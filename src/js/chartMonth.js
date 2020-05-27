@@ -432,7 +432,7 @@ function firstQuery(){
 	if(sumMonth>0){$("#consumption-month_1").text( Math.round(sumMonth) + " kWh" );}
 	else{alert("Data not available/No operation"+nameMst_1);
 		$("#consumption-month_1").text( Math.round(sumMonth) + " kWh (Data not available/No operation)"+nameMst_1);}
-        
+
         colorMst = updateChart(chartData, nameMst_1);
         msts.push([sessionStorage.getItem("mstID_1"),nameMst_1]);
 

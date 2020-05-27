@@ -25,7 +25,7 @@ h1{
 	float:right;
 }
 
-  
+
  #loginButton, #demoButton{
 	 margin-top:200px;
 	 padding:10px;
@@ -40,7 +40,7 @@ h1{
 	 -o-transition: all 0.4s ease-in-out;
 	 transition: all 0.4s ease-in-out;
  }
- 
+
  #loginButton:hover, #demoButton:hover{
 	 background-color:#FFCE00;
 	 color:black;
@@ -51,14 +51,14 @@ h1{
 #loginButton{
 margin-right:3px;
 }
- 
+
  .images{
 	 display:inline-block;
 	 height:150px;
 	 width:250px;
-       
+
  }
- 
+
  #divImages{
 	 margin-left:auto;
 	 margin-right:auto;
