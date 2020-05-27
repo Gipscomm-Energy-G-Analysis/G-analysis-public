@@ -1,0 +1,31 @@
+(function evalBrowser(){
+  // Opera 8.0+
+var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+// Firefox 1.0+
+var isFirefox = typeof InstallTrigger !== 'undefined';
+
+// Safari 3.0+ "[object HTMLElementConstructor]"
+var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+
+// Internet Explorer 6-11
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+// Edge 20+
+var isEdge = !isIE && !!window.StyleMedia;
+
+// Chrome 1+
+var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+// Blink engine detection
+var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+console.log("Opera: " +  isOpera + " \nFirefox: " +  isFirefox + " \nSafari: " +  isSafari +
+  " \nInternet Explorer: " +  isIE + " \nMS Edge: " +  isEdge + " \nGoogle Chrome: " +
+  isChrome + " \nBlink: " +  isBlink + " \n");
+
+if (isIE){
+  alert("Der Internet-Explorer kann einige JavaScript Neuerungen, gar nicht bis mangelhaft ausführen.\nDa der IE auch nichtmehr weiterentwickelt wird, sollte er grundsätzlich nichtmehr genutzt werden!");
+  window.location.href = "changeBrowser.html";
+}
+})();

@@ -1,0 +1,65 @@
+
+
+
+
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <link id="indexStyle" rel="stylesheet" href="css/login_style.css" type="text/css" media="all">
+      <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+      <!--Logo-->
+      <img id="Glogo" src="images/gLogoOrg3.png" alt="Gipscomm-Energie Logo" style="float:left; height:50px; width:150px;">
+      <img id="logo" src="images/g_analysisNeu6.png" alt="G-Analysis Logo" style="clear:right; float:right;height:50px;width:150px;">
+      <div id="formReg">
+        <p>Um Ihnen einen Demozugang zur Verfügung stellen
+          zu können schicken Sie uns eine E-mail an die
+          unten angegebene Adresse oder füllen Sie das folgende
+          Formular aus und bestätigen mit dem "Absenden" Knopf.<br><br>
+          info@energie-gipscomm.de</p>
+          <br>
+          <label>Anrede*:</label>
+          <select id="anredeDemo">
+            <option label=" "> </option>
+            <option label=" ">Herr</option>
+            <option label=" ">Frau</option>
+          </select>
+          <label>Vorname:</label>
+          <input id="vornameDemo" type="text" name="Vorname"/>
+          <label>Nachname*:</label>
+          <input id="nachnameDemo" type="text" name="Nachname"/>
+          <label>Firma*:</label>
+          <input id="firmaDemo" type="text" name="Firma"/>
+          <label>E-mail*: ->wenn mehrere durch Komma trennen</label>
+          <input id="emailDemo" type="text" name="E-mail"/>
+          <label>Mitteilung:</label>
+          <textarea id="mitteillungDemo" rows="10" name="Mitteilung"></textarea>
+          <br>
+          <button id="btnRegGast">Absenden</button>
+        </div>
+        <script type="text/javascript">
+          $("#btnRegGast").click(function(){
+            $.ajax({
+              type: 'POST',
+              async: true,
+              url: 'php/sendMail.php',
+              data: {
+                anrede: $("#anredeDemo").val(),
+                vorname: $("#vornameDemo").val(),
+                nachname: $("#nachnameDemo").val(),
+                firma: $("#firmaDemo").val(),
+                empfaenger: $("#emailDemo").val(),
+                mitteilung: $("#mitteillungDemo").val(),
+                anhangPfad: "/documents/G_Analysis_PPT.pdf"
+              },
+              success: function (echo) {
+                console.log(echo);
+                alert("Die E-Mail wurde erfolgreich versendet.");
+                window.open("index.html", "_self");
+              }
+            });
+        </script>
+    </body>
+  </html>

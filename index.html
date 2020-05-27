@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="de-DE">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-Analysis - Energiemanagement</title>
+    <link id="indexStyle" rel="stylesheet" href="dist/css/index_style.css" type="text/css" media="all">
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <!--Logo-->
+    <img id="Glogo" src="images/gLogoOrg3.png" alt="Gipscomm-Energie Logo" style="float:left; height:50px;width:150px;margin:5px;">
+    <img id="logo" src="images/g_analysisNeu6.png" alt="G-Analysis Logo" style="clear:right; float:right;height:50px;width:150px;margin:5px;">
+    <div id="indexP">
+      <div id="divImages">
+        <img class="images" alt="Auswertung von Energiedaten" src="images/1.jpg">
+        <img class="images" alt="Auswertung von Energiedaten" src="images/2.jpg">
+        <img class="images" alt="Auswertung von Energiedaten" src="images/3.jpg">
+      </div>
+      <div>
+        <div class="container">
+          <h1>Willkommen bei Gipscomm-Analysis.</h1>
+          <button id="loginButton">Einloggen</button>
+          <button id="demoButton">Demo</button>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <a href="impressum.html" style="margin-right:10px;">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </div> <!--Ende indexP-->
+     <script type="text/javascript">
+        //Auf loginP leiten wenn Einloggen geklickt
+        $("#loginButton").click(function () {
+          window.open("login.html", "_self");
+        });
+        $("#demoButton").click(function () {
+          window.open("demo.html", "_self");
+        });
+        $.ajaxSetup({
+          beforeSend: (xhr) => {
+              xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+          }
+        });
+      </script>
+  </body>
+</html>

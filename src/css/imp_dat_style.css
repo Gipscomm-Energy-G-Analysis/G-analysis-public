@@ -1,0 +1,22 @@
+body{
+  background: url(../images/5653.jpg) no-repeat center center fixed;
+  background-size: cover;
+  margin: 0px;
+  padding: 20px;
+}
+
+div{
+  background-color: #B9C0C7;
+  border: 1px solid black;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 0 5px #333;
+          box-shadow: 0 0 5px #333;
+  clear: both;
+  padding: 25px;
+  margin: 0 auto;
+  width: 700px;
+}
+p{
+width: 650px;
+text-align: justify;
+}

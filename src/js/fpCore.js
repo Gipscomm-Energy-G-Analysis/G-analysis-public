@@ -1,0 +1,191 @@
+"use strict"
+// Distribution Configuration
+//
+// Testing Configuration
+
+const scpCore =
+Object
+.freeze(
+    new function () {
+        const isType =
+            arg => {
+                const isInstance =
+                    ins =>
+                    arg instanceof ins
+
+                let result;
+
+                switch (typeof a) {
+
+                    case "number":
+                        result =
+                            arg === Math.round (arg) ? "integer" : "float";
+                        break;
+
+                    case "object":
+                        result =
+                            isInstance (Array) ? "array" :
+                            isInstance (Function) ? "function" : "record";
+                        break;
+
+                    default: result =
+                        typeof arg;
+                }
+                return result;
+            };
+
+        const type =
+            Object.freeze(
+                { isString : a => isType(a) === "string"
+                , isBool : a => isType(a) === "boolean"
+                , isInt : a => isType(a) === "integer"
+                , isFloat : a => isType(a) === "float"
+                , isArray : a => isType(a) === "array"
+                , isRecord : a => isType(a) === "record"
+                , isFunction : a => isType(a) === "function"
+                }
+            );
+
+        const { isString
+              , isBool
+              , isInt
+              , isFloat
+              , isArray
+              , isRecord
+              , isFunction
+              } = type;
+
+        this.type = type;
+        this.split_ = a => b => isString(a) && isString(b) ? b.split(a) : console.error(`scpCore.split_ : invalid datatypes ! \nEXPECTED 'string => string', \nACTUAL '${isType(a)} => ${isType(b)}'`);
+        this.splt = this.split_;
+        this.join_ = a => b => b.join(a);
+        this.jn = this.join_;
+        this.length_ = a => a.length;
+        this.len = this.length_;
+        this.trim_ = a => a.trim();
+        this.trm = a => a.trim();
+        this.id = a => a;
+        this.flip = fn => a => b => fn(b)(a);
+        this.first = a => b => a;
+        this.second = a => b => b;
+        this.apply = fn => a => fn(a);
+        this.not = this.first ? this.second : this.first;
+        this.equal = a => b => a === b;
+        this.unequal = a => b => this.not(this.equal(a)(b));
+        this.greater = a => b => a > b;
+        this.greaterZero = this.flip(this.greater)(0);
+        this.greaterOne = this.flip(this.greater)(1);
+        this.smaller = this.flip(this.greater);
+        this.applyRv = this.flip(this.apply);
+        this.compose = fn => gn => a => fn(gn(a));
+        this.singleton = a => [].concat([a]);
+        this.isSingleton = a => equal(a.length)(1);
+        this.array = n => m => (x = this.singleton(m)) => this.greater(n)(1) ? x.concat(this.array(n - 1)(m)(this.singleton(m))) : x;
+        this.head = arr => arr[0];
+        this.arrayFrom = a => a.split(",").map(this.trim_);
+        this.isDefined = a => this.not(this.equal(a, null) || this.equal(a, undefined) || this.equal(a, ""));
+        this.tail = arr => arr.slice(1);
+        this.last = arr => arr[arr.length - 1];
+        this.flatten = arr => arr.reduce((acc, val) => acc.concat(val), []);
+        this.altFuse = arr1 => arr2 => this.flatten(arr1.map((x, i) => (i <= arr2.length - 1) ? [x, arr2[i]] : x));
+        this.incr = a => a + 1,
+        this.decr = a => a - 1,
+        this.sum = (a, b, castNum = false) => castNum ? Number(a) + Number(b) : a + b;
+        this.subtract = (a, b, castNum = false) => castNum ? Number(a) - Number(b) : a - b;
+        this.devide = (a, b) => a / b;
+        this.multiply = (a, b) => a * b;
+        this.round = a => b => Math.round(a * Math.pow(10, b)) / Math.pow(10, b);
+        this.roundWithZeros = val => digits => String(this.round(val)(digits)) .split(".") .length === 2 ? this.round(val)(digits) + "0" .repeat(this.subtract(digits, String(this.round(val)(digits)).split(".")[1].length) ) : val;
+        this.doOperation = op => a => b => {
+            const val1 = Number(String(a) .replace(",", ".")), val2 = Number(String(b) .replace(",", "."));
+            switch (op) {
+                case "(": return this.opnPths(a, b); // opening parentheses
+                break;
+                case ")": return this.clsPths(a, b); // closing parentheses
+                break;
+                case "/": return this.devide(val1, val2);
+                break;
+                case "+": return this.sum(val1, val2);
+                break;
+                case "*": return this.multiply(val1, val2);
+                break;
+                case "-": return this.subtract(val1, val2);
+                break;
+                default: alert("doOperation(a, b) : \nAn invalid operator was found!")
+            }};
+        this.average = list => list.reduce(sum) / list.length;
+        this.exclude = exclVals => val => exclVals.filter(this.equal(val)).length > 0;
+        this.get = cdnFn => str => str.split(" ").filter(cdnFn);
+        this.toObject = str => obj => replace(str)(["{", "}"]).split(",").map(split_(":")).forEach((x) => this.set(this.makeProperty(obj)(x[0])(x[1])));
+        this.emptyString = str => this.equal(str)("");
+        this.replace = str => (repl, wth = "") => repl.reduce((lastStr = str, x) => lastStr.replace(x, wth));
+        this.makeRecord = a => new Object(a);
+        this.addField = rec => prop => value => rec[prop] = value;
+        this.field = obj => name => obj[name];
+        this.decode = this.id;
+        this.json = a => { try { JSON.parse(a); } catch (e) { return false; } return JSON.parse(a); };
+        this.freeze = obj => Object.freeze(obj);
+        this.exists = obj => prop => obj.hasOwnProperty(prop);
+        this.deepFreeze = obj => { this.freeze(obj); Object.getOwnPropertyNames(obj).forEach(prop => {if (exists(obj)(prop) && obj[prop] !== null && (typeof obj[prop] === "object" || typeof obj[prop] === "function") && !Object.isFrozen(obj[prop])) {this.deepFreeze(obj[prop])}});return obj;};
+        this.fetchPost = url => body => fetch (url, {method: "POST", body});
+        this.fetchGet = url => fetch (url, {method: "GET"});
+    }
+);
+const { type
+      , split_
+      , splt
+      , join_
+      , jn
+      , length_
+      , len
+      , trim_
+      ,  trm
+      ,  id
+      ,  first
+      , second
+      , apply
+      , not
+      , flip
+      , equal
+      , unequal
+      , greater
+      , greaterZero
+      , greaterOne
+      , smaller
+      , applyRv
+      , compose
+      , singleton
+      , isSingleton
+      , array
+      , head
+      , arrayFrom
+      , isDefined
+      , tail
+      , last
+      , flatten
+      , altFuse
+      , incr
+      , decr
+      , sum
+      , subtract
+      , devide
+      , multiply
+      , round
+      , roundWithZeros
+      , doOperation
+      , average
+      , exclude
+      , get
+      , toObject
+      , emptyString
+      , replace
+      , makeRecord
+      , addField
+      , field
+      , decode
+      , json
+      , freeze
+      , exists
+      , deepFreeze
+      } = scpCore	;
+    // module.exports = scpCore;

@@ -1,0 +1,1082 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+html {
+  font-family: "Roboto", helvetica, arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+}
+body {
+  background: url(../images/5653.jpg) no-repeat center center fixed;
+  background-size: cover;
+  margin: 0px;
+  padding: 0px;
+}
+#asideRight, #asideRight2 {
+  position: absolute;
+  height: 230px;
+  width: 210px;
+  top: 117px;
+  border-radius: 8px;
+  background-color: #CED6DE; /*#B9C0C7;*/
+  border: 1px solid #A1A7AD;
+  font-size:14px;
+  opacity:.8;
+}
+#asideLeft {
+  float:left;
+  height: 430px;
+  width: 200px;
+  margin-top: 117px;
+  margin-left: 10px;
+  border-radius: 8px;
+  background-color: #CED6DE; /*#B9C0C7;*/
+  border: 1px solid #A1A7AD;
+  font-size:14px;
+  opacity:.8;
+}
+h3{
+  font-size:16px;
+  font-weight:bold;
+  text-align:center;
+}
+#tblAuswertung1ERng_filter, #tblAuswertung2ERng_filter{
+  display:none;
+}
+#search-inp1, #search-inp2{
+  display:none;
+}
+#tblLetzteRngs {
+  margin-left: 10px;
+}
+#dateiTabelle {
+  display: inline-block;
+  float: right;
+}
+#kategorienDok{
+  display:inline-block;
+  clear:both;
+}
+#ladenSymbolAnl,
+#ladenSymbolMsm,
+#ladenSymbolERng{
+  height: 23px;
+  width: 23px;
+  margin-top:5px;
+}
+#ladenLblAnl,
+#ladenLblMsm,
+#ladenLblERng{
+  display: none;
+}
+#dokuAuswahlAnl,
+#dokuAuswahlMsm,
+#dokuAuswahlERng{
+  height: 25px;
+}
+#mainContainerBerFrm{
+  border: 2px dashed orange;
+}
+#einstellungBerFrm{
+  border: 2px solid green;
+}
+#operatorenUndNamensfeldBerFrm{
+  border: 2px solid white;
+  margin-left: 10px;
+}
+#subContainerFormelfeldUndTblBerFrm{
+  clear: left;
+  border: 2px dashed red;
+  margin-top: 20px;
+}
+#tblContainerBerFrm{
+  border: 2px solid lightblue;
+  width: 45%;
+  float: left;
+}
+#subContainerFormelfeldBerFrm{
+  border: 2px solid blue;
+  width: 50%;
+  margin-left: 20px;
+  float: left;
+}
+#jahreSpaEfVBenutzerdef{
+  display: none;
+}
+#speziSpaEfVTbl1Org,
+#speziSpaEfVTbl1Lieg,
+#lblSpeziSpaEfVTble1Org,
+#lblSpeziSpaEfVTble1Lieg{
+  display: none;
+}
+#interneEnergieformenLieg{
+  display: none;
+}
+#intMesswerteLeftMenu{
+  padding: 10px;
+}
+
+#masseneingabeZeitintervallContainerIMw{
+  float: right;
+  width: 815px;
+  height: 35px;
+  overflow: hidden;
+
+}
+#masseneingabeZeitintervallContainerIMw #masseneingabeZeitintervallIMw{
+  position: absolute;
+  left: 170px;
+  height: 30px;
+  width: 650px;
+  overflow: hidden;
+}
+#masseneingabeNameIMw{
+  height: 500px;
+  float: left;
+  overflow: hidden;
+}
+#masseneingabeInputIMw{
+  width: 665px;
+  height: 515px;
+  overflow-x: scroll;
+}
+#masseneingabeNameUndInputMatrixIMw{
+  height: 600px;
+}
+.liegPfad, .orgPfad{
+  font-size: 12px;
+  width: 145px;
+}
+.spaEfVBenutzerdefiniert1,
+.spaEfVBenutzerdefiniert2{
+  display: none;
+}
+.mathSymbols{
+  height:25px;
+  width:25px;
+}
+.node {
+  cursor: pointer;
+}
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+.node text {
+  font: 12px sans-serif;
+}
+.link {
+  fill: none;
+  stroke: white;
+  stroke-width: 3px;
+}
+.clearfix:after {
+  display: block;
+  clear: both;
+}
+.menu ul {
+  margin-top: 20px;
+}
+nav {
+  position: absolute;
+  width:100%;
+}
+.menu li {
+  list-style:none;
+  font-family:'Ek Mukta';
+}
+.menu a {
+  font-family:Calibri,Arial, Helvetica, sans-serif;
+  font-size:14px;
+  /*transition:all linear 0.15s;*/
+  color:black;
+  background-color:transparent; /* Old browsers */
+  text-decoration:none;
+}
+.menu li:hover > a{
+  text-decoration:none;
+  color:black;
+}
+.menu .arrow {
+  font-size:11px;
+  line-height:0%;
+}
+/*----- Top Level -----*/
+.menu > ul > li {
+  float:left;
+  display:inline-block;
+  position:relative;
+  font-size:19px;
+}
+.menu > ul > li > a {
+  padding:10px 10px;
+  display:inline-block;
+  text-shadow:0px 1px 0px rgba(0,0,0,0.4);
+  letter-spacing:1px;
+}
+.menu > ul > li:hover > a {
+  font-weight:400;
+}
+/*----- Bottom Level -----*/
+.menu li:hover .sub-menu {
+  z-index:1;
+  opacity:1;
+}
+.sub-menu {
+  width:155px;
+  padding:5px 0px;
+  position:absolute;
+  top:25px;
+  left:0px;
+  z-index:-1;
+  opacity:0;
+  -webkit-transition:opacity linear 0.15s;
+  -o-transition:opacity linear 0.15s;
+  transition:opacity linear 0.15s;
+  -webkit-box-shadow:0px 2px 3px rgba(0,0,0,0.2);
+          box-shadow:0px 2px 3px rgba(0,0,0,0.2);
+  background:#2e2728;
+}
+.sub-menu li {
+  display:block;
+  font-size:14px;
+}
+.sub-menu li a {
+  padding:10px 10px;
+  display:block;
+  background: #E5E5E5;
+}
+.sub-menu li a:hover, .sub-menu .current-item a {
+  font-weight:400;
+}
+.logo {
+  float:right;
+}
+.kurve {
+    display: inline-block;
+    width: 25px;
+    height: 5px;
+    background-color: orange;
+    margin-top: 250px;
+}
+
+#tblMessstellenBerechnungseditor_filter,
+#tblMessstellenBerechnungseditor_info,
+#tblMessstellenBerechnungseditor_paginate,
+#tblAnlagenBerechnungseditor_filter,
+#tblAnlagenBerechnungseditor_info,
+#tblAnlagenBerechnungseditor_paginate,
+#tblBdeDynBerechnungseditor_filter,
+#tblBdeDynBerechnungseditor_info,
+#tblBdeDynBerechnungseditor_paginate,
+#tblInterneMesswerteBerechnungseditor_filter,
+#tblInterneMesswerteBerechnungseditor_info,
+#tblInterneMesswerteBerechnungseditor_paginate,
+#tblProdukte_filter,
+#tblProdukte_info,
+#tblProdukte_paginate,
+#tblVorlFrmZuordnen_filter,
+#tblVorlFrmZuordnen_info,
+#tblVorlFrmZuordnen_paginate{
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+#chartDiv {
+  background:lightyellow;
+  margin-top:50px;
+  margin-left:50px;
+  display:inline-block;
+}
+#myChart {
+  background:lightyellow;
+  display:inline-block;
+  margin-left:10px;
+}
+.responstable {
+  margin-top:50px;
+  margin-left:45px;
+  display:inline-block;
+  float:left;
+}
+#main {
+  display:block;
+  width:854px;
+  height:80%;
+  margin-top:100px;
+}
+#manSpeichern:hover {
+  background:lightblue;
+}
+.manPfad, .manLiegLabel {
+  font-size:14px;
+  width:150px;
+}
+#tabsUnternehmensstruktur, #tabsAnlagenverwaltung, #tabsPruefmittelverwaltung, #tabsMessmittelverwaltung, #tabsProdukteverwaltung, #tabsKennzahlenAlarme, #tabsManuell, #tabsAuswertungen {
+  display: inline-block;
+  float: left;
+}
+/*24-02-2020 tab html designed calculator*/
+#tabGipscAdm, #tabBetrGrp, #tabSAdm, #tabManGrp, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl ,#tabStdDr, #tabBer, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm,
+#tabMsg, #tabKnz, #tabAlm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabEng, #tabZp, #tabBerechnungsformeln,
+#tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
+#tabEPrd, #tabPrd, #tabPrd_historie, #tabVorlagenformeln, #tabAnl_weitereKonfig, #tabPrd_konfig, #tabDiagKnz,
+#tabGrpDiag, #tabHzk,#tabTaschenrechner,#tabDynamicKorrekturFktr {
+  display: inline;
+  margin: 0px;
+  background-color: #B9C0C7;
+  font-size: 12px;
+  border: 1px solid #A1A7AD;
+  border-bottom: #B9C0C7;
+  border-top-left-radius: 8px;
+  float: left;
+}
+.infoBody{
+  background-color:#CED6DE;
+  border:1px solid #A1A7AD;
+  border-bottom-left-radius:8px;
+  border-bottom-right-radius:8px;
+  border-top-right-radius:8px;
+  display:inline-block;
+  clear:left;
+  float:left;
+}
+.navDropBox{
+  margin:10px;
+  font-size:14px;
+}
+.liegenschaftHeader{
+  padding:10px;
+}
+/*24-02-2020 tab detail html designed calculator*/
+#infosGipscommAdmins,
+#infosBetreuerGruppen,
+#infosSuperAdmins,
+#infosMandantenGruppen,
+#infosAdmins,
+#infosBenutzer,
+#infosMandanten,
+#infosOrganisationen,
+#infosLiegenschaften,
+#infosExtDurchleitungen,
+#infosStandorteDritte,
+#infosBereiche,
+#infosStandorte,
+#infosAnlagen,
+#infosAnlagenHistorie,
+#infosEnergieversorgungHistorie,
+#infosEnergieversorgung,
+#infosDokumente,
+#infosHistorieAnl,
+#infosMessgeraete,
+#infosMessmittel,
+#infosKennzahlen,
+#infosAlarme,
+#bericht,
+#infosEnergie,
+#infosZaehlpunkte,
+#infosKonfiguration,
+#infosDokumenteMsm,
+#infosHistorieMsm,
+#infosExtRechnungen,
+#infosIntEnergiedaten,
+#infosIntBetriebsdaten,
+#infosMasseneingabe,
+#infosAuswertungManuell,
+#infosSpaEfVTabelle1,
+#infosSpaEfVTabelle2,
+#infosEditor,
+#infosProduktion,
+#infosErweiterungenAnlagen,
+#infosBerechnungsformeln,
+#infosVorlagenformeln,
+#infosVerbrauchsdatenexport,
+#infosDiagramm,
+#infosDiagramm2,
+#infosDiagrammKnz,
+.tbKnz,
+#infosErweiterungenProdukte,
+#infosProdukte,
+#infosWeitereAnlKonfig,
+#infosHistoriePrd,
+#infosWeiterePrdKonfig,
+#infosGruppierungDiagramme,
+#infosKorrekturFaktor,
+#infosDynamicKorrekturFaktor {
+  background-color: #B9C0C7;
+  margin: 10px;
+  width: 21.85cm;
+  border: 1px solid black;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 0 5px #333;
+  box-shadow: 0 0 5px #333;
+  clear: both;
+  padding: 2px;
+}
+.navDropBox img{
+  float:right;
+  cursor:pointer;
+  margin-left:0.15cm;
+}
+#ber {
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #6B6F73;
+  color: white;
+  margin: 1px;
+  padding: 5px 20px;
+}
+.berDialogButton,
+.anlDialogButton,
+#berSuchenAnl,
+#berResetAnl,
+#feldHinzufuegenStd,
+#linkBerechnungslogikOderEingabemaske,
+.btn,
+#entManZuordnung,
+#enfManZuordnung,
+#entFaktorHinz,
+#enfFaktorHinz,
+#alleAnhaken,
+#alleZuruecksetzen,
+#entEnfManStatusSpeichern,
+#btnErweitertERng,
+#btnHtNt,
+#weitereEntsLieg,
+#diaProd1AusEin,
+#diaProd2AusEin,
+#btnChartReset,
+#chartAusbl1,
+#chartAusbl2,
+#chartAusbl3,
+#chartAusbl4,
+#chartAusbl5,
+#loeschenAbbrechen,
+#loeschenOk,
+#btnStandortDatenExtDl,
+#manZuManGrpHinz,
+#btnParHinz,
+#btnAnlOeffnen,
+#downloadLink,
+#webViewerLink,
+#btnDokLoeschen,
+#aktuellesDokNameERng,
+#btnSpaEfVTbl1Erstellen,
+#btnSpaEfVTbl2Erstellen,
+#entVersorgerHinz,
+#neuenEntLiegHinz,
+#erweiternEnfLieg,
+#histSpeichern,
+#histNichtSpeichern,
+#histOk,
+#histAbbrechen,
+#verschSpeichern,
+#verschAbbrechen,
+#mapDrucken,
+#btnTageMasseneingabeIMw,
+#btnWochenMasseneingabeIMw,
+#btnMonateMasseneingabeIMw,
+#btnJahreMasseneingabeIMw,
+#masseneingabeSpeichern,
+#masseneingabeLaden,
+#btnMassEingMst,
+#btnMassEingAnl,
+#btnKonfigMstAnl,
+#btnAnlagenNrOderName,
+#formelSpeichern,
+#btnVerbrauchsdatenExport,
+#btnDiagrammErst,
+#btnDiagramm2Erst,
+#btnZeitrmDiag,
+#btnSyncOk,
+#btnSyncAbbr,
+#btnMstResetDiag,
+#btnKnzResetDiag,
+#formelfeldLeeren,
+#btnInMstVerwaltungSpringen,
+#btnInKnzVerwaltungSpringen,
+#btnWeitereKnzHinz,
+.btnNeueFormelKnz,
+#btnPrdOeffnen,
+#btnProdAnzeigenKnz,
+#formelVorSpeichern,
+#formelVorfeldLeeren,
+.btnVorlFormeln,
+#btnFrmAusVorlOk,
+#btnFrmAusVorlAbbr,
+#formelvorlageBenutzen,
+#btnPlusAnlsPrd,
+#btnDiagrammKnzErst,
+#btnBetriebsparsSpeichern,
+#bildHochlAnl,
+#btnBenDefZeitrmDiagKnz,
+#btnGespDiag,
+#btnGespDiag2,
+#btnGespDiagKnz{
+  border: 0px solid black;
+  border-radius: 5px;
+  background-color: transparent;
+  color: black;
+  margin: 3px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+#ber:hover,
+.berDialogButton:hover,
+.anlDialogButton:hover,
+#berSuchenAnl:hover,
+#berSuchenOrt:hover,
+#berSuchenVBereich1:hover,
+#berSuchenVBereich2:hover,
+#berResetAnl:hover,
+#feldHinzufuegenStd:hover,
+#linkBerechnungslogikOderEingabemaske:hover,
+#mstSuchenVMessstelle:hover,
+#msmSuchenMst:hover,
+#ortSuchenMst:hover,
+.btn:hover,
+#anlAuswahlBer:hover,
+#anlAuswahlStd:hover,
+#entManZuordnung:hover,
+#enfManZuordnung:hover,
+#entFaktorHinz:hover,
+#enfFaktorHinz:hover,
+#alleAnhaken:hover,
+#alleZuruecksetzen:hover,
+#entManStatus:hover,
+#anlSuchenMst:hover,
+#anlSuchenKanal1:hover,
+#anlSuchenKanal2:hover,
+#anlSuchenKanal3:hover,
+#btnErweitertERng:hover,
+#btnHtNt:hover,
+#eRngSuchenMst:hover,
+#weitereEntsLieg:hover,
+#mstSuchenAnlage:hover,
+#anlEnt1SuchenMst:hover,
+#anlEnt2SuchenMst:hover,
+#anlEnt3SuchenMst:hover,
+#anlEnt4SuchenMst:hover,
+#msmSuchenAnlage:hover,
+#zpSuchenMst:hover,
+#diaProd1AusEin:hover,
+#diaProd2AusEin:hover,
+#anlAuswahlZugVerbr1:hover,
+#anlAuswahlZugVerbr2:hover,
+#anlAuswahlZugVerbr3:hover,
+#anlAuswahlZugVerbr4:hover,
+#anlAuswahlZugVerbr5:hover,
+#anlAuswahlZugVerbr6:hover,
+#berichtSuchenMst1:hover,
+#berichtSuchenMst2:hover,
+#berichtSuchenMst3:hover,
+#btnChartReset:hover,
+#chartAusbl1:hover,
+#chartAusbl2:hover,
+#chartAusbl3:hover,
+#chartAusbl4:hover,
+#chartAusbl5:hover,
+#loeschenAbbrechen:hover,
+#loeschenOk:hover,
+.lupe:hover,
+#manZuManGrpHinz:hover,
+#btnStandortDatenExtDl:hover,
+#btnParHinz:hover,
+#btnAnlOeffnen:hover,
+#downloadLink:hover,
+#webViewerLink:hover,
+#btnDokLoeschen:hover,
+#aktuellesDokNameERng:hover,
+#btnSpaEfVTbl1Erstellen:hover,
+#btnSpaEfVTbl2Erstellen:hover,
+#entVersorgerHinz:hover,
+#neuenEntLiegHinz:hover,
+#erweiternEnfLieg:hover,
+#histSpeichern:hover,
+#histNichtSpeichern:hover,
+#histOk:hover,
+#histAbbrechen:hover,
+#verschSpeichern:hover,
+#verschAbbrechen:hover,
+#mapDrucken:hover,
+#mstSuchenIMw:hover,
+#btnTageMasseneingabeIMw:hover,
+#btnWochenMasseneingabeIMw:hover,
+#btnMonateMasseneingabeIMw:hover,
+#btnJahreMasseneingabeIMw:hover,
+#masseneingabeSpeichern:hover,
+#masseneingabeLaden:hover,
+#btnMassEingMst:hover,
+#btnMassEingAnl:hover,
+#btnKonfigMstAnl:hover,
+#btnAnlagenNrOderName:hover,
+#formelSpeichern:hover,
+#btnVerbrauchsdatenExport:hover,
+#btnDiagrammErst:hover,
+#btnDiagramm2Erst:hover,
+#btnZeitrmDiag:hover,
+#imgBtnMstDiag11:hover,
+#imgBtnMstDiag12:hover,
+#imgBtnMstDiag13:hover,
+#imgBtnMstDiag2:hover,
+#btnSyncOk:hover,
+#btnSyncAbbr:hover,
+#imgBtnMstDatenexport:hover,
+#btnMstResetDiag:hover,
+#btnKnzResetDiag:hover,
+#formelfeldLeeren:hover,
+#btnInMstVerwaltungSpringen:hover,
+#btnInKnzVerwaltungSpringen:hover,
+#btnWeitereKnzHinz:hover,
+#insSuchenKnz:hover,
+.btnNeueFormelKnz:hover,
+#btnPrdOeffnen:hover,
+#btnProdAnzeigenKnz:hover,
+#imgBtnAnlage1Prd:hover,
+#imgBtnAnlage2Prd:hover,
+#imgBtnAnlage3Prd:hover,
+#imgBtnAnlage4Prd:hover,
+#imgBtnAnlage5Prd:hover,
+#imgBtnAnlage6Prd:hover,
+#imgBtnAnlage7Prd:hover,
+#imgBtnAnlage8Prd:hover,
+#imgBtnAnlage9Prd:hover,
+#formelVorSpeichern:hover,
+#formelVorfeldLeeren:hover,
+.btnVorlFormeln:hover,
+.imgBtnFormel:hover,
+#btnFrmAusVorlOk:hover,
+#btnFrmAusVorlAbbr:hover,
+#formelvorlageBenutzen:hover,
+#btnPlusAnlsPrd:hover,
+#prdAuswahlZugDynPrdID:hover,
+#imgBtnknzDiag11:hover,
+#imgBtnknzDiag12:hover,
+#imgBtnknzDiag13:hover,
+#btnDiagrammKnzErst:hover,
+#tblSuchenEPrd:hover,
+#btnBetriebsparsSpeichern:hover,
+#mstSuchenVergl1:hover,
+#mstSuchenVergl2:hover,
+#bildHochlAnl:hover,
+#btnBenDefZeitrmDiagKnz:hover,
+#btnGespDiag:hover,
+#btnGespDiag2:hover,
+#btnGespDiagKnz:hover {
+  background-color: white;
+  cursor: pointer;
+}
+#timeIntervalWerteEnergiedatenIMw{
+  height: 600px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+#aktuellesDokNameERng{
+  font-size: 12px;
+  padding: 5px 5px;
+}
+#bereichWaehlen select {
+  width:100px;
+}
+#bereichWaehlen label {
+  margin-top:10px;
+  display:block;
+}
+#tblBereicheAnl{
+  font-size:14px;
+}
+#formelFeld{
+  background-color: white;
+  height: 75px;
+  margin: 10px;
+  border: 2px solid black;
+}
+.dok {
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #6B6F73;
+  color: white;
+  margin: 1px;
+  margin-top: 5px;
+  padding: 2px 10px;
+}
+.dok:hover{
+  background-color:white;
+  color:black;
+  cursor:pointer;
+}
+.infosBlock{
+  margin-bottom:0.3cm;
+  /*display:inline-block;
+  padding:0px;
+  margin-bottom:0.2cm;
+  width:7.2cm;
+  height:6cm;
+  font-size:10px;
+  font-family:helvetica,'Times New Roman', Times, serifArial;
+  margin-left:0.5cm;
+  float:left;*/
+}
+.sectionHeader label{
+  display:block;
+  color:white;
+  font-size:12px;
+  font-weight:bold;
+  background-color:#6B6F73;
+  height:0.5cm;
+  margin-bottom:5px;
+  padding-top:0.1cm;
+  padding-bottom:2px;
+  padding-left:0.1cm;
+}
+.controlDiv{
+  display:inline-block;
+  background-color:#A1A7AD;
+  margin-bottom:0.1cm;
+  width:7.2cm;
+  /*border:1px solid red;*/
+}
+.controlDivInternTab{
+  width: 6.5cm;
+}
+.controlDiv label{
+  display:inline-block;
+  width:3.4cm;
+  height:0.5cm;
+  background-color:#A1A7AD;
+  font-size:12px;
+  padding-left:0.1cm;
+  border:none;
+}
+.controlDivInternTab label{
+  width: 2.9cm;
+}
+.controlDiv label:hover {
+  color: #6B6F73;
+}
+.controlDiv input, #clearFieldKurve1 {
+  margin-left: 0.1cm;
+  margin-top: 0.1cm;
+  display: inline;
+  font-size: 11px;
+  height: 0.4cm;
+  left: 100px;
+  clear: both;
+  width: 3.3cm;
+  padding: 0px;
+  vertical-align: central;
+}
+.controlDivInternTab input{
+  left: 80px;
+  width: 3.1cm;
+}
+.controlDiv textarea {
+  margin-left: 0.1cm;
+  margin-top: 0.1cm;
+  display: inline;
+  font-size: 11px;
+  left: 100px;
+  clear: both;
+  width: 3.3cm;
+  padding: 0px;
+}
+.controlDiv input[type="checkbox"]{
+  vertical-align:middle;
+  height:16px;
+}
+.controlDiv input[type="button"]{
+  height:0.6cm;
+}
+.controlDiv select{
+  margin-left:0.1cm;
+  margin-top:0.1cm;
+  display:inline;
+  font-size:11px;
+  height:0.5cm;
+  left:100px;
+  clear:left;
+  width:3.4cm;
+  padding:0px;
+}
+.controlDivInternTab select{
+  left:80px;
+  width: 3.1cm;
+}
+.controlDiv .normalButton{
+  border-top-left-radius:0px;
+  border:1px solid black;
+  background-color:#6B6F73;
+  color:white;
+  margin:1px;
+  clear:left;
+  float:none;
+}
+#btnSpeichern{
+  height:100px;
+}
+.controlDiv .hinzButton {
+  border-top-left-radius:0px;
+  border:1px solid black;
+  background-color:#6B6F73;
+  color:white;
+  padding:3px;
+  margin:10px;
+  margin-left:0.1cm;
+  border-radius:3px;
+  clear:left;
+  float:none;
+}
+.controlDiv .hinzMessstelle{
+  border:1px solid black;
+  background-color:#6B6F73;
+  color:white;
+  padding:3px;
+  margin:10px;
+  margin-left:0.1cm;
+  border-radius:3px;
+  clear:left;
+  float:none;
+  font:16px;
+}
+.controlDiv .hinzMessstelle:hover{
+  background-color:white;
+  color:black;
+  cursor:pointer;
+}
+#blockHinzButton{
+  display:none;
+  border:1px solid black;
+  background-color:#5A5E61;
+  color:white;
+  padding:5px;
+  margin-left:20px;
+  margin-bottom:20px;
+  border-radius:3px;
+  clear:left;
+  float:none;
+  font-size:12px;
+}
+.controlDiv .normalButton:hover{
+  background-color:white;/*#B9C0C7;*/
+  color:black;
+  cursor:pointer;
+}
+.controlDiv .hinzButton:hover{
+  background-color:white;
+  color:black;
+  cursor:pointer;
+}
+.vorlFrmPlatzhalter{
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid black;
+  border-radius: 3px;
+  font-size: 12px;
+}
+#blockHinzButton:hover{
+  background-color:white;
+  color:black;
+  cursor:pointer;
+}
+#mainVM {
+  padding: 10px;
+  border: 1px solid #B9C0C7;
+  margin-top: 50px;
+  border-radius: 8px;
+  display: inline-block;
+  background-color: #B9C0C7;
+}
+#menu-v li, #menu-v a {zoom:1;} /* Hacks for IE6, IE7 */
+#menu-v, #menu-v ul
+{
+  width: 120px; /* Main Menu Item widths */
+  border: 1px solid #ccc;
+  border-top:none;
+  margin-top:250px;
+  position: relative; font-size:0;
+  list-style: none; margin: 0; padding: 0; display:block;
+  z-index:9;
+  float:left;
+}
+/* Top level menu links style
+---------------------------------------*/
+#menu-v li
+{
+  background-color:#B9C0C7;
+  list-style: none; margin: 0; padding: 0;
+  height:20px;
+}
+#menu-v li a
+{
+  font: normal 10px Arial;
+  border-top: 1px solid #ccc;
+  display: block;
+  /*overflow: auto; force hasLayout in IE7 */
+  color: black;
+  text-decoration: none;
+  line-height:20px;
+  padding-left:26px;
+}
+#menu-v ul li a
+{
+  line-height:20px;
+}
+#menu-v li a.arrow:hover
+{
+  background-image:url(arrowon.gif);
+  background-repeat: no-repeat;
+  background-position: 97% 50%;
+}
+/*Sub level menu items
+---------------------------------------*/
+#menu-v li ul
+{
+  position: absolute;
+  width: 120px; /*Sub Menu Items width */
+  visibility:hidden;
+}
+#menu-v a.arrow
+{
+  background-image:url(arrow.gif);
+  background-repeat: no-repeat;
+  background-position: 97% 50%;
+}
+#menu-v li:hover, #menu-v li.onhover
+{
+  background-position:0 -62px;
+  background-color:white;
+}
+#menu-v ul li
+{
+  background: #B9C0C7;
+  background-image:none;
+}
+#menu-v ul li:hover, #menu-v ul li.onhover
+{
+  background: #FFF;
+  background-image:none;
+}
+#logout:hover{
+  cursor:pointer;
+}
+textarea {
+  font-familiy:Calibri;
+  font-size:11px;
+}
+.manPfadEnt{
+  display:inline;
+}
+.aktiv {
+  display: inline-block;
+}
+.dispNone {
+  display: none;
+}
+.visHidden{
+  visibility:hidden;
+}
+.imgAmpelZustand{
+  width:15px;
+  height:15px;
+  margin-right:10px;
+  background-color:black;
+}
+.lblStringZustand{
+  font-size: 16;
+}
+
+.benutzerdefZeitrDiag{
+  display: none;
+}
+#exampleColumnChart{
+  display: none;
+}
+.legendeVorlagenformeln{
+  font-size: 14px;
+}
+
+
+/*messe column manage 06/02/2020*/
+#tabs-1_berEdit table#tblMessstellenBerechnungseditor tbody>tr>:nth-child(5) {
+    /* color: red; */
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*padding-bottom: 10px;*/
+}
+
+
+/*tooltip messstellen records css 03-03-2020*/
+  a.tooltip_formula_show {
+    position: absolute;
+  }
+  a.tooltip_formula_show:after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 130%;
+    background: #6B6F73;
+    padding: 9px 20px;
+    color: #ffff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius   : 3px;
+    border-radius        : 3px;
+    white-space: nowrap;
+    opacity: 0;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition   : all 0.4s ease;
+  }
+  a.tooltip_formula_show:hover:after {
+    bottom: 100%;
+  }
+  a.tooltip_formula_show:hover:before {
+    bottom: 70%;
+  }
+  a.tooltip_formula_show:hover:after {
+    opacity: 1;
+  }
+
+  /*05-03-2020 Formel Editiern button design */
+  #tabsTblsBerEdit .FormelEditiernBtnDiv {
+    width: 165px;
+    float: right;
+    padding-bottom: 6px;
+  /*  margin-right: 5px;*/
+  }
+  .FormelEditiernBtnDiv button#FormelEditiernBtn {
+    padding: 5px;
+    width: 100%;
+    border: 3px solid #4a5f79;
+    background: #3f78bd;
+    color: #fff;
+    font-size: 12px;
+    font-weight: normal;
+    cursor: pointer;
+}
+button#FormelEditiernBtn:disabled,
+button#FormelEditiernBtn[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+/*02-04-2020 select box type (time, temprature etc)*/
+.typeDynamicCF,.subtypeTimeDynamicCF,.subtypeTxtDynamicCF{
+  width: 90% !important;
+    margin: 4px;
+}
+.sectionDynamicCF{
+ /* height: 100px;*/
+  width: 69%;
+  /*background-color: #79ace978;
+  border: 1px solid #596675;*/
+}
+
+
+/*03-04-2020 select width design*/
+.subtypeSelDay, .subtypeSelMonth,.subtypeSelYear{
+  width:80px !important;
+}
