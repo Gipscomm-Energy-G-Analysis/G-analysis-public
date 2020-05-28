@@ -47,7 +47,7 @@ const scpDataDB =
             const withData =
                 instance =>
                 taskSpecific =>
-
+                []
 
 
             const Messmittel =
@@ -90,20 +90,3 @@ const scpDataDB =
                 }
         }
     )
-
-    function tuple (a, b) {
-		let retVal = false;
-
-		switch (fn.name) {
-            case "pair":
-				tuple_ =
-					{ first : a
-			  	 	, second : b
-              	 	}
-				break;
-			 case "first":
-				retVal =
-					tuple_.first
-			 case "second":
-				retVal =
-					tuple_.second

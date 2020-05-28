@@ -100,7 +100,7 @@
             top: "-600px"
         });
 
-        // $iframe.ready() and $iframe.load were inconsistent between browsers    
+        // $iframe.ready() and $iframe.load were inconsistent between browsers
         setTimeout(function () {
 
             // Add doctype to fix the style difference between printing and render

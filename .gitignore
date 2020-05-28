@@ -67,7 +67,7 @@ Last active last month • Report abuse
 dist/
 
 # ignore historic folder
-oldFiles/
+# oldFiles/
 
 # ignore not changing Syncfusion folder
 Syncfusion/

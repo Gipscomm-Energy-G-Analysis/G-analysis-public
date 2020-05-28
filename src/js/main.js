@@ -16,7 +16,7 @@ function Mandant() {
 
 //Klasse Organisation
 function Organisation(organisation,mandant) {
-        
+
     this.organisation = organisation;
     this.mandant = mandant;
     this.nameAllgemein;
@@ -46,12 +46,12 @@ function Organisation(organisation,mandant) {
 
     this.neueOrganisationUI = function () {
 
-    }    
+    }
 }
 
 //Klasse Liegenschaft
 function Liegenschaft(liegenschaft,organisation) {
-    
+
     this.liegenschaft = liegenschaft;
     this.organisation = organisation;
     this.nameAllgemein;
@@ -79,7 +79,7 @@ function Liegenschaft(liegenschaft,organisation) {
     this.energieformen();
     this.unterliegenschaften();
     this.bereiche();
-        
+
     this.neueLiegenschaftUI = function () {
 
     }
@@ -95,7 +95,7 @@ function Bereich(bereich, liegenschaft) {
     this.kostenstelle;
     this.unterbereiche();
     this.messpunkte();
-    
+
     this.neueBereichUI = function () {
 
     }
@@ -103,13 +103,13 @@ function Bereich(bereich, liegenschaft) {
 
 //Klasse Messpunkt
 function Messpunkt(bereich,messmittel){
-    
+
     this.bereich = bereich;
     this.messmittel = messmittel;
     this.messstellenNr;
     this.messstelle;
     this.kurzbezeichnung;
-    this.kostenstelle;    
+    this.kostenstelle;
 }
 
 //Klasse Messmittel
@@ -135,7 +135,7 @@ for (var i = 0; i < 5; i++) {
     alert(listeOrganisationen[i].mandant);
 }
 
-//Überschrift der Liegenschaft wenn inputbox Name changed einlesen
+//ï¿½berschrift der Liegenschaft wenn inputbox Name changed einlesen
 function changeLiegenschaftName(newText) {
 
     var liegenschaftNameDiv = document.getElementsByClassName("liegenschaftHeader");
@@ -144,13 +144,13 @@ function changeLiegenschaftName(newText) {
 
     var changeLabel = liegenschaftsNameLabel.innerHTML = newText;
 
-   
+
 }
 
-//Bei Klick auf Ja wird die bgcolor vom Button geändert
+//Bei Klick auf Ja wird die bgcolor vom Button geï¿½ndert
 function changeEigenstaendigeFormValue(element) {
 
-    
+
     if (element.name == "ja") {
         var buttonBestaetigt = element.style.backgroundColor = "white";
         var buttonNichtBestaetigt=element

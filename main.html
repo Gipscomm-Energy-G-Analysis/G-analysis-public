@@ -12,6 +12,7 @@
     <link type="text/css" rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
     <link type="text/css" rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
     <link type="text/css" rel="stylesheet" href="dist/css/colReorder.dataTables.min.css">
+    <link href="dist/css/pace-theme.min.css" rel="stylesheet"/>
     <style>
         .ui-dialog .ui-dialog-content {
             position: relative;
@@ -229,7 +230,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <!--22-02-2020 Add editor menu here--> 
+                                <!--22-02-2020 Add editor menu here-->
                             </ul>
                         </div>
                     </li>
@@ -309,7 +310,7 @@
                                                  <li>
                                                     <a id="korrekturFaktorMenu" href="#">statische Korrekturfaktoren</a>
                                                 </li>
-                                                
+
                                                 <!--24-02-2020 korrektur Faktor top Menu defined,18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren"-->
                                                 <!--31-03-2020 dynamischer korrektur Faktor top Menu defined-->
                                                  <li>
@@ -476,12 +477,12 @@
                         </div>
                         <button id="tabGrpDiag" class="no_korrector_tabs">Gruppierung Diagramme</button>
                       <!--24-02-2020 create calculator tab button html, 18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren" -->
-                          <button id="tabTaschenrechner" style="">statische Korrekturfaktoren</button> 
+                          <button id="tabTaschenrechner" style="">statische Korrekturfaktoren</button>
                       <!--24-02-2020 create calculator tab button html,18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren" -->
                       <!--<button id="tabHzk">Heizkurve</button>				-->
 
                       <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
-                          <button id="tabDynamicKorrekturFktr" style="">dynamische Korrekturfaktoren</button> 
+                          <button id="tabDynamicKorrekturFktr" style="">dynamische Korrekturfaktoren</button>
                       <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
                     </div>
                     <div id="tabsBenutzerrechte" style="display:none;">
@@ -688,7 +689,7 @@
                         <label>Berechnungslogik Editor</label>
                     </div>
                     <div id="tblMstBerEditorContainer" style="height:550px;width:800px;padding:5px">
-                        <div class="controlDiv">                            
+                        <div class="controlDiv">
                             <label for="bermstmod">Formelmodus</label>
                             <!-- <select id="bermstmod">
                                 <option>Berechnung</option>
@@ -754,7 +755,7 @@
                                 <div class="FormelEditiernBtnDiv">
                                    <input type="hidden" name="mstFormula" class="mstFormula" value="">
                                    <input type="hidden" name="berechnetFormula" class="berechnetFormula" value="">
-                                   <button id="FormelEditiernBtn" disabled="">Formel Editiern</button> 
+                                   <button id="FormelEditiernBtn" disabled="">Formel Editiern</button>
                                 </div>
                                 <!--05-03-2020 Formel Editiern button drag drop functioanality-->
                                 <table id="tblMessstellenBerechnungseditor" class="stripe hover row-border compact dt-left custom" style="font-size:12px;border:1px solid black;margin-top: 20px;margin-right: 50px;">
@@ -2884,7 +2885,7 @@
                 <input id="anlIDMst" style="display:none;"/>
             </div>
             <!--16-03-2020 Update the html- comment the img tag-->
-            <div class="controlDiv"> 
+            <div class="controlDiv">
                 <label id="labelMessmittelMst" style="display:inline-block;">physikalisches<br /> Messmittel<img id="msmSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
                 <label id="labelBerechnungslogikMst" style="display:none;"><br />Berechnungslogik
                 <!-- <img id="msmSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;display: none;" /> -->
@@ -5696,7 +5697,7 @@
                             </div>
                             <hr>
                             <!--19-02-2020 Create Correction factor form and display data-->
-                          <!--   <div class="KorrekturFaktorFrm">                               
+                          <!--   <div class="KorrekturFaktorFrm">
                                 <fieldset>
                                     <legend>Korrekturfaktor</legend>
                                     <div class="controlDiv ">
@@ -5774,12 +5775,12 @@
                     </div>
                     <div class="infosBlock">
                         <!--19-02-2020 Create Correction factor form and display data, 21-03-2020 Add Description field here-->
-                        <div class="KorrekturFaktorFrm">                               
+                        <div class="KorrekturFaktorFrm">
                             <fieldset>
                                 <legend>Korrekturfaktor</legend>
                                 <div class="controlDiv ">
                                     <label>Name</label>
-                                    <input id="optionName" class=""/>  
+                                    <input id="optionName" class=""/>
                                 </div>
                                  <div class="controlDiv" style="width: 57%;">
                                     <label>Wert</label>
@@ -5798,21 +5799,21 @@
                                     <select class="groupStaticCF" id="groupStaticCF">
                                     <option value="">--Select--</option>
                                     </select>
-                                </div> 
+                                </div>
                                 <button id="addNewGroupStaticCF">Add New Group</button>
                                 <button id="editGroupStaticCF">Edit Group</button>
                                 <div class="controlDiv" id="groupStaticCFDiv" style="width: 46%;padding:9px;display: none;">
                                     <input id="addNewGroupTxtStaticCF" class="" style="margin-right:5%;" />
                                     <button id="createNewGroupTxtStaticCF" style="width:25%;">Create</button>
                                     <button id="cancelNewGroupTxtStaticCF" style="width:25%;">Cancel</button>
-                                </div> 
+                                </div>
                                 <div class="controlDiv" id="groupUpdateStaticCFDiv" style="width: 62%;padding:9px;display: none;">
                                     <input id="updateGroupTxtStaticCF" class="" style="margin-right:3%;" />
                                     <input id="updateGroupSelIDStaticCF" type="hidden" />
-                                    <button id="updateGroupBtnStaticCF" style="width:22%;">Update</button>                                    
+                                    <button id="updateGroupBtnStaticCF" style="width:22%;">Update</button>
                                     <button id="deleteGroupBtnStaticCF" style="width:22%;">Delete</button>
                                     <button id="cancelGroupBtnStaticCF" style="width:22%;">Cancel</button>
-                                </div> 
+                                </div>
                                 <!--27-03-2020 Group Management in staic faktor module-->
                                 <br>
                                     <button id="btnOptionHinzEPrdKff" style="margin-top:2%;">Option speichern</button>
@@ -5823,7 +5824,7 @@
                                 <br>
                                 <table id="tblOptionenEPrdKff" class="stripe hover row-border compact dt-left custom" style="float:left;font-size:12px;width:70%;">
                                     <thead>
-                                        <tr>                                          
+                                        <tr>
                                             <th>Name</th>
                                             <th>Wert</th>
                                             <th>Description</th>
@@ -5842,9 +5843,9 @@
                                     <thead>
                                         <tr>
                                             <th style="padding-right: 30px;"> Name </th>
-                                            <th style="padding-right: 30px;"> wert </th> 
+                                            <th style="padding-right: 30px;"> wert </th>
                                             <th style="padding-right: 30px;"> description </th>
-                                            <th style="padding-right: 30px;"> Gruppen </th> 
+                                            <th style="padding-right: 30px;"> Gruppen </th>
                                             <th style="padding-right: 30px;"> Action </th>
                                         </tr>
                                         </thead>
@@ -5877,18 +5878,18 @@
                     </div>
                     <div class="infosBlock">
                         <!--01-04-2020,02-04-2020 Create dynamic Correction factor form and display data,08-02-2020 As per window design document-->
-                        <div class="DynamicKorrekturFaktorFrm">  
+                        <div class="DynamicKorrekturFaktorFrm">
                             <fieldset>
                                 <legend>Merkmal</legend>
                                 <div class="controlDiv ">
                                     <label>Name</label>
-                                    <input id="optionNameDKff" class=""/>  
+                                    <input id="optionNameDKff" class=""/>
                                 </div>
                                 <div class="controlDiv">
                                 </div>
                                 <div class="controlDiv" style="width: 69%;height: 69px;margin-bottom: 11px;">
                                     <label style="vertical-align: 23px;">Beschreibung</label>
-                                    <textarea id="optionBeschreibungDKff" class="" style="width: 73%;height: 55px;" /></textarea>                                   
+                                    <textarea id="optionBeschreibungDKff" class="" style="width: 73%;height: 55px;" /></textarea>
                                 </div>
                                 <div class="sectionDynamicCF">
                                     <div class="inputGrpDynamicCF">
@@ -5901,7 +5902,7 @@
                                                 <option value="Arbeitswoche">Arbeitswoche</option>
                                                 <option value="AnlagenZustände">Anlagen Zustände</option>
                                             </select>
-                                        </div>  
+                                        </div>
                                         <div class="controlDiv" style="width: 46%;padding:9px;">
                                             <label>Format, Dynamik</label>
                                              <select class="subtypeTimeDynamicCF" disabled>
@@ -5914,8 +5915,8 @@
                                                 <option value="tempNum" class="temperaturOption">Temperatur </option>
                                                 <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
                                                 <option value="tempPlusMonth" class="temperaturOption">Temperatur + Monat (Beispiel 01)</option>
-                                                <option value="tempPlusYear" class="temperaturOption">Temperatur + Jahr (Beispiel 2020)</option>  
-                                                                                   
+                                                <option value="tempPlusYear" class="temperaturOption">Temperatur + Jahr (Beispiel 2020)</option>
+
                                             </select>
                                           <!--   <input type="text" id="subtypeTxtDynamicCF" class="" name="subtypeTxtDynamicCF" style="display:none;"> -->
                                        </div>
@@ -5928,13 +5929,13 @@
                                         <option value="Basis Faktor">Basis Faktor </option>
                                         <option value="Basis Faktor + 2. Bedingung">Basis Faktor + 2. Bedingung </option>
                                         <option value="Basis Faktor + 3. Bedingung">Basis Faktor + 3. Bedingung </option>
-                                    </select>                                   
+                                    </select>
                                 </div>
-                                
+
                                 <div class="subtypeTxtDynamicCF" style="display: none;margin: 10px 0px 3px 0px;">
                                     <div class="controlDiv" style="width:32%;">
                                         <label style="width: 44%;">Name</label>
-                                        <input id="subtypeTxtOptNameDKff" class="" style="width:40%;"/>  
+                                        <input id="subtypeTxtOptNameDKff" class="" style="width:40%;"/>
                                     </div>
                                     <div class="controlDiv bezugInputMainDiv" style="width:32%;">
                                         <label style="width: 44%;">Bezug </label>
@@ -5956,7 +5957,7 @@
                                 <div class="subtypeTxtBasisFaktor2" style="display: none;margin: 10px 0px 3px 0px;">
                                     <div class="controlDiv" style="width:29%;">
                                         <label style="width: 44%;">K. Bezeichnung</label>
-                                        <input id="subtypeTxtBasisFaktor2Name" class="" style="width:40%;"/>  
+                                        <input id="subtypeTxtBasisFaktor2Name" class="" style="width:40%;"/>
                                     </div>
                                     <div class="controlDiv" style="width:29%;">
                                         <label style="width: 33%;">Calculator </label>
@@ -5970,13 +5971,13 @@
                                     </div>
                                     <div class="controlDiv" style="width:29%;margin-top: 2%;">
                                         <label style="width: 44%;">Wert</label>
-                                        <input id="subtypeTxtBasisFaktor2Wert" class="inp_valid1" style="width:40%;"/>                                         
+                                        <input id="subtypeTxtBasisFaktor2Wert" class="inp_valid1" style="width:40%;"/>
                                     </div>
                                 </div>
                                 <div class="subtypeTxtBasisFaktor3" style="display: none;margin: 10px 0px 3px 0px;">
                                     <div class="controlDiv" style="width:29%;">
                                         <label style="width: 44%;">K. Bezeichnung</label>
-                                        <input id="subtypeTxtBasisFaktor3Name" class="" style="width:40%;"/>  
+                                        <input id="subtypeTxtBasisFaktor3Name" class="" style="width:40%;"/>
                                     </div>
                                     <div class="controlDiv" style="width:29%;">
                                         <label style="width: 33%;">Calculator </label>
@@ -5990,13 +5991,13 @@
                                     </div>
                                     <div class="controlDiv" style="width:29%;margin-top: 2%;">
                                         <label style="width: 44%;">Wert</label>
-                                        <input id="subtypeTxtBasisFaktor3Wert" class="inp_valid1" style="width:40%;"/>                                         
+                                        <input id="subtypeTxtBasisFaktor3Wert" class="inp_valid1" style="width:40%;"/>
                                     </div>
                                 </div>
                                 <div class="moreOptionBtnDiv" style="margin: 20px 0 20px 0;">
                                     <button id="btnOptionHinzEPrdDKff">Option speichern</button>
                                     <button id="btnOptionHinzEPrdDKffUpdate" style="display: none;">Aktualisieren</button>
-                                    <button id="btnOptionHinzEPrdDKffStornieren" style="display: none;">Abrechen</button> 
+                                    <button id="btnOptionHinzEPrdDKffStornieren" style="display: none;">Abrechen</button>
                                     </div>
                                 <table id="tblOptionenEPrdDKff" class="stripe hover row-border compact dt-left custom" style="float:left;font-size:12px;width:100%;">
                                     <thead>
@@ -6006,11 +6007,11 @@
                                             <th>Name </th>
                                             <th>bezug </th>
                                             <th>temperature</th>
-                                            <th>faktore</th>                      
+                                            <th>faktore</th>
                                             <th>K. Bezeichnung</th>
                                             <th>Calculator </th>
                                             <th>Wert</th>
-                                            <th>Result</th> 
+                                            <th>Result</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -6028,7 +6029,7 @@
                                             <th>K. Bezeichnung</th>
                                             <th>Calculator </th>
                                             <th>Wert</th>
-                                            <th>Result</th> 
+                                            <th>Result</th>
                                              <th> Action</th>
                                         </tr>
                                         </thead>
@@ -6040,7 +6041,7 @@
                         </div>
                 </div>
                 <!--01-04-2020,02-04-2020 Tab Korrektur Faktor form html,08-02-2020 As per window design document-->
-               
+
                 <div id="infosGesellschaftsformen">
                 </div>
                 <div id="infosManagementsysteme">
@@ -8418,15 +8419,17 @@
                 <script type="text/javascript" src="dist/js/buttons.html5.min.js"></script>
                 <script type="text/javascript" src="dist/js/buttons.print.min.js"></script>
                 <script type="text/javascript" src="dist/js/jspdf.debug.min.js"></script>
-                <script type="text/javascript" src="dist/js/fpCore.min.js"></script>
                 <script type="text/javascript" src="dist/js/printThis.js"></script>
+
+                <script type="text/javascript" src="dist/js/fpCore.min.js"></script>
+
                 <script type="text/javascript" src="dist/js/Synchronizer.min.js"></script>
                 <script type="text/javascript" src="dist/js/DataMachine.min.js"></script>
                 <script type="text/javascript" src="dist/js/objects.min.js"></script>
                 <script type="text/javascript" src="dist/js/functions.min.js"></script>
                 <script type="text/javascript" src="dist/js/events.min.js"></script>
-		
-		<link href="dist/css/pace-theme.min.css" rel="stylesheet"/>
+
+
 
     		<script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>

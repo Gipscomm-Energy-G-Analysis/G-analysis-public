@@ -7,56 +7,9 @@ const scpCore =
 Object
 .freeze(
     new function () {
-        const isType =
-            arg => {
-                const isInstance =
-                    ins =>
-                    arg instanceof ins
-
-                let result;
-
-                switch (typeof a) {
-
-                    case "number":
-                        result =
-                            arg === Math.round (arg) ? "integer" : "float";
-                        break;
-
-                    case "object":
-                        result =
-                            isInstance (Array) ? "array" :
-                            isInstance (Function) ? "function" : "record";
-                        break;
-
-                    default: result =
-                        typeof arg;
-                }
-                return result;
-            };
-
-        const type =
-            Object.freeze(
-                { isString : a => isType(a) === "string"
-                , isBool : a => isType(a) === "boolean"
-                , isInt : a => isType(a) === "integer"
-                , isFloat : a => isType(a) === "float"
-                , isArray : a => isType(a) === "array"
-                , isRecord : a => isType(a) === "record"
-                , isFunction : a => isType(a) === "function"
-                }
-            );
-
-        const { isString
-              , isBool
-              , isInt
-              , isFloat
-              , isArray
-              , isRecord
-              , isFunction
-              } = type;
 
         this.type = type;
-        this.split_ = a => b => isString(a) && isString(b) ? b.split(a) : console.error(`scpCore.split_ : invalid datatypes ! \nEXPECTED 'string => string', \nACTUAL '${isType(a)} => ${isType(b)}'`);
+        this.split_ = a => a.split("");
         this.splt = this.split_;
         this.join_ = a => b => b.join(a);
         this.jn = this.join_;
