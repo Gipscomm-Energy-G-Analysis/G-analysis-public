@@ -26,6 +26,6 @@ if($verwaltung == "ERng"){
 
 $records = queryDB($conn, $query, "read");
 
-echo json_encode($records);     // CHANGE: The DB data has to be echoed json encoded(before echo $records;) 27.05.2020
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE);     // CHANGE: The DB data has to be echoed json encoded(before echo $records;) 27.05.2020
 
 ?>

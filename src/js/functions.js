@@ -2040,14 +2040,39 @@ try {
                 }
             })
         };
-
-
+        dokumentAuswaehlenUndAuslesen = function(a, b) {
+            $("#dokID").val(b);
+            dokumenteLoeschen(0, null);
+            var e = toggleLabelUndLadenSymbol();
+            $(e).css("display", "inline");
+            $.ajax({
+                url: "uploadsDownloads/php/download.php",
+                type: "POST",
+                data: {
+                    nameDB: $("#nameDB").val(),
+                    dateiName: a,
+                    verwaltung: $("#verwaltung").val(),
+                    id: b
+                },
+                success: function(a) {
+                    $(e).css("display", "none");
+                    $("#downloadLink").prop("href", "uploadsDownloads/docs/" + $("#nameDB").val() + "/" + a);
+                    $("#webViewerLink").prop("href",
+                        "uploadsDownloads/docs/" + $("#nameDB").val() + "/" + a);
+                    $("#btnDokLoeschen").css("display", "inline-block");
+                    $("#dokDlOderLoeschenContainer").dialog({
+                        height: 290,
+                        width: 240,
+                        resize: "auto"
+                    })
+                }
+            })
+        };
 		const intoTable =		// CHANGE: added fn to write data into any DataTable 20.05.2020
             tbl =>
             data =>
             data
             .forEach(a => tbl.row.add(a).draw())
-
         function dokumentAuswaehlenUndEinlesen(evt) {
 
             var file = evt.target.files[0];
@@ -2132,8 +2157,7 @@ try {
                 }
             });
         };
-
-    kategorieWaehlen = function() {
+        kategorieWaehlen = function() {
             $("#dokKategorieWaehlenFenster").css("display", "block");
             $("#dokKategorieWaehlenFenster").dialog({
                 resize: "auto",
@@ -9485,9 +9509,8 @@ try {
         ME = masseneingabe,
         set = id,
         isInstance = function(a) {
-            return head(["First", "Next", "Previous", "Last"].map(flip(split_)(a)).filter(function(a) {
-                return 1 <
-                    length_(a)
+            return head(["First", "Next", "Previous", "Last"].map(b => a.split(b)).filter(function(a) {
+                return 1 < length_(a)
             }).join().split(","))
         },
         datensatzGespeichert = function(a) {

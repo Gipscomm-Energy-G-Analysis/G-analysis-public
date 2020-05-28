@@ -28,7 +28,7 @@
         const user =
             $("#user").val();
 
-        ajaxPost('php/login.php')({user})
+        ajaxPost('php/login.php')({user: user})
         .then(
             record => {
                 const dbHash =
@@ -46,7 +46,7 @@
                 const valueField =
                     name =>
                     head(record)[name] ;
-                    
+
                 if ( equal( getHash( $("#pw").val() ) ) ( dbHash ) ) {
                     fieldnames
                     .map(

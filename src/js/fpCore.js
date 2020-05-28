@@ -7,8 +7,6 @@ const scpCore =
 Object
 .freeze(
     new function () {
-
-        this.type = type;
         this.split_ = a => a.split("");
         this.splt = this.split_;
         this.join_ = a => b => b.join(a);
@@ -24,6 +22,7 @@ Object
         this.apply = fn => a => fn(a);
         this.not = this.first ? this.second : this.first;
         this.equal = a => b => a === b;
+        this.equalsZero = a => a === 0;
         this.unequal = a => b => this.not(this.equal(a)(b));
         this.greater = a => b => a > b;
         this.greaterZero = this.flip(this.greater)(0);
@@ -82,10 +81,34 @@ Object
         this.deepFreeze = obj => { this.freeze(obj); Object.getOwnPropertyNames(obj).forEach(prop => {if (exists(obj)(prop) && obj[prop] !== null && (typeof obj[prop] === "object" || typeof obj[prop] === "function") && !Object.isFrozen(obj[prop])) {this.deepFreeze(obj[prop])}});return obj;};
         this.fetchPost = url => body => fetch (url, {method: "POST", body});
         this.fetchGet = url => fetch (url, {method: "GET"});
+        this.ajaxPost = url => data => {
+            // console.log =
+            //     () => {};
+
+            const filterRecord =
+                record =>
+                Object
+                .values(record)
+                .filter(a => this.emptyString(String(a)))
+            , containsEmptyFields =
+                record =>
+                this.not( this.equalsZero( this.len( filterRecord ) ) )
+
+            this.emptyString(url) ?
+            () => {throw new Error("\n\nfpCore.ajaxPost : \n-->\nThe arg for 'url' contains an empty string instead of a server path !\n\n" )} :
+            console.log(`\n\nurl : ${url}\n\n`)
+
+            containsEmptyFields(data) ?
+            () => {throw new Error(`\n\nfpCore.ajaxPost : \n-->\n Record 'data', contains ${this.len(filterRecord)} empty string/s !\n-->\ndata : ${data}\n\n` )} :
+            console.log(`\n\ndata : ${data}\n\n`)
+
+            return new Promise((resolve,reject)=>$.ajax({type:"POST",url,data,fail:()=>reject(()=>{throw new Error("Ajax Post failed!" )}),success:records=>{console.log(records);resolve(this.json(records))}}))
+        };
+        this.itemSessionSet = key => value => sessionStorage.setItem(key, value);
+        this.itemSessionGet = key => sessionStorage.getItem(key);
     }
 );
-const { type
-      , split_
+const { split_
       , splt
       , join_
       , jn
@@ -100,6 +123,7 @@ const { type
       , not
       , flip
       , equal
+      , equalsZero
       , unequal
       , greater
       , greaterZero
@@ -140,5 +164,10 @@ const { type
       , freeze
       , exists
       , deepFreeze
-      } = scpCore	;
+      , fetchPost
+      , fetchGet
+      , ajaxPost
+      , itemSessionSet
+      , itemSessionGet
+      } = scpCore;
     // module.exports = scpCore;

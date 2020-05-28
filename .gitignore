@@ -70,7 +70,7 @@ dist/
 # oldFiles/
 
 # ignore not changing Syncfusion folder
-Syncfusion/
+# Syncfusion/
 
 # ignore node/grunt dependency directories
 node_modules/
