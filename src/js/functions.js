@@ -8107,7 +8107,7 @@ try {
             pageLength: 15,
             bAutoWidth: !1,
             colReorder: !0
-        }),
+        }), // Just for showing Raj GitHub...
         tblKennzahlAuswahl = $("#tblKennzahlAuswahl").DataTable({
             dom: "Bfrtip",
             buttons: [{
