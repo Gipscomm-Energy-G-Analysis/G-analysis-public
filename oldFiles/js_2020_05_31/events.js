@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function(){ // Test change
     (function(){
         if (sessionStorage.getItem("position") == "gipsAdm") {
             mandantenEinlesen("alle", null, null);

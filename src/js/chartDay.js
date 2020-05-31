@@ -1,5 +1,5 @@
 // Depends on fpChart.js
-"use strict"
+"use strict" 
 
 let dataMachine = new DataMachine(),
 tblChartData_1 =  $("#tblChartData_1").DataTable({
