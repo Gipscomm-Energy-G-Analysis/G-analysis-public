@@ -2152,7 +2152,16 @@ try {
                         .val() + "/" + data);
                     }
                     else {
-                        intoTable(tblDokumenteMsm)([result])  // CHANGE: fills table with Messmittel Dokumente
+                        let table;
+                        switch (this.id) {
+                            case "dokuAuswahlAnl":
+                                table = tblDokumenteAnl
+                                break;
+                            case "dokuAuswahlMsm":
+                                table = tblDokumenteMsm
+                                break;
+                        }
+                        intoTable(table)([result])  // CHANGE: fills table with Messmittel Dokumente
                     }
                 }
             });
@@ -4822,7 +4831,9 @@ try {
                                 ].forEach(function(a) {
                                     $(a[0]).val(c[b][a[1]])
                                 })) :
-                                (clearFields("anlHinz"), dokumentenListeErstellen())
+                                (clearFields("anlHinz"))
+
+                                dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
                     });
                     changeTracker.setRecordsNavID(anlNavID);
@@ -4854,9 +4865,7 @@ try {
                                     ["#anlMsm", "anl"],
                                     ["#anlIDMsm", "anl_ID"],
                                     ["#typAllgemeinMsm", "typMsm"],
-                                    ["#typNrAllgemeinMsm",
-                                        "typNrMsm"
-                                    ],
+                                    ["#typNrAllgemeinMsm", "typNrMsm"],
                                     ["#installationsdatumAllgemeinMsm", "installationsdatumMsm"],
                                     ["#entMsm", "energietraegerMsm"],
                                     ["#einheitAllgemeinMsm", "einheitMsm"],
@@ -4877,9 +4886,7 @@ try {
                                     ["#messmethodeInformationenConfig", "messmethodeConfig"],
                                     ["#messzyklusInformationenConfig", "messzyklusConfig"],
                                     ["#notiz1InformationenConfig", "notizAllgemeinConfig"],
-                                    ["#verbrauchswertbildungConfig",
-                                        "verbrauchswertbildungConfig"
-                                    ],
+                                    ["#verbrauchswertbildungConfig","verbrauchswertbildungConfig"],
                                     ["#geraetetypTechnischeDetailsConfig", "geraeteTypMsm"],
                                     ["#ipTechnischeDetailsConfig", "ipAdresseConfig"],
                                     ["#subnetMaskTechnischeDetailsConfig", "subnetMaskConfig"],
@@ -4891,7 +4898,9 @@ try {
                                 ].forEach(function(a) {
                                     $(a[0]).val(c[b][a[1]])
                                 })) :
-                                (clearFields("msmHinz"), dokumentenListeErstellen())
+                                (clearFields("msmHinz"))
+
+                                dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
                     });
                     break;
