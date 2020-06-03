@@ -2141,9 +2141,6 @@ try {
                 success: function (data) {
                     result = json(data)
 
-                    // console.log("Uploaded file data(json) : ");
-                    // console.log(result)
-
                     $(ladenSymbolID).css("display", "none");
 
                     if (isImg) {
@@ -2167,10 +2164,8 @@ try {
                             case "dokuAuswahlMsm" :
                                 intoTable(tblDokumenteMsm)([result])  // CHANGE: fills table with Messmittel Dokumente 03.06.2020
                                 break;
-                            case "dokuAuswahlERng" :
+                            default :
                                 $("#aktuellesDokNameERng").val(result[1])  // CHANGE: changes name of Downloadfield to name of currently uploaded file 03.06.2020
-                                console.log("Name RechnungsDok : ");
-                                console.log(result[1]);
                                 break;
                         }
 
