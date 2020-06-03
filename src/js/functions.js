@@ -2003,7 +2003,13 @@ try {
                     var e = "#tblDokumente" + a + " tbody";
                     if ("null" != c) {
                         c = JSON.parse(c);
-						b.clear().draw();   // CHANGE: Dokumentenlist table should be cleared before it is filled 27.05.2020
+
+                        if(a !== "ERng") {
+                            b.clear().draw();   // CHANGE: Dokumentenlist table should be cleared before it is filled 27.05.2020
+                        } else {
+                            $("#aktuellesDokNameERng").val(""); // CHANGE: Clear Rechnungen Downloadfield 03.06.2020
+                        }
+
                         var f = c.length;
                         if (0 < f)
                             if ("ERng" == $("#verwaltung").val()) $("#aktuellesDokIDERng").val(c[f -
@@ -2118,6 +2124,7 @@ try {
                 formData.append('id', $("#eRngID").val());
                 formData.append('verwaltung', "ERng");
                 formData.append('kategorie', $("#kategorie").val());
+
                 var url = dokUploadsUrl;
             }
 
@@ -2134,8 +2141,8 @@ try {
                 success: function (data) {
                     result = json(data)
 
-                    console.log("Uploaded file data(json) : ");
-                    console.log(result)
+                    // console.log("Uploaded file data(json) : ");
+                    // console.log(result)
 
                     $(ladenSymbolID).css("display", "none");
 
@@ -2154,14 +2161,19 @@ try {
                     else {
                         let table;
                         switch (this.id) {
-                            case "dokuAuswahlAnl":
-                                table = tblDokumenteAnl
+                            case "dokuAuswahlAnl" :
+                                intoTable(tblDokumenteAnl)([result])  // CHANGE: fills table with Anlagen Dokumente 03.06.2020
                                 break;
-                            case "dokuAuswahlMsm":
-                                table = tblDokumenteMsm
+                            case "dokuAuswahlMsm" :
+                                intoTable(tblDokumenteMsm)([result])  // CHANGE: fills table with Messmittel Dokumente 03.06.2020
+                                break;
+                            case "dokuAuswahlERng" :
+                                $("#aktuellesDokNameERng").val(result[1])  // CHANGE: changes name of Downloadfield to name of currently uploaded file 03.06.2020
+                                console.log("Name RechnungsDok : ");
+                                console.log(result[1]);
                                 break;
                         }
-                        intoTable(table)([result])  // CHANGE: fills table with Messmittel Dokumente
+
                     }
                 }
             });
