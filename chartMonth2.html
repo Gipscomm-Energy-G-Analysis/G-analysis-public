@@ -33,6 +33,7 @@
 <body>
   <h3></h3>
   <label id="lieg"></label>
+  <button id="diagSpeichern" style="float:right;margin-bottom:10px;margin-right:25px;">Diagramm speichern</button>
   <div class="content-container-fluid">
     <div class="row">
       <div class="cols-sample-area">
@@ -40,20 +41,6 @@
       </div>
     </div>
   </div>
-    <label></label>
-    <div style="padding:10px;">
-      <label>Tage verschieben</label>
-      <br>
-      <label class="radio-inline"><input type="radio" name="optradio" checked>Kurve 1</label>
-      <label class="radio-inline"><input type="radio" name="optradio">Kurve 2</label>
-      <label class="radio-inline"><input type="radio" name="optradio">Kurve 3</label>
-    </div>
-    <br>
-    <br>
-  <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="-5" data-slider-max="+5" data-slider-step="1" data-slider-value="0" />
-  <br>
-  <br>
-  <!-- <button id="btn">SHIFT GRAPH 1</button> -->
   <div id="Tooltip" style="display: none;">
     <div id="icon">
       <div id="eficon">
@@ -68,9 +55,9 @@
       </div>
     </div>
     </div>
-    <div id="table-chart-data-container_1" style="margin-top: 20px;">
-      <label style="font-size: 18px;">Summe-Monat: </label>
-      <label id="consumption-month_1" style="font-size: 18px;"></label>
+    <div id="table-chart-data-container_1">
+      <!-- <label style="font-size: 18px;">Summe-Monat: </label> -->
+      <label id="consumption-day_1" style="font-size: 18px;"></label>
       <br>
       <br>
       <table id="tblChartData_1" class="stripe hover row-border compact dt-left custom">
@@ -86,8 +73,8 @@
       </table>
     </div>
     <div id="table-chart-data-container_2">
-      <label style="font-size: 18px;">Summe-Monat: </label>
-      <label id="consumption-month_2" style="font-size: 18px;"></label>
+      <!-- <label style="font-size: 18px;">Summe-Monat: </label> -->
+      <label id="consumption-day_2" style="font-size: 18px;"></label>
       <br>
       <br>
       <table id="tblChartData_2" class="stripe hover row-border compact dt-left custom">
@@ -103,8 +90,8 @@
       </table>
     </div>
     <div id="table-chart-data-container_3">
-      <label style="font-size: 18px;">Summe-Monat: </label>
-      <label id="consumption-month_3" style="font-size: 18px;"></label>
+      <!-- <label style="font-size: 18px;">Summe-Monat: </label> -->
+      <label id="consumption-day_3" style="font-size: 18px;"></label>
       <br>
       <br>
       <table id="tblChartData_3" class="stripe hover row-border compact dt-left custom">
@@ -127,146 +114,148 @@
   </script>
   <script type="text/javascript" language="javascript">
   let dataMachine = new DataMachine(),
-  chartDataObj = null,
-  sliderVal = 0,
-  tblChartData_1 =  $("#tblChartData_1").DataTable({
-      dom: 'Bfrtip',
-      buttons: [
-        {
-          extend: 'copy',
-          text: 'Kopieren',
-          exportOptions: {
-            columns: ':visible'
-          }
-        },
-        {
-          extend: 'csv',
-          text: 'CSV-Export',
-          exportOptions: {
-            columns: ':visible'
-          }
-        },
-        {
-          extend: 'print',
-          text: 'Drucken',
-          exportOptions: {
-            columns: ':visible'
-          }
-        }
-      ],
-      pageLength: 15,
-      bAutoWidth: false,
-      colReorder: true,
-      columnDefs: [{
-        width: "33%",
-        targets: 0
-      },
-      {
-        width: "33%",
-        targets: 1
-      },
-      {
-        width: "33%",
-        targets: 2
-      }]
-    })
-  tblChartData_2 =  $("#tblChartData_2").DataTable({
-      dom: 'Bfrtip',
-      buttons: [
-        {
-          extend: 'copy',
-          text: 'Kopieren',
-          exportOptions: {
-            columns: ':visible'
-          }
-        },
-        {
-          extend: 'csv',
-          text: 'CSV-Export',
-          exportOptions: {
-            columns: ':visible'
-          }
-        },
-        {
-          extend: 'print',
-          text: 'Drucken',
-          exportOptions: {
-            columns: ':visible'
-          }
-        }
-      ],
-      pageLength: 15,
-      bAutoWidth: false,
-      colReorder: true,
-      columnDefs: [{
-        width: "33%",
-        targets: 0
-      },
-      {
-        width: "33%",
-        targets: 1
-      },
-      {
-        width: "33%",
-        targets: 2
-      }]
-    })
-  tblChartData_3 =  $("#tblChartData_3").DataTable({
-      dom: 'Bfrtip',
-      buttons: [
-        {
-          extend: 'copy',
-          text: 'Kopieren',
-          exportOptions: {
-            columns: ':visible'
-          }
-        },
-        {
-          extend: 'csv',
-          text: 'CSV-Export',
-          exportOptions: {
-            columns: ':visible'
-          }
-        },
-        {
-          extend: 'print',
-          text: 'Drucken',
-          exportOptions: {
-            columns: ':visible'
-          }
-        }
-      ],
-      pageLength: 15,
-      bAutoWidth: false,
-      colReorder: true,
-      columnDefs: [{
-        width: "33%",
-        targets: 0
-      },
-      {
-        width: "33%",
-        targets: 1
-      },
-      {
-        width: "33%",
-        targets: 2
-      }]
-    })
-  year_1 = sessionStorage.getItem("year_1"),
-  year_2 = sessionStorage.getItem("year_2"),
-  year_3 = sessionStorage.getItem("year_3"),
-  monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-  month_1 = sessionStorage.getItem("month_1"),
-  month_2 = sessionStorage.getItem("month_2"),
-  month_3 = sessionStorage.getItem("month_3"),
-  nameDB = sessionStorage.getItem("nameDB"),
-  chartType = sessionStorage.getItem("chartType"),
-  displayMean = sessionStorage.getItem("displayMean"),
-  nameMst = sessionStorage.getItem("nameMst"),
-  queryString_1 = sessionStorage.getItem("queryString_1"),
-  queryString_2 = sessionStorage.getItem("queryString_2"),
-  queryString_3 = sessionStorage.getItem("queryString_3"),
-  csOptions = null;
+      tblChartData_1 =  $("#tblChartData_1").DataTable({
+          dom: 'Bfrtip',
+          buttons: [
+            {
+              extend: 'copy',
+              text: 'Kopieren',
+              exportOptions: {
+                columns: ':visible'
+              }
+            },
+            {
+              extend: 'csv',
+              text: 'CSV-Export',
+              exportOptions: {
+                columns: ':visible'
+              }
+            },
+            {
+              extend: 'print',
+              text: 'Drucken',
+              exportOptions: {
+                columns: ':visible'
+              }
+            }
+          ],
+          pageLength: 15,
+          bAutoWidth: false,
+          colReorder: true,
+          columnDefs: [{
+            width: "33%",
+            targets: 0
+          },
+          {
+            width: "33%",
+            targets: 1
+          },
+          {
+            width: "33%",
+            targets: 2
+          }]
+        })
+      tblChartData_2 =  $("#tblChartData_2").DataTable({
+          dom: 'Bfrtip',
+          buttons: [
+            {
+              extend: 'copy',
+              text: 'Kopieren',
+              exportOptions: {
+                columns: ':visible'
+              }
+            },
+            {
+              extend: 'csv',
+              text: 'CSV-Export',
+              exportOptions: {
+                columns: ':visible'
+              }
+            },
+            {
+              extend: 'print',
+              text: 'Drucken',
+              exportOptions: {
+                columns: ':visible'
+              }
+            }
+          ],
+          pageLength: 15,
+          bAutoWidth: false,
+          colReorder: true,
+          columnDefs: [{
+            width: "33%",
+            targets: 0
+          },
+          {
+            width: "33%",
+            targets: 1
+          },
+          {
+            width: "33%",
+            targets: 2
+          }]
+        })
+      tblChartData_3 =  $("#tblChartData_3").DataTable({
+          dom: 'Bfrtip',
+          buttons: [
+            {
+              extend: 'copy',
+              text: 'Kopieren',
+              exportOptions: {
+                columns: ':visible'
+              }
+            },
+            {
+              extend: 'csv',
+              text: 'CSV-Export',
+              exportOptions: {
+                columns: ':visible'
+              }
+            },
+            {
+              extend: 'print',
+              text: 'Drucken',
+              exportOptions: {
+                columns: ':visible'
+              }
+            }
+          ],
+          pageLength: 15,
+          bAutoWidth: false,
+          colReorder: true,
+          columnDefs: [{
+            width: "33%",
+            targets: 0
+          },
+          {
+            width: "33%",
+            targets: 1
+          },
+          {
+            width: "33%",
+            targets: 2
+          }]
+        })
+      year_1 = sessionStorage.getItem("year_1"),
+      year_2 = sessionStorage.getItem("year_2"),
+      year_3 = sessionStorage.getItem("year_3"),
+      monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+      month_1 = sessionStorage.getItem("month_1"),
+      month_2 = sessionStorage.getItem("month_2"),
+      month_3 = sessionStorage.getItem("month_3"),
+      day_1 = sessionStorage.getItem("day_1"),
+      day_2 = sessionStorage.getItem("day_2"),
+      day_3 = sessionStorage.getItem("day_3"),
+      nameDB = sessionStorage.getItem("nameDB"),
+      chartType = sessionStorage.getItem("chartType"),
+      displayMean = sessionStorage.getItem("displayMean"),
+      nameMst = sessionStorage.getItem("nameMst"),
+
+      queryString_1 = sessionStorage.getItem("queryString_1"),
+      queryString_2 = sessionStorage.getItem("queryString_2"),
+      queryString_3 = sessionStorage.getItem("queryString_3"),
+      csOptions = null;
       if(chartType == "line"){
         csOptions = {
           tooltip: {
@@ -276,7 +265,7 @@
             marker: {
               shape: 'circle',
               size: {
-                height: 10, width: 10
+                height: 8, width: 8
               },
               visible: true
             }
@@ -288,37 +277,36 @@
             visible : true
           },
             border : {width: 2},
-            marker: {
-              dataLabel: {visible: true}
-            }
         }
       }
-  $("#container").ejChart({
+  $("#container") .ejChart({
         legend: {
           position: "top"
         },
         //Initializing Primary X Axis
         primaryXAxis: {
           title: {
-            text: "Tag"
+            text: "Uhrzeit"
           }
         },
         //Initializing Primary Y Axis
         primaryYAxis: {
           title: {
-            text: "Verbrauch[kWh]"
+            text: "Leistung[kW/15min]"
           }
          },
           commonSeriesOptions: csOptions,
           series: []
-  });
-  $('#ex1').slider({
-	   formatter: function(value) {
-       sliderVal = value;
-		   return 'Current value: ' + value;
-  	}
-  });
+        });
 
+  console.log("queryString_1");
+  console.log(queryString_1);
+
+  console.log("queryString_2");
+  console.log(queryString_2);
+
+  console.log("queryString_3");
+  console.log(queryString_3);
 
   $("h3").text("Energieverbrauch " + nameMst);
 
@@ -344,27 +332,20 @@
     .then(function(data){
       let dataTranslator = null,
           chartData = [],
-          sumMonth = 0;
-      if(nameDB == "001_heco" || nameDB == "002_badber" || nameDB == "003_tauchzor"){
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-      }
-      else {
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      }
-
+          sumDay = 0;
+      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
       console.log(chartData);
-      dataTranslator.sumDays(year_1, month_1);
-      chartData = dataTranslator.translate(4);
+      dataTranslator.sum15minsDay();
+      chartData = dataTranslator.translate(1);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_1.row.add([
           chartData[1].name,
-          chartData[i].x + "." + month_1 + "." + year_1,
+          day_1 + "." + month_1 + "." + year_1 + " " + chartData[i].x,
           chartData[i].y
         ]).draw();
-        sumMonth += chartData[i].y;
+        sumDay += chartData[i].y;
       }
-      $("#consumption-month_1").text(sumMonth + " kWh");
-      updateChart(chartData, month_1 + "." + year_1);
+      updateChart(chartData, day_1 + "." + month_1 + "." + year_1);
     });
   }
 
@@ -374,25 +355,19 @@
     .then(function(data){
       let dataTranslator = null,
           chartData = [],
-          sumMonth = 0;
-      if(nameDB == "001_heco" || nameDB == "002_badber" || nameDB == "003_tauchzor"){
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-      }
-      else {
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      }
-      dataTranslator.sumDays(year_2, month_2);
-      chartData = dataTranslator.translate(4);
+          sumDay = 0;
+      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+      dataTranslator.sum15minsDay();
+      chartData = dataTranslator.translate(1);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_2.row.add([
           chartData[1].name,
-          chartData[i].x + "." + month_2 + "." + year_2,
+          day_2 + "." + month_2 + "." + year_2 + " " + chartData[i].x,
           chartData[i].y
         ]).draw();
-        sumMonth += chartData[i].y;
+        sumDay += chartData[i].y;
       }
-      $("#consumption-month_2").text(sumMonth + " kWh");
-      updateChart(chartData,  month_2 + "." + year_2);
+      updateChart(chartData, day_2 + "." + month_2 + "." + year_2);
     });
   }
 
@@ -402,25 +377,19 @@
     .then(function(data){
       let dataTranslator = null,
           chartData = [],
-          sumMonth = 0;
-      if(nameDB == "001_heco" || nameDB == "002_badber" || nameDB == "003_tauchzor"){
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-      }
-      else {
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      }
-      dataTranslator.sumDays(year_3, month_3);
-      chartData = dataTranslator.translate(4);
+          sumDay = 0;
+      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+      dataTranslator.sum15minsDay();
+      chartData = dataTranslator.translate(1);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_3.row.add([
           chartData[1].name,
-          chartData[i].x + "." + month_3 + "." + year_3,
+          day_3 + "." + month_3 + "." + year_3 + " " + chartData[i].x,
           chartData[i].y
         ]).draw();
-        sumMonth += chartData[i].y;
+        sumDay += chartData[i].y;
       }
-      $("#consumption-month_3").text(sumMonth + " kWh");
-      updateChart(chartData,  month_3 + "." + year_3);
+      updateChart(chartData, day_3 + "." + month_3 + "." + year_3);
     });
   }
 
@@ -435,20 +404,27 @@
       yName: "y",
     });
     chart.redraw();
-
-    chartDataObj = $("#container").data("ejChart");
   }
-
-  // function shiftGraph(graph, shiftVal){
-  //   let nDataset = chartDataObj.model.series[graph].dataSource.length;
-  //   for(let i = 0; i < nDataset; i++){
-  //     chartDataObj.model.series[graph].dataSource[i].x = Number(chartDataObj.model.series[graph].dataSource[i].x) + Number(shiftVal);
-  //   }
-  //   chartDataObj.redraw();
-  // }
 
   </script>
   <style class="cssStyles">
+  #diagSpeichern{
+      border: 0px solid black;
+      border-radius: 5px;
+      background-color: transparent;
+      color: black;
+      margin: 3px;
+      margin-top: 5px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+  }
+  #diagSpeichern:hover {
+      color:white;
+      background-color: black;
+      cursor: pointer;
+  }
   html{
     width: 100%;
     padding: 10px;
