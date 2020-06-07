@@ -267,8 +267,8 @@ try {
             queryString_1 += "INNER JOIN messmittel ";
             queryString_1 += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
             queryString_1 += "INNER JOIN messstellen ";
-            queryString_1 += "ON messmittel.messstelleIDMsm = messstellen.mst_ID ";
-            queryString_1 += "WHERE mst_ID = '" + idMst + "' ";
+            queryString_1 += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            queryString_1 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
               queryString_1 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
               if(timeInterval == "Tag" || timeInterval == "Tag 15min"){
@@ -291,8 +291,8 @@ try {
             queryString_2 += "INNER JOIN messmittel ";
             queryString_2 += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
             queryString_2 += "INNER JOIN messstellen ";
-            queryString_2 += "ON messmittel.messstelleIDMsm = messstellen.mst_ID ";
-            queryString_2 += "WHERE mst_ID = '" + idMst + "' ";
+            queryString_2 += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            queryString_2 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
               queryString_2 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_2 + "' ";
               if(timeInterval == "Tag" || timeInterval == "Tag 15min"){
@@ -315,8 +315,8 @@ try {
             queryString_3 += "INNER JOIN messmittel ";
             queryString_3 += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
             queryString_3 += "INNER JOIN messstellen ";
-            queryString_3 += "ON messmittel.messstelleIDMsm = messstellen.mst_ID ";
-            queryString_3 += "WHERE mst_ID = '" + idMst + "' ";
+            queryString_3 += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            queryString_3 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
               queryString_3 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_3 + "' ";
               if(timeInterval == "Tag" || timeInterval == "Tag 15min"){
@@ -341,8 +341,8 @@ try {
             queryString_1 += "INNER JOIN messmittel ";
             queryString_1 += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
             queryString_1 += "INNER JOIN messstellen ";
-            queryString_1 += "ON messmittel.messstelleIDMsm = messstellen.mst_ID ";
-            queryString_1 += "WHERE mst_ID = '" + idMst + "' ";
+            queryString_1 += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            queryString_1 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
               queryString_1 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
               if(timeInterval == "Tag" || timeInterval == "Tag 15min"){
@@ -365,8 +365,8 @@ try {
             queryString_2 += "INNER JOIN messmittel ";
             queryString_2 += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
             queryString_2 += "INNER JOIN messstellen ";
-            queryString_2 += "ON messmittel.messstelleIDMsm = messstellen.mst_ID ";
-            queryString_2 += "WHERE mst_ID = '" + idMst + "' ";
+            queryString_2 += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            queryString_2 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
               queryString_2 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_2 + "' ";
               if(timeInterval == "Tag" || timeInterval == "Tag 15min"){
@@ -391,8 +391,8 @@ try {
             queryString_1 += "INNER JOIN messmittel ";
             queryString_1 += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
             queryString_1 += "INNER JOIN messstellen ";
-            queryString_1 += "ON messmittel.messstelleIDMsm = messstellen.mst_ID ";
-            queryString_1 += "WHERE mst_ID = '" + idMst + "' ";
+            queryString_1 += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            queryString_1 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
               queryString_1 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
               if(timeInterval == "Tag" || timeInterval == "Tag 15min"){
