@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -30,6 +31,7 @@
 <body>
   <h3></h3>
   <label id="lieg"></label>
+  <button id="diagSpeichern" style="float:right;margin-bottom:10px;margin-right:25px;">Diagramm speichern</button>
   <div class="content-container-fluid">
     <div class="row">
       <div class="cols-sample-area">
@@ -52,8 +54,8 @@
     </div>
     </div>
     <div id="table-chart-data-container_1">
-      <label style="font-size: 18px;">Summe-Monat: </label>
-      <label id="consumption-year_1" style="font-size: 18px;"></label>
+      <!-- <label style="font-size: 18px;">Summe-Monat: </label> -->
+      <label id="consumption-day_1" style="font-size: 18px;"></label>
       <br>
       <br>
       <table id="tblChartData_1" class="stripe hover row-border compact dt-left custom">
@@ -69,8 +71,8 @@
       </table>
     </div>
     <div id="table-chart-data-container_2">
-      <label style="font-size: 18px;">Summe-Monat: </label>
-      <label id="consumption-year_2" style="font-size: 18px;"></label>
+      <!-- <label style="font-size: 18px;">Summe-Monat: </label> -->
+      <label id="consumption-day_2" style="font-size: 18px;"></label>
       <br>
       <br>
       <table id="tblChartData_2" class="stripe hover row-border compact dt-left custom">
@@ -86,8 +88,8 @@
       </table>
     </div>
     <div id="table-chart-data-container_3">
-      <label style="font-size: 18px;">Summe-Monat: </label>
-      <label id="consumption-year_3" style="font-size: 18px;"></label>
+      <!-- <label style="font-size: 18px;">Summe-Monat: </label> -->
+      <label id="consumption-day_3" style="font-size: 18px;"></label>
       <br>
       <br>
       <table id="tblChartData_3" class="stripe hover row-border compact dt-left custom">
@@ -237,42 +239,49 @@
       year_1 = sessionStorage.getItem("year_1"),
       year_2 = sessionStorage.getItem("year_2"),
       year_3 = sessionStorage.getItem("year_3"),
+
       monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-      month = sessionStorage.getItem("month"),
+
+      day_1 = sessionStorage.getItem("day_1"),
+      day_2 = sessionStorage.getItem("day_2"),
+      day_3 = sessionStorage.getItem("day_3"),
+
+      month_1 = sessionStorage.getItem("month_1"),
+      month_2 = sessionStorage.getItem("month_2"),
+      month_3 = sessionStorage.getItem("month_3"),
+
       nameDB = sessionStorage.getItem("nameDB"),
       chartType = sessionStorage.getItem("chartType"),
       displayMean = sessionStorage.getItem("displayMean"),
       nameMst = sessionStorage.getItem("nameMst"),
+
       queryString_1 = sessionStorage.getItem("queryString_1"),
       queryString_2 = sessionStorage.getItem("queryString_2"),
       queryString_3 = sessionStorage.getItem("queryString_3"),
       csOptions = null;
-  if(chartType == "line"){
-    csOptions = {
-      tooltip: {
-        visible : true
-      },
-        border : {width: 2},
-        marker: {
-          shape: 'circle',
-          size: {
-            height: 10, width: 10
+      if(chartType == "line"){
+        csOptions = {
+          tooltip: {
+            visible : true
           },
-          visible: true
+            border : {width: 2},
+            marker: {
+              shape: 'circle',
+              size: {
+                height: 8, width: 8
+              },
+              visible: true
+            }
         }
-    }
-  }
-  else {
-    csOptions = {
-      tooltip: {
-        visible : true
-      },
-        border : {width: 2},
-        marker: {
-          dataLabel: {visible: true}
+      }
+      else {
+        csOptions = {
+          tooltip: {
+            visible : true
+          },
+            border : {width: 2},
         }
-    }
-  }
+      }
   $("#container") .ejChart({
         legend: {
           position: "top"
@@ -280,13 +289,13 @@
         //Initializing Primary X Axis
         primaryXAxis: {
           title: {
-            text: "Monat"
+            text: "Uhrzeit"
           }
         },
         //Initializing Primary Y Axis
         primaryYAxis: {
           title: {
-            text: "Verbrauch[kWh]"
+            text: "Leistung[kW/15min]"
           }
          },
           commonSeriesOptions: csOptions,
@@ -317,20 +326,20 @@
     .then(function(data){
       let dataTranslator = null,
           chartData = [],
-          sumYear = 0;
+          sumDay = 0;
       dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      dataTranslator.sumMonths();
+      console.log(chartData);
+      dataTranslator.sumHours();
       chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_1.row.add([
-          chartData[i].name,
-          chartData[i].x + "." + year_1,
+          chartData[1].name,
+          day_1 + "." + month_1 + "." + year_1 + " " + chartData[i].x,
           chartData[i].y
         ]).draw();
-        sumYear += chartData[i].y;
+        sumDay += chartData[i].y;
       }
-      $("#consumption-year_1").text(sumYear + " kWh");
-      updateChart(chartData, year_1);
+      updateChart(chartData, day_1 + "." + month_1 + "." + year_1);
     });
   }
 
@@ -340,20 +349,19 @@
     .then(function(data){
       let dataTranslator = null,
           chartData = [],
-          sumYear = 0;
+          sumDay = 0;
       dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      dataTranslator.sumMonths();
+      dataTranslator.sumHours();
       chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_2.row.add([
-          chartData[i].name,
-          chartData[i].x + "." + year_2,
+          chartData[1].name,
+          day_2 + "." + month_2 + "." + year_2 + " " + chartData[i].x,
           chartData[i].y
         ]).draw();
-        sumYear += chartData[i].y;
+        sumDay += chartData[i].y;
       }
-      $("#consumption-year_2").text(sumYear + " kWh");
-      updateChart(chartData, year_2);
+      updateChart(chartData, day_2 + "." + month_2 + "." + year_2);
     });
   }
 
@@ -363,20 +371,19 @@
     .then(function(data){
       let dataTranslator = null,
           chartData = [],
-          sumYear = 0;
+          sumDay = 0;
       dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      dataTranslator.sumMonths();
+      dataTranslator.sumHours();
       chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_3.row.add([
-          chartData[i].name,
-          chartData[i].x + "." + year_3,
+          chartData[1].name,
+          day_3 + "." + month_3 + "." + year_3 + " " + chartData[i].x,
           chartData[i].y
         ]).draw();
-        sumYear += chartData[i].y;
+        sumDay += chartData[i].y;
       }
-      $("#consumption-year_3").text(sumYear + " kWh");
-      updateChart(chartData, year_3);
+      updateChart(chartData, day_3 + "." + month_3 + "." + year_3);
     });
   }
 
@@ -395,6 +402,23 @@
 
   </script>
   <style class="cssStyles">
+  #diagSpeichern{
+      border: 0px solid black;
+      border-radius: 5px;
+      background-color: transparent;
+      color: black;
+      margin: 3px;
+      margin-top: 5px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+  }
+  #diagSpeichern:hover {
+      color:white;
+      background-color: black;
+      cursor: pointer;
+  }
   html{
     width: 100%;
     padding: 10px;
