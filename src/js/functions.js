@@ -252,13 +252,9 @@ try {
           chartType = $("#typDiag2").val(),
           displayMean = $("#avgDiag2").is(":checked"),
           vers = 0;
-          if(nameDB === "001_heco" || nameDB === "002_badber" || nameDB === "003_tauchzor"){
-            valName = "value";
-          }
-          else {
-            valName = "power";
-          }
-          if(jahr_3 != ""){
+          valName = "power";
+
+          if(jahr_3 != "") {
 
             // First MeasurementPoint
             queryString_1 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
