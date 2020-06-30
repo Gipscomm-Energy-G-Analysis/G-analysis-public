@@ -9886,7 +9886,6 @@ function virtuelleMessstelle() {
         if ($(this).is(':selected')) {
             //alert($(this).val());
             if ($(this).val() == 'Virtuelle Messstelle') {
-                $("#tabs-1_berEdit .zeitInterFrmDiv").hide();
                 $("#tabsTblsBerEdit .tab_hide_virtuelle_messstelle").hide();
                 $("#tblMstBerEditorContainer .controlDiv.berFormel").show();
                 $("#tblMstBerEditorContainer .controlDiv.knzFormel").hide();
@@ -9894,10 +9893,10 @@ function virtuelleMessstelle() {
                 $("#btnInMstVerwaltungSpringen").show();
                 $("#btnInKnzVerwaltungSpringen").hide();
             } else if ($(this).val() == 'Kennzahl') {
-                $("#tabs-1_berEdit .zeitInterFrmDiv").show();
                 $("#tabsTblsBerEdit .tab_hide_virtuelle_messstelle").show();
                 $("#tblMstBerEditorContainer .controlDiv.berFormel").hide();
                 $("#tblMstBerEditorContainer .controlDiv.knzFormel").show();
+
                 $("#btnInMstVerwaltungSpringen").hide();
                 $("#btnInKnzVerwaltungSpringen").show();
             }

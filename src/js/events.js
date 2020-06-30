@@ -96,16 +96,14 @@ $(document).ready(function() {
         }
     });
     $("#formelSpeichern").click(function() {
-        var a;
-        a = "" === $("#zeitintervallFormel").val() ? btoa($("#formelIdDarstellung").val()) : btoa($("#zeitintervallFormel").val() + " , " + $("#formelIdDarstellung").val());
-        a = {
+        const formula = {
             modus: $("#bermstmod").val(),
             berechneteMstID: $("#berechneteMstID").val().split("_")[1],
             bezug: $("#inpBezugKnz").val(),
             formelString: btoa($("#formelStringDarstellung").val()),
-            idString: a
+            idString: btoa($("#formelIdDarstellung").val())
         };
-        writeFormulaToDB(a);
+        writeFormulaToDB(formula);
         setTimeout(function() {
             messstellenInAuswertungsEditorTabelleEinlesen();
         }, 2000);
@@ -128,7 +126,6 @@ $(document).ready(function() {
                 var b = $(this).find("td"),
                     c = "mst_" + b.prev().text(),
                     b = b.text();
-                $("#zeitintervallFormel").val($("#zeitInterFrm").val());
                 contents = [c, b]
             }
         })
@@ -298,15 +295,16 @@ $(document).ready(function() {
             $(this).val("" + f)
         }
     });
-    /*27-02-2020 Hide this , switch off die Time interval*/
+    /*27-02-2020 Hide this , switch off die Time interval
+      30.06.2020 Refactored, reintroduced var names and deleted everything
+      related to the time interval */
     $("#formelStringDarstellung, #berechneteMstName").droppable({
         tolerance: "touch",
         drop: function() {
-            var a = this.id,
-                b, c;
-            "mst" === contents[0].split(" ")[0].split("_")[0] ? (b = contents[0].split(" ")[0], c = contents[0].split(" ")[1]) : (b = contents[0].split(" ")[0], c = contents[0].split(" ")[1]);
-            "" === $("#formelStringDarstfunctionellung").val() && $("#zeitintervallFormel").val("");
-            formelerweiterungNachDrop(a, b, c, !1)
+            let drpField = this.id,
+            idDrag = contents[0].split(" ")[0],
+            nameDrag = contents[0].split(" ")[1];
+            formelerweiterungNachDrop(drpField, idDrag, nameDrag, false);
         }
     });
     /*27-02-2020 Hide this function, switch off die Time interval*/
