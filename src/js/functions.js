@@ -9726,11 +9726,57 @@ try {
             return function(b) {
                 $(a).append(b)
             }
-        }
+        };
+
 } catch (a) {
     console.log("Error: " + a)
 };
 
+// Tests if an element of a formula is an operator(+-*/)
+const isOperator =
+    element =>
+    ["+", "-", "*", "/", ""]
+    .filter(a => a === element).length > 0
+
+// Returns the type of a formula element
+const typeElement =
+    element =>
+    isOperator(element) ?
+    "operator" :
+    "unit"
+
+// Tests if an element of a formula occurs on both sides of the equation
+const isSelfReference =
+    self =>
+    current =>
+    self === current
+
+// Gets last element of the formulas idString
+const getLastElement =
+    idString =>
+    idString === "" ?
+    "" :
+    idString.split(" ").filter(a => a !== "").reverse()[0]
+
+// Tests if the order of formula elements is correct
+const validOrder =
+    typeLastElement =>
+    typeNewElement =>
+    typeLastElement === "operator" && typeNewElement === "unit"
+    || typeLastElement === "unit" && typeNewElement === "operator"
+
+// Verifies if the action is fullfilling all the necessary conditions
+const validDrop =
+    idMst =>
+    idDragMst =>
+    idString =>
+    idMst === "" ?
+    "REFERENCE" :
+    isSelfReference(idMst)(idDragMst) ?
+    "SELF" :
+    validOrder(typeElement(getLastElement(idString)))("operator") ?
+    "ORDER" :
+    "VALID"
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
 function spiesOrganisationenSearch() {
@@ -11021,3 +11067,5 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
     }
 
 }
+
+// module.exports = {isOperator, typeElement, isSelfReference, getLastElement, validOrder, validDrop}

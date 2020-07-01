@@ -297,14 +297,53 @@ $(document).ready(function() {
     });
     /*27-02-2020 Hide this , switch off die Time interval
       30.06.2020 Refactored, reintroduced var names and deleted everything
-      related to the time interval */
-    $("#formelStringDarstellung, #berechneteMstName").droppable({
+      related to the time interval
+      01.07.2020 Separated formelStringDarstellung and berechneteMstName events*/
+    $("#formelStringDarstellung").droppable({
         tolerance: "touch",
         drop: function() {
+
             let drpField = this.id,
             idDrag = contents[0].split(" ")[0],
             nameDrag = contents[0].split(" ")[1];
+
+            console.log("#formelIdDarstellung");
+            console.log($("#formelIdDarstellung").val());
+
+            switch ($("#bermstmod").val()) {
+                case "Virtuelle Messstelle":
+                    switch (validDrop($("#berechneteMstID").val())(idDrag)($("#formelIdDarstellung").val())) {
+                        case "REFERENCE":
+                                alert("Es wurde keine Referenzmessstelle ausgewählt.")
+                            break;
+                        case "SELF":
+                            alert("Die zu berechnende Messstelle darf nicht in ihrer eigenen Berechnung vorkommen.")
+                            break;
+                        case "ORDER":
+                            alert("Bitte fügen Sie einen Operator (+-*/) vor dem Droppen einer weiteren Messstelle ein.")
+                            break;
+                        case "VALID":
+                            formelerweiterungNachDrop(drpField, idDrag, nameDrag, false);
+                            break;
+                    }
+                    break;
+                case "Kennzahl":
+
+                    break;
+
+            }
+        }
+    });
+    $("#berechneteMstName").droppable({
+        tolerance: "touch",
+        drop: function() {
+
+            let drpField = this.id,
+            idDrag = contents[0].split(" ")[0],
+            nameDrag = contents[0].split(" ")[1];
+
             formelerweiterungNachDrop(drpField, idDrag, nameDrag, false);
+
         }
     });
     /*27-02-2020 Hide this function, switch off die Time interval*/
