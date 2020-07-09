@@ -54,45 +54,118 @@ $(document).ready(function() {
     $(".imgBtnAnlagePrd").click(function() {
         anlagenAuswahllisteErstellen(this.id)
     });
-    $(".btnFormelSymbol").click(function() {
-        var a = $(this).text();
-        if ("AC" == a) d.latex(""), $("#formelStringDarstellung, #formelIdDarstellung").val(""), formula.resetFormula();
-        else if ("CE" == a) {
-            d.keystroke("Del");
-            a = $("#formelStringDarstellung").val();
-            $("#formelIdDarstellung").val();
-            var e = formula.getLastElement(),
-                b = 0;
-            1 < formula.formula.length && (b = e.operator.length);
-            e.operand.type ==
-                OperandType.MEASUREMENT_POINT ? (b += e.operand.operandObject.name.length, b += 2) : e.operand.type == OperandType.NUMERIC_OPERAND && (b += e.operand.operandObject.value.length);
-            b += Number(e.parentheses.number);
-            $("#formelStringDarstellung").val(a.substring(0, a.length - b));
-            formula.removeLastElement()
-        } else if ("MD" == a) "none" == $("#formelLatexDarstellung").css("display") ? ($("#formelLatexDarstellung").css("display", "block"), $("#formelStringDarstellung").css("display", "none")) : ($("#formelLatexDarstellung").css("display",
-            "none"), $("#formelStringDarstellung").css("display", "block"));
-        else if ("\u2192" == a) d.keystroke("Right");
-        else if ("\u2190" == a) d.keystroke("Left");
-        else if ("\u2191" == a) d.keystroke("Up");
-        else if ("\u2193" == a) d.keystroke("Down");
+    $(".btnFormelSymbol").click(function(){
+        var txt = $(this).text();
+        if(txt == "AC"){
+            mathField.latex("");
+            $("#formelStringDarstellung, #formelIdDarstellung").val("");
+            formula.resetFormula();
+        }
+        else if (txt == "CE") {
+            mathField.keystroke("Del");
+
+            var frmString = $("#formelStringDarstellung").val();
+            var frmID = $("#formelIdDarstellung").val();
+            var lastElement = formula.getLastElement();
+            var lengthProperties = 0;
+
+            if(formula.formula.length > 1){
+                lengthProperties = lastElement.operator.length;
+            }
+            if(lastElement.operand.type == OperandType.MEASUREMENT_POINT){
+                lengthProperties += lastElement.operand.operandObject.name.length;
+                lengthProperties += 2;
+            }
+            else if(lastElement.operand.type == OperandType.NUMERIC_OPERAND){
+                lengthProperties += lastElement.operand.operandObject.value.length;
+            }
+            lengthProperties += Number(lastElement.parentheses.number);
+
+
+            $("#formelStringDarstellung").val(frmString.substring(0, frmString.length - lengthProperties));
+            //$("#formelIdDarstellung").val(frmID.substring(0, frmID.length - lengthPropertiesID));
+            formula.removeLastElement();
+        }
+        else if (txt == "MD") {
+            if($("#formelLatexDarstellung").css("display") == "none"){
+                $("#formelLatexDarstellung").css("display","block");
+                $("#formelStringDarstellung").css("display","none");
+            }
+            else {
+                $("#formelLatexDarstellung").css("display","none");
+                $("#formelStringDarstellung").css("display","block");
+            }
+        }
+        else if (txt == "→") {
+            mathField.keystroke("Right");
+        }
+        else if (txt == "←") {
+            mathField.keystroke("Left");
+        }
+        else if (txt == "↑") {
+            mathField.keystroke("Up");
+        }
+        else if (txt == "↓") {
+            mathField.keystroke("Down");
+        }
         else {
-            if (0 == a || 1 == a || 2 == a || 3 == a || 4 == a || 5 == a || 6 == a || 7 == a || 8 == a || 9 == a) e = new NumericOperand(a), "" == $("#formelStringDarstellung").val() ? formula.setFirstElement(LocationParentheses.NONE, 0, OperandType.NUMERIC_OPERAND, e) : formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.NUMERIC_OPERAND, {
-                type: OperandType.NUMERIC_OPERAND,
-                operandObject: e
-            });
-            "(" != a && ")" != a ? " + " != a && " - " != a && " * " != a && " / " != a || formula.setElement(a, null, null, null, null) : "(" == a ? (a = formula.formula[formula.formula.length - 1].parentheses.number + 1, formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
-                location: LocationParentheses.BEGINNING,
-                number: a
-            })) : ")" == a && (a = formula.formula[formula.formula.length - 1].parentheses.number + 1, formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
-                location: LocationParentheses.END,
-                number: a
-            }));
-            a = "block" === $("#infosVorlagenformeln").css("display") ? "#formelVorStringDarstellung" : "#formelStringDarstellung";
-            e = $(a).val() + $(this).text();
-            b = $("#formelIdDarstellung").val() + $(this).text();
-            $(a).val(e);
-            $("#formelIdDarstellung").val(b);
-            d.typedText($(this).text())
+            if(txt == 0 || txt == 1 || txt == 2 || txt == 3 || txt == 4 ||
+                txt == 5 || txt == 6 || txt == 7 || txt == 8 || txt == 9) {
+                    if(validInputNumber($("#formelIdDarstellung").val())) {
+                        var operand = new NumericOperand(txt);
+                        if($("#formelStringDarstellung").val() == ""){
+                            formula.setFirstElement(LocationParentheses.NONE, 0, OperandType.NUMERIC_OPERAND, operand);
+                        }
+                        else {
+                            formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.NUMERIC_OPERAND, {
+                                type: OperandType.NUMERIC_OPERAND,
+                                operandObject: operand});
+
+                            }
+                    }
+                    else {
+                        alert("Bitte fügen Sie einen Operator (+-*/) vor dem Einfügen einer Zahl ein.")
+                        return
+                    }
+            }
+            if(txt != "(" && txt != ")"){
+                if(txt == " + " || txt == " - " || txt == " * " || txt == " / "){
+                    if(validInputOperator($("#formelIdDarstellung").val())) {
+                        formula.setElement(txt, null, null, null, null)
+                    }
+                    else {
+                        alert("Es können keine Operatoren hintereinander eingefügt werden.")
+                        return
+                    }
+                }
+            }
+            else if(txt == "(") {
+
+                var nParentheses = formula.formula[formula.formula.length - 1].parentheses.number + 1;
+                formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
+                    location: LocationParentheses.BEGINNING,
+                    number: nParentheses
+                });
+            }
+            else if(txt == ")") {
+                var nParentheses = formula.formula[formula.formula.length - 1].parentheses.number + 1;
+                formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
+                    location: LocationParentheses.END,
+                    number: nParentheses
+                });
+            }
+            let idFrmStr = "";
+            if($("#infosVorlagenformeln").css("display") === "block"){
+                idFrmStr = "#formelVorStringDarstellung";
+            }
+            else {
+                idFrmStr = "#formelStringDarstellung";
+            }
+            var newString = $(idFrmStr).val() + $(this).text();
+            var newIdString = $("#formelIdDarstellung").val() + $(this).text();
+            $(idFrmStr).val(newString);
+            $("#formelIdDarstellung").val(newIdString);
+            mathField.typedText($(this).text());
         }
     });
     $("#formelSpeichern").click(function() {
@@ -307,14 +380,11 @@ $(document).ready(function() {
             idDrag = contents[0].split(" ")[0],
             nameDrag = contents[0].split(" ")[1];
 
-            console.log("#formelIdDarstellung");
-            console.log($("#formelIdDarstellung").val());
-
             switch ($("#bermstmod").val()) {
                 case "Virtuelle Messstelle":
-                    switch (validDrop($("#berechneteMstID").val())(idDrag)($("#formelIdDarstellung").val())) {
+                    switch (validDropMessstelle($("#berechneteMstID").val())(idDrag)($("#formelIdDarstellung").val())) {
                         case "REFERENCE":
-                                alert("Es wurde keine Referenzmessstelle ausgewählt.")
+                            alert("Die zu berechnende Messstelle wurde noch nicht ausgewählt.")
                             break;
                         case "SELF":
                             alert("Die zu berechnende Messstelle darf nicht in ihrer eigenen Berechnung vorkommen.")
@@ -328,9 +398,10 @@ $(document).ready(function() {
                     }
                     break;
                 case "Kennzahl":
-
+                    validDropUnit($("#formelIdDarstellung").val()) ?
+                    formelerweiterungNachDrop(drpField, idDrag, nameDrag, false) :
+                    alert("Bitte fügen Sie einen Operator (+-*/) vor dem Droppen einer weiteren Instanz ein.")
                     break;
-
             }
         }
     });
@@ -342,8 +413,9 @@ $(document).ready(function() {
             idDrag = contents[0].split(" ")[0],
             nameDrag = contents[0].split(" ")[1];
 
-            formelerweiterungNachDrop(drpField, idDrag, nameDrag, false);
-
+            isMessstelle(idDrag) ?
+            formelerweiterungNachDrop(drpField, idDrag, nameDrag, false) :
+            alert("Hier gehört die zu berechnende Messstelle hin !")
         }
     });
     /*27-02-2020 Hide this function, switch off die Time interval*/

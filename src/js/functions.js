@@ -9738,6 +9738,16 @@ const isOperator =
     ["+", "-", "*", "/", ""]
     .filter(a => a === element).length > 0
 
+// Tests if some n is a number
+const isNumeric =
+    n =>
+    !isNaN(parseFloat(n)) && isFinite(n)
+
+// Tests if the elements identifier is of type Messstelle
+const isMessstelle =
+    element =>
+    element.split("_")[0] === "mst"
+
 // Returns the type of a formula element
 const typeElement =
     element =>
@@ -9765,8 +9775,8 @@ const validOrder =
     typeLastElement === "operator" && typeNewElement === "unit"
     || typeLastElement === "unit" && typeNewElement === "operator"
 
-// Verifies if the action is fullfilling all the necessary conditions
-const validDrop =
+// Verifies if the action(Berechnete Messstelle) is fullfilling all the necessary conditions
+const validDropMessstelle =
     idMst =>
     idDragMst =>
     idString =>
@@ -9777,6 +9787,31 @@ const validDrop =
     validOrder(typeElement(getLastElement(idString)))("operator") ?
     "ORDER" :
     "VALID"
+
+// Tests if the last element of the formula is an operator
+const afterElement =
+    type =>
+    idString =>
+    validOrder(typeElement(getLastElement(idString)))(type) ?
+    "ORDER" :
+    "VALID"
+
+// Verifies if the action(Kennzahl) is fullfilling all the necessary conditions
+const validDropUnit =
+    idString =>
+    afterElement("operator")(idString) === "VALID"
+
+// Verifies if the action(Number) is fullfilling all the necessary conditions
+const validInputNumber =
+    idString =>
+    afterElement("operator")(idString) === "VALID"
+    || isNumeric(getLastElement(idString))
+
+// Verifies if the action(Operator) is fullfilling all the necessary conditions
+const validInputOperator =
+    idString =>
+    afterElement("unit")(idString) === "VALID"
+
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
 function spiesOrganisationenSearch() {
@@ -11068,4 +11103,15 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
 
 }
 
-// module.exports = {isOperator, typeElement, isSelfReference, getLastElement, validOrder, validDrop}
+// module.exports =
+//     { isOperator
+//     , isNumeric
+//     , isMessstelle
+//     , typeElement
+//     , isSelfReference
+//     , getLastElement
+//     , validOrder
+//     , validDropMessstelle
+//     , afterElement
+//     , validInputNumber
+//     }
