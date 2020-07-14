@@ -230,3 +230,24 @@ test('function validInputNumber : Should return true if the order of elements is
 
     t.end();
 });
+test('function validInputOperator : Should return true if the order of elements is valid.', function (t) {
+
+    t.comment("#");
+
+    t.plan(8);
+
+    t.true(fn.validInputOperator("bdeProd_1-cycletime * bdeProd_1-istMenge / bdeProd_1-nester / bdeProd_1-Factor3600 "));
+    t.true(fn.validInputOperator("bdeProd_1-verbrauchSchuss / bdeProd_1-nester"));
+    t.true(fn.validInputOperator("bdeProd_1-verbrauchSchuss / bdeProd_1-nester * ePrd_2 "));
+    t.true(fn.validInputOperator("bdeProd_1-verbrauchAuftrag * 77 "));
+
+    t.false(fn.validInputOperator("bdeProd_1-cycletime * bdeProd_1-istMenge +"));
+    t.false(fn.validInputOperator("bdeProd_1-verbrauchSchuss *"));
+    t.false(fn.validInputOperator("bdeProd_1-verbrauchSchuss / bdeProd_1-nester / "));
+    t.false(fn.validInputOperator("bdeProd_1-verbrauchAuftrag - "));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});

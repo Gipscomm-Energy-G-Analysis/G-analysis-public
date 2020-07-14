@@ -11103,15 +11103,16 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
 
 }
 
-// module.exports =
-//     { isOperator
-//     , isNumeric
-//     , isMessstelle
-//     , typeElement
-//     , isSelfReference
-//     , getLastElement
-//     , validOrder
-//     , validDropMessstelle
-//     , afterElement
-//     , validInputNumber
-//     }
+module.exports =
+    { isOperator
+    , isNumeric
+    , isMessstelle
+    , typeElement
+    , isSelfReference
+    , getLastElement
+    , validOrder
+    , validDropMessstelle
+    , afterElement
+    , validInputNumber
+    , validInputOperator
+    }
