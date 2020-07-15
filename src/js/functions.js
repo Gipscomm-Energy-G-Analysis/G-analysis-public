@@ -9743,10 +9743,25 @@ const isNumeric =
     n =>
     !isNaN(parseFloat(n)) && isFinite(n)
 
+// Tests if the element is a unit
+const isUnit =
+    element =>
+    String(element).split("_").length > 1
+
 // Tests if the elements identifier is of type Messstelle
 const isMessstelle =
     element =>
     element.split("_")[0] === "mst"
+
+// Tests if the element is an opening parentheses
+const isOpeningParentheses =
+    element =>
+    element === "("
+
+// Tests if the element is a closing parentheses
+const isClosingParentheses =
+    element =>
+    element === ")"
 
 // Returns the type of a formula element
 const typeElement =
@@ -11101,16 +11116,19 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
 
 }
 
-// module.exports =
-//     { isOperator
-//     , isNumeric
-//     , isMessstelle
-//     , typeElement
-//     , isSelfReference
-//     , getLastElement
-//     , validOrder
-//     , validDropMessstelle
-//     , afterElement
-//     , validInputNumber
-//     , validInputOperator
-//     }
+module.exports =
+    { isOperator
+    , isNumeric
+    , isUnit
+    , isMessstelle
+    , isOpeningParentheses
+    , isClosingParentheses
+    , typeElement
+    , isSelfReference
+    , getLastElement
+    , validOrder
+    , validDropMessstelle
+    , afterElement
+    , validInputNumber
+    , validInputOperator
+    }

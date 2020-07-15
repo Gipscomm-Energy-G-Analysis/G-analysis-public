@@ -50,6 +50,28 @@ test("function isNumeric : Should return true if it's a number.", function (t) {
 
     t.end();
 });
+test("function isUnit : Should return true if it's a unit.", function (t) {
+
+    t.comment("#");
+
+    t.plan(9);
+
+    t.true(fn.isUnit("mst_123"));
+    t.true(fn.isUnit("prd_34"));
+    t.true(fn.isUnit("prd_456"));
+    t.true(fn.isUnit("bPar_7"));
+
+    t.false(fn.isUnit("wert"));
+    t.false(fn.isUnit("--"));
+    t.false(fn.isUnit("+"));
+    t.false(fn.isUnit("("));
+    t.false(fn.isUnit(122));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
 test('function isMessstelle : Should return true if the first part is the Messstellen identifier(mst).', function (t) {
 
     t.comment("#");
@@ -65,6 +87,48 @@ test('function isMessstelle : Should return true if the first part is the Messst
     t.false(fn.isMessstelle("453"));
     t.false(fn.isMessstelle(""));
     t.false(fn.isMessstelle("bPar_7"));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
+test('function isOpeningParentheses : Should return true if it is an opening parentheses.', function (t) {
+
+    t.comment("#");
+
+    t.plan(8);
+
+    t.true(fn.isOpeningParentheses("("));
+
+    t.false(fn.isOpeningParentheses(")"));
+    t.false(fn.isOpeningParentheses(453));
+    t.false(fn.isOpeningParentheses("+"));
+    t.false(fn.isOpeningParentheses("*"));
+    t.false(fn.isOpeningParentheses("-"));
+    t.false(fn.isOpeningParentheses("/"));
+    t.false(fn.isOpeningParentheses("bPar_7"));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
+test('function isClosingParentheses : Should return true if it is a closing parentheses.', function (t) {
+
+    t.comment("#");
+
+    t.plan(8);
+
+    t.true(fn.isClosingParentheses(")"));
+
+    t.false(fn.isClosingParentheses("("));
+    t.false(fn.isClosingParentheses(453));
+    t.false(fn.isClosingParentheses("+"));
+    t.false(fn.isClosingParentheses("-"));
+    t.false(fn.isClosingParentheses("*"));
+    t.false(fn.isClosingParentheses("/"));
+    t.false(fn.isClosingParentheses("bPar_7"));
 
     t.comment("#");
     t.comment("#");
