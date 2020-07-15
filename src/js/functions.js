@@ -9763,13 +9763,6 @@ const isClosingParentheses =
     element =>
     element === ")"
 
-// Returns the type of a formula element
-const typeElement =
-    element =>
-    isOperator(element) ?
-    "operator" :
-    "unit"
-
 // Tests if an element of a formula occurs on both sides of the equation
 const isSelfReference =
     self =>
@@ -9783,13 +9776,6 @@ const getLastElement =
     "" :
     idString.split(" ").filter(a => a !== "").reverse()[0]
 
-// Tests if the order of formula elements is correct
-const validOrder =
-    typeLastElement =>
-    typeNewElement =>
-    typeLastElement === "operator" && typeNewElement === "unit"
-    || typeLastElement === "unit" && typeNewElement === "operator"
-
 // Verifies if the action(Berechnete Messstelle) is fullfilling all the necessary conditions
 const validDropMessstelle =
     idMst =>
@@ -9799,33 +9785,29 @@ const validDropMessstelle =
     "REFERENCE" :
     isSelfReference(idMst)(idDragMst) ?
     "SELF" :
-    validOrder(typeElement(getLastElement(idString)))("operator") ?
-    "ORDER" :
-    "VALID"
-
-// Tests if the last element of the formula is an operator
-const afterElement =
-    type =>
-    idString =>
-    validOrder(typeElement(getLastElement(idString)))(type) ?
+    isUnit(getLastElement(idString)) || isClosingParentheses(getLastElement(idString)) ?
     "ORDER" :
     "VALID"
 
 // Verifies if the action(Kennzahl) is fullfilling all the necessary conditions
 const validDropUnit =
     idString =>
-    afterElement("operator")(idString) === "VALID"
+    isOperator(getLastElement(idString))
+    || isOpeningParentheses(getLastElement(idString))
 
 // Verifies if the action(Number) is fullfilling all the necessary conditions
 const validInputNumber =
     idString =>
-    afterElement("operator")(idString) === "VALID"
+    isOperator(getLastElement(idString))
     || isNumeric(getLastElement(idString))
+    || isOpeningParentheses(getLastElement(idString))
 
 // Verifies if the action(Operator) is fullfilling all the necessary conditions
 const validInputOperator =
     idString =>
-    afterElement("unit")(idString) === "VALID"
+    isUnit(getLastElement(idString))
+    || isNumeric(getLastElement(idString))
+    || isClosingParentheses(getLastElement(idString))
 
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
@@ -11123,12 +11105,10 @@ module.exports =
     , isMessstelle
     , isOpeningParentheses
     , isClosingParentheses
-    , typeElement
     , isSelfReference
     , getLastElement
-    , validOrder
     , validDropMessstelle
-    , afterElement
+    , validDropUnit
     , validInputNumber
     , validInputOperator
     }
