@@ -9726,10 +9726,91 @@ try {
             return function(b) {
                 $(a).append(b)
             }
-        }
+        };
+
 } catch (a) {
     console.log("Error: " + a)
 };
+
+// Tests if an element of a formula is an operator(+-*/)
+const isOperator =
+    element =>
+    ["+", "-", "*", "/", ""]
+    .filter(a => a === element).length > 0
+
+// Tests if some n is a number
+const isNumeric =
+    n =>
+    !isNaN(parseFloat(n)) && isFinite(n)
+
+// Tests if the elements identifier is of type Messstelle
+const isMessstelle =
+    element =>
+    element.split("_")[0] === "mst"
+
+// Returns the type of a formula element
+const typeElement =
+    element =>
+    isOperator(element) ?
+    "operator" :
+    "unit"
+
+// Tests if an element of a formula occurs on both sides of the equation
+const isSelfReference =
+    self =>
+    current =>
+    self === current
+
+// Gets last element of the formulas idString
+const getLastElement =
+    idString =>
+    idString === "" ?
+    "" :
+    idString.split(" ").filter(a => a !== "").reverse()[0]
+
+// Tests if the order of formula elements is correct
+const validOrder =
+    typeLastElement =>
+    typeNewElement =>
+    typeLastElement === "operator" && typeNewElement === "unit"
+    || typeLastElement === "unit" && typeNewElement === "operator"
+
+// Verifies if the action(Berechnete Messstelle) is fullfilling all the necessary conditions
+const validDropMessstelle =
+    idMst =>
+    idDragMst =>
+    idString =>
+    idMst === "" ?
+    "REFERENCE" :
+    isSelfReference(idMst)(idDragMst) ?
+    "SELF" :
+    validOrder(typeElement(getLastElement(idString)))("operator") ?
+    "ORDER" :
+    "VALID"
+
+// Tests if the last element of the formula is an operator
+const afterElement =
+    type =>
+    idString =>
+    validOrder(typeElement(getLastElement(idString)))(type) ?
+    "ORDER" :
+    "VALID"
+
+// Verifies if the action(Kennzahl) is fullfilling all the necessary conditions
+const validDropUnit =
+    idString =>
+    afterElement("operator")(idString) === "VALID"
+
+// Verifies if the action(Number) is fullfilling all the necessary conditions
+const validInputNumber =
+    idString =>
+    afterElement("operator")(idString) === "VALID"
+    || isNumeric(getLastElement(idString))
+
+// Verifies if the action(Operator) is fullfilling all the necessary conditions
+const validInputOperator =
+    idString =>
+    afterElement("unit")(idString) === "VALID"
 
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
@@ -9886,7 +9967,6 @@ function virtuelleMessstelle() {
         if ($(this).is(':selected')) {
             //alert($(this).val());
             if ($(this).val() == 'Virtuelle Messstelle') {
-                $("#tabs-1_berEdit .zeitInterFrmDiv").hide();
                 $("#tabsTblsBerEdit .tab_hide_virtuelle_messstelle").hide();
                 $("#tblMstBerEditorContainer .controlDiv.berFormel").show();
                 $("#tblMstBerEditorContainer .controlDiv.knzFormel").hide();
@@ -9894,10 +9974,10 @@ function virtuelleMessstelle() {
                 $("#btnInMstVerwaltungSpringen").show();
                 $("#btnInKnzVerwaltungSpringen").hide();
             } else if ($(this).val() == 'Kennzahl') {
-                $("#tabs-1_berEdit .zeitInterFrmDiv").show();
                 $("#tabsTblsBerEdit .tab_hide_virtuelle_messstelle").show();
                 $("#tblMstBerEditorContainer .controlDiv.berFormel").hide();
                 $("#tblMstBerEditorContainer .controlDiv.knzFormel").show();
+
                 $("#btnInMstVerwaltungSpringen").hide();
                 $("#btnInKnzVerwaltungSpringen").show();
             }
@@ -10639,8 +10719,6 @@ function korrekturFaktorEinfügenGruppenloschen() {
 }
 /*06-05-2020 dynamiche Correction factor delete record ajax response*/
 
-
-
 /*14-05-2020 reset/destroy dataTable*/
 
 function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal, subtypeTimeDynamicCFVal, auswahlTypierungVal) {
@@ -11022,3 +11100,17 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
     }
 
 }
+
+// module.exports =
+//     { isOperator
+//     , isNumeric
+//     , isMessstelle
+//     , typeElement
+//     , isSelfReference
+//     , getLastElement
+//     , validOrder
+//     , validDropMessstelle
+//     , afterElement
+//     , validInputNumber
+//     , validInputOperator
+//     }

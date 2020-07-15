@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Gipscomm-Energy-G-Analysis/G-Analysis---Energiemanagement/issues"
   },
-  "homepage": "https://github.com/Gipscomm-Energy-G-Analysis/G-Analysis---Energiemanagement#readme"
+  "homepage": "https://github.com/Gipscomm-Energy-G-Analysis/G-Analysis---Energiemanagement#readme",
+  "dependencies": {
+    "tape": "^5.0.1"
+  }
 }
