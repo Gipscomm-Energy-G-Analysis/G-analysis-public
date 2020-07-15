@@ -128,7 +128,7 @@ $(document).ready(function() {
                         return
                     }
             }
-            if(txt != "(" && txt != ")"){
+            if(txt != " ( " && txt != " ) "){
                 if(txt == " + " || txt == " - " || txt == " * " || txt == " / "){
                     if(validInputOperator($("#formelIdDarstellung").val())) {
                         formula.setElement(txt, null, null, null, null)
@@ -139,7 +139,7 @@ $(document).ready(function() {
                     }
                 }
             }
-            else if(txt == "(") {
+            else if(txt == " ( ") {
 
                 var nParentheses = formula.formula[formula.formula.length - 1].parentheses.number + 1;
                 formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
@@ -147,7 +147,7 @@ $(document).ready(function() {
                     number: nParentheses
                 });
             }
-            else if(txt == ")") {
+            else if(txt == " ) ") {
                 var nParentheses = formula.formula[formula.formula.length - 1].parentheses.number + 1;
                 formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
                     location: LocationParentheses.END,
