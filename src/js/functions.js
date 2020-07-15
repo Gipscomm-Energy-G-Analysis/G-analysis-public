@@ -10719,8 +10719,6 @@ function korrekturFaktorEinfügenGruppenloschen() {
 }
 /*06-05-2020 dynamiche Correction factor delete record ajax response*/
 
-
-
 /*14-05-2020 reset/destroy dataTable*/
 
 function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal, subtypeTimeDynamicCFVal, auswahlTypierungVal) {
@@ -11103,16 +11101,16 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
 
 }
 
-module.exports =
-    { isOperator
-    , isNumeric
-    , isMessstelle
-    , typeElement
-    , isSelfReference
-    , getLastElement
-    , validOrder
-    , validDropMessstelle
-    , afterElement
-    , validInputNumber
-    , validInputOperator
-    }
+// module.exports =
+//     { isOperator
+//     , isNumeric
+//     , isMessstelle
+//     , typeElement
+//     , isSelfReference
+//     , getLastElement
+//     , validOrder
+//     , validDropMessstelle
+//     , afterElement
+//     , validInputNumber
+//     , validInputOperator
+//     }
