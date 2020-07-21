@@ -6,6 +6,25 @@ require('../src/js/imports/jquery-3.1.1.min.js');
 core = require('../src/js/fpCore.js');
 fn = require('../src/js/functions.js');
 
+test('function isEmpty : Should return true if is is an empty string.', function (t) {
+
+    t.comment("#");
+
+    t.plan(6);
+
+    t.true(fn.isEmpty(""));
+
+    t.false(fn.isEmpty("wert"));
+    t.false(fn.isEmpty("--"));
+    t.false(fn.isEmpty("1"));
+    t.false(fn.isEmpty(87898));
+    t.false(fn.isEmpty([2,3,4]));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
 test('function isOperator : Should return true if is one of(+-*/).', function (t) {
 
     t.comment("#");
@@ -129,6 +148,27 @@ test('function isClosingParentheses : Should return true if it is a closing pare
     t.false(fn.isClosingParentheses("*"));
     t.false(fn.isClosingParentheses("/"));
     t.false(fn.isClosingParentheses("bPar_7"));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
+test('function moreOpeningThanClosingParentheses : Should return true if there are more opening- than closing parentheses.', function (t) {
+
+    t.comment("#");
+
+    t.plan(8);
+
+    t.true(fn.moreOpeningThanClosingParentheses("( bdeProd_1-verbrauchSchuss / bdeProd_1-nester * ePrd_2 * "));
+    t.true(fn.moreOpeningThanClosingParentheses("bdeProd_1-verbrauchSchuss / ( ( bdeProd_1-nester * ePrd_2 " ));
+    t.true(fn.moreOpeningThanClosingParentheses("mst_37 * mst_26 + ("));
+    t.true(fn.moreOpeningThanClosingParentheses("mst_1 - ( mst_1 / 33 + ( ("));
+
+    t.false(fn.moreOpeningThanClosingParentheses("mst_109 - mst_120 / mst_116"));
+    t.false(fn.moreOpeningThanClosingParentheses("( mst_109 - mst_120 ) / mst_116"));
+    t.false(fn.moreOpeningThanClosingParentheses("( bdeProd_1-verbrauchSchuss / ( bdeProd_1-nester * ePrd_2 ) ) "));
+    t.false(fn.moreOpeningThanClosingParentheses("bdeProd_1-verbrauchAuftrag * 77 "));
 
     t.comment("#");
     t.comment("#");
@@ -276,6 +316,53 @@ test('function validInputOperator : Should return true if the order of elements 
     t.false(fn.validInputOperator("bdeProd_1-verbrauchSchuss *"));
     t.false(fn.validInputOperator("bdeProd_1-verbrauchSchuss / bdeProd_1-nester / "));
     t.false(fn.validInputOperator("bdeProd_1-verbrauchAuftrag - "));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
+test('function validInputOpeningParentheses : Should return true if the order of elements is valid.', function (t) {
+
+    t.comment("#");
+
+    t.plan(11);
+
+    t.true(fn.validInputOpeningParentheses("bdeProd_1-cycletime * bdeProd_1-istMenge / bdeProd_1-nester / bdeProd_1-Factor3600 +"));
+    t.true(fn.validInputOpeningParentheses("bdeProd_1-verbrauchSchuss / bdeProd_1-nester / ("));
+    t.true(fn.validInputOpeningParentheses("bdeProd_1-verbrauchSchuss / ( bdeProd_1-nester * ePrd_2 - "));
+    t.true(fn.validInputOpeningParentheses("bdeProd_1-verbrauchSchuss / "));
+    t.true(fn.validInputOpeningParentheses("bdeProd_1-verbrauchAuftrag * 77 * ( ( ( "));
+    t.true(fn.validInputOpeningParentheses(""));
+
+    t.false(fn.validInputOpeningParentheses("bdeProd_1-cycletime * bdeProd_1-istMenge "));
+    t.false(fn.validInputOpeningParentheses("( bdeProd_1-cycletime * bdeProd_1-istMenge )"));
+    t.false(fn.validInputOpeningParentheses("bdeProd_1-verbrauchSchuss"));
+    t.false(fn.validInputOpeningParentheses("bdeProd_1-verbrauchSchuss / bdeProd_1-nester "));
+    t.false(fn.validInputOpeningParentheses("( bdeProd_1-verbrauchAuftrag )"));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
+test('function validInputClosingParentheses : Should return true if the order of elements is valid.', function (t) {
+
+    t.comment("#");
+
+    t.plan(10);
+
+    t.true(fn.validInputClosingParentheses("bdeProd_1-cycletime * ( bdeProd_1-istMenge / bdeProd_1-nester / bdeProd_1-Factor3600 "));
+    t.true(fn.validInputClosingParentheses("( ( bdeProd_1-verbrauchSchuss / bdeProd_1-nester )"));
+    t.true(fn.validInputClosingParentheses("bdeProd_1-verbrauchSchuss / ( bdeProd_1-nester * ePrd_2 - 66"));
+    t.true(fn.validInputClosingParentheses(" ( ( ( bdeProd_1-verbrauchSchuss / 3 "));
+    t.true(fn.validInputClosingParentheses("bdeProd_1-verbrauchAuftrag * 77 * ( ( (  + mst_33"));
+
+    t.false(fn.validInputClosingParentheses(" ( bdeProd_1-cycletime * bdeProd_1-istMenge )"));
+    t.false(fn.validInputClosingParentheses("( ( bdeProd_1-cycletime * bdeProd_1-istMenge ) )"));
+    t.false(fn.validInputClosingParentheses("( ( ( bdeProd_1-verbrauchSchuss ) ) )"));
+    t.false(fn.validInputClosingParentheses("bdeProd_1-verbrauchSchuss / ( bdeProd_1-nester )"));
+    t.false(fn.validInputClosingParentheses("bdeProd_1-verbrauchAuftrag "));
 
     t.comment("#");
     t.comment("#");

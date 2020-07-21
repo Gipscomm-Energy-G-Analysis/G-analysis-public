@@ -9732,6 +9732,11 @@ try {
     console.log("Error: " + a)
 };
 
+// Tests if element is empty string
+const isEmpty =
+    element =>
+    element === ""
+
 // Tests if an element of a formula is an operator(+-*/)
 const isOperator =
     element =>
@@ -9762,6 +9767,15 @@ const isOpeningParentheses =
 const isClosingParentheses =
     element =>
     element === ")"
+
+// Tests if there are more opening than closing parentheses
+const moreOpeningThanClosingParentheses =
+    idString => {
+        splittedString = idString.split("")
+        countOpening = splittedString.filter(isOpeningParentheses).length
+        countClosing = splittedString.filter(isClosingParentheses).length
+        return countOpening > countClosing
+    }
 
 // Tests if an element of a formula occurs on both sides of the equation
 const isSelfReference =
@@ -9809,6 +9823,20 @@ const validInputOperator =
     || isNumeric(getLastElement(idString))
     || isClosingParentheses(getLastElement(idString))
 
+// Verifies if the action(Opening parentheses) is fullfilling all the necessary conditions
+const validInputOpeningParentheses =
+    idString =>
+    isEmpty(idString)
+    || isOperator(getLastElement(idString))
+    || isOpeningParentheses(getLastElement(idString))
+
+// Verifies if the action(Closing parentheses) is fullfilling all the necessary conditions
+const validInputClosingParentheses =
+    idString =>
+    moreOpeningThanClosingParentheses(idString)
+    && ( isUnit(getLastElement(idString))
+    || isNumeric(getLastElement(idString))
+    || isClosingParentheses(getLastElement(idString)) )
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
 function spiesOrganisationenSearch() {
@@ -11098,17 +11126,21 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
 
 }
 
-module.exports =
-    { isOperator
-    , isNumeric
-    , isUnit
-    , isMessstelle
-    , isOpeningParentheses
-    , isClosingParentheses
-    , isSelfReference
-    , getLastElement
-    , validDropMessstelle
-    , validDropUnit
-    , validInputNumber
-    , validInputOperator
-    }
+// module.exports =
+//     { isEmpty
+//     , isOperator
+//     , isNumeric
+//     , isUnit
+//     , isMessstelle
+//     , isOpeningParentheses
+//     , isClosingParentheses
+//     , moreOpeningThanClosingParentheses
+//     , isSelfReference
+//     , getLastElement
+//     , validDropMessstelle
+//     , validDropUnit
+//     , validInputNumber
+//     , validInputOperator
+//     , validInputOpeningParentheses
+//     , validInputClosingParentheses
+//     }
