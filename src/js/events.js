@@ -124,35 +124,46 @@ $(document).ready(function() {
                             }
                     }
                     else {
-                        alert("Bitte fügen Sie einen Operator (+-*/) vor dem Einfügen einer Zahl ein.")
+                        alert("Bitte fügen Sie einen Operator (+-*/) oder eine oder mehrere öffnende Klammern vor dem Einfügen einer Zahl ein.")
                         return
                     }
             }
-            if(txt != "(" && txt != ")"){
+            if(txt != "( " && txt != " )"){
                 if(txt == " + " || txt == " - " || txt == " * " || txt == " / "){
                     if(validInputOperator($("#formelIdDarstellung").val())) {
                         formula.setElement(txt, null, null, null, null)
                     }
                     else {
-                        alert("Es können keine Operatoren hintereinander eingefügt werden.")
+                        alert("Es können keine Operatoren als erstes Element oder hintereinander eingefügt werden.")
                         return
                     }
                 }
             }
-            else if(txt == "(") {
-
-                var nParentheses = formula.formula[formula.formula.length - 1].parentheses.number + 1;
-                formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
+            else if(txt === "( ") {
+                if(validInputOpeningParentheses($("#formelIdDarstellung").val())) {
+                    var nParentheses = formula.formula[formula.formula.length - 1].parentheses.number + 1;
+                    formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
                     location: LocationParentheses.BEGINNING,
                     number: nParentheses
                 });
+                }
+                else {
+                    alert("Eine öffnende Klammer, darf nur nach einem Operator oder einer anderen öffnenden Klammer eingefügt werden.")
+                    return
+                }
             }
-            else if(txt == ")") {
-                var nParentheses = formula.formula[formula.formula.length - 1].parentheses.number + 1;
-                formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
+            else if(txt === " )") {
+                if(validInputClosingParentheses($("#formelIdDarstellung").val())) {
+                    var nParentheses = formula.formula[formula.formula.length - 1].parentheses.number + 1;
+                    formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.PARENTHESES, {
                     location: LocationParentheses.END,
                     number: nParentheses
                 });
+                }
+                else {
+                    alert("Eine schließende Klammer muss eine zugehörige öffnende Klammer aufweisen und darf nur nach einer Instanz, einer Zahl oder einer anderen schließenden Klammer eingefügt werden.")
+                    return
+                }
             }
             let idFrmStr = "";
             if($("#infosVorlagenformeln").css("display") === "block"){
@@ -390,7 +401,7 @@ $(document).ready(function() {
                             alert("Die zu berechnende Messstelle darf nicht in ihrer eigenen Berechnung vorkommen.")
                             break;
                         case "ORDER":
-                            alert("Bitte fügen Sie einen Operator (+-*/) vor dem Droppen einer weiteren Messstelle ein.")
+                            alert("Bitte fügen Sie einen Operator (+-*/) oder eine oder mehrere öffnende Klammern vor dem Droppen einer weiteren Messstelle ein.")
                             break;
                         case "VALID":
                             formelerweiterungNachDrop(drpField, idDrag, nameDrag, false);
@@ -400,7 +411,7 @@ $(document).ready(function() {
                 case "Kennzahl":
                     validDropUnit($("#formelIdDarstellung").val()) ?
                     formelerweiterungNachDrop(drpField, idDrag, nameDrag, false) :
-                    alert("Bitte fügen Sie einen Operator (+-*/) vor dem Droppen einer weiteren Instanz ein.")
+                    alert("Bitte fügen Sie einen Operator (+-*/) oder eine oder mehrere öffnende Klammern vor dem Droppen einer weiteren Instanz ein.")
                     break;
             }
         }

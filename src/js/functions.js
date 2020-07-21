@@ -9732,6 +9732,11 @@ try {
     console.log("Error: " + a)
 };
 
+// Tests if element is empty string
+const isEmpty =
+    element =>
+    element === ""
+
 // Tests if an element of a formula is an operator(+-*/)
 const isOperator =
     element =>
@@ -9743,17 +9748,34 @@ const isNumeric =
     n =>
     !isNaN(parseFloat(n)) && isFinite(n)
 
+// Tests if the element is a unit
+const isUnit =
+    element =>
+    String(element).split("_").length > 1
+
 // Tests if the elements identifier is of type Messstelle
 const isMessstelle =
     element =>
     element.split("_")[0] === "mst"
 
-// Returns the type of a formula element
-const typeElement =
+// Tests if the element is an opening parentheses
+const isOpeningParentheses =
     element =>
-    isOperator(element) ?
-    "operator" :
-    "unit"
+    element === "("
+
+// Tests if the element is a closing parentheses
+const isClosingParentheses =
+    element =>
+    element === ")"
+
+// Tests if there are more opening than closing parentheses
+const moreOpeningThanClosingParentheses =
+    idString => {
+        splittedString = idString.split("")
+        countOpening = splittedString.filter(isOpeningParentheses).length
+        countClosing = splittedString.filter(isClosingParentheses).length
+        return countOpening > countClosing
+    }
 
 // Tests if an element of a formula occurs on both sides of the equation
 const isSelfReference =
@@ -9768,13 +9790,6 @@ const getLastElement =
     "" :
     idString.split(" ").filter(a => a !== "").reverse()[0]
 
-// Tests if the order of formula elements is correct
-const validOrder =
-    typeLastElement =>
-    typeNewElement =>
-    typeLastElement === "operator" && typeNewElement === "unit"
-    || typeLastElement === "unit" && typeNewElement === "operator"
-
 // Verifies if the action(Berechnete Messstelle) is fullfilling all the necessary conditions
 const validDropMessstelle =
     idMst =>
@@ -9784,34 +9799,44 @@ const validDropMessstelle =
     "REFERENCE" :
     isSelfReference(idMst)(idDragMst) ?
     "SELF" :
-    validOrder(typeElement(getLastElement(idString)))("operator") ?
-    "ORDER" :
-    "VALID"
-
-// Tests if the last element of the formula is an operator
-const afterElement =
-    type =>
-    idString =>
-    validOrder(typeElement(getLastElement(idString)))(type) ?
+    isUnit(getLastElement(idString)) || isClosingParentheses(getLastElement(idString)) ?
     "ORDER" :
     "VALID"
 
 // Verifies if the action(Kennzahl) is fullfilling all the necessary conditions
 const validDropUnit =
     idString =>
-    afterElement("operator")(idString) === "VALID"
+    isOperator(getLastElement(idString))
+    || isOpeningParentheses(getLastElement(idString))
 
 // Verifies if the action(Number) is fullfilling all the necessary conditions
 const validInputNumber =
     idString =>
-    afterElement("operator")(idString) === "VALID"
+    isOperator(getLastElement(idString))
     || isNumeric(getLastElement(idString))
+    || isOpeningParentheses(getLastElement(idString))
 
 // Verifies if the action(Operator) is fullfilling all the necessary conditions
 const validInputOperator =
     idString =>
-    afterElement("unit")(idString) === "VALID"
+    isUnit(getLastElement(idString))
+    || isNumeric(getLastElement(idString))
+    || isClosingParentheses(getLastElement(idString))
 
+// Verifies if the action(Opening parentheses) is fullfilling all the necessary conditions
+const validInputOpeningParentheses =
+    idString =>
+    isEmpty(idString)
+    || isOperator(getLastElement(idString))
+    || isOpeningParentheses(getLastElement(idString))
+
+// Verifies if the action(Closing parentheses) is fullfilling all the necessary conditions
+const validInputClosingParentheses =
+    idString =>
+    moreOpeningThanClosingParentheses(idString)
+    && ( isUnit(getLastElement(idString))
+    || isNumeric(getLastElement(idString))
+    || isClosingParentheses(getLastElement(idString)) )
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
 function spiesOrganisationenSearch() {
@@ -11102,15 +11127,20 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
 }
 
 // module.exports =
-//     { isOperator
+//     { isEmpty
+//     , isOperator
 //     , isNumeric
+//     , isUnit
 //     , isMessstelle
-//     , typeElement
+//     , isOpeningParentheses
+//     , isClosingParentheses
+//     , moreOpeningThanClosingParentheses
 //     , isSelfReference
 //     , getLastElement
-//     , validOrder
 //     , validDropMessstelle
-//     , afterElement
+//     , validDropUnit
 //     , validInputNumber
 //     , validInputOperator
+//     , validInputOpeningParentheses
+//     , validInputClosingParentheses
 //     }
