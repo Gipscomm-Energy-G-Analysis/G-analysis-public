@@ -3,6 +3,7 @@ error_reporting( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
 
 require 'DbOperations.php';
+require 'EMail.php';
 
 $nameDB = "master" ;
 
@@ -13,21 +14,84 @@ $queryDBs .= "WHERE active = 'true' " ;
 
 $recordsDB = queryDB($conn1, $queryDBs, "read") ;
 
+function replaceCurlyBraces($string) {
+    $opening = str_replace( "{", "",  $string) ;
+    $closing = str_replace( "}", "",  $opening) ;
+
+    return $closing ;
+}
+
+function below10Prepend0($strNum) {
+    return (int)$strNum < 10 ? "0".$strNum : $strNum ;
+}
+
 function lastData($db) {
     $conn2 = connectToDB( "master" ) ;
 
     $queryDate = "SELECT TOP(1) time_de FROM [".$db['name']."].[dbo].[data_value_15m] " ;
     $queryDate .= "ORDER BY time_de DESC " ;
 
-    $recordsTimes = queryDB($conn2, $queryDate, "read") ;
+    $recordsTime = queryDB($conn2, $queryDate, "read") ;
 
-    return $recordsTimes ;
+    return [$db['name'], $recordsTime] ;
 }
 
 function outputState($dbs) {
-    print_r (array_map('lastData', $dbs)) ;
+    $noNewData = [] ;
+
+    for($i = 0; $i < count($dbs); $i++) {
+        $data = lastData($dbs[$i]) ;
+
+        $clientName = $data[0] ;
+        $timeObj = replaceCurlyBraces(json_encode($data[1][0]['time_de'])) ;
+        $splittedTimeObj = explode(",", $timeObj) ;
+        $datePart = explode('"date":', $splittedTimeObj[0])[1] ;
+        $dateWithoutTime = substr(explode(" ", $datePart)[0], 1) ;
+
+        $dateData = getdate() ;
+
+        $today = $dateData['year']."-".below10Prepend0($dateData['mon'])."-".below10Prepend0($dateData['mday']) ;
+
+        // print_r($i) ;
+        // print_r(count($dbs)) ;
+        // echo "<br>" ;
+        // print_r($clientName) ;
+        // echo "  " ;
+        // print_r($dateWithoutTime) ;
+        // echo "<br>" ;
+
+        $today !== $dateWithoutTime ? array_push($noNewData, [$clientName, $dateWithoutTime]) : true ;
+    }
+
+    return $noNewData ;
 }
 
-outputState($recordsDB) ;
+function sendAlertEmails($haveOldData) {
+
+    $empfaenger = "sdm@energie-gipscomm.de" ;// "info@energie-gipscomm.de, sdm@energie-gipscomm.de" ;
+
+    $betreff = "Daten kommen nicht mehr an (G-Analysis)" ;
+
+    $emailText = "Bei folgenden Kunden kommen keine Daten mehr an :<br><br>" ;
+
+    for($j = 0; $j < count($haveOldData); $j++) {
+        $emailText .= "Kunde: ".$haveOldData[$j][0]." - Datum des letzten Datensatzes: ".$haveOldData[$j][1]."<br> " ;
+    }
+
+    print_r($emailText) ;
+
+    // eMail($empfaenger, false, $betreff, $emailText) ;
+}
+
+$output = outputState($recordsDB) ;
+
+if(count($output) > 0) {
+    sendAlertEmails($output) ;
+}
+else {
+    echo "All data is up-to-date !" ;
+}
+
+// Resolver EMail issue !!
 
 ?>
