@@ -40,10 +40,6 @@ try{
     $mail->AddAddress($empfaenger);
   }
 
-  /*if($anhangPfad != false){
-    $mail->AddAttachment($anhangPfad);
-  }*/
-
   $mail->Subject = $betreff;
   $mail->Body = $emailText;
   $mail->Send();
