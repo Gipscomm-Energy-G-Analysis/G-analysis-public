@@ -224,6 +224,27 @@ test('function getLastElement : Should return the last element of a splitted(" "
 
     t.end();
 });
+test('function allParenthesesClosed : Should return true if all opening parentheses are closed.', function (t) {
+
+    t.comment("#");
+
+    t.plan(8);
+
+    t.true(fn.allParenthesesClosed("mst_37 * mst_26 + mst_103"));
+    t.true(fn.allParenthesesClosed("( mst_109 - mst_120 ) / mst_116"));
+    t.true(fn.allParenthesesClosed("( ( bdeProd_1-cycletime * bdeProd_1-istMenge ) / bdeProd_1-nester ) / bdeProd_1-Factor3600"));
+    t.true(fn.allParenthesesClosed("( bdeProd_1-cycletime * bdeProd_1-istMenge / ( bdeProd_1-nester / bdeProd_1-Factor3600 ) ) "));
+
+    t.false(fn.allParenthesesClosed("( mst_37 * mst_26 + mst_103"));
+    t.false(fn.allParenthesesClosed("( ( mst_109 - mst_120 ) / mst_116"));
+    t.false(fn.allParenthesesClosed("( ( bdeProd_1-cycletime * ( bdeProd_1-istMenge ) / bdeProd_1-nester ) / bdeProd_1-Factor3600"));
+    t.false(fn.allParenthesesClosed("( bdeProd_1-cycletime * ( ( bdeProd_1-istMenge / ( bdeProd_1-nester ) / bdeProd_1-Factor3600 ) ) "));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
 test('function validDropMessstelle : Should return true if the order of elements is valid.', function (t) {
 
     t.comment("#");
@@ -363,6 +384,29 @@ test('function validInputClosingParentheses : Should return true if the order of
     t.false(fn.validInputClosingParentheses("( ( ( bdeProd_1-verbrauchSchuss ) ) )"));
     t.false(fn.validInputClosingParentheses("bdeProd_1-verbrauchSchuss / ( bdeProd_1-nester )"));
     t.false(fn.validInputClosingParentheses("bdeProd_1-verbrauchAuftrag "));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
+test('function readyToSave : Should return true if the formula is valid.', function (t) {
+
+    t.comment("#");
+
+    t.plan(10);
+
+    t.true(fn.readyToSave("bdeProd_1-cycletime * bdeProd_1-istMenge / bdeProd_1-nester / bdeProd_1-Factor3600 "));
+    t.true(fn.readyToSave("( bdeProd_1-verbrauchSchuss / bdeProd_1-nester ) * 456"));
+    t.true(fn.readyToSave("bdeProd_1-verbrauchSchuss / bdeProd_1-nester * ePrd_2 - 66"));
+    t.true(fn.readyToSave(" ( ( ( bdeProd_1-verbrauchSchuss / 3 ) ) ) "));
+    t.true(fn.readyToSave("( ( ( bdeProd_1-verbrauchAuftrag * 77 ) * mst_33 ) )"));
+
+    t.false(fn.readyToSave(" ( bdeProd_1-cycletime * bdeProd_1-istMenge "));
+    t.false(fn.readyToSave("bdeProd_1-cycletime * bdeProd_1-istMenge + "));
+    t.false(fn.readyToSave("( ( ( bdeProd_1-verbrauchSchuss ) )"));
+    t.false(fn.readyToSave("( bdeProd_1-verbrauchSchuss / ( bdeProd_1-nester )"));
+    t.false(fn.readyToSave("bdeProd_1-verbrauchAuftrag - "));
 
     t.comment("#");
     t.comment("#");

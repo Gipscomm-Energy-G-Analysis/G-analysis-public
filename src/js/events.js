@@ -187,10 +187,16 @@ $(document).ready(function() {
             formelString: btoa($("#formelStringDarstellung").val()),
             idString: btoa($("#formelIdDarstellung").val())
         };
-        writeFormulaToDB(formula);
-        setTimeout(function() {
-            messstellenInAuswertungsEditorTabelleEinlesen();
-        }, 2000);
+        if(readyToSave($("#formelIdDarstellung").val())) {
+
+            writeFormulaToDB(formula);
+            setTimeout(function() {
+                messstellenInAuswertungsEditorTabelleEinlesen();
+            }, 2000);
+        }
+        else {
+            alert("Dies ist keine gültige Formel. Nur wenn alle Klammern geschlossen sind und das letzte Element entweder eine schließende Klammer, eine Zahl oder eine Instanz ist, ist die Formel gültig.")
+        }
     });
     $("#formelVorSpeichern").click(function() {
         var a = $("#inpBezeichnungVorFrm").val(),

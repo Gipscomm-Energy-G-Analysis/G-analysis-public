@@ -9790,6 +9790,12 @@ const getLastElement =
     "" :
     idString.split(" ").filter(a => a !== "").reverse()[0]
 
+// Tests if all opening parentheses are closed
+const allParenthesesClosed =
+    idString =>
+    idString.split("").filter(isOpeningParentheses).length
+    === idString.split("").filter(isClosingParentheses).length
+
 // Verifies if the action(Berechnete Messstelle) is fullfilling all the necessary conditions
 const validDropMessstelle =
     idMst =>
@@ -9834,6 +9840,14 @@ const validInputOpeningParentheses =
 const validInputClosingParentheses =
     idString =>
     moreOpeningThanClosingParentheses(idString)
+    && ( isUnit(getLastElement(idString))
+    || isNumeric(getLastElement(idString))
+    || isClosingParentheses(getLastElement(idString)) )
+
+// Verifies if the formula is valid and can be saved
+const readyToSave =
+    idString =>
+    allParenthesesClosed(idString)
     && ( isUnit(getLastElement(idString))
     || isNumeric(getLastElement(idString))
     || isClosingParentheses(getLastElement(idString)) )
@@ -11137,10 +11151,12 @@ function addValidateClassOnFormatDynamicSelection(selectedOption) {
 //     , moreOpeningThanClosingParentheses
 //     , isSelfReference
 //     , getLastElement
+//     , allParenthesesClosed
 //     , validDropMessstelle
 //     , validDropUnit
 //     , validInputNumber
 //     , validInputOperator
 //     , validInputOpeningParentheses
 //     , validInputClosingParentheses
+//     , readyToSave
 //     }
