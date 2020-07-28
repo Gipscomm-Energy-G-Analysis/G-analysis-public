@@ -1,6 +1,6 @@
 <?php
 include('top-cache.php');
-require 'EMail.php';
+require 'EMail_swift.php';
 
 //Set Vars
 $betreff = "G-Analysis Demo-Account Anfrage";
@@ -40,7 +40,7 @@ $emailText .= $extMitteilungFooter;
 
 $emailResponse = eMail($empfaenger, $anhangPfad, $betreff, $emailText);
 
-eMail("info@energie-gipscomm.de,sdm@energie-gipscomm.de", false, $betreff, $mainMitteilung);
+eMail("info@energie-gipscomm.de", $betreff, $mainMitteilung);
 
 echo "E-Mail wurde versandt";
 include('bottom-cache.php');

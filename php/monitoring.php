@@ -3,9 +3,9 @@ error_reporting( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
 
 require 'DbOperations.php';
-require 'EMail.php';
+require 'EMail_swift.php';
 
-$nameDB = "master" ;
+$nameDB = "gipscomm" ;
 
 $conn1 = connectToDB( $nameDB ) ;
 
@@ -52,14 +52,6 @@ function outputState($dbs) {
 
         $today = $dateData['year']."-".below10Prepend0($dateData['mon'])."-".below10Prepend0($dateData['mday']) ;
 
-        // print_r($i) ;
-        // print_r(count($dbs)) ;
-        // echo "<br>" ;
-        // print_r($clientName) ;
-        // echo "  " ;
-        // print_r($dateWithoutTime) ;
-        // echo "<br>" ;
-
         $today !== $dateWithoutTime ? array_push($noNewData, [$clientName, $dateWithoutTime]) : true ;
     }
 
@@ -68,19 +60,24 @@ function outputState($dbs) {
 
 function sendAlertEmails($haveOldData) {
 
-    $empfaenger = "sdm@energie-gipscomm.de" ;// "info@energie-gipscomm.de, sdm@energie-gipscomm.de" ;
+    $empfaenger = [ "sdm@energie-gipscomm.de"
+                  , "info@energie-gipscomm.de"
+                  , "tmm@energie-gipscomm.de"
+                  , "cmu@energie-gipscomm.de"
+                  ] ;
 
     $betreff = "Daten kommen nicht mehr an (G-Analysis)" ;
 
-    $emailText = "Bei folgenden Kunden kommen keine Daten mehr an :<br><br>" ;
+    $emailText = "Bei folgenden Kunden kommen keine Daten mehr an : <br><br>" ;
 
     for($j = 0; $j < count($haveOldData); $j++) {
-        $emailText .= "Kunde: ".$haveOldData[$j][0]." - Datum des letzten Datensatzes: ".$haveOldData[$j][1]."<br> " ;
+        $emailText .= "Kunde: ".$haveOldData[$j][0]." - Datum des letzten Datensatzes: ".$haveOldData[$j][1]."<br>" ;
     }
 
-    print_r($emailText) ;
-
-    // eMail($empfaenger, false, $betreff, $emailText) ;
+    eMail($empfaenger[0], $betreff, $emailText) ;
+    eMail($empfaenger[1], $betreff, $emailText) ;
+    eMail($empfaenger[2], $betreff, $emailText) ;
+    eMail($empfaenger[3], $betreff, $emailText) ;
 }
 
 $output = outputState($recordsDB) ;
@@ -91,7 +88,5 @@ if(count($output) > 0) {
 else {
     echo "All data is up-to-date !" ;
 }
-
-// Resolver EMail issue !!
 
 ?>
