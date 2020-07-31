@@ -1,4 +1,4 @@
-let TranslationType = {
+const TranslationType = {
   ENERGY_DATA_01: 1,
   ENERGY_DATA_02: 2
 }
