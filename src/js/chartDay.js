@@ -305,8 +305,6 @@ function thirdQuery(){
   if(sumDay>0){updateChart(chartData, nameMst_3);
     $("#consumption-day_3").text(Math.round(sumDay) + " kWh");}
   else{$("#consumption-day_3").text(sumDay + " kWh (Data not available/No operation)"+nameMst_3);}
-     //updateChart(chartData, day_3 + "." + month_3 + "." + year_3);
-  //updateChart(chartData, nameMst_3);
   });
 }
 
