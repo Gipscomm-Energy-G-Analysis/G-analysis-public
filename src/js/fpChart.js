@@ -3,9 +3,6 @@
 // DataTables libs
 // Syncfusion Chart libs
 
-//
-// Testing Configuration
-// const scpCore = require('../js/fpCore.js');
 const scpChart =
     Object
     .freeze (
@@ -122,6 +119,3 @@ const scpChart =
                         });
         }
     );
-
-    // module.exports = scpChart;
-//
