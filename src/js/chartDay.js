@@ -1,3 +1,7 @@
+
+// Depends on fpChart.js
+"use strict"
+
 let dataMachine = new DataMachine(),
 tblChartData_1 =  $("#tblChartData_1").DataTable({
     dom: 'Bfrtip',
@@ -210,7 +214,6 @@ else {
 
 
 function firstQuery(){
-  /*alert(nameDB);*/
 
   dataMachine.runQuery("read", nameDB, queryString_1)
   .then(JSON.parse)
@@ -242,8 +245,6 @@ function firstQuery(){
    updateChart(chartData, nameMst_1); }
   else{$("#consumption-day_1").text(Math.round(sumDay) + " kWh (Data not available/No operation) "+nameMst_1);
       alert("Data not available/No operation in "+nameMst_1);}
-
-    //updateChart(chartData, day_1 + "." + month_1 + "." + year_1);
   });
 }
 
@@ -273,7 +274,6 @@ function secondQuery(){
   if(sumDay>0){updateChart(chartData, nameMst_2);
     $("#consumption-day_2").text(Math.round(sumDay) + " kWh");}
   else{$("#consumption-day_2").text(sumDay + " kWh (Data not available/No operation) "+nameMst_2);}
-    //updateChart(chartData, day_2 + "." + month_2 + "." + year_2);
 
   });
 }
