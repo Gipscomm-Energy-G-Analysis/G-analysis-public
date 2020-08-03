@@ -1652,7 +1652,7 @@ $(document).ready(function(){ // Test change
                 var menuPunktID = "";
                 var fieldIDs = "";
 
-                if($(this).text() == "Berechnungslogik anlegen"){
+                if($(this).text() == "Berechnunqgslogik anlegen"){
                     navigationsID = mstNavID;
                     menuPunktID = "menuBerechnungsformeln";
                     fieldIDs = ["messmittelBerechnungslogikMst", "berechnungslogikMst"];
