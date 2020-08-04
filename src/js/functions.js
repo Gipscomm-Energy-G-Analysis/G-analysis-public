@@ -462,7 +462,7 @@ try {
                 b = "",
                 e = "",
                 a = $("#nameDB").val(),
-                c = "",
+                c = "power",
                 g = $("#mstIDDiag1").val(),
                 f = $("#mstIDDiag2").val(),
                 h = $("#mstIDDiag3").val(),
@@ -478,7 +478,6 @@ try {
                 A = $("#typDiag").val(),
                 B = $("#avgDiag").is(":checked");
             sessionStorage.setItem("loadDiag", !1);
-            c = "001_heco" === a || "002_badber" === a || "003_tauchzor" === a ? "value" : "power";
             if ("" != h) {
                 a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase," +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
@@ -587,8 +586,7 @@ try {
             sessionStorage.setItem("mstID_1", g);
             sessionStorage.setItem("mstID_2", f);
             sessionStorage.setItem("mstID_3", h);
-            sessionStorage.setItem("queryString_1",
-                a);
+            sessionStorage.setItem("queryString_1", a);
             sessionStorage.setItem("queryString_2", b);
             sessionStorage.setItem("queryString_3", e);
             setTimeout(function() {
