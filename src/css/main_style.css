@@ -1080,3 +1080,73 @@ button#FormelEditiernBtn[disabled]{
 .subtypeSelDay, .subtypeSelMonth,.subtypeSelYear{
   width:80px !important;
 }
+
+
+
+
+/*02-04-2020 select box type (time, temprature etc)*/
+.typeDynamicCF,.subtypeTimeDynamicCF{
+  width: 90% !important;
+  margin: 4px;
+}
+.sectionDynamicCF{
+ /* height: 100px;*/
+  width: 69%;
+  /*background-color: #79ace978;
+  border: 1px solid #596675;*/
+}
+
+
+/*03-04-2020 select width design*/
+.subtypeSelDay, .subtypeSelMonth,.subtypeSelYear{
+  width:80px !important;
+}
+
+
+/*31-07-2020 dynamische korrektor faktor 4  css*/
+#basicFaktorRow1.subtypeTxtDynamicCF,
+#basicFaktorRow2.subtypeTxtDynamicCFRow2,
+#basicFaktorRow3.subtypeTxtBasisFaktor2,
+#basicFaktorRow4.subtypeTxtBasisFaktor3{
+  width: 100% !important;
+  margin: 10px 0px 3px;
+}
+
+#basicFaktorRow1 .controlDiv,
+#basicFaktorRow2 .controlDiv,
+#basicFaktorRow3 .controlDiv,
+#basicFaktorRow4 .controlDiv {
+    width: 120px;
+    padding: 0px 12px 8px 8px;
+}
+
+#basicFaktorRow1 .controlDiv input,
+#basicFaktorRow2 .controlDiv input,
+#basicFaktorRow3 .controlDiv input,
+#basicFaktorRow4 .controlDiv input {
+    width: 114px;
+}
+#basicFaktorRow1 .controlDiv.formatDynamicBezugRow1,
+#basicFaktorRow2 .controlDiv.formatDynamicBezugRow2 {
+    width: 181px !important;
+}
+#basicFaktorRow1 .controlDiv.formatDynamicBezugRow1 select,
+#basicFaktorRow2 .controlDiv.formatDynamicBezugRow2 select{
+    width: 184px !important;
+}
+
+/*14-07-2020*/
+.tempMonthCaseWidth input {
+    width: 84px!important;
+}
+
+.tempMonthCaseWidth div {
+    width: 91px !important;
+}
+.tempMonthCaseWidth .controlDiv label {
+    width: 92px;
+}
+
+div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
+    max-width: 800px;
+}

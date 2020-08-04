@@ -1996,1454 +1996,6 @@ $(document).ready(function() {
 
 });
 
-/*02-04-2020 on change select box open next input*/
-$(document).ready(function() {
-
-    $(".typeDynamicCF").change(function() {
-        //console.log($(this).val());
-        $("#subtypeTimeDynamicCF").val("");
-        $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
-        var selVal = $(this).val();
-        if (selVal == 'Zeit') {
-            console.log('Zeit');
-            $(".subtypeTimeDynamicCF option.zeitOption").show();
-            $(".subtypeTimeDynamicCF option.temperaturOption").hide();
-            $(".subtypeTimeDynamicCF").prop('disabled', false);
-
-            $(".subtypeTxtBasisFaktor2").hide();
-            $(".subtypeTxtBasisFaktor3").hide();
-            $(".subtypeTxtDynamicCF").hide();
-            $(".subtypeTimeDynamicCF").val("");
-            $(".auswahlTypierungFaktorDKff").val("");
-            $(".subtypeTimeDynamicCF option.zeitOption").show();
-            $(".subtypeTimeDynamicCF option.temperaturOption").hide();
-
-            $("#subtypeTxtBasisFaktor2Name").val("");
-            $(".subtypeTxtBasisFaktor2Calc").val("");
-            $("#subtypeTxtBasisFaktor2Wert").val("");
-            $("#subtypeTxtBasisFaktor3Name").val("");
-            $(".subtypeTxtBasisFaktor3Calc").val("");
-            $("#subtypeTxtBasisFaktor3Wert").val("");
-            $("#subtypeTxtOptNameDKff").val("");
-            $("#subtypeTxtoptzBezugDkff").val("");
-            $("#subtypeTxtoptzTempDkff").val("");
-            $("#subtypeTxtoptzFaktoreDkff").val("");
-        } else if (selVal == 'Temperatur') {
-            $(".subtypeTimeDynamicCF option.zeitOption").hide();
-            $(".subtypeTimeDynamicCF option.temperaturOption").show();
-            $(".subtypeTimeDynamicCF").prop('disabled', false);
-
-            $(".subtypeTxtBasisFaktor2").hide();
-            $(".subtypeTxtBasisFaktor3").hide();
-            $(".subtypeTxtDynamicCF").hide();
-            $(".subtypeTimeDynamicCF").val("");
-            $(".auswahlTypierungFaktorDKff").val("");
-            $(".subtypeTimeDynamicCF option.zeitOption").hide();
-            $(".subtypeTimeDynamicCF option.temperaturOption").show();
-
-            $("#subtypeTxtBasisFaktor2Name").val("");
-            $(".subtypeTxtBasisFaktor2Calc").val("");
-            $("#subtypeTxtBasisFaktor2Wert").val("");
-            $("#subtypeTxtBasisFaktor3Name").val("");
-            $(".subtypeTxtBasisFaktor3Calc").val("");
-            $("#subtypeTxtBasisFaktor3Wert").val("");
-            $("#subtypeTxtOptNameDKff").val("");
-            $("#subtypeTxtoptzBezugDkff").val("");
-            $("#subtypeTxtoptzTempDkff").val("");
-            $("#subtypeTxtoptzFaktoreDkff").val("");
-        } else {
-            //console.log('Other');
-            //$(".subtypeTimeDynamicCF").hide();
-            $(".subtypeTxtBasisFaktor2").hide();
-            $(".subtypeTxtBasisFaktor3").hide();
-            $(".subtypeTxtDynamicCF").hide();
-            $(".subtypeTimeDynamicCF").val("");
-            $(".subtypeTimeDynamicCF").prop("disabled", "disabled");
-            $(".auswahlTypierungFaktorDKff").val("");
-            $(".subtypeTimeDynamicCF option.zeitOption").hide();
-            $(".subtypeTimeDynamicCF option.temperaturOption").hide();
-
-            $("#subtypeTxtBasisFaktor2Name").val("");
-            $(".subtypeTxtBasisFaktor2Calc").val("");
-            $("#subtypeTxtBasisFaktor2Wert").val("");
-            $("#subtypeTxtBasisFaktor3Name").val("");
-            $(".subtypeTxtBasisFaktor3Calc").val("");
-            $("#subtypeTxtBasisFaktor3Wert").val("");
-            $("#subtypeTxtOptNameDKff").val("");
-            $("#subtypeTxtoptzBezugDkff").val("");
-            $("#subtypeTxtoptzTempDkff").val("");
-            $("#subtypeTxtoptzFaktoreDkff").val("");
-        }
-    });
-
-    $(".subtypeTimeDynamicCF").change(function() {
-        //console.log($(this).val());
-        $("#subtypeTxtoptzBezugDkff").val("");
-
-        var auswahlTypierung = $(".auswahlTypierungFaktorDKff").val();
-        //alert(auswahlTypierung);
-        /*if(auswahlTypierung =='Basis Faktor + 2. Bedingung'){
-        	$(".subtypeTxtBasisFaktor2").show();
-        	$(".subtypeTxtBasisFaktor3").hide();
-        	$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-
-        }else if(auswahlTypierung =='Basis Faktor + 3. Bedingung'){
-        	$(".subtypeTxtBasisFaktor2").show();
-        	$(".subtypeTxtBasisFaktor3").show();
-
-        	$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-        }else if(auswahlTypierung =='Basis Faktor'){
-
-        	$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-        }else{
-        	$(".subtypeTxtBasisFaktor2").hide();
-        	$(".subtypeTxtBasisFaktor3").hide();
-        	$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
-
-        }*/
-        $("#subtypeTxtBasisFaktor2Name").val("");
-        $(".subtypeTxtBasisFaktor2Calc").val("");
-        $("#subtypeTxtBasisFaktor2Wert").val("");
-        $("#subtypeTxtBasisFaktor3Name").val("");
-        $(".subtypeTxtBasisFaktor3Calc").val("");
-        $("#subtypeTxtBasisFaktor3Wert").val("");
-        $("#subtypeTxtOptNameDKff").val("");
-        $("#subtypeTxtoptzBezugDkff").val("");
-        $("#subtypeTxtoptzFaktoreDkff").val("");
-        $(".subtypeTxtBasisFaktor2").hide();
-        $(".subtypeTxtBasisFaktor3").hide();
-        $(".subtypeTxtDynamicCF").hide();
-        $(".auswahlTypierungFaktorDKff").val("");
-        $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
-        var selVal = $(this).val();
-        var typ = $('.typeDynamicCF').val();
-        addValidateClassOnFormatDynamicSelection(selVal);
-        /*if(typ=='Zeit'){
-		$(".tempInputMainDiv").hide();
-		$(".bezugInputMainDiv").show();
-		$(".subtypeTxtDynamicCF div").css("width", "32%");
-		$(".subtypeTxtDynamicCF label").css("width", "44%");
-		var column = tblOptionenEPrdDKff.columns([2]);
-        		column.visible( !column.visible() );
-		if(selVal =='year'){
-			console.log('year');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzBezugDkff").addClass('yearBezugValidate');
-		}else if(selVal =='month'){
-			console.log('month');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-		}else if(selVal =='monthYear'){
-			console.log('monthYear');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzBezugDkff").addClass('monthYearBezugValidate');
-		}else if(selVal =='day'){
-			console.log('day');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzBezugDkff").addClass('dayBezugValidate');
-		}else if(selVal =='dayMonth'){
-			console.log('dayMonth');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzBezugDkff").addClass('dayMonthBezugValidate');
-		}else{
-			console.log('Other');
-			$(".subtypeTxtDynamicCF").hide();
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-		}
-	}else if(typ=='Temperatur'){
-		if(selVal =='tempNum'){
-			console.log('tempNum');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzTempDkff").removeClass();
-			$(".bezugInputMainDiv").hide();
-			$(".tempInputMainDiv").show();
-
-			$(".subtypeTxtDynamicCF div").css("width", "32%");
-			$(".subtypeTxtDynamicCF label").css("width", "44%");
-		}else if(selVal =='tempOnlyMonth'){
-			console.log('tempOnlyMonth');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzTempDkff").removeClass();
-			$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-			$(".tempInputMainDiv").hide();
-			$(".bezugInputMainDiv").show();
-
-			$(".subtypeTxtDynamicCF div").css("width", "32%");
-			$(".subtypeTxtDynamicCF label").css("width", "44%");
-		}else if(selVal =='tempPlusMonth'){
-			console.log('tempPlusMonth');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzTempDkff").removeClass();
-			$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-			$("#subtypeTxtoptzTempDkff").addClass('temperaturValidate');
-			$(".bezugInputMainDiv").show();
-			$(".tempInputMainDiv").show();
-			$(".subtypeTxtDynamicCF div").css("width", "22%");
-			$(".subtypeTxtDynamicCF label").css("width", "35%");
-
-		}else if(selVal =='tempPlusYear'){
-			console.log('tempPlusYear');
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzTempDkff").removeClass();
-			$("#subtypeTxtoptzBezugDkff").addClass('yearBezugValidate');
-			$("#subtypeTxtoptzTempDkff").addClass('temperaturValidate');
-			$(".bezugInputMainDiv").show();
-			$(".tempInputMainDiv").show();
-			$(".subtypeTxtDynamicCF div").css("width", "22%");
-			$(".subtypeTxtDynamicCF label").css("width", "35%");
-
-		}else{
-			console.log('Other');
-			$(".subtypeTxtDynamicCF").hide();
-			$(".tempInputMainDiv").hide();
-			$(".bezugInputMainDiv").show();
-			$("#subtypeTxtoptzBezugDkff").removeClass();
-			$("#subtypeTxtoptzTempDkff").removeClass();
-
-			$(".subtypeTxtDynamicCF div").css("width", "32%");
-			$(".subtypeTxtDynamicCF label").css("width", "44%");
-		}
-	}*/
-
-    });
-
-});
-
-
-/*06-04-2020 Crete dynamic correction factor options add more functionality*/
-$("#btnOptionHinzEPrdDKff").click(function() {
-
-    var type = $(".typeDynamicCF option:selected").val();
-    var format = $(".subtypeTimeDynamicCF option:selected").val();
-    var name = $("#subtypeTxtOptNameDKff").val();
-    var bezug = $("#subtypeTxtoptzBezugDkff").val();
-    var temprature = $("#subtypeTxtoptzTempDkff").val();
-    /*if(type=='Ziet'){
-    	var temprature ='';
-    }else if(type=='Temperatur' && format=='tempOnlyMonth'){
-    	var temprature ='';
-    }else{
-    	var temprature =$("#subtypeTxtoptzTempDkff").val();
-    }*/
-
-    var faktore = $("#subtypeTxtoptzFaktoreDkff").val();
-
-    var typeVal = $(".auswahlTypierungFaktorDKff").val();
-
-    var basisFktr1Name = ''; /**/
-    var basisFktr1Calc = '';
-    var basisFktr1Wert = '';
-
-    var basisFktr2Name = $("#subtypeTxtBasisFaktor2Name").val();
-    var basisFktr2Calc = $(".subtypeTxtBasisFaktor2Calc").val();
-    var basisFktr2Wert = $("#subtypeTxtBasisFaktor2Wert").val();
-
-    var basisFktr3Name = $("#subtypeTxtBasisFaktor3Name").val();
-    var basisFktr3Calc = $(".subtypeTxtBasisFaktor3Calc").val();
-    var basisFktr3Wert = $("#subtypeTxtBasisFaktor3Wert").val();
-
-    var result1 = '';
-    //alert(checkDigitWithDot(faktore));
-
-    if (faktore != '' && typeVal == 'Basis Faktor') {
-
-
-        var faktoreRep = faktore.replace(",", ".");
-
-        var faktore1Comma = faktore.replace(".", ",");
-
-        var faktoreWithComma = faktore1Comma.split(',');
-        var factorVal = faktoreWithComma[1];
-        if (typeof factorVal !== "undefined") {
-            var factorLength = factorVal.length;
-        } else {
-            var factorLength = faktore1Comma.length;
-        }
-
-        if (factorLength > 4 && isFloat(faktore) == false) {
-            alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
-            return false;
-        }
-
-    }
-    if (basisFktr2Wert != '' && basisFktr2Calc != '' && faktore != '') {
-        var faktoreRep = faktore.replace(",", ".");
-        var basisFktr2WertRep = basisFktr2Wert.replace(",", ".");
-
-        var faktore2Comma = faktore.replace(".", ",");
-        var basisFktr2WertComma = basisFktr2Wert.replace(".", ",");
-        /*alert(isFloat(faktoreRep));alert(isFloat(basisFktr2WertRep));*/
-        if (isFloat(faktoreRep) == true && isFloat(basisFktr2WertRep) == true) {
-            var result2CommaDigit = eval(faktoreRep + basisFktr2Calc + basisFktr2WertRep);
-        } else {
-            alert("Bitte geben Sie den Textwert in faktore und wert ein");
-            return false;
-        }
-        var result2 = result2CommaDigit.toFixed(4).replace(".", ",");
-
-        var faktoreWithComma = faktore2Comma.split(',');
-        var factorVal = faktoreWithComma[1];
-        if (typeof factorVal !== "undefined") {
-            var factorLength = factorVal.length;
-        } else {
-            var factorLength = faktore2Comma.length;
-        }
-
-        var basisFktrWertWithComma = basisFktr2WertComma.split(',');
-        var basisFktrWertVal = basisFktrWertWithComma[1];
-        if (typeof basisFktrWertVal !== "undefined") {
-            var basisFktrWertLength = basisFktrWertVal.length;
-        } else {
-            var basisFktrWertLength = basisFktr2WertComma.length;
-        }
-
-        if (factorLength > 4 || basisFktrWertLength > 4) {
-            alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
-            return false;
-        }
-    }
-
-    if (basisFktr3Wert != '' && basisFktr3Calc != '' && faktore != '') {
-
-        var faktore3Rep = faktore.replace(",", ".");
-        var basisFktr3WertRep = basisFktr3Wert.replace(",", ".");
-
-        var faktore3Comma = faktore.replace(".", ",");
-        var basisFktr3WertComma = basisFktr3Wert.replace(".", ",");
-        if (isFloat(faktore3Rep) == true && isFloat(basisFktr3WertRep) == true) {
-            var result3CommaDigit = eval(faktore3Rep + basisFktr3Calc + basisFktr3WertRep);
-        } else {
-            alert("Bitte geben Sie den Textwert in faktore und wert ein");
-            return false;
-        }
-        var result3 = result3CommaDigit.toFixed(4).replace(".", ",");
-
-        var faktore3WithComma = faktore3Comma.split(',');
-        var factor3Val = faktore3WithComma[1];
-        if (typeof factor3Val !== "undefined") {
-            var factor3Length = factor3Val.length;
-        } else {
-            var factor3Length = faktore3Comma.length;
-        }
-
-        var basisFktr3WertWithComma = basisFktr3WertComma.split(',');
-        var basisFktr3WertVal = basisFktr3WertWithComma[1];
-        if (typeof basisFktr3WertVal !== "undefined") {
-            var basisFktr3WertLength = basisFktr3WertVal.length;
-        } else {
-            var basisFktr3WertLength = basisFktr3WertComma.length;
-        }
-
-        if (factor3Length > 4 || basisFktr3WertLength > 4) {
-            alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
-            return false;
-        }
-    }
-
-    var a = $("#optionNameDKff").val();
-    var b = $("#optionBeschreibungDKff").val();
-
-    var yearVal = $(".yearBezugValidate").val();
-    if (yearVal) {
-        var yearRegex = /^\s*((?:19|20)\d{2})\s*$/;
-        if (!yearRegex.test(yearVal)) {
-            alert('Bitte geben Sie ein gültiges Jahr ein (Beispiel 2020)');
-            return false;
-        }
-    }
-
-    var monthVal = $(".monthBezugValidate").val();
-    if (monthVal) {
-        var regexMonth = /^\s*(1[012]|0?[1-9])\s*$/;
-        if (!regexMonth.test(monthVal)) {
-            alert('Bitte geben Sie einen gültigen Monat ein (Beispiel 01)');
-            return false;
-        }
-    }
-
-    var monthYearVal = $(".monthYearBezugValidate").val();
-    if (monthYearVal) {
-        var monthYearRegex = /^\s*(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
-        if (!monthYearRegex.test(monthYearVal)) {
-            alert('Bitte geben Sie ein gültiges Monat Jahr ein (Beispiel 01.2020)');
-            return false;
-        }
-    }
-
-    var dayVal = $(".dayBezugValidate").val();
-    if (dayVal) {
-        var dayRegex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
-        if (!dayRegex.test(dayVal)) {
-            alert('Bitte geben Sie einen gültigen Tag ein (Beispiel 01.01.2020)');
-            return false;
-        }
-    }
-
-    var dayMonthVal = $(".dayMonthBezugValidate").val();
-    if (dayMonthVal) {
-        var dayMonthRegex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\s*$/;
-        if (!dayMonthRegex.test(dayMonthVal)) {
-            alert('Bitte geben Sie einen gültigen Monat Monat ein (Beispiel 02.01)');
-            return false;
-        }
-    }
-
-
-    if (a != '' && b != '' && type != '' && format != '' && name != '' && faktore != '' && typeVal == 'Basis Faktor') {
-        tblOptionenEPrdDKff.row.add([name, bezug, temprature, faktore, basisFktr1Name, basisFktr1Calc, basisFktr1Wert, result1]).draw();
-        $("#tblOptionenEPrdDKffNotify").show();
-        $(".typeDynamicCF").prop('disabled', 'disabled');
-        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
-        $(".auswahlTypierungFaktorDKff").prop('disabled', 'disabled');
-        $("#subtypeTxtOptNameDKff").val("");
-        $("#subtypeTxtoptzBezugDkff").val("");
-        $("#subtypeTxtoptzTempDkff").val("");
-        $("#subtypeTxtoptzFaktoreDkff").val("");
-
-        $("#subtypeTxtBasisFaktor2Name").val("");
-        $(".subtypeTxtBasisFaktor2Calc").val("");
-        $("#subtypeTxtBasisFaktor2Wert").val("");
-        $("#subtypeTxtBasisFaktor3Name").val("");
-        $(".subtypeTxtBasisFaktor3Calc").val("");
-        $("#subtypeTxtBasisFaktor3Wert").val("");
-        $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-
-    } else if (a != '' && b != '' && type != '' && format != '' && name != '' && faktore2Comma != '' && typeVal == 'Basis Faktor + 2. Bedingung' && basisFktr2Name != '' && basisFktr2Calc != '' && basisFktr2Wert != '' && result2 != '') {
-        tblOptionenEPrdDKff.row.add([name, bezug, temprature, faktore2Comma, basisFktr2Name, basisFktr2Calc, basisFktr2WertComma, result2]).draw();
-        $("#tblOptionenEPrdDKffNotify").show();
-        $(".typeDynamicCF").prop('disabled', 'disabled');
-        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
-        $(".auswahlTypierungFaktorDKff").prop('disabled', 'disabled');
-        $("#subtypeTxtOptNameDKff").val("");
-        $("#subtypeTxtoptzBezugDkff").val("");
-        $("#subtypeTxtoptzTempDkff").val("");
-        $("#subtypeTxtoptzFaktoreDkff").val("");
-
-        $("#subtypeTxtBasisFaktor2Name").val("");
-        $(".subtypeTxtBasisFaktor2Calc").val("");
-        $("#subtypeTxtBasisFaktor2Wert").val("");
-        $("#subtypeTxtBasisFaktor3Name").val("");
-        $(".subtypeTxtBasisFaktor3Calc").val("");
-        $("#subtypeTxtBasisFaktor3Wert").val("");
-        $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-
-    } else if (a != '' && b != '' && type != '' && format != '' && name != '' && faktore != '' && typeVal == 'Basis Faktor + 3. Bedingung' && basisFktr2Name != '' && basisFktr2Calc != '' && basisFktr2Wert != '' && result2 != '' && basisFktr3Name != '' && basisFktr3Calc != '' && basisFktr3Wert != '' && result3 != '') {
-        tblOptionenEPrdDKff.row.add([name, bezug, temprature, faktore2Comma, basisFktr2Name, basisFktr2Calc, basisFktr2WertComma, result2]).draw();
-        tblOptionenEPrdDKff.row.add([name, bezug, temprature, faktore3Comma, basisFktr3Name, basisFktr3Calc, basisFktr3WertComma, result3]).draw();
-        $("#tblOptionenEPrdDKffNotify").show();
-        $(".typeDynamicCF").prop('disabled', 'disabled');
-        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
-        $(".auswahlTypierungFaktorDKff").prop('disabled', 'disabled');
-        $("#subtypeTxtOptNameDKff").val("");
-        $("#subtypeTxtoptzBezugDkff").val("");
-        $("#subtypeTxtoptzTempDkff").val("");
-        $("#subtypeTxtoptzFaktoreDkff").val("");
-
-        $("#subtypeTxtBasisFaktor2Name").val("");
-        $(".subtypeTxtBasisFaktor2Calc").val("");
-        $("#subtypeTxtBasisFaktor2Wert").val("");
-        $("#subtypeTxtBasisFaktor3Name").val("");
-        $(".subtypeTxtBasisFaktor3Calc").val("");
-        $("#subtypeTxtBasisFaktor3Wert").val("");
-        $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-
-    } else if (a != '' && b != '' && type != '' && format != '' && name != '' && faktore != '' && typeVal == 'Basis Faktor') {
-        tblOptionenEPrdDKff.row.add([name, bezug, temprature, faktore, basisFktr1Name, basisFktr1Calc, basisFktr1Wert, result1]).draw();
-        $("#tblOptionenEPrdDKffNotify").show();
-        $(".typeDynamicCF").prop('disabled', 'disabled');
-        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
-        $(".auswahlTypierungFaktorDKff").prop('disabled', 'disabled');
-        $("#subtypeTxtOptNameDKff").val("");
-        $("#subtypeTxtoptzBezugDkff").val("");
-        $("#subtypeTxtoptzTempDkff").val("");
-        $("#subtypeTxtoptzFaktoreDkff").val("");
-
-        $("#subtypeTxtBasisFaktor2Name").val("");
-        $(".subtypeTxtBasisFaktor2Calc").val("");
-        $("#subtypeTxtBasisFaktor2Wert").val("");
-        $("#subtypeTxtBasisFaktor3Name").val("");
-        $(".subtypeTxtBasisFaktor3Calc").val("");
-        $("#subtypeTxtBasisFaktor3Wert").val("");
-        $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-
-    } else {
-        alert('Bitte alle Felder besetzen, und erneut Speichern!');
-    }
-});
-/*06-04-2020 Crete dynamic correction factor options add more functionality*/
-$("#tblOptionenEPrdDKff tbody").on("dblclick", "tr", function() {
-    tblOptionenEPrdDKff.row(this).remove().draw()
-});
-
-/*06-04-2020 on load jQuery call the numeric validation */
-$(document).ready(function() {
-    jQuery(".DynamicKorrekturFaktorFrm .inp_valid").NumericOnly();
-});
-
-/*09-04-2020 Crete dynamic correction factor new button reset functionality*/
-$("#DkFeHinz").click(function() {
-
-    $("#optionNameDKff").val("");
-    $("#optionBeschreibungDKff").val("");
-    $(".typeDynamicCF").val("");
-    $(".subtypeTimeDynamicCF").val("");
-    $(".typeDynamicCF").prop('disabled', false);
-    $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
-    $(".auswahlTypierungFaktorDKff").prop('disabled', false);
-    $("#subtypeTxtOptNameDKff").val("");
-    $("#subtypeTxtoptzBezugDkff").val("");
-    $("#subtypeTxtoptzTempDkff").val("");
-    $("#subtypeTxtoptzFaktoreDkff").val("");
-    $(".subtypeTxtDynamicCF").hide();
-    $("#tblOptionenEPrdDKffNotify").hide();
-    $(".sectionDynamicCF").show();
-    //$(".subtypeTimeDynamicCF").hide();
-    tblOptionenEPrdDKff.rows().remove().draw();
-    tblGetDyanamicheKorrekturfaktoren.rows().remove().draw();
-    $("#ePrdDMainIdStore").val("");
-    $("#subtypeTxtBasisFaktor2Name").val("");
-    $("#subtypeTxtBasisFaktor2Name").val("");
-    $(".subtypeTxtBasisFaktor2Calc").val("");
-    $("#subtypeTxtBasisFaktor2Wert").val("");
-    $(".auswahlTypierungFaktorDKff").val("");
-    $(".subtypeTxtBasisFaktor2").hide();
-    $("#subtypeTxtBasisFaktor3Name").val("");
-    $(".subtypeTxtBasisFaktor3Calc").val("");
-    $("#subtypeTxtBasisFaktor3Wert").val("");
-    $(".subtypeTxtBasisFaktor3").hide();
-    /*$("#btnOptionHinzEPrdDKffUpdate").hide();
-    $("#btnOptionHinzEPrdDKffStornieren").hide();
-    $("#btnOptionHinzEPrdDKff").show();*/
-    $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
-
-    $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
-    $('#saveOptType').val('');
-});
-/*09-04-2020 Crete dynamic correction factor new button reset functionality*/
-
-/*13-04-2020 Dynamic Correction factor add record row wise not quoma saperated*/
-$("#DkFeSpeichern").click(function() {
-    //alert('Call dynamischeKorrekturfaktorenSpeichern');
-    dynamischeKorrekturfaktorenSpeichern();
-});
-/*13-04-2020 Dynamic Correction factor add record row wise not quoma saperated*/
-
-/*14-04-2020  on click edit button append data into form textbox */
-$("body").on("click", "#tblGetDyanamicheKorrekturfaktoren tbody tr .dyanamicheKorrekturfaktorenMenuEdit", function(e) {
-    e.preventDefault();
-    $("#btnOptionHinzEPrdDKffUpdate").show();
-    $("#btnOptionHinzEPrdDKffStornieren").show();
-    $("#DkFeSpeichern").hide();
-    $("#DkFeHinz").hide();
-    $("#DkFeFirst").hide();
-    $("#DkFePrevious").hide();
-    $("#DkFeNext").hide();
-    $("#DkFeLast").hide();
-    $("#DkFeSuchen").hide();
-    $("#btnOptionHinzEPrdDKff").hide();
-    $(".subtypeTxtDynamicCF").show();
-    var parentRow = $(this).closest("tr");
-    var ePrddKffOptionIDStore = $(this).attr("data-id");
-    var ePrdDOptIdStore = $(this).attr("data-id-parent");
-
-    var rowData = tblGetDyanamicheKorrekturfaktoren.row(parentRow).data();
-    console.log(rowData);
-    $('#subtypeTxtOptNameDKff').val(rowData[0]);
-    $('#subtypeTxtoptzBezugDkff').val(rowData[1]);
-    $('#subtypeTxtoptzTempDkff').val(rowData[2]);
-    $('#subtypeTxtoptzFaktoreDkff').val(rowData[3]);
-    $("#subtypeTxtBasisFaktor2Name").val(rowData[4]);
-    $(".subtypeTxtBasisFaktor2Calc").val(rowData[5]);
-    $("#subtypeTxtBasisFaktor2Wert").val(rowData[6]);
-
-    $("#ePrddKffOptionIDStore").val(ePrddKffOptionIDStore);
-    $('#ePrdDIdStore').val(ePrdDOptIdStore);
-    $('.subtypeTxtBasisFaktor3').hide();
-    var parentID = $(this).attr('data-id-parent');
-    getSingleRecordDynamischeKorrekturfaktoren(parentID);
-});
-/*14-04-2020 on click edit button append data into form textbox */
-
-/*14-04-2020  dynamische Corrector factor cancel option after edit click */
-$("#btnOptionHinzEPrdDKffStornieren").on("click", function() {
-    $("#btnOptionHinzEPrdDKffUpdate").hide();
-    $("#btnOptionHinzEPrdDKffStornieren").hide();
-    $("#btnOptionHinzEPrdDKff").show();
-    $("#DkFeSpeichern").show();
-    $("#DkFeHinz").show();
-    $("#DkFeFirst").show();
-    $("#DkFePrevious").show();
-    $("#DkFeNext").show();
-    $("#DkFeLast").show();
-    $("#DkFeSuchen").show();
-    $('#subtypeTxtOptNameDKff').val("");
-    $('#subtypeTxtoptzBezugDkff').val("");
-    $('#subtypeTxtoptzTempDkff').val("");
-    $('#subtypeTxtoptzFaktoreDkff').val("");
-    $('#ePrdDIdStore').val("");
-    $('#subtypeTxtBasisFaktor2Name').val("");
-    $('.subtypeTxtBasisFaktor2Calc').val("");
-    $('#subtypeTxtBasisFaktor2Wert').val("");
-});
-/*14-04-2020 dynamische Corrector factor cancel option after edit click */
-
-/*14-04-2020  dynamische Corrector factor update record*/
-$("#btnOptionHinzEPrdDKffUpdate").click(function() {
-
-    var name = $("#optionNameDKff").val();
-    var beschreibunDesc = $("#optionBeschreibungDKff").val();
-
-    var a = $("#subtypeTxtOptNameDKff").val();
-    var b = $("#subtypeTxtoptzBezugDkff").val();
-    var c = $("#subtypeTxtoptzFaktoreDkff").val();
-    var d = $('#subtypeTxtBasisFaktor2Name').val();
-    var e = $('.subtypeTxtBasisFaktor2Calc').val();
-    var f = $('#subtypeTxtBasisFaktor2Wert').val();
-
-    var g = $('#subtypeTxtoptzFaktoreDkff').val();
-
-    var faktore2Comma = g.replace(".", ",");
-    var basisFktrWertComma = f.replace(".", ",");
-
-    var faktoreWithComma = faktore2Comma.split(',');
-    var factorVal = faktoreWithComma[1];
-
-    if (typeof factorVal !== "undefined") {
-        var factorLength = factorVal.length;
-    } else {
-        var factorLength = faktore2Comma.length;
-    }
-    var basisFktrWertWithComma = basisFktrWertComma.split(',');
-    var basisFktrWertVal = basisFktrWertWithComma[1];
-
-    if (typeof basisFktrWertVal !== "undefined") {
-        var basisFktrWertLength = basisFktrWertVal.length;
-    } else {
-        var basisFktrWertLength = basisFktrWertComma.length;
-    }
-
-    if (factorLength > 4 || basisFktrWertLength > 4) {
-        alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
-        return false;
-    }
-
-    var yearVal = $(".yearBezugValidate").val();
-    if (yearVal) {
-        var yearRegex = /^\s*((?:19|20)\d{2})\s*$/;
-        if (!yearRegex.test(yearVal)) {
-            alert('Bitte geben Sie ein gültiges Jahr ein (Beispiel 2020)');
-            return false;
-        }
-    }
-
-    var monthVal = $(".monthBezugValidate").val();
-    if (monthVal) {
-        var regexMonth = /^\s*(1[012]|0?[1-9])\s*$/;
-        if (!regexMonth.test(monthVal)) {
-            alert('Bitte geben Sie einen gültigen Monat ein (Beispiel 01)');
-            return false;
-        }
-    }
-
-    var monthYearVal = $(".monthYearBezugValidate").val();
-    if (monthYearVal) {
-        var monthYearRegex = /^\s*(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
-        if (!monthYearRegex.test(monthYearVal)) {
-            alert('Bitte geben Sie ein gültiges Monat Jahr ein (Beispiel 01.2020)');
-            return false;
-        }
-    }
-
-    var dayVal = $(".dayBezugValidate").val();
-    if (dayVal) {
-        var dayRegex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
-        if (!dayRegex.test(dayVal)) {
-            alert('Bitte geben Sie einen gültigen Tag ein (Beispiel 01.01.2020)');
-            return false;
-        }
-    }
-
-    var dayMonthVal = $(".dayMonthBezugValidate").val();
-    if (dayMonthVal) {
-        var dayMonthRegex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\s*$/;
-        if (!dayMonthRegex.test(dayMonthVal)) {
-            alert('Bitte geben Sie einen gültigen Monat Monat ein (Beispiel 02.01)');
-            return false;
-        }
-    }
-    if (a != '' && c != '' && d != '' && e != '' && f != '' && name != '' && beschreibunDesc != '') {
-        DynamischeKorrekturfaktorenAktualisieren();
-    } else {
-        alert('Bitte geben Sie danach Text ein und klicken Sie auf Speichern!');
-    }
-});
-/*14-04-2020  dynamische Corrector factor update record*/
-
-/*14-04-2020  dynamische Corrector factor delete record*/
-$("body").on("click", "#tblGetDyanamicheKorrekturfaktoren tbody tr .dyanamicheKorrekturfaktorenMenuDel", function(e) {
-    e.preventDefault();
-    var ePrdDIdStore = $(this).attr("data-id");
-    dynamischeKorrekturfaktorenloschen(ePrdDIdStore);
-});
-/*14-04-2020  dynamische Corrector factor delete record*/
-
-/*14-04-2020 on click serach icon show popup*/
-$("#DkFeSuchen").click(function() {
-    dynamischeKorrekturfaktorenSuchen(this.id);
-    $('#ePrdDMainIdStore').val("");
-});
-/*14-04-2020 on click search icon show popup */
-
-/*15-04-2020 on double click row append data into input and dynamischeKorektorFaktor table data refresh*/
-$("#tblGetDyanamicheKorrekturfaktorenParent tbody").on("dblclick", "tr", function() {
-    //tblGetDyanamicheKorrekturfaktoren.row(this).remove().draw();
-    var id = $(this).attr('data-id');
-    getDynamischeKorrekturfaktoren(id);
-    var rowData = tblGetDyanamicheKorrekturfaktorenParent.row(this).data();
-
-    setTimeout(function() {
-        var typeDynamicCFVal = $(".typeDynamicCF").val();
-        var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
-        var auswahlTypierungVal = rowData[2];
-        alert(typeDynamicCFVal);
-        alert(subtypeTimeDynamicCFVal);
-        alert(auswahlTypierungVal);
-        visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal, subtypeTimeDynamicCFVal, auswahlTypierungVal);
-    }, 500);
-    /*if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Zeit'){
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").hide();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				$('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
-			    var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2,4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([2,4,5,6,7]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Zeit'){
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").hide();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
-        		columnHide.visible( !columnHide.visible() );
-				var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([2]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Zeit'){
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").hide();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var column = tblGetDyanamicheKorrekturfaktoren.columns([1,4,5,6,7,8]);
-        		column.visible( column.visible() );
-        		var columnShowMore = tblGetDyanamicheKorrekturfaktoren.columns([1,4,5,6,7,8]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
-				console.log('Temperatur');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").hide();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([1,4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,3,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([1,4,5,6,7]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,2,3]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
-				console.log('month');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").hide();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2,4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,8]);
-        		columnShow.visible(columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([2,4,5,6,7]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
-				console.log('TempPlusMonth');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "22%");
-				$(".subtypeTxtDynamicCF label").css("width", "35%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,3,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([4,5,6,7]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,3]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
-				console.log('TempPlusYear');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "22%");
-				$(".subtypeTxtDynamicCF label").css("width", "35%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,3,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([4,5,6,7]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,3]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
-				console.log('Basis Faktor + 2. Bedingung Temperatur');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").hide();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([1]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([1]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,2,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
-				console.log('Basis Faktor + 2. Bedingung month');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").hide();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([2]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
-				console.log('Basis Faktor + 2. Bedingung TempPlusMonth');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "22%");
-				$(".subtypeTxtDynamicCF label").css("width", "35%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
-				console.log('Basis Faktor + 2. Bedingung TempPlusYear');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "22%");
-				$(".subtypeTxtDynamicCF label").css("width", "35%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
-				console.log('Basis Faktor + 3. Bedingung Temperatur');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$(".bezugInputMainDiv").hide();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([1]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([1]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,2,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
-				console.log('Basis Faktor + 3. Bedingung month');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").hide();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnHideMore = tblOptionenEPrdDKff.columns([2]);
-        		columnHideMore.visible(! columnHideMore.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
-				console.log('Basis Faktor + 3. Bedingung TempPlusMonth');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "22%");
-				$(".subtypeTxtDynamicCF label").css("width", "35%");
-
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
-				console.log('Basis Faktor + 3. Bedingung TempPlusYear');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "22%");
-				$(".subtypeTxtDynamicCF label").css("width", "35%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,3,4,5,6,7,8]);
-        		columnShow.visible( columnShow.visible() );
-        		var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,3,4,5,6,7]);
-        		columnShowMore.visible( columnShowMore.visible() );
-			}else if(auswahlTypierungVal ==''){
-				$(".subtypeTxtDynamicCF").hide();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$(".bezugInputMainDiv").show();
-				$(".tempInputMainDiv").show();
-				$(".subtypeTxtDynamicCF div").css("width", "32%");
-				$(".subtypeTxtDynamicCF label").css("width", "44%");
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
-			}*/
-    /*}, 500);*/
-    $("#optionNameDKff").val(rowData[0]);
-    $("#optionBeschreibungDKff").val(rowData[1]);
-    $(".auswahlTypierungFaktorDKff").val(rowData[2]);
-    $(".typeDynamicCF").val(rowData[3]);
-    $(".subtypeTimeDynamicCF").val(rowData[4]);
-    //$(".subtypeTimeDynamicCF").show();
-    $(".typeDynamicCF").prop('disabled', 'disabled');
-    $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
-    $(".auswahlTypierungFaktorDKff").prop('disabled', 'disabled');
-    $('#ePrdDMainIdStore').val(id);
-
-    $("#subtypeTxtBasisFaktor2Name").val("");
-    $(".subtypeTxtBasisFaktor2Calc").val("");
-    $("#subtypeTxtBasisFaktor2Wert").val("");
-    $("#subtypeTxtBasisFaktor3Name").val("");
-    $(".subtypeTxtBasisFaktor3Calc").val("");
-    $("#subtypeTxtBasisFaktor3Wert").val("");
-    $("#tblOptionenEPrdDKffNotify").hide();
-    $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
-    $('#saveOptType').val('searchClick');
-    $("#dyanamicheKorrekturfaktorenParentContainer").dialog("close");
-
-    var selVal = rowData[3];
-    addValidateClassOnFormatDynamicSelection(selVal);
-    /*if(selVal =='year'){
-    	console.log('year');
-    	$("#subtypeTxtoptzBezugDkff").removeClass();
-    	$("#subtypeTxtoptzBezugDkff").addClass('yearBezugValidate');
-    }else if(selVal =='month'){
-    	console.log('month');
-    	$("#subtypeTxtoptzBezugDkff").removeClass();
-    	$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-    }else if(selVal =='monthYear'){
-    	console.log('monthYear');
-    	$("#subtypeTxtoptzBezugDkff").removeClass();
-    	$("#subtypeTxtoptzBezugDkff").addClass('monthYearBezugValidate');
-    }else if(selVal =='day'){
-    	console.log('day');
-    	$("#subtypeTxtoptzBezugDkff").removeClass();
-    	$("#subtypeTxtoptzBezugDkff").addClass('dayBezugValidate');
-    }else if(selVal =='dayMonth'){
-    	console.log('dayMonth');
-    	$("#subtypeTxtoptzBezugDkff").removeClass();
-    	$("#subtypeTxtoptzBezugDkff").addClass('dayMonthBezugValidate');
-    }else{
-    	console.log('Other');
-    	$(".subtypeTxtDynamicCF").hide();
-    	$("#subtypeTxtoptzBezugDkff").removeClass();
-    }*/
-});
-/*15-04-2020 on double click row append data into input and dynamischeKorektorFaktor table data refresh*/
-
-
-/*16-04-2020 default page load data show parent and child get last id */
-$("#korrekturFaktorMenuDynamischer").click(function() {
-    getLastIdDataAppendDynamicKorrektorFaktor('', $("#ePrdDMainIdStore").val());
-    setTimeout(function() {
-        var selVal = $(".subtypeTimeDynamicCF").val();
-        var basisType = $(".auswahlTypierungFaktorDKff").val();
-        addValidateClassOnFormatDynamicSelection(selVal);
-        /*if(selVal =='year'){
-        	console.log('year');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('yearBezugValidate');
-        }else if(selVal =='month'){
-        	console.log('month');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-        }else if(selVal =='monthYear'){
-        	console.log('monthYear');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('monthYearBezugValidate');
-        }else if(selVal =='day'){
-        	console.log('day');
-        	$(".subtypeTxtDynamicCF").show();
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('dayBezugValidate');
-        }else if(selVal =='dayMonth'){
-        	console.log('dayMonth');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('dayMonthBezugValidate');
-        }else{
-        	console.log('Other');
-        	$(".subtypeTxtDynamicCF").hide();
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        }
-        if(basisType ==''){
-        	$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
-
-        }else{
-        	$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-        }*/
-        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
-        $("#optionNameDKff").val("");
-        $("#optionBeschreibungDKff").val("");
-        $(".typeDynamicCF").val("");
-        $(".subtypeTimeDynamicCF").val("");
-        $(".typeDynamicCF").prop('disabled', false);
-        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
-        $(".auswahlTypierungFaktorDKff").prop('disabled', false);
-        $("#subtypeTxtOptNameDKff").val("");
-        $("#subtypeTxtoptzBezugDkff").val("");
-        $("#subtypeTxtoptzTempDkff").val("");
-        $("#subtypeTxtoptzFaktoreDkff").val("");
-        $(".subtypeTxtDynamicCF").hide();
-        $("#tblOptionenEPrdDKffNotify").hide();
-        $(".sectionDynamicCF").show();
-        $("#btnOptionHinzEPrdDKffUpdate").hide();
-        $("#btnOptionHinzEPrdDKffStornieren").hide();
-        $("#btnOptionHinzEPrdDKff").show();
-
-        //$(".subtypeTimeDynamicCF").hide();
-        tblOptionenEPrdDKff.rows().remove().draw();
-        tblGetDyanamicheKorrekturfaktoren.rows().remove().draw();
-        $("#ePrdDMainIdStore").val("");
-        $("#subtypeTxtBasisFaktor2Name").val("");
-        $("#subtypeTxtBasisFaktor2Name").val("");
-        $(".subtypeTxtBasisFaktor2Calc").val("");
-        $("#subtypeTxtBasisFaktor2Wert").val("");
-        $(".auswahlTypierungFaktorDKff").val("");
-        $(".subtypeTxtBasisFaktor2").hide();
-        $("#subtypeTxtBasisFaktor3Name").val("");
-        $(".subtypeTxtBasisFaktor3Calc").val("");
-        $("#subtypeTxtBasisFaktor3Wert").val("");
-        $(".subtypeTxtBasisFaktor3").hide();
-        $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
-        $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
-        $('#saveOptType').val('');
-    }, 300);
-    $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
-    $('#saveOptType').val('');
-
-});
-/*16-04-2020 default page load data show parent and child get last id */
-
-/*16-04-2020 next button functionality for the dynamische korrektor faktor */
-$("#DkFeNext").click(function() {
-    var parentDataID = $(this).attr('data-id');
-
-    getLastIdDataShowNextPrevDynamicKorrektorFaktor('DkFeNext', parentDataID);
-    setTimeout(function() {
-        var selVal = $(".subtypeTimeDynamicCF").val();
-        $(".tempInputMainDiv").hide();
-        $(".bezugInputMainDiv").show();
-        $(".subtypeTxtDynamicCF div").css("width", "32%");
-        $(".subtypeTxtDynamicCF label").css("width", "44%");
-
-        var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
-        var typeDynamicCFVal = $(".typeDynamicCF").val();
-        var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
-        visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal, subtypeTimeDynamicCFVal, auswahlTypierungVal);
-        addValidateClassOnFormatDynamicSelection(selVal);
-
-        /*if(selVal =='year'){
-        		console.log('year');
-        		$("#subtypeTxtoptzBezugDkff").removeClass();
-        		$("#subtypeTxtoptzBezugDkff").addClass('yearBezugValidate');
-        	}else if(selVal =='month'){
-        		console.log('month');
-        		$("#subtypeTxtoptzBezugDkff").removeClass();
-        		$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-        	}else if(selVal =='monthYear'){
-        		console.log('monthYear');
-        		$("#subtypeTxtoptzBezugDkff").removeClass();
-        		$("#subtypeTxtoptzBezugDkff").addClass('monthYearBezugValidate');
-        	}else if(selVal =='day'){
-        		console.log('day');
-        		$("#subtypeTxtoptzBezugDkff").removeClass();
-        		$("#subtypeTxtoptzBezugDkff").addClass('dayBezugValidate');
-        	}else if(selVal =='dayMonth'){
-        		console.log('dayMonth');
-        		$("#subtypeTxtoptzBezugDkff").removeClass();
-        		$("#subtypeTxtoptzBezugDkff").addClass('dayMonthBezugValidate');
-        	}else if(selVal ==''){
-        		$(".subtypeTxtDynamicCF").hide();
-        		$("#subtypeTxtoptzBezugDkff").removeClass();
-        	}*/
-    }, 500);
-    $('#saveOptType').val('');
-    $('#saveOptType').val('DkFeNext');
-});
-/*16-04-2020 next button functionality for the dynamische korrektor faktor */
-
-/*16-04-2020 previous button functionality for the dynamische korrektor faktor */
-$("#DkFePrevious").click(function() {
-    var parentDataID = $(this).attr('data-id');
-    getLastIdDataShowNextPrevDynamicKorrektorFaktor('DkFePrevious', parentDataID);
-    setTimeout(function() {
-        var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
-        var typeDynamicCFVal = $(".typeDynamicCF").val();
-        var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
-        //var selVal = $(".subtypeTimeDynamicCF").val();
-        visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal, subtypeTimeDynamicCFVal, auswahlTypierungVal);
-        addValidateClassOnFormatDynamicSelection(subtypeTimeDynamicCFVal);
-        /*$(".tempInputMainDiv").hide();
-        $(".bezugInputMainDiv").show();
-        $(".subtypeTxtDynamicCF div").css("width", "32%");
-        $(".subtypeTxtDynamicCF label").css("width", "44%");
-        if(selVal =='year'){
-        	console.log('year');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('yearBezugValidate');
-        }else if(selVal =='month'){
-        	console.log('month');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-        }else if(selVal =='monthYear'){
-        	console.log('monthYear');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('monthYearBezugValidate');
-        }else if(selVal =='day'){
-        	console.log('day');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('dayBezugValidate');
-        }else if(selVal =='dayMonth'){
-        	console.log('dayMonth');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('dayMonthBezugValidate');
-        }else{
-        	console.log('Other');
-        	$(".subtypeTxtDynamicCF").hide();
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        }*/
-
-    }, 500);
-    $('#saveOptType').val('');
-    $('#saveOptType').val('DkFePrevious');
-});
-/*16-04-2020 previous button functionality for the dynamische korrektor faktor */
-
-/*20-04-2020 On change  auswahl Typierung Faktor - dynamische korrektor faktor */
-
-$(".auswahlTypierungFaktorDKff").change(function() {
-    var auswahlTypierungVal = $(this).val();
-    var typeDynamicCFVal = $(".typeDynamicCF").val();
-    var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
-
-    if (typeDynamicCFVal != '' && subtypeTimeDynamicCFVal != '') {
-        //setTimeout(function(){
-        alert(typeDynamicCFVal);
-        alert(subtypeTimeDynamicCFVal);
-        alert(auswahlTypierungVal);
-        visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal, subtypeTimeDynamicCFVal, auswahlTypierungVal);
-        //}, 500);
-        /*		if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Zeit'){
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-			    var columnHide = tblOptionenEPrdDKff.columns([2,4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,1,3]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Zeit'){
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var column = tblOptionenEPrdDKff.columns([1,4,5,6,7]);
-        		column.visible( column.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Zeit'){
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var column = tblOptionenEPrdDKff.columns([1,4,5,6,7]);
-        		column.visible( column.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
-				console.log('Temperatur');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblOptionenEPrdDKff.columns([1,4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,2,3]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
-				console.log('month');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblOptionenEPrdDKff.columns([2,4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,1,3]);
-        		columnShow.visible(columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
-				console.log('TempPlusMonth');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblOptionenEPrdDKff.columns([4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,1,2,3]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
-				console.log('TempPlusYear');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblOptionenEPrdDKff.columns([4,5,6,7]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,1,2,3]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
-				console.log('Basis Faktor + 2. Bedingung Temperatur');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblOptionenEPrdDKff.columns([1]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,2,3,4,5,6,7]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
-				console.log('Basis Faktor + 2. Bedingung month');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblOptionenEPrdDKff.columns([2]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
-				console.log('Basis Faktor + 2. Bedingung TempPlusMonth');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-        		var columnShow = tblOptionenEPrdDKff.columns([0,1,2,3,4,5,6,7]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 2. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
-				console.log('Basis Faktor + 2. Bedingung TempPlusYear');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnShow = tblOptionenEPrdDKff.columns([0,1,2,3,4,5,6,7]);
-        		columnShow.visible( columnsnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
-				console.log('Basis Faktor + 3. Bedingung Temperatur');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblOptionenEPrdDKff.columns([1]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,2,3,4,5,6,7]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
-				console.log('Basis Faktor + 3. Bedingung month');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnHide = tblOptionenEPrdDKff.columns([2]);
-        		columnHide.visible(! columnHide.visible() );
-        		var columnShow = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
-				console.log('Basis Faktor + 3. Bedingung TempPlusMonth');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnShow = tblOptionenEPrdDKff.columns([0,1,2,3,4,5,6,7]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal =='Basis Faktor + 3. Bedingung' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
-				console.log('Basis Faktor + 3. Bedingung TempPlusYear');
-				$(".subtypeTxtDynamicCF	").show();
-				$(".subtypeTxtBasisFaktor2").show();
-				$(".subtypeTxtBasisFaktor3").show();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
-				var columnShow = tblOptionenEPrdDKff.columns([0,1,2,3,4,5,6,7]);
-        		columnShow.visible( columnShow.visible() );
-			}else if(auswahlTypierungVal ==''){
-				$(".subtypeTxtDynamicCF").hide();
-				$(".subtypeTxtBasisFaktor2").hide();
-				$(".subtypeTxtBasisFaktor3").hide();
-				$('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
-			}*/
-    }
-
-});
-/*20-04-2020 On change  auswahl Typierung Faktor - dynamische korrektor faktor */
-
-
-/*27-04-2020 last button functionality for the dynamische korrektor faktor */
-$("#DkFeLast").click(function() {
-    getLastIdDataShowNextPrevDynamicKorrektorFaktor('DkFeLast', '');
-    setTimeout(function() {
-        var selVal = $(".subtypeTimeDynamicCF").val();
-        $(".tempInputMainDiv").hide();
-        $(".bezugInputMainDiv").show();
-        $(".subtypeTxtDynamicCF div").css("width", "32%");
-        $(".subtypeTxtDynamicCF label").css("width", "44%");
-        addValidateClassOnFormatDynamicSelection(selVal);
-        /*if(selVal =='year'){
-        	console.log('year');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('yearBezugValidate');
-        }else if(selVal =='month'){
-        	console.log('month');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-        }else if(selVal =='monthYear'){
-        	console.log('monthYear');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('monthYearBezugValidate');
-        }else if(selVal =='day'){
-        	console.log('day');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('dayBezugValidate');
-        }else if(selVal =='dayMonth'){
-        	console.log('dayMonth');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('dayMonthBezugValidate');
-        }else{
-        	console.log('Other');
-        	$(".subtypeTxtDynamicCF").hide();
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        }*/
-    }, 500);
-    $('#saveOptType').val('');
-    $('#saveOptType').val('DkFePrevious');
-});
-/*27-04-2020 last button functionality for the dynamische korrektor faktor */
-
-/*27-04-2020 first button functionality for the dynamische korrektor faktor */
-$("#DkFeFirst").click(function() {
-    getLastIdDataShowNextPrevDynamicKorrektorFaktor('DkFeFirst', '');
-    setTimeout(function() {
-        var selVal = $(".subtypeTimeDynamicCF").val();
-        $(".tempInputMainDiv").hide();
-        $(".bezugInputMainDiv").show();
-        $(".subtypeTxtDynamicCF div").css("width", "32%");
-        $(".subtypeTxtDynamicCF label").css("width", "44%");
-        addValidateClassOnFormatDynamicSelection(selVal);
-        /*if(selVal =='year'){
-        	console.log('year');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('yearBezugValidate');
-        }else if(selVal =='month'){
-        	console.log('month');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
-        }else if(selVal =='monthYear'){
-        	console.log('monthYear');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('monthYearBezugValidate');
-        }else if(selVal =='day'){
-        	console.log('day');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('dayBezugValidate');
-        }else if(selVal =='dayMonth'){
-        	console.log('dayMonth');
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        	$("#subtypeTxtoptzBezugDkff").addClass('dayMonthBezugValidate');
-        }else{
-        	console.log('Other');
-        	$(".subtypeTxtDynamicCF").hide();
-        	$("#subtypeTxtoptzBezugDkff").removeClass();
-        }*/
-    }, 500);
-    $('#saveOptType').val('');
-    $('#saveOptType').val('DkFePrevious');
-});
-/*27-04-2020 first button functionality for the dynamische korrektor faktor */
-
-
 /*27-04-2020 Group Management in static faktor module Add new link click event*/
 $("#addNewGroupStaticCF").on('click', function() {
     $("#groupStaticCFDiv").show();
@@ -3548,3 +2100,1244 @@ $("#editGroupStaticCF").on('click', function() {
 function isFloat(n) {
     return parseFloat(n.match(/^-?\d*(\.\d+)?$/)) > 0;
 }
+
+
+//DYNAMIC KORREKTOR FAKTOR START
+
+/*02-04-2020 on change select box open next input*/
+$( document ).ready(function() {
+
+$(".typeDynamicCF").change(function() {
+    //console.log($(this).val());
+    $("#subtypeTimeDynamicCF").val(""); 
+    $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
+    var selVal = $(this).val();
+    if(selVal =='Zeit'){
+        console.log('Zeit');
+        $(".subtypeTimeDynamicCF option.zeitOption").show();
+        $(".subtypeTimeDynamicCF option.temperaturOption").hide();
+        $(".subtypeTimeDynamicCF").prop('disabled', false);
+
+        $(".subtypeTxtBasisFaktor2").hide();
+        $(".subtypeTxtBasisFaktor3").hide();
+        $(".subtypeTxtDynamicCF").hide();
+        $(".subtypeTimeDynamicCF").val("");
+        $(".auswahlTypierungFaktorDKff").val("");
+        $(".subtypeTimeDynamicCF option.zeitOption").show();
+        $(".subtypeTimeDynamicCF option.temperaturOption").hide();
+
+        $("#subtypeTxtBasisFaktor2Name").val("");
+        $(".subtypeTxtBasisFaktor2Calc").val("");
+        $("#subtypeTxtBasisFaktor2Wert").val("");
+        $("#subtypeTxtBasisFaktor3Name").val("");
+        $(".subtypeTxtBasisFaktor3Calc").val("");
+        $("#subtypeTxtBasisFaktor3Wert").val("");       
+        $("#subtypeTxtOptNameDKff").val("");
+        $("#subtypeTxtoptzBezugDkff").val("");
+        $("#subtypeTxtoptzTempDkff").val("");
+        $("#subtypeTxtoptzFaktoreDkff").val("");
+        $(".subtypeTxtDynamicCFRow2").hide();
+
+        $(".formatDynamicBezugRow1 .formatDynamicSelOptRow1 option.zeitOption").show();
+        $(".formatDynamicBezugRow1 .formatDynamicSelOptRow1  option.temperaturOption").hide();
+
+        $(".formatDynamicBezugRow2 .formatDynamicSelOptRow2 option.zeitOption").show();
+        $(".formatDynamicBezugRow2 .formatDynamicSelOptRow2  option.temperaturOption").hide();
+        $(".calculationTypeDiv").hide();
+        $(".calculationTypeDKff").val("");
+
+
+    }else if(selVal =='Temperatur'){
+        $(".subtypeTimeDynamicCF option.zeitOption").hide();
+        $(".subtypeTimeDynamicCF option.temperaturOption").show();
+        $(".subtypeTimeDynamicCF").prop('disabled', false);
+
+        $(".subtypeTxtBasisFaktor2").hide();
+        $(".subtypeTxtBasisFaktor3").hide();
+        $(".subtypeTxtDynamicCF").hide();
+        $(".subtypeTimeDynamicCF").val("");
+        $(".auswahlTypierungFaktorDKff").val("");
+        $(".subtypeTimeDynamicCF option.zeitOption").hide();
+        $(".subtypeTimeDynamicCF option.temperaturOption").show();
+
+        $("#subtypeTxtBasisFaktor2Name").val("");
+        $(".subtypeTxtBasisFaktor2Calc").val("");
+        $("#subtypeTxtBasisFaktor2Wert").val("");
+        $("#subtypeTxtBasisFaktor3Name").val("");
+        $(".subtypeTxtBasisFaktor3Calc").val("");
+        $("#subtypeTxtBasisFaktor3Wert").val("");
+        $("#subtypeTxtOptNameDKff").val("");
+        $("#subtypeTxtoptzBezugDkff").val("");
+        $("#subtypeTxtoptzTempDkff").val("");
+        $("#subtypeTxtoptzFaktoreDkff").val("");
+        $(".subtypeTxtDynamicCFRow2").hide();
+
+        $(".formatDynamicBezugRow1 .formatDynamicSelOptRow1 option.zeitOption").hide();
+        $(".formatDynamicBezugRow1 .formatDynamicSelOptRow1  option.temperaturOption").show();
+
+        $(".formatDynamicBezugRow2 .formatDynamicSelOptRow2 option.zeitOption").hide();
+        $(".formatDynamicBezugRow2 .formatDynamicSelOptRow2  option.temperaturOption").show();
+
+        $(".calculationTypeDiv").hide();
+        $(".calculationTypeDKff").val("");
+    }else{
+        //console.log('Other');
+        //$(".subtypeTimeDynamicCF").hide();
+        $(".subtypeTxtBasisFaktor2").hide();
+        $(".subtypeTxtBasisFaktor3").hide();
+        $(".subtypeTxtDynamicCF").hide();
+        $(".subtypeTimeDynamicCF").val("");
+        $(".subtypeTimeDynamicCF").prop("disabled","disabled");
+        $(".auswahlTypierungFaktorDKff").val("");
+        $(".subtypeTimeDynamicCF option.zeitOption").hide();
+        $(".subtypeTimeDynamicCF option.temperaturOption").hide();
+
+        $("#subtypeTxtBasisFaktor2Name").val("");
+        $(".subtypeTxtBasisFaktor2Calc").val("");
+        $("#subtypeTxtBasisFaktor2Wert").val("");
+        $("#subtypeTxtBasisFaktor3Name").val("");
+        $(".subtypeTxtBasisFaktor3Calc").val("");
+        $("#subtypeTxtBasisFaktor3Wert").val("");
+        $("#subtypeTxtOptNameDKff").val("");
+        $("#subtypeTxtoptzBezugDkff").val("");
+        $("#subtypeTxtoptzTempDkff").val("");
+        $("#subtypeTxtoptzFaktoreDkff").val("");
+        $(".formatDynamicBezugRow1 .formatDynamicSelOptRow1 option.zeitOption").hide();
+        $(".formatDynamicBezugRow1 .formatDynamicSelOptRow1  option.temperaturOption").hide();
+
+        $(".formatDynamicBezugRow2 .formatDynamicSelOptRow2 option.zeitOption").hide();
+        $(".formatDynamicBezugRow2 .formatDynamicSelOptRow2  option.temperaturOption").hide();
+        $(".calculationTypeDiv").hide();
+        $(".calculationTypeDKff").val("");
+    }
+});
+
+$(".subtypeTimeDynamicCF").change(function() {
+    //console.log($(this).val());
+    $("#subtypeTxtoptzBezugDkff").val("");
+    
+    var auswahlTypierung = $(".auswahlTypierungFaktorDKff").val();
+    /*$("#subtypeTxtBasisFaktor2Name").val("");
+    $(".subtypeTxtBasisFaktor2Calc").val("");
+    $("#subtypeTxtBasisFaktor2Wert").val("");
+    $("#subtypeTxtBasisFaktor3Name").val("");
+    $(".subtypeTxtBasisFaktor3Calc").val("");
+    $("#subtypeTxtBasisFaktor3Wert").val("");
+    $("#subtypeTxtOptNameDKff").val("");
+    $("#subtypeTxtoptzBezugDkff").val("");
+    $("#subtypeTxtoptzFaktoreDkff").val("");*/
+    $("#basicFaktorRow1 input").val("");
+    $("#basicFaktorRow2 input").val("");
+    $("#basicFaktorRow3 input").val("");
+    $("#basicFaktorRow4 input").val("");    
+
+    $(".subtypeTxtBasisFaktor2").hide();
+    $(".subtypeTxtBasisFaktor3").hide();
+    $(".subtypeTxtDynamicCF").hide();
+    $(".subtypeTxtDynamicCFRow2").hide();
+    $(".auswahlTypierungFaktorDKff").val("");
+    $(".calculationTypeDiv").hide();
+    $(".calculationTypeDKff").val("");
+    $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
+    var selVal = $(this).val();
+    var typ = $('.typeDynamicCF').val();
+    addValidateClassOnFormatDynamicSelection(selVal);
+});
+
+});
+
+
+/*06-04-2020 Crete dynamic correction factor options add more functionality*/
+$("#btnOptionHinzEPrdDKff").click(function() {
+
+    var type = $( ".typeDynamicCF option:selected" ).val();
+    var format = $( ".subtypeTimeDynamicCF option:selected" ).val();
+    var name =$("#subtypeTxtOptNameDKff").val();
+    var bezug =$("#subtypeTxtoptzBezugDkff").val();
+    var temprature =$("#subtypeTxtoptzTempDkff").val();
+    
+    var faktore =$("#subtypeTxtoptzFaktoreDkff").val();
+
+    var typeVal =$(".auswahlTypierungFaktorDKff").val();
+
+    var basisFktr1Name ='';
+    var basisFktr1Calc ='';
+    var basisFktr1Wert ='';
+
+    var basisFktr2Name =$("#subtypeTxtBasisFaktor2Name").val();
+    var basisFktr2Calc =$(".subtypeTxtBasisFaktor2Calc").val();
+    var basisFktr2Wert =$("#subtypeTxtBasisFaktor2Wert").val();
+
+    var basisFktr3Name =$("#subtypeTxtBasisFaktor3Name").val();
+    var basisFktr3Calc =$(".subtypeTxtBasisFaktor3Calc").val();
+    var basisFktr3Wert =$("#subtypeTxtBasisFaktor3Wert").val();
+
+    var result1 = '';
+
+    /*02-06-2020 Faktor 4 functionality*/
+    var name2 =$("#subtypeTxtOptNameDKff2").val();
+    var bezug2 =$("#subtypeTxtoptzBezugDkff2").val();
+    var temprature2 =$("#subtypeTxtoptzTempDkff2").val();
+    var faktore2 =$("#subtypeTxtoptzFaktoreDkff2").val();
+    var formatDynamicRow1 =$(".formatDynamicSelOptRow1").val();
+    var formatDynamicRow2 =$(".formatDynamicSelOptRow2").val();
+
+    var formatDynamicRowTxt1 =$(".formatDynamicSelOptRow1 option:selected").text();
+    var formatDynamicRowTxt2 =$(".formatDynamicSelOptRow2 option:selected").text();
+    
+    /*02-06-2020 Faktor 4 functionality*/
+
+    var calculationType = $(".calculationTypeDKff").val();  
+     if(typeVal =='1' || typeVal =='4' || typeVal =='5' || typeVal =='6' || typeVal =='7' || typeVal =='8' || typeVal =='9'){    
+
+            if(faktore !=''){
+                var faktoreRep = faktore.replace(",", ".");
+
+                var faktore1Comma = faktore.replace(".", ",");
+
+                var faktoreWithComma = faktore1Comma.split(',');
+                var factorVal = faktoreWithComma[1];
+                if(typeof factorVal !== "undefined" ){
+                    var factorLength = factorVal.length;
+                }else{
+                    var factorLength = faktore1Comma.length;
+                }       
+
+                if(factorLength >4 && isFloat(faktore) ==false){
+                    alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
+                    return false;
+                }
+            }
+            if(faktore2 !=''){
+                var faktore2Rep = faktore2.replace(",", ".");
+
+                var faktore2Comma = faktore2.replace(".", ",");
+
+                var faktore2WithComma = faktore2Comma.split(',');
+                var faktore2Val = faktore2WithComma[1];
+                if(typeof faktore2Val !== "undefined" ){
+                    var faktore2Length = faktore2Val.length;
+                }else{
+                    var faktore2Length = faktore2Comma.length;
+                }       
+
+                if(faktore2Length >4 && isFloat(faktore2) ==false){
+                    alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
+                    return false;
+                }
+            }
+                var faktore3RepType5 = faktore2.replace(",", "."); 
+                var basisFktr3WertRepType5 = basisFktr3Wert.replace(",", ".");
+
+                var faktore3CommaType5 = faktore2.replace(".", ",");
+                var basisFktr3WertCommaType5 = basisFktr3Wert.replace(".", ",");
+
+                if(faktore3RepType5 !='' && basisFktr3WertRepType5 !=''){
+                    if(isFloat(faktore3RepType5)==true && isFloat(basisFktr3WertRepType5)==true){
+                        var result3CommaDigitType5 = eval(faktore3RepType5 + basisFktr3Calc + basisFktr3WertRepType5);
+                    }else{
+                        alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                        return false;
+                    }    
+
+                var result3Type5 =result3CommaDigitType5.toFixed(4).replace(".", ",");
+                }
+                var faktore3WithCommaType5 = faktore3CommaType5.split(',');
+                var factor3ValType5 = faktore3WithCommaType5[1];
+                if(typeof factor3ValType5 !== "undefined" ){
+                    var factor3LengthType5 = factor3ValType5.length;
+                }else{
+                    var factor3LengthType5 = faktore3CommaType5.length;
+                }       
+
+                var basisFktr3WertWithCommaType5 = basisFktr3WertCommaType5.split(',');
+                var basisFktr3WertValType5 = basisFktr3WertWithCommaType5[1];    
+                if(typeof basisFktr3WertValType5 !== "undefined" ){
+                    var basisFktr3WertLengthType5 = basisFktr3WertValType5.length;
+                }else{
+                    var basisFktr3WertLengthType5 = basisFktr3WertCommaType5.length;
+                }
+
+                if(factor3LengthType5 >4 || basisFktr3WertLengthType5 >4){
+                    alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
+                    return false;
+                }
+           /*Factor 6 get Start and End bezug*/
+           var bezugStartTxt =$("#bezugStartTxt").val();
+           var bezugEndTxt =$("#bezugEndTxt").val();
+           var tempStartTxt =$("#tempStartTxt").val();
+           var tempEndTxt =$("#tempEndTxt").val();
+
+           /*Factor 8 get Start and End bezug*/
+           var bezugStartTxt2 =$("#bezugStartTxt2").val();
+           var bezugEndTxt2 =$("#bezugEndTxt2").val();
+           var tempStartTxt2 =$("#tempStartTxt2").val();
+           var tempEndTxt2 =$("#tempEndTxt2").val();
+
+    }   
+    if(basisFktr2Wert !='' && basisFktr2Calc !='' && faktore !=''){  
+
+            
+            var faktoreRep = faktore.replace(",", ".");
+            var basisFktr2WertRep = basisFktr2Wert.replace(",", ".");
+
+            var faktore2Comma = faktore.replace(".", ",");
+            var basisFktr2WertComma = basisFktr2Wert.replace(".", ",");
+            /*alert(isFloat(faktoreRep));alert(isFloat(basisFktr2WertRep));*/
+            if(isFloat(faktoreRep)==true && isFloat(basisFktr2WertRep)==true){
+                var result2CommaDigit = eval(faktoreRep + basisFktr2Calc + basisFktr2WertRep);
+            }else{
+                alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                return false;
+            }
+            var result2 = result2CommaDigit.toFixed(4).replace(".", ",");
+
+            var faktoreWithComma = faktore2Comma.split(',');
+            var factorVal = faktoreWithComma[1];
+            if(typeof factorVal !== "undefined" ){
+                var factorLength = factorVal.length;
+            }else{
+                var factorLength = faktore2Comma.length;
+            }       
+
+            var basisFktrWertWithComma = basisFktr2WertComma.split(',');
+            var basisFktrWertVal = basisFktrWertWithComma[1];    
+            if(typeof basisFktrWertVal !== "undefined" ){
+                var basisFktrWertLength = basisFktrWertVal.length;
+            }else{
+                var basisFktrWertLength = basisFktr2WertComma.length;
+            }
+
+            if(factorLength >4 || basisFktrWertLength >4){
+                alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
+                return false;
+            }
+    }
+
+        if(basisFktr3Wert !='' && basisFktr3Calc !='' && faktore !='' && typeVal !='5'){            
+            
+            var faktore3Rep = faktore.replace(",", "."); 
+            var basisFktr3WertRep = basisFktr3Wert.replace(",", ".");
+
+            var faktore3Comma = faktore.replace(".", ",");
+            var basisFktr3WertComma = basisFktr3Wert.replace(".", ",");
+            if(isFloat(faktore3Rep)==true && isFloat(basisFktr3WertRep)==true){
+                var result3CommaDigit = eval(faktore3Rep + basisFktr3Calc + basisFktr3WertRep);
+            }else{
+                alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                return false;
+            }           
+            var result3 =result3CommaDigit.toFixed(4).replace(".", ",");
+
+            var faktore3WithComma = faktore3Comma.split(',');
+            var factor3Val = faktore3WithComma[1];
+            if(typeof factor3Val !== "undefined" ){
+                var factor3Length = factor3Val.length;
+            }else{
+                var factor3Length = faktore3Comma.length;
+            }       
+
+            var basisFktr3WertWithComma = basisFktr3WertComma.split(',');
+            var basisFktr3WertVal = basisFktr3WertWithComma[1];  
+            if(typeof basisFktr3WertVal !== "undefined" ){
+                var basisFktr3WertLength = basisFktr3WertVal.length;
+            }else{
+                var basisFktr3WertLength = basisFktr3WertComma.length;
+            }
+
+            if(factor3Length >4 || basisFktr3WertLength >4){
+                alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
+                return false;
+            }           
+    }
+
+    var a = $("#optionNameDKff").val();
+    var b = $("#optionBeschreibungDKff").val(); 
+
+    var yearVal = $(".yearBezugValidate").val();
+    if(yearVal){ 
+        var yearRegex = /^\s*((?:19|20)\d{2})\s*$/;
+        if (!yearRegex.test(yearVal)) { 
+            alert('Bitte geben Sie ein gültiges Jahr ein (Beispiel 2020)');
+            return false;
+        }       
+    }  
+
+    var monthVal = $(".monthBezugValidate").val();
+    if(monthVal){ 
+        var regexMonth = /^\s*(1[012]|0?[1-9])\s*$/;
+        if (!regexMonth.test(monthVal)) {
+            alert('Bitte geben Sie einen gültigen Monat ein (Beispiel 01)');
+            return false;
+        }       
+    }    
+
+    var month2Val = $(".monthBezug2Validate").val();
+    if(month2Val){ 
+        var regexMonth = /^\s*(1[012]|0?[1-9])\s*$/;
+        if (!regexMonth.test(month2Val)) {
+            alert('Bitte geben Sie einen gültigen Monat ein (Beispiel 01)');
+            return false;
+        }       
+    }   
+
+    var monthYearVal = $(".monthYearBezugValidate").val();
+    if(monthYearVal){ 
+        var monthYearRegex = /^\s*(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/; 
+        if (!monthYearRegex.test(monthYearVal)) {
+            alert('Bitte geben Sie ein gültiges Monat Jahr ein (Beispiel 01.2020)');
+            return false;
+        }   
+    }    
+
+    var dayVal = $(".dayBezugValidate").val();
+    if(dayVal){ 
+        var dayRegex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/; 
+        if (!dayRegex.test(dayVal)) {
+            alert('Bitte geben Sie einen gültigen Tag ein (Beispiel 01.01.2020)');
+            return false;
+        }   
+    }  
+
+    var dayMonthVal = $(".dayMonthBezugValidate").val();
+    if(dayMonthVal){ 
+        var dayMonthRegex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\s*$/; 
+        if (!dayMonthRegex.test(dayMonthVal)) {
+            alert('Bitte geben Sie einen gültigen Monat Monat ein (Beispiel 02.01)');
+            return false;
+        }   
+    }   
+
+    /*Row 2 faktor 4 functionality*/
+    var year2Val = $(".yearBezug2Validate").val();
+    if(year2Val){ 
+        var year2Regex = /^\s*((?:19|20)\d{2})\s*$/;
+        if (!year2Regex.test(year2Val)) { 
+            alert('Bitte geben Sie ein gültiges Jahr ein (Beispiel 2020)');
+            return false;
+        }       
+    }  
+
+    var month2Val = $(".monthBezug2Validate").val();
+    if(month2Val){ 
+        var regex2Month = /^\s*(1[012]|0?[1-9])\s*$/;
+        if (!regex2Month.test(month2Val)) {
+            alert('Bitte geben Sie einen gültigen Monat ein (Beispiel 01)');
+            return false;
+        }       
+    }    
+
+    var monthYear2Val = $(".monthYearBezug2Validate").val();
+    if(monthYear2Val){ 
+        var monthYear2Regex = /^\s*(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/; 
+        if (!monthYear2Regex.test(monthYear2Val)) {
+            alert('Bitte geben Sie ein gültiges Monat Jahr ein (Beispiel 01.2020)');
+            return false;
+        }   
+    }    
+
+    var day2Val = $(".dayBezug2Validate").val();
+    if(day2Val){ 
+        var day2Regex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/; 
+        if (!day2Regex.test(day2Val)) {
+            alert('Bitte geben Sie einen gültigen Tag ein (Beispiel 01.01.2020)');
+            return false;
+        }   
+    }  
+
+    var dayMonth2Val = $(".dayMonthBezug2Validate").val();
+    if(dayMonth2Val){ 
+        var dayMonth2Regex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\s*$/; 
+        if (!dayMonth2Regex.test(dayMonth2Val)) {
+            alert('Bitte geben Sie einen gültigen Monat Monat ein (Beispiel 02.01)');
+            return false;
+        }   
+    }
+    
+    if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='1'){
+        tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1]).draw();     
+            addMoreAfterResetDynamischeKorrekturFktor();
+    
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore2Comma !='' && typeVal =='2' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !=''){
+            tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRow1]).draw();
+            addMoreAfterResetDynamischeKorrekturFktor();
+    
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='3' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3Wert !='' && result3 !=''){
+            tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRow1]).draw();
+            tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore3Comma,basisFktr3Name,basisFktr3Calc,basisFktr3WertComma,result3,formatDynamicRow1]).draw();
+            addMoreAfterResetDynamischeKorrekturFktor();
+    
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='1'){
+        tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1]).draw();     
+        
+            addMoreAfterResetDynamischeKorrekturFktor();
+    
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && name2 !='' && faktore2 !='' && typeVal =='4' && formatDynamicRow1 !='' && formatDynamicRow2 !=''){
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRowTxt1]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore2,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRowTxt2]).draw().node();
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+            addMoreAfterResetDynamischeKorrekturFktor();    
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==1 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !=''){
+                //alert(calculationType);alert(faktore);alert(faktore2);
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2]).draw().node();        
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+            addMoreAfterResetDynamischeKorrekturFktor();
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==2 && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !=''){
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,'-','-','-','-',formatDynamicRowTxt1]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2]).draw().node();
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+            addMoreAfterResetDynamischeKorrekturFktor();
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==3 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !=''){
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2]).draw().node();        
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+            addMoreAfterResetDynamischeKorrekturFktor();
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==4){
+            var rowNodeTbl1 =  tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,'-','-','-','-',formatDynamicRowTxt1]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2]).draw().node();                    
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+            addMoreAfterResetDynamischeKorrekturFktor();
+    } else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' /*&& bezugStartTxt !='' && bezugEndTxt !='' && tempStartTxt !='' && tempEndTxt !=''*/ && typeVal =='6'){
+        ///alert('typeVal='+typeVal);
+        validateStartEndInputBezugFaktorTypeBasicBetween(typeVal);
+        if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
+            tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1]).draw();     
+            addMoreAfterResetDynamischeKorrekturFktor();
+        }
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore2Comma !='' && typeVal =='7' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !=''){
+            if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
+                tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,'']).draw();
+                addMoreAfterResetDynamischeKorrekturFktor();
+            }
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && name2 !='' && faktore2 !='' && typeVal =='8' && formatDynamicRow1 !='' && formatDynamicRow2 !=''){
+            alert(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal));
+        
+            if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
+                var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore,'','','','',formatDynamicRowTxt1]).draw().node();
+                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore2,'','','','',formatDynamicRowTxt2]).draw().node();
+                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+                addMoreAfterResetDynamischeKorrekturFktor(); 
+            }   
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==1 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !=''){
+                //alert(calculationType);alert(faktore);alert(faktore2);
+           if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
+                var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1]).draw().node();
+                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2]).draw().node();      
+                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+                addMoreAfterResetDynamischeKorrekturFktor();
+            }
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==2 && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !=''){
+             if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
+                var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,'-','-','-','-',formatDynamicRowTxt1]).draw().node();
+                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2]).draw().node();
+                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+                addMoreAfterResetDynamischeKorrekturFktor();
+             }
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==3 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !=''){
+             if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
+                var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1]).draw().node();
+                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2]).draw().node();      
+                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+                addMoreAfterResetDynamischeKorrekturFktor();
+            }
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==4){
+             if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
+                var rowNodeTbl1 =  tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,'-','-','-','-',formatDynamicRowTxt1]).draw().node();
+                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2]).draw().node();                  
+                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+                addMoreAfterResetDynamischeKorrekturFktor();
+             }
+    }else{
+            alert('Bitte alle Felder besetzen, und erneut Speichern!');
+    }          
+ });
+/*06-04-2020 Crete dynamic correction factor options add more functionality*/
+$("#tblOptionenEPrdDKff tbody").on("dblclick", "tr", function() {
+    tblOptionenEPrdDKff.row(this).remove().draw()
+});
+
+/*06-04-2020 on load jQuery call the numeric validation */
+$( document ).ready(function() {
+    jQuery(".DynamicKorrekturFaktorFrm .inp_valid").NumericOnly();
+});
+
+/*09-04-2020 Crete dynamic correction factor new button reset functionality*/
+$("#DkFeHinz").click(function() {
+
+        $("#optionNameDKff").val("");
+        $("#optionBeschreibungDKff").val("");
+        $(".typeDynamicCF").val("");
+        $(".subtypeTimeDynamicCF").val("");
+        $(".typeDynamicCF").prop('disabled', false);
+        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
+        $(".auswahlTypierungFaktorDKff").prop('disabled', false);
+        $("#subtypeTxtOptNameDKff").val("");
+        $("#subtypeTxtoptzBezugDkff").val("");
+        $("#subtypeTxtoptzTempDkff").val("");
+        $("#subtypeTxtoptzFaktoreDkff").val("");
+        $(".subtypeTxtDynamicCF").hide();
+        $("#tblOptionenEPrdDKffNotify").hide();
+        $(".calculationTypeDKff").prop('disabled', false);
+        $(".calculationTypeDiv").hide();
+        $(".sectionDynamicCF").show();
+        //$(".subtypeTimeDynamicCF").hide();
+        tblOptionenEPrdDKff.rows().remove().draw();
+        tblGetDyanamicheKorrekturfaktoren.rows().remove().draw();
+        $("#ePrdDMainIdStore").val("");
+        $("#subtypeTxtBasisFaktor2Name").val("");
+        $("#subtypeTxtBasisFaktor2Name").val("");
+        $(".subtypeTxtBasisFaktor2Calc").val("");
+        $("#subtypeTxtBasisFaktor2Wert").val("");
+        $(".auswahlTypierungFaktorDKff").val("");
+        $(".subtypeTxtBasisFaktor2").hide();
+        $("#subtypeTxtBasisFaktor3Name").val("");
+        $(".subtypeTxtBasisFaktor3Calc").val("");
+        $("#subtypeTxtBasisFaktor3Wert").val("");
+        $(".subtypeTxtBasisFaktor3").hide();
+        /*$("#btnOptionHinzEPrdDKffUpdate").hide();
+        $("#btnOptionHinzEPrdDKffStornieren").hide();
+        $("#btnOptionHinzEPrdDKff").show();*/
+        $(".formatDynamicBezugRow1").hide();
+        $(".subtypeTxtDynamicCFRow2").hide();
+        $(".formatDynamicBezugRow2").hide();
+        $("#tempStartTxt").val("");
+        $("#tempEndTxt").val("");
+        $("#bezugStartTxt").val("");
+        $("#bezugEndTxt").val("");
+        $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
+            
+        $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
+        $('#saveOptType').val('');    
+     });
+/*09-04-2020 Crete dynamic correction factor new button reset functionality*/
+
+/*13-04-2020 Dynamic Correction factor add record row wise not quoma saperated*/
+$("#DkFeSpeichern").click(function() {  
+    //alert('Call dynamischeKorrekturfaktorenSpeichern');
+    dynamischeKorrekturfaktorenSpeichern();
+});
+/*13-04-2020 Dynamic Correction factor add record row wise not quoma saperated*/
+
+/*14-04-2020  on click edit button append data into form textbox */
+    $("body").on("click", "#tblGetDyanamicheKorrekturfaktoren tbody tr .dyanamicheKorrekturfaktorenMenuEdit", function (e) {
+        e.preventDefault();
+        $("#btnOptionHinzEPrdDKffUpdate").show();
+        $("#btnOptionHinzEPrdDKffStornieren").show();
+        $("#DkFeSpeichern").hide();
+        $("#DkFeHinz").hide();
+        $("#DkFeFirst").hide();
+        $("#DkFePrevious").hide();
+        $("#DkFeNext").hide();
+        $("#DkFeLast").hide();
+        $("#DkFeSuchen").hide();
+        $("#btnOptionHinzEPrdDKff").hide();
+        $("#basicFaktorRow1").show();
+        $("#basicFaktorRow2").hide();
+        var parentRow = $(this).closest("tr");
+        var ePrddKffOptionIDStore = $(this).attr("data-id");
+        var ePrdDOptIdStore = $(this).attr("data-id-parent");
+        var formatDynamicType = $(this).closest("tr").attr("data-type");
+        //alert(formatDynamicType);
+        var rowData = tblGetDyanamicheKorrekturfaktoren.row(parentRow).data();
+        //console.log(rowData);
+         $('#subtypeTxtOptNameDKff').val(rowData[0]);    
+         $('#subtypeTxtoptzBezugDkff').val(rowData[1]); 
+         $('#subtypeTxtoptzTempDkff').val(rowData[2]);
+
+         $('#bezugStartTxt').val(rowData[3]);
+         $('#bezugEndTxt').val(rowData[4]);
+         $('#tempStartTxt').val(rowData[5]);
+         $('#tempEndTxt').val(rowData[6]);
+
+         $('#subtypeTxtoptzFaktoreDkff').val(rowData[7]);
+         $("#subtypeTxtBasisFaktor2Name").val(rowData[8]);
+         $(".subtypeTxtBasisFaktor2Calc").val(rowData[9]);
+         $("#subtypeTxtBasisFaktor2Wert").val(rowData[10]);
+         
+
+         $("#ePrddKffOptionIDStore").val(ePrddKffOptionIDStore);
+         $('#ePrdDIdStore').val(ePrdDOptIdStore);   
+         $('.subtypeTxtBasisFaktor3').hide();
+         $('#faktoreDynamictypeStore').val(formatDynamicType);
+         var calculationTypeDKff = $('.calculationTypeDKff').val();
+         var parentID = $(this).attr('data-id-parent');          
+         getSingleRecordDynamischeKorrekturfaktoren(parentID);
+         setTimeout(function(){ 
+            $('.formatDynamicBezugRow1 select').val(formatDynamicType);
+         //addValidateClassOnFormatDynamicSelection(formatDynamicType);
+         }, 300);
+         var fktr = $('.auswahlTypierungFaktorDKff').val();
+         var type = $(".typeDynamicCF").val();
+        //var subType = $(this).val();
+        addValidateClassOnRightSelecOptRow1VisibilityBezugTemp(fktr,type,formatDynamicType);
+        addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(fktr,type,formatDynamicType);
+        if((fktr ==5 || fktr ==9) && rowData[8] =='-' && rowData[9] =='-' && rowData[10] =='-'){    
+            //alert('0');     
+            $('#basicFaktorRow3').hide();
+            $('#basicFaktorRow1').show();
+            $('#basicFaktorRow2').hide();
+            $('#basicFaktorRow4').hide();
+            $("#subtypeTxtBasisFaktor2Name").val('');
+            $(".subtypeTxtBasisFaktor2Calc").val('');
+            $("#subtypeTxtBasisFaktor2Wert").val('');
+        }else if(fktr ==5 || fktr ==9){ 
+            //alert('1');
+            $('#basicFaktorRow1').show();
+            $('#basicFaktorRow2').hide();
+            $('#basicFaktorRow4').hide();
+            $('#basicFaktorRow3').show();
+        }
+    });
+/*14-04-2020 on click edit button append data into form textbox */
+
+/*14-04-2020  dynamische Corrector factor cancel option after edit click */
+    $("#btnOptionHinzEPrdDKffStornieren").on("click",function(){
+        $("#btnOptionHinzEPrdDKffUpdate").hide();
+        $("#btnOptionHinzEPrdDKffStornieren").hide();
+        $("#btnOptionHinzEPrdDKff").show();
+        $("#DkFeSpeichern").show();
+        $("#DkFeHinz").show();      
+        $("#DkFeFirst").show();
+        $("#DkFePrevious").show();
+        $("#DkFeNext").show();
+        $("#DkFeLast").show();
+        $("#DkFeSuchen").show();
+        /*$('#subtypeTxtOptNameDKff').val("");  
+        $('#subtypeTxtoptzBezugDkff').val("");
+        $('#subtypeTxtoptzTempDkff').val("");   
+        $('#subtypeTxtoptzFaktoreDkff').val("");*/
+        $('#ePrdDIdStore').val(""); 
+        /*$('#subtypeTxtBasisFaktor2Name').val("");
+        $('.subtypeTxtBasisFaktor2Calc').val("");
+        $('#subtypeTxtBasisFaktor2Wert').val("");*/
+
+        var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
+        var typeDynamicCFVal = $(".typeDynamicCF").val();
+        var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
+        $("#basicFaktorRow1 input").val("");
+        $("#basicFaktorRow2 input").val("");
+        $("#basicFaktorRow3 input").val("");
+        $("#basicFaktorRow4 input").val("");    
+        $("#basicFaktorRow3 select").val("");
+        $("#basicFaktorRow4 select").val("");
+        if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){  
+            visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);          
+            addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+        }
+        var calculationTypeDKff = $(".calculationTypeDKff").val();          
+        if(calculationTypeDKff && (auswahlTypierungVal == 5 || auswahlTypierungVal == 9)){
+            basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff); 
+        }
+    });
+    /*14-04-2020 dynamische Corrector factor cancel option after edit click */
+
+    /*14-04-2020  dynamische Corrector factor update record*/
+    $("#btnOptionHinzEPrdDKffUpdate").click(function() {
+
+        var name = $("#optionNameDKff").val();
+        var beschreibunDesc = $("#optionBeschreibungDKff").val();
+
+        var a = $("#subtypeTxtOptNameDKff").val();
+        var b = $("#subtypeTxtoptzBezugDkff").val();
+        var c = $("#subtypeTxtoptzFaktoreDkff").val();
+        var d = $('#subtypeTxtBasisFaktor2Name').val();
+        var e = $('.subtypeTxtBasisFaktor2Calc').val();
+        var f = $('#subtypeTxtBasisFaktor2Wert').val();
+
+        var g = $('#subtypeTxtoptzFaktoreDkff').val();
+
+        var faktore2Comma = g.replace(".", ",");
+        var basisFktrWertComma = f.replace(".", ",");
+
+        var faktoreWithComma = faktore2Comma.split(',');
+        var factorVal = faktoreWithComma[1];     
+        
+        if(typeof factorVal !== "undefined" ){
+            var factorLength = factorVal.length;
+        }else{
+            var factorLength = faktore2Comma.length;
+        }   
+        var basisFktrWertWithComma = basisFktrWertComma.split(',');
+        var basisFktrWertVal = basisFktrWertWithComma[1];    
+
+        if(typeof basisFktrWertVal !== "undefined" ){
+            var basisFktrWertLength = basisFktrWertVal.length;
+        }else{
+            var basisFktrWertLength = basisFktrWertComma.length;
+        }
+
+        if(factorLength >4 || basisFktrWertLength >4){
+            alert("Erlaube 4 Stellen nach dem Komma (,) Wert");
+            return false;
+        }
+
+        var yearVal = $(".yearBezugValidate").val();
+        if(yearVal){ 
+            var yearRegex = /^\s*((?:19|20)\d{2})\s*$/;
+            if (!yearRegex.test(yearVal)) { 
+                alert('Bitte geben Sie ein gültiges Jahr ein (Beispiel 2020)');
+                return false;
+            }       
+        }  
+
+        var monthVal = $(".monthBezugValidate").val();
+        if(monthVal){ 
+            var regexMonth = /^\s*(1[012]|0?[1-9])\s*$/;
+            if (!regexMonth.test(monthVal)) {
+                alert('Bitte geben Sie einen gültigen Monat ein (Beispiel 01)');
+                return false;
+            }       
+        }    
+
+        var monthYearVal = $(".monthYearBezugValidate").val();
+        if(monthYearVal){ 
+            var monthYearRegex = /^\s*(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/; 
+            if (!monthYearRegex.test(monthYearVal)) {
+                alert('Bitte geben Sie ein gültiges Monat Jahr ein (Beispiel 01.2020)');
+                return false;
+            }   
+        }    
+
+        var dayVal = $(".dayBezugValidate").val();
+        if(dayVal){ 
+            var dayRegex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/; 
+            if (!dayRegex.test(dayVal)) {
+                alert('Bitte geben Sie einen gültigen Tag ein (Beispiel 01.01.2020)');
+                return false;
+            }   
+        }  
+
+        var dayMonthVal = $(".dayMonthBezugValidate").val();
+        if(dayMonthVal){ 
+            var dayMonthRegex = /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\s*$/; 
+            if (!dayMonthRegex.test(dayMonthVal)) {
+                alert('Bitte geben Sie einen gültigen Monat Monat ein (Beispiel 02.01)');
+                return false;
+            }   
+        }  
+        if(a !='' && c !='' /*&& d !='' && e !='' && f !=''*/ && name !='' && beschreibunDesc !=''){
+            
+            DynamischeKorrekturfaktorenAktualisieren();
+        }else{
+            alert('Bitte geben Sie danach Text ein und klicken Sie auf Speichern!');
+        } 
+    });
+    /*14-04-2020  dynamische Corrector factor update record*/
+
+    /*14-04-2020  dynamische Corrector factor delete record*/
+    $("body").on("click", "#tblGetDyanamicheKorrekturfaktoren tbody tr .dyanamicheKorrekturfaktorenMenuDel", function (e) {
+        e.preventDefault();
+        var ePrdDIdStore = $(this).attr("data-id"); 
+        dynamischeKorrekturfaktorenloschen(ePrdDIdStore);
+    });
+    /*14-04-2020  dynamische Corrector factor delete record*/
+
+    /*14-04-2020 on click serach icon show popup*/
+    $("#DkFeSuchen").click(function() {
+            dynamischeKorrekturfaktorenSuchen(this.id); 
+            $('#ePrdDMainIdStore').val("");        
+    });
+    /*14-04-2020 on click search icon show popup */
+
+    /*15-04-2020 on double click row append data into input and dynamischeKorektorFaktor table data refresh*/
+    $("#tblGetDyanamicheKorrekturfaktorenParent tbody").on("dblclick","tr",function(){
+        //tblGetDyanamicheKorrekturfaktoren.row(this).remove().draw();
+        var id = $(this).attr('data-id');
+        getDynamischeKorrekturfaktoren(id);
+        var rowData = tblGetDyanamicheKorrekturfaktorenParent.row( this ).data();
+        if(rowData[2]=="Basic"){var basisType = '1'; 
+        }else if(rowData[2]=='Basic + Multiplay'){var basisType = '2'; 
+        }else if(rowData[2]=='Basic + Multiplay 2'){var basisType = '3'; 
+        }else if(rowData[2]=='Basic + 2 Conditions'){var basisType = '4'; 
+        }else if(rowData[2]=='Basic + 2 Condition & Multiplay'){var basisType = '5'; 
+        }else if(rowData[2]=='Basic Between'){var basisType = '6'; 
+        }else if(rowData[2]=='Basic Between + Multiplay'){var basisType = '7'; 
+        }else if(rowData[2]=='Basic Between + 2 Conditions'){var basisType = '8';
+        }else if(rowData[2]=='Basic Between + 2 Contition + Multiplay'){var basisType = '9'; }
+       
+        var subtypeTimeDynamicCFVal = $(this).attr('data-type');
+        var calculationTypeDKff = $(this).attr('calculation-type');
+
+        console.log(rowData);
+        $("#optionNameDKff").val(rowData[0]);
+        $("#optionBeschreibungDKff").val(rowData[1]);       
+        $(".auswahlTypierungFaktorDKff").val(basisType);
+        $(".typeDynamicCF").val(rowData[3]);
+        $(".subtypeTimeDynamicCF").val(subtypeTimeDynamicCFVal);
+        $(".calculationTypeDKff").val(calculationTypeDKff);
+        //$(".subtypeTimeDynamicCF").show();
+        $(".typeDynamicCF").prop('disabled', 'disabled');
+        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
+        $(".auswahlTypierungFaktorDKff").prop('disabled', 'disabled');
+        $(".calculationTypeDKff").prop('disabled', 'disabled');
+        //alert(id);
+        $('#ePrdDMainIdStore').val(id);
+
+        $("#subtypeTxtBasisFaktor2Name").val("");
+        $(".subtypeTxtBasisFaktor2Calc").val("");
+        $("#subtypeTxtBasisFaktor2Wert").val("");       
+        $("#subtypeTxtBasisFaktor3Name").val("");
+        $(".subtypeTxtBasisFaktor3Calc").val("");
+        $("#subtypeTxtBasisFaktor3Wert").val("");
+        $("#tblOptionenEPrdDKffNotify").hide();
+        $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
+        $('#saveOptType').val('searchClick');
+        $("#dyanamicheKorrekturfaktorenParentContainer").dialog("close");
+        
+        var selVal = rowData[3];
+        //addValidateClassOnFormatDynamicSelection(selVal);
+        setTimeout(function(){ 
+            var typeDynamicCFVal = $(".typeDynamicCF").val();
+            if(typeDynamicCFVal == 'Zeit'){
+                $(".formatDynamicSelOptRow1 option.zeitOption").show();
+                $(".formatDynamicSelOptRow1 option.temperaturOption").hide();
+                $(".formatDynamicSelOptRow2 option.zeitOption").show();
+                $(".formatDynamicSelOptRow2 option.temperaturOption").hide();
+            }
+            if(typeDynamicCFVal == 'Temperatur'){
+                $(".formatDynamicSelOptRow1 option.temperaturOption").show();
+                $(".formatDynamicSelOptRow1 option.zeitOption").hide();
+                $(".formatDynamicSelOptRow2 option.temperaturOption").show();
+                $(".formatDynamicSelOptRow2 option.zeitOption").hide();
+            }
+            var calculationTypeDKff = $(".calculationTypeDKff").val();
+            //alert(subtypeTimeDynamicCFVal);
+            var auswahlTypierungVal = basisType;
+           // alert(typeDynamicCFVal);alert(subtypeTimeDynamicCFVal1);alert(auswahlTypierungVal);
+            visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);
+            //alert(calculationTypeDKff);
+            addValidateClassOnFormatDynamicSelection(subtypeTimeDynamicCFVal);
+            if(calculationTypeDKff && (auswahlTypierungVal == 5 || auswahlTypierungVal == 9)){
+                    basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff); 
+            } 
+            if(auswahlTypierungVal ==5 || auswahlTypierungVal ==4 || auswahlTypierungVal ==8 || auswahlTypierungVal ==9){   
+                addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+            }else{
+                $("#subtypeTxtoptzBezugDkff2").removeClass();
+            }  
+            if(auswahlTypierungVal ==6 || auswahlTypierungVal ==7 || auswahlTypierungVal ==8 || auswahlTypierungVal ==9){ 
+                //alert(auswahlTypierungVal);
+                addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+                addValidateClassOnBezugRangeFaktoreTypeRow2BasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);
+            }else{
+                $("#bezugStartTxt").removeClass();
+                $("#bezugEndTxt").removeClass();
+            }   
+            //$("#basicFaktorRow1 div").show();
+            //$("#basicFaktorRow2 div").show();
+            //$("#basicFaktorRow1 input").val("");
+            //$("#basicFaktorRow2 input").val("");
+        }, 300);
+    });
+    /*15-04-2020 on double click row append data into input and dynamischeKorektorFaktor table data refresh*/
+
+
+    /*16-04-2020 default page load data show parent and child get last id */
+    $("#korrekturFaktorMenuDynamischer").click(function(){
+            getLastIdDataAppendDynamicKorrektorFaktor('',$("#ePrdDMainIdStore").val());
+            setTimeout(function(){ 
+            var selVal = $(".subtypeTimeDynamicCF").val();
+            var basisType = $(".auswahlTypierungFaktorDKff").val();
+            addValidateClassOnFormatDynamicSelection(selVal);
+            
+            $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
+            $("#optionNameDKff").val("");
+            $("#optionBeschreibungDKff").val("");
+            $(".typeDynamicCF").val("");
+            $(".subtypeTimeDynamicCF").val("");
+            $(".typeDynamicCF").prop('disabled', false);
+            $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
+            $(".auswahlTypierungFaktorDKff").prop('disabled', false);
+            $(".calculationTypeDKff").prop('disabled', false);
+            $(".calculationTypeDiv").hide();
+            $("#subtypeTxtOptNameDKff").val("");
+            $("#subtypeTxtoptzBezugDkff").val("");
+            $("#subtypeTxtoptzTempDkff").val("");
+            $("#subtypeTxtoptzFaktoreDkff").val("");
+            $(".subtypeTxtDynamicCF").hide();
+            $("#tblOptionenEPrdDKffNotify").hide();
+            $(".sectionDynamicCF").show();
+            $("#btnOptionHinzEPrdDKffUpdate").hide();
+            $("#btnOptionHinzEPrdDKffStornieren").hide();
+            $("#btnOptionHinzEPrdDKff").show();
+            $("#basicFaktorRow1").hide();
+            $("#basicFaktorRow2").hide();
+            $("#basicFaktorRow3").hide();
+            
+            //$(".subtypeTimeDynamicCF").hide();
+            tblOptionenEPrdDKff.rows().remove().draw();
+            tblGetDyanamicheKorrekturfaktoren.rows().remove().draw();
+            $("#ePrdDMainIdStore").val("");
+            $("#subtypeTxtBasisFaktor2Name").val("");
+            $("#subtypeTxtBasisFaktor2Name").val("");
+            $(".subtypeTxtBasisFaktor2Calc").val("");
+            $("#subtypeTxtBasisFaktor2Wert").val("");
+            $(".auswahlTypierungFaktorDKff").val("");
+            $(".subtypeTxtBasisFaktor2").hide();
+            $("#subtypeTxtBasisFaktor3Name").val("");
+            $(".subtypeTxtBasisFaktor3Calc").val("");
+            $("#subtypeTxtBasisFaktor3Wert").val("");
+            $(".subtypeTxtBasisFaktor3").hide();
+            $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
+            $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
+            $('#saveOptType').val(''); 
+            }, 300);
+            $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
+            $('#saveOptType').val(''); 
+
+    });
+    /*16-04-2020 default page load data show parent and child get last id */
+
+    /*16-04-2020 next button functionality for the dynamische korrektor faktor */
+    $("#DkFeNext").click(function(){
+            var parentDataID = $(this).attr('data-id');
+
+            getLastIdDataShowNextPrevDynamicKorrektorFaktor('DkFeNext',parentDataID);
+            setTimeout(function(){
+            var selVal = $(".subtypeTimeDynamicCF").val();
+            $(".tempInputMainDiv").hide();
+            $(".bezugInputMainDiv").show();
+            //$(".subtypeTxtDynamicCF div").css("width", "32%");
+            //$(".subtypeTxtDynamicCF label").css("width", "44%");
+
+            var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
+            var typeDynamicCFVal = $(".typeDynamicCF").val();
+            var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
+            var calculationTypeDKff = $(".calculationTypeDKff").val();
+            visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);          
+            addValidateClassOnFormatDynamicSelection(selVal);
+            if(calculationTypeDKff && (auswahlTypierungVal == 5 || auswahlTypierungVal == 9)){  
+                    $(".calculationTypeDKff").prop('disabled', 'disabled');     
+                    basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);   
+            } 
+            if(auswahlTypierungVal ==6 || auswahlTypierungVal ==7 || auswahlTypierungVal ==8 || auswahlTypierungVal == 9){ 
+                addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+            }else{
+                $("#bezugStartTxt").removeClass();
+                $("#bezugEndTxt").removeClass();
+            }            
+            setDynamicFaktorDefaultValueIntoSelOpt(typeDynamicCFVal); 
+            }, 500);
+            $('#saveOptType').val('');
+            $('#saveOptType').val('DkFeNext');
+            $("#tempStartTxt").val("");
+            $("#tempEndTxt").val("");
+            $("#bezugStartTxt").val("");
+            $("#bezugEndTxt").val("");
+    });
+    /*16-04-2020 next button functionality for the dynamische korrektor faktor */
+
+    /*16-04-2020 previous button functionality for the dynamische korrektor faktor */
+    $("#DkFePrevious").click(function(){
+            var parentDataID = $(this).attr('data-id');         
+            getLastIdDataShowNextPrevDynamicKorrektorFaktor('DkFePrevious',parentDataID);
+            setTimeout(function(){ 
+            var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
+            var typeDynamicCFVal = $(".typeDynamicCF").val();
+            var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();         
+            var calculationTypeDKff = $(".calculationTypeDKff").val();
+            //var selVal = $(".subtypeTimeDynamicCF").val();
+            visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);
+            addValidateClassOnFormatDynamicSelection(subtypeTimeDynamicCFVal);
+            if(calculationTypeDKff && (auswahlTypierungVal == 5 || auswahlTypierungVal == 9)){  
+                    $(".calculationTypeDKff").prop('disabled', 'disabled');     
+                    basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);   
+            }
+            if(auswahlTypierungVal ==5 || auswahlTypierungVal ==4 || auswahlTypierungVal == 9){ 
+                addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+            }else{
+                $("#subtypeTxtoptzBezugDkff2").removeClass();
+            } 
+            if(auswahlTypierungVal ==6 || auswahlTypierungVal ==7 || auswahlTypierungVal ==8 || auswahlTypierungVal == 9){ 
+                addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+            }else{
+                $("#bezugStartTxt").removeClass();
+                $("#bezugEndTxt").removeClass();
+            } 
+            setDynamicFaktorDefaultValueIntoSelOpt(typeDynamicCFVal);    
+         }, 500);
+            $('#saveOptType').val('');
+            $('#saveOptType').val('DkFePrevious');
+            $("#tempStartTxt").val("");
+            $("#tempEndTxt").val("");
+            $("#bezugStartTxt").val("");
+            $("#bezugEndTxt").val("");
+    });
+    /*16-04-2020 previous button functionality for the dynamische korrektor faktor */
+    
+    /*20-04-2020 On change  auswahl Typierung Faktor - dynamische korrektor faktor */
+    
+    $(".auswahlTypierungFaktorDKff").change(function() {
+    var auswahlTypierungVal = $(this).val();
+    var typeDynamicCFVal = $(".typeDynamicCF").val();
+    var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
+    //var calculationTypeVal = $(".calculationTypeDKff").val();
+
+    $("#basicFaktorRow1 input").val("");
+    $("#basicFaktorRow2 input").val("");
+    $("#basicFaktorRow3 input").val("");
+    $("#basicFaktorRow4 input").val("");    
+
+        if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){          
+        
+            visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);          
+            if(auswahlTypierungVal ==5 || auswahlTypierungVal ==9){ 
+                basicPlus2ConditionMultiplayCalculationType(1);
+            }
+            if(auswahlTypierungVal ==5 || auswahlTypierungVal ==4 || auswahlTypierungVal ==9){  
+                addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+            }else{
+                $("#subtypeTxtoptzBezugDkff2").removeClass();
+            }
+            if(auswahlTypierungVal ==6 || auswahlTypierungVal ==7 || auswahlTypierungVal ==8 || auswahlTypierungVal ==9){ 
+                addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+                addValidateClassOnBezugRangeFaktoreTypeRow2BasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);
+            }else{
+                $("#bezugStartTxt").removeClass();
+                $("#bezugEndTxt").removeClass();
+                $("#tempStartTxt").removeClass();
+                $("#tempEndTxt").removeClass();
+                $("#bezugStartTxt2").removeClass();
+                $("#bezugEndTxt2").removeClass();
+                $("#tempStartTxt2").removeClass();
+                $("#tempEndTxt2").removeClass();
+            }
+        }
+    });
+    /*20-04-2020 On change  auswahl Typierung Faktor - dynamische korrektor faktor */
+
+    /*16-06-2020 On change calculation type*/ 
+    $(".calculationTypeDKff").change(function() {
+        var calculationTypeVal = $(this).val();
+        $("#basicFaktorRow1 input").val("");
+        $("#basicFaktorRow2 input").val("");
+        $("#basicFaktorRow3 input").val("");
+        $("#basicFaktorRow4 input").val("");
+        if(calculationTypeVal == ''){
+            $('#basicFaktorRow1').hide();
+            $('#basicFaktorRow3').hide();
+            $('#basicFaktorRow2').hide();
+            $('#basicFaktorRow4').hide();
+        }
+        basicPlus2ConditionMultiplayCalculationType(calculationTypeVal);
+    });
+    /*16-06-2020 On change calculation type*/ 
+    
+    /*27-04-2020 last button functionality for the dynamische korrektor faktor */
+    $("#DkFeLast").click(function(){            
+            getLastIdDataShowNextPrevDynamicKorrektorFaktor('DkFeLast','');
+            setTimeout(function(){ 
+            var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
+            var typeDynamicCFVal = $(".typeDynamicCF").val();
+            var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
+            var calculationTypeDKff = $(".calculationTypeDKff").val();
+            visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);
+            addValidateClassOnFormatDynamicSelection(subtypeTimeDynamicCFVal);
+            if(calculationTypeDKff && (auswahlTypierungVal == 5 || auswahlTypierungVal == 9)){
+                    $(".calculationTypeDKff").prop('disabled', 'disabled');         
+                    basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);   
+            }
+            if(auswahlTypierungVal ==5 || auswahlTypierungVal ==4 || auswahlTypierungVal == 9){ 
+                addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+            }else{
+                $("#subtypeTxtoptzBezugDkff2").removeClass();
+            }
+            if(auswahlTypierungVal ==6 || auswahlTypierungVal ==7 || auswahlTypierungVal ==8 || auswahlTypierungVal == 9){ 
+                addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+                addValidateClassOnBezugRangeFaktoreTypeRow2BasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);
+            }else{
+                $("#bezugStartTxt").removeClass();
+                $("#bezugEndTxt").removeClass();
+                $("#tempStartTxt").removeClass();
+                $("#tempEndTxt").removeClass();
+                $("#bezugStartTxt2").removeClass();
+                $("#bezugEndTxt2").removeClass();
+                $("#tempStartTxt2").removeClass();
+                $("#tempEndTxt2").removeClass();
+            }
+            setDynamicFaktorDefaultValueIntoSelOpt(typeDynamicCFVal);           
+         }, 500);
+            $('#saveOptType').val('');
+            $('#saveOptType').val('DkFePrevious');
+            $("#tempStartTxt").val("");
+            $("#tempEndTxt").val("");
+            $("#bezugStartTxt").val("");
+            $("#bezugEndTxt").val("");
+    });
+    /*27-04-2020 last button functionality for the dynamische korrektor faktor */
+
+    /*27-04-2020 first button functionality for the dynamische korrektor faktor */
+    $("#DkFeFirst").click(function(){           
+            getLastIdDataShowNextPrevDynamicKorrektorFaktor('DkFeFirst','');
+            setTimeout(function(){ 
+            var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
+            var typeDynamicCFVal = $(".typeDynamicCF").val();
+            var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
+            //var selVal = $(".subtypeTimeDynamicCF").val();
+            visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);
+            addValidateClassOnFormatDynamicSelection(subtypeTimeDynamicCFVal);
+            var calculationTypeDKff = $(".calculationTypeDKff").val();
+            if(calculationTypeDKff && (auswahlTypierungVal == 5 || auswahlTypierungVal == 9)){
+                    $(".calculationTypeDKff").prop('disabled', 'disabled');         
+                    basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);   
+            }
+            if(auswahlTypierungVal ==5 || auswahlTypierungVal ==4 || auswahlTypierungVal == 9){ 
+                addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+            }else{
+                $("#subtypeTxtoptzBezugDkff2").removeClass();
+            } 
+            if(auswahlTypierungVal ==6 || auswahlTypierungVal ==7 || auswahlTypierungVal ==8 || auswahlTypierungVal == 9){ 
+                addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+                addValidateClassOnBezugRangeFaktoreTypeRow2BasicBetweeen(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);
+            }else{
+                $("#bezugStartTxt").removeClass();
+                $("#bezugEndTxt").removeClass();
+                $("#tempStartTxt").removeClass();
+                $("#tempEndTxt").removeClass();
+                $("#bezugStartTxt2").removeClass();
+                $("#bezugEndTxt2").removeClass();
+                $("#tempStartTxt2").removeClass();
+                $("#tempEndTxt2").removeClass();
+            }
+            setDynamicFaktorDefaultValueIntoSelOpt(typeDynamicCFVal); 
+         }, 500);
+            $('#saveOptType').val('');
+        $('#saveOptType').val('DkFePrevious');
+        $("#tempStartTxt").val("");
+        $("#tempEndTxt").val("");
+        $("#bezugStartTxt").val("");
+        $("#bezugEndTxt").val("");
+    });
+    /*27-04-2020 first button functionality for the dynamische korrektor faktor */
+
+    $(".formatDynamicSelOptRow1").change(function() {
+        
+        //addValidateClassOnFormatDynamicSelection(selectedOptionRow1);
+            var fktr = $('.auswahlTypierungFaktorDKff').val();
+            var type = $(".typeDynamicCF").val();
+            var subType = $(this).val();
+            addValidateClassOnRightSelecOptRow1VisibilityBezugTemp(fktr,type,subType);
+            addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(fktr,type,subType);
+            $(this).val(subType);
+    });
+
+    $(".formatDynamicSelOptRow2").change(function() {
+        var fktr = $('.auswahlTypierungFaktorDKff').val();
+        var type = $(".typeDynamicCF").val();
+        var subType = $(this).val();
+        addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(fktr,type,subType);
+        addValidateClassOnBezugRangeFaktoreTypeRow2BasicBetweeen(fktr,type,subType);
+        $(this).val(subType);
+    });
+//DYNAMIC KORREKTOR FAKTOR END
