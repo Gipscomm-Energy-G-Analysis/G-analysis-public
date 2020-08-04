@@ -221,14 +221,8 @@ function firstQuery(){
     let dataTranslator = null,
         chartData = [],
         sumDay = 0;
-    if(nameDB == "001_heco"/* || nameDB == "002_badber"*/ || nameDB == "003_tauchzor"){
-      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-    }
-    else {
-      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-    }
+    dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
-    console.log(chartData);
     dataTranslator.sumHours();
     chartData = dataTranslator.translate(4);
     for(let i = 0; i < chartData.length; i++){
@@ -244,7 +238,7 @@ function firstQuery(){
     $("#consumption-day_1").text(Math.round(sumDay) + " kWh");
    updateChart(chartData, nameMst_1); }
   else{$("#consumption-day_1").text(Math.round(sumDay) + " kWh (Data not available/No operation) "+nameMst_1);
-      alert("Data not available/No operation in "+nameMst_1);}
+      alert("Data not available/No operation in " + nameMst_1);}
   });
 }
 
@@ -255,12 +249,8 @@ function secondQuery(){
     let dataTranslator = null,
         chartData = [],
         sumDay = 0;
-    if(nameDB == "001_heco" /*|| nameDB == "002_badber" */|| nameDB == "003_tauchzor"){
-      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-    }
-    else {
-      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-    }
+    dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+
     dataTranslator.sumHours();
     chartData = dataTranslator.translate(4);
     for(let i = 0; i < chartData.length; i++){
@@ -285,12 +275,8 @@ function thirdQuery(){
     let dataTranslator = null,
         chartData = [],
         sumDay = 0;
-    if(nameDB == "001_heco" /*|| nameDB == "002_badber" */|| nameDB == "003_tauchzor"){
-      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-    }
-    else {
-      dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-    }
+    dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+
     dataTranslator.sumHours();
     chartData = dataTranslator.translate(4);
     for(let i = 0; i < chartData.length; i++){
@@ -302,9 +288,13 @@ function thirdQuery(){
       sumDay += chartData[i].y;
     }
 
-  if(sumDay>0){updateChart(chartData, nameMst_3);
-    $("#consumption-day_3").text(Math.round(sumDay) + " kWh");}
-  else{$("#consumption-day_3").text(sumDay + " kWh (Data not available/No operation)"+nameMst_3);}
+    if(sumDay>0){
+        updateChart(chartData, nameMst_3);
+        $("#consumption-day_3").text(Math.round(sumDay) + " kWh");
+    }
+    else{
+        $("#consumption-day_3").text(sumDay + " kWh (Data not available/No operation)"+nameMst_3);
+    }
   });
 }
 
