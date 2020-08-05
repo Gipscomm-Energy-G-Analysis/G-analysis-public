@@ -742,12 +742,6 @@ function Formula() {
   Formula.prototype.removeLastElement = function (){
     this.formula.pop();
   }
-  Formula.prototype.calculate = function(){
-
-  }
-  Formula.prototype.getResult = function(){
-
-  }
   Formula.prototype.resetFormula = function(){
     this.measurementObjectToCalculate = null;
     this.formula = [];

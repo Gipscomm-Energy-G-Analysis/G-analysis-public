@@ -249,17 +249,19 @@ test('function validDropMessstelle : Should return true if the order of elements
 
     t.comment("#");
 
-    t.plan(15);
+    t.plan(18);
 
     t.deepEqual(fn.validDropMessstelle("")("mst_37")("mst_109 - mst_120 /"), "REFERENCE");
     t.deepEqual(fn.validDropMessstelle("mst_37")("mst_37")("mst_109 - mst_120 / "), "SELF");
     t.deepEqual(fn.validDropMessstelle("mst_35")("mst_37")("mst_109 - mst_120 "), "ORDER");
     t.deepEqual(fn.validDropMessstelle("mst_35")("mst_37")("( mst_109 - mst_120 )"), "ORDER");
+    t.deepEqual(fn.validDropMessstelle("mst_35")("mst_37")("( mst_109 - 120 )"), "ORDER");
     t.deepEqual(fn.validDropMessstelle("mst_35")("mst_37")("mst_109 - mst_120 /"), "VALID");
 
     t.deepEqual(fn.validDropMessstelle("")("mst_93")("mst_178 + mst_175 -"), "REFERENCE");
     t.deepEqual(fn.validDropMessstelle("mst_67")("mst_67")("mst_178 + mst_175 - mst_208 "), "SELF");
     t.deepEqual(fn.validDropMessstelle("mst_67")("mst_777")("mst_178 + mst_175 - mst_208 "), "ORDER");
+    t.deepEqual(fn.validDropMessstelle("mst_67")("mst_777")("mst_178 + mst_175 - mst_208 * 19"), "ORDER");
     t.deepEqual(fn.validDropMessstelle("mst_67")("mst_777")("mst_178 + mst_175 - mst_208 + ("), "VALID");
     t.deepEqual(fn.validDropMessstelle("mst_38")("mst_93")("mst_178 + mst_175 -"), "VALID");
 
@@ -267,6 +269,7 @@ test('function validDropMessstelle : Should return true if the order of elements
     t.notDeepEqual(fn.validDropMessstelle("mst_67")("mst_17")("mst_118 * mst_123 + mst_124 "), "SELF");
     t.notDeepEqual(fn.validDropMessstelle("mst_777")("mst_777")("mst_118 * mst_123 + mst_124 / "), "ORDER");
     t.notDeepEqual(fn.validDropMessstelle("mst_777")("mst_777")("mst_118 * mst_123 + mst_124 ) "), "ORDER");
+    t.notDeepEqual(fn.validDropMessstelle("mst_777")("mst_777")("mst_118 * mst_123 + mst_124 ) + 99"), "VALID");
     t.notDeepEqual(fn.validDropMessstelle("mst_38")("mst_93")("mst_118 * mst_123 + mst_124"), "VALID");
 
     t.comment("#");
