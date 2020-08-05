@@ -412,14 +412,11 @@ function firstQuery(){
         let dataTranslator = null,
         chartData = [],
         sumMonth = 0;
-        if(nameDB == "001_heco"  || nameDB == "003_tauchzor"){  				//|| nameDB == "002_badber"
-            dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-        }
-        else {
-            dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-        }
-        console.log(chartData);
+
+        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+
         dataTranslator.sumDays(year, month);
+
         chartData = dataTranslator.translate(4);
         for(let i = 0; i < chartData.length; i++) {
             tblChartData_1.row.add([

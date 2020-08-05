@@ -4,6 +4,11 @@ const TranslationType = {
   ENERGY_DATA_02: 2
 }
 
+const isCountingUp =
+    data =>
+    data.every((a, i) => )
+
+
 function DataTranslator(translationType, inData){
   this.translationType = translationType;
   this.inData = inData;
