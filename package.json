@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/Gipscomm-Energy-G-Analysis/G-Analysis---Energiemanagement#readme",
   "dependencies": {
-    "tape": "^5.0.1"
+    "tape": "^5.0.1",
+    "uglify-js": "^3.10.0",
+    "uglifycss": "0.0.29",
+    "uglifyjs": "^2.4.11"
   }
 }

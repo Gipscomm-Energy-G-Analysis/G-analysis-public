@@ -7,7 +7,7 @@ DataMachine.prototype.runQuery = function(a, d, e) {
 };
 
 function performAjaxCall(a, d, e) {
-    return new Promise(function(c, g) {
+    return new Promise(function(resolve, reject) {
         $.ajax({
             type: "POST",
             async: !0,
@@ -18,8 +18,12 @@ function performAjaxCall(a, d, e) {
                 liegID: $("#liegID").val(),
                 query: e
             },
-            success: function(a) {
-                0 < a.length ? c(a) : g("Ajax Call failed!No data has been returned.")
+            success: result => {
+                if(result.length > 0) {
+                    resolve(result)
+                } else {
+                    reject("Ajax Call failed!No data has been returned.")
+                }
             }
         })
     })
