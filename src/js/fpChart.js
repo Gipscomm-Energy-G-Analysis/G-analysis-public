@@ -23,7 +23,7 @@ const scpChart =
                     , {hex: "#F6B53F", name: "Yellow"}
                     , {hex: "#6FAAB0", name: "Blue"}
                     ]
-            this.chooseFlag = hx => scpCore.head(colors().filter(a => scpCore.equal(hx)(a.hex))).name;
+            this.chooseFlag = hx => head(colors().filter(a => equal(hx)(a.hex))).name;
             this.updateChart = newDataSeries => nameSeries => {
 
                 let chart = $("#container").ejChart("instance");
@@ -39,7 +39,7 @@ const scpChart =
                 chart.redraw();
                 return [chart.model.series[nSeries].fill, nSeries];
             };
-            this.sumSeries = data => data.map(a => a.y).reduce(scpCore.sum);
+            this.sumSeries = data => data.map(a => a.y).reduce(sum);
             this.fillTable = data => tbl => record => {
                 const addRow = tbl => tbl.row.add;
                 data.map( record ).forEach( addRow );
