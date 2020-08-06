@@ -13504,3 +13504,24 @@ function validateStartEndInputBezugFaktorTypeBasicBetween(faktorType){
         }
      }
 }
+
+/*module.exports =
+    { isEmpty
+    , isOperator
+    , isNumeric
+    , isUnit
+    , isMessstelle
+    , isOpeningParentheses
+    , isClosingParentheses
+    , moreOpeningThanClosingParentheses
+    , isSelfReference
+    , getLastElement
+    , allParenthesesClosed
+    , validDropMessstelle
+    , validDropUnit
+    , validInputNumber
+    , validInputOperator
+    , validInputOpeningParentheses
+    , validInputClosingParentheses
+    , readyToSave
+}*/
