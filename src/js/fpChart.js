@@ -26,26 +26,25 @@ const scpChart =
             this.chooseFlag = hx => head(colors().filter(a => equal(hx)(a.hex))).name;
             this.updateChart = newDataSeries => nameSeries => {
 
-                let chart = this.getChart("#container") ;
-                const nSeries = chart.model.series.length;
+                let chart = this.getChart("#container")
+                const nSeries = chart.model.series.length
                 chart.model.series.push({
                       type: chartType
                     , name: nameSeries
-                    , points: newDataSeries
+                    , points: newDataSeries.map(
+                            a => ({name: a.name, x: a.x + ".", y: a.y})
+                        )
                     , xName: "x"
                     , yName: "y"
-                });
+                })
 
-                chart.redraw();
-                return [chart.model.series[nSeries].fill, nSeries];
+                chart.redraw()
+                return [chart.model.series[nSeries].fill, nSeries]
             };
             this.sumSeries = data => Math.round(data.map(a => a.y).reduce(sum));
             this.fillTable = data => tbl => recordFn => {
-
                 data.map( recordFn ).forEach( tbl.row.add );
-
                 tbl.draw();
             };
-
         }
     );

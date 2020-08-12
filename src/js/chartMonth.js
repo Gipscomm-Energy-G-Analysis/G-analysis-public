@@ -141,48 +141,48 @@ let notes = [];
 let msts = [];
 
 const updateNotes =
-mstID =>
-mstName =>
-mstColor =>
-$.ajax({
-    type: 'POST',
-    async: true,
-    url: 'php/readNote.php',
-    data: {
-        ins: "read",
-        nameDB,
-        mstID,
-        type: "month"
-    },
-    success: function (records) {
+    mstID =>
+    mstName =>
+    mstColor =>
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: 'php/readNote.php',
+        data: {
+            ins: "read",
+            nameDB,
+            mstID,
+            type: "month"
+        },
+        success: function (records) {
 
-        insJson = JSON.parse(records);
+            insJson = JSON.parse(records);
 
-        console.log(insJson);
+            console.log(insJson);
 
-        if (insJson.length > 0) {
-            insJson
-            .filter(
-                a => a.ident.split("/")[0] === year && a.ident.split("/")[1] === month
-            )
-            .forEach(
-                a => {
-                    scpChart.appendTo ("#bemList")
-                    (scpChart.note(
-                        a.ident
-                    )(
-                        mstName
-                    )(
-                        mstColor
-                    )(
-                        a.bemerkung
-                    ));
+            if (insJson.length > 0) {
+                insJson
+                .filter(
+                    a => a.ident.split("/")[0] === year && a.ident.split("/")[1] === month
+                )
+                .forEach(
+                    a => {
+                        scpChart.appendTo ("#bemList")
+                        (scpChart.note(
+                            a.ident
+                        )(
+                            mstName
+                        )(
+                            mstColor
+                        )(
+                            a.bemerkung
+                        ));
 
-                    notes.push([a.ident, mstName, a.mst_ID, mstColor, a.bemerkung]);
-                }
-            )
+                        notes.push([a.ident, mstName, a.mst_ID, mstColor, a.bemerkung]);
+                    }
+                )
+            }
         }
-    }
 });
 
 if(chartType == "line"){
@@ -303,10 +303,6 @@ $("#diagSpeichern").click(function() {
 });
 $("#container") .ejChart({
     pointRegionClick: function (args) {
-        console.log(args);
-
-        console.log("NrPoint: " + args.data.region.Region.PointIndex);
-        console.log("Dataseries: " + args.data.region.SeriesIndex);
 
         $("#notePopup").dialog({
             resize: "auto",
@@ -341,8 +337,7 @@ $("#container") .ejChart({
         $("#bemerkungNote").val(
             toTake.length === 1 ? toTake[0][4] : ""
         )
-        console.log("notes");
-        console.log(notes);
+
     },
     legend: {
         position: "top"
@@ -370,7 +365,6 @@ if(queryString_1 != "" && queryString_2 != "" && queryString_3 != ""){
     secondQuery();
     thirdQuery();
 }
-
 else if (queryString_1 != "" && queryString_2 != "") {
     firstQuery();
     secondQuery();
@@ -378,7 +372,6 @@ else if (queryString_1 != "" && queryString_2 != "") {
 else if (queryString_1 != "") {
     firstQuery();
 }
-
 else {
     console.log("There're no query data!!");
 }
@@ -395,20 +388,24 @@ function firstQuery(){
 
         dataTranslator.sumDays(year, month)
 
+        // Translates the data to a format the charts understand
         chartData = dataTranslator.translate(4)
-
-        alert("sums month mst1")
 
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_1)(
             a => [a.name, a.x + "." + month + "." + year, a.y]
         )
 
+        // Updates the chart and gets the color of the current series as a return value
+        const [ colorMst, series ] = scpChart.updateChart(chartData)(nameMst_1)
+
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_1").text( scpChart.sumSeries(chartData) + " kWh" )
 
-        colorMst = updateChart(chartData, nameMst_1);
-        msts.push([sessionStorage.getItem("mstID_1"),nameMst_1]);
+        // Sets the color of the text for the sum of the month
+        $("#consumption-month_1").css("color", colorMst)
+
+        msts.push([sessionStorage.getItem("mstID_1"), nameMst_1])
 
         updateNotes(
             sessionStorage.getItem("mstID_1")
@@ -427,27 +424,26 @@ function secondQuery(){
         let dataTranslator = null,
         chartData = [],
         sumMonth = 0;
-        if(nameDB == "001_heco" || nameDB == "003_tauchzor"){					// || nameDB == "002_badber"
-            dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-        }
-        else {
-            dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-        }
+        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
         dataTranslator.sumDays(year, month);
         chartData = dataTranslator.translate(4);
-        for(let i = 0; i < chartData.length; i++){
-            tblChartData_2.row.add([
-                chartData[1].name,
-                chartData[i].x + "." + month + "." + year,
-                chartData[i].y
-            ]).draw();
-            sumMonth += chartData[i].y;
-        }
-	if(sumMonth>0){$("#consumption-month_2").text( Math.round(sumMonth) + " kWh" );}
-	else{$("#consumption-month_2").text(Math.round(sumMonth) + " kWh (Data not available/No operation)"+nameMst_2);} //06-02-2020 edited raj
-        colorMst2 = updateChart(chartData, nameMst_2);
-        msts.push([sessionStorage.getItem("mstID_2"),nameMst_2]);
+
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_2)(
+            a => [a.name, a.x + "." + month + "." + year, a.y]
+        )
+
+        // Updates the chart and gets the color of the current series as a return value
+        const [ colorMst2, series2 ] = scpChart.updateChart(chartData)(nameMst_2)
+
+        // Sums up all the values of the month for the given Messstelle
+        $("#consumption-month_2").text( scpChart.sumSeries(chartData) + " kWh" )
+
+        // Sets the color of the text for the sum of the month
+        $("#consumption-month_2").css("color", colorMst2)
+
+        msts.push([sessionStorage.getItem("mstID_2"), nameMst_2])
 
         updateNotes(
             sessionStorage.getItem("mstID_2")
@@ -462,32 +458,30 @@ function secondQuery(){
 function thirdQuery(){
     dataMachine.runQuery("read", nameDB, queryString_3)
     .then(JSON.parse)
-    .then(function(data){
+    .then(function(data) {
         let dataTranslator = null,
         chartData = [],
         sumMonth = 0;
-        if(nameDB == "001_heco"  || nameDB == "003_tauchzor"){					//|| nameDB == "002_badber"
-            dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-        }
-        else {
-            dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-        }
+        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
         dataTranslator.sumDays(year, month);
         chartData = dataTranslator.translate(4);
-        for(let i = 0; i < chartData.length; i++){
-            tblChartData_3.row.add([
-                chartData[1].name,
-                chartData[i].x + "." + month + "." + year,
-                chartData[i].y
-            ]).draw();
-            sumMonth += chartData[i].y;
-        }
-	if(sumMonth>0){$("#consumption-month_3").text( Math.round(sumMonth) + " kWh" );}
-	else{$("#consumption-month_3").text(Math.round(sumMonth) + " kWh (Data not available/No operation)"+nameMst_3);} //06-02-2020 edited raj
 
-        colorMst3 = updateChart(chartData, nameMst_3);
-        msts.push([sessionStorage.getItem("mstID_3"),nameMst_3]);
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_3)(
+            a => [a.name, a.x + "." + month + "." + year, a.y]
+        )
+
+        // Updates the chart and gets the color of the current series as a return value
+        const [ colorMst3, series3 ] = scpChart.updateChart(chartData)(nameMst_3)
+
+        // Sums up all the values of the month for the given Messstelle
+        $("#consumption-month_3").text( scpChart.sumSeries(chartData) + " kWh" )
+
+        // Sets the color of the text for the sum of the month
+        $("#consumption-month_3").css("color", colorMst3)
+
+        msts.push([sessionStorage.getItem("mstID_3"), nameMst_3])
 
         updateNotes(
             sessionStorage.getItem("mstID_3")
@@ -497,20 +491,4 @@ function thirdQuery(){
             colorMst3
         )
     });
-}
-
-function updateChart(newDataSeries, nameSeries){
-    let chart = $("#container") .ejChart("instance");
-    const nSeries = chart.model.series.length;
-
-    chart.model.series.push({
-        type: chartType,
-        name: nameSeries,
-        dataSource: newDataSeries,
-        xName: "x",
-        yName: "y"
-    });
-    chart.redraw();
-
-    return chart.model.series[nSeries].fill
 }
