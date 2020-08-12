@@ -8,12 +8,12 @@ const scpChart =
     .freeze (
         new function () {
             this.getChart = sel => $(sel).ejChart("instance");
-            this.note = ident => mst => color => note =>
+            this.note = ident => mst => color => note_ =>
                 "<div class='bem'>" +
                 "<image src='images/icons/notepad.svg' style='height:18px;width:18px;'/>" +
                 "<label style='margin-right:10px;'> &nbsp;" + ident + " </label>" +
                 "<label style='margin-right:10px;color:" + color + "'>" + mst + " </label>" +
-                "<label>" + note + " </label>" +
+                "<label>" + note_ + " </label>" +
                 "</div>";
             this.appendTo = elem => sth => $(elem).append(sth);
             this.formatDate = dt => dt.length === 1 ? "0" + dt : dt;
@@ -26,7 +26,7 @@ const scpChart =
             this.chooseFlag = hx => head(colors().filter(a => equal(hx)(a.hex))).name;
             this.updateChart = newDataSeries => nameSeries => {
 
-                let chart = $("#container").ejChart("instance");
+                let chart = this.getChart("#container") ;
                 const nSeries = chart.model.series.length;
                 chart.model.series.push({
                       type: chartType
@@ -39,83 +39,13 @@ const scpChart =
                 chart.redraw();
                 return [chart.model.series[nSeries].fill, nSeries];
             };
-            this.sumSeries = data => data.map(a => a.y).reduce(sum);
-            this.fillTable = data => tbl => record => {
-                const addRow = tbl => tbl.row.add;
-                data.map( record ).forEach( addRow );
+            this.sumSeries = data => Math.round(data.map(a => a.y).reduce(sum));
+            this.fillTable = data => tbl => recordFn => {
+
+                data.map( recordFn ).forEach( tbl.row.add );
 
                 tbl.draw();
             };
-            this.updateNotes =
-                mstID =>
-                mstName =>
-                mstColor =>
-                ser =>
-                fetch('php/readNote.php',
-                    { method: 'POST'
-                    , body:
-                        { ins: "read"
-                        , nameDB
-                        , mstID
-                        , type: "day"
-                        }
-                    })
-                    .then(JSON.parse)
-                    .then(records => {
 
-
-
-                            console.log("this.updateNotes : records");
-                            console.log(records);
-
-                            if (greaterZero(records)) {
-                                records
-                                .filter(
-                                    a => head(splitSlashes(a.ident)) === year && a.ident.split("/")[1] === month && a.ident.split("/")[2] === scpChart.formatDate(day)
-                                )
-                                .forEach(
-                                    a => {
-                                        scpChart.appendTo ("#bemList")
-                                        (scpChart.note(
-                                            a.ident
-                                        )(
-                                            mstName
-                                        )(
-                                            mstColor
-                                        )(
-                                            a.bemerkung
-                                        ));
-
-                                        notes.push([a.ident, mstName, a.mst_ID, mstColor, a.bemerkung]);
-                                    }
-                                )
-                            }
-
-                            let chart = $("#container") .ejChart("instance");
-
-                            notes
-                            .forEach(
-                                a =>
-                                chart
-                                .model
-                                .series[ser]
-                                .points
-                                .forEach (
-                                    b => {
-                                        if(a[1] === b.name && head(a).split("/")[3] === b.x)
-                                        {
-                                            b.marker = {
-                                                shape: 'image',
-                                                size: {
-                                                    height: 50, width: 50
-                                                },
-                                                imageUrl: "images/icons/flag3" + scpChart.chooseFlag(a[3]) + ".png"
-                                            }
-                                        }
-                                    }
-                                )
-                            )
-                            chart.redraw();
-                        });
         }
     );

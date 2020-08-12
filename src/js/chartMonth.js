@@ -140,28 +140,6 @@ csOptions = null;
 let notes = [];
 let msts = [];
 
-const note =
-ident =>
-mst =>
-color =>
-note =>
-"<div class='bem'>" +
-"<label style='margin-right:10px;'>" + ident + " </label>" +
-"<label style='margin-right:10px;color:" + color + "'>" + mst + " </label>" +
-"<label>"+ note + " </label>" +
-"</div>";
-
-const appendTo =
-idTo =>
-sth =>
-$(idTo)
-.append(sth);
-
-const formatDate =
-dt =>
-dt.length === 1 ?
-"0" + dt : dt;
-
 const updateNotes =
 mstID =>
 mstName =>
@@ -189,8 +167,8 @@ $.ajax({
             )
             .forEach(
                 a => {
-                    appendTo ("#bemList")
-                    (note(
+                    scpChart.appendTo ("#bemList")
+                    (scpChart.note(
                         a.ident
                     )(
                         mstName
@@ -269,8 +247,8 @@ $("#btnNoteOk").click(function() {
                 success: function (records) {
                     alert("Daten gespeichert!");
 
-                    appendTo ("#bemList")
-                    (note(
+                    scpChart.appendTo ("#bemList")
+                    (scpChart.note(
                         $("#identNote").val()
                     )(
                         $("#mstNote").val()
@@ -345,7 +323,7 @@ $("#container") .ejChart({
         });
 
         $("#identNote").val(
-            year + "/" + month + "/" + formatDate(String(args.data.region.Region.PointIndex + 1))
+            year + "/" + month + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
         )
         $("#mstIDNote").val(
             msts[args.data.region.SeriesIndex][0]
@@ -408,27 +386,26 @@ else {
 function firstQuery(){
     dataMachine.runQuery("read", nameDB, queryString_1)
     .then(JSON.parse)
-    .then(function(data){
+    .then(function(data) {
         let dataTranslator = null,
         chartData = [],
         sumMonth = 0;
 
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data)
 
-        dataTranslator.sumDays(year, month);
+        dataTranslator.sumDays(year, month)
 
-        chartData = dataTranslator.translate(4);
-        for(let i = 0; i < chartData.length; i++) {
-            tblChartData_1.row.add([
-                chartData[1].name,
-                chartData[i].x + "." + month + "." + year,
-                chartData[i].y
-            ]).draw();
-            sumMonth += chartData[i].y;
-        }
-	if(sumMonth>0){$("#consumption-month_1").text( Math.round(sumMonth) + " kWh" );}
-	else{alert("Data not available/No operation"+nameMst_1);
-		$("#consumption-month_1").text( Math.round(sumMonth) + " kWh (Data not available/No operation)"+nameMst_1);}
+        chartData = dataTranslator.translate(4)
+
+        alert("sums month mst1")
+
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_1)(
+            a => [a.name, a.x + "." + month + "." + year, a.y]
+        )
+
+        // Sums up all the values of the month for the given Messstelle
+        $("#consumption-month_1").text( scpChart.sumSeries(chartData) + " kWh" )
 
         colorMst = updateChart(chartData, nameMst_1);
         msts.push([sessionStorage.getItem("mstID_1"),nameMst_1]);
