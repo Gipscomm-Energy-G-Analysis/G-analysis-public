@@ -140,50 +140,8 @@ csOptions = null;
 let notes = [];
 let msts = [];
 
-const updateNotes =
-    mstID =>
-    mstName =>
-    mstColor =>
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: 'php/readNote.php',
-        data: {
-            ins: "read",
-            nameDB,
-            mstID,
-            type: "month"
-        },
-        success: function (records) {
-
-            insJson = JSON.parse(records);
-
-            console.log(insJson);
-
-            if (insJson.length > 0) {
-                insJson
-                .filter(
-                    a => a.ident.split("/")[0] === year && a.ident.split("/")[1] === month
-                )
-                .forEach(
-                    a => {
-                        scpChart.appendTo ("#bemList")
-                        (scpChart.note(
-                            a.ident
-                        )(
-                            mstName
-                        )(
-                            mstColor
-                        )(
-                            a.bemerkung
-                        ));
-
-                        notes.push([a.ident, mstName, a.mst_ID, mstColor, a.bemerkung]);
-                    }
-                )
-            }
-        }
-});
+const updateNotesMonth =
+    scpChart.updateNotes("month")
 
 if(chartType == "line"){
     csOptions = {
@@ -407,13 +365,18 @@ function firstQuery(){
 
         msts.push([sessionStorage.getItem("mstID_1"), nameMst_1])
 
-        updateNotes(
+        updateNotesMonth(
             sessionStorage.getItem("mstID_1")
         )(
-            sessionStorage.getItem("nameMst_1")
+            nameMst_1
         )(
             colorMst
+        )(
+            series
         )
+
+        console.log("series :")
+        console.log(series)
     });
 }
 
@@ -445,12 +408,14 @@ function secondQuery(){
 
         msts.push([sessionStorage.getItem("mstID_2"), nameMst_2])
 
-        updateNotes(
+        updateNotesMonth(
             sessionStorage.getItem("mstID_2")
         )(
             sessionStorage.getItem("nameMst_2")
         )(
             colorMst2
+        )(
+            series2
         )
     });
 }
@@ -483,12 +448,14 @@ function thirdQuery(){
 
         msts.push([sessionStorage.getItem("mstID_3"), nameMst_3])
 
-        updateNotes(
+        updateNotesMonth(
             sessionStorage.getItem("mstID_3")
         )(
             sessionStorage.getItem("nameMst_3")
         )(
             colorMst3
+        )(
+            series3
         )
     });
 }

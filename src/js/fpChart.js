@@ -46,5 +46,103 @@ const scpChart =
                 data.map( recordFn ).forEach( tbl.row.add );
                 tbl.draw();
             };
+            this.selectNotes =
+                type =>
+                notes_ =>
+                equal(type)("month") ?
+                notes_.filter(
+                    a =>
+                    a.ident.split("/")[0] === year
+                    && a.ident.split("/")[1] === month
+                ) : false
+
+            this.addToList =
+                mstName =>
+                mstColor =>
+                notes_ => {
+                notes_
+                .forEach(
+                    rec => {
+                        this.appendTo ("#bemList")
+                        ( this.note (rec.ident)(mstName)(mstColor)(rec.bemerkung) )
+
+                        notes.push([rec.ident, mstName, rec.mst_ID, mstColor, rec.bemerkung])
+                    }
+                )
+                return notes
+            }
+
+            this.matchNote =
+                note_ =>
+                point_ => {
+                    const splittedDate = head(note_).split("/")
+
+                    console.log("note");
+                    console.log(note_);
+
+                    console.log("point");
+                    console.log(point_);
+
+                    console.log("is same mst");
+                    console.log(note_[1] + " , " + point_.name);
+
+                    console.log("is same date");
+                    console.log(splittedDate[decr(splittedDate.length)] + "." + " , " + point_.x);
+
+                    return equal(note_[1])(point_.name)
+                    && equal(splittedDate[decr(splittedDate.length)] + ".")(point_.x)
+
+                }
+
+            this.addFlags =
+                series =>
+                notes_ => {
+                    let chart = this.getChart("#container")
+
+                    console.log("in AddFlags");
+
+                    console.log("notes");
+                    console.log(notes);
+
+                    notes_
+                    .forEach(
+                        nt =>
+                        chart.model.series[series].points
+                        .forEach(
+                            pt => {
+                                if( this.matchNote(nt)(pt) ) {
+                                    console.log("ADD FLAG AT POINT :")
+                                    console.log(pt);
+
+                                    pt.marker =
+                                        { shape : "image"
+                                        , size :
+                                            { height : 50
+                                            , width : 50
+                                            }
+                                        , imageUrl : "dist/images/icons/flag3Full" + scpChart.chooseFlag(nt[3]) + ".png"
+                                        }
+                                }
+                            }
+                        )
+                    )
+                    chart.redraw()
+                }
+
+            this.updateNotes =
+                type =>
+                mstID =>
+                mstName =>
+                mstColor =>
+                series =>
+                ajaxPost('php/readNote.php')({ins: "read", nameDB, mstID, type})
+                .then(this.selectNotes(type))
+                .then(this.addToList(mstName)(mstColor))
+                .then(this.addFlags(series))
+
+
+
+
+
         }
     );
