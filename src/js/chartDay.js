@@ -1,6 +1,6 @@
-
-// Depends on fpChart.js
 "use strict"
+// Depends on fpCore.js
+// Depends on fpChart.js
 
 let dataMachine = new DataMachine(),
 tblChartData_1 =  $("#tblChartData_1").DataTable({
@@ -127,28 +127,29 @@ tblChartData_3 =  $("#tblChartData_3").DataTable({
     }]
   })
 
-year_1 = sessionStorage.getItem("year"),
-year_2 = sessionStorage.getItem("year"),
-year_3 = sessionStorage.getItem("year"),
+year = sessionStorage.getItem("year"),
 monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-month_1 = sessionStorage.getItem("month"),
-month_2 = sessionStorage.getItem("month"),
-month_3 = sessionStorage.getItem("month"),
-day_1 = sessionStorage.getItem("day"),
-day_2 = sessionStorage.getItem("day"),
-day_3 = sessionStorage.getItem("day"),
+month = sessionStorage.getItem("month"),
+day = sessionStorage.getItem("day"),
 nameDB = sessionStorage.getItem("nameDB"),
 chartType = sessionStorage.getItem("chartType"),
 displayMean = sessionStorage.getItem("displayMean"),
 nameMst_1 = sessionStorage.getItem("nameMst_1"),
 nameMst_2 = sessionStorage.getItem("nameMst_2"),
 nameMst_3 = sessionStorage.getItem("nameMst_3"),
-
 queryString_1 = sessionStorage.getItem("queryString_1"),
 queryString_2 = sessionStorage.getItem("queryString_2"),
 queryString_3 = sessionStorage.getItem("queryString_3"),
+headerDiagramm = "Energieverbrauch " + day + " " + monthArr[Number(month) - 1] + " " + year
 
 csOptions = null;
+
+let notes = [];
+let msts = [];
+
+const updateNotesDay =
+    scpChart.getNotes("day")
+
 if(chartType == "line"){
   csOptions = {
     tooltip: {
@@ -175,27 +176,155 @@ else {
       }
   }
 }
-$("#container") .ejChart({
-      legend: {
-        position: "top"
-      },
-      //Initializing Primary X Axis
-      primaryXAxis: {
-        title: {
-          text: "Uhrzeit"
-        }
-      },
-      //Initializing Primary Y Axis
-      primaryYAxis: {
-        title: {
-          text: "Verbrauch[kWh]"
-        }
-       },
-        commonSeriesOptions: csOptions,
-        series: []
-      });
 
-$("h3").text("Energieverbrauch " + day_1 + " " + monthArr[Number(month_1) - 1] + " " + year_1);
+$("#btnNoteAbbr").click(function() {
+    $("#notePopup").dialog("close");
+});
+$("#btnNoteOk").click(function() {
+    $("#notePopup").dialog("close");
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: 'php/saveNote.php',
+        data: {
+            ins: "test",
+            nameDB,
+            ident: $("#identNote").val(),
+            mstID: $("#mstIDNote").val(),
+        },
+        success: function (records) {
+            insJson = JSON.parse(records);
+
+            ins = insJson.length === 0 ? "new" : "save"
+
+            $.ajax({
+                type: 'POST',
+                async: true,
+                url: 'php/saveNote.php',
+                data: {
+                    ins,
+                    nameDB,
+                    type: "month",
+                    mstID: $("#mstIDNote").val(),
+                    ident: $("#identNote").val(),
+                    bemerkung: $("#bemerkungNote").val()
+                },
+                success: function (records) {
+                    alert("Daten gespeichert!");
+
+                    scpChart.appendTo ("#bemList")
+                    (scpChart.note(
+                        $("#identNote").val()
+                    )(
+                        $("#mstNote").val()
+                    )(
+                        "black"
+                    )(
+                        $("#bemerkungNote").val()
+                    ))
+
+                    $("#identNote").val("");
+                    $("#mstIDNote").val("");
+                    $("#mstNote").val("");
+                    $("#bemerkungNote").val("");
+                }
+            });
+        }
+    });
+});
+$("#btnSaveOk").click(function() {
+    $("#savePopup").dialog("close");
+    let chart = $("#container") .ejChart("instance");
+    $.ajax({
+        type: 'POST',
+        async: true,
+        url: 'php/saveDiag.php',
+        data: {
+            ins: "saveDiag",
+            nameDB,
+            name: headerDiagramm,
+            typ: "month",
+            jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+        },
+        success: function (records) {
+            alert("Daten gespeichert!");
+        }
+    });
+});
+$("#diagSpeichern").click(function() {
+    $("#savePopup").dialog({
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        width: 425,
+        height: 250
+    });
+});
+$("#container") .ejChart({
+    pointRegionClick: function (args) {
+
+        $("#notePopup").dialog({
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            width: 425,
+            height: 295
+        });
+
+        $("#identNote").val(
+            year + "/" + month + "/" + day + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + ":00"))
+        )
+        $("#mstIDNote").val(
+            msts[args.data.region.SeriesIndex][0]
+        )
+        $("#mstNote").val(
+            msts[args.data.region.SeriesIndex][1]
+        )
+
+        const toTake =
+        notes
+        .filter(
+            a => a[0] === $("#identNote").val() && a[2] == $("#mstIDNote").val()
+        )
+
+        $("#bemerkungNote").val(
+            toTake.length === 1 ? toTake[0][4] : ""
+        )
+
+    },
+    legend: {
+        position: "top"
+    },
+    //Initializing Primary X Axis
+    primaryXAxis: {
+        title: {
+            text: "Tag"
+        }
+    },
+    //Initializing Primary Y Axis
+    primaryYAxis: {
+        title: {
+            text: "Verbrauch[kWh]"
+        }
+    },
+    commonSeriesOptions: csOptions,
+    series: []
+});
+
+$("h3").text(headerDiagramm);
+
 if(queryString_1 != "" && queryString_2 != "" && queryString_3 != ""){
   firstQuery();
   secondQuery();
@@ -209,120 +338,134 @@ else if (queryString_1 != "") {
   firstQuery();
 }
 else {
-  window.alert ("There're no query data!!");
+  console.log("There're no query data!!");
 }
 
-
 function firstQuery(){
-
-  dataMachine.runQuery("read", nameDB, queryString_1)
-  .then(JSON.parse)
-  .then(function(data){
-    let dataTranslator = null,
+    dataMachine.runQuery("read", nameDB, queryString_1)
+    .then(JSON.parse)
+    .then(function(data) {
+        let dataTranslator = null,
         chartData = [],
-        sumDay = 0;
-    dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+        sumMonth = 0;
 
-    dataTranslator.sumHours();
-    chartData = dataTranslator.translate(4);
-    for(let i = 0; i < chartData.length; i++){
-      tblChartData_1.row.add([
-        chartData[1].name,
-        day_1 + "." + month_1 + "." + year_1 + " " + chartData[i].x,
-        chartData[i].y
-      ]).draw();
-      sumDay += chartData[i].y;
-    }
+        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data)
 
-  if(sumDay>0){						 //Edited 06.02.2020 raj
-    $("#consumption-day_1").text(Math.round(sumDay) + " kWh");
-   updateChart(chartData, nameMst_1); }
-  else{$("#consumption-day_1").text(Math.round(sumDay) + " kWh (Data not available/No operation) "+nameMst_1);
-      alert("Data not available/No operation in " + nameMst_1);}
-  });
+        dataTranslator.sumHours()
+
+        // Translates the data to a format the charts understand
+        chartData = dataTranslator.translate(4)
+
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_1)(
+            a => [a.name, day + "." + month + "." + year + " " + a.x, a.y]
+        )
+
+        // Updates the chart and gets the color of the current series as a return value
+        const [ colorMst, series ] = scpChart.updateChart(chartData)(nameMst_1)
+
+        // Sums up all the values of the month for the given Messstelle
+        $("#consumption-day_1").text( scpChart.sumSeries(chartData) + " kWh" )
+
+        // Sets the color of the text for the sum of the month
+        $("#consumption-day_1").css("color", colorMst)
+
+        msts.push([sessionStorage.getItem("mstID_1"), nameMst_1])
+
+        updateNotesDay(
+            sessionStorage.getItem("mstID_1")
+        )(
+            nameMst_1
+        )(
+            colorMst
+        )(
+            series
+        )
+    });
 }
 
 function secondQuery(){
-  dataMachine.runQuery("read", nameDB, queryString_2)
-  .then(JSON.parse)
-  .then(function(data){
-    let dataTranslator = null,
+    dataMachine.runQuery("read", nameDB, queryString_2)
+    .then(JSON.parse)
+    .then(function(data) {
+        let dataTranslator = null,
         chartData = [],
-        sumDay = 0;
-    dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+        sumMonth = 0;
 
-    dataTranslator.sumHours();
-    chartData = dataTranslator.translate(4);
-    for(let i = 0; i < chartData.length; i++){
-      tblChartData_2.row.add([
-        chartData[1].name,
-        day_2 + "." + month_2 + "." + year_2 + " " + chartData[i].x,
-        chartData[i].y
-      ]).draw();
-      sumDay += chartData[i].y;
-    }
-  if(sumDay>0){updateChart(chartData, nameMst_2);
-    $("#consumption-day_2").text(Math.round(sumDay) + " kWh");}
-  else{$("#consumption-day_2").text(sumDay + " kWh (Data not available/No operation) "+nameMst_2);}
+        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data)
 
-  });
+        dataTranslator.sumHours()
+
+        // Translates the data to a format the charts understand
+        chartData = dataTranslator.translate(4)
+
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_2)(
+            a => [a.name, day + "." + month + "." + year + " " + a.x, a.y]
+        )
+
+        // Updates the chart and gets the color of the current series as a return value
+        const [ colorMst2, series2 ] = scpChart.updateChart(chartData)(nameMst_2)
+
+        // Sums up all the values of the month for the given Messstelle
+        $("#consumption-day_2").text( scpChart.sumSeries(chartData) + " kWh" )
+
+        // Sets the color of the text for the sum of the month
+        $("#consumption-day_2").css("color", colorMst2)
+
+        msts.push([sessionStorage.getItem("mstID_2"), nameMst_2])
+
+        updateNotesDay(
+            sessionStorage.getItem("mstID_2")
+        )(
+            nameMst_2
+        )(
+            colorMst2
+        )(
+            series2
+        )
+    });
 }
 
 function thirdQuery(){
-  dataMachine.runQuery("read", nameDB, queryString_3)
-  .then(JSON.parse)
-  .then(function(data){
-    let dataTranslator = null,
+    dataMachine.runQuery("read", nameDB, queryString_3)
+    .then(JSON.parse)
+    .then(function(data) {
+        let dataTranslator = null,
         chartData = [],
-        sumDay = 0;
-    dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
+        sumMonth = 0;
 
-    dataTranslator.sumHours();
-    chartData = dataTranslator.translate(4);
-    for(let i = 0; i < chartData.length; i++){
-      tblChartData_3.row.add([
-        chartData[1].name,
-        day_3 + "." + month_3 + "." + year_3 + " " + chartData[i].x,
-        chartData[i].y
-      ]).draw();
-      sumDay += chartData[i].y;
-    }
+        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data)
 
-    if(sumDay>0){
-        updateChart(chartData, nameMst_3);
-        $("#consumption-day_3").text(Math.round(sumDay) + " kWh");
-    }
-    else{
-        $("#consumption-day_3").text(sumDay + " kWh (Data not available/No operation)"+nameMst_3);
-    }
-  });
+        dataTranslator.sumHours()
+
+        // Translates the data to a format the charts understand
+        chartData = dataTranslator.translate(4)
+
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_3)(
+            a => [a.name, day + "." + month + "." + year + " " + a.x, a.y]
+        )
+
+        // Updates the chart and gets the color of the current series as a return value
+        const [ colorMst3, series3 ] = scpChart.updateChart(chartData)(nameMst_3)
+
+        // Sums up all the values of the month for the given Messstelle
+        $("#consumption-day_3").text( scpChart.sumSeries(chartData) + " kWh" )
+
+        // Sets the color of the text for the sum of the month
+        $("#consumption-day_3").css("color", colorMst3)
+
+        msts.push([sessionStorage.getItem("mstID_3"), nameMst_3])
+
+        updateNotesDay(
+            sessionStorage.getItem("mstID_3")
+        )(
+            nameMst_3
+        )(
+            colorMst3
+        )(
+            series3
+        )
+    });
 }
-
-function updateChart(newDataSeries, nameSeries){
-  let chart = $("#container") .ejChart("instance");
-
-  chart.model.series.push({
-    type: chartType,
-    name: nameSeries,
-    dataSource: newDataSeries,
-    xName: "x",
-    yName: "y",
-  });
-  chart.redraw();
-}
-
-  $("#diagSpeichern").click(function() {
-      $("#savePopup").dialog({
-      resize: "auto",
-      show: {
-          effect: "fade",
-          duration: 500
-      },
-      hide: {
-          effect: "fade",
-          duration: 500
-      },
-      width: 425,
-      height: 250
-          });
-  });

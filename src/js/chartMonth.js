@@ -1,3 +1,7 @@
+// Depends on fpCore.js
+// Depends on fpChart.js
+"use strict"
+
 let dataMachine = new DataMachine(),
 tblChartData_1 =  $("#tblChartData_1").DataTable({
     dom: 'Bfrtip',
@@ -135,13 +139,17 @@ queryString_1 = sessionStorage.getItem("queryString_1"),
 queryString_2 = sessionStorage.getItem("queryString_2"),
 queryString_3 = sessionStorage.getItem("queryString_3"),
 headerDiagramm = "Energieverbrauch " + monthArr[Number(month) - 1] + " " + year,
+
 csOptions = null;
 
 let notes = [];
 let msts = [];
 
-const updateNotesMonth =
-    scpChart.updateNotes("month")
+const getNotesMonth =
+    scpChart.getNotes("month")
+
+const saveNoteMonth =
+    scpChart.saveNote("month")
 
 if(chartType == "line"){
     csOptions = {
@@ -171,59 +179,42 @@ else {
 }
 
 $("#btnNoteAbbr").click(function() {
-    $("#notePopup").dialog("close");
-});
+    $("#notePopup").dialog("close")
+})
 $("#btnNoteOk").click(function() {
-    $("#notePopup").dialog("close");
-    $.ajax({
-        type: 'POST',
-        async: true,
-        url: 'php/saveNote.php',
-        data: {
-            ins: "test",
-            nameDB,
-            ident: $("#identNote").val(),
-            mstID: $("#mstIDNote").val(),
-        },
-        success: function (records) {
-            insJson = JSON.parse(records);
+    $("#notePopup").dialog("close")
 
-            ins = insJson.length === 0 ? "new" : "save"
+    // empty note list
+    $("#bemList").empty()
 
-            $.ajax({
-                type: 'POST',
-                async: true,
-                url: 'php/saveNote.php',
-                data: {
-                    ins,
-                    nameDB,
-                    type: "month",
-                    mstID: $("#mstIDNote").val(),
-                    ident: $("#identNote").val(),
-                    bemerkung: $("#bemerkungNote").val()
-                },
-                success: function (records) {
-                    alert("Daten gespeichert!");
+    // saves the note created in the dialog
+    // then updates the note list
+    saveNoteMonth(
+        $("#identNote").val()
+    )(
+        $("#mstIDNote").val()
+    )(
+        $("#bemerkungNote").val()
+    )
+    .then(
+        () =>
+        pipe( scpChart.getChart("#container")
+            , scpChart.getSeries
+            , scpChart.updateNotesOfVisibleSeries("month") )
+    )
+    .then(
+        [ "#identNote"
+        , "#mstIDNote"
+        , "#mstNote"
+        , "#colorNote"
+        , "#bemerkungNote"
+        , "#seriesNote"
+        ]
+        .forEach(a => $(a).val(""))
+    )
 
-                    scpChart.appendTo ("#bemList")
-                    (scpChart.note(
-                        $("#identNote").val()
-                    )(
-                        $("#mstNote").val()
-                    )(
-                        "black"
-                    )(
-                        $("#bemerkungNote").val()
-                    ))
-
-                    $("#identNote").val("");
-                    $("#mstIDNote").val("");
-                    $("#mstNote").val("");
-                    $("#bemerkungNote").val("");
-                }
-            });
-        }
-    });
+    // empty notes array
+    notes = []
 });
 $("#btnSaveOk").click(function() {
     $("#savePopup").dialog("close");
@@ -285,6 +276,12 @@ $("#container") .ejChart({
         $("#mstNote").val(
             msts[args.data.region.SeriesIndex][1]
         )
+        $("#colorNote").val(
+            msts[args.data.region.SeriesIndex][2]
+        )
+        $("#seriesNote").val(
+            args.data.region.SeriesIndex
+        )
 
         const toTake =
         notes
@@ -293,12 +290,28 @@ $("#container") .ejChart({
         )
 
         $("#bemerkungNote").val(
-            toTake.length === 1 ? toTake[0][4] : ""
+            toTake.length >= 1 ? toTake[0][4] : ""
         )
 
     },
     legend: {
         position: "top"
+    },
+    legendItemClick: function (sender) {
+
+        // empty note list
+        $("#bemList").empty()
+
+        // empty notes array
+        notes = []
+
+        // select notes which correspond to the visible series
+        // and show only those
+        pipe( scpChart.getChart("#container")
+            , scpChart.getSeries
+            , scpChart.prepareSeries(sender)
+            , scpChart.updateNotesOfVisibleSeries("month") )
+
     },
     //Initializing Primary X Axis
     primaryXAxis: {
@@ -363,9 +376,9 @@ function firstQuery(){
         // Sets the color of the text for the sum of the month
         $("#consumption-month_1").css("color", colorMst)
 
-        msts.push([sessionStorage.getItem("mstID_1"), nameMst_1])
+        msts.push([sessionStorage.getItem("mstID_1"), nameMst_1, colorMst])
 
-        updateNotesMonth(
+        getNotesMonth(
             sessionStorage.getItem("mstID_1")
         )(
             nameMst_1
@@ -374,9 +387,6 @@ function firstQuery(){
         )(
             series
         )
-
-        console.log("series :")
-        console.log(series)
     });
 }
 
@@ -406,9 +416,9 @@ function secondQuery(){
         // Sets the color of the text for the sum of the month
         $("#consumption-month_2").css("color", colorMst2)
 
-        msts.push([sessionStorage.getItem("mstID_2"), nameMst_2])
+        msts.push([sessionStorage.getItem("mstID_2"), nameMst_2, colorMst2])
 
-        updateNotesMonth(
+        getNotesMonth(
             sessionStorage.getItem("mstID_2")
         )(
             sessionStorage.getItem("nameMst_2")
@@ -446,9 +456,9 @@ function thirdQuery(){
         // Sets the color of the text for the sum of the month
         $("#consumption-month_3").css("color", colorMst3)
 
-        msts.push([sessionStorage.getItem("mstID_3"), nameMst_3])
+        msts.push([sessionStorage.getItem("mstID_3"), nameMst_3, colorMst3])
 
-        updateNotesMonth(
+        getNotesMonth(
             sessionStorage.getItem("mstID_3")
         )(
             sessionStorage.getItem("nameMst_3")
