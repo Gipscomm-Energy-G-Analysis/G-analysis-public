@@ -104,8 +104,16 @@ Object
 
             return new Promise((resolve,reject)=>$.ajax({type:"POST",url,data,fail:()=>reject(()=>{throw new Error("Ajax Post failed!" )}),success:records=>{console.log(records);resolve(this.json(records))}}))
         };
+        this.pipe = (...fns) => {
+            results = [this.head(fns)]
+            for(k=1;this.smaller(k)(fns.length);k++) {
+                results = this.push(results)(fns[k](results[this.decr(k)]))
+            }
+            return results
+        };
         this.itemSessionSet = key => value => sessionStorage.setItem(key, value);
         this.itemSessionGet = key => sessionStorage.getItem(key);
+        this.push = a => b => { a[a.length] = b;return a };
     }
 );
 const { split_
@@ -167,7 +175,9 @@ const { split_
       , fetchPost
       , fetchGet
       , ajaxPost
+      , pipe
       , itemSessionSet
       , itemSessionGet
+      , push
       } = scpCore;
     // module.exports = scpCore;
