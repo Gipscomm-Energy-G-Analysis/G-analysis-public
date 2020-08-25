@@ -237,19 +237,20 @@ $("#btnSaveOk").click(function() {
     });
 });
 $("#diagSpeichern").click(function() {
-    $("#savePopup").dialog({
-        resize: "auto",
-        show: {
-            effect: "fade",
-            duration: 500
-        },
-        hide: {
-            effect: "fade",
-            duration: 500
-        },
-        width: 425,
-        height: 250
-    });
+    alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+    // $("#savePopup").dialog({
+    //     resize: "auto",
+    //     show: {
+    //         effect: "fade",
+    //         duration: 500
+    //     },
+    //     hide: {
+    //         effect: "fade",
+    //         duration: 500
+    //     },
+    //     width: 425,
+    //     height: 250
+    // });
 });
 $("#container") .ejChart({
     pointRegionClick: function (args) {
@@ -351,6 +352,9 @@ else {
     console.log("There're no query data!!");
 }
 
+const recordMask =
+    a => [a.name, day + "." + month + "." + year + " " + a.x, a.y]
+
 function firstQuery(){
     dataMachine.runQuery("read", nameDB, queryString_1)
     .then(JSON.parse)
@@ -367,9 +371,7 @@ function firstQuery(){
         chartData = dataTranslator.translate(4)
 
         // Fill table with energy records
-        scpChart.fillTable(chartData)(tblChartData_1)(
-            a => [a.name, a.x + "." + month + "." + year + " " + a.y, a.y]
-        )
+        scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
 
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst, series ] = scpChart.updateChart(chartData)(nameMst_1)
@@ -407,9 +409,7 @@ function secondQuery(){
         chartData = dataTranslator.translate(4);
 
         // Fill table with energy records
-        scpChart.fillTable(chartData)(tblChartData_2)(
-            a => [a.name, a.x + "." + month + "." + year, a.y]
-        )
+        scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
 
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst2, series2 ] = scpChart.updateChart(chartData)(nameMst_2)
@@ -447,9 +447,7 @@ function thirdQuery(){
         chartData = dataTranslator.translate(4);
 
         // Fill table with energy records
-        scpChart.fillTable(chartData)(tblChartData_3)(
-            a => [a.name, a.x + "." + month + "." + year, a.y]
-        )
+        scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
 
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst3, series3 ] = scpChart.updateChart(chartData)(nameMst_3)

@@ -70,6 +70,11 @@ const scpChart =
                     a =>
                     a.ident.split("/")[0] === year
                     && a.ident.split("/")[1] === month
+                ) :
+                equal(type)("year") ?
+                notes_.filter(
+                    a =>
+                    a.ident.split("/")[0] === year
                 ) : false
 
             this.addToList =
