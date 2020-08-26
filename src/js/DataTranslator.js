@@ -4,6 +4,10 @@ const TranslationType = {
   ENERGY_DATA_02: 2
 }
 
+const fullHour =
+    minutes =>
+    minutes === "00"
+
 const isCounter =
     data =>
     data.every((a, i, arr) => equalsZero(i) || a.Value >= arr[decr(i)])
@@ -199,16 +203,19 @@ function DataTranslator(translationType, inData){
     switch (this.translationType) {
       case TranslationType.ENERGY_DATA_01:
         for(let i = 0; i < nHours; i++){
-          if(i < 9){
+          if(i <= 9){
             hourDay = "0" + i;
           }
           else {
-            hourDay = i;
+            hourDay = String(i);
           }
           for(let j = 0; j < this.data.length; j++){
             hour = this.data[j].Time;
-            hour =  hour.slice(11, 13);
-            if(hour == hourDay){
+            minutes = hour.slice(14, 16);
+            hour = hour.slice(11, 13);
+
+            if( (!fullHour(minutes) && ( hour - 1 ) === hourDay )
+            || (hour === hourDay && fullHour(minutes)) ) {  // CHANGE: 09.07.2020 records for 8 h = all values after 7:xx to 8:00.
               summedData[i].Value += Number(this.data[j].Value);
               summedData[i].Time = hour + ":00";
               summedData[i].Name = this.data[0].Name;
