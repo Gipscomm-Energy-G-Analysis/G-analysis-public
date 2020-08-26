@@ -9,35 +9,29 @@ $nameDB = $_POST['nameDB'];
 $conn = connectToDB($nameDB);
 
 
+$ins = $_POST['ins'];
 $ident = $_POST['ident'];
 $mstID = $_POST['mstID'];
-$ins = $_POST['ins'];
-$mode = "";
+$bemerkung = $_POST['bemerkung'];
 
-if ($ins === "test"){
-    $query = "SELECT * FROM bemerkungenDiagrammme ";
-    $query .= "WHERE mst_ID = '$mstID' AND ident = '$ident' ";
+if ($ins === "new"){
 
-    $mode = "read";
-}
-else if ($ins === "new"){
     $type = $_POST['type'];
-    $bemerkung = $_POST['bemerkung'];
 
-    $query = "INSERT INTO bemerkungenDiagrammme (gespeichertAm, type, mst_ID, ident, bemerkung)" ;
-    $query .= "VALUES (getdate(), '$type', $mstID, '$ident', '$bemerkung')" ;
-
-    $mode = "write";
+    $query = "INSERT INTO bemerkungenDiagramme (gespeichertAm, type, mst_ID, ident, bemerkung) " ;
+    $query .= "VALUES (getdate(), '$type', $mstID, '$ident', '$bemerkung') " ;
 }
 else {
-    $bemerkung = $_POST['bemerkung'];
 
-    $query = "UPDATE bemerkungenDiagrammme " ;
+    $query = "UPDATE bemerkungenDiagramme " ;
     $query .= "SET gespeichertAm = getdate(), bemerkung = '$bemerkung' " ;
     $query .= "WHERE mst_ID = $mstID AND ident = '$ident' " ;
 }
 
-$records = queryDB($conn, $query, $mode);
+$records = queryDB($conn, $query, "write");
+
 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+
+
 include('bottom-cache.php');
 ?>

@@ -1,6 +1,6 @@
+"use strict"
 // Depends on fpCore.js
 // Depends on fpChart.js
-"use strict"
 
 let dataMachine = new DataMachine(),
 tblChartData_1 =  $("#tblChartData_1").DataTable({
@@ -127,8 +127,6 @@ tblChartData_3 =  $("#tblChartData_3").DataTable({
     }]
 })
 year = sessionStorage.getItem("year"),
-monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-month = sessionStorage.getItem("month"),
 nameDB = sessionStorage.getItem("nameDB"),
 chartType = sessionStorage.getItem("chartType"),
 displayMean = sessionStorage.getItem("displayMean"),
@@ -138,18 +136,18 @@ nameMst_3 = sessionStorage.getItem("nameMst_3"),
 queryString_1 = sessionStorage.getItem("queryString_1"),
 queryString_2 = sessionStorage.getItem("queryString_2"),
 queryString_3 = sessionStorage.getItem("queryString_3"),
-headerDiagramm = "Energieverbrauch " + monthArr[Number(month) - 1] + " " + year,
+headerDiagramm = "Energieverbrauch " + year,
 
 csOptions = null;
 
 let notes = [];
 let msts = [];
 
-const getNotesMonth =
-    scpChart.getNotes("month")
+const getNotesYear =
+    scpChart.getNotes("year")
 
-const saveNoteMonth =
-    scpChart.saveNote("month")
+const saveNoteYear =
+    scpChart.saveNote("year")
 
 if(chartType == "line"){
     csOptions = {
@@ -189,7 +187,7 @@ $("#btnNoteOk").click(function() {
 
     // saves the note created in the dialog
     // then updates the note list
-    saveNoteMonth(
+    saveNoteYear(
         $("#identNote").val()
     )(
         $("#mstIDNote").val()
@@ -200,7 +198,7 @@ $("#btnNoteOk").click(function() {
         () =>
         pipe( scpChart.getChart("#container")
             , scpChart.getSeries
-            , scpChart.updateNotesOfVisibleSeries("month") )
+            , scpChart.updateNotesOfVisibleSeries("year") )
     )
     .then(
         [ "#identNote"
@@ -227,7 +225,7 @@ $("#btnSaveOk").click(function() {
             ins: "saveDiag",
             nameDB,
             name: headerDiagramm,
-            typ: "month",
+            typ: "year",
             jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
@@ -269,7 +267,7 @@ $("#container") .ejChart({
         });
 
         $("#identNote").val(
-            year + "/" + month + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
+            year + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
         )
         $("#mstIDNote").val(
             msts[args.data.region.SeriesIndex][0]
@@ -311,7 +309,7 @@ $("#container") .ejChart({
         pipe( scpChart.getChart("#container")
             , scpChart.getSeries
             , scpChart.prepareSeries(sender)
-            , scpChart.updateNotesOfVisibleSeries("month") )
+            , scpChart.updateNotesOfVisibleSeries("year") )
 
     },
     //Initializing Primary X Axis
@@ -349,7 +347,7 @@ else {
 }
 
 const recordMask =
-    a => [a.name, a.x + "." + month + "." + year, a.y]
+    a => [a.name, a.x + "." + year , a.y]
 
 function firstQuery(){
     dataMachine.runQuery("read", nameDB, queryString_1)
@@ -361,7 +359,7 @@ function firstQuery(){
 
         dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data)
 
-        dataTranslator.sumDays(year, month)
+        dataTranslator.sumMonths()
 
         // Translates the data to a format the charts understand
         chartData = dataTranslator.translate(4)
@@ -372,15 +370,15 @@ function firstQuery(){
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst, series ] = scpChart.updateChart(chartData)(nameMst_1)
 
-        // Sums up all the values of the month for the given Messstelle
-        $("#consumption-month_1").text( scpChart.sumSeries(chartData) + " kWh" )
+        // Sums up all the values of the year for the given Messstelle
+        $("#consumption-year_1").text( scpChart.sumSeries(chartData) + " kWh" )
 
-        // Sets the color of the text for the sum of the month
-        $("#consumption-month_1").css("color", colorMst)
+        // Sets the color of the text for the sum of the year
+        $("#consumption-year_1").css("color", colorMst)
 
         msts.push([sessionStorage.getItem("mstID_1"), nameMst_1, colorMst])
 
-        getNotesMonth(
+        getNotesYear(
             sessionStorage.getItem("mstID_1")
         )(
             nameMst_1
@@ -401,7 +399,7 @@ function secondQuery(){
         sumMonth = 0;
         dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
-        dataTranslator.sumDays(year, month);
+        dataTranslator.sumMonths();
         chartData = dataTranslator.translate(4);
 
         // Fill table with energy records
@@ -410,15 +408,15 @@ function secondQuery(){
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst2, series2 ] = scpChart.updateChart(chartData)(nameMst_2)
 
-        // Sums up all the values of the month for the given Messstelle
-        $("#consumption-month_2").text( scpChart.sumSeries(chartData) + " kWh" )
+        // Sums up all the values of the year for the given Messstelle
+        $("#consumption-year_2").text( scpChart.sumSeries(chartData) + " kWh" )
 
-        // Sets the color of the text for the sum of the month
-        $("#consumption-month_2").css("color", colorMst2)
+        // Sets the color of the text for the sum of the year
+        $("#consumption-year_2").css("color", colorMst2)
 
         msts.push([sessionStorage.getItem("mstID_2"), nameMst_2, colorMst2])
 
-        getNotesMonth(
+        getNotesYear(
             sessionStorage.getItem("mstID_2")
         )(
             sessionStorage.getItem("nameMst_2")
@@ -439,8 +437,8 @@ function thirdQuery(){
         sumMonth = 0;
         dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
-        dataTranslator.sumDays(year, month);
-        chartData = dataTranslator.translate(4);
+        dataTranslator.sumMonths()
+        chartData = dataTranslator.translate(4)
 
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
@@ -448,15 +446,15 @@ function thirdQuery(){
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst3, series3 ] = scpChart.updateChart(chartData)(nameMst_3)
 
-        // Sums up all the values of the month for the given Messstelle
-        $("#consumption-month_3").text( scpChart.sumSeries(chartData) + " kWh" )
+        // Sums up all the values of the year for the given Messstelle
+        $("#consumption-year_3").text( scpChart.sumSeries(chartData) + " kWh" )
 
-        // Sets the color of the text for the sum of the month
-        $("#consumption-month_3").css("color", colorMst3)
+        // Sets the color of the text for the sum of the year
+        $("#consumption-year_3").css("color", colorMst3)
 
         msts.push([sessionStorage.getItem("mstID_3"), nameMst_3, colorMst3])
 
-        getNotesMonth(
+        getNotesYear(
             sessionStorage.getItem("mstID_3")
         )(
             sessionStorage.getItem("nameMst_3")

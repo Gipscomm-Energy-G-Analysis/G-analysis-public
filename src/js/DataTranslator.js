@@ -1,7 +1,12 @@
+
 const TranslationType = {
   ENERGY_DATA_01: 1,
   ENERGY_DATA_02: 2
 }
+
+const isCounter =
+    data =>
+    data.every((a, i, arr) => equalsZero(i) || a.Value >= arr[decr(i)])
 
 function DataTranslator(translationType, inData){
   this.translationType = translationType;

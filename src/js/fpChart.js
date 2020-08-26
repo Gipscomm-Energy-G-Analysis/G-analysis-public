@@ -3,125 +3,193 @@
 // DataTables libs
 // Syncfusion Chart libs
 
-//
-// Testing Configuration
-// const scpCore = require('../js/fpCore.js');
 const scpChart =
     Object
     .freeze (
         new function () {
-            this.getChart = sel => $(sel).ejChart("instance");
-            this.note = ident => mst => color => note =>
+            this.getChart = sel => $(sel).ejChart("instance")
+
+            this.note = ident => mst => color => note_ =>
                 "<div class='bem'>" +
                 "<image src='images/icons/notepad.svg' style='height:18px;width:18px;'/>" +
                 "<label style='margin-right:10px;'> &nbsp;" + ident + " </label>" +
                 "<label style='margin-right:10px;color:" + color + "'>" + mst + " </label>" +
-                "<label>" + note + " </label>" +
-                "</div>";
-            this.appendTo = elem => sth => $(elem).append(sth);
-            this.formatDate = dt => dt.length === 1 ? "0" + dt : dt;
+                "<label>" + note_ + " </label>" +
+                "</div>"
+
+            this.appendTo = elem => sth => $(elem).append(sth)
+
+            this.formatDate = dt => dt.length === 1 ? "0" + dt : dt
+
             const colors =
                 () =>
                     [ {hex: "#E94649", name: "Red"}
                     , {hex: "#F6B53F", name: "Yellow"}
                     , {hex: "#6FAAB0", name: "Blue"}
                     ]
-            this.chooseFlag = hx => scpCore.head(colors().filter(a => scpCore.equal(hx)(a.hex))).name;
+
+            this.chooseFlag = hx => head(colors().filter(a => equal(hx)(a.hex))).name
+
             this.updateChart = newDataSeries => nameSeries => {
 
-                let chart = $("#container").ejChart("instance");
-                const nSeries = chart.model.series.length;
+                let chart = this.getChart("#container")
+                const nSeries = chart.model.series.length
                 chart.model.series.push({
                       type: chartType
                     , name: nameSeries
-                    , points: newDataSeries
+                    , points: newDataSeries.map(
+                            a => ({name: a.name, x: a.x + " ", y: a.y})
+                        )
                     , xName: "x"
                     , yName: "y"
-                });
+                })
 
-                chart.redraw();
-                return [chart.model.series[nSeries].fill, nSeries];
-            };
-            this.sumSeries = data => data.map(a => a.y).reduce(scpCore.sum);
-            this.fillTable = data => tbl => record => {
-                const addRow = tbl => tbl.row.add;
-                data.map( record ).forEach( addRow );
+                chart.redraw()
+                return [chart.model.series[nSeries].fill, nSeries]
+            }
 
-                tbl.draw();
-            };
-            this.updateNotes =
+            this.sumSeries = data => Math.round(data.map(a => a.y).reduce(sum))
+
+            this.fillTable = data => tbl => recordFn => {
+                data.map( recordFn ).forEach( tbl.row.add )
+                tbl.draw()
+            }
+
+            this.selectNotes =
+                type =>
+                notes_ =>
+                equal(type)("day") ?
+                notes_.filter(
+                    a =>
+                    a.ident.split("/")[0] === year
+                    && a.ident.split("/")[1] === month
+                    && a.ident.split("/")[2] === day
+                ) :
+                equal(type)("month") ?
+                notes_.filter(
+                    a =>
+                    a.ident.split("/")[0] === year
+                    && a.ident.split("/")[1] === month
+                ) :
+                equal(type)("year") ?
+                notes_.filter(
+                    a =>
+                    a.ident.split("/")[0] === year
+                ) : false
+
+            this.addToList =
+                mstName =>
+                mstColor =>
+                notes_ => {
+                    notes_
+                    .forEach(
+                        rec => {
+                            this.appendTo ("#bemList")
+                            ( this.note (rec.ident)(mstName)(mstColor)(rec.bemerkung) )
+
+                            notes.push([rec.ident, mstName, rec.mst_ID, mstColor, rec.bemerkung])
+                        }
+                    )
+                    return notes
+            }
+
+            this.matchNote =
+                note_ =>
+                point_ => {
+                    const splittedDate = head(note_).split("/")
+
+                    return equal(note_[1])(point_.name)
+                    && equal(splittedDate[decr(splittedDate.length)] + " ")(point_.x)
+                }
+
+            this.addFlags =
+                series =>
+                notes_ => {
+                    let chart = this.getChart("#container")
+
+                    notes_
+                    .forEach(
+                        nt =>
+                        chart.model.series[series].points
+                        .forEach(
+                            pt => {
+                                if( this.matchNote(nt)(pt) ) {
+                                    pt.marker =
+                                        { shape : "image"
+                                        , size :
+                                            { height : 50
+                                            , width : 50
+                                            }
+                                        , imageUrl : "dist/images/icons/flag3Full" + scpChart.chooseFlag(nt[3]) + ".png"
+                                        }
+                                }
+                            }
+                        )
+                    )
+                    chart.redraw()
+                }
+
+            this.getNotes =
+                type =>
                 mstID =>
                 mstName =>
                 mstColor =>
-                ser =>
-                fetch('php/readNote.php',
-                    { method: 'POST'
-                    , body:
-                        { ins: "read"
-                        , nameDB
-                        , mstID
-                        , type: "day"
-                        }
-                    })
-                    .then(JSON.parse)
-                    .then(records => {
+                series =>
+                ajaxPost('php/readNote.php')({nameDB, mstID, type})
+                .then(this.selectNotes(type))
+                .then(this.addToList(mstName)(mstColor))
+                .then(this.addFlags(series))
 
+            this.noteExists =
+                ident =>
+                mstID =>
+                notes
+                .some(a => equal(a[0])(ident) && equal(a[2])(Number(mstID)))
 
+            this.saveNote =
+                type =>
+                ident =>
+                mstID =>
+                bemerkung =>
+                ajaxPost('php/saveNote.php')(
+                    { nameDB
+                    , ins : this.noteExists(ident)(mstID) ? "save" : "new"
+                    , ident
+                    , mstID
+                    , bemerkung
+                    , type
+                    }
+                )
 
-                            console.log("this.updateNotes : records");
-                            console.log(records);
+            this.getSeries =
+                chartObj =>
+                JSON.parse(JSON.stringify(chartObj.model.series))
 
-                            if (greaterZero(records)) {
-                                records
-                                .filter(
-                                    a => head(splitSlashes(a.ident)) === year && a.ident.split("/")[1] === month && a.ident.split("/")[2] === scpChart.formatDate(day)
-                                )
-                                .forEach(
-                                    a => {
-                                        scpChart.appendTo ("#bemList")
-                                        (scpChart.note(
-                                            a.ident
-                                        )(
-                                            mstName
-                                        )(
-                                            mstColor
-                                        )(
-                                            a.bemerkung
-                                        ));
+            this.currentSeriesIndex =
+                sender =>
+                sender.data.legendItem.Style.SeriesIndex
 
-                                        notes.push([a.ident, mstName, a.mst_ID, mstColor, a.bemerkung]);
-                                    }
-                                )
-                            }
+            this.prepareSeries =
+                sender =>
+                series => {
+                    if(series[this.currentSeriesIndex(sender)].visibility === "visible") {
+                        series[this.currentSeriesIndex(sender)].visibility = "hidden"
+                    }
+                    else {
+                        series[this.currentSeriesIndex(sender)].visibility = "visible"
+                    }
+                    return series
+                }
 
-                            let chart = $("#container") .ejChart("instance");
+            this.updateNotesOfVisibleSeries =
+                type =>
+                series =>
+                series
+                .forEach((item, i) => {
+                    if(item.visibility === "visible") {
+                        this.getNotes(type)(msts[i][0])(msts[i][1])(msts[i][2])(i)
+                    }
+                })
 
-                            notes
-                            .forEach(
-                                a =>
-                                chart
-                                .model
-                                .series[ser]
-                                .points
-                                .forEach (
-                                    b => {
-                                        if(a[1] === b.name && head(a).split("/")[3] === b.x)
-                                        {
-                                            b.marker = {
-                                                shape: 'image',
-                                                size: {
-                                                    height: 50, width: 50
-                                                },
-                                                imageUrl: "images/icons/flag3" + scpChart.chooseFlag(a[3]) + ".png"
-                                            }
-                                        }
-                                    }
-                                )
-                            )
-                            chart.redraw();
-                        });
         }
     );
-
-    // module.exports = scpChart;
-//

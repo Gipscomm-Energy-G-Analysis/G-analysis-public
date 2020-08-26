@@ -11,7 +11,7 @@ $conn = connectToDB($nameDB);
 $mstID = $_POST['mstID'];
 $type = $_POST['type'];
 
-$query = "SELECT * FROM bemerkungenDiagrammme ";
+$query = "SELECT * FROM bemerkungenDiagramme ";
 $query .= "WHERE mst_ID = $mstID and type = '$type' ";
 $query .= "ORDER BY ident ";
 
