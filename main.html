@@ -2875,14 +2875,14 @@
                 <input id="anlIDMst" style="display:none;"/>
             </div>
             <!--16-03-2020 Update the html- comment the img tag-->
-            <div class="controlDiv">
+            <div class="controlDiv" style="width: 550px;">
                 <label id="labelMessmittelMst" style="display:inline-block;">physikalisches<br /> Messmittel<img id="msmSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
                 <label id="labelBerechnungslogikMst" style="display:none;"><br />Berechnungslogik
                 <!-- <img id="msmSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;display: none;" /> -->
                 </label>
-                <input id="messmittelBerechnungslogikMst" />
+                <input id="messmittelBerechnungslogikMst" readonly/>
                 <input id="messmittelIDMst" style="display:none;"/>
-                <input id="berechnungslogikMst" style="display:none;"/>
+                <input id="berechnungslogikMst" style="display:none;width:540px;" readonly/>
                 <input type="hidden" id="loginkMstData" name="loginkMstData" value="">
             </div>
             <!--16-03-2020 Update the html- comment the img tag-->
@@ -5868,18 +5868,18 @@
                     </div>
                     <div class="infosBlock">
                         <!--31-07-2020 Create dynamic Correction factor-->
-                        <div class="DynamicKorrekturFaktorFrm">  
+                        <div class="DynamicKorrekturFaktorFrm">
                             <fieldset>
                                 <legend>Merkmal</legend>
                                 <div class="controlDiv ">
                                     <label>Name</label>
-                                    <input id="optionNameDKff" class=""/>  
+                                    <input id="optionNameDKff" class=""/>
                                 </div>
                                 <div class="controlDiv">
                                 </div>
                                 <div class="controlDiv" style="width: 69%;height: 69px;margin-bottom: 11px;">
                                     <label style="vertical-align: 23px;">Beschreibung</label>
-                                    <textarea id="optionBeschreibungDKff" class="" style="width: 73%;height: 55px;" /></textarea>                                   
+                                    <textarea id="optionBeschreibungDKff" class="" style="width: 73%;height: 55px;" /></textarea>
                                 </div>
                                 <div class="sectionDynamicCF">
                                     <div class="inputGrpDynamicCF">
@@ -5892,7 +5892,7 @@
                                                 <option value="Arbeitswoche">Arbeitswoche</option>
                                                 <option value="AnlagenZustände">Anlagen Zustände</option>
                                             </select>
-                                        </div>  
+                                        </div>
                                         <div class="controlDiv" style="width: 46%;padding:9px;">
                                             <label>Format, Dynamik</label>
                                              <select class="subtypeTimeDynamicCF" disabled>
@@ -5905,8 +5905,8 @@
                                                 <option value="tempNum" class="temperaturOption">Temperatur </option>
                                                 <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
                                                 <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur  </option>
-                                                <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur  </option>  
-                                                                                   
+                                                <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur  </option>
+
                                             </select>
                                           <!--   <input type="text" id="subtypeTxtDynamicCF" class="" name="subtypeTxtDynamicCF" style="display:none;"> -->
                                        </div>
@@ -5923,9 +5923,9 @@
                                         <option value="5"> Basic + 2 Condition & Multiplay </option>
                                         <option value="6"> Basic Between</option>
                                         <option value="7"> Basic Between + Multiplay</option>
-                                        <option value="8"> Basic Between + 2 Conditions</option> 
-                                        <option value="9"> Basic Between + 2 Contition + Multiplay</option>  
-                                    </select>                                   
+                                        <option value="8"> Basic Between + 2 Conditions</option>
+                                        <option value="9"> Basic Between + 2 Contition + Multiplay</option>
+                                    </select>
                                 </div>
                                 <div class="controlDiv calculationTypeDiv" style="width:528px;padding:9px;margin-top:8px;display: none;">
                                     <label style="width:38%;">Calculation Option </label>
@@ -5935,14 +5935,14 @@
                                         <option value="2">Calculation 2 Line </option>
                                         <option value="3">Calculation 1+2 Line </option>
                                         <option value="4">Calculation Off </option>
-                                    </select>                                   
+                                    </select>
                                 </div>
                                 <div class="subtypeTxtDynamicCF"  id="basicFaktorRow1" style="display: none;">
                                     <div class="controlDiv" >
                                         <label>Name</label>
-                                        <input id="subtypeTxtOptNameDKff" class="" />  
+                                        <input id="subtypeTxtOptNameDKff" class="" />
                                     </div>
-                                    
+
                                     <div class="controlDiv bezugStartDiv" style="display: none;">
                                         <label>Bezug Start</label>
                                         <input id="bezugStartTxt" class="" />
@@ -5969,7 +5969,7 @@
                                     </div>
                                     <div class="controlDiv" style="">
                                         <label>Faktore</label>
-                                        <input id="subtypeTxtoptzFaktoreDkff" class="inp_valid1" />                                        
+                                        <input id="subtypeTxtoptzFaktoreDkff" class="inp_valid1" />
                                     </div>
                                     <div class="controlDiv formatDynamicBezugRow1" style="display: none;">
                                             <label>Format, Dynamik</label>
@@ -5983,14 +5983,14 @@
                                                 <option value="tempNum" class="temperaturOption">Temperatur </option>
                                                 <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
                                                 <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur</option>
-                                                <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur</option>  
+                                                <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur</option>
                                             </select>
                                        </div>
                                 </div>
                                 <div class="subtypeTxtBasisFaktor2" id="basicFaktorRow3" style="display: none;">
                                     <div class="controlDiv" >
                                         <label>K. Bezeichnung</label>
-                                        <input id="subtypeTxtBasisFaktor2Name" class="" />  
+                                        <input id="subtypeTxtBasisFaktor2Name" class="" />
                                     </div>
                                     <div class="controlDiv" >
                                         <label >Calculator </label>
@@ -6004,13 +6004,13 @@
                                     </div>
                                     <div class="controlDiv">
                                         <label>Wert</label>
-                                        <input id="subtypeTxtBasisFaktor2Wert" class="inp_valid1" />                                         
+                                        <input id="subtypeTxtBasisFaktor2Wert" class="inp_valid1" />
                                     </div>
                                 </div>
                                 <div class="subtypeTxtDynamicCFRow2"  id="basicFaktorRow2" style="display: none;">
                                     <div class="controlDiv" >
                                         <label>Name</label>
-                                        <input id="subtypeTxtOptNameDKff2" class="" />  
+                                        <input id="subtypeTxtOptNameDKff2" class="" />
                                     </div>
                                     <div class="controlDiv bezugStartDiv2" style="display: none;">
                                         <label>Bezug Start</label>
@@ -6052,14 +6052,14 @@
                                                 <option value="tempNum" class="temperaturOption">Temperatur </option>
                                                 <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
                                                 <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur</option>
-                                                <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur </option>  
+                                                <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur </option>
                                             </select>
                                        </div>
-                                </div>                                
+                                </div>
                                 <div class="subtypeTxtBasisFaktor3" id="basicFaktorRow4" style="display: none;">
                                     <div class="controlDiv" >
                                         <label>K. Bezeichnung</label>
-                                        <input id="subtypeTxtBasisFaktor3Name" class="" />  
+                                        <input id="subtypeTxtBasisFaktor3Name" class="" />
                                     </div>
                                     <div class="controlDiv" >
                                         <label >Calculator </label>
@@ -6073,31 +6073,31 @@
                                     </div>
                                     <div class="controlDiv">
                                         <label>Wert</label>
-                                        <input id="subtypeTxtBasisFaktor3Wert" class="inp_valid1" />                                         
+                                        <input id="subtypeTxtBasisFaktor3Wert" class="inp_valid1" />
                                     </div>
                                 </div>
                                 <div class="moreOptionBtnDiv" style="margin: 20px 0 20px 0;">
                                     <button id="btnOptionHinzEPrdDKff">Option speichern</button>
                                     <button id="btnOptionHinzEPrdDKffUpdate" style="display: none;">Aktualisieren</button>
-                                    <button id="btnOptionHinzEPrdDKffStornieren" style="display: none;">Abrechen</button> 
+                                    <button id="btnOptionHinzEPrdDKffStornieren" style="display: none;">Abrechen</button>
                                     </div>
                                 <table id="tblOptionenEPrdDKff" class="stripe hover row-border compact dt-left custom" style="float:left;font-size:12px;width:100%;">
                                     <thead>
                                         <tr>
                                            <!--  <th> Typ </th>
                                             <th> Format, Dynamik  </th> -->
-                                            <th>Name </th>                                            
+                                            <th>Name </th>
                                             <th>bezug </th>
                                             <th>temperature</th>
                                             <th>bezug Start</th>
                                             <th>bezug End</th>
                                             <th>temperature Start</th>
                                             <th>temperature End</th>
-                                            <th>faktore</th>                      
+                                            <th>faktore</th>
                                             <th>K. Bezeichnung</th>
                                             <th>Calculator </th>
                                             <th>Wert</th>
-                                            <th>Result</th> 
+                                            <th>Result</th>
                                             <th>format, dynamik</th>
                                         </tr>
                                         </thead>
@@ -6109,19 +6109,19 @@
                                     <table id="tblGetDyanamicheKorrekturfaktoren" class="stripe hover row-border compact dt-left custom" style="float:left;font-size:12px;width:100%;">
                                     <thead>
                                         <tr>
-                                            <th>Name </th>                                            
+                                            <th>Name </th>
                                             <th>bezug </th>
                                             <th>temperature</th>
                                             <th>bezug Start</th>
                                             <th>bezug End</th>
                                             <th>temperature Start</th>
                                             <th>temperature End</th>
-                                            <th>faktore</th>                      
+                                            <th>faktore</th>
                                             <th>K. Bezeichnung</th>
                                             <th>Calculator </th>
                                             <th>Wert</th>
-                                            <th>Result</th> 
-                                            <th>format, dynamik</th> 
+                                            <th>Result</th>
+                                            <th>format, dynamik</th>
                                             <th> Action</th>
                                         </tr>
                                         </thead>

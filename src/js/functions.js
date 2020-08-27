@@ -2295,9 +2295,6 @@ try {
             a = a.replace(/\u00dc/g, "Ue");
             a = a.replace(/\u00fc/g, "ue");
             return a = a.replace(/\u00df/g, "ss")
-        }, messmittelOderBerechnungslogik = function(a) {
-            "automatisch" == $(a).prop("value") || "manuell" == $(a).prop("value") ? ($("#labelMessmittelMst").css("display", "inline-block"), $("#labelBerechnungslogikMst").css("display", "none"), $("#linkBerechnungslogikOderEingabemaske").text("Messmittel anlegen")) : ($("#labelMessmittelMst").css("display", "none"), $("#labelBerechnungslogikMst").css("display",
-                "inline-block"), $("#linkBerechnungslogikOderEingabemaske").text("Berechnungslogik anlegen"))
         }, createCustomField = function(a) {
             "std" == a ? "none" == $("#custom1Std").css("display") ? $("#custom1Std").css("display", "block") : "none" == $("#custom2Std").css("display") ? $("#custom2Std").css("display", "block") : "none" == $("#custom3Std").css("display") ? $("#custom3Std").css("display", "block") : "none" == $("#custom4Std").css("display") ? $("#custom4Std").css("display", "block") : "none" == $("#custom5Std").css("display") ? $("#custom5Std").css("display",
                 "block") : "none" == $("#custom6Std").css("display") ? $("#custom6Std").css("display", "block") : ($("#meldungCustomFields").css("display", "block"), $("#meldungCustomFields").dialog()) : "none" == $("#" + a + "FaktorX1").css("display") ? $("#" + a + "FaktorX1").css("display", "block") : "none" == $("#" + a + "FaktorX2").css("display") ? $("#" + a + "FaktorX2").css("display", "block") : "none" == $("#" + a + "FaktorX3").css("display") ? $("#" + a + "FaktorX3").css("display", "block") : ($("#meldungCustomFields").css("display", "block"), $("#meldungCustomFields").dialog())
@@ -4726,6 +4723,9 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
+
+                            toggleMsmBerechnungslogik(c[b].messartMst)
+
                             $("#mstCount").val(c.length);
                             0 < c.length ? ($("#aktivMst").prop("checked", c[b].aktivMst), $("#istDlMst").prop("checked", c[b].isDurchleitung),
                                     [
@@ -4740,7 +4740,8 @@ try {
                                         ["#vorgelagerteMst", "vorgelagerteMessstelleMst"],
                                         ["#anlMst", "anl"],
                                         ["#anlIDMst", "anl_ID"],
-                                        ["#messmittelBerechnungslogikMst", "messmittelBerechnungslogikMstNormal"],
+                                        ["#messmittelBerechnungslogikMst", "msm"],
+                                        ["#berechnungslogikMst", "messmittelBerechnungslogikMstNormal"],
                                         ["#messmittelIDMst", "msm_ID"],
                                         ["#notizAllgemeinMst", "notizMst"]
                                     ].forEach(function(a) {
@@ -9735,6 +9736,32 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
     console.log("Error: " + a)
 };
 
+// Tests if a Messstelle is calculated
+const isCalculated =
+type =>
+type === "berechnet"
+
+// Depending which messart was chosen labels and txtboxes
+// + button are shown or hidden
+const toggleMsmBerechnungslogik =
+    type => {
+        if(isCalculated(type)) {
+            $("#labelMessmittelMst").hide()
+            $("#messmittelBerechnungslogikMst").hide()
+            $("#labelBerechnungslogikMst").show()
+            $("#berechnungslogikMst").show()
+            $("#linkBerechnungslogikOderEingabemaske").show()
+        }
+        else {
+            $("#linkBerechnungslogikOderEingabemaske").hide()
+            $("#labelBerechnungslogikMst").hide()
+            $("#berechnungslogikMst").hide()
+            $("#labelMessmittelMst").show()
+            $("#messmittelBerechnungslogikMst").show()
+        }
+    }
+
+
 // Tests if element is empty string
 const isEmpty =
     element =>
@@ -13508,7 +13535,8 @@ function validateStartEndInputBezugFaktorTypeBasicBetween(faktorType){
 }
 
 // module.exports =
-//     { isEmpty
+//     { isCalculated
+//     , isEmpty
 //     , isOperator
 //     , isNumeric
 //     , isUnit

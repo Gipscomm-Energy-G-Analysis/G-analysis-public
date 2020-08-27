@@ -833,32 +833,9 @@ $(document).ready(function() {
         vorgelagertenBereichAktivieren(this)
     });
     /*17-03-2020 js event for the messaMart on change*/
+    // 26-08-2020 simplified the logic
     $("#messartMst").change(function() {
-        messmittelOderBerechnungslogik(this)
-        var selVal = $(this).find('option:selected').text();
-        //alert(selVal);
-        var getMstVal = $("#messmittelBerechnungslogikMst").val();
-        //alert(getMstVal);
-        if (selVal == 'berechnet') {
-            //alert(1);
-            $("#loginkMstData").val(getMstVal);
-            $("#messmittelBerechnungslogikMst").val('');
-            $("#linkBerechnungslogikOderEingabemaske").css("background-color", "white");
-            $("#labelBerechnungslogikMst").css("display", "inline-block");
-            $("#labelMessmittelMst").css("display", "none");
-        } else {
-            // alert(2);
-            var loginkMstData = $("#loginkMstData").val();
-            if (getMstVal) {
-                $("#messmittelBerechnungslogikMst").val(getMstVal);
-            } else if (loginkMstData) {
-                $("#messmittelBerechnungslogikMst").val(loginkMstData);
-            }
-            $("#loginkMstData").val('');
-            $("#linkBerechnungslogikOderEingabemaske").css("background-color", "");
-            $("#labelBerechnungslogikMst").css("display", "none");
-            $("#labelMessmittelMst").css("display", "inline-block");
-        }
+        toggleMsmBerechnungslogik(this.value)
     });
     /*17-03-2020 js event for the messaMart on change*/
     $("#mstSuchen").click(function() {

@@ -6,6 +6,25 @@ require('../src/js/imports/jquery-3.1.1.min.js');
 core = require('../src/js/fpCore.js');
 fn = require('../src/js/functions.js');
 
+test('function isCalculated : Should return true if the mst is calculated.', function (t) {
+
+    t.comment("#");
+
+    t.plan(6);
+
+    t.true(fn.isCalculated("berechnet"));
+
+    t.false(fn.isCalculated("automatisch"));
+    t.false(fn.isCalculated("manuell"));
+    t.false(fn.isCalculated("1"));
+    t.false(fn.isCalculated(87898));
+    t.false(fn.isCalculated([2,3,4]));
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
 test('function isEmpty : Should return true if is is an empty string.', function (t) {
 
     t.comment("#");

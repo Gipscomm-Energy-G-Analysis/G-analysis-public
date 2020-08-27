@@ -8,7 +8,6 @@ require 'DbOperations.php';
 $nameDB = $_POST['nameDB'];
 $conn = connectToDB($nameDB);
 
-
 $ins = $_POST['ins'];
 $ident = $_POST['ident'];
 $mstID = $_POST['mstID'];
