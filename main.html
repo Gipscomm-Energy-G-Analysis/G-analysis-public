@@ -5854,7 +5854,7 @@
                  <div id="infosDynamicKorrekturFaktor">
                     <div class="navDropBox" style="height:20px;padding:3px;">
                         <img class="navigation_controls" id="DkFeLoeschen" title="löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
-                        <img id="DkFeSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                        <button id="DkFeSpeichern"><img title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /></button>
                         <img id="DkFeHinz" title="neu erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
                         <img class="" id="DkFeSuchen" title="suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                         <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
@@ -5877,7 +5877,7 @@
                                 </div>
                                 <div class="controlDiv">
                                 </div>
-                                <div class="controlDiv" style="width: 69%;height: 69px;margin-bottom: 11px;">
+                                <div class="controlDiv optionBeschreibungDKffDiv">
                                     <label style="vertical-align: 23px;">Beschreibung</label>
                                     <textarea id="optionBeschreibungDKff" class="" style="width: 73%;height: 55px;" /></textarea>
                                 </div>
@@ -5972,20 +5972,29 @@
                                         <input id="subtypeTxtoptzFaktoreDkff" class="inp_valid1" />
                                     </div>
                                     <div class="controlDiv formatDynamicBezugRow1" style="display: none;">
-                                            <label>Format, Dynamik</label>
-                                             <select class="formatDynamicSelOptRow1">
-                                                <option value="">-- Select --</option>
-                                                <option value="year" class="zeitOption">Jahr (Beispiel 2020)</option>
-                                                <option value="month" class="zeitOption">Monat (Beispiel 01)</option>
-                                                <option value="monthYear" class="zeitOption">Monat, Jahr (Beispiel 01.2020)</option>
-                                                <option value="day" class="zeitOption">Tag (Beispiel 01.01.2020)</option>
-                                                <option value="dayMonth" class="zeitOption">Tag, Monat (Beispiel 02.01)</option>
-                                                <option value="tempNum" class="temperaturOption">Temperatur </option>
-                                                <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
-                                                <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur</option>
-                                                <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur</option>
-                                            </select>
-                                       </div>
+                                        <label>Format, Dynamik</label>
+                                         <select class="formatDynamicSelOptRow1">
+                                            <option value="">-- Select --</option>
+                                            <option value="year" class="zeitOption">Jahr (Beispiel 2020)</option>
+                                            <option value="month" class="zeitOption">Monat (Beispiel 01)</option>
+                                            <option value="monthYear" class="zeitOption">Monat, Jahr (Beispiel 01.2020)</option>
+                                            <option value="day" class="zeitOption">Tag (Beispiel 01.01.2020)</option>
+                                            <option value="dayMonth" class="zeitOption">Tag, Monat (Beispiel 02.01)</option>
+                                            <option value="tempNum" class="temperaturOption">Temperatur </option>
+                                            <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
+                                            <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur</option>
+                                            <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur</option>  
+                                        </select>
+                                    </div>
+                                    <div class="controlDiv messstellenCatNameDiv">
+                                        <label>Bereich</label>
+                                        <input id="messstellenCatName" class="messstellenCatName" />
+                                        <img class="" id="messstellenCatSel" title="Bereich" src="images/search.png" alt="Bereich">
+                                        <input type="hidden" id="messstellenBerecheID">
+                                    </div>
+                                    <div class="delReset">
+                                       <button id="basicFaktorRow1Reset">Delete</button>
+                                    </div>
                                 </div>
                                 <div class="subtypeTxtBasisFaktor2" id="basicFaktorRow3" style="display: none;">
                                     <div class="controlDiv" >
@@ -6004,7 +6013,17 @@
                                     </div>
                                     <div class="controlDiv">
                                         <label>Wert</label>
-                                        <input id="subtypeTxtBasisFaktor2Wert" class="inp_valid1" />
+                                        <input id="subtypeTxtBasisFaktor2Wert" class="inp_valid1" />                         
+                                    </div>
+                                    <div class="controlDiv subtypeTxtBasisFaktor2CalcRghtDiv" style="display: none;">
+                                        <label >Calculator </label>
+                                        <select class="subtypeTxtBasisFaktor2CalcRght">
+                                                <option value="">-Select-</option>
+                                                <option value="+">+</option>
+                                                <option value="-">-</option>
+                                                <option value="*">*</option>
+                                                <option value="/">/</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="subtypeTxtDynamicCFRow2"  id="basicFaktorRow2" style="display: none;">
@@ -6041,21 +6060,31 @@
                                         <input id="subtypeTxtoptzFaktoreDkff2" class="inp_valid1" />
                                     </div>
                                     <div class="controlDiv formatDynamicBezugRow2" style="display: none;">
-                                            <label>Format, Dynamik</label>
-                                             <select class="formatDynamicSelOptRow2">
-                                                <option value="">-- Select --</option>
-                                                <option value="year" class="zeitOption">Jahr (Beispiel 2020)</option>
-                                                <option value="month" class="zeitOption">Monat (Beispiel 01)</option>
-                                                <option value="monthYear" class="zeitOption">Monat, Jahr (Beispiel 01.2020)</option>
-                                                <option value="day" class="zeitOption">Tag (Beispiel 01.01.2020)</option>
-                                                <option value="dayMonth" class="zeitOption">Tag, Monat (Beispiel 02.01)</option>
-                                                <option value="tempNum" class="temperaturOption">Temperatur </option>
-                                                <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
-                                                <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur</option>
-                                                <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur </option>
-                                            </select>
-                                       </div>
-                                </div>
+
+                                        <label>Format, Dynamik</label>
+                                         <select class="formatDynamicSelOptRow2">
+                                            <option value="">-- Select --</option>
+                                            <option value="year" class="zeitOption">Jahr (Beispiel 2020)</option>
+                                            <option value="month" class="zeitOption">Monat (Beispiel 01)</option>
+                                            <option value="monthYear" class="zeitOption">Monat, Jahr (Beispiel 01.2020)</option>
+                                            <option value="day" class="zeitOption">Tag (Beispiel 01.01.2020)</option>
+                                            <option value="dayMonth" class="zeitOption">Tag, Monat (Beispiel 02.01)</option>
+                                            <option value="tempNum" class="temperaturOption">Temperatur </option>
+                                            <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
+                                            <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur</option>
+                                            <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur </option>  
+                                        </select>
+                                    </div>
+                                    <div class="controlDiv messstellenCatNameDiv2">
+                                        <label>Bereich</label>
+                                        <input id="messstellenCatName2" class="messstellenCatName2" />
+                                        <img class="" id="messstellenCatSel2" title="Bereich" src="images/search.png" alt="Bereich">  
+                                        <input type="hidden" id="messstellenBerecheID2"> 
+                                    </div>
+                                    <div class="delReset">
+                                       <button id="basicFaktorRow2Reset">Delete</button>
+                                    </div>
+                                </div>      
                                 <div class="subtypeTxtBasisFaktor3" id="basicFaktorRow4" style="display: none;">
                                     <div class="controlDiv" >
                                         <label>K. Bezeichnung</label>
@@ -6073,14 +6102,28 @@
                                     </div>
                                     <div class="controlDiv">
                                         <label>Wert</label>
-                                        <input id="subtypeTxtBasisFaktor3Wert" class="inp_valid1" />
+                                        <input id="subtypeTxtBasisFaktor3Wert" class="inp_valid1" />                          
+                                    </div>
+                                    <div class="controlDiv subtypeTxtBasisFaktor3CalcRghtDiv" style="display: none;">
+                                        <label >Calculator </label>
+                                        <select class="subtypeTxtBasisFaktor3CalcRght">
+                                                <option value="">-Select-</option>
+                                                <option value="+">+</option>
+                                                <option value="-">-</option>
+                                                <option value="*">*</option>
+                                                <option value="/">/</option>
+                                            </select>
                                     </div>
                                 </div>
                                 <div class="moreOptionBtnDiv" style="margin: 20px 0 20px 0;">
                                     <button id="btnOptionHinzEPrdDKff">Option speichern</button>
                                     <button id="btnOptionHinzEPrdDKffUpdate" style="display: none;">Aktualisieren</button>
-                                    <button id="btnOptionHinzEPrdDKffStornieren" style="display: none;">Abrechen</button>
+                                    <button id="btnOptionHinzEPrdDKffStornieren" style="display: none;">Abrechen</button> 
+                                     <div class="delReset">
+                                       <button id="basicFaktorDelete">Delete</button>
+                                       <input type="hidden" id="calculationTypeID">
                                     </div>
+                                </div>
                                 <table id="tblOptionenEPrdDKff" class="stripe hover row-border compact dt-left custom" style="float:left;font-size:12px;width:100%;">
                                     <thead>
                                         <tr>
@@ -6099,6 +6142,7 @@
                                             <th>Wert</th>
                                             <th>Result</th>
                                             <th>format, dynamik</th>
+                                            <th>Bereich</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -6120,9 +6164,10 @@
                                             <th>K. Bezeichnung</th>
                                             <th>Calculator </th>
                                             <th>Wert</th>
-                                            <th>Result</th>
-                                            <th>format, dynamik</th>
-                                            <th> Action</th>
+                                            <th>Result</th> 
+                                            <th>format, dynamik</th> 
+                                            <th>Bereich</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -6136,6 +6181,15 @@
                         <input type="hidden" name="ePrddKffOptionIDStore" id="ePrddKffOptionIDStore" value="">
                         <input type="hidden" name="saveOptType" id="saveOptType" value="">
                         <input type="hidden" name="faktoreDynamictypeStore" id="faktoreDynamictypeStore">
+                        <input type="hidden" name="ePrdDKFECalcID" id="ePrdDKFECalcID">
+                        <input type="hidden" name="ePrdDKFECalcType" id="ePrdDKFECalcType">
+                        <input type="hidden" name="ePrdDKFECalcWert" id="ePrdDKFECalcWert">
+                        <input type="hidden" name="ePrdDKFECalcWertR2" id="ePrdDKFECalcWertR2">
+                        <input type="hidden" name="ePrdDKFECalcFaktor" id="ePrdDKFECalcFaktor">
+                        <input type="hidden" name="ePrdDKFECalcRowType" id="ePrdDKFECalcRowType">
+                        <input type="hidden" id="ePrdDKFERow1ID">
+                        <input type="hidden" id="ePrdDKFERow2ID">
+                        <input type="hidden" id="updateOptType">
                 </div>
                 <!--End 31-07-2020 Tab Korrektur Faktor form html-->
 
@@ -8052,6 +8106,48 @@
         </div>
     </div>
     <!--Bereich wählen-->
+    <!--  -->
+    <div id="dynamischeFaktorMessstellenCatContainer" style="display:none;font-size:14px;">
+        <div style="margin-bottom:100px;">
+            <table id="tblMessstellenCat" class="stripe hover row-border compact dt-left custom">
+                <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>Bereich</th>
+                        <th>Kürzel</th>
+                        <th>Kostenstelle</th>
+                        <th>Ort</th>
+                        <th>Level</th>
+                        <th>Vorgelagerter Bereich 1</th>
+                        <th>Vorgelagerter Bereich 2</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <!--Messstellen Cat-->
+    <!--  -->
+    <div id="dynamischeFaktorMessstellenCat2Container" style="display:none;font-size:14px;">
+        <div style="margin-bottom:100px;">
+            <table id="tblMessstellenCat2" class="stripe hover row-border compact dt-left custom">
+                <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>Bereich</th>
+                        <th>Kürzel</th>
+                        <th>Kostenstelle</th>
+                        <th>Ort</th>
+                        <th>Level</th>
+                        <th>Vorgelagerter Bereich 1</th>
+                        <th>Vorgelagerter Bereich 2</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <!--Messstellen Cat2-->
     <!--  -->
     <div id="bereichWaehlen" style="display:none;font-size:14px;">
         <div style="margin-bottom:100px;">

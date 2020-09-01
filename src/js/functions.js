@@ -8636,7 +8636,8 @@ try {
         buttons: [],
         pageLength: 15,
         bAutoWidth: !1,
-        colReorder: !0
+        colReorder: !0,
+        bSort : false
     });
 
     /*03-04-2020 get Dynamic Correction factor (Datatable settings)*/
@@ -8650,6 +8651,7 @@ try {
         pageLength: 15,
         bAutoWidth: !1,
         colReorder: !0,
+        bSort : false,
         createdRow: function(row, data, dataIndex) {
             $(row).find("td:eq(0)").attr("data-id", $("#ePrdIdStore").val());
             $(row).attr("data-type", "");
@@ -8660,7 +8662,7 @@ try {
     /*14-04-2020 Create Dynamic Correction factor search icon display dataTable (Datatable settings)*/
      tblGetDyanamicheKorrekturfaktorenParent = $("#tblGetDyanamicheKorrekturfaktorenParent").DataTable({
         dom: "Bfrtip",
-        buttons: [ {
+        buttons: [ /*{
             extend: "copy",
             text: "Kopieren",
             exportOptions: {
@@ -8678,7 +8680,7 @@ try {
             exportOptions: {
                 columns: ":visible"
             }
-        } ],
+        } */],
         pageLength: 50,
         bAutoWidth: !1,
         colReorder: !0
@@ -9156,6 +9158,56 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 columns: ":visible"
             }
         }],
+        pageLength: 20,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblMessstellenCat = $("#tblMessstellenCat").DataTable({
+        dom: "Bfrtip",
+        buttons: [/*{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }*/],
+        pageLength: 20,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblMessstellenCat2 = $("#tblMessstellenCat2").DataTable({
+        dom: "Bfrtip",
+        buttons: [/*{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }*/],
         pageLength: 20,
         bAutoWidth: !1,
         colReorder: !0
@@ -10167,6 +10219,7 @@ function dynamischeKorrekturfaktorenSpeichern() {
     optionBasisFaktorType= [];
     optionBasisResult= [];
     optionFormatDynamicType= [];
+    optionBereich= [];
 
       var optionNameDKff = $("#optionNameDKff").val();
       var optionBeschreibungDKff = $("#optionBeschreibungDKff").val();
@@ -10176,7 +10229,9 @@ function dynamischeKorrekturfaktorenSpeichern() {
       var basisType = $('.auswahlTypierungFaktorDKff').val();
       var calculationTypeDKff = $('.calculationTypeDKff').val(); //This field for faktor 5
       var saveOptType =  $('#saveOptType').val();
+        
       for (i = 0; i < $("#tblOptionenEPrdDKff tbody tr").length; i++){
+       // console.log(i);
          optionName[i] = tblOptionenEPrdDKff.cell(i, 0).data();
          optionBezug[i] = tblOptionenEPrdDKff.cell(i, 1).data();
          optionTemp[i] = tblOptionenEPrdDKff.cell(i, 2).data(); //15-05-20 New Added filed temperature
@@ -10191,6 +10246,10 @@ function dynamischeKorrekturfaktorenSpeichern() {
          optionBasisResult[i] = tblOptionenEPrdDKff.cell(i, 11).data();
          var nodeFormatDynamic = tblOptionenEPrdDKff.rows( i ).nodes()[0];
          optionFormatDynamicType[i] =  $(nodeFormatDynamic).attr("data-type");
+
+         var nodeBereich = tblOptionenEPrdDKff.rows( i ).nodes()[0];
+         optionBereich[i] =  $(nodeBereich).attr("bereich_id");
+
             xOptionName = optionName;
             yOptionBezug = optionBezug;
             yOptionBezugStart = optionBezugStart;
@@ -10204,6 +10263,7 @@ function dynamischeKorrekturfaktorenSpeichern() {
             cOptionBasisFaktorWert= optionBasisFaktorWert;
             dOptionResults = optionBasisResult;
             formatDynamicType = optionFormatDynamicType;
+            bereich_id=optionBereich;
         }
         $.ajax({
             type: "POST",
@@ -10234,15 +10294,16 @@ function dynamischeKorrekturfaktorenSpeichern() {
                 formatDynamicType:formatDynamicType,
                 basisType:basisType,
                 calculationTypeDKff:calculationTypeDKff,
-                saveOptType:saveOptType
+                saveOptType:saveOptType,
+                rowResult:rowResult,
+                rowCalculator:rowCalculator,
+                bereich_id:bereich_id
             },
             success: function(a) {
                 if(a !=''){
-                    //tblOptionenEPrdDKff.clear().draw();
-                    /*var ePrdDMainIdStore =$("#ePrdDMainIdStore").val(a);
-
-                    getDynamischeKorrekturfaktoren(ePrdDMainIdStore);
-                */  $("#tblOptionenEPrdDKffNotify").hide();
+                    /*console.log(rowResult);
+                    console.log(rowCalculator);*/                    
+                    $("#tblOptionenEPrdDKffNotify").hide();
                     $("#optionNameDKff").val("");
                     $("#optionBeschreibungDKff").val("");
                     $(".typeDynamicCF").val("");
@@ -10258,20 +10319,9 @@ function dynamischeKorrekturfaktorenSpeichern() {
                     $("#tblOptionenEPrdDKffNotify").hide();
                     $(".sectionDynamicCF").show();
                     $(".calculationTypeDiv").hide();
-                    //$(".subtypeTimeDynamicCF").hide();
                     tblOptionenEPrdDKff.rows().remove().draw();
                     tblGetDyanamicheKorrekturfaktoren.rows().remove().draw();
-                    //$("#ePrdDMainIdStore").val("");
-                    /*$("#subtypeTxtBasisFaktor2Name").val("");
-                    $(".subtypeTxtBasisFaktor2Calc").val("");
-                    $("#subtypeTxtBasisFaktor2Wert").val("");
-                    $(".auswahlTypierungFaktorDKff").val("");
-                    $(".subtypeTxtBasisFaktor2").hide();
-                    $("#subtypeTxtBasisFaktor3Name").val("");
-                    $(".subtypeTxtBasisFaktor3Calc").val("");
-                    $("#subtypeTxtBasisFaktor3Wert").val("");
-                    $(".subtypeTxtBasisFaktor3").hide();
-                    */
+
                     var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
                     var typeDynamicCFVal = $(".typeDynamicCF").val();
                     var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
@@ -10296,6 +10346,8 @@ function dynamischeKorrekturfaktorenSpeichern() {
                     $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
                     $('#saveOptType').val('');
                     alert("Daten erfolgreich gespeichert");
+                    emptyArrayAfterPush();
+                    $("#DkFeSpeichern").prop('disabled', false);
                 }
             }
     })
@@ -10306,7 +10358,8 @@ function dynamischeKorrekturfaktorenSpeichern() {
 function getDynamischeKorrekturfaktoren(id) {
     setTimeout(function(){
     var FaktoreType = $(".auswahlTypierungFaktorDKff").val();
-    if(FaktoreType==1 || FaktoreType==6 || FaktoreType==4 || FaktoreType==8){
+    var calculationTypeDKff = $(".calculationTypeDKff").val();
+    if(FaktoreType==1 || FaktoreType==6 || FaktoreType==4 || FaktoreType==8){ 
         $.ajax({
             type: "POST",
             async: !0,
@@ -10337,12 +10390,62 @@ function getDynamischeKorrekturfaktoren(id) {
                         "",
                         "",
                         typeValueSubtypeformatDynamic(a[e].formatDynamicType),
-                        "<a data-id='"+a[e].dKffOption_id+"' data-id-parent='"+a[e].dKff_id+"' class='dyanamicheKorrekturfaktorenMenuEdit'>Edit</a> | <a class='dyanamicheKorrekturfaktorenMenuDel' data-id='"+a[e].dKffOption_id+"'>Delete</a>"]).draw().node();
+                         a[e].nameBer,
+                        "<a data-id='"+a[e].dKffOption_id+"' ber-id='"+a[e].ber_ID+"' data-id-parent='"+a[e].dKff_id+"' class='dyanamicheKorrekturfaktorenMenuEdit'>Edit</a> | <a class='dyanamicheKorrekturfaktorenMenuDel' data-id='"+a[e].dKffOption_id+"'>Delete</a>"]).draw().node();
                        $( rowNode ).attr('data-type',a[e].formatDynamicType).css("cursor", "pointer");
                 }
             }
         })
-    }else{
+    }else if(FaktoreType==5 || FaktoreType==9){
+       // alert(FaktoreType);
+          $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getDKorrekturfaktor.php",
+            data: {
+                nameDB: $("#nameDB").val(),
+                dKff_id:id,
+                FaktoreType:FaktoreType
+            },
+            success: function(a) {
+                a = json(a);
+                var b = a.length;
+                //console.log(a);
+                tblGetDyanamicheKorrekturfaktoren.colReorder.reset();
+                tblGetDyanamicheKorrekturfaktoren.clear().draw();
+                for (var e = 0; e < b; e++){
+                   if(calculationTypeDKff ==4){
+                        var editDel = "<a data-id='"+a[e].dKffOption_id+"' ber-id='"+a[e].ber_ID+"' data-id-parent='"+a[e].dKff_id+"' class='dyanamicheKorrekturfaktorenMenuEdit'>Edit</a> | <a class='dyanamicheKorrekturfaktorenMenuDel' data-id='"+a[e].dKffOption_id+"'>Delete</a>";
+                     }else{
+                        var editDel =  "<a calc-id='"+a[e].calculateID+"'  ber-id='"+a[e].ber_ID+"' data-id='"+a[e].dKffOption_id+"' data-id-parent='"+a[e].dKff_id+"' class='dyanamicheKorrekturfaktorenMenuEdit'>Edit</a>";
+                     }
+                   var rowNode = tblGetDyanamicheKorrekturfaktoren.row.add(
+                        [a[e].subtypeTxtOptNameDKff,                        
+                        a[e].subtypeTxtoptzBezugDkff,
+                        a[e].subtypeTxtoptzTempDkff,
+                        a[e].bezugStartTxt,
+                        a[e].bezugEndTxt,                       
+                        a[e].tempStartTxt,
+                        a[e].tempEndTxt,
+                        a[e].subtypeTxtoptzFaktoreDkff,
+                        a[e].faktorName,
+                        a[e].faktorCalc,
+                        a[e].faktorWert,
+                        a[e].result,
+                    typeValueSubtypeformatDynamic(a[e].formatDynamicType),
+                        a[e].nameBer,
+                       editDel]).draw().node();
+                    $( rowNode ).attr('data-type',a[e].formatDynamicType).css("cursor", "pointer");
+                    
+                   if(e%2!=0 && calculationTypeDKff !=4){
+                    var rowData = tblGetDyanamicheKorrekturfaktoren.row(rowNode);
+                    rowData.child( tblOptionenRecordAndDelOpt(a[e].calculationType,a[e].calculationResult,a[e].calculateID)).show();
+                   }
+               }
+            }
+        })
+
+    }else{ 
         $.ajax({
             type: "POST",
             async: !0,
@@ -10371,8 +10474,9 @@ function getDynamischeKorrekturfaktoren(id) {
                         a[e].faktorCalc,
                         a[e].faktorWert,
                         a[e].result,
-                    typeValueSubtypeformatDynamic(a[e].formatDynamicType),
-                        "<a data-id='"+a[e].dKffOption_id+"' data-id-parent='"+a[e].dKff_id+"' class='dyanamicheKorrekturfaktorenMenuEdit'>Edit</a> | <a class='dyanamicheKorrekturfaktorenMenuDel' data-id='"+a[e].dKffOption_id+"'>Delete</a>"]).draw().node();
+                        typeValueSubtypeformatDynamic(a[e].formatDynamicType),
+                        a[e].nameBer,
+                        "<a data-id='"+a[e].dKffOption_id+"'  ber-id='"+a[e].ber_ID+"' data-id-parent='"+a[e].dKff_id+"' class='dyanamicheKorrekturfaktorenMenuEdit'>Edit</a> | <a class='dyanamicheKorrekturfaktorenMenuDel' data-id='"+a[e].dKffOption_id+"'>Delete</a>"]).draw().node();
                     $( rowNode ).attr('data-type',a[e].formatDynamicType).css("cursor", "pointer");
                }
             }
@@ -10541,7 +10645,31 @@ function DynamischeKorrekturfaktorenAktualisieren() {
      var tempStartTxt = $("#tempStartTxt").val();
      var tempEndTxt = $("#tempEndTxt").val();
 
-    if(basisFktr2Wert !='' && optionFaktore !=''){
+     var ePrdDKFECalcResult = $("#ePrdDKFECalcResult").val();
+     var messstellenBerecheID = $('#messstellenBerecheID').val();
+
+    /*Faktor 5 or 9 delete option row*/
+    var ePrdDKFERow1ID = $('#ePrdDKFERow1ID').val();
+    var ePrdDKFERow2ID = $('#ePrdDKFERow2ID').val();
+    var updateOptType = $('#updateOptType').val();
+    var basisFktr3Name = $('#subtypeTxtBasisFaktor3Name').val();
+    var basisFktr3Calc = $('.subtypeTxtBasisFaktor3Calc').val();
+    var basisFktr3Wert = $('#subtypeTxtBasisFaktor3Wert').val();
+
+    var optionName2 = $('#subtypeTxtOptNameDKff2').val();
+    var optionBezug2 = $('#subtypeTxtoptzBezugDkff2').val();
+    var optionTemp2 = $('#subtypeTxtoptzTempDkff2').val();
+    var bezugStartTxt2 = $("#bezugStartTxt2").val();
+    var bezugEndTxt2 = $("#bezugEndTxt2").val();
+    var tempStartTxt2 = $("#tempStartTxt2").val();
+    var tempEndTxt2 = $("#tempEndTxt2").val();
+    var optionFaktore2 = $('#subtypeTxtoptzFaktoreDkff2').val();
+    var faktoreDynamictypeVal2 = $('.formatDynamicSelOptRow2').val();
+    var messstellenBerecheID2 = $('#messstellenBerecheID2').val();
+    var calculationTypeDKff = $('.calculationTypeDKff').val(); 
+
+    
+    if(basisFktr2Wert !='' && optionFaktore !=''){ 
         var faktoreRep = optionFaktore.replace(",", ".");
         var basisFktr2WertRep = basisFktr2Wert.replace(",", ".");
 
@@ -10554,9 +10682,11 @@ function DynamischeKorrekturfaktorenAktualisieren() {
             return false;
         }
         var result = result2CommaDigit.toFixed(4).replace(".", ",");
+    }else{
+        var result ='';
     }
-    if(faktorType ==4 || faktorType ==1 || faktorType ==5  || faktorType ==6 || faktorType ==8 || faktorType ==9){
-        if(optionFaktore !=''){
+    if(faktorType ==4 || faktorType ==1 || faktorType ==5  || faktorType ==6 || faktorType ==8 || faktorType ==9){ 
+        if(optionFaktore !=''){   
             var faktoreRep = optionFaktore.replace(",", ".");
             var faktore2CommaRep = optionFaktore.replace(".", ",");
             if(isFloat(faktoreRep)==true){
@@ -10568,13 +10698,123 @@ function DynamischeKorrekturfaktorenAktualisieren() {
         }
     }
     if(faktorType ==6 || faktorType ==7 || faktorType==8 || faktorType==9){
-        alert(validateStartEndInputBezugFaktorTypeBasicBetween(faktorType));
+        //alert(validateStartEndInputBezugFaktorTypeBasicBetween(faktorType));
         if(validateStartEndInputBezugFaktorTypeBasicBetween(faktorType) != true){
             return false;
         }
     }
 
+    if(faktorType==5 || faktorType==9){
 
+        var calculateID = $('#ePrdDKFECalcID').val();
+        var wertRow1 = $('#subtypeTxtBasisFaktor2Wert').val();
+        var wertRow2 = $('#ePrdDKFECalcWertR2').val();
+
+        var ePrdDKFECalcWert = $('#ePrdDKFECalcWert').val();
+        var ePrdDKFECalcRowType = $('#ePrdDKFECalcRowType').val();
+
+        var faktor = $('#ePrdDKFECalcFaktor').val();
+           
+        if(basisFktr3Wert !='' && optionFaktore2 !='' /*&& (calculationTypeDKff ==2 || calculationTypeDKff ==3 )*/){  
+            var faktoreRep2 = optionFaktore2.replace(",", ".");
+            var basisFktr3WertRep = basisFktr3Wert.replace(",", ".");
+
+            var faktore3Comma = optionFaktore2.replace(".", ",");
+            var basisFktrWert3Comma = basisFktr3Wert.replace(".", ",");
+
+            if(isFloat(faktoreRep2)==true && isFloat(basisFktr3WertRep)==true){
+                var result3CommaDigit = eval(faktoreRep2 + basisFktr3Calc + basisFktr3WertRep);
+            }else{
+                alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                return false;
+            }
+           
+           // alert('result2=' +result2 );
+        }
+        if(result3CommaDigit){
+             var result2 = result3CommaDigit.toFixed(4).replace(".", ",");
+         }else{
+             var result2 = '';
+         }
+        ////////////////////////
+        if(updateOptType !='deleteClickUpdate'){
+            if(calculationTypeDKff ==3){
+                    if(ePrdDKFECalcRowType =='odd' && wertRow1 !=='' && wertRow2 !=''){
+                    var calculationType = $('.subtypeTxtBasisFaktor2CalcRght').val();
+                    var results = eval(wertRow1 + calculationType + wertRow2);
+                    var calcResult = results.toFixed(4).replace(".", ",");
+                    //alert('calcResult1='+calcResult);
+                    }
+                    if(ePrdDKFECalcRowType =='even' && wertRow1 !=='' && ePrdDKFECalcWert !=''){
+                    var calculationType = $('.subtypeTxtBasisFaktor2CalcRght').val();
+                    var results = eval(wertRow1 + calculationType + ePrdDKFECalcWert);
+                    var calcResult = results.toFixed(4).replace(".", ",");
+                    //alert('calcResult2='+calcResult);
+                    }
+            }else{
+                var basisFktr2WertRep = basisFktr2Wert.replace(",", ".");
+                 if(faktor !=='' && basisFktr2WertRep !=''){
+                    var calculationType = $('.subtypeTxtBasisFaktor2CalcRght').val();
+                     //alert('basisFktr2WertRep='+basisFktr2WertRep);
+                    var results = eval(faktor + calculationType + basisFktr2WertRep);
+                    var calcResult = results.toFixed(4).replace(".", ",");
+                    //alert('calcResult3='+calcResult);
+                }else{
+                    var calculationType = $('#ePrdDKFECalcType').val();
+                    var results = eval(faktoreRep + calculationType + ePrdDKFECalcWert);
+                    var calcResult = results.toFixed(4).replace(".", ",");
+                   //alert('calcResult4='+calcResult);
+                }
+
+            }
+        }else{
+        ////////////////////////
+        var basisFktr2WertRepRght = basisFktr2Wert.replace(",", ".");
+        var basisFktr2WertCommaRght = basisFktr2Wert.replace(".", ",");
+        var faktore3RepType5 = optionFaktore2.replace(",", "."); 
+        var basisFktr3WertRepType5 = basisFktr3Wert.replace(",", ".");
+        var basisFktr2CalcRght =$(".subtypeTxtBasisFaktor2CalcRght").val();
+        var basisFktr3CalcRght =$(".subtypeTxtBasisFaktor3CalcRght").val();
+
+        if( calculationTypeDKff ==1){
+             if(faktore3RepType5 !='' && basisFktr2WertRepRght !=''){
+                if(isFloat(faktore3RepType5)==true && isFloat(basisFktr2WertRepRght)==true){
+                    var resultCalcRght = eval(faktore3RepType5 + basisFktr2CalcRght + basisFktr2WertRepRght);
+                }else{
+                    alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                    return false;
+                }  
+            var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
+            var calculationType =basisFktr2CalcRght;
+            //alert('resultCalcRghtFinal1='+calcResult);
+           }
+        }else if( calculationTypeDKff ==2){
+            if(faktoreRep !='' && basisFktr3WertRepType5 !='' && basisFktr3CalcRght !=''){
+                if(isFloat(faktoreRep)==true && isFloat(basisFktr3WertRepType5)==true){
+                    var resultCalcRght = eval(faktoreRep + basisFktr3CalcRght + basisFktr3WertRepType5);
+                }else{
+                    alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                    return false;
+                }  
+            var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
+            var calculationType =basisFktr3CalcRght;
+            //alert('resultCalcRghtFinal2='+resultCalcRght);
+           }
+        }else if(calculationTypeDKff ==3){
+            if(basisFktr2WertRepRght !='' && basisFktr3WertRepType5 !='' && basisFktr2CalcRght !=''){
+                if(isFloat(basisFktr2WertRepRght)==true && isFloat(basisFktr3WertRepType5)==true){
+                    var resultCalcRght = eval(basisFktr2WertRepRght + basisFktr2CalcRght + basisFktr3WertRepType5);
+                }else{
+                    alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                    return false;
+                }  
+            var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
+            var calculationType =basisFktr2CalcRght;
+            //alert('resultCalcRghtFinal3='+resultCalcRght);
+           }
+        }
+      }
+    }
    // validateStartEndInputBezugFaktorTypeBasicBetween(faktorType);
     //alert(optionFaktore);
         $.ajax({
@@ -10604,7 +10844,29 @@ function DynamischeKorrekturfaktorenAktualisieren() {
                 bezugStartTxt:bezugStartTxt,
                 bezugEndTxt:bezugEndTxt,
                 tempStartTxt:tempStartTxt,
-                tempEndTxt:tempEndTxt
+                tempEndTxt:tempEndTxt,
+                calculationType:calculationType,
+                calcResult:calcResult,
+                calculateID:calculateID,
+                messstellenBerecheID:messstellenBerecheID,
+                ePrdDKFERow1ID:ePrdDKFERow1ID,
+                ePrdDKFERow2ID:ePrdDKFERow2ID,
+                updateOptType:updateOptType,
+                basisFktr3Name:basisFktr3Name,
+                basisFktr3Calc:basisFktr3Calc,
+                basisFktr3Wert:basisFktrWert3Comma,
+                optionName2:optionName2, 
+                optionBezug2:optionBezug2,
+                optionTemp2 :optionTemp2,
+                bezugStartTxt2:bezugStartTxt2,
+                bezugEndTxt2:bezugEndTxt2,
+                tempStartTxt2: tempStartTxt2,
+                tempEndTxt2 :tempEndTxt2,
+                optionFaktore2:optionFaktore2,
+                faktoreDynamictypeVal2:faktoreDynamictypeVal2,
+                messstellenBerecheID2:messstellenBerecheID2,
+                result2:result2
+
             },
             success: function(a) {
                 alert("Datensatz wurde erfolgreich aktualisiert!");
@@ -10623,30 +10885,32 @@ function DynamischeKorrekturfaktorenAktualisieren() {
                 $("#DkFeNext").show();
                 $("#DkFeLast").show();
                 $("#DkFeSuchen").show();
-                /*$("#subtypeTxtBasisFaktor2Name").val("");
-                $(".subtypeTxtBasisFaktor2Calc").val("");
-                $("#subtypeTxtBasisFaktor2Wert").val("");
-                $("#subtypeTxtBasisFaktor3Name").val("");
-                $(".subtypeTxtBasisFaktor3Calc").val("");
-                $("#subtypeTxtBasisFaktor3Wert").val("");*/
+
                 var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
                 var typeDynamicCFVal = $(".typeDynamicCF").val();
                 var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
                 var calculationTypeDKff = $(".calculationTypeDKff").val();
-                $("#basicFaktorRow1 input").val("");
-                $("#basicFaktorRow2 input").val("");
-                $("#basicFaktorRow3 input").val("");
-                $("#basicFaktorRow4 input").val("");
-                $("#basicFaktorRow3 select").val("");
-                $("#basicFaktorRow4 select").val("");
-                    if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){
-                        visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);
-                        addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);
-                    }
-                    getDynamischeKorrekturfaktoren(ePrdDMainIdStore);
-                    if(calculationTypeDKff && auswahlTypierungVal == 5){
-                        basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);
-                    }
+
+                $("#basicFaktorRow1 input").val('');
+                $("#basicFaktorRow1 select").val('');
+                $("#basicFaktorRow3 input").val('');
+                $("#basicFaktorRow3 select").val('');
+                $("#basicFaktorRow2 input").val('');
+                $("#basicFaktorRow2 select").val('');
+                $("#basicFaktorRow4 input").val('');
+                $("#basicFaktorRow4 select").val('');
+                $('#ePrdDKFERow1ID').val('');
+                $('#ePrdDKFERow2ID').val('');
+                $('#updateOptType').val('');
+                if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){  
+                    visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);          
+                    addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+
+                }
+                getDynamischeKorrekturfaktoren(ePrdDMainIdStore);
+                if(calculationTypeDKff && auswahlTypierungVal == 5){
+                    basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);
+                }
             }
     })
 }
@@ -10752,7 +11016,7 @@ function getSingleRecordDynamischeKorrekturfaktoren(parentID) {
         success: function(a) {
             a = json(a);
             //var b = a.length;
-            console.log(a);
+            //console.log(a);
             var dKff_id = a[0].dKff_id;
             var optionNameDKff = a[0].optionNameDKff;
             var optionBeschreibungDKff = a[0].optionBeschreibungDKff;
@@ -10819,7 +11083,7 @@ function getLastIdDataAppendDynamicKorrektorFaktor(key,parentDataID){
         },
         success: function(a) {
             a = json(a);
-            console.log(a);
+            //console.log(a);
             if(a.length ==1){
             var dKff_id = a[0].dKff_id;
             var optionNameDKff = a[0].optionNameDKff;
@@ -10843,7 +11107,7 @@ function getLastIdDataAppendDynamicKorrektorFaktor(key,parentDataID){
             $("#DkFeNext").show();
             $("#DkFeLast").show();
             $("#DkFeSuchen").show();
-            $(".subtypeTxtDynamicCF").show();
+            /*$(".subtypeTxtDynamicCF").show();*/
 
             /*next previous id assign*/
             //$("#ePrdDMainIdStore").val(dKff_id);
@@ -10869,7 +11133,7 @@ function getLastIdDataShowNextPrevDynamicKorrektorFaktor(key,parentDataID){
         },
         success: function(a) {
             a = json(a);
-            console.log(a);
+            //console.log(a);
             if(a.length ==1){
             var dKff_id = a[0].dKff_id;
             var optionNameDKff = a[0].optionNameDKff;
@@ -10926,6 +11190,19 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
             $('#tblGetDyanamicheKorrekturfaktoren .dataTables_empty').attr('colspan','100%');
             $(".subtypeTxtDynamicCFRow2").hide();
             $(".formatDynamicBezugRow2").hide();
+            $(".subtypeTxtBasisFaktor2CalcRghtDiv").hide();
+            $(".subtypeTxtBasisFaktor3CalcRghtDiv").hide();
+            $(".delReset").hide();
+            $("#btnOptionHinzEPrdDKff").show();
+            $("#btnOptionHinzEPrdDKffUpdate").hide(); 
+            $("#basicFaktorRow1 input").val('');
+            $("#basicFaktorRow1 select").val('');
+            $("#basicFaktorRow3 input").val('');
+            $("#basicFaktorRow3 select").val('');
+            $("#basicFaktorRow2 input").val('');
+            $("#basicFaktorRow2 select").val('');
+            $("#basicFaktorRow4 input").val('');
+            $("#basicFaktorRow4 select").val('');
             if(auswahlTypierungVal =='1' && typeDynamicCFVal=='Zeit'){
                 $('.calculationTypeDiv').hide();
                 $(".subtypeTxtDynamicCF ").show();
@@ -10943,12 +11220,13 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,2,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
                 $(".formatDynamicBezugRow2").hide();
@@ -10969,12 +11247,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 //$(".subtypeTxtDynamicCF label").css("width", "44%");
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,2,12]);
-                columnHide.visible( !columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13]);
-                columnShow.visible( columnShow.visible() );
+
+                columnHide.visible( !columnHide.visible() );    
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13,14]);
+                columnShow.visible( columnShow.visible() ); 
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,8,9,10,11]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,8,9,10,11,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
@@ -10997,12 +11277,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 var column = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,2,12]);
                 column.visible( !column.visible() );
-                var columnShowMore = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13]);
+                var columnShowMore = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13,14]);
                 columnShowMore.visible( columnShowMore.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,8,9,10,11]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,8,9,10,11,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
@@ -11029,12 +11309,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 //$('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,1,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,7,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,7,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,1,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible());
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
                 $(".formatDynamicBezugRow1").hide();
@@ -11062,11 +11344,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 //$('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,2,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,13,14]);
                 columnShow.visible(columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -11097,11 +11379,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 //$('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -11132,12 +11414,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 //$('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7]);
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,13]);
                 columnShowMore.visible( columnShowMore.visible() );
+
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
                 $("#subtypeTxtoptzBezugDkff").removeClass();
@@ -11164,12 +11448,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,1,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,7,8,9,10,11,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,7,8,9,10,11,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,1,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7,8,9,10,11]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7,8,9,10,11,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
                 $(".formatDynamicBezugRow1").hide();
@@ -11194,12 +11480,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,2,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,8,9,10,11]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,8,9,10,11,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $("#subtypeTxtoptzBezugDkff").removeClass();
                 $("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
                 $(".formatDynamicBezugRow1").hide();
@@ -11225,12 +11513,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,13,14]);
                 columnShow.visible( columnShow.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11]);
-                columnShowMore.visible( columnShowMore.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,13]);
+                columnShowMore.visible( columnShowMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
                 $("#subtypeTxtoptzBezugDkff").removeClass();
@@ -11258,9 +11546,9 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,13,14]);
                 columnShow.visible( columnShow.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -11290,12 +11578,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,1,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,7,8,9,10,11,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,2,7,8,9,10,11,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,1,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7,8,9,10,11]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7,8,9,10,11,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
                 $(".formatDynamicBezugRow2").hide();
@@ -11318,12 +11608,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,6,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,6,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,8,9,10,11]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,8,9,10,11,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $("#subtypeTxtoptzBezugDkff").removeClass();
                 $("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
                 $(".formatDynamicBezugRow1").hide();
@@ -11350,10 +11642,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,13,14]);
                 columnShow.visible( columnShow.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11]);
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,13]);
                 columnShowMore.visible( columnShowMore.visible() );
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
@@ -11384,10 +11678,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,13,14]);
                 columnShow.visible( columnShow.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
@@ -11427,11 +11723,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,2,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,12]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,12,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -11465,11 +11761,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,12]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,12,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -11502,11 +11798,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,12]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,12,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -11539,11 +11835,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                  var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,12]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,12,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -11577,11 +11873,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,12]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,12,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -11615,12 +11911,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4]);
-                columnHide.visible( !columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13]);
+
+                columnHide.visible( !columnHide.visible() );    
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13,14]);
                 columnShow.visible( columnShow.visible() );
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -11656,12 +11954,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12]);
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12,13]);
                 columnShowMore.visible( columnShowMore.visible() );
+
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
             }else if(auswahlTypierungVal =='5' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
@@ -11695,12 +11995,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
             }else if(auswahlTypierungVal =='5' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
@@ -11736,7 +12038,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 //var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([8]);
                 //columnHide.visible(! columnHide.visible() );
-                /*var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13]);
+                /*var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12]);
                 columnShowMore.visible( columnShowMore.visible() );*/
@@ -11744,12 +12046,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 //columnHideMore.visible(! columnHideMore.visible() );
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
             }else if(auswahlTypierungVal =='5' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
@@ -11784,7 +12088,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 //var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([8]);
                 //columnHide.visible(! columnHide.visible() );
-                /*var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13]);
+                /*var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12]);
                 columnShowMore.visible( columnShowMore.visible() );*/
@@ -11792,12 +12096,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 //columnHideMore.visible(! columnHideMore.visible() );
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13]);
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13,14]);
                 columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() );
+
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
             }else if(auswahlTypierungVal =='6' && typeDynamicCFVal=='Zeit'){
@@ -11817,12 +12123,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,1,2,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,1,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
                 $(".formatDynamicBezugRow2").hide();
@@ -11845,11 +12153,13 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([3,4,1,2,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,5,6,7,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,5,6,7,13,14]);
+                columnShow.visible( columnShow.visible() ); 
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,1,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,5,6,7]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,5,6,7,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -11877,11 +12187,13 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,1,2,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,13,14]);
+                columnShow.visible( columnShow.visible() ); 
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,1,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -11910,11 +12222,13 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([3,4,2,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,13,14]);
+                columnShow.visible( columnShow.visible() ); 
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7,13]);
                 columnShowMore.visible( columnShowMore.visible() );
 
                 $("#subtypeTxtoptzTempDkff").removeClass();
@@ -11944,12 +12258,13 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([3,4,2,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,13]);
-                columnShow.visible( columnShow.visible() );
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7,13]);
+                columnShowMore.visible( columnShowMore.visible() );  
+
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
                 $("#subtypeTxtoptzBezugDkff").removeClass();
@@ -11977,12 +12292,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,1,2,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,8,9,10,11,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,8,9,10,11,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,1,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,8,9,10,11]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,8,9,10,11,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
                 $(".formatDynamicBezugRow2").hide();
@@ -12005,11 +12322,13 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([3,4,1,2,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,5,6,7,8,9,10,11,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,5,6,7,8,9,10,11,13,14]);
+                columnShow.visible( columnShow.visible() ); 
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,1,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,5,6,7,8,9,10,11]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,5,6,7,8,9,10,11,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -12036,11 +12355,13 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,1,2,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,8,9,10,11,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,8,9,10,11,13,14]);
+                columnShow.visible( columnShow.visible() ); 
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,1,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,8,9,10,11]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,8,9,10,11,13]);
                 columnShowMore.visible( columnShowMore.visible() );
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -12069,11 +12390,13 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([3,4,2,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,8,9,10,11,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,8,9,10,11,13,14]);
+                columnShow.visible( columnShow.visible() ); 
+
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7,8,9,10,11]);
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7,8,9,10,11,13]);
                 columnShowMore.visible( columnShowMore.visible() );
 
                 $("#subtypeTxtoptzTempDkff").removeClass();
@@ -12102,12 +12425,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([3,4,2,12]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,8,9,10,11,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,8,9,10,11,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7,8,9,10,11]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7,8,9,10,11,13]);
+                columnShowMore.visible( columnShowMore.visible() );  
+
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
                 $("#subtypeTxtoptzBezugDkff").removeClass();
@@ -12151,12 +12476,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+
 
             }else if(auswahlTypierungVal =='8' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
                 console.log('Temperatur');
@@ -12192,12 +12519,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+                
 
             }else if(auswahlTypierungVal =='8' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
                 console.log('month');
@@ -12235,13 +12564,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12]);
-                columnShowMore.visible( columnShowMore.visible() );
-
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+                        
             }else if(auswahlTypierungVal =='8' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
                 console.log('TempPlusMonth');
                 $('.calculationTypeDiv').hide();
@@ -12277,12 +12607,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
+                columnShowMore.visible( columnShowMore.visible() );             
+
             }else if(auswahlTypierungVal =='8' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
                 console.log('TempPlusYear');
                 $('.calculationTypeDiv').hide();
@@ -12318,13 +12650,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2,8,9,10,11]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12]);
-                columnShowMore.visible( columnShowMore.visible() );
-
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
+                columnShowMore.visible( columnShowMore.visible() );  
+                
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Zeit'){
                 $('.calculationTypeDiv').show();
                 $('#basicFaktorRow1').show();
@@ -12359,23 +12692,17 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
-                /*var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2,1,5,6]);
-                columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,8,9,10,11,12,13]);
-                columnShow.visible( columnShow.visible() );
-                var columnHideMore = tblOptionenEPrdDKff.columns([2,1,5,6]);
-                columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() ); */
+               
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
 
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
                 console.log('Temperatur');
@@ -12413,13 +12740,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() );
-
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+                
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
                 console.log('month');
                 $('.calculationTypeDiv').show();
@@ -12458,13 +12786,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() );
-
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
+                columnShowMore.visible( columnShowMore.visible() ); 
+                        
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
                 console.log('TempPlusMonth');
                 $('.calculationTypeDiv').show();
@@ -12502,12 +12831,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() );
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
+                columnShowMore.visible( columnShowMore.visible() );             
+
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
                 console.log('TempPlusYear');
                 $('.calculationTypeDiv').show();
@@ -12545,13 +12876,14 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
                 columnHide.visible(! columnHide.visible() );
-                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShow.visible( columnShow.visible() );
+
+                var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
+                columnShow.visible( columnShow.visible() ); 
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
-                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12]);
-                columnShowMore.visible( columnShowMore.visible() );
-
+                var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
+                columnShowMore.visible( columnShowMore.visible() );  
+                
             }else if(auswahlTypierungVal ==''){
                 $('.calculationTypeDiv').hide();
                 $(".subtypeTxtDynamicCF").hide();
@@ -13061,34 +13393,35 @@ function basicPlus2ConditionMultiplayCalculationType($val){
         $('#basicFaktorRow2').show();
         $('#basicFaktorRow4').hide();
         $(".calculationTypeDKff").val(1);
+        $('.subtypeTxtBasisFaktor2CalcRghtDiv').show();
+        $('.subtypeTxtBasisFaktor3CalcRghtDiv').hide();
     }else if($val =='2'){
         $('#basicFaktorRow1').show();
         $('#basicFaktorRow3').hide();
         $('#basicFaktorRow2').show();
         $('#basicFaktorRow4').show();
         $(".calculationTypeDKff").val(2);
+        $('.subtypeTxtBasisFaktor2CalcRghtDiv').hide();
+        $('.subtypeTxtBasisFaktor3CalcRghtDiv').show();
     }else if($val =='3'){
         $('#basicFaktorRow1').show();
         $('#basicFaktorRow3').show();
         $('#basicFaktorRow2').show();
         $('#basicFaktorRow4').show();
         $(".calculationTypeDKff").val(3);
+        $('.subtypeTxtBasisFaktor2CalcRghtDiv').show();
+        $('.subtypeTxtBasisFaktor3CalcRghtDiv').hide();
     }else if($val =='4'){
         $('#basicFaktorRow1').show();
         $('#basicFaktorRow3').hide();
         $('#basicFaktorRow2').show();
         $('#basicFaktorRow4').hide();
         $(".calculationTypeDKff").val(4);
+        $('.subtypeTxtBasisFaktor2CalcRghtDiv').hide();
+        $('.subtypeTxtBasisFaktor3CalcRghtDiv').hide();
 
-    }/*else if($val ==''){
-        $('#basicFaktorRow1').hide();
-        $('#basicFaktorRow3').hide();
-        $('#basicFaktorRow2').hide();
-        $('#basicFaktorRow4').hide();
-    }*/
+    }
 }
-
-
 
 /*19-06-2020 Add more after reset dynamische korrektore faktore*/
 function addMoreAfterResetDynamischeKorrekturFktor(){
@@ -13534,6 +13867,7 @@ function validateStartEndInputBezugFaktorTypeBasicBetween(faktorType){
      }
 }
 
+
 // module.exports =
 //     { isCalculated
 //     , isEmpty
@@ -13555,3 +13889,560 @@ function validateStartEndInputBezugFaktorTypeBasicBetween(faktorType){
 //     , validInputClosingParentheses
 //     , readyToSave
 //     }
+
+/*10-08-2020 formate result*/
+function tblOptionenEPrdDKffFormat ( c,d ) {
+     //return '<b style="float:right;margin-right:27px;">Result : '+d+'</b>';
+    /* rowResult.push(d);
+     rowCalculator.push(c); */
+     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-right: 26px;float: right;font-weight:bold;">'+
+        '<tr>'+
+            '<td>Result :</td>'+
+            '<td>'+d+'('+c+')</td>'+
+        '</tr>'
+    '</table>';
+}
+
+function tblOptionenRecordAndDelOpt( c,d,e ) {
+     //return '<b style="float:right;margin-right:27px;">Result : '+d+'</b>';
+    /* rowResult.push(d);
+     rowCalculator.push(c); */
+     return '<table id="childTableGetDFaktr" cellpadding="5" cellspacing="0" border="0" style="padding-right: 26px;float: right;font-weight:bold;">'+
+        '<tr>'+
+            '<td>Result :</td>'+
+            '<td>'+d+'('+c+')</td>'+
+            '<td class="dyanamicheKrkturfktrDelFiveOrNine"><button type="button" data-id="'+e+'">Delete</button></td>'+
+        '</tr>'
+    '</table>';
+}
+/*dynamischeKorrektorFaktor get calculation type record*/
+
+function getCalculationtypeRecordFiveAndNineFaktor(calculationID,FaktoreType){
+         $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzIntoDb.php",
+            data: {
+                nameDB: $("#nameDB").val(),
+                dKff_id:id,
+                FaktoreType:FaktoreType,
+                calculationID:calculationID,
+                id:'calculationTypeResult'
+            },
+            success: function(a) {
+                a = json(a);
+                var b = a.length;
+                console.log(a);
+                var calculateID = a[0]['calculateID'];
+                var calculationType = a[0]['calculationType'];
+                var faktorWert = a[0]['faktorWert'];
+                var faktorWertR2 = a[1]['faktorWert'];
+                var faktor = a[1]['subtypeTxtoptzFaktoreDkff'];
+                $('#ePrdDKFECalcID').val(calculateID);
+                $('#ePrdDKFECalcType').val(calculationType);
+                $('#ePrdDKFECalcWert').val(faktorWert);
+                $('#ePrdDKFECalcWertR2').val(faktorWertR2);
+                $('#ePrdDKFECalcFaktor').val(faktor);
+                $('.subtypeTxtBasisFaktor2CalcRght').val(calculationType);
+            }
+        });
+}
+
+
+function pushArrayforTheResultArr(c,d){
+     rowResult.push(d);
+     rowCalculator.push(c); 
+}
+
+
+function emptyArrayAfterPush() {
+    rowResult.length = 0;
+    rowCalculator.length = 0;
+    //console.log(rowResult);
+    //console.log(rowCalculator);
+}
+
+
+function addExtraWidthToDynamischeFaktor(){
+    var $dte = $('#main');
+    $('#infosDynamicKorrekturFaktor').is(':visible') ? $dte.addClass('fullWidthDynamischeFktor') : $dte.removeClass('fullWidthDynamischeFktor')
+}
+
+function dynamischeKorrekturFaktorenMessstellenCatSel(){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getBereiche.php",
+        data: {
+            id: "dynamicFaktorBereiche",
+            nameDB: $("#nameDB").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            tblMessstellenCat.colReorder.reset();
+            tblMessstellenCat.clear().draw();
+            for (var b = 0; b < a.length; b++) tblMessstellenCat.row.add([a[b].ber_ID, a[b].nameBer, a[b].kurzbezeichnungBer, a[b].kostenstelleBer, a[b].ortBer, a[b].ausgewaehltesLevelBer, a[b].vorgelagerterBereich1Ber, a[b].vorgelagerterBereich2Ber]).draw();
+            tblMessstellenCat.column(0).visible(!1);
+            $("#dynamischeFaktorMessstellenCatContainer").css("display", "block");
+            $("#dynamischeFaktorMessstellenCatContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    $("#tblMessstellenCat tbody tr").css("cursor", "pointer");
+                    $("#tblMessstellenCat tbody").on("dblclick", "tr", function() {
+                        var rowData = tblMessstellenCat.row(this).data();
+                        $("#dynamischeFaktorMessstellenCatContainer").dialog("close");
+                        console.log(rowData);
+                        $("#messstellenBerecheID").val(rowData[0]);
+                        $("#messstellenCatName").val(rowData[1]);
+                    });
+                    
+                }
+            });
+        }
+    });
+}
+
+function dynamischeKorrekturFaktorenMessstellenCatSel2(){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getBereiche.php",
+        data: {
+            id: "dynamicFaktorBereiche",
+            nameDB: $("#nameDB").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            tblMessstellenCat2.colReorder.reset();
+            tblMessstellenCat2.clear().draw();
+            for (var b = 0; b < a.length; b++) tblMessstellenCat2.row.add([a[b].ber_ID, a[b].nameBer, a[b].kurzbezeichnungBer, a[b].kostenstelleBer, a[b].ortBer, a[b].ausgewaehltesLevelBer, a[b].vorgelagerterBereich1Ber, a[b].vorgelagerterBereich2Ber]).draw();
+            tblMessstellenCat2.column(0).visible(!1);
+            $("#dynamischeFaktorMessstellenCat2Container").css("display", "block");
+            $("#dynamischeFaktorMessstellenCat2Container").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    $("#tblMessstellenCat2 tbody tr").css("cursor", "pointer");
+                    $("#tblMessstellenCat2 tbody").on("dblclick", "tr", function() {
+                        var rowData = tblMessstellenCat2.row(this).data();
+                        $("#dynamischeFaktorMessstellenCat2Container").dialog("close");
+                        console.log(rowData);
+                        $("#messstellenBerecheID2").val(rowData[0]);
+                        $("#messstellenCatName2").val(rowData[1]);
+                    });
+                    
+                }
+            });
+        }
+    });
+}
+
+
+function getDynamischeKrktrFaktorDeleteOptClickValues(calcID){
+         $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getDKorrekturfaktor.php",
+            data: {
+                nameDB: $("#nameDB").val(),
+                id:'deleteOrReset',
+                calcID:calcID
+            },
+            success: function(a) {
+                formData = json(a);
+                var b = formData.length;
+                console.log(formData);
+                var calculationType = $(".calculationTypeDKff").val();
+                if(calculationType == 1){ 
+                    $('#subtypeTxtOptNameDKff').val(formData[0]['subtypeTxtOptNameDKff']);    
+                    $('#subtypeTxtoptzBezugDkff').val(formData[0]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtoptzTempDkff').val(formData[0]['subtypeTxtoptzTempDkff']);
+                    $('#subtypeTxtoptzFaktoreDkff').val(formData[0]['subtypeTxtoptzFaktoreDkff']);
+
+                    $('#bezugStartTxt').val(formData[0]['bezugStartTxt']);
+                    $('#bezugEndTxt').val(formData[0]['bezugEndTxt']);
+                    $('#tempStartTxt').val(formData[0]['tempStartTxt']);    
+                    $('#tempEndTxt').val(formData[0]['tempEndTxt']);
+                    $('#messstellenCatName').val(formData[0]['nameBer']);
+                    $('#messstellenBerecheID').val(formData[0]['ber_ID']);
+                    $('.formatDynamicSelOptRow1').val(formData[0]['formatDynamicType']);
+                    
+                    $("#subtypeTxtBasisFaktor2Name").val(formData[0]['faktorName']);
+                    $(".subtypeTxtBasisFaktor2Calc").val(formData[0]['faktorCalc']);
+                    $("#subtypeTxtBasisFaktor2Wert").val(formData[0]['faktorWert']);
+                    $(".subtypeTxtBasisFaktor2CalcRght").val(formData[0]['calculationType']);
+                    $('#subtypeTxtOptNameDKff2').val(formData[1]['subtypeTxtOptNameDKff']);    
+                    $('#subtypeTxtoptzBezugDkff2').val(formData[1]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtoptzTempDkff2').val(formData[1]['subtypeTxtoptzTempDkff']);
+                    $('#subtypeTxtoptzFaktoreDkff2').val(formData[1]['subtypeTxtoptzFaktoreDkff']);
+
+                    $('#bezugStartTxt2').val(formData[1]['bezugStartTxt']);
+                    $('#bezugEndTxt2').val(formData[1]['bezugEndTxt']);
+                    $('#tempStartTxt2').val(formData[1]['tempStartTxt']);    
+                    $('#tempEndTxt2').val(formData[1]['tempEndTxt']);
+                    $('#messstellenCatName2').val(formData[1]['nameBer']);
+                    $('#messstellenBerecheID2').val(formData[1]['ber_ID']);
+                    $('.formatDynamicSelOptRow2').val(formData[0]['formatDynamicType']);
+                    $('#ePrdDKFERow1ID').val(formData[0]['dKffOption_id']);
+                    $('#ePrdDKFERow2ID').val(formData[1]['dKffOption_id']);
+                    $('#updateOptType').val('deleteClickUpdate');
+                    
+                }else if(calculationType == 2){
+                    $('#subtypeTxtOptNameDKff').val(formData[1]['subtypeTxtOptNameDKff']);    
+                    $('#subtypeTxtoptzBezugDkff').val(formData[1]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtoptzTempDkff').val(formData[1]['subtypeTxtoptzTempDkff']);
+                    $('#subtypeTxtoptzFaktoreDkff').val(formData[1]['subtypeTxtoptzFaktoreDkff']);
+
+                    $('#bezugStartTxt').val(formData[1]['bezugStartTxt']);
+                    $('#bezugEndTxt').val(formData[1]['bezugEndTxt']);
+                    $('#tempStartTxt').val(formData[1]['tempStartTxt']);    
+                    $('#tempEndTxt').val(formData[1]['tempEndTxt']);
+                    $('#messstellenCatName').val(formData[1]['nameBer']);
+                    $('#messstellenBerecheID').val(formData[1]['ber_ID']);
+                    $('.formatDynamicSelOptRow1').val(formData[0]['formatDynamicType']);
+
+                    $('#subtypeTxtOptNameDKff2').val(formData[0]['subtypeTxtOptNameDKff']);    
+                    $('#subtypeTxtoptzBezugDkff2').val(formData[0]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtoptzTempDkff2').val(formData[0]['subtypeTxtoptzTempDkff']);
+                    $('#subtypeTxtoptzFaktoreDkff2').val(formData[0]['subtypeTxtoptzFaktoreDkff']);
+
+                    $('#bezugStartTxt2').val(formData[0]['bezugStartTxt']);
+                    $('#bezugEndTxt2').val(formData[0]['bezugEndTxt']);
+                    $('#tempStartTxt2').val(formData[0]['tempStartTxt']);    
+                    $('#tempEndTxt2').val(formData[0]['tempEndTxt']);
+                    $('#messstellenCatName2').val(formData[0]['nameBer']);
+                    $('#messstellenBerecheID2').val(formData[0]['ber_ID']);
+                    $('.formatDynamicSelOptRow2').val(formData[0]['formatDynamicType']);
+
+                    $("#subtypeTxtBasisFaktor3Name").val(formData[0]['faktorName']);
+                    $(".subtypeTxtBasisFaktor3Calc").val(formData[0]['faktorCalc']);
+                    $("#subtypeTxtBasisFaktor3Wert").val(formData[0]['faktorWert']);
+                    $(".subtypeTxtBasisFaktor3CalcRght").val(formData[0]['calculationType']);
+
+                    $('#ePrdDKFERow1ID').val(formData[0]['dKffOption_id']);
+                    $('#ePrdDKFERow2ID').val(formData[1]['dKffOption_id']);
+                    $('#updateOptType').val('deleteClickUpdate');
+                }else if(calculationType == 3){
+                    $('#subtypeTxtOptNameDKff').val(formData[0]['subtypeTxtOptNameDKff']);    
+                    $('#subtypeTxtoptzBezugDkff').val(formData[0]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtoptzTempDkff').val(formData[0]['subtypeTxtoptzTempDkff']);
+                    $('#subtypeTxtoptzFaktoreDkff').val(formData[0]['subtypeTxtoptzFaktoreDkff']);
+
+                    $('#bezugStartTxt').val(formData[0]['bezugStartTxt']);
+                    $('#bezugEndTxt').val(formData[0]['bezugEndTxt']);
+                    $('#tempStartTxt').val(formData[0]['tempStartTxt']);    
+                    $('#tempEndTxt').val(formData[0]['tempEndTxt']);
+                    $('#messstellenCatName').val(formData[0]['nameBer']);
+                    $('#messstellenBerecheID').val(formData[0]['ber_ID']);
+                    $('.formatDynamicSelOptRow1').val(formData[0]['formatDynamicType']);
+
+                    $("#subtypeTxtBasisFaktor2Name").val(formData[0]['faktorName']);
+                    $(".subtypeTxtBasisFaktor2Calc").val(formData[0]['faktorCalc']);
+                    $("#subtypeTxtBasisFaktor2Wert").val(formData[0]['faktorWert']);
+                    $(".subtypeTxtBasisFaktor2CalcRght").val(formData[0]['calculationType']);
+
+                    $('#subtypeTxtOptNameDKff2').val(formData[1]['subtypeTxtOptNameDKff']);    
+                    $('#subtypeTxtoptzBezugDkff2').val(formData[1]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtoptzTempDkff2').val(formData[1]['subtypeTxtoptzTempDkff']);
+                    $('#subtypeTxtoptzFaktoreDkff2').val(formData[1]['subtypeTxtoptzFaktoreDkff']);
+
+                    $('#bezugStartTxt2').val(formData[1]['bezugStartTxt']);
+                    $('#bezugEndTxt2').val(formData[1]['bezugEndTxt']);
+                    $('#tempStartTxt2').val(formData[1]['tempStartTxt']);    
+                    $('#tempEndTxt2').val(formData[1]['tempEndTxt']);
+                    $('#messstellenCatName2').val(formData[1]['nameBer']);
+                    $('#messstellenBerecheID2').val(formData[1]['ber_ID']);
+                    $('.formatDynamicSelOptRow2').val(formData[0]['formatDynamicType']);
+                    
+                    $("#subtypeTxtBasisFaktor3Name").val(formData[1]['faktorName']);
+                    $(".subtypeTxtBasisFaktor3Calc").val(formData[1]['faktorCalc']);
+                    $("#subtypeTxtBasisFaktor3Wert").val(formData[1]['faktorWert']);
+                    $(".subtypeTxtBasisFaktor3CalcRght").val(formData[1]['calculationType']);
+
+                    $('#ePrdDKFERow1ID').val(formData[0]['dKffOption_id']);
+                    $('#ePrdDKFERow2ID').val(formData[1]['dKffOption_id']);
+                    $('#updateOptType').val('deleteClickUpdate');
+                }
+                
+            }
+        });
+}
+
+
+
+/*28-08-2020 dynamiche Correction factor update record Delete option button ajax response*/
+function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
+
+    //alert('test1');
+     var parentOptName = $("#optionNameDKff").val();
+     var parentBeschreibunDesc = $("#optionBeschreibungDKff").val();
+
+     var optionName = $('#subtypeTxtOptNameDKff').val();
+     var optionBezug = $('#subtypeTxtoptzBezugDkff').val();
+     var optionTemp = $('#subtypeTxtoptzTempDkff').val();
+     var optionFaktore = $('#subtypeTxtoptzFaktoreDkff').val();
+     var ePrdDIdStore = $('#ePrdDIdStore').val();
+     var ePrdDMainIdStore = $('#ePrdDMainIdStore').val();
+     var basisFktr2Name = $('#subtypeTxtBasisFaktor2Name').val();
+     var basisFktr2Calc = $('.subtypeTxtBasisFaktor2Calc').val();
+     var basisFktr2Wert = $('#subtypeTxtBasisFaktor2Wert').val();
+     var ePrddKffOptionIDStore = $('#ePrddKffOptionIDStore').val();
+
+     var faktoreDynamictypeVal = $('.formatDynamicSelOptRow1').val();
+     //alert(faktoreDynamictypeVal);
+     var faktorType = $(".auswahlTypierungFaktorDKff").val();
+     var bezugStartTxt = $("#bezugStartTxt").val();
+     var bezugEndTxt = $("#bezugEndTxt").val();
+     var tempStartTxt = $("#tempStartTxt").val();
+     var tempEndTxt = $("#tempEndTxt").val();
+
+     var ePrdDKFECalcResult = $("#ePrdDKFECalcResult").val();
+     var messstellenBerecheID = $('#messstellenBerecheID').val();
+
+    /*Faktor 5 or 9 delete option row*/
+    var ePrdDKFERow1ID = $('#ePrdDKFERow1ID').val();
+    var ePrdDKFERow2ID = $('#ePrdDKFERow2ID').val();
+    var updateOptType = $('#updateOptType').val();
+    var basisFktr3Name = $('#subtypeTxtBasisFaktor3Name').val();
+    var basisFktr3Calc = $('.subtypeTxtBasisFaktor3Calc').val();
+    var basisFktr3Wert = $('#subtypeTxtBasisFaktor3Wert').val();
+
+    var optionName2 = $('#subtypeTxtOptNameDKff2').val();
+    var optionBezug2 = $('#subtypeTxtoptzBezugDkff2').val();
+    var optionTemp2 = $('#subtypeTxtoptzTempDkff2').val();
+    var bezugStartTxt2 = $("#bezugStartTxt2").val();
+    var bezugEndTxt2 = $("#bezugEndTxt2").val();
+    var tempStartTxt2 = $("#tempStartTxt2").val();
+    var tempEndTxt2 = $("#tempEndTxt2").val();
+    var optionFaktore2 = $('#subtypeTxtoptzFaktoreDkff2').val();
+    var faktoreDynamictypeVal2 = $('.formatDynamicSelOptRow2').val();
+    var messstellenBerecheID2 = $('#messstellenBerecheID2').val();
+    var calculationTypeDKff = $('.calculationTypeDKff').val(); 
+    //alert('test2');
+    
+    if(basisFktr2Wert !='' && optionFaktore !=''){  
+        var faktoreRep = optionFaktore.replace(",", ".");
+        var basisFktr2WertRep = basisFktr2Wert.replace(",", ".");
+
+        var faktore2Comma = optionFaktore.replace(".", ",");
+        var basisFktrWertComma = basisFktr2Wert.replace(".", ",");
+        if(isFloat(faktoreRep)==true && isFloat(basisFktr2WertRep)==true){
+            var result2CommaDigit = eval(faktoreRep + basisFktr2Calc + basisFktr2WertRep);
+        }else{
+            alert("Bitte geben Sie den Textwert in faktore und wert ein");
+            return false;
+        }
+        var result = result2CommaDigit.toFixed(4).replace(".", ",");
+    }else{
+        var result ='';
+    }
+    
+     if(optionFaktore !=''){     
+            var faktoreRep = optionFaktore.replace(",", ".");
+            var faktore2CommaRep = optionFaktore.replace(".", ",");
+            if(isFloat(faktoreRep)==true){
+                var faktore2Comma = faktore2CommaRep;
+            }else{
+                alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                return false;
+            }
+        }
+        if(faktorType==9){
+            //alert(validateStartEndInputBezugFaktorTypeBasicBetween(faktorType));
+            if(validateStartEndInputBezugFaktorTypeBasicBetween(faktorType) != true){
+                return false;
+            }
+        }
+        //alert('test3');
+        var calculateID = $('#ePrdDKFECalcID').val();
+        var wertRow1 = $('#subtypeTxtBasisFaktor2Wert').val();
+        var wertRow2 = $('#ePrdDKFECalcWertR2').val();
+
+        var ePrdDKFECalcWert = $('#ePrdDKFECalcWert').val();
+        var ePrdDKFECalcRowType = $('#ePrdDKFECalcRowType').val();
+
+        var faktor = $('#ePrdDKFECalcFaktor').val();
+           
+        if(basisFktr3Wert !='' && optionFaktore2 !='' /*&& (calculationTypeDKff ==2 || calculationTypeDKff ==3 )*/){  
+            var faktoreRep2 = optionFaktore2.replace(",", ".");
+            var basisFktr3WertRep = basisFktr3Wert.replace(",", ".");
+
+            var faktore3Comma = optionFaktore2.replace(".", ",");
+            var basisFktrWert3Comma = basisFktr3Wert.replace(".", ",");
+
+            if(isFloat(faktoreRep2)==true && isFloat(basisFktr3WertRep)==true){
+                var result3CommaDigit = eval(faktoreRep2 + basisFktr3Calc + basisFktr3WertRep);
+            }else{
+                alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                return false;
+            }
+           
+           // alert('result2=' +result2 );
+        }
+        if(result3CommaDigit){
+             var result2 = result3CommaDigit.toFixed(4).replace(".", ",");
+         }else{
+             var result2 = '';
+         }
+        
+        ////////////////////////
+        var basisFktr2WertRepRght = basisFktr2Wert.replace(",", ".");
+        var basisFktr2WertCommaRght = basisFktr2Wert.replace(".", ",");
+        var faktore3RepType5 = optionFaktore2.replace(",", "."); 
+        var basisFktr3WertRepType5 = basisFktr3Wert.replace(",", ".");
+        var basisFktr2CalcRght =$(".subtypeTxtBasisFaktor2CalcRght").val();
+        var basisFktr3CalcRght =$(".subtypeTxtBasisFaktor3CalcRght").val();
+
+        if( calculationTypeDKff ==1){
+             if(faktore3RepType5 !='' && basisFktr2WertRepRght !=''){
+                if(isFloat(faktore3RepType5)==true && isFloat(basisFktr2WertRepRght)==true){
+                    var resultCalcRght = eval(faktore3RepType5 + basisFktr2CalcRght + basisFktr2WertRepRght);
+                }else{
+                    alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                    return false;
+                }  
+            var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
+            var calculationType =basisFktr2CalcRght;
+            //alert('resultCalcRghtFinal1='+calcResult);
+           }
+        }else if( calculationTypeDKff ==2){
+            if(faktoreRep !='' && basisFktr3WertRepType5 !='' && basisFktr3CalcRght !=''){
+                if(isFloat(faktoreRep)==true && isFloat(basisFktr3WertRepType5)==true){
+                    var resultCalcRght = eval(faktoreRep + basisFktr3CalcRght + basisFktr3WertRepType5);
+                }else{
+                    alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                    return false;
+                }  
+            var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
+            var calculationType =basisFktr3CalcRght;
+            //alert('resultCalcRghtFinal2='+resultCalcRght);
+           }
+        }else if(calculationTypeDKff ==3){
+            if(basisFktr2WertRepRght !='' && basisFktr3WertRepType5 !='' && basisFktr2CalcRght !=''){
+                if(isFloat(basisFktr2WertRepRght)==true && isFloat(basisFktr3WertRepType5)==true){
+                    var resultCalcRght = eval(basisFktr2WertRepRght + basisFktr2CalcRght + basisFktr3WertRepType5);
+                }else{
+                    alert("Bitte geben Sie den Textwert in faktore und wert ein");
+                    return false;
+                }  
+            var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
+            var calculationType =basisFktr2CalcRght;
+            //alert('resultCalcRghtFinal3='+resultCalcRght);
+           }
+        }    
+   // validateStartEndInputBezugFaktorTypeBasicBetween(faktorType);
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzIntoDb.php",
+            data: {
+                id: "ePrdDKFEDelUpdate",
+                modus: "deleteUpdate",
+                nameDB: $("#nameDB").val(),
+                ePrdID: $("#ePrdID").val(),
+                optionName: optionName,
+                optionBezug:optionBezug,
+                optionTemp:optionTemp,
+                optionFaktore:faktore2Comma,
+                ePrdDIdStore:ePrdDIdStore,
+                parentOptName:parentOptName,
+                parentBeschreibunDesc:parentBeschreibunDesc,
+                ePrdDMainIdStore:ePrdDMainIdStore,
+                basisFktr2Name:basisFktr2Name,
+                basisFktr2Calc:basisFktr2Calc,
+                basisFktr2Wert:basisFktrWertComma,              
+                result:result,
+                ePrddKffOptionIDStore:ePrddKffOptionIDStore,
+                faktoreDynamictypeVal:faktoreDynamictypeVal,
+                faktorType:faktorType,
+                bezugStartTxt:bezugStartTxt,
+                bezugEndTxt:bezugEndTxt,
+                tempStartTxt:tempStartTxt,
+                tempEndTxt:tempEndTxt,
+                calculationType:calculationType,
+                calcResult:calcResult,
+                calculateID:calculateID,
+                messstellenBerecheID:messstellenBerecheID,
+                ePrdDKFERow1ID:ePrdDKFERow1ID,
+                ePrdDKFERow2ID:ePrdDKFERow2ID,
+                updateOptType:updateOptType,
+                basisFktr3Name:basisFktr3Name,
+                basisFktr3Calc:basisFktr3Calc,
+                basisFktr3Wert:basisFktrWert3Comma,
+                optionName2:optionName2, 
+                optionBezug2:optionBezug2,
+                optionTemp2 :optionTemp2,
+                bezugStartTxt2:bezugStartTxt2,
+                bezugEndTxt2:bezugEndTxt2,
+                tempStartTxt2: tempStartTxt2,
+                tempEndTxt2 :tempEndTxt2,
+                optionFaktore2:optionFaktore2,
+                faktoreDynamictypeVal2:faktoreDynamictypeVal2,
+                messstellenBerecheID2:messstellenBerecheID2,
+                result2:result2,
+                calculationTypeDKff:calculationTypeDKff
+
+            },
+            success: function(a) {
+                alert("Datensatz wurde erfolgreich aktualisiert!");
+                $('#subtypeTxtOptNameDKff').val("");
+                $('#subtypeTxtoptzBezugDkff').val("");
+                $('#subtypeTxtoptzTempDkff').val("");
+                $('#subtypeTxtoptzFaktoreDkff').val("");
+                $('#ePrdDIdStore').val("");
+                $("#btnOptionHinzEPrdDKffUpdate").hide();
+                $("#btnOptionHinzEPrdDKffStornieren").hide();
+                $("#btnOptionHinzEPrdDKff").show();
+                $("#DkFeSpeichern").show();
+                $("#DkFeHinz").show();
+                $("#DkFeFirst").show();
+                $("#DkFePrevious").show();
+                $("#DkFeNext").show();
+                $("#DkFeLast").show();
+                $("#DkFeSuchen").show();
+
+                var auswahlTypierungVal = $('.auswahlTypierungFaktorDKff').val();
+                var typeDynamicCFVal = $(".typeDynamicCF").val();
+                var subtypeTimeDynamicCFVal = $(".subtypeTimeDynamicCF").val();
+                var calculationTypeDKff = $(".calculationTypeDKff").val();
+                $("#basicFaktorRow1 input").val('');
+                $("#basicFaktorRow1 select").val('');
+                $("#basicFaktorRow3 input").val('');
+                $("#basicFaktorRow3 select").val('');
+                $("#basicFaktorRow2 input").val('');
+                $("#basicFaktorRow2 select").val('');
+                $("#basicFaktorRow4 input").val('');
+                $("#basicFaktorRow4 select").val('');
+                $('#ePrdDKFERow1ID').val('');
+                $('#ePrdDKFERow2ID').val('');
+                $('#updateOptType').val('');
+                    if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){  
+                        visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);          
+                        addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+                    }
+                    getDynamischeKorrekturfaktoren(ePrdDMainIdStore);
+                    if(calculationTypeDKff && auswahlTypierungVal == 5){ 
+                        basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff); 
+                    }
+            }
+    })
+}
