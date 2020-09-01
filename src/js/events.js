@@ -1211,7 +1211,8 @@ $(document).ready(function() {
             "none");
         $("#optionen").css("display", "none");
         $("#stammdaten").css("display", "none");
-        mainMenuNav(this.id)
+        mainMenuNav(this.id);
+        addExtraWidthToDynamischeFaktor();
     });
     $("#betrGrpMenu, #sAdmMenu, #manGrpMenu, #admMenu, #benMenu, #untMenu, #anlMenu, #pmMenu, #msmMenu, #knz_almMenu, #manMenu, #orgMenu, #liegMenu, #berMenu, #stdMenu, #stdDrMenu, #anl_Menu, #msgMenu, #knzMenu, #almMenu, #prdMenu,#anl_Eng_Menu, #anl_Dok_Menu, #anl_Hist_Menu, #anl_Konfig_Menu,#prd_Menu, #prd_Konfig_Menu, #prd_Hist_Menu").click(function() {
         $("#auswertungen").css("display", "none");
@@ -1220,6 +1221,7 @@ $(document).ready(function() {
         $("#manuell").css("display", "none");
         $("#optionen").css("display", "none");
         mainMenuNav(this.id)
+        addExtraWidthToDynamischeFaktor();
     });
     $("#erwAnlMenu, #entMenu, #enfMenu, #gsfMenu, #mgsMenu, #zpMenu, #erwPrdMenu, #grpDiagMenu,#korrekturFaktorMenu,#korrekturFaktorMenuDynamischer").click(function() {
         $("#auswertungen").css("display", "none");
@@ -1227,6 +1229,7 @@ $(document).ready(function() {
         $("#manuell").css("display", "none");
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id)
+        addExtraWidthToDynamischeFaktor();
     });
     $("#extRngMenu, #intEngIMwMenu, #intBdeIMwMenu, #eRngVergleichMenu, #spaEfVTab1Menu, #spaEfVTab2Menu").click(function() {
         $("#auswertungen").css("display",
@@ -1235,6 +1238,7 @@ $(document).ready(function() {
         $("#optionen").css("display", "none");
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id)
+        addExtraWidthToDynamischeFaktor();
     });
     $("#manMap, #orgMap, #liegMap, #berMap").click(function() {
         mapErstellen(this.id, $("#selectMap").val())
@@ -1326,7 +1330,8 @@ $(document).ready(function() {
     $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag,#tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
         tabControlNav(this.id);
         $(".lblNeu").css("display", "none");
-        $(".lblAendern").css("display", "inline")
+        $(".lblAendern").css("display", "inline");
+        addExtraWidthToDynamischeFaktor();
     });
     $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst,\n                #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstFirst, #stdFirst,\n                #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst,\n                #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "gipscAdmFirst" == this.id ?
@@ -2219,15 +2224,6 @@ $(".subtypeTimeDynamicCF").change(function() {
     $("#subtypeTxtoptzBezugDkff").val("");
     
     var auswahlTypierung = $(".auswahlTypierungFaktorDKff").val();
-    /*$("#subtypeTxtBasisFaktor2Name").val("");
-    $(".subtypeTxtBasisFaktor2Calc").val("");
-    $("#subtypeTxtBasisFaktor2Wert").val("");
-    $("#subtypeTxtBasisFaktor3Name").val("");
-    $(".subtypeTxtBasisFaktor3Calc").val("");
-    $("#subtypeTxtBasisFaktor3Wert").val("");
-    $("#subtypeTxtOptNameDKff").val("");
-    $("#subtypeTxtoptzBezugDkff").val("");
-    $("#subtypeTxtoptzFaktoreDkff").val("");*/
     $("#basicFaktorRow1 input").val("");
     $("#basicFaktorRow2 input").val("");
     $("#basicFaktorRow3 input").val("");
@@ -2290,6 +2286,13 @@ $("#btnOptionHinzEPrdDKff").click(function() {
     var formatDynamicRowTxt1 =$(".formatDynamicSelOptRow1 option:selected").text();
     var formatDynamicRowTxt2 =$(".formatDynamicSelOptRow2 option:selected").text();
     
+    /*20-08-2020 BereichName and BereichID popup variable define*/  
+    var BereichName =$("#messstellenCatName").val();
+    var BereichID =$("#messstellenBerecheID").val();
+    var BereichName2 =$("#messstellenCatName2").val();
+    var BereichID2 =$("#messstellenBerecheID2").val();
+    /*20-08-2020 BereichName and BereichID popup variable define*/  
+
     /*02-06-2020 Faktor 4 functionality*/
 
     var calculationType = $(".calculationTypeDKff").val();  
@@ -2391,7 +2394,7 @@ $("#btnOptionHinzEPrdDKff").click(function() {
                             return false;
                         }  
                     var resultCalcRghtFinal =resultCalcRght.toFixed(4).replace(".", ",");
-                    alert('resultCalcRghtFinal1='+resultCalcRghtFinal);
+                    //alert('resultCalcRghtFinal1='+resultCalcRghtFinal);
                    }
                }else if( (typeVal =='5' ||  typeVal =='9' ) && calculationType ==2){
                     if(faktoreRep !='' && basisFktr3WertRepType5 !='' && basisFktr3CalcRght !=''){
@@ -2402,7 +2405,7 @@ $("#btnOptionHinzEPrdDKff").click(function() {
                             return false;
                         }  
                     var resultCalcRghtFinal =resultCalcRght.toFixed(4).replace(".", ",");
-                    alert('resultCalcRghtFinal2='+resultCalcRghtFinal);
+                    //alert('resultCalcRghtFinal2='+resultCalcRghtFinal);
                    }
                }else if( (typeVal =='5' ||  typeVal =='9' ) && calculationType ==3){
                     if(basisFktr2WertRepRght !='' && basisFktr3WertRepType5 !='' && basisFktr2CalcRght !=''){
@@ -2413,7 +2416,7 @@ $("#btnOptionHinzEPrdDKff").click(function() {
                             return false;
                         }  
                     var resultCalcRghtFinal =resultCalcRght.toFixed(4).replace(".", ",");
-                    alert('resultCalcRghtFinal3='+resultCalcRghtFinal);
+                    //alert('resultCalcRghtFinal3='+resultCalcRghtFinal);
                    }
                }
         }   
@@ -2597,134 +2600,133 @@ $("#btnOptionHinzEPrdDKff").click(function() {
     }
 
     
-    if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='1'){
-            tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1]).draw();     
+    if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='1' && BereichName !=''){
+            var rowNode = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1,BereichName]).draw().node();     
+            $( rowNode ).attr('bereich_id',BereichID);
             addMoreAfterResetDynamischeKorrekturFktor();
     
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore2Comma !='' && typeVal =='2' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !=''){
-            tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRow1]).draw();
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore2Comma !='' && typeVal =='2' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !='' && BereichName !=''){
+            var rowNode = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRow1,BereichName]).draw().node();
+            $( rowNode ).attr('bereich_id',BereichID);
             addMoreAfterResetDynamischeKorrekturFktor();
     
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='3' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3Wert !='' && result3 !=''){
-            tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRow1]).draw();
-            tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore3Comma,basisFktr3Name,basisFktr3Calc,basisFktr3WertComma,result3,formatDynamicRow1]).draw();
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='3' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3Wert !='' && result3 !='' && BereichName !=''){
+            var rowNodeTbl1 =tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRow1,BereichName]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore3Comma,basisFktr3Name,basisFktr3Calc,basisFktr3WertComma,result3,formatDynamicRow2,BereichName]).draw().node();
+            $( rowNodeTbl1 ).attr('bereich_id',BereichID);
+            $( rowNodeTbl2 ).attr('bereich_id',BereichID);
             addMoreAfterResetDynamischeKorrekturFktor();
     
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='1'){
-            tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1]).draw();     
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && typeVal =='1' && BereichName !=''){
+            var rowNode = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1,BereichName]).draw().node();     
+            $( rowNode ).attr('bereich_id',BereichID);
             addMoreAfterResetDynamischeKorrekturFktor();
     
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && name2 !='' && faktore2 !='' && typeVal =='4' && formatDynamicRow1 !='' && formatDynamicRow2 !=''){
-            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRowTxt1]).draw().node();
-            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore2,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRowTxt2]).draw().node();
-            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
-            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && name2 !='' && faktore2 !='' && typeVal =='4' && formatDynamicRow1 !='' && formatDynamicRow2 !='' && BereichName !='' && BereichName2 !=''){
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRowTxt1,BereichName]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore2,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRowTxt2,BereichName2]).draw().node();
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
             addMoreAfterResetDynamischeKorrekturFktor();    
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==1 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr2CalcRght !=''){
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==1 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr2CalcRght !='' && BereichName !='' && BereichName2 !=''){
                 //alert(calculationType);alert(faktore);alert(faktore2);
-            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore1Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1]).draw().node();
-            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2]).draw().node();
-           // tblOptionenEPrdDKff.row.add(['','','','','','','','','','','','Result',resultCalcRghtFinal]).draw().node();        
-            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
-            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore1Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1,BereichName]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2,BereichName2]).draw().node();
+           
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
 
             pushArrayforTheResultArr(basisFktr2CalcRght,resultCalcRghtFinal);
             var rowData1 = tblOptionenEPrdDKff.row( rowNodeTbl2 );
             rowData1.child( tblOptionenEPrdDKffFormat(basisFktr2CalcRght,resultCalcRghtFinal) ).show();
-            
             addMoreAfterResetDynamischeKorrekturFktor();
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==2 && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !='' && basisFktr3CalcRght !=''){
-            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2]).draw().node();
-            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore1Comma,'-','-','-','-',formatDynamicRowTxt1]).draw().node();
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==2 && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !='' && basisFktr3CalcRght !='' && BereichName !='' && BereichName2 !=''){
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2,BereichName2]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore1Comma,'-','-','-','-',formatDynamicRowTxt1,BereichName]).draw().node();
            
-            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
-            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
 
-          /*  $( rowNodeTbl2 ).attr('data-result',resultCalcRghtFinal);
-            $( rowNodeTbl2 ).attr('data-calculate',basisFktr3CalcRght);*/
             pushArrayforTheResultArr(basisFktr3CalcRght,resultCalcRghtFinal);
             var rowData2 = tblOptionenEPrdDKff.row( rowNodeTbl2 );
             rowData2.child( tblOptionenEPrdDKffFormat(basisFktr3CalcRght,resultCalcRghtFinal) ).show();
             addMoreAfterResetDynamischeKorrekturFktor();
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==3 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !='' && basisFktr2CalcRght !=''){
-            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore1Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1]).draw().node();
-            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2]).draw().node();        
-            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
-            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==3 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !='' && basisFktr2CalcRght !='' && BereichName !='' && BereichName2 !=''){
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore1Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1,BereichName]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2,BereichName2]).draw().node();        
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
 
-             /*$( rowNodeTbl2 ).attr('data-result',resultCalcRghtFinal);
-             $( rowNodeTbl2 ).attr('data-calculate',basisFktr2CalcRght);*/
              pushArrayforTheResultArr(basisFktr2CalcRght,resultCalcRghtFinal);
              var rowData3 = tblOptionenEPrdDKff.row( rowNodeTbl2 );
              rowData3.child( tblOptionenEPrdDKffFormat(basisFktr2CalcRght,resultCalcRghtFinal)).show();
              addMoreAfterResetDynamischeKorrekturFktor();
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==4){
-            var rowNodeTbl1 =  tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore1Comma,'-','-','-','-',formatDynamicRowTxt1]).draw().node();
-            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2]).draw().node();                    
-            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
-            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal =='5' && calculationType !='' && calculationType==4 && BereichName !='' && BereichName2 !=''){
+            var rowNodeTbl1 =  tblOptionenEPrdDKff.row.add([name,bezug,temprature,'','','','',faktore1Comma,'-','-','-','-',formatDynamicRowTxt1,BereichName]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,'','','','',faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2,BereichName2]).draw().node();                    
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
 
             $( rowNodeTbl2 ).removeAttr('data-result');
             $( rowNodeTbl2 ).removeAttr('data-calculate');            
             addMoreAfterResetDynamischeKorrekturFktor();
-    } else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' /*&& bezugStartTxt !='' && bezugEndTxt !='' && tempStartTxt !='' && tempEndTxt !=''*/ && typeVal =='6'){
+    } else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' /*&& bezugStartTxt !='' && bezugEndTxt !='' && tempStartTxt !='' && tempEndTxt !=''*/ && typeVal =='6' && BereichName !=''){
             ///alert('typeVal='+typeVal);
             validateStartEndInputBezugFaktorTypeBasicBetween(typeVal);
             if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
-                tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1]).draw();     
+               var rowNode= tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore,basisFktr1Name,basisFktr1Calc,basisFktr1Wert,result1,formatDynamicRow1,BereichName]).draw().node();     
+              $( rowNode ).attr('bereich_id',BereichID);
                 addMoreAfterResetDynamischeKorrekturFktor();
             }
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore2Comma !='' && typeVal =='7' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !=''){
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore2Comma !='' && typeVal =='7' && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2Wert !='' && result2 !='' && BereichName !=''){
             if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
-                tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,'']).draw();
+                var rowNode= tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,'',BereichName]).draw().node();
+                $( rowNode ).attr('bereich_id',BereichID);
                 addMoreAfterResetDynamischeKorrekturFktor();
             }
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && name2 !='' && faktore2 !='' && typeVal =='8' && formatDynamicRow1 !='' && formatDynamicRow2 !=''){
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && faktore !='' && name2 !='' && faktore2 !='' && typeVal =='8' && formatDynamicRow1 !='' && formatDynamicRow2 !='' && BereichName !='' && BereichName2 !=''){
             //alert(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal));
             if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
-                var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore,'','','','',formatDynamicRowTxt1]).draw().node();
-                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore2,'','','','',formatDynamicRowTxt2]).draw().node();
-                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
-                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+                var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore,'','','','',formatDynamicRowTxt1,BereichName]).draw().node();
+                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore2,'','','','',formatDynamicRowTxt2,BereichName2]).draw().node();
+                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
                 addMoreAfterResetDynamischeKorrekturFktor(); 
             }   
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==1 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr2CalcRght !=''){
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==1 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr2CalcRght !='' && BereichName !='' && BereichName2 !=''){
                 //alert(calculationType);alert(faktore);alert(faktore2);
            if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
-                var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1]).draw().node();
-                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2]).draw().node();      
-                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
-                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+                var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1,BereichName]).draw().node();
+                var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2,BereichName2]).draw().node();      
+                $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+                $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
 
-                /*$( rowNodeTbl2 ).attr('data-result',resultCalcRghtFinal);
-                $( rowNodeTbl2 ).attr('data-calculate',basisFktr2CalcRght);*/
                 pushArrayforTheResultArr(basisFktr2CalcRght,resultCalcRghtFinal);
                 var rowData1 = tblOptionenEPrdDKff.row( rowNodeTbl2 );
                 rowData1.child( tblOptionenEPrdDKffFormat(basisFktr2CalcRght,resultCalcRghtFinal)).show();
                 addMoreAfterResetDynamischeKorrekturFktor();
             }
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==2 && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !='' && basisFktr3CalcRght !=''){
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==2 && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !='' && basisFktr3CalcRght !='' && BereichName !='' && BereichName2 !=''){
          if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
-            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2]).draw().node();
-            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,'-','-','-','-',formatDynamicRowTxt1]).draw().node();
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2,BereichName2]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,'-','-','-','-',formatDynamicRowTxt1,BereichName]).draw().node();
           
-            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow1);
-            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow2);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
 
             /*$( rowNodeTbl2 ).attr('data-result',resultCalcRghtFinal);
             $( rowNodeTbl2 ).attr('data-calculate',basisFktr3CalcRght);*/
             pushArrayforTheResultArr(basisFktr3CalcRght,resultCalcRghtFinal);
             var rowData2 = tblOptionenEPrdDKff.row( rowNodeTbl2 );
             rowData2.child( tblOptionenEPrdDKffFormat(basisFktr3CalcRght,resultCalcRghtFinal)).show();
-
             addMoreAfterResetDynamischeKorrekturFktor();
          }
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==3 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !='' && basisFktr2CalcRght !=''){
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==3 && basisFktr2Name !='' && basisFktr2Calc !='' && basisFktr2WertComma !='' && result2 !='' && basisFktr3Name !='' && basisFktr3Calc !='' && basisFktr3WertCommaType5 !='' && result3Type5 !='' && basisFktr2CalcRght !='' && BereichName !='' && BereichName2 !=''){
          if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
-            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1]).draw().node();
-            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2]).draw().node();      
-            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
-            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+            var rowNodeTbl1 = tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,basisFktr2Name,basisFktr2Calc,basisFktr2WertComma,result2,formatDynamicRowTxt1,BereichName]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,basisFktr3Name,basisFktr3Calc,basisFktr3WertCommaType5,result3Type5,formatDynamicRowTxt2,BereichName2]).draw().node();      
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
 
             /*$( rowNodeTbl2 ).attr('data-result',resultCalcRghtFinal);
             $( rowNodeTbl2 ).attr('data-calculate',basisFktr2CalcRght);*/
@@ -2734,12 +2736,12 @@ $("#btnOptionHinzEPrdDKff").click(function() {
 
             addMoreAfterResetDynamischeKorrekturFktor();
         }
-    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==4){
+    }else if(a !='' && b !='' && type !='' && format !='' && name !='' && name2 !='' && faktore2Comma !='' && faktore3CommaType5 !='' && typeVal ==9 && calculationType !='' && calculationType==4 && BereichName !='' && BereichName2 !=''){
          if(validateStartEndInputBezugFaktorTypeBasicBetween(typeVal) ==true){
-            var rowNodeTbl1 =  tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,'-','-','-','-',formatDynamicRowTxt1]).draw().node();
-            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2]).draw().node();                  
-            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1);
-            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2);
+            var rowNodeTbl1 =  tblOptionenEPrdDKff.row.add([name,bezug,temprature,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,faktore2Comma,'-','-','-','-',formatDynamicRowTxt1,BereichName]).draw().node();
+            var rowNodeTbl2 = tblOptionenEPrdDKff.row.add([name2,bezug2,temprature2,bezugStartTxt2,bezugEndTxt2,tempStartTxt2,tempEndTxt2,faktore3CommaType5,'-','-','-','-',formatDynamicRowTxt2,BereichName2]).draw().node();                  
+            $( rowNodeTbl1 ).attr('data-type',formatDynamicRow1).attr('bereich_id',BereichID);
+            $( rowNodeTbl2 ).attr('data-type',formatDynamicRow2).attr('bereich_id',BereichID2);
 
             $( rowNodeTbl2 ).removeAttr('data-result');
             $( rowNodeTbl2 ).removeAttr('data-calculate');
@@ -2805,13 +2807,17 @@ $("#DkFeHinz").click(function() {
         $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
             
         $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
-        $('#saveOptType').val('');    
+        $('#saveOptType').val('');
+        $('#ePrdDKFERow1ID').val('');
+        $('#ePrdDKFERow2ID').val('');
+        $('#updateOptType').val('');    
      });
 /*09-04-2020 Crete dynamic correction factor new button reset functionality*/
 
 /*13-04-2020 Dynamic Correction factor add record row wise not quoma saperated*/
 $("#DkFeSpeichern").click(function() {  
     //alert('Call dynamischeKorrekturfaktorenSpeichern');
+    $("#DkFeSpeichern").prop('disabled', true);
     dynamischeKorrekturfaktorenSpeichern();
 });
 /*13-04-2020 Dynamic Correction factor add record row wise not quoma saperated*/
@@ -2831,10 +2837,12 @@ $("#DkFeSpeichern").click(function() {
         $("#btnOptionHinzEPrdDKff").hide();
         $("#basicFaktorRow1").show();
         $("#basicFaktorRow2").hide();
+        $(".delReset").hide();
         var parentRow = $(this).closest("tr");
         var ePrddKffOptionIDStore = $(this).attr("data-id");
         var ePrdDOptIdStore = $(this).attr("data-id-parent");
         var formatDynamicType = $(this).closest("tr").attr("data-type");
+        var ber_ID = $(this).attr("ber-id");
         //alert(formatDynamicType);
         var rowData = tblGetDyanamicheKorrekturfaktoren.row(parentRow).data();
     
@@ -2860,6 +2868,8 @@ $("#DkFeSpeichern").click(function() {
          var calculationTypeDKff = $('.calculationTypeDKff').val();
          var parentID = $(this).attr('data-id-parent');          
          getSingleRecordDynamischeKorrekturfaktoren(parentID);
+         $("#messstellenBerecheID").val(ber_ID);
+         $("#messstellenCatName").val(rowData[13]);
 
          setTimeout(function(){ 
             $('.formatDynamicBezugRow1 select').val(formatDynamicType);
@@ -2871,7 +2881,7 @@ $("#DkFeSpeichern").click(function() {
         addValidateClassOnRightSelecOptRow1VisibilityBezugTemp(fktr,type,formatDynamicType);
         addValidateClassOnBezugRangeFaktoreTypeBasicBetweeen(fktr,type,formatDynamicType);
         if((fktr ==5 || fktr ==9) && rowData[8] =='-' && rowData[9] =='-' && rowData[10] =='-'){    
-            alert('0');     
+            //alert('0');     
             $('#basicFaktorRow3').hide();
             $('#basicFaktorRow1').show();
             $('#basicFaktorRow2').hide();
@@ -2884,7 +2894,7 @@ $("#DkFeSpeichern").click(function() {
             getCalculationtypeRecordFiveAndNineFaktor(calc_id,fktr);
            
         }else if(fktr ==5 || fktr ==9){ 
-            alert('1');
+            //alert('1');
             $('#basicFaktorRow1').show();
             $('#basicFaktorRow2').hide();
             $('#basicFaktorRow4').hide();
@@ -2894,6 +2904,9 @@ $("#DkFeSpeichern").click(function() {
             var calc_id = $(this).attr('calc-id');
             getCalculationtypeRecordFiveAndNineFaktor(calc_id,fktr);
         }
+        $('#ePrdDKFERow1ID').val('');
+        $('#ePrdDKFERow2ID').val('');
+        $('#updateOptType').val('');
     });
 /*14-04-2020 on click edit button append data into form textbox */
 
@@ -2935,6 +2948,9 @@ $("#DkFeSpeichern").click(function() {
         if(calculationTypeDKff && (auswahlTypierungVal == 5 || auswahlTypierungVal == 9)){
             basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff); 
         }
+        $('#ePrdDKFERow1ID').val('');
+        $('#ePrdDKFERow2ID').val('');
+        $('#updateOptType').val('');
     });
     /*14-04-2020 dynamische Corrector factor cancel option after edit click */
 
@@ -3023,8 +3039,15 @@ $("#DkFeSpeichern").click(function() {
             }   
         }  
         if(a !='' && c !='' /*&& d !='' && e !='' && f !=''*/ && name !='' && beschreibunDesc !=''){
+           var updateOptType = $('#updateOptType').val();
+            if(updateOptType == 'deleteClickUpdate'){ 
+               // alert('deleteEvent');
+                DynamischeKorrekturfaktorenDeleteBtnAktualisieren();
+            }else{
+                // alert('OtherEvent');
+                DynamischeKorrekturfaktorenAktualisieren();
+            }
             
-            DynamischeKorrekturfaktorenAktualisieren();
         }else{
             alert('Bitte geben Sie danach Text ein und klicken Sie auf Speichern!');
         } 
@@ -3065,7 +3088,7 @@ $("#DkFeSpeichern").click(function() {
         var subtypeTimeDynamicCFVal = $(this).attr('data-type');
         var calculationTypeDKff = $(this).attr('calculation-type');
 
-        console.log(rowData);
+        //console.log(rowData);
         $("#optionNameDKff").val(rowData[0]);
         $("#optionBeschreibungDKff").val(rowData[1]);       
         $(".auswahlTypierungFaktorDKff").val(basisType);
@@ -3130,10 +3153,9 @@ $("#DkFeSpeichern").click(function() {
                 $("#bezugStartTxt").removeClass();
                 $("#bezugEndTxt").removeClass();
             }   
-            //$("#basicFaktorRow1 div").show();
-            //$("#basicFaktorRow2 div").show();
-            //$("#basicFaktorRow1 input").val("");
-            //$("#basicFaktorRow2 input").val("");
+            $('#ePrdDKFERow1ID').val('');
+            $('#ePrdDKFERow2ID').val('');
+            $('#updateOptType').val('');
         }, 300);
     });
     /*15-04-2020 on double click row append data into input and dynamischeKorektorFaktor table data refresh*/
@@ -3182,15 +3204,16 @@ $("#DkFeSpeichern").click(function() {
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
                 $('#saveOptType').val(''); 
-                     /* addExtraWidthToDynamischeFaktor();*/
+                addExtraWidthToDynamischeFaktor();
+                $("#basicFaktorRow1").hide();
+                $("#basicFaktorRow2").hide();
+                $("#basicFaktorRow3").hide();
+                $("#basicFaktorRow4").hide();
             }, 300);
 
             $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().hide();
             $('#saveOptType').val(''); 
-            $("#basicFaktorRow1").hide();
-            $("#basicFaktorRow2").hide();
-            $("#basicFaktorRow3").hide();
-            $("#basicFaktorRow4").hide();
+           
 
 
     });
@@ -3437,22 +3460,77 @@ $("#DkFeSpeichern").click(function() {
         addValidateClassOnBezugRangeFaktoreTypeRow2BasicBetweeen(fktr,type,subType);
         $(this).val(subType);
     });
-//DYNAMIC KORREKTOR FAKTOR END
-
-  /*On click event for the row click*/
- /* $('#tblOptionenEPrdDKff tbody').on('click', 'tr.even', function() {
-       // var tr = $(this).closest('tr');
-        var row = tblOptionenEPrdDKff.row( this );
-        var result =  $(this).attr("data-result");
-
-        if ( row.child.isShown() ) {
-            // This row is already open - close it
-            row.child.hide();
-            $(this).removeClass('shown');
-        }
-        else {
-            row.child( tblOptionenEPrdDKffFormat(result) ).show();
-            $(this).addClass('shown');
-        }
-    });*/
    
+    /*19-08-2020 on click serach icon show popup messstellen Cat Sel */
+    $("#messstellenCatSel").click(function() {   
+            dynamischeKorrekturFaktorenMessstellenCatSel(this.id);
+    });
+
+    /*19-08-2020 on click serach icon show popup messstellen Cat Sel 2 */
+    $("#messstellenCatSel2").click(function() {
+            dynamischeKorrekturFaktorenMessstellenCatSel2(this.id);
+    });
+
+    /*Delete option for 5 and 9 faktor type */
+    
+    $( "table" ).delegate( "td.dyanamicheKrkturfktrDelFiveOrNine", "click", function() {
+        //alert('clicked');
+        var calculationTypeDKff = $(".calculationTypeDKff").val();
+        basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);
+        $(".delReset").css("display","inline-block");
+        $("#btnOptionHinzEPrdDKff").hide();
+        $("#btnOptionHinzEPrdDKffUpdate").show();
+         $("#btnOptionHinzEPrdDKffStornieren").show(); 
+        var calculationTypeID = $(this).find('button').attr('data-id');
+        $("#calculationTypeID").val(calculationTypeID);
+        $("#ePrdDKFECalcID").val(calculationTypeID);
+        getDynamischeKrktrFaktorDeleteOptClickValues(calculationTypeID);
+
+       /* var trOdd = $(this).closest('tr').parents('tr');
+        var prevtrOdd = trOdd.prev('tr')[1];
+        var dataOdd = tblGetDyanamicheKorrekturfaktoren.row(prevtrOdd).data();
+
+        var trEven = $(this).closest('tr').parents('tr');
+        var prevtrEven = trEven.prev('tr')[0];
+        var dataEven = tblGetDyanamicheKorrekturfaktoren.row(prevtrEven).data();
+
+        console.log(dataOdd);
+        console.log(dataEven);*/
+    });
+
+    /*Reset first row*/
+    $("#basicFaktorRow1Reset").click(function() {
+        if (window.confirm('Are you sure？')) {
+            $("#basicFaktorRow1 input").val('');
+            $("#basicFaktorRow1 select").val('');
+            $("#basicFaktorRow3 input").val('');
+            $("#basicFaktorRow3 select").val('');
+        }
+    });
+    /*Reset second row*/
+    $("#basicFaktorRow2Reset").click(function() {
+        if (window.confirm('Are you sure？')) {
+            $("#basicFaktorRow2 input").val('');
+            $("#basicFaktorRow2 select").val('');
+            $("#basicFaktorRow4 input").val('');
+            $("#basicFaktorRow4 select").val('');
+        }
+    });
+
+    /*Reset first and second row*/
+    
+     $("#basicFaktorDelete").click(function() {
+        if (window.confirm('Are you sure？')) {
+            $("#basicFaktorRow1 input").val('');
+            $("#basicFaktorRow1 select").val('');
+            $("#basicFaktorRow3 input").val('');
+            $("#basicFaktorRow3 select").val('');
+            $("#basicFaktorRow2 input").val('');
+            $("#basicFaktorRow2 select").val('');
+            $("#basicFaktorRow4 input").val('');
+            $("#basicFaktorRow4 select").val('');
+            $('#ePrdDKFERow1ID').val('');
+            $('#ePrdDKFERow2ID').val('');
+            $('#updateOptType').val('');
+        }
+    });

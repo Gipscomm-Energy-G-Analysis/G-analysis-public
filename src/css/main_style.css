@@ -1116,7 +1116,7 @@ button#FormelEditiernBtn[disabled]{
 #basicFaktorRow2 .controlDiv,
 #basicFaktorRow3 .controlDiv,
 #basicFaktorRow4 .controlDiv {
-    width: 120px;
+    width: 125px;
     padding: 0px 12px 8px 8px;
 }
 
@@ -1148,13 +1148,49 @@ button#FormelEditiernBtn[disabled]{
 }
 
 div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
-    max-width: 800px;
+    max-width: 100%;
 }
 
 /*18-08-2020*/
-/*#infosDynamicKorrekturFaktor{
+#infosDynamicKorrekturFaktor{
   width: 1100px;
 }
 .fullWidthDynamischeFktor{
   left:110px !important;
-}*/
+}
+.optionBeschreibungDKffDiv{
+  width: 67%;
+  height: 82px;
+  padding: 11px 0px 0px 0px;
+  margin: 6px 0px 15px 0px;
+}
+
+#basicFaktorRow1 .controlDiv.messstellenCatNameDiv,
+#basicFaktorRow2 .controlDiv.messstellenCatNameDiv2  {
+  width: 160px !important;
+}
+#basicFaktorRow1 .controlDiv.messstellenCatNameDiv #messstellenCatSel,
+#basicFaktorRow2 .controlDiv.messstellenCatNameDiv2 #messstellenCatSel2{
+  height: 16px;
+  width: 16px;
+  margin-left: 9px;
+  margin-bottom: -3px
+}
+#basicFaktorRow1 .controlDiv.messstellenCatNameDiv img,
+#basicFaktorRow2 .controlDiv.messstellenCatNameDiv2 img  {
+  cursor: pointer;
+}
+
+.delReset{
+  display: none;
+}
+
+#DkFeSpeichern{
+  float: right;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    margin-left: 10px;
+}

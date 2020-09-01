@@ -31,6 +31,10 @@ elseif($id == "berSuchen"){
 	$query .= "WHERE lieg_ID = '$liegID' ";
 	$query .= "AND deleted <> 'true' ";
 }
+elseif($id == "dynamicFaktorBereiche"){
+
+	$query = "SELECT * FROM bereiche";
+}
 
 $records = queryDB($conn, $query, "read");
 
