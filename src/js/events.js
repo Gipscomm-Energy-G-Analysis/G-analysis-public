@@ -1213,6 +1213,11 @@ $(document).ready(function() {
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id);
         addExtraWidthToDynamischeFaktor();
+        if(this.id =='menuBerechnungsformeln'){
+            //$(".liegPfad option:eq(1)").prop('selected', 'selected').trigger('change');
+            getKorrekturfaktor();
+            virtuelleMessstelle();
+        }
     });
     $("#betrGrpMenu, #sAdmMenu, #manGrpMenu, #admMenu, #benMenu, #untMenu, #anlMenu, #pmMenu, #msmMenu, #knz_almMenu, #manMenu, #orgMenu, #liegMenu, #berMenu, #stdMenu, #stdDrMenu, #anl_Menu, #msgMenu, #knzMenu, #almMenu, #prdMenu,#anl_Eng_Menu, #anl_Dok_Menu, #anl_Hist_Menu, #anl_Konfig_Menu,#prd_Menu, #prd_Konfig_Menu, #prd_Hist_Menu").click(function() {
         $("#auswertungen").css("display", "none");
@@ -1755,12 +1760,6 @@ $(".orgSuchenSpies").click(function() {
 
 });
 
-/*On click menu Berechnungsformeln update lieg select options*/
-$("#menuBerechnungsformeln").click(function() {
-    $(".liegPfad option:eq(0)").prop('selected', 'selected').trigger('change');
-    getKorrekturfaktor(); /*Call Correction factor ajax response 14-02-2020*/
-    virtuelleMessstelle();
-});
 /*On click menu Vers.Bereiche/Messstellen update lieg select options*/
 $("#berMenu").click(function() {
     $(".liegPfad option:eq(0)").prop('selected', 'selected').trigger('change');
