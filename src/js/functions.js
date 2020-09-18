@@ -894,8 +894,8 @@ try {
             "formelStringDarstellung" == a ? ("" == $("#formelIdDarstellung").val() ? formula.setFirstElement(LocationParentheses.NONE, 0, OperandType.MEASUREMENT_POINT, c) : formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.MEASUREMENT_POINT, {
                 type: OperandType.MEASUREMENT_POINT,
                 operandObject: c
-            }), $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + e), $("#formelIdDarstellung").val($("#formelIdDarstellung").val() + b)) : ($("#berechneteMstName").val(e), $("#berechneteMstID").val(b),
-                formula.resetFormula(), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), formula.setMeasurementObjectToCalculate(c), $("#formelStringDarstellung").val(formula.getMeasurementObjectToCalculate().name + " = "), "" != b ? ($("#berechneteMstName").val(e), $("#berechneteMstID").val(b), formula.readFromDB(DbTable.MESSSTELLEN).then(function(a) {
+            }), $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + e), $("#formelIdDarstellung").val($("#formelIdDarstellung").val() + b)) : ($("#berechneteMstName").val(e), $("#berechneteMstID").val('mst_'+b),
+                formula.resetFormula(), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), formula.setMeasurementObjectToCalculate(c), $("#formelStringDarstellung").val(formula.getMeasurementObjectToCalculate().name + " = "), "" != b ? ($("#berechneteMstName").val(e), $("#berechneteMstID").val('mst_'+b), formula.readFromDB(DbTable.MESSSTELLEN).then(function(a) {
                     formula.setFormulaObject(a)
                 }).then(function() {
                     $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + formula.getFormulaString())
