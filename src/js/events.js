@@ -3487,3 +3487,38 @@ $("#DkFeSpeichern").click(function() {
             $('#updateOptType').val('');
         }
     });
+
+    /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
+    $("#intBdeIMwSuchen").click(function() {
+            tblAnlOhneZeitintervallIMwSuchenMethod();
+    });
+   /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
+
+
+
+    /*18-09-2020 on double click row append data into input*/
+    $("#tblAnlOhneZeitintervallIMwSuchen tbody").on("dblclick","tr",function(){
+
+        //var id = $(this).attr('data-id');
+        var rowData = tblAnlOhneZeitintervallIMwSuchen.row( this ).data();
+        console.log(rowData);
+/*
+        var subtypeTimeDynamicCFVal = $(this).attr('data-type');
+        var calculationTypeDKff = $(this).attr('calculation-type');
+
+        //console.log(rowData);
+        $("#optionNameDKff").val(rowData[0]);
+        $("#optionBeschreibungDKff").val(rowData[1]);
+        $(".auswahlTypierungFaktorDKff").val(basisType);
+        $(".typeDynamicCF").val(rowData[3]);
+        $(".subtypeTimeDynamicCF").val(subtypeTimeDynamicCFVal);
+        $(".calculationTypeDKff").val(calculationTypeDKff);
+        //$(".subtypeTimeDynamicCF").show();
+        $(".typeDynamicCF").prop('disabled', 'disabled');
+        $(".subtypeTimeDynamicCF").prop('disabled', 'disabled');
+        $(".auswahlTypierungFaktorDKff").prop('disabled', 'disabled');
+        $(".calculationTypeDKff").prop('disabled', 'disabled');*/
+       
+    });
+    /*18-09-2020  on double click row append data into input*/
+

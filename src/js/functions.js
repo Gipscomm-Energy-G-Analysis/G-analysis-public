@@ -8520,7 +8520,7 @@ try {
             "erwPrdMenu" == a || "erwAnlMenu" == a || "entMenu" == a || "enfMenu" == a || "gsfMenu" == a || "mgsMenu" == a || "zpMenu" == a || "grpDiagMenu" == a || "korrekturFaktorMenu" == a || "korrekturFaktorMenuDynamischer" == a ? ($("#tabsOptionen, #optionen").css("display",
                 "block"), $('.navigation_controls').hide(), $("#tabsUnternehmensstruktur, #tabsEditor").css("display", "none"), $("#tabsBasisdaten").css("display", "block"), "entMenu" == a || "enfMenu" == a ? (tabControlNav("tabEng"), $('.no_korrector_tabs').show()) : "gsfMenu" == a ? tabControlNav("tabGsf") : "mgsMenu" == a ? tabControlNav("tabMgs") : "zpMenu" == a ? (tabControlNav("tabZp"), $('.no_korrector_tabs').show()) : "erwAnlMenu" == a ? (tabControlNav("tabEAnl"), $('.no_korrector_tabs').show()) : "grpDiagMenu" == a ? (tabControlNav("tabGrpDiag"), $('.no_korrector_tabs').show()) : "korrekturFaktorMenu" == a ? (tabControlNav("tabTaschenrechner"), $('.no_korrector_tabs').hide(), $('#tabTaschenrechner').show(), $('#tabDynamicKorrekturFktr').hide(), getStatischeKorrekturfaktoren()) : "korrekturFaktorMenuDynamischer" == a ? (tabControlNav("tabDynamicKorrekturFktr"), $('.no_korrector_tabs').hide(), $('#tabTaschenrechner').hide(), $('#tabDynamicKorrekturFktr').show()) : "erwPrdMenu" == a && (tabControlNav("tabEPrd"), $('.no_korrector_tabs').show())) : $("#tabsOptionen, #optionen").css("display", "none");
             "intEngIMwMenu" == a || "intBdeIMwMenu" == a || "extRngMenu" ==
-                a || "eRngVergleichMenu" == a ? ($("#tabsEditor").css("display", "none"), $("#tabsManuell").css("display", "block"), "intEngIMwMenu" == a || "intBdeIMwMenu" == a ? ($("#tabsIntMesswerte").css("display", "block"), "intEngIMwMenu" == a ? (tabControlNav("tabIntEnergiedatenIMw"), $("#verwaltung").val("intEngIMw")) : "intBdeIMwMenu" == a && (tabControlNav("tabIntBetriebsdatenIMw"), $("#verwaltung").val("intBdeIMw"))) : $("#tabsIntMesswerte").css("display", "none"), "extRngMenu" == a || "eRngVergleichMenu" == a ? ($("#tabsEditor").css("display",
+                a || "eRngVergleichMenu" == a ? ($("#tabsEditor").css("display", "none"), $("#tabsManuell").css("display", "block"), "intEngIMwMenu" == a || "intBdeIMwMenu" == a ? ($("#tabsIntMesswerte").css("display", "block"), "intEngIMwMenu" == a ? (tabControlNav("tabIntEnergiedatenIMw"),$("#tabIntBetriebsdatenIMw").css("display", "none"),$("#tabIntEnergiedatenIMw").css("display", "block"),$("#verwaltung").val("intEngIMw")) : "intBdeIMwMenu" == a && (tabControlNav("tabIntBetriebsdatenIMw"),$("#tabIntBetriebsdatenIMw").css("display", "block"),$("#tabIntEnergiedatenIMw").css("display", "none"), $("#verwaltung").val("intBdeIMw"))) : $("#tabsIntMesswerte").css("display", "none"), "extRngMenu" == a || "eRngVergleichMenu" == a ? ($("#tabsEditor").css("display",
                     "none"), $("#tabsExterneRechnungen").css("display", "block"), "extRngMenu" == a ? (tabControlNav("tabExtRechnungen"), $("#verwaltung").val("ERng")) : "eRngVergleichMenu" == a && (tabControlNav("tabAusw_eRng_iMw"), $("#verwaltung").val("AusERng"))) : $("#tabsExterneRechnungen").css("display", "none")) : $("#tabsManuell").css("display", "none")
         }, setAnlagenTbl2 = function() {
             return $("#tblAnlagenListe2").DataTable({
@@ -8902,6 +8902,13 @@ try {
         colReorder: !0
     });
     tblAnlOhneZeitintervallIMw = $("#tblAnlOhneZeitintervallIMw").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+     tblAnlOhneZeitintervallIMwSuchen = $("#tblAnlOhneZeitintervallIMwSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [],
         pageLength: 15,
@@ -15039,5 +15046,50 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                         basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);
                     }
             }
+    })
+}
+
+/*Ajax Call for the Manuel module serach 18-09-2020*/
+function tblAnlOhneZeitintervallIMwSuchenMethod() {
+     var a = itemSessionGet("nameDB");
+     //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            nameDB: $("#nameDB").val(),
+            id:'Suchen'
+        },
+        success: function(e) {
+            //console.log('Working fine');
+            e = json(e);
+            console.log(e);
+            tblAnlOhneZeitintervallIMwSuchen.colReorder.reset();
+            tblAnlOhneZeitintervallIMwSuchen.clear().draw();
+            for (var c = 0; c < e.length; c++){                
+               tblAnlOhneZeitintervallIMwSuchen.row.add([
+                    e[c].anl_ID,
+                    e[c].nummerAnl,
+                    e[c].bezeichnungAnl,
+                    e[c].messwertIMwAnl,
+                    e[c].einheitIMwAnl
+                    ]).draw();
+            }
+            $("#tblAnlOhneZeitintervallIMwSearchContainer").css("display", "block");
+            $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 300
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 300
+                }
+            })
+        }
     })
 }
