@@ -14,6 +14,12 @@ if ($id == "Suchen") {
   $query = "SELECT * FROM anlagen ";
   $query .= "WHERE zeitintervallAnl  <> 0 ";
   $query .= "AND deleted <> 1 ";
+}elseif($id == 'DblClick'){
+	$anl_ID = $_POST['anl_ID'];
+	$query = "SELECT * FROM anlagen ";
+	$query .= "WHERE zeitintervallAnl  <> 0 ";
+	$query .= "AND anl_ID = $anl_ID ";
+	$query .= "AND deleted <> 1 ";
 }
 //echo $query;die;
 $records = queryDB($conn, $query, "read");

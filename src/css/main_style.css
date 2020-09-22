@@ -1196,3 +1196,17 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
     height: 18px;
     margin-left: 10px;
 }
+
+
+/*21-09-2020*/
+.btnShowRecordsAnl{
+  float: right;
+  padding-bottom: 27px;
+  padding-right: 3px;
+}
+
+/*22-09-2020*/
+#btnMassEingAnl{
+  background-color: white !important;
+  cursor: pointer !important;
+}

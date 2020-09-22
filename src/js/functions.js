@@ -6893,7 +6893,7 @@ try {
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a));
-                        mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE)
+                       // mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE)
                     }
                 })
             } else if ("eAnlSpeichern" == a) {
@@ -8442,7 +8442,10 @@ try {
                     else if ("tabExtRechnungen" == a) $("#asideRight").css("display", "block"), versorgerUndEinheitBefuellen(), energietrInDBoxERngVergleich(), energietrInDBoxLieg();
                     else if ("tabAusw_eRng_iMw" == a) energietrInDBoxERngVergleich(), energietrInDBoxLieg(), externeRechnungenListeErstellen("vergleich");
                     else if ("tabIntEnergiedatenIMw" == a || "tabIntBetriebsdatenIMw" ==
-                        a) $("#berechnungsformelnLeft").css("display", "none"), $("#interneMesswerteLeft, #interneMesswerte").css("display", "block"), $("#infosMasseneingabe").css("display", "none"), $("#btnMassEingAnl, #btnMassEingMst").text("Masseneingabe"), "tabIntEnergiedatenIMw" == a ? mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.ENERGY) : "tabIntBetriebsdatenIMw" == a && mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE);
+                        a) $("#berechnungsformelnLeft").css("display", "none"), 
+                           $("#interneMesswerteLeft, #interneMesswerte").css("display", "block"), 
+                           $("#infosMasseneingabe").css("display", "none"), $("#btnMassEingAnl, #btnMassEingMst").text("Masseneingabe"), 
+                           "tabIntEnergiedatenIMw" == a ? mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.ENERGY) : "tabIntBetriebsdatenIMw" == a; /*&& mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE);*/
                     else if ("tabBerechnungsformeln" == a || "tabVorlagenformeln" == a) $("#tabsAuswertungen").css("display", "block"), $("#tabBerechnungsformeln, #tabVorlagenformeln").css("display",
                         "inline-block"), $("#asideLeft").css("display", "block"), $("#berechnungsformelnLeft").css("display", "block"), $("#interneMesswerteLeft").css("display", "none"), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), $("#berechneteMstName").val(""), messstellenInAuswertungsEditorTabelleEinlesen(), anlagenInAuswertungsEditorTabelleEinlesen(), dynBdeDatenInAuswertungsEditorTabelleEinlesen(), produkteInFormeleditorEinlesen();
                     1 > tabsData[e].lengthPath ? alert("The tabsData[tb].lengthPath is to small! It has to be at least 1. :tabControlNav(tab)") :
@@ -15090,6 +15093,37 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                     duration: 300
                 }
             })
+        }
+    })
+}
+
+
+
+/*Ajax Call for the Manuel module serach 18-09-2020*/
+function tblAnlOhneZeitintervallIMwSuchenDblClick(anl_ID) {
+     var a = itemSessionGet("nameDB");
+     //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            nameDB: $("#nameDB").val(),
+            anl_ID:anl_ID,
+            id:'DblClick'
+        },
+        success: function(e) {
+            //console.log('Working fine');
+            e = json(e);
+            console.log(e);
+            $("#anlID").val(e[0].anl_ID);
+            $("#anlIMw").val(e[0].bezeichnungAnl);
+            $("#anlNrIMw").val(e[0].nummerAnl);
+            $("#zeitintervallAnl").val(e[0].zeitintervallAnl);
+            $("#jahrMassEingDataAnl").val(e[0].baujahrAnl);
+            $("#einheitAnl").val(e[0].einheitAnl);
+            $("#notizBdeIMw").val(e[0].notizMesswertManuell);
+          
         }
     })
 }
