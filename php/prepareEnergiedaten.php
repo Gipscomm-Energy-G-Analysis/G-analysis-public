@@ -33,9 +33,6 @@ require 'DbOperations.php';
 
 // 4. Map over the records and retrieve energy data from the view "MessstellenEnergiedaten"
 //    for every identifier in a formula
-//    4.1 Create function isIdentifier(element)
-//    4.2 Create function getIdentifiers(formulaArray)
-//        4.2.1 Return filter over formula with isIdentifier
 //    4.3 Create function getEnergyData(nameDB, mstID)
 //        4.3.1 Connect to db
 //        4.3.2 Set query with where clause referencing mstID
@@ -55,6 +52,10 @@ require 'DbOperations.php';
 //    9.1 Create table "BerechneteEnergiedaten" with columns
 //        "mstID, Name, Time, Value, ConvFactor"
 //    9.2 Create function calculatedDataIntoDB
+
+// SET DB
+// ------
+const nameDB = "012_spiess" ;
 
 // HELPERS
 // -------
@@ -78,9 +79,9 @@ function splitUnderline($string) {
 
 // -----------------------------
 // Query mst formula data
-function getMstFormulaRecords($nameDB) {
+function getMstFormulaRecords() {
     $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-    return queryDB(connectToDB($nameDB), $query, "read") ;
+    return queryDB(connectToDB(nameDB), $query, "read") ;
 }
 
 // Function that base64 decodes all formulas
@@ -99,27 +100,90 @@ function splitFormulas($records) {
     return array_map('splitFormula', $records) ;
 }
 
-// SOME SUPER FUNCTION
+// Queries all the data for every formula
+function getEnergyDataFormulas($records) {
 
-// Retrieves identifiers of formula array
-// USE actionOn and return full records !
-function getIdentifiers($formulaArray) {
-    function isIdentifier($element) {
-        return count(splitUnderline($element)) === 2 ;
+    // Helpers
+    function isMst($identifier) {
+        return splitUnderline($identifier)[0] === "mst" ;
     }
-    return array_filter($formulaArray, 'isIdentifier') ;
+    function isKorFac($identifier) {
+        return splitUnderline($identifier)[0] === "ePrdKFE" ;
+    }
+    function getID($identifier) {
+        return splitUnderline($identifier)[1] ;
+    }
+
+    // Query mst energy data of a formula
+    function getEnergyDataFormula($formulaArray) {
+        $msts = array_values(array_filter($formulaArray, 'isMst')) ;
+        $mstsIDs = array_map('getID', $msts) ;
+
+        $dataMsts = [] ;
+        for ($i=0; $i < count($mstsIDs) ; $i++) {
+            $query = "SELECT TOP(10) * FROM MessstellenEnergiedaten " ;
+            $query .= "WHERE mst_ID = ".$mstsIDs[$i] ;
+            array_push($dataMsts, queryDB(connectToDB(nameDB), $query, "read")) ;
+        }
+        return $dataMsts ;
+    }
+
+    // retrieves energy data of a record
+    function dataRecord($record) {
+        return actionOn($record, "Formula", 'getEnergyDataFormula') ;
+    }
+
+    return [$records, array_map('dataRecord', $records)] ;
 }
 
-// Query mst energy data
-function getEnergyData($nameDB, $mstID) {
-    $query = "SELECT * FROM MessstellenEnergiedaten " ;
-    $query .= "WHERE mst_ID = ".$mstID ;
-    return queryDB(connectToDB($nameDB), $query, "read") ;
+// Calculates Level-1 Formulas
+function calculateFormulas($records) {
+
+    // Helper
+    function prependZero($n) {
+        return (int)$n < 10 ? "0".$n : (int)$n ;
+    }
+
+    function dateNow() {
+        $date = getdate() ;
+
+        $year = $date["year"] ;
+        $month = prependZero($date["mon"]) ;
+        $day = prependZero($date["mday"]) ;
+        $hours = prependZero($date["hours"]) ;
+        $minutes = prependZero($date["minutes"]) ;
+        $seconds = prependZero($date["seconds"]) ;
+
+        return $year."-".$month."-".$day." ".$hours.":".$minutes.":".$seconds.".000" ;
+    }
+
+    function add15min($date) {
+        $dateTime = new DateTime($date);
+        $dateTime->modify('+15 minutes');
+        return $dateTime->format('Y-m-d H:i:s.000'); ;
+    }
+
+    // 1. Assign vars for array of mstFormulas records and energy records
+    $mstFormulaRecords = $records[0] ;
+    $formulaEnergyRecords = $records[1] ;
+
+    // 2. Create formula arrays from date x to current dateTime
+    function createFormulaArray($data) {
+        $record = $data[0] ;
+        $from = $data[1] ;
+        $to = $data[2] ;
+        $date = $from ;
+        $formulaRecords = [] ;
+        while ($date < $to) {
+            $date = add15min($date) ;
+            $record["Time"] = $date ;
+            array_push($formulaRecords, $record) ;
+        }
+        return $formulaRecords ;
+    }
+
 }
 
-// END SUPER FUNCTION
-
-// print_r(splitFormulas(base64DecodeFormulas(getMstFormulaRecords("012_spiess")))) ;
-print_r(getIdentifiers(["mst_3", "+", "mst_5", "-", "mst_10"])) ;
+print_r(splitFormulas(base64DecodeFormulas(getMstFormulaRecords()))) ;
 
 ?>
