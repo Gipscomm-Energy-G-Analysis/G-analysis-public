@@ -119,6 +119,7 @@ function getEnergyData($nameDB, $mstID) {
 
 // END SUPER FUNCTION
 
-print_r(splitFormulas(base64DecodeFormulas(getMstFormulaRecords("012_spiess")))) ;
+// print_r(splitFormulas(base64DecodeFormulas(getMstFormulaRecords("012_spiess")))) ;
+print_r(getIdentifiers(["mst_3", "+", "mst_5", "-", "mst_10"])) ;
 
 ?>
