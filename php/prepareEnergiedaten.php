@@ -57,6 +57,11 @@ require 'DbOperations.php';
 // ------
 const nameDB = "012_spiess" ;
 
+// SET START AND END DATE FOR CALCULATION
+// ------------------------------
+const startDate = "2018-07-15 02:00:00.000000" ;
+const endDate = "2018-07-25 02:00:00.000000" ;
+
 // HELPERS
 // -------
 // Higher level function which applies a passed function on a specified field
@@ -121,7 +126,7 @@ function getEnergyDataFormulas($records) {
 
         $dataMsts = [] ;
         for ($i=0; $i < count($mstsIDs) ; $i++) {
-            $query = "SELECT TOP(10) * FROM MessstellenEnergiedaten " ;
+            $query = "SELECT TOP(1) * FROM MessstellenEnergiedaten " ;
             $query .= "WHERE mst_ID = ".$mstsIDs[$i] ;
             array_push($dataMsts, queryDB(connectToDB(nameDB), $query, "read")) ;
         }
@@ -133,17 +138,24 @@ function getEnergyDataFormulas($records) {
         return actionOn($record, "Formula", 'getEnergyDataFormula') ;
     }
 
-    return [$records, array_map('dataRecord', $records)] ;
+    $formulasEnergyRecords = array_map('dataRecord', $records) ;
+
+    return [$records, $formulasEnergyRecords] ;
 }
 
 // Calculates Level-1 Formulas
 function calculateFormulas($records) {
+
+    // Assigned vars for array of mstFormulas records and energy records
+    $mstFormulaRecords = $records[0] ;
+    $formulaEnergyRecords = $records[1] ;
 
     // Helper
     function prependZero($n) {
         return (int)$n < 10 ? "0".$n : (int)$n ;
     }
 
+    // Returns the current formatted date
     function dateNow() {
         $date = getdate() ;
 
@@ -154,18 +166,25 @@ function calculateFormulas($records) {
         $minutes = prependZero($date["minutes"]) ;
         $seconds = prependZero($date["seconds"]) ;
 
-        return $year."-".$month."-".$day." ".$hours.":".$minutes.":".$seconds.".000" ;
+        return $year."-".$month."-".$day." ".$hours.":".$minutes.":".$seconds.".000000" ;
     }
 
     function add15min($date) {
         $dateTime = new DateTime($date);
         $dateTime->modify('+15 minutes');
-        return $dateTime->format('Y-m-d H:i:s.000'); ;
+        return $dateTime->format('Y-m-d H:i:s.000000'); ;
     }
 
-    // 1. Assign vars for array of mstFormulas records and energy records
-    $mstFormulaRecords = $records[0] ;
-    $formulaEnergyRecords = $records[1] ;
+    // Returns a dateTime string from a DateTime Object
+    function accessDate($date) {
+        return $date->format('Y-m-d H:i:s.u') ;
+    }
+
+    // Converts the DateTime Object to a date string
+    function formatDate($record) {
+        return actionOn($record, "Time", 'accessDate') ;
+    }
+
 
     // 2. Create formula arrays from date x to current dateTime
     function createFormulaArray($data) {
@@ -182,8 +201,33 @@ function calculateFormulas($records) {
         return $formulaRecords ;
     }
 
+    // 3. Prepare energy data dates
+    function formatDatesEnergyData($energyData) {
+        return array_map('formatDate', $energyData) ;
+    }
+
+    // 4. Replace the formula identifiers with the associated values
+    function replaceFormulaIdentifiers($formulaRecord, $energyData) {
+        $formulaArray = createFormulaArray([$formulaRecord, startDate, endDate]) ;
+
+        function findRecordWithDate($formulaRecord, $energyData) {
+            $date = $formulaRecord["Time"] ;
+            $idx = array_search($date, array_column(formatDatesEnergyData($energyData), 'Time')) ;
+
+            return gettype($idx) === "boolean" ?
+            ["mst_ID" => $energyData[0]["mst_ID"], "Name" => $energyData[0]["Name"], "Time" => $date, "Value" => 0, "ConvFactor" => $energyData[0]["ConvFactor"]] :
+            $energyData[$idx] ;
+        }
+
+        // Map over formula array and replace identifiers with time associated values
+
+        // Change EnergyData View to
+        // SELECT TOP(10000) mst_ID, Name, Time, sum(Value) AS Value, ConvFactor FROM MessstellenEnergiedaten
+        // GROUP BY Time, mst_ID, Name, ConvFactor
+        // ORDER BY Time, mst_ID
+    }
 }
 
-print_r(splitFormulas(base64DecodeFormulas(getMstFormulaRecords()))) ;
+getEnergyDataFormulas(splitFormulas(base64DecodeFormulas(getMstFormulaRecords()))) ;
 
 ?>
