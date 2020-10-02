@@ -150,7 +150,8 @@ function calculateFormulas($records) {
     $mstFormulaRecords = $records[0] ;
     $formulaEnergyRecords = $records[1] ;
 
-    // Helper
+    // CREATE FORMULA ARRAYS FROM DATE X TO DATE Y
+    // -------------------------------------------
     function prependZero($n) {
         return (int)$n < 10 ? "0".$n : (int)$n ;
     }
@@ -175,59 +176,104 @@ function calculateFormulas($records) {
         return $dateTime->format('Y-m-d H:i:s.000000'); ;
     }
 
-    // Returns a dateTime string from a DateTime Object
-    function accessDate($date) {
-        return $date->format('Y-m-d H:i:s.u') ;
-    }
-
-    // Converts the DateTime Object to a date string
-    function formatDate($record) {
-        return actionOn($record, "Time", 'accessDate') ;
-    }
-
-
-    // 2. Create formula arrays from date x to current dateTime
-    function createFormulaArray($data) {
-        $record = $data[0] ;
-        $from = $data[1] ;
-        $to = $data[2] ;
-        $date = $from ;
+    function createFormulaArray($formulaRecord) {
+        $to = endDate ;
+        $date = startDate ;
         $formulaRecords = [] ;
-        while ($date < $to) {
+        while ($date < endDate) {
             $date = add15min($date) ;
-            $record["Time"] = $date ;
-            array_push($formulaRecords, $record) ;
+            $formulaRecord["Time"] = new DateTime($date) ;
+            array_push($formulaRecords, $formulaRecord) ;
         }
         return $formulaRecords ;
     }
 
-    // 3. Prepare energy data dates
-    function formatDatesEnergyData($energyData) {
-        return array_map('formatDate', $energyData) ;
+
+    function createFormulaArrays($formulaRecords) {
+        return array_map('createFormulaArray', $formulaRecords) ;
+    }
+    // -------------------------------------------
+
+
+    // INDEX THE FORMULA ELEMENTS FOR LATER SORTING
+    // --------------------------------------------
+    function indexed($arr) {
+        for($i = 0; $i < count($arr); $i++) {
+            $arr[$i] = [$i, $arr[$i]] ;
+        }
+        return $arr ;
+    }
+
+    function indexedFormulaArray($formulaRecord) {
+        return actionOn($formulaRecord, "Formula", 'indexed') ;
+    }
+
+    function indexedFormulaArrays($formulaArrays) {
+        return array_map('indexedFormulaArray', $formulaArrays) ;
+    }
+
+    function indexedFormulasArrays($formulasArrays) {
+        return array_map('indexedFormulaArrays', $formulasArrays) ;
+    }
+    // --------------------------------------------
+
+
+    // REPLACE ALL FORMULAS WITH THEIR ASSOCIATED VALUES
+    // -------------------------------------------------
+    function removeIdx($element) {
+        return $element[1] ;
+    }
+
+    function joinFormula($formulaArray) {
+        $extractFormulaElements = array_map("removeIdx", $formulaArray) ;
+
+        return implode(" ", $extractFormulaElements) ;
+    }
+
+    function isMst($ident) {
+        return explode("_", $ident[1])[0] === "mst" ;
+    }
+
+    function isNotMst($ident) {
+        return !isMst($ident) ;
+    }
+
+    function findRecordIdx($dateFormulaRecord, $energyRecords) {
+        return array_search($dateFormulaRecord, array_column($energyRecords, 'Time')) ;
+    }
+
+    function replaceFormula($formulaRecord, $energyDataRecords) {
+
+        // Separate formula parts
+        $mstsFormula = array_filter($formulaRecord, "isMst") ;
+        $notMstParts = array_filter($formulaRecord, "isNotMst") ;
+
+        // Find the energy data records with the associated date
+
+
+        return $mstsFormula ;
+    }
+
+    // Retrieve energy record referenced by date
+    function findRecordWithDate($formulaRecord, $energyData) {
+        $date = $formulaRecord["Time"] ;
+        $idx = array_search($date, array_column($energyData, 'Time')) ;
+
+        return gettype($idx) === "boolean" ?
+        ["mst_ID" => $energyData[0]["mst_ID"], "Name" => $energyData[0]["Name"], "Time" => $date, "Value" => 0, "ConvFactor" => $energyData[0]["ConvFactor"]] :
+        $energyData[$idx] ;
     }
 
     // 4. Replace the formula identifiers with the associated values
     function replaceFormulaIdentifiers($formulaRecord, $energyData) {
         $formulaArray = createFormulaArray([$formulaRecord, startDate, endDate]) ;
 
-        function findRecordWithDate($formulaRecord, $energyData) {
-            $date = $formulaRecord["Time"] ;
-            $idx = array_search($date, array_column(formatDatesEnergyData($energyData), 'Time')) ;
-
-            return gettype($idx) === "boolean" ?
-            ["mst_ID" => $energyData[0]["mst_ID"], "Name" => $energyData[0]["Name"], "Time" => $date, "Value" => 0, "ConvFactor" => $energyData[0]["ConvFactor"]] :
-            $energyData[$idx] ;
-        }
 
         // Map over formula array and replace identifiers with time associated values
 
-        // Change EnergyData View to
-        // SELECT TOP(10000) mst_ID, Name, Time, sum(Value) AS Value, ConvFactor FROM MessstellenEnergiedaten
-        // GROUP BY Time, mst_ID, Name, ConvFactor
-        // ORDER BY Time, mst_ID
     }
 }
 
-getEnergyDataFormulas(splitFormulas(base64DecodeFormulas(getMstFormulaRecords()))) ;
+print_r(calculateFormulas(getEnergyDataFormulas(splitFormulas(base64DecodeFormulas(getMstFormulaRecords()))))) ;
 
 ?>
