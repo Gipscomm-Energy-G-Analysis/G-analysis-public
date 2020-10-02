@@ -1,10 +1,11 @@
 <?php
 
-include('top-cache.php');
-error_reporting (-1);
-ini_set ('display_errors', 'On');
+include('top-cache.php') ;
+error_reporting (-1) ;
+ini_set ('display_errors', 'On') ;
 
-require 'DbOperations.php';
+require 'DbOperations.php' ;
+require 'Matex.php' ;
 
 // SET DB
 // ------
@@ -74,9 +75,15 @@ function splitFormula($record) {
 function isMst($identifier) {
     return splitUnderline($identifier)[0] === "mst" ;
 }
+
+function isNotMst($ident) {
+    return !isMst($ident) ;
+}
+
 function isKorFac($identifier) {
     return splitUnderline($identifier)[0] === "ePrdKFE" ;
 }
+
 function getID($identifier) {
     return splitUnderline($identifier)[1] ;
 }
@@ -84,7 +91,7 @@ function getID($identifier) {
 // Queries all the data for every formula
 function getEnergyDataFormula($formulaRecord) {
 
-// Query mst energy data of a formula
+    // Query mst energy data of a formula
     $msts = array_values(array_filter($formulaRecord["Formula"], 'isMst')) ;
     $mstsIDs = array_map('getID', $msts) ;
 
@@ -240,8 +247,80 @@ function calculateFormulas($records) {
     // --------------------------------------------
     return indexedFormulaArrays(fillDateGapsAllEnergyData($formulaRecord, $formulaEnergyRecords)[0]) ;
 
+    // REPLACE FORMULAS WITH VALUES
 
-    
+    function sortFormula($array) {
+     if (!$length = count($array)) {
+      return $array;
+     }
+     for ($outer = 0; $outer < $length; $outer++) {
+      for ($inner = 0; $inner < $length; $inner++) {
+       if ($array[$outer] < $array[$inner]) {
+        $tmp = $array[$outer];
+        $array[$outer] = $array[$inner];
+        $array[$inner] = $tmp;
+       }
+      }
+     }
+     return $array ;
+    }
+
+    function removeIdx($element) {
+        return $element[1] ;
+    }
+
+    function joinFormula($formulaArray) {
+        $extractFormulaElements = array_map("removeIdx", $formulaArray) ;
+
+        return implode(" ", $extractFormulaElements) ;
+    }
+
+    function replaceWithValue($mst, $value) {
+        return [$mst[0], $value["Value"]] ;
+    }
+
+    function replaceFormula($formula_, $values_) {
+
+        // separate formula parts
+        $indexedFormula = indexed(splitFormula($formula_)) ;
+        $mstsFormula = array_filter($indexedFormula, "isMst") ;
+        $notMstParts = array_filter($indexedFormula, "isNotMst") ;
+
+        // replace msts with values
+        $mstsValues = array_map("replaceWithValue", $mstsFormula, $values_) ;
+
+        // re-compose formula
+        $formulaValues = sortFormula(array_merge($mstsValues, $notMstParts)) ;
+        $formulaValueString = joinFormula($formulaValues) ;
+
+
+        print_r ($indexedFormula) ;
+        echo "\n\n" ;
+        print_r ($mstsFormula) ;
+        echo "\n\n" ;
+        print_r ($mstsValues) ;
+        echo "\n\n" ;
+        print_r ($notMstParts) ;
+        echo "\n\n" ;
+        print_r(array_merge($mstsValues, $notMstParts)) ;
+        echo "\n\n" ;
+        print_r($formulaValues) ;
+        echo "\n\n" ;
+        print_r($formulaValueString) ;
+
+        return $formulaValueString ;
+    }
+
+    // calculate formula string as term
+    function calculateFormula($term)  {
+        $evaluator = new \Matex\Evaluator() ;
+
+        echo "\n\n" ;
+        print_r($evaluator->execute($term)) ;
+
+        return $evaluator->execute($term) ;
+    }
+
 }
 
 print_r(json_encode(calculateFormulas(getEnergyDataFormula(splitFormula(base64Decode(getMstFormulaRecord())))))) ;
