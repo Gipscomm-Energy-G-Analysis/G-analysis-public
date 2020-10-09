@@ -1083,16 +1083,19 @@
                             <label for="mstDiag1">Messstelle 1<img id="imgBtnMstDiag11" title="Messstelle auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
                             <input id="mstDiag1" readonly/>
                             <input id="mstIDDiag1" style="display:none;"/>
+                            <input id="mstMessart1" style="display:none;"/>
                         </div>
                         <div class="controlDiv">
                             <label for="mstDiag2">Messstelle 2<img id="imgBtnMstDiag12" title="Messstelle auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
                             <input id="mstDiag2" readonly/>
                             <input id="mstIDDiag2" style="display:none;"/>
+                            <input id="mstMessart2" style="display:none;"/>
                         </div>
                         <div class="controlDiv">
                             <label for="mstDiag3">Messstelle 3<img id="imgBtnMstDiag13" title="Messstelle auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
                             <input id="mstDiag3" readonly/>
                             <input id="mstIDDiag3" style="display:none;"/>
+                            <input id="mstMessart3" style="display:none;"/>
                         </div>
                     </div>
                     <button id="btnMstResetDiag">Auswahl zurücksetzen</button>
@@ -5983,7 +5986,7 @@
                                             <option value="tempNum" class="temperaturOption">Temperatur </option>
                                             <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
                                             <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur</option>
-                                            <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur</option>  
+                                            <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur</option>
                                         </select>
                                     </div>
                                     <div class="controlDiv messstellenCatNameDiv">
@@ -6013,7 +6016,7 @@
                                     </div>
                                     <div class="controlDiv">
                                         <label>Wert</label>
-                                        <input id="subtypeTxtBasisFaktor2Wert" class="inp_valid1" />                         
+                                        <input id="subtypeTxtBasisFaktor2Wert" class="inp_valid1" />
                                     </div>
                                     <div class="controlDiv subtypeTxtBasisFaktor2CalcRghtDiv" style="display: none;">
                                         <label >Calculator </label>
@@ -6072,19 +6075,19 @@
                                             <option value="tempNum" class="temperaturOption">Temperatur </option>
                                             <option value="tempOnlyMonth" class="temperaturOption">Monat (Beispiel 01) </option>
                                             <option value="tempPlusMonth" class="temperaturOption">Monat (Beispiel 01) + Temperatur</option>
-                                            <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur </option>  
+                                            <option value="tempPlusYear" class="temperaturOption">Jahr (Beispiel 2020) + Temperatur </option>
                                         </select>
                                     </div>
                                     <div class="controlDiv messstellenCatNameDiv2">
                                         <label>Bereich</label>
                                         <input id="messstellenCatName2" class="messstellenCatName2" />
-                                        <img class="" id="messstellenCatSel2" title="Bereich" src="images/search.png" alt="Bereich">  
-                                        <input type="hidden" id="messstellenBerecheID2"> 
+                                        <img class="" id="messstellenCatSel2" title="Bereich" src="images/search.png" alt="Bereich">
+                                        <input type="hidden" id="messstellenBerecheID2">
                                     </div>
                                     <div class="delReset">
                                        <button id="basicFaktorRow2Reset">Delete</button>
                                     </div>
-                                </div>      
+                                </div>
                                 <div class="subtypeTxtBasisFaktor3" id="basicFaktorRow4" style="display: none;">
                                     <div class="controlDiv" >
                                         <label>K. Bezeichnung</label>
@@ -6102,7 +6105,7 @@
                                     </div>
                                     <div class="controlDiv">
                                         <label>Wert</label>
-                                        <input id="subtypeTxtBasisFaktor3Wert" class="inp_valid1" />                          
+                                        <input id="subtypeTxtBasisFaktor3Wert" class="inp_valid1" />
                                     </div>
                                     <div class="controlDiv subtypeTxtBasisFaktor3CalcRghtDiv" style="display: none;">
                                         <label >Calculator </label>
@@ -6118,7 +6121,7 @@
                                 <div class="moreOptionBtnDiv" style="margin: 20px 0 20px 0;">
                                     <button id="btnOptionHinzEPrdDKff">Option speichern</button>
                                     <button id="btnOptionHinzEPrdDKffUpdate" style="display: none;">Aktualisieren</button>
-                                    <button id="btnOptionHinzEPrdDKffStornieren" style="display: none;">Abrechen</button> 
+                                    <button id="btnOptionHinzEPrdDKffStornieren" style="display: none;">Abrechen</button>
                                      <div class="delReset">
                                        <button id="basicFaktorDelete">Delete</button>
                                        <input type="hidden" id="calculationTypeID">
@@ -6164,8 +6167,8 @@
                                             <th>K. Bezeichnung</th>
                                             <th>Calculator </th>
                                             <th>Wert</th>
-                                            <th>Result</th> 
-                                            <th>format, dynamik</th> 
+                                            <th>Result</th>
+                                            <th>format, dynamik</th>
                                             <th>Bereich</th>
                                             <th>Action</th>
                                         </tr>
@@ -8198,6 +8201,7 @@
                         <th>Kostenstelle</th>
                         <th>Messmittel/Berechnungslogik</th>
                         <th>mst_ID</th>
+                        <th>Messart</th>
                     </tr>
                 </thead>
                 <tbody></tbody>

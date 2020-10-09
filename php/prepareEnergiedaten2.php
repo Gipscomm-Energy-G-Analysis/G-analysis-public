@@ -20,8 +20,8 @@ const mstID = 110 ;
 
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
-const startDate = "2018-12-15 11:15:00.000" ;
-const endDate =  "2019-04-15 11:15:00.000" ;
+const startDate = "2019-02-15 11:15:00.000" ;
+const endDate =  "2019-05-15 11:15:00.000" ;
 
 // HELPERS
 // -------
@@ -155,7 +155,6 @@ function getEnergyDataFormula($formulaRecord) {
     return [$formulaRecord, $dataMsts] ;
 }
 
-
 // Calculates Level-1 Formulas
 function prepareForCalculation($records) {
 
@@ -201,6 +200,7 @@ function prepareForCalculation($records) {
                 , "Time"=>new DateTime($date)
                 , "Value"=>$formulaRecord_["Formula"]
                 , "Formula"=>$formulaRecord_["Formula"]
+                , "ConvFactor"=>1
             ] ;
             array_push($formulaRecords, $formulaRecord__) ;
         }
@@ -363,7 +363,8 @@ function writeToDB($records) {
         .$record["mst_ID"].", '"
         .$record["Name"]."', '"
         .dateTimeToString($record["Time"])."', "
-        .$record["Value"].") " ;
+        .$record["Value"].", "
+        .$record["ConvFactor"].")" ;
     }
 
     function splitArray($size, $records) {
@@ -380,7 +381,7 @@ function writeToDB($records) {
 
         function buildInsertInto($last, $records_) {
             $query = $last ;
-            $query .= "INSERT INTO berechneteEnergiedaten (mst_ID, Name, Time, Value) " ;
+            $query .= "INSERT INTO berechneteEnergiedaten (mst_ID, Name, Time, Value, ConvFactor) " ;
             $query .= "VALUES ".buildValuesString($records_)." "  ;
 
             return $query ;

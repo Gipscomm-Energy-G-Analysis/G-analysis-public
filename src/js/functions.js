@@ -72,8 +72,7 @@ try {
             sessionStorage.setItem("chartType", $("#typDiagKnz").val());
             sessionStorage.setItem("timeSpan", $("#letzteAuftrDiagKnz").val());
             sessionStorage.setItem("knzID_1", $("#knzIDDiag1").val());
-            sessionStorage.setItem("knzID_2",
-                $("#knzIDDiag2").val());
+            sessionStorage.setItem("knzID_2", $("#knzIDDiag2").val());
             sessionStorage.setItem("knzID_3", $("#knzIDDiag3").val());
             sessionStorage.setItem("knzName_1", $("#knzDiag1").val());
             sessionStorage.setItem("knzName_2", $("#knzDiag2").val());
@@ -467,8 +466,11 @@ try {
                 f = $("#mstIDDiag2").val(),
                 h = $("#mstIDDiag3").val(),
                 q = $("#mstDiag1").val(),
+                qa = $("#mstMessart1").val(),
                 r = $("#mstDiag2").val(),
+                ra = $("#mstMessart2").val(),
                 x = $("#mstDiag3").val(),
+                xa = $("#mstMessart3").val(),
                 u = $("#diagJahr").val(),
                 t = $("#diagMonat").val(),
                 w = $("#diagTag").val(),
@@ -479,105 +481,189 @@ try {
                 B = $("#avgDiag").is(":checked");
             sessionStorage.setItem("loadDiag", !1);
             if ("" != h) {
-                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase," +
+                if(qa === "berechnet") {
+                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a += "WHERE mst_ID = '" + g + "' "
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                        if (a +=
+                            "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        }
+                    else a += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                    a += "ORDER by Time ";
+                }
+                else {
+                    a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase," +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
-                a += "INNER JOIN messmittel ";
-                a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
-                a += "INNER JOIN messstellen ";
-                a += "ON messmittel.mst_ID = messstellen.mst_ID ";
-                a += "WHERE messstellen.mst_ID = '" + g + "' ";
-                if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
-                    if (a +=
-                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
-                    else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
-                    }
-                else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                a += "ORDER by time_de ";
-                b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                    a += "INNER JOIN messmittel ";
+                    a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+                    a += "INNER JOIN messstellen ";
+                    a += "ON messmittel.mst_ID = messstellen.mst_ID ";
+                    a += "WHERE messstellen.mst_ID = '" + g + "' ";
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                        if (a +=
+                            "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        }
+                    else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                    a += "ORDER by time_de ";
+                }
+                if (ra === "berechnet") {
+                    b = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    b += "WHERE mst_ID = '" + f + "' "
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                        if (b +=
+                            "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        }
+                    else b += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                    b += "ORDER by Time ";
+                }
+                else {
+                    b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
-                b += "INNER JOIN messmittel ";
-                b += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
-                b += "INNER JOIN messstellen ";
-                b += "ON messmittel.mst_ID = messstellen.mst_ID ";
-                b += "WHERE messstellen.mst_ID = '" + f + "' ";
-                if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                    b += "INNER JOIN messmittel ";
+                    b += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+                    b += "INNER JOIN messstellen ";
+                    b += "ON messmittel.mst_ID = messstellen.mst_ID ";
+                    b += "WHERE messstellen.mst_ID = '" + f + "' ";
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (b +=
                         "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
-                    else {
-                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
-                    }
-                else b += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                b += "ORDER by time_de ";
-                e = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        }
+                        else b += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                        b += "ORDER by time_de ";
+                }
+                if (xa === "berechnet") {
+                    e = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    e += "WHERE mst_ID = '" + f + "' "
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                        if (e +=
+                            "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        }
+                    else e += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                    e += "ORDER by Time ";
+                }
+                else {
+                    e = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
-                e += "INNER JOIN messmittel ";
-                e += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
-                e += "INNER JOIN messstellen ";
-                e += "ON messmittel.mst_ID = messstellen.mst_ID ";
-                e += "WHERE messstellen.mst_ID = '" + h + "' ";
-                if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                    e += "INNER JOIN messmittel ";
+                    e += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+                    e += "INNER JOIN messstellen ";
+                    e += "ON messmittel.mst_ID = messstellen.mst_ID ";
+                    e += "WHERE messstellen.mst_ID = '" + h + "' ";
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (e +=
-                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                    "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
                         if ("Monat" == p || "Monat 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
-                else e += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                e += "ORDER by time_de "
+                    else e += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                    e += "ORDER by time_de "
+                }
             } else if ("" != f) {
-                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                if(qa === "berechnet") {
+                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a += "WHERE mst_ID = '" + g + "' "
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                        if (a +=
+                            "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        }
+                    else a += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                    a += "ORDER by Time ";
+                }
+                else {
+                    a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
-                a += "INNER JOIN messmittel ";
-                a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
-                a += "INNER JOIN messstellen ";
-                a += "ON messmittel.mst_ID = messstellen.mst_ID ";
-                a += "WHERE messstellen.mst_ID = '" + g + "' ";
-                if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                    a += "INNER JOIN messmittel ";
+                    a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+                    a += "INNER JOIN messstellen ";
+                    a += "ON messmittel.mst_ID = messstellen.mst_ID ";
+                    a += "WHERE messstellen.mst_ID = '" + g + "' ";
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
                         "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
-                    else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
-                    }
-                else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                a += "ORDER by time_de ";
-                b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        }
+                        else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                        a += "ORDER by time_de ";
+                }
+                if(ra === "berechnet") {
+                    b = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    b += "WHERE mst_ID = '" + f + "' "
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                        if (b +=
+                            "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        }
+                    else b += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                    b += "ORDER by Time ";
+                }
+                else {
+                    b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
-                b += "INNER JOIN messmittel ";
-                b += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
-                b += "INNER JOIN messstellen ";
-                b += "ON messmittel.mst_ID = messstellen.mst_ID ";
-                b += "WHERE messstellen.mst_ID = '" + f + "' ";
-                if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                    b += "INNER JOIN messmittel ";
+                    b += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+                    b += "INNER JOIN messstellen ";
+                    b += "ON messmittel.mst_ID = messstellen.mst_ID ";
+                    b += "WHERE messstellen.mst_ID = '" + f + "' ";
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (b +=
                         "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
-                    else {
-                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
-                    }
-                else b += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                b += "ORDER by time_de "
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        }
+                        else b += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                        b += "ORDER by time_de "
+                }
             } else {
-                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                if(qa === "berechnet") {
+                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a += "WHERE mst_ID = '" + g + "' "
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                        if (a +=
+                            "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        }
+                    else a += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                    a += "ORDER by Time ";
+                }
+                else {
+                    a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
-                a += "INNER JOIN messmittel ";
-                a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
-                a += "INNER JOIN messstellen ";
-                a += "ON messmittel.mst_ID = messstellen.mst_ID ";
-                a += "WHERE messstellen.mst_ID = '" + g + "' ";
-                if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
+                    a += "INNER JOIN messmittel ";
+                    a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+                    a += "INNER JOIN messstellen ";
+                    a += "ON messmittel.mst_ID = messstellen.mst_ID ";
+                    a += "WHERE messstellen.mst_ID = '" + g + "' ";
+                    if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
                         "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
-                    else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
-                    }
-                else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                a += "ORDER by time_de "
+                        else {
+                            if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        }
+                        else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                        a += "ORDER by time_de "
+                }
             }
             sessionStorage.setItem("nameDB", $("#nameDB").val());
             sessionStorage.setItem("year", u);
-            sessionStorage.setItem("month", t);
             sessionStorage.setItem("day", w);
             sessionStorage.setItem("from", y);
             sessionStorage.setItem("to", z);
+            sessionStorage.setItem("month", t);
             sessionStorage.setItem("chartType", A);
             sessionStorage.setItem("displayMean", B);
             sessionStorage.setItem("nameMst_1", q);
@@ -894,8 +980,8 @@ try {
             "formelStringDarstellung" == a ? ("" == $("#formelIdDarstellung").val() ? formula.setFirstElement(LocationParentheses.NONE, 0, OperandType.MEASUREMENT_POINT, c) : formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.MEASUREMENT_POINT, {
                 type: OperandType.MEASUREMENT_POINT,
                 operandObject: c
-            }), $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + e), $("#formelIdDarstellung").val($("#formelIdDarstellung").val() + b)) : ($("#berechneteMstName").val(e), $("#berechneteMstID").val('mst_'+b),
-                formula.resetFormula(), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), formula.setMeasurementObjectToCalculate(c), $("#formelStringDarstellung").val(formula.getMeasurementObjectToCalculate().name + " = "), "" != b ? ($("#berechneteMstName").val(e), $("#berechneteMstID").val('mst_'+b), formula.readFromDB(DbTable.MESSSTELLEN).then(function(a) {
+            }), $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + e), $("#formelIdDarstellung").val($("#formelIdDarstellung").val() + b)) : ($("#berechneteMstName").val(e), $("#berechneteMstID").val(b),
+                formula.resetFormula(), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), formula.setMeasurementObjectToCalculate(c), $("#formelStringDarstellung").val(formula.getMeasurementObjectToCalculate().name + " = "), "" != b ? ($("#berechneteMstName").val(e), $("#berechneteMstID").val(b), formula.readFromDB(DbTable.MESSSTELLEN).then(function(a) {
                     formula.setFormulaObject(a)
                 }).then(function() {
                     $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + formula.getFormulaString())
@@ -2711,7 +2797,7 @@ try {
                 success: function(b) {
                     b = JSON.parse(b);
                     tblMessstelleAuswahl.clear().draw();
-                    for (var c = 0; c < b.length; c++) tblMessstelleAuswahl.row.add([b[c].nameMSt, b[c].kurzbezeichnungMst, b[c].kostenstelleMst, b[c].messmittelBerechnungslogikMst, b[c].mst_ID]).draw();
+                    for (var c = 0; c < b.length; c++) tblMessstelleAuswahl.row.add([b[c].nameMSt, b[c].kurzbezeichnungMst, b[c].kostenstelleMst, b[c].messmittelBerechnungslogikMst, b[c].mst_ID, b[c].messartMst]).draw();
                     $("#messstellenAuswahlContainer").css("display", "block");
                     $("#messstellenAuswahlContainer").dialog({
                         height: 400,
@@ -2726,8 +2812,7 @@ try {
                             duration: 500
                         },
                         open: function() {
-                            $("#tblMessstellenlisteMst tbody tr").css("cursor",
-                                "pointer");
+                            $("#tblMessstellenlisteMst tbody tr").css("cursor", "pointer");
                             $("#tblMessstellenlisteMst tbody").off("dblclick", "tr");
                             $("#tblMessstellenlisteMst tbody").on("dblclick", "tr", function() {
                                 var b = tblMessstelleAuswahl.row(this).data();
@@ -2751,9 +2836,9 @@ try {
                                 else if ("mstEngRes4ExtDl" == a) $("#messstelleEngRes4ExtDl").val(b[0]);
                                 else if ("mstEngRes5ExtDl" == a) $("#messstelleEngRes5ExtDl").val(b[0]);
                                 else if ("mstEngRes6ExtDl" == a) $("#messstelleEngRes6ExtDl").val(b[0]);
-                                else if ("mstDiag1" == a) $("#mstDiag1").val(b[0]), $("#mstIDDiag1").val(b[4]);
-                                else if ("mstDiag2" == a) $("#mstDiag2").val(b[0]), $("#mstIDDiag2").val(b[4]);
-                                else if ("mstDiag3" == a) $("#mstDiag3").val(b[0]), $("#mstIDDiag3").val(b[4]);
+                                else if ("mstDiag1" == a) $("#mstDiag1").val(b[0]), $("#mstIDDiag1").val(b[4]), $("#mstMessart1").val(b[5]);
+                                else if ("mstDiag2" == a) $("#mstDiag2").val(b[0]), $("#mstIDDiag2").val(b[4]), $("#mstMessart2").val(b[5]);
+                                else if ("mstDiag3" == a) $("#mstDiag3").val(b[0]), $("#mstIDDiag3").val(b[4]), $("#mstMessart3").val(b[5]);
                                 else if ("mstCompDiag" == a) $("#mstDiag").val(b[0]), $("#mstIDDiag").val(b[4]);
                                 else if ("mstDatenexport" == a) $("#mstDatenexport").val(b[0]), $("#mstIDDatenexport").val(b[4]);
                                 else if ("mstSuchenVergl1" == a) $("#vergMst1ERng").val(b[0]),
@@ -9813,7 +9898,6 @@ const toggleMsmBerechnungslogik =
         }
     }
 
-
 // Tests if element is empty string
 const isEmpty =
     element =>
@@ -10229,7 +10313,7 @@ function dynamischeKorrekturfaktorenSpeichern() {
       var basisType = $('.auswahlTypierungFaktorDKff').val();
       var calculationTypeDKff = $('.calculationTypeDKff').val(); //This field for faktor 5
       var saveOptType =  $('#saveOptType').val();
-        
+
       for (i = 0; i < $("#tblOptionenEPrdDKff tbody tr").length; i++){
        // console.log(i);
          optionName[i] = tblOptionenEPrdDKff.cell(i, 0).data();
@@ -10302,7 +10386,7 @@ function dynamischeKorrekturfaktorenSpeichern() {
             success: function(a) {
                 if(a !=''){
                     /*console.log(rowResult);
-                    console.log(rowCalculator);*/                    
+                    console.log(rowCalculator);*/
                     $("#tblOptionenEPrdDKffNotify").hide();
                     $("#optionNameDKff").val("");
                     $("#optionBeschreibungDKff").val("");
@@ -10359,7 +10443,7 @@ function getDynamischeKorrekturfaktoren(id) {
     setTimeout(function(){
     var FaktoreType = $(".auswahlTypierungFaktorDKff").val();
     var calculationTypeDKff = $(".calculationTypeDKff").val();
-    if(FaktoreType==1 || FaktoreType==6 || FaktoreType==4 || FaktoreType==8){ 
+    if(FaktoreType==1 || FaktoreType==6 || FaktoreType==4 || FaktoreType==8){
         $.ajax({
             type: "POST",
             async: !0,
@@ -10420,11 +10504,11 @@ function getDynamischeKorrekturfaktoren(id) {
                         var editDel =  "<a calc-id='"+a[e].calculateID+"'  ber-id='"+a[e].ber_ID+"' data-id='"+a[e].dKffOption_id+"' data-id-parent='"+a[e].dKff_id+"' class='dyanamicheKorrekturfaktorenMenuEdit'>Edit</a>";
                      }
                    var rowNode = tblGetDyanamicheKorrekturfaktoren.row.add(
-                        [a[e].subtypeTxtOptNameDKff,                        
+                        [a[e].subtypeTxtOptNameDKff,
                         a[e].subtypeTxtoptzBezugDkff,
                         a[e].subtypeTxtoptzTempDkff,
                         a[e].bezugStartTxt,
-                        a[e].bezugEndTxt,                       
+                        a[e].bezugEndTxt,
                         a[e].tempStartTxt,
                         a[e].tempEndTxt,
                         a[e].subtypeTxtoptzFaktoreDkff,
@@ -10436,7 +10520,7 @@ function getDynamischeKorrekturfaktoren(id) {
                         a[e].nameBer,
                        editDel]).draw().node();
                     $( rowNode ).attr('data-type',a[e].formatDynamicType).css("cursor", "pointer");
-                    
+
                    if(e%2!=0 && calculationTypeDKff !=4){
                     var rowData = tblGetDyanamicheKorrekturfaktoren.row(rowNode);
                     rowData.child( tblOptionenRecordAndDelOpt(a[e].calculationType,a[e].calculationResult,a[e].calculateID)).show();
@@ -10445,7 +10529,7 @@ function getDynamischeKorrekturfaktoren(id) {
             }
         })
 
-    }else{ 
+    }else{
         $.ajax({
             type: "POST",
             async: !0,
@@ -10666,10 +10750,10 @@ function DynamischeKorrekturfaktorenAktualisieren() {
     var optionFaktore2 = $('#subtypeTxtoptzFaktoreDkff2').val();
     var faktoreDynamictypeVal2 = $('.formatDynamicSelOptRow2').val();
     var messstellenBerecheID2 = $('#messstellenBerecheID2').val();
-    var calculationTypeDKff = $('.calculationTypeDKff').val(); 
+    var calculationTypeDKff = $('.calculationTypeDKff').val();
 
-    
-    if(basisFktr2Wert !='' && optionFaktore !=''){ 
+
+    if(basisFktr2Wert !='' && optionFaktore !=''){
         var faktoreRep = optionFaktore.replace(",", ".");
         var basisFktr2WertRep = basisFktr2Wert.replace(",", ".");
 
@@ -10685,8 +10769,8 @@ function DynamischeKorrekturfaktorenAktualisieren() {
     }else{
         var result ='';
     }
-    if(faktorType ==4 || faktorType ==1 || faktorType ==5  || faktorType ==6 || faktorType ==8 || faktorType ==9){ 
-        if(optionFaktore !=''){   
+    if(faktorType ==4 || faktorType ==1 || faktorType ==5  || faktorType ==6 || faktorType ==8 || faktorType ==9){
+        if(optionFaktore !=''){
             var faktoreRep = optionFaktore.replace(",", ".");
             var faktore2CommaRep = optionFaktore.replace(".", ",");
             if(isFloat(faktoreRep)==true){
@@ -10714,8 +10798,8 @@ function DynamischeKorrekturfaktorenAktualisieren() {
         var ePrdDKFECalcRowType = $('#ePrdDKFECalcRowType').val();
 
         var faktor = $('#ePrdDKFECalcFaktor').val();
-           
-        if(basisFktr3Wert !='' && optionFaktore2 !='' /*&& (calculationTypeDKff ==2 || calculationTypeDKff ==3 )*/){  
+
+        if(basisFktr3Wert !='' && optionFaktore2 !='' /*&& (calculationTypeDKff ==2 || calculationTypeDKff ==3 )*/){
             var faktoreRep2 = optionFaktore2.replace(",", ".");
             var basisFktr3WertRep = basisFktr3Wert.replace(",", ".");
 
@@ -10728,7 +10812,7 @@ function DynamischeKorrekturfaktorenAktualisieren() {
                 alert("Bitte geben Sie den Textwert in faktore und wert ein");
                 return false;
             }
-           
+
            // alert('result2=' +result2 );
         }
         if(result3CommaDigit){
@@ -10771,7 +10855,7 @@ function DynamischeKorrekturfaktorenAktualisieren() {
         ////////////////////////
         var basisFktr2WertRepRght = basisFktr2Wert.replace(",", ".");
         var basisFktr2WertCommaRght = basisFktr2Wert.replace(".", ",");
-        var faktore3RepType5 = optionFaktore2.replace(",", "."); 
+        var faktore3RepType5 = optionFaktore2.replace(",", ".");
         var basisFktr3WertRepType5 = basisFktr3Wert.replace(",", ".");
         var basisFktr2CalcRght =$(".subtypeTxtBasisFaktor2CalcRght").val();
         var basisFktr3CalcRght =$(".subtypeTxtBasisFaktor3CalcRght").val();
@@ -10783,7 +10867,7 @@ function DynamischeKorrekturfaktorenAktualisieren() {
                 }else{
                     alert("Bitte geben Sie den Textwert in faktore und wert ein");
                     return false;
-                }  
+                }
             var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
             var calculationType =basisFktr2CalcRght;
             //alert('resultCalcRghtFinal1='+calcResult);
@@ -10795,7 +10879,7 @@ function DynamischeKorrekturfaktorenAktualisieren() {
                 }else{
                     alert("Bitte geben Sie den Textwert in faktore und wert ein");
                     return false;
-                }  
+                }
             var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
             var calculationType =basisFktr3CalcRght;
             //alert('resultCalcRghtFinal2='+resultCalcRght);
@@ -10807,7 +10891,7 @@ function DynamischeKorrekturfaktorenAktualisieren() {
                 }else{
                     alert("Bitte geben Sie den Textwert in faktore und wert ein");
                     return false;
-                }  
+                }
             var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
             var calculationType =basisFktr2CalcRght;
             //alert('resultCalcRghtFinal3='+resultCalcRght);
@@ -10855,7 +10939,7 @@ function DynamischeKorrekturfaktorenAktualisieren() {
                 basisFktr3Name:basisFktr3Name,
                 basisFktr3Calc:basisFktr3Calc,
                 basisFktr3Wert:basisFktrWert3Comma,
-                optionName2:optionName2, 
+                optionName2:optionName2,
                 optionBezug2:optionBezug2,
                 optionTemp2 :optionTemp2,
                 bezugStartTxt2:bezugStartTxt2,
@@ -10902,9 +10986,9 @@ function DynamischeKorrekturfaktorenAktualisieren() {
                 $('#ePrdDKFERow1ID').val('');
                 $('#ePrdDKFERow2ID').val('');
                 $('#updateOptType').val('');
-                if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){  
-                    visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);          
-                    addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+                if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){
+                    visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);
+                    addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);
 
                 }
                 getDynamischeKorrekturfaktoren(ePrdDMainIdStore);
@@ -11194,7 +11278,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
             $(".subtypeTxtBasisFaktor3CalcRghtDiv").hide();
             $(".delReset").hide();
             $("#btnOptionHinzEPrdDKff").show();
-            $("#btnOptionHinzEPrdDKffUpdate").hide(); 
+            $("#btnOptionHinzEPrdDKffUpdate").hide();
             $("#basicFaktorRow1 input").val('');
             $("#basicFaktorRow1 select").val('');
             $("#basicFaktorRow3 input").val('');
@@ -11222,11 +11306,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
                 $(".formatDynamicBezugRow2").hide();
@@ -11248,9 +11332,9 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4,2,12]);
 
-                columnHide.visible( !columnHide.visible() );    
+                columnHide.visible( !columnHide.visible() );
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,7,8,9,10,11,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -11315,7 +11399,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHideMore.visible(! columnHideMore.visible());
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -11454,7 +11538,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHideMore.visible(! columnHideMore.visible() );
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7,8,9,10,11,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -11486,7 +11570,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHideMore.visible(! columnHideMore.visible() );
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,8,9,10,11,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#subtypeTxtoptzBezugDkff").removeClass();
                 $("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
@@ -11584,7 +11668,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHideMore.visible(! columnHideMore.visible() );
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,2,7,8,9,10,11,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
@@ -11614,7 +11698,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHideMore.visible(! columnHideMore.visible() );
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,7,8,9,10,11,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#subtypeTxtoptzBezugDkff").removeClass();
                 $("#subtypeTxtoptzBezugDkff").addClass('monthBezugValidate');
@@ -11682,7 +11766,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnShow.visible( columnShow.visible() );
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,3,4,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -11912,7 +11996,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([5,6,3,4]);
 
-                columnHide.visible( !columnHide.visible() );    
+                columnHide.visible( !columnHide.visible() );
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,2,7,8,9,10,11,12,13,14]);
                 columnShow.visible( columnShow.visible() );
 
@@ -12001,7 +12085,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHideMore.visible(! columnHideMore.visible() );
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -12052,7 +12136,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHideMore.visible(! columnHideMore.visible() );
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -12102,7 +12186,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHideMore.visible(! columnHideMore.visible() );
 
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,2,7,8,9,10,11,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#basicFaktorRow1").removeClass("tempMonthCaseWidth");
                 $("#basicFaktorRow2").removeClass("tempMonthCaseWidth");
@@ -12125,11 +12209,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,1,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
@@ -12155,7 +12239,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,5,6,7,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,1,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -12189,7 +12273,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,1,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -12224,7 +12308,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -12259,11 +12343,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([3,4,2,8,9,10,11,12]);
                 columnHide.visible(! columnHide.visible() );
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,2,8,9,10,11,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7,13]);
-                columnShowMore.visible( columnShowMore.visible() );  
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -12294,11 +12378,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,8,9,10,11,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,1,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,3,4,7,8,9,10,11,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $(".formatDynamicBezugRow1").hide();
                 $(".subtypeTxtDynamicCFRow2").hide();
@@ -12324,7 +12408,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,5,6,7,8,9,10,11,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,1,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -12357,7 +12441,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,3,4,7,8,9,10,11,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([5,6,1,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -12392,7 +12476,7 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,8,9,10,11,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
 
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
@@ -12427,11 +12511,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,5,6,7,8,9,10,11,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([3,4,2,12]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,5,6,7,8,9,10,11,13]);
-                columnShowMore.visible( columnShowMore.visible() );  
+                columnShowMore.visible( columnShowMore.visible() );
 
                 $("#subtypeTxtoptzTempDkff").removeClass();
                 $("#subtypeTxtoptzTempDkff").addClass('temperatureNumValidate');
@@ -12478,11 +12562,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
 
             }else if(auswahlTypierungVal =='8' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
@@ -12521,12 +12605,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
-                
+                columnShowMore.visible( columnShowMore.visible() );
+
 
             }else if(auswahlTypierungVal =='8' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
                 console.log('month');
@@ -12566,12 +12650,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
-                        
+                columnShowMore.visible( columnShowMore.visible() );
+
             }else if(auswahlTypierungVal =='8' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
                 console.log('TempPlusMonth');
                 $('.calculationTypeDiv').hide();
@@ -12609,11 +12693,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
-                columnShowMore.visible( columnShowMore.visible() );             
+                columnShowMore.visible( columnShowMore.visible() );
 
             }else if(auswahlTypierungVal =='8' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
                 console.log('TempPlusYear');
@@ -12652,12 +12736,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2,8,9,10,11]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,12,13]);
-                columnShowMore.visible( columnShowMore.visible() );  
-                
+                columnShowMore.visible( columnShowMore.visible() );
+
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Zeit'){
                 $('.calculationTypeDiv').show();
                 $('#basicFaktorRow1').show();
@@ -12692,17 +12776,17 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
 
                 $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().show();
                 $('#tblGetDyanamicheKorrekturfaktoren').parents('div.dataTables_wrapper').first().show();
-               
+
 
                 var columnHide = tblGetDyanamicheKorrekturfaktoren.columns([2]);
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
+                columnShowMore.visible( columnShowMore.visible() );
 
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempNum'){
                 console.log('Temperatur');
@@ -12742,12 +12826,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
-                
+                columnShowMore.visible( columnShowMore.visible() );
+
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempOnlyMonth'){
                 console.log('month');
                 $('.calculationTypeDiv').show();
@@ -12788,12 +12872,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShowMore.visible( columnShowMore.visible() ); 
-                        
+                columnShowMore.visible( columnShowMore.visible() );
+
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusMonth'){
                 console.log('TempPlusMonth');
                 $('.calculationTypeDiv').show();
@@ -12833,11 +12917,11 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShowMore.visible( columnShowMore.visible() );             
+                columnShowMore.visible( columnShowMore.visible() );
 
             }else if(auswahlTypierungVal =='9' && typeDynamicCFVal=='Temperatur' && subtypeTimeDynamicCFVal=='tempPlusYear'){
                 console.log('TempPlusYear');
@@ -12878,12 +12962,12 @@ function visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeD
                 columnHide.visible(! columnHide.visible() );
 
                 var columnShow = tblGetDyanamicheKorrekturfaktoren.columns([0,1,3,4,5,6,7,8,9,10,11,12,13,14]);
-                columnShow.visible( columnShow.visible() ); 
+                columnShow.visible( columnShow.visible() );
                 var columnHideMore = tblOptionenEPrdDKff.columns([2]);
                 columnHideMore.visible(! columnHideMore.visible() );
                 var columnShowMore = tblOptionenEPrdDKff.columns([0,1,3,4,5,6,7,8,9,10,11,12,13]);
-                columnShowMore.visible( columnShowMore.visible() );  
-                
+                columnShowMore.visible( columnShowMore.visible() );
+
             }else if(auswahlTypierungVal ==''){
                 $('.calculationTypeDiv').hide();
                 $(".subtypeTxtDynamicCF").hide();
@@ -13951,7 +14035,7 @@ function getCalculationtypeRecordFiveAndNineFaktor(calculationID,FaktoreType){
 
 function pushArrayforTheResultArr(c,d){
      rowResult.push(d);
-     rowCalculator.push(c); 
+     rowCalculator.push(c);
 }
 
 
@@ -14005,7 +14089,7 @@ function dynamischeKorrekturFaktorenMessstellenCatSel(){
                         $("#messstellenBerecheID").val(rowData[0]);
                         $("#messstellenCatName").val(rowData[1]);
                     });
-                    
+
                 }
             });
         }
@@ -14049,7 +14133,7 @@ function dynamischeKorrekturFaktorenMessstellenCatSel2(){
                         $("#messstellenBerecheID2").val(rowData[0]);
                         $("#messstellenCatName2").val(rowData[1]);
                     });
-                    
+
                 }
             });
         }
@@ -14072,32 +14156,32 @@ function getDynamischeKrktrFaktorDeleteOptClickValues(calcID){
                 var b = formData.length;
                 console.log(formData);
                 var calculationType = $(".calculationTypeDKff").val();
-                if(calculationType == 1){ 
-                    $('#subtypeTxtOptNameDKff').val(formData[0]['subtypeTxtOptNameDKff']);    
-                    $('#subtypeTxtoptzBezugDkff').val(formData[0]['subtypeTxtoptzBezugDkff']); 
+                if(calculationType == 1){
+                    $('#subtypeTxtOptNameDKff').val(formData[0]['subtypeTxtOptNameDKff']);
+                    $('#subtypeTxtoptzBezugDkff').val(formData[0]['subtypeTxtoptzBezugDkff']);
                     $('#subtypeTxtoptzTempDkff').val(formData[0]['subtypeTxtoptzTempDkff']);
                     $('#subtypeTxtoptzFaktoreDkff').val(formData[0]['subtypeTxtoptzFaktoreDkff']);
 
                     $('#bezugStartTxt').val(formData[0]['bezugStartTxt']);
                     $('#bezugEndTxt').val(formData[0]['bezugEndTxt']);
-                    $('#tempStartTxt').val(formData[0]['tempStartTxt']);    
+                    $('#tempStartTxt').val(formData[0]['tempStartTxt']);
                     $('#tempEndTxt').val(formData[0]['tempEndTxt']);
                     $('#messstellenCatName').val(formData[0]['nameBer']);
                     $('#messstellenBerecheID').val(formData[0]['ber_ID']);
                     $('.formatDynamicSelOptRow1').val(formData[0]['formatDynamicType']);
-                    
+
                     $("#subtypeTxtBasisFaktor2Name").val(formData[0]['faktorName']);
                     $(".subtypeTxtBasisFaktor2Calc").val(formData[0]['faktorCalc']);
                     $("#subtypeTxtBasisFaktor2Wert").val(formData[0]['faktorWert']);
                     $(".subtypeTxtBasisFaktor2CalcRght").val(formData[0]['calculationType']);
-                    $('#subtypeTxtOptNameDKff2').val(formData[1]['subtypeTxtOptNameDKff']);    
-                    $('#subtypeTxtoptzBezugDkff2').val(formData[1]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtOptNameDKff2').val(formData[1]['subtypeTxtOptNameDKff']);
+                    $('#subtypeTxtoptzBezugDkff2').val(formData[1]['subtypeTxtoptzBezugDkff']);
                     $('#subtypeTxtoptzTempDkff2').val(formData[1]['subtypeTxtoptzTempDkff']);
                     $('#subtypeTxtoptzFaktoreDkff2').val(formData[1]['subtypeTxtoptzFaktoreDkff']);
 
                     $('#bezugStartTxt2').val(formData[1]['bezugStartTxt']);
                     $('#bezugEndTxt2').val(formData[1]['bezugEndTxt']);
-                    $('#tempStartTxt2').val(formData[1]['tempStartTxt']);    
+                    $('#tempStartTxt2').val(formData[1]['tempStartTxt']);
                     $('#tempEndTxt2').val(formData[1]['tempEndTxt']);
                     $('#messstellenCatName2').val(formData[1]['nameBer']);
                     $('#messstellenBerecheID2').val(formData[1]['ber_ID']);
@@ -14105,29 +14189,29 @@ function getDynamischeKrktrFaktorDeleteOptClickValues(calcID){
                     $('#ePrdDKFERow1ID').val(formData[0]['dKffOption_id']);
                     $('#ePrdDKFERow2ID').val(formData[1]['dKffOption_id']);
                     $('#updateOptType').val('deleteClickUpdate');
-                    
+
                 }else if(calculationType == 2){
-                    $('#subtypeTxtOptNameDKff').val(formData[1]['subtypeTxtOptNameDKff']);    
-                    $('#subtypeTxtoptzBezugDkff').val(formData[1]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtOptNameDKff').val(formData[1]['subtypeTxtOptNameDKff']);
+                    $('#subtypeTxtoptzBezugDkff').val(formData[1]['subtypeTxtoptzBezugDkff']);
                     $('#subtypeTxtoptzTempDkff').val(formData[1]['subtypeTxtoptzTempDkff']);
                     $('#subtypeTxtoptzFaktoreDkff').val(formData[1]['subtypeTxtoptzFaktoreDkff']);
 
                     $('#bezugStartTxt').val(formData[1]['bezugStartTxt']);
                     $('#bezugEndTxt').val(formData[1]['bezugEndTxt']);
-                    $('#tempStartTxt').val(formData[1]['tempStartTxt']);    
+                    $('#tempStartTxt').val(formData[1]['tempStartTxt']);
                     $('#tempEndTxt').val(formData[1]['tempEndTxt']);
                     $('#messstellenCatName').val(formData[1]['nameBer']);
                     $('#messstellenBerecheID').val(formData[1]['ber_ID']);
                     $('.formatDynamicSelOptRow1').val(formData[0]['formatDynamicType']);
 
-                    $('#subtypeTxtOptNameDKff2').val(formData[0]['subtypeTxtOptNameDKff']);    
-                    $('#subtypeTxtoptzBezugDkff2').val(formData[0]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtOptNameDKff2').val(formData[0]['subtypeTxtOptNameDKff']);
+                    $('#subtypeTxtoptzBezugDkff2').val(formData[0]['subtypeTxtoptzBezugDkff']);
                     $('#subtypeTxtoptzTempDkff2').val(formData[0]['subtypeTxtoptzTempDkff']);
                     $('#subtypeTxtoptzFaktoreDkff2').val(formData[0]['subtypeTxtoptzFaktoreDkff']);
 
                     $('#bezugStartTxt2').val(formData[0]['bezugStartTxt']);
                     $('#bezugEndTxt2').val(formData[0]['bezugEndTxt']);
-                    $('#tempStartTxt2').val(formData[0]['tempStartTxt']);    
+                    $('#tempStartTxt2').val(formData[0]['tempStartTxt']);
                     $('#tempEndTxt2').val(formData[0]['tempEndTxt']);
                     $('#messstellenCatName2').val(formData[0]['nameBer']);
                     $('#messstellenBerecheID2').val(formData[0]['ber_ID']);
@@ -14142,14 +14226,14 @@ function getDynamischeKrktrFaktorDeleteOptClickValues(calcID){
                     $('#ePrdDKFERow2ID').val(formData[1]['dKffOption_id']);
                     $('#updateOptType').val('deleteClickUpdate');
                 }else if(calculationType == 3){
-                    $('#subtypeTxtOptNameDKff').val(formData[0]['subtypeTxtOptNameDKff']);    
-                    $('#subtypeTxtoptzBezugDkff').val(formData[0]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtOptNameDKff').val(formData[0]['subtypeTxtOptNameDKff']);
+                    $('#subtypeTxtoptzBezugDkff').val(formData[0]['subtypeTxtoptzBezugDkff']);
                     $('#subtypeTxtoptzTempDkff').val(formData[0]['subtypeTxtoptzTempDkff']);
                     $('#subtypeTxtoptzFaktoreDkff').val(formData[0]['subtypeTxtoptzFaktoreDkff']);
 
                     $('#bezugStartTxt').val(formData[0]['bezugStartTxt']);
                     $('#bezugEndTxt').val(formData[0]['bezugEndTxt']);
-                    $('#tempStartTxt').val(formData[0]['tempStartTxt']);    
+                    $('#tempStartTxt').val(formData[0]['tempStartTxt']);
                     $('#tempEndTxt').val(formData[0]['tempEndTxt']);
                     $('#messstellenCatName').val(formData[0]['nameBer']);
                     $('#messstellenBerecheID').val(formData[0]['ber_ID']);
@@ -14160,19 +14244,19 @@ function getDynamischeKrktrFaktorDeleteOptClickValues(calcID){
                     $("#subtypeTxtBasisFaktor2Wert").val(formData[0]['faktorWert']);
                     $(".subtypeTxtBasisFaktor2CalcRght").val(formData[0]['calculationType']);
 
-                    $('#subtypeTxtOptNameDKff2').val(formData[1]['subtypeTxtOptNameDKff']);    
-                    $('#subtypeTxtoptzBezugDkff2').val(formData[1]['subtypeTxtoptzBezugDkff']); 
+                    $('#subtypeTxtOptNameDKff2').val(formData[1]['subtypeTxtOptNameDKff']);
+                    $('#subtypeTxtoptzBezugDkff2').val(formData[1]['subtypeTxtoptzBezugDkff']);
                     $('#subtypeTxtoptzTempDkff2').val(formData[1]['subtypeTxtoptzTempDkff']);
                     $('#subtypeTxtoptzFaktoreDkff2').val(formData[1]['subtypeTxtoptzFaktoreDkff']);
 
                     $('#bezugStartTxt2').val(formData[1]['bezugStartTxt']);
                     $('#bezugEndTxt2').val(formData[1]['bezugEndTxt']);
-                    $('#tempStartTxt2').val(formData[1]['tempStartTxt']);    
+                    $('#tempStartTxt2').val(formData[1]['tempStartTxt']);
                     $('#tempEndTxt2').val(formData[1]['tempEndTxt']);
                     $('#messstellenCatName2').val(formData[1]['nameBer']);
                     $('#messstellenBerecheID2').val(formData[1]['ber_ID']);
                     $('.formatDynamicSelOptRow2').val(formData[0]['formatDynamicType']);
-                    
+
                     $("#subtypeTxtBasisFaktor3Name").val(formData[1]['faktorName']);
                     $(".subtypeTxtBasisFaktor3Calc").val(formData[1]['faktorCalc']);
                     $("#subtypeTxtBasisFaktor3Wert").val(formData[1]['faktorWert']);
@@ -14182,7 +14266,7 @@ function getDynamischeKrktrFaktorDeleteOptClickValues(calcID){
                     $('#ePrdDKFERow2ID').val(formData[1]['dKffOption_id']);
                     $('#updateOptType').val('deleteClickUpdate');
                 }
-                
+
             }
         });
 }
@@ -14236,10 +14320,10 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
     var optionFaktore2 = $('#subtypeTxtoptzFaktoreDkff2').val();
     var faktoreDynamictypeVal2 = $('.formatDynamicSelOptRow2').val();
     var messstellenBerecheID2 = $('#messstellenBerecheID2').val();
-    var calculationTypeDKff = $('.calculationTypeDKff').val(); 
+    var calculationTypeDKff = $('.calculationTypeDKff').val();
     //alert('test2');
-    
-    if(basisFktr2Wert !='' && optionFaktore !=''){  
+
+    if(basisFktr2Wert !='' && optionFaktore !=''){
         var faktoreRep = optionFaktore.replace(",", ".");
         var basisFktr2WertRep = basisFktr2Wert.replace(",", ".");
 
@@ -14255,8 +14339,8 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
     }else{
         var result ='';
     }
-    
-     if(optionFaktore !=''){     
+
+     if(optionFaktore !=''){
             var faktoreRep = optionFaktore.replace(",", ".");
             var faktore2CommaRep = optionFaktore.replace(".", ",");
             if(isFloat(faktoreRep)==true){
@@ -14281,8 +14365,8 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
         var ePrdDKFECalcRowType = $('#ePrdDKFECalcRowType').val();
 
         var faktor = $('#ePrdDKFECalcFaktor').val();
-           
-        if(basisFktr3Wert !='' && optionFaktore2 !='' /*&& (calculationTypeDKff ==2 || calculationTypeDKff ==3 )*/){  
+
+        if(basisFktr3Wert !='' && optionFaktore2 !='' /*&& (calculationTypeDKff ==2 || calculationTypeDKff ==3 )*/){
             var faktoreRep2 = optionFaktore2.replace(",", ".");
             var basisFktr3WertRep = basisFktr3Wert.replace(",", ".");
 
@@ -14295,7 +14379,7 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                 alert("Bitte geben Sie den Textwert in faktore und wert ein");
                 return false;
             }
-           
+
            // alert('result2=' +result2 );
         }
         if(result3CommaDigit){
@@ -14303,11 +14387,11 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
          }else{
              var result2 = '';
          }
-        
+
         ////////////////////////
         var basisFktr2WertRepRght = basisFktr2Wert.replace(",", ".");
         var basisFktr2WertCommaRght = basisFktr2Wert.replace(".", ",");
-        var faktore3RepType5 = optionFaktore2.replace(",", "."); 
+        var faktore3RepType5 = optionFaktore2.replace(",", ".");
         var basisFktr3WertRepType5 = basisFktr3Wert.replace(",", ".");
         var basisFktr2CalcRght =$(".subtypeTxtBasisFaktor2CalcRght").val();
         var basisFktr3CalcRght =$(".subtypeTxtBasisFaktor3CalcRght").val();
@@ -14319,7 +14403,7 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                 }else{
                     alert("Bitte geben Sie den Textwert in faktore und wert ein");
                     return false;
-                }  
+                }
             var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
             var calculationType =basisFktr2CalcRght;
             //alert('resultCalcRghtFinal1='+calcResult);
@@ -14331,7 +14415,7 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                 }else{
                     alert("Bitte geben Sie den Textwert in faktore und wert ein");
                     return false;
-                }  
+                }
             var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
             var calculationType =basisFktr3CalcRght;
             //alert('resultCalcRghtFinal2='+resultCalcRght);
@@ -14343,12 +14427,12 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                 }else{
                     alert("Bitte geben Sie den Textwert in faktore und wert ein");
                     return false;
-                }  
+                }
             var calcResult =resultCalcRght.toFixed(4).replace(".", ",");
             var calculationType =basisFktr2CalcRght;
             //alert('resultCalcRghtFinal3='+resultCalcRght);
            }
-        }    
+        }
    // validateStartEndInputBezugFaktorTypeBasicBetween(faktorType);
         $.ajax({
             type: "POST",
@@ -14369,7 +14453,7 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                 ePrdDMainIdStore:ePrdDMainIdStore,
                 basisFktr2Name:basisFktr2Name,
                 basisFktr2Calc:basisFktr2Calc,
-                basisFktr2Wert:basisFktrWertComma,              
+                basisFktr2Wert:basisFktrWertComma,
                 result:result,
                 ePrddKffOptionIDStore:ePrddKffOptionIDStore,
                 faktoreDynamictypeVal:faktoreDynamictypeVal,
@@ -14388,7 +14472,7 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                 basisFktr3Name:basisFktr3Name,
                 basisFktr3Calc:basisFktr3Calc,
                 basisFktr3Wert:basisFktrWert3Comma,
-                optionName2:optionName2, 
+                optionName2:optionName2,
                 optionBezug2:optionBezug2,
                 optionTemp2 :optionTemp2,
                 bezugStartTxt2:bezugStartTxt2,
@@ -14435,13 +14519,13 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                 $('#ePrdDKFERow1ID').val('');
                 $('#ePrdDKFERow2ID').val('');
                 $('#updateOptType').val('');
-                    if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){  
-                        visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);          
-                        addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);      
+                    if(typeDynamicCFVal !='' && subtypeTimeDynamicCFVal !=''){
+                        visibleInvisibleColumnDataOnTypeSelection(typeDynamicCFVal,subtypeTimeDynamicCFVal,auswahlTypierungVal);
+                        addValidateClassOnRightSelecOptRow2VisibilityBezugTemp(auswahlTypierungVal,typeDynamicCFVal,subtypeTimeDynamicCFVal);
                     }
                     getDynamischeKorrekturfaktoren(ePrdDMainIdStore);
-                    if(calculationTypeDKff && auswahlTypierungVal == 5){ 
-                        basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff); 
+                    if(calculationTypeDKff && auswahlTypierungVal == 5){
+                        basicPlus2ConditionMultiplayCalculationType(calculationTypeDKff);
                     }
             }
     })
