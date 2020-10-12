@@ -1260,7 +1260,7 @@ $(document).ready(function() {
             case "Kennzahl":
                 a = "kennzahl";
                 break;
-            case "Berechnung":
+            case "Virtuelle Messstelle":
                 a = "berechnet";
                 break;
             default:
@@ -1729,7 +1729,7 @@ $(".orgSuchenSpies").click(function() {
 /*On click menu Vers.Bereiche/Messstellen update lieg select options*/
 $("#berMenu").click(function() {
     $(".liegPfad option:eq(0)").prop('selected', 'selected').trigger('change');
-    toggleMsmBerechnungslogik($("#messartMst").val()) 
+    toggleMsmBerechnungslogik($("#messartMst").val())
 });
 
 
