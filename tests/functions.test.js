@@ -4,8 +4,34 @@
 const test = require('tape');
 require('../src/js/imports/jquery-3.1.1.min.js');
 core = require('../src/js/fpCore.js');
+tail = arr => arr.slice(1) ;
 fn = require('../src/js/functions.js');
 
+test('function mstIdentifier : Should return a valid mst_someID string.', function (t) {
+
+    t.comment("#");
+
+    t.plan(12);
+
+    t.deepEqual(fn.mstIdentifier("12"), "mst_12");
+    t.deepEqual(fn.mstIdentifier("546"), "mst_546");
+    t.deepEqual(fn.mstIdentifier("mst_34"), "mst_34");
+    t.deepEqual(fn.mstIdentifier("mst_123"), "mst_123");
+    t.deepEqual(fn.mstIdentifier("mst_mst_153"), "mst_153");
+    t.deepEqual(fn.mstIdentifier("mst_mst_125"), "mst_125");
+
+    t.notDeepEqual(fn.mstIdentifier("55"), "55");
+    t.notDeepEqual(fn.mstIdentifier("16"), "16");
+    t.notDeepEqual(fn.mstIdentifier("mst_38"), "34");
+    t.notDeepEqual(fn.mstIdentifier("mst_4"), "4");
+    t.notDeepEqual(fn.mstIdentifier("mst_mst_1"), "mst_mst_1");
+    t.notDeepEqual(fn.mstIdentifier("mst_mst_345"), "mst_mst_345");
+
+    t.comment("#");
+    t.comment("#");
+
+    t.end();
+});
 test('function isCalculated : Should return true if the mst is calculated.', function (t) {
 
     t.comment("#");
