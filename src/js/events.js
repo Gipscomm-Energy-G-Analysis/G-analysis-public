@@ -1729,32 +1729,7 @@ $(".orgSuchenSpies").click(function() {
 /*On click menu Vers.Bereiche/Messstellen update lieg select options*/
 $("#berMenu").click(function() {
     $(".liegPfad option:eq(0)").prop('selected', 'selected').trigger('change');
-    /*17-03-2020 js event for the messaMart on change*/
-    var selVal = $('#messartMst').find('option:selected').text();
-    //alert(selVal);
-    var getMstVal = $("#messmittelBerechnungslogikMst").val();
-    //alert(getMstVal);
-    if (selVal == 'berechnet') {
-        //alert(1);
-        $("#loginkMstData").val(getMstVal);
-        $("#messmittelBerechnungslogikMst").val(getMstVal);
-        $("#linkBerechnungslogikOderEingabemaske").css("background-color", "white");
-        $("#labelBerechnungslogikMst").css("display", "inline-block");
-        $("#labelMessmittelMst").css("display", "none");
-    } else {
-        // alert(2);
-        var loginkMstData = $("#loginkMstData").val();
-        if (getMstVal) {
-            $("#messmittelBerechnungslogikMst").val(getMstVal);
-        } else if (loginkMstData) {
-            $("#messmittelBerechnungslogikMst").val(loginkMstData);
-        }
-        $("#loginkMstData").val('');
-        $("#linkBerechnungslogikOderEingabemaske").css("background-color", "");
-        $("#labelBerechnungslogikMst").css("display", "none");
-        $("#labelMessmittelMst").css("display", "inline-block");
-    }
-    /*17-03-2020 js event for the messaMart on change*/
+    toggleMsmBerechnungslogik($("#messartMst").val()) 
 });
 
 
