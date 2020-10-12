@@ -1,66 +1,31 @@
 <?php
 
-include('top-cache.php');
-error_reporting (-1);
-ini_set ('display_errors', 'On');
+include('top-cache.php') ;
+error_reporting (-1) ;
+ini_set ('display_errors', 'On') ;
 
-require 'DbOperations.php';
-
-// REQUIREMENTS
-// ------------
-// 1. Calculated Msts formulas should be evaluated
-// 2. Evaluated Msts should be written back into the database
-
-// DESIGN
-// -----------------
-// 0. Helpers
-//    0.1 Higher level function that applies some fn on a field of a record
-//        and returns that record with the new field value
-//    0.2 Function that splits a string at spaces
-//    0.3 Function that splits a string at underlines
-// 1. Query data of the calculated Msts from the DB view "MessstellenBerechnungsformeln"
-//    1.1 Create function getMstFormulaRecords(nameDB)
-//        1.1.1 Connect to db
-//        1.1.2 Set query
-//        1.1.3 Return query result
-// 2. Base64 decode each formula
-//    2.1 Create function base64DecodeFormulas(records)
-//        2.1.1 Map over records and apply function actionOn(record, "Value", 'base64_decode')
-// 3. Map over the records and split the formulas into their components (identifiers + operators)
-//    3.1 Create function splitSpace(string)
-//    3.1 Create function splitFormulas(records)
-//        3.1.1 Map over records with actionOn(record, "Formula", 'splitSpace')
-
-// 4. Map over the records and retrieve energy data from the view "MessstellenEnergiedaten"
-//    for every identifier in a formula
-//    4.3 Create function getEnergyData(nameDB, mstID)
-//        4.3.1 Connect to db
-//        4.3.2 Set query with where clause referencing mstID
-//        4.3.3 Return query result
-// 5. For every formula record, create a formula array with consecutive dates from some date x
-//    to today
-//    5.1 Create function createArray(fromDate, toDate)
-// 6. For every created formula array take the energy data and adjust it to the specifications
-//    of the formula array (consecutive dates -> resulting in same length)
-//    6.1 Create function adjustEnergyArrays
-// 7. For every created formula array replace the formula identifiers with the associated
-//    energy values
-//    7.1 Create function identifiersToValues
-// 8. For every created formula array, evaluate the formula by using Matex
-//    8.1 Create function calculateFormulas
-// 9. For each formula array, write all records into the table "BerechneteEnergiedaten"
-//    9.1 Create table "BerechneteEnergiedaten" with columns
-//        "mstID, Name, Time, Value, ConvFactor"
-//    9.2 Create function calculatedDataIntoDB
+require 'DbOperations.php' ;
+require 'Matex.php' ;
 
 // SET DB
 // ------
 const nameDB = "012_spiess" ;
 
+// CONNECT TO DB
+$GLOBALS["connect"] = connectToDB(nameDB) ;
+
+// SET VIRTUAL MEASUREMENT POINT
+// -----------------------------
+const mstID = 69 ;
+
+// [M-Verbraucher-Trafo-8] = [M506] + [M508]
+
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
-const startDate = "2018-07-15 02:00:00.000000" ;
-const endDate = "2018-07-25 02:00:00.000000" ;
+const startDate = "2019-04-15 11:15:00.000" ;
+const endDate =  "2019-07-08 13:15:00.000" ;
+
+// last 2019-07-08 13:15:00.000
 
 // HELPERS
 // -------
@@ -82,72 +47,123 @@ function splitUnderline($string) {
     return explode("_", $string) ;
 }
 
+// Remove duplicates in multidim array
+function unique_multidim_array($array, $key) {
+    $temp_array = array();
+    $i = 0;
+    $key_array = array();
+
+    foreach($array as $val) {
+        if (!in_array($val[$key], $key_array)) {
+            $key_array[$i] = $val[$key];
+            $temp_array[$i] = $val;
+        }
+        $i++;
+    }
+    return $temp_array;
+}
+
+function array_flatten($array) {
+  if (!is_array($array)) {
+    return false;
+  }
+  $result = array();
+  foreach ($array as $key => $value) {
+    if (is_array($value)) {
+      $result = array_merge($result, array_flatten($value));
+    } else {
+      $result = array_merge($result, array($key => $value));
+    }
+  }
+  return $result;
+}
+
+function flipDiagonally($arr) {
+    $out = array();
+    foreach ($arr as $key => $subarr) {
+        foreach ($subarr as $subkey => $subvalue) {
+            $out[$subkey][$key] = $subvalue;
+        }
+    }
+    return $out;
+}
+
 // -----------------------------
 // Query mst formula data
-function getMstFormulaRecords() {
+function getMstFormulaRecord() {
     $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-    return queryDB(connectToDB(nameDB), $query, "read") ;
+    $query .= "WHERE mst_ID = ".mstID  ;
+    return queryDB($GLOBALS["connect"], $query, "read") ;
 }
 
-// Function that base64 decodes all formulas
-function base64DecodeFormulas($records) {
-    function base64Decode($record) {
-        return actionOn($record, "Formula", 'base64_decode') ;
-    }
-    return array_map('base64Decode', $records) ;
+function base64Decode($record) {
+    return actionOn($record[0], "Formula", 'base64_decode') ;
 }
 
-// Function that splits the formulas into their sub-parts
-function splitFormulas($records) {
-    function splitFormula($record) {
-        return actionOn($record, "Formula", 'splitSpace') ;
-    }
-    return array_map('splitFormula', $records) ;
+function getFormula($record) {
+    return $record["Value"] ;
+}
+
+function splitFormula($record) {
+    return actionOn($record, "Formula", 'splitSpace') ;
+}
+
+function isMst($identifier) {
+    $element = splitUnderline($identifier)[0] ;
+
+    return $element !== "("
+    && $element !== ")"
+    && $element !== "+"
+    && $element !== "-"
+    && $element !== "*"
+    && $element !== "/" ;
+}
+
+function isIndexedMst($element) {
+    return isMst($element[1]) ;
+}
+
+function isNotMst($ident) {
+    return !isMst($ident) ;
+}
+
+function isNotIndexedMst($element) {
+    return !isIndexedMst($element) ;
+}
+
+function isKorFac($identifier) {
+    return splitUnderline($identifier)[0] === "ePrdKFE" ;
+}
+
+function getID($identifier) {
+    return splitUnderline($identifier)[1] ;
 }
 
 // Queries all the data for every formula
-function getEnergyDataFormulas($records) {
-
-    // Helpers
-    function isMst($identifier) {
-        return splitUnderline($identifier)[0] === "mst" ;
-    }
-    function isKorFac($identifier) {
-        return splitUnderline($identifier)[0] === "ePrdKFE" ;
-    }
-    function getID($identifier) {
-        return splitUnderline($identifier)[1] ;
-    }
+function getEnergyDataFormula($formulaRecord) {
 
     // Query mst energy data of a formula
-    function getEnergyDataFormula($formulaArray) {
-        $msts = array_values(array_filter($formulaArray, 'isMst')) ;
-        $mstsIDs = array_map('getID', $msts) ;
+    $msts = array_values(array_filter($formulaRecord["Formula"], 'isMst')) ;
+    $mstsIDs = array_map('getID', $msts) ;
 
-        $dataMsts = [] ;
-        for ($i=0; $i < count($mstsIDs) ; $i++) {
-            $query = "SELECT TOP(1) * FROM MessstellenEnergiedaten " ;
-            $query .= "WHERE mst_ID = ".$mstsIDs[$i] ;
-            array_push($dataMsts, queryDB(connectToDB(nameDB), $query, "read")) ;
-        }
-        return $dataMsts ;
+    $dataMsts = [] ;
+
+    foreach ($mstsIDs as $id) {
+        $query = "SELECT * FROM MessstellenEnergiedaten " ;
+        $query .= "WHERE mst_ID = ".$id." " ;
+        $query .= "AND Time BETWEEN '".startDate."' AND '".endDate."' " ;
+        $query .= "ORDER BY Time" ;
+        array_push($dataMsts, queryDB($GLOBALS["connect"], $query, "read")) ;
     }
 
-    // retrieves energy data of a record
-    function dataRecord($record) {
-        return actionOn($record, "Formula", 'getEnergyDataFormula') ;
-    }
-
-    $formulasEnergyRecords = array_map('dataRecord', $records) ;
-
-    return [$records, $formulasEnergyRecords] ;
+    return [$formulaRecord, $dataMsts] ;
 }
 
 // Calculates Level-1 Formulas
-function calculateFormulas($records) {
+function prepareForCalculation($records) {
 
     // Assigned vars for array of mstFormulas records and energy records
-    $mstFormulaRecords = $records[0] ;
+    $formulaRecord = $records[0] ;
     $formulaEnergyRecords = $records[1] ;
 
     // CREATE FORMULA ARRAYS FROM DATE X TO DATE Y
@@ -176,104 +192,221 @@ function calculateFormulas($records) {
         return $dateTime->format('Y-m-d H:i:s.000000'); ;
     }
 
-    function createFormulaArray($formulaRecord) {
+    function createFormulaArray($formulaRecord_) {
         $to = endDate ;
         $date = startDate ;
         $formulaRecords = [] ;
         while ($date < endDate) {
             $date = add15min($date) ;
-            $formulaRecord["Time"] = new DateTime($date) ;
-            array_push($formulaRecords, $formulaRecord) ;
+            $formulaRecord__ = [
+                "mst_ID"=>$formulaRecord_["mst_ID"]
+                , "Name"=>$formulaRecord_["Name"]
+                , "Time"=>new DateTime($date)
+                , "Value"=>$formulaRecord_["Formula"]
+                , "Formula"=>$formulaRecord_["Formula"]
+                , "ConvFactor"=>1
+            ] ;
+            array_push($formulaRecords, $formulaRecord__) ;
         }
         return $formulaRecords ;
     }
 
-
-    function createFormulaArrays($formulaRecords) {
-        return array_map('createFormulaArray', $formulaRecords) ;
+    function equalStartDate($energyRecords) {
+        return $energyRecords[0]["Time"] == new DateTime(startDate) ;
     }
-    // -------------------------------------------
 
+    function equalEndDate($energyRecords) {
+        return $energyRecords[count($energyRecords) - 1] == new DateTime(endDate) ;
+    }
 
-    // INDEX THE FORMULA ELEMENTS FOR LATER SORTING
-    // --------------------------------------------
-    function indexed($arr) {
-        for($i = 0; $i < count($arr); $i++) {
-            $arr[$i] = [$i, $arr[$i]] ;
+    function equalLength($formulaRecords, $energyRecords) {
+        return count($formulaRecords) === count($energyRecords) ;
+    }
+
+    function noDuplicates($energyRecords) {
+        return count(unique_multidim_array($energyRecords, "Time")) === count($energyRecords) ;
+    }
+
+    function isConsistent($formulaRecords, $energyRecords) {
+        return equalLength($formulaRecords, $energyRecords) ?
+        equalStartDate($energyRecords)
+        && equalEndDate($energyRecords)
+        && noDuplicates($energyRecords) :
+        false ;
+    }
+
+    function search($arr, $key, $value) {
+        $result = [] ;
+        foreach ($arr as $record) {
+            if ($record[$key] == $value) {
+                array_push($result, $record) ;
+            }
         }
-        return $arr ;
-    }
-
-    function indexedFormulaArray($formulaRecord) {
-        return actionOn($formulaRecord, "Formula", 'indexed') ;
-    }
-
-    function indexedFormulaArrays($formulaArrays) {
-        return array_map('indexedFormulaArray', $formulaArrays) ;
-    }
-
-    function indexedFormulasArrays($formulasArrays) {
-        return array_map('indexedFormulaArrays', $formulasArrays) ;
-    }
-    // --------------------------------------------
-
-
-    // REPLACE ALL FORMULAS WITH THEIR ASSOCIATED VALUES
-    // -------------------------------------------------
-    function removeIdx($element) {
-        return $element[1] ;
-    }
-
-    function joinFormula($formulaArray) {
-        $extractFormulaElements = array_map("removeIdx", $formulaArray) ;
-
-        return implode(" ", $extractFormulaElements) ;
-    }
-
-    function isMst($ident) {
-        return explode("_", $ident[1])[0] === "mst" ;
-    }
-
-    function isNotMst($ident) {
-        return !isMst($ident) ;
-    }
-
-    function findRecordIdx($dateFormulaRecord, $energyRecords) {
-        return array_search($dateFormulaRecord, array_column($energyRecords, 'Time')) ;
-    }
-
-    function replaceFormula($formulaRecord, $energyDataRecords) {
-
-        // Separate formula parts
-        $mstsFormula = array_filter($formulaRecord, "isMst") ;
-        $notMstParts = array_filter($formulaRecord, "isNotMst") ;
-
-        // Find the energy data records with the associated date
-
-
-        return $mstsFormula ;
+        return count($result) === 1 ? $result[0] : false ;
     }
 
     // Retrieve energy record referenced by date
     function findRecordWithDate($formulaRecord, $energyData) {
         $date = $formulaRecord["Time"] ;
-        $idx = array_search($date, array_column($energyData, 'Time')) ;
+        $record = search($energyData, "Time", $date) ;
 
-        return gettype($idx) === "boolean" ?
+        return gettype($record) === "boolean" ?
         ["mst_ID" => $energyData[0]["mst_ID"], "Name" => $energyData[0]["Name"], "Time" => $date, "Value" => 0, "ConvFactor" => $energyData[0]["ConvFactor"]] :
-        $energyData[$idx] ;
+        $record ;
     }
 
-    // 4. Replace the formula identifiers with the associated values
-    function replaceFormulaIdentifiers($formulaRecord, $energyData) {
-        $formulaArray = createFormulaArray([$formulaRecord, startDate, endDate]) ;
-
-
-        // Map over formula array and replace identifiers with time associated values
-
+    // Fills date gaps in energy records of one mst
+    function fillDateGapsEnergyData($formulaRecords, $energyRecords) {
+        if ( isConsistent($formulaRecords, $energyRecords) ) {
+            return $energyRecords ;
+        }
+        else {
+            $noGapsEnergyRecords = [] ;
+            foreach ($formulaRecords as $record) {
+                array_push($noGapsEnergyRecords, findRecordWithDate($record, $energyRecords)) ;
+            }
+            return $noGapsEnergyRecords ;
+        }
     }
+
+    function multiplyConvFactor($record) {
+        $record["Value"] *= $record["ConvFactor"] ;
+        return $record ;
+    }
+
+    function multiplyConvFactorRecords($records) {
+        return array_map('multiplyConvFactor', $records) ;
+    }
+
+    function multiplyConvFactorsAllRecords($records) {
+        return array_map('multiplyConvFactorRecords', $records) ;
+    }
+
+    function fillDateGapsAllEnergyData($formulaRecord_, $formulaEnergyRecords_) {
+        $formulaRecords = createFormulaArray($formulaRecord_) ;
+        $energyRecords = [] ;
+        foreach ($formulaEnergyRecords_ as $energyData) {
+            array_push($energyRecords, fillDateGapsEnergyData($formulaRecords, $energyData)) ;
+        }
+
+        $energyRecords = multiplyConvFactorsAllRecords($energyRecords) ;
+        $transposedEnergyRecords = flipDiagonally($energyRecords) ;
+        return [$formulaRecords, $transposedEnergyRecords] ;
+    }
+
+    return fillDateGapsAllEnergyData($formulaRecord, $formulaEnergyRecords) ;
+}
+// -------------------------------------------
+
+function calculateFormulas($records) {
+
+    $mstFormulaArray = $records[0] ;
+    $formulaEnergyRecords = $records[1] ;
+
+    // REPLACE FORMULAS WITH VALUES
+
+    function assignToValue($mst, $value) {
+        $keyValuePair[$mst] = $value["Value"] ;
+        return $keyValuePair ;
+    }
+
+    function replaceFormula($formulaRecord, $energyRecord) {
+
+        $formulaArray = getFormula($formulaRecord) ;
+
+        // separate formula parts
+        $mstsFormula = array_filter($formulaArray, "isMst") ;
+
+        // replace msts with values
+        $mstsValues = array_map("assignToValue", $mstsFormula, $energyRecord) ;
+
+        // re-assign Value property
+        $formulaRecord["Value"] = array_flatten($mstsValues) ;
+        $formulaRecord["Formula"] = implode(' ', $formulaArray) ;
+
+        return $formulaRecord ;
+    }
+
+    function replaceFormulas($formulaRecords, $energyData) {
+        $newFormulaRecords = [] ;
+
+        for ($i=0; $i < count($formulaRecords); $i++) {
+            array_push($newFormulaRecords, replaceFormula($formulaRecords[$i], $energyData[$i])) ;
+        }
+
+        return $newFormulaRecords ;
+    }
+
+    // calculate formula string as term
+    function calculate($record)  {
+
+        $vars = $record["Value"] ;
+        $formulaString = $record["Formula"] ;
+
+        $evaluator = new \Matex\Evaluator() ;
+
+        $evaluator->variables = $vars ;
+
+        $record["Value"] = $evaluator->execute($formulaString) ;
+
+        return $record ;
+    }
+
+    return array_map('calculate', replaceFormulas($mstFormulaArray, $formulaEnergyRecords)) ;
+
 }
 
-print_r(calculateFormulas(getEnergyDataFormulas(splitFormulas(base64DecodeFormulas(getMstFormulaRecords()))))) ;
+function writeToDB($records) {
+
+    function dateTimeToString($dateObject) {
+        return $dateObject->format('Y-m-d H:i:s.u') ;
+    }
+
+    function buildValueString($last, $record) {
+        return $last.", ("
+        .$record["mst_ID"].", '"
+        .$record["Name"]."', '"
+        .dateTimeToString($record["Time"])."', "
+        .$record["Value"].", "
+        .$record["ConvFactor"].")" ;
+    }
+
+    function splitArray($size, $records) {
+        return array_chunk($records, $size) ;
+    }
+
+    function buildValuesString($records) {
+        return substr(array_reduce($records, 'buildValueString'), 1) ;
+    }
+
+    function buildQuery($records) {
+        $recordArrays = splitArray(1000, $records) ;
+        $query = "" ;
+
+        function buildInsertInto($last, $records_) {
+            $query = $last ;
+            $query .= "INSERT INTO berechneteEnergiedaten (mst_ID, Name, Time, Value, ConvFactor) " ;
+            $query .= "VALUES ".buildValuesString($records_)." "  ;
+
+            return $query ;
+        }
+
+        return array_reduce($recordArrays, 'buildInsertInto') ;
+    }
+
+    return queryDB($GLOBALS["connect"], buildQuery($records), "write") ;
+}
+
+$start = hrtime(true) ;
+
+writeToDB(calculateFormulas(prepareForCalculation(getEnergyDataFormula(splitFormula(base64Decode(getMstFormulaRecord())))))) ;
+
+closeDbConn($GLOBALS["connect"]) ;
+
+unset($GLOBALS["connect"]) ;
+
+$end = hrtime(true) ;
+
+echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
 ?>

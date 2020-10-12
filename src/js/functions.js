@@ -980,8 +980,8 @@ try {
             "formelStringDarstellung" == a ? ("" == $("#formelIdDarstellung").val() ? formula.setFirstElement(LocationParentheses.NONE, 0, OperandType.MEASUREMENT_POINT, c) : formula.alterElementProperty(formula.formula.length - 1, FormulaProperty.MEASUREMENT_POINT, {
                 type: OperandType.MEASUREMENT_POINT,
                 operandObject: c
-            }), $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + e), $("#formelIdDarstellung").val($("#formelIdDarstellung").val() + b)) : ($("#berechneteMstName").val(e), $("#berechneteMstID").val(b),
-                formula.resetFormula(), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), formula.setMeasurementObjectToCalculate(c), $("#formelStringDarstellung").val(formula.getMeasurementObjectToCalculate().name + " = "), "" != b ? ($("#berechneteMstName").val(e), $("#berechneteMstID").val(b), formula.readFromDB(DbTable.MESSSTELLEN).then(function(a) {
+            }), $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + e), $("#formelIdDarstellung").val($("#formelIdDarstellung").val() + b)) : ($("#berechneteMstName").val(e), $("#berechneteMstID").val(mstIdentifier(b)),
+                formula.resetFormula(), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), formula.setMeasurementObjectToCalculate(c), $("#formelStringDarstellung").val(formula.getMeasurementObjectToCalculate().name + " = "), "" != b ? ($("#berechneteMstName").val(e), $("#berechneteMstID").val(mstIdentifier(b)), formula.readFromDB(DbTable.MESSSTELLEN).then(function(a) {
                     formula.setFormulaObject(a)
                 }).then(function() {
                     $("#formelStringDarstellung").val($("#formelStringDarstellung").val() + formula.getFormulaString())
@@ -9873,10 +9873,19 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
     console.log("Error: " + a)
 };
 
+// Prepares the mst_x identifier
+const mstIdentifier =
+    ident =>
+    ident.split("_").length === 1 ?
+    "mst_" + ident :
+    ident.split("_").length > 2 ?
+    tail(ident.split("_")).join("_") :
+    ident
+
 // Tests if a Messstelle is calculated
 const isCalculated =
-type =>
-type === "berechnet"
+    type =>
+    type === "berechnet"
 
 // Depending which messart was chosen labels and txtboxes
 // + button are shown or hidden
@@ -13953,7 +13962,8 @@ function validateStartEndInputBezugFaktorTypeBasicBetween(faktorType){
 
 
 // module.exports =
-//     { isCalculated
+//     { mstIdentifier
+//     , isCalculated
 //     , isEmpty
 //     , isOperator
 //     , isNumeric

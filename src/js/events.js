@@ -204,7 +204,7 @@ $(document).ready(function() {
         $("#tblMessstellenBerechnungseditor tr").draggable({
             helper: "clone",
             start: function(a, e) {
-                var b = $(this).find("td"),
+                var b = $(this).find("td") ;
                     c = "mst_" + b.prev().text(),
                     b = b.text();
                 contents = [c, b]
