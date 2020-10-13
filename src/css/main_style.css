@@ -315,7 +315,7 @@ nav {
 /*24-02-2020 tab html designed calculator*/
 #tabGipscAdm, #tabBetrGrp, #tabSAdm, #tabManGrp, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl ,#tabStdDr, #tabBer, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm,
 #tabMsg, #tabKnz, #tabAlm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabEng, #tabZp, #tabBerechnungsformeln,
-#tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
+#tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
 #tabEPrd, #tabPrd, #tabPrd_historie, #tabVorlagenformeln, #tabAnl_weitereKonfig, #tabPrd_konfig, #tabDiagKnz,
 #tabGrpDiag, #tabHzk,#tabTaschenrechner,#tabDynamicKorrekturFktr {
   display: inline;
@@ -377,6 +377,7 @@ nav {
 #infosExtRechnungen,
 #infosIntEnergiedaten,
 #infosIntBetriebsdaten,
+#infosIntBetriebsdatenHist,
 #infosMasseneingabe,
 #infosAuswertungManuell,
 #infosSpaEfVTabelle1,
@@ -398,7 +399,8 @@ nav {
 #infosWeiterePrdKonfig,
 #infosGruppierungDiagramme,
 #infosKorrekturFaktor,
-#infosDynamicKorrekturFaktor {
+#infosDynamicKorrekturFaktor,
+#intBdeIMwHistorieDiv {
   background-color: #B9C0C7;
   margin: 10px;
   width: 21.85cm;
@@ -513,7 +515,8 @@ nav {
 #histDataJa,
 #histDataNein,
 #saveMstFormulaAbbrechen,
-#anlPrdLink{
+#anlPrdLink
+#btnShowRecordsAnlBtn{
   border: 0px solid black;
   border-radius: 5px;
   background-color: transparent;
@@ -670,7 +673,8 @@ nav {
 #histDataJa:hover,
 #histDataNein:hover,
 #saveMstFormulaAbbrechen:hover,
-#anlPrdLink:hover {
+#anlPrdLink:hover 
+#btnShowRecordsAnlBtn:hover {
   background-color: white;
   cursor: pointer;
 }
@@ -1206,7 +1210,20 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 }
 
 /*22-09-2020*/
-#btnMassEingAnl{
+#btnMassEingAnl,#btnShowRecordsAnlBtn{
   background-color: white !important;
   cursor: pointer !important;
+}
+
+.monthInputZeitintervallAnl,.wochenInputZeitintervallAnl{
+  width: 1.5cm !important;
+}
+
+#intBdeIMwHistorieDiv input, #intBdeIMwHistorieDiv select{
+  font-size:13px;
+}
+
+#intBdeIMwHistSpeichernDblClick img{
+  width: 20px;
+  margin-left: 0px;
 }
