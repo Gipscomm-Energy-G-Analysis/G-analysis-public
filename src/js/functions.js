@@ -10701,7 +10701,6 @@ function korrekturFaktorEinfügenGruppenloschen() {
 
             },
             success: function(a) {
-                alert(a);
                 getKorrekturFaktorEinfügenGruppen();
                 $("#updateGroupTxtStaticCF").val('');
                 //$("#updateGroupSelIDStaticCF").val('');
