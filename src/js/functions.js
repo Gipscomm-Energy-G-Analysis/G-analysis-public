@@ -3779,6 +3779,10 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
+
+                    console.log("Formula search records :");
+                    console.log(a);
+
                     tblformelSuchen.colReorder.reset();
                     tblformelSuchen.clear().draw();
                     for (var b = 0; b < a.length; b++) tblformelSuchen.row.add([a[b][e.id], a[b][e.name], atob(a[b][e.formelString]), atob(a[b][e.formelIdString])]).draw();
