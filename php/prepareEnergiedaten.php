@@ -9,23 +9,25 @@ require 'Matex.php' ;
 
 // SET DB
 // ------
-const nameDB = "012_spiess" ;
+const nameDB = "g-analysis" ;
 
 // CONNECT TO DB
 $GLOBALS["connect"] = connectToDB(nameDB) ;
 
 // SET VIRTUAL MEASUREMENT POINT
 // -----------------------------
-const mstID = 69 ;
+const mstID = 338 ;
 
-// [M-Verbraucher-Trafo-8] = [M506] + [M508]
+// [M901_Gesamtberechnung] = [M901_Strompfad_1] + [M901_Strompfad_2]
+// mst_339 + mst_340
 
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
-const startDate = "2019-04-15 11:15:00.000" ;
-const endDate =  "2019-07-08 13:15:00.000" ;
+const startDate = "2020-08-22 05:45:00.000" ;
+const endDate =  "2020-10-08 03:00:00.000" ;
 
-// last 2019-07-08 13:15:00.000
+// first 2019-05-22 05:45:00.000
+// last 2020-10-08 03:00:00.000
 
 // HELPERS
 // -------
@@ -151,8 +153,9 @@ function getEnergyDataFormula($formulaRecord) {
     foreach ($mstsIDs as $id) {
         $query = "SELECT * FROM MessstellenEnergiedaten " ;
         $query .= "WHERE mst_ID = ".$id." " ;
-        $query .= "AND Time BETWEEN '".startDate."' AND '".endDate."' " ;
-        $query .= "ORDER BY Time" ;
+        $query .= "AND CONVERT(varchar(50), Time,121 ) BETWEEN CONVERT(varchar(50), '".startDate."', 121) AND CONVERT(varchar(50), '".endDate."', 121) " ;
+        $query .= "ORDER BY Time " ;
+
         array_push($dataMsts, queryDB($GLOBALS["connect"], $query, "read")) ;
     }
 
@@ -288,9 +291,8 @@ function prepareForCalculation($records) {
         foreach ($formulaEnergyRecords_ as $energyData) {
             array_push($energyRecords, fillDateGapsEnergyData($formulaRecords, $energyData)) ;
         }
-
-        $energyRecords = multiplyConvFactorsAllRecords($energyRecords) ;
-        $transposedEnergyRecords = flipDiagonally($energyRecords) ;
+        $energyRecordsConvFactor = multiplyConvFactorsAllRecords($energyRecords) ;
+        $transposedEnergyRecords = flipDiagonally($energyRecordsConvFactor) ;
         return [$formulaRecords, $transposedEnergyRecords] ;
     }
 
@@ -397,16 +399,21 @@ function writeToDB($records) {
     return queryDB($GLOBALS["connect"], buildQuery($records), "write") ;
 }
 
-$start = hrtime(true) ;
+// $start = hrtime(true) ;
 
 writeToDB(calculateFormulas(prepareForCalculation(getEnergyDataFormula(splitFormula(base64Decode(getMstFormulaRecord())))))) ;
+
+// print_r(getMstFormulaRecord()) ;
+// print_r(base64Decode(getMstFormulaRecord())) ;
+// print_r(splitFormula(base64Decode(getMstFormulaRecord()))) ;
+// print_r(getEnergyDataFormula(splitFormula(base64Decode(getMstFormulaRecord())))) ;
 
 closeDbConn($GLOBALS["connect"]) ;
 
 unset($GLOBALS["connect"]) ;
 
-$end = hrtime(true) ;
+// $end = hrtime(true) ;
 
-echo "    Execution Time : ".(($end - $start) / 1000000000) ;
+// echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
 ?>

@@ -1260,7 +1260,7 @@ $(document).ready(function() {
             case "Kennzahl":
                 a = "kennzahl";
                 break;
-            case "Berechnung":
+            case "Virtuelle Messstelle":
                 a = "berechnet";
                 break;
             default:
