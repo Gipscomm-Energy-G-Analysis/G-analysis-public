@@ -482,7 +482,7 @@ try {
             sessionStorage.setItem("loadDiag", !1);
             if ("" != h) {
                 if(qa === "berechnet") {
-                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a = "SELECT mst_ID, Name, CONVERT(varchar,CONVERT(datetime, LEFT(Time, 10)),104) + ' ' + RIGHT(LEFT(Time, 22), 11) AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     a += "WHERE mst_ID = '" + g + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (a +=
@@ -511,7 +511,7 @@ try {
                     a += "ORDER by time_de ";
                 }
                 if (ra === "berechnet") {
-                    b = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    b = "SELECT mst_ID, Name, CONVERT(varchar,CONVERT(datetime, LEFT(Time, 10)),104) + ' ' + RIGHT(LEFT(Time, 22), 11) AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     b += "WHERE mst_ID = '" + f + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (b +=
@@ -540,7 +540,7 @@ try {
                         b += "ORDER by time_de ";
                 }
                 if (xa === "berechnet") {
-                    e = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    e = "SELECT mst_ID, Name, CONVERT(varchar,CONVERT(datetime, LEFT(Time, 10)),104) + ' ' + RIGHT(LEFT(Time, 22), 11) AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     e += "WHERE mst_ID = '" + f + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (e +=
@@ -570,7 +570,7 @@ try {
                 }
             } else if ("" != f) {
                 if(qa === "berechnet") {
-                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a = "SELECT mst_ID, Name, CONVERT(varchar,CONVERT(datetime, LEFT(Time, 10)),104) + ' ' + RIGHT(LEFT(Time, 22), 11) AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     a += "WHERE mst_ID = '" + g + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (a +=
@@ -599,7 +599,7 @@ try {
                         a += "ORDER by time_de ";
                 }
                 if(ra === "berechnet") {
-                    b = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    b = "SELECT mst_ID, Name, CONVERT(varchar,CONVERT(datetime, LEFT(Time, 10)),104) + ' ' + RIGHT(LEFT(Time, 22), 11) AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     b += "WHERE mst_ID = '" + f + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (b +=
@@ -629,7 +629,7 @@ try {
                 }
             } else {
                 if(qa === "berechnet") {
-                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a = "SELECT mst_ID, Name, CONVERT(varchar,CONVERT(datetime, LEFT(Time, 10)),104) + ' ' + RIGHT(LEFT(Time, 22), 11) AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     a += "WHERE mst_ID = '" + g + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (a +=
