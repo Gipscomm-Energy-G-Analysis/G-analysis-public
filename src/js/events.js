@@ -278,7 +278,7 @@ $(document).ready(function() {
             helper: "clone",
             start: function(a, e) {
                 var b = $(this).find("td"),
-                    c = "ePrd_" + b.prev().text(),
+                    c = "ePrdKFE_" + b.prev().text(),
                     b = b.text();
                 contents = [c, b]
             }
