@@ -21,7 +21,7 @@ const mstID = 69 ;
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
 const startDate = "2017-12-31 23:00:00.000" ;
-const endDate =  "2018-02-31 23:00:00.000" ;
+const endDate =  "2018-01-03 23:00:00.000" ;
 
 // first 2019-05-22 05:45:00.000
 // last 2020-10-08 03:00:00.000
@@ -123,6 +123,12 @@ function getID($identifier) {
     return splitUnderline($identifier)[1] ;
 }
 
+function add15min($date) {
+    $dateTime = new DateTime($date);
+    $dateTime->modify('+15 minutes');
+    return $dateTime->format('Y-m-d H:i:s.000000'); ;
+}
+
 function getDataFormula($formulaRecord) {
 
     $mstsOrKorFacs = array_values(array_filter($formulaRecord["Formula"], 'isMstOrKorFac')) ;
@@ -159,7 +165,7 @@ function getDataFormula($formulaRecord) {
         $query .= "WHERE ePrdKFE_id = ".$korFacID." " ;
         $query .= "AND deleted <> 'true' " ;
 
-        return queryDB($GLOBALS["connect"], $query, "read") ;
+        return createKorFacArray(queryDB($GLOBALS["connect"], $query, "read")[0]) ;
     }
 
     function getDataArrays($mstsOrKorFacs_) {
@@ -203,12 +209,6 @@ function prepareForCalculation($records) {
         $seconds = prependZero($date["seconds"]) ;
 
         return $year."-".$month."-".$day." ".$hours.":".$minutes.":".$seconds.".000000" ;
-    }
-
-    function add15min($date) {
-        $dateTime = new DateTime($date);
-        $dateTime->modify('+15 minutes');
-        return $dateTime->format('Y-m-d H:i:s.000000'); ;
     }
 
     function createFormulaArray($formulaRecord_) {
