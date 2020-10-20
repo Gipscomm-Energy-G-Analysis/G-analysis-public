@@ -18,10 +18,14 @@ $GLOBALS["connect"] = connectToDB(nameDB) ;
 // -----------------------------
 const mstID = 69 ;
 
+// Formula
+// [M-Verbraucher-Trafo-8] = [M506] * [test] + [M508] * [New_2020]
+// mst_89 * eprdkfe_1 + mst_90 * eprdkfe_12
+
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
-const startDate = "2017-12-31 23:00:00.000" ;
-const endDate =  "2018-01-03 23:00:00.000" ;
+const startDate = "2018-01-03 23:00:00.000" ;
+const endDate =  "2018-04-03 23:00:00.000" ;
 
 // first 2019-05-22 05:45:00.000
 // last 2020-10-08 03:00:00.000
@@ -112,7 +116,7 @@ function isMst($identifier) {
 }
 
 function isKorFac($identifier) {
-    return splitUnderline($identifier)[0] === "ePrdKFE" ;
+    return splitUnderline($identifier)[0] === "eprdkfe" ;
 }
 
 function isMstOrKorFac($identifier) {
@@ -149,10 +153,10 @@ function getDataFormula($formulaRecord) {
         while ($date < endDate) {
             $date = add15min($date) ;
             $korFacRecord_ = [
-                "ePrdKFE_id"=>$korFacRecord["ePrdKFE_id"]
-                , "Name"=>$korFacRecord["name"]
+                "eprdkfe_id"=>$korFacRecord["eprdkfe_id"]
+                , "Name"=>$korFacRecord["Name"]
                 , "Time"=>new DateTime($date)
-                , "Value"=>$korFacRecord["wert"]
+                , "Value"=>$korFacRecord["Value"]
                 , "ConvFactor"=>1
             ] ;
             array_push($korFacRecords, $korFacRecord_) ;
@@ -161,7 +165,7 @@ function getDataFormula($formulaRecord) {
     }
 
     function getKorFacData($korFacID) {
-        $query = "SELECT * FROM korrekturFaktorEinfugen " ;
+        $query = "SELECT ePrdKFE_id AS eprdkfe_id, name AS Name, wert AS Value FROM korrekturFaktorEinfugen " ;
         $query .= "WHERE ePrdKFE_id = ".$korFacID." " ;
         $query .= "AND deleted <> 'true' " ;
 
@@ -328,18 +332,18 @@ function calculateFormulas($records) {
         return $keyValuePair ;
     }
 
-    function replaceFormula($formulaRecord, $energyRecord) {
+    function replaceFormula($formulaRecord, $dataRecord) {
 
         $formulaArray = getFormula($formulaRecord) ;
 
         // separate formula parts
-        $mstsFormula = array_filter($formulaArray, "isMst") ;
+        $mstsOrKorFacsFormula = array_filter($formulaArray, "isMstOrKorFac") ;
 
-        // replace msts with values
-        $mstsValues = array_map("assignToValue", $mstsFormula, $energyRecord) ;
+        // replace units with values
+        $mstsOrKorFacsValues = array_map("assignToValue", $mstsOrKorFacsFormula, $dataRecord) ;
 
         // re-assign Value property
-        $formulaRecord["Value"] = array_flatten($mstsValues) ;
+        $formulaRecord["Value"] = array_flatten($mstsOrKorFacsValues) ;
         $formulaRecord["Formula"] = implode(' ', $formulaArray) ;
 
         return $formulaRecord ;
@@ -371,7 +375,6 @@ function calculateFormulas($records) {
     }
 
     return array_map('calculate', replaceFormulas($mstFormulaArray, $formulaEnergyRecords)) ;
-
 }
 
 function writeToDB($records) {
@@ -422,7 +425,7 @@ function writeToDB($records) {
 // print_r(getMstFormulaRecord()) ;
 // print_r(base64Decode(getMstFormulaRecord())) ;
 // print_r(splitFormula(base64Decode(getMstFormulaRecord()))) ;
-print_r(json_encode(getDataFormula(splitFormula(base64Decode(getMstFormulaRecord()))))) ;
+print_r(json_encode(calculateFormulas(prepareForCalculation(getDataFormula(splitFormula(base64Decode(getMstFormulaRecord()))))))) ;
 
 closeDbConn($GLOBALS["connect"]) ;
 

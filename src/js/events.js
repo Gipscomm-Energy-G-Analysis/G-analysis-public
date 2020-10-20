@@ -229,7 +229,7 @@ $(document).ready(function() {
             helper: "clone",
             start: function(a, e) {
                 var b = $(this).find("td"),
-                    c = "staProd_" + b.prev().text(),
+                    c = "staprod_" + b.prev().text(),
                     b = b.text();
                 contents = [c, b]
             }
@@ -242,7 +242,7 @@ $(document).ready(function() {
             helper: "clone",
             start: function(a, e) {
                 var b = $(this).find("td"),
-                    c = "bdeProd_" + b.prev().text(),
+                    c = "bdeprod_" + b.prev().text(),
                     b = b.text();
                 contents = [c, b]
             }
@@ -265,7 +265,7 @@ $(document).ready(function() {
             helper: "clone",
             start: function(a, e) {
                 var b = $(this).find("td"),
-                    c = "ePrd_" + b.prev().text(),
+                    c = "eprd_" + b.prev().text(),
                     b = b.text();
                 contents = [c, b]
             }
@@ -278,7 +278,7 @@ $(document).ready(function() {
             helper: "clone",
             start: function(a, e) {
                 var b = $(this).find("td"),
-                    c = "ePrdKFE_" + b.prev().text(),
+                    c = "eprdkfe_" + b.prev().text(),
                     b = b.text();
                 contents = [c, b]
             }
