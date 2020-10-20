@@ -163,44 +163,9 @@ function getDataFormula($formulaRecord) {
 // Calculates Level-1 Formulas
 function prepareForCalculation($records) {
 
-    function createKorFacArray($korFacRecord) {
-        $to = endDate ;
-        $date = startDate ;
-        $korFacRecords = [] ;
-        while ($date < endDate) {
-            $date = add15min($date) ;
-            $korFacRecord_ = [
-                "ePrdKFE_id"=>$korFacRecord["ePrdKFE_id"]
-                , "Name"=>$korFacRecord["name"]
-                , "Time"=>new DateTime($date)
-                , "Value"=>$korFacRecord["wert"]
-                , "ConvFactor"=>1
-                ] ;
-            array_push($korFacRecords, $korFacRecord_) ;
-        }
-        return $korFacRecords ;
-    }
-
-    function isKorFacArray($records) {
-        return array_key_exists('ePrdKFE', $records) ;
-    }
-
-    function prepareKorFacArrays($records) {
-        $dataArrays = [] ;
-        foreach ($records as $arr) {
-            if (isKorFacArray($arr)) {
-                array_push($dataArrays, createKorFacArray($arr[0])) ;
-            }
-            else {
-                array_push($dataArrays, $arr) ;
-            }
-        }
-        return $dataArrays ;
-    }
-
     // Assigned vars for array of mstFormulas records and energy records
     $formulaRecord = $records[0] ;
-    $formulaDataRecords = prepareKorFacArrays($records[1]) ;
+    $formulaDataRecords = $records[1] ;
 
     // CREATE FORMULA ARRAYS FROM DATE X TO DATE Y
     // -------------------------------------------
@@ -245,6 +210,32 @@ function prepareForCalculation($records) {
             array_push($formulaRecords, $formulaRecord__) ;
         }
         return $formulaRecords ;
+    }
+
+    function createKorFacArray($korFacRecord) {
+        $to = endDate ;
+        $date = startDate ;
+        $korFacRecords = [] ;
+        while ($date < endDate) {
+            $date = add15min($date) ;
+            $korFacRecord_ = [
+                "ePrdKFE_id"=>$korFacRecord["ePrdKFE_id"]
+                , "Name"=>$korFacRecord["name"]
+                , "Time"=>new DateTime($date)
+                , "Value"=>$korFacRecord["wert"]
+                , "ConvFactor"=>1
+            ] ;
+            array_push($korFacRecords, $korFacRecord_) ;
+        }
+        return $korFacRecords ;
+    }
+
+    function isKorFacArray($records) {
+        return array_key_exists('ePrdKFE', $records) ;
+    }
+
+    function prepareKorFacArrays($records) {
+
     }
 
     function equalStartDate($energyRecords) {
@@ -439,7 +430,7 @@ function writeToDB($records) {
 // print_r(getMstFormulaRecord()) ;
 // print_r(base64Decode(getMstFormulaRecord())) ;
 // print_r(splitFormula(base64Decode(getMstFormulaRecord()))) ;
-print_r(json_encode(prepareForCalculation(getDataFormula(splitFormula(base64Decode(getMstFormulaRecord())))))) ;
+print_r(json_encode(getDataFormula(splitFormula(base64Decode(getMstFormulaRecord()))))) ;
 
 closeDbConn($GLOBALS["connect"]) ;
 
