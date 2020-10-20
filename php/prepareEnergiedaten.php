@@ -136,6 +136,24 @@ function getDataFormula($formulaRecord) {
         return queryDB($GLOBALS["connect"], $query, "read") ;
     }
 
+    function createKorFacArray($korFacRecord) {
+        $to = endDate ;
+        $date = startDate ;
+        $korFacRecords = [] ;
+        while ($date < endDate) {
+            $date = add15min($date) ;
+            $korFacRecord_ = [
+                "ePrdKFE_id"=>$korFacRecord["ePrdKFE_id"]
+                , "Name"=>$korFacRecord["name"]
+                , "Time"=>new DateTime($date)
+                , "Value"=>$korFacRecord["wert"]
+                , "ConvFactor"=>1
+            ] ;
+            array_push($korFacRecords, $korFacRecord_) ;
+        }
+        return $korFacRecords ;
+    }
+
     function getKorFacData($korFacID) {
         $query = "SELECT * FROM korrekturFaktorEinfugen " ;
         $query .= "WHERE ePrdKFE_id = ".$korFacID." " ;
