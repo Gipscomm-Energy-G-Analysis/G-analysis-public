@@ -212,32 +212,6 @@ function prepareForCalculation($records) {
         return $formulaRecords ;
     }
 
-    function createKorFacArray($korFacRecord) {
-        $to = endDate ;
-        $date = startDate ;
-        $korFacRecords = [] ;
-        while ($date < endDate) {
-            $date = add15min($date) ;
-            $korFacRecord_ = [
-                "ePrdKFE_id"=>$korFacRecord["ePrdKFE_id"]
-                , "Name"=>$korFacRecord["name"]
-                , "Time"=>new DateTime($date)
-                , "Value"=>$korFacRecord["wert"]
-                , "ConvFactor"=>1
-            ] ;
-            array_push($korFacRecords, $korFacRecord_) ;
-        }
-        return $korFacRecords ;
-    }
-
-    function isKorFacArray($records) {
-        return array_key_exists('ePrdKFE', $records) ;
-    }
-
-    function prepareKorFacArrays($records) {
-
-    }
-
     function equalStartDate($energyRecords) {
         return $energyRecords[0]["Time"] == new DateTime(startDate) ;
     }
