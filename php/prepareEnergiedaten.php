@@ -19,13 +19,14 @@ $GLOBALS["connect"] = connectToDB(nameDB) ;
 const mstID = 69 ;
 
 // Formula
-// [M-Verbraucher-Trafo-8] = [M506] * [test] + [M508] * [New_2020]
-// mst_89 * eprdkfe_1 + mst_90 * eprdkfe_12
+// mstID = 69
+// [M-Verbraucher-Trafo-8] = [M613] * ( ( [M601] + [M603] ) / [test] + [M608] ) * [test]
+// mst_159 * ( ( mst_133 + mst_131 ) / eprdkfe_1 + mst_161 ) * eprdkfe_7
 
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
-const startDate = "2018-01-03 23:00:00.000" ;
-const endDate =  "2018-04-03 23:00:00.000" ;
+const startDate = "2018-09-03 23:00:00.000" ;
+const endDate =  "2018-11-03 23:00:00.000" ;
 
 // first 2019-05-22 05:45:00.000
 // last 2020-10-08 03:00:00.000
@@ -415,7 +416,17 @@ function writeToDB($records) {
         return array_reduce($recordArrays, 'buildInsertInto') ;
     }
 
-    return queryDB($GLOBALS["connect"], buildQuery($records), "write") ;
+    return $records ;
+}
+
+function testIfDataInDB($records) {
+    $initialRecords = $records ;
+
+    $query = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten " ;
+    $query .= "WHERE mst_ID = ".mstID." " ;
+    $query .= "AND CONVERT(varchar(50), Time, 121) BETWEEN CONVERT(varchar(50), '".startDate."', 121) AND CONVERT(varchar(50), '".endDate."', 121) " ;
+
+
 }
 
 // $start = hrtime(true) ;
