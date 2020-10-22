@@ -66,7 +66,12 @@ try {
             else if (a == ObjectCopyMode.FUSION_SHALLOW || ObjectCopyMode.FUSION_DEEP)
                 for (var f = 0; f < c; f++) g = $.extend(e, {}, g, obj[f]);
             return $.extend(e, {}, g)
-        },
+        };
+
+        const toGermanDate =
+            date =>
+            `CONVERT(varchar,CONVERT(datetime, LEFT(${date}, 10)),104) + ' ' + RIGHT(LEFT(${date}, 22), 11)`
+
         chartInNewWindowKnz = function() {
             sessionStorage.setItem("nameDB", $("#nameDB").val());
             sessionStorage.setItem("chartType", $("#typDiagKnz").val());
@@ -482,7 +487,7 @@ try {
             sessionStorage.setItem("loadDiag", !1);
             if ("" != h) {
                 if(qa === "berechnet") {
-                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     a += "WHERE mst_ID = '" + g + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (a +=
@@ -511,7 +516,7 @@ try {
                     a += "ORDER by time_de ";
                 }
                 if (ra === "berechnet") {
-                    b = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    b = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     b += "WHERE mst_ID = '" + f + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (b +=
@@ -540,7 +545,7 @@ try {
                         b += "ORDER by time_de ";
                 }
                 if (xa === "berechnet") {
-                    e = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    e = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     e += "WHERE mst_ID = '" + f + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (e +=
@@ -570,7 +575,7 @@ try {
                 }
             } else if ("" != f) {
                 if(qa === "berechnet") {
-                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     a += "WHERE mst_ID = '" + g + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (a +=
@@ -599,7 +604,7 @@ try {
                         a += "ORDER by time_de ";
                 }
                 if(ra === "berechnet") {
-                    b = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    b = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     b += "WHERE mst_ID = '" + f + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (b +=
@@ -629,7 +634,7 @@ try {
                 }
             } else {
                 if(qa === "berechnet") {
-                    a = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten "
+                    a = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
                     a += "WHERE mst_ID = '" + g + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (a +=
