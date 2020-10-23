@@ -6,6 +6,7 @@ ini_set ('display_errors', 'On') ;
 
 require 'DbOperations.php' ;
 require 'Matex.php' ;
+require 'EMail_swift.php';
 
 // SET DB
 // ------
@@ -25,8 +26,8 @@ const mstID = 69 ;
 
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
-const startDate = "2018-09-03 23:00:00.000" ;
-const endDate =  "2018-11-03 23:00:00.000" ;
+const startDate = "2018-10-10 12:30:00.000" ;
+const endDate =  "2018-11-22 23:15:00.000" ;
 
 // first 2019-05-22 05:45:00.000
 // last 2020-10-08 03:00:00.000
@@ -92,7 +93,22 @@ function flipDiagonally($arr) {
     return $out;
 }
 
-// -----------------------------
+function equalLength($arr1, $arr2) {
+    return count($arr1) === count($arr2) ;
+}
+
+function noMatchRecord($record1, $record2) {
+    return $record1 !== $record2 ;
+}
+
+function id($a){
+    return $a ;
+}
+
+function roundTo($val, $toDigits) {
+    return round($val * 10 ** $toDigits) / 10 ** $toDigits ;
+}
+
 // Query mst formula data
 function getMstFormulaRecord() {
     $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
@@ -126,6 +142,10 @@ function isMstOrKorFac($identifier) {
 
 function getID($identifier) {
     return splitUnderline($identifier)[1] ;
+}
+
+function dateTimeToString($dateObject) {
+    return $dateObject->format('Y-m-d H:i:s.u') ;
 }
 
 function add15min($date) {
@@ -241,10 +261,6 @@ function prepareForCalculation($records) {
 
     function equalEndDate($energyRecords) {
         return $energyRecords[count($energyRecords) - 1] == new DateTime(endDate) ;
-    }
-
-    function equalLength($formulaRecords, $energyRecords) {
-        return count($formulaRecords) === count($energyRecords) ;
     }
 
     function noDuplicates($energyRecords) {
@@ -380,10 +396,6 @@ function calculateFormulas($records) {
 
 function writeToDB($records) {
 
-    function dateTimeToString($dateObject) {
-        return $dateObject->format('Y-m-d H:i:s.u') ;
-    }
-
     function buildValueString($last, $record) {
         return $last.", ("
         .$record["mst_ID"].", '"
@@ -416,34 +428,56 @@ function writeToDB($records) {
         return array_reduce($recordArrays, 'buildInsertInto') ;
     }
 
+    queryDB($GLOBALS["connect"], buildQuery($records), "write") ;
+
     return $records ;
 }
 
+// Only checks if the the record count is the same !
 function testIfDataInDB($records) {
+
     $initialRecords = $records ;
 
-    $query = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten " ;
-    $query .= "WHERE mst_ID = ".mstID." " ;
-    $query .= "AND CONVERT(varchar(50), Time, 121) BETWEEN CONVERT(varchar(50), '".startDate."', 121) AND CONVERT(varchar(50), '".endDate."', 121) " ;
+    function queryData() {
+        $query = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten " ;
+        $query .= "WHERE mst_ID = ".mstID." " ;
+        $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".add15min(startDate)."', 121) AND CONVERT(varchar(50), '".add15min(endDate)."', 121) " ;
+        $query .= "ORDER BY Time " ;
 
+        return queryDB($GLOBALS["connect"], $query, "read") ;
+    }
 
+    function sendAlertEmail() {
+
+        $empfaenger = "sdm@energie-gipscomm.de" ;
+
+        $betreff = "Berechnete Energiedaten Konnten nicht in DB geschrieben werden. (G-Analysis)" ;
+
+        $emailText = "Dies betrifft die mst_ID = ".mstID." <br><br>" ;
+        $emailText .= "Zeitbereich = ".startDate." - ".endDate." <br><br>" ;
+
+        eMail($empfaenger, $betreff, $emailText) ;
+    }
+
+    function alertIfNeccessary($sameLength) {
+        if (!$sameLength) {
+            sendAlertEmail() ;
+        }
+    }
+
+    alertIfNeccessary(equalLength($initialRecords, queryData())) ;
 }
 
-// $start = hrtime(true) ;
+$start = hrtime(true) ;
 
-// writeToDB(calculateFormulas(prepareForCalculation(getEnergyDataFormula(splitFormula(base64Decode(getMstFormulaRecord())))))) ;
-
-// print_r(getMstFormulaRecord()) ;
-// print_r(base64Decode(getMstFormulaRecord())) ;
-// print_r(splitFormula(base64Decode(getMstFormulaRecord()))) ;
-print_r(json_encode(calculateFormulas(prepareForCalculation(getDataFormula(splitFormula(base64Decode(getMstFormulaRecord()))))))) ;
+testIfDataInDB(writeToDB(calculateFormulas(prepareForCalculation(getDataFormula(splitFormula(base64Decode(getMstFormulaRecord()))))))) ;
 
 closeDbConn($GLOBALS["connect"]) ;
 
 unset($GLOBALS["connect"]) ;
 
-// $end = hrtime(true) ;
+$end = hrtime(true) ;
 
-// echo "    Execution Time : ".(($end - $start) / 1000000000) ;
+echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
 ?>
