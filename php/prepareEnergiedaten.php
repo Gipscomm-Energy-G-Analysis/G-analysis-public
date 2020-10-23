@@ -463,9 +463,10 @@ function testIfDataInDB($records) {
         if (!$sameLength) {
             sendAlertEmail() ;
         }
+        return !$sameLength ;
     }
 
-    alertIfNeccessary(equalLength($initialRecords, queryData())) ;
+    return alertIfNeccessary(equalLength($initialRecords, queryData())) ;
 }
 
 $start = hrtime(true) ;
