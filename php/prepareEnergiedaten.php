@@ -42,6 +42,18 @@ function actionOn($record, $field, $fn) {
     return $record ;
 }
 
+function head($arr) {
+    return $arr[0] ;
+}
+
+function pipe($fns) {
+    $results = [head($fns)] ;
+    for($i = 1; $i < count($fns); $i++){
+        array_push($results, $fns[$i]($results[$i - 1])) ;
+    }
+    return $results ;
+}
+
 // Function which as the name suggests, splits a string at spaces
 function splitSpace($string) {
     return explode(" ", $string) ;
@@ -99,10 +111,6 @@ function equalLength($arr1, $arr2) {
 
 function noMatchRecord($record1, $record2) {
     return $record1 !== $record2 ;
-}
-
-function id($a){
-    return $a ;
 }
 
 function roundTo($val, $toDigits) {
@@ -471,7 +479,17 @@ function testIfDataInDB($records) {
 
 $start = hrtime(true) ;
 
-testIfDataInDB(writeToDB(calculateFormulas(prepareForCalculation(getDataFormula(splitFormula(base64Decode(getMstFormulaRecord()))))))) ;
+pipe(
+    [ getMstFormulaRecord()
+    , 'base64Decode'
+    , 'splitFormula'
+    , 'getDataFormula'
+    , 'prepareForCalculation'
+    , 'calculateFormulas'
+    , 'writeToDB'
+    , 'testIfDataInDB'
+    ]
+) ;
 
 closeDbConn($GLOBALS["connect"]) ;
 
