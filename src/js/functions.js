@@ -10038,6 +10038,73 @@ const readyToSave =
     || isNumeric(getLastElement(idString))
     || isClosingParentheses(getLastElement(idString)) )
 
+// Save a Messstellen formula
+const saveVirtMessstelleFormula =
+    () => {
+        const formula = {
+            modus: $("#bermstmod").val(),
+            berechneteMstID: $("#berechneteMstID").val().split("_")[1],
+            bezug: $("#inpBezugKnz").val(),
+            formelString: btoa($("#formelStringDarstellung").val()),
+            idString: btoa($("#formelIdDarstellung").val())
+        }
+        writeFormulaToDB(formula)
+        setTimeout(function() {
+            messstellenInAuswertungsEditorTabelleEinlesen()
+        }, 2000);
+    }
+
+// Save a Messstellen formula and calculate historic data
+const virtMessstelleWithHistory =
+    () => {
+        saveVirtMessstelleFormula()
+        $("#virtMessstelleSave").dialog("close")
+        alert("Save and calculate historic data")
+    }
+
+// Save a Messstellen formula without calculating historic data
+const virtMessstelleWithoutHistory =
+    () => {
+        saveVirtMessstelleFormula()
+        $("#virtMessstelleSave").dialog("close")
+        alert("Save without historic data calculation")
+    }
+
+// Open popup and decide if historic Virtuelle Messstelle
+// data should be calculated or only from now on get updated
+const virtMessstelleSaveDialog =
+    () => {
+        $("#virtMessstelleSave").dialog({
+            height: 225,
+            width: 405,
+            resizable: false,
+            draggable: false,
+            modal: true,
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open : () => {
+
+                // Save a Messstellen formula and calculate historic data
+                $("#histDataJa").off("click")
+                $("#histDataJa").on("click", virtMessstelleWithHistory)
+
+                // Save a Messstellen formula without historic data calculation
+                $("#histDataNein").off("click")
+                $("#histDataNein").on("click", virtMessstelleWithoutHistory)
+
+                // Cancel saving process
+                $("#saveMstFormulaAbbrechen").off("click")
+                $("#saveMstFormulaAbbrechen").on("click", () => {$("#virtMessstelleSave").dialog("close")})
+            }
+        })
+}
+
 /*Ajax Call for the Spies organization serach 21-01-2020*/
 function spiesOrganisationenSearch() {
     var a = itemSessionGet("nameDB");
