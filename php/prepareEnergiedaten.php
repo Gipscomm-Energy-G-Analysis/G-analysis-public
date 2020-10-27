@@ -1,8 +1,11 @@
 <?php
 
+set_time_limit(0) ;
+
 include('top-cache.php') ;
 error_reporting (-1) ;
 ini_set ('display_errors', 'On') ;
+
 
 require 'DbOperations.php' ;
 require 'Matex.php' ;
@@ -21,16 +24,16 @@ const mstID = 69 ;
 
 // Formula
 // mstID = 69
-// [M-Verbraucher-Trafo-8] = [M613] * ( ( [M601] + [M603] ) / [test] + [M608] ) * [test]
-// mst_159 * ( ( mst_133 + mst_131 ) / eprdkfe_1 + mst_161 ) * eprdkfe_7
+// [M-Verbraucher-Trafo-8] = [M613] + [M610] * [test]
+// mst_159 + mst_160 * eprdkfe_1
 
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
-const startDate = "2018-10-10 12:30:00.000" ;
-const endDate =  "2018-11-22 23:15:00.000" ;
+const startDate = "2017-12-31 23:00:00.000" ;
+const endDate =  "2018-07-00 06:00:00.000" ;
 
-// first 2019-05-22 05:45:00.000
-// last 2020-10-08 03:00:00.000
+// first 2017-12-31 23:00:00.000
+// last 2019-02-12 06:00:00.000
 
 // HELPERS
 // -------
@@ -117,7 +120,9 @@ function roundTo($val, $toDigits) {
     return round($val * 10 ** $toDigits) / 10 ** $toDigits ;
 }
 
-// Query mst formula data
+// END HELPERS
+//------------
+
 function getMstFormulaRecord() {
     $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
     $query .= "WHERE mst_ID = ".mstID  ;
@@ -469,7 +474,11 @@ function testIfDataInDB($records) {
 
     function alertIfNeccessary($sameLength) {
         if (!$sameLength) {
+            print_r("FALSE") ;
             sendAlertEmail() ;
+        }
+        else {
+            print_r("TRUE") ;
         }
         return !$sameLength ;
     }
