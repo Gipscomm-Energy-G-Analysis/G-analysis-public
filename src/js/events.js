@@ -3514,8 +3514,9 @@ $("#DkFeSpeichern").click(function() {
             tblMstOhneZeitintervallIMw.clear().draw();
             $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
            // if(!$(this).hasClass('showTable')){                           
-                mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE);    
+               // mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE);    
            // }         
+           keinZeitIntervallZugewiesen(InstanceMode.BDE);
         });
 
         //30-09-2020 On change #zeitintervallAnl select option
@@ -3581,22 +3582,33 @@ $("#DkFeSpeichern").click(function() {
    /*save icon click event for the Interne Betriebsdaten Speichern 05-10-2020*/
 
     $("#intBdeIMwSpeichern").click(function(){
-        intBdeIMwHistorieSpeichernPopUp();
+        var anlIMw =$("#anlIMw").val();
+        var zeitintervallAnl =$("#zeitintervallAnl").val();
+        //var monateMassEingDataAnlStart =$("#monateMassEingDataAnlStart").val();
+        var notizBdeIMw =$("#notizBdeIMw").val();
+        if(anlIMw =='' || zeitintervallAnl =='' || notizBdeIMw==''){
+            alert("Bitte füllen Sie die Felder aus");
+            return false;
+        }else{            
+            intBdeIMwHistorieSpeichernPopUp();
+        }
     });
 
     $(" #tabIntBetriebsdatenIMwHist").click(function(){
         intBdeIMwHistOkGetHistorie();
     });
 
-    $(" #anlIMwNoEnding").change(function(){
+    $("#anlIMwNoEnding").change(function(){
          var zeitintervallAnl = $("#zeitintervallAnl").val();        
 
          if(zeitintervallAnl == 1){
             if($(this).is(':checked')){
                 $("#tageMassEingDataAnlEnde").prop('disabled', true);
                 $("#tageMassEingDataAnlEnde").val('');
+                $(this).val(1);
             } else {
                $("#tageMassEingDataAnlEnde").prop('disabled', false);
+               $(this).val(0);
             }               
            }else if(zeitintervallAnl == 2){
             if($(this).is(':checked')){
@@ -3604,23 +3616,29 @@ $("#DkFeSpeichern").click(function() {
                 $("#wochenYMassEingDataAnlEnde").prop('disabled', true);
                 $("#wochenWMassEingDataAnlEnde").val('');
                 $("#wochenYMassEingDataAnlEnde").val('');
+                $(this).val(1);
             } else {
                $("#wochenWMassEingDataAnlEnde").prop('disabled', false);
                $("#wochenYMassEingDataAnlEnde").prop('disabled', false);
+               $(this).val(0);
             }               
            }else if(zeitintervallAnl == 3){
             if($(this).is(':checked')){
                 $("#monateMassEingDataAnlEnde").prop('disabled', true);
                 $("#monateMassEingDataAnlEnde").val('');
+                $(this).val(1);
             } else {
                $("#monateMassEingDataAnlEnde").prop('disabled', false);
+               $(this).val(0);
             }      
            }else if(zeitintervallAnl == 4){
             if($(this).is(':checked')){
                 $("#jahrMassEingDataAnlEnde").prop('disabled', true);
                  $("#jahrMassEingDataAnlEnde").val('');
+                 $(this).val(1);
             } else {
                $("#jahrMassEingDataAnlEnde").prop('disabled', false);
+               $(this).val(0);
             }  
            }else{
                 $(".zeitintervallAnl_1").hide();
@@ -3630,3 +3648,56 @@ $("#DkFeSpeichern").click(function() {
                 $(".zeitintervallAnl_NoEnding").hide();
            } 
     });
+
+
+
+    $("#intBdeIMwZeitintervallAnl").change(function(){
+           //alert($(this).val());
+        $("#monateMassEingDataAnlEndeP").prop('disabled', false);
+        $("#jahrMassEingDataAnlEndeP").prop('disabled', false);
+        $("#tageMassEingDataAnlEndeP").prop('disabled', false);
+        $("#anlIMwNoEndingP").prop('checked', false);
+
+        $("#intBdeIMwHistorieDiv .zeitintervallAnl_1 input").val("");
+        $("#intBdeIMwHistorieDiv .zeitintervallAnl_2 input").val("");
+        $("#intBdeIMwHistorieDiv .zeitintervallAnl_3 input").val("");
+        $("#intBdeIMwHistorieDiv .zeitintervallAnl_4 input").val("");
+        
+           if($(this).val() == 1){
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").show();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").show();
+
+           }else if($(this).val() == 2){
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").show();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").show();
+
+           }else if($(this).val() == 3){
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").show();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").show();
+        
+           }else if($(this).val() == 4){
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").show();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").show();
+
+           }else{
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").hide();
+                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").hide();
+                
+
+           }      
+        });

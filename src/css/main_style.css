@@ -1215,10 +1215,6 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
   cursor: pointer !important;
 }
 
-.monthInputZeitintervallAnl,.wochenInputZeitintervallAnl{
-  width: 1.5cm !important;
-}
-
 #intBdeIMwHistorieDiv input, #intBdeIMwHistorieDiv select{
   font-size:13px;
 }
@@ -1226,4 +1222,29 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 #intBdeIMwHistSpeichernDblClick img{
   width: 20px;
   margin-left: 0px;
+}
+
+.monthInputZeitintervallAnl{
+  width: 1.5cm !important;
+}
+
+.wochenInputZeitintervallAnl{
+  width: 1.2cm !important;
+}
+
+#infosIntBetriebsdaten input[readonly], 
+#infosIntBdeIMwHistoriePopUpDiv input[readonly],
+#infosIntBdeIMwHistoriePopUpDiv select[readonly]  {
+    background: #dadcde;
+}
+
+#intBdeIMwHistorieDiv .controlDiv.zeitintervallAnl_1,
+#intBdeIMwHistorieDiv .controlDiv.zeitintervallAnl_2,
+#intBdeIMwHistorieDiv .controlDiv.zeitintervallAnl_3
+#intBdeIMwHistorieDiv .controlDiv.zeitintervallAnl_4 {
+    width: 274px;
+}
+
+div#infosIntBdeIMwHistoriePopUpDiv input {
+    margin: 16px 0px 9px 8px;
 }

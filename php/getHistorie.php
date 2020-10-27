@@ -21,18 +21,23 @@ elseif ($modus == "prd") {
   $query .= "WHERE gruppenID = $gruppenID ";
 }
 elseif ($modus == "intBdeIMwGetHist") {
-	$anlagenNr = $_POST['anlagenNr'];
-   $query = "SELECT * FROM interneBetriebsdatenHistorie ";
-   $query .= "WHERE archiviert = 'true'";
+	 $anlagenNr = $_POST['anlagenNr'];
+   $mstID = $_POST['mstID'];
+   $query = "SELECT * FROM interneBetriebsdatenHistorie AS T1 ";
+   $query .= "LEFT JOIN iMwUnits AS T2 ";
+   $query .= "ON T1.einheitAnl = T2.unt_ID ";
+   $query .= "WHERE archiviert = 'true' ";
+   $query .= "AND mstID = '$mstID' ";
 }
 elseif ($modus == "intBdeIMwGetHistSingle") {
-	$anlID = $_POST['anlID'];
+	$mstID = $_POST['mstID'];
 	$histID = $_POST['histID'];
    $query = "SELECT * FROM interneBetriebsdatenHistorie ";
    $query .= "WHERE archiviert = 'true'";
    $query .= "AND histID = '$histID' ";
-   $query .= "AND anl_ID = '$anlID' ";
+   $query .= "AND mstID = '$mstID' ";
 }
+//echo $query;die;
 
 $records = queryDB($conn, $query, "read");
 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);

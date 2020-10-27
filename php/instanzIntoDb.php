@@ -2801,14 +2801,14 @@ elseif ($id == "betrPar") {
         $tsql .= "VALUES ( '$tblName', '$parJson' ) " ;
     }
 }
-elseif($id == "intBdeIMwHistOk") { /*06-10-2020 History save intern Betriebsdaten*/
+elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdaten*/
 
  $modus = $_POST['modus'];
  
  if($modus == "save"){
    //echo '<pre>'; print_r($_POST);die;
     $anlID = $_POST['anlID'];
-    $liegID = $_POST['liegID'];
+    $mstID = $_POST['mstID'];
     $archiviert = $_POST['archiviert'];
     $bemerkung = $_POST['bemerkung'];
     $gueltigVon = $_POST['gueltigVon'];
@@ -2818,13 +2818,40 @@ elseif($id == "intBdeIMwHistOk") { /*06-10-2020 History save intern Betriebsdate
     $zeitintervallAnl = $_POST['zeitintervallAnl'];
     $einheitAnl = $_POST['einheitAnl'];
     $notizBdeIMw = $_POST['notizBdeIMw'];
-    $monthStartDate = $_POST['monthStartDate'];
-    $monthEndDate = $_POST['monthEndDate'];
-    $yearStartDate = $_POST['yearStartDate'];
-    $yearEndDate = $_POST['yearEndDate'];
+    $startDate = $_POST['startDate'];
+    $endDate = $_POST['endDate']; 
+    $ending = $_POST['ending'];  
 
-    $tsql = "INSERT INTO interneBetriebsdatenHistorie (anl_ID, liegID, archiviert,bemerkung,gueltigVon,gueltigBis,anlIMw,anlNrIMw,zeitintervallAnl,einheitAnl,notizBdeIMw,monthStartDate,monthEndDate,yearStartDate,yearEndDate,deleted) ";
-    $tsql .= "VALUES ('$anlID', '$liegID', '$archiviert', '$bemerkung', '$gueltigVon', '$gueltigBis', '$anlIMw', '$anlNrIMw', '$zeitintervallAnl', '$einheitAnl', '$notizBdeIMw', '$monthStartDate', '$monthEndDate', '$yearStartDate', '$yearEndDate','false') ";
+    $tsql = "INSERT INTO interneBetriebsdatenHistorie (anl_ID, mstID, archiviert,bemerkung,gueltigVon,gueltigBis,anlIMw,anlNrIMw,zeitintervallAnl,einheitAnl,notizBdeIMw,startDate,endDate,ending,deleted) ";
+    $tsql .= "VALUES ('$anlID', '$mstID', '$archiviert', '$bemerkung', '$gueltigVon', '$gueltigBis', '$anlIMw', '$anlNrIMw', '$zeitintervallAnl', '$einheitAnl', '$notizBdeIMw', '$startDate', '$endDate','$ending','false') ";
+  }
+}
+elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betriebsdaten*/
+
+ $modus = $_POST['modus'];
+ 
+ if($modus == "save"){
+   //echo '<pre>'; print_r($_POST);die;
+    $mstID = $_POST['mstID'];
+    $intTp_ID = $_POST['intTp_ID'];
+    $unt_ID = $_POST['unt_ID'];
+    $note = $_POST['note'];
+    $startDate = $_POST['startDate'];
+    $endDate = $_POST['endDate'];  
+    $ending = $_POST['ending'];  
+
+    $query="SELECT * FROM interneMesswerteConfig WHERE mst_ID = '$mstID'";
+    $records = queryDB($conn, $query, "read");
+
+    if(count($records) > 0){
+      $tsql = "UPDATE interneMesswerteConfig SET intTp_ID = '$intTp_ID', 
+      unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',ending = '$ending',note = '$note'";
+      $tsql .= "WHERE mst_ID = $mstID ";
+    }
+    else {
+      $tsql = "INSERT INTO interneMesswerteConfig (intTp_ID,unt_ID, mst_ID, startDate,endDate,ending,note) ";
+      $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$startDate', '$endDate', '$ending', '$note') ";
+    }  
   }
 }
 elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebsdaten*/
@@ -2836,6 +2863,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
     $anlID = $_POST['anlID'];
     $liegID = $_POST['liegID'];
     $histID = $_POST['histID'];
+    $mstID = $_POST['mstID'];
     $archiviert = $_POST['archiviert'];
     $bemerkung = $_POST['bemerkung'];
     $gueltigVon = $_POST['gueltigVon'];
@@ -2845,13 +2873,12 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
     $zeitintervallAnl = $_POST['zeitintervallAnl'];
     $einheitAnl = $_POST['einheitAnl'];
     $notizBdeIMw = $_POST['notizBdeIMw'];
-    $monthStartDate = $_POST['monthStartDate'];
-    $monthEndDate = $_POST['monthEndDate'];
-    $yearStartDate = $_POST['yearStartDate'];
-    $yearEndDate = $_POST['yearEndDate'];
+    $startDate = $_POST['startDate'];
+    $endDate = $_POST['endDate']; 
+    $ending = $_POST['ending'];  
 
-    $tsql = "UPDATE interneBetriebsdatenHistorie SET anlNrIMw = '$anlNrIMw' , zeitintervallAnl = '$zeitintervallAnl', einheitAnl = '$einheitAnl', notizBdeIMw = '$notizBdeIMw', bemerkung = '$bemerkung', gueltigVon = '$gueltigVon', gueltigBis = '$gueltigBis' ";
-    $tsql .= " WHERE anl_ID = '$anlID'";
+    $tsql = "UPDATE interneBetriebsdatenHistorie SET anlNrIMw = '$anlNrIMw' , zeitintervallAnl = '$zeitintervallAnl', einheitAnl = '$einheitAnl', notizBdeIMw = '$notizBdeIMw', bemerkung = '$bemerkung', gueltigVon = '$gueltigVon', gueltigBis = '$gueltigBis', startDate = '$startDate', endDate = '$endDate' , ending = '$ending'";
+    $tsql .= " WHERE mstID = '$mstID'";
     $tsql .= " AND histID = '$histID'";
 
   }
