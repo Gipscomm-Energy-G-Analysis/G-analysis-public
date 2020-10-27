@@ -10054,6 +10054,11 @@ const saveFormula =
         }, 2000);
     }
 
+const createVirtMessstelleHistory =
+    formula => {
+
+    }
+
 // Save a Messstellen formula and calculate historic data
 const virtMessstelleWithHistory =
     () => {

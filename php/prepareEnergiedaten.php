@@ -1,6 +1,6 @@
 <?php
 
-set_time_limit(0) ;
+set_time_limit(300) ;
 
 include('top-cache.php') ;
 error_reporting (-1) ;
@@ -20,7 +20,19 @@ $GLOBALS["connect"] = connectToDB(nameDB) ;
 
 // SET VIRTUAL MEASUREMENT POINT
 // -----------------------------
-const mstID = 69 ;
+
+const formula = "bXN0XzEzMCArIG1zdF8xMzM=" ;
+
+function getIDFromFormula($formula) {
+    $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
+    $query .= "WHERE Formula = '".$formula."'" ;
+
+    $result = queryDB($GLOBALS["connect"], $query, "read") ;
+
+    return $result[0]["mst_ID"] ;
+}
+
+$GLOBALS["mstID"] = (int)getIDFromFormula(formula) ;
 
 // Formula
 // mstID = 69
@@ -30,7 +42,7 @@ const mstID = 69 ;
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
 const startDate = "2017-12-31 23:00:00.000" ;
-const endDate =  "2018-07-00 06:00:00.000" ;
+const endDate =  "2018-08-01 06:00:00.000" ;
 
 // first 2017-12-31 23:00:00.000
 // last 2019-02-12 06:00:00.000
@@ -125,7 +137,7 @@ function roundTo($val, $toDigits) {
 
 function getMstFormulaRecord() {
     $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-    $query .= "WHERE mst_ID = ".mstID  ;
+    $query .= "WHERE mst_ID = ".$GLOBALS["mstID"]  ;
     return queryDB($GLOBALS["connect"], $query, "read") ;
 }
 
@@ -453,7 +465,7 @@ function testIfDataInDB($records) {
 
     function queryData() {
         $query = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten " ;
-        $query .= "WHERE mst_ID = ".mstID." " ;
+        $query .= "WHERE mst_ID = ".$GLOBALS["mstID"]." " ;
         $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".add15min(startDate)."', 121) AND CONVERT(varchar(50), '".add15min(endDate)."', 121) " ;
         $query .= "ORDER BY Time " ;
 
@@ -466,7 +478,7 @@ function testIfDataInDB($records) {
 
         $betreff = "Berechnete Energiedaten Konnten nicht in DB geschrieben werden. (G-Analysis)" ;
 
-        $emailText = "Dies betrifft die mst_ID = ".mstID." <br><br>" ;
+        $emailText = "Dies betrifft die mst_ID = ".$GLOBALS["mstID"]." <br><br>" ;
         $emailText .= "Zeitbereich = ".startDate." - ".endDate." <br><br>" ;
 
         eMail($empfaenger, $betreff, $emailText) ;
@@ -503,6 +515,7 @@ pipe(
 closeDbConn($GLOBALS["connect"]) ;
 
 unset($GLOBALS["connect"]) ;
+unset($GLOBALS["mstID"]) ;
 
 $end = hrtime(true) ;
 
