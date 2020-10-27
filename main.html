@@ -6876,13 +6876,15 @@
                                 <th>histID</th>
                                 <th>anl_ID</th>  
                                 <th>Start Date</th> 
-                                <th>End Date</th>     
-                                <th>anlIMw</th>                                
-                                <th>zeitintervallAnl</th>                               
-                                <th>notizBdeIMw</th>
-                                <th>bemerkung</th>
-                                <th>gueltigVon</th>
-                                <th>gueltigBis</th>
+                                <th>End Date</th>
+                                <th>Einheit</th>
+                                <th>Zeitintervall</th>     
+                                <th>Messstelle</th>
+                                <th>Anlage</th>
+                                <th>Notiz</th>
+                                <th>Bemerkung</th>
+                                <th>Gültig von</th>
+                                <th>Gültig bis</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -7547,44 +7549,51 @@
                 <img style="float:right;width:15px;" src="images/space1.png" alt="__">
             </div>
             <div class="infosBlock" >
-                        <div class="sectionHeader">
-                            <label>Allgemein</label>
-                        </div>
-                        <div class="controlDiv" style="display:none;">
-                            <label>Archiviert</label>
-                            <input id="archiviertIntBdeIMwEditor">
-                            <input id="anlIDEditor">
-                            <input id="histIDEditor">
-                        </div>
-                        <div class="controlDiv">
-                            <label for="intBdeIMwAnl">Messstelle</label>
-                            <input id="intBdeIMwAnl" name="intBdeIMwAnl" class="iMwEngHinz" >
-                        </div>
-                        <div class="controlDiv">
-                            <label for="intBdeIMwAnlNr">Anlage</label>
-                            <input id="intBdeIMwAnlNr" class="iMwEngHinz" >
-                        </div>
-                        <div class="controlDiv">
-                            <label for="intBdeIMwZeitintervallAnl">Zeitintervall</label>
-                            <select id="intBdeIMwZeitintervallAnl" class="iMwEngHinz" >
-                                <option value="0" selected></option>
-                                <option value="1">Tage</option>
-                                <option value="2">Wochen</option>
-                                <option value="3">Monate</option>
-                                <option value="4">Jahre</option>
-                            </select>
-                        </div>
-                        <div class="controlDiv zeitintervallAnl_1">
-                        <label for="tageMassEingDataAnlStartP">Starttag</label>
-                        <input type="text" id="tageMassEingDataAnlStartP" placeholder="" class="datepicker">
+                    <div class="sectionHeader">
+                        <label>Allgemein</label>
+                    </div>
+                    <div class="controlDiv" style="display:none;">
+                        <label>Archiviert</label>
+                        <input id="archiviertIntBdeIMw">
+                        <input id="anlIDEditor">
+                        <input id="histIDEditor">
+                    </div>
+                    <div class="controlDiv">
+                        <label for="anlIMw">Messstelle</label>
+                        <input id="anlIMw" class="iMwEngHinz" readonly>
+                    </div>
+                    <div class="controlDiv">
+                        <label for="anlNrIMw">Anlage</label>
+                        <input id="anlNrIMw" class="iMwEngHinz" readonly>
+                    </div>
+                    <div class="controlDiv">
+                        <label for="zeitintervallAnl">Zeitintervall</label>
+                        <select id="zeitintervallAnl" class="iMwEngHinz">
+                            <option value="0" selected></option>
+                            <option value="1">Tage</option>
+                            <option value="2">Wochen</option>
+                            <option value="3">Monate</option>
+                            <option value="4">Jahre</option>
+                        </select>
+                        <!-- <select id="zeitintervallAnl" class="iMwEngHinz">
+                            <option value="0" selected></option>
+                            <option value="1">Jahre </option>
+                            <option value="2">Monate</option>
+                            <option value="3">Wochen</option>
+                            <option value="4">Tage</option>
+                        </select> -->
                     </div>
                     <div class="controlDiv zeitintervallAnl_1">
-                        <label for="tageMassEingDataAnlEndeP">Endtag</label>
-                        <input type="text" id="tageMassEingDataAnlEndeP" placeholder="" class="datepicker">
+                        <label for="tageMassEingDataAnlStart">Starttag</label>
+                        <input type="text" id="tageMassEingDataAnlStart" placeholder="" class="datepicker">
+                    </div>
+                    <div class="controlDiv zeitintervallAnl_1">
+                        <label for="tageMassEingDataAnlEnde">Endtag</label>
+                        <input type="text" id="tageMassEingDataAnlEnde" placeholder="" class="datepicker">
                     </div> 
                     <div class="controlDiv zeitintervallAnl_2">
-                        <label for="wochenYMassEingDataAnlStartP">Startwochen</label>
-                        <select id="wochenWMassEingDataAnlStartP" class="wochenInputZeitintervallAnl">
+                        <label for="wochenYMassEingDataAnlStart">Startwochen</label>
+                        <select id="wochenWMassEingDataAnlStart" class="wochenInputZeitintervallAnl">
                             <option value="">Weeks</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -7641,11 +7650,11 @@
                             <option value="53">53</option>
                         </select>
                         kw
-                        <input type="text" id="wochenYMassEingDataAnlStartP" placeholder="" class="wochenInputZeitintervallAnl">
+                        <input type="text" id="wochenYMassEingDataAnlStart" placeholder="" class="wochenInputZeitintervallAnl">
                     </div>
                     <div class="controlDiv zeitintervallAnl_2">
-                        <label for="wochenYMassEingDataAnlEndeP">Endewochen</label>
-                        <select id="wochenWMassEingDataAnlEndeP" class="wochenInputZeitintervallAnl">
+                        <label for="wochenYMassEingDataAnlEnde">Endewochen</label>
+                        <select id="wochenWMassEingDataAnlEnde" class="wochenInputZeitintervallAnl">
                             <option value="">Weeks</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -7702,41 +7711,40 @@
                             <option value="53">53</option>
                         </select>
                         kw
-                        <input type="text" id="wochenYMassEingDataAnlEndeP" placeholder="" class="wochenInputZeitintervallAnl">
-                        </div>     
-                        <div class="controlDiv zeitintervallAnl_3">
-                            <label for="monateMassEingDataAnlStartP">Startmonate</label>
-                            <input type="text" id="monateMassEingDataAnlStartP" placeholder="" class="datepicker">
-                        </div>
-                        <div class="controlDiv zeitintervallAnl_3">
-                            <label for="monateMassEingDataAnlEndeP">Endemonate</label>
-                            <input type="text" id="monateMassEingDataAnlEndeP" placeholder="" class="datepicker">
-                        </div>                   
-                        <div class="controlDiv zeitintervallAnl_4">
-                            <label for="jahrMassEingDataAnlStartP">Startjahr</label>
-                            <input type="text" id="jahrMassEingDataAnlStartP" placeholder="">
-                        </div>
-                        <div class="controlDiv zeitintervallAnl_4">
-                            <label for="jahrMassEingDataAnlEndeP">Endejahr</label>
-                            <input type="text" id="jahrMassEingDataAnlEndeP" placeholder="">
-                        </div>
-                        <div class="controlDiv zeitintervallAnl_NoEnding" style="clear:left;">
-                            <label for="anlIMwNoEndingP">No Ending</label>
-                            <input id="anlIMwNoEndingP" type="checkbox" value="0">
-                        </div>
-                        <div class="controlDiv">
-                            <label for="intBdeIMwEinheitAnl">Einheit</label>
-                            <select id="intBdeIMwEinheitAnl" class="iMwEngHinz" readonly>
-                                <option> </option>
-                                <option value="1">Betriebsstunden</option>
-                                <option value="2">kWh</option>
-                            </select>
-                        </div>
-                        
-                        <div class="controlDiv" style="width:21.80cm;margin-top:10px;margin-bottom:10px;" readonly>
-                            <label>Notiz</label>
-                            <textarea rows="3" id="intBdeIMwNotizBdeIMw" class="iMwHinz" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
-                        </div>
+                        <input type="text" id="wochenYMassEingDataAnlEnde" placeholder="" class="wochenInputZeitintervallAnl">
+                    </div>     
+                    <div class="controlDiv zeitintervallAnl_3">
+                        <label for="monateMassEingDataAnlStart">Startmonate</label>
+                        <input type="text" id="monateMassEingDataAnlStart" placeholder="" class="datepicker">
+                    </div>
+                    <div class="controlDiv zeitintervallAnl_3">
+                        <label for="monateMassEingDataAnlEnde">Endemonate</label>
+                        <input type="text" id="monateMassEingDataAnlEnde" placeholder="" class="datepicker">
+                    </div>                   
+                    <div class="controlDiv zeitintervallAnl_4">
+                        <label for="jahrMassEingDataAnlStart">Startjahr</label>
+                        <input type="text" id="jahrMassEingDataAnlStart" placeholder="">
+                    </div>
+                    <div class="controlDiv zeitintervallAnl_4">
+                        <label for="jahrMassEingDataAnlEnde">Endejahr</label>
+                        <input type="text" id="jahrMassEingDataAnlEnde" placeholder="">
+                    </div>
+                    <div class="controlDiv zeitintervallAnl_NoEnding" style="clear:left;">
+                        <label for="anlIMwNoEnding">No Ending</label>
+                        <input id="anlIMwNoEnding" type="checkbox" value="0">
+                    </div>
+                    <div class="controlDiv">
+                        <label for="einheitAnl">Einheit</label>
+                        <select id="einheitAnl" class="iMwEngHinz">
+                            <option> </option>
+                            <option value="1">Betriebsstunden</option>
+                            <option value="2">kWh</option>
+                        </select>
+                    </div>
+                    <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
+                        <label>Notiz</label>
+                        <textarea rows="3" id="notizBdeIMw" class="iMwHinz" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                    </div>
                         <div class="controlDiv">
                             <label for="bemerkungHistIntBdeIMwEditor">bemerkung</label>
                             <input id="bemerkungHistIntBdeIMwEditor" class="iMwEngHinz" >

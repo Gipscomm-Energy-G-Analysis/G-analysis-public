@@ -26,6 +26,8 @@ elseif ($modus == "intBdeIMwGetHist") {
    $query = "SELECT * FROM interneBetriebsdatenHistorie AS T1 ";
    $query .= "LEFT JOIN iMwUnits AS T2 ";
    $query .= "ON T1.einheitAnl = T2.unt_ID ";
+   $query .= "LEFT JOIN intervalType AS T3 ";
+   $query .= "ON T1.zeitintervallAnl = T3.intTp_ID ";
    $query .= "WHERE archiviert = 'true' ";
    $query .= "AND mstID = '$mstID' ";
 }

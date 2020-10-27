@@ -15087,7 +15087,7 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                 var a = b.row(this).data();
                 //console.log(a);    
                 resetFormAllgemein('infosIntBetriebsdaten');           
-                keinZeitIntervallZugewiesenDblClickRow(a[0]);
+                keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
                 $("#mstID").val(a[0]);
                 $("#anlIMw").val(a[1]);
                 $("#anlNrIMw").val(a[2]);  
@@ -15112,27 +15112,27 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
 
 
 //30-09-2020 dynamic function for validations #zeitintervallAnl
-function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl){
+function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId){
         var startDate = new Date(start);
         var endDate = new Date(end);
         if(zeitintervallAnl == 2){
             if (startDate > endDate){
                 alert("End month should be greater then start month");
-                $(".zeitintervallAnl_2 input").val("");
-                $(".zeitintervallAnl_2 select").val("");
+                $("." + sId + " .zeitintervallAnl_2 input").val("");
+                $("." + sId + " .zeitintervallAnl_2 select").val("");
             }
         }
         else if(zeitintervallAnl == 3){
             if (startDate > endDate){
                 alert("End month should be greater then start month");
-                $("#monateMassEingDataAnlStart").val("");
-                $("#monateMassEingDataAnlEnde").val("");
+                $("." + sId + " #monateMassEingDataAnlStart").val("");
+                $("." + sId + " #monateMassEingDataAnlEnde").val("");
             }
         }else if(zeitintervallAnl == 4){
             if (startDate > endDate){
                 alert("End year should be greater then start year");
-                $("#jahrMassEingDataAnlStart").val("");
-                $("#jahrMassEingDataAnlEnde").val("");
+                $("." + sId + " #jahrMassEingDataAnlStart").val("");
+                $("." + sId + " #jahrMassEingDataAnlEnde").val("");
             }
         }
         
@@ -15261,16 +15261,16 @@ function intBdeIMwHistOkGetHistorie(){
             var b = a.length;
             tblHistorieIntBdeIMw.clear().draw();
                 for (var e = 0; e < b; e++){ 
-                    tblHistorieIntBdeIMw.row.add( [e + 1,a[e].histID,a[e].mstID, a[e].startDate, a[e].endDate, a[e].anlIMw, a[e].zeitintervallAnl, a[e].notizBdeIMw, a[e].bemerkung, a[e].gueltigVon, a[e].gueltigBis,a[e].unit]).draw(); 
+                    tblHistorieIntBdeIMw.row.add( [e + 1,a[e].histID,a[e].mstID, a[e].startDate, a[e].endDate,a[e].unit, a[e].type, a[e].anlIMw, a[e].anlNrIMw, a[e].notizBdeIMw, a[e].bemerkung, a[e].gueltigVon, a[e].gueltigBis]).draw(); 
                     //tblHistorieIntBdeIMw.column([0,1]).visible(!1);
                     $("#tblHistorieIntBdeIMw tr").css("cursor", "pointer");
                     $("#tblHistorieIntBdeIMw").off("dblclick", "tr");
                 } 
-                var columnHide = tblHistorieIntBdeIMw.columns([0,1,2,3,4,6]);
+                var columnHide = tblHistorieIntBdeIMw.columns([0,1,2,3,4]);
                 columnHide.visible(! columnHide.visible() );
                 $("#tblHistorieIntBdeIMw").on("dblclick", "tr", function() {
                     var a = tblHistorieIntBdeIMw.row(this).data();
-                    intBdeIMwDatensatzAusHistorieEinlesenAnl(a[1],a[2]);
+                    intBdeIMwDatensatzAusHistorieEinlesenAnl(a[1],a[2],'intBdeIMwHistorieContainer');
             })
         }
     })
@@ -15278,7 +15278,7 @@ function intBdeIMwHistOkGetHistorie(){
 
 
 /*Get history details using anl_ID*/
-function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID){
+function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
     $('#intBdeIMwHistorieContainer').dialog({  height: 400,
         width: 900,
         resize: "auto",
@@ -15295,7 +15295,7 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID){
 
         $("button#intBdeIMwHistSpeichernDblClick").on("click", function() {
             $("#archiviertIntBdeIMw").val("true");          
-            intBdeIMwHistSpeichernMethodDblClickEditorPopUp();
+            intBdeIMwHistSpeichernMethodDblClickEditorPopUp('intBdeIMwHistorieContainer');
         });
     },
     close: function() {
@@ -15317,20 +15317,20 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID){
             a = JSON.parse(a);
             var b = a.length;
             console.log(a);
-            $("#intBdeIMwAnl").val(a[0].anlIMw);
-            $("#intBdeIMwAnlNr").val(a[0].anlNrIMw);
-            $("#intBdeIMwZeitintervallAnl").val(a[0].zeitintervallAnl);
-            $("#intBdeIMwEinheitAnl").val(a[0].einheitAnl);
-            $("#intBdeIMwNotizBdeIMw").val(a[0].notizBdeIMw);
-            $("#anlIDEditor").val(a[0].anl_ID);
-            $("#histIDEditor").val(a[0].histID);
-            $("#archiviertIntBdeIMwEditor").val("true");            
-            $("#bemerkungHistIntBdeIMwEditor").val(a[0].bemerkung);
-            $("#gueltigVonHistIntBdeIMwEditor").val(a[0].gueltigVon);
-            $("#gueltigBisHistIntBdeIMwEditor").val(a[0].gueltigBis);
-            zeitintervallAnlInputsVisibleInvisiblePopup(a[0].zeitintervallAnl,a[0].startDate,a[0].endDate,a[0].ending);  
-            $("#anlIMwNoEndingP").prop('checked', a[0].ending);
-            $("#anlIMwNoEndingP").val(a[0].ending);
+            $("." + sId + " #anlIMw").val(a[0].anlIMw);
+            $("." + sId + " #anlNrIMw").val(a[0].anlNrIMw);
+            $("." + sId + " #zeitintervallAnl").val(a[0].zeitintervallAnl);
+            $("." + sId + " #einheitAnl").val(a[0].einheitAnl);
+            $("." + sId + " #notizBdeIMw").val(a[0].notizBdeIMw);
+            $("." + sId + " #anlIDEditor").val(a[0].anl_ID);
+            $("." + sId + " #histIDEditor").val(a[0].histID);
+            $("." + sId + " #archiviertAnl").val("true");            
+            $("." + sId + " #bemerkungHistIntBdeIMwEditor").val(a[0].bemerkung);
+            $("." + sId + " #gueltigVonHistIntBdeIMwEditor").val(a[0].gueltigVon);
+            $("." + sId + " #gueltigBisHistIntBdeIMwEditor").val(a[0].gueltigBis);
+            zeitintervallAnlInputsVisibleInvisible(a[0].zeitintervallAnl,a[0].startDate,a[0].endDate,a[0].ending,sId);  
+            $("." + sId + " #anlIMwNoEnding").prop('checked', a[0].ending);
+            $("." + sId + " #anlIMwNoEnding").val(a[0].ending);
 
         }
     })
@@ -15338,7 +15338,8 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID){
 
 
 /*Ajax Call for the Manuel module serach 18-09-2020*/
-function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(){
+function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
+    //alert("." + sId + " anlIDEditor");
      var zeitintervallAnl = $("#intBdeIMwZeitintervallAnl").val();
      var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosIntBetriebsdaten');
      startDate =dates[0];
@@ -15350,23 +15351,24 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(){
         data: {
             id: "intBdeIMwHistEditor",
             modus: "update",
-            anlID: $("#anlIDEditor").val(),
-            histID: $("#histIDEditor").val(),
+            anlID: $("." + sId + " #anlIDEditor").val(),
+            histID: $("." + sId + " #histIDEditor").val(),
             nameDB: $("#nameDB").val(),
             liegID: $("#liegID").val(),
             mstID:$("#mstID").val(),
-            archiviert: $("#archiviertIntBdeIMwEditor").val(),
-            bemerkung: $("#bemerkungHistIntBdeIMwEditor").val(),
-            gueltigVon: $("#gueltigVonHistIntBdeIMwEditor").val(),
-            gueltigBis: $("#gueltigBisHistIntBdeIMwEditor").val(),            
-            anlIMw: $("#intBdeIMwAnl").val(),
-            anlNrIMw: $("#intBdeIMwAnlNr").val(),
-            zeitintervallAnl: $("#intBdeIMwZeitintervallAnl").val(),
-            einheitAnl: $("#intBdeIMwEinheitAnl").val(),
-            notizBdeIMw: $("#intBdeIMwNotizBdeIMw").val(),
+            histID:$("." + sId + " #histIDEditor").val(),
+            archiviert: $("." + sId + " #archiviertIntBdeIMw").val(),
+            bemerkung: $("." + sId + " #bemerkungHistIntBdeIMwEditor").val(),
+            gueltigVon: $("." + sId + " #gueltigVonHistIntBdeIMwEditor").val(),
+            gueltigBis: $("." + sId + " #gueltigBisHistIntBdeIMwEditor").val(),            
+            anlIMw: $("." + sId + " #anlIMw").val(),
+            anlNrIMw: $("." + sId + " #anlNrIMw").val(),
+            zeitintervallAnl: $("." + sId + " #zeitintervallAnl").val(),
+            einheitAnl: $("." + sId + " #einheitAnl").val(),
+            notizBdeIMw: $("." + sId + " #notizBdeIMw").val(),
             startDate:startDate,
             endDate:endDate,
-            ending:$("#anlIMwNoEndingP").val(),
+            ending:$("." + sId + " #anlIMwNoEnding").val(),
         },
         success: function(a) {
             alert("Verlauf erfolgreich aktualisiert");
@@ -15380,7 +15382,7 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(){
 /*Validation for the start date and end date*/
 $(document).ready(function(){ 
     datePickerForInterneBetriebsdaten('infosIntBetriebsdaten');
-    datePickerForInterneBetriebsdaten('intBdeIMwHistorieDiv');
+    datePickerForInterneBetriebsdaten('intBdeIMwHistorieContainer');
     datePickerForInterneBetriebsdaten('intBdeIMwHistoriePopUp');
 });
 
@@ -15396,9 +15398,9 @@ function datePickerForInterneBetriebsdaten(sId){
             $(this).datepicker('setDate', new Date(year, month, 1));
             var strtStr1 = $(this).val();
             var start1 = strtStr1.split('.');
-            var endStr1 = $("#monateMassEingDataAnlEnde").val();
+            var endStr1 = $("." + sId + " #monateMassEingDataAnlEnde").val();
             var end1 = endStr1.split('.');
-            var zeitintervallAnl = $("#zeitintervallAnl").val();
+            var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId); 
         }
     });    
@@ -15420,11 +15422,11 @@ function datePickerForInterneBetriebsdaten(sId){
             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
             $(this).datepicker('setDate', new Date(year, month, 1));
-            var strtStr2 = $("#monateMassEingDataAnlStart").val();
+            var strtStr2 = $("." + sId + " #monateMassEingDataAnlStart").val();
             var start2 = strtStr2.split('.');
             var endStr2 = $(this).val();   
             var end2 = endStr2.split('.'); 
-            var zeitintervallAnl = $("#zeitintervallAnl").val();        
+            var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();        
             validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId) 
         }
     });    
@@ -15449,8 +15451,8 @@ function datePickerForInterneBetriebsdaten(sId){
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
             $(this).datepicker('setDate', new Date(year, month, 1));
             var start3 = $(this).val();
-            var end3 = $("#jahrMassEingDataAnlEnde").val();
-            var zeitintervallAnl = $("#zeitintervallAnl").val();
+            var end3 = $("." + sId + " #jahrMassEingDataAnlEnde").val();
+            var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             validateZeitintervallAnlSelectOpt(start3,end3,zeitintervallAnl,sId);
         }
     });    
@@ -15473,9 +15475,9 @@ function datePickerForInterneBetriebsdaten(sId){
             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
             $(this).datepicker('setDate', new Date(year, month, 1)); 
-            var start4 = $("#jahrMassEingDataAnlStart").val();
+            var start4 = $("." + sId + " #jahrMassEingDataAnlStart").val();
             var end4 = $(this).val();    
-            var zeitintervallAnl = $("#zeitintervallAnl").val();        
+            var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();        
             validateZeitintervallAnlSelectOpt(start4,end4,zeitintervallAnl,sId);
         }
     });    
@@ -15501,8 +15503,8 @@ function datePickerForInterneBetriebsdaten(sId){
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
             $(this).datepicker('setDate', new Date(year, month, 1));
             var start3 = $(this).val();
-            var end3 = $("#wochenYMassEingDataAnlEnde").val();
-            var zeitintervallAnl = $("#zeitintervallAnl").val();
+            var end3 = $("." + sId + " #wochenYMassEingDataAnlEnde").val();
+            var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             validateZeitintervallAnlSelectOpt(start3,end3,zeitintervallAnl,sId);
         }
     });    
@@ -15525,9 +15527,9 @@ function datePickerForInterneBetriebsdaten(sId){
             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
             $(this).datepicker('setDate', new Date(year, month, 1)); 
-            var start4 = $("#wochenYMassEingDataAnlStart").val();
+            var start4 = $("." + sId + " #wochenYMassEingDataAnlStart").val();
             var end4 = $(this).val();    
-            var zeitintervallAnl = $("#zeitintervallAnl").val();        
+            var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();        
             validateZeitintervallAnlSelectOpt(start4,end4,zeitintervallAnl,sId);
         }
     });    
@@ -15596,7 +15598,7 @@ function keinZeitIntervallZugewiesen(){
                 var a = b.row(this).data();
                 //console.log(a);    
                 resetFormAllgemein('infosIntBetriebsdaten');           
-                keinZeitIntervallZugewiesenDblClickRow(a[0]);
+                keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
                 $("#mstID").val(a[0]);
                 $("#anlIMw").val(a[1]);
                 $("#anlNrIMw").val(a[2]);                
@@ -15604,7 +15606,7 @@ function keinZeitIntervallZugewiesen(){
         })
 }
 
-function keinZeitIntervallZugewiesenDblClickRow(mstID){
+function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
         $.ajax({
         type: "POST",
         async: !0,
@@ -15619,12 +15621,12 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID){
             var b = a.length;
             //console.log(a);
             if (b>0) {
-                $("#zeitintervallAnl").val(a[0]['intTp_ID']);
-                $("#einheitAnl").val(a[0]['unt_ID']);
-                $("#notizBdeIMw").val(a[0]['note']);
+                $("." + sId + " #zeitintervallAnl").val(a[0]['intTp_ID']);
+                $("." + sId + " #einheitAnl").val(a[0]['unt_ID']);
+                $("." + sId + " #notizBdeIMw").val(a[0]['note']);
                 zeitintervallAnlInputsVisibleInvisible(a[0]['intTp_ID'],a[0]['startDate'],a[0]['endDate'],a[0]['ending'],'infosIntBetriebsdaten'); 
-                $("#anlIMwNoEnding").prop('checked', a[0]['ending']);
-                $("#anlIMwNoEnding").val(a[0]['ending']);
+                $("." + sId + " #anlIMwNoEnding").prop('checked', a[0]['ending']);
+                $("." + sId + " #anlIMwNoEnding").val(a[0]['ending']);
              }
         }
     })
@@ -15766,93 +15768,6 @@ function resetFormAllgemein(sId){
     $("." + sId + " #anlNrIMw").val("");
     $("." + sId + " #notizBdeIMw").val("");
 }
-
-
-function zeitintervallAnlInputsVisibleInvisiblePopup(zeitIntVal,startDate,endDate,ending){
-        $(".zeitintervallAnl_1").hide();
-        $(".zeitintervallAnl_2").hide();
-        $(".zeitintervallAnl_3").hide();
-        $(".zeitintervallAnl_4").hide();
-        $(".zeitintervallAnl_NoEnding").hide();
-
-        $("#monateMassEingDataAnlEndeP").prop('disabled', false);
-        $("#jahrMassEingDataAnlEndeP").prop('disabled', false);
-        $("#tageMassEingDataAnlEndeP").prop('disabled', false);
-        $("#anlIMwNoEnding").prop('checked', false);
-
-        $(".zeitintervallAnl_1 input").val("");
-        $(".zeitintervallAnl_2 input").val("");
-        $(".zeitintervallAnl_3 input").val("");
-        $(".zeitintervallAnl_4 input").val("");
-           if(zeitIntVal == 1){
-                $(".zeitintervallAnl_1").show();
-                $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").show();
-                $("#tageMassEingDataAnlStartP").val(startDate);
-                $("#tageMassEingDataAnlEndeP").val(endDate);
-                if(ending==1){
-                    $("#tageMassEingDataAnlEndeP").prop('disabled', true);
-                }else{
-                     $("#tageMassEingDataAnlEndeP").prop('disabled', false);
-                }   
-           }else if(zeitIntVal == 2){
-                $(".zeitintervallAnl_1").hide();
-                $(".zeitintervallAnl_2").show();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").show();
-
-                var startDateSplit = startDate.split('-');
-                var endDateSplit = endDate.split('-');
-                $("#wochenWMassEingDataAnlStartP").val(startDateSplit[0]);
-                $("#wochenYMassEingDataAnlStartP").val(startDateSplit[1]);
-                $("#wochenWMassEingDataAnlEndeP").val(endDateSplit[0]);
-                $("#wochenYMassEingDataAnlEndeP").val(endDateSplit[1]);
-                if(ending==1){
-                    $("#wochenWMassEingDataAnlEndeP").prop('disabled', true);
-                    $("#wochenYMassEingDataAnlEndeP").prop('disabled', true);
-                }else{
-                     $("#wochenWMassEingDataAnlEndeP").prop('disabled', false);
-                     $("#wochenYMassEingDataAnlEndeP").prop('disabled', false);
-                }  
-           }else if(zeitIntVal == 3){
-                $(".zeitintervallAnl_1").hide();
-                $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").show();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").show();
-                $("#monateMassEingDataAnlStartP").val(startDate);
-                $("#monateMassEingDataAnlEndeP").val(endDate); 
-                if(ending==1){
-                    $("#monateMassEingDataAnlEndeP").prop('disabled', true);
-                }else{
-                     $("#monateMassEingDataAnlEndeP").prop('disabled', false);
-                }          
-           }else if(zeitIntVal == 4){
-                $(".zeitintervallAnl_1").hide();
-                $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").show();
-                $(".zeitintervallAnl_NoEnding").show();
-                $("#jahrMassEingDataAnlStartP").val(startDate);
-                $("#jahrMassEingDataAnlEndeP").val(endDate);
-                if(ending==1){
-                    $("#jahrMassEingDataAnlEndeP").prop('disabled', true);
-                }else{
-                     $("#jahrMassEingDataAnlEndeP").prop('disabled', false);
-                }
-           }else{
-                $(".zeitintervallAnl_1").hide();
-                $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").hide();
-           } 
- }
-/*Interne Messwerte End 20-10-2020*/
-
 
 function returnStartDateAndEndDate(zeitintervallAnl,sId){
         var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();

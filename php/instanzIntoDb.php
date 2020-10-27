@@ -2859,8 +2859,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
  $modus = $_POST['modus'];
   
  if($modus == "update"){
-   //echo '<pre>'; print_r($_POST);die;
-    $anlID = $_POST['anlID'];
+  // echo '<pre>'; print_r($_POST);die;
     $liegID = $_POST['liegID'];
     $histID = $_POST['histID'];
     $mstID = $_POST['mstID'];

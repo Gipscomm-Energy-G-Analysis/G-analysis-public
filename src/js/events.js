@@ -3526,7 +3526,7 @@ $("#DkFeSpeichern").click(function() {
         $(".zeitintervallAnl_4").hide();
         $(".zeitintervallAnl_NoEnding").hide();
         $("#zeitintervallAnl").change(function(){
-           //alert($(this).val());
+            
         $("#monateMassEingDataAnlEnde").prop('disabled', false);
         $("#jahrMassEingDataAnlEnde").prop('disabled', false);
         $("#tageMassEingDataAnlEnde").prop('disabled', false);
