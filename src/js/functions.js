@@ -10039,7 +10039,7 @@ const readyToSave =
     || isClosingParentheses(getLastElement(idString)) )
 
 // Save a Messstellen formula
-const saveVirtMessstelleFormula =
+const saveFormula =
     () => {
         const formula = {
             modus: $("#bermstmod").val(),
@@ -10057,7 +10057,7 @@ const saveVirtMessstelleFormula =
 // Save a Messstellen formula and calculate historic data
 const virtMessstelleWithHistory =
     () => {
-        saveVirtMessstelleFormula()
+        saveFormula()
         $("#virtMessstelleSave").dialog("close")
         alert("Save and calculate historic data")
     }
@@ -10065,7 +10065,7 @@ const virtMessstelleWithHistory =
 // Save a Messstellen formula without calculating historic data
 const virtMessstelleWithoutHistory =
     () => {
-        saveVirtMessstelleFormula()
+        saveFormula()
         $("#virtMessstelleSave").dialog("close")
         alert("Save without historic data calculation")
     }

@@ -112,7 +112,7 @@ const scpFormula =
                                 underscoreSplit (ins);
 
                             const retVal =
-                                equal(insRef[0]) ("bdeProd") ?
+                                equal(insRef[0]) ("bdeprod") ?
                                 rec[ins.split("-")[1]] :
                                     equal(insRef[0]) ("mst") &&
                                     equal(insRef[1]) (rec.mst_ID) ?

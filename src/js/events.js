@@ -172,7 +172,12 @@ $(document).ready(function() {
     });
     $("#formelSpeichern").click(function() {
         if(readyToSave($("#formelIdDarstellung").val())) {
-            virtMessstelleSaveDialog()
+            if ($("#bermstmod").val() === "Virtuelle Messstelle") {
+                virtMessstelleSaveDialog()
+            }
+            else {
+                saveFormula()
+            }
         }
         else {
             alert("Dies ist keine gültige Formel. Nur wenn alle Klammern geschlossen sind und das letzte Element entweder eine schließende Klammer, eine Zahl oder eine Instanz ist, ist die Formel gültig.")
@@ -1393,7 +1398,7 @@ $(document).ready(function() {
         for (var b = 1; b < Math.floor(a) + 1; b++) $("#masseneingabeNameIMw input:nth-child(" + b + ")").css("visibility", "hidden")
     });
     $("#bermstmod").change(function() {
-        "Berechnung" == this.value ? ($(".berFormel").css("display", "block"), $(".knzFormel").css("display", "none"), $("#formelSuchenTyp").val("mst")) :
+        "Virtuelle Messstelle" == this.value ? ($(".berFormel").css("display", "block"), $(".knzFormel").css("display", "none"), $("#formelSuchenTyp").val("mst")) :
             "Kennzahl" == this.value ? ($(".berFormel").css("display", "none"), $(".knzFormel").css("display", "block"), $("#formelSuchenTyp").val("knz")) : logToConsole('$("#bermstmod").change()', "ERROR", "Something went wrong!")
     });
     $("#formelfeldLeeren").click(function() {
