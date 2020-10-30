@@ -1,143 +1,30 @@
 <?php
 
-set_time_limit(300) ;
+set_time_limit(0) ;
 
 include('top-cache.php') ;
 error_reporting (-1) ;
 ini_set ('display_errors', 'On') ;
 
-
+require 'helpers.php' ;
 require 'DbOperations.php' ;
 require 'Matex.php' ;
 require 'EMail_swift.php';
 
-// SET DB
-// ------
-const nameDB = "012_spiess" ;
-
 // CONNECT TO DB
-$GLOBALS["connect"] = connectToDB(nameDB) ;
+$GLOBALS["connect"] = connectToDB($_GET['nameDB']) ;
 
-// SET VIRTUAL MEASUREMENT POINT
-// -----------------------------
-
-const formula = "bXN0XzEzMCArIG1zdF8xMzM=" ;
-
-function getIDFromFormula($formula) {
-    $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-    $query .= "WHERE Formula = '".$formula."'" ;
-
-    $result = queryDB($GLOBALS["connect"], $query, "read") ;
-
-    return $result[0]["mst_ID"] ;
-}
-
-$GLOBALS["mstID"] = (int)getIDFromFormula(formula) ;
-
-// Formula
-// mstID = 69
-// [M-Verbraucher-Trafo-8] = [M613] + [M610] * [test]
-// mst_159 + mst_160 * eprdkfe_1
+// SET VIRTUAL MEASUREMENT POINT ID
+const mstID = $_GET['mstID'] ;
 
 // SET START AND END DATE FOR CALCULATION
 // ------------------------------
-const startDate = "2017-12-31 23:00:00.000" ;
-const endDate =  "2018-08-01 06:00:00.000" ;
-
-// first 2017-12-31 23:00:00.000
-// last 2019-02-12 06:00:00.000
-
-// HELPERS
-// -------
-// Higher level function which applies a passed function on a specified field
-// of a record and returns the modified record
-function actionOn($record, $field, $fn) {
-    $record[$field] = $fn($record[$field]) ;
-
-    return $record ;
-}
-
-function head($arr) {
-    return $arr[0] ;
-}
-
-function pipe($fns) {
-    $results = [head($fns)] ;
-    for($i = 1; $i < count($fns); $i++){
-        array_push($results, $fns[$i]($results[$i - 1])) ;
-    }
-    return $results ;
-}
-
-// Function which as the name suggests, splits a string at spaces
-function splitSpace($string) {
-    return explode(" ", $string) ;
-}
-
-// Function that splits a string at underlines
-function splitUnderline($string) {
-    return explode("_", $string) ;
-}
-
-// Remove duplicates in multidim array
-function unique_multidim_array($array, $key) {
-    $temp_array = array();
-    $i = 0;
-    $key_array = array();
-
-    foreach($array as $val) {
-        if (!in_array($val[$key], $key_array)) {
-            $key_array[$i] = $val[$key];
-            $temp_array[$i] = $val;
-        }
-        $i++;
-    }
-    return $temp_array;
-}
-
-function array_flatten($array) {
-  if (!is_array($array)) {
-    return false;
-  }
-  $result = array();
-  foreach ($array as $key => $value) {
-    if (is_array($value)) {
-      $result = array_merge($result, array_flatten($value));
-    } else {
-      $result = array_merge($result, array($key => $value));
-    }
-  }
-  return $result;
-}
-
-function flipDiagonally($arr) {
-    $out = array();
-    foreach ($arr as $key => $subarr) {
-        foreach ($subarr as $subkey => $subvalue) {
-            $out[$subkey][$key] = $subvalue;
-        }
-    }
-    return $out;
-}
-
-function equalLength($arr1, $arr2) {
-    return count($arr1) === count($arr2) ;
-}
-
-function noMatchRecord($record1, $record2) {
-    return $record1 !== $record2 ;
-}
-
-function roundTo($val, $toDigits) {
-    return round($val * 10 ** $toDigits) / 10 ** $toDigits ;
-}
-
-// END HELPERS
-//------------
+const startDate = $_GET['startDate'] ;
+const endDate =  $_GET['endDate'] ;
 
 function getMstFormulaRecord() {
     $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-    $query .= "WHERE mst_ID = ".$GLOBALS["mstID"]  ;
+    $query .= "WHERE mst_ID = ".  ;
     return queryDB($GLOBALS["connect"], $query, "read") ;
 }
 
@@ -154,11 +41,11 @@ function splitFormula($record) {
 }
 
 function isMst($identifier) {
-    return splitUnderline($identifier)[0] === "mst" ;
+    return splitUnderscore($identifier)[0] === "mst" ;
 }
 
 function isKorFac($identifier) {
-    return splitUnderline($identifier)[0] === "eprdkfe" ;
+    return splitUnderscore($identifier)[0] === "eprdkfe" ;
 }
 
 function isMstOrKorFac($identifier) {
@@ -166,17 +53,7 @@ function isMstOrKorFac($identifier) {
 }
 
 function getID($identifier) {
-    return splitUnderline($identifier)[1] ;
-}
-
-function dateTimeToString($dateObject) {
-    return $dateObject->format('Y-m-d H:i:s.u') ;
-}
-
-function add15min($date) {
-    $dateTime = new DateTime($date);
-    $dateTime->modify('+15 minutes');
-    return $dateTime->format('Y-m-d H:i:s.000000'); ;
+    return splitUnderscore($identifier)[1] ;
 }
 
 function getDataFormula($formulaRecord) {
@@ -234,7 +111,6 @@ function getDataFormula($formulaRecord) {
     return [$formulaRecord, getDataArrays($mstsOrKorFacs)] ;
 }
 
-// Calculates Level-1 Formulas
 function prepareForCalculation($records) {
 
     // Assigned vars for array of mstFormulas records and energy records
@@ -360,7 +236,6 @@ function prepareForCalculation($records) {
 
     return fillDateGapsAllEnergyData($formulaRecord, $formulaDataRecords) ;
 }
-// -------------------------------------------
 
 function calculateFormulas($records) {
 
@@ -430,10 +305,6 @@ function writeToDB($records) {
         .$record["ConvFactor"].")" ;
     }
 
-    function splitArray($size, $records) {
-        return array_chunk($records, $size) ;
-    }
-
     function buildValuesString($records) {
         return substr(array_reduce($records, 'buildValueString'), 1) ;
     }
@@ -458,18 +329,29 @@ function writeToDB($records) {
     return $records ;
 }
 
-// Only checks if the the record count is the same !
 function testIfDataInDB($records) {
 
     $initialRecords = $records ;
 
     function queryData() {
         $query = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten " ;
-        $query .= "WHERE mst_ID = ".$GLOBALS["mstID"]." " ;
+        $query .= "WHERE mst_ID = ".." " ;
         $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".add15min(startDate)."', 121) AND CONVERT(varchar(50), '".add15min(endDate)."', 121) " ;
         $query .= "ORDER BY Time " ;
 
         return queryDB($GLOBALS["connect"], $query, "read") ;
+    }
+
+    function getURL() {
+        return implode("/",tail(tail(explode("/", $_SERVER['REQUEST_URI'])))) ;
+    }
+
+    function setExecutedTrue() {
+        $query = "UPDATE phpScriptsToExecute " ;
+        $query .= "SET dateExec = ".getdate().", executed = 'true' " ;
+        $query .= "WHERE pathScript= '".getURL()."'" ;
+
+        queryDB(connectToDB("gipscomm"), $query, "write") ;
     }
 
     function sendAlertEmail() {
@@ -478,7 +360,7 @@ function testIfDataInDB($records) {
 
         $betreff = "Berechnete Energiedaten Konnten nicht in DB geschrieben werden. (G-Analysis)" ;
 
-        $emailText = "Dies betrifft die mst_ID = ".$GLOBALS["mstID"]." <br><br>" ;
+        $emailText = "Dies betrifft die mst_ID = ".." <br><br>" ;
         $emailText .= "Zeitbereich = ".startDate." - ".endDate." <br><br>" ;
 
         eMail($empfaenger, $betreff, $emailText) ;
@@ -490,6 +372,7 @@ function testIfDataInDB($records) {
             sendAlertEmail() ;
         }
         else {
+            setExecutedTrue() ;
             print_r("TRUE") ;
         }
         return !$sameLength ;
@@ -515,7 +398,6 @@ pipe(
 closeDbConn($GLOBALS["connect"]) ;
 
 unset($GLOBALS["connect"]) ;
-unset($GLOBALS["mstID"]) ;
 
 $end = hrtime(true) ;
 
