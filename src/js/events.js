@@ -1225,6 +1225,8 @@ $(document).ready(function() {
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id)
         addExtraWidthToDynamischeFaktor();
+        datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
+        $("#nextPrevMstID").val($("#mstID").val());
     });
     $("#manMap, #orgMap, #liegMap, #berMap").click(function() {
         mapErstellen(this.id, $("#selectMap").val())
@@ -3396,7 +3398,6 @@ $("#DkFeSpeichern").click(function() {
     /*27-04-2020 first button functionality for the dynamische korrektor faktor */
 
     $(".formatDynamicSelOptRow1").change(function() {
-
         //addValidateClassOnFormatDynamicSelection(selectedOptionRow1);
             var fktr = $('.auswahlTypierungFaktorDKff').val();
             var type = $(".typeDynamicCF").val();
@@ -3439,17 +3440,6 @@ $("#DkFeSpeichern").click(function() {
         $("#calculationTypeID").val(calculationTypeID);
         $("#ePrdDKFECalcID").val(calculationTypeID);
         getDynamischeKrktrFaktorDeleteOptClickValues(calculationTypeID);
-
-       /* var trOdd = $(this).closest('tr').parents('tr');
-        var prevtrOdd = trOdd.prev('tr')[1];
-        var dataOdd = tblGetDyanamicheKorrekturfaktoren.row(prevtrOdd).data();
-
-        var trEven = $(this).closest('tr').parents('tr');
-        var prevtrEven = trEven.prev('tr')[0];
-        var dataEven = tblGetDyanamicheKorrekturfaktoren.row(prevtrEven).data();
-
-        console.log(dataOdd);
-        console.log(dataEven);*/
     });
 
     /*Reset first row*/
@@ -3495,8 +3485,6 @@ $("#DkFeSpeichern").click(function() {
     });
    /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
 
-
-
     /*18-09-2020 on double click row append data into input*/
     $("#tblAnlOhneZeitintervallIMwSuchen tbody").on("dblclick","tr",function(){
         //var id = $(this).attr('data-id');
@@ -3513,72 +3501,19 @@ $("#DkFeSpeichern").click(function() {
             $(this).prop("disabled", true);
             tblMstOhneZeitintervallIMw.clear().draw();
             $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
-           // if(!$(this).hasClass('showTable')){                           
-               // mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE);    
-           // }         
+              
            keinZeitIntervallZugewiesen(InstanceMode.BDE);
         });
-
-        //30-09-2020 On change #zeitintervallAnl select option
         $(".zeitintervallAnl_1").hide();
         $(".zeitintervallAnl_2").hide();
         $(".zeitintervallAnl_3").hide();
         $(".zeitintervallAnl_4").hide();
         $(".zeitintervallAnl_NoEnding").hide();
-        $("#zeitintervallAnl").change(function(){
-            
-        $("#monateMassEingDataAnlEnde").prop('disabled', false);
-        $("#jahrMassEingDataAnlEnde").prop('disabled', false);
-        $("#tageMassEingDataAnlEnde").prop('disabled', false);
-        $("#anlIMwNoEnding").prop('checked', false);
 
-        $(".zeitintervallAnl_1 input").val("");
-        $(".zeitintervallAnl_2 input").val("");
-        $(".zeitintervallAnl_3 input").val("");
-        $(".zeitintervallAnl_4 input").val("");
-        
-           if($(this).val() == 1){
-                $(".zeitintervallAnl_1").show();
-                $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").show();
-
-           }else if($(this).val() == 2){
-                $(".zeitintervallAnl_1").hide();
-                $(".zeitintervallAnl_2").show();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").show();
-
-           }else if($(this).val() == 3){
-                $(".zeitintervallAnl_1").hide();
-               $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").show();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").show();
-        
-           }else if($(this).val() == 4){
-                $(".zeitintervallAnl_1").hide();
-            $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").show();
-                $(".zeitintervallAnl_NoEnding").show();
-
-           }else{
-                $(".zeitintervallAnl_1").hide();
-                $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").hide();
-                
-
-           }      
-        });
-               
+        btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDiv',4);
+        //30-09-2020 On change #zeitintervallAnl select option              
     });
    
-
    /*save icon click event for the Interne Betriebsdaten Speichern 05-10-2020*/
 
     $("#intBdeIMwSpeichern").click(function(){
@@ -3598,106 +3533,36 @@ $("#DkFeSpeichern").click(function() {
         intBdeIMwHistOkGetHistorie();
     });
 
-    $("#anlIMwNoEnding").change(function(){
-         var zeitintervallAnl = $("#zeitintervallAnl").val();        
 
-         if(zeitintervallAnl == 1){
-            if($(this).is(':checked')){
-                $("#tageMassEingDataAnlEnde").prop('disabled', true);
-                $("#tageMassEingDataAnlEnde").val('');
-                $(this).val(1);
-            } else {
-               $("#tageMassEingDataAnlEnde").prop('disabled', false);
-               $(this).val(0);
-            }               
-           }else if(zeitintervallAnl == 2){
-            if($(this).is(':checked')){
-                $("#wochenWMassEingDataAnlEnde").prop('disabled', true);
-                $("#wochenYMassEingDataAnlEnde").prop('disabled', true);
-                $("#wochenWMassEingDataAnlEnde").val('');
-                $("#wochenYMassEingDataAnlEnde").val('');
-                $(this).val(1);
-            } else {
-               $("#wochenWMassEingDataAnlEnde").prop('disabled', false);
-               $("#wochenYMassEingDataAnlEnde").prop('disabled', false);
-               $(this).val(0);
-            }               
-           }else if(zeitintervallAnl == 3){
-            if($(this).is(':checked')){
-                $("#monateMassEingDataAnlEnde").prop('disabled', true);
-                $("#monateMassEingDataAnlEnde").val('');
-                $(this).val(1);
-            } else {
-               $("#monateMassEingDataAnlEnde").prop('disabled', false);
-               $(this).val(0);
-            }      
-           }else if(zeitintervallAnl == 4){
-            if($(this).is(':checked')){
-                $("#jahrMassEingDataAnlEnde").prop('disabled', true);
-                 $("#jahrMassEingDataAnlEnde").val('');
-                 $(this).val(1);
-            } else {
-               $("#jahrMassEingDataAnlEnde").prop('disabled', false);
-               $(this).val(0);
-            }  
-           }else{
-                $(".zeitintervallAnl_1").hide();
-                $(".zeitintervallAnl_2").hide();
-                $(".zeitintervallAnl_3").hide();
-                $(".zeitintervallAnl_4").hide();
-                $(".zeitintervallAnl_NoEnding").hide();
-           } 
+
+     $("#intBdeIMwLastMst,#intBdeIMwNextMst,#intBdeIMwPreviousMst,#intBdeIMwFirstMst").click(function(){
+        //alert(this.id);
+            var countRecord = $("#intBdeIMwCount").val();
+            var mst_id = $("#nextPrevMstID").val();
+            if(this.id =="intBdeIMwNextMst"){
+              intBdeIMwNextPrev(this.id,countRecord,mst_id);
+            }else if(this.id =="intBdeIMwPreviousMst"){
+                intBdeIMwNextPrev(this.id,countRecord,mst_id)
+            }else if(this.id =="intBdeIMwLastMst"){
+                intBdeIMwNextPrev(this.id,countRecord,mst_id)
+            }else if(this.id =="intBdeIMwFirstMst"){
+                intBdeIMwNextPrev(this.id,countRecord,mst_id)
+            }
+     });
+  
+    $("#btnTageMasseneingabeIMw,#btnWochenMasseneingabeIMw,#btnMonateMasseneingabeIMw,#btnJahreMasseneingabeIMw").click(function(){
+           
+            
+           $(".infosMasseneingabeInside button").removeClass('active');
+            if(this.id =="btnTageMasseneingabeIMw"){
+                btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDiv',4);
+            }else if(this.id =="btnWochenMasseneingabeIMw"){
+                btnMasseneingabeIMwChange(2,'infosMasseneingabeDateRangeDiv',4);
+            }else if(this.id =="btnMonateMasseneingabeIMw"){
+                btnMasseneingabeIMwChange(3,'infosMasseneingabeDateRangeDiv',4);
+            }else if(this.id =="btnJahreMasseneingabeIMw"){
+                btnMasseneingabeIMwChange(4,'infosMasseneingabeDateRangeDiv',4);
+            }
+            datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
+            $(this).addClass('active');
     });
-
-
-
-    $("#intBdeIMwZeitintervallAnl").change(function(){
-           //alert($(this).val());
-        $("#monateMassEingDataAnlEndeP").prop('disabled', false);
-        $("#jahrMassEingDataAnlEndeP").prop('disabled', false);
-        $("#tageMassEingDataAnlEndeP").prop('disabled', false);
-        $("#anlIMwNoEndingP").prop('checked', false);
-
-        $("#intBdeIMwHistorieDiv .zeitintervallAnl_1 input").val("");
-        $("#intBdeIMwHistorieDiv .zeitintervallAnl_2 input").val("");
-        $("#intBdeIMwHistorieDiv .zeitintervallAnl_3 input").val("");
-        $("#intBdeIMwHistorieDiv .zeitintervallAnl_4 input").val("");
-        
-           if($(this).val() == 1){
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").show();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").show();
-
-           }else if($(this).val() == 2){
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").show();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").show();
-
-           }else if($(this).val() == 3){
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").show();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").show();
-        
-           }else if($(this).val() == 4){
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").show();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").show();
-
-           }else{
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_1").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_2").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_3").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_4").hide();
-                $("#intBdeIMwHistorieDiv .zeitintervallAnl_NoEnding").hide();
-                
-
-           }      
-        });

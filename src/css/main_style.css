@@ -1234,17 +1234,96 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 
 #infosIntBetriebsdaten input[readonly], 
 #infosIntBdeIMwHistoriePopUpDiv input[readonly],
-#infosIntBdeIMwHistoriePopUpDiv select[readonly]  {
+#infosIntBdeIMwHistoriePopUpDiv select[readonly],
+#intBdeIMwHistorieContainer input[readonly]
+{
     background: #dadcde;
-}
-
-#intBdeIMwHistorieDiv .controlDiv.zeitintervallAnl_1,
-#intBdeIMwHistorieDiv .controlDiv.zeitintervallAnl_2,
-#intBdeIMwHistorieDiv .controlDiv.zeitintervallAnl_3
-#intBdeIMwHistorieDiv .controlDiv.zeitintervallAnl_4 {
-    width: 274px;
 }
 
 div#infosIntBdeIMwHistoriePopUpDiv input {
     margin: 16px 0px 9px 8px;
+}
+
+div#intBdeIMwHistorieDiv .controlDiv{
+  display: inline-block;
+  background-color: #A1A7AD;
+  margin-bottom: 0.1cm;
+  width: 7.0cm;
+}
+div#intBdeIMwHistorieDiv .controlDiv label{
+    display: inline-block;
+    width: 2.9cm;
+    height: 0.5cm;
+    background-color: #A1A7AD;
+    font-size: 12px;
+    padding-left: 0.1cm;
+    border: none;
+} 
+div#intBdeIMwHistorieDiv .controlDiv input{
+    margin-left: 0.1cm;
+    margin-top: 0.1cm;
+    display: inline;
+    font-size: 11px;
+    height: 0.4cm;
+    left: 100px;
+    clear: both;
+    width: 3.3cm;
+    padding: 0px;
+}
+
+
+/*02-11-2020 create html for second page Masseneingabe Button */
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_1, 
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_2,
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_3, 
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_4 ,
+.infosMasseneingabeDateRangeDiv .btnMasseneingabeIMwSearchDiv{
+    width: 22%;
+    display: inline;
+}
+
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_1 input,
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_3 input,
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_4 input {
+    width: 20%;
+    height: 24px;
+    border-radius: 3px;
+    border-color: none;
+}
+.infosMasseneingabeDateRangeDiv input#btnMasseneingabeIMwSearch {
+    width: 5cm;
+    height: 30px;
+}
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_2 input {
+    width: 9% !important;
+    height: 24px;
+    border-radius: 3px;
+    border-color: none;
+}
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_2 select {
+    width: 8% !important;
+    height: 30px;
+    border-radius: 3px;
+}
+.infosMasseneingabeDateRangeDiv {
+    background: #ccc;
+    padding: 12px 0px 12px 0px;
+    text-align: center;
+}
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_2{
+  padding: 0px 35px 0 0;
+  font-size: 18px;
+}
+
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_1,
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_3,
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_4{
+  padding: 0px 30px 0 0;
+}
+
+button#btnTageMasseneingabeIMw.active,
+button#btnWochenMasseneingabeIMw.active,
+button#btnMonateMasseneingabeIMw.active,
+button#btnJahreMasseneingabeIMw.active {
+    background: #f3f3f3;
 }

@@ -27,6 +27,54 @@ elseif($id == 'displayData'){
 	$query = "SELECT * FROM interneMesswerteConfig ";
 	$query .= "WHERE mst_ID  = '$mstID' ";
 }
+elseif($id == 'intBdeIMw'){
+	if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwNextMst'){
+		/* $query = "SELECT TOP 1 * FROM MessstellenAnlagen WHERE mst_ID >".$_POST['mst_ID']." AND  deleted='false' ORDER BY mst_ID ASC";*/
+		//$record = queryDB($conn, $nextQuery, "read");
+		$query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
+		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		  $query .= "ON T1.mst_ID = T2.mst_ID ";
+		  $query .= "WHERE T1.messartMst = 'manuell' ";
+		  $query .= "AND T1.deleted <> 'true' ";
+		  $query .= "AND T1.mst_ID >".$_POST['mst_ID']." ";
+		  $query .= "ORDER BY T1.mst_ID ASC";
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwPreviousMst'){
+		/*$query = "SELECT TOP 1 * FROM MessstellenAnlagen WHERE mst_ID <".$_POST['mst_ID']." AND  deleted='false' ORDER BY mst_ID DESC";*/
+		//$record = queryDB($conn, $previousQuery, "read");
+		$query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
+		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		  $query .= "ON T1.mst_ID = T2.mst_ID ";
+		  $query .= "WHERE T1.messartMst = 'manuell' ";
+		  $query .= "AND T1.deleted <> 'true' ";
+		  $query .= "AND T1.mst_ID <".$_POST['mst_ID']." ";
+		  $query .= "ORDER BY T1.mst_ID DESC";
+
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwLastMst'){
+		/*$query = "SELECT TOP 1 * FROM MessstellenAnlagen WHERE deleted='false' ORDER BY mst_ID DESC";*/
+		$query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
+		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		  $query .= "ON T1.mst_ID = T2.mst_ID ";
+		  $query .= "WHERE T1.messartMst = 'manuell' ";
+		  $query .= "AND T1.deleted <> 'true' ";
+		  $query .= "ORDER BY T1.mst_ID DESC";
+
+	    //$record = queryDB($conn, $lastQuery, "read");
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwFirstMst'){
+		/*$query = "SELECT TOP 1 * FROM MessstellenAnlagen WHERE deleted='false' ORDER BY mst_ID ASC";*/
+		//$record = queryDB($conn, $firstQuery, "read");
+		  $query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
+		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		  $query .= "ON T1.mst_ID = T2.mst_ID ";
+		  $query .= "WHERE T1.messartMst = 'manuell' ";
+		  $query .= "AND T1.deleted <> 'true' ";
+		  $query .= "ORDER BY T1.mst_ID ASC";
+
+	}
+}
+
 //echo $query;die;
 $records = queryDB($conn, $query, "read");
 
