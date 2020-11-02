@@ -98,6 +98,20 @@ function dateTimeToString($dateObject) {
     return $dateObject->format('Y-m-d H:i:s.u') ;
 }
 
+// Returns the current formatted date
+function dateNow() {
+    $date = getdate() ;
+
+    $year = $date["year"] ;
+    $month = prependZero($date["mon"]) ;
+    $day = prependZero($date["mday"]) ;
+    $hours = prependZero($date["hours"]) ;
+    $minutes = prependZero($date["minutes"]) ;
+    $seconds = prependZero($date["seconds"]) ;
+
+    return $year."-".$month."-".$day." ".$hours.":".$minutes.":".$seconds.".000" ;
+}
+
 // Adds 15 min to a datetime string
 function add15min($date) {
     $dateTime = new DateTime($date);
@@ -112,10 +126,21 @@ function addTwoMonth($date) {
     return $dateTime->format('Y-m-d H:i:s.000000') ;
 }
 
-// Takes list of datetime objects and returns a sorted list
+// Sorts a string array
+function sortStrings($arr) {
+    sort($arr) ;
+    return $arr ;
+}
+
+// Replaces every a with b in a string
+function replaceInString($a, $b, $str) {
+    return implode($b, explode($a, $str)) ;
+}
+
+// Takes a list of datetime objects and returns a sorted list
 // of datetime strings
-function sortDates($dateArray) {
-    return sort(array_map('dateTimeToString', $dateArray)) ;
+function sortDates($dateArray_) {
+    return sortStrings(array_map('dateTimeToString', $dateArray_)) ;
 }
 
 ?>
