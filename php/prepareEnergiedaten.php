@@ -11,21 +11,15 @@ require 'DbOperations.php' ;
 require 'Matex.php' ;
 require 'EMail_swift.php';
 
-// CONNECT TO DB
-$GLOBALS["connect"] = connectToDB($_GET['nameDB']) ;
-
-// SET VIRTUAL MEASUREMENT POINT ID
-const mstID = $_GET['mstID'] ;
-
-// SET START AND END DATE FOR CALCULATION
-// ------------------------------
-const startDate = $_GET['startDate'] ;
-const endDate =  $_GET['endDate'] ;
+define("connect", connectToDB($_GET['nameDB'])) ;
+define("mstID", $_GET['mstID']) ;
+define("startDate", $_GET['startDate']) ;
+define("endDate", $_GET['endDate']) ;
 
 function getMstFormulaRecord() {
     $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-    $query .= "WHERE mst_ID = ".  ;
-    return queryDB($GLOBALS["connect"], $query, "read") ;
+    $query .= "WHERE mst_ID = ".mstID  ;
+    return queryDB(connect, $query, "read") ;
 }
 
 function base64Decode($record) {
@@ -66,7 +60,7 @@ function getDataFormula($formulaRecord) {
         $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".startDate."', 121) AND CONVERT(varchar(50), '".endDate."', 121) " ;
         $query .= "ORDER BY Time " ;
 
-        return queryDB($GLOBALS["connect"], $query, "read") ;
+        return queryDB(connect, $query, "read") ;
     }
 
     function createKorFacArray($korFacRecord) {
@@ -92,7 +86,7 @@ function getDataFormula($formulaRecord) {
         $query .= "WHERE ePrdKFE_id = ".$korFacID." " ;
         $query .= "AND deleted <> 'true' " ;
 
-        return createKorFacArray(queryDB($GLOBALS["connect"], $query, "read")[0]) ;
+        return createKorFacArray(queryDB(connect, $query, "read")[0]) ;
     }
 
     function getDataArrays($mstsOrKorFacs_) {
@@ -121,20 +115,6 @@ function prepareForCalculation($records) {
     // -------------------------------------------
     function prependZero($n) {
         return (int)$n < 10 ? "0".$n : (int)$n ;
-    }
-
-    // Returns the current formatted date
-    function dateNow() {
-        $date = getdate() ;
-
-        $year = $date["year"] ;
-        $month = prependZero($date["mon"]) ;
-        $day = prependZero($date["mday"]) ;
-        $hours = prependZero($date["hours"]) ;
-        $minutes = prependZero($date["minutes"]) ;
-        $seconds = prependZero($date["seconds"]) ;
-
-        return $year."-".$month."-".$day." ".$hours.":".$minutes.":".$seconds.".000000" ;
     }
 
     function createFormulaArray($formulaRecord_) {
@@ -324,7 +304,7 @@ function writeToDB($records) {
         return array_reduce($recordArrays, 'buildInsertInto') ;
     }
 
-    queryDB($GLOBALS["connect"], buildQuery($records), "write") ;
+    queryDB(connect, buildQuery($records), "write") ;
 
     return $records ;
 }
@@ -335,23 +315,27 @@ function testIfDataInDB($records) {
 
     function queryData() {
         $query = "SELECT mst_ID, Name, Time, Value, ConvFactor FROM berechneteEnergiedaten " ;
-        $query .= "WHERE mst_ID = ".." " ;
+        $query .= "WHERE mst_ID = ".mstID." " ;
         $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".add15min(startDate)."', 121) AND CONVERT(varchar(50), '".add15min(endDate)."', 121) " ;
         $query .= "ORDER BY Time " ;
 
-        return queryDB($GLOBALS["connect"], $query, "read") ;
+        return queryDB(connect, $query, "read") ;
     }
 
     function getURL() {
-        return implode("/",tail(tail(explode("/", $_SERVER['REQUEST_URI'])))) ;
+        return replaceInString("%20", " ", "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) ;
     }
 
     function setExecutedTrue() {
+        $conn = connectToDB("gipscomm") ;
+
         $query = "UPDATE phpScriptsToExecute " ;
-        $query .= "SET dateExec = ".getdate().", executed = 'true' " ;
+        $query .= "SET dateExec = '".dateNow()."', executed = 'true' " ;
         $query .= "WHERE pathScript= '".getURL()."'" ;
 
-        queryDB(connectToDB("gipscomm"), $query, "write") ;
+        queryDB($conn, $query, "write") ;
+
+        closeDbConn($conn) ;
     }
 
     function sendAlertEmail() {
@@ -360,7 +344,7 @@ function testIfDataInDB($records) {
 
         $betreff = "Berechnete Energiedaten Konnten nicht in DB geschrieben werden. (G-Analysis)" ;
 
-        $emailText = "Dies betrifft die mst_ID = ".." <br><br>" ;
+        $emailText = "Dies betrifft die mst_ID = ".mstID." <br><br>" ;
         $emailText .= "Zeitbereich = ".startDate." - ".endDate." <br><br>" ;
 
         eMail($empfaenger, $betreff, $emailText) ;
@@ -395,9 +379,7 @@ pipe(
     ]
 ) ;
 
-closeDbConn($GLOBALS["connect"]) ;
-
-unset($GLOBALS["connect"]) ;
+closeDbConn(connect) ;
 
 $end = hrtime(true) ;
 

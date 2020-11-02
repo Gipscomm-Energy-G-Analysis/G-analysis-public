@@ -8,10 +8,11 @@ require 'helpers.php' ;
 require 'DbOperations.php' ;
 require 'EMail_swift.php';
 
-const nameDB = $_POST['nameDB'] ;
-$GLOBALS["connMandant"] = connectToDB(nameDB) ;
-const formula = $_POST['formula'] ;
-const mstID = $_POST['mstID'] ;
+define("nameDB", $_POST['nameDB']) ;
+define("connMandant", connectToDB(nameDB)) ;
+define("connGipscomm", connectToDB("gipscomm")) ;
+define("mstID", $_POST['mstID']) ;
+define("formula", $_POST['formula']) ;
 
 function isMst($identifier) {
     return splitUnderscore($identifier)[0] === "mst" ;
@@ -38,12 +39,12 @@ function queryHead($mstID) {
 
 function getFirstDate($mstID) {
     $query = queryHead($mstID)." ORDER BY Time " ;
-    return queryDB($GLOBALS["connMandant"], $query, "read")["Time"] ;
+    return queryDB(connMandant, $query, "read")[0]["Time"] ;
 }
 
 function getLastDate($mstID) {
     $query = queryHead($mstID)." ORDER BY Time DESC " ;
-    return queryDB($GLOBALS["connMandant"], $query, "read")["Time"] ;
+    return queryDB(connMandant, $query, "read")[0]["Time"] ;
 }
 
 function getFirstDates($formula) {
@@ -67,7 +68,7 @@ function getEndDate($formula) {
 
 function setGetProperties($startDate, $endDate) {
     $string = "?nameDB=".nameDB ;
-    $string = "&mstID=".mstID ;
+    $string .= "&mstID=".mstID ;
     $string .= "&startDate=".$startDate ;
     $string .= "&endDate=".$endDate ;
 
@@ -75,7 +76,7 @@ function setGetProperties($startDate, $endDate) {
 }
 
 function setScriptPath($startDate, $endDate) {
-    $path = "php/prepareEnergiedaten.php" ;
+    $path = "https://".$_SERVER['HTTP_HOST']."/testwebsite3/php/prepareEnergiedaten.php" ;
     $path .= setGetProperties($startDate, $endDate) ;
 
     return $path ;
@@ -93,38 +94,46 @@ function prepareScriptPaths($formula) {
 
         array_push($records, setScriptPath($startDate, $endDate)) ;
     }
-    $allRecords = array_push($records, setScriptPath($date, $to)) ;
+    array_push($records, setScriptPath($date, $to)) ;
 
-    return $allRecords ;
+    return $records ;
 }
 
 function buildValueString($last, $current) {
     return $last.", ('".$current."')" ;
 }
 
+function buildValuesString($records) {
+    return substr(array_reduce($records, 'buildValueString'), 1) ;
+}
+
 function writeToDB($records) {
 
     $query = "INSERT INTO phpScriptsToExecute (pathScript) " ;
-    $query .="VALUES ".substr(array_reduce($records, 'buildValueString'), 1) ;
+    $query .="VALUES ".buildValuesString($records) ;
 
-    queryDB(connectToDB("gipscomm"), $query, "write") ;
+    queryDB(connGipscomm, $query, "write") ;
 
     return $records ;
 }
 
 function buildWhereString($last, $current) {
-    return $last."OR pathScript = '".$currentm."' " ;
+    return $last."OR pathScript = '".$current."' " ;
+}
+
+function buildWheresString($records) {
+    return substr(array_reduce($records, 'buildWhereString'), 2) ;
 }
 
 function testIfDataInDB($records) {
 
-    $initialRecords = $records ;
+    define('records', $records) ;
 
-    function queryData($records_) {
+    function queryData() {
         $query = "SELECT * FROM phpScriptsToExecute " ;
-        $query .= "WHERE ".substr(array_reduce($records_, 'buildWhereString'), 1) ;
+        $query .= "WHERE ".buildWheresString(records) ;
 
-        return queryDB(connectToDB("gipscomm"), $query, "read") ;
+        return queryDB(connGipscomm, $query, "read") ;
     }
 
     function sendAlertEmail() {
@@ -134,7 +143,8 @@ function testIfDataInDB($records) {
         $betreff = "Berechnete Messstellen Warteschlange konnte nicht geschrieben werden. (G-Analysis)" ;
 
         $emailText = "Dies betrifft die mst_ID = ".mstID." <br><br>" ;
-        $emailText .= "Zeitbereich = ".$records[0]." - ".$records[count($records) - 1]." <br><br>" ;
+        $emailText .= "Start Skript = ".records[0]." <br><br> " ;
+        $emailText .= "End Skript = ".records[count(records) - 1]." <br><br>" ;
 
         eMail($empfaenger, $betreff, $emailText) ;
     }
@@ -150,7 +160,7 @@ function testIfDataInDB($records) {
         return !$sameLength ;
     }
 
-    return alertIfNeccessary(equalLength($initialRecords, queryData())) ;
+    return alertIfNeccessary(equalLength(records, queryData())) ;
 }
 
 pipe(
@@ -159,5 +169,8 @@ pipe(
     , 'testIfDataInDB'
     ]
 ) ;
+
+closeDbConn(connMandant) ;
+closeDbConn(connGipscomm) ;
 
 ?>
