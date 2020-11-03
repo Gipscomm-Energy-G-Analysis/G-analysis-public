@@ -10049,20 +10049,24 @@ const saveFormula =
             idString: btoa($("#formelIdDarstellung").val())
         }
         writeFormulaToDB(formula)
-        setTimeout(function() {
-            messstellenInAuswertungsEditorTabelleEinlesen()
-        }, 2000);
+        .then(messstellenInAuswertungsEditorTabelleEinlesen)
     }
 
-const createVirtMessstelleHistory =
-    formula => {
-
-    }
+const addVirtMessstelleHistoryJob =
+    nameDB =>
+    mstID =>
+    formula =>
+    ajaxPost('php/scriptExecPath.php')({nameDB, mstID, formula})
 
 // Save a Messstellen formula and calculate historic data
 const virtMessstelleWithHistory =
+    nameDB =>
+    mstID =>
+    formula =>
     () => {
         saveFormula()
+        addVirtMessstelleHistoryJob(nameDB)(mstID)(formula)
+
         $("#virtMessstelleSave").dialog("close")
         alert("Save and calculate historic data")
     }
@@ -10079,6 +10083,10 @@ const virtMessstelleWithoutHistory =
 // data should be calculated or only from now on get updated
 const virtMessstelleSaveDialog =
     () => {
+        const nameDB = $("#nameDB").val()
+        const mstID = $("#berechneteMstID").val().split("_")[1]
+        const formula = $("#formelIdDarstellung").val()
+
         $("#virtMessstelleSave").dialog({
             height: 225,
             width: 405,
@@ -10097,7 +10105,9 @@ const virtMessstelleSaveDialog =
 
                 // Save a Messstellen formula and calculate historic data
                 $("#histDataJa").off("click")
-                $("#histDataJa").on("click", virtMessstelleWithHistory)
+                $("#histDataJa").on("click",
+                    virtMessstelleWithHistory(nameDB)(mstID)(formula)
+                )
 
                 // Save a Messstellen formula without historic data calculation
                 $("#histDataNein").off("click")
