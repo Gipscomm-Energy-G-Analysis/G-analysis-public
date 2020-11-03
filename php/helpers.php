@@ -143,4 +143,9 @@ function sortDates($dateArray_) {
     return sortStrings(array_map('dateTimeToString', $dateArray_)) ;
 }
 
+// Retrieves the current URL
+function getURL() {
+    return replaceInString("%20", " ", "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) ;
+}
+
 ?>
