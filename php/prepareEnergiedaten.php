@@ -322,15 +322,24 @@ function testIfDataInDB($records) {
         return queryDB(connect, $query, "read") ;
     }
 
+    function deleteInsertedData() {
+        $query = "DELETE FROM berechneteEnergiedaten " ;
+        $query .= "WHERE mst_ID = ".mstID." " ;
+        $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".add15min(startDate)."', 121) AND CONVERT(varchar(50), '".add15min(endDate)."', 121) " ;
+
+        queryDB(connect, $query, "read") ;
+    }
+
     function getURL() {
         return replaceInString("%20", " ", "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) ;
     }
 
-    function setExecutedTrue() {
+    function setExecuted($bool) {
+
         $conn = connectToDB("gipscomm") ;
 
         $query = "UPDATE phpScriptsToExecute " ;
-        $query .= "SET dateExec = '".dateNow()."', executed = 'true' " ;
+        $query .= "SET dateExec = '".dateNow()."', executed = '".$bool."' " ;
         $query .= "WHERE pathScript= '".getURL()."'" ;
 
         queryDB($conn, $query, "write") ;
@@ -344,20 +353,22 @@ function testIfDataInDB($records) {
 
         $betreff = "Berechnete Energiedaten Konnten nicht in DB geschrieben werden. (G-Analysis)" ;
 
-        $emailText = "Dies betrifft die mst_ID = ".mstID." <br><br>" ;
-        $emailText .= "Zeitbereich = ".startDate." - ".endDate." <br><br>" ;
+        $emailText = "Letzter Datensatz : <br><br>" ;
+        $emailText .= getURL() ;
 
         eMail($empfaenger, $betreff, $emailText) ;
     }
 
     function alertIfNeccessary($sameLength) {
         if (!$sameLength) {
-            print_r("FALSE") ;
+            setExecuted("false") ;
+            deleteInsertedData() ;
             sendAlertEmail() ;
+            print_r(" FALSE ") ;
         }
         else {
-            setExecutedTrue() ;
-            print_r("TRUE") ;
+            setExecuted("true") ;
+            print_r(" TRUE ") ;
         }
         return !$sameLength ;
     }
