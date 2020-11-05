@@ -1327,3 +1327,52 @@ button#btnMonateMasseneingabeIMw.active,
 button#btnJahreMasseneingabeIMw.active {
     background: #f3f3f3;
 }
+
+
+table#tblMasseneingabeDataIMwTbl {
+  width: 100%;
+}
+
+table#tblMasseneingabeDataIMwTbl td, 
+table#tblMasseneingabeDataIMwTbl th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 5px;
+}
+
+table#tblMasseneingabeDataIMwTbl tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+table#tblMasseneingabeDataIMwTbl td input {
+  display: block;
+  top:0;
+  left:0;
+  margin: 0;
+  height: 100%;
+  /*width: 100%;*/
+  max-width: 156px;
+  border: none;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+#timeIntervalWerteEnergiedatenIMw{
+    width: 1100px;
+    overflow-x: auto;
+    height: 150px;
+}
+
+.fullWidthMasseneingabe #infosMasseneingabe{
+  width:1100px;
+}
+.fullWidthMasseneingabe #interneMesswerte{
+  width:1125px;
+}
+.fullWidthMasseneingabe #manuell{
+   width:1100px;
+   margin-left: -141px;
+}
+.fullWidthMasseneingabe #tabsManuell{
+   margin-left: -141px;
+}

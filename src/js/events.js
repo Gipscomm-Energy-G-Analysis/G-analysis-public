@@ -1199,6 +1199,7 @@ $(document).ready(function() {
             getKorrekturfaktor();
             virtuelleMessstelle();
         }
+        $("body").removeClass('fullWidthMasseneingabe');
     });
     $("#betrGrpMenu, #sAdmMenu, #manGrpMenu, #admMenu, #benMenu, #untMenu, #anlMenu, #pmMenu, #msmMenu, #knz_almMenu, #manMenu, #orgMenu, #liegMenu, #berMenu, #stdMenu, #stdDrMenu, #anl_Menu, #msgMenu, #knzMenu, #almMenu, #prdMenu,#anl_Eng_Menu, #anl_Dok_Menu, #anl_Hist_Menu, #anl_Konfig_Menu,#prd_Menu, #prd_Konfig_Menu, #prd_Hist_Menu").click(function() {
         $("#auswertungen").css("display", "none");
@@ -1208,6 +1209,7 @@ $(document).ready(function() {
         $("#optionen").css("display", "none");
         mainMenuNav(this.id)
         addExtraWidthToDynamischeFaktor();
+        $("body").removeClass('fullWidthMasseneingabe');
     });
     $("#erwAnlMenu, #entMenu, #enfMenu, #gsfMenu, #mgsMenu, #zpMenu, #erwPrdMenu, #grpDiagMenu,#korrekturFaktorMenu,#korrekturFaktorMenuDynamischer").click(function() {
         $("#auswertungen").css("display", "none");
@@ -1216,6 +1218,7 @@ $(document).ready(function() {
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id)
         addExtraWidthToDynamischeFaktor();
+        $("body").removeClass('fullWidthMasseneingabe');
     });
     $("#extRngMenu, #intEngIMwMenu, #intBdeIMwMenu, #eRngVergleichMenu, #spaEfVTab1Menu, #spaEfVTab2Menu").click(function() {
         $("#auswertungen").css("display",
@@ -1227,6 +1230,7 @@ $(document).ready(function() {
         addExtraWidthToDynamischeFaktor();
         datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
         $("#nextPrevMstID").val($("#mstID").val());
+        $("body").removeClass('fullWidthMasseneingabe');
     });
     $("#manMap, #orgMap, #liegMap, #berMap").click(function() {
         mapErstellen(this.id, $("#selectMap").val())
@@ -1318,6 +1322,9 @@ $(document).ready(function() {
     $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag,#tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
         tabControlNav(this.id);
         addExtraWidthToDynamischeFaktor();
+        if(this.id=='btnMassEingAnl'){
+            $("body").removeClass('fullWidthMasseneingabe');
+        }
     });
     $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst,\n                #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstFirst, #stdFirst,\n                #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst,\n                #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "gipscAdmFirst" == this.id ?
@@ -3511,6 +3518,7 @@ $("#DkFeSpeichern").click(function() {
         $(".zeitintervallAnl_NoEnding").hide();
 
         btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDiv',4);
+        datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
         //30-09-2020 On change #zeitintervallAnl select option              
     });
    
@@ -3529,8 +3537,10 @@ $("#DkFeSpeichern").click(function() {
         }
     });
 
-    $(" #tabIntBetriebsdatenIMwHist").click(function(){
+    $("#tabIntBetriebsdatenIMwHist").click(function(){
         intBdeIMwHistOkGetHistorie();
+        $("body").removeClass('fullWidthMasseneingabe');
+        $("#infosMasseneingabe").hide();
     });
 
 
@@ -3551,9 +3561,8 @@ $("#DkFeSpeichern").click(function() {
      });
   
     $("#btnTageMasseneingabeIMw,#btnWochenMasseneingabeIMw,#btnMonateMasseneingabeIMw,#btnJahreMasseneingabeIMw").click(function(){
-           
-            
            $(".infosMasseneingabeInside button").removeClass('active');
+            $("#tblMasseneingabeDataIMw").remove();
             if(this.id =="btnTageMasseneingabeIMw"){
                 btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDiv',4);
             }else if(this.id =="btnWochenMasseneingabeIMw"){
@@ -3566,3 +3575,31 @@ $("#DkFeSpeichern").click(function() {
             datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
             $(this).addClass('active');
     });
+
+     $("#btnMasseneingabeIMwSearch").click(function(){
+        var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+        var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);
+        var sDate =dates[0];alert(sDate);
+        var eDate =dates[1]; alert(eDate);
+        if(zeitintervallAnl == 3){
+            var from = sDate.split(".");
+            var f = new Date(from[1], from[0]);
+            var startDate = f.getFullYear() + "-" + f.getMonth();
+
+            var to = eDate.split(".");
+            var t = new Date(to[1], to[0]);
+            var endDate = t.getFullYear() + "-" + t.getMonth();
+        }else{
+            var startDate =dates[0];
+            var endDate =dates[1];
+        }
+        getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate);    
+     });
+
+     $("#btnMassEingAnl").click(function() {
+        $("body").addClass('fullWidthMasseneingabe');
+     });
+      $("#btnKonfigMstAnl").click(function() {
+        $("body").removeClass('fullWidthMasseneingabe');
+     });
+     

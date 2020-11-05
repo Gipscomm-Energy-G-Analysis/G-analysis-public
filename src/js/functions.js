@@ -10993,7 +10993,7 @@ function getDynamischeKorrekturfaktoren(id) {
                 console.log(a);
                 tblGetDyanamicheKorrekturfaktoren.colReorder.reset();
                 tblGetDyanamicheKorrekturfaktoren.clear().draw();
-                for (var e = 0; e < b; e++){ console.log(a[e]);
+                for (var e = 0; e < b; e++){ 
                  var rowNode = tblGetDyanamicheKorrekturfaktoren.row.add(
                         [a[e].subtypeTxtOptNameDKff,
                         a[e].subtypeTxtoptzBezugDkff,
@@ -15162,8 +15162,8 @@ function intBdeIMwHistorieSpeichernPopUp() {
     },
     open: function() {
         $("#bemerkungHistIntBdeIMw").val($("#notizBdeIMw").val());
-        var zeitintervallAnl = $("#zeitintervallAnl").val();
-        var dates = returnStartDateAndEndDate('infosIntBetriebsdaten',1);
+        var zeitintervallAnl = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
+        var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosIntBetriebsdaten',1);
         //console.log(dates);
         var startDate =dates[0];
         var endDate =dates[1]; 
@@ -15222,8 +15222,8 @@ function intBdeIMwHistorieSpeichernPopUp() {
  
 /*Ajax Call for the Manuel module serach 18-09-2020*/
 function intBdeIMwHistOkSpeichernMethod(){
-    var zeitintervallAnl = $("#zeitintervallAnl").val();
-    var dates = returnStartDateAndEndDate('infosIntBetriebsdaten',1);
+    var zeitintervallAnl = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
+    var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosIntBetriebsdaten',1);
     startDate =dates[0];
     endDate =dates[1];
     $.ajax({
@@ -15357,7 +15357,7 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
     //alert("." + sId + " anlIDEditor");
     //alert("." + sId + " #zeitintervallAnl");
      var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
-     var dates = returnStartDateAndEndDate('intBdeIMwHistorieContainer',2);
+     var dates = returnStartDateAndEndDate(zeitintervallAnl,'intBdeIMwHistorieContainer',2);
      startDate =dates[0];
      endDate =dates[1];
      $.ajax({
@@ -15728,8 +15728,8 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
  }
 
  function interneMesswerteConfigSpeichernMethod(){
-    var zeitintervallAnl = $("#zeitintervallAnl").val();
-    var dates = returnStartDateAndEndDate('infosIntBetriebsdaten',1);
+    var zeitintervallAnl = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
+    var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosIntBetriebsdaten',1);
     startDate =dates[0];
     endDate =dates[1];
     $.ajax({
@@ -15780,8 +15780,8 @@ function resetFormAllgemein(sId,id){
     $("." + sId + " #notizBdeIMw").val("");
 }
 
-function returnStartDateAndEndDate(sId,id){
-        var val = $("." + sId + " #zeitintervallAnl").val();
+function returnStartDateAndEndDate(val,sId,id){
+        //var val = $("." + sId + " #zeitintervallAnl").val();
         if(val ==1){ 
             var startDate = $("." + sId + " #tageMassEingDataAnlStart" + id + "").val(); 
             var endDate = $("." + sId + " #tageMassEingDataAnlEnde" + id + "").val();
@@ -15797,7 +15797,7 @@ function returnStartDateAndEndDate(sId,id){
             var endDate = $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val();
         }else if(val ==4){
             var startDate = $("." + sId + " #jahrMassEingDataAnlStart" + id + "").val(); 
-            var endDate = $("." + sId + " #jahrMassEingDataAnlEnd" + id + "").val();
+            var endDate = $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").val();
         }
         return [startDate, endDate];
   
@@ -15988,3 +15988,173 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").hide();
            }  
   }
+
+  /*Interne Messwerte Start 20-10-2020*/
+function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){   
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeSearch",
+                nameDB: $("#nameDB").val(),
+                startDate: startDate,
+                endDate:endDate,
+                zeitintervallAnl:zeitintervallAnl
+            },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                var b = a.length;
+                if(zeitintervallAnl == 1){
+                    //alert(1);
+                    var from = startDate.split(".");
+                    var f = new Date(from[2], from[1], from[0]);
+                    var newStartDate = f.getFullYear() + "-" + f.getMonth() + "-" + f.getDate();
+
+                    var to = endDate.split(".");
+                    var t = new Date(to[2], to[1], to[0]);
+                    var newEndDate = t.getFullYear() + "-" + t.getMonth() + "-" + t.getDate();
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getDatesInToArray(From_date, To_date);
+                   // var newDateArr= dateArr.toDateString("yyyy-MM-dd");
+                   /* for (var i = 0; i < dateArr.length; i++) {
+                          console.log(dateArr[i]); //Get all Dates
+                    } */                  
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.floor(diff_date/day);  //alert('days=' +days);
+                    //var days = Math.floor(((diff_date % 31536000000) % 2628000000)/86400000);
+                    //console.log('days='+days);
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                   for (var e = 0; e < b; e++){    
+                        if(e==0) {                   
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= days; r++){                  
+                                $row += '<th data-id="'+a[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
+                            }                        
+                            $row += '</tr>';
+                      }
+                    }
+                    for (var e = 0; e < b; e++){                        
+                       $row += '<tr><td>'+a[e].nameMSt+'</td>';
+                       //alert(days);
+                        for (var r = 0; r <= days; r++){                           
+                            $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]"/></td>';
+                        }                        
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMw').html( $row );
+
+                }else if(zeitintervallAnl == 2){
+                    alert(2);
+                }else if(zeitintervallAnl == 3){
+                    //alert(3);
+                   /* var from = startDate.split(".");
+                    var f = new Date(from[1], from[0]);
+                    var newStartDate = f.getFullYear() + "-" + f.getMonth();alert(newStartDate);
+
+                    var to = endDate.split(".");
+                    var t = new Date(to[1], to[0]);
+                    var newEndDate = t.getFullYear() + "-" + t.getMonth();alert(newEndDate);
+                    */
+                    var  monthsArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                    var From_date = new Date(startDate);
+                    var To_date = new Date(endDate);
+                    var diff_date =  To_date - From_date;
+                    
+                    var dateArr = getDatesInToArray(From_date, To_date);
+                    
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.floor(diff_date/day);
+                    var months = Math.floor(days/31);
+                    var years = Math.floor(months/12);
+
+                    
+                    //var monthNames=monthsArr[dateArr.getMonth()];
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){    
+                        if(e==0) {                   
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= months; r++){              
+                                $row += '<th data-id="'+a[e].mst_ID+'" class="masseneingabeInputLBL">' + monthsArr[dateArr[r].getMonth()];+ '</th>';
+                            }                        
+                            $row += '</tr>';
+                      }
+                    }
+                    for (var e = 0; e < b; e++){                        
+                       $row += '<tr><td>'+a[e].nameMSt+'</td>';
+                        for (var r = 0; r <= months; r++){                           
+                            $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]"/></td>';
+                        }                        
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMw').html( $row );
+                }else if(zeitintervallAnl == 4){
+                    //alert(4);
+
+                    var From_date = new Date(startDate);
+                    var To_date = new Date(endDate);
+                    var diff_date =  To_date - From_date;
+                    //var dateArr = getDatesInToArray(From_date, To_date);
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.floor(diff_date/day);
+                    var months = Math.floor(days/31);
+                    var years = Math.floor(months/12);
+
+                    //alert(years);
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){    
+                        if(e==0) {                   
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= years; r++){  
+                                var yr = eval(startDate) + eval(r);                
+                                $row += '<th data-id="'+a[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
+                            }                        
+                            $row += '</tr>';
+                      }
+                    }
+                    for (var e = 0; e < b; e++){                        
+                       $row += '<tr><td>'+a[e].nameMSt+'</td>';
+                        for (var r = 0; r <= years; r++){                           
+                            $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]"/></td>';
+                        }                        
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMw').html( $row );
+                }                            
+               
+            }
+        });
+}
+
+
+function getDatesInToArray(start, end) {
+    var arr = new Array();
+    var dt = new Date(start);
+    while (dt <= end) {
+        arr.push(new Date(dt));
+        dt.setDate(dt.getDate() + 1);
+    }
+    return arr;
+}
+
+function convertToDateMonthAndYearformate(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [day,mnth,date.getFullYear() ].join(".");
+}

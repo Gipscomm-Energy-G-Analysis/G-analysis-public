@@ -6662,15 +6662,15 @@
                         </select> -->
                     </div>
                     <div class="controlDiv zeitintervallAnl_1">
-                        <label for="tageMassEingDataAnlStart1">Starttag</label>
+                        <label for="tageMassEingDataAnlStart1">StartTag</label>
                         <input type="text" id="tageMassEingDataAnlStart1" placeholder="" class="">
                     </div>
                     <div class="controlDiv zeitintervallAnl_1">
-                        <label for="tageMassEingDataAnlEnde1">Endtag</label>
+                        <label for="tageMassEingDataAnlEnde1">End Tag</label>
                         <input type="text" id="tageMassEingDataAnlEnde1" placeholder="" class="">
                     </div> 
                     <div class="controlDiv zeitintervallAnl_2">
-                        <label for="wochenYMassEingDataAnlStart1">Startwochen</label>
+                        <label for="wochenYMassEingDataAnlStart1">Start Wochen</label>
                         <select id="wochenWMassEingDataAnlStart1" class="wochenInputZeitintervallAnl">
                             <option value="">Weeks</option>
                             <option value="1">1</option>
@@ -6728,10 +6728,10 @@
                             <option value="53">53</option>
                         </select>
                         kw
-                        <input type="text" id="wochenYMassEingDataAnlStart1" placeholder="" class="wochenInputZeitintervallAnl ">
+                        <input type="text" id="wochenYMassEingDataAnlStart1" placeholder="Year" class="wochenInputZeitintervallAnl ">
                     </div>
                     <div class="controlDiv zeitintervallAnl_2">
-                        <label for="wochenWMassEingDataAnlEnde1">Endewochen</label>
+                        <label for="wochenWMassEingDataAnlEnde1">Ende Wochen</label>
                         <select id="wochenWMassEingDataAnlEnde1" class="wochenInputZeitintervallAnl">
                             <option value="">Weeks</option>
                             <option value="1">1</option>
@@ -6789,22 +6789,22 @@
                             <option value="53">53</option>
                         </select>
                         kw
-                        <input type="text" id="wochenYMassEingDataAnlEnde1" placeholder="" class="wochenInputZeitintervallAnl ">
+                        <input type="text" id="wochenYMassEingDataAnlEnde1" placeholder="Year" class="wochenInputZeitintervallAnl ">
                     </div>     
                     <div class="controlDiv zeitintervallAnl_3">
-                        <label for="monateMassEingDataAnlStart1">Startmonate</label>
+                        <label for="monateMassEingDataAnlStart1">Start Monate</label>
                         <input type="text" id="monateMassEingDataAnlStart1" placeholder="" class="">
                     </div>
                     <div class="controlDiv zeitintervallAnl_3">
-                        <label for="monateMassEingDataAnlEnde1">Endemonate</label>
+                        <label for="monateMassEingDataAnlEnde1">Ende Monate</label>
                         <input type="text" id="monateMassEingDataAnlEnde1" placeholder="" class="">
                     </div>                   
                     <div class="controlDiv zeitintervallAnl_4">
-                        <label for="jahrMassEingDataAnlStart1">Startjahr</label>
+                        <label for="jahrMassEingDataAnlStart1">Start Jahr</label>
                         <input type="text" id="jahrMassEingDataAnlStart1" placeholder="" class="">
                     </div>
                     <div class="controlDiv zeitintervallAnl_4">
-                        <label for="jahrMassEingDataAnlEnde1">Endejahr</label>
+                        <label for="jahrMassEingDataAnlEnde1">Ende Jahr</label>
                         <input type="text" id="jahrMassEingDataAnlEnde1" placeholder="" class="">
                     </div>
                     <div class="controlDiv zeitintervallAnl_NoEnding" style="clear:left;">
@@ -6903,10 +6903,10 @@
                         <button id="masseneingabeLaden">Existierende Daten laden</button>
                         <div class="infosMasseneingabeInside">
                             <br>
-                            <button id="btnTageMasseneingabeIMw" class="active">Tage</button>
-                            <button id="btnWochenMasseneingabeIMw">Wochen</button>
-                            <button id="btnMonateMasseneingabeIMw">Monate</button>
-                            <button id="btnJahreMasseneingabeIMw">Jahre</button>
+                            <button id="btnTageMasseneingabeIMw" class="active" data-id="1">Tage</button>
+                            <button id="btnWochenMasseneingabeIMw" data-id="2">Wochen</button>
+                            <button id="btnMonateMasseneingabeIMw" data-id="3">Monate</button>
+                            <button id="btnJahreMasseneingabeIMw" data-id="4">Jahre</button>
                             <br>
                             <br>
                             <div class="infosMasseneingabeDateRangeDiv">
@@ -6974,7 +6974,7 @@
                                         <option value="53">53</option>
                                     </select>
                                     kw
-                                    <input type="text" id="wochenYMassEingDataAnlStart4" placeholder="Start" class="wochenInputZeitintervallAnl ">
+                                    <input type="text" id="wochenYMassEingDataAnlStart4" placeholder="Year" class="wochenInputZeitintervallAnl ">
                                 </div>
                                 <div class="zeitintervallAnl_2">
                                     <select id="wochenWMassEingDataAnlEnde4" class="wochenInputZeitintervallAnl">
@@ -7034,7 +7034,7 @@
                                         <option value="53">53</option>
                                     </select>
                                     kw
-                                    <input type="text" id="wochenYMassEingDataAnlEnde4" placeholder="End" class="wochenInputZeitintervallAnl ">
+                                    <input type="text" id="wochenYMassEingDataAnlEnde4" placeholder="Year" class="wochenInputZeitintervallAnl ">
                                 </div>     
                                 <div class="zeitintervallAnl_3">
                                     <input type="text" id="monateMassEingDataAnlStart4" placeholder="Start Monate" class="">
@@ -7054,72 +7054,11 @@
                             </div>
                             <br>
                             <br>
-                            <input id="btnAnlagenNummerMassEing" name="test" type="radio"/><label style="font-size: 14px;">Anlagen Nr. anzeigen</label>
-                            <br>
-                            <input id="btnAnlagenBezeichnungMassEing" name="test" type="radio"/><label style="font-size: 14px;">Anlagenbezeichnung anzeigen</label>
-                            <br>
-                            <br>
+                        
                         </div>
-                        <div class="controlDiv">
-                            <label id="lblJahrMasseneingabeIMw" for="jahrMasseneingabeIMw">Jahr</label>
-                            <select id="jahrMasseneingabeIMw">
-                                <option>2010</option>
-                                <option>2011</option>
-                                <option>2012</option>
-                                <option>2013</option>
-                                <option>2014</option>
-                                <option>2015</option>
-                                <option>2016</option>
-                                <option>2017</option>
-                                <option>2018</option>
-                                <option>2019</option>
-                                <option>2020</option>
-                                <option>2021</option>
-                                <option>2022</option>
-                                <option>2023</option>
-                                <option>2024</option>
-                                <option>2025</option>
-                            </select>
-                        </div>
-                        <div class="controlDiv">
-                            <label id="lblMonatMasseneingabeIMw" for="messstelleIMw">Monat</label>
-                            <select id="monatMasseneingabeIMw">
-                                <option value="0">Januar</option>
-                                <option value="1">Februar</option>
-                                <option value="2">März</option>
-                                <option value="3">April</option>
-                                <option value="4">Mai</option>
-                                <option value="5">Juni</option>
-                                <option value="6">Juli</option>
-                                <option value="7">August</option>
-                                <option value="8">September</option>
-                                <option value="9">Oktober</option>
-                                <option value="10">November</option>
-                                <option value="11">Dezember</option>
-                            </select>
-                        </div>
-                        <div class="controlDiv">
-                            <label id="lblEinheitMasseneingabeIMw" for="einheitMasseneingabeIMw">Einheit</label>
-                            <select id="einheitMasseneingabeIMw">
-                                <option>Betriebsstunden</option>
-                            </select>
-                        </div>
-                        <br>
-                        <br>
-                        <div id="timeIntervalWerteEnergiedatenIMw">
-                            <div id="masseneingabeZeitintervallContainerIMw">
-                                <div id="masseneingabeZeitintervallIMw">
-                                </div>
-                            </div>
-                            <div id="masseneingabeNameUndInputMatrixIMw">
-                                <div id="masseneingabeNameContainerIMw">
-                                    <div id="masseneingabeNameIMw">
-                                    </div>
-                                </div>
-                                <div id="masseneingabeInputIMw">
-                                </div>
-                            </div>
-                        </div>
+                        
+                        <div id="timeIntervalWerteEnergiedatenIMw">                          
+                        </div> 
                     </div>
                     <input id="masseneingabeTimeInterval" style="display:none;"/>
                 </div>
@@ -7597,7 +7536,7 @@
                         <option value="53">53</option>
                     </select>
                     kw
-                    <input type="text" id="wochenYMassEingDataAnlStart3" placeholder="" class="wochenInputZeitintervallAnl " readonly>
+                    <input type="text" id="wochenYMassEingDataAnlStart3" placeholder="Year" class="wochenInputZeitintervallAnl " readonly>
                 </div>
                 <div class="zeitintervallAnl_2">
                     <label for="wochenYMassEingDataAnlEnde3">Gültig bis:</label>
@@ -7730,15 +7669,15 @@
                         </select> -->
                     </div>
                     <div class="controlDiv zeitintervallAnl_1">
-                        <label for="tageMassEingDataAnlStart2">Starttag</label>
+                        <label for="tageMassEingDataAnlStart2">Start Tag</label>
                         <input type="text" id="tageMassEingDataAnlStart2" placeholder="" class="">
                     </div>
                     <div class="controlDiv zeitintervallAnl_1">
-                        <label for="tageMassEingDataAnlEnde2">Endtag</label>
+                        <label for="tageMassEingDataAnlEnde2">End Tag</label>
                         <input type="text" id="tageMassEingDataAnlEnde2" placeholder="" class="">
                     </div> 
                     <div class="controlDiv zeitintervallAnl_2">
-                        <label for="wochenYMassEingDataAnlStart2">Startwochen</label>
+                        <label for="wochenYMassEingDataAnlStart2">Start Wochen</label>
                         <select id="wochenWMassEingDataAnlStart2" class="wochenInputZeitintervallAnl">
                             <option value="">Weeks</option>
                             <option value="1">1</option>
@@ -7796,10 +7735,10 @@
                             <option value="53">53</option>
                         </select>
                         kw
-                        <input type="text" id="wochenYMassEingDataAnlStart2" placeholder="" class="wochenInputZeitintervallAnl ">
+                        <input type="text" id="wochenYMassEingDataAnlStart2" placeholder="Year" class="wochenInputZeitintervallAnl ">
                     </div>
                     <div class="controlDiv zeitintervallAnl_2">
-                        <label for="wochenYMassEingDataAnlEnde2">Endewochen</label>
+                        <label for="wochenYMassEingDataAnlEnde2">Ende Wochen</label>
                         <select id="wochenWMassEingDataAnlEnde2" class="wochenInputZeitintervallAnl">
                             <option value="">Weeks</option>
                             <option value="1">1</option>
@@ -7857,22 +7796,22 @@
                             <option value="53">53</option>
                         </select>
                         kw
-                        <input type="text" id="wochenYMassEingDataAnlEnde2" placeholder="" class="wochenInputZeitintervallAnl ">
+                        <input type="text" id="wochenYMassEingDataAnlEnde2" placeholder="Year" class="wochenInputZeitintervallAnl ">
                     </div>     
                     <div class="controlDiv zeitintervallAnl_3">
-                        <label for="monateMassEingDataAnlStart2">Startmonate</label>
+                        <label for="monateMassEingDataAnlStart2">Start Monate</label>
                         <input type="text" id="monateMassEingDataAnlStart2" placeholder="" class="">
                     </div>
                     <div class="controlDiv zeitintervallAnl_3">
-                        <label for="monateMassEingDataAnlEnde2">Endemonate</label>
+                        <label for="monateMassEingDataAnlEnde2">Ende Monate</label>
                         <input type="text" id="monateMassEingDataAnlEnde2" placeholder="" class="">
                     </div>                   
                     <div class="controlDiv zeitintervallAnl_4">
-                        <label for="jahrMassEingDataAnlStart2">Startjahr</label>
+                        <label for="jahrMassEingDataAnlStart2">Start Jahr</label>
                         <input type="text" id="jahrMassEingDataAnlStart2" placeholder="" class="">
                     </div>
                     <div class="controlDiv zeitintervallAnl_4">
-                        <label for="jahrMassEingDataAnlEnde2">Endejahr</label>
+                        <label for="jahrMassEingDataAnlEnde2">Ende Jahr</label>
                         <input type="text" id="jahrMassEingDataAnlEnde2" placeholder="" class="">
                     </div>
                     <div class="controlDiv zeitintervallAnl_NoEnding" style="clear:left;">
