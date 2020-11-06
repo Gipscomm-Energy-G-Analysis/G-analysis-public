@@ -3,8 +3,8 @@
 set_time_limit(0) ;
 
 include('top-cache.php') ;
-error_reporting (-1) ;
-ini_set ('display_errors', 'On') ;
+// error_reporting (-1) ;
+// ini_set ('display_errors', 'On') ;
 
 require 'helpers.php' ;
 require 'DbOperations.php' ;
@@ -171,8 +171,12 @@ function prepareForCalculation($records) {
         $date = $formulaRecord["Time"] ;
         $record = search($energyData, "Time", $date) ;
 
-        return gettype($record) === "boolean" ?
-        ["mst_ID" => $energyData[0]["mst_ID"], "Name" => $energyData[0]["Name"], "Time" => $date, "Value" => 0, "ConvFactor" => $energyData[0]["ConvFactor"]] :
+        $isBool = gettype($record) === "boolean" ;
+
+        return $isBool && array_key_exists(0, $energyData) ?
+        ["mst_ID" => head($energyData)["mst_ID"], "Name" => head($energyData)["Name"], "Time" => $date, "Value" => 0, "ConvFactor" => head($energyData)["ConvFactor"]] :
+        $isBool ?
+        ["mst_ID" => "", "Name" => "", "Time" => $date, "Value" => 0, "ConvFactor" => 1] :
         $record ;
     }
 
@@ -219,7 +223,7 @@ function prepareForCalculation($records) {
 
 function calculateFormulas($records) {
 
-    $mstFormulaArray = $records[0] ;
+    $mstFormulaArray = head($records) ;
     $formulaEnergyRecords = $records[1] ;
 
     // REPLACE FORMULAS WITH VALUES
@@ -328,10 +332,6 @@ function testIfDataInDB($records) {
         $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".add15min(startDate)."', 121) AND CONVERT(varchar(50), '".add15min(endDate)."', 121) " ;
 
         queryDB(connect, $query, "read") ;
-    }
-
-    function getURL() {
-        return replaceInString("%20", " ", "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) ;
     }
 
     function setExecuted($bool) {

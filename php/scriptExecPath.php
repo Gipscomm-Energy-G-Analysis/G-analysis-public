@@ -132,8 +132,15 @@ function testIfDataInDB($records) {
     function queryData() {
         $query = "SELECT * FROM phpScriptsToExecute " ;
         $query .= "WHERE ".buildWheresString(records) ;
-
+        
         return queryDB(connGipscomm, $query, "read") ;
+    }
+
+    function deleteInsertedData() {
+        $query = "DELETE FROM phpScriptsToExecute " ;
+        $query .= "WHERE ".buildWheresString(records) ;
+
+        queryDB(connGipscomm, $query, "read") ;
     }
 
     function sendAlertEmail() {
@@ -152,6 +159,7 @@ function testIfDataInDB($records) {
     function alertIfNeccessary($sameLength) {
         if (!$sameLength) {
             print_r("FALSE") ;
+            deleteInsertedData() ;
             sendAlertEmail() ;
         }
         else {
