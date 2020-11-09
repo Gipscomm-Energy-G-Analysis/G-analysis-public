@@ -546,7 +546,7 @@ try {
                 }
                 if (xa === "berechnet") {
                     e = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
-                    e += "WHERE mst_ID = '" + f + "' "
+                    e += "WHERE mst_ID = '" + h + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (e +=
                             "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
