@@ -70,7 +70,7 @@ try {
 
         const toGermanDate =
             date =>
-            `CONVERT(varchar,CONVERT(datetime, LEFT(${date}, 10)),104) + ' ' + RIGHT(LEFT(${date}, 22), 11)`
+            `RIGHT(LEFT(${date}, 10), 2) + '.' + RIGHT(LEFT(${date}, 7), 2) + '.' + LEFT(${date}, 4) + ' ' + RIGHT(LEFT(${date}, 22), 11)`
 
         chartInNewWindowKnz = function() {
             sessionStorage.setItem("nameDB", $("#nameDB").val());
