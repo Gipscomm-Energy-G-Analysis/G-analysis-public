@@ -132,7 +132,7 @@ function testIfDataInDB($records) {
     function queryData() {
         $query = "SELECT * FROM phpScriptsToExecute " ;
         $query .= "WHERE ".buildWheresString(records) ;
-        
+
         return queryDB(connGipscomm, $query, "read") ;
     }
 
