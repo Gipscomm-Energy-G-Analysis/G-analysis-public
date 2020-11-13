@@ -119,10 +119,10 @@ function add15min($date) {
     return $dateTime->format('Y-m-d H:i:s.000000'); ;
 }
 
-// Adds 2 month to a datetime string
-function addTwoMonth($date) {
+// Adds 1 month to a datetime string
+function addOneMonth($date) {
     $dateTime = new DateTime($date);
-    $dateTime->modify('+2 month');
+    $dateTime->modify('+1 month');
     return $dateTime->format('Y-m-d H:i:s.000000') ;
 }
 

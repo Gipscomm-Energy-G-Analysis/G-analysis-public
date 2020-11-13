@@ -87,9 +87,9 @@ function prepareScriptPaths($formula) {
     $to = getEndDate($formula) ;
     $date = $from ;
     $records = [] ;
-    while (addTwoMonth($date) < $to) {
+    while (addOneMonth($date) < $to) {
         $startDate = $date ;
-        $endDate = addTwoMonth($startDate) ;
+        $endDate = addOneMonth($startDate) ;
         $date = $endDate ;
 
         array_push($records, setScriptPath($startDate, $endDate)) ;
