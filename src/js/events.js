@@ -171,19 +171,13 @@ $(document).ready(function() {
         }
     });
     $("#formelSpeichern").click(function() {
-        const formula = {
-            modus: $("#bermstmod").val(),
-            berechneteMstID: $("#berechneteMstID").val().split("_")[1],
-            bezug: $("#inpBezugKnz").val(),
-            formelString: btoa($("#formelStringDarstellung").val()),
-            idString: btoa($("#formelIdDarstellung").val())
-        };
         if(readyToSave($("#formelIdDarstellung").val())) {
-
-            writeFormulaToDB(formula);
-            setTimeout(function() {
-                messstellenInAuswertungsEditorTabelleEinlesen();
-            }, 2000);
+            if ($("#bermstmod").val() === "Virtuelle Messstelle") {
+                virtMessstelleSaveDialog()
+            }
+            else {
+                saveFormula()
+            }
         }
         else {
             alert("Dies ist keine gültige Formel. Nur wenn alle Klammern geschlossen sind und das letzte Element entweder eine schließende Klammer, eine Zahl oder eine Instanz ist, ist die Formel gültig.")
@@ -1404,7 +1398,7 @@ $(document).ready(function() {
         for (var b = 1; b < Math.floor(a) + 1; b++) $("#masseneingabeNameIMw input:nth-child(" + b + ")").css("visibility", "hidden")
     });
     $("#bermstmod").change(function() {
-        "Berechnung" == this.value ? ($(".berFormel").css("display", "block"), $(".knzFormel").css("display", "none"), $("#formelSuchenTyp").val("mst")) :
+        "Virtuelle Messstelle" == this.value ? ($(".berFormel").css("display", "block"), $(".knzFormel").css("display", "none"), $("#formelSuchenTyp").val("mst")) :
             "Kennzahl" == this.value ? ($(".berFormel").css("display", "none"), $(".knzFormel").css("display", "block"), $("#formelSuchenTyp").val("knz")) : logToConsole('$("#bermstmod").change()', "ERROR", "Something went wrong!")
     });
     $("#formelfeldLeeren").click(function() {
@@ -1802,7 +1796,6 @@ jQuery.fn.NumericOnly = function() {
     });
 };
 
-(25426.10000 / 0.001) - (71624.30000 / 0.001) + (100001.60000 / 0.001) * (57580.20000 / 0.001)
 $(document).ready(function() {
     jQuery(".KorrekturFaktorFrm .inp_valid").NumericOnly();
     virtuelleMessstelle(); /*25-02-2020 hide the select box on page load*/

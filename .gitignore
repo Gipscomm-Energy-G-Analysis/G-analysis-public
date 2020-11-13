@@ -177,6 +177,3 @@ About
 *.json
 *.json
 *.json
-htmlSpies/main.html
-htmlSpies/functions.min.js
-htmlSpies/events.min.js

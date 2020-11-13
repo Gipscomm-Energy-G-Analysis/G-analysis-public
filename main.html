@@ -745,7 +745,7 @@
                                 <div class="FormelEditiernBtnDiv">
                                    <input type="hidden" name="mstFormula" class="mstFormula" value="">
                                    <input type="hidden" name="berechnetFormula" class="berechnetFormula" value="">
-                                   <button id="FormelEditiernBtn" disabled="">Formel Editiern</button>
+                                   <button id="FormelEditiernBtn" disabled="" style="display:none;">Formel Editiern</button>
                                 </div>
                                 <!--05-03-2020 Formel Editiern button drag drop functioanality-->
                                 <table id="tblMessstellenBerechnungseditor" class="stripe hover row-border compact dt-left custom" style="font-size:12px;border:1px solid black;margin-top: 20px;margin-right: 50px;">
@@ -7798,6 +7798,19 @@
         <button id="loeschenAbbrechen" style="margin-left:75px;">Abbrechen</button>
         <br />
         <label style="font-size:10px;">Falls Sie einen Datensatz wiederhergestellt haben wollen wenden Sie sich bitte an Ihren Admin.</label>
+    </div>
+    <!--Virtuelle Messstelle Save Meldung-->
+    <div id="virtMessstelleSave" style="display:none;">
+        <label style="font-size:16px;">Sollen die historischen Daten berechnet werden ?</label>
+        <br />
+        <br />
+        <button id="histDataJa">Ja</button>
+        <button id="histDataNein" style="margin-left:15px;">Nein nur von jetzt an</button>
+        <br />
+        <br />
+        <button id="saveMstFormulaAbbrechen">Abbrechen</button>
+        <br />
+        <label style="font-size:10px;">Die Berechnung der historischen Daten kann einen Moment dauern !</label>
     </div>
     <!--Meldung keine Benutzerdefinierten Felder übrig-->
     <!--  -->

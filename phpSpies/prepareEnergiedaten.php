@@ -376,7 +376,7 @@ function testIfDataInDB($records) {
     return alertIfNeccessary(equalLength($initialRecords, queryData())) ;
 }
 
-$start = hrtime(true) ;
+// $start = hrtime(true) ;
 
 pipe(
     [ getMstFormulaRecord()
@@ -392,8 +392,8 @@ pipe(
 
 closeDbConn(connect) ;
 
-$end = hrtime(true) ;
+// $end = hrtime(true) ;
 
-echo "    Execution Time : ".(($end - $start) / 1000000000) ;
+// echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
 ?>

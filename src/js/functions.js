@@ -70,7 +70,7 @@ try {
 
         const toGermanDate =
             date =>
-            `CONVERT(varchar,CONVERT(datetime, LEFT(${date}, 10)),104) + ' ' + RIGHT(LEFT(${date}, 22), 11)`
+            `RIGHT(LEFT(${date}, 10), 2) + '.' + RIGHT(LEFT(${date}, 7), 2) + '.' + LEFT(${date}, 4) + ' ' + RIGHT(LEFT(${date}, 22), 11)`
 
         chartInNewWindowKnz = function() {
             sessionStorage.setItem("nameDB", $("#nameDB").val());
@@ -546,7 +546,7 @@ try {
                 }
                 if (xa === "berechnet") {
                     e = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
-                    e += "WHERE mst_ID = '" + f + "' "
+                    e += "WHERE mst_ID = '" + h + "' "
                     if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                         if (e +=
                             "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
@@ -10037,6 +10037,88 @@ const readyToSave =
     && ( isUnit(getLastElement(idString))
     || isNumeric(getLastElement(idString))
     || isClosingParentheses(getLastElement(idString)) )
+
+// Save a Messstellen formula
+const saveFormula =
+    () => {
+        const formula = {
+            modus: $("#bermstmod").val(),
+            berechneteMstID: $("#berechneteMstID").val().split("_")[1],
+            bezug: $("#inpBezugKnz").val(),
+            formelString: btoa($("#formelStringDarstellung").val()),
+            idString: btoa($("#formelIdDarstellung").val())
+        }
+        writeFormulaToDB(formula)
+        .then(messstellenInAuswertungsEditorTabelleEinlesen)
+    }
+
+const addVirtMessstelleHistoryJob =
+    nameDB =>
+    mstID =>
+    formula =>
+    ajaxPost('php/scriptExecPath.php')({nameDB, mstID, formula})
+
+// Save a Messstellen formula and calculate historic data
+const virtMessstelleWithHistory =
+    nameDB =>
+    mstID =>
+    formula =>
+    () => {
+        saveFormula()
+        addVirtMessstelleHistoryJob(nameDB)(mstID)(formula)
+
+        $("#virtMessstelleSave").dialog("close")
+        alert("Save and calculate historic data")
+    }
+
+// Save a Messstellen formula without calculating historic data
+const virtMessstelleWithoutHistory =
+    () => {
+        saveFormula()
+        $("#virtMessstelleSave").dialog("close")
+        alert("Save without historic data calculation")
+    }
+
+// Open popup and decide if historic Virtuelle Messstelle
+// data should be calculated or only from now on get updated
+const virtMessstelleSaveDialog =
+    () => {
+        const nameDB = $("#nameDB").val()
+        const mstID = $("#berechneteMstID").val().split("_")[1]
+        const formula = $("#formelIdDarstellung").val()
+
+        $("#virtMessstelleSave").dialog({
+            height: 225,
+            width: 405,
+            resizable: false,
+            draggable: false,
+            modal: true,
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open : () => {
+
+                // Save a Messstellen formula and calculate historic data
+                $("#histDataJa").off("click")
+                $("#histDataJa").on("click",
+                    virtMessstelleWithHistory(nameDB)(mstID)(formula)
+                )
+
+                // Save a Messstellen formula without historic data calculation
+                $("#histDataNein").off("click")
+                $("#histDataNein").on("click", virtMessstelleWithoutHistory)
+
+                // Cancel saving process
+                $("#saveMstFormulaAbbrechen").off("click")
+                $("#saveMstFormulaAbbrechen").on("click", () => {$("#virtMessstelleSave").dialog("close")})
+            }
+        })
+}
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
 function spiesOrganisationenSearch() {
