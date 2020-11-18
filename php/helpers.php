@@ -21,6 +21,11 @@ function tail($arr) {
     return array_slice($arr, 1) ;
 }
 
+// Returns the last element of an array
+function last($arr) {
+    return $arr[count($arr) - 1] ;
+}
+
 // Pipes the return values from function to function
 function pipe($fns) {
     $results = [head($fns)] ;
