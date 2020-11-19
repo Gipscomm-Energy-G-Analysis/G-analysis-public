@@ -77,15 +77,36 @@ elseif($id == 'intBdeIMw'){
 		$startDate = $_POST['startDate'];
 		$endDate = $_POST['endDate'];
 		$zeitintervallAnl = $_POST['zeitintervallAnl'];
-		$query = "SELECT * FROM MessstellenAnlagen As T1 ";
-		$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-		$query .= "ON T1.mst_ID = T2.mst_ID ";
-		$query .= "WHERE T1.messartMst = 'manuell' ";
-		$query .= "AND T1.deleted <> 'true' ";
-		$query .= "AND T2.startDate >= '$startDate' ";
-		$query .= "AND T2.endDate <= '$endDate' ";
-		$query .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
-		$query .= "ORDER BY T1.mst_ID ASC";
+		if($zeitintervallAnl == 2){
+            $from = explode("-",$startDate);
+            $s1 = $from[0]; //first week selected value
+            $s2 = $from[1]; //first year input text value
+
+            $to = explode("-",$endDate);
+            $e1 = $to[0]; //first week selected value
+            $e2 = $to[1]; //first year input text value
+
+            $query = "SELECT * FROM MessstellenAnlagen As T1 ";
+			$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+			$query .= "ON T1.mst_ID = T2.mst_ID ";
+			$query .= "WHERE T1.messartMst = 'manuell' ";
+			$query .= "AND T1.deleted <> 'true' ";
+			$query .= "AND T2.startDate >= '$s2' ";
+			$query .= "AND T2.endDate <= '$e2' ";
+			$query .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+			$query .= "ORDER BY T1.mst_ID ASC";
+        }else{
+			$query = "SELECT * FROM MessstellenAnlagen As T1 ";
+			$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+			$query .= "ON T1.mst_ID = T2.mst_ID ";
+			$query .= "WHERE T1.messartMst = 'manuell' ";
+			$query .= "AND T1.deleted <> 'true' ";
+			$query .= "AND T2.startDate >= '$startDate' ";
+			$query .= "AND T2.endDate <= '$endDate' ";
+			$query .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+			$query .= "ORDER BY T1.mst_ID ASC";
+        } 
+		
 }
 
 //echo $query;die;

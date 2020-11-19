@@ -2818,12 +2818,45 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
     $zeitintervallAnl = $_POST['zeitintervallAnl'];
     $einheitAnl = $_POST['einheitAnl'];
     $notizBdeIMw = $_POST['notizBdeIMw'];
-    $startDate = $_POST['startDate'];
-    $endDate = $_POST['endDate']; 
     $ending = $_POST['ending'];  
 
-    $tsql = "INSERT INTO interneBetriebsdatenHistorie (anl_ID, mstID, archiviert,bemerkung,gueltigVon,gueltigBis,anlIMw,anlNrIMw,zeitintervallAnl,einheitAnl,notizBdeIMw,startDate,endDate,ending,deleted) ";
-    $tsql .= "VALUES ('$anlID', '$mstID', '$archiviert', '$bemerkung', '$gueltigVon', '$gueltigBis', '$anlIMw', '$anlNrIMw', '$zeitintervallAnl', '$einheitAnl', '$notizBdeIMw', '$startDate', '$endDate','$ending','false') ";
+    if($zeitintervallAnl==2){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      $fromDate =explode("-", $sDate);
+      $startWeek = $fromDate[0]; //first week selected value
+      $startDate = $fromDate[1]; //first year input text value
+
+      $toDate = explode("-", $eDate);
+      $endWeek =  $toDate[0]; //second week selected value
+      $endDate =  $toDate[1]; //second year input text value
+
+    }else if($zeitintervallAnl==3){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      $fromDate =explode(".", $sDate);
+      
+      $arrStart[] = $fromDate[1]; //first year input text value      
+      $arrStart[] = $fromDate[0]; //first week selected value
+
+      $toDate = explode(".", $eDate);
+
+      $arrEnd[] =  $toDate[1]; //second year input text value
+      $arrEnd[] =  $toDate[0]; //second week selected value
+
+      $startDate = implode("-",$arrStart);
+      $endDate = implode("-",$arrEnd);
+      $startWeek ='';
+      $endWeek ='';
+    }else{
+        $startDate =$_POST['startDate'];
+        $endDate =$_POST['endDate']; 
+        $startWeek ='';
+        $endWeek ='';
+    }
+
+    $tsql = "INSERT INTO interneBetriebsdatenHistorie (anl_ID, mstID, archiviert,bemerkung,gueltigVon,gueltigBis,anlIMw,anlNrIMw,zeitintervallAnl,einheitAnl,notizBdeIMw,startDate,endDate,startWeek,endWeek,ending,deleted) ";
+    $tsql .= "VALUES ('$anlID', '$mstID', '$archiviert', '$bemerkung', '$gueltigVon', '$gueltigBis', '$anlIMw', '$anlNrIMw', '$zeitintervallAnl', '$einheitAnl', '$notizBdeIMw', '$startDate', '$endDate','$startWeek','$endWeek','$ending','false') ";
   }
 }
 elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betriebsdaten*/
@@ -2836,21 +2869,56 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
     $intTp_ID = $_POST['intTp_ID'];
     $unt_ID = $_POST['unt_ID'];
     $note = $_POST['note'];
-    $startDate = $_POST['startDate'];
-    $endDate = $_POST['endDate'];  
+    /*$startDate = $_POST['startDate'];
+    $endDate = $_POST['endDate'];  */
     $ending = $_POST['ending'];  
+    if($intTp_ID==2){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      $fromDate =explode("-", $sDate);
+      $startWeek = $fromDate[0]; //first week selected value
+      $startDate = $fromDate[1]; //first year input text value
+
+      $toDate = explode("-", $eDate);
+      $endWeek =  $toDate[0]; //second week selected value
+      $endDate =  $toDate[1]; //second year input text value
+
+    }else if($intTp_ID==3){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      $fromDate =explode(".", $sDate);
+
+      $arrStart[] = $fromDate[1]; //first year input text value      
+      $arrStart[] = $fromDate[0]; //first week selected value
+
+      $toDate = explode(".", $eDate);
+
+      $arrEnd[] =  $toDate[1]; //second year input text value
+      $arrEnd[] =  $toDate[0]; //second week selected value
+
+      $startDate = implode("-",$arrStart);
+      $endDate = implode("-",$arrEnd);
+      $startWeek ='';
+      $endWeek ='';
+
+    }else{
+        $startDate =$_POST['startDate'];
+        $endDate =$_POST['endDate']; 
+        $startWeek ='';
+        $endWeek ='';
+    }
 
     $query="SELECT * FROM interneMesswerteConfig WHERE mst_ID = '$mstID'";
     $records = queryDB($conn, $query, "read");
 
     if(count($records) > 0){
       $tsql = "UPDATE interneMesswerteConfig SET intTp_ID = '$intTp_ID', 
-      unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',ending = '$ending',note = '$note'";
+      unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note'";
       $tsql .= "WHERE mst_ID = $mstID ";
     }
     else {
-      $tsql = "INSERT INTO interneMesswerteConfig (intTp_ID,unt_ID, mst_ID, startDate,endDate,ending,note) ";
-      $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$startDate', '$endDate', '$ending', '$note') ";
+      $tsql = "INSERT INTO interneMesswerteConfig (intTp_ID,unt_ID, mst_ID, startDate,endDate,startWeek,endWeek,ending,note) ";
+      $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note') ";
     }  
   }
 }
@@ -2872,11 +2940,46 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
     $zeitintervallAnl = $_POST['zeitintervallAnl'];
     $einheitAnl = $_POST['einheitAnl'];
     $notizBdeIMw = $_POST['notizBdeIMw'];
-    $startDate = $_POST['startDate'];
-    $endDate = $_POST['endDate']; 
-    $ending = $_POST['ending'];  
+    /*$startDate = $_POST['startDate'];
+    $endDate = $_POST['endDate']; */
+    $ending = $_POST['ending'];
+    if($zeitintervallAnl==2){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      $fromDate =explode("-", $sDate);
+      $startWeek = $fromDate[0]; //first week selected value
+      $startDate = $fromDate[1]; //first year input text value
 
-    $tsql = "UPDATE interneBetriebsdatenHistorie SET anlNrIMw = '$anlNrIMw' , zeitintervallAnl = '$zeitintervallAnl', einheitAnl = '$einheitAnl', notizBdeIMw = '$notizBdeIMw', bemerkung = '$bemerkung', gueltigVon = '$gueltigVon', gueltigBis = '$gueltigBis', startDate = '$startDate', endDate = '$endDate' , ending = '$ending'";
+      $toDate = explode("-", $eDate);
+      $endWeek =  $toDate[0]; //second week selected value
+      $endDate =  $toDate[1]; //second year input text value
+
+    }else if($zeitintervallAnl==3){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      $fromDate =explode(".", $sDate);
+
+      $arrStart[] = $fromDate[1]; //first year input text value      
+      $arrStart[] = $fromDate[0]; //first week selected value
+
+      $toDate = explode(".", $eDate);
+
+      $arrEnd[] =  $toDate[1]; //second year input text value
+      $arrEnd[] =  $toDate[0]; //second week selected value
+
+      $startDate = implode("-",$arrStart);
+      $endDate = implode("-",$arrEnd);
+      $startWeek ='';
+      $endWeek ='';
+
+    }else{
+        $startDate =$_POST['startDate'];
+        $endDate =$_POST['endDate']; 
+        $startWeek ='';
+        $endWeek ='';
+    }  
+
+    $tsql = "UPDATE interneBetriebsdatenHistorie SET anlNrIMw = '$anlNrIMw' , zeitintervallAnl = '$zeitintervallAnl', einheitAnl = '$einheitAnl', notizBdeIMw = '$notizBdeIMw', bemerkung = '$bemerkung', gueltigVon = '$gueltigVon', gueltigBis = '$gueltigBis', startDate = '$startDate', endDate = '$endDate' ,startWeek = '$startWeek',endWeek = '$endWeek', ending = '$ending'";
     $tsql .= " WHERE mstID = '$mstID'";
     $tsql .= " AND histID = '$histID'";
 

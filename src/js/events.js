@@ -1322,7 +1322,8 @@ $(document).ready(function() {
     $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag,#tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
         tabControlNav(this.id);
         addExtraWidthToDynamischeFaktor();
-        if(this.id=='btnMassEingAnl'){
+        //alert(this.id);
+        if(this.id=='tabIntBetriebsdatenIMw'){
             $("body").removeClass('fullWidthMasseneingabe');
         }
     });
@@ -1412,7 +1413,8 @@ $(document).ready(function() {
         masseneingabeZeitintervallAendern(a)
     });
     $("#masseneingabeSpeichern").click(function() {
-        ME.saveToDB()
+        //ME.saveToDB()
+        alert('Save button working');
     });
     $("#masseneingabeLaden").click(function() {
         ME.loadFromDB()
@@ -3487,7 +3489,7 @@ $("#DkFeSpeichern").click(function() {
     });
 
     /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
-    $("#intBdeIMwSuchen").click(function() {
+    $("#intBdeIMwSuchen").click(function(){
             tblAnlOhneZeitintervallIMwSuchenMethod();
     });
    /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
@@ -3543,8 +3545,6 @@ $("#DkFeSpeichern").click(function() {
         $("#infosMasseneingabe").hide();
     });
 
-
-
      $("#intBdeIMwLastMst,#intBdeIMwNextMst,#intBdeIMwPreviousMst,#intBdeIMwFirstMst").click(function(){
         //alert(this.id);
             var countRecord = $("#intBdeIMwCount").val();
@@ -3574,30 +3574,45 @@ $("#DkFeSpeichern").click(function() {
             }
             datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
             $(this).addClass('active');
+            resetSearchFormMasseneingabe('infosMasseneingabeDateRangeDiv');
     });
 
      $("#btnMasseneingabeIMwSearch").click(function(){
         var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
         var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);
-        var sDate =dates[0];alert(sDate);
-        var eDate =dates[1]; alert(eDate);
-        if(zeitintervallAnl == 3){
+        var sDate =dates[0];
+        var eDate =dates[1]; 
+        if(zeitintervallAnl == 3 && sDate != '' && eDate != ''){
+            //alert(sDate);alert(eDate);alert(zeitintervallAnl);
             var from = sDate.split(".");
             var f = new Date(from[1], from[0]);
-            var startDate = f.getFullYear() + "-" + f.getMonth();
+            var startDate = startDateV= f.getFullYear() + "-" + f.getMonth();
 
             var to = eDate.split(".");
             var t = new Date(to[1], to[0]);
-            var endDate = t.getFullYear() + "-" + t.getMonth();
-        }else{
-            var startDate =dates[0];
+            var endDate = endDateV = t.getFullYear() + "-" + t.getMonth();
+        }else if(zeitintervallAnl == 2 && sDate != '' && eDate != ''){
+            var from = sDate.split("-");
+            var g = from[0]; //first week selected value
+            var startDate = startDateV = from[1]; //first year input text value
+
+            var to = eDate.split("-");
+            var s =  to[0]; //second week selected value
+            var endDate = endDateV = to[1]; //second year input text value
+            var startDate = dates[0];
             var endDate =dates[1];
+        }else{
+            var startDate = startDateV = dates[0];
+            var endDate = endDateV = dates[1];
         }
-        getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate);    
+        getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate);
+        validateNullValZeitintervallAnlSelectOpt(startDateV,endDateV,zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);    
+        validateZeitintervallAnlSelectOpt(startDate,endDate,zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);
      });
 
      $("#btnMassEingAnl").click(function() {
         $("body").addClass('fullWidthMasseneingabe');
+        datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
      });
       $("#btnKonfigMstAnl").click(function() {
         $("body").removeClass('fullWidthMasseneingabe');
