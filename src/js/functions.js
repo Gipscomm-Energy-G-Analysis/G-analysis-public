@@ -5723,6 +5723,8 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     organisationenEinlesen()
+                    console.log("Save org query");
+                    console.log(a);
                 }
             });
             else if ("liegSpeichern" == a) $.ajax({
@@ -5732,6 +5734,7 @@ try {
                 data: {
                     id: "lieg",
                     modus: "save",
+                    orgID: $("#orgID").val(),
                     liegID: $("#liegID").val(),
                     nameDB: $("#nameDB").val(),
                     nameAllgemein: $("#nameAllgemeinLieg").val(),
@@ -5866,6 +5869,7 @@ try {
                 data: {
                     id: "ber",
                     modus: "save",
+                    liegID: $("#liegID").val(),
                     berID: $("#berID").val(),
                     nameDB: $("#nameDB").val(),
                     nameAllgemein: $("#nameAllgemeinBer").val(),
