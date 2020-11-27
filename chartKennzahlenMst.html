@@ -10,14 +10,12 @@
     <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.min.css">
     <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.structure.min.css">
     <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.theme.css">
-    <link href="dist/css/syncfusion/flat-azure-dark/ej.web.all.min.css" rel="stylesheet" />
     <link href="Syncfusion/content/default.css" rel="stylesheet" />
     <link href="Syncfusion/content/default-responsive.css" rel="stylesheet" />
     <link href="dist/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="dist/css/buttons.dataTables.min.css" rel="stylesheet" />
     <script src="Syncfusion/scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
     <script  src="dist/js/jqueryui/jquery-ui.min.js"></script>
-    <script src="dist/js/loadingOverlay.min.js"></script>
     <!-- Promise lib -->
     <script src="dist/js/bluebird.min.js"></script>
     <script src="dist/js/ej.web.all.min.js" type="text/javascript"></script>
@@ -537,6 +535,9 @@
 
 
 function firstQuery() {
+    console.log("nameDB, knzID_1, timeSpan");
+    console.log([nameDB, knzID_1, timeSpan]);
+
     const xAxis =
     frm.datasetRaw(nameDB)(knzID_1)(timeSpan)
     .then(
@@ -550,7 +551,7 @@ function firstQuery() {
                 (data,i)=>
                 ({
                     name: knzName_1,
-                    x: "A" + (i + 1) + "-" + dataRaw[i].artikelnummer.split("-")[1],
+                    x: "A" + (i + 1) + "-" + dataRaw[i].auftrag,
                     y: data
                 })
             ),
@@ -560,7 +561,7 @@ function firstQuery() {
             .forEach((col,n) =>
             tblChartData_1.row.add([
                 col.artikelnummer.split("-")[0],
-                "A" + (n + 1) + "-" + dataRaw[n].artikelnummer.split("-")[1],
+                "A" + (n + 1) + "-" + dataRaw[n].auftrag,
                 col.nameMSt,
                 col.istMenge,
                 roundWithZeros(chartData[n].y)(3),
@@ -603,12 +604,10 @@ function firstQuery() {
             .map(a => a.y);
 
         const minPointsChart =
-            math
-            .min(pointsChart)
+            math.min(pointsChart)
 
         const maxPointsChart =
-            math
-            .max(pointsChart)
+            math.max(pointsChart)
 
 
         drawChart();

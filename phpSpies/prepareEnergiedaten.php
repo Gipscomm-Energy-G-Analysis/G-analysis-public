@@ -339,7 +339,7 @@ function testIfDataInDB($records) {
         $conn = connectToDB("gipscomm") ;
 
         $query = "UPDATE phpScriptsToExecute " ;
-        $query .= "SET dateExec = '".dateNow()."', executed = '".$bool."' " ;
+        $query .= "SET dateExec = CONVERT(datetime, '".dateNow()."', 121), executed = '".$bool."' " ;
         $query .= "WHERE pathScript= '".getURL()."'" ;
 
         queryDB($conn, $query, "write") ;

@@ -27,8 +27,13 @@ if ($ins = "prd") {
         $srt = "";
     }
 
+    $whereClause =
+        $nameDB === "012_spiess" ?
+        "WHERE LEFT(artikelnummer,4) = ".$preRecords[0]['artikelNrPrd']." " :
+        "WHERE artikelnummer = ".$preRecords[0]['artikelNrPrd']." " ;
+
     $query = "SELECT * FROM (SELECT".$top." * FROM ProdData ";
-    $query .= "WHERE LEFT(artikelnummer,4) = ".$preRecords[0]['artikelNrPrd']." ";
+    $query .= $whereClause ;
     $query .= "ORDER BY timeClose".$srt.") AS div1 ";
     $query .= "ORDER BY timeClose";
 } else {

@@ -1663,7 +1663,7 @@ $(document).ready(function() {
                 title: "Meldung!"
             })) : "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
-            })) : "betrParSpeichern" == this.id && (1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            })) : "betrParSpeichern" == this.id && (1 == b || 0 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
             })))
     });

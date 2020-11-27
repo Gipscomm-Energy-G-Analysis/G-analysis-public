@@ -1,3 +1,12 @@
+const clearTable =
+    tbl =>
+    tbl.clear().draw()
+
+const intoTable =		// CHANGE: added fn to write data into any DataTable 20.05.2020
+    tbl =>
+    data =>
+    data
+    .forEach(a => tbl.row.add(a).draw())
 try {
     var dateTime = function(a) {
             var b = new Date(1970, 0, 1, 0, 0, 0);
@@ -1102,38 +1111,30 @@ try {
         anlageVerschieben = function() {
             instanzSpeichern("anlVerschieben")
         },
-        dynBdeDatenInAuswertungsEditorTabelleEinlesen = function() {
-            var a = function(a) {
-                    return function(b) {
-                        return apply(not)(exclude(a)(b))
+        dynBdeDatenInAuswertungsEditorTabelleEinlesen =
+            () =>
+            ajaxPost("php/dynBdeDaten.php")({nameDB: $("#nameDB").val()})
+            .then(
+                    data => {
+                        const prepareTableData =
+                            pars =>
+                            json(pars.parJson)
+                            .filter(a => a.state)
+                            .map(
+                                a =>
+                                [ `${pars.bPar_ID}-${a.col}`
+                                , ` [${a.alias}]`
+                                , ` ${pars.tblName}`
+                                ]
+                            )
+
+                        clearTable(tblBdeDynBerechnungseditor)
+
+                        intoTable(tblBdeDynBerechnungseditor)(
+                            prepareTableData(data[0])
+                        )
                     }
-                },
-                b = function(b) {
-                    return Array.from(b).filter(a(["[", "]", '"', "{"])).join("").split("},").map(function(a) {
-                        return a.split(",").map(function(a) {
-                            return a.replace("}}", "").split(":")
-                        })
-                    })
-                };
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/dynBdeDaten.php",
-                data: {
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(a) {
-                    a = a.replace(/\\/g, "").replace(/"/g, "");
-                    var c = b(a.split("[")[1].replace(",parJson:", ""))[0];
-                    a = b(a.split(",parJson:")[1]).map(function(a) {
-                        return c.concat(a)
-                    });
-                    var e = a.length;
-                    tblBdeDynBerechnungseditor.clear().draw();
-                    for (var f = 0; f < e; f++) "true" === a[f][3][1] && (tblBdeDynBerechnungseditor.row.add([a[f][0][1] + "-" + a[f][2][1] + " ", "[" + a[f][4][1].replace(/\s/g, "_") + "]", a[f][1][1] + " "]).draw(), $("tr").css("cursor", "pointer"))
-                }
-            })
-        },
+                )
         produkteInFormeleditorEinlesen = function() {
             $.ajax({
                 type: "POST",
@@ -2256,11 +2257,6 @@ try {
                 }
             })
         };
-		const intoTable =		// CHANGE: added fn to write data into any DataTable 20.05.2020
-            tbl =>
-            data =>
-            data
-            .forEach(a => tbl.row.add(a).draw())
         function dokumentAuswaehlenUndEinlesen(evt) {
 
             var file = evt.target.files[0];
@@ -4308,7 +4304,7 @@ try {
                 "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
                 "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
                     a = $("#nameDB").val(), $("#bildAllgemeinAnl").prop("src", "uploadsDownloads/images/" + a + "noImg.png"), $("#aktivAllgemeinAnl").prop("checked", !1), $("#mehrProdukteAllgemeinAnl").prop("checked", !1), $("#betriebsstundenAllgemeinAnl").val(0), $("#produktionsmenge1AllgemeinAnl").val(0), $("#anschlussleistung1Anl").val(0), $("#mittlereAuslastungProzent1Anl").val(0), $("#mittlereAuslastungKw1Anl").val(0), $("#betriebstemperatur1Anl").val(0), $("#abwaerme1Anl").val(0), $("#anschlussleistung2Anl").val(0), $("#mittlereAuslastungProzent2Anl").val(0),
-                    $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) : "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage2Prd #inpAnlage3Prd #inpAnlage4Prd #inpAnlage5Prd #inpAnlage6Prd #inpAnlage8Prd #inpAnlage9Prd".split(" ") :
+                    $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) : "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
                 "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
                     $("#lblEntEinh2FaktorX1").text(""), $("#lblEntEinh3FaktorX1").text(""), $("#lblEntEinh1FaktorX2").text(""), $("#lblEntEinh2FaktorX2").text(""), $("#lblEntEinh3FaktorX2").text(""), $("#lblEntEinh1FaktorX3").text(""), $("#lblEntEinh2FaktorX3").text(""), $("#lblEntEinh3FaktorX3").text("")) : "enfHinz" == a ? (b = "#nameEnf #kuerzelEnf #notizEnf #einheit1Enf #einheit2Enf #einheit3Enf #enfEinh1FaktorKwh #enfEinh2FaktorKwh #enfEinh3FaktorKwh #enfEinh1FaktorCO2 #enfEinh2FaktorCO2 #enfEinh3FaktorCO2 #enfEinh1FaktorX1 #enfEinh2FaktorX1 #enfEinh3FaktorX1 #enfEinh1FaktorX2 #enfEinh2FaktorX2 #enfEinh3FaktorX2 #enfEinh1FaktorX3 #enfEinh2FaktorX3 #enfEinh3FaktorX3 #gueltigVomEnf #gueltigBisEnf".split(" "),
                     $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) : "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
@@ -5126,23 +5122,23 @@ try {
                                     ["#custom5Prd", "custom5"],
                                     ["#custom6Prd", "custom6"],
                                     ["#inpAnlage1Prd", "anl01"],
-                                    ["#inpAnlage1IDPrd", "anl01ID"],
+                                    ["#inpAnlage1IDPrd", "anl01_ID"],
                                     ["#inpAnlage2Prd", "anl02"],
-                                    ["#inpAnlage2IDPrd", "anl02ID"],
+                                    ["#inpAnlage2IDPrd", "anl02_ID"],
                                     ["#inpAnlage3Prd", "anl03"],
-                                    ["#inpAnlage3IDPrd", "anl03ID"],
+                                    ["#inpAnlage3IDPrd", "anl03_ID"],
                                     ["#inpAnlage4Prd", "anl04"],
-                                    ["#inpAnlage4IDPrd", "anl04ID"],
+                                    ["#inpAnlage4IDPrd", "anl04_ID"],
                                     ["#inpAnlage5Prd", "anl05"],
-                                    ["#inpAnlage5IDPrd", "anl05ID"],
+                                    ["#inpAnlage5IDPrd", "anl05_ID"],
                                     ["#inpAnlage6Prd", "anl06"],
-                                    ["#inpAnlage6IDPrd", "anl06ID"],
+                                    ["#inpAnlage6IDPrd", "anl06_ID"],
                                     ["#inpAnlage7Prd", "anl07"],
-                                    ["#inpAnlage7IDPrd", "anl07ID"],
+                                    ["#inpAnlage7IDPrd", "anl07_ID"],
                                     ["#inpAnlage8Prd", "anl08"],
-                                    ["#inpAnlage8IDPrd", "anl08ID"],
+                                    ["#inpAnlage8IDPrd", "anl08_ID"],
                                     ["#inpAnlage9Prd", "anl09"],
-                                    ["#inpAnlage9IDPrd", "anl09ID"],
+                                    ["#inpAnlage9IDPrd", "anl09_ID"],
                                     ["#gruppenIDPrd", "gruppenID"]
                                 ].forEach(function(a) {
                                     $(a[0]).val(c[b][a[1]])
@@ -5224,9 +5220,7 @@ try {
                                             ["#entEinh1FaktorKwh", "entEinh1FaktorKwh"],
                                             ["#entEinh2FaktorKwh", "entEinh2FaktorKwh"],
                                             ["#entEinh3FaktorKwh", "entEinh3FaktorKwh"],
-                                            ["#entEinh1FaktorCO2",
-                                                "entEinh1FaktorCO2"
-                                            ],
+                                            ["#entEinh1FaktorCO2", "entEinh1FaktorCO2"],
                                             ["#entEinh2FaktorCO2", "entEinh2FaktorCO2"],
                                             ["#entEinh3FaktorCO2", "entEinh3FaktorCO2"],
                                             ["#entEinh1FaktorX1", "entEinh1FaktorX1"],
@@ -6265,14 +6259,15 @@ try {
                         id: "prd",
                         nameDB: $("#nameDB").val(),
                         prdID: $("#prdID").val(),
+                        orgID: $("#orgID").val(),
+                        bezeichnung: $("#bezeichnungPrd").val(),
+                        artikelnummer: $("#artklnrPrd").val().trim(),
                         gruppenID: $("#prdCount").val(),
                         archiviert: $("#archiviertPrd").val(),
                         bemerkung: $("#bemerkungHistFenster").val(),
                         info: q,
                         gueltigVon: $("#gueltigVonHistFenster").val(),
                         gueltigBis: $("#gueltigBisHistFenster").val(),
-                        bezeichnung: $("#bezeichnungPrd").val(),
-                        artikelnummer: $("#artklnrPrd").val().trim(),
                         custom1: $("#custom1Prd").val(),
                         custom2: $("#custom2Prd").val(),
                         custom3: $("#custom3Prd").val(),
@@ -7567,7 +7562,7 @@ try {
                         id: "prd",
                         nameDB: $("#nameDB").val(),
                         modus: "new",
-                        grpID: e,
+                        gruppenID: e,
                         orgID: $("#orgID").val(),
                         bezeichnung: $("#bezeichnungPrd").val(),
                         artikelnummer: $("#artklnrPrd").val().trim(),

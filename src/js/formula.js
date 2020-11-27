@@ -76,7 +76,7 @@ const scpFormula =
             .then (
                 kpi =>
                 applyRv (
-                    {nameDB, ins: kpi.bezug, id: kpi[`${kpi.bezug}_ID`],nRecords}
+                    {nameDB, ins: kpi.bezug, id: kpi[`${kpi.bezug}_ID`], nRecords}
                 )(
                     timeInterval ( head ( get (instances) (kpi.idString) ) ) ?
                     energyData :
