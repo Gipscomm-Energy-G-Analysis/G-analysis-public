@@ -5732,6 +5732,7 @@ try {
                 data: {
                     id: "lieg",
                     modus: "save",
+                    orgID: $("#orgID").val(),
                     liegID: $("#liegID").val(),
                     nameDB: $("#nameDB").val(),
                     nameAllgemein: $("#nameAllgemeinLieg").val(),
@@ -5784,6 +5785,8 @@ try {
                 },
                 success: function(a) {
                     alert(datensatzGespeichert(a))
+                    console.log("Lieg save query");
+                    console.log(a);
                 }
             });
             else if ("extDlSpeichern" == a) $.ajax({
