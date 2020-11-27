@@ -5721,8 +5721,10 @@ try {
                     mobiltelefonEnergiemanagement: $("#mobiltelefonEnergiemanagementOrg").val()
                 },
                 success: function(a) {
-                    alert(datensatzGespeichert(a));
+                    alert(datensatzGespeichert(a))
                     organisationenEinlesen()
+                    console.log("Save org query");
+                    console.log(a);
                 }
             });
             else if ("liegSpeichern" == a) $.ajax({
