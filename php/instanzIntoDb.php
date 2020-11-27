@@ -1902,7 +1902,7 @@ elseif($id == "ePrd") {
 }  /*24-02-2020 Insert data into database using php*/
 elseif($id == "ePrdKFE") {
   $modus = $_POST['modus'];
-  
+
   if($modus == "save" && isset($_POST['xOptionName']) && isset($_POST['yOptionWert'])){
       $xOptionNames = $_POST['xOptionName'];
       $yOptionWert = $_POST['yOptionWert'];
@@ -1912,7 +1912,7 @@ elseif($id == "ePrdKFE") {
 
       $i=0;
       foreach ($xOptionNames as $key => $xOptionName) {
-        
+
         $name = $xOptionName;
         $wert = $yOptionWert[$key];
         $desc = $zOptionDesc[$i];
@@ -1921,16 +1921,16 @@ elseif($id == "ePrdKFE") {
 
         $kfeQuery = "INSERT INTO korrekturFaktorEinfugen(name,wert,description,ePrdKFE_GrpID,deleted)";
         $kfeQuery .= "VALUES ('$name','$wert','$desc','$groupID','false')";
-          queryDB( $conn, $kfeQuery, "write" ); 
+          queryDB( $conn, $kfeQuery, "write" );
         $i++;
-        
-      }  
+
+      }
       echo "Daten erfolgreich gespeichert";
   }
 }
 elseif($id == "ePrdKFEUpdate") { /*25-03-2020 update the record korector faktor*/
  $modus = $_POST['modus'];
- 
+
  if($modus == "update" && isset($_POST['optionName']) && isset($_POST['optionWert']) && isset($_POST['optionDescription']) && isset($_POST['ePrdIdStore'])){
       $optionName = $_POST['optionName'];
       $optionWert = $_POST['optionWert'];
@@ -1940,8 +1940,8 @@ elseif($id == "ePrdKFEUpdate") { /*25-03-2020 update the record korector faktor*
       //$optionGrpTxt = $_POST['optionGrpTxt'];
      // print_r($_POST);
 
-    $tsql= "UPDATE korrekturFaktorEinfugen SET 
-    name = '$optionName', 
+    $tsql= "UPDATE korrekturFaktorEinfugen SET
+    name = '$optionName',
     wert = '$optionWert',
     description = '$optionDescription',
     ePrdKFE_GrpID = '$optionGrpID'";
@@ -1951,17 +1951,17 @@ elseif($id == "ePrdKFEUpdate") { /*25-03-2020 update the record korector faktor*
 elseif($id == "ePrdKFEDelete") { /*25-03-2020 delete the record korector faktor*/
 
  $modus = $_POST['modus'];
- 
+
  if($modus == "delete" && isset($_POST['ePrdKFE_id'])){
        //print_r($_POST['ePrdKFE_id']);die;
       $ePrdKFE_id = $_POST['ePrdKFE_id'];
-      
+
     $tsql = "UPDATE korrekturFaktorEinfugen SET deleted = 1";
     $tsql .= " WHERE ePrdKFE_id = '$ePrdKFE_id'";
   }
 }elseif($id == "ePrdDKFE") { /*13-04-2020 Insert data into database using php*/
   $modus = $_POST['modus'];
-  
+
   if($modus == "save" && isset($_POST['xOptionName'])){
    // print_r($_POST);die;
       $xOptionNames = $_POST['xOptionName'];
@@ -1975,7 +1975,7 @@ elseif($id == "ePrdKFEDelete") { /*25-03-2020 delete the record korector faktor*
       $bOptionBasisFaktorCalc = $_POST['bOptionBasisFaktorCalc'];
       $cOptionBasisFaktorWert = $_POST['cOptionBasisFaktorWert'];
       $dBasisType = $_POST['basisType'];
-      $eOptionBasisFaktorResult = $_POST['dOptionResults'];    
+      $eOptionBasisFaktorResult = $_POST['dOptionResults'];
 
       $optionNameDKff = $_POST["optionNameDKff"];
       $optionBeschreibungDKff = $_POST["optionBeschreibungDKff"];
@@ -1993,14 +1993,14 @@ elseif($id == "ePrdKFEDelete") { /*25-03-2020 delete the record korector faktor*
       $tempEndTxt = $_POST['yOptionTempEnd'];
 
 
-      
+
       //echo '<pre>';print_r($_POST);echo '</pre>';die;
       if($dBasisType ==5 || $dBasisType ==9){
         $rowResult = $_POST['rowResult'];
         $rowCalculator = $_POST['rowCalculator'];
       }
 
-     
+
       if($ePrdDMainIdStore){
         $optionId = $_POST['ePrdDMainIdStore'];
       }else{
@@ -2008,11 +2008,11 @@ elseif($id == "ePrdKFEDelete") { /*25-03-2020 delete the record korector faktor*
         $dkfeQueryMain .= "VALUES ('$optionNameDKff','$optionBeschreibungDKff','$typeDynamicCF','$subtypeTimeDynamicCF','$dBasisType','$calculationTypeDKff','false')";
 
         queryDB( $conn, $dkfeQueryMain, "write" );
-           
+
         $getLastId = "SELECT dKff_id AS last_inserted_id FROM dynamischeKorrekturFaktoren WHERE dKff_id = @@Identity";
         $lastID = queryDB( $conn, $getLastId, "read" );
         $optionId = $lastID[0]['last_inserted_id'];
-      }      
+      }
       if($optionId){
         $i=0;$n=0;$x=0;
         $calcId=[];
@@ -2025,7 +2025,7 @@ elseif($id == "ePrdKFEDelete") { /*25-03-2020 delete the record korector faktor*
               queryDB( $conn, $dkfeQuery, "write" );
 
               $getLastCalcId = "SELECT calculateID AS last_inserted_calc_id FROM dynamischeKorrekturFaktorenCalculation WHERE calculateID = @@Identity";
-              $lastCalcID = queryDB( $conn, $getLastCalcId, "read" );           
+              $lastCalcID = queryDB( $conn, $getLastCalcId, "read" );
               $calcId[] = $lastCalcID[0]['last_inserted_calc_id'];
           }
         }
@@ -2050,15 +2050,15 @@ elseif($id == "ePrdKFEDelete") { /*25-03-2020 delete the record korector faktor*
           $basisFktrName = $aOptionBasisFaktorName[$i];
 
           $basisFktrCalc = $bOptionBasisFaktorCalc[$i];
-          $basisFktrWert = $cOptionBasisFaktorWert[$i];          
+          $basisFktrWert = $cOptionBasisFaktorWert[$i];
           $basisFktrResult = $eOptionBasisFaktorResult[$i];
-          
+
           if($formatDynamicType){
             $formatDynamicTypeVal= $formatDynamicType[$i];
           }else{
             $formatDynamicTypeVal= '';
           }
-          
+
           $dkfeQuery = "INSERT INTO dynamischeKorrekturFaktorenOption(subtypeTxtOptNameDKff,subtypeTxtoptzBezugDkff,subtypeTxtoptzTempDkff,subtypeTxtoptzFaktoreDkff,dKff_id,deleted,formatDynamicType,bezugStartTxt,bezugEndTxt,tempStartTxt,tempEndTxt,calculateID,bereichID)";
           $dkfeQuery .= "VALUES ('$name','$bezug','$temperature','$faktore','$optionId','false','$formatDynamicTypeVal','$bezugStart','$bezugEnd','$tempStart','$tempEnd','$calcIds','$bereichID')";
           /*}*/
@@ -2082,8 +2082,8 @@ elseif($id == "ePrdKFEDelete") { /*25-03-2020 delete the record korector faktor*
           }else{
             $n++;
           }
-          $i++;          
-        }       
+          $i++;
+        }
     }
     echo $optionId;
       //echo "Daten erfolgreich gespeichert";
@@ -2107,7 +2107,7 @@ elseif($id == "ePrdDKFEUpdate") { /*14-04-2020 update the record dynamische kore
       $basisFktr2Calc = $_POST['basisFktr2Calc'];
       $basisFktr2Wert = $_POST['basisFktr2Wert'];
       $result = $_POST['result'];
-      $messstellenBerecheID= $_POST['messstellenBerecheID']; 
+      $messstellenBerecheID= $_POST['messstellenBerecheID'];
 
       $ePrddKffOptionIDStore = $_POST['ePrddKffOptionIDStore'];
 
@@ -2117,22 +2117,22 @@ elseif($id == "ePrdDKFEUpdate") { /*14-04-2020 update the record dynamische kore
       $tempEndTxt = $_POST['tempEndTxt'];
       $faktoreDynamictype = $_POST['faktoreDynamictypeVal'];
 
-      $parentSql= "UPDATE dynamischeKorrekturFaktoren SET 
-      optionNameDKff = '$parentOptName', 
+      $parentSql= "UPDATE dynamischeKorrekturFaktoren SET
+      optionNameDKff = '$parentOptName',
       optionBeschreibungDKff = '$parentBeschreibunDesc'";
       $parentSql .= "WHERE dKff_id = $ePrdDMainIdStore ";
-      queryDB( $conn, $parentSql, "write" ); 
+      queryDB( $conn, $parentSql, "write" );
 
-      $basisFktrSql= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET 
-      faktorName = '$basisFktr2Name', 
+      $basisFktrSql= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET
+      faktorName = '$basisFktr2Name',
       faktorCalc = '$basisFktr2Calc',
       faktorWert = '$basisFktr2Wert',
       result = '$result' ";
       $basisFktrSql .= "WHERE dKffOption_id = $ePrddKffOptionIDStore ";
-      queryDB( $conn, $basisFktrSql, "write" ); 
+      queryDB( $conn, $basisFktrSql, "write" );
 
-      $tsql= "UPDATE dynamischeKorrekturFaktorenOption SET 
-      subtypeTxtOptNameDKff = '$optionName', 
+      $tsql= "UPDATE dynamischeKorrekturFaktorenOption SET
+      subtypeTxtOptNameDKff = '$optionName',
       subtypeTxtoptzBezugDkff = '$optionBezug',
       subtypeTxtoptzTempDkff = '$optionTemp',
       subtypeTxtoptzFaktoreDkff = '$optionFaktore',
@@ -2149,11 +2149,11 @@ elseif($id == "ePrdDKFEUpdate") { /*14-04-2020 update the record dynamische kore
         $calculationResult =  $_POST['calcResult'];
         $calculateID =  $_POST['calculateID'];
          if(!empty($calculateID) && !empty($calculationType) && !empty($calculationResult) ){
-            $calculationSql= "UPDATE dynamischeKorrekturFaktorenCalculation SET 
-            calculationType = '$calculationType', 
+            $calculationSql= "UPDATE dynamischeKorrekturFaktorenCalculation SET
+            calculationType = '$calculationType',
             calculationResult = '$calculationResult'";
             $calculationSql .= "WHERE calculateID = $calculateID ";
-             queryDB( $conn, $calculationSql, "write" ); 
+             queryDB( $conn, $calculationSql, "write" );
          }
       }
 
@@ -2172,16 +2172,16 @@ elseif($id == "ePrdDKFEUpdate") { /*14-04-2020 update the record dynamische kore
       $bezugEndTxt = $_POST['bezugEndTxt'];
       $tempStartTxt = $_POST['tempStartTxt'];
       $tempEndTxt = $_POST['tempEndTxt'];
-      $messstellenBerecheID= $_POST['messstellenBerecheID']; 
-     
-      $parentSql= "UPDATE dynamischeKorrekturFaktoren SET 
-      optionNameDKff = '$parentOptName', 
+      $messstellenBerecheID= $_POST['messstellenBerecheID'];
+
+      $parentSql= "UPDATE dynamischeKorrekturFaktoren SET
+      optionNameDKff = '$parentOptName',
       optionBeschreibungDKff = '$parentBeschreibunDesc' ";
       $parentSql .= "WHERE dKff_id = $ePrdDMainIdStore ";
-      queryDB( $conn, $parentSql, "write" ); 
+      queryDB( $conn, $parentSql, "write" );
 
-      $tsql= "UPDATE dynamischeKorrekturFaktorenOption SET 
-      subtypeTxtOptNameDKff = '$optionName', 
+      $tsql= "UPDATE dynamischeKorrekturFaktorenOption SET
+      subtypeTxtOptNameDKff = '$optionName',
       subtypeTxtoptzBezugDkff = '$optionBezug',
       subtypeTxtoptzTempDkff = '$optionTemp',
       subtypeTxtoptzFaktoreDkff = '$optionFaktore',
@@ -2192,17 +2192,17 @@ elseif($id == "ePrdDKFEUpdate") { /*14-04-2020 update the record dynamische kore
       tempEndTxt = '$tempEndTxt',
       bereichID = '$messstellenBerecheID'  ";
       $tsql .= "WHERE dKffOption_id = $ePrddKffOptionIDStore ";
-       
+
       if($faktorType ==5 || $faktorType ==9){
       $calculationType =  $_POST['calculationType'];
       $calculationResult =  $_POST['calcResult'];
       $calculateID =  $_POST['calculateID'];
        if(!empty($calculateID) && !empty($calculationType) && !empty($calculationResult) ){
-          $calculationSql= "UPDATE dynamischeKorrekturFaktorenCalculation SET 
-          calculationType = '$calculationType', 
+          $calculationSql= "UPDATE dynamischeKorrekturFaktorenCalculation SET
+          calculationType = '$calculationType',
           calculationResult = '$calculationResult'";
           $calculationSql .= "WHERE calculateID = $calculateID ";
-           queryDB( $conn, $calculationSql, "write" ); 
+           queryDB( $conn, $calculationSql, "write" );
        }
       }
   }
@@ -2224,8 +2224,8 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
   $query .= " WHERE calculateID = '$calculateID'";*/
   $query = "SELECT T1.*,T2.*,T3.*
     FROM dynamischeKorrekturFaktorenOption AS T1
-    LEFT JOIN dynamischeKorrekturFaktorenBasisFaktor AS T2    
-    ON T1.dKffOption_id = T2.dKffOption_id 
+    LEFT JOIN dynamischeKorrekturFaktorenBasisFaktor AS T2
+    ON T1.dKffOption_id = T2.dKffOption_id
     LEFT JOIN dynamischeKorrekturFaktorenCalculation AS T3
     ON T3.calculateID = T1.calculateID
     WHERE T1.deleted='false'
@@ -2245,7 +2245,7 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
       $optionBezug = $_POST['optionBezug'];
       $optionTemp = $_POST['optionTemp'];
       $optionFaktore = $_POST['optionFaktore'];
-      $ePrdDIdStore = $_POST['ePrdDIdStore']; 
+      $ePrdDIdStore = $_POST['ePrdDIdStore'];
 
       $ePrddKffOptionIDStore = $_POST['ePrddKffOptionIDStore'];
       $bezugStartTxt = $_POST['bezugStartTxt'];
@@ -2253,7 +2253,7 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
       $tempStartTxt = $_POST['tempStartTxt'];
       $tempEndTxt = $_POST['tempEndTxt'];
       $faktoreDynamictype = $_POST['faktoreDynamictypeVal'];
-      $messstellenBerecheID= $_POST['messstellenBerecheID']; 
+      $messstellenBerecheID= $_POST['messstellenBerecheID'];
 
       $optionName2 = $_POST['optionName2'];
       $optionBezug2 = $_POST['optionBezug2'];
@@ -2266,7 +2266,7 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
       $faktoreDynamictype2 = $_POST['faktoreDynamictypeVal2'];
       $messstellenBerecheID2= $_POST['messstellenBerecheID2'];
 
-      $updateOptType = $_POST['updateOptType'];     
+      $updateOptType = $_POST['updateOptType'];
       $calculationTypeDKff = $_POST['calculationTypeDKff'];
      // if($updateOptType =='deleteClickUpdate'){
           $ePrdDKFERow1ID = $_POST['ePrdDKFERow1ID'];
@@ -2280,16 +2280,16 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
               $basisFktr2Wert = $basisFktr2WertVal ? $basisFktr2WertVal : '-';
               $resultVal = $_POST['result'];
               $result = $resultVal ? $resultVal : '-';
-              $basisFktrSql1= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET 
-              faktorName = '$basisFktr2Name', 
+              $basisFktrSql1= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET
+              faktorName = '$basisFktr2Name',
               faktorCalc = '$basisFktr2Calc',
               faktorWert = '$basisFktr2Wert',
               result = '$result' ";
               $basisFktrSql1 .= "WHERE dKffOption_id = '$ePrdDKFERow1ID' ";
               queryDB( $conn, $basisFktrSql1, "write" );
 
-              $basisOptSql1= "UPDATE dynamischeKorrekturFaktorenOption SET 
-                subtypeTxtOptNameDKff = '$optionName', 
+              $basisOptSql1= "UPDATE dynamischeKorrekturFaktorenOption SET
+                subtypeTxtOptNameDKff = '$optionName',
                 subtypeTxtoptzBezugDkff = '$optionBezug',
                 subtypeTxtoptzTempDkff = '$optionTemp',
                 subtypeTxtoptzFaktoreDkff = '$optionFaktore',
@@ -2299,11 +2299,11 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
                 tempStartTxt = '$tempStartTxt',
                 tempEndTxt = '$tempEndTxt',
                 bereichID = '$messstellenBerecheID' ";
-              $basisOptSql1 .= "WHERE dKffOption_id = $ePrdDKFERow1ID "; 
+              $basisOptSql1 .= "WHERE dKffOption_id = $ePrdDKFERow1ID ";
               queryDB( $conn, $basisOptSql1, "write" );
 
-              $basisOptSql2= "UPDATE dynamischeKorrekturFaktorenOption SET 
-                subtypeTxtOptNameDKff = '$optionName2', 
+              $basisOptSql2= "UPDATE dynamischeKorrekturFaktorenOption SET
+                subtypeTxtOptNameDKff = '$optionName2',
                 subtypeTxtoptzBezugDkff = '$optionBezug2',
                 subtypeTxtoptzTempDkff = '$optionTemp2',
                 subtypeTxtoptzFaktoreDkff = '$optionFaktore2',
@@ -2313,7 +2313,7 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
                 tempStartTxt = '$tempStartTxt2',
                 tempEndTxt = '$tempEndTxt2',
                 bereichID = '$messstellenBerecheID2' ";
-              $basisOptSql2 .= "WHERE dKffOption_id = $ePrdDKFERow2ID ";   
+              $basisOptSql2 .= "WHERE dKffOption_id = $ePrdDKFERow2ID ";
               queryDB( $conn, $basisOptSql2, "write" );
 
           }
@@ -2328,16 +2328,16 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
               $result2Val= $_POST['result2'];
               $result2 = $result2Val ? $result2Val : '-';
 
-              $basisFktrSql2= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET 
-              faktorName = '$basisFktr3Name', 
+              $basisFktrSql2= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET
+              faktorName = '$basisFktr3Name',
               faktorCalc = '$basisFktr3Calc',
               faktorWert = '$basisFktr3Wert',
               result = '$result2' ";
               $basisFktrSql2 .= "WHERE dKffOption_id = $ePrdDKFERow1ID ";
               queryDB( $conn, $basisFktrSql2, "write" );
 
-              $basisOptSql2= "UPDATE dynamischeKorrekturFaktorenOption SET 
-                subtypeTxtOptNameDKff = '$optionName2', 
+              $basisOptSql2= "UPDATE dynamischeKorrekturFaktorenOption SET
+                subtypeTxtOptNameDKff = '$optionName2',
                 subtypeTxtoptzBezugDkff = '$optionBezug2',
                 subtypeTxtoptzTempDkff = '$optionTemp2',
                 subtypeTxtoptzFaktoreDkff = '$optionFaktore2',
@@ -2347,11 +2347,11 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
                 tempStartTxt = '$tempStartTxt2',
                 tempEndTxt = '$tempEndTxt2',
                 bereichID = '$messstellenBerecheID2' ";
-              $basisOptSql2 .= "WHERE dKffOption_id = $ePrdDKFERow1ID ";   
+              $basisOptSql2 .= "WHERE dKffOption_id = $ePrdDKFERow1ID ";
               queryDB( $conn, $basisOptSql2, "write" );
 
-               $basisOptSql1= "UPDATE dynamischeKorrekturFaktorenOption SET 
-                subtypeTxtOptNameDKff = '$optionName', 
+               $basisOptSql1= "UPDATE dynamischeKorrekturFaktorenOption SET
+                subtypeTxtOptNameDKff = '$optionName',
                 subtypeTxtoptzBezugDkff = '$optionBezug',
                 subtypeTxtoptzTempDkff = '$optionTemp',
                 subtypeTxtoptzFaktoreDkff = '$optionFaktore',
@@ -2361,9 +2361,9 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
                 tempStartTxt = '$tempStartTxt',
                 tempEndTxt = '$tempEndTxt',
                 bereichID = '$messstellenBerecheID' ";
-              $basisOptSql1 .= "WHERE dKffOption_id = $ePrdDKFERow2ID "; 
+              $basisOptSql1 .= "WHERE dKffOption_id = $ePrdDKFERow2ID ";
               queryDB( $conn, $basisOptSql1, "write" );
-              
+
           }
 
           if($calculationTypeDKff ==3 ){
@@ -2385,24 +2385,24 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
               $result2Val= $_POST['result2'];
               $result2 = $result2Val ? $result2Val : '-';
 
-              $basisFktrSql1= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET 
-              faktorName = '$basisFktr2Name', 
+              $basisFktrSql1= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET
+              faktorName = '$basisFktr2Name',
               faktorCalc = '$basisFktr2Calc',
               faktorWert = '$basisFktr2Wert',
               result = '$result' ";
               $basisFktrSql1 .= "WHERE dKffOption_id = '$ePrdDKFERow1ID' ";
               queryDB( $conn, $basisFktrSql1, "write" );
 
-              $basisFktrSql2= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET 
-              faktorName = '$basisFktr3Name', 
+              $basisFktrSql2= "UPDATE dynamischeKorrekturFaktorenBasisFaktor SET
+              faktorName = '$basisFktr3Name',
               faktorCalc = '$basisFktr3Calc',
               faktorWert = '$basisFktr3Wert',
               result = '$result2' ";
               $basisFktrSql2 .= "WHERE dKffOption_id = $ePrdDKFERow2ID ";
               queryDB( $conn, $basisFktrSql2, "write" );
 
-              $basisOptSql1= "UPDATE dynamischeKorrekturFaktorenOption SET 
-              subtypeTxtOptNameDKff = '$optionName', 
+              $basisOptSql1= "UPDATE dynamischeKorrekturFaktorenOption SET
+              subtypeTxtOptNameDKff = '$optionName',
               subtypeTxtoptzBezugDkff = '$optionBezug',
               subtypeTxtoptzTempDkff = '$optionTemp',
               subtypeTxtoptzFaktoreDkff = '$optionFaktore',
@@ -2412,11 +2412,11 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
               tempStartTxt = '$tempStartTxt',
               tempEndTxt = '$tempEndTxt',
               bereichID = '$messstellenBerecheID' ";
-              $basisOptSql1 .= "WHERE dKffOption_id = $ePrdDKFERow1ID "; 
+              $basisOptSql1 .= "WHERE dKffOption_id = $ePrdDKFERow1ID ";
               queryDB( $conn, $basisOptSql1, "write" );
 
-              $basisOptSql2= "UPDATE dynamischeKorrekturFaktorenOption SET 
-              subtypeTxtOptNameDKff = '$optionName2', 
+              $basisOptSql2= "UPDATE dynamischeKorrekturFaktorenOption SET
+              subtypeTxtOptNameDKff = '$optionName2',
               subtypeTxtoptzBezugDkff = '$optionBezug2',
               subtypeTxtoptzTempDkff = '$optionTemp2',
               subtypeTxtoptzFaktoreDkff = '$optionFaktore2',
@@ -2426,11 +2426,11 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
               tempStartTxt = '$tempStartTxt2',
               tempEndTxt = '$tempEndTxt2',
               bereichID = '$messstellenBerecheID2' ";
-              $basisOptSql2 .= "WHERE dKffOption_id = $ePrdDKFERow2ID ";   
+              $basisOptSql2 .= "WHERE dKffOption_id = $ePrdDKFERow2ID ";
               queryDB( $conn, $basisOptSql2, "write" );
           }
-          $tsql= "UPDATE dynamischeKorrekturFaktoren SET 
-          optionNameDKff = '$parentOptName', 
+          $tsql= "UPDATE dynamischeKorrekturFaktoren SET
+          optionNameDKff = '$parentOptName',
           optionBeschreibungDKff = '$parentBeschreibunDesc'";
           $tsql .= "WHERE dKff_id = $ePrdDMainIdStore ";
          // queryDB( $conn, $parentSql, "write" );
@@ -2440,11 +2440,11 @@ elseif($id == "ePrdDKFEDelete") { /*14-04-2020 delete the record dynamische kore
               $calculationResult =  $_POST['calcResult'];
               $calculateID =  $_POST['calculateID'];
                if(!empty($calculateID) && !empty($calculationType) && !empty($calculationResult) ){
-                  $calculationSql= "UPDATE dynamischeKorrekturFaktorenCalculation SET 
-                  calculationType = '$calculationType', 
+                  $calculationSql= "UPDATE dynamischeKorrekturFaktorenCalculation SET
+                  calculationType = '$calculationType',
                   calculationResult = '$calculationResult'";
                   $calculationSql .= "WHERE calculateID = $calculateID ";
-                   queryDB( $conn, $calculationSql, "write" ); 
+                   queryDB( $conn, $calculationSql, "write" );
                }
             }
   }
@@ -2625,7 +2625,7 @@ elseif ($id == "frm") {
 
   $formelStringNormal =base64_decode($_POST['formelString']);
   /*05-03-2020 update default option berechnet in messartMst*/
-  $tsql = "UPDATE messstellen SET messmittelBerechnungslogikMst = '$formelString', 
+  $tsql = "UPDATE messstellen SET messmittelBerechnungslogikMst = '$formelString',
   messmittelBerechnungslogikMstNormal = '$formelStringNormal',
   berLogikIdString = '$idString',messartMst = 'berechnet'";
   $tsql .= "WHERE mst_ID = $berechneteMstID ";
@@ -2639,16 +2639,16 @@ elseif ($id == "frmKnz") {
   $tsql .= "VALUES ('$typ', '$formelString', '$idString') ";
 }
 elseif ($id == "betrPar") {
-  $tblName = $_POST['tblName'];
-  $parJson = $_POST['parJson'];
+    $tblName = $_POST['tblName'];
+    $parJson = $_POST['parJson'];
 
-  $tsql = "INSERT INTO config.betriebsparameter ( tblName, parJson ) " ;
-  $tsql .= "VALUES ( '$tblName', '$parJson' ) " ;
+    $tsql = "INSERT INTO config.betriebsparameter ( tblName, parJson ) " ;
+    $tsql .= "VALUES ( '$tblName', '$parJson' ) " ;
 }
 
 if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  ) {
-  $retState = queryDB( $conn, $tsql, "write" );
-  echo $tsql;
+    $retState = queryDB( $conn, $tsql, "write" );
+    echo $tsql;
 }
 
 
