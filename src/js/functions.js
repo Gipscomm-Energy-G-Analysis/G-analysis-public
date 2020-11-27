@@ -5785,8 +5785,6 @@ try {
                 },
                 success: function(a) {
                     alert(datensatzGespeichert(a))
-                    console.log("Lieg save query");
-                    console.log(a);
                 }
             });
             else if ("extDlSpeichern" == a) $.ajax({
@@ -5869,6 +5867,7 @@ try {
                 data: {
                     id: "ber",
                     modus: "save",
+                    liegID: $("#liegID").val(),
                     berID: $("#berID").val(),
                     nameDB: $("#nameDB").val(),
                     nameAllgemein: $("#nameAllgemeinBer").val(),
