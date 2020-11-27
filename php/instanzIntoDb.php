@@ -166,53 +166,54 @@ $passwort = $_POST['passwort'];
 	}
 }
 elseif($id == "org") {
-    $modus = $_POST['modus'];
-    $nameAllgemein = $_POST['nameAllgemein'];
-    $gesellschaftsform = $_POST['gesellschaftsform'];
-    $firmenanschrift = $_POST['firmenanschrift'];
-    $land = $_POST['land'];
-    $plz = $_POST['plz'];
-    $ort = $_POST['ort'];
-    $hrbNummer = $_POST['hrbNummer'];
-    $titelGeschaeftsfuehrung = $_POST['titelGeschaeftsfuehrung'];
-    $nameGeschaeftsfuehrung = $_POST['nameGeschaeftsfuehrung'];
-    $vornameGeschaeftsfuehrung = $_POST['vornameGeschaeftsfuehrung'];
-    $eMailGeschaeftsfuehrung = $_POST['eMailGeschaeftsfuehrung'];
-    $telefonGeschaeftsfuehrung = $_POST['telefonGeschaeftsfuehrung'];
-    $faxGeschaeftsfuehrung = $_POST['faxGeschaeftsfuehrung'];
-    $mobiltelefonGeschaeftsfuehrung = $_POST['mobiltelefonGeschaeftsfuehrung'];
-    $titelEnergiemanagement = $_POST['titelEnergiemanagement'];
-    $nameEnergiemanagement = $_POST['nameEnergiemanagement'];
-    $vornameEnergiemanagement = $_POST['vornameEnergiemanagement'];
-    $eMailEnergiemanagement = $_POST['eMailEnergiemanagement'];
-    $telefonEnergiemanagement = $_POST['telefonEnergiemanagement'];
-    $faxEnergiemanagement = $_POST['faxEnergiemanagement'];
-    $mobiltelefonEnergiemanagement = $_POST['mobiltelefonEnergiemanagement'];
+$modus = $_POST['modus'];
+$nameAllgemein = $_POST['nameAllgemein'];
+$gesellschaftsform = $_POST['gesellschaftsform'];
+$firmenanschrift = $_POST['firmenanschrift'];
+$land = $_POST['land'];
+$plz = $_POST['plz'];
+$ort = $_POST['ort'];
+$hrbNummer = $_POST['hrbNummer'];
+$titelGeschaeftsfuehrung = $_POST['titelGeschaeftsfuehrung'];
+$nameGeschaeftsfuehrung = $_POST['nameGeschaeftsfuehrung'];
+$vornameGeschaeftsfuehrung = $_POST['vornameGeschaeftsfuehrung'];
+$eMailGeschaeftsfuehrung = $_POST['eMailGeschaeftsfuehrung'];
+$telefonGeschaeftsfuehrung = $_POST['telefonGeschaeftsfuehrung'];
+$faxGeschaeftsfuehrung = $_POST['faxGeschaeftsfuehrung'];
+$mobiltelefonGeschaeftsfuehrung = $_POST['mobiltelefonGeschaeftsfuehrung'];
+$titelEnergiemanagement = $_POST['titelEnergiemanagement'];
+$nameEnergiemanagement = $_POST['nameEnergiemanagement'];
+$vornameEnergiemanagement = $_POST['vornameEnergiemanagement'];
+$eMailEnergiemanagement = $_POST['eMailEnergiemanagement'];
+$telefonEnergiemanagement = $_POST['telefonEnergiemanagement'];
+$faxEnergiemanagement = $_POST['faxEnergiemanagement'];
+$mobiltelefonEnergiemanagement = $_POST['mobiltelefonEnergiemanagement'];
 
-    if($modus == "new"){
-    	$tsql = "
-    	INSERT INTO organisationen(datumOrg,nameOrg,gesellschaftsformOrg,anschriftOrg,landOrg,plzOrg,ortOrg,hrbNummerOrg,titelGeschaeftsfuehrungOrg,nameGeschaeftsfuehrungOrg,vornameGeschaeftsfuehrungOrg,eMailGeschaeftsfuehrungOrg,telefonGeschaeftsfuehrungOrg, faxGeschaeftsfuehrungOrg,mobiltelefonGeschaeftsfuehrungOrg,titelEnergiemanagementOrg,nameEnergiemanagementOrg,vornameEnergiemanagementOrg,eMailEnergiemanagementOrg,telefonEnergiemanagementOrg, faxEnergiemanagementOrg,mobiltelefonEnergiemanagementOrg,deleted)
-    	VALUES (getdate(),'$nameAllgemein','$gesellschaftsform',' $firmenanschrift','$land','$plz','$ort','$hrbNummer','$titelGeschaeftsfuehrung','$nameGeschaeftsfuehrung','$vornameGeschaeftsfuehrung','$eMailGeschaeftsfuehrung','$telefonGeschaeftsfuehrung','$faxGeschaeftsfuehrung','$mobiltelefonGeschaeftsfuehrung','$titelEnergiemanagement','$nameEnergiemanagement','$vornameEnergiemanagement','$eMailEnergiemanagement','$telefonEnergiemanagement','$faxEnergiemanagement','$mobiltelefonEnergiemanagement',0)";
-    }
-    elseif($modus == "save"){
-    	$orgID = $_POST['orgID'];
 
-    	$tsql = "UPDATE organisationen SET datumOrg=getdate(),nameOrg='$nameAllgemein',gesellschaftsformOrg='$gesellschaftsform',anschriftOrg='$firmenanschrift',";
-        $tsql .= "landOrg='$land',plzOrg='$plz',ortOrg='$ort',hrbNummerOrg='$hrbNummer',titelGeschaeftsfuehrungOrg='$titelGeschaeftsfuehrung',";
-        $tsql .= "nameGeschaeftsfuehrungOrg='$nameGeschaeftsfuehrung',vornameGeschaeftsfuehrungOrg='$vornameGeschaeftsfuehrung',";
-        $tsql .= "eMailGeschaeftsfuehrungOrg='$eMailGeschaeftsfuehrung',telefonGeschaeftsfuehrungOrg='$telefonGeschaeftsfuehrung',";
-        $tsql .= "faxGeschaeftsfuehrungOrg='$faxGeschaeftsfuehrung',mobiltelefonGeschaeftsfuehrungOrg='$mobiltelefonGeschaeftsfuehrung',";
-        $tsql .= "titelEnergiemanagementOrg = '$titelEnergiemanagement',nameEnergiemanagementOrg='$nameEnergiemanagement',";
-        $tsql .= "vornameEnergiemanagementOrg='$vornameEnergiemanagement',eMailEnergiemanagementOrg='$eMailEnergiemanagement',";
-        $tsql .= "telefonEnergiemanagementOrg='$telefonEnergiemanagement', faxEnergiemanagementOrg='$faxEnergiemanagement',";
-        $tsql .= "mobiltelefonEnergiemanagementOrg='$mobiltelefonEnergiemanagement' ";
-    	$tsql .= "WHERE org_ID = '$orgID'";
-    }
-    elseif ($modus == "delete") {
-        $orgID = $_POST['orgID'];
-        $tsql = "UPDATE organisationen SET datumOrg = getdate(), deleted = 1";
-    	$tsql .= "WHERE org_ID = '$orgID'";
-    }
+if($modus == "new"){
+	$tsql = "
+	INSERT INTO organisationen(datumOrg,nameOrg,gesellschaftsformOrg,anschriftOrg,landOrg,plzOrg,ortOrg,hrbNummerOrg,titelGeschaeftsfuehrungOrg,nameGeschaeftsfuehrungOrg,vornameGeschaeftsfuehrungOrg,eMailGeschaeftsfuehrungOrg,telefonGeschaeftsfuehrungOrg, faxGeschaeftsfuehrungOrg,mobiltelefonGeschaeftsfuehrungOrg,titelEnergiemanagementOrg,nameEnergiemanagementOrg,vornameEnergiemanagementOrg,eMailEnergiemanagementOrg,telefonEnergiemanagementOrg, faxEnergiemanagementOrg,mobiltelefonEnergiemanagementOrg,deleted)
+	VALUES (getdate(),'$nameAllgemein','$gesellschaftsform',' $firmenanschrift','$land','$plz','$ort','$hrbNummer','$titelGeschaeftsfuehrung','$nameGeschaeftsfuehrung','$vornameGeschaeftsfuehrung','$eMailGeschaeftsfuehrung','$telefonGeschaeftsfuehrung','$faxGeschaeftsfuehrung','$mobiltelefonGeschaeftsfuehrung','$titelEnergiemanagement','$nameEnergiemanagement','$vornameEnergiemanagement','$eMailEnergiemanagement','$telefonEnergiemanagement','$faxEnergiemanagement','$mobiltelefonEnergiemanagement',0)";
+}
+elseif($modus == "save"){
+	$orgID = $_POST['orgID'];
+
+	$tsql = "UPDATE organisationen SET datumOrg=getdate(),nameOrg='$nameAllgemein',gesellschaftsformOrg='$gesellschaftsform',anschriftOrg='$firmenanschrift',";
+    $tsql .= "landOrg='$land',plzOrg='$plz',ortOrg='$ort',hrbNummerOrg='$hrbNummer',titelGeschaeftsfuehrungOrg='$titelGeschaeftsfuehrung',";
+    $tsql .= "nameGeschaeftsfuehrungOrg='$nameGeschaeftsfuehrung',vornameGeschaeftsfuehrungOrg='$vornameGeschaeftsfuehrung',";
+    $tsql .= "eMailGeschaeftsfuehrungOrg='$eMailGeschaeftsfuehrung',telefonGeschaeftsfuehrungOrg='$telefonGeschaeftsfuehrung',";
+    $tsql .= "faxGeschaeftsfuehrungOrg='$faxGeschaeftsfuehrung',mobiltelefonGeschaeftsfuehrungOrg='$mobiltelefonGeschaeftsfuehrung',";
+    $tsql .= "titelEnergiemanagementOrg = '$titelEnergiemanagement',nameEnergiemanagementOrg='$nameEnergiemanagement',";
+    $tsql .= "vornameEnergiemanagementOrg='$vornameEnergiemanagement',eMailEnergiemanagementOrg='$eMailEnergiemanagement',";
+    $tsql .= "telefonEnergiemanagementOrg='$telefonEnergiemanagement', faxEnergiemanagementOrg='$faxEnergiemanagement',";
+    $tsql .= "mobiltelefonEnergiemanagementOrg='$mobiltelefonEnergiemanagement' ";
+	$tsql .= "WHERE org_ID = '$orgID'";
+}
+elseif ($modus == "delete") {
+$tsql = "UPDATE organisationen SET datumOrg = getdate(), deleted = 1";
+	$tsql .= "WHERE org_ID = '$orgID'";
+}
+
 }
 elseif($id == "lieg") {
     $modus = $_POST['modus'];
