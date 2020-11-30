@@ -3495,12 +3495,12 @@ $("#DkFeSpeichern").click(function() {
    /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
 
     /*18-09-2020 on double click row append data into input*/
-    $("#tblAnlOhneZeitintervallIMwSuchen tbody").on("dblclick","tr",function(){
+    /*$("#tblAnlOhneZeitintervallIMwSuchen tbody").on("dblclick","tr",function(){
         //var id = $(this).attr('data-id');
         var rowData = tblAnlOhneZeitintervallIMwSuchen.row( this ).data();
         tblAnlOhneZeitintervallIMwSuchenDblClick(rowData[0]); 
         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");      
-    });
+    });*/
     /*18-09-2020  on double click row append data into input*/
 
     $(document).ready(function(){
@@ -3582,16 +3582,7 @@ $("#DkFeSpeichern").click(function() {
         var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);
         var sDate =dates[0];
         var eDate =dates[1]; 
-        if(zeitintervallAnl == 3 && sDate != '' && eDate != ''){
-            //alert(sDate);alert(eDate);alert(zeitintervallAnl);
-            var from = sDate.split(".");
-            var f = new Date(from[1], from[0]);
-            var startDate = startDateV= f.getFullYear() + "-" + f.getMonth();
-
-            var to = eDate.split(".");
-            var t = new Date(to[1], to[0]);
-            var endDate = endDateV = t.getFullYear() + "-" + t.getMonth();
-        }else if(zeitintervallAnl == 2 && sDate != '' && eDate != ''){
+        if(zeitintervallAnl == 2 && sDate != '' && eDate != ''){
             var from = sDate.split("-");
             var g = from[0]; //first week selected value
             var startDate = startDateV = from[1]; //first year input text value

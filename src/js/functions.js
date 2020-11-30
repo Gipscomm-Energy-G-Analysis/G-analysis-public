@@ -8908,7 +8908,10 @@ try {
         buttons: [],
         pageLength: 15,
         bAutoWidth: !1,
-        colReorder: !0
+        colReorder: !0,
+         language: {
+            emptyTable: "Loading...."
+        }
     });
      tblAnlOhneZeitintervallIMwSuchen = $("#tblAnlOhneZeitintervallIMwSuchen").DataTable({
         dom: "Bfrtip",
@@ -15067,21 +15070,22 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
 
 /*Ajax Call for the Manuel module serach 18-09-2020*/
 function tblAnlOhneZeitintervallIMwSuchenMethod() {
-    var b = null,
+    /*var b = null,
     e = new DataMachine,
     c = void 0,
+    d = void 0,
     g = [],
     f = void 0,
     h = "",
     q = "SELECT * FROM ",
     r = void 0;  
-    b = tblAnlOhneZeitintervallIMwSuchen, mstOrAnlString = "tblAnlOhneZeitintervallIMwSuchen", r = ReadInstance.INTERNE_BETRIEBSDATEN, c = "MessstellenAnlagen\n",
-        g = ["mst_ID", "nameMSt", "anlageMst"], f = "messartMst"            
+    b = tblAnlOhneZeitintervallIMwSuchen, mstOrAnlString = "tblAnlOhneZeitintervallIMwSuchen", r = ReadInstance.INTERNE_BETRIEBSDATEN, c = "MessstellenAnlagen\n",d = "interneMesswerteConfig\n",
+        g = ["mst_ID", "nameMSt", "anlageMst", "startDate", "endDate", "messartMst", "note"], f = "messartMst"            
         b.clear().draw();
-        q += c + " WHERE " + f + " = 'manuell' AND deleted <> 'true'" + h + " ";
+        q += c + " LEFT JOIN " + d + " ON MessstellenAnlagen.mst_ID = interneMesswerteConfig.mst_ID " + " WHERE " + f + " = 'manuell' AND deleted <> 'true'" + h + " ";
         e.runQuery("read", $("#nameDB").val(), q).then(function(a) {
             a = JSON.parse(a);
-            for (var c = a.length, e = 0; e < c; e++) b.row.add([a[e][g[0]], a[e][g[1]], a[e][g[2]]]).draw(), b.column(0).visible(!1).draw();
+            for (var c = a.length, e = 0; e < c; e++) b.row.add([a[e][g[0]], a[e][g[1]], a[e][g[2]], a[e][g[3]], a[e][g[4]], a[e][g[5]], a[e][g[6]]]).draw(), b.column(0).visible(!1).draw();
             $("#" + mstOrAnlString + " tbody").off("dblclick");
             $("#" + mstOrAnlString + " tbody").on("dblclick", "tr", function() {
                 var a = b.row(this).data();
@@ -15093,7 +15097,7 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                 $("#anlNrIMw").val(a[2]);  
                 $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");              
             })
-        })
+        })*/
         $("#tblAnlOhneZeitintervallIMwSearchContainer").css("display", "block");
         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog({
             height: $(window).height() - .125 * $(window).height(),
@@ -15107,7 +15111,40 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                 effect: "fade",
                 duration: 300
             }
-        })
+        });
+
+         $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "KeinZeitintervallTbl",
+                nameDB: $("#nameDB").val()
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                var b = a.length;console.log(a);
+                tblAnlOhneZeitintervallIMwSuchen.clear().draw();
+                    for (var e = 0; e < b; e++){ 
+                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit, capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                        //tblAnlOhneZeitintervallIMwSuchen.column([0,1]).visible(!1);
+                        $("#tblAnlOhneZeitintervallIMwSuchen tr").css("cursor", "pointer");
+                        $("#tblAnlOhneZeitintervallIMwSuchen").off("dblclick", "tr");
+                    } 
+                    var columnHide = tblAnlOhneZeitintervallIMwSuchen.columns([0]);
+                    columnHide.visible(! columnHide.visible() );
+                    $("#tblAnlOhneZeitintervallIMwSuchen").on("dblclick", "tr", function() {
+                         var a = tblAnlOhneZeitintervallIMwSuchen.row(this).data();
+                        //console.log(a);    
+                        resetFormAllgemein('infosIntBetriebsdaten',1);           
+                        keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
+                        $("#mstID").val(a[0]);
+                        $("#anlIMw").val(a[1]);
+                        $("#anlNrIMw").val(a[2]);  
+                        $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close"); 
+                });
+            }
+        });
 }
 
 
@@ -15198,7 +15235,7 @@ function intBdeIMwHistorieSpeichernPopUp() {
         $("#bemerkungHistIntBdeIMw").val($("#notizBdeIMw").val());
         var zeitintervallAnl = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
         var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosIntBetriebsdaten',1);
-        //console.log(dates);
+        ///console.log(dates);
         var startDate =dates[0];
         var endDate =dates[1]; 
         zeitintervallAnlInputsVisibleInvisible(zeitintervallAnl,startDate,endDate,'','intBdeIMwHistoriePopUp',3);
@@ -15378,7 +15415,9 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
             $("." + sId + " #bemerkungHistIntBdeIMwEditor").val(a[0].bemerkung);
             $("." + sId + " #gueltigVonHistIntBdeIMwEditor").val(a[0].gueltigVon);
             $("." + sId + " #gueltigBisHistIntBdeIMwEditor").val(a[0].gueltigBis);
-            zeitintervallAnlInputsVisibleInvisible(a[0].zeitintervallAnl,a[0].startDate,a[0].endDate,a[0].ending,sId,2);  
+            var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
+            var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
+            zeitintervallAnlInputsVisibleInvisible(a[0].zeitintervallAnl,sDt,eDt,a[0].ending,sId,2);  
             $("." + sId + " #anlIMwNoEnding").prop('checked', a[0].ending);
             $("." + sId + " #anlIMwNoEnding").val(a[0].ending);
              if(a[0].zeitintervallAnl==2){
@@ -15619,7 +15658,22 @@ function datePickerForInterneBetriebsdaten(sId,id){
             });        
     }); 
 
-    var dateFormat = "dd.mm.yy",
+    $("." + sId + " #tageMassEingDataAnlStart" +id+ "").datepicker({
+        numberOfMonths: 1,
+        dateFormat: 'dd.mm.yy',
+        onSelect: function(selected) {
+          $("." + sId + " #tageMassEingDataAnlEnde" +id+ "").datepicker("option","minDate", selected)
+        }
+    });
+    $("." + sId + " #tageMassEingDataAnlEnde" +id+ "").datepicker({ 
+        numberOfMonths: 1,
+        dateFormat: 'dd.mm.yy',
+        onSelect: function(selected) {
+           $("." + sId + " #tageMassEingDataAnlStart" +id+ "").datepicker("option","maxDate", selected)
+        }
+    });  
+
+    /*var dateFormat = "dd.mm.yy",
     beginDate = $( "." + sId + " #tageMassEingDataAnlStart" +id+ "")
     .datepicker({
         changeMonth: true,
@@ -15637,9 +15691,9 @@ function datePickerForInterneBetriebsdaten(sId,id){
     })
     .on( "change", function() {
         beginDate.datepicker( "option", "maxDate", getDate(this));
-    });
+    });*/
 }
-function getDate(element) {
+/*function getDate(element) {
     var date;
     try {
         date = $.datepicker.parseDate( dateFormat, element.value );
@@ -15647,26 +15701,29 @@ function getDate(element) {
         date = null;
     }
     return date;
-}
+}*/
 
 
 /*Interne Messwerte Start 20-10-2020*/
 function keinZeitIntervallZugewiesen(){
-    var b = null,
+    /*var b = null,
     e = new DataMachine,
     c = void 0,
+    d = void 0,
+    s = void 0,
+    t = void 0,
     g = [],
     f = void 0,
     h = "",
     q = "SELECT * FROM ",
     r = void 0;  
-    b = tblAnlOhneZeitintervallIMw, mstOrAnlString = "tblAnlOhneZeitintervallIMw", r = ReadInstance.INTERNE_BETRIEBSDATEN, c = "MessstellenAnlagen\n",
-        g = ["mst_ID", "nameMSt", "anlageMst"], f = "messartMst"            
+    b = tblAnlOhneZeitintervallIMw, mstOrAnlString = "tblAnlOhneZeitintervallIMw", r = ReadInstance.INTERNE_BETRIEBSDATEN, c = "MessstellenAnlagen\n",d = "interneMesswerteConfig\n",s = "iMwUnits\n", t = "intervalType\n",
+        g = ["mst_ID", "nameMSt", "anlageMst", "startDate", "endDate", "messartMst", "note"], f = "MessstellenAnlagen.messartMst"            
         b.clear().draw();
-        q += c + " WHERE " + f + " = 'manuell' AND deleted <> 'true'" + h + " ";
+        q += c + " LEFT JOIN " + d + " ON MessstellenAnlagen.mst_ID = interneMesswerteConfig.mst_ID " + " LEFT JOIN " + s + " ON MessstellenAnlagen.einheitAnl = iMwUnits.unt_ID " + " WHERE " + f + " = 'manuell' AND MessstellenAnlagen.deleted <> 'true'" + h + " "; console.log(q);
         e.runQuery("read", $("#nameDB").val(), q).then(function(a) {
             a = JSON.parse(a);$("#intBdeIMwCount").val(a.length);
-            for (var c = a.length, e = 0; e < c; e++) b.row.add([a[e][g[0]], a[e][g[1]], a[e][g[2]]]).draw(), b.column(0).visible(!1).draw();
+            for (var c = a.length, e = 0; e < c; e++) b.row.add([a[e][g[0]], a[e][g[1]], a[e][g[2]], a[e][g[3]], a[e][g[4]], a[e][g[5]], a[e][g[6]]]).draw(), b.column(0).visible(!1).draw();
             $("#" + mstOrAnlString + " tbody").off("dblclick");
             $("#" + mstOrAnlString + " tbody").on("dblclick", "tr", function() {
                 var a = b.row(this).data();
@@ -15677,7 +15734,39 @@ function keinZeitIntervallZugewiesen(){
                 $("#anlIMw").val(a[1]);
                 $("#anlNrIMw").val(a[2]);                
             })
-        })
+        })*/
+
+     $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            id: "KeinZeitintervallTbl",
+            nameDB: $("#nameDB").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;console.log(a);
+            tblAnlOhneZeitintervallIMw.clear().draw();
+                for (var e = 0; e < b; e++){ 
+                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit, capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                    //tblAnlOhneZeitintervallIMw.column([0,1]).visible(!1);
+                    $("#tblAnlOhneZeitintervallIMw tr").css("cursor", "pointer");
+                    $("#tblAnlOhneZeitintervallIMw").off("dblclick", "tr");
+                } 
+                var columnHide = tblAnlOhneZeitintervallIMw.columns([0]);
+                columnHide.visible(! columnHide.visible() );
+                $("#tblAnlOhneZeitintervallIMw").on("dblclick", "tr", function() {
+                    var a = tblAnlOhneZeitintervallIMw.row(this).data();
+                    //console.log(a);    
+                    resetFormAllgemein('infosIntBetriebsdaten',1);           
+                    keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
+                    $("#mstID").val(a[0]);
+                    $("#anlIMw").val(a[1]);
+                    $("#anlNrIMw").val(a[2]); 
+            });
+        }
+    });
 }
 
 function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
@@ -15695,10 +15784,14 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
             var b = a.length;
             console.log(a);
             if (b>0) {
+
+                var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
+                var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
+
                 $("." + sId + " #zeitintervallAnl").val(a[0]['intTp_ID']);
                 $("." + sId + " #einheitAnl").val(a[0]['unt_ID']);
                 $("." + sId + " #notizBdeIMw").val(a[0]['note']);
-                zeitintervallAnlInputsVisibleInvisible(a[0]['intTp_ID'],a[0]['startDate'],a[0]['endDate'],a[0]['ending'],'infosIntBetriebsdaten',1); 
+                zeitintervallAnlInputsVisibleInvisible(a[0]['intTp_ID'],sDt,eDt,a[0]['ending'],'infosIntBetriebsdaten',1); 
                 $("." + sId + " #anlIMwNoEnding").prop('checked', a[0]['ending']);
                 $("." + sId + " #anlIMwNoEnding").val(a[0]['ending']);
                 if(a[0]['intTp_ID']==2){
@@ -15710,7 +15803,8 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
     })
  }
 
- function zeitintervallAnlInputsVisibleInvisible(zeitIntVal,startDate,endDate,ending,sId,id){
+ function zeitintervallAnlInputsVisibleInvisible(zeitIntVal,startDate,endDate,ending,sId,id){ 
+    //alert(startDate);alert(endDate);
         $("." + sId + " .zeitintervallAnl_1").hide();
         $("." + sId + " .zeitintervallAnl_2").hide();
         $("." + sId + " .zeitintervallAnl_3").hide();
@@ -15746,12 +15840,20 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
                 $("." + sId + " .zeitintervallAnl_4").hide();
                 $("." + sId + " .zeitintervallAnl_NoEnding").show();
 
-                //var startDateSplit = startDate.split('-');
-                //var endDateSplit = endDate.split('-');
+               
                 //$("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val(startDateSplit[0]);
-                $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val(startDate);
-                //$("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val(endDateSplit[0]);
-                $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val(endDate);
+                if(id==3){
+                    var startDateSplit = startDate.split('-');
+                    var endDateSplit = endDate.split('-');
+                    $("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val(startDateSplit[0]);
+                    $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val(endDateSplit[0]);   
+                    $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val(startDateSplit[1]);
+                    $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val(endDateSplit[1]); 
+                }else{
+                   $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val(startDate);
+                    $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val(endDate); 
+                }
+                
                 if(ending==1){
                     $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").prop('disabled', true);
                     $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").prop('disabled', true);
@@ -15760,7 +15862,7 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
                      $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").prop('disabled', false);
                 }  
            }else if(zeitIntVal == 3){
-                var sDate = startDate.split("-");
+                /*var sDate = startDate.split("-");
                 var startYear =sDate[0];
                 var startMonth =sDate[1];
                 var startDateActual = sDate[1]+"."+sDate[0];
@@ -15768,15 +15870,15 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
                 var eDate = endDate.split("-");
                 var endYear =eDate[0];
                 var endMonth =eDate[1];
-                var endDateActual = eDate[1]+"."+eDate[0];
+                var endDateActual = eDate[1]+"."+eDate[0];*/
 
                 $("." + sId + " .zeitintervallAnl_1").hide();
                 $("." + sId + " .zeitintervallAnl_2").hide();
                 $("." + sId + " .zeitintervallAnl_3").show();
                 $("." + sId + " .zeitintervallAnl_4").hide();
                 $("." + sId + " .zeitintervallAnl_NoEnding").show();
-                $("." + sId + " #monateMassEingDataAnlStart" + id + "").val(startDateActual);
-                $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val(endDateActual); 
+                $("." + sId + " #monateMassEingDataAnlStart" + id + "").val(startDate);
+                $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val(endDate); 
                 if(ending==1){
                     $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', true);
                 }else{
@@ -15829,6 +15931,7 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
         success: function(a) {
            // alert(datensatzGespeichert(a));
             resetFormAllgemein('infosIntBetriebsdaten',1);
+            keinZeitIntervallZugewiesen();
         }
     });
 }
@@ -16002,12 +16105,14 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
                 var b = c.length;
                 //console.log(c);
                 if (b>0) {
+                    var sDt = convertDateFormateForDataTbl(c[0]['intTp_ID'],c[0]['startDate']);
+                    var eDt = convertDateFormateForDataTbl(c[0]['intTp_ID'],c[0]['endDate']);
                     $(".infosIntBetriebsdaten #anlIMw").val(c[0]['nameMSt']);
                     $(".infosIntBetriebsdaten #anlNrIMw").val(c[0]['anlageMst']);
                     $(".infosIntBetriebsdaten #zeitintervallAnl").val(c[0]['intTp_ID']);
                     $(".infosIntBetriebsdaten #einheitAnl").val(c[0]['unt_ID']);
                     $(".infosIntBetriebsdaten #notizBdeIMw").val(c[0]['note']);
-                    zeitintervallAnlInputsVisibleInvisible(c[0]['intTp_ID'],c[0]['startDate'],c[0]['endDate'],c[0]['ending'],'infosIntBetriebsdaten',1); 
+                    zeitintervallAnlInputsVisibleInvisible(c[0]['intTp_ID'],sDt,eDt,c[0]['ending'],'infosIntBetriebsdaten',1); 
                     $(".infosIntBetriebsdaten #anlIMwNoEnding").prop('checked', c[0]['ending']);
                     $(".infosIntBetriebsdaten #anlIMwNoEnding").val(c[0]['ending']);
                     $("#nextPrevMstID").val(c[0].mst_ID);
@@ -16081,46 +16186,94 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                 if(b>0){
                 if(zeitintervallAnl == 1){                    
                     var from = startDate.split(".");
+
                     var f = new Date(from[2], from[1], from[0]);
                     var newStartDate = f.getFullYear() + "-" + f.getMonth() + "-" + f.getDate();
 
                     var to = endDate.split(".");
                     var t = new Date(to[2], to[1], to[0]);
                     var newEndDate = t.getFullYear() + "-" + t.getMonth() + "-" + t.getDate();
-
+                    //console.log(newEndDate);   
                     var From_date = new Date(newStartDate);
                     var To_date = new Date(newEndDate);
                     var diff_date =  To_date - From_date;
-
+                    
                     var dateArr = getDatesInToArray(From_date, To_date);
+                    console.log('dateArr='+dateArr);
 
                     var day = 1000 * 60 * 60 * 24;
-                    var days = Math.floor(diff_date/day);  
-                    
+                    var days = Math.floor(diff_date/day);
+
                    $("#tblMasseneingabeDataIMw").remove();
                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                    for (var e = 0; e < b; e++){    
-                        if(e==0) {                   
+                        if(e==0) {    
+                           // var dT = dateFormateChangeSplit(a[e].startDate,a[e].endDate); 
+                            //console.log(dT[0]);
                             $row += '<tr><td>Anlage</td>';
-                            for (var r = 0; r <= days; r++){                  
-                                $row += '<th data-id="'+a[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
-                            }                        
+                            for (var r = 0; r <= days; r++){ 
+                                  $row += '<th data-id="'+a[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
+                            }
+                            /*if(a[e].startDate >= startDate && a[e].endDate <= endDate){
+                                for (var p = 0; p <= dT[1]; p++){
+                                    $row += '<th data-id="'+a[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dT[0][p])+'</th>';
+                                 }
+                            }*/
+
                             $row += '</tr>';
-                      }
+                        }
                     }
                     for (var e = 0; e < b; e++){                        
-                       $row += '<tr><td>'+a[e].nameMSt+'</td>';
-                       //alert(days);
-                        for (var r = 0; r <= days; r++){                           
-                            $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]"/></td>';
-                        }                        
+                       $row += '<tr><td>'+a[e].nameMSt+'</td>';                      
+                       /* var changeDates=dateFormateChangeSplitDatesOne(a[e].startDate,a[e].endDate);
+                        var arrLen= changeDates[0]['dateArr'].length-1;*/
+                         //console.log(changeDates );
+                         //console.log(changeDates);
+                         //console.log(a[e].endDate);
+                         //console.log('arrLen='+arrLen );
+                         //console.log(a[e].startDate);
+                           for (var r = 0; r <= days; r++){ 
+                                var n='';
+                                 
+                                //console.log('dateArr='+dateArr[r]); 
+                                //console.log(dateArr );
+                                console.log(a[e].ending);
+                                if(a[e].ending ==0){
+                                  if(a[e].startDate > dateArr[r]){
+                                    //console.log('DAYS1='+days );
+                                     n='disabled';
+                                    }else if(a[e].endDate < dateArr[r]){
+                                        //console.log('DAYS2='+days );
+                                         n='disabled';
+                                    }  
+                                }
+                                if(a[e].ending ==1){
+                                  if(a[e].startDate > dateArr[r]){
+                                    //console.log('DAYS1='+days );
+                                     n='disabled';
+                                    }/*else if(a[e].endDate < dateArr[r]){
+                                        //console.log('DAYS2='+days );
+                                         n='disabled';
+                                    } */ 
+                                }
+                                
+                                $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' /></td>';
+                            }  
+                            //var dTinput = dateFormateChangeSplit(a[e].startDate,a[e].endDate); 
+                            /*if(a[e].startDate >= startDate && a[e].endDate <= endDate){
+                                for (var q = 0; q <= dTinput[1]; q++){
+                                    $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+q+'[]"/></td>';
+                                 }
+                            } */  
+                        //}
+                                            
                         $row += '</tr>';
                     }
                     $row +='</table></div>';
                     $('#timeIntervalWerteEnergiedatenIMw').html( $row );
 
                 }else if(zeitintervallAnl == 2){
-                    //alert(2);
+                    //alert(startDate);
                     var from = startDate.split("-");
                     var g = from[0]; //first week selected value
                     var f = from[1]; //first year input text value
@@ -16158,8 +16311,8 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                     } 
                                 }                                    
                             } 
-                            for (var n = 1; n <= s; n++){                                   
-                                    var yr = eval(t);                
+                            for (var n = 1; n <= s; n++){        
+                                    var yr = eval(t);
                                     $row += '<th data-id="'+a[e].mst_ID+'" class="masseneingabeInputLBL">' + n + ' KW ' + yr + '</th>';                                  
                                             
                             }                  
@@ -16178,17 +16331,76 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                           
                              $row += '<tr><td>'+a[e].nameMSt+'</td>';
                              for (var r1 = 0; r1 <= years; r1++){
+
+                                //var sDateY = new Date(a[e].startDate);
+                                //var endDateY = new Date(a[e].endDate);
+
+                                ///var sDateW = a[e].startWeek;
+                                //var endDateW = a[e].endWeek;
+
+                                /*const getYearsWeekToArray = (start, end) => Array(end - start + 1)
+                                .fill(start)
+                                .map((year, index) => year + index);
+
+                                // console.log(f1);console.log(t1);
+
+                                let yearsBw= getYearsWeekToArray(new Date(f1).getFullYear(), new Date(t1).getFullYear());
+                                let yearsBwDB= getYearsWeekToArray(new Date(sDateY).getFullYear(), new Date(endDateY).getFullYear());
+                                var arrLen = yearsBwDB.length-1;
+
+                                var m='';   
+                                    if(new Date("'"+yearsBwDB[0]+"'") >= new Date("'"+yearsBw[r1]+"'")){
+                                         m='disabled';
+                                    }else if(new Date("'"+yearsBwDB[arrLen]+"'") <= new Date("'"+yearsBw[r1]+"'") ){
+                                         m='disabled';
+                                    }*/
+                                const getYearsWeekInToArray = (start, end) => Array(end - start + 1)
+                                .fill(start)
+                                .map((year, index) => year + index);
+                                let yearsBw= getYearsWeekInToArray(new Date(f1).getFullYear(), new Date(t1).getFullYear()); 
+                                //var m='disabled'; 
+                                var m=''; 
+                                if(a[e].ending ==0){
+                                    //console.log('a[e].startDate='+a[e].startDate);
+                                    //console.log('yearsBw[r]='+yearsBw[r1]);
+                                    if(a[e].startDate > yearsBw[r1]){
+                                         m='disabled';
+                                    }else if(a[e].endDate < yearsBw[r1]){
+                                         m='disabled';
+                                    }   
+                                      
+                                 }
+                                 if(a[e].ending ==1){
+                                    if(a[e].startDate > yearsBw[r1]){
+                                         m='disabled';
+                                    }
+                                 }
+
                                 for (var i1 = g1; i1 <= 53; i1++){
-                                        var yr1 = eval(f1) + eval(r1);                
-                                        $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+i1+'[]"/></td>';
+                                        var yr1 = eval(f1) + eval(r1);             
+                                        
+                                       // console.log("yr1="+yr1);
+
+                                       /* if(i1 == a[e].startWeek && a[e].startDate ==  yr1 ){
+                                           // if(a[e].startDate > yearsBw[r1]){
+                                                 m='';
+                                            //}
+                                        }*/
+                                        /*else
+                                        if(i1 == a[e].endWeek && yearsBw[r1]== a[e].endDate   ){
+                                           // if(a[e].startDate > yearsBw[r1]){
+                                                 m='disabled';
+                                            //}
+                                        } */                                 
+                                        $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD 1111"><input type="text" name="masseneingabeInput'+i1+'[]" '+m+'/></td>';
                                         if(i1>=53){
                                             var g1=1;   
-                                            console.log('i1='+i1); 
+                                           // console.log('i1='+i1); 
                                         } 
                                 }                                    
                             } 
-                            for (var n1 = 1; n1 <= s1; n1++){      
-                                $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+n1+'[]"/></td>';                                                
+                            for (var n1 = 1; n1 <= s1; n1++){    
+                                $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD 22222"><input type="text" name="masseneingabeInput'+n1+'[]" '+m+'/></td>';                                                
                             }                  
                             $row += '</tr>';
                     }
@@ -16197,11 +16409,28 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
 
                 }else if(zeitintervallAnl == 3){
                     //alert(3);
-                    var From_date = new Date(startDate);
-                    var To_date = new Date(endDate);
+                    var from = startDate.split(".");
+                    var f1 = from[0]; //first week selected value
+                    var f2 = from[1]; //first year input text value
+
+                    var to = endDate.split(".");
+                    var t1 =  to[0]; //second week selected value
+                    var t2 = to[1]; //second year input text value
+
+                    var f = new Date(from[1], from[0]);
+                    var newStartDate = f.getFullYear() + "-" + f.getMonth();
+
+                    var t = new Date(to[1], to[0]);
+                    var newEndDate = t.getFullYear() + "-" + t.getMonth();
+
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
                     var diff_date =  To_date - From_date;
                     
                     var dateArr = getMonthsInToArray(From_date, To_date);
+                    console.log(dateArr);
+                    //var arrLen = dateArr.length-1;
                     
                     var day = 1000 * 60 * 60 * 24;
                     var days = Math.ceil(diff_date/day);
@@ -16221,8 +16450,26 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     }
                     for (var e = 0; e < b; e++){                        
                        $row += '<tr><td>'+a[e].nameMSt+'</td>';
-                        for (var r = 0; r <= months; r++){                           
-                            $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]"/></td>';
+                       //var changeDates1 =dateFormateChangeSplitDatesThree(a[e].startDate,a[e].endDate);
+                        //var arrLen1= changeDates1[0]['months']-1;
+                       // console.log(a[e].endDate);
+                        for (var r = 0; r <= months; r++){   
+                            var n=''; 
+                            if(a[e].ending ==0){
+                                if(a[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }  
+                            } 
+                             if(a[e].ending ==1){
+                                if(a[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }/*else if(a[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                } */ 
+                            }                     
+                            $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]" '+n+'/></td>';
                         }                        
                         $row += '</tr>';
                     }
@@ -16253,8 +16500,32 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     }
                     for (var e = 0; e < b; e++){                        
                         $row += '<tr><td>'+a[e].nameMSt+'</td>';
-                        for (var r = 0; r <= years; r++){                           
-                            $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]"/></td>';
+                        for (var r = 0; r <= years; r++){
+
+                           // var yr = eval(startDate) + eval(r); 
+                            //var sDateY = new Date(a[e].startDate);
+                            //var endDateY = new Date(a[e].endDate);
+                            const getYearsInToArray = (start, end) => Array(end - start + 1)
+                            .fill(start)
+                            .map((year, index) => year + index);
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear()); 
+                            var t='';   
+                            if(a[e].ending ==0){
+                                if(a[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }   
+                             }
+                             if(a[e].ending ==1){
+                                if(a[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }/*else if(a[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }*/   
+                             }
+
+                            $row += '<td data-id="'+a[e].mst_ID+'" class="masseneingabeInputTD"><input type="text" name="masseneingabeInput'+r+'[]" '+t+'/></td>';
                         }                        
                         $row += '</tr>';
                     }
@@ -16276,9 +16547,15 @@ function getDatesInToArray(start, end) {
     var arr = new Array();
     var dt = new Date(start);
     while (dt <= end) {
-        arr.push(new Date(dt));
+        var date = new Date(dt);        
+        var year=date.getFullYear();
+        var month=("0" + (date.getMonth() + 1)).slice(-2);
+        var day=("0" + date.getDate()).slice(-2);
+        var formattedDates=year+"-"+month+"-"+day;
+        //console.log(formatted);
+        arr.push(formattedDates);
         dt.setDate(dt.getDate() + 1);
-    }
+    }    
     return arr;
 }
 
@@ -16286,11 +16563,20 @@ function getMonthsInToArray(start, end) {
     var arr = new Array();
     var dt = new Date(start);
     while (dt <= end) {
-        arr.push(new Date(dt));
+        //arr.push(new Date(dt));
+        var date = new Date(dt);        
+        var year=date.getFullYear();
+        var month=("0" + (date.getMonth() + 1)).slice(-2); 
+       // var day=("0" + date.getDate()).slice(-2);
+        var formattedDates=year+"-"+month;
+        //console.log(formatted);
+        arr.push(formattedDates);
         dt = new Date(dt.getFullYear(), dt.getMonth() + 1, 1);
     }
     return arr;
 }
+
+
 
 function convertToDateMonthAndYearformate(str) {
   var date = new Date(str),
@@ -16306,6 +16592,30 @@ function convertToMonthAndYearformate(str) {
     day = ("0" + date.getDate()).slice(-2);
   return [mnth,date.getFullYear() ].join(".");
 }
+
+function convertDateFormateForDataTbl(type,str){
+    //console.log('str='+str);
+    if(str !=''){
+        if(type == 1 ){
+            var date = new Date(str);
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+            day = ("0" + date.getDate()).slice(-2);
+            var dt= [day,mnth,date.getFullYear() ].join(".");
+        }else if(type == 3){
+            var date = new Date(str);
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2);
+            day = ("0" + date.getDate()).slice(-2);
+            var dt= [mnth,date.getFullYear() ].join(".");
+        }else{
+            var dt = str;
+        }
+    }else{
+        var dt = '';
+    }
+    return dt;
+}
+
+
 
 /*
 function saveToDBMasseneingabeEingaben(key,mst_ID){
@@ -16342,3 +16652,56 @@ function resetSearchFormMasseneingabe(sId){
     $("." + sId + " .zeitintervallAnl_3").val("");
     $("." + sId + " .zeitintervallAnl_4").val("");
 }
+const capitalizeLetter = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+/*function dateFormateChangeSplitDatesOne(sDate,eDate){
+        jsonObj = [];
+        var from = sDate.split(".");
+        var f = new Date(from[2], from[1], from[0]);
+        var newStartDate = f.getFullYear() + "-" + f.getMonth() + "-" + f.getDate();
+
+        var to = eDate.split(".");
+        var t = new Date(to[2], to[1], to[0]);
+        var newEndDate = t.getMonth()+ "." + t.getDate() + "." + t.getFullYear();
+
+        var From_date = new Date(newStartDate);
+        var To_date = new Date(newEndDate);
+        var diff_date=  To_date - From_date;
+
+        var dateArr = getDatesInToArray(From_date, To_date);
+
+        var day = 1000 * 60 * 60 * 24;
+        var days = Math.ceil(diff_date/day);
+
+        item= {}
+        item["dateArr"] = dateArr;
+        item["days"] = days;
+
+        jsonObj.push(item);
+        return jsonObj;
+}
+
+function dateFormateChangeSplitDatesThree(sDate,eDate){
+        jsonObj = [];
+
+        var From_date = new Date(sDate);
+        var To_date = new Date(eDate);
+        var diff_date=  To_date - From_date;
+
+        var dateArr = getMonthsInToArray(From_date, To_date);
+
+        var day = 1000 * 60 * 60 * 24;
+        var days = Math.ceil(diff_date/day);
+        var months = Math.ceil(days/31)+1;
+        var years = Math.ceil(months/12);
+
+        item= {}
+        item["dateArr"] = dateArr;
+        item["months"] = months;
+
+        jsonObj.push(item);
+        return jsonObj;
+}*/

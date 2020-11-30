@@ -2820,7 +2820,89 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
     $notizBdeIMw = $_POST['notizBdeIMw'];
     $ending = $_POST['ending'];  
 
-    if($zeitintervallAnl==2){
+    if($zeitintervallAnl==1){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      if($sDate){
+        $fromDate =explode(".", $sDate);      
+        $arrStart[] = $fromDate[2];
+        $arrStart[] = $fromDate[1];      
+        $arrStart[] = $fromDate[0]; 
+        $startDate = implode("-",$arrStart);
+      }else{
+        $startDate = $_POST['startDate'];
+      }      
+      if($eDate){
+        $toDate = explode(".", $eDate);
+        $arrEnd[] =  $toDate[2]; 
+        $arrEnd[] =  $toDate[1]; 
+        $arrEnd[] =  $toDate[0];       
+        $endDate = implode("-",$arrEnd);
+      }else{
+        $endDate = $_POST['endDate'];
+      }      
+      $startWeek ='';
+      $endWeek ='';
+
+    }else if($zeitintervallAnl==2){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      $fromDate =explode("-", $sDate);
+      $startWeek = $fromDate[0]; //first week selected value
+      $startDate = $fromDate[1]; //first year input text value
+
+      $toDate = explode("-", $eDate);
+      $endWeek =  $toDate[0]; //second week selected value
+      $endDate =  $toDate[1]; //second year input text value
+
+    }else if($zeitintervallAnl==3){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      if($sDate){
+        $fromDate =explode(".", $sDate);
+        $arrStart[] = $fromDate[1]; //first year input text value      
+        $arrStart[] = $fromDate[0]; //first week selected value
+        $startDate = implode("-",$arrStart);
+      }else{
+         $startDate = $_POST['startDate'];
+      }
+      if($eDate){
+        $toDate = explode(".", $eDate);
+        $arrEnd[] =  $toDate[1]; //second year input text value
+        $arrEnd[] =  $toDate[0]; //second week selected value
+        $endDate = implode("-",$arrEnd);
+      }else{
+        $endDate = $_POST['endDate']; 
+      }
+      $startWeek ='';
+      $endWeek ='';
+    }else{
+        $startDate =$_POST['startDate'];
+        $endDate =$_POST['endDate']; 
+        $startWeek ='';
+        $endWeek ='';
+    }
+    /*if($zeitintervallAnl==1){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+
+      $fromDate =explode(".", $sDate);      
+      $arrStart[] = $fromDate[2];
+      $arrStart[] = $fromDate[1];      
+      $arrStart[] = $fromDate[0]; 
+
+      $toDate = explode(".", $eDate);
+      $arrEnd[] =  $toDate[2]; 
+      $arrEnd[] =  $toDate[1]; 
+      $arrEnd[] =  $toDate[0]; 
+
+      $startDate = implode("-",$arrStart);
+      $endDate = implode("-",$arrEnd);
+      $startWeek ='';
+      $endWeek ='';
+
+    }
+    else if($zeitintervallAnl==2){
       $sDate = $_POST['startDate'];
       $eDate = $_POST['endDate']; 
       $fromDate =explode("-", $sDate);
@@ -2853,7 +2935,7 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
         $endDate =$_POST['endDate']; 
         $startWeek ='';
         $endWeek ='';
-    }
+    }*/
 
     $tsql = "INSERT INTO interneBetriebsdatenHistorie (anl_ID, mstID, archiviert,bemerkung,gueltigVon,gueltigBis,anlIMw,anlNrIMw,zeitintervallAnl,einheitAnl,notizBdeIMw,startDate,endDate,startWeek,endWeek,ending,deleted) ";
     $tsql .= "VALUES ('$anlID', '$mstID', '$archiviert', '$bemerkung', '$gueltigVon', '$gueltigBis', '$anlIMw', '$anlNrIMw', '$zeitintervallAnl', '$einheitAnl', '$notizBdeIMw', '$startDate', '$endDate','$startWeek','$endWeek','$ending','false') ";
@@ -2871,8 +2953,32 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
     $note = $_POST['note'];
     /*$startDate = $_POST['startDate'];
     $endDate = $_POST['endDate'];  */
-    $ending = $_POST['ending'];  
-    if($intTp_ID==2){
+    $ending = $_POST['ending'];
+    if($intTp_ID==1){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      if($sDate){
+        $fromDate =explode(".", $sDate);      
+        $arrStart[] = $fromDate[2];
+        $arrStart[] = $fromDate[1];      
+        $arrStart[] = $fromDate[0]; 
+        $startDate = implode("-",$arrStart);
+      }else{
+        $startDate = $_POST['startDate'];
+      }      
+      if($eDate){
+        $toDate = explode(".", $eDate);
+        $arrEnd[] =  $toDate[2]; 
+        $arrEnd[] =  $toDate[1]; 
+        $arrEnd[] =  $toDate[0];       
+        $endDate = implode("-",$arrEnd);
+      }else{
+        $endDate = $_POST['endDate'];
+      }      
+      $startWeek ='';
+      $endWeek ='';
+
+    }else if($intTp_ID==2){
       $sDate = $_POST['startDate'];
       $eDate = $_POST['endDate']; 
       $fromDate =explode("-", $sDate);
@@ -2886,28 +2992,30 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
     }else if($intTp_ID==3){
       $sDate = $_POST['startDate'];
       $eDate = $_POST['endDate']; 
-      $fromDate =explode(".", $sDate);
-
-      $arrStart[] = $fromDate[1]; //first year input text value      
-      $arrStart[] = $fromDate[0]; //first week selected value
-
-      $toDate = explode(".", $eDate);
-
-      $arrEnd[] =  $toDate[1]; //second year input text value
-      $arrEnd[] =  $toDate[0]; //second week selected value
-
-      $startDate = implode("-",$arrStart);
-      $endDate = implode("-",$arrEnd);
+      if($sDate){
+        $fromDate =explode(".", $sDate);
+        $arrStart[] = $fromDate[1]; //first year input text value      
+        $arrStart[] = $fromDate[0]; //first week selected value
+        $startDate = implode("-",$arrStart);
+      }else{
+         $startDate = $_POST['startDate'];
+      }
+      if($eDate){
+        $toDate = explode(".", $eDate);
+        $arrEnd[] =  $toDate[1]; //second year input text value
+        $arrEnd[] =  $toDate[0]; //second week selected value
+        $endDate = implode("-",$arrEnd);
+      }else{
+        $endDate = $_POST['endDate']; 
+      }
       $startWeek ='';
       $endWeek ='';
-
     }else{
         $startDate =$_POST['startDate'];
         $endDate =$_POST['endDate']; 
         $startWeek ='';
         $endWeek ='';
     }
-
     $query="SELECT * FROM interneMesswerteConfig WHERE mst_ID = '$mstID'";
     $records = queryDB($conn, $query, "read");
 
@@ -2943,7 +3051,26 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
     /*$startDate = $_POST['startDate'];
     $endDate = $_POST['endDate']; */
     $ending = $_POST['ending'];
-    if($zeitintervallAnl==2){
+    if($zeitintervallAnl==1){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+
+      $fromDate =explode(".", $sDate);      
+      $arrStart[] = $fromDate[2];
+      $arrStart[] = $fromDate[1];      
+      $arrStart[] = $fromDate[0]; 
+
+      $toDate = explode(".", $eDate);
+      $arrEnd[] =  $toDate[2]; 
+      $arrEnd[] =  $toDate[1]; 
+      $arrEnd[] =  $toDate[0]; 
+
+      $startDate = implode("-",$arrStart);
+      $endDate = implode("-",$arrEnd);
+      $startWeek ='';
+      $endWeek ='';
+
+    }else if($zeitintervallAnl==2){
       $sDate = $_POST['startDate'];
       $eDate = $_POST['endDate']; 
       $fromDate =explode("-", $sDate);
