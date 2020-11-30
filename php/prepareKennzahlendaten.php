@@ -18,8 +18,11 @@ function flatten($arr) {
 }
 
 function queryProdData($artikelnummer) {
-    $query = "SELECT TOP(25000) * FROM ProdData_ " ;
+    $query = "SELECT * FROM ProdData_ " ;
     $query .= "WHERE artikelnummer = '".$artikelnummer."' " ;
+    // $query .= "AND (auftrag = '000970430020' OR auftrag = '000970440020' OR auftrag = '000972340020') " ;
+    // $query .= "auftrag = '000957990020' OR auftrag = '000958000020' OR auftrag = '000958010020' ) " ;
+    // $query .= "auftrag = '000970430020' OR auftrag = '000970440020' OR auftrag = '000972340020') " ;
     $query .= "ORDER BY auftrag, zeitstempel " ;
 
     return queryDB(connect, $query, "read") ;
@@ -298,6 +301,8 @@ function testIfDataInDB($records) {
     return alertIfNeccessary(equalLength($initialRecords, queryData())) ;
 }
 
+$start = hrtime(true) ;
+
 pipe(
     [ queryProdData(artikelnummer)
     , 'getOrders'
@@ -307,6 +312,17 @@ pipe(
     ]
 ) ;
 
-// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100837605
+closeDbConn(connect) ;
+
+$end = hrtime(true) ;
+
+echo "    Execution Time : ".(($end - $start) / 1000000000) ;
+
+// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100901002
+
+
+// Measured machines
+// 595, 577, 592, 626, 590, 587, 582, 634, 586, 580, 600, 607, 599, 606, 608, 624, 596, 559, 544
+// 542, 550, 610, 621
 
 ?>

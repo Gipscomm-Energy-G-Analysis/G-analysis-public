@@ -562,8 +562,8 @@ function firstQuery() {
             tblChartData_1.row.add([
                 col.artikelnummer.split("-")[0],
                 "A" + (n + 1) + "-" + dataRaw[n].auftrag,
-                col.nameMSt,
-                col.istMenge,
+                col.anlageMst,
+                col.gutmenge,
                 roundWithZeros(chartData[n].y)(3),
                 col.timeUnlock.split(".")[0],
                 col.timeClose.split(".")[0]
@@ -660,7 +660,7 @@ function secondQuery() {
                 (data,i)=>
                 ({
                     name: knzName_2,
-                    x: "A" + (i + 1) + "-" + dataRaw[i].artikelnummer.split("-")[1],
+                    x: "A" + (i + 1) + "-" + dataRaw[i].auftrag,
                     y: data
                 })
             );
@@ -670,9 +670,9 @@ function secondQuery() {
             .forEach((col,n) =>
             tblChartData_2.row.add ([
                 col.artikelnummer.split("-")[0],
-                "A" + (n + 1) + "-" + col.artikelnummer.split("-")[1],
-                col.nameMSt,
-                col.istMenge,
+                "A" + (n + 1) + "-" + dataRaw[n].auftrag,
+                col.anlageMst,
+                col.gutmenge,
                 roundWithZeros(chartData[n].y)(3),
                 col.timeUnlock.split(".")[0],
                 col.timeClose.split(".")[0]

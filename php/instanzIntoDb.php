@@ -2448,144 +2448,144 @@ $parentOptName = $_POST['parentOptName'];
 }
 }/*14-04-2020 delete the record dynamische korector faktor*/
 elseif($id == "knz") {
-$modus = $_POST['modus'];
-$bezug = $_POST['bezug'];
-$instanzID = $_POST['instanzID'];
-$orgID = $_POST['orgID'];
-$zustaendigerMitarbeiter = $_POST['zustaendigerMitarbeiter'];
-$beschreibung = $_POST['beschreibung'];
-$lenLoop = 11;
-$nKnzs = $_POST['nKnzs'];
-$tsql = "";
+    $modus = $_POST['modus'];
+    $bezug = $_POST['bezug'];
+    $instanzID = $_POST['instanzID'];
+    $orgID = $_POST['orgID'];
+    $zustaendigerMitarbeiter = $_POST['zustaendigerMitarbeiter'];
+    $beschreibung = $_POST['beschreibung'];
+    $lenLoop = 11;
+    $nKnzs = $_POST['nKnzs'];
+    $tsql = "";
 
-if($modus == "new"){
-$tsql = "DECLARE @cntRows int = (SELECT COUNT(*) FROM kennzahlenInstanzen) ";
-	$tsql .= "INSERT INTO kennzahlenInstanzen(knzIns_ID, org_ID, nKnzs, ".$bezug."_ID, zustaendigerMitarbeiter, beschreibung, bezug, deleted) ";
-	$tsql .= "VALUES (@cntRows + 1, '$orgID', $nKnzs, '$instanzID', '$zustaendigerMitarbeiter', '$beschreibung', '$bezug', 'false') ";
+    if($modus == "new"){
+        $tsql = "DECLARE @cntRows int = (SELECT COUNT(*) FROM kennzahlenInstanzen) ";
+    	$tsql .= "INSERT INTO kennzahlenInstanzen(knzIns_ID, org_ID, nKnzs, ".$bezug."_ID, zustaendigerMitarbeiter, beschreibung, bezug, deleted) ";
+    	$tsql .= "VALUES (@cntRows + 1, '$orgID', $nKnzs, '$instanzID', '$zustaendigerMitarbeiter', '$beschreibung', '$bezug', 'false') ";
 
-$tsql .= "INSERT INTO kennzahlen(knzIns_ID, knzInsNum, bezeichnung, anwendungsbereich, aktiv, datumEinfuehrung, ";
-$tsql .= "letzteUeberpruefung, datumDeaktivierung, einheit, frm_ID, kennzahl, grenzwertO, grenzwertU, zielwert, zielVon, zielBis) ";
-$tsql .= "VALUES ";
-for($i = 1; $i < $lenLoop; $i++){
-  $bezeichnung = $_POST['bezeichnung'.$i];
-  $anwendungsbereich = $_POST['anwendungsbereich'.$i];
-  $status = $_POST['status'.$i];
-  $einfuehrung = $_POST['einfuehrung'.$i];
-  $letzteUeberpruefung = $_POST['letzteUeberpruefung'.$i];
-  $deaktivierung = $_POST['deaktivierung'.$i];
-  $einheit = $_POST['einheit'.$i];
-  $zielVon = $_POST['zielVon'.$i];
-  $zielBis = $_POST['zielBis'.$i];
+        $tsql .= "INSERT INTO kennzahlen(knzIns_ID, knzInsNum, bezeichnung, anwendungsbereich, aktiv, datumEinfuehrung, ";
+        $tsql .= "letzteUeberpruefung, datumDeaktivierung, einheit, frm_ID, kennzahl, grenzwertO, grenzwertU, zielwert, zielVon, zielBis) ";
+        $tsql .= "VALUES ";
+        for($i = 1; $i < $lenLoop; $i++){
+            $bezeichnung = $_POST['bezeichnung'.$i];
+            $anwendungsbereich = $_POST['anwendungsbereich'.$i];
+            $status = $_POST['status'.$i];
+            $einfuehrung = $_POST['einfuehrung'.$i];
+            $letzteUeberpruefung = $_POST['letzteUeberpruefung'.$i];
+            $deaktivierung = $_POST['deaktivierung'.$i];
+            $einheit = $_POST['einheit'.$i];
+            $zielVon = $_POST['zielVon'.$i];
+            $zielBis = $_POST['zielBis'.$i];
 
-  if($_POST['formelID'.$i] == "") {
-    $formelID = "NULL";
-  }
-  else {
-    $formelID = $_POST['formelID'.$i];
-  }
-  if(is_numeric($_POST['kennzahl'.$i] ) ) {
-    $kennzahl = $_POST['kennzahl'.$i];
-  }
-  else {
-    $kennzahl = 0;
-  }
-  if(is_numeric($_POST['toleranzgrenzeOben'.$i])){
-    $toleranzgrenzeOben = $_POST['toleranzgrenzeOben'.$i];
-  }
-  else {
-    $toleranzgrenzeOben = 0;
-  }
-  if(is_numeric($_POST['toleranzgrenzeUnten'.$i])){
-    $toleranzgrenzeUnten = $_POST['toleranzgrenzeUnten'.$i];
-  }
-  else {
-    $toleranzgrenzeUnten = 0;
-  }
-  if(is_numeric($_POST['zielwert'.$i])){
-    $zielwert = $_POST['zielwert'.$i];
-  }
-  else {
-    $zielwert = 0;
-  }
-  $tsql .= "( ";
-  $tsql .= "@cntRows + 1, $i, ";
-  $tsql .= "'$bezeichnung', '$anwendungsbereich', '$status', '$einfuehrung', '$letzteUeberpruefung', ";
-  $tsql .= "'$deaktivierung', '$einheit', $formelID, $kennzahl, $toleranzgrenzeOben, $toleranzgrenzeUnten, ";
-  $tsql .= "$zielwert, '$zielVon', '$zielBis' ";
-  if ($i < $lenLoop - 1) {
-    $tsql .= "), ";
-  }
-  else {
-    $tsql .= ") ";
-  }
-}
-}
-else {
-$knzInsID = $_POST['knzInsID'];
+            if($_POST['formelID'.$i] == "") {
+                $formelID = "NULL";
+            }
+            else {
+                $formelID = $_POST['formelID'.$i];
+            }
+            if(is_numeric($_POST['kennzahl'.$i] ) ) {
+                $kennzahl = $_POST['kennzahl'.$i];
+            }
+            else {
+                $kennzahl = 0;
+            }
+            if(is_numeric($_POST['toleranzgrenzeOben'.$i])){
+                $toleranzgrenzeOben = $_POST['toleranzgrenzeOben'.$i];
+            }
+            else {
+                $toleranzgrenzeOben = 0;
+            }
+            if(is_numeric($_POST['toleranzgrenzeUnten'.$i])){
+                $toleranzgrenzeUnten = $_POST['toleranzgrenzeUnten'.$i];
+            }
+            else {
+                $toleranzgrenzeUnten = 0;
+            }
+            if(is_numeric($_POST['zielwert'.$i])){
+                $zielwert = $_POST['zielwert'.$i];
+            }
+            else {
+                $zielwert = 0;
+            }
+            $tsql .= "( ";
+            $tsql .= "@cntRows + 1, $i, ";
+            $tsql .= "'$bezeichnung', '$anwendungsbereich', '$status', '$einfuehrung', '$letzteUeberpruefung', ";
+            $tsql .= "'$deaktivierung', '$einheit', $formelID, $kennzahl, $toleranzgrenzeOben, $toleranzgrenzeUnten, ";
+            $tsql .= "$zielwert, '$zielVon', '$zielBis' ";
+            if ($i < $lenLoop - 1) {
+                $tsql .= "), ";
+            }
+            else {
+                $tsql .= ") ";
+            }
+        }
+    }
+    else {
+        $knzInsID = $_POST['knzInsID'];
 
-	$tsql .= "UPDATE kennzahlenInstanzen SET ";
-	$tsql .= $bezug."_ID = '$instanzID', zustaendigerMitarbeiter = '$zustaendigerMitarbeiter', beschreibung = '$beschreibung', bezug = '$bezug', nKnzs = $nKnzs ";
-$tsql .= "WHERE knzIns_ID = $knzInsID ";
+    	$tsql .= "UPDATE kennzahlenInstanzen SET ";
+    	$tsql .= $bezug."_ID = '$instanzID', zustaendigerMitarbeiter = '$zustaendigerMitarbeiter', beschreibung = '$beschreibung', bezug = '$bezug', nKnzs = $nKnzs ";
+        $tsql .= "WHERE knzIns_ID = $knzInsID ";
 
-for($i = 1; $i < $lenLoop ; $i++) {
-  $bezeichnung = $_POST['bezeichnung'.$i];
-  $anwendungsbereich = $_POST['anwendungsbereich'.$i];
-  $status = $_POST['status'.$i];
-  $einfuehrung = $_POST['einfuehrung'.$i];
-  $letzteUeberpruefung = $_POST['letzteUeberpruefung'.$i];
-  $deaktivierung = $_POST['deaktivierung'.$i];
-  $einheit = $_POST['einheit'.$i];
-  $zielVon = $_POST['zielVon'.$i];
-  $zielBis = $_POST['zielBis'.$i];
+        for($i = 1; $i < $lenLoop ; $i++) {
+            $bezeichnung = $_POST['bezeichnung'.$i];
+            $anwendungsbereich = $_POST['anwendungsbereich'.$i];
+            $status = $_POST['status'.$i];
+            $einfuehrung = $_POST['einfuehrung'.$i];
+            $letzteUeberpruefung = $_POST['letzteUeberpruefung'.$i];
+            $deaktivierung = $_POST['deaktivierung'.$i];
+            $einheit = $_POST['einheit'.$i];
+            $zielVon = $_POST['zielVon'.$i];
+            $zielBis = $_POST['zielBis'.$i];
 
-  if($_POST['formelID'.$i] == "") {
-    $formelID = "NULL";
-  }
-  else {
-    $formelID = $_POST['formelID'.$i];
-  }
-  if (is_numeric($_POST['kennzahl'.$i] ) ) {
-    $kennzahl = $_POST['kennzahl'.$i];
-  }
-  else {
-    $kennzahl = 0;
-  }
-  if (is_numeric($_POST['toleranzgrenzeOben'.$i] ) ) {
-    $toleranzgrenzeOben = $_POST['toleranzgrenzeOben'.$i];
-  }
-  else {
-    $toleranzgrenzeOben = 0;
-  }
-  if(is_numeric($_POST['toleranzgrenzeUnten'.$i] ) ) {
-    $toleranzgrenzeUnten = $_POST['toleranzgrenzeUnten'.$i];
-  }
-  else {
-    $toleranzgrenzeUnten = 0;
-  }
-  if(is_numeric($_POST['zielwert'.$i])){
-    $zielwert = $_POST['zielwert'.$i];
-  }
-  else {
-    $zielwert = 0;
-  }
-  $tsql .= "UPDATE kennzahlen SET anwendungsbereich = '$anwendungsbereich', aktiv = '$status', ";
-  $tsql .= "letzteUeberpruefung = '$letzteUeberpruefung', datumDeaktivierung = '$deaktivierung', einheit = '$einheit', ";
-  $tsql .= "frm_ID = $formelID, kennzahl = $kennzahl, grenzwertO = '$toleranzgrenzeOben', ";
-  $tsql .= "grenzwertU = '$toleranzgrenzeUnten', datumEinfuehrung = '$einfuehrung', bezeichnung = '$bezeichnung', ";
-  $tsql .= "zielwert = $zielwert, zielVon = '$zielVon', zielBis = '$zielBis' ";
-  $tsql .= "WHERE knzIns_ID = $knzInsID AND knzInsNum = $i ";
-}
-}
+            if($_POST['formelID'.$i] == "") {
+                $formelID = "NULL";
+            }
+            else {
+                $formelID = $_POST['formelID'.$i];
+            }
+            if (is_numeric($_POST['kennzahl'.$i] ) ) {
+                $kennzahl = $_POST['kennzahl'.$i];
+            }
+            else {
+                $kennzahl = 0;
+            }
+            if (is_numeric($_POST['toleranzgrenzeOben'.$i] ) ) {
+                $toleranzgrenzeOben = $_POST['toleranzgrenzeOben'.$i];
+            }
+            else {
+                $toleranzgrenzeOben = 0;
+            }
+            if(is_numeric($_POST['toleranzgrenzeUnten'.$i] ) ) {
+                $toleranzgrenzeUnten = $_POST['toleranzgrenzeUnten'.$i];
+            }
+            else {
+                $toleranzgrenzeUnten = 0;
+            }
+            if(is_numeric($_POST['zielwert'.$i])){
+                $zielwert = $_POST['zielwert'.$i];
+            }
+            else {
+                $zielwert = 0;
+            }
+            $tsql .= "UPDATE kennzahlen SET anwendungsbereich = '$anwendungsbereich', aktiv = '$status', ";
+            $tsql .= "letzteUeberpruefung = '$letzteUeberpruefung', datumDeaktivierung = '$deaktivierung', einheit = '$einheit', ";
+            $tsql .= "frm_ID = $formelID, kennzahl = $kennzahl, grenzwertO = '$toleranzgrenzeOben', ";
+            $tsql .= "grenzwertU = '$toleranzgrenzeUnten', datumEinfuehrung = '$einfuehrung', bezeichnung = '$bezeichnung', ";
+            $tsql .= "zielwert = $zielwert, zielVon = '$zielVon', zielBis = '$zielBis' ";
+            $tsql .= "WHERE knzIns_ID = $knzInsID AND knzInsNum = $i ";
+        }
+    }
 }
 elseif ($id == "knzUpd") {
-$knzID = $_POST['knzID'];
-$kennzahl = $_POST['kennzahl'];
-$grenzwertO = $_POST['grenzwertO'];
-$grenzwertU = $_POST['grenzwertU'];
+    $knzID = $_POST['knzID'];
+    $kennzahl = $_POST['kennzahl'];
+    $grenzwertO = $_POST['grenzwertO'];
+    $grenzwertU = $_POST['grenzwertU'];
 
-$tsql = "UPDATE kennzahlen SET kennzahl = $kennzahl, ";
-$tsql .= "grenzwertO = $grenzwertO, grenzwertU = $grenzwertU ";
-$tsql .= "WHERE knz_ID = $knzID";
+    $tsql = "UPDATE kennzahlen SET kennzahl = $kennzahl, ";
+    $tsql .= "grenzwertO = $grenzwertO, grenzwertU = $grenzwertU ";
+    $tsql .= "WHERE knz_ID = $knzID";
 }
 elseif($id == "zp") {
 $modus = $_POST['modus'];
