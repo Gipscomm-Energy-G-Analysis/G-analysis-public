@@ -7330,13 +7330,13 @@ try {
                     ausgewaehltesLevel: $("#levelAuswahlAllgemeinBer").val(),
                     vorgelagerterBereich1: $("#vorgelagerteBereiche1AllgemeinBer").val(),
                     vorgelagerterBereich2: $("#vorgelagerteBereiche2AllgemeinBer").val(),
-                    notiz: $("#notizAllgemeinBer").val(),
-                    energietraeger1: $("#energietraeger1AllgemeinBer").val(),
-                    energietraeger2: $("#energietraeger2AllgemeinBer").val(),
-                    energietraeger3: $("#energietraeger3AllgemeinBer").val(),
-                    energietraeger4: $("#energietraeger4AllgemeinBer").val()
+                    notiz: $("#notizAllgemeinBer").val()
                 },
                 success: function(a) {
+
+                    console.log("Ber save");
+                    console.log(a);
+
                     alert(datensatzGespeichert(a));
                     readInstanzen("berLast", $("#berCount").val())
                 }

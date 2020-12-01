@@ -14,15 +14,16 @@ define("connect", connectToDB($_GET['nameDB'])) ;
 define("artikelnummer", $_GET['artikelnummer']) ;
 
 function flatten($arr) {
-    return array_reduce($arr, 'array_merge', []) ;
+    return gettype($arr) === "array" ?
+           array_reduce($arr, 'array_merge', []) :
+           $arr ;
 }
 
 function queryProdData($artikelnummer) {
     $query = "SELECT * FROM ProdData_ " ;
     $query .= "WHERE artikelnummer = '".$artikelnummer."' " ;
-    // $query .= "AND (auftrag = '000970430020' OR auftrag = '000970440020' OR auftrag = '000972340020') " ;
-    // $query .= "auftrag = '000957990020' OR auftrag = '000958000020' OR auftrag = '000958010020' ) " ;
-    // $query .= "auftrag = '000970430020' OR auftrag = '000970440020' OR auftrag = '000972340020') " ;
+    $query .= "AND auftrag <> '' " ;
+    $query .= "AND (auftrag = '000979810020' OR auftrag = '000979820020') " ;
     $query .= "ORDER BY auftrag, zeitstempel " ;
 
     return queryDB(connect, $query, "read") ;
@@ -183,7 +184,10 @@ function getEnergyDataOrders($records) {
     }
 
     function getSumEnergyDataOrders($records) {
-        return array_reduce($records, 'sumEnergyData') ;
+
+        return gettype($records) === "array" ?
+               array_reduce($records, 'sumEnergyData') :
+               $records["Value"] ;
     }
 
     function createOrderRecord($recordEnergy, $recordOrder) {
@@ -202,6 +206,10 @@ function getEnergyDataOrders($records) {
 
 function writeToDB($records) {
     function buildValueString($last, $record) {
+        $verbrauchAuftrag =
+            $record["verbrauchAuftrag"] === "" || $record["verbrauchAuftrag"] == null ?
+            0 : $record["verbrauchAuftrag"] ;
+
         return $last.", ("
         .$record["anl_ID"].", '"
         .$record["anlageMst"]."', '"
@@ -219,7 +227,7 @@ function writeToDB($records) {
         .$record["timeUnlock"]."', '"
         .$record["timeClose"]."', "
         .$record["zykluszeit"].", "
-        .$record["verbrauchAuftrag"].")" ;
+        .$verbrauchAuftrag.")" ;
     }
 
     function buildValuesString($records_) {
@@ -303,6 +311,7 @@ function testIfDataInDB($records) {
 
 $start = hrtime(true) ;
 
+// Test if data in DB has to be still implemented
 pipe(
     [ queryProdData(artikelnummer)
     , 'getOrders'
@@ -318,11 +327,8 @@ $end = hrtime(true) ;
 
 echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
-// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100901002
+// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100912002
 
 
-// Measured machines
-// 595, 577, 592, 626, 590, 587, 582, 634, 586, 580, 600, 607, 599, 606, 608, 624, 596, 559, 544
-// 542, 550, 610, 621
 
 ?>
