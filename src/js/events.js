@@ -1219,6 +1219,9 @@ $(document).ready(function() {
     $(".anlSuchen").click(function() {
         anlagenlisteErstellen()
     });
+    $("#eAnlSuchen").click(function() {
+        eAnlagenlisteErstellen()
+    });
     $("#berSuchen").click(function() {
         bereichelisteErstellen()
     });

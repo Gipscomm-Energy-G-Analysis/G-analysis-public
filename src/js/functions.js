@@ -3951,7 +3951,47 @@ try {
                     })
                 }
             })
-        }, bereichelisteErstellen = function() {
+        };
+        const eAnlagenlisteErstellen =
+            () =>
+            ajaxPost("php/eAnlEinlesen.php")({nameDB : $("#nameDB").val()})
+            .then(result => {
+                    const prepareTableData =
+                        data =>
+                        data.map(
+                            (rec, i) => [ i
+                                        , rec.name
+                                        , rec.beschreibung
+                                        , rec.optionen
+                                        ]
+                        )
+                    clearTable(tblEAnlSuchen)
+                    intoTable(tblEAnlSuchen)(prepareTableData(result))
+
+                    $("#eAnlagenSuchenContainer").dialog({
+                        height: $(window).height() - .125 * $(window).height(),
+                        width: $(window).width() - .125 * $(window).width(),
+                        resize: "auto",
+                        show: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        hide: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        open: function() {
+                            $("#tblEAnlSuchen tbody tr").css("cursor", "pointer")
+                            $("#tblEAnlSuchen tbody").on("dblclick", "tr", function() {
+                                var data = tblEAnlSuchen.row(this).data()
+                                $("#eAnlagenSuchenContainer").dialog("close")
+                                clearFields("eAnlHinz")
+                                readInstanzen("eAnlFirst", data[0])
+                            })
+                        }
+                    })
+                })
+        bereichelisteErstellen = function() {
             $.ajax({
                 type: "POST",
                 async: !0,
@@ -9358,6 +9398,33 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         colReorder: !0
     });
     tblMessstelleAuswahl = $("#tblMessstellenlisteMst").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+                extend: "copy",
+                text: "Kopieren",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            },
+            {
+                extend: "csv",
+                text: "CSV-Export",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            }, {
+                extend: "print",
+                text: "Drucken",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            }
+        ],
+        pageLength: 20,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblEAnlSuchen = $("#tblEAnlSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
                 extend: "copy",
