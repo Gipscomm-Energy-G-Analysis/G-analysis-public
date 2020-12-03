@@ -368,7 +368,7 @@ function firstQuery(){
         dataTranslator.sumHours()
 
         // Translates the data to a format the charts understand
-        chartData = dataTranslator.translate(4)
+        chartData = dataTranslator.translate(1)
 
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
@@ -406,7 +406,7 @@ function secondQuery(){
         dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
         dataTranslator.sumHours()
-        chartData = dataTranslator.translate(4);
+        chartData = dataTranslator.translate(1);
 
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
@@ -444,7 +444,7 @@ function thirdQuery(){
         dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
         dataTranslator.sumHours()
-        chartData = dataTranslator.translate(4);
+        chartData = dataTranslator.translate(1);
 
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
