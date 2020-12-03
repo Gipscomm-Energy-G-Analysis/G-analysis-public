@@ -75,7 +75,7 @@
       </table>
     </div>
     <div id="table-chart-data-container_2">
-      <label style="font-size: 18px;">Summe-Tag: </label> 
+      <label style="font-size: 18px;">Summe-Tag: </label>
       <label id="consumption-day_2" style="font-size: 18px;"></label>
       <br>
       <br>
@@ -296,15 +296,6 @@
           series: []
         });
 
-  console.log("queryString_1");
-  console.log(queryString_1);
-
-  console.log("queryString_2");
-  console.log(queryString_2);
-
-  console.log("queryString_3");
-  console.log(queryString_3);
-
   $("h3").text("Energieverbrauch " + day + " " + monthArr[Number(month) - 1] + " " + year);
 
   if(queryString_1 != "" && queryString_2 != "" && queryString_3 != ""){
@@ -330,15 +321,11 @@
       let dataTranslator = null,
           chartData = [],
           sumDay = 0;
-      if(nameDB == "001_heco" /*|| nameDB == "002_badber"*/ || nameDB == "003_tauchzor"){
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-      }
-      else {
         dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      }
+
       console.log(chartData);
       dataTranslator.sum15minsDay();
-      chartData = dataTranslator.translate(1);
+      chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_1.row.add([
           chartData[1].name,
@@ -348,7 +335,7 @@
         sumDay += chartData[i].y;
       }
 	if(sumDay>0){updateChart(chartData, nameMst_1);
-		$("#consumption-day_1").text(Math.round(sumDay/4)+" kWh");}
+		$("#consumption-day_1").text(Math.round(sumDay)+" kWh");}
       	else{alert("Data not available/No Operation in "+nameMst_1);
 		$("#consumption-day_1").text(Math.round(sumDay)+" kWh (Data not available/No Operation) "+nameMst_1);}
     });
@@ -361,15 +348,10 @@
       let dataTranslator = null,
           chartData = [],
           sumDay = 0;
-      if(nameDB == "001_heco" || nameDB == "002_badber" || nameDB == "003_tauchzor"){
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-      }
-      else {
         dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      }
 
       dataTranslator.sum15minsDay();
-      chartData = dataTranslator.translate(1);
+      chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_2.row.add([
           chartData[1].name,
@@ -390,15 +372,10 @@
       let dataTranslator = null,
           chartData = [],
           sumDay = 0;
-      if(nameDB == "001_heco" || nameDB == "002_badber" || nameDB == "003_tauchzor"){
-        dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_02, data);
-      }
-      else {
         dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
-      }
 
       dataTranslator.sum15minsDay();
-      chartData = dataTranslator.translate(1);
+      chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_3.row.add([
           chartData[1].name,
@@ -410,7 +387,7 @@
      if(sumDay>0){updateChart(chartData, nameMst_3);
 		$("#consumption-day_3").text(Math.round(sumDay/4)+" kWh");}
       	else{$("#consumption-day_3").text(Math.round(sumDay)+" kWh (Data not available/No Operation) "+nameMst_3);}
-		
+
     });
   }
 

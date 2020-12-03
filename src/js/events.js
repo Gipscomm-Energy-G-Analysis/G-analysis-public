@@ -584,7 +584,8 @@ $(document).ready(function() {
         "Produktparameter einblenden" === $(this).text() ? ($(".customParDiv").css("display", "block"), $(this).text("Produktparameter ausblenden")) : ($(".customParDiv").css("display", "none"), $(this).text("Produktparameter einblenden"))
     });
     $(document).on("input", ".bezeichnungKnz", function() {
-        $(".knzForms").eq(subtract(1, extractNumber(this.id))).text(this.value)
+
+        $(".knzForms").eq(decr(extractNumber(this.id))).text(this.value)
     });
     $(".btnVorlFormeln").click(function() {
         $("#nrKnz").val(extractNumber(this.id));

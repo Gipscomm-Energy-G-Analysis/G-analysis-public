@@ -333,7 +333,7 @@
       dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
       console.log(chartData);
       dataTranslator.sum15minsMonth(year, month);
-      chartData = dataTranslator.translate(1);
+      chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_1.row.add([
           chartData[1].name,
@@ -343,7 +343,7 @@
         sumMonth += chartData[i].y;
       }
       if(sumMonth>0){updateChart(chartData, nameMst_1); //edited on 06-02-2020 raj
-	$("#consumption-month_1").text(Math.round(sumMonth/4)+"kWh"); }
+	$("#consumption-month_1").text(Math.round(sumMonth)+"kWh"); }
 	else{alert("Data not available/No Operation "+nameMst_1);
 	$("#consumption-month_1").text((sumMonth) +" kWh (Data not available/No operation) "+nameMst_1);}
     });
@@ -358,7 +358,7 @@
           sumMonth = 0;
       dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
       dataTranslator.sum15minsMonth(year, month);
-      chartData = dataTranslator.translate(1);
+      chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_2.row.add([
           chartData[1].name,
@@ -381,7 +381,7 @@
           sumMonth = 0;
       dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
       dataTranslator.sum15minsMonth(year, month);
-      chartData = dataTranslator.translate(1);
+      chartData = dataTranslator.translate(4);
       for(let i = 0; i < chartData.length; i++){
         tblChartData_3.row.add([
           chartData[1].name,

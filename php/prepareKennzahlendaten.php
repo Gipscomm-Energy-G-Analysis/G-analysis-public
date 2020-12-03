@@ -14,12 +14,16 @@ define("connect", connectToDB($_GET['nameDB'])) ;
 define("artikelnummer", $_GET['artikelnummer']) ;
 
 function flatten($arr) {
-    return array_reduce($arr, 'array_merge', []) ;
+    return gettype($arr) === "array" ?
+           array_reduce($arr, 'array_merge', []) :
+           $arr ;
 }
 
 function queryProdData($artikelnummer) {
-    $query = "SELECT TOP(25000) * FROM ProdData_ " ;
+    $query = "SELECT * FROM ProdData_ " ;
     $query .= "WHERE artikelnummer = '".$artikelnummer."' " ;
+    $query .= "AND auftrag <> '' " ;
+    $query .= "AND (auftrag = '000979810020' OR auftrag = '000979820020') " ;
     $query .= "ORDER BY auftrag, zeitstempel " ;
 
     return queryDB(connect, $query, "read") ;
@@ -180,7 +184,10 @@ function getEnergyDataOrders($records) {
     }
 
     function getSumEnergyDataOrders($records) {
-        return array_reduce($records, 'sumEnergyData') ;
+
+        return gettype($records) === "array" ?
+               array_reduce($records, 'sumEnergyData') :
+               $records["Value"] ;
     }
 
     function createOrderRecord($recordEnergy, $recordOrder) {
@@ -199,6 +206,10 @@ function getEnergyDataOrders($records) {
 
 function writeToDB($records) {
     function buildValueString($last, $record) {
+        $verbrauchAuftrag =
+            $record["verbrauchAuftrag"] === "" || $record["verbrauchAuftrag"] == null ?
+            0 : $record["verbrauchAuftrag"] ;
+
         return $last.", ("
         .$record["anl_ID"].", '"
         .$record["anlageMst"]."', '"
@@ -216,7 +227,7 @@ function writeToDB($records) {
         .$record["timeUnlock"]."', '"
         .$record["timeClose"]."', "
         .$record["zykluszeit"].", "
-        .$record["verbrauchAuftrag"].")" ;
+        .$verbrauchAuftrag.")" ;
     }
 
     function buildValuesString($records_) {
@@ -298,6 +309,9 @@ function testIfDataInDB($records) {
     return alertIfNeccessary(equalLength($initialRecords, queryData())) ;
 }
 
+$start = hrtime(true) ;
+
+// Test if data in DB has to be still implemented
 pipe(
     [ queryProdData(artikelnummer)
     , 'getOrders'
@@ -307,6 +321,14 @@ pipe(
     ]
 ) ;
 
-// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100837605
+closeDbConn(connect) ;
+
+$end = hrtime(true) ;
+
+echo "    Execution Time : ".(($end - $start) / 1000000000) ;
+
+// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100912002
+
+
 
 ?>

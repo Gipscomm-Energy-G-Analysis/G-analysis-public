@@ -692,27 +692,61 @@ try {
             setTimeout(function() {
                 "Jahr" == p ? window.open("chartYear.html", "_blank") : "Monat" == p ? window.open("chartMonth.html", "_blank") : "Monat 15min" == p ? window.open("chartMonth15min.html", "_blank") : "Tag" == p ? window.open("chartDay.html", "_blank") : "Tag 15min" == p ? window.open("chartDay15min.html", "_blank") : window.open("chartBenDef15min.html", "_blank")
             }, 2E3)
-        },
-        verbrauchsdatenExportieren = function() {
-            var a = new DataMachine,
-                b = "",
-                b = $("#nameDB").val(),
-                e = $("#mstIDDatenexport").val(),
-                c = $("#VerbrauchsdatenexportJahr").val(),
-                g = $("#VerbrauchsdatenexportMonat").val(),
-                f = 0;
-            "001_heco" == b || "002_badber" == b || "003_tauchzor" == b ? (b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, value AS Value FROM data_value_15m INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID " + ("WHERE messstellen.mst_ID = '" + e + "' ") + ("AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" +
-                c + "' "), "-" != g && (b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + g + "' "), b += "ORDER by time_de ", f = 1) : (b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID " +
-                ("WHERE messstellen.mst_ID = '" + e + "' ") + ("AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + c + "' "), "-" != g && (b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + g + "' "), b += "ORDER by time_de ", f = 2);
-            a.runQuery("read", $("#nameDB").val(), b).then(function(a) {
-                a = JSON.parse(a);
-                var b = a.length,
-                    c, e;
-                tblVerbrauchsdatenExp.clear();
-                for (var g = 0; g < b; g++) c = 1 == f ? 1 : a[g].Phase, e = $.isNumeric(a[g].Value) ? formatNumber("form", a[g].Value) : 0, tblVerbrauchsdatenExp.row.add([a[g].Name, a[g].Time, c, e]);
-                tblVerbrauchsdatenExp.draw()
-            })
-        },
+        };
+        function verbrauchsdatenExportieren() {
+            let dataMachine = new DataMachine(),
+            queryString = "",
+            nameDB = $("#nameDB").val(),
+            idMst = $("#mstIDDatenexport").val(),
+            jahr = $("#VerbrauchsdatenexportJahr").val(),
+            monat = $("#VerbrauchsdatenexportMonat").val(),
+            vers = 0;
+            queryString = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value FROM data_value_15m ";
+            queryString += "INNER JOIN channel ";
+            queryString += "ON data_value_15m.channel_id = channel.channel_id ";
+            queryString += "INNER JOIN messmittel ";
+            queryString += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+            queryString += "INNER JOIN messstellen ";
+            queryString += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            queryString += "WHERE messstellen.mst_ID = '" + idMst + "' ";
+            queryString += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr + "' ";
+            if(monat != "-"){
+                queryString += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat + "' ";
+            }
+            queryString += "ORDER by time_de ";
+            vers = 2;
+
+
+            dataMachine.runQuery("read", $("#nameDB").val(), queryString)
+            .then(function(data){
+            let jsonData = JSON.parse(data),
+            nJsonData = jsonData.length,
+            phase = 0,
+            value = 0;
+            tblVerbrauchsdatenExp.clear();
+            for(let i = 0; i < nJsonData; i++){
+                if(vers == 1){
+                    phase = 1;
+                }
+                else {
+                    phase = jsonData[i].Phase;
+                }
+                if($.isNumeric(jsonData[i].Value)){
+                    value = formatNumber("form", jsonData[i].Value);
+                }
+                else {
+                    value = 0;
+                }
+                tblVerbrauchsdatenExp.row.add([
+                    jsonData[i].Name,
+                    jsonData[i].Time,
+                    phase,
+                    value
+                ]);
+            }
+            tblVerbrauchsdatenExp.draw();
+            });
+        };
         writeVorlFormulaToDB = function(a, b, e) {
             $.ajax({
                 type: "POST",
@@ -4303,7 +4337,7 @@ try {
                     $("#aktivMst").prop("checked", !1)) : "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
                 "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
                 "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
-                    a = $("#nameDB").val(), $("#bildAllgemeinAnl").prop("src", "uploadsDownloads/images/" + a + "noImg.png"), $("#aktivAllgemeinAnl").prop("checked", !1), $("#mehrProdukteAllgemeinAnl").prop("checked", !1), $("#betriebsstundenAllgemeinAnl").val(0), $("#produktionsmenge1AllgemeinAnl").val(0), $("#anschlussleistung1Anl").val(0), $("#mittlereAuslastungProzent1Anl").val(0), $("#mittlereAuslastungKw1Anl").val(0), $("#betriebstemperatur1Anl").val(0), $("#abwaerme1Anl").val(0), $("#anschlussleistung2Anl").val(0), $("#mittlereAuslastungProzent2Anl").val(0),
+                    a = $("#nameDB").val(), $("#bildAllgemeinAnl").prop("src", "uploadsDownloads/images/" + a + "noImg.png"), $(".anlageAnl").text(""), $("#aktivAllgemeinAnl").prop("checked", !1), $("#mehrProdukteAllgemeinAnl").prop("checked", !1), $("#betriebsstundenAllgemeinAnl").val(0), $("#produktionsmenge1AllgemeinAnl").val(0), $("#anschlussleistung1Anl").val(0), $("#mittlereAuslastungProzent1Anl").val(0), $("#mittlereAuslastungKw1Anl").val(0), $("#betriebstemperatur1Anl").val(0), $("#abwaerme1Anl").val(0), $("#anschlussleistung2Anl").val(0), $("#mittlereAuslastungProzent2Anl").val(0),
                     $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) : "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
                 "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
                     $("#lblEntEinh2FaktorX1").text(""), $("#lblEntEinh3FaktorX1").text(""), $("#lblEntEinh1FaktorX2").text(""), $("#lblEntEinh2FaktorX2").text(""), $("#lblEntEinh3FaktorX2").text(""), $("#lblEntEinh1FaktorX3").text(""), $("#lblEntEinh2FaktorX3").text(""), $("#lblEntEinh3FaktorX3").text("")) : "enfHinz" == a ? (b = "#nameEnf #kuerzelEnf #notizEnf #einheit1Enf #einheit2Enf #einheit3Enf #enfEinh1FaktorKwh #enfEinh2FaktorKwh #enfEinh3FaktorKwh #enfEinh1FaktorCO2 #enfEinh2FaktorCO2 #enfEinh3FaktorCO2 #enfEinh1FaktorX1 #enfEinh2FaktorX1 #enfEinh3FaktorX1 #enfEinh1FaktorX2 #enfEinh2FaktorX2 #enfEinh3FaktorX2 #enfEinh1FaktorX3 #enfEinh2FaktorX3 #enfEinh3FaktorX3 #gueltigVomEnf #gueltigBisEnf".split(" "),
@@ -4316,10 +4350,10 @@ try {
                         firstPart: "#ui-id-",
                         secondPart: ""
                     }, {
-                        von: 23,
-                        bis: 32
+                        von: 7,
+                        bis: 16
                     })) : "knzOhneInstanz" == a && (b = "#bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
-                    $("#status1Knz").prop("checked", !1), $("#status2Knz").prop("checked", !1), $("#status3Knz").prop("checked", !1), $("#status4Knz").prop("checked", !1), $("#status5Knz").prop("checked", !1), $("#status6Knz").prop("checked", !1), $("#status7Knz").prop("checked", !1), $("#status8Knz").prop("checked", !1), $("#status9Knz").prop("checked", !1), $("#status10Knz").prop("checked", !1));
+                    $("#status1Knz").prop("checked", !1), $("#status2Knz").prop("checked", !1), $("#status3Knz").prop("checked", !1), $("#status4Knz").prop("checked", !1), $("#status5Knz").prop("checked", !1), $("#status6Knz").prop("checked", !1), $("#status7Knz").prop("checked", !1), $("#status8Knz").prop("checked", !1), $("#status9Knz").prop("checked", !1), $("#status10Knz").prop("checked", !1), $(".knzForms").eq(0).prop("aria-selected", true));
             b.forEach(function(a) {
                 $(a).val("")
             });
@@ -6619,9 +6653,9 @@ try {
                     N = $("#kennzahl1Knz").val(),
                     O = $("#toleranzgrenzeOben1Knz").val(),
                     P = $("#toleranzgrenzeUnten1Knz").val();
-                $("#zielwert1Knz").val();
-                $("#zielVon1Knz").val();
-                $("#zielBis1Knz").val();
+                    $("#zielwert1Knz").val();
+                    $("#zielVon1Knz").val();
+                    $("#zielBis1Knz").val();
                 var Q = $("#bez_2_Knz").val(),
                     R = $("#anwendungsbereichKennzahldetails2Knz").val(),
                     S = $("#status2Knz").prop("checked"),
@@ -6633,9 +6667,9 @@ try {
                     Y = $("#kennzahl2Knz").val(),
                     Z = $("#toleranzgrenzeOben2Knz").val(),
                     aa = $("#toleranzgrenzeUnten2Knz").val();
-                $("#zielwert2Knz").val();
-                $("#zielVon2Knz").val();
-                $("#zielBis2Knz").val();
+                    $("#zielwert2Knz").val();
+                    $("#zielVon2Knz").val();
+                    $("#zielBis2Knz").val();
                 var ba = $("#bez_3_Knz").val(),
                     ca = $("#anwendungsbereichKennzahldetails3Knz").val(),
                     da = $("#status3Knz").prop("checked"),
@@ -6647,9 +6681,9 @@ try {
                     ja = $("#kennzahl3Knz").val(),
                     ka = $("#toleranzgrenzeOben3Knz").val(),
                     la = $("#toleranzgrenzeUnten3Knz").val();
-                $("#zielwert3Knz").val();
-                $("#zielVon3Knz").val();
-                $("#zielBis3Knz").val();
+                    $("#zielwert3Knz").val();
+                    $("#zielVon3Knz").val();
+                    $("#zielBis3Knz").val();
                 var ma = $("#bez_4_Knz").val(),
                     na = $("#anwendungsbereichKennzahldetails4Knz").val(),
                     oa = $("#status4Knz").prop("checked"),
@@ -6661,9 +6695,9 @@ try {
                     ua = $("#kennzahl4Knz").val(),
                     va = $("#toleranzgrenzeOben4Knz").val(),
                     wa = $("#toleranzgrenzeUnten4Knz").val();
-                $("#zielwert4Knz").val();
-                $("#zielVon4Knz").val();
-                $("#zielBis4Knz").val();
+                    $("#zielwert4Knz").val();
+                    $("#zielVon4Knz").val();
+                    $("#zielBis4Knz").val();
                 var xa = $("#bez_5_Knz").val(),
                     ya = $("#anwendungsbereichKennzahldetails5Knz").val(),
                     za = $("#status5Knz").prop("checked"),
@@ -6675,9 +6709,9 @@ try {
                     Fa = $("#kennzahl5Knz").val(),
                     Ga = $("#toleranzgrenzeOben5Knz").val(),
                     Ha = $("#toleranzgrenzeUnten5Knz").val();
-                $("#zielwert5Knz").val();
-                $("#zielVon5Knz").val();
-                $("#zielBis5Knz").val();
+                    $("#zielwert5Knz").val();
+                    $("#zielVon5Knz").val();
+                    $("#zielBis5Knz").val();
                 var Ia = $("#bez_6_Knz").val(),
                     Ja = $("#anwendungsbereichKennzahldetails6Knz").val(),
                     Ka = $("#status6Knz").prop("checked"),
@@ -6689,9 +6723,9 @@ try {
                     Qa = $("#kennzahl6Knz").val(),
                     Ra = $("#toleranzgrenzeOben6Knz").val(),
                     Sa = $("#toleranzgrenzeUnten6Knz").val();
-                $("#zielwert6Knz").val();
-                $("#zielVon6Knz").val();
-                $("#zielBis6Knz").val();
+                    $("#zielwert6Knz").val();
+                    $("#zielVon6Knz").val();
+                    $("#zielBis6Knz").val();
                 var Ta = $("#bez_7_Knz").val(),
                     Ua = $("#anwendungsbereichKennzahldetails7Knz").val(),
                     Va = $("#status7Knz").prop("checked"),
@@ -6703,9 +6737,9 @@ try {
                     ab = $("#kennzahl7Knz").val(),
                     bb = $("#toleranzgrenzeOben7Knz").val(),
                     cb = $("#toleranzgrenzeUnten7Knz").val();
-                $("#zielwert7Knz").val();
-                $("#zielVon7Knz").val();
-                $("#zielBis7Knz").val();
+                    $("#zielwert7Knz").val();
+                    $("#zielVon7Knz").val();
+                    $("#zielBis7Knz").val();
                 var db = $("#bez_8_Knz").val(),
                     eb = $("#anwendungsbereichKennzahldetails8Knz").val(),
                     fb = $("#status8Knz").prop("checked"),
@@ -6717,9 +6751,9 @@ try {
                     lb = $("#kennzahl8Knz").val(),
                     mb = $("#toleranzgrenzeOben8Knz").val(),
                     nb = $("#toleranzgrenzeUnten8Knz").val();
-                $("#zielwert8Knz").val();
-                $("#zielVon8Knz").val();
-                $("#zielBis8Knz").val();
+                    $("#zielwert8Knz").val();
+                    $("#zielVon8Knz").val();
+                    $("#zielBis8Knz").val();
                 var ob = $("#bez_9_Knz").val(),
                     pb = $("#anwendungsbereichKennzahldetails9Knz").val(),
                     qb = $("#status9Knz").prop("checked"),
@@ -6731,9 +6765,9 @@ try {
                     wb = $("#kennzahl9Knz").val(),
                     xb = $("#toleranzgrenzeOben9Knz").val(),
                     yb = $("#toleranzgrenzeUnten9Knz").val();
-                $("#zielwert9Knz").val();
-                $("#zielVon9Knz").val();
-                $("#zielBis9Knz").val();
+                    $("#zielwert9Knz").val();
+                    $("#zielVon9Knz").val();
+                    $("#zielBis9Knz").val();
                 var zb = $("#bez_10_Knz").val(),
                     Ab = $("#anwendungsbereichKennzahldetails10Knz").val(),
                     Bb = $("#status10Knz").prop("checked"),
@@ -6745,9 +6779,9 @@ try {
                     Hb = $("#kennzahl10Knz").val(),
                     Ib = $("#toleranzgrenzeOben10Knz").val(),
                     Jb = $("#toleranzgrenzeUnten10Knz").val();
-                $("#zielwert10Knz").val();
-                $("#zielVon10Knz").val();
-                $("#zielBis10Knz").val();
+                    $("#zielwert10Knz").val();
+                    $("#zielVon10Knz").val();
+                    $("#zielBis10Knz").val();
                 var E = new Date,
                     Kb = {
                         dataToLog: "\n            ##########################################################################\n\n            Ge\u00e4ndert\n            ++++++++\n            Datum: " + E.getDate() + "." + (E.getMonth() + 1) + ".2019 " + E.getHours() + ":" + (E.getMinutes() + 1) + "\n\n            bezug: " +
@@ -6771,12 +6805,6 @@ try {
                         alert("Logged data!")
                     }
                 });
-                console.log('$("#zielwert1Knz").val()');
-                console.log($("#zielwert1Knz").val());
-                console.log('$("#zielVon1Knz").val()');
-                console.log($("#zielVon1Knz").val());
-                console.log('$("#zielBis1Knz").val()');
-                console.log($("#zielBis1Knz").val());
                 $.ajax({
                     type: "POST",
                     async: !0,
@@ -6934,7 +6962,6 @@ try {
                         zielBis10: $("#zielBis10Knz").val()
                     },
                     success: function(a) {
-                        console.log(a);
                         alert(datensatzGespeichert(a))
                     }
                 })
@@ -7303,13 +7330,13 @@ try {
                     ausgewaehltesLevel: $("#levelAuswahlAllgemeinBer").val(),
                     vorgelagerterBereich1: $("#vorgelagerteBereiche1AllgemeinBer").val(),
                     vorgelagerterBereich2: $("#vorgelagerteBereiche2AllgemeinBer").val(),
-                    notiz: $("#notizAllgemeinBer").val(),
-                    energietraeger1: $("#energietraeger1AllgemeinBer").val(),
-                    energietraeger2: $("#energietraeger2AllgemeinBer").val(),
-                    energietraeger3: $("#energietraeger3AllgemeinBer").val(),
-                    energietraeger4: $("#energietraeger4AllgemeinBer").val()
+                    notiz: $("#notizAllgemeinBer").val()
                 },
                 success: function(a) {
+
+                    console.log("Ber save");
+                    console.log(a);
+
                     alert(datensatzGespeichert(a));
                     readInstanzen("berLast", $("#berCount").val())
                 }
