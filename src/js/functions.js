@@ -3967,7 +3967,7 @@ try {
                         )
                     clearTable(tblEAnlSuchen)
                     intoTable(tblEAnlSuchen)(prepareTableData(result))
-
+                    $("#eAnlagenSuchenContainer").css("display", "block")
                     $("#eAnlagenSuchenContainer").dialog({
                         height: $(window).height() - .125 * $(window).height(),
                         width: $(window).width() - .125 * $(window).width(),
@@ -3985,6 +3985,7 @@ try {
                             $("#tblEAnlSuchen tbody").on("dblclick", "tr", function() {
                                 var data = tblEAnlSuchen.row(this).data()
                                 $("#eAnlagenSuchenContainer").dialog("close")
+                                $("#eAnlagenSuchenContainer").css("display", "none")
                                 clearFields("eAnlHinz")
                                 readInstanzen("eAnlFirst", data[0])
                             })
@@ -7862,6 +7863,7 @@ try {
                 e = [];
                 for (i = 0; i < $("#tblOptionenEAnl tbody tr").length; i++) e[i] = tblOptionenEAnl.cell(i, 0).data();
                 e = e.join(",");
+                $("#eAnlFirst").trigger("click")
                 $.ajax({
                     type: "POST",
                     async: !0,
@@ -7876,8 +7878,10 @@ try {
                         optionen: e
                     },
                     success: function(a) {
+
                         alert(datensatzGespeichert(a));
-                        readInstanzen("eAnlLast", $("#eAnlCount").val())
+
+                        $("#eAnlFirst").trigger("click")
                     }
                 });
                 eAnlNavID = $("#eAnlCount").val()

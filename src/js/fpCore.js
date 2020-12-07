@@ -96,13 +96,13 @@ Object
 
             this.emptyString(url) ?
             () => {throw new Error("\n\nfpCore.ajaxPost : \n-->\nThe arg for 'url' contains an empty string instead of a server path !\n\n" )} :
-            console.log(`\n\nurl : ${url}\n\n`)
+            console.log() // console.log(`\n\nurl : ${url}\n\n`)
 
             containsEmptyFields(data) ?
             () => {throw new Error(`\n\nfpCore.ajaxPost : \n-->\n Record 'data', contains ${this.len(filterRecord)} empty string/s !\n-->\ndata : ${data}\n\n` )} :
-            console.log(`\n\ndata : ${data}\n\n`)
+            console.log() // console.log(`\n\ndata : ${data}\n\n`)
 
-            return new Promise((resolve,reject)=>$.ajax({type:"POST",url,data,fail:()=>reject(()=>{throw new Error("Ajax Post failed!" )}),success:records=>{console.log(records);resolve(this.json(records))}}))
+            return new Promise((resolve,reject)=>$.ajax({type:"POST",url,data,fail:()=>reject(()=>{throw new Error("Ajax Post failed!" )}),success:records=>{resolve(this.json(records))}}))
         };
         this.pipe = (...fns) => {
             results = [this.head(fns)]
