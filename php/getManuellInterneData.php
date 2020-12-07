@@ -144,7 +144,7 @@ elseif($id == 'intBdeIMw'){
 			$query .= "ON T1.mst_ID = T2.mst_ID ";
 			$query .= "WHERE T1.messartMst = 'manuell' ";
 			$query .= "AND T1.deleted <> 'true' ";
-			$query .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate'))";
+			$query .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
 			$query .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
 			$query .= "ORDER BY T1.mst_ID ASC";
         //} 

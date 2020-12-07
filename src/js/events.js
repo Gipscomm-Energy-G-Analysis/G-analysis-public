@@ -3450,7 +3450,6 @@ $("#DkFeSpeichern").click(function() {
         $("#ePrdDKFECalcID").val(calculationTypeID);
         getDynamischeKrktrFaktorDeleteOptClickValues(calculationTypeID);
     });
-
     /*Reset first row*/
     $("#basicFaktorRow1Reset").click(function() {
         if (window.confirm('Are you sure？')) {
@@ -3471,7 +3470,6 @@ $("#DkFeSpeichern").click(function() {
     });
 
     /*Reset first and second row*/
-
      $("#basicFaktorDelete").click(function() {
         if (window.confirm('Are you sure？')) {
             $("#basicFaktorRow1 input").val('');
@@ -3493,16 +3491,6 @@ $("#DkFeSpeichern").click(function() {
             tblAnlOhneZeitintervallIMwSuchenMethod();
     });
    /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
-
-    /*18-09-2020 on double click row append data into input*/
-    /*$("#tblAnlOhneZeitintervallIMwSuchen tbody").on("dblclick","tr",function(){
-        //var id = $(this).attr('data-id');
-        var rowData = tblAnlOhneZeitintervallIMwSuchen.row( this ).data();
-        tblAnlOhneZeitintervallIMwSuchenDblClick(rowData[0]); 
-        $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");      
-    });*/
-    /*18-09-2020  on double click row append data into input*/
-
     $(document).ready(function(){
         $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
         $("#btnShowRecordsAnlBtn").click(function(){
@@ -3527,12 +3515,14 @@ $("#DkFeSpeichern").click(function() {
    /*save icon click event for the Interne Betriebsdaten Speichern 05-10-2020*/
 
     $("#intBdeIMwSpeichern").click(function(){
-        var anlIMw =$("#anlIMw").val();
+        //var anlIMw =$("#anlIMw").val();
         var zeitintervallAnl =$("#zeitintervallAnl").val();
         //var monateMassEingDataAnlStart =$("#monateMassEingDataAnlStart").val();
-        var notizBdeIMw =$("#notizBdeIMw").val();
-        if(anlIMw =='' || zeitintervallAnl =='' || notizBdeIMw==''){
-            alert("Bitte füllen Sie die Felder aus");
+        //var notizBdeIMw =$("#notizBdeIMw").val();
+        var noEnding =$("#anlIMwNoEnding").is(":checked");
+
+        var validate = validateIntBdeFrm(noEnding,zeitintervallAnl,'infosIntBetriebsdaten',1);
+        if(validate==false){
             return false;
         }else{            
             intBdeIMwHistorieSpeichernPopUp();
@@ -3595,10 +3585,17 @@ $("#DkFeSpeichern").click(function() {
         }else{
             var startDate = startDateV = dates[0];
             var endDate = endDateV = dates[1];
+        }        
+        var validateNull= validateNullValZeitintervallAnlSelectOpt(sDate,eDate,zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);    
+        var validateSel = validateZeitintervallAnlSelectOpt(startDate,endDate,zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);
+        if(validateNull==false){
+            return false;
+        }else if(validateSel==false){
+            return false;
+        }else{
+            getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate);
         }
-        getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate);
-        validateNullValZeitintervallAnlSelectOpt(startDateV,endDateV,zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);    
-        validateZeitintervallAnlSelectOpt(startDate,endDate,zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);
+        
      });
 
      $("#btnMassEingAnl").click(function() {

@@ -2852,8 +2852,13 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
       $startDate = $fromDate[1]; //first year input text value
 
       $toDate = explode("-", $eDate);
-      $endWeek =  $toDate[0]; //second week selected value
-      $endDate =  $toDate[1]; //second year input text value
+      if($ending==0){
+        $endWeek =  $toDate[0]; //second week selected value
+        $endDate =  $toDate[1]; //second year input text value
+      }else{
+        $endWeek =  ''; //second week selected value
+        $endDate =  ''; //second year input text value
+      }
 
     }else if($zeitintervallAnl==3){
       $sDate = $_POST['startDate'];
@@ -2986,8 +2991,13 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
       $startDate = $fromDate[1]; //first year input text value
 
       $toDate = explode("-", $eDate);
-      $endWeek =  $toDate[0]; //second week selected value
-      $endDate =  $toDate[1]; //second year input text value
+      if($ending==0){
+        $endWeek =  $toDate[0]; //second week selected value
+        $endDate =  $toDate[1]; //second year input text value
+      }else{
+        $endWeek =  ''; //second week selected value
+        $endDate =  ''; //second year input text value
+      }
 
     }else if($intTp_ID==3){
       $sDate = $_POST['startDate'];
@@ -3078,8 +3088,13 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
       $startDate = $fromDate[1]; //first year input text value
 
       $toDate = explode("-", $eDate);
-      $endWeek =  $toDate[0]; //second week selected value
-      $endDate =  $toDate[1]; //second year input text value
+     if($ending==0){
+        $endWeek =  $toDate[0]; //second week selected value
+        $endDate =  $toDate[1]; //second year input text value
+      }else{
+        $endWeek =  ''; //second week selected value
+        $endDate =  ''; //second year input text value
+      }
 
     }else if($zeitintervallAnl==3){
       $sDate = $_POST['startDate'];
