@@ -2886,6 +2886,7 @@ try {
                                     $("#inpAuswahlVorlFrmIns" + e).val(c);
                                     $("#inpAuswahlVorlFrmIDIns" + e).val(b)
                                 }
+                                $("#messstellenAuswahlContainer").css("display","none")
                                 $("#messstellenAuswahlContainer").dialog("close")
                             })
                         }

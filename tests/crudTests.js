@@ -3,60 +3,71 @@
 // disable alert
 alert = () => {}
 
- randomInt =
+randomInt =
     min =>
     max =>
     ((Math.random() * (max - min + 1)) << 0) + min
 
- randomFloat =
+randomFloat =
     min =>
     max =>
     round((Math.random() * (max - min + 1)) + min)
 
- randomChar =
+randomChar =
     chars =>
     chars.charAt(Math.floor(Math.random() * chars.length))
 
- randomString =
+randomString =
     maxLen =>
     array(randomInt(1)(maxLen))("")()
     .map(() => randomChar(" _-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "))
     .join("")
 
- fillForm =
+randomSelect =
+    element => {
+        const nOptions = $(`${element} option`).length
+        const rndChild = randomInt(1)(nOptions)
+        return $(`${element} option:nth-child(${rndChild})`).val()
+    }
+
+fillForm =
     elements =>
     elements.forEach(a => $(head(a)).val(last(a)))
 
- getFormData =
+getFormData =
     elements =>
     elements.map(a => $(head(a)).val())
 
- getTableData =
+getTableData =
     tbl =>
     tbl.rows().data()
 
- simulateClick =
+simulateClick =
     instanz =>
     $(instanz).trigger("click")
 
- navigate =
+navigate =
     instanz =>
     nav =>
     simulateClick(`#${instanz}${nav}`)
 
- compareData =
+compareData =
     data1 =>
     data2 =>
     data1.every((a, i) => a === data2[i])
 
- isDialogShown =
+isDialogShown =
     element =>
     $(element).css("display") === "block"
 
 jumpToRecord =
     element =>
-    idx =>
-    $(`${element} tbody tr:nth-child(${idx})`).trigger("dblclick")
+    idx => {
+        const selector = `${element} tbody tr:nth-child(${idx})`
+        const value = $(`${selector} td:nth-child(1)`)[0].innerText
+        $(selector).trigger("dblclick")
+        return value
+    }
 
 delete_ =
     ins => {
@@ -64,50 +75,54 @@ delete_ =
         simulateClick("#loeschenOk")
     }
 
+rowsTable =
+    tbl =>
+    tbl.rows().data().length
+
 // Test Erweiterungen Anlagen
- testEAnl =
+testEAnl =
     tout => {
-         elementsEAnl =
+        elementsEAnl =
             () =>
             [ [ "#nameEAnl", randomString(50) ]
             , [ "#kuerzelEAnl", randomString(50) ]
             , [ "#beschreibungEAnl", randomString(500)]
             ]
 
-         optionsEAnl =
+        optionsEAnl =
             () =>
             array(randomInt(1)(50))("")()
             .map(() => randomString(50))
 
-         addOption =
+        addOption =
             opt => {
                 $("#optionEAnl").val(opt)
                 $("#btnOptionHinzEAnl").trigger("click")
             }
 
-         fillOptionTable =
+        fillOptionTable =
             opts =>
             opts.forEach(addOption)
 
-         newInstanz =
+        newInstanz =
             () =>
             simulateClick("#eAnlHinz")
 
-         saveInstanz =
+        saveInstanz =
             () =>
             simulateClick("#eAnlSpeichern")
 
-         showSearchDialog =
+        showSearchDialog =
             () =>
             simulateClick("#eAnlSuchen")
 
-         clearOptionTable =
+        clearOptionTable =
             () =>
             tblOptionenEAnl.clear().draw()
 
-         create =
+        create =
             () => {
-                 [elements, options]  = [elementsEAnl(), optionsEAnl()]
+                [elements, options]  = [elementsEAnl(), optionsEAnl()]
 
                 newInstanz()
                 fillForm(elements)
@@ -117,32 +132,32 @@ delete_ =
                 return [elements, options]
             }
 
-         read =
+        read =
             data => {
                  [elements, options] = data
 
-                 formData =
+                formData =
                     () =>
                     getFormData(elements)
 
-                 optionsTable =
+                optionsTable =
                     () =>
                     flatten(getTableData(tblOptionenEAnl))
 
-                 compareElements =
+                compareElements =
                     () =>
                     compareData(elements.map(last))(formData())
 
-                 compareOptions =
+                compareOptions =
                     () =>
                     compareData(options)(optionsTable())
 
                 return compareElements() && compareOptions()
             }
 
-         update =
+        update =
             () => {
-                 [elements, options]  = [elementsEAnl(), optionsEAnl()]
+                [elements, options]  = [elementsEAnl(), optionsEAnl()]
 
                 fillForm(elements)
                 fillOptionTable(options)
@@ -154,48 +169,48 @@ delete_ =
         search =
             type =>
             data => {
-            [elements, options] = [data.map(a => a[0]), data.map(a => a[1].join())]
+                [elements, options] = [data.map(a => a[0]), data.map(a => a[1].join())]
 
-            dataTable =
-                getTableData(tblEAnlSuchen)
+                dataTable =
+                    getTableData(tblEAnlSuchen)
 
-            dataSearchTable =
-                () =>
-                [ dataTable[0]
-                , dataTable[1]
-                , dataTable[2]
-                ]
+                dataSearchTable =
+                    () =>
+                    [ dataTable[0]
+                    , dataTable[1]
+                    , dataTable[2]
+                    ]
 
-            dataRecords =
-                records =>
-                records[0].map((a, i) => [i, last(head(a)), last(last(a)), records[1][i]])
+                dataRecords =
+                    records =>
+                    records[0].map((a, i) => [i, last(head(a)), last(last(a)), records[1][i]])
 
-            validTableData =
-                () =>
-                compareData(
-                   dataSearchTable(tblEAnlSuchen).map(a => a.join())
-                )(
-                   dataRecords([elements, options]).map(a => a.join())
-                )
+                validTableData =
+                    () =>
+                    compareData(
+                       dataSearchTable(tblEAnlSuchen).map(a => a.join())
+                    )(
+                       dataRecords([elements, options]).map(a => a.join())
+                    )
 
-            jumpToSecondRecord =
-                () =>
-                jumpToRecord("#tblEAnlSuchen")(2)
+                jumpToSecondRecord =
+                    () =>
+                    jumpToRecord("#tblEAnlSuchen")(2)
 
-            switch (type) {
-                case "isDialogShown":
-                    return isDialogShown("#eAnlagenSuchenContainer")
-                    break;
-                case "validTableData":
-                    return validTableData()
-                    break;
-                case "jumpToSecondRecord":
-                    return jumpToSecondRecord()
-                    break;
-                default:
-                    return "No Valid Search arg passed for -> type"
+                switch (type) {
+                    case "isDialogShown":
+                        return isDialogShown("#eAnlagenSuchenContainer")
+                        break;
+                    case "validTableData":
+                        return validTableData()
+                        break;
+                    case "jumpToSecondRecord":
+                        return jumpToSecondRecord()
+                        break;
+                    default:
+                        return "No Valid Search arg passed for -> type"
+                }
             }
-        }
 
         records =
             [create(), create(), create()]
@@ -276,4 +291,40 @@ delete_ =
         setTimeout(() => {
             console.log("Tests eAnl end.")
         }, 22 * tout)
+}
+
+// Test Anlagenverwaltung
+testAnl =
+    tout => {
+        elementsAnl =
+            () =>
+            [ [ "#anlagennummerAllgemeinAnl", randomString(50) ]
+            , [ "#bezeichnungAllgemeinAnl", randomString(50) ]
+            , [ "#aktivAllgemeinAnl", 1]
+            , [ "#typAllgemeinAnl", randomString(50) ]
+            , [ "#serienNrAllgemeinAnl", randomString(50) ]
+            , [ "#standortAllgemeinAnl", randomString(50) ]
+            , [ "#datumAnschaffungAllgemeinAnl", "01.01.1970" ]
+            , [ "#baujahrAnl", "2000" ]
+            , [ "#betriebsstundenAllgemeinAnl", randomInt(1000)(10000) ]
+            , [ "#notizAllgemeinAnl", randomString(500) ]
+            , [ "#produktAllgemeinAnl", randomString(50) ]
+            , [ "#produktionsmenge1AllgemeinAnl", randomString(50) ]
+            , [ "#einheitProduktionsmenge1AllgemeinAnl", randomString(50) ]
+            , [ "#produktnummer1AllgemeinAnl", randomString(50) ]
+            , [ "#mehrProdukteAllgemeinAnl", 0 ]
+            // , [ "#energieform1AllgemeinAnl",  randomString(50) ]
+            , [ "#anschlussleistung1Anl",  randomFloat(1)(100000)(2) ]
+            , [ "#betriebstemperatur1Anl",  randomFloat(-30)(1000)(2) ]
+            ]
+
+        specialElementsAnl =
+            () => {
+                [ "#energietraeger1AllgemeinAnl",  randomSelect("#energietraeger1AllgemeinAnl") ]
+                [ "#einheit1Anl",  randomSelect("#einheit1Anl") ]
+                [ "#mittlereAuslastungProzent1Anl",  randomFloat(1)(100)(2) ]
+                [ "#mittlereAuslastungKw1Anl",  randomFloat(1)($("#anschlussleistung1Anl").val())(2) ]
+                [ "#mst1Anl",  smallSearchSelect("#anlEnt1SuchenMst") ]
+                [ "#mst1Anl",  smallSearchSelect("#anlEnt1SuchenMst") ]
+            }
     }
