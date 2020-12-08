@@ -1360,7 +1360,6 @@ try {
                     a = JSON.parse(a);
                     $(".energietraegerLieg").empty();
                     $(".energietraegerLieg").append("<option></option>");
-                    $(".energietraegerLieg").append("<option>-Energietr\u00e4ger hinzuf\u00fcgen-</option>");
                     for (i = 0; i < a.length; i++) $(".energietraegerLieg").append("<option>" + a[i].nameEnt + "</option>");
                     energietrInDBoxBer()
                 }

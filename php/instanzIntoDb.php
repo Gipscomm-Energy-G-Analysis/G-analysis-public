@@ -669,7 +669,7 @@ $zugeordneterVerbraucherID5 = $_POST['zugeordneterVerbraucherID5'];
 $zugeordneterVerbraucherID6 = $_POST['zugeordneterVerbraucherID6'];
 
 $energietraeger1 = $_POST['energietraeger1'];
-$energieform1 = $_POST['energieform1'];
+$energieform1 = "";
 $einheit1 = $_POST['einheit1'];
 
 if($_POST['anschlussleistung1'] == ''){
@@ -715,7 +715,7 @@ $abwaermeNutzbarkeit1 = $_POST['abwaermeNutzbarkeit1'];
 $bewertungAbwaermeNutzbarkeit1 = $_POST['bewertungAbwaermeNutzbarkeit1'];
 
 $energietraeger2 = $_POST['energietraeger2'];
-$energieform2 = $_POST['energieform2'];
+$energieform2 = "";
 $einheit2 = $_POST['einheit2'];
 
 if($_POST['anschlussleistung2'] == ''){
@@ -762,7 +762,7 @@ $bewertungAbwaermeNutzbarkeit2 = $_POST['bewertungAbwaermeNutzbarkeit2'];
 
 
 $energietraeger3 = $_POST['energietraeger3'];
-$energieform3 = $_POST['energieform3'];
+$energieform3 = "";
 $einheit3 = $_POST['einheit3'];
 
 if($_POST['anschlussleistung3'] == ''){
@@ -808,7 +808,7 @@ $abwaermeNutzbarkeit3 = $_POST['abwaermeNutzbarkeit3'];
 $bewertungAbwaermeNutzbarkeit3 = $_POST['bewertungAbwaermeNutzbarkeit3'];
 
 $energietraeger4 = $_POST['energietraeger4'];
-$energieform4 = $_POST['energieform4'];
+$energieform4 = "";
 $einheit4 = $_POST['einheit4'];
 
 
