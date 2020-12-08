@@ -2343,6 +2343,8 @@ try {
 
             $(ladenSymbolID).css("display", "inline");
 
+            const idVerwaltung = this.id
+
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -2368,7 +2370,7 @@ try {
                     }
                     else {
                         let table;
-                        switch (this.id) {
+                        switch (idVerwaltung) {
                             case "dokuAuswahlAnl" :
                                 intoTable(tblDokumenteAnl)([result])  // CHANGE: fills table with Anlagen Dokumente 03.06.2020
                                 break;
