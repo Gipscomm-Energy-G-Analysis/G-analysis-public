@@ -3,6 +3,15 @@
 // disable alert
 alert = () => {}
 
+timeOutPromise =
+    fn =>
+    t => {
+        return new Promise(
+            (resolve, reject) =>
+            setTimeout(() => resolve(fn), t)
+        )
+    }
+
 randomInt =
     min =>
     max =>
@@ -42,6 +51,10 @@ getTableData =
     tbl =>
     tbl.rows().data()
 
+rowsTable =
+    tbl =>
+    tbl.rows().data().length
+
 simulateClick =
     instanz =>
     $(instanz).trigger("click")
@@ -69,15 +82,33 @@ jumpToRecord =
         return value
     }
 
+smallSearchSelect =
+    time =>
+    element => {
+        const selectRecord =
+            tblElement =>
+            tbl =>
+            () => {
+                const rows = rowsTable(tbl)
+                const nthRecord = randomInt(1)(rows)
+                return timeOutPromise(jumpToRecord(tblElement)(nthRecord))(time)
+            }
+
+        switch (element) {
+            case "#anlEnt1SuchenMst":
+                    return timeOutPromise(simulateClick(element))(time)
+                    .then(selectRecord("#tblMessstellenlisteMst")(tblMessstelleAuswahl))
+                break;
+            default:
+                return "smallSearchSelect : Invalid case !"
+        }
+    }
+
 delete_ =
     ins => {
         simulateClick(`#${ins}Loeschen`)
         simulateClick("#loeschenOk")
     }
-
-rowsTable =
-    tbl =>
-    tbl.rows().data().length
 
 // Test Erweiterungen Anlagen
 testEAnl =
@@ -296,35 +327,33 @@ testEAnl =
 // Test Anlagenverwaltung
 testAnl =
     tout => {
-        elementsAnl =
-            () =>
-            [ [ "#anlagennummerAllgemeinAnl", randomString(50) ]
-            , [ "#bezeichnungAllgemeinAnl", randomString(50) ]
-            , [ "#aktivAllgemeinAnl", 1]
-            , [ "#typAllgemeinAnl", randomString(50) ]
-            , [ "#serienNrAllgemeinAnl", randomString(50) ]
-            , [ "#standortAllgemeinAnl", randomString(50) ]
-            , [ "#datumAnschaffungAllgemeinAnl", "01.01.1970" ]
-            , [ "#baujahrAnl", "2000" ]
-            , [ "#betriebsstundenAllgemeinAnl", randomInt(1000)(10000) ]
-            , [ "#notizAllgemeinAnl", randomString(500) ]
-            , [ "#produktAllgemeinAnl", randomString(50) ]
-            , [ "#produktionsmenge1AllgemeinAnl", randomString(50) ]
-            , [ "#einheitProduktionsmenge1AllgemeinAnl", randomString(50) ]
-            , [ "#produktnummer1AllgemeinAnl", randomString(50) ]
-            , [ "#mehrProdukteAllgemeinAnl", 0 ]
-            // , [ "#energieform1AllgemeinAnl",  randomString(50) ]
-            , [ "#anschlussleistung1Anl",  randomFloat(1)(100000)(2) ]
-            , [ "#betriebstemperatur1Anl",  randomFloat(-30)(1000)(2) ]
-            ]
+            (async function() {
+                elementsAnl =
+                    [ [ "#anlagennummerAllgemeinAnl", randomString(50) ]
+                    , [ "#bezeichnungAllgemeinAnl", randomString(50) ]
+                    , [ "#aktivAllgemeinAnl", 1]
+                    , [ "#typAllgemeinAnl", randomString(50) ]
+                    , [ "#serienNrAllgemeinAnl", randomString(50) ]
+                    , [ "#standortAllgemeinAnl", randomString(50) ]
+                    , [ "#datumAnschaffungAllgemeinAnl", "01.01.1970" ]
+                    , [ "#baujahrAnl", "2000" ]
+                    , [ "#betriebsstundenAllgemeinAnl", randomInt(1000)(10000) ]
+                    , [ "#notizAllgemeinAnl", randomString(500) ]
+                    , [ "#produktAllgemeinAnl", randomString(50) ]
+                    , [ "#produktionsmenge1AllgemeinAnl", randomString(50) ]
+                    , [ "#einheitProduktionsmenge1AllgemeinAnl", randomString(50) ]
+                    , [ "#produktnummer1AllgemeinAnl", randomString(50) ]
+                    , [ "#mehrProdukteAllgemeinAnl", 0 ]
+                    , [ "#anschlussleistung1Anl",  randomFloat(1)(100000)(2) ]
+                    , [ "#betriebstemperatur1Anl",  randomFloat(-30)(1000)(2) ]
+                    , [ "#energietraeger1AllgemeinAnl",  randomSelect("#energietraeger1AllgemeinAnl") ]
+                    , [ "#einheit1Anl",  randomSelect("#einheit1Anl") ]
+                    , [ "#mittlereAuslastungProzent1Anl",  randomFloat(1)(100)(2) ]
+                    , [ "#mittlereAuslastungKw1Anl",  $("#mittlereAuslastungKw1Anl").val() ]
+                    , [ "#mst1Anl", await smallSearchSelect(tout)("#anlEnt1SuchenMst") ]
+                    , [ "#mst1IDAnl", $("#mst1IDAnl").val() ]
+                    ]
 
-        specialElementsAnl =
-            () => {
-                [ "#energietraeger1AllgemeinAnl",  randomSelect("#energietraeger1AllgemeinAnl") ]
-                [ "#einheit1Anl",  randomSelect("#einheit1Anl") ]
-                [ "#mittlereAuslastungProzent1Anl",  randomFloat(1)(100)(2) ]
-                [ "#mittlereAuslastungKw1Anl",  randomFloat(1)($("#anschlussleistung1Anl").val())(2) ]
-                [ "#mst1Anl",  smallSearchSelect("#anlEnt1SuchenMst") ]
-                [ "#mst1Anl",  smallSearchSelect("#anlEnt1SuchenMst") ]
-            }
+                    console.log(elementsAnl)
+                })()
     }
