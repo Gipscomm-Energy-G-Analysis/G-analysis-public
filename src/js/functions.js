@@ -5006,107 +5006,92 @@ try {
                             var c = $.parseJSON(a);
                             $("#anlCount").val(c.length);
                             0 < c.length ? ($("#bildAllgemeinAnl").prop("src", c[b].bildAnl), $(".anlageAnl").text(c[b].bezeichnungAnl), $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl), $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
-                            $("#anschlussleistung1Anl").val(formatNumber("form", c[b]["anschlussleistung1Anl"])),
-                            $("#mittlereAuslastungProzent1Anl").val(formatNumber("form", c[b]["mittlereAuslastungProzent1Anl"])),
-                            $("#mittlereAuslastungKw1Anl").val(formatNumber("form", c[b]["mittlereAuslastungKw1Anl"])),
 
-                            $("#anschlussleistung2Anl").val(formatNumber("form", c[b]["anschlussleistung2Anl"])),
-                            $("#mittlereAuslastungProzent2Anl").val(formatNumber("form", c[b]["mittlereAuslastungProzent2Anl"])),
-                            $("#mittlereAuslastungKw2Anl").val(formatNumber("form", c[b]["mittlereAuslastungKw2Anl"])),
+                            [1, 2, 3, 4]
+                            .forEach(
+                                a1 => {
+                                    [ "anschlussleistung"
+                                    , "mittlereAuslastungProzent"
+                                    , "mittlereAuslastungKw"
+                                    , "abwaerme"
+                                    , "betriebstemperatur"
+                                    ].forEach(a2 => $(`#${a2}${a1}Anl`).val(formatNumber("form", c[b][`${a2}${a1}Anl`])))
+                                }
+                            ),
 
-                            $("#anschlussleistung3Anl").val(formatNumber("form", c[b]["anschlussleistung3Anl"])),
-                            $("#mittlereAuslastungProzent3Anl").val(formatNumber("form", c[b]["mittlereAuslastungProzent3Anl"])),
-                            $("#mittlereAuslastungKw3Anl").val(formatNumber("form", c[b]["mittlereAuslastungKw3Anl"])),
+                            [ [ "#anlID", "anl_ID" ]
+                            , [ "#idAllgemeinAnl", "anl_ID" ]
+                            , [ "#bereichAllgemeinAnl", "nameBer" ]
+                            , [ "#berID", "ber_ID" ]
+                            , [ "#anlagennummerAllgemeinAnl", "nummerAnl" ]
+                            , [ "#bezeichnungAllgemeinAnl", "bezeichnungAnl" ]
+                            , [ "#typAllgemeinAnl", "typAnl" ]
+                            , [ "#serienNrAllgemeinAnl", "serienNrAnl" ]
+                            , [ "#standortAllgemeinAnl", "standortAnl" ]
+                            , [ "#baujahrAnl", "baujahrAnl" ]
+                            , [ "#datumAnschaffungAllgemeinAnl", "datumAnschaffungAnl" ]
+                            , [ "#betriebsstundenAllgemeinAnl", "jahresbetriebsstundenAnl" ]
+                            , [ "#notizAllgemeinAnl", "notizAnl" ]
+                            , [ "#produktAllgemeinAnl", "produktAnl" ]
+                            , [ "#produktionsmenge1AllgemeinAnl", "produktionsmengeAnl" ]
+                            , [ "#einheitProduktionsmenge1AllgemeinAnl", "produktionsmengeEinheitAnl" ]
+                            , [ "#produktnummer1AllgemeinAnl", "produktnummerAnl" ]
+                            , [ "#zugeordneterVerbraucher1AllgemeinAnl", "zugeordneterVerbraucher1" ]
+                            , [ "#zugeordneterVerbraucher2AllgemeinAnl", "zugeordneterVerbraucher2" ]
+                            , [ "#zugeordneterVerbraucher3AllgemeinAnl", "zugeordneterVerbraucher3" ]
+                            , [ "#zugeordneterVerbraucher4AllgemeinAnl", "zugeordneterVerbraucher4" ]
+                            , [ "#zugeordneterVerbraucher5AllgemeinAnl", "zugeordneterVerbraucher5" ]
+                            , [ "#zugeordneterVerbraucher6AllgemeinAnl", "zugeordneterVerbraucher6" ]
+                            , [ "#zugeordneterVerbraucherID1AllgemeinAnl", "zugeordneterVerbraucherID1" ]
+                            , [ "#zugeordneterVerbraucherID2AllgemeinAnl", "zugeordneterVerbraucherID2" ]
+                            , [ "#zugeordneterVerbraucherID3AllgemeinAnl", "zugeordneterVerbraucherID3" ]
+                            , [ "#zugeordneterVerbraucherID4AllgemeinAnl", "zugeordneterVerbraucherID4" ]
+                            , [ "#zugeordneterVerbraucherID5AllgemeinAnl", "zugeordneterVerbraucherID5" ]
+                            , [ "#zugeordneterVerbraucherID6AllgemeinAnl", "zugeordneterVerbraucherID6" ]
+                            , [ "#energietraeger1AllgemeinAnl", "energietraeger1Anl" ]
+                            , [ "#energieform1AllgemeinAnl", "energieform1Anl" ]
+                            , [ "#einheit1Anl", "einheitEnergie1Anl" ]
+                            , [ "#mst1Anl", "messstelle1Anl" ]
+                            , [ "#mst1IDAnl", "messstelle1IDAnl" ]
+                            , [ "#ber1Anl", "versBereich1Anl" ]
+                            , [ "#nutzbarkeitAbwaerme1Anl", "abwaermeNutzbarkeit1Anl" ]
+                            , [ "#bewertungNutzbarkeitAbwaerme1Anl", "bewertungNutzbarkeitAbwaerme1Anl" ]
+                            , [ "#energietraeger2AllgemeinAnl","energietraeger2Anl" ]
+                            , [ "#energieform2AllgemeinAnl", "energieform2Anl" ]
+                            , [ "#einheit2Anl", "einheitEnergie2Anl" ]
+                            , [ "#mst2Anl", "messstelle2Anl" ]
+                            , [ "#mst2IDAnl", "messstelle2IDAnl" ]
+                            , [ "#ber2Anl", "versBereich2Anl" ]
+                            , [ "#nutzbarkeitAbwaerme2Anl", "abwaermeNutzbarkeit2Anl" ]
+                            , [ "#bewertungNutzbarkeitAbwaerme2Anl", "bewertungNutzbarkeitAbwaerme2Anl" ]
+                            , [ "#energietraeger3AllgemeinAnl", "energietraeger3Anl" ]
+                            , [ "#energieform3AllgemeinAnl", "energieform3Anl" ]
+                            , [ "#einheit3Anl", "einheitEnergie3Anl" ]
+                            , [ "#mst3Anl", "messstelle3Anl" ]
+                            , [ "#mst3IDAnl", "messstelle3IDAnl" ]
+                            , [ "#ber3Anl", "versBereich3Anl" ]
+                            , [ "#nutzbarkeitAbwaerme3Anl", "abwaermeNutzbarkeit3Anl" ]
+                            , [ "#bewertungNutzbarkeitAbwaerme3Anl", "bewertungNutzbarkeitAbwaerme3Anl" ]
+                            , [ "#energietraeger4AllgemeinAnl", "energietraeger4Anl" ]
+                            , [ "#energieform4AllgemeinAnl", "energieform4Anl" ]
+                            , [ "#einheit4Anl", "einheitEnergie4Anl" ]
+                            , [ "#mst4Anl", "messstelle4Anl" ]
+                            , [ "#mst4IDAnl", "messstelle4IDAnl" ]
+                            , [ "#ber4Anl", "versBereich4Anl" ]
+                            , [ "#nutzbarkeitAbwaerme4Anl", "abwaermeNutzbarkeit4Anl" ]
+                            , [ "#bewertungNutzbarkeitAbwaerme4Anl", "bewertungNutzbarkeitAbwaerme4Anl" ]
+                            , [ "#custom1Anl", "custom1Anl" ]
+                            , [ "#custom2Anl", "custom2Anl" ]
+                            , [ "#custom3Anl", "custom3Anl" ]
+                            , [ "#custom4Anl", "custom4Anl" ]
+                            , [ "#custom5Anl", "custom5Anl" ]
+                            , [ "#custom6Anl", "custom6Anl" ]
+                            ].forEach(function(a) {
+                                $(a[0]).val(c[b][a[1]])
+                            })) :
+                            (clearFields("anlHinz"))
 
-                            $("#anschlussleistung4Anl").val(formatNumber("form", c[b]["anschlussleistung4Anl"])),
-                            $("#mittlereAuslastungProzent4Anl").val(formatNumber("form", c[b]["mittlereAuslastungProzent4Anl"])),
-                            $("#mittlereAuslastungKw4Anl").val(formatNumber("form", c[b]["mittlereAuslastungKw4Anl"])),
-                                [
-                                    ["#anlID", "anl_ID"],
-                                    ["#idAllgemeinAnl", "anl_ID"],
-                                    ["#bereichAllgemeinAnl", "nameBer"],
-                                    ["#berID", "ber_ID"],
-                                    ["#anlagennummerAllgemeinAnl", "nummerAnl"],
-                                    ["#bezeichnungAllgemeinAnl",
-                                        "bezeichnungAnl"
-                                    ],
-                                    ["#typAllgemeinAnl", "typAnl"],
-                                    ["#serienNrAllgemeinAnl", "serienNrAnl"],
-                                    ["#standortAllgemeinAnl", "standortAnl"],
-                                    ["#baujahrAnl", "baujahrAnl"],
-                                    ["#datumAnschaffungAllgemeinAnl", "datumAnschaffungAnl"],
-                                    ["#betriebsstundenAllgemeinAnl", "jahresbetriebsstundenAnl"],
-                                    ["#notizAllgemeinAnl", "notizAnl"],
-                                    ["#produktAllgemeinAnl", "produktAnl"],
-                                    ["#produktionsmenge1AllgemeinAnl", "produktionsmengeAnl"],
-                                    ["#einheitProduktionsmenge1AllgemeinAnl", "produktionsmengeEinheitAnl"],
-                                    ["#produktnummer1AllgemeinAnl",
-                                        "produktnummerAnl"
-                                    ],
-                                    ["#zugeordneterVerbraucher1AllgemeinAnl", "zugeordneterVerbraucher1"],
-                                    ["#zugeordneterVerbraucher2AllgemeinAnl", "zugeordneterVerbraucher2"],
-                                    ["#zugeordneterVerbraucher3AllgemeinAnl", "zugeordneterVerbraucher3"],
-                                    ["#zugeordneterVerbraucher4AllgemeinAnl", "zugeordneterVerbraucher4"],
-                                    ["#zugeordneterVerbraucher5AllgemeinAnl", "zugeordneterVerbraucher5"],
-                                    ["#zugeordneterVerbraucher6AllgemeinAnl", "zugeordneterVerbraucher6"],
-                                    ["#zugeordneterVerbraucherID1AllgemeinAnl", "zugeordneterVerbraucherID1"],
-                                    ["#zugeordneterVerbraucherID2AllgemeinAnl", "zugeordneterVerbraucherID2"],
-                                    ["#zugeordneterVerbraucherID3AllgemeinAnl", "zugeordneterVerbraucherID3"],
-                                    ["#zugeordneterVerbraucherID4AllgemeinAnl", "zugeordneterVerbraucherID4"],
-                                    ["#zugeordneterVerbraucherID5AllgemeinAnl", "zugeordneterVerbraucherID5"],
-                                    ["#zugeordneterVerbraucherID6AllgemeinAnl", "zugeordneterVerbraucherID6"],
-                                    ["#energietraeger1AllgemeinAnl", "energietraeger1Anl"],
-                                    ["#energieform1AllgemeinAnl", "energieform1Anl"],
-                                    ["#einheit1Anl", "einheitEnergie1Anl"],
-                                    ["#betriebstemperatur1Anl", "betriebstemperatur1Anl"],
-                                    ["#mst1Anl", "messstelle1Anl"],
-                                    ["#mst1IDAnl", "messstelle1IDAnl"],
-                                    ["#ber1Anl", "versBereich1Anl"],
-                                    ["#abwaerme1Anl", "abwaerme1Anl"],
-                                    ["#nutzbarkeitAbwaerme1Anl", "abwaermeNutzbarkeit1Anl"],
-                                    ["#bewertungNutzbarkeitAbwaerme1Anl", "bewertungNutzbarkeitAbwaerme1Anl"],
-                                    ["#energietraeger2AllgemeinAnl","energietraeger2Anl"],
-                                    ["#energieform2AllgemeinAnl", "energieform2Anl"],
-                                    ["#einheit2Anl", "einheitEnergie2Anl"],
-                                    ["#betriebstemperatur2Anl", "betriebstemperatur2Anl"],
-                                    ["#mst2Anl", "messstelle2Anl"],
-                                    ["#mst2IDAnl", "messstelle2IDAnl"],
-                                    ["#ber2Anl", "versBereich2Anl"],
-                                    ["#abwaerme2Anl", "abwaerme2Anl"],
-                                    ["#nutzbarkeitAbwaerme2Anl", "abwaermeNutzbarkeit2Anl"],
-                                    ["#bewertungNutzbarkeitAbwaerme2Anl", "bewertungNutzbarkeitAbwaerme2Anl"],
-                                    ["#energietraeger3AllgemeinAnl", "energietraeger3Anl"],
-                                    ["#energieform3AllgemeinAnl", "energieform3Anl"],
-                                    ["#einheit3Anl", "einheitEnergie3Anl"],
-                                    ["#betriebstemperatur3Anl", "betriebstemperatur3Anl"],
-                                    ["#mst3Anl", "messstelle3Anl"],
-                                    ["#mst3IDAnl", "messstelle3IDAnl"],
-                                    ["#ber3Anl", "versBereich3Anl"],
-                                    ["#abwaerme3Anl", "abwaerme3Anl"],
-                                    ["#nutzbarkeitAbwaerme3Anl", "abwaermeNutzbarkeit3Anl"],
-                                    ["#bewertungNutzbarkeitAbwaerme3Anl", "bewertungNutzbarkeitAbwaerme3Anl"],
-                                    ["#energietraeger4AllgemeinAnl", "energietraeger4Anl"],
-                                    ["#energieform4AllgemeinAnl", "energieform4Anl"],
-                                    ["#einheit4Anl", "einheitEnergie4Anl"],
-                                    ["#betriebstemperatur4Anl", "betriebstemperatur4Anl"],
-                                    ["#mst4Anl", "messstelle4Anl"],
-                                    ["#mst4IDAnl", "messstelle4IDAnl"],
-                                    ["#ber4Anl", "versBereich4Anl"],
-                                    ["#abwaerme4Anl", "abwaerme4Anl"],
-                                    ["#nutzbarkeitAbwaerme4Anl", "abwaermeNutzbarkeit4Anl"],
-                                    ["#bewertungNutzbarkeitAbwaerme4Anl", "bewertungNutzbarkeitAbwaerme4Anl"],
-                                    ["#custom1Anl", "custom1Anl"],
-                                    ["#custom2Anl", "custom2Anl"],
-                                    ["#custom3Anl", "custom3Anl"],
-                                    ["#custom4Anl", "custom4Anl"],
-                                    ["#custom5Anl", "custom5Anl"],
-                                    ["#custom6Anl", "custom6Anl"]
-                                ].forEach(function(a) {
-                                    $(a[0]).val(c[b][a[1]])
-                                })) :
-                                (clearFields("anlHinz"))
-
-                                dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
+                            dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
                     });
                     changeTracker.setRecordsNavID(anlNavID);
@@ -6113,11 +6098,11 @@ try {
                         anschlussleistung1: formatNumber("deform", $("#anschlussleistung1Anl").val()),
                         mittlereAuslastungProzent1: formatNumber("deform", $("#mittlereAuslastungProzent1Anl").val()),
                         mittlereAuslastungKw1: formatNumber("deform", $("#mittlereAuslastungKw1Anl").val()),
-                        betriebstemperatur1: $("#betriebstemperatur1Anl").val(),
+                        betriebstemperatur1: formatNumber("deform", $("#betriebstemperatur1Anl").val()),
                         messstelle1: $("#mst1Anl").val(),
                         messstelle1ID: $("#mst1IDAnl").val(),
                         versBereich1: $("#ber1Anl").val(),
-                        abwaerme1: $("#abwaerme1Anl").val(),
+                        abwaerme1: formatNumber("deform", $("#abwaerme1Anl").val()),
                         abwaermeNutzbarkeit1: $("#nutzbarkeitAbwaerme1Anl").val(),
                         bewertungAbwaermeNutzbarkeit1: $("#bewertungNutzbarkeitAbwaerme1Anl").val(),
                         energietraeger2: $("#energietraeger2AllgemeinAnl").val(),
@@ -6126,11 +6111,11 @@ try {
                         anschlussleistung2: formatNumber("deform", $("#anschlussleistung2Anl").val()),
                         mittlereAuslastungProzent2: formatNumber("deform", $("#mittlereAuslastungProzent2Anl").val()),
                         mittlereAuslastungKw2: formatNumber("deform", $("#mittlereAuslastungKw2Anl").val()),
-                        betriebstemperatur2: $("#betriebstemperatur2Anl").val(),
+                        betriebstemperatur2: formatNumber("deform", $("#betriebstemperatur2Anl").val()),
                         messstelle2: $("#mst2Anl").val(),
                         messstelle2ID: $("#mst2IDAnl").val(),
                         versBereich2: $("#ber2Anl").val(),
-                        abwaerme2: $("#abwaerme2Anl").val(),
+                        abwaerme2: formatNumber("deform", $("#abwaerme2Anl").val()),
                         abwaermeNutzbarkeit2: $("#nutzbarkeitAbwaerme2Anl").val(),
                         bewertungAbwaermeNutzbarkeit2: $("#bewertungNutzbarkeitAbwaerme2Anl").val(),
                         energietraeger3: $("#energietraeger3AllgemeinAnl").val(),
@@ -6139,11 +6124,11 @@ try {
                         anschlussleistung3: formatNumber("deform", $("#anschlussleistung3Anl").val()),
                         mittlereAuslastungProzent3: formatNumber("deform", $("#mittlereAuslastungProzent3Anl").val()),
                         mittlereAuslastungKw3: formatNumber("deform", $("#mittlereAuslastungKw3Anl").val()),
-                        betriebstemperatur3: $("#betriebstemperatur3Anl").val(),
+                        betriebstemperatur3: formatNumber("deform", $("#betriebstemperatur3Anl").val()),
                         messstelle3: $("#mst3Anl").val(),
                         messstelle3ID: $("#mst3IDAnl").val(),
                         versBereich3: $("#ber3Anl").val(),
-                        abwaerme3: $("#abwaerme3Anl").val(),
+                        abwaerme3: formatNumber("deform", $("#abwaerme3Anl").val()),
                         abwaermeNutzbarkeit3: $("#nutzbarkeitAbwaerme3Anl").val(),
                         bewertungAbwaermeNutzbarkeit3: $("#bewertungNutzbarkeitAbwaerme3Anl").val(),
                         energietraeger4: $("#energietraeger4AllgemeinAnl").val(),
@@ -6152,11 +6137,11 @@ try {
                         anschlussleistung4: formatNumber("deform", $("#anschlussleistung4Anl").val()),
                         mittlereAuslastungProzent4: formatNumber("deform", $("#mittlereAuslastungProzent4Anl").val()),
                         mittlereAuslastungKw4: formatNumber("deform", $("#mittlereAuslastungKw4Anl").val()),
-                        betriebstemperatur4: $("#betriebstemperatur4Anl").val(),
+                        betriebstemperatur4: formatNumber("deform", $("#betriebstemperatur4Anl").val()),
                         messstelle4: $("#mst4Anl").val(),
                         messstelle4ID: $("#mst4IDAnl").val(),
                         versBereich4: $("#ber4Anl").val(),
-                        abwaerme4: $("#abwaerme4Anl").val(),
+                        abwaerme4: formatNumber("deform", $("#abwaerme4Anl").val()),
                         abwaermeNutzbarkeit4: $("#nutzbarkeitAbwaerme4Anl").val(),
                         bewertungAbwaermeNutzbarkeit4: $("#bewertungNutzbarkeitAbwaerme4Anl").val(),
                         custom1: $("#custom1Anl").val(),
@@ -7521,11 +7506,11 @@ try {
                         anschlussleistung1: formatNumber("deform", $("#anschlussleistung1Anl").val()),
                         mittlereAuslastungProzent1: formatNumber("deform", $("#mittlereAuslastungProzent1Anl").val()),
                         mittlereAuslastungKw1: formatNumber("deform", $("#mittlereAuslastungKw1Anl").val()),
-                        betriebstemperatur1: $("#betriebstemperatur1Anl").val(),
+                        betriebstemperatur1: formatNumber("deform", $("#betriebstemperatur1Anl").val()),
                         messstelle1: $("#mst1Anl").val(),
                         messstelle1ID: $("#mst1IDAnl").val(),
                         versBereich1: $("#ber1Anl").val(),
-                        abwaerme1: $("#abwaerme1Anl").val(),
+                        abwaerme1: formatNumber("deform", $("#abwaerme1Anl").val()),
                         abwaermeNutzbarkeit1: $("#nutzbarkeitAbwaerme1Anl").val(),
                         bewertungAbwaermeNutzbarkeit1: $("#bewertungNutzbarkeitAbwaerme1Anl").val(),
                         energietraeger2: $("#energietraeger2AllgemeinAnl").val(),
@@ -7534,11 +7519,11 @@ try {
                         anschlussleistung2: formatNumber("deform", $("#anschlussleistung2Anl").val()),
                         mittlereAuslastungProzent2: formatNumber("deform", $("#mittlereAuslastungProzent2Anl").val()),
                         mittlereAuslastungKw2: formatNumber("deform", $("#mittlereAuslastungKw2Anl").val()),
-                        betriebstemperatur2: $("#betriebstemperatur2Anl").val(),
+                        betriebstemperatur2: formatNumber("deform", $("#betriebstemperatur2Anl").val()),
                         messstelle2: $("#mst2Anl").val(),
                         messstelle2ID: $("#mst2IDAnl").val(),
                         versBereich2: $("#ber2Anl").val(),
-                        abwaerme2: $("#abwaerme2Anl").val(),
+                        abwaerme2: formatNumber("deform", $("#abwaerme2Anl").val()),
                         abwaermeNutzbarkeit2: $("#nutzbarkeitAbwaerme2Anl").val(),
                         bewertungAbwaermeNutzbarkeit2: $("#bewertungNutzbarkeitAbwaerme2Anl").val(),
                         energietraeger3: $("#energietraeger3AllgemeinAnl").val(),
@@ -7547,11 +7532,11 @@ try {
                         anschlussleistung3: formatNumber("deform", $("#anschlussleistung3Anl").val()),
                         mittlereAuslastungProzent3: formatNumber("deform", $("#mittlereAuslastungProzent3Anl").val()),
                         mittlereAuslastungKw3: formatNumber("deform", $("#mittlereAuslastungKw3Anl").val()),
-                        betriebstemperatur3: $("#betriebstemperatur3Anl").val(),
+                        betriebstemperatur3: formatNumber("deform", $("#betriebstemperatur3Anl").val()),
                         messstelle3: $("#mst3Anl").val(),
                         messstelle3ID: $("#mst3IDAnl").val(),
                         versBereich3: $("#ber3Anl").val(),
-                        abwaerme3: $("#abwaerme3Anl").val(),
+                        abwaerme3: formatNumber("deform", $("#abwaerme3Anl").val()),
                         abwaermeNutzbarkeit3: $("#nutzbarkeitAbwaerme3Anl").val(),
                         bewertungAbwaermeNutzbarkeit3: $("#bewertungNutzbarkeitAbwaerme3Anl").val(),
                         energietraeger4: $("#energietraeger4AllgemeinAnl").val(),
@@ -7560,11 +7545,11 @@ try {
                         anschlussleistung4: formatNumber("deform", $("#anschlussleistung4Anl").val()),
                         mittlereAuslastungProzent4: formatNumber("deform", $("#mittlereAuslastungProzent4Anl").val()),
                         mittlereAuslastungKw4: formatNumber("deform", $("#mittlereAuslastungKw4Anl").val()),
-                        betriebstemperatur4: $("#betriebstemperatur4Anl").val(),
+                        betriebstemperatur4: formatNumber("deform", $("#betriebstemperatur4Anl").val()),
                         messstelle4: $("#mst4Anl").val(),
                         messstelle4ID: $("#mst4IDAnl").val(),
                         versBereich4: $("#ber4Anl").val(),
-                        abwaerme4: $("#abwaerme4Anl").val(),
+                        abwaerme4: formatNumber("deform", $("#abwaerme4Anl").val()),
                         abwaermeNutzbarkeit4: $("#nutzbarkeitAbwaerme4Anl").val(),
                         bewertungAbwaermeNutzbarkeit4: $("#bewertungNutzbarkeitAbwaerme4Anl").val(),
                         custom1: $("#custom1Anl").val(),
