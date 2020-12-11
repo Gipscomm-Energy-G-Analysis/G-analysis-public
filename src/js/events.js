@@ -1333,8 +1333,6 @@ $(document).ready(function() {
     });
     $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag,#tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
         tabControlNav(this.id);
-        $(".lblNeu").css("display", "none");
-        $(".lblAendern").css("display", "inline");
         addExtraWidthToDynamischeFaktor();
     });
     $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst,\n                #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstFirst, #stdFirst,\n                #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst,\n                #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {

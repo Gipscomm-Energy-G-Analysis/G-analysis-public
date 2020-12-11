@@ -1275,6 +1275,10 @@ try {
             })
         },
         anlagenGruppenEinlesen = function() {
+            const erwAnl =
+                  [1, 2, 3, 4, 5, 6]
+                  .map(a => $(`#custom${a}Anl`).val())
+
             $.ajax({
                 type: "POST",
                 async: !0,
@@ -1291,6 +1295,7 @@ try {
                         var b = a[i].optionen.split(",");
                         $("#custom" + (i + 1) + "Anl").empty();
                         for (j = 0; j < b.length; j++) $("#custom" + (i + 1) + "Anl").append("<option>" + b[j] + "</option>")
+                        $("#custom" + (i + 1) + "Anl").val(erwAnl[i])
                     }
                 }
             })
@@ -8165,7 +8170,7 @@ try {
                     else if ("tabStdDr" == a) readInstanzen("stdDrFirst", 0);
                     else if ("tabBer" == a) clearFields("berHinz"), readInstanzen("berFirst", 0), $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val());
                     else if ("tabBen" == a) b = ["", ""], readInstanzen("benFirst", 0);
-                    else if ("tabAnl" == a) anlagenGruppenEinlesen(),
+                    else if ("tabAnl" == a)
                         getAnlagenAuswahlTblHeader();
                     else if ("tabMsm" == a) getAnlagenAuswahlTblHeader();
                     else if ("tabKnz" == a) $("#asideRight2").css("display", "block"), knzEinheitenEinlesen();
@@ -8195,6 +8200,7 @@ try {
                 $("#tabsAnlagenverwaltung, #anlagenverwaltung, #stammdaten").css("display", "block");
                 $("#bereichAnl").text($("#nameAllgemeinBer").val());
                 clearFields("anl");
+                anlagenGruppenEinlesen()
                 $("#verwaltung").val("Anl");
                 var b = "";
                 switch (a) {
