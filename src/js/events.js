@@ -426,10 +426,7 @@ $(document).ready(function() {
     });
     $(".inputEnergietraegerLieg").change(function() {
         "-Energietr\u00e4ger hinzuf\u00fcgen-" ==
-        $(this).val() && (b ? (instanzErstellen("liegSpeichern"), b = !1) : instanzSpeichern("liegSpeichern"), lastNav.setRecordsNavID(liegNavID), lastNav.setFieldsNavInfo([{
-            type: "comboBox",
-            id: this.id
-        }]), lastNav.enableJump(!0), $("#entHinz").trigger("click"), mainMenuNav("entMenu"))
+        $(this).val() && (b ? (instanzErstellen("liegSpeichern"), b = !1) : instanzSpeichern("liegSpeichern"), $("#entHinz").trigger("click"), mainMenuNav("entMenu"))
     });
     $.fn.dataTableExt.sErrMode = "throw";
     $(window).resize(function() {
@@ -1019,21 +1016,7 @@ $(document).ready(function() {
         var a, b;
         "Berechnungslogik anlegen" == $(this).text() ? (a = mstNavID, b = ["messmittelBerechnungslogikMst", "berechnungslogikMst"], $("#menuBerechnungsformeln").trigger("click"), formelerweiterungNachDrop("berechneteMstName", $("#mstID").val(), $("#nameMst").val(),
             !0)) : (a = msmNavID, b = ["messmittelBerechnungslogikMst"], $("#msmMenu").trigger("click"));
-        lastNav.setBasicNavInfo({
-            db: $("#nameDB").val(),
-            organisation: $("#orgID").val(),
-            liegenschaft: $("#liegID").val(),
-            bereich: $("#berID").val()
-        }, "ber");
-        lastNav.setRecordsNavID(a);
-        lastNav.setFieldsNavInfo([{
-            type: "textbox",
-            id: b[0]
-        }, {
-            type: "textbox",
-            id: b[1]
-        }]);
-        lastNav.enableJump(!0)
+
     });
     $("#btnDiagrammErst").click(function() {
         chartInNewWindow()
@@ -1631,10 +1614,10 @@ $(document).ready(function() {
             })) : "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() &&
             0 == b ? ($("#archiviertAnl").val(!0), instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
-            })) : "msmSpeichern" == this.id ? "" != $("#messmittelNrAllgemeinMsm").val() && 1 == b ? (lastNav.setReturnValues([$("#bezeichnungAllgemeinMsm").val()]), instanzErstellen(this.id), b = !1, lastNav.jump()) : "" != $("#messmittelNrAllgemeinMsm").val() && 0 == b ? (lastNav.setReturnValues([$("#bezeichnungAllgemeinMsm").val()]), instanzSpeichern(this.id), lastNav.jump()) : ($("#meldung").css("display",
+            })) : "msmSpeichern" == this.id ? "" != $("#messmittelNrAllgemeinMsm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#messmittelNrAllgemeinMsm").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display",
                 "block"), $("#meldung").dialog({
                 title: "Meldung!"
-            })) : "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (lastNav.setReturnValues([$("#nameEnt").val()]), instanzErstellen(this.id), b = !1, energietrInDBoxLieg(), lastNav.jump()) : "" != $("#nameEnt").val() && 0 == b ? (lastNav.setReturnValues([$("#nameEnt").val()]), instanzSpeichern(this.id), energietrInDBoxLieg(), lastNav.jump()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            })) : "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (instanzErstellen(this.id), b = !1, energietrInDBoxLieg()) : "" != $("#nameEnt").val() && 0 == b ? (instanzSpeichern(this.id), energietrInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
             })) : "enfSpeichern" == this.id ? "" != $("#nameEnf").val() && 1 == b ? (instanzErstellen(this.id),
                 b = !1, energiefrmInDBoxLieg()) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id), energiefrmInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
