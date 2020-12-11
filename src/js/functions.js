@@ -4765,7 +4765,6 @@ try {
                                 $("#entLiegErweitert").css("display", "block") : $("#entLiegErweitert").css("display", "none"), energietrInDBoxLieg(), $(".liegPfad").val(c[b].nameLieg)) : clearFields("liegHinz")
                         }
                     });
-                    lastNav.setRecordsNavID(liegNavID);
                     break;
                 case "extDl":
                     $.ajax({
@@ -8167,7 +8166,6 @@ try {
                         "inline-block"), $("#asideLeft").css("display", "block"), $("#berechnungsformelnLeft").css("display", "block"), $("#interneMesswerteLeft").css("display", "none"), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), $("#berechneteMstName").val(""), messstellenInAuswertungsEditorTabelleEinlesen(), anlagenInAuswertungsEditorTabelleEinlesen(), dynBdeDatenInAuswertungsEditorTabelleEinlesen(), produkteInFormeleditorEinlesen();
                     1 > tabsData[e].lengthPath ? alert("The tabsData[tb].lengthPath is to small! It has to be at least 1. :tabControlNav(tab)") :
                         4 < tabsData[e].lengthPath && alert("The tabsData[tb].lengthPath is to big! It has to be smaller than 4. :tabControlNav(tab)");
-                    lastNav.setBasicNavInfo(b, tabsData[e].aktivInstance);
                     changeTracker.setInstance(tabsData[e].aktivInstance)
                 } else $("#" + tabsData[e].tab).css("background-color", "#B9C0C7"), $("#" + tabsData[e].infos).css("display", "none"), "block" != $("#infosKennzahlen").css("display") && $("#asideRight2").css("display", "none"), "block" != $("#infosExtRechnungen").css("display") && $("#asideRight").css("display",
                     "none"), "block" != $("#infosBerechnungsformeln").css("display") && "block" != $("#infosVorlagenformeln").css("display") && "block" != $("#infosIntEnergiedaten").css("display") && "block" != $("#infosIntBetriebsdaten").css("display") && $("#asideLeft").css("display", "none")
@@ -9507,7 +9505,6 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 }
             }
         }),
-        lastNav = new LastNavInfo,
         tabsData = [{
                 lengthPath: 1,
                 tab: "tabEPrd",
