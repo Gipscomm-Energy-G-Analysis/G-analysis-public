@@ -823,15 +823,50 @@ $(document).ready(function() {
     $("#mstSuchen").click(function() {
         messstellenlisteErstellen()
     });
-    $(".auslastung").blur(function() {
-        if ("mittlereAuslastungKw1Anl" == this.id) {
-            var a = 100 * $("#mittlereAuslastungKw1Anl").val() / $("#anschlussleistung1Anl").val(),
-                a = a.toFixed(2);
-            $("#mittlereAuslastungProzent1Anl").val(a)
-        } else "mittlereAuslastungProzent1Anl" == this.id ? (a = $("#mittlereAuslastungProzent1Anl").val() / 100 * $("#anschlussleistung1Anl").val(), a = a.toFixed(3), $("#mittlereAuslastungKw1Anl").val(a)) : "mittlereAuslastungKw2Anl" == this.id ? (a = 100 * $("#mittlereAuslastungKw2Anl").val() /
-            $("#anschlussleistung2Anl").val(), a = a.toFixed(2), $("#mittlereAuslastungProzent2Anl").val(a)) : "mittlereAuslastungProzent2Anl" == this.id ? (a = $("#mittlereAuslastungProzent2Anl").val() / 100 * $("#anschlussleistung2Anl").val(), a = a.toFixed(3), $("#mittlereAuslastungKw2Anl").val(a)) : "mittlereAuslastungKw3Anl" == this.id ? (a = 100 * $("#mittlereAuslastungKw3Anl").val() / $("#anschlussleistung3Anl").val(), a = a.toFixed(2), $("#mittlereAuslastungProzent3Anl").val(a)) : "mittlereAuslastungProzent3Anl" == this.id ? (a = $("#mittlereAuslastungProzent3Anl").val() /
-            100 * $("#anschlussleistung3Anl").val(), a = a.toFixed(3), $("#mittlereAuslastungKw3Anl").val(a)) : "mittlereAuslastungKw4Anl" == this.id ? (a = 100 * $("#mittlereAuslastungKw4Anl").val() / $("#anschlussleistung4Anl").val(), a = a.toFixed(2), $("#mittlereAuslastungProzent4Anl").val(a)) : "mittlereAuslastungProzent4Anl" == this.id && (a = $("#mittlereAuslastungProzent4Anl").val() / 100 * $("#anschlussleistung4Anl").val(), a = a.toFixed(3), $("#mittlereAuslastungKw4Anl").val(a))
+    //Mittlere Auslastung in MsmVerwaltung je nach Eingabe in % oder kWh umrechnen
+    $(".auslastung").blur(function () {
+        if (this.id == "mittlereAuslastungKw1Anl") {
+            var mAkW = formatNumber("deform", $("#mittlereAuslastungKw1Anl").val()) * 100 / formatNumber("deform", $("#anschlussleistung1Anl").val());
+            mAkW = mAkW.toFixed(2);
+            $("#mittlereAuslastungProzent1Anl").val(formatNumber("form", mAkW));
+        }
+        else if (this.id == "mittlereAuslastungProzent1Anl") {
+            var mAPro = formatNumber("deform", $("#mittlereAuslastungProzent1Anl").val()) / 100 * formatNumber("deform", $("#anschlussleistung1Anl").val());
+            mAPro = mAPro.toFixed(3);
+            $("#mittlereAuslastungKw1Anl").val(formatNumber("form", mAPro));
+        }
+        else if (this.id == "mittlereAuslastungKw2Anl") {
+            var mAkW = formatNumber("deform", $("#mittlereAuslastungKw2Anl").val()) * 100 / formatNumber("deform", $("#anschlussleistung2Anl").val());
+            mAkW = mAkW.toFixed(2);
+            $("#mittlereAuslastungProzent2Anl").val(formatNumber("form", mAkW));
+        }
+        else if (this.id == "mittlereAuslastungProzent2Anl") {
+            var mAPro = formatNumber("deform", $("#mittlereAuslastungProzent2Anl").val()) / 100 * formatNumber("deform", $("#anschlussleistung2Anl").val());
+            mAPro = mAPro.toFixed(3);
+            $("#mittlereAuslastungKw2Anl").val(formatNumber("form", mAPro));
+        }
+        else if (this.id == "mittlereAuslastungKw3Anl") {
+            var mAkW = formatNumber("deform", $("#mittlereAuslastungKw3Anl").val()) * 100 / formatNumber("deform", $("#anschlussleistung3Anl").val());
+            mAkW = mAkW.toFixed(2);
+            $("#mittlereAuslastungProzent3Anl").val(formatNumber("form", mAkW));
+        }
+        else if (this.id == "mittlereAuslastungProzent3Anl") {
+            var mAPro = formatNumber("deform", $("#mittlereAuslastungProzent3Anl").val()) / 100 * formatNumber("deform", $("#anschlussleistung3Anl").val());
+            mAPro = mAPro.toFixed(3);
+            $("#mittlereAuslastungKw3Anl").val(formatNumber("form", mAPro));
+        }
+        else if (this.id == "mittlereAuslastungKw4Anl") {
+            var mAkW = formatNumber("deform", $("#mittlereAuslastungKw4Anl").val()) * 100 / formatNumber("deform", $("#anschlussleistung4Anl").val());
+            mAkW = mAkW.toFixed(2);
+            $("#mittlereAuslastungProzent4Anl").val(formatNumber("form", mAkW));
+        }
+        else if (this.id == "mittlereAuslastungProzent4Anl") {
+            var mAPro = formatNumber("deform", $("#mittlereAuslastungProzent4Anl").val()) / 100 * formatNumber("deform", $("#anschlussleistung4Anl").val());
+            mAPro = mAPro.toFixed(3);
+            $("#mittlereAuslastungKw4Anl").val(formatNumber("form", mAPro));
+        }
     });
+
     $("#feldHinzufuegenStd").click(function() {
         createCustomField("std")
     });
