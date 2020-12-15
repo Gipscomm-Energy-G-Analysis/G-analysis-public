@@ -515,7 +515,8 @@ nav {
 #btnGespDiagKnz,
 #histDataJa,
 #histDataNein,
-#saveMstFormulaAbbrechen{
+#saveMstFormulaAbbrechen,
+#anlPrdLink{
   border: 0px solid black;
   border-radius: 5px;
   background-color: transparent;
@@ -671,7 +672,8 @@ nav {
 #btnGespDiagKnz:hover,
 #histDataJa:hover,
 #histDataNein:hover,
-#saveMstFormulaAbbrechen:hover {
+#saveMstFormulaAbbrechen:hover,
+#anlPrdLink:hover {
   background-color: white;
   cursor: pointer;
 }
