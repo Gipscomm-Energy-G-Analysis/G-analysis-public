@@ -5264,47 +5264,51 @@ try {
                                     var b = $.parseJSON(a);
                                     a = b.length;
                                     if (0 < a) {
-                                        [
-                                            ["#lblEntEinh1FaktorX1", "lblEntEinh1FaktorX1"],
-                                            ["#lblEntEinh2FaktorX1", "lblEntEinh2FaktorX1"],
-                                            ["#lblEntEinh3FaktorX1", "lblEntEinh3FaktorX1"],
-                                            ["#lblEntEinh1FaktorX2", "lblEntEinh1FaktorX2"],
-                                            ["#lblEntEinh2FaktorX2", "lblEntEinh2FaktorX2"],
-                                            ["#lblEntEinh3FaktorX2", "lblEntEinh3FaktorX2"],
-                                            ["#lblEntEinh1FaktorX3", "lblEntEinh1FaktorX3"],
-                                            ["#lblEntEinh2FaktorX3", "lblEntEinh2FaktorX3"],
-                                            ["#lblEntEinh3FaktorX3", "lblEntEinh3FaktorX3"]
-                                        ].forEach(function(a) {
-                                            $(a[0]).text(b[0][a[1]])
-                                        });
-                                        [
-                                            ["#versID", "vers_ID"],
-                                            ["#versorgerEvuEnt", "versorgerEvu"],
-                                            ["#versorgerUenbEnt", "versorgerUenb"],
-                                            ["#versorgerMsbEnt", "versorgerMsb"],
-                                            ["#einheit1Ent", "einheit1Ent"],
-                                            ["#einheit2Ent", "einheit2Ent"],
-                                            ["#einheit3Ent", "einheit3Ent"],
-                                            ["#entEinh1FaktorKwh", "entEinh1FaktorKwh"],
-                                            ["#entEinh2FaktorKwh", "entEinh2FaktorKwh"],
-                                            ["#entEinh3FaktorKwh", "entEinh3FaktorKwh"],
-                                            ["#entEinh1FaktorCO2", "entEinh1FaktorCO2"],
-                                            ["#entEinh2FaktorCO2", "entEinh2FaktorCO2"],
-                                            ["#entEinh3FaktorCO2", "entEinh3FaktorCO2"],
-                                            ["#entEinh1FaktorX1", "entEinh1FaktorX1"],
-                                            ["#entEinh2FaktorX1", "entEinh2FaktorX1"],
-                                            ["#entEinh3FaktorX1", "entEinh3FaktorX1"],
-                                            ["#entEinh1FaktorX2", "entEinh1FaktorX2"],
-                                            ["#entEinh2FaktorX2", "entEinh2FaktorX2"],
-                                            ["#entEinh3FaktorX2", "entEinh3FaktorX2"],
-                                            ["#entEinh1FaktorX3", "entEinh1FaktorX3"],
-                                            ["#entEinh2FaktorX3", "entEinh2FaktorX3"],
-                                            ["#entEinh3FaktorX3", "entEinh3FaktorX3"],
-                                            ["#gueltigVomEnt", "gueltigVomEnt"],
-                                            ["#gueltigBisEnt", "gueltigBisEnt"]
-                                        ].forEach(function(a) {
-                                            $(a[0]).val(b[0][a[1]])
-                                        });
+                                        [ ["#lblEntEinh1FaktorX1", "lblEntEinh1FaktorX1"]
+                                        , ["#lblEntEinh2FaktorX1", "lblEntEinh2FaktorX1"]
+                                        , ["#lblEntEinh3FaktorX1", "lblEntEinh3FaktorX1"]
+                                        , ["#lblEntEinh1FaktorX2", "lblEntEinh1FaktorX2"]
+                                        , ["#lblEntEinh2FaktorX2", "lblEntEinh2FaktorX2"]
+                                        , ["#lblEntEinh3FaktorX2", "lblEntEinh3FaktorX2"]
+                                        , ["#lblEntEinh1FaktorX3", "lblEntEinh1FaktorX3"]
+                                        , ["#lblEntEinh2FaktorX3", "lblEntEinh2FaktorX3"]
+                                        , ["#lblEntEinh3FaktorX3", "lblEntEinh3FaktorX3"]
+                                        ].forEach(
+                                            a => $(a[0]).text(b[0][a[1]])
+                                        ),
+
+                                        [ ["#versID", "vers_ID"]
+                                        , ["#versorgerEvuEnt", "versorgerEvu"]
+                                        , ["#versorgerUenbEnt", "versorgerUenb"]
+                                        , ["#versorgerMsbEnt", "versorgerMsb"]
+                                        , ["#einheit1Ent", "einheit1Ent"]
+                                        , ["#einheit2Ent", "einheit2Ent"]
+                                        , ["#einheit3Ent", "einheit3Ent"]
+                                        , ["#gueltigVomEnt", "gueltigVomEnt"]
+                                        , ["#gueltigBisEnt", "gueltigBisEnt"]
+                                        ].forEach(
+                                            a => $(a[0]).val(b[0][a[1]])
+                                        ),
+
+                                        [ ["#entEinh1FaktorKwh", "entEinh1FaktorKwh"]
+                                        , ["#entEinh2FaktorKwh", "entEinh2FaktorKwh"]
+                                        , ["#entEinh3FaktorKwh", "entEinh3FaktorKwh"]
+                                        , ["#entEinh1FaktorCO2", "entEinh1FaktorCO2"]
+                                        , ["#entEinh2FaktorCO2", "entEinh2FaktorCO2"]
+                                        , ["#entEinh3FaktorCO2", "entEinh3FaktorCO2"]
+                                        , ["#entEinh1FaktorX1", "entEinh1FaktorX1"]
+                                        , ["#entEinh2FaktorX1", "entEinh2FaktorX1"]
+                                        , ["#entEinh3FaktorX1", "entEinh3FaktorX1"]
+                                        , ["#entEinh1FaktorX2", "entEinh1FaktorX2"]
+                                        , ["#entEinh2FaktorX2", "entEinh2FaktorX2"]
+                                        , ["#entEinh3FaktorX2", "entEinh3FaktorX2"]
+                                        , ["#entEinh1FaktorX3", "entEinh1FaktorX3"]
+                                        , ["#entEinh2FaktorX3", "entEinh2FaktorX3"]
+                                        , ["#entEinh3FaktorX3", "entEinh3FaktorX3"]
+                                        ].forEach(
+                                          a => $(a[0]).val(formatNumber("form", b[0][a[1]]))
+                                        )
+
                                         var c = tblVersorgerHistorie;
                                         c.clear();
                                         for (var e = 0; e < a - 1; e++) c.row.add([c.rows().count(), b[e].versorgerEvu, b[e].versorgerUenb, b[e].versorgerMsb, b[e].gueltigVomEnt + " - " + b[e].gueltigBisEnt]);
@@ -6427,30 +6431,30 @@ try {
                     einheit1: $("#einheit1Ent").val(),
                     einheit2: $("#einheit2Ent").val(),
                     einheit3: $("#einheit3Ent").val(),
-                    einh1FaktorKwh: $("#entEinh1FaktorKwh").val(),
-                    einh2FaktorKwh: $("#entEinh2FaktorKwh").val(),
-                    einh3FaktorKwh: $("#entEinh3FaktorKwh").val(),
-                    einh1FaktorCO2: $("#entEinh1FaktorCO2").val(),
-                    einh2FaktorCO2: $("#entEinh2FaktorCO2").val(),
-                    einh3FaktorCO2: $("#entEinh3FaktorCO2").val(),
+                    einh1FaktorKwh: formatNumber("deform", $("#entEinh1FaktorKwh").val()),
+                    einh2FaktorKwh: formatNumber("deform", $("#entEinh2FaktorKwh").val()),
+                    einh3FaktorKwh: formatNumber("deform", $("#entEinh3FaktorKwh").val()),
+                    einh1FaktorCO2: formatNumber("deform", $("#entEinh1FaktorCO2").val()),
+                    einh2FaktorCO2: formatNumber("deform", $("#entEinh2FaktorCO2").val()),
+                    einh3FaktorCO2: formatNumber("deform", $("#entEinh3FaktorCO2").val()),
                     lblEinh1FaktorX1: $("#lblEntEinh1FaktorX1").text(),
                     lblEinh2FaktorX1: $("#lblEntEinh2FaktorX1").text(),
                     lblEinh3FaktorX1: $("#lblEntEinh3FaktorX1").text(),
-                    einh1FaktorX1: $("#entEinh1FaktorX1").val(),
-                    einh2FaktorX1: $("#entEinh2FaktorX1").val(),
-                    einh3FaktorX1: $("#entEinh3FaktorX1").val(),
+                    einh1FaktorX1: formatNumber("deform", $("#entEinh1FaktorX1").val()),
+                    einh2FaktorX1: formatNumber("deform", $("#entEinh2FaktorX1").val()),
+                    einh3FaktorX1: formatNumber("deform", $("#entEinh3FaktorX1").val()),
                     lblEinh1FaktorX2: $("#lblEntEinh1FaktorX2").text(),
                     lblEinh2FaktorX2: $("#lblEntEinh2FaktorX2").text(),
                     lblEinh3FaktorX2: $("#lblEntEinh3FaktorX2").text(),
-                    einh1FaktorX2: $("#entEinh1FaktorX2").val(),
-                    einh2FaktorX2: $("#entEinh2FaktorX2").val(),
-                    einh3FaktorX2: $("#entEinh3FaktorX2").val(),
+                    einh1FaktorX2: formatNumber("deform", $("#entEinh1FaktorX2").val()),
+                    einh2FaktorX2: formatNumber("deform", $("#entEinh2FaktorX2").val()),
+                    einh3FaktorX2: formatNumber("deform", $("#entEinh3FaktorX2").val()),
                     lblEinh1FaktorX3: $("#lblEntEinh1FaktorX3").text(),
                     lblEinh2FaktorX3: $("#lblEntEinh2FaktorX3").text(),
                     lblEinh3FaktorX3: $("#lblEntEinh3FaktorX3").text(),
-                    einh1FaktorX3: $("#entEinh1FaktorX3").val(),
-                    einh2FaktorX3: $("#entEinh2FaktorX3").val(),
-                    einh3FaktorX3: $("#entEinh3FaktorX3").val(),
+                    einh1FaktorX3: formatNumber("deform", $("#entEinh1FaktorX3").val()),
+                    einh2FaktorX3: formatNumber("deform", $("#entEinh2FaktorX3").val()),
+                    einh3FaktorX3: formatNumber("deform", $("#entEinh3FaktorX3").val()),
                     gueltigVom: $("#gueltigVomEnt").val(),
                     gueltigBis: $("#gueltigBisEnt").val()
                 },
@@ -7672,30 +7676,30 @@ try {
                     einheit1: $("#einheit1Ent").val(),
                     einheit2: $("#einheit2Ent").val(),
                     einheit3: $("#einheit3Ent").val(),
-                    einh1FaktorKwh: $("#entEinh1FaktorKwh").val(),
-                    einh2FaktorKwh: $("#entEinh2FaktorKwh").val(),
-                    einh3FaktorKwh: $("#entEinh3FaktorKwh").val(),
-                    einh1FaktorCO2: $("#entEinh1FaktorCO2").val(),
-                    einh2FaktorCO2: $("#entEinh2FaktorCO2").val(),
-                    einh3FaktorCO2: $("#entEinh3FaktorCO2").val(),
+                    einh1FaktorKwh: formatNumber("deform", $("#entEinh1FaktorKwh").val()),
+                    einh2FaktorKwh: formatNumber("deform", $("#entEinh2FaktorKwh").val()),
+                    einh3FaktorKwh: formatNumber("deform", $("#entEinh3FaktorKwh").val()),
+                    einh1FaktorCO2: formatNumber("deform", $("#entEinh1FaktorCO2").val()),
+                    einh2FaktorCO2: formatNumber("deform", $("#entEinh2FaktorCO2").val()),
+                    einh3FaktorCO2: formatNumber("deform", $("#entEinh3FaktorCO2").val()),
                     lblEinh1FaktorX1: $("#lblEntEinh1FaktorX1").text(),
                     lblEinh2FaktorX1: $("#lblEntEinh2FaktorX1").text(),
                     lblEinh3FaktorX1: $("#lblEntEinh3FaktorX1").text(),
-                    einh1FaktorX1: $("#entEinh1FaktorX1").val(),
-                    einh2FaktorX1: $("#entEinh2FaktorX1").val(),
-                    einh3FaktorX1: $("#entEinh3FaktorX1").val(),
+                    einh1FaktorX1: formatNumber("deform", $("#entEinh1FaktorX1").val()),
+                    einh2FaktorX1: formatNumber("deform", $("#entEinh2FaktorX1").val()),
+                    einh3FaktorX1: formatNumber("deform", $("#entEinh3FaktorX1").val()),
                     lblEinh1FaktorX2: $("#lblEntEinh1FaktorX2").text(),
                     lblEinh2FaktorX2: $("#lblEntEinh2FaktorX2").text(),
                     lblEinh3FaktorX2: $("#lblEntEinh3FaktorX2").text(),
-                    einh1FaktorX2: $("#entEinh1FaktorX2").val(),
-                    einh2FaktorX2: $("#entEinh2FaktorX2").val(),
-                    einh3FaktorX2: $("#entEinh3FaktorX2").val(),
+                    einh1FaktorX2: formatNumber("deform", $("#entEinh1FaktorX2").val()),
+                    einh2FaktorX2: formatNumber("deform", $("#entEinh2FaktorX2").val()),
+                    einh3FaktorX2: formatNumber("deform", $("#entEinh3FaktorX2").val()),
                     lblEinh1FaktorX3: $("#lblEntEinh1FaktorX3").text(),
                     lblEinh2FaktorX3: $("#lblEntEinh2FaktorX3").text(),
                     lblEinh3FaktorX3: $("#lblEntEinh3FaktorX3").text(),
-                    einh1FaktorX3: $("#entEinh1FaktorX3").val(),
-                    einh2FaktorX3: $("#entEinh2FaktorX3").val(),
-                    einh3FaktorX3: $("#entEinh3FaktorX3").val(),
+                    einh1FaktorX3: formatNumber("deform", $("#entEinh1FaktorX3").val()),
+                    einh2FaktorX3: formatNumber("deform", $("#entEinh2FaktorX3").val()),
+                    einh3FaktorX3: formatNumber("deform", $("#entEinh3FaktorX3").val()),
                     gueltigVom: $("#gueltigVomEnt").val(),
                     gueltigBis: $("#gueltigBisEnt").val()
                 },
