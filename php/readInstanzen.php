@@ -214,27 +214,20 @@ $query = "SELECT * FROM messmittel ";
 
 elseif($id == "ent"){
 
+    $liegID = $_POST['liegID'] ;
 
-  $liegID = $_POST['liegID'];
-
-
-
-  $query = "SELECT * FROM energietraeger ";
-
-  $query .= "WHERE lieg_ID = '$liegID'";
+    $query = "SELECT * FROM energietraeger " ;
+    $query .= "WHERE lieg_ID = '$liegID'" ;
 
 }
 
 
 elseif($id == "vers"){
 
-  $entID = $_POST['entID'];
+    $entID = $_POST['entID'] ;
 
-
-
-  $query = "SELECT * FROM versorger ";
-
-  $query .= "WHERE ent_ID = '$entID' ";
+    $query = "SELECT * FROM versorger " ;
+    $query .= "WHERE ent_ID = '$entID' " ;
 
 }
 
@@ -323,4 +316,3 @@ $records = queryDB($conn, $query, "read");
 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 include('bottom-cache.php');
 ?>
-

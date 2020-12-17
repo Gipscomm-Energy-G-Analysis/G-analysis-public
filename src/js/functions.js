@@ -5274,7 +5274,7 @@ try {
                                         , ["#lblEntEinh2FaktorX3", "lblEntEinh2FaktorX3"]
                                         , ["#lblEntEinh3FaktorX3", "lblEntEinh3FaktorX3"]
                                         ].forEach(
-                                            a => $(a[0]).text(b[0][a[1]])
+                                            a => $(a[0]).text(last(b)[a[1]])
                                         ),
 
                                         [ ["#versID", "vers_ID"]
@@ -5287,7 +5287,7 @@ try {
                                         , ["#gueltigVomEnt", "gueltigVomEnt"]
                                         , ["#gueltigBisEnt", "gueltigBisEnt"]
                                         ].forEach(
-                                            a => $(a[0]).val(b[0][a[1]])
+                                            a => $(a[0]).val(last(b)[a[1]])
                                         ),
 
                                         [ ["#entEinh1FaktorKwh", "entEinh1FaktorKwh"]
@@ -5306,7 +5306,7 @@ try {
                                         , ["#entEinh2FaktorX3", "entEinh2FaktorX3"]
                                         , ["#entEinh3FaktorX3", "entEinh3FaktorX3"]
                                         ].forEach(
-                                          a => $(a[0]).val(formatNumber("form", b[0][a[1]]))
+                                          a => $(a[0]).val(formatNumber("form", last(b)[a[1]]))
                                         )
 
                                         var c = tblVersorgerHistorie;

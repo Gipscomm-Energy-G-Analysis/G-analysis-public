@@ -1375,197 +1375,195 @@ else{
 }
 elseif($id == "ent") {
 
-$modus = $_POST['modus'];
-$entID = $_POST['entID'];
-$name = $_POST['name'];
-$kuerzel = $_POST['kuerzel'];
-$allgemEnt = $_POST['allgemEnt'];
-$notiz = $_POST['notiz'] ;
-$versorgerEvu = $_POST['versorgerEvu'];
-$versorgerUenb = $_POST['versorgerUenb'];
-$versorgerMsb = $_POST['versorgerMsb'];
-$einheit1 = $_POST['einheit1'];
-$einheit2 = $_POST['einheit2'];
-$einheit3 = $_POST['einheit3'];
+    $modus = $_POST['modus'];
+    $entID = $_POST['entID'];
+    $name = $_POST['name'];
+    $kuerzel = $_POST['kuerzel'];
+    $allgemEnt = $_POST['allgemEnt'];
+    $notiz = $_POST['notiz'] ;
+    $versorgerEvu = $_POST['versorgerEvu'];
+    $versorgerUenb = $_POST['versorgerUenb'];
+    $versorgerMsb = $_POST['versorgerMsb'];
+    $einheit1 = $_POST['einheit1'];
+    $einheit2 = $_POST['einheit2'];
+    $einheit3 = $_POST['einheit3'];
 
-if($_POST['einh1FaktorKwh'] == ""){
-	$einh1FaktorKwh = 1;
-}
-else{
-	$einh1FaktorKwh = $_POST['einh1FaktorKwh'];
-}
-if($_POST['einh2FaktorKwh'] == ""){
-	$einh2FaktorKwh = 1;
-}
-else{
-	$einh2FaktorKwh = $_POST['einh2FaktorKwh'];
-}
-if($_POST['einh3FaktorKwh'] == ""){
-	$einh3FaktorKwh = 1;
-}
-else{
-	$einh3FaktorKwh = $_POST['einh3FaktorKwh'];
-}
-
-if($_POST['einh1FaktorCO2'] == ""){
-	$einh1FaktorCO2 = 0;
-}
-else{
-	$einh1FaktorCO2 = $_POST['einh1FaktorCO2'];
-}
-if($_POST['einh2FaktorCO2'] == ""){
-	$einh2FaktorCO2 = 0;
-}
-else{
-	$einh2FaktorCO2 = $_POST['einh2FaktorCO2'];
-}
-if($_POST['einh3FaktorCO2'] == ""){
-	$einh3FaktorCO2 = 0;
-}
-else{
-	$einh3FaktorCO2 = $_POST['einh3FaktorCO2'];
-}
-$lblEinh1FaktorX1 = $_POST['lblEinh1FaktorX1'];
-$lblEinh2FaktorX1 = $_POST['lblEinh2FaktorX1'];
-$lblEinh3FaktorX1 = $_POST['lblEinh3FaktorX1'];
-if($_POST['einh1FaktorX1'] == ""){
-	$einh1FaktorX1 = 0;
-}
-else{
-	$einh1FaktorX1 = $_POST['einh1FaktorX1'];
-}
-if($_POST['einh2FaktorX1'] == ""){
-	$einh2FaktorX1 = 0;
-}
-else{
-	$einh2FaktorX1 = $_POST['einh2FaktorX1'];
-}
-if($_POST['einh3FaktorX1'] == ""){
-	$einh3FaktorX1 = 0;
-}
-else{
-	$einh3FaktorX1 = $_POST['einh3FaktorX1'];
-}
-$lblEinh1FaktorX2 = $_POST['lblEinh1FaktorX2'];
-$lblEinh2FaktorX2 = $_POST['lblEinh2FaktorX2'];
-$lblEinh3FaktorX2 = $_POST['lblEinh3FaktorX2'];
-if($_POST['einh1FaktorX2'] == ""){
-	$einh1FaktorX2 = 0;
-}
-else{
-	$einh1FaktorX2 = $_POST['einh1FaktorX2'];
-}
-if($_POST['einh2FaktorX2'] == ""){
-	$einh2FaktorX2 = 0;
-}
-else{
-	$einh2FaktorX2 = $_POST['einh2FaktorX2'];
-}
-if($_POST['einh3FaktorX2'] == ""){
-	$einh3FaktorX2 = 0;
-}
-else{
-	$einh3FaktorX2 = $_POST['einh3FaktorX2'];
-}
-$lblEinh1FaktorX3 = $_POST['lblEinh1FaktorX3'];
-$lblEinh2FaktorX3 = $_POST['lblEinh2FaktorX3'];
-$lblEinh3FaktorX3 = $_POST['lblEinh3FaktorX3'];
-if($_POST['einh1FaktorX3'] == ""){
-	$einh1FaktorX3 = 0;
-}
-else{
-	$einh1FaktorX3 = $_POST['einh1FaktorX3'];
-}
-if($_POST['einh2FaktorX3'] == ""){
-	$einh2FaktorX3 = 0;
-}
-else{
-	$einh2FaktorX3 = $_POST['einh2FaktorX3'];
-}
-if($_POST['einh3FaktorX3'] == ""){
-	$einh3FaktorX3 = 0;
-}
-else{
-	$einh3FaktorX3 = $_POST['einh3FaktorX3'];
-}
-$gueltigVom = $_POST['gueltigVom'];
-$gueltigBis = $_POST['gueltigBis'];
-
-if($modus == "new"){
-    echo "New Ent!!";
-    $liegID = $_POST['liegID'];
-	$tsql = "INSERT INTO energietraeger(lieg_ID,nameEnt,kuerzelEnt,allgemeinerEnt,notizEnt) ";
-    $tsql .= "VALUES ('$liegID', '$name', '$kuerzel','$allgemEnt', '$notiz') ";
-    queryDB($conn, $tsql, "write");
-
-    $query  = "SELECT ent_ID FROM energietraeger ";
-    $query .= "ORDER BY ent_ID ";
-    $records = queryDB($conn, $query, "read");
-
-    if(count($records) == 0){
-      $entID = 1;
+    if($_POST['einh1FaktorKwh'] == ""){
+    	$einh1FaktorKwh = 1;
     }
-    else {
-      $entID = $records[count($records) - 1]["ent_ID"];
+    else{
+    	$einh1FaktorKwh = $_POST['einh1FaktorKwh'];
     }
-    echo json_encode($records);
-    echo $entID;
+    if($_POST['einh2FaktorKwh'] == ""){
+    	$einh2FaktorKwh = 1;
+    }
+    else{
+    	$einh2FaktorKwh = $_POST['einh2FaktorKwh'];
+    }
+    if($_POST['einh3FaktorKwh'] == ""){
+    	$einh3FaktorKwh = 1;
+    }
+    else{
+    	$einh3FaktorKwh = $_POST['einh3FaktorKwh'];
+    }
 
-    $tsql = "INSERT INTO versorger(ent_ID,eingabeDatum,versorgerEvu,versorgerUenb,versorgerMsb,";
-    $tsql .= "einheit1Ent, einheit2Ent, einheit3Ent,";
-	$tsql .= "entEinh1FaktorKwh,entEinh2FaktorKwh,entEinh3FaktorKwh,entEinh1FaktorCO2,entEinh2FaktorCO2,entEinh3FaktorCO2,";
-	$tsql .= "lblEntEinh1FaktorX1,lblEntEinh2FaktorX1,lblEntEinh3FaktorX1,entEinh1FaktorX1,entEinh2FaktorX1,entEinh3FaktorX1,";
-	$tsql .= "lblEntEinh1FaktorX2,lblEntEinh2FaktorX2,lblEntEinh3FaktorX2,entEinh1FaktorX2,entEinh2FaktorX2,entEinh3FaktorX2,";
-	$tsql .= "lblEntEinh1FaktorX3,lblEntEinh2FaktorX3,lblEntEinh3FaktorX3,entEinh1FaktorX3,entEinh2FaktorX3,entEinh3FaktorX3,";
-	$tsql .= "gueltigVomEnt, gueltigBisEnt) ";
-    $tsql .= "VALUES ('$entID',getdate(),'$versorgerEvu','$versorgerUenb','$versorgerMsb',";
-	$tsql .= "'$einheit1', '$einheit2', '$einheit3',";
-	$tsql .= "$einh1FaktorKwh, $einh2FaktorKwh, $einh3FaktorKwh, $einh1FaktorCO2, $einh2FaktorCO2, $einh3FaktorCO2,";
-	$tsql .= "'$lblEinh1FaktorX1', '$lblEinh2FaktorX1', '$lblEinh3FaktorX1', $einh1FaktorX1, $einh2FaktorX1, $einh3FaktorX1,";
-	$tsql .= "'$lblEinh1FaktorX2', '$lblEinh2FaktorX2', '$lblEinh3FaktorX2', $einh1FaktorX2, $einh2FaktorX2, $einh3FaktorX2,";
-	$tsql .= "'$lblEinh1FaktorX3', '$lblEinh2FaktorX3', '$lblEinh3FaktorX3', $einh1FaktorX3, $einh2FaktorX3, $einh3FaktorX3,";
-	$tsql .= "'$gueltigVom', '$gueltigBis')";
-}
-else{
-$modusVers = $_POST['modusVers'];
+    if($_POST['einh1FaktorCO2'] == ""){
+    	$einh1FaktorCO2 = 0;
+    }
+    else{
+    	$einh1FaktorCO2 = $_POST['einh1FaktorCO2'];
+    }
+    if($_POST['einh2FaktorCO2'] == ""){
+    	$einh2FaktorCO2 = 0;
+    }
+    else{
+    	$einh2FaktorCO2 = $_POST['einh2FaktorCO2'];
+    }
+    if($_POST['einh3FaktorCO2'] == ""){
+    	$einh3FaktorCO2 = 0;
+    }
+    else{
+    	$einh3FaktorCO2 = $_POST['einh3FaktorCO2'];
+    }
+    $lblEinh1FaktorX1 = $_POST['lblEinh1FaktorX1'];
+    $lblEinh2FaktorX1 = $_POST['lblEinh2FaktorX1'];
+    $lblEinh3FaktorX1 = $_POST['lblEinh3FaktorX1'];
+    if($_POST['einh1FaktorX1'] == ""){
+    	$einh1FaktorX1 = 0;
+    }
+    else{
+    	$einh1FaktorX1 = $_POST['einh1FaktorX1'];
+    }
+    if($_POST['einh2FaktorX1'] == ""){
+    	$einh2FaktorX1 = 0;
+    }
+    else{
+    	$einh2FaktorX1 = $_POST['einh2FaktorX1'];
+    }
+    if($_POST['einh3FaktorX1'] == ""){
+    	$einh3FaktorX1 = 0;
+    }
+    else{
+    	$einh3FaktorX1 = $_POST['einh3FaktorX1'];
+    }
+    $lblEinh1FaktorX2 = $_POST['lblEinh1FaktorX2'];
+    $lblEinh2FaktorX2 = $_POST['lblEinh2FaktorX2'];
+    $lblEinh3FaktorX2 = $_POST['lblEinh3FaktorX2'];
+    if($_POST['einh1FaktorX2'] == ""){
+    	$einh1FaktorX2 = 0;
+    }
+    else{
+    	$einh1FaktorX2 = $_POST['einh1FaktorX2'];
+    }
+    if($_POST['einh2FaktorX2'] == ""){
+    	$einh2FaktorX2 = 0;
+    }
+    else{
+    	$einh2FaktorX2 = $_POST['einh2FaktorX2'];
+    }
+    if($_POST['einh3FaktorX2'] == ""){
+    	$einh3FaktorX2 = 0;
+    }
+    else{
+    	$einh3FaktorX2 = $_POST['einh3FaktorX2'];
+    }
+    $lblEinh1FaktorX3 = $_POST['lblEinh1FaktorX3'];
+    $lblEinh2FaktorX3 = $_POST['lblEinh2FaktorX3'];
+    $lblEinh3FaktorX3 = $_POST['lblEinh3FaktorX3'];
+    if($_POST['einh1FaktorX3'] == ""){
+    	$einh1FaktorX3 = 0;
+    }
+    else{
+    	$einh1FaktorX3 = $_POST['einh1FaktorX3'];
+    }
+    if($_POST['einh2FaktorX3'] == ""){
+    	$einh2FaktorX3 = 0;
+    }
+    else{
+    	$einh2FaktorX3 = $_POST['einh2FaktorX3'];
+    }
+    if($_POST['einh3FaktorX3'] == ""){
+    	$einh3FaktorX3 = 0;
+    }
+    else{
+    	$einh3FaktorX3 = $_POST['einh3FaktorX3'];
+    }
+    $gueltigVom = $_POST['gueltigVom'];
+    $gueltigBis = $_POST['gueltigBis'];
 
-$tsql =  "UPDATE energietraeger SET nameEnt = '$name', kuerzelEnt = '$kuerzel', allgemeinerEnt = '$allgemEnt', notizEnt = '$notiz' ";
-$tsql .= "WHERE ent_ID = '$entID' ";
+    if($modus == "new"){
+        $liegID = $_POST['liegID'];
+      	$tsql = "INSERT INTO energietraeger(lieg_ID,nameEnt,kuerzelEnt,allgemeinerEnt,notizEnt) ";
+        $tsql .= "VALUES ('$liegID', '$name', '$kuerzel','$allgemEnt', '$notiz') ";
+        queryDB($conn, $tsql, "write");
 
-if($modusVers == "neu"){
-$tsql .= "INSERT INTO versorger(ent_ID,eingabeDatum,versorgerEvu,versorgerUenb,versorgerMsb,";
-$tsql .= "einheit1Ent, einheit2Ent, einheit3Ent,";
-	$tsql .= "entEinh1FaktorKwh,entEinh2FaktorKwh,entEinh3FaktorKwh,entEinh1FaktorCO2,entEinh2FaktorCO2,entEinh3FaktorCO2,";
-	$tsql .= "lblEntEinh1FaktorX1,lblEntEinh2FaktorX1,lblEntEinh3FaktorX1,entEinh1FaktorX1,entEinh2FaktorX1,entEinh3FaktorX1,";
-	$tsql .= "lblEntEinh1FaktorX2,lblEntEinh2FaktorX2,lblEntEinh3FaktorX2,entEinh1FaktorX2,entEinh2FaktorX2,entEinh3FaktorX2,";
-	$tsql .= "lblEntEinh1FaktorX3,lblEntEinh2FaktorX3,lblEntEinh3FaktorX3,entEinh1FaktorX3,entEinh2FaktorX3,entEinh3FaktorX3,";
-	$tsql .= "gueltigVomEnt, gueltigBisEnt) ";
-$tsql .= "VALUES ('$entID',getdate(),'$versorgerEvu','$versorgerUenb','$versorgerMsb',";
-	$tsql .= "'$einheit1', '$einheit2', '$einheit3',";
-	$tsql .= "$einh1FaktorKwh, $einh2FaktorKwh, $einh3FaktorKwh, $einh1FaktorCO2, $einh2FaktorCO2, $einh3FaktorCO2,";
-	$tsql .= "'$lblEinh1FaktorX1', '$lblEinh2FaktorX1', '$lblEinh3FaktorX1', $einh1FaktorX1, $einh2FaktorX1, $einh3FaktorX1,";
-	$tsql .= "'$lblEinh1FaktorX2', '$lblEinh2FaktorX2', '$lblEinh3FaktorX2', $einh1FaktorX2, $einh2FaktorX2, $einh3FaktorX2,";
-	$tsql .= "'$lblEinh1FaktorX3', '$lblEinh2FaktorX3', '$lblEinh3FaktorX3', $einh1FaktorX3, $einh2FaktorX3, $einh3FaktorX3,";
-	$tsql .= "'$gueltigVom', '$gueltigBis')";
-}
-else{
-$versID = $_POST['versID'];
+        $query  = "SELECT ent_ID FROM energietraeger ";
+        $query .= "ORDER BY ent_ID ";
+        $records = queryDB($conn, $query, "read");
 
-$tsql .= "UPDATE versorger SET eingabeDatum = getdate(), versorgerEvu = '$versorgerEvu',versorgerUenb = '$versorgerUenb',";
-$tsql .= "versorgerMsb = '$versorgerMsb', einheit1Ent = '$einheit1',einheit2Ent = '$einheit2',einheit3Ent = '$einheit3',";
-$tsql .= "entEinh1FaktorKwh = $einh1FaktorKwh,entEinh2FaktorKwh = $einh2FaktorKwh,entEinh3FaktorKwh = $einh3FaktorKwh,";
-$tsql .= "entEinh1FaktorCO2 = $einh1FaktorCO2,entEinh2FaktorCO2 = $einh2FaktorCO2,entEinh3FaktorCO2 = $einh3FaktorCO2,";
-$tsql .= "lblEntEinh1FaktorX1 = '$lblEinh1FaktorX1',lblEntEinh2FaktorX1 = '$lblEinh2FaktorX1',lblEntEinh3FaktorX1 = '$lblEinh3FaktorX1',";
-$tsql .= "entEinh1FaktorX1 = $einh1FaktorX1,entEinh2FaktorX1 = $einh2FaktorX1,entEinh3FaktorX1 = $einh3FaktorX1,";
-$tsql .= "lblEntEinh1FaktorX2 = '$lblEinh1FaktorX2',lblEntEinh2FaktorX2 = '$lblEinh2FaktorX2',lblEntEinh3FaktorX2 = '$lblEinh3FaktorX2',";
-$tsql .= "entEinh1FaktorX2 = $einh1FaktorX2,entEinh2FaktorX2 = $einh2FaktorX2,entEinh3FaktorX2 = $einh3FaktorX2,";
-$tsql .= "lblEntEinh1FaktorX3 = '$lblEinh1FaktorX3',lblEntEinh2FaktorX3 = '$lblEinh2FaktorX3',lblEntEinh3FaktorX3 = '$lblEinh3FaktorX3',";
-$tsql .= "entEinh1FaktorX3 = $einh1FaktorX3,entEinh2FaktorX3 = $einh2FaktorX3,entEinh3FaktorX3 = $einh3FaktorX3,";
-$tsql .= "gueltigVomEnt = '$gueltigVom', gueltigBisEnt = '$gueltigBis' ";
+        if(count($records) == 0){
+          $entID = 1;
+        }
+        else {
+          $entID = $records[count($records) - 1]["ent_ID"];
+        }
+        echo json_encode($records);
+        echo $entID;
 
-$tsql .= "WHERE vers_ID = '$versID'";
-}
-}
+        $tsql = "INSERT INTO versorger(ent_ID,eingabeDatum,versorgerEvu,versorgerUenb,versorgerMsb,";
+        $tsql .= "einheit1Ent, einheit2Ent, einheit3Ent,";
+      	$tsql .= "entEinh1FaktorKwh,entEinh2FaktorKwh,entEinh3FaktorKwh,entEinh1FaktorCO2,entEinh2FaktorCO2,entEinh3FaktorCO2,";
+      	$tsql .= "lblEntEinh1FaktorX1,lblEntEinh2FaktorX1,lblEntEinh3FaktorX1,entEinh1FaktorX1,entEinh2FaktorX1,entEinh3FaktorX1,";
+      	$tsql .= "lblEntEinh1FaktorX2,lblEntEinh2FaktorX2,lblEntEinh3FaktorX2,entEinh1FaktorX2,entEinh2FaktorX2,entEinh3FaktorX2,";
+      	$tsql .= "lblEntEinh1FaktorX3,lblEntEinh2FaktorX3,lblEntEinh3FaktorX3,entEinh1FaktorX3,entEinh2FaktorX3,entEinh3FaktorX3,";
+      	$tsql .= "gueltigVomEnt, gueltigBisEnt) ";
+        $tsql .= "VALUES ('$entID',getdate(),'$versorgerEvu','$versorgerUenb','$versorgerMsb',";
+      	$tsql .= "'$einheit1', '$einheit2', '$einheit3',";
+      	$tsql .= "$einh1FaktorKwh, $einh2FaktorKwh, $einh3FaktorKwh, $einh1FaktorCO2, $einh2FaktorCO2, $einh3FaktorCO2,";
+      	$tsql .= "'$lblEinh1FaktorX1', '$lblEinh2FaktorX1', '$lblEinh3FaktorX1', $einh1FaktorX1, $einh2FaktorX1, $einh3FaktorX1,";
+      	$tsql .= "'$lblEinh1FaktorX2', '$lblEinh2FaktorX2', '$lblEinh3FaktorX2', $einh1FaktorX2, $einh2FaktorX2, $einh3FaktorX2,";
+      	$tsql .= "'$lblEinh1FaktorX3', '$lblEinh2FaktorX3', '$lblEinh3FaktorX3', $einh1FaktorX3, $einh2FaktorX3, $einh3FaktorX3,";
+      	$tsql .= "'$gueltigVom', '$gueltigBis')";
+    }
+    else{
+        $modusVers = $_POST['modusVers'];
+
+        $tsql =  "UPDATE energietraeger SET nameEnt = '$name', kuerzelEnt = '$kuerzel', allgemeinerEnt = '$allgemEnt', notizEnt = '$notiz' ";
+        $tsql .= "WHERE ent_ID = '$entID' ";
+
+        if($modusVers == "neu"){
+            $tsql .= "INSERT INTO versorger(ent_ID,eingabeDatum,versorgerEvu,versorgerUenb,versorgerMsb,";
+            $tsql .= "einheit1Ent, einheit2Ent, einheit3Ent,";
+          	$tsql .= "entEinh1FaktorKwh,entEinh2FaktorKwh,entEinh3FaktorKwh,entEinh1FaktorCO2,entEinh2FaktorCO2,entEinh3FaktorCO2,";
+          	$tsql .= "lblEntEinh1FaktorX1,lblEntEinh2FaktorX1,lblEntEinh3FaktorX1,entEinh1FaktorX1,entEinh2FaktorX1,entEinh3FaktorX1,";
+          	$tsql .= "lblEntEinh1FaktorX2,lblEntEinh2FaktorX2,lblEntEinh3FaktorX2,entEinh1FaktorX2,entEinh2FaktorX2,entEinh3FaktorX2,";
+          	$tsql .= "lblEntEinh1FaktorX3,lblEntEinh2FaktorX3,lblEntEinh3FaktorX3,entEinh1FaktorX3,entEinh2FaktorX3,entEinh3FaktorX3,";
+          	$tsql .= "gueltigVomEnt, gueltigBisEnt) ";
+            $tsql .= "VALUES ('$entID',getdate(),'$versorgerEvu','$versorgerUenb','$versorgerMsb',";
+          	$tsql .= "'$einheit1', '$einheit2', '$einheit3',";
+          	$tsql .= "$einh1FaktorKwh, $einh2FaktorKwh, $einh3FaktorKwh, $einh1FaktorCO2, $einh2FaktorCO2, $einh3FaktorCO2,";
+          	$tsql .= "'$lblEinh1FaktorX1', '$lblEinh2FaktorX1', '$lblEinh3FaktorX1', $einh1FaktorX1, $einh2FaktorX1, $einh3FaktorX1,";
+          	$tsql .= "'$lblEinh1FaktorX2', '$lblEinh2FaktorX2', '$lblEinh3FaktorX2', $einh1FaktorX2, $einh2FaktorX2, $einh3FaktorX2,";
+          	$tsql .= "'$lblEinh1FaktorX3', '$lblEinh2FaktorX3', '$lblEinh3FaktorX3', $einh1FaktorX3, $einh2FaktorX3, $einh3FaktorX3,";
+          	$tsql .= "'$gueltigVom', '$gueltigBis')";
+        }
+        else{
+            $versID = $_POST['versID'];
+
+            $tsql .= "UPDATE versorger SET eingabeDatum = getdate(), versorgerEvu = '$versorgerEvu',versorgerUenb = '$versorgerUenb',";
+            $tsql .= "versorgerMsb = '$versorgerMsb', einheit1Ent = '$einheit1',einheit2Ent = '$einheit2',einheit3Ent = '$einheit3',";
+            $tsql .= "entEinh1FaktorKwh = $einh1FaktorKwh,entEinh2FaktorKwh = $einh2FaktorKwh,entEinh3FaktorKwh = $einh3FaktorKwh,";
+            $tsql .= "entEinh1FaktorCO2 = $einh1FaktorCO2,entEinh2FaktorCO2 = $einh2FaktorCO2,entEinh3FaktorCO2 = $einh3FaktorCO2,";
+            $tsql .= "lblEntEinh1FaktorX1 = '$lblEinh1FaktorX1',lblEntEinh2FaktorX1 = '$lblEinh2FaktorX1',lblEntEinh3FaktorX1 = '$lblEinh3FaktorX1',";
+            $tsql .= "entEinh1FaktorX1 = $einh1FaktorX1,entEinh2FaktorX1 = $einh2FaktorX1,entEinh3FaktorX1 = $einh3FaktorX1,";
+            $tsql .= "lblEntEinh1FaktorX2 = '$lblEinh1FaktorX2',lblEntEinh2FaktorX2 = '$lblEinh2FaktorX2',lblEntEinh3FaktorX2 = '$lblEinh3FaktorX2',";
+            $tsql .= "entEinh1FaktorX2 = $einh1FaktorX2,entEinh2FaktorX2 = $einh2FaktorX2,entEinh3FaktorX2 = $einh3FaktorX2,";
+            $tsql .= "lblEntEinh1FaktorX3 = '$lblEinh1FaktorX3',lblEntEinh2FaktorX3 = '$lblEinh2FaktorX3',lblEntEinh3FaktorX3 = '$lblEinh3FaktorX3',";
+            $tsql .= "entEinh1FaktorX3 = $einh1FaktorX3,entEinh2FaktorX3 = $einh2FaktorX3,entEinh3FaktorX3 = $einh3FaktorX3,";
+            $tsql .= "gueltigVomEnt = '$gueltigVom', gueltigBisEnt = '$gueltigBis' ";
+            $tsql .= "WHERE vers_ID = '$versID'";
+        }
+    }
 }
 elseif($id == "eRng") {
 
