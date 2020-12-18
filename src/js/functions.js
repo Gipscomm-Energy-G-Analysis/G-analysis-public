@@ -1582,7 +1582,6 @@ try {
             organisationenEinlesen();
             dbFuerEnergietraegerFestlegen($("#nameDB").val());
             energietrInDBoxLieg();
-            energiefrmInDBoxLieg();
             liegenschaftenEinlesen();
             readInstanzen("liegFirst", 0);
             liegNavID = 0;
@@ -7660,7 +7659,7 @@ try {
                         readInstanzen("prdLast", $("#prdCount").val())
                     }
                 }), prdNavID = $("#prdCount").val();
-            else if ("entSpeichern" == a) energietrInDBoxLieg(), energiefrmInDBoxLieg(), $.ajax({
+            else if ("entSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -7712,7 +7711,7 @@ try {
                     readInstanzen("entLast", $("#entCount").val())
                 }
             }), entNavID = $("#entCount").val();
-            else if ("enfSpeichern" == a) energietrInDBoxLieg(), energiefrmInDBoxLieg(), $.ajax({
+            else if ("enfSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",

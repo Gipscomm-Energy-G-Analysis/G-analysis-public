@@ -1489,7 +1489,6 @@ $(document).ready(function() {
         readInstanzen("orgFirst", 0);
         dbFuerEnergietraegerFestlegen($("#nameDB").val());
         energietrInDBoxLieg();
-        energiefrmInDBoxLieg();
         liegenschaftenEinlesen();
         readInstanzen("liegFirst", 0);
         liegNavID = 0;
@@ -1626,7 +1625,7 @@ $(document).ready(function() {
             })) : "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (instanzErstellen(this.id), b = !1, energietrInDBoxLieg()) : "" != $("#nameEnt").val() && 0 == b ? (instanzSpeichern(this.id), energietrInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
             })) : "enfSpeichern" == this.id ? "" != $("#nameEnf").val() && 1 == b ? (instanzErstellen(this.id),
-                b = !1, energiefrmInDBoxLieg()) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id), energiefrmInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+                b = !1) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
             })) : "eRngSpeichern" == this.id ? "" != $("#nrERng").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nrERng").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
