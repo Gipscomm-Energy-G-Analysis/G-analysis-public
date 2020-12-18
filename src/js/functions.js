@@ -3206,7 +3206,33 @@ try {
                     })
                 }
             })
-        }, tabellenAuswahllisteErstellen =
+        };
+        elementsBdeTblConfig =
+            dbTbl => {
+                $("#checkEPrd").empty();
+                $("#quellTblEPrd").val(dbTbl);
+                var e = mkLabel("EPrd")(""),
+                f = mkCheckbox("EPrd")("chkBetriebsparameter"),
+                h = mkTextbox("EPrd")("txtBetriebsparameter");
+                getDbTableColumns(dbTbl).then(function(a) {
+                    appendHtml("#checkEPrd")(a.map(function(a) {
+                        return "<div>" +
+                        e(a) + f(a) + h(a) + "</div>"
+                    }))
+                });
+            }
+        readBdeConfig =
+            function(a) {
+                return function() {
+                    var b = tblTabellenProdSuchen.row(this).data();
+                    switch (a) {
+                        case "tblSuchenEPrd":
+                            elementsBdeTblConfig(b[1])
+                            $("#channelZuordnungProdContainer").dialog("close")
+                    }
+                }
+            }
+        tabellenAuswahllisteErstellen =
         function(a) {
             $.ajax({
                 type: "POST",
@@ -3236,24 +3262,7 @@ try {
                         open: function() {
                             $("#tblTabellenProdSuchen tbody tr").css("cursor", "pointer");
                             $("#tblTabellenProdSuchen tbody").off("dblclick", "tr");
-                            $("#tblTabellenProdSuchen tbody").on("dblclick", "tr", function() {
-                                var b = tblTabellenProdSuchen.row(this).data();
-                                switch (a) {
-                                    case "tblSuchenEPrd":
-                                        $("#checkEPrd").empty();
-                                        $("#quellTblEPrd").val(b[1]);
-                                        var e = mkLabel("EPrd")(""),
-                                            f = mkCheckbox("EPrd")("chkBetriebsparameter"),
-                                            h = mkTextbox("EPrd")("txtBetriebsparameter");
-                                        getDbTableColumns(b[1]).then(function(a) {
-                                            appendHtml("#checkEPrd")(a.map(function(a) {
-                                                return "<div>" +
-                                                    e(a) + f(a) + h(a) + "</div>"
-                                            }))
-                                        });
-                                        $("#channelZuordnungProdContainer").dialog("close")
-                                }
-                            })
+                            $("#tblTabellenProdSuchen tbody").on("dblclick", "tr", readBdeConfig(a))
                         }
                     })
                 }
