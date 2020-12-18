@@ -3207,10 +3207,17 @@ try {
                 }
             })
         };
+        setBdeConfigColumnAndAlias =
+            record => {
+                elementsBdeTblConfig(record[0].tblName)
+
+                checkEPrd
+            }
+            
         readBdeConfig =
             nameDB =>
             ajaxPost("php/getBdeConfigInfo.php")({nameDB})
-            .then(record => elementsBdeTblConfig(record[0].tblName))
+            .then(setBdeConfigColumnAndAlias)
 
         elementsBdeTblConfig =
             dbTbl => {
