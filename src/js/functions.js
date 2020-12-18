@@ -3207,6 +3207,11 @@ try {
                 }
             })
         };
+        readBdeConfig =
+            nameDB =>
+            ajaxPost("php/getBdeConfigInfo.php")({nameDB})
+            .then(record => elementsBdeTblConfig(record[0].tblName))
+
         elementsBdeTblConfig =
             dbTbl => {
                 $("#checkEPrd").empty();
@@ -3221,7 +3226,7 @@ try {
                     }))
                 });
             }
-        readBdeConfig =
+        readBdeConfigSelect =
             function(a) {
                 return function() {
                     var b = tblTabellenProdSuchen.row(this).data();
@@ -3262,7 +3267,7 @@ try {
                         open: function() {
                             $("#tblTabellenProdSuchen tbody tr").css("cursor", "pointer");
                             $("#tblTabellenProdSuchen tbody").off("dblclick", "tr");
-                            $("#tblTabellenProdSuchen tbody").on("dblclick", "tr", readBdeConfig(a))
+                            $("#tblTabellenProdSuchen tbody").on("dblclick", "tr", readBdeConfigSelect(a))
                         }
                     })
                 }
@@ -8169,6 +8174,7 @@ try {
                     else if ("tabExtDl" == a) readInstanzen("extDlFirst", 0);
                     else if ("tabStdDr" == a) readInstanzen("stdDrFirst", 0);
                     else if ("tabBer" == a) clearFields("berHinz"), readInstanzen("berFirst", 0), $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val());
+                    else if ("tabEPrd" == a) readBdeConfig($("#nameDB").val());
                     else if ("tabBen" == a) b = ["", ""], readInstanzen("benFirst", 0);
                     else if ("tabAnl" == a)
                         getAnlagenAuswahlTblHeader();
