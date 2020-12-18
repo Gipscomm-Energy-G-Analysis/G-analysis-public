@@ -1693,7 +1693,7 @@ $(document).ready(function() {
                 title: "Meldung!"
             })))
     });
-    $("#orgLoeschen, #liegLoeschen, #extDlLoeschen, #berLoeschen,#mstLoeschen, #stdLoeschen, #stdDrLoeschen, #anlLoeschen,#msmLoeschen, #eRngLoeschen, #zpLoeschen, #eAnlLoeschen, #prdLoeschen").click(function() {
+    $("#orgLoeschen, #liegLoeschen, #extDlLoeschen, #berLoeschen,#mstLoeschen, #stdLoeschen, #stdDrLoeschen, #anlLoeschen,#msmLoeschen, #eRngLoeschen, #zpLoeschen, #eAnlLoeschen, #prdLoeschen, #entLoeschen").click(function() {
         fensterLoeschenmeldung(this.id)
     })
 });

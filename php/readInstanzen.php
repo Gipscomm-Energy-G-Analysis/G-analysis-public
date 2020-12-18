@@ -217,7 +217,8 @@ elseif($id == "ent"){
     $liegID = $_POST['liegID'] ;
 
     $query = "SELECT * FROM energietraeger " ;
-    $query .= "WHERE lieg_ID = '$liegID'" ;
+    $query .= "WHERE lieg_ID = '$liegID' " ;
+    $query .= "AND deleted = 0 " ;
 
 }
 

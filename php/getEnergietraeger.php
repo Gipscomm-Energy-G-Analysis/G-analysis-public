@@ -8,7 +8,8 @@ require 'DbOperations.php';
 $nameDB = $_POST['nameDB'];
 $conn = connectToDB($nameDB);
 
-$query = "SELECT * FROM energietraeger";
+$query = "SELECT * FROM energietraeger " ;
+$query .= "WHERE deleted = 0 " ;
 
 $records = queryDB($conn, $query, "read");
 

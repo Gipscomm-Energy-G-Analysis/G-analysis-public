@@ -63,6 +63,10 @@ switch ($ins) {
     $tbl = "produkte";
     $idName = "prd_ID";
     break;
+  case "ent":
+    $tbl = "energietraeger";
+    $idName = "ent_ID";
+    break;
 }
 $idValue = $_POST['idValue'];
 

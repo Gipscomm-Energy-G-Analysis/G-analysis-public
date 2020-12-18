@@ -4330,6 +4330,10 @@ try {
                     break;
                 case "prdLoeschen":
                     b = "prd", e = $("#prdID").val(), prdNavID = 0
+                    break;
+                case "entLoeschen":
+                    b = "ent", e = $("#entID").val(), entNavID = 0
+                    break;
             }
             $.ajax({
                 type: "POST",
