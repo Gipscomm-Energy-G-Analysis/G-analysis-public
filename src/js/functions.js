@@ -7708,7 +7708,7 @@ try {
                 },
                 success: function(a) {
                     alert(datensatzGespeichert(a));
-                    readInstanzen("entLast", $("#entCount").val())
+                    readInstanzen("entFirst", 0)
                 }
             }), entNavID = $("#entCount").val();
             else if ("enfSpeichern" == a) energietrInDBoxLieg(), $.ajax({
