@@ -3259,6 +3259,7 @@ try {
                     }))
                 });
             }
+
         const readBdeConfigSelect =
             function(a) {
                 return function() {
@@ -3270,6 +3271,7 @@ try {
                     }
                 }
             }
+            
         tabellenAuswahllisteErstellen =
         function(a) {
             $.ajax({
