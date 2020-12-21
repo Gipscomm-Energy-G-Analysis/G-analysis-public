@@ -3212,27 +3212,24 @@ try {
             record => {
 
                 const selectNthChild =
-                    element =>
                     n =>
-                    `${element} div:nth-child(${n})`
+                    `#checkEPrd div:nth-child(${n})`
 
                 const selectNthCheckbox =
-                    element =>
                     n =>
-                    $(`${selectNthChild(element)(n)} .chkBetriebsparameter`)
+                    $(`${selectNthChild(n)} .chkBetriebsparameter`)
 
                 const selectNthTextbox =
-                    element =>
                     n =>
-                    $(`${selectNthChild(element)(n)} .txtBetriebsparameter`)
+                    $(`${selectNthChild(n)} .txtBetriebsparameter`)
 
                 const setChecksAndAliases =
                     data =>
                     data
                     .forEach(
                         (a, i) => {
-                            selectNthCheckbox("#checkEPrd")(incr(i)).prop("checked", a.state)
-                            selectNthTextbox("#checkEPrd")(incr(i)).val(a.alias)
+                            selectNthCheckbox(incr(i)).prop("checked", a.state)
+                            selectNthTextbox(incr(i)).val(a.alias)
                         }
                     )
 
