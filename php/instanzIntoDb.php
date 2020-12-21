@@ -2619,19 +2619,29 @@ berLogikIdString = '$idString',messartMst = 'berechnet'";
 $tsql .= "WHERE mst_ID = $berechneteMstID ";
 }
 elseif ($id == "frmKnz") {
-$typ = $_POST['bezug'];
-$formelString = $_POST['formelString'];
-$idString = $_POST['idString'];
+    $typ = $_POST['bezug'];
+    $formelString = $_POST['formelString'];
+    $idString = $_POST['idString'];
 
-$tsql = "INSERT INTO formeln (typ, formelString, idString) ";
-$tsql .= "VALUES ('$typ', '$formelString', '$idString') ";
+    $tsql = "INSERT INTO formeln (typ, formelString, idString) ";
+    $tsql .= "VALUES ('$typ', '$formelString', '$idString') ";
 }
 elseif ($id == "betrPar") {
-$tblName = $_POST['tblName'];
-$parJson = $_POST['parJson'];
+    $tblName = $_POST['tblName'] ;
+    $parJson = $_POST['parJson'] ;
 
-$tsql = "INSERT INTO config.betriebsparameter ( tblName, parJson ) " ;
-$tsql .= "VALUES ( '$tblName', '$parJson' ) " ;
+    $tsql1 = "SELECT * FROM config.betriebsparameter " ;
+
+    $result = queryDB( $conn, $tsql1, "read" ) ;
+
+    if(count($result) === 1) {
+        $tsql = "UPDATE config.betriebsparameter " ;
+        $tsql .= "SET parJson = '$parJson' " ;
+    }
+    else {
+        $tsql = "INSERT INTO config.betriebsparameter ( tblName, parJson ) " ;
+        $tsql .= "VALUES ( '$tblName', '$parJson' ) " ;
+    }
 }
 
 if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  ) {

@@ -3271,7 +3271,7 @@ try {
                     }
                 }
             }
-            
+
         tabellenAuswahllisteErstellen =
         function(a) {
             $.ajax({
@@ -8192,7 +8192,7 @@ try {
                     readInstanzen("betrParLast", $("#betrParCount").val())
                 }
             }), betrParNavID = $("#betrParCount").val());
-            $(".lblNeu").css("display", "none");
+            $(".lblNeu").css("display", "none")
             $(".lblAendern").css("display", "inline")
         }, tabControlNav = function(a) {
             var b = [];
