@@ -3207,19 +3207,48 @@ try {
                 }
             })
         };
-        setBdeConfigColumnAndAlias =
+
+        const setBdeConfigColumnAndAlias =
             record => {
+
+                const selectNthChild =
+                    element =>
+                    n =>
+                    `${element} div:nth-child(${n})`
+
+                const selectNthCheckbox =
+                    element =>
+                    n =>
+                    $(`${selectNthChild(element)(n)} .chkBetriebsparameter`)
+
+                const selectNthTextbox =
+                    element =>
+                    n =>
+                    $(`${selectNthChild(element)(n)} .txtBetriebsparameter`)
+
+                const setChecksAndAliases =
+                    data =>
+                    data
+                    .forEach(
+                        (a, i) => {
+                            selectNthCheckbox("#checkEPrd")(incr(i)).prop("checked", a.state)
+                            selectNthTextbox("#checkEPrd")(incr(i)).val(a.alias)
+                        }
+                    )
+
                 elementsBdeTblConfig(record[0].tblName)
 
-                checkEPrd
+                setTimeout(
+                  () => setChecksAndAliases(JSON.parse(record[0].parJson))
+                , 750)
             }
-            
-        readBdeConfig =
+
+        const readBdeConfig =
             nameDB =>
             ajaxPost("php/getBdeConfigInfo.php")({nameDB})
             .then(setBdeConfigColumnAndAlias)
 
-        elementsBdeTblConfig =
+        const elementsBdeTblConfig =
             dbTbl => {
                 $("#checkEPrd").empty();
                 $("#quellTblEPrd").val(dbTbl);
@@ -3233,7 +3262,7 @@ try {
                     }))
                 });
             }
-        readBdeConfigSelect =
+        const readBdeConfigSelect =
             function(a) {
                 return function() {
                     var b = tblTabellenProdSuchen.row(this).data();
