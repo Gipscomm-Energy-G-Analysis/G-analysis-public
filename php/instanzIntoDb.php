@@ -1569,7 +1569,6 @@ elseif($id == "ent") {
 }
 elseif ($id == "enf") {
     $modus = $_POST["modus"] ;
-    $liegID = $_POST["liegID"] ;
     $name = $_POST["name"] ;
     $kuerzel = $_POST["kuerzel"] ;
     $notiz = $_POST["notiz"] ;
@@ -1682,6 +1681,8 @@ elseif ($id == "enf") {
     $gueltigBis = $_POST['gueltigBis'];
 
     if ($modus == "new") {
+        $liegID = $_POST["liegID"] ;
+
         $tsql = "INSERT INTO energieformen (lieg_ID, nameEnf, kuerzelEnf, notizEnf, " ;
         $tsql .= "einheit1Enf, einheit2Enf, einheit3Enf, enfEinh1FaktorKwh, enfEinh2FaktorKwh, " ;
         $tsql .= "enfEinh3FaktorKwh, enfEinh1FaktorCO2, enfEinh2FaktorCO2, enfEinh3FaktorCO2, " ;
@@ -1698,6 +1699,20 @@ elseif ($id == "enf") {
         $tsql .= "'$lblEinh3FaktorX2', $einh1FaktorX2, $einh2FaktorX2, $einh3FaktorX2, " ;
         $tsql .= "'$lblEinh1FaktorX3', '$lblEinh2FaktorX3', '$lblEinh3FaktorX3', $einh1FaktorX3, " ;
         $tsql .= "$einh2FaktorX3, $einh3FaktorX3, '$aktiv', '$gueltigVom', '$gueltigBis') " ;
+    }
+    else {
+        $enfID = $_POST["enfID"] ;
+
+        $tsql = "UPDATE energieformen " ;
+        $tsql .= "SET nameEnf = '$name', kuerzelEnf = '$kuerzel', notizEnf = '$notiz', " ;
+        $tsql .= "einheit1Enf = '$einheit1', einheit2Enf = '$einheit2', einheit3Enf = '$einheit3', enfEinh1FaktorKwh = $einh1FaktorKwh, enfEinh2FaktorKwh = $einh2FaktorKwh, " ;
+        $tsql .= "enfEinh3FaktorKwh = $einh2FaktorKwh, enfEinh1FaktorCO2 = $einh1FaktorCO2, enfEinh2FaktorCO2 = $einh2FaktorCO2, enfEinh3FaktorCO2 = $einh3FaktorCO2, " ;
+        $tsql .= "lblEnfEinh1FaktorX1 = '$lblEinh1FaktorX1', lblEnfEinh2FaktorX1 = '$lblEinh2FaktorX1', lblEnfEinh3FaktorX1 = '$lblEinh3FaktorX1', enfEinh1FaktorX1 = $einh1FaktorX1, " ;
+        $tsql .= "enfEinh2FaktorX1 = $einh2FaktorX1, enfEinh3FaktorX1 = $einh3FaktorX1, lblEnfEinh1FaktorX2 = '$lblEinh1FaktorX2', lblEnfEinh2FaktorX2 = '$lblEinh2FaktorX2', " ;
+        $tsql .= "lblEnfEinh3FaktorX2 = '$lblEinh3FaktorX2', enfEinh1FaktorX2 = $einh1FaktorX2, enfEinh2FaktorX2 = $einh2FaktorX2, enfEinh3FaktorX2 = $einh3FaktorX2,  " ;
+        $tsql .= "lblEnfEinh1FaktorX3 = '$lblEinh1FaktorX3', lblEnfEinh2FaktorX3 = '$lblEinh2FaktorX3', lblEnfEinh3FaktorX3 = '$lblEinh3FaktorX3', enfEinh1FaktorX3 = $einh1FaktorX3, " ;
+        $tsql .= "enfEinh2FaktorX3 = $einh2FaktorX3, enfEinh3FaktorX3 = $einh3FaktorX3, aktivEnf = '$aktiv', gueltigVomEnf = '$gueltigVom', gueltigBisEnf = '$gueltigBis' " ;
+        $tsql .= "WHERE enf_ID = $enfID " ;
     }
 }
 elseif($id == "eRng") {
