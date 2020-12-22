@@ -1502,6 +1502,8 @@ elseif($id == "ent") {
         $records = queryDB($conn, $query, "read");
 
         if(count($records) == 0){
+
+
           $entID = 1;
         }
         else {
@@ -1563,6 +1565,139 @@ elseif($id == "ent") {
             $tsql .= "gueltigVomEnt = '$gueltigVom', gueltigBisEnt = '$gueltigBis' ";
             $tsql .= "WHERE vers_ID = '$versID'";
         }
+    }
+}
+elseif ($id == "enf") {
+    $modus = $_POST["modus"] ;
+    $liegID = $_POST["liegID"] ;
+    $name = $_POST["name"] ;
+    $kuerzel = $_POST["kuerzel"] ;
+    $notiz = $_POST["notiz"] ;
+    $aktiv = $_POST["aktiv"] ;
+    $einheit1 = $_POST["einheit1"] ;
+    $einheit2 = $_POST["einheit2"] ;
+    $einheit3 = $_POST["einheit3"] ;
+
+    if($_POST['einh1FaktorKwh'] == ""){
+        $einh1FaktorKwh = 1;
+    }
+    else{
+        $einh1FaktorKwh = $_POST['einh1FaktorKwh'];
+    }
+    if($_POST['einh2FaktorKwh'] == ""){
+        $einh2FaktorKwh = 1;
+    }
+    else{
+        $einh2FaktorKwh = $_POST['einh2FaktorKwh'];
+    }
+    if($_POST['einh3FaktorKwh'] == ""){
+        $einh3FaktorKwh = 1;
+    }
+    else{
+        $einh3FaktorKwh = $_POST['einh3FaktorKwh'];
+    }
+
+    if($_POST['einh1FaktorCO2'] == ""){
+        $einh1FaktorCO2 = 0;
+    }
+    else{
+        $einh1FaktorCO2 = $_POST['einh1FaktorCO2'];
+    }
+    if($_POST['einh2FaktorCO2'] == ""){
+        $einh2FaktorCO2 = 0;
+    }
+    else{
+        $einh2FaktorCO2 = $_POST['einh2FaktorCO2'];
+    }
+    if($_POST['einh3FaktorCO2'] == ""){
+        $einh3FaktorCO2 = 0;
+    }
+    else{
+      $einh3FaktorCO2 = $_POST['einh3FaktorCO2'];
+    }
+    $lblEinh1FaktorX1 = $_POST['lblEinh1FaktorX1'];
+    $lblEinh2FaktorX1 = $_POST['lblEinh2FaktorX1'];
+    $lblEinh3FaktorX1 = $_POST['lblEinh3FaktorX1'];
+    if($_POST['einh1FaktorX1'] == ""){
+        $einh1FaktorX1 = 0;
+    }
+    else{
+        $einh1FaktorX1 = $_POST['einh1FaktorX1'];
+    }
+    if($_POST['einh2FaktorX1'] == ""){
+        $einh2FaktorX1 = 0;
+    }
+    else{
+        $einh2FaktorX1 = $_POST['einh2FaktorX1'];
+    }
+    if($_POST['einh3FaktorX1'] == ""){
+        $einh3FaktorX1 = 0;
+    }
+    else{
+        $einh3FaktorX1 = $_POST['einh3FaktorX1'];
+    }
+    $lblEinh1FaktorX2 = $_POST['lblEinh1FaktorX2'];
+    $lblEinh2FaktorX2 = $_POST['lblEinh2FaktorX2'];
+    $lblEinh3FaktorX2 = $_POST['lblEinh3FaktorX2'];
+    if($_POST['einh1FaktorX2'] == ""){
+        $einh1FaktorX2 = 0;
+    }
+    else{
+        $einh1FaktorX2 = $_POST['einh1FaktorX2'];
+    }
+    if($_POST['einh2FaktorX2'] == ""){
+        $einh2FaktorX2 = 0;
+    }
+    else{
+        $einh2FaktorX2 = $_POST['einh2FaktorX2'];
+    }
+    if($_POST['einh3FaktorX2'] == ""){
+        $einh3FaktorX2 = 0;
+    }
+    else{
+        $einh3FaktorX2 = $_POST['einh3FaktorX2'];
+    }
+    $lblEinh1FaktorX3 = $_POST['lblEinh1FaktorX3'];
+    $lblEinh2FaktorX3 = $_POST['lblEinh2FaktorX3'];
+    $lblEinh3FaktorX3 = $_POST['lblEinh3FaktorX3'];
+    if($_POST['einh1FaktorX3'] == ""){
+        $einh1FaktorX3 = 0;
+    }
+    else{
+        $einh1FaktorX3 = $_POST['einh1FaktorX3'];
+    }
+    if($_POST['einh2FaktorX3'] == ""){
+        $einh2FaktorX3 = 0;
+    }
+    else{
+        $einh2FaktorX3 = $_POST['einh2FaktorX3'];
+    }
+    if($_POST['einh3FaktorX3'] == ""){
+        $einh3FaktorX3 = 0;
+    }
+    else{
+        $einh3FaktorX3 = $_POST['einh3FaktorX3'];
+    }
+    $gueltigVom = $_POST['gueltigVom'];
+    $gueltigBis = $_POST['gueltigBis'];
+
+    if ($modus == "new") {
+        $tsql = "INSERT INTO energieformen (lieg_ID, nameEnf, kuerzelEnf, notizEnf, " ;
+        $tsql .= "einheit1Enf, einheit2Enf, einheit3Enf, enfEinh1FaktorKwh, enfEinh2FaktorKwh, " ;
+        $tsql .= "enfEinh3FaktorKwh, enfEinh1FaktorCO2, enfEinh2FaktorCO2, enfEinh3FaktorCO2, " ;
+        $tsql .= "lblEnfEinh1FaktorX1, lblEnfEinh2FaktorX1, lblEnfEinh3FaktorX1, enfEinh1FaktorX1, " ;
+        $tsql .= "enfEinh2FaktorX1, enfEinh3FaktorX1, lblEnfEinh1FaktorX2, lblEnfEinh2FaktorX2, " ;
+        $tsql .= "lblEnfEinh3FaktorX2, enfEinh1FaktorX2, enfEinh2FaktorX2, enfEinh3FaktorX2,  " ;
+        $tsql .= "lblEnfEinh1FaktorX3, lblEnfEinh2FaktorX3, lblEnfEinh3FaktorX3, enfEinh1FaktorX3, " ;
+        $tsql .= "enfEinh2FaktorX3, enfEinh3FaktorX3, aktivEnf, gueltigVomEnf, gueltigBisEnf) " ;
+        $tsql .= "VALUES($liegID, '$name', '$kuerzel', '$notiz', " ;
+        $tsql .= "'$einheit1', '$einheit2', '$einheit3',  $einh1FaktorKwh, $einh2FaktorKwh, " ;
+        $tsql .= "$einh3FaktorKwh, $einh1FaktorCO2, $einh2FaktorCO2, $einh3FaktorCO2, " ;
+        $tsql .= "'$lblEinh1FaktorX1', '$lblEinh2FaktorX1', '$lblEinh3FaktorX1', $einh1FaktorX1, " ;
+        $tsql .= "$einh2FaktorX1, $einh3FaktorX1, '$lblEinh1FaktorX2', '$lblEinh2FaktorX2', " ;
+        $tsql .= "'$lblEinh3FaktorX2', $einh1FaktorX2, $einh2FaktorX2, $einh3FaktorX2, " ;
+        $tsql .= "'$lblEinh1FaktorX3', '$lblEinh2FaktorX3', '$lblEinh3FaktorX3', $einh1FaktorX3, " ;
+        $tsql .= "$einh2FaktorX3, $einh3FaktorX3, '$aktiv', '$gueltigVom', '$gueltigBis') " ;
     }
 }
 elseif($id == "eRng") {
@@ -2645,8 +2780,8 @@ elseif ($id == "betrPar") {
 }
 
 if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  ) {
-$retState = queryDB( $conn, $tsql, "write" );
-echo $tsql;
+    $retState = queryDB( $conn, $tsql, "write" );
+    echo $tsql;
 }
 
 
