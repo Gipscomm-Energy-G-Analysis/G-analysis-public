@@ -3682,6 +3682,7 @@ try {
                             $("#tblEnergietraegerSuchen tbody").on("dblclick", "tr", function() {
                                 var a = tblEnergietraegerSuchen.row(this).data();
                                 $("#energietraegerSuchenContainer").dialog("close");
+                                $("#energietraegerSuchenContainer").css("display", "none");
                                 readInstanzen("entFirst", a[0])
                             })
                         }
