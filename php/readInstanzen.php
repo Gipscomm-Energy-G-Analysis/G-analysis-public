@@ -4,6 +4,7 @@ include('top-cache.php');
 error_reporting(-1);
 ini_set ('display_errors', 'On');
 require 'DbOperations.php';
+
 $nameDB = $_POST['nameDB'];
 
 $conn = connectToDB($nameDB);
@@ -234,42 +235,34 @@ elseif($id == "vers"){
 
 elseif($id == "enf"){
 
+    $liegID = $_POST['liegID'] ;
 
-  $liegID = $_POST['liegID'];
-
-
-
-  $query = "SELECT * FROM energieformen ";
-
-  $query .= "WHERE lieg_ID = '$liegID'";
+    $query = "SELECT * FROM energieformen " ;
+    $query .= "WHERE lieg_ID = '$liegID' " ;
 
 }
 
 elseif($id == "eAnl"){
 
-$query = "SELECT * FROM erweiterungenAnlagen ";
-
-  $query .= "WHERE deleted <> 'true' ";
+    $query = "SELECT * FROM erweiterungenAnlagen ";
+    $query .= "WHERE deleted <> 'true' ";
 
 }
 
 elseif($id == "ePrd"){
 
-$query = "SELECT * FROM erweiterungenProdukte ";
-
-  $query .= "WHERE deleted <> 'true' ";
+    $query = "SELECT * FROM erweiterungenProdukte ";
+    $query .= "WHERE deleted <> 'true' ";
 
 }
 
 elseif($id == "eRng"){
 
-$liegID = $_POST['liegID'];
+    $liegID = $_POST['liegID'];
 
-$query = "SELECT * FROM externeRechnungen ";
-
-  $query .= "WHERE lieg_ID = ".$liegID." ";
-
-  $query .= "AND deleted <> 'true' ";
+    $query = "SELECT * FROM externeRechnungen ";
+    $query .= "WHERE lieg_ID = ".$liegID." ";
+    $query .= "AND deleted <> 'true' ";
 
 }
 
@@ -313,7 +306,8 @@ elseif($id == "betrPar"){
 
 }
 
-$records = queryDB($conn, $query, "read");
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+$records = queryDB($conn, $query, "read") ;
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
+
 include('bottom-cache.php');
 ?>
