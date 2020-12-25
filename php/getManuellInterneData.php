@@ -125,46 +125,44 @@ elseif($id == 'intBdeIMw'){
 		      $startWeek ='';
 		      $endWeek ='';
 	    }
+			$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
+			$query1 .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+			$query1 .= "ON T1.mst_ID = T2.mst_ID ";
+			$query1 .= "WHERE T1.messartMst = 'manuell' ";
+			$query1 .= "AND T1.deleted <> 'true' ";
+			$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+			$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+			$query1 .= "ORDER BY T1.mst_ID ASC";
 
-		/*if($zeitintervallAnl == 2){
-            $query = "SELECT * FROM MessstellenAnlagen As T1 ";
-			$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-			$query .= "ON T1.mst_ID = T2.mst_ID ";
-			$query .= "WHERE T1.messartMst = 'manuell' ";
-			$query .= "AND T1.deleted <> 'true' ";
-			$query .= "AND T2.startDate >= '$startDate' ";
-			$query .= "AND T2.startDate <= '$endDate' ";
-			$query .= "AND T2.startWeek >= '$startWeek' ";
-			$query .= "AND T2.startWeek <= '$endWeek' ";
-			$query .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
-			$query .= "ORDER BY T1.mst_ID ASC";
-        }else{*/
-			$query = "SELECT * FROM MessstellenAnlagen As T1 ";
-			$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-			$query .= "ON T1.mst_ID = T2.mst_ID ";
-			$query .= "WHERE T1.messartMst = 'manuell' ";
-			$query .= "AND T1.deleted <> 'true' ";
-			$query .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
-			$query .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
-			$query .= "ORDER BY T1.mst_ID ASC";
-        //} 
+			$query2 = "SELECT * FROM masseneingabeSucheIMw ";
+			$query2 .= "WHERE type = '$zeitintervallAnl' ";
+
+			$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
+			$query3 .= "WHERE type = '$zeitintervallAnl' ";
 		
 }
 
-//echo $query;die;
-$records = queryDB($conn, $query, "read");
+//echo $query2;die;
+$records['query1'] = queryDB($conn, $query1, "read");
+$records['query2'] = queryDB($conn, $query2, "read");
+$records['query3'] = queryDB($conn, $query3, "read");
+//$records['query1'] = queryDB($conn, $query1, "read");
+/*$arr = [];
+$query2Records = queryDB($conn, $query2, "read");
+$query3Records= queryDB($conn, $query3, "read");
+foreach ($query3Records as $query3Record) {
+	
+	$key = array_search($query3Record['on_date'], array_column($query2Records, 'on_date'));
+	//echo '<pre>';print_r($query2Records);echo '</pre>';
+	$arr[$key]['on_date']=$query3Record['on_date'];
+	$arr[$key]['result']=$query3Record['result'];
+	$arr[$key]['val']=$query2Records[$key]['val'];
+	$arr[$key]['on_week']=$query3Record['on_week'];
+	$arr[$key]['mst_ID']=$query3Record['mst_ID'];
+}
+echo '<pre>';print_r($arr);echo '</pre>';*/
 
 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 
 
-/*SELECT * FROM MessstellenAnlagen As T1 
-LEFT JOIN interneMesswerteConfig AS T2 
-ON T1.mst_ID = T2.mst_ID 
-WHERE T1.messartMst = 'manuell' 
-AND T1.deleted <> 'true' 
-AND ((T2.startDate >= '2016' AND T2.startDate <= '2017')
-OR (T2.endDate >= '2016' AND T2.endDate <= '2017') 
-OR (T2.startDate <= '2016' AND T2.endDate >= '2017'))
-AND T2.intTp_ID = '4' 
-ORDER BY T1.mst_ID ASC;*/
 ?>

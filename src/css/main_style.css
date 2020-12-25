@@ -472,11 +472,11 @@ nav {
 #verschSpeichern,
 #verschAbbrechen,
 #mapDrucken,
-#btnTageMasseneingabeIMw,
-#btnWochenMasseneingabeIMw,
-#btnMonateMasseneingabeIMw,
-#btnJahreMasseneingabeIMw,
-#masseneingabeSpeichern,
+#btnTageMasseneingabeIMwNw,
+#btnWochenMasseneingabeIMwNw,
+#btnMonateMasseneingabeIMwNw,
+#btnJahreMasseneingabeIMwNw,
+#masseneingabeSpeichernSrch,
 #masseneingabeLaden,
 #btnMassEingMst,
 #btnMassEingAnl,
@@ -607,11 +607,11 @@ nav {
 #verschAbbrechen:hover,
 #mapDrucken:hover,
 #mstSuchenIMw:hover,
-#btnTageMasseneingabeIMw:hover,
-#btnWochenMasseneingabeIMw:hover,
-#btnMonateMasseneingabeIMw:hover,
-#btnJahreMasseneingabeIMw:hover,
-#masseneingabeSpeichern:hover,
+#btnTageMasseneingabeIMwNw:hover,
+#btnWochenMasseneingabeIMwNw:hover,
+#btnMonateMasseneingabeIMwNw:hover,
+#btnJahreMasseneingabeIMwNw:hover,
+#masseneingabeSpeichernSrch:hover,
 #masseneingabeLaden:hover,
 #btnMassEingMst:hover,
 #btnMassEingAnl:hover,
@@ -1321,10 +1321,10 @@ div#intBdeIMwHistorieDiv .controlDiv input{
   padding: 0px 30px 0 0;
 }
 
-button#btnTageMasseneingabeIMw.active,
-button#btnWochenMasseneingabeIMw.active,
-button#btnMonateMasseneingabeIMw.active,
-button#btnJahreMasseneingabeIMw.active {
+button#btnTageMasseneingabeIMwNw.active,
+button#btnWochenMasseneingabeIMwNw.active,
+button#btnMonateMasseneingabeIMwNw.active,
+button#btnJahreMasseneingabeIMwNw.active {
     background: #f3f3f3;
 }
 
@@ -1375,4 +1375,25 @@ table#tblMasseneingabeDataIMwTbl td input {
 }
 .fullWidthMasseneingabe #tabsManuell{
    margin-left: -141px;
+}
+
+/*07-12-2020*/
+.calcZeit1RowInputs.hide,
+.calcZeit2RowInputs.hide,
+.calcZeit3RowInputs.hide,
+.calcZeit4RowInputs.hide{
+  display: none;
+}
+.calcZeit1RowInputs input[readonly],
+.calcZeit2RowInputs input[readonly],
+.calcZeit3RowInputs input[readonly],
+.calcZeit4RowInputs input[readonly]{
+  background: #e3e6e8;
+}
+
+div#intBdeConcernOrDeletePopUpDiv button {
+    padding: 10px;
+}
+div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
+    margin-left: 10px;
 }

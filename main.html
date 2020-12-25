@@ -6909,14 +6909,15 @@
                         <button id="btnKonfigMstAnl">Konfiguration</button>
                         <br>
                         <br>
-                        <button id="masseneingabeSpeichern">Eingaben speichern</button>
-                        <button id="masseneingabeLaden">Existierende Daten laden</button>
+                        <!-- <button id="masseneingabeSpeichern">Eingaben speichern</button>
+                        <button id="masseneingabeLaden">Existierende Daten laden</button> -->
+                        <button id="masseneingabeSpeichernSrch">Eingaben speichern</button>
                         <div class="infosMasseneingabeInside">
                             <br>
-                            <button id="btnTageMasseneingabeIMw" class="active" data-id="1">Tage</button>
-                            <button id="btnWochenMasseneingabeIMw" data-id="2">Wochen</button>
-                            <button id="btnMonateMasseneingabeIMw" data-id="3">Monate</button>
-                            <button id="btnJahreMasseneingabeIMw" data-id="4">Jahre</button>
+                            <button id="btnTageMasseneingabeIMwNw" class="active" data-id="1">Tage</button>
+                            <button id="btnWochenMasseneingabeIMwNw" data-id="2">Wochen</button>
+                            <button id="btnMonateMasseneingabeIMwNw" data-id="3">Monate</button>
+                            <button id="btnJahreMasseneingabeIMwNw" data-id="4">Jahre</button>
                             <br>
                             <br>
                             <div class="infosMasseneingabeDateRangeDiv">
@@ -7067,8 +7068,16 @@
                         
                         </div>
                         
-                        <div id="timeIntervalWerteEnergiedatenIMw">                          
+                        <div id="timeIntervalWerteEnergiedatenIMw" class="timeIntervalWerteEnergiedatenIMw">
                         </div> 
+                        <div id="timeIntervalWerteEnergiedatenIMwHoldIds" class="timeIntervalWerteEnergiedatenIMwHoldIds">
+                            <input type="hidden" id="inputCurPrevId">
+                            <input type="hidden" id="inputNextId">
+                            <input type="hidden" id="inputBottomPrevId">
+                            <input type="hidden" id="inputBottomPrevNextId">
+                            <input type="hidden" id="inputValBottom">
+                            <input type="hidden" id="inputValBottomPrev">
+                        </div>
                     </div>
                     <input id="masseneingabeTimeInterval" style="display:none;"/>
                 </div>
@@ -7634,7 +7643,19 @@
         <button id="intBdeIMwHistAbbrechen" style="margin-left:50px;">Abbrechen</button>
     </div>
     <!--Interne Betriebsdaten  Historie 07-10-2020-->
-
+    <!--Start Interne Betriebsdaten search confirmation 11-12-2020-->
+    <!-- <div id="intBdeConcernOrDeletePopUp" class="intBdeConcernOrDeletePopUp" style="display:none;">
+        <p>
+             Warnung: Sie haben einen Wert besetzt, <br>
+             der nicht mit der bereits gesetzten Datenlagen<br>
+             in der Abfolge übereinstimmen kann.  
+        </p>
+        <div id="intBdeConcernOrDeletePopUpDiv">
+        <button id="intBdeConcern" >Concern</button>
+        <button id="intBdeDelete">Delete</button>
+        </div>
+    </div> -->
+    <!--End Interne Betriebsdaten search confirmation 11-12-2020-->
     <!--Interne Betriebsdaten  Historie row double click popup 07-10-2020-->
     <div id="intBdeIMwHistorieContainer" class="intBdeIMwHistorieContainer" style="display:none;">
         <div id="intBdeIMwHistorieDiv">
