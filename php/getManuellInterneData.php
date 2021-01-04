@@ -143,9 +143,16 @@ elseif($id == 'intBdeIMw'){
 }
 
 //echo $query2;die;
+if($id == 'masseneingabeSearch'){
+
 $records['query1'] = queryDB($conn, $query1, "read");
 $records['query2'] = queryDB($conn, $query2, "read");
 $records['query3'] = queryDB($conn, $query3, "read");
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
+}else{
+$records= queryDB($conn, $query, "read");
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+}
 //$records['query1'] = queryDB($conn, $query1, "read");
 /*$arr = [];
 $query2Records = queryDB($conn, $query2, "read");
@@ -162,7 +169,7 @@ foreach ($query3Records as $query3Record) {
 }
 echo '<pre>';print_r($arr);echo '</pre>';*/
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+
 
 
 ?>

@@ -6816,7 +6816,20 @@
                         <select id="einheitAnl" class="iMwEngHinz">
                             <option> </option>
                             <option value="1">Betriebsstunden</option>
-                            <option value="2">kWh</option>
+                            <option value="2">Energie kWh</option>
+                            <option value="3">Energie m³</option>
+                            <option value="4">Energie l </option>
+                            <option value="5">Energie kg </option>
+                        </select>
+                    </div>
+                    <div class="controlDiv control_system_div" style="display: none;">
+                        <label for="control_system">Control System</label>
+                        <select id="control_system">
+                            <option> </option>
+                            <option value="1" class="invisible">Count Up Stunden </option>
+                            <option value="2" class="invisible">Count Up Energie </option>
+                            <option value="3" class="invisible">Genullte Stunden </option>
+                            <option value="4" class="invisible">Genullte Energiewerte  </option>
                         </select>
                     </div>
                     <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
@@ -7072,11 +7085,14 @@
                         </div> 
                         <div id="timeIntervalWerteEnergiedatenIMwHoldIds" class="timeIntervalWerteEnergiedatenIMwHoldIds">
                             <input type="hidden" id="inputCurPrevId">
+                            <input type="hidden" id="inputCurrId">
                             <input type="hidden" id="inputNextId">
+                            <input type="hidden" id="inputBottomCurrId">
                             <input type="hidden" id="inputBottomPrevId">
-                            <input type="hidden" id="inputBottomPrevNextId">
-                            <input type="hidden" id="inputValBottom">
+                            <input type="hidden" id="inputValBottomCurr">
                             <input type="hidden" id="inputValBottomPrev">
+                            <input type="hidden" id="inputFocusedId">
+                            <input type="hidden" id="inputDeleteBotmId">
                         </div>
                     </div>
                     <input id="masseneingabeTimeInterval" style="display:none;"/>

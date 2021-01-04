@@ -3536,45 +3536,47 @@ $("#DkFeSpeichern").click(function() {
                 $(this).closest('tr').next('tr').addClass('hide');
             } 
            event.stopPropagation();         
-        });        
-        /*$(document).click(function() {
-            $(".calcZeit1RowInputs").removeClass("show");
-            $(".calcZeit1RowInputs").addClass("hide");
-            $(".calcZeit2RowInputs").removeClass("show");
-            $(".calcZeit2RowInputs").addClass("hide");
-            $(".calcZeit3RowInputs").removeClass("show");
-            $(".calcZeit3RowInputs").addClass("hide");
-            $(".calcZeit4RowInputs").removeClass("show");
-            $(".calcZeit4RowInputs").addClass("hide");
-        });*/
+        }); 
+
+        $('body').on('keyup input', '.txtBoxSrch', function(e){
+            var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            var inputId=this.id;
+            var splitId = inputId.split("_");
+            var currID = splitId[1];
+            var nextId = eval(splitId[1])+eval(1);
+            var bottomPrevId = eval(splitId[1])-eval(1);
+            var bottomPrevNextId = eval(bottomPrevId)-eval(1); 
+            var rowMainIDEn = $(this).closest('tr').attr('id');
+            var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
+    
+            var inputBottomCurrId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
+            var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
+            var inputCurPrevId = "#"+rowMainIDEn+" #anlageMainRow_"+bottomPrevId;
+            var inputCurrId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
+            var inputNextId = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
+            var inputValBottomPrev=$(inputBottomPrevId).val();   
+            var inputValBottomCurr=$(inputBottomCurrId).val();
+            $("#inputCurPrevId").val(inputCurPrevId);
+            $("#inputCurrId").val(inputCurrId);
+            $("#inputNextId").val(inputNextId);
+            $("#inputBottomCurrId").val(inputBottomCurrId);
+            $("#inputBottomPrevId").val(inputBottomPrevId);
+            $("#inputValBottomPrev").val(inputValBottomPrev);
+            $("#inputValBottomCurr").val(inputValBottomCurr);
+            /*$("#inputFocusedId").val(inputCurrId);*/
+            $("#inputDeleteBotmId").val(inputBottomCurrId);
+
+            e.stopPropagation();         
+        });
         $('body').on('change input', '.txtBoxSrch', function(e){
             var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             var inputId=this.id;
             var inputValFirst=$(this).val();
             $(this).addClass("isShowPopup");
-            
             var splitId = inputId.split("_");
-
-            /*if(zeitIntervallAnl==2){
-                //console.log(splitId);
-                var currID = splitId[1]+'_'+splitId[2];  
-                if(splitId[1]==53){
-                    var nextId = eval(1)+'_'+(eval(splitId[2])+eval(1));
-                }else{
-                    var nextId = eval(splitId[1])+eval(1)+'_'+splitId[2];
-                }
-                if(splitId[1]==1){
-                    var prevId = 53+'_'+(eval(splitId[2])-eval(1));
-                }else{
-                    var prevId = (eval(splitId[1])-eval(1))+'_'+splitId[2];
-                }
-            }else{*/
-                var currID = splitId[1];
-                var nextId = eval(splitId[1])+eval(1);
-                var prevId = eval(splitId[1])-eval(1); 
-                /*alert("nextId2="+nextId);
-                alert("prevId2="+prevId);*/
-           // }
+            var currID = splitId[1];
+            var nextId = eval(splitId[1])+eval(1);
+            var prevId = eval(splitId[1])-eval(1); 
 
             var inputIdNext = "#anlageMainRow_"+nextId;
             var inputIdPrev = "#anlageMainRow_"+prevId;
@@ -3597,54 +3599,70 @@ $("#DkFeSpeichern").click(function() {
             }
             e.stopPropagation();         
         });
-        /*$('body').on('click input', '.txtBoxSrch', function(e){*/
+
         $('body').on('click focus', '.txtBoxSrch', function(e){
             var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             var inputId=this.id;
-           // var inputValFirst=$(this).val();
             var splitId = inputId.split("_");
-            /*if(zeitIntervallAnl==2){
-                //console.log(splitId);
-                var currID = splitId[1]+'_'+splitId[2];  
-                if(splitId[1]==53){
-                    var bottomPrevId = eval(1)+'_'+(eval(splitId[2])+eval(1));
-                }else{
-                    var bottomPrevId = eval(splitId[1])+eval(1)+'_'+splitId[2];
+            var currID = splitId[1];
+            var currNextID = eval(splitId[1])+eval(1);
+            var bottomPrevId = eval(splitId[1])-eval(1);
+            var bottomPrevNextId = eval(bottomPrevId)-eval(1); 
+            var rowMainIDEn = $(this).closest('tr').attr('id');
+            var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
+    
+            var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
+            var inputBottomPrevNextId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevNextId;
+
+            var inputCurPrevId = "#"+rowMainIDEn+" #anlageMainRow_"+bottomPrevId;
+            var inputNextId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
+            var inputBottomCurrId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
+            
+            var einheitVal = $(this).closest('tr').attr('data-einheit');
+            var inptCurPrevId = $("#inputCurPrevId").val();
+            var inptCurrId= $("#inputCurrId").val();
+            var inputCurNextId = $("#inputNextId").val();
+            if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
+                if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
+                   if(Number($(inptCurrId).val()) <= Number($(inptCurPrevId).val())){
+                      alert('Current value should be greater');
+                      $(inptCurrId).val('');
+                      $(inputBottomPrevId).val('');
+                      $(inptCurrId).focus();
+                      resetInputsSearchMasseneingabe();
+                     return false;
+                   }
                 }
-                if(splitId[1]==1){
-                    var bottomPrevNextId = 53+'_'+(eval(splitId[2])-eval(1));
-                }else{
-                    var bottomPrevNextId = (eval(splitId[1])-eval(1))+'_'+splitId[2];
-                }
-            }else{*/
-                    var currID = splitId[1];
-                    var bottomPrevId = eval(splitId[1])-eval(1);
-                    var bottomPrevNextId = eval(bottomPrevId)-eval(1); 
-            //}
-            /*console.log('currID='+currID);
-            console.log('bottomPrevId='+bottomPrevId);
-            console.log('bottomPrevNextId='+bottomPrevNextId);*/
-            var rowMainID = $(this).closest('tr').attr('id');
+                if(($(inputCurNextId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inputCurNextId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
+                   if(Number($(inptCurrId).val()) >= Number($(inputCurNextId).val())){
+                      alert('Current value should not be greater then next value!');
+                      $(inptCurrId).val('');
+                      $(inputBottomPrevId).val('');
+                      $(inptCurrId).focus();
+                      resetInputsSearchMasseneingabe();
+                     return false;
+                   }
+                }                                                       
+            }
+            /*Check greater less condition*/
+             $("#inputFocusedId").val(inputNextId);
+            //$("#inputDeleteBotmId").val(inputBottomCurrId);
 
-            var inputBottomPrevId = "input#anlageCalculationRow_"+bottomPrevId;
-            var inputBottomPrevNextId = "input#anlageCalculationRow_"+bottomPrevNextId;
-
-            var inputCurPrevId = "#"+rowMainID+" #anlageMainRow_"+bottomPrevId;
-            var inputNextId = "#"+rowMainID+" #anlageMainRow_"+currID;
-
-            var inputValBottom=$(this).closest('tr').next('tr').find(inputBottomPrevId).val();   
-            var inputValBottomPrev=$(this).closest('tr').next('tr').find(inputBottomPrevNextId).val();
+            var inputValBottom=$(inputBottomPrevId).val();   
+            var inputValBottomPrev=$(inputBottomPrevNextId).val();
             var showPopupExist = $(inputCurPrevId).hasClass("isShowPopup");
-            //console.log('showPopupExist = '+showPopupExist);
-            $("#inputCurPrevId").val(inputCurPrevId);
+            //console.log('inputValBottom = '+inputValBottom);
+            //console.log('inputValBottomPrev = '+inputValBottomPrev);
+            /*$("#inputCurPrevId").val(inputCurPrevId);
             $("#inputNextId").val(inputNextId);
             $("#inputBottomPrevId").val(inputBottomPrevId);
             $("#inputBottomPrevNextId").val(inputBottomPrevNextId);
             $("#inputValBottom").val(inputValBottom);
             $("#inputValBottomPrev").val(inputValBottomPrev);
-
+*/
             if((inputValBottom !='' && inputValBottomPrev !='') && (typeof(inputValBottom) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
                 if(showPopupExist ==true){
+
                 var inputLengthBottom = inputValBottom.length;
                 var inputLengthBottomPrev = inputValBottomPrev.length;
 
@@ -3658,17 +3676,17 @@ $("#DkFeSpeichern").click(function() {
                     if(valLeft ==true && valRight ==true) {
                         if(inputLengthBottom != inputLengthBottomPrev){
                             //alert('show alert box 1');
-                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomPrevId);
+                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId);
                            // showPopup = true;
                         }
                     }else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
                             //alert('show alert box 2');
-                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomPrevId);
+                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId);
                             //showPopup = true;
                     }else if(valLeft ==false && valRight ==false) {
-                        if(nValBtmPrev.length != nValBtm.length ){
+                        if(inputLengthBottom != inputLengthBottomPrev){
                             //alert('show alert box 3');
-                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomPrevId);
+                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId);
                            // showPopup = false;
                         }
                     }                   
@@ -3680,38 +3698,67 @@ $("#DkFeSpeichern").click(function() {
          if (!$(event.target).closest('button,#btnMasseneingabeIMwSearch').length) {
                 if ($('#timeIntervalWerteEnergiedatenIMw').html() != ""){ 
                    var inputCurPrevId = $("#inputCurPrevId").val();
-                   var inputNextId= $("#inputNextId").val();
+                   var inputCurrId= $("#inputCurrId").val();
+                   var inputCurNextId = $("#inputNextId").val();
+                   var inputBottomCurrId= $("#inputBottomCurrId").val();
                    var inputBottomPrevId= $("#inputBottomPrevId").val();
-                   var inputBottomPrevNextId= $("#inputBottomPrevNextId").val();
-                   var showPopupExist = $(inputCurPrevId).hasClass("isShowPopup");
-                   var inputValBottom= $("#inputValBottom").val();
+                   var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
+                   var inputValBottomCurr= $("#inputValBottomCurr").val();
                    var inputValBottomPrev= $("#inputValBottomPrev").val();
-
-                   if((inputValBottom !='' && inputValBottomPrev !='') && (typeof(inputValBottom) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
+                   var einheitVal = $(inputCurrId).closest('tr').attr('data-einheit');
+                   /*Check greater less condition*/
+                   if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
+                       
+                      /* console.log($(inputCurrId).val());
+                       console.log($(inputCurPrevId).val());
+                       console.log($(inputCurNextId).val());*/
+                       if(($(inputCurPrevId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurPrevId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                           if(Number($(inputCurrId).val()) <= Number($(inputCurPrevId).val())){
+                              alert('Current value should be greater then last value!');
+                              $(inputCurrId).val('');
+                              $(inputBottomCurrId).val('');
+                              $(inputCurrId).focus();
+                              resetInputsSearchMasseneingabe();
+                             return false;
+                           }
+                       }
+                       if(($(inputCurNextId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurNextId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                           if(Number($(inputCurrId).val()) >= Number($(inputCurNextId).val())){
+                              alert('Current value should not be greater then next value!');
+                              $(inputCurrId).val('');
+                              $(inputBottomCurrId).val('');
+                              $(inputCurrId).focus();
+                              resetInputsSearchMasseneingabe();
+                             return false;
+                           }
+                       }
+                    }
+                   /*Check greater less condition*/
+                   if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
                     if(showPopupExist ==true){
-                    var inputLengthBottom = inputValBottom.length;
+                    var inputLengthBottom = inputValBottomCurr.length;
                     var inputLengthBottomPrev = inputValBottomPrev.length;
 
                     var valLeft = checkPositiveValue(inputValBottomPrev);
-                    var valRight = checkPositiveValue(inputValBottom);
+                    var valRight = checkPositiveValue(inputValBottomCurr);
 
-                    var nValBtm = convertToPositive(inputValBottom);
+                    var nValBtm = convertToPositive(inputValBottomCurr);
                     var nValBtmPrev =convertToPositive(inputValBottomPrev);
                     //if(showPopup==true){
                         if(valLeft ==true && valRight ==true) {
                             if(inputLengthBottom != inputLengthBottomPrev){
                                 //alert('show alert box 1');
-                                intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomPrevId);
+                                intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputCurrId,inputBottomCurrId);
                                // showPopup = true;
                             }
                         }else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
                                 //alert('show alert box 2');
-                                intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomPrevId);
+                                intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputCurrId,inputBottomCurrId);
                                 //showPopup = true;
                         }else if(valLeft ==false && valRight ==false) {
-                            if(nValBtmPrev.length != nValBtm.length ){
+                            if(inputLengthBottom != inputLengthBottomPrev){
                                 //alert('show alert box 3');
-                                intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomPrevId);
+                                intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputCurrId,inputBottomCurrId);
                             }
                         }                   
                     }
@@ -3726,10 +3773,7 @@ $("#DkFeSpeichern").click(function() {
     $("#intBdeIMwSpeichern").click(function(){
         //var anlIMw =$("#anlIMw").val();
         var zeitintervallAnl =$("#zeitintervallAnl").val();
-        //var monateMassEingDataAnlStart =$("#monateMassEingDataAnlStart").val();
-        //var notizBdeIMw =$("#notizBdeIMw").val();
         var noEnding =$("#anlIMwNoEnding").is(":checked");
-
         var validate = validateIntBdeFrm(noEnding,zeitintervallAnl,'infosIntBetriebsdaten',1);
         if(validate==false){
             return false;
@@ -3783,7 +3827,8 @@ $("#DkFeSpeichern").click(function() {
         var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
         var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);
         var sDate =dates[0];
-        var eDate =dates[1]; 
+        var eDate =dates[1];
+        resetInputsSearchMasseneingabe();
         if(zeitintervallAnl == 2 && sDate != '' && eDate != ''){
             var from = sDate.split("-");
             var g = from[0]; //first week selected value
@@ -3821,6 +3866,9 @@ $("#DkFeSpeichern").click(function() {
         var key = $(".infosMasseneingabeInside button.active").attr('data-id');
         saveToDBMasseneingabeEingaben(key);
     });
-    
 
-    
+   /*On change Einheit create Control System select option */
+   $(".infosIntBetriebsdaten #einheitAnl").change(function() {
+        einheitAnlOnChangeChildSelectOpt(this.value);
+   });
+   /*On change Einheit create Control System select option */

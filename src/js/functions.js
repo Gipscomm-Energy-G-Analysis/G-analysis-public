@@ -14513,9 +14513,6 @@ function validateStartEndInputBezugFaktorTypeBasicBetween(faktorType){
 
 /*10-08-2020 formate result*/
 function tblOptionenEPrdDKffFormat ( c,d ) {
-     //return '<b style="float:right;margin-right:27px;">Result : '+d+'</b>';
-    /* rowResult.push(d);
-     rowCalculator.push(c); */
      return '<table cellpadding="5" cellspacing="0" border="0" style="padding-right: 26px;float: right;font-weight:bold;">'+
         '<tr>'+
             '<td>Result :</td>'+
@@ -14525,9 +14522,6 @@ function tblOptionenEPrdDKffFormat ( c,d ) {
 }
 
 function tblOptionenRecordAndDelOpt( c,d,e ) {
-     //return '<b style="float:right;margin-right:27px;">Result : '+d+'</b>';
-    /* rowResult.push(d);
-     rowCalculator.push(c); */
      return '<table id="childTableGetDFaktr" cellpadding="5" cellspacing="0" border="0" style="padding-right: 26px;float: right;font-weight:bold;">'+
         '<tr>'+
             '<td>Result :</td>'+
@@ -14677,7 +14671,6 @@ function dynamischeKorrekturFaktorenMessstellenCatSel2(){
     });
 }
 
-
 function getDynamischeKrktrFaktorDeleteOptClickValues(calcID){
          $.ajax({
             type: "POST",
@@ -14808,8 +14801,6 @@ function getDynamischeKrktrFaktorDeleteOptClickValues(calcID){
         });
 }
 
-
-
 /*28-08-2020 dynamiche Correction factor update record Delete option button ajax response*/
 function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
 
@@ -14916,16 +14907,12 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
                 alert("Bitte geben Sie den Textwert in faktore und wert ein");
                 return false;
             }
-
-           // alert('result2=' +result2 );
         }
         if(result3CommaDigit){
              var result2 = result3CommaDigit.toFixed(4).replace(".", ",");
          }else{
              var result2 = '';
          }
-
-        ////////////////////////
         var basisFktr2WertRepRght = basisFktr2Wert.replace(",", ".");
         var basisFktr2WertCommaRght = basisFktr2Wert.replace(".", ",");
         var faktore3RepType5 = optionFaktore2.replace(",", ".");
@@ -15070,34 +15057,6 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
 
 /*Ajax Call for the Manuel module serach 18-09-2020*/
 function tblAnlOhneZeitintervallIMwSuchenMethod() {
-    /*var b = null,
-    e = new DataMachine,
-    c = void 0,
-    d = void 0,
-    g = [],
-    f = void 0,
-    h = "",
-    q = "SELECT * FROM ",
-    r = void 0;  
-    b = tblAnlOhneZeitintervallIMwSuchen, mstOrAnlString = "tblAnlOhneZeitintervallIMwSuchen", r = ReadInstance.INTERNE_BETRIEBSDATEN, c = "MessstellenAnlagen\n",d = "interneMesswerteConfig\n",
-        g = ["mst_ID", "nameMSt", "anlageMst", "startDate", "endDate", "messartMst", "note"], f = "messartMst"            
-        b.clear().draw();
-        q += c + " LEFT JOIN " + d + " ON MessstellenAnlagen.mst_ID = interneMesswerteConfig.mst_ID " + " WHERE " + f + " = 'manuell' AND deleted <> 'true'" + h + " ";
-        e.runQuery("read", $("#nameDB").val(), q).then(function(a) {
-            a = JSON.parse(a);
-            for (var c = a.length, e = 0; e < c; e++) b.row.add([a[e][g[0]], a[e][g[1]], a[e][g[2]], a[e][g[3]], a[e][g[4]], a[e][g[5]], a[e][g[6]]]).draw(), b.column(0).visible(!1).draw();
-            $("#" + mstOrAnlString + " tbody").off("dblclick");
-            $("#" + mstOrAnlString + " tbody").on("dblclick", "tr", function() {
-                var a = b.row(this).data();
-                //console.log(a);    
-                resetFormAllgemein('infosIntBetriebsdaten',1);           
-                keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
-                $("#mstID").val(a[0]);
-                $("#anlIMw").val(a[1]);
-                $("#anlNrIMw").val(a[2]);  
-                $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");              
-            })
-        })*/
         $("#tblAnlOhneZeitintervallIMwSearchContainer").css("display", "block");
         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog({
             height: $(window).height() - .125 * $(window).height(),
@@ -15244,7 +15203,6 @@ function validateNullValZeitintervallAnlSelectOpt(start,end,zeitintervallAnl){
         
 }
 
-
 /*Ajax Call for the Interne Betriebsdaten Speichern 05-10-2020*/
 function intBdeIMwHistorieSpeichernPopUp() {
    // alert('test');
@@ -15293,8 +15251,6 @@ function intBdeIMwHistorieSpeichernPopUp() {
         });
         $("#intBdeIMwHistOk").on("click", function() {
             $("#archiviertIntBdeIMw").val("true");
-            //instanzSpeichern("intBdeIMwSpeichern");
-            //instanzErstellen("intBdeIMwSpeichern");                     
             intBdeIMwHistOkSpeichernMethod();
             interneMesswerteConfigSpeichernMethod();
             $("#infosIntBdeIMwHistoriePopUpDiv, #intBdeIMwHistOk").css("display", "none");
@@ -15318,8 +15274,6 @@ function intBdeIMwHistorieSpeichernPopUp() {
     });
         
 }
-
-
  
 /*Ajax Call for the Manuel module serach 18-09-2020*/
 function intBdeIMwHistOkSpeichernMethod(){
@@ -15393,7 +15347,6 @@ function intBdeIMwHistOkGetHistorie(){
     })
 }
 
-
 /*Get history details using anl_ID*/
 function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
     $('#intBdeIMwHistorieContainer').dialog({  height: 380,
@@ -15458,7 +15411,6 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
         }
     })
 }
-
 
 /*Ajax Call for the Manuel module serach 18-09-2020*/
 function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
@@ -15687,7 +15639,6 @@ function datePickerForInterneBetriebsdaten(sId,id){
               of: $(this)
             });        
     }); 
-
     $("." + sId + " #tageMassEingDataAnlStart" +id+ "").datepicker({
         numberOfMonths: 1,
         dateFormat: 'dd.mm.yy',
@@ -15702,71 +15653,11 @@ function datePickerForInterneBetriebsdaten(sId,id){
            $("." + sId + " #tageMassEingDataAnlStart" +id+ "").datepicker("option","maxDate", selected)
         }
     });  
-
-    /*var dateFormat = "dd.mm.yy",
-    beginDate = $( "." + sId + " #tageMassEingDataAnlStart" +id+ "")
-    .datepicker({
-        changeMonth: true,
-        numberOfMonths: 1,
-        dateFormat: 'dd.mm.yy' 
-    })
-    .on( "change", function() {
-        endDate.datepicker("option", "minDate", getDate(this));
-    }),
-    endDate = $( "." + sId + " #tageMassEingDataAnlEnde" +id+ "" ).datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        numberOfMonths: 1,
-        dateFormat: 'dd.mm.yy' 
-    })
-    .on( "change", function() {
-        beginDate.datepicker( "option", "maxDate", getDate(this));
-    });*/
 }
-/*function getDate(element) {
-    var date;
-    try {
-        date = $.datepicker.parseDate( dateFormat, element.value );
-    } catch( error ) {
-        date = null;
-    }
-    return date;
-}*/
-
 
 /*Interne Messwerte Start 20-10-2020*/
 function keinZeitIntervallZugewiesen(){
-    /*var b = null,
-    e = new DataMachine,
-    c = void 0,
-    d = void 0,
-    s = void 0,
-    t = void 0,
-    g = [],
-    f = void 0,
-    h = "",
-    q = "SELECT * FROM ",
-    r = void 0;  
-    b = tblAnlOhneZeitintervallIMw, mstOrAnlString = "tblAnlOhneZeitintervallIMw", r = ReadInstance.INTERNE_BETRIEBSDATEN, c = "MessstellenAnlagen\n",d = "interneMesswerteConfig\n",s = "iMwUnits\n", t = "intervalType\n",
-        g = ["mst_ID", "nameMSt", "anlageMst", "startDate", "endDate", "messartMst", "note"], f = "MessstellenAnlagen.messartMst"            
-        b.clear().draw();
-        q += c + " LEFT JOIN " + d + " ON MessstellenAnlagen.mst_ID = interneMesswerteConfig.mst_ID " + " LEFT JOIN " + s + " ON MessstellenAnlagen.einheitAnl = iMwUnits.unt_ID " + " WHERE " + f + " = 'manuell' AND MessstellenAnlagen.deleted <> 'true'" + h + " "; console.log(q);
-        e.runQuery("read", $("#nameDB").val(), q).then(function(a) {
-            a = JSON.parse(a);$("#intBdeIMwCount").val(a.length);
-            for (var c = a.length, e = 0; e < c; e++) b.row.add([a[e][g[0]], a[e][g[1]], a[e][g[2]], a[e][g[3]], a[e][g[4]], a[e][g[5]], a[e][g[6]]]).draw(), b.column(0).visible(!1).draw();
-            $("#" + mstOrAnlString + " tbody").off("dblclick");
-            $("#" + mstOrAnlString + " tbody").on("dblclick", "tr", function() {
-                var a = b.row(this).data();
-                //console.log(a);    
-                resetFormAllgemein('infosIntBetriebsdaten',1);           
-                keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
-                $("#mstID").val(a[0]);
-                $("#anlIMw").val(a[1]);
-                $("#anlNrIMw").val(a[2]);                
-            })
-        })*/
-
-     $.ajax({
+    $.ajax({
         type: "POST",
         async: !0,
         url: "php/getManuellInterneData.php",
@@ -15814,10 +15705,8 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
             var b = a.length;
             console.log(a);
             if (b>0) {
-
                 var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
                 var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
-
                 $("." + sId + " #zeitintervallAnl").val(a[0]['intTp_ID']);
                 $("." + sId + " #einheitAnl").val(a[0]['unt_ID']);
                 $("." + sId + " #notizBdeIMw").val(a[0]['note']);
@@ -15827,7 +15716,10 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
                 if(a[0]['intTp_ID']==2){
                     $("." + sId + " #wochenWMassEingDataAnlStart1").val(a[0]['startWeek']);
                     $("." + sId + " #wochenWMassEingDataAnlEnde1").val(a[0]['endWeek']);
-                }               
+                } 
+                $("." + sId + " .control_system_div").show();  
+                $("." + sId + " #control_system").val(a[0]['einheitControlSys']); 
+                einheitAnlOnChangeChildSelectOpt(a[0]['unt_ID']);
              }
         }
     })
@@ -15869,9 +15761,6 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
                 $("." + sId + " .zeitintervallAnl_3").hide();
                 $("." + sId + " .zeitintervallAnl_4").hide();
                 $("." + sId + " .zeitintervallAnl_NoEnding").show();
-
-               
-                //$("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val(startDateSplit[0]);
                 if(id==3){
                     var startDateSplit = startDate.split('-');
                     var endDateSplit = endDate.split('-');
@@ -15892,16 +15781,6 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
                      $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").prop('disabled', false);
                 }  
            }else if(zeitIntVal == 3){
-                /*var sDate = startDate.split("-");
-                var startYear =sDate[0];
-                var startMonth =sDate[1];
-                var startDateActual = sDate[1]+"."+sDate[0];
-
-                var eDate = endDate.split("-");
-                var endYear =eDate[0];
-                var endMonth =eDate[1];
-                var endDateActual = eDate[1]+"."+eDate[0];*/
-
                 $("." + sId + " .zeitintervallAnl_1").hide();
                 $("." + sId + " .zeitintervallAnl_2").hide();
                 $("." + sId + " .zeitintervallAnl_3").show();
@@ -15956,6 +15835,7 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
             endDate:endDate,
             ending:$("#anlIMwNoEnding").val(),
             note:$("#notizBdeIMw").val(),
+            einheitControlSys:$("#control_system").val(),
 
         },
         success: function(a) {
@@ -15972,12 +15852,10 @@ function resetFormAllgemein(sId,id){
     $("." + sId + " .zeitintervallAnl_3").hide();
     $("." + sId + " .zeitintervallAnl_4").hide();
     $("." + sId + " .zeitintervallAnl_NoEnding").hide();
-
     $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
     $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
     $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
     $("." + sId + " #anlIMwNoEnding").prop('checked', false);
-
     $("." + sId + " .zeitintervallAnl_1 input").val("");
     $("." + sId + " .zeitintervallAnl_2 input").val("");
     $("." + sId + " .zeitintervallAnl_3 input").val("");
@@ -15988,10 +15866,11 @@ function resetFormAllgemein(sId,id){
     $("." + sId + " #anlIMw").val("");
     $("." + sId + " #anlNrIMw").val("");
     $("." + sId + " #notizBdeIMw").val("");
+    $("." + sId + " #control_system").val("");
+    $("." + sId + " .control_system_div").hide();
 }
 
 function returnStartDateAndEndDate(val,sId,id){
-        //var val = $("." + sId + " #zeitintervallAnl").val();
         if(val ==1){ 
             var startDate = $("." + sId + " #tageMassEingDataAnlStart" + id + "").val(); 
             var endDate = $("." + sId + " #tageMassEingDataAnlEnde" + id + "").val();
@@ -16010,7 +15889,6 @@ function returnStartDateAndEndDate(val,sId,id){
             var endDate = $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").val();
         }
         return [startDate, endDate];
-  
 }
 
 function zeitintervallChange(val,sId,id){            
@@ -16018,19 +15896,17 @@ function zeitintervallChange(val,sId,id){
     $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
     $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
     $("." + sId + " #anlIMwNoEnding").prop('checked', false);
-
     $("." + sId + " .zeitintervallAnl_1 input").val("");
     $("." + sId + " .zeitintervallAnl_2 input").val("");
     $("." + sId + " .zeitintervallAnl_3 input").val("");
     $("." + sId + " .zeitintervallAnl_4 input").val("");
-    
+   
        if(val == 1){
             $("." + sId + " .zeitintervallAnl_1").show();
             $("." + sId + " .zeitintervallAnl_2").hide();
             $("." + sId + " .zeitintervallAnl_3").hide();
             $("." + sId + " .zeitintervallAnl_4").hide();
             $("." + sId + " .zeitintervallAnl_NoEnding").show();
-
        }else if(val == 2){
             $("." + sId + " .zeitintervallAnl_1").hide();
             $("." + sId + " .zeitintervallAnl_2").show();
@@ -16043,23 +15919,19 @@ function zeitintervallChange(val,sId,id){
            $("." + sId + " .zeitintervallAnl_2").hide();
             $("." + sId + " .zeitintervallAnl_3").show();
             $("." + sId + " .zeitintervallAnl_4").hide();
-            $("." + sId + " .zeitintervallAnl_NoEnding").show();
-        
+            $("." + sId + " .zeitintervallAnl_NoEnding").show();  
        }else if(val == 4){
             $("." + sId + " .zeitintervallAnl_1").hide();
             $("." + sId + " .zeitintervallAnl_2").hide();
             $("." + sId + " .zeitintervallAnl_3").hide();
             $("." + sId + " .zeitintervallAnl_4").show();
             $("." + sId + " .zeitintervallAnl_NoEnding").show();
-
        }else{
             $("." + sId + " .zeitintervallAnl_1").hide();
             $("." + sId + " .zeitintervallAnl_2").hide();
             $("." + sId + " .zeitintervallAnl_3").hide();
             $("." + sId + " .zeitintervallAnl_4").hide();
             $("." + sId + " .zeitintervallAnl_NoEnding").hide();
-            
-
        }  
 }
 
@@ -16113,7 +15985,6 @@ function noEndingChange(val,sId,id){
        } 
   }
 
-
 function intBdeIMwNextPrev(key,countRecord,mst_ID){
     $.ajax({
             type: "POST",
@@ -16152,15 +16023,12 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
         });
     }
 
-
     /*02-11-2020 btn Masseneingabe IMw functionality*/
     function btnMasseneingabeIMwChange(val,sId,id){
         $("." + sId + " .zeitintervallAnl_1 input").val("");
         $("." + sId + " .zeitintervallAnl_2 input").val("");
         $("." + sId + " .zeitintervallAnl_3 input").val("");
         $("." + sId + " .zeitintervallAnl_4 input").val("");
-        
-        
         /*Months Start*/
         var date = new Date();
         var eYY3  =date.getFullYear();
@@ -16209,7 +16077,7 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
             var startWk_2 = 53+weekDiff; 
             var sDate2_set = date2.setFullYear(date2.getFullYear() - 1);
             var sDate2 = new Date(sDate2_set);
-            var startYear_2 = date2.getFullYear();alert(startYear_2);
+            var startYear_2 = date2.getFullYear();
         }
         /*Wochen End*/ 
 
@@ -16310,8 +16178,8 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                             $row += '</tr>';
                         }
                     }
-                    for (var e = 0; e < b; e++){                        
-                       $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"><td>'+a.query1[e].nameMSt+'</td>';
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                            for (var r = 0; r <= days; r++){ 
                                 var n='';
                                 //console.log(a[e].ending);
@@ -16326,15 +16194,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                   if(a.query1[e].startDate > dateArr[r]){
                                      n='disabled';
                                     }
-                                }
-                               /* let inpVal='';
-                                const index = a.query2.findIndex((element, index) => {
-                                  if (element.on_date === dateArr[r] && element.mst_ID === a.query1[e].mst_ID) {
-                                        inpVal += element.val;
-                                       //console.log(inpVal);
-                                       }
-                                  });*/
-                                //console.log(inpVal);
+                                }                               
                                 var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
                                 $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
                             }             
@@ -16361,13 +16221,6 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                 if(n !== 'disabled'){
                                     rdOnly = 'readonly';
                                 }
-                                /*let inpVal1='';
-                                const index1 = a.query3.findIndex((element, index) => {
-                                  if (element.on_date === dateArr[r] && element.mst_ID === a.query1[e].mst_ID) {
-                                        inpVal1 += element.result;
-                                       //console.log(inpVal);
-                                       }
-                                  });*/
                                var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
                                 $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
                             }             
@@ -16436,7 +16289,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                         var s1 =s2=  to1[0]; //second week selected value
                         var t1 =t2=  to1[1]; //second year input text value
                                           
-                             $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"><td>'+a.query1[e].nameMSt+'</td>';
+                             $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                              var count1 = 0;
                              for (var r1 = 0; r1 <= years; r1++){
                                 var m='disabled';
@@ -16582,7 +16435,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                       }
                     }
                     for (var e = 0; e < b; e++){                        
-                       $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow"><td>'+a.query1[e].nameMSt+'</td>';
+                       $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                         for (var r = 0; r <= months; r++){   
                             var n=''; 
                             if(a.query1[e].ending ==0){
@@ -16601,7 +16454,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                             $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
                         }                        
                         $row += '</tr>';
-                        $row += '<tr class="calcZeit3RowInputs hide disabledRow" id=" dataDisabledRow-'+e+'"><td></td>';
+                        $row += '<tr class="calcZeit3RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
                         for (var r = 0; r <= months; r++){   
                             var n=''; 
                             if(a.query1[e].ending ==0){
@@ -16645,7 +16498,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                         }
                     }
                     for (var e = 0; e < b; e++){                        
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                         for (var r = 0; r <= years; r++){
                             let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear()); 
                             var t='';   
@@ -16667,7 +16520,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                         }                        
                         $row += '</tr>';
 
-                        $row += '<tr class="calcZeit4RowInputs hide disabledRow" id="  dataDisabledRow-'+e+'"><td></td>';
+                        $row += '<tr class="calcZeit4RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
                         for (var r = 0; r <= years; r++){
                             let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear()); 
                             var t='';   
@@ -16740,15 +16593,12 @@ function getMonthsInToArray(start, end) {
     return arr;
 }
 
-
-
 function convertToDateMonthAndYearformate(str) {
   var date = new Date(str),
     mnth = ("0" + (date.getMonth() + 1)).slice(-2),
     day = ("0" + date.getDate()).slice(-2);
   return [day,mnth,date.getFullYear() ].join(".");
 }
-
 
 function convertToMonthAndYearformate(str) {
   var date = new Date(str),
@@ -16758,7 +16608,6 @@ function convertToMonthAndYearformate(str) {
 }
 
 function convertDateFormateForDataTbl(type,str){
-    //console.log('str='+str);
     if(str !=''){
         if(type == 1 ){
             var date = new Date(str);
@@ -16779,20 +16628,7 @@ function convertDateFormateForDataTbl(type,str){
     return dt;
 }
 
-
-
-
 function saveToDBMasseneingabeEingaben(key){
-        /*var postData = "";
-        $("#tblMasseneingabeDataIMwTbl").find("td input:text").each(function() {
-            textVal = this.value;            
-            //inputName = $(this).attr("name");
-            mstID = $(this).closest("td").attr("data-id");
-            date = $(this).closest("td").attr("date");
-            //console.log('textVal='+textVal);
-            postData+='&textVal='+textVal+'&mstID='+mstID+'&date='+date;
-            
-        });*/
         var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
         var postDataEnabled =new Array();
         var enabledRow = [];
@@ -16802,13 +16638,10 @@ function saveToDBMasseneingabeEingaben(key){
                     textValEnabled = $(this).find('input').val();
                     mstIDEnabled = $(this).attr("data-id");
                     dateEnabled = $(this).attr("date"); 
-                    /*myObj +='&textVal='+textVal+'&mstID='+mstID+'&date='+date;*/
-                     /*myRows ={ 'textVal': textVal, 'mstID': mstID, 'date': date };*/
-                     enabledRow.push({
+                    enabledRow.push({
                         'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
                      });
                 }); 
-                 //myObj = myRows;
             });
             var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
             var postDataDisabled =new Array();
@@ -16819,18 +16652,14 @@ function saveToDBMasseneingabeEingaben(key){
                     textValDisabled = $(this).find('input').val();
                     mstIDDisabled = $(this).attr("data-id");
                     dateDisabled = $(this).attr("date"); 
-                    /*myObj +='&textVal='+textVal+'&mstID='+mstID+'&date='+date;*/
-                     /*myRows ={ 'textVal': textVal, 'mstID': mstID, 'date': date };*/
-                     disabledRow.push({
+                    disabledRow.push({
                         'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
                      });
                 }); 
-                 //myObj = myRows;
             });
 
              var postDataEnabled = JSON.stringify(enabledRow);
              var postDataDisabled = JSON.stringify(disabledRow);
-             //console.log(postData);  
                $.ajax({
                     type: "POST",
                     url: "php/saveMasseneingabeEingaben.php",
@@ -16848,7 +16677,7 @@ function saveToDBMasseneingabeEingaben(key){
                     },
                     success: function(a) {
                        alert(a);
-                       $('#tblMasseneingabeDataIMwTbl tbody td input').val("");
+                      /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
                     }
                 });
     }
@@ -16945,9 +16774,8 @@ function validateIntBdeFrm(noEnding,Zeitintervall,sId,id){
     }
   }
 
-
 /*Concern Delete popup for the search functionality 05-10-2020*/
-function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID) {
+function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID) { 
    $("#intBdeConcernOrDeletePopUp").remove();   
    $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none;'> <p>Warnung: Sie haben einen Wert besetzt, <br>der nicht mit der bereits gesetzten Datenlagen<br>in der Abfolge übereinstimmen kann.</p><div id='intBdeConcernOrDeletePopUpDiv'><button id='intBdeConcern' >Concern</button><button id='intBdeDelete'>Delete</button></div></div>").dialog({
             height: 250,
@@ -16965,20 +16793,22 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID) {
         },
         open: function(event, ui) {    
             $("#intBdeConcern").on("click", function() { 
+                var inputCurrId = $("#inputCurrId").val();
+                var inputCurPrevId = $("#inputCurPrevId").val();
                 $("" + prevID + "").removeClass("isShowPopup");
-                $("" + nextID + "").focus();            
+                $($("#inputFocusedId").val()).focus();
+                $("" + inputCurrId + "").removeClass("isShowPopup");
                 $("#intBdeConcernOrDeletePopUp").remove(); 
-                $("#inputCurPrevId").val("");
-                $("#inputNextId").val("");
-                $("#inputBottomPrevId").val("");
-                $("#inputBottomPrevNextId").val("");
-                $("#inputValBottom").val("");
-                $("#inputValBottomPrev").val("");
             });
             $("#intBdeDelete").on("click", function() {
-                $("" + prevID + "").val("");
-                $("" + prevBottomID + "").val("");
-                $("" + prevID + "").focus();
+                var inputCurrId = $("#inputCurrId").val();
+                //var inputFocusedId = $("#inputFocusedId").val();
+                var inputDeleteBotmId = $("#inputDeleteBotmId").val();
+                $("" + inputCurrId + "").val("");
+                $(inputCurrId).closest('tr').next('tr').find(inputDeleteBotmId).val("");
+                $("" + inputCurrId + "").focus();
+                $("" + prevID + "").removeClass("isShowPopup");
+                $("" + inputCurrId + "").removeClass("isShowPopup");
                 $("#intBdeConcernOrDeletePopUp").remove(); 
             });
          }
@@ -16995,13 +16825,9 @@ function checkPositiveValue(val){
     }
 }
 function convertToPositive(a) { 
-        // Check the number is negative 
         if (a < 0) { 
-            // Multiply number with -1 
-            // to make it positive 
             a = a * -1; 
-        } 
-        // Return the positive number 
+        }  
         return a; 
 } 
 
@@ -17022,4 +16848,43 @@ function findArrValueByDateWeek(date,week,mst_ID,arrName){
       }     
     });
     return inpVal;
+}
+
+function resetInputsSearchMasseneingabe(){
+    $("#inputCurPrevId").val("");
+    $("#inputCurrId").val("");
+    $("#inputBottomCurrId").val("");
+    $("#inputBottomPrevId").val("");
+    $("#inputValBottomPrev").val("");
+    $("#inputValBottomCurr").val("");
+    $("#inputFocusedId").val("");
+    $("#inputNextId").val("");
+}
+
+function einheitAnlOnChangeChildSelectOpt(einheitAnlVal){
+       $('.infosIntBetriebsdaten #control_system > option').each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $(".infosIntBetriebsdaten .control_system_div").show();
+                $(".infosIntBetriebsdaten #control_system option[value='1']").addClass('visible');
+                $(".infosIntBetriebsdaten #control_system option[value='2']").addClass('visible');
+                $(".infosIntBetriebsdaten #control_system option[value='1']").removeClass('invisible');
+                $(".infosIntBetriebsdaten #control_system option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $(".infosIntBetriebsdaten .control_system_div").show();
+                $(".infosIntBetriebsdaten #control_system option[value='2']").addClass('visible');
+                $(".infosIntBetriebsdaten #control_system option[value='4']").addClass('visible');
+                $(".infosIntBetriebsdaten #control_system option[value='2']").removeClass('invisible');
+                $(".infosIntBetriebsdaten #control_system option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $(".infosIntBetriebsdaten .control_system_div").hide();
+    }
 }

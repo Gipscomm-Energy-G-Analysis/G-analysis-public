@@ -1397,3 +1397,10 @@ div#intBdeConcernOrDeletePopUpDiv button {
 div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
     margin-left: 10px;
 }
+
+.control_system_div #control_system .invisible{
+  display: none;
+}
+.control_system_div #control_system .visible{
+  display: block;
+}

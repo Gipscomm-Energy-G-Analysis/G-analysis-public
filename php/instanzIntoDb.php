@@ -2956,6 +2956,7 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
     $intTp_ID = $_POST['intTp_ID'];
     $unt_ID = $_POST['unt_ID'];
     $note = $_POST['note'];
+    $einheitControlSys = $_POST['einheitControlSys'];
     /*$startDate = $_POST['startDate'];
     $endDate = $_POST['endDate'];  */
     $ending = $_POST['ending'];
@@ -3031,12 +3032,12 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
 
     if(count($records) > 0){
       $tsql = "UPDATE interneMesswerteConfig SET intTp_ID = '$intTp_ID', 
-      unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note'";
-      $tsql .= "WHERE mst_ID = $mstID ";
+      unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note',einheitControlSys = '$einheitControlSys'";
+      $tsql .= " WHERE mst_ID = $mstID ";
     }
     else {
-      $tsql = "INSERT INTO interneMesswerteConfig (intTp_ID,unt_ID, mst_ID, startDate,endDate,startWeek,endWeek,ending,note) ";
-      $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note') ";
+      $tsql = "INSERT INTO interneMesswerteConfig (intTp_ID,unt_ID, mst_ID, startDate,endDate,startWeek,endWeek,ending,note,einheitControlSys) ";
+      $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note','$einheitControlSys') ";
     }  
   }
 }
