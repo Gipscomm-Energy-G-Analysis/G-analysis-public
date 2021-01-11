@@ -1311,7 +1311,8 @@ try {
                 },
                 success: function(a) {
                     a = $.parseJSON(a);
-                    const energieformen =
+
+                    const energieformenAnl =
                         [1, 2, 3, 4]
                         .map(idx => $(`#energieform${idx}AllgemeinAnl`).val())
 
@@ -1319,7 +1320,7 @@ try {
                     $(".energieformenLieg").append("<option></option>");
                     for (i = 0; i < a.length; i++) 1 == a[i].aktivEnf && $(".energieformenLieg").append("<option>" + a[i].nameEnf + "</option>")
 
-                    energieformen
+                    energieformenAnl
                     .forEach((a, i) => $($(`#energieform${incr(i)}AllgemeinAnl`).val(a)))
                 }
             })
@@ -4804,9 +4805,7 @@ try {
                                     ["#energieform2Lieg", "energieform2"],
                                     ["#energieform3Lieg", "energieform3"],
                                     ["#energieform4Lieg", "energieform4"],
-                                    ["#energieform5Lieg",
-                                        "energieform5"
-                                    ],
+                                    ["#energieform5Lieg", "energieform5"],
                                     ["#energieform6Lieg", "energieform6"],
                                     ["#energieform7Lieg", "energieform7"],
                                     ["#managementsystem1Lieg", "managementsystem1"],
