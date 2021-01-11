@@ -628,329 +628,329 @@ else{
 }
 elseif($id == "anl") {
 
-$modus = $_POST['modus'];
-$liegID = $_POST['liegID'];
+    $modus = $_POST['modus'];
+    $liegID = $_POST['liegID'];
 
-$anlagennummer = $_POST['anlagennummer'];
-$bezeichnung = $_POST['bezeichnung'];
-$aktiv = $_POST['aktiv'];
-$typ = $_POST['typ'];
-$seriennummer = $_POST['seriennummer'];
-$standort = $_POST['standort'];
-$anschaffungsdatum = $_POST['anschaffungsdatum'];
-$baujahr = $_POST['baujahr'];
+    $anlagennummer = $_POST['anlagennummer'];
+    $bezeichnung = $_POST['bezeichnung'];
+    $aktiv = $_POST['aktiv'];
+    $typ = $_POST['typ'];
+    $seriennummer = $_POST['seriennummer'];
+    $standort = $_POST['standort'];
+    $anschaffungsdatum = $_POST['anschaffungsdatum'];
+    $baujahr = $_POST['baujahr'];
 
-if($_POST['jahresbetriebsstunden'] == ''){
-$jahresbetriebsstunden = 0;
-}
-else{
-	$jahresbetriebsstunden = $_POST['jahresbetriebsstunden'];
-}
+    if($_POST['jahresbetriebsstunden'] == ''){
+        $jahresbetriebsstunden = 0;
+    }
+    else{
+    	$jahresbetriebsstunden = $_POST['jahresbetriebsstunden'];
+    }
 
-$notizAllgemein = $_POST['notizAllgemein'];
-$produkt = $_POST['produkt'];
+    $notizAllgemein = $_POST['notizAllgemein'];
+    $produkt = $_POST['produkt'];
 
-if($_POST['produktionsmenge'] == ''){
-$produktionsmenge = 0;
-}
-else{
-	$produktionsmenge = $_POST['produktionsmenge'];
-}
+    if($_POST['produktionsmenge'] == ''){
+        $produktionsmenge = 0;
+    }
+    else{
+    	$produktionsmenge = $_POST['produktionsmenge'];
+    }
 
-$produktionsmengeEinheit = $_POST['produktionsmengeEinheit'];
-$produktnummer = $_POST['produktnummer'];
-$mehrProdukte = $_POST['mehrProdukte'];
+    $produktionsmengeEinheit = $_POST['produktionsmengeEinheit'];
+    $produktnummer = $_POST['produktnummer'];
+    $mehrProdukte = $_POST['mehrProdukte'];
 
-$zugeordneterVerbraucherID1 = $_POST['zugeordneterVerbraucherID1'];
-$zugeordneterVerbraucherID2 = $_POST['zugeordneterVerbraucherID2'];
-$zugeordneterVerbraucherID3 = $_POST['zugeordneterVerbraucherID3'];
-$zugeordneterVerbraucherID4 = $_POST['zugeordneterVerbraucherID4'];
-$zugeordneterVerbraucherID5 = $_POST['zugeordneterVerbraucherID5'];
-$zugeordneterVerbraucherID6 = $_POST['zugeordneterVerbraucherID6'];
+    $zugeordneterVerbraucherID1 = $_POST['zugeordneterVerbraucherID1'];
+    $zugeordneterVerbraucherID2 = $_POST['zugeordneterVerbraucherID2'];
+    $zugeordneterVerbraucherID3 = $_POST['zugeordneterVerbraucherID3'];
+    $zugeordneterVerbraucherID4 = $_POST['zugeordneterVerbraucherID4'];
+    $zugeordneterVerbraucherID5 = $_POST['zugeordneterVerbraucherID5'];
+    $zugeordneterVerbraucherID6 = $_POST['zugeordneterVerbraucherID6'];
 
-$energietraeger1 = $_POST['energietraeger1'];
-$energieform1 = "";
-$einheit1 = $_POST['einheit1'];
+    $energietraeger1 = $_POST['energietraeger1'];
+    $energieform1 = $_POST['energieform1'];
+    $einheit1 = $_POST['einheit1'];
 
-if($_POST['anschlussleistung1'] == ''){
-$anschlussleistung1 = 0;
-}
-else{
-	$anschlussleistung1 = $_POST['anschlussleistung1'];
-}
+    if($_POST['anschlussleistung1'] == ''){
+        $anschlussleistung1 = 0;
+    }
+    else{
+    	$anschlussleistung1 = $_POST['anschlussleistung1'];
+    }
 
-if($_POST['mittlereAuslastungProzent1'] == ''){
-$mittlereAuslastungProzent1 = 0;
-}
-else{
-	$mittlereAuslastungProzent1 = $_POST['mittlereAuslastungProzent1'];
-}
+    if($_POST['mittlereAuslastungProzent1'] == ''){
+        $mittlereAuslastungProzent1 = 0;
+    }
+    else{
+    	$mittlereAuslastungProzent1 = $_POST['mittlereAuslastungProzent1'];
+    }
 
-if($_POST['mittlereAuslastungKw1'] == ''){
-$mittlereAuslastungKw1 = 0;
-}
-else{
-	$mittlereAuslastungKw1 = $_POST['mittlereAuslastungKw1'];
-}
+    if($_POST['mittlereAuslastungKw1'] == ''){
+        $mittlereAuslastungKw1 = 0;
+    }
+    else{
+    	$mittlereAuslastungKw1 = $_POST['mittlereAuslastungKw1'];
+    }
 
-if($_POST['betriebstemperatur1'] == ''){
-$betriebstemperatur1 = 0;
-}
-else{
-	$betriebstemperatur1 = $_POST['betriebstemperatur1'];
-}
+    if($_POST['betriebstemperatur1'] == ''){
+        $betriebstemperatur1 = 0;
+    }
+    else{
+    	$betriebstemperatur1 = $_POST['betriebstemperatur1'];
+    }
 
-$messstelle1 = $_POST['messstelle1'];
-$messstelle1ID = $_POST['messstelle1ID'];
-$versBereich1 = $_POST['versBereich1'];
+    $messstelle1 = $_POST['messstelle1'];
+    $messstelle1ID = $_POST['messstelle1ID'];
+    $versBereich1 = $_POST['versBereich1'];
 
-if($_POST['abwaerme1'] == ''){
-$abwaerme1 = 0;
-}
-else{
-	$abwaerme1 = $_POST['abwaerme1'];
-}
+    if($_POST['abwaerme1'] == ''){
+        $abwaerme1 = 0;
+    }
+    else{
+    	$abwaerme1 = $_POST['abwaerme1'];
+    }
 
-$abwaermeNutzbarkeit1 = $_POST['abwaermeNutzbarkeit1'];
-$bewertungAbwaermeNutzbarkeit1 = $_POST['bewertungAbwaermeNutzbarkeit1'];
+    $abwaermeNutzbarkeit1 = $_POST['abwaermeNutzbarkeit1'];
+    $bewertungAbwaermeNutzbarkeit1 = $_POST['bewertungAbwaermeNutzbarkeit1'];
 
-$energietraeger2 = $_POST['energietraeger2'];
-$energieform2 = "";
-$einheit2 = $_POST['einheit2'];
+    $energietraeger2 = $_POST['energietraeger2'];
+    $energieform2 = $_POST['energieform2'];
+    $einheit2 = $_POST['einheit2'];
 
-if($_POST['anschlussleistung2'] == ''){
-$anschlussleistung2 = 0;
-}
-else{
-	$anschlussleistung2 = $_POST['anschlussleistung2'];
-}
+    if($_POST['anschlussleistung2'] == ''){
+        $anschlussleistung2 = 0;
+    }
+    else{
+    	$anschlussleistung2 = $_POST['anschlussleistung2'];
+    }
 
-if($_POST['mittlereAuslastungProzent2'] == ''){
-$mittlereAuslastungProzent2 = 0;
-}
-else{
-	$mittlereAuslastungProzent2 = $_POST['mittlereAuslastungProzent2'];
-}
+    if($_POST['mittlereAuslastungProzent2'] == ''){
+        $mittlereAuslastungProzent2 = 0;
+    }
+    else{
+    	$mittlereAuslastungProzent2 = $_POST['mittlereAuslastungProzent2'];
+    }
 
-if($_POST['mittlereAuslastungKw2'] == ''){
-$mittlereAuslastungKw2 = 0;
-}
-else{
-	$mittlereAuslastungKw2 = $_POST['mittlereAuslastungKw2'];
-}
+    if($_POST['mittlereAuslastungKw2'] == ''){
+        $mittlereAuslastungKw2 = 0;
+    }
+    else{
+    	$mittlereAuslastungKw2 = $_POST['mittlereAuslastungKw2'];
+    }
 
-if($_POST['betriebstemperatur2'] == ''){
-$betriebstemperatur2 = 0;
-}
-else{
-	$betriebstemperatur2 = $_POST['betriebstemperatur2'];
-}
+    if($_POST['betriebstemperatur2'] == ''){
+        $betriebstemperatur2 = 0;
+    }
+    else{
+    	$betriebstemperatur2 = $_POST['betriebstemperatur2'];
+    }
 
-$messstelle2 = $_POST['messstelle2'];
-$messstelle2ID = $_POST['messstelle2ID'];
-$versBereich2 = $_POST['versBereich2'];
+    $messstelle2 = $_POST['messstelle2'];
+    $messstelle2ID = $_POST['messstelle2ID'];
+    $versBereich2 = $_POST['versBereich2'];
 
-if($_POST['abwaerme2'] == ''){
-$abwaerme2 = 0;
-}
-else{
-	$abwaerme2 = $_POST['abwaerme2'];
-}
+    if($_POST['abwaerme2'] == ''){
+        $abwaerme2 = 0;
+    }
+    else{
+    	$abwaerme2 = $_POST['abwaerme2'];
+    }
 
-$abwaermeNutzbarkeit2 = $_POST['abwaermeNutzbarkeit2'];
-$bewertungAbwaermeNutzbarkeit2 = $_POST['bewertungAbwaermeNutzbarkeit2'];
-
-
-$energietraeger3 = $_POST['energietraeger3'];
-$energieform3 = "";
-$einheit3 = $_POST['einheit3'];
-
-if($_POST['anschlussleistung3'] == ''){
-$anschlussleistung3 = 0;
-}
-else{
-	$anschlussleistung3 = $_POST['anschlussleistung3'];
-}
-
-if($_POST['mittlereAuslastungProzent3'] == ''){
-$mittlereAuslastungProzent3 = 0;
-}
-else{
-	$mittlereAuslastungProzent3 = $_POST['mittlereAuslastungProzent3'];
-}
-
-if($_POST['mittlereAuslastungKw3'] == ''){
-$mittlereAuslastungKw3 = 0;
-}
-else{
-	$mittlereAuslastungKw3 = $_POST['mittlereAuslastungKw3'];
-}
-
-if($_POST['betriebstemperatur3'] == ''){
-$betriebstemperatur3 = 0;
-}
-else{
-	$betriebstemperatur3 = $_POST['betriebstemperatur3'];
-}
-
-$messstelle3 = $_POST['messstelle3'];
-$messstelle3ID = $_POST['messstelle3ID'];
-$versBereich3 = $_POST['versBereich3'];
-
-if($_POST['abwaerme3'] == ''){
-$abwaerme3 = 0;
-}
-else{
-	$abwaerme3 = $_POST['abwaerme3'];
-}
-
-$abwaermeNutzbarkeit3 = $_POST['abwaermeNutzbarkeit3'];
-$bewertungAbwaermeNutzbarkeit3 = $_POST['bewertungAbwaermeNutzbarkeit3'];
-
-$energietraeger4 = $_POST['energietraeger4'];
-$energieform4 = "";
-$einheit4 = $_POST['einheit4'];
+    $abwaermeNutzbarkeit2 = $_POST['abwaermeNutzbarkeit2'];
+    $bewertungAbwaermeNutzbarkeit2 = $_POST['bewertungAbwaermeNutzbarkeit2'];
 
 
-if($_POST['anschlussleistung4'] == ''){
-$anschlussleistung4 = 0;
-}
-else{
-	$anschlussleistung4 = $_POST['anschlussleistung4'];
-}
+    $energietraeger3 = $_POST['energietraeger3'];
+    $energieform3 = $_POST['energieform3'];
+    $einheit3 = $_POST['einheit3'];
 
-if($_POST['mittlereAuslastungProzent4'] == ''){
-$mittlereAuslastungProzent4 = 0;
-}
-else{
-	$mittlereAuslastungProzent4 = $_POST['mittlereAuslastungProzent4'];
-}
+    if($_POST['anschlussleistung3'] == ''){
+        $anschlussleistung3 = 0;
+    }
+    else{
+    	$anschlussleistung3 = $_POST['anschlussleistung3'];
+    }
 
-if($_POST['mittlereAuslastungKw4'] == ''){
-$mittlereAuslastungKw4 = 0;
-}
-else{
-	$mittlereAuslastungKw4 = $_POST['mittlereAuslastungKw4'];
-}
+    if($_POST['mittlereAuslastungProzent3'] == ''){
+        $mittlereAuslastungProzent3 = 0;
+    }
+    else{
+    	$mittlereAuslastungProzent3 = $_POST['mittlereAuslastungProzent3'];
+    }
 
-if($_POST['betriebstemperatur4'] == ''){
-$betriebstemperatur4 = 0;
-}
-else{
-	$betriebstemperatur4 = $_POST['betriebstemperatur4'];
-}
+    if($_POST['mittlereAuslastungKw3'] == ''){
+        $mittlereAuslastungKw3 = 0;
+    }
+    else{
+    	$mittlereAuslastungKw3 = $_POST['mittlereAuslastungKw3'];
+    }
 
-$messstelle4 = $_POST['messstelle4'];
-$messstelle4ID = $_POST['messstelle4ID'];
-$versBereich4 = $_POST['versBereich4'];
+    if($_POST['betriebstemperatur3'] == ''){
+        $betriebstemperatur3 = 0;
+    }
+    else{
+    	$betriebstemperatur3 = $_POST['betriebstemperatur3'];
+    }
 
-if($_POST['abwaerme4'] == ''){
-$abwaerme4 = 0;
-}
-else{
-	$abwaerme4 = $_POST['abwaerme4'];
-}
+    $messstelle3 = $_POST['messstelle3'];
+    $messstelle3ID = $_POST['messstelle3ID'];
+    $versBereich3 = $_POST['versBereich3'];
 
-$abwaermeNutzbarkeit4 = $_POST['abwaermeNutzbarkeit4'];
-$bewertungAbwaermeNutzbarkeit4 = $_POST['bewertungAbwaermeNutzbarkeit4'];
+    if($_POST['abwaerme3'] == ''){
+        $abwaerme3 = 0;
+    }
+    else{
+    	$abwaerme3 = $_POST['abwaerme3'];
+    }
 
-$custom1 = $_POST['custom1'];
-$custom2 = $_POST['custom2'];
-$custom3 = $_POST['custom3'];
-$custom4 = $_POST['custom4'];
-$custom5 = $_POST['custom5'];
-$custom6 = $_POST['custom6'];
+    $abwaermeNutzbarkeit3 = $_POST['abwaermeNutzbarkeit3'];
+    $bewertungAbwaermeNutzbarkeit3 = $_POST['bewertungAbwaermeNutzbarkeit3'];
 
-if($modus == "new") {
+    $energietraeger4 = $_POST['energietraeger4'];
+    $energieform4 = $_POST['energieform4'];
+    $einheit4 = $_POST['einheit4'];
 
-	$tsql = "INSERT INTO anlagen(lieg_ID, archiviertAnl, datumAnl, nummerAnl, bezeichnungAnl, aktivAnl, typAnl, serienNrAnl, standortAnl, datumAnschaffungAnl, baujahrAnl,";
-	$tsql .= "jahresbetriebsstundenAnl, notizAnl, produktAnl, produktionsmengeAnl, produktionsmengeEinheitAnl, ";
-	$tsql .= "produktnummerAnl, mehrProdukteAnl, zugeordneterVerbraucherID1, zugeordneterVerbraucherID2, zugeordneterVerbraucherID3, ";
-    $tsql .= "zugeordneterVerbraucherID4, zugeordneterVerbraucherID5, zugeordneterVerbraucherID6,";
 
-	$tsql .= "energietraeger1Anl, energieform1Anl, einheitEnergie1Anl, anschlussleistung1Anl, mittlereAuslastungProzent1Anl, ";
-	$tsql .= "mittlereAuslastungKw1Anl, betriebstemperatur1Anl,messstelle1Anl,messstelle1IDAnl,versBereich1Anl, abwaerme1Anl, abwaermeNutzbarkeit1Anl, bewertungNutzbarkeitAbwaerme1Anl, ";
+    if($_POST['anschlussleistung4'] == ''){
+        $anschlussleistung4 = 0;
+    }
+    else{
+    	$anschlussleistung4 = $_POST['anschlussleistung4'];
+    }
 
-	$tsql .= "energietraeger2Anl, energieform2Anl, einheitEnergie2Anl, anschlussleistung2Anl, mittlereAuslastungProzent2Anl, ";
-	$tsql .= "mittlereAuslastungKw2Anl, betriebstemperatur2Anl,messstelle2Anl,messstelle2IDAnl,versBereich2Anl, abwaerme2Anl, abwaermeNutzbarkeit2Anl, bewertungNutzbarkeitAbwaerme2Anl, ";
+    if($_POST['mittlereAuslastungProzent4'] == ''){
+        $mittlereAuslastungProzent4 = 0;
+    }
+    else{
+    	$mittlereAuslastungProzent4 = $_POST['mittlereAuslastungProzent4'];
+    }
 
-	$tsql .= "energietraeger3Anl, energieform3Anl, einheitEnergie3Anl, anschlussleistung3Anl, mittlereAuslastungProzent3Anl, ";
-	$tsql .= "mittlereAuslastungKw3Anl, betriebstemperatur3Anl,messstelle3Anl,messstelle3IDAnl,versBereich3Anl, abwaerme3Anl, abwaermeNutzbarkeit3Anl, bewertungNutzbarkeitAbwaerme3Anl, ";
+    if($_POST['mittlereAuslastungKw4'] == ''){
+        $mittlereAuslastungKw4 = 0;
+    }
+    else{
+    	$mittlereAuslastungKw4 = $_POST['mittlereAuslastungKw4'];
+    }
 
-	$tsql .= "energietraeger4Anl, energieform4Anl, einheitEnergie4Anl, anschlussleistung4Anl, mittlereAuslastungProzent4Anl, ";
-	$tsql .= "mittlereAuslastungKw4Anl, betriebstemperatur4Anl,messstelle4Anl,messstelle4IDAnl,versBereich4Anl, abwaerme4Anl, abwaermeNutzbarkeit4Anl, bewertungNutzbarkeitAbwaerme4Anl, ";
-    $tsql .= "custom1Anl, custom2Anl, custom3Anl, custom4Anl, custom5Anl, custom6Anl, deleted) ";
+    if($_POST['betriebstemperatur4'] == ''){
+        $betriebstemperatur4 = 0;
+    }
+    else{
+    	$betriebstemperatur4 = $_POST['betriebstemperatur4'];
+    }
 
-	$tsql .= "VALUES ('$liegID', 'false', getdate(), '$anlagennummer', '$bezeichnung', '$aktiv', '$typ', '$seriennummer', '$standort', '$anschaffungsdatum', ";
-	$tsql .= "'$baujahr',$jahresbetriebsstunden, '$notizAllgemein', '$produkt', $produktionsmenge,";
-	$tsql .= "'$produktionsmengeEinheit', '$produktnummer', '$mehrProdukte', '$zugeordneterVerbraucherID1', '$zugeordneterVerbraucherID2', ";
-    $tsql .= "'$zugeordneterVerbraucherID3', '$zugeordneterVerbraucherID4', '$zugeordneterVerbraucherID5', '$zugeordneterVerbraucherID6', ";
+    $messstelle4 = $_POST['messstelle4'];
+    $messstelle4ID = $_POST['messstelle4ID'];
+    $versBereich4 = $_POST['versBereich4'];
 
-	$tsql .= "'$energietraeger1', '$energieform1', '$einheit1', $anschlussleistung1, $mittlereAuslastungProzent1, $mittlereAuslastungKw1, ";
-	$tsql .= "$betriebstemperatur1,'$messstelle1','$messstelle1ID','$versBereich1', $abwaerme1, '$abwaermeNutzbarkeit1', '$bewertungAbwaermeNutzbarkeit1', ";
+    if($_POST['abwaerme4'] == ''){
+        $abwaerme4 = 0;
+    }
+    else{
+    	$abwaerme4 = $_POST['abwaerme4'];
+    }
 
-	$tsql .= "'$energietraeger2', '$energieform2', '$einheit2', $anschlussleistung2, $mittlereAuslastungProzent2, $mittlereAuslastungKw2, ";
-	$tsql .= "$betriebstemperatur2,'$messstelle2','$messstelle2ID','$versBereich2', $abwaerme2, '$abwaermeNutzbarkeit2', '$bewertungAbwaermeNutzbarkeit2', ";
+    $abwaermeNutzbarkeit4 = $_POST['abwaermeNutzbarkeit4'];
+    $bewertungAbwaermeNutzbarkeit4 = $_POST['bewertungAbwaermeNutzbarkeit4'];
 
-	$tsql .= "'$energietraeger3', '$energieform3', '$einheit3', $anschlussleistung3, $mittlereAuslastungProzent3, $mittlereAuslastungKw3, ";
-	$tsql .= "$betriebstemperatur3,'$messstelle3','$messstelle3ID','$versBereich3', $abwaerme3, '$abwaermeNutzbarkeit3', '$bewertungAbwaermeNutzbarkeit3', ";
+    $custom1 = $_POST['custom1'];
+    $custom2 = $_POST['custom2'];
+    $custom3 = $_POST['custom3'];
+    $custom4 = $_POST['custom4'];
+    $custom5 = $_POST['custom5'];
+    $custom6 = $_POST['custom6'];
 
-	$tsql .= "'$energietraeger4', '$energieform4', '$einheit4', $anschlussleistung4, $mittlereAuslastungProzent4, $mittlereAuslastungKw4, ";
-	$tsql .= "$betriebstemperatur4,'$messstelle4','$messstelle4ID','$versBereich4', $abwaerme4, '$abwaermeNutzbarkeit4', '$bewertungAbwaermeNutzbarkeit4', ";
-    $tsql .= "'$custom1','$custom2','$custom3','$custom4','$custom5','$custom6', 0)";
-}
-else{
-$anlID = $_POST['anlID'];
-$archiviert = $_POST['archiviert'];
+    if($modus == "new") {
 
-if($archiviert === "true"){
-  $bemerkung = $_POST['bemerkung'];
-  $info = $_POST['info'];
-  $gueltigVon = $_POST['gueltigVon'];
-  $gueltigBis = $_POST['gueltigBis'];
+    	$tsql = "INSERT INTO anlagen(lieg_ID, archiviertAnl, datumAnl, nummerAnl, bezeichnungAnl, aktivAnl, typAnl, serienNrAnl, standortAnl, datumAnschaffungAnl, baujahrAnl,";
+    	$tsql .= "jahresbetriebsstundenAnl, notizAnl, produktAnl, produktionsmengeAnl, produktionsmengeEinheitAnl, ";
+    	$tsql .= "produktnummerAnl, mehrProdukteAnl, zugeordneterVerbraucherID1, zugeordneterVerbraucherID2, zugeordneterVerbraucherID3, ";
+        $tsql .= "zugeordneterVerbraucherID4, zugeordneterVerbraucherID5, zugeordneterVerbraucherID6,";
 
-  $tsql = "UPDATE anlagen SET archiviertAnl = 'true', ";
-  $tsql .= "aenderungsBemerkung = '$bemerkung', aenderungsInfo = '$info', ";
-  $tsql .= "gueltigVonAnl = '$gueltigVon', gueltigBisAnl = '$gueltigBis' ";
-  $tsql .= "WHERE anl_ID = '$anlID'";
-}
-else {
-  $tsql =  "UPDATE anlagen SET lieg_ID = '$liegID', datumAnl = getdate(),nummerAnl = '$anlagennummer', bezeichnungAnl = '$bezeichnung', aktivAnl = '$aktiv',";
-	  $tsql .= "typAnl = '$typ', serienNrAnl = '$seriennummer', standortAnl = '$standort',baujahrAnl = '$baujahr', datumAnschaffungAnl = '$anschaffungsdatum', ";
-	  $tsql .= "jahresbetriebsstundenAnl = $jahresbetriebsstunden, notizAnl = '$notizAllgemein', produktAnl = '$produkt',";
-	  $tsql .= "produktionsmengeAnl = $produktionsmenge, produktionsmengeEinheitAnl = '$produktionsmengeEinheit',";
-	  $tsql .= "produktnummerAnl = '$produktnummer', mehrProdukteAnl = '$mehrProdukte', zugeordneterVerbraucherID1 = '$zugeordneterVerbraucherID1',";
-	  $tsql .= "zugeordneterVerbraucherID2 = '$zugeordneterVerbraucherID2', zugeordneterVerbraucherID3 = '$zugeordneterVerbraucherID3',";
-	  $tsql .= "zugeordneterVerbraucherID4 = '$zugeordneterVerbraucherID4', zugeordneterVerbraucherID5 = '$zugeordneterVerbraucherID5',";
-	  $tsql .= "zugeordneterVerbraucherID6 = '$zugeordneterVerbraucherID6',";
+    	$tsql .= "energietraeger1Anl, energieform1Anl, einheitEnergie1Anl, anschlussleistung1Anl, mittlereAuslastungProzent1Anl, ";
+    	$tsql .= "mittlereAuslastungKw1Anl, betriebstemperatur1Anl,messstelle1Anl,messstelle1IDAnl,versBereich1Anl, abwaerme1Anl, abwaermeNutzbarkeit1Anl, bewertungNutzbarkeitAbwaerme1Anl, ";
 
-	  $tsql .= "energietraeger1Anl = '$energietraeger1', energieform1Anl = '$energieform1', einheitEnergie1Anl = '$einheit1',";
-	  $tsql .= "anschlussleistung1Anl = $anschlussleistung1, mittlereAuslastungProzent1Anl = $mittlereAuslastungProzent1,";
-	  $tsql .= "mittlereAuslastungKw1Anl = $mittlereAuslastungKw1, betriebstemperatur1Anl = $betriebstemperatur1,";
-  $tsql .= "messstelle1Anl = '$messstelle1',messstelle1IDAnl = '$messstelle1ID',versBereich1Anl = '$versBereich1', abwaerme1Anl = $abwaerme1,";
-  $tsql .= "abwaermeNutzbarkeit1Anl = '$abwaermeNutzbarkeit1', bewertungNutzbarkeitAbwaerme1Anl = '$bewertungAbwaermeNutzbarkeit1',";
+    	$tsql .= "energietraeger2Anl, energieform2Anl, einheitEnergie2Anl, anschlussleistung2Anl, mittlereAuslastungProzent2Anl, ";
+    	$tsql .= "mittlereAuslastungKw2Anl, betriebstemperatur2Anl,messstelle2Anl,messstelle2IDAnl,versBereich2Anl, abwaerme2Anl, abwaermeNutzbarkeit2Anl, bewertungNutzbarkeitAbwaerme2Anl, ";
 
-	  $tsql .= "energietraeger2Anl = '$energietraeger2', energieform2Anl = '$energieform2', einheitEnergie2Anl = '$einheit2',";
-	  $tsql .= "anschlussleistung2Anl = $anschlussleistung2, mittlereAuslastungProzent2Anl = $mittlereAuslastungProzent2,";
-	  $tsql .= "mittlereAuslastungKw2Anl = $mittlereAuslastungKw2, betriebstemperatur2Anl = $betriebstemperatur2, ";
-  $tsql .= "messstelle2Anl = '$messstelle2',messstelle2IDAnl = '$messstelle2ID',versBereich2Anl = '$versBereich2', abwaerme2Anl = $abwaerme2,";
-  $tsql .= "abwaermeNutzbarkeit2Anl = '$abwaermeNutzbarkeit2', bewertungNutzbarkeitAbwaerme2Anl = '$bewertungAbwaermeNutzbarkeit2',";
+    	$tsql .= "energietraeger3Anl, energieform3Anl, einheitEnergie3Anl, anschlussleistung3Anl, mittlereAuslastungProzent3Anl, ";
+    	$tsql .= "mittlereAuslastungKw3Anl, betriebstemperatur3Anl,messstelle3Anl,messstelle3IDAnl,versBereich3Anl, abwaerme3Anl, abwaermeNutzbarkeit3Anl, bewertungNutzbarkeitAbwaerme3Anl, ";
 
-	  $tsql .= "energietraeger3Anl = '$energietraeger3', energieform3Anl = '$energieform3', einheitEnergie3Anl = '$einheit3',";
-	  $tsql .= "anschlussleistung3Anl = $anschlussleistung3, mittlereAuslastungProzent3Anl = $mittlereAuslastungProzent3,";
-	  $tsql .= "mittlereAuslastungKw3Anl = $mittlereAuslastungKw3, betriebstemperatur3Anl = $betriebstemperatur3, ";
-  $tsql .= "messstelle3Anl = '$messstelle3',messstelle3IDAnl = '$messstelle3ID',versBereich3Anl = '$versBereich3', abwaerme3Anl = $abwaerme3,";
-  $tsql .= "abwaermeNutzbarkeit3Anl = '$abwaermeNutzbarkeit3', bewertungNutzbarkeitAbwaerme3Anl = '$bewertungAbwaermeNutzbarkeit3',";
+    	$tsql .= "energietraeger4Anl, energieform4Anl, einheitEnergie4Anl, anschlussleistung4Anl, mittlereAuslastungProzent4Anl, ";
+    	$tsql .= "mittlereAuslastungKw4Anl, betriebstemperatur4Anl,messstelle4Anl,messstelle4IDAnl,versBereich4Anl, abwaerme4Anl, abwaermeNutzbarkeit4Anl, bewertungNutzbarkeitAbwaerme4Anl, ";
+        $tsql .= "custom1Anl, custom2Anl, custom3Anl, custom4Anl, custom5Anl, custom6Anl, deleted) ";
 
-	  $tsql .= "energietraeger4Anl = '$energietraeger4', energieform4Anl = '$energieform4', einheitEnergie4Anl = '$einheit4',";
-	  $tsql .= "anschlussleistung4Anl = $anschlussleistung4, mittlereAuslastungProzent4Anl = $mittlereAuslastungProzent4,";
-	  $tsql .= "mittlereAuslastungKw4Anl = $mittlereAuslastungKw4, betriebstemperatur4Anl = $betriebstemperatur4, ";
-  $tsql .= "messstelle4Anl = '$messstelle4',messstelle4IDAnl = '$messstelle4ID',versBereich4Anl = '$versBereich4', abwaerme4Anl = $abwaerme4,";
-	  $tsql .= "abwaermeNutzbarkeit4Anl = '$abwaermeNutzbarkeit4', bewertungNutzbarkeitAbwaerme4Anl = '$bewertungAbwaermeNutzbarkeit4', ";
-	  $tsql .= "custom1Anl = '$custom1',custom2Anl = '$custom2',custom3Anl = '$custom3',custom4Anl = '$custom4',custom5Anl = '$custom5',custom6Anl = '$custom6' ";
-	  $tsql .= "WHERE anl_ID = '$anlID'";
-}
-}
+    	$tsql .= "VALUES ('$liegID', 'false', getdate(), '$anlagennummer', '$bezeichnung', '$aktiv', '$typ', '$seriennummer', '$standort', '$anschaffungsdatum', ";
+    	$tsql .= "'$baujahr',$jahresbetriebsstunden, '$notizAllgemein', '$produkt', $produktionsmenge,";
+    	$tsql .= "'$produktionsmengeEinheit', '$produktnummer', '$mehrProdukte', '$zugeordneterVerbraucherID1', '$zugeordneterVerbraucherID2', ";
+        $tsql .= "'$zugeordneterVerbraucherID3', '$zugeordneterVerbraucherID4', '$zugeordneterVerbraucherID5', '$zugeordneterVerbraucherID6', ";
+
+    	$tsql .= "'$energietraeger1', '$energieform1', '$einheit1', $anschlussleistung1, $mittlereAuslastungProzent1, $mittlereAuslastungKw1, ";
+    	$tsql .= "$betriebstemperatur1,'$messstelle1','$messstelle1ID','$versBereich1', $abwaerme1, '$abwaermeNutzbarkeit1', '$bewertungAbwaermeNutzbarkeit1', ";
+
+    	$tsql .= "'$energietraeger2', '$energieform2', '$einheit2', $anschlussleistung2, $mittlereAuslastungProzent2, $mittlereAuslastungKw2, ";
+    	$tsql .= "$betriebstemperatur2,'$messstelle2','$messstelle2ID','$versBereich2', $abwaerme2, '$abwaermeNutzbarkeit2', '$bewertungAbwaermeNutzbarkeit2', ";
+
+    	$tsql .= "'$energietraeger3', '$energieform3', '$einheit3', $anschlussleistung3, $mittlereAuslastungProzent3, $mittlereAuslastungKw3, ";
+    	$tsql .= "$betriebstemperatur3,'$messstelle3','$messstelle3ID','$versBereich3', $abwaerme3, '$abwaermeNutzbarkeit3', '$bewertungAbwaermeNutzbarkeit3', ";
+
+    	$tsql .= "'$energietraeger4', '$energieform4', '$einheit4', $anschlussleistung4, $mittlereAuslastungProzent4, $mittlereAuslastungKw4, ";
+    	$tsql .= "$betriebstemperatur4,'$messstelle4','$messstelle4ID','$versBereich4', $abwaerme4, '$abwaermeNutzbarkeit4', '$bewertungAbwaermeNutzbarkeit4', ";
+        $tsql .= "'$custom1','$custom2','$custom3','$custom4','$custom5','$custom6', 0)";
+    }
+    else{
+        $anlID = $_POST['anlID'];
+        $archiviert = $_POST['archiviert'];
+
+    if($archiviert === "true"){
+        $bemerkung = $_POST['bemerkung'];
+        $info = $_POST['info'];
+        $gueltigVon = $_POST['gueltigVon'];
+        $gueltigBis = $_POST['gueltigBis'];
+
+        $tsql = "UPDATE anlagen SET archiviertAnl = 'true', ";
+        $tsql .= "aenderungsBemerkung = '$bemerkung', aenderungsInfo = '$info', ";
+        $tsql .= "gueltigVonAnl = '$gueltigVon', gueltigBisAnl = '$gueltigBis' ";
+        $tsql .= "WHERE anl_ID = '$anlID'";
+    }
+    else {
+        $tsql =  "UPDATE anlagen SET lieg_ID = '$liegID', datumAnl = getdate(),nummerAnl = '$anlagennummer', bezeichnungAnl = '$bezeichnung', aktivAnl = '$aktiv',";
+        $tsql .= "typAnl = '$typ', serienNrAnl = '$seriennummer', standortAnl = '$standort',baujahrAnl = '$baujahr', datumAnschaffungAnl = '$anschaffungsdatum', ";
+        $tsql .= "jahresbetriebsstundenAnl = $jahresbetriebsstunden, notizAnl = '$notizAllgemein', produktAnl = '$produkt',";
+        $tsql .= "produktionsmengeAnl = $produktionsmenge, produktionsmengeEinheitAnl = '$produktionsmengeEinheit',";
+        $tsql .= "produktnummerAnl = '$produktnummer', mehrProdukteAnl = '$mehrProdukte', zugeordneterVerbraucherID1 = '$zugeordneterVerbraucherID1',";
+        $tsql .= "zugeordneterVerbraucherID2 = '$zugeordneterVerbraucherID2', zugeordneterVerbraucherID3 = '$zugeordneterVerbraucherID3',";
+        $tsql .= "zugeordneterVerbraucherID4 = '$zugeordneterVerbraucherID4', zugeordneterVerbraucherID5 = '$zugeordneterVerbraucherID5',";
+        $tsql .= "zugeordneterVerbraucherID6 = '$zugeordneterVerbraucherID6',";
+
+        $tsql .= "energietraeger1Anl = '$energietraeger1', energieform1Anl = '$energieform1', einheitEnergie1Anl = '$einheit1',";
+        $tsql .= "anschlussleistung1Anl = $anschlussleistung1, mittlereAuslastungProzent1Anl = $mittlereAuslastungProzent1,";
+        $tsql .= "mittlereAuslastungKw1Anl = $mittlereAuslastungKw1, betriebstemperatur1Anl = $betriebstemperatur1,";
+        $tsql .= "messstelle1Anl = '$messstelle1',messstelle1IDAnl = '$messstelle1ID',versBereich1Anl = '$versBereich1', abwaerme1Anl = $abwaerme1,";
+        $tsql .= "abwaermeNutzbarkeit1Anl = '$abwaermeNutzbarkeit1', bewertungNutzbarkeitAbwaerme1Anl = '$bewertungAbwaermeNutzbarkeit1',";
+
+        $tsql .= "energietraeger2Anl = '$energietraeger2', energieform2Anl = '$energieform2', einheitEnergie2Anl = '$einheit2',";
+        $tsql .= "anschlussleistung2Anl = $anschlussleistung2, mittlereAuslastungProzent2Anl = $mittlereAuslastungProzent2,";
+        $tsql .= "mittlereAuslastungKw2Anl = $mittlereAuslastungKw2, betriebstemperatur2Anl = $betriebstemperatur2, ";
+        $tsql .= "messstelle2Anl = '$messstelle2',messstelle2IDAnl = '$messstelle2ID',versBereich2Anl = '$versBereich2', abwaerme2Anl = $abwaerme2,";
+        $tsql .= "abwaermeNutzbarkeit2Anl = '$abwaermeNutzbarkeit2', bewertungNutzbarkeitAbwaerme2Anl = '$bewertungAbwaermeNutzbarkeit2',";
+
+        $tsql .= "energietraeger3Anl = '$energietraeger3', energieform3Anl = '$energieform3', einheitEnergie3Anl = '$einheit3',";
+        $tsql .= "anschlussleistung3Anl = $anschlussleistung3, mittlereAuslastungProzent3Anl = $mittlereAuslastungProzent3,";
+        $tsql .= "mittlereAuslastungKw3Anl = $mittlereAuslastungKw3, betriebstemperatur3Anl = $betriebstemperatur3, ";
+        $tsql .= "messstelle3Anl = '$messstelle3',messstelle3IDAnl = '$messstelle3ID',versBereich3Anl = '$versBereich3', abwaerme3Anl = $abwaerme3,";
+        $tsql .= "abwaermeNutzbarkeit3Anl = '$abwaermeNutzbarkeit3', bewertungNutzbarkeitAbwaerme3Anl = '$bewertungAbwaermeNutzbarkeit3',";
+
+        $tsql .= "energietraeger4Anl = '$energietraeger4', energieform4Anl = '$energieform4', einheitEnergie4Anl = '$einheit4',";
+        $tsql .= "anschlussleistung4Anl = $anschlussleistung4, mittlereAuslastungProzent4Anl = $mittlereAuslastungProzent4,";
+        $tsql .= "mittlereAuslastungKw4Anl = $mittlereAuslastungKw4, betriebstemperatur4Anl = $betriebstemperatur4, ";
+        $tsql .= "messstelle4Anl = '$messstelle4',messstelle4IDAnl = '$messstelle4ID',versBereich4Anl = '$versBereich4', abwaerme4Anl = $abwaerme4,";
+        $tsql .= "abwaermeNutzbarkeit4Anl = '$abwaermeNutzbarkeit4', bewertungNutzbarkeitAbwaerme4Anl = '$bewertungAbwaermeNutzbarkeit4', ";
+        $tsql .= "custom1Anl = '$custom1',custom2Anl = '$custom2',custom3Anl = '$custom3',custom4Anl = '$custom4',custom5Anl = '$custom5',custom6Anl = '$custom6' ";
+        $tsql .= "WHERE anl_ID = '$anlID'";
+    }
+    }
 }
 elseif($id == "anlVersch") {
 $anlID = $_POST['anlID'];
