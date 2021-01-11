@@ -1314,10 +1314,16 @@ try {
                 },
                 success: function(a) {
                     a = $.parseJSON(a);
+                    const energieformen =
+                        [1, 2, 3, 4]
+                        .map(idx => $(`#energieform${idx}AllgemeinAnl`).val())
 
                     $(".energieformenLieg").empty();
                     $(".energieformenLieg").append("<option></option>");
                     for (i = 0; i < a.length; i++) 1 == a[i].aktivEnf && $(".energieformenLieg").append("<option>" + a[i].nameEnf + "</option>")
+
+                    energieformen
+                    .forEach((a, i) => $($(`#energieform${incr(i)}AllgemeinAnl`).val(a)))
                 }
             })
         },
