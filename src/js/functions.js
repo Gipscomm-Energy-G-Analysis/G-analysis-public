@@ -1300,9 +1300,6 @@ try {
                 }
             })
         },
-        energieformenEinAusblenden = function() {
-            "block" == $("#interneEnergieformenLieg").css("display") ? ($("#interneEnergieformenLieg select").val(""), $("#interneEnergieformenLieg").css("display", "none")) : $("#interneEnergieformenLieg").css("display", "block")
-        },
         energiefrmInDBoxLieg = function() {
             $.ajax({
                 type: "POST",

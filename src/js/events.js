@@ -1304,9 +1304,6 @@ $(document).ready(function() {
         }
         formellisteErstellen(a)
     });
-    $("#erweiternEnfLieg").click(function() {
-        energieformenEinAusblenden()
-    });
     $("#formelVorfeldLeeren").click(function() {
         $("#formelVorStringDarstellung").val("")
     });
