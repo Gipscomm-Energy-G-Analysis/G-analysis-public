@@ -47,7 +47,7 @@ $(document).ready(function() {
     $("#verschAbbrechen").click(function() {
         $("#anlageVerschieben").dialog("close")
     });
-    $("#inputEnergietraeger1Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger3Lieg, #inputEnergietraeger4Lieg, #inputEnergietraeger5Lieg, #inputEnergietraeger6Lieg, #inputEnergietraeger7Lieg, #inputEnergietraeger8Lieg, #inputEnergietraeger9Lieg").click(function() {
+    $("#inputEnergietraeger1Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger3Lieg, #inputEnergietraeger4Lieg, #inputEnergietraeger5Lieg, #inputEnergietraeger6Lieg, #inputEnergietraeger7Lieg, #inputEnergietraeger8Lieg, #inputEnergietraeger9Lieg, #energieform1Lieg, #energieform2Lieg, #energieform3Lieg, #energieform4Lieg, #energieform5Lieg, #energieform6Lieg, #energieform7Lieg, #energieform1AllgemeinAnl, #energieform2AllgemeinAnl, #energieform3AllgemeinAnl, #energieform4AllgemeinAnl").click(function() {
         $(this).val("")
     });
     $("#mapDrucken").click(function() {
@@ -423,10 +423,6 @@ $(document).ready(function() {
     /*27-02-2020 Hide this function, switch off die Time interval*/
     $("#btnPrdOeffnen").click(function() {
         mainMenuNav("prdMenu")
-    });
-    $(".inputEnergietraegerLieg").change(function() {
-        "-Energietr\u00e4ger hinzuf\u00fcgen-" ==
-        $(this).val() && (b ? (instanzErstellen("liegSpeichern"), b = !1) : instanzSpeichern("liegSpeichern"), $("#entHinz").trigger("click"), mainMenuNav("entMenu"))
     });
     $.fn.dataTableExt.sErrMode = "throw";
     $(window).resize(function() {
