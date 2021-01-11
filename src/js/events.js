@@ -1517,7 +1517,6 @@ $(document).ready(function() {
         iMwNavID = 0;
         readInstanzen("zpFirst", 0);
         zpNavID = 0;
-        standardVorlagenEinlesen();
         externeRechnungenListeErstellen("vergleich")
     });
     $(".orgPfad").change(function() {

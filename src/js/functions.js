@@ -1314,6 +1314,7 @@ try {
                 },
                 success: function(a) {
                     a = $.parseJSON(a);
+
                     $(".energieformenLieg").empty();
                     $(".energieformenLieg").append("<option></option>");
                     for (i = 0; i < a.length; i++) 1 == a[i].aktivEnf && $(".energieformenLieg").append("<option>" + a[i].nameEnf + "</option>")
@@ -4761,6 +4762,7 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
+
                             $("#liegCount").val(c.length);
                             0 < c.length ? ($("#eigenstaendigeformAllgemeinLieg").prop("checked", c[b].eigenstaendigeFormLieg), $("#aktivAllgemeinLieg").prop("checked", c[b].aktivLieg), $("#hatDlAllgemeinLieg").prop("checked", c[b].hatDl), [
                                     ["#liegID", "lieg_ID"],
@@ -4770,9 +4772,7 @@ try {
                                     ["#anschriftAllgemeinLieg", "anschriftLieg"],
                                     ["#landAllgemeinLieg", "landLieg"],
                                     ["#plzAllgemeinLieg", "plzLieg"],
-                                    ["#ortAllgemeinLieg",
-                                        "ortLieg"
-                                    ],
+                                    ["#ortAllgemeinLieg","ortLieg"],
                                     ["#typAllgemeinLieg", "typLieg"],
                                     ["#titelAnsprechpartnerLieg", "titelAnsprechpartnerLieg"],
                                     ["#nameAnsprechpartnerLieg", "nameAnsprechpartnerLieg"],
@@ -8245,14 +8245,13 @@ try {
                     if ("tabGipscAdm" == a) passwortAuswertenGipscAdm();
                     else if ("tabOrg" == a) b = [$("#nameDB").val()], $("#manPfadOrg").text($("#nameAllgemeinMan").val());
                     else if ("tabLieg" == a) b = [$("#nameDB").val(), $(".orgPfad").val(), "", ""], readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex")),
-                        $("#manPfadLieg").css("display", "none"), $("#orgPfadLieg").text($("#nameAllgemeinOrg").val()), energietrInDBoxLieg();
+                        $("#manPfadLieg").css("display", "none"), $("#orgPfadLieg").text($("#nameAllgemeinOrg").val()), energietrInDBoxLieg(), energiefrmInDBoxLieg();
                     else if ("tabExtDl" == a) readInstanzen("extDlFirst", 0);
                     else if ("tabStdDr" == a) readInstanzen("stdDrFirst", 0);
-                    else if ("tabBer" == a) clearFields("berHinz"), readInstanzen("berFirst", 0), $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val());
+                    else if ("tabBer" == a) clearFields("berHinz"), readInstanzen("berFirst", 0), $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val()), energiefrmInDBoxLieg();
                     else if ("tabEPrd" == a) readBdeConfig($("#nameDB").val());
                     else if ("tabBen" == a) b = ["", ""], readInstanzen("benFirst", 0);
-                    else if ("tabAnl" == a)
-                        getAnlagenAuswahlTblHeader();
+                    else if ("tabAnl" == a) getAnlagenAuswahlTblHeader(), energiefrmInDBoxLieg();
                     else if ("tabMsm" == a) getAnlagenAuswahlTblHeader();
                     else if ("tabKnz" == a) $("#asideRight2").css("display", "block"), knzEinheitenEinlesen();
                     else if ("tabExtRechnungen" == a) $("#asideRight").css("display", "block"), versorgerUndEinheitBefuellen(), energietrInDBoxERngVergleich(), energietrInDBoxLieg();
