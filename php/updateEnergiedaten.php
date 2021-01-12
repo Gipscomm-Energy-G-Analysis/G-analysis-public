@@ -11,16 +11,18 @@ require 'DbOperations.php' ;
 
 function prepareEnergiedatenArguments($db) {
 
-    function lastDateCalcMst($db) {
-        $query = "SELECT TOP(1) Time FROM berechneteEnergiedaten " ;
+    function lastDate($db, $tbl) {
+        $query = "SELECT TOP(1) Time FROM ".$tbl." " ;
         $query += "ORDER BY Time DESC " ;
         return queryDB(connectToDB($db), $query, "read")["Time"] ;
     }
 
+    function lastDateCalcMst($db) {
+        return lastDate($db, "berechneteEnergiedaten") ;
+    }
+
     function lastDateEnergyData($db) {
-        $query = "SELECT TOP(1) Time FROM MessstellenEnergiedaten " ;
-        $query += "ORDER BY Time DESC " ;
-        return queryDB(connectToDB($db), $query, "read")["time_de"] ;
+        return lastDate($db, "MessstellenEnergiedaten") ;
     }
 
     function getBerechneteMsts($db) {
