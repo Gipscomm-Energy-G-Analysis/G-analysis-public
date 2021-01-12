@@ -9,13 +9,23 @@ include('top-cache.php') ;
 require 'helpers.php' ;
 require 'DbOperations.php' ;
 
-function lastDateCalcMst($db) {
-    $query = "SELECT TOP(1) Time FROM berechneteEnergiedaten " ;
-    $query += "ORDER BY Time DESC " ;
-    return queryDB(connectToDB($db), $query, "read")["Time"] ;
-}
+function prepareEnergiedatenArguments($db) {
 
-function getBerechneteMsts($db) {
-    $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-    return queryDB(connectToDB($db), $query, "read") ;
+    function lastDateCalcMst($db) {
+        $query = "SELECT TOP(1) Time FROM berechneteEnergiedaten " ;
+        $query += "ORDER BY Time DESC " ;
+        return queryDB(connectToDB($db), $query, "read")["Time"] ;
+    }
+
+    function lastDateEnergyData($db) {
+        $query = "SELECT TOP(1) Time FROM MessstellenEnergiedaten " ;
+        $query += "ORDER BY Time DESC " ;
+        return queryDB(connectToDB($db), $query, "read")["time_de"] ;
+    }
+
+    function getBerechneteMsts($db) {
+        $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
+        return queryDB(connectToDB($db), $query, "read") ;
+    }
+
 }
