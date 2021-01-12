@@ -153,4 +153,11 @@ function getURL() {
     return replaceInString("%20", " ", "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) ;
 }
 
+// Retrieves all DBs with active data inflow
+function getActiveCustomerDBs() {
+    $query =  "SELECT name FROM kundenDBs " ;
+    $query += "WHERE active = 1 " ;
+    return queryDB(connectToDB("gipscomm"), $query, "read") ;
+}
+
 ?>
