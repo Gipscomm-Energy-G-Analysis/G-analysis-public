@@ -14,3 +14,8 @@ function lastDateCalcMst($db) {
     $query += "ORDER BY Time DESC " ;
     return queryDB(connectToDB($db), $query, "read")["Time"] ;
 }
+
+function getBerechneteMsts($db) {
+    $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
+    return queryDB(connectToDB($db), $query, "read") ;
+}
