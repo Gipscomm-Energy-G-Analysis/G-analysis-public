@@ -81,6 +81,14 @@ function setScriptPath($startDate, $endDate) {
 
     return $path ;
 }
+// Version for main page
+//
+// function setScriptPath($startDate, $endDate) {
+//     $path = "https://".$_SERVER['HTTP_HOST']."/php/prepareEnergiedaten.php" ;
+//     $path .= setGetProperties($startDate, $endDate) ;
+//
+//     return $path ;
+// }
 
 function prepareScriptPaths($formula) {
     $from = getStartDate($formula) ;
