@@ -11,50 +11,76 @@ require 'DbOperations.php' ;
 
 function prepareEnergiedatenArguments() {
 
-    function lastDate($db, $tbl) {
+    function lastDate($conn, $tbl) {
         $query = "SELECT TOP(1) Time FROM ".$tbl." " ;
         $query .= "ORDER BY Time DESC " ;
-        $result = queryDB(connectToDB($db), $query, "read") ;
+
+        $result = queryDB($conn, $query, "read") ;
+        $time = head($result)["Time"] ;
         $retVal = "" ;
 
-        if (count($result) === 0) {
+        if (empty($result)) {
            $retVal = $retVal ;
-        } elseif (gettype($result[0]["Time"]) === "string") {
-           $retVal = $result[0]["Time"] ;
+        } elseif (gettype($time) === "string") {
+           $retVal = $time ;
         } else {
-           $retVal = dateTimeToString($result[0]["Time"]) ;
+           $retVal = dateTimeToString($time) ;
         }
         return $retVal ;
     }
 
-    function lastDateCalcMst($db) {
-        return lastDate($db, "berechneteEnergiedaten") ;
+    function lastDateCalcMst($conn) {
+        return lastDate($conn, "berechneteEnergiedaten") ;
     }
 
-    function lastDateEnergyData($db) {
-        return lastDate($db, "MessstellenEnergiedaten") ;
+    function lastDateEnergyData($conn) {
+        return lastDate($conn, "MessstellenEnergiedaten") ;
     }
 
     function getID($record) {
         return $record["mst_ID"] ;
     }
 
-    function getBerechneteMstIDs($db) {
+    function getMstIDs($conn) {
         $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-        return array_map('getID', queryDB(connectToDB($db), $query, "read")) ;
+        return array_map('getID', queryDB($conn, $query, "read")) ;
     }
 
-    function extractTimeInterval($db) {
-        return [ lastDateCalcMst($db), lastDateEnergyData($db) ] ;
+    function extractTimeInterval($conn) {
+      return [ lastDateCalcMst($conn), lastDateEnergyData($conn) ] ;
     }
 
-    $dbs = getActiveCustomerDBs() ;
+    function assembleArgument($nameDB, $mstID, $startDate, $endDate) {
+        return [ "nameDB" => $nameDB
+               , "mstID" => $mstID
+               , "startDate" => $startDate
+               , "endDate" => $endDate
+               ] ;
+    }
 
-    $timeIntervals = array_map('extractTimeInterval', $dbs) ;
+    function getArguments($nameDB) {
+        $conn = connectToDB($nameDB) ;
 
-    $msts = array_map('getBerechneteMstIDs', $dbs) ;
+        $mstIDs = getMstIDs($conn) ;
+        $arguments = [] ;
 
-    return $msts ;
+        if (empty($mstIDs)) {
+            $arguments = $arguments ;
+        } else {
+            $timeInterval = extractTimeInterval($conn) ;
+            foreach ($mstIDs as $mstID) {
+                array_push($arguments,
+                    assembleArgument($nameDB, $mstID, head($timeInterval), last($timeInterval))) ;
+            }
+        }
+
+        closeDbConn($conn) ;
+
+        return $arguments ;
+
+    }
+
+    return array_map('getArguments', getActiveCustomerDBs()) ;
 
 }
 
