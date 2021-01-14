@@ -14,7 +14,8 @@ function prepareEnergiedatenArguments($db) {
     function lastDate($db, $tbl) {
         $query = "SELECT TOP(1) Time FROM ".$tbl." " ;
         $query += "ORDER BY Time DESC " ;
-        return queryDB(connectToDB($db), $query, "read")["Time"] ;
+        $retVal = queryDB(connectToDB($db), $query, "read")
+        return count($retVal) === 0 ? $retVal : $retVal["Time"] ;
     }
 
     function lastDateCalcMst($db) {
