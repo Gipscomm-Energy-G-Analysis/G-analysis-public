@@ -156,8 +156,13 @@ function getURL() {
 // Retrieves all DBs with active data inflow
 function getActiveCustomerDBs() {
     $query =  "SELECT name FROM kundenDBs " ;
-    $query += "WHERE active = 1 " ;
-    return queryDB(connectToDB("gipscomm"), $query, "read") ;
+    $query .= "WHERE active = 1 " ;
+
+    function getNames($record) {
+        return $record["name"] ;
+    }
+
+    return array_map('getNames', queryDB(connectToDB("gipscomm"), $query, "read")) ;
 }
 
 ?>
