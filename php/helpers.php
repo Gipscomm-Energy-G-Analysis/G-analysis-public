@@ -11,6 +11,11 @@ function actionOn($record, $field, $fn) {
     return $record ;
 }
 
+// Filters an array of arrays and returns just non-empty arrays
+function notEmpty($arr) {
+    return !empty($arr) ;
+}
+
 // Returns the first element of an array
 function head($arr) {
     return $arr[0] ;

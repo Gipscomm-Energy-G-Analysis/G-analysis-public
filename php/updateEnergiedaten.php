@@ -80,7 +80,7 @@ function prepareEnergiedatenArguments() {
 
     }
 
-    return array_map('getArguments', getActiveCustomerDBs()) ;
+    return array_filter(array_map('getArguments', getActiveCustomerDBs()), 'notEmpty') ;
 
 }
 
