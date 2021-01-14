@@ -30,4 +30,12 @@ function prepareEnergiedatenArguments($db) {
         return queryDB(connectToDB($db), $query, "read") ;
     }
 
+    function extractTimeInterval($db) {
+        return [ lastDateCalcMst($db), lastDateEnergyData($db) ] ;
+    }
+
+    $dbs = getActiveCustomerDBs() ;
+
+    $timeIntervals = array_map('extractTimeInterval', $dbs) ;
+
 }
