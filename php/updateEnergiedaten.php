@@ -35,9 +35,13 @@ function prepareEnergiedatenArguments() {
         return lastDate($db, "MessstellenEnergiedaten") ;
     }
 
-    function getBerechneteMsts($db) {
+    function getID($record) {
+        return $record["mst_ID"] ;
+    }
+
+    function getBerechneteMstIDs($db) {
         $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
-        return queryDB(connectToDB($db), $query, "read") ;
+        return array_map('getID', queryDB(connectToDB($db), $query, "read")) ;
     }
 
     function extractTimeInterval($db) {
@@ -48,8 +52,16 @@ function prepareEnergiedatenArguments() {
 
     $timeIntervals = array_map('extractTimeInterval', $dbs) ;
 
-    return $timeIntervals ;
+    $msts = array_map('getBerechneteMstIDs', $dbs) ;
+
+    return $msts ;
 
 }
 
-print_r(prepareEnergiedatenArguments()) ;
+$start = hrtime(true) ;
+
+print_r(json_encode(prepareEnergiedatenArguments())) ;
+
+$end = hrtime(true) ;
+
+echo "    Execution Time : ".(($end - $start) / 1000000000) ;
