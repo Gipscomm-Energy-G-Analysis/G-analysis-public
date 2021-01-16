@@ -47,7 +47,7 @@ function prepareEnergiedatenArguments() {
     }
 
     function extractTimeInterval($conn) {
-      return [ lastDateCalcMst($conn), lastDateEnergyData($conn) ] ;
+        return [ lastDateCalcMst($conn), lastDateEnergyData($conn) ] ;
     }
 
     function assembleArgument($nameDB, $mstID, $startDate, $endDate) {
