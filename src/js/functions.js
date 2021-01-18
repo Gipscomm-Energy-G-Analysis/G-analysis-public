@@ -10243,7 +10243,7 @@ const addVirtMessstelleHistoryJob =
     nameDB =>
     mstID =>
     formula =>
-    ajaxPost('php/scriptExecPath.php')({nameDB, mstID, formula})
+    ajaxPost('php/scriptExecPath.php?mode=history')({nameDB, mstID, formula})
 
 // Save a Messstellen formula and calculate historic data
 const virtMessstelleWithHistory =
