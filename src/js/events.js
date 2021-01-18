@@ -1325,6 +1325,7 @@ $(document).ready(function() {
         //alert(this.id);
         if(this.id=='tabIntBetriebsdatenIMw'){
             $("body").removeClass('fullWidthMasseneingabe');
+            $("#tblMasseneingabeDataIMw").remove();
         }
     });
     $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst,\n                #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstFirst, #stdFirst,\n                #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst,\n                #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
@@ -3556,16 +3557,23 @@ $("#DkFeSpeichern").click(function() {
             var inputNextId = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
             var inputValBottomPrev=$(inputBottomPrevId).val();   
             var inputValBottomCurr=$(inputBottomCurrId).val();
-            $("#inputCurPrevId").val(inputCurPrevId);
-            $("#inputCurrId").val(inputCurrId);
-            $("#inputNextId").val(inputNextId);
-            $("#inputBottomCurrId").val(inputBottomCurrId);
-            $("#inputBottomPrevId").val(inputBottomPrevId);
-            $("#inputValBottomPrev").val(inputValBottomPrev);
-            $("#inputValBottomCurr").val(inputValBottomCurr);
-            /*$("#inputFocusedId").val(inputCurrId);*/
-            $("#inputDeleteBotmId").val(inputBottomCurrId);
+            var inputValCurr=$(inputCurrId).val();
+            if(e.keyCode != 9){
+                if(bottomPrevId>=0){
+                    $("#inputCurPrevId").val(inputCurPrevId);
+                    $("#inputBottomPrevId").val(inputBottomPrevId);
+                }
+                $("#currInputID").val(currID);
+                $("#inputDeleteBotmId").val(inputBottomCurrId);
+                $("#inputCurrId").val(inputCurrId);
+                $("#inputNextId").val(inputNextId);
+                $("#inputBottomCurrId").val(inputBottomCurrId);
+                $("#inputValBottomPrev").val(inputValBottomPrev);
+                $("#inputValBottomCurr").val(inputValBottomCurr);
+                $("#inputCurrVal").val(inputValCurr);
+                $("#rowMainIDDs").val(rowMainIDDs);
 
+            }                     
             e.stopPropagation();         
         });
         $('body').on('change input', '.txtBoxSrch', function(e){
@@ -3585,22 +3593,53 @@ $("#DkFeSpeichern").click(function() {
             
             var calcVal = inputValNext-inputValFirst;
             var currCalcVal = inputValFirst-inputValCurrent;
-            
             var inputVal=$(this).val();
+
+            var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
+            var checkPrevInpDs = $(this).closest('td').prev('td').find('input').attr('disabled');    
+            var currInputID = $("#currInputID").val();
+            var rowMainIDDs = $("#rowMainIDDs").val();        
+            if(checkPrevVal =='' && typeof(checkPrevInpDs) =='undefined'){
+                 alert('Please enter value into the previous input first!');
+                $(this).val('');
+                $(this).closest('tr').next('tr').find('#anlageCalculationRow_'+currID).val('');
+                return false;
+            }
             if((inputValFirst !='' && inputValCurrent !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValCurrent) !='undefined')){
                  $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
             }else{
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val('');
+                 getLastInputValuesByCurrent(currInputID-1,rowMainIDDs,4);
             }
             if((inputValFirst !='' && inputValNext !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValNext) !='undefined')){
                  $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(calcVal);
             }else{
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val('');
             }
+
+            var mstID = $(this).closest('td').attr('data-id');
+            var date = $(this).closest('td').attr('date');
+            var checkAlertRangeExist = $(this).hasClass("checkAlertRange");
+            var rowMainIDEn = $(this).closest('tr').attr('id');
+            var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
+            var inputCurrTopId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
+            var inputCurrBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
+            //console.log(checkAlertRangeExist);
+            //if(checkAlertRangeExist ==true){
+            // checkAlertRangeMinMaxServerSide(zeitIntervallAnl,mstID,date,rowMainIDDs,prevId);
+            checkAlertRangeLastInputValueExist(zeitIntervallAnl,mstID,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);
+            //}else{
+                //console.log(prevID); console.log(rowMainIDDs);
+                
+           // }
             e.stopPropagation();         
         });
+        /*$('body').on('focusout', '.txtBoxSrch', function(e){
+          console.log(this);
+        });*/
 
         $('body').on('click focus', '.txtBoxSrch', function(e){
+            //console.log(this);
             var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             var inputId=this.id;
             var splitId = inputId.split("_");
@@ -3610,7 +3649,7 @@ $("#DkFeSpeichern").click(function() {
             var bottomPrevNextId = eval(bottomPrevId)-eval(1); 
             var rowMainIDEn = $(this).closest('tr').attr('id');
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
-    
+            
             var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
             var inputBottomPrevNextId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevNextId;
 
@@ -3622,12 +3661,28 @@ $("#DkFeSpeichern").click(function() {
             var inptCurPrevId = $("#inputCurPrevId").val();
             var inptCurrId= $("#inputCurrId").val();
             var inputCurNextId = $("#inputNextId").val();
+            var inputDeleteBotmId = $("#inputDeleteBotmId").val(); 
+            var inputCountVal = $("#inputCountVal").val(); 
+
+           /* if(inputCountVal !='' && $(inputCurPrevId).val() !='' && $(this).val() !='' && typeof(inputCurPrevId) !='undefined'){
+                
+            }*/
+
             if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
                 if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                    if(Number($(inptCurrId).val()) <= Number($(inptCurPrevId).val())){
-                      alert('Current value should be greater');
+                      alert('Current value should be greater then previous value!');
                       $(inptCurrId).val('');
-                      $(inputBottomPrevId).val('');
+                      $(inputDeleteBotmId).val('');
+                      $(inptCurrId).focus();
+                      resetInputsSearchMasseneingabe();
+                     return false;
+                   }
+                }else if(($("#inputPrevValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
+                   if(Number($(inptCurrId).val()) <= Number($("#inputPrevValDB").val())){
+                      alert('Current value should be greater then previous value!');
+                      $(inptCurrId).val('');
+                      $(inputDeleteBotmId).val('');
                       $(inptCurrId).focus();
                       resetInputsSearchMasseneingabe();
                      return false;
@@ -3637,32 +3692,82 @@ $("#DkFeSpeichern").click(function() {
                    if(Number($(inptCurrId).val()) >= Number($(inputCurNextId).val())){
                       alert('Current value should not be greater then next value!');
                       $(inptCurrId).val('');
-                      $(inputBottomPrevId).val('');
+                      $(inputDeleteBotmId).val('');
                       $(inptCurrId).focus();
                       resetInputsSearchMasseneingabe();
                      return false;
                    }
-                }                                                       
+                }                                                    
+            }
+            if((einheitVal==3 || einheitVal==4) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
+                if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
+                   if(checkPositiveValue($(inptCurrId).val())==false || checkPositiveValue($(inptCurPrevId).val())==false
+                    ){
+                      alert('Current value & previous value should be positive!');
+                      $(inptCurrId).val('');
+                      $(inputDeleteBotmId).val('');
+                      $(inptCurrId).focus();
+                      resetInputsSearchMasseneingabe();
+                      return false;
+                   }
+                }else if(($("#inputPrevValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
+                   if(checkPositiveValue($(inptCurrId).val())==false || checkPositiveValue($("#inputPrevValDB").val())==false
+                    ){
+                      alert('Current value & previous value should be positive!');
+                      $(inptCurrId).val('');
+                      $(inputDeleteBotmId).val('');
+                      $(inptCurrId).focus();
+                      resetInputsSearchMasseneingabe();
+                      return false;
+                   }
+                }
+                if(($(inputCurNextId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inputCurNextId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
+                   if(checkPositiveValue($(inptCurrId).val()) ==false || checkPositiveValue($(inputCurNextId).val())==false){
+                      alert('Current value & next value should be positive!');
+                      $(inptCurrId).val('');
+                      $(inputDeleteBotmId).val('');
+                      $(inptCurrId).focus();
+                      resetInputsSearchMasseneingabe();
+                      return false;
+                   }
+                }                                                    
             }
             /*Check greater less condition*/
-             $("#inputFocusedId").val(inputNextId);
-            //$("#inputDeleteBotmId").val(inputBottomCurrId);
-
-            var inputValBottom=$(inputBottomPrevId).val();   
-            var inputValBottomPrev=$(inputBottomPrevNextId).val();
+            $("#inputFocusedId").val(inputNextId);
+            //var inputValBottom=$(inputBottomPrevId).val();   
+            //var inputValBottomPrev=$(inputBottomPrevNextId).val();
             var showPopupExist = $(inputCurPrevId).hasClass("isShowPopup");
-            //console.log('inputValBottom = '+inputValBottom);
-            //console.log('inputValBottomPrev = '+inputValBottomPrev);
-            /*$("#inputCurPrevId").val(inputCurPrevId);
-            $("#inputNextId").val(inputNextId);
-            $("#inputBottomPrevId").val(inputBottomPrevId);
-            $("#inputBottomPrevNextId").val(inputBottomPrevNextId);
-            $("#inputValBottom").val(inputValBottom);
-            $("#inputValBottomPrev").val(inputValBottomPrev);
-*/
-            if((inputValBottom !='' && inputValBottomPrev !='') && (typeof(inputValBottom) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
-                if(showPopupExist ==true){
 
+            if(($(inputBottomPrevId).val() !='' && $(inputBottomPrevNextId).val() !='') && (typeof($(inputBottomPrevId).val()) !='undefined' && typeof($(inputBottomPrevNextId).val()) !='undefined')){
+                var inputValBottomPrev= $(inputBottomPrevNextId).val();
+                var inputValBottom=$(inputBottomPrevId).val(); 
+            }else{
+                var inputValBottomPrev= $("#inputPrevBtmValDB").val();
+                var inputValBottom=$("#inputValBottomCurr").val(); 
+            }
+            /*console.log('inputValBottom='+inputValBottom);
+            console.log('inputValBottomPrev='+inputValBottomPrev);
+            console.log('inputValBottom='+inputBotmMin);
+            console.log('inputBotmMax='+inputBotmMax);*/
+
+            /*Min and Max condition*/
+            var inputBotmMin = $("#inputBotmMin").val();
+            var inputBotmMax = $("#inputBotmMax").val();
+            //var inputBottomCurrVal = $(inputBottomCurrId).val(); 
+            var inputValBottomCurr = $("#inputValBottomCurr").val(); 
+            
+            /*if((inputValBottom !='' && inputValBottomPrev !='' && inputBotmMin !='' && inputBotmMax !='' ) && (typeof(inputValBottom) !='undefined' && typeof(inputValBottomPrev) !='undefined' && typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined')){*/
+            if((inputValBottom !='' && inputValBottomPrev !='' ) && (typeof(inputValBottom) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
+               //console.log(3);
+               
+                if(showPopupExist ==true){
+                if (( inputValBottomCurr !='' && typeof(inputValBottomCurr) !='undefined' && inputBotmMin !='' && inputBotmMax !='' ) && ((inputValBottomCurr <= Number(inputBotmMax)) && (inputValBottomCurr >= Number(inputBotmMin)))){
+                    var currInputID = $("#currInputID").val();
+                    var rowMainIDDs = $("#rowMainIDDs").val();
+                    getLastInputValuesByCurrent(currInputID,rowMainIDDs,4); 
+                    //alert(inputValBottomCurr+" exist between "+inputBotmMin+" & "+inputBotmMax);
+                    return false;
+                }
                 var inputLengthBottom = inputValBottom.length;
                 var inputLengthBottomPrev = inputValBottomPrev.length;
 
@@ -3694,8 +3799,61 @@ $("#DkFeSpeichern").click(function() {
             }           
             e.stopPropagation();
         }); 
-        $("#infosMasseneingabe").on('click', function (event) {
-         if (!$(event.target).closest('button,#btnMasseneingabeIMwSearch').length) {
+         $('body').on('focus', '.disabledRow input', function(e){
+            var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            var inputCurPrevId = $("#inputCurPrevId").val();
+            var inputCurrId = $("#inputCurrId").val();
+            var inputBottomCurrId = $("#inputBottomCurrId").val();
+
+            /*Check greater less condition*/
+            $("#inputFocusedId").val(inputCurrId);
+            var inputValBottom=$("#inputValBottomCurr").val();   
+            var inputValBottomPrev=$("#inputValBottomPrev").val();
+
+            /*Min and Max condition*/
+            var inputBotmMin = $("#inputBotmMin").val();
+            var inputBotmMax = $("#inputBotmMax").val();
+            //console.log(inputCurPrevId);
+            var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
+            if((inputValBottom !='' && inputValBottomPrev !='' && inputBotmMin !='' && inputBotmMax !='') && (typeof(inputValBottom) !='undefined' && typeof(inputValBottomPrev) !='undefined'  && typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined')){
+                if(showPopupExist ==true){
+                    var inputLengthBottom = inputValBottom.length;
+                    var inputLengthBottomPrev = inputValBottomPrev.length;
+
+                    var valLeft = checkPositiveValue(inputValBottomPrev);
+                    var valRight = checkPositiveValue(inputValBottom);
+
+                    var nValBtm = convertToPositive(inputValBottom);
+                    var nValBtmPrev =convertToPositive(inputValBottomPrev);
+                //console.log('popupShow='+showPopup);
+                //if(showPopup==true){
+                    if (( inputValBottom !='' && typeof(inputValBottom) !='undefined' ) && ((inputValBottom <= Number(inputBotmMax)) && (inputValBottom >= Number(inputBotmMin)))){
+                        //alert(inputValBottom+" exist between "+inputBotmMin+" & "+inputBotmMax);
+                        return false;
+                    }
+                    if(valLeft ==true && valRight ==true) {
+                        if(inputLengthBottom != inputLengthBottomPrev){
+                            //alert('show alert box 1');
+                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId);
+                           // showPopup = true;
+                        }
+                    }else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
+                            //alert('show alert box 2');
+                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId);
+                            //showPopup = true;
+                    }else if(valLeft ==false && valRight ==false) {
+                        if(inputLengthBottom != inputLengthBottomPrev){
+                            //alert('show alert box 3');
+                            intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId);
+                           // showPopup = false;
+                        }
+                    }                   
+                }
+            }           
+            e.stopPropagation();
+        }); 
+        $("body").on('click','#infosMasseneingabe', function (event) {
+            if (!$(event.target).closest('#btnTageMasseneingabeIMwNw,#btnWochenMasseneingabeIMwNw,#btnMonateMasseneingabeIMwNw,#btnJahreMasseneingabeIMwNw,#btnMasseneingabeIMwSearch').length) {
                 if ($('#timeIntervalWerteEnergiedatenIMw').html() != ""){ 
                    var inputCurPrevId = $("#inputCurPrevId").val();
                    var inputCurrId= $("#inputCurrId").val();
@@ -3703,8 +3861,9 @@ $("#DkFeSpeichern").click(function() {
                    var inputBottomCurrId= $("#inputBottomCurrId").val();
                    var inputBottomPrevId= $("#inputBottomPrevId").val();
                    var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
-                   var inputValBottomCurr= $("#inputValBottomCurr").val();
-                   var inputValBottomPrev= $("#inputValBottomPrev").val();
+                   //var inputValBottomCurr= $("#inputValBottomCurr").val();
+                   //var inputValBottomPrev= $("#inputValBottomPrev").val();
+                   var inputDeleteBotmId = $("#inputDeleteBotmId").val();
                    var einheitVal = $(inputCurrId).closest('tr').attr('data-einheit');
                    /*Check greater less condition*/
                    if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
@@ -3714,9 +3873,18 @@ $("#DkFeSpeichern").click(function() {
                        console.log($(inputCurNextId).val());*/
                        if(($(inputCurPrevId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurPrevId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                            if(Number($(inputCurrId).val()) <= Number($(inputCurPrevId).val())){
-                              alert('Current value should be greater then last value!');
+                              alert('Current value should be greater then previous value!');
                               $(inputCurrId).val('');
-                              $(inputBottomCurrId).val('');
+                              $(inputDeleteBotmId).val('');
+                              $(inputCurrId).focus();
+                              resetInputsSearchMasseneingabe();
+                             return false;
+                           }
+                       }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                           if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
+                              alert('Current value should be greater then previous value!');
+                              $(inputCurrId).val('');
+                              $(inputDeleteBotmId).val('');
                               $(inputCurrId).focus();
                               resetInputsSearchMasseneingabe();
                              return false;
@@ -3726,16 +3894,69 @@ $("#DkFeSpeichern").click(function() {
                            if(Number($(inputCurrId).val()) >= Number($(inputCurNextId).val())){
                               alert('Current value should not be greater then next value!');
                               $(inputCurrId).val('');
-                              $(inputBottomCurrId).val('');
+                              $(inputDeleteBotmId).val('');
                               $(inputCurrId).focus();
                               resetInputsSearchMasseneingabe();
                              return false;
                            }
                        }
                     }
+                    if((einheitVal==3 || einheitVal==4) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
+                        if(($(inputCurPrevId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurPrevId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                           if(checkPositiveValue($(inputCurrId).val())==false || checkPositiveValue($(inputCurPrevId).val())==false
+                            ){
+                              alert('Current value & previous value should be positive!');
+                              $(inputCurrId).val('');
+                              $(inputBottomCurrId).val('');
+                              $(inputCurrId).focus();
+                              resetInputsSearchMasseneingabe();
+                              return false;
+                           }
+                        }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                           if(checkPositiveValue($(inputCurrId).val())==false || checkPositiveValue($("#inputPrevValDB").val())==false
+                            ){
+                              alert('Current value & previous value should be positive!');
+                              $(inputCurrId).val('');
+                              $(inputBottomCurrId).val('');
+                              $(inputCurrId).focus();
+                              resetInputsSearchMasseneingabe();
+                              return false;
+                           }
+                        }
+                        if(($(inputCurNextId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurNextId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                           if(checkPositiveValue($(inputCurrId).val()) ==false || checkPositiveValue($(inputCurNextId).val())==false){
+                              alert('Current value & next value should be positive!');
+                              $(inputCurrId).val('');
+                              $(inputBottomCurrId).val('');
+                              $(inputCurrId).focus();
+                              resetInputsSearchMasseneingabe();
+                              return false;
+                           }
+                        }                                                    
+                    }
+                    if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
+                         var inputValBottomCurr= $("#inputValBottomCurr").val();
+                         var inputValBottomPrev= $("#inputValBottomPrev").val(); 
+                    }else{
+                        var inputValBottomPrev= $("#inputPrevBtmValDB").val();
+                        var inputValBottomCurr=$("#inputValBottomCurr").val(); 
+                    }
+
+                    /*Min and Max condition*/
+                    var inputBotmMin = $("#inputBotmMin").val();
+                    var inputBotmMax = $("#inputBotmMax").val();
                    /*Check greater less condition*/
+                   /*if((inputValBottomCurr !='' && inputValBottomPrev !='' && inputBotmMin !='' && inputBotmMax !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined' && typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined')){*/
                    if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
+                     
                     if(showPopupExist ==true){
+                    if (( inputValBottomCurr !='' && typeof(inputValBottomCurr) !='undefined' && typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined') && ((inputValBottomCurr <= Number(inputBotmMax)) && (inputValBottomCurr >= Number(inputBotmMin)))){
+                        var currInputID = $("#currInputID").val();
+                        var rowMainIDDs = $("#rowMainIDDs").val();
+                        getLastInputValuesByCurrent(currInputID,rowMainIDDs,4);
+                        //alert(inputValBottomCurr+" exist between "+inputBotmMin+" & "+inputBotmMax);
+                        return false;
+                    }
                     var inputLengthBottom = inputValBottomCurr.length;
                     var inputLengthBottomPrev = inputValBottomPrev.length;
 
@@ -3769,7 +3990,6 @@ $("#DkFeSpeichern").click(function() {
     });
    
    /*save icon click event for the Interne Betriebsdaten Speichern 05-10-2020*/
-
     $("#intBdeIMwSpeichern").click(function(){
         //var anlIMw =$("#anlIMw").val();
         var zeitintervallAnl =$("#zeitintervallAnl").val();
@@ -3824,6 +4044,8 @@ $("#DkFeSpeichern").click(function() {
     });
 
      $("#btnMasseneingabeIMwSearch").click(function(){
+        $("#inputBotmMax").val('');
+        $("#inputBotmMin").val('');
         var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
         var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosMasseneingabeDateRangeDiv',4);
         var sDate =dates[0];
@@ -3852,19 +4074,38 @@ $("#DkFeSpeichern").click(function() {
         }else{
             getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate);
         }
-        
      });
 
      $("#btnMassEingAnl").click(function() {
         $("body").addClass('fullWidthMasseneingabe');
         datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
+         $("#tblMasseneingabeDataIMw").remove();
      });
      $("#btnKonfigMstAnl").click(function() {
         $("body").removeClass('fullWidthMasseneingabe');
-     });     
-    $("#masseneingabeSpeichernSrch").click(function() {        //ME.saveToDB()
-        var key = $(".infosMasseneingabeInside button.active").attr('data-id');
-        saveToDBMasseneingabeEingaben(key);
+        $("#tblMasseneingabeDataIMw").remove();
+     }); 
+
+    $("#masseneingabeSpeichernSrch").click(function() {  
+         var inputCurrId = $("#inputCurrId").val();
+         var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
+         //console.log($("#timeIntervalWerteEnergiedatenIMw").html());
+         if (confirm("Do you want to save？")) {
+            if($.trim($("#timeIntervalWerteEnergiedatenIMw").html()) !=''){
+                if(showPopupExist==false){
+                    $("#masseneingabeSrchImg").show();
+                    setTimeout(function(){
+                      var key = $(".infosMasseneingabeInside button.active").attr('data-id');
+                      saveToDBMasseneingabeEingaben(key);
+                    }, 300);
+                }
+            }else{
+                alert("Please generate inputs first.");
+            } 
+           return true;
+         }else{
+           return false;
+         } 
     });
 
    /*On change Einheit create Control System select option */
@@ -3872,3 +4113,6 @@ $("#DkFeSpeichern").click(function() {
         einheitAnlOnChangeChildSelectOpt(this.value);
    });
    /*On change Einheit create Control System select option */
+
+
+  

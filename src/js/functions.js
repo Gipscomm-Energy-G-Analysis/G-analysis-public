@@ -15085,7 +15085,7 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                 var b = a.length;console.log(a);
                 tblAnlOhneZeitintervallIMwSuchen.clear().draw();
                     for (var e = 0; e < b; e++){ 
-                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit, capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw(); 
                         //tblAnlOhneZeitintervallIMwSuchen.column([0,1]).visible(!1);
                         $("#tblAnlOhneZeitintervallIMwSuchen tr").css("cursor", "pointer");
                         $("#tblAnlOhneZeitintervallIMwSuchen").off("dblclick", "tr");
@@ -15670,7 +15670,7 @@ function keinZeitIntervallZugewiesen(){
             var b = a.length;console.log(a);
             tblAnlOhneZeitintervallIMw.clear().draw();
                 for (var e = 0; e < b; e++){ 
-                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit, capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw(); 
                     //tblAnlOhneZeitintervallIMw.column([0,1]).visible(!1);
                     $("#tblAnlOhneZeitintervallIMw tr").css("cursor", "pointer");
                     $("#tblAnlOhneZeitintervallIMw").off("dblclick", "tr");
@@ -16165,7 +16165,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     
                     var day = 1000 * 60 * 60 * 24;
                     var days = Math.floor(diff_date/day);
-
+                   $("#inputCountVal").val(a.query4[0].inputCountVal);
                    $("#tblMasseneingabeDataIMw").remove();
                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                    for (var e = 0; e < b; e++){    
@@ -16180,6 +16180,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     }
                     for (var e = 0; e < b; e++){
                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                           var p=0;var z;
                            for (var r = 0; r <= days; r++){ 
                                 var n='';
                                 //console.log(a[e].ending);
@@ -16194,9 +16195,20 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                   if(a.query1[e].startDate > dateArr[r]){
                                      n='disabled';
                                     }
-                                }                               
+                                }
+                                
+                                if(n !='disabled'){ 
+                                    if(p < 5){
+                                      z="checkAlertRange";
+                                    }else{
+                                      z='';
+                                    } 
+                                    p++;                 
+                                }
+
                                 var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
-                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup '+z+'" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
+                                
                             }             
                         $row += '</tr>';
                         /*Second row for calculation*/
@@ -16660,6 +16672,7 @@ function saveToDBMasseneingabeEingaben(key){
 
              var postDataEnabled = JSON.stringify(enabledRow);
              var postDataDisabled = JSON.stringify(disabledRow);
+             $("#masseneingabeSpeichernSrch").prop('disabled',true);
                $.ajax({
                     type: "POST",
                     url: "php/saveMasseneingabeEingaben.php",
@@ -16677,6 +16690,8 @@ function saveToDBMasseneingabeEingaben(key){
                     },
                     success: function(a) {
                        alert(a);
+                       $("#masseneingabeSpeichernSrch").prop('disabled',false);
+                       $("#masseneingabeSrchImg").hide(); 
                       /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
                     }
                 });
@@ -16795,21 +16810,31 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID) {
             $("#intBdeConcern").on("click", function() { 
                 var inputCurrId = $("#inputCurrId").val();
                 var inputCurPrevId = $("#inputCurPrevId").val();
+                var currInputID = $("#currInputID").val();
+                var rowMainIDDs = $("#rowMainIDDs").val();
+                var inputCountVal = $("#inputCountVal").val();
                 $("" + prevID + "").removeClass("isShowPopup");
                 $($("#inputFocusedId").val()).focus();
                 $("" + inputCurrId + "").removeClass("isShowPopup");
                 $("#intBdeConcernOrDeletePopUp").remove(); 
+                $("#inputCountVal").val(eval(inputCountVal)+1);
+                if(inputCountVal>=5){
+                    getLastInputValuesByCurrent(currInputID,rowMainIDDs,4);
+                }
+                
             });
             $("#intBdeDelete").on("click", function() {
                 var inputCurrId = $("#inputCurrId").val();
-                //var inputFocusedId = $("#inputFocusedId").val();
                 var inputDeleteBotmId = $("#inputDeleteBotmId").val();
                 $("" + inputCurrId + "").val("");
-                $(inputCurrId).closest('tr').next('tr').find(inputDeleteBotmId).val("");
+                $(inputDeleteBotmId).val("");
                 $("" + inputCurrId + "").focus();
                 $("" + prevID + "").removeClass("isShowPopup");
                 $("" + inputCurrId + "").removeClass("isShowPopup");
                 $("#intBdeConcernOrDeletePopUp").remove(); 
+                var currInputID = $("#currInputID").val();
+                var rowMainIDDs = $("#rowMainIDDs").val();
+                getLastInputValuesByCurrent(currInputID-1,rowMainIDDs,4);
             });
          }
     }); 
@@ -16859,6 +16884,10 @@ function resetInputsSearchMasseneingabe(){
     $("#inputValBottomCurr").val("");
     $("#inputFocusedId").val("");
     $("#inputNextId").val("");
+    //$("#inputBotmMin").val("");
+    //$("#inputBotmMax").val("");
+    $("#inputPrevValDB").val("");
+    $("#inputPrevBtmValDB").val("");
 }
 
 function einheitAnlOnChangeChildSelectOpt(einheitAnlVal){
@@ -16887,4 +16916,140 @@ function einheitAnlOnChangeChildSelectOpt(einheitAnlVal){
     }else{
         $(".infosIntBetriebsdaten .control_system_div").hide();
     }
+}
+
+
+function typeValueEinheitControlSys($val){
+    var opt;
+    if($val ==1){
+        opt= 'Count Up Stunden';
+    }else if($val ==2){
+        opt= 'Count Up Energie';
+    }else if($val ==3){
+        opt= 'genullte Stunden';
+    }else if($val ==4){
+        opt= 'genullte Energiewerte';
+    }else{
+        opt= '';
+    }
+    return opt;
+}
+
+function getLastInputValuesByCurrent(prevID,rowMainIDDs,inputIndex){
+    //console.log(prevID);  console.log(rowMainIDDs);  console.log(inputIndex);
+    if(prevID !=''){
+       //console.log(prevID);
+        var inptTxtID = "";
+        var i;
+        var id;
+        var maxPrice = 0;
+        
+        for (i = 0; i <= inputIndex; i++) {
+          id = prevID-i;
+          inptTxtID = parseFloat($("#"+rowMainIDDs+" #anlageCalculationRow_"+id).val());
+          maxPrice = (inptTxtID >= maxPrice) ? inptTxtID : maxPrice;
+          var minPrice = maxPrice;
+          minPrice = (inptTxtID <= minPrice) ? inptTxtID : minPrice;
+        }
+        var minPrice = maxPrice;
+        for (i = 0; i <= inputIndex; i++) {
+          id = prevID-i;
+          inptTxtID = parseFloat($("#"+rowMainIDDs+" #anlageCalculationRow_"+id).val());
+          minPrice = (inptTxtID <= minPrice) ? inptTxtID : minPrice;
+        }
+        var lastInputMin = $("#inputBotmMin").val();
+        var lastInputMax = $("#inputBotmMax").val();
+        /*if(lastInputMax<maxPrice){
+            $("#inputBotmMin").val(minPrice);
+            $("#inputBotmMax").val(maxPrice);
+        }*/
+        if(prevID==0 && lastInputMax !='' && lastInputMin !=''){
+              if (maxPrice > lastInputMax)
+              {
+                 $("#inputBotmMax").val(maxPrice);
+                 //$("#inputBotmMin").val(minPrice);
+              }
+              if (minPrice < lastInputMin)
+              {
+                 //$("#inputBotmMax").val(maxPrice);
+                 $("#inputBotmMin").val(minPrice);
+              }
+        }else{
+             $("#inputBotmMax").val(maxPrice);
+             $("#inputBotmMin").val(minPrice);
+        }
+             
+    }
+}   
+
+
+function checkAlertRangeMinMaxServerSide(zeitintervallAnl,mstID,date,rowMainIDDs,prevId){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeAlertRangeMinMax",
+                nameDB: $("#nameDB").val(),
+                mstID: mstID,
+                date:date,
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a); 
+                //console.log(a);
+                if(a.min[0]){
+                   var b = a.min.length;
+                    //console.log(a);
+                    var inputCountVal = $("#inputCountVal").val();
+                    if(b>0){
+                        if(inputCountVal>=5){
+                            $("#inputBotmMin").val(a.min[0].val);
+                            $("#inputBotmMax").val(a.max[0].val); 
+                        }
+                    }
+                }               
+                
+        }
+    });
+}
+
+function checkAlertRangeLastInputValueExist(zeitintervallAnl,mstID,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeAlertRangeLastInptValue",
+                nameDB: $("#nameDB").val(),
+                mstID: mstID,
+                date:date,
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a); 
+                if(a.top[0]){               
+                var b = a.top[0].val.length;
+                if(b>0){
+                        var currTopVal = $(inputCurrTopId).val();
+                        if((currTopVal !='' && a.top[0].val !='') && (typeof(currTopVal) !='undefined' && typeof(a.top[0].val) !='undefined')){
+                            var calculate = currTopVal-a.top[0].val;
+                            $(inputCurrBottomId).val(calculate); 
+                        }else{
+                            $(inputCurrBottomId).val(""); 
+                        }
+                        $("#inputPrevValDB").val(a.top[0].val);
+                        $("#inputPrevBtmValDB").val(a.bottom[0].val);
+                        $("#inputValBottomCurr").val($(inputCurrBottomId).val());
+                        checkAlertRangeMinMaxServerSide(zeitintervallAnl,mstID,date,rowMainIDDs,prevId);
+                }
+            }
+        }
+    });
 }

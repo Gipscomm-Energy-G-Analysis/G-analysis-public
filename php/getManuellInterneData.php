@@ -139,37 +139,61 @@ elseif($id == 'intBdeIMw'){
 
 			$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
 			$query3 .= "WHERE type = '$zeitintervallAnl' ";
+
+			$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
+			$query4 .= "WHERE type = '$zeitintervallAnl' ";
 		
-}
+}elseif($id == 'masseneingabeAlertRangeMinMax'){
+	$type = $_POST['zeitintervallAnl'];
+	$mstID = $_POST['mstID'];
+	$date = $_POST['date'];
+	$query1 = "SELECT Top 1 val From masseneingabeSucheErgebnisIMw ";
+	$query1 .= "WHERE type = '$type' ";
+	$query1 .= "AND mst_ID = '$mstID' ";
+	$query1 .= "AND on_date  >= DATEADD(day,-5, '$date') ";
+	$query1 .= "AND on_date <= '$date' ";
+	$query1 .= "Order by val desc";
 
-//echo $query2;die;
-if($id == 'masseneingabeSearch'){
-
-$records['query1'] = queryDB($conn, $query1, "read");
-$records['query2'] = queryDB($conn, $query2, "read");
-$records['query3'] = queryDB($conn, $query3, "read");
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
-}else{
-$records= queryDB($conn, $query, "read");
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-}
-//$records['query1'] = queryDB($conn, $query1, "read");
-/*$arr = [];
-$query2Records = queryDB($conn, $query2, "read");
-$query3Records= queryDB($conn, $query3, "read");
-foreach ($query3Records as $query3Record) {
+	$query2 = "SELECT Top 1 val From masseneingabeSucheErgebnisIMw ";
+	$query2 .= "WHERE type = '$type' ";
+	$query2 .= "AND mst_ID = '$mstID' ";
+	$query2 .= "AND on_date  >= DATEADD(day,-5, '$date') ";
+	$query2 .= "AND on_date <= '$date' ";
+	$query2 .= "Order by val asc";	
+}elseif($id == 'masseneingabeAlertRangeLastInptValue'){
+	$type = $_POST['zeitintervallAnl'];
+	$mstID = $_POST['mstID'];
+	$date = $_POST['date'];
+	$query1 = "SELECT val FROM masseneingabeSucheIMw ";
+	$query1 .= "WHERE type = '$type' ";
+	$query1 .= "AND mst_ID = '$mstID' ";
+	$query1 .= "AND on_date  >= DATEADD(day,-1, '$date') ";
+	$query1 .= "AND on_date <= '$date' ";
 	
-	$key = array_search($query3Record['on_date'], array_column($query2Records, 'on_date'));
-	//echo '<pre>';print_r($query2Records);echo '</pre>';
-	$arr[$key]['on_date']=$query3Record['on_date'];
-	$arr[$key]['result']=$query3Record['result'];
-	$arr[$key]['val']=$query2Records[$key]['val'];
-	$arr[$key]['on_week']=$query3Record['on_week'];
-	$arr[$key]['mst_ID']=$query3Record['mst_ID'];
+	$query2 = "SELECT val FROM masseneingabeSucheErgebnisIMw ";
+	$query2 .= "WHERE type = '$type' ";
+	$query2 .= "AND mst_ID = '$mstID' ";
+	$query2 .= "AND on_date  >= DATEADD(day,-1, '$date') ";
+	$query2 .= "AND on_date <= '$date' ";	
 }
-echo '<pre>';print_r($arr);echo '</pre>';*/
-
-
-
-
+//echo $query1;die;
+if($id == 'masseneingabeSearch'){
+	$records['query1'] = queryDB($conn, $query1, "read");
+	$records['query2'] = queryDB($conn, $query2, "read");
+	$records['query3'] = queryDB($conn, $query3, "read");
+	$records['query4'] = queryDB($conn, $query4, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
+}else if($id == 'masseneingabeAlertRangeMinMax'){
+	//echo $query1;die;
+	$records['min'] = queryDB($conn, $query1, "read");
+	$records['max'] = queryDB($conn, $query2, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
+}else if($id == 'masseneingabeAlertRangeLastInptValue'){
+	$records['top'] = queryDB($conn, $query1, "read");
+	$records['bottom'] = queryDB($conn, $query2, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
+}else{
+	$records= queryDB($conn, $query, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+}
 ?>

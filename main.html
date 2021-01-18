@@ -6849,6 +6849,7 @@
                                 <th>Start Date</th> 
                                 <th>End Date</th>
                                 <th>Einheit</th>
+                                <th>Control System</th>
                                 <th>Zeitintervall</th> 
                                 <th>Notiz</th>
                             </tr>
@@ -6866,6 +6867,7 @@
                                     <th>Start Date</th> 
                                     <th>End Date</th>
                                     <th>Einheit</th>
+                                    <th>Control System</th>
                                     <th>Zeitintervall</th> 
                                     <th>Notiz</th>
                                 </tr>
@@ -6922,9 +6924,7 @@
                         <button id="btnKonfigMstAnl">Konfiguration</button>
                         <br>
                         <br>
-                        <!-- <button id="masseneingabeSpeichern">Eingaben speichern</button>
-                        <button id="masseneingabeLaden">Existierende Daten laden</button> -->
-                        <button id="masseneingabeSpeichernSrch">Eingaben speichern</button>
+                        <button id="masseneingabeSpeichernSrch">Eingaben speichern</button><img id="masseneingabeSrchImg" src="images/waiting.gif">
                         <div class="infosMasseneingabeInside">
                             <br>
                             <button id="btnTageMasseneingabeIMwNw" class="active" data-id="1">Tage</button>
@@ -7084,15 +7084,22 @@
                         <div id="timeIntervalWerteEnergiedatenIMw" class="timeIntervalWerteEnergiedatenIMw">
                         </div> 
                         <div id="timeIntervalWerteEnergiedatenIMwHoldIds" class="timeIntervalWerteEnergiedatenIMwHoldIds">
-                            <input type="hidden" id="inputCurPrevId">
-                            <input type="hidden" id="inputCurrId">
-                            <input type="hidden" id="inputNextId">
-                            <input type="hidden" id="inputBottomCurrId">
-                            <input type="hidden" id="inputBottomPrevId">
-                            <input type="hidden" id="inputValBottomCurr">
-                            <input type="hidden" id="inputValBottomPrev">
-                            <input type="hidden" id="inputFocusedId">
-                            <input type="hidden" id="inputDeleteBotmId">
+                            <input type="hidden" id="currInputID"/>
+                            <input type="hidden" id="rowMainIDDs"/>
+                            <input type="hidden" id="inputCurPrevId"/>
+                            <input type="hidden" id="inputCurrId"/>
+                            <input type="hidden" id="inputNextId"/>
+                            <input type="hidden" id="inputBottomCurrId"/>
+                            <input type="hidden" id="inputBottomPrevId"/>
+                            <input type="hidden" id="inputValBottomCurr"/>
+                            <input type="hidden" id="inputValBottomPrev"/>
+                            <input type="hidden" id="inputFocusedId"/>
+                            <input type="hidden" id="inputDeleteBotmId"/>
+                            <input type="hidden" id="inputBotmMin"/>
+                            <input type="hidden" id="inputBotmMax"/>
+                            <input type="hidden" id="inputPrevValDB"/>
+                            <input type="hidden" id="inputPrevBtmValDB"/>
+                            <input type="hidden" id="inputCountVal"/>
                         </div>
                     </div>
                     <input id="masseneingabeTimeInterval" style="display:none;"/>
