@@ -103,14 +103,29 @@ function prepareEnergiedatenArguments() {
 
 function writeToDB($arguments) {
 
-  function setGetProperties($arguments) {
-      $string = "?nameDB=".nameDB ;
-      $string .= "&mstID=".mstID ;
-      $string .= "&startDate=".$startDate ;
-      $string .= "&endDate=".$endDate ;
+    function setGetProperties($args) {
+        $string = "?nameDB=".$args["nameDB"] ;
+        $string .= "&mstID=".$args["mstID"] ;
+        $string .= "&startDate=".$args["startDate"] ;
+        $string .= "&endDate=".$args["endDate"] ;
 
-      return $string ;
-  }
+        return $string ;
+    }
+
+    function setScriptPath($args) {
+        $path = "https://".$_SERVER['HTTP_HOST']."/testwebsite3/php/prepareEnergiedaten.php" ;
+        $path .= setGetProperties($args) ;
+
+        return $path ;
+    }
+    // Version for main page
+    //
+    // function setScriptPath($args) {
+    //     $path = "https://".$_SERVER['HTTP_HOST']."/php/prepareEnergiedaten.php" ;
+    //     $path .= setGetProperties($args) ;
+    //
+    //     return $path ;
+    // }
 }
 
 $start = hrtime(true) ;
