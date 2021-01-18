@@ -88,13 +88,17 @@ function prepareEnergiedatenArguments() {
         return array_filter($arguments, 'notEmpty') ;
     }
 
+    function flattenArguments($args) {
+        return call_user_func_array('array_merge', $args) ;
+    }
+
     return pipe(
         [ getActiveCustomerDBs()
         , 'mapGetArguments'
         , 'filterNotEmpty'
-        , 'array_flatten'
+        , 'flattenArguments'
         ]
-    ) ;
+    )[3] ;
 }
 
 function writeToDB($arguments) {
