@@ -158,6 +158,16 @@ function getURL() {
     return replaceInString("%20", " ", "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) ;
 }
 
+// Sets the path for prepareEnergiedaten
+function prepareEnergiedatenPath() {
+    return "https://".$_SERVER['HTTP_HOST']."/testwebsite3/php/prepareEnergiedaten.php" ;
+}
+// Version for main page
+//
+// function prepareEnergiedatenPath() {
+//     return "https://".$_SERVER['HTTP_HOST']."/php/prepareEnergiedaten.php" ;
+// }
+
 // Retrieves all DBs with active data inflow
 function getActiveCustomerDBs() {
     $conn = connectToDB("gipscomm") ;

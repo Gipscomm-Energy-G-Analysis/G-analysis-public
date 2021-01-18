@@ -76,19 +76,11 @@ function setGetProperties($startDate, $endDate) {
 }
 
 function setScriptPath($startDate, $endDate) {
-    $path = "https://".$_SERVER['HTTP_HOST']."/testwebsite3/php/prepareEnergiedaten.php" ;
-    $path .= setGetProperties($startDate, $endDate) ;
-
-    return $path ;
+    return prepareEnergiedatenPath().setGetProperties($startDate, $endDate) ;
 }
 // Version for main page
 //
-// function setScriptPath($startDate, $endDate) {
-//     $path = "https://".$_SERVER['HTTP_HOST']."/php/prepareEnergiedaten.php" ;
-//     $path .= setGetProperties($startDate, $endDate) ;
-//
-//     return $path ;
-// }
+// see prepareEnergiedatenPath() in helpers.php
 
 function prepareScriptPaths($formula) {
     $from = getStartDate($formula) ;
