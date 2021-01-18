@@ -84,6 +84,10 @@ function prepareEnergiedatenArguments() {
 
 }
 
+function writeToDB($arguments) {
+    
+}
+
 $start = hrtime(true) ;
 
 print_r(json_encode(prepareEnergiedatenArguments())) ;
