@@ -80,12 +80,33 @@ function prepareEnergiedatenArguments() {
 
     }
 
-    return array_filter(array_map('getArguments', getActiveCustomerDBs()), 'notEmpty') ;
+    function mapGetArguments($dbs) {
+        return array_map('getArguments', $dbs) ;
+    }
 
+    function filterNotEmpty($arguments) {
+        return array_filter($arguments, 'notEmpty') ;
+    }
+
+    return pipe(
+        [ getActiveCustomerDBs()
+        , 'mapGetArguments'
+        , 'filterNotEmpty'
+        , 'array_flatten'
+        ]
+    ) ;
 }
 
 function writeToDB($arguments) {
-    
+
+  function setGetProperties($arguments) {
+      $string = "?nameDB=".nameDB ;
+      $string .= "&mstID=".mstID ;
+      $string .= "&startDate=".$startDate ;
+      $string .= "&endDate=".$endDate ;
+
+      return $string ;
+  }
 }
 
 $start = hrtime(true) ;
