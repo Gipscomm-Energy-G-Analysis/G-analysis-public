@@ -79,11 +79,7 @@ Object
         this.freeze = obj => Object.freeze(obj);
         this.exists = obj => prop => obj.hasOwnProperty(prop);
         this.deepFreeze = obj => { this.freeze(obj); Object.getOwnPropertyNames(obj).forEach(prop => {if (exists(obj)(prop) && obj[prop] !== null && (typeof obj[prop] === "object" || typeof obj[prop] === "function") && !Object.isFrozen(obj[prop])) {this.deepFreeze(obj[prop])}});return obj;};
-        this.fetchPost = url => body => fetch (url, {method: "POST", body});
-        this.fetchGet = url => fetch (url, {method: "GET"});
-        this.ajaxPost = url => data => {
-            // console.log =
-            //     () => {};
+        this.callAjax = type => url => data => {
 
             const filterRecord =
                 record =>
@@ -102,8 +98,10 @@ Object
             () => {throw new Error(`\n\nfpCore.ajaxPost : \n-->\n Record 'data', contains ${this.len(filterRecord)} empty string/s !\n-->\ndata : ${data}\n\n` )} :
             console.log() // console.log(`\n\ndata : ${data}\n\n`)
 
-            return new Promise((resolve,reject)=>$.ajax({type:"POST",url,data,fail:()=>reject(()=>{throw new Error("Ajax Post failed!" )}),success:records=>{resolve(this.json(records))}}))
+            return new Promise((resolve,reject)=>$.ajax({type,url,data,fail:()=>reject(()=>{throw new Error("Ajax Post failed!" )}),success:records=>{resolve(this.json(records))}}))
         };
+        this.ajaxPost = this.callAjax("POST");
+        this.ajaxGet = this.callAjax("GET");
         this.pipe = (...fns) => {
             results = [this.head(fns)]
             for(k=1;this.smaller(k)(fns.length);k++) {
@@ -172,9 +170,8 @@ const { split_
       , freeze
       , exists
       , deepFreeze
-      , fetchPost
-      , fetchGet
       , ajaxPost
+      , ajaxGet
       , pipe
       , itemSessionSet
       , itemSessionGet
