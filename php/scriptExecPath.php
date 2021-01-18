@@ -99,24 +99,6 @@ function prepareScriptPaths($formula) {
     return $records ;
 }
 
-function buildValueString($last, $current) {
-    return $last.", ('".$current."')" ;
-}
-
-function buildValuesString($records) {
-    return substr(array_reduce($records, 'buildValueString'), 1) ;
-}
-
-function writeToDB($records) {
-
-    $query = "INSERT INTO phpScriptsToExecute (pathScript) " ;
-    $query .="VALUES ".buildValuesString($records) ;
-
-    queryDB(connGipscomm, $query, "write") ;
-
-    return $records ;
-}
-
 function buildWhereString($last, $current) {
     return $last."OR pathScript = '".$current."' " ;
 }
@@ -173,7 +155,7 @@ function testIfDataInDB($records) {
 
 pipe(
     [ prepareScriptPaths(formula)
-    , 'writeToDB'
+    , 'writePathsToDB'
     , 'testIfDataInDB'
     ]
 ) ;

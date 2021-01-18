@@ -168,9 +168,30 @@ function prepareEnergiedatenPath() {
 //     return "https://".$_SERVER['HTTP_HOST']."/php/prepareEnergiedaten.php" ;
 // }
 
+// Builds the value string to write php paths to DB
+function buildValueStringPaths($last, $current) {
+    return $last.", ('".$current."')" ;
+}
+
+// Concats the value string to write php paths to DB
+function buildValuesStringPaths($paths) {
+    return substr(array_reduce($paths, 'buildValueStringPaths'), 1) ;
+}
+
+// Inserts php paths into DB tbl phpScriptsToExecute
+function writePathsToDB($scriptPaths) {
+
+    $query = "INSERT INTO phpScriptsToExecute (pathScript) " ;
+    $query .="VALUES ".buildValuesStringPaths($scriptPaths) ;
+
+    queryDB(connGipscomm, $query, "write") ;
+
+    return $scriptPaths ;
+}
+
 // Retrieves all DBs with active data inflow
+// the const connGipscomm has to be defined in the target script
 function getActiveCustomerDBs() {
-    $conn = connectToDB("gipscomm") ;
 
     $query =  "SELECT name FROM kundenDBs " ;
     $query .= "WHERE active = 1 " ;
@@ -179,9 +200,7 @@ function getActiveCustomerDBs() {
         return $record["name"] ;
     }
 
-    $retVal = array_map('getNames', queryDB($conn, $query, "read")) ;
-
-    closeDbConn($conn) ;
+    $retVal = array_map('getNames', queryDB(connGipscomm, $query, "read")) ;
 
     return $retVal ;
 }

@@ -9,6 +9,8 @@ include('top-cache.php') ;
 require 'helpers.php' ;
 require 'DbOperations.php' ;
 
+define("connGipscomm", connectToDB("gipscomm")) ;
+
 function prepareEnergiedatenArguments() {
 
     function lastDate($conn, $tbl) {
@@ -101,7 +103,7 @@ function prepareEnergiedatenArguments() {
     )[3] ;
 }
 
-function writeToDB($arguments) {
+function assembleScriptPaths($arguments) {
 
     function setGetProperties($args) {
         $string = "?nameDB=".$args["nameDB"] ;
@@ -113,24 +115,20 @@ function writeToDB($arguments) {
     }
 
     function setScriptPath($args) {
-        $path = "https://".$_SERVER['HTTP_HOST']."/testwebsite3/php/prepareEnergiedaten.php" ;
-        $path .= setGetProperties($args) ;
-
-        return $path ;
+        return prepareEnergiedatenPath().setGetProperties($args) ;
     }
     // Version for main page
     //
-    // function setScriptPath($args) {
-    //     $path = "https://".$_SERVER['HTTP_HOST']."/php/prepareEnergiedaten.php" ;
-    //     $path .= setGetProperties($args) ;
-    //
-    //     return $path ;
-    // }
+    // see prepareEnergiedatenPath() in helpers.php
+
+    return array_map('setScriptPath', $arguments) ;
 }
 
 $start = hrtime(true) ;
 
-print_r(json_encode(prepareEnergiedatenArguments())) ;
+print_r(writePathsToDB(assembleScriptPaths(prepareEnergiedatenArguments()))) ;
+
+closeDbConn(connGipscomm) ;
 
 $end = hrtime(true) ;
 
