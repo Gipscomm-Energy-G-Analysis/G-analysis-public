@@ -102,66 +102,11 @@ function writeHistoryPaths() {
         return $records ;
     }
 
-    function buildWhereString($last, $current) {
-        return $last."OR pathScript = '".$current."' " ;
-    }
-
-    function buildWheresString($records) {
-        return substr(array_reduce($records, 'buildWhereString'), 2) ;
-    }
-
-    function testIfDataInDB($records) {
-
-        define('records', $records) ;
-
-        function queryData() {
-            $query = "SELECT * FROM phpScriptsToExecute " ;
-            $query .= "WHERE ".buildWheresString(records) ;
-
-            return queryDB(connGipscomm, $query, "read") ;
-        }
-
-        function deleteInsertedData() {
-            $query = "DELETE FROM phpScriptsToExecute " ;
-            $query .= "WHERE ".buildWheresString(records) ;
-
-            queryDB(connGipscomm, $query, "read") ;
-        }
-
-        function sendAlertEmail() {
-
-            $empfaenger = "sdm@energie-gipscomm.de" ;
-
-            $betreff = "Berechnete Messstellen Warteschlange konnte nicht geschrieben werden. (G-Analysis)" ;
-
-            $emailText = "Dies betrifft die mst_ID = ".mstID." <br><br>" ;
-            $emailText .= "Start Skript = ".records[0]." <br><br> " ;
-            $emailText .= "End Skript = ".records[count(records) - 1]." <br><br>" ;
-
-            eMail($empfaenger, $betreff, $emailText) ;
-        }
-
-        function alertIfNeccessary($sameLength) {
-            if (!$sameLength) {
-                print_r("FALSE") ;
-                deleteInsertedData() ;
-                sendAlertEmail() ;
-            }
-            else {
-                print_r("TRUE") ;
-            }
-            return !$sameLength ;
-        }
-
-        return alertIfNeccessary(equalLength(records, queryData())) ;
-    }
-
-    pipe(
-        [ prepareScriptPaths(formula)
-        , 'writePathsToDB'
-        , 'testIfDataInDB'
-        ]
-    ) ;
+    return pipe(
+              [ prepareScriptPaths(formula)
+              , 'writePathsToDB'
+              ]
+          )[1] ;
 
     closeDbConn(connMandant) ;
 }
@@ -281,19 +226,79 @@ function writeUpdatePaths() {
         return array_map('setScriptPath', $arguments) ;
     }
 
-    pipe(
-        [ prepareEnergiedatenArguments()
-        , 'assembleScriptPaths'
-        , 'writePathsToDB'
-        ]
-    ) ;
+    return pipe(
+              [ prepareEnergiedatenArguments()
+              , 'assembleScriptPaths'
+              , 'writePathsToDB'
+              ]
+          )[2] ;
+}
+
+function testIfDataInDB($mode, $records) {
+
+    define('records', $records) ;
+
+    function buildWhereString($last, $current) {
+        return $last."OR pathScript = '".$current."' " ;
+    }
+
+    function buildWheresString($records) {
+        return substr(array_reduce($records, 'buildWhereString'), 2) ;
+    }
+
+    function queryData() {
+        $query = "SELECT * FROM phpScriptsToExecute " ;
+        $query .= "WHERE ".buildWheresString(records) ;
+
+        return queryDB(connGipscomm, $query, "read") ;
+    }
+
+    function deleteInsertedData() {
+        $query = "DELETE FROM phpScriptsToExecute " ;
+        $query .= "WHERE ".buildWheresString(records) ;
+
+        queryDB(connGipscomm, $query, "read") ;
+    }
+
+    function sendAlertEmail($mode_) {
+
+        $empfaenger = "sdm@energie-gipscomm.de" ;
+        $betreff = "Berechnete Messstellen Warteschlange konnte nicht geschrieben werden. (G-Analysis)" ;
+        $emailText = "" ;
+
+        if ($mode_ === "history") {
+            $emailText = "Dies betrifft die mst_ID = ".mstID." <br><br>" ;
+        }
+        else {
+            $emailText = "Dies betrifft die Pfade...<br><br>" ;
+        }
+
+        $emailText .= "Start Skript = ".records[0]." <br><br> " ;
+        $emailText .= "End Skript = ".records[count(records) - 1]." <br><br>" ;
+
+        eMail($empfaenger, $betreff, $emailText) ;
+    }
+
+    function alertIfNeccessary($mode_, $sameLength) {
+        if (!$sameLength) {
+            print_r("FALSE") ;
+            deleteInsertedData() ;
+            sendAlertEmail($mode_) ;
+        }
+        else {
+            print_r("TRUE") ;
+        }
+        return !$sameLength ;
+    }
+
+    return alertIfNeccessary($mode, equalLength(records, queryData())) ;
 }
 
 if ($_GET["mode"] === "history") {
-    writeHistoryPaths() ;
+    testIfDataInDB("history", writeHistoryPaths()) ;
 }
 else {
-    writeUpdatePaths() ;
+    testIfDataInDB("update", writeUpdatePaths()) ;
 }
 
 closeDbConn(connGipscomm) ;
