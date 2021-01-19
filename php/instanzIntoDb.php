@@ -456,7 +456,7 @@ elseif($id == "mst") {
     $vorgelagerteMessstelle = $_POST['vorgelagerteMessstelle'];
     $messmittelBerechnungslogik = $_POST['messmittelBerechnungslogik'];
     $msmID = $_POST['msmID'];
-    $anlID = $_POST['anlID'];
+    $anlID = $_POST['anlID'] === "" ? 0 : $_POST['anlID'] ;
     $notiz = $_POST['notiz'];
 
     if($modus == "new"){
