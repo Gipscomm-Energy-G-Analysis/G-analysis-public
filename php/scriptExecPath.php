@@ -79,7 +79,9 @@ function writeHistoryPaths() {
     }
 
     function setScriptPath($startDate, $endDate) {
-        return prepareEnergiedatenPath().setGetProperties($startDate, $endDate) ;
+        return prepareEnergiedatenPath()
+        .setGetProperties($startDate, $endDate)
+        .", 'history'" ;
     }
     // Version for main page
     //
@@ -217,7 +219,9 @@ function writeUpdatePaths() {
         }
 
         function setScriptPath($args) {
-            return prepareEnergiedatenPath().setGetProperties($args) ;
+            return prepareEnergiedatenPath()
+            .setGetProperties($args)
+            .", 'update'" ;
         }
         // Version for main page
         //
