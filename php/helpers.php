@@ -186,12 +186,21 @@ function extractPath($pathString) {
 // Inserts php paths into DB tbl phpScriptsToExecute
 function writePathsToDB($scriptPaths) {
 
-    $query = "INSERT INTO phpScriptsToExecute (pathScript, mode) " ;
-    $query .="VALUES ".buildValuesStringPaths($scriptPaths) ;
+    $retVal = [] ;
 
-    queryDB(connGipscomm, $query, "write") ;
+    if (empty($scriptPaths)) {
+        $retVal = $retVal ;
+    }
+    else {
+      $query = "INSERT INTO phpScriptsToExecute (pathScript, mode) " ;
+      $query .="VALUES ".buildValuesStringPaths($scriptPaths) ;
 
-    return array_map('extractPath', $scriptPaths) ;
+      queryDB(connGipscomm, $query, "write") ;
+
+      $retVal = array_map('extractPath', $scriptPaths) ;
+    }
+
+    return $retVal ;
 }
 
 // Retrieves all DBs with active data inflow

@@ -120,15 +120,14 @@ function writeUpdatePaths() {
             $query .= "ORDER BY Time DESC " ;
 
             $result = queryDB($conn, $query, "read") ;
-            $time = head($result)["Time"] ;
             $retVal = "" ;
 
             if (empty($result)) {
                $retVal = $retVal ;
-            } elseif (gettype($time) === "string") {
-               $retVal = $time ;
+            } elseif (gettype(head($result)["Time"]) === "string") {
+               $retVal = head($result)["Time"] ;
             } else {
-               $retVal = dateTimeToString($time) ;
+               $retVal = dateTimeToString(head($result)["Time"]) ;
             }
             return $retVal ;
         }
@@ -172,9 +171,15 @@ function writeUpdatePaths() {
                 $arguments = $arguments ;
             } else {
                 $timeInterval = extractTimeInterval($conn) ;
-                foreach ($mstIDs as $mstID) {
-                    array_push($arguments,
-                        assembleArgument($nameDB, $mstID, head($timeInterval), last($timeInterval))) ;
+                if (head($timeInterval) === "" || last($timeInterval) === ""
+                    || head($timeInterval) === last($timeInterval)) {
+                    $arguments = $arguments ;
+                }
+                else {
+                    foreach ($mstIDs as $mstID) {
+                      array_push($arguments,
+                      assembleArgument($nameDB, $mstID, head($timeInterval), last($timeInterval))) ;
+                    }
                 }
             }
 
@@ -223,7 +228,7 @@ function writeUpdatePaths() {
         //
         // see prepareEnergiedatenPath() in helpers.php
 
-        return array_map('setScriptPath', $arguments) ;
+        return empty($arguments) ? $arguments : array_map('setScriptPath', $arguments) ;
     }
 
     return pipe(
@@ -291,7 +296,16 @@ function testIfDataInDB($mode, $records) {
         return !$sameLength ;
     }
 
-    return alertIfNeccessary($mode, equalLength(records, queryData())) ;
+    $retVal = true ;
+
+    if (empty(records)) {
+        print_r("TRUE") ;
+        $retVal = $retVal ;
+    }
+    else {
+        $retVal = alertIfNeccessary($mode, equalLength(records, queryData())) ;
+    }
+    return $retVal ;
 }
 
 if ($_GET["mode"] === "history") {
