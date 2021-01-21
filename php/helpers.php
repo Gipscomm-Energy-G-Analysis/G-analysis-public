@@ -178,20 +178,15 @@ function buildValuesStringPaths($paths) {
     return substr(array_reduce($paths, 'buildValueStringPaths'), 1) ;
 }
 
-// Separates the path from the mode part of the path string
-function extractPath($pathString) {
-    return explode(",", $pathString)[0] ;
-}
-
 // Inserts php paths into DB tbl phpScriptsToExecute
 function writePathsToDB($scriptPaths) {
 
-    $query = "INSERT INTO phpScriptsToExecute (pathScript, mode) " ;
+    $query = "INSERT INTO phpScriptsToExecute (pathScript) " ;
     $query .="VALUES ".buildValuesStringPaths($scriptPaths) ;
 
     queryDB(connGipscomm, $query, "write") ;
 
-    return array_map('extractPath', $scriptPaths) ;
+    return $scriptPaths ;
 }
 
 // Retrieves all DBs with active data inflow
