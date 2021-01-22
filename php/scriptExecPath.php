@@ -10,41 +10,40 @@ require 'EMail_swift.php';
 
 define("connGipscomm", connectToDB("gipscomm")) ;
 
+function lastDate($conn, $tbl, $mstID) {
+    $query = "SELECT TOP(1) Time FROM ".$tbl." " ;
+
+    if ($mstID > 0) {
+        $query .= "WHERE mst_ID = ".$mstID." " ;
+    }
+
+    $query .= "ORDER BY Time DESC " ;
+
+    $result = queryDB($conn, $query, "read") ;
+    $retVal = "" ;
+
+    if (empty($result)) {
+        $retVal = $retVal ;
+    } elseif (gettype(head($result)["Time"]) === "string") {
+        $retVal = head($result)["Time"] ;
+    } else {
+        $retVal = dateTimeToString(head($result)["Time"]) ;
+    }
+    return $retVal ;
+}
+
+function lastDateEnergyData($conn) {
+    return lastDate($conn, "MessstellenEnergiedaten", 0) ;
+}
+
 function writeUpdateStartingPointPath() {
 
     define("nameDB", $_POST['nameDB']) ;
     define("mstID", $_POST['mstID']) ;
 
     function nextDates() {
-        $date = getdate() ;
 
-        $year = $date["year"] ;
-        $month = prependZero($date["mon"]) ;
-        $day = prependZero($date["mday"]) ;
-        $hours = prependZero($date["hours"] - 4) ;
-        $hoursAdjusted = "" ;
-        $minutes = prependZero($date["minutes"]) ;
-        $minutesAdjusted = "" ;
-
-        if ((int)$minutes > 45) {
-            $hoursAdjusted = prependZero($date["hours"] + 1) ;
-            $minutesAdjusted = "00" ;
-        }
-        elseif ((int)$minutes > 30) {
-            $hoursAdjusted = $hours ;
-            $minutesAdjusted = "45" ;
-        }
-        elseif ((int)$minutes > 15) {
-            $hoursAdjusted = $hours ;
-            $minutesAdjusted = "30" ;
-        }
-        else {
-            $hoursAdjusted = $hours ;
-            $minutesAdjusted = "15" ;
-        }
-
-
-        $current = $year."-".$month."-".$day." ".$hoursAdjusted.":".$minutesAdjusted.":00.000000" ;
+        $current = lastDateEnergyData(connectToDB(nameDB)) ;
         $nextDate = add15min($current) ;
 
         return [$current, $nextDate] ;
@@ -179,34 +178,8 @@ function writeUpdatePaths() {
 
     function prepareEnergiedatenArguments() {
 
-        function lastDate($conn, $tbl, $mstID) {
-            $query = "SELECT TOP(1) Time FROM ".$tbl." " ;
-
-            if ($mstID > 0) {
-                $query .= "WHERE mst_ID = ".$mstID." " ;
-            }
-
-            $query .= "ORDER BY Time DESC " ;
-
-            $result = queryDB($conn, $query, "read") ;
-            $retVal = "" ;
-
-            if (empty($result)) {
-                $retVal = $retVal ;
-            } elseif (gettype(head($result)["Time"]) === "string") {
-                $retVal = head($result)["Time"] ;
-            } else {
-                $retVal = dateTimeToString(head($result)["Time"]) ;
-            }
-            return $retVal ;
-        }
-
         function lastDateCalcMst($conn, $mstID) {
             return lastDate($conn, "berechneteEnergiedaten", $mstID) ;
-        }
-
-        function lastDateEnergyData($conn) {
-            return lastDate($conn, "MessstellenEnergiedaten", 0) ;
         }
 
         function getID($record) {
