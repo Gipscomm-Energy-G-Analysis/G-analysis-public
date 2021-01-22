@@ -179,8 +179,9 @@ function writeUpdatePaths() {
 
     function prepareEnergiedatenArguments() {
 
-        function lastDate($conn, $tbl) {
+        function lastDate($conn, $tbl, $mstID) {
             $query = "SELECT TOP(1) Time FROM ".$tbl." " ;
+            $query .= "WHERE mst_ID = ".$mstID." " ;
             $query .= "ORDER BY Time DESC " ;
 
             $result = queryDB($conn, $query, "read") ;
@@ -213,7 +214,7 @@ function writeUpdatePaths() {
             return array_map('getID', queryDB($conn, $query, "read")) ;
         }
 
-        function extractTimeInterval($conn) {
+        function extractTimeIntervals($conn, $mstIDs) {
             return [ lastDateCalcMst($conn), lastDateEnergyData($conn) ] ;
         }
 
