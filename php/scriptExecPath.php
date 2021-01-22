@@ -21,7 +21,7 @@ function writeUpdateStartingPointPath() {
         $year = $date["year"] ;
         $month = prependZero($date["mon"]) ;
         $day = prependZero($date["mday"]) ;
-        $hours = prependZero($date["hours"] - 2) ;
+        $hours = prependZero($date["hours"] - 3) ;
         $hoursAdjusted = "" ;
         $minutes = prependZero($date["minutes"]) ;
         $minutesAdjusted = "" ;
@@ -181,28 +181,32 @@ function writeUpdatePaths() {
 
         function lastDate($conn, $tbl, $mstID) {
             $query = "SELECT TOP(1) Time FROM ".$tbl." " ;
-            $query .= "WHERE mst_ID = ".$mstID." " ;
+
+            if ($mstID > 0) {
+                $query .= "WHERE mst_ID = ".$mstID." " ;
+            }
+
             $query .= "ORDER BY Time DESC " ;
 
             $result = queryDB($conn, $query, "read") ;
             $retVal = "" ;
 
             if (empty($result)) {
-               $retVal = $retVal ;
+                $retVal = $retVal ;
             } elseif (gettype(head($result)["Time"]) === "string") {
-               $retVal = head($result)["Time"] ;
+                $retVal = head($result)["Time"] ;
             } else {
-               $retVal = dateTimeToString(head($result)["Time"]) ;
+                $retVal = dateTimeToString(head($result)["Time"]) ;
             }
             return $retVal ;
         }
 
-        function lastDateCalcMst($conn) {
-            return lastDate($conn, "berechneteEnergiedaten") ;
+        function lastDateCalcMst($conn, $mstID) {
+            return lastDate($conn, "berechneteEnergiedaten", $mstID) ;
         }
 
         function lastDateEnergyData($conn) {
-            return lastDate($conn, "MessstellenEnergiedaten") ;
+            return lastDate($conn, "MessstellenEnergiedaten", 0) ;
         }
 
         function getID($record) {
@@ -212,10 +216,6 @@ function writeUpdatePaths() {
         function getMstIDs($conn) {
             $query = "SELECT * FROM MessstellenBerechnungsformeln " ;
             return array_map('getID', queryDB($conn, $query, "read")) ;
-        }
-
-        function extractTimeIntervals($conn, $mstIDs) {
-            return [ lastDateCalcMst($conn), lastDateEnergyData($conn) ] ;
         }
 
         function assembleArgument($nameDB, $mstID, $startDate, $endDate) {
@@ -234,16 +234,23 @@ function writeUpdatePaths() {
 
             if (empty($mstIDs)) {
                 $arguments = $arguments ;
-            } else {
-                $timeInterval = extractTimeInterval($conn) ;
-                if (head($timeInterval) === "" || last($timeInterval) === ""
-                    || head($timeInterval) === last($timeInterval)) {
+            }
+            else {
+                $lastDateEnergyData = lastDateEnergyData($conn) ;
+                if ($lastDateEnergyData === "") {
                     $arguments = $arguments ;
                 }
                 else {
                     foreach ($mstIDs as $mstID) {
-                      array_push($arguments,
-                      assembleArgument($nameDB, $mstID, head($timeInterval), last($timeInterval))) ;
+                        $lastDateCalcMst = lastDateCalcMst($conn, $mstID) ;
+                        if ($lastDateCalcMst === "") {
+                            $arguments = $arguments ;
+                        }
+                        else {
+                            array_push($arguments,
+                                assembleArgument($nameDB, $mstID, $lastDateCalcMst, $lastDateEnergyData)
+                            ) ;
+                        }
                     }
                 }
             }
