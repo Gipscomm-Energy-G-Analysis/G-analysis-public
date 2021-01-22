@@ -21,7 +21,7 @@ function writeUpdateStartingPointPath() {
         $year = $date["year"] ;
         $month = prependZero($date["mon"]) ;
         $day = prependZero($date["mday"]) ;
-        $hours = prependZero($date["hours"] - 3) ;
+        $hours = prependZero($date["hours"] - 4) ;
         $hoursAdjusted = "" ;
         $minutes = prependZero($date["minutes"]) ;
         $minutesAdjusted = "" ;
