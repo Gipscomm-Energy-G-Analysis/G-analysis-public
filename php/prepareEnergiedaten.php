@@ -113,9 +113,6 @@ function prepareForCalculation($records) {
 
     // CREATE FORMULA ARRAYS FROM DATE X TO DATE Y
     // -------------------------------------------
-    function prependZero($n) {
-        return (int)$n < 10 ? "0".$n : (int)$n ;
-    }
 
     function createFormulaArray($formulaRecord_) {
         $to = endDate ;

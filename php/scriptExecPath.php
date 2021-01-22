@@ -10,6 +10,70 @@ require 'EMail_swift.php';
 
 define("connGipscomm", connectToDB("gipscomm")) ;
 
+function writeUpdateStartingPointPath() {
+
+    define("nameDB", $_POST['nameDB']) ;
+    define("mstID", $_POST['mstID']) ;
+
+    function nextDates() {
+        $date = getdate() ;
+
+        $year = $date["year"] ;
+        $month = prependZero($date["mon"]) ;
+        $day = prependZero($date["mday"]) ;
+        $hours = prependZero($date["hours"] - 2) ;
+        $hoursAdjusted = "" ;
+        $minutes = prependZero($date["minutes"]) ;
+        $minutesAdjusted = "" ;
+
+        if ((int)$minutes > 45) {
+            $hoursAdjusted = prependZero($date["hours"] + 1) ;
+            $minutesAdjusted = "00" ;
+        }
+        elseif ((int)$minutes > 30) {
+            $hoursAdjusted = $hours ;
+            $minutesAdjusted = "45" ;
+        }
+        elseif ((int)$minutes > 15) {
+            $hoursAdjusted = $hours ;
+            $minutesAdjusted = "30" ;
+        }
+        else {
+            $hoursAdjusted = $hours ;
+            $minutesAdjusted = "15" ;
+        }
+
+
+        $current = $year."-".$month."-".$day." ".$hoursAdjusted.":".$minutesAdjusted.":00.000000" ;
+        $nextDate = add15min($current) ;
+
+        return [$current, $nextDate] ;
+    }
+
+    function setGetProperties($startDate, $endDate) {
+        $string = "?nameDB=".nameDB ;
+        $string .= "&mstID=".mstID ;
+        $string .= "&startDate=".$startDate ;
+        $string .= "&endDate=".$endDate ;
+
+        return $string ;
+    }
+
+    function setScriptPath($dates) {
+        return [ prepareEnergiedatenPath().setGetProperties(head($dates), last($dates))."', 'startupdate" ] ;
+    }
+    // Version for main page
+    //
+    // see prepareEnergiedatenPath() in helpers.php
+
+    return pipe(
+              [ nextDates()
+              , 'setScriptPath'
+              , 'writePathsToDB'
+              ]
+          )[2] ;
+}
+
 function writeHistoryPaths() {
 
     define("nameDB", $_POST['nameDB']) ;
@@ -310,6 +374,9 @@ function testIfDataInDB($mode, $records) {
 
 if ($_GET["mode"] === "history") {
     testIfDataInDB("history", writeHistoryPaths()) ;
+}
+elseif ($_GET["mode"] === "startupdate") {
+    testIfDataInDB("history", writeUpdateStartingPointPath()) ;
 }
 else {
     testIfDataInDB("update", writeUpdatePaths()) ;

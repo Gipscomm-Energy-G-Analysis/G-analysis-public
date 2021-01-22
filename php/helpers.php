@@ -11,6 +11,11 @@ function actionOn($record, $field, $fn) {
     return $record ;
 }
 
+// Prepends a zero in case n is smaller 10
+function prependZero($n) {
+    return (int)$n < 10 ? "0".$n : (int)$n ;
+}
+
 // Filters an array of arrays and returns just non-empty arrays
 function notEmpty($arr) {
     return !empty($arr) ;

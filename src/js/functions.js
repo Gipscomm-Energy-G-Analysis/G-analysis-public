@@ -10239,6 +10239,14 @@ const saveFormula =
         .then(messstellenInAuswertungsEditorTabelleEinlesen)
     }
 
+// Adds one job as a starting point for the updating
+const addOneVirtMessstelleHistoryJob =
+    nameDB =>
+    mstID =>
+    ajaxPost('php/scriptExecPath.php?mode=startupdate')({nameDB, mstID})
+
+
+// Adds jobs for history calculation
 const addVirtMessstelleHistoryJob =
     nameDB =>
     mstID =>
@@ -10260,8 +10268,11 @@ const virtMessstelleWithHistory =
 
 // Save a Messstellen formula without calculating historic data
 const virtMessstelleWithoutHistory =
+    nameDB =>
+    mstID =>
     () => {
         saveFormula()
+        addOneVirtMessstelleHistoryJob(nameDB)(mstID)
         $("#virtMessstelleSave").dialog("close")
         alert("Save without historic data calculation")
     }
@@ -10298,7 +10309,9 @@ const virtMessstelleSaveDialog =
 
                 // Save a Messstellen formula without historic data calculation
                 $("#histDataNein").off("click")
-                $("#histDataNein").on("click", virtMessstelleWithoutHistory)
+                $("#histDataNein").on("click",
+                    virtMessstelleWithoutHistory(nameDB)(mstID)
+                )
 
                 // Cancel saving process
                 $("#saveMstFormulaAbbrechen").off("click")
