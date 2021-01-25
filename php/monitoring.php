@@ -29,6 +29,7 @@ function lastData($db) {
     $conn2 = connectToDB( "master" ) ;
 
     $queryDate = "SELECT TOP(1) time_de FROM [".$db['name']."].[dbo].[data_value_15m] " ;
+    $queryDate .= "WHERE power IS NOT NULL " ;
     $queryDate .= "ORDER BY time_de DESC " ;
 
     $recordsTime = queryDB($conn2, $queryDate, "read") ;
