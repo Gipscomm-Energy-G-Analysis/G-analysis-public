@@ -11,13 +11,19 @@ require 'EMail_swift.php';
 define("connGipscomm", connectToDB("gipscomm")) ;
 
 function lastDate($conn, $tbl, $mstID) {
-    $query = "SELECT TOP(1) Time FROM ".$tbl." " ;
+    $query = "" ;
 
     if ($mstID > 0) {
+        $query .= "SELECT TOP(1) Time FROM ".$tbl." " ;
         $query .= "WHERE mst_ID = ".$mstID." " ;
+        $query .= "ORDER BY Time DESC " ;
+    }
+    else {
+      $query .= "SELECT TOP(1) time_de AS Time FROM ".$tbl." " ;
+      $query .= "WHERE power IS NOT NULL " ;
+      $query .= "ORDER BY time_de DESC " ;
     }
 
-    $query .= "ORDER BY Time DESC " ;
 
     $result = queryDB($conn, $query, "read") ;
     $retVal = "" ;
@@ -33,7 +39,7 @@ function lastDate($conn, $tbl, $mstID) {
 }
 
 function lastDateEnergyData($conn) {
-    return lastDate($conn, "MessstellenEnergiedaten", 0) ;
+    return lastDate($conn, "data_value_15m", 0) ;
 }
 
 function writeUpdateStartingPointPath() {
@@ -353,6 +359,8 @@ function testIfDataInDB($mode, $records) {
     return $retVal ;
 }
 
+$start = hrtime(true) ;
+
 if ($_GET["mode"] === "history") {
     testIfDataInDB("history", writeHistoryPaths()) ;
 }
@@ -364,5 +372,9 @@ else {
 }
 
 closeDbConn(connGipscomm) ;
+
+$end = hrtime(true) ;
+
+echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
 ?>
