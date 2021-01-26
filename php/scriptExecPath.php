@@ -337,12 +337,12 @@ function testIfDataInDB($mode, $records) {
 
     function alertIfNeccessary($mode_, $sameLength) {
         if (!$sameLength) {
-            print_r("FALSE") ;
+            echo("FALSE") ;
             deleteInsertedData() ;
             sendAlertEmail($mode_) ;
         }
         else {
-            print_r("TRUE") ;
+            echo("TRUE") ;
         }
         return !$sameLength ;
     }
@@ -350,7 +350,7 @@ function testIfDataInDB($mode, $records) {
     $retVal = true ;
 
     if (empty(records)) {
-        print_r("TRUE") ;
+        echo("TRUE") ;
         $retVal = $retVal ;
     }
     else {
@@ -359,7 +359,7 @@ function testIfDataInDB($mode, $records) {
     return $retVal ;
 }
 
-$start = hrtime(true) ;
+// $start = hrtime(true) ;
 
 if ($_GET["mode"] === "history") {
     testIfDataInDB("history", writeHistoryPaths()) ;
@@ -373,8 +373,8 @@ else {
 
 closeDbConn(connGipscomm) ;
 
-$end = hrtime(true) ;
-
-echo "    Execution Time : ".(($end - $start) / 1000000000) ;
+// $end = hrtime(true) ;
+//
+// echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
 ?>
