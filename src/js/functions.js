@@ -7,6 +7,15 @@ const intoTable =		// CHANGE: added fn to write data into any DataTable 20.05.20
     data =>
     data
     .forEach(a => tbl.row.add(a).draw())
+
+const disableBtn =
+    idBtn =>
+    $(idBtn).prop("disabled","disabled")
+
+const enableBtn =
+    idBtn =>
+    $(idBtn).prop("disabled","")
+
 try {
     var dateTime = function(a) {
             var b = new Date(1970, 0, 1, 0, 0, 0);
@@ -10239,6 +10248,29 @@ const saveFormula =
         .then(messstellenInAuswertungsEditorTabelleEinlesen)
     }
 
+// Tests if php path were successfully written to DB
+const jobSetupSuccess =
+    type =>
+    result => {
+        const jobType =
+            equal(type)("history") ?
+            "Messstellenhistorie" :
+            "Update Startposition"
+
+        const getMsg =
+            name =>
+            equal(result)("FALSE") ?
+            `Die ${name} konnte nicht konfiguriert werden ! Bitte wenden Sie sich an Ihren Ansprechpartner.` :
+            `${name} erfolgreich konfiguriert !`
+
+        const retVal =
+            getMsg(jobType())
+
+        alert(retVal)
+
+        return retVal
+    }
+
 // Adds one job as a starting point for the updating
 const addOneVirtMessstelleHistoryJob =
     nameDB =>
@@ -10253,29 +10285,31 @@ const addVirtMessstelleHistoryJob =
     formula =>
     ajaxPost('php/scriptExecPath.php?mode=history')({nameDB, mstID, formula})
 
+const configureVirtMessstelle =
+    job =>
+    type => {
+        disableBtn("#formelSpeichern")
+        saveFormula()
+        job
+        .then(jobSetupSuccess(type))
+        .then(enableBtn("#formelSpeichern"))
+
+        $("#virtMessstelleSave").dialog("close")
+    }
+
 // Save a Messstellen formula and calculate historic data
 const virtMessstelleWithHistory =
     nameDB =>
     mstID =>
     formula =>
-    () => {
-        saveFormula()
-        addVirtMessstelleHistoryJob(nameDB)(mstID)(formula)
+    configureVirtMessstelle(addVirtMessstelleHistoryJob(nameDB)(mstID)(formula))("history")
 
-        $("#virtMessstelleSave").dialog("close")
-        alert("Save and calculate historic data")
-    }
 
 // Save a Messstellen formula without calculating historic data
 const virtMessstelleWithoutHistory =
     nameDB =>
     mstID =>
-    () => {
-        saveFormula()
-        addOneVirtMessstelleHistoryJob(nameDB)(mstID)
-        $("#virtMessstelleSave").dialog("close")
-        alert("Save without historic data calculation")
-    }
+    configureVirtMessstelle(addOneVirtMessstelleHistoryJob(nameDB)(mstID))("startupdate")
 
 // Open popup and decide if historic Virtuelle Messstelle
 // data should be calculated or only from now on get updated
