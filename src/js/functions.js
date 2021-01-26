@@ -9,12 +9,18 @@ const intoTable =		// CHANGE: added fn to write data into any DataTable 20.05.20
     .forEach(a => tbl.row.add(a).draw())
 
 const disableBtn =
-    idBtn =>
-    $(idBtn).prop("disabled","disabled")
+    idBtn => {
+        $(idBtn).text("Speichert...")
+        $(idBtn).prop("disabled","disabled")
+    }
+
 
 const enableBtn =
-    idBtn =>
-    $(idBtn).prop("disabled","")
+    idBtn => {
+        $(idBtn).prop("disabled","")
+        $(idBtn).text("Speichern")
+    }
+
 
 try {
     var dateTime = function(a) {
@@ -805,8 +811,6 @@ try {
                         alert("failed!!")
                     },
                     success: function(c) {
-                        "error" === c ? b("fail") : a();
-                        alert(datensatzGespeichert(c))
                     }
                 })
             })
@@ -10264,7 +10268,7 @@ const jobSetupSuccess =
             `${name} erfolgreich konfiguriert !`
 
         const retVal =
-            getMsg(jobType())
+            getMsg(jobType)
 
         alert(retVal)
 
@@ -10302,6 +10306,7 @@ const virtMessstelleWithHistory =
     nameDB =>
     mstID =>
     formula =>
+    () =>
     configureVirtMessstelle(addVirtMessstelleHistoryJob(nameDB)(mstID)(formula))("history")
 
 
@@ -10309,6 +10314,7 @@ const virtMessstelleWithHistory =
 const virtMessstelleWithoutHistory =
     nameDB =>
     mstID =>
+    () =>
     configureVirtMessstelle(addOneVirtMessstelleHistoryJob(nameDB)(mstID))("startupdate")
 
 // Open popup and decide if historic Virtuelle Messstelle
