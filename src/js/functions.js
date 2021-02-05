@@ -1197,6 +1197,7 @@ try {
                 },
                 success: function(a) {
                     a = $.parseJSON(a);
+
                     if (0 < a.length)
                         for (n = 0; n < a.length; n++) tblMandantengruppe.row.add([a[n].man_ID, a[n].nameMan, a[n].dbName], n).draw(), tblMandantengruppe.column(0).visible(!1).draw();
                     else tblMandantengruppe.clear().draw()
@@ -4718,7 +4719,8 @@ try {
                             , ["#notizBetrGrp", "notiz"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
-                            })) : clearFields("betrGrp")
+                            }),
+                          readInstanzen("manGrpFirst", 0)) : clearFields("betrGrp")
                         }
                     });
                     break;
@@ -4757,12 +4759,16 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
-                            0 < c.length ? (mandantenInMandantenGruppenTabelleEinlesen(c[b].mandantenIDs), $("#manGrpCount").val(c.length), [
-                                    ["#manGrpID", "manGrp_ID"]["#nameManGrp", "name"]["#kurzManGrp", "kurz"]["#notizManGrp", "notiz"]
-                                ].forEach(function(a) {
-                                    $(a[0]).val(c[b][a[1]])
-                                })) :
-                                clearFields("manGrpHinz")
+                            0 < c.length ? (mandantenInMandantenGruppenTabelleEinlesen(c[b].mandantenIDs), $("#manGrpCount").val(c.length),
+                            [
+                              ["#manGrpID", "manGrp_ID"]
+                            , ["#nameManGrp", "name"]
+                            , ["#kurzManGrp", "kurz"]
+                            , ["#notizManGrp", "notiz"]
+                            ].forEach(function(a) {
+                                $(a[0]).val(c[b][a[1]])
+                            })) :
+                            clearFields("manGrpHinz")
                         }
                     });
                     break;
@@ -4783,18 +4789,18 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
-                            0 < c.length ? ($("#admCount").val(c.length), [
-                                ["#admID", "adm_ID"],
-                                ["#titelAdm", "titel"],
-                                ["#nameAdm", "name"],
-                                ["#vornameAdm", "vorname"],
-                                ["#emailAdm", "email"],
-                                ["#telefonAdm",
-                                    "telefon"
-                                ],
-                                ["#faxAdm", "fax"],
-                                ["#mobiltelefonAdm", "mobiltelefon"],
-                                ["#benutzernameAdm", "benutzername"]
+
+                            0 < c.length ? ($("#admCount").val(c.length),
+                            [
+                              ["#admID", "adm_ID"]
+                            , ["#titelAdm", "titel"]
+                            , ["#nameAdm", "name"]
+                            , ["#vornameAdm", "vorname"]
+                            , ["#emailAdm", "email"]
+                            , ["#telefonAdm", "telefon"]
+                            , ["#faxAdm", "fax"]
+                            , ["#mobiltelefonAdm", "mobiltelefon"]
+                            , ["#benutzernameAdm", "benutzername"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             })) : clearFields("admHinz")
