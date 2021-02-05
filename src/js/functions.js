@@ -5906,6 +5906,7 @@ try {
                 },
                 success: function(a) {
                     alert(datensatzGespeichert(a))
+                    betrGrpEinlesen()
                 }
             });
             else if ("sAdmSpeichern" == a) $.ajax({
@@ -7317,6 +7318,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("betrGrpLast", $("#betrGrpCount").val())
+                    betrGrpEinlesen()
                 }
             }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
             else if ("sAdmSpeichern" == a) $.ajax({
