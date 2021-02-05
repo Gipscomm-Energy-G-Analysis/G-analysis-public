@@ -29,17 +29,25 @@ if($id == "gipscAdm") {
 }
 elseif($id == "betrGrp") {
 
-$modus = $_POST['modus'];
+    $modus = $_POST['modus'] ;
+    $firma = $_POST['firma'] ;
+    $anzahlMitarbeiter = $_POST['anzahlMitarbeiter'] ;
+    $anschrift = $_POST['anschrift'] ;
+    $plz = $_POST['plz'] ;
+    $ort = $_POST['ort'] ;
+    $geschaeftsfuehrer = $_POST['geschaeftsfuehrer'] ;
+    $telefon = $_POST['telefon'] ;
+    $eMail = $_POST['eMail'] ;
+    $notiz = $_POST['notiz'] ;
 
-
-	if($modus == "new"){
+	if($modus == "new") {
 
 		$tsql = "INSERT INTO betreuerGruppen(firma,anzahlMitarbeiter, anschrift, plz, ort, ";
 		$tsql .= "geschaeftsfuehrer, telefon, eMail, notiz) ";
 		$tsql .= "VALUES ('$firma','$anzahlMitarbeiter','$anschrift', '$plz','$ort','$geschaeftsfuehrer', ";
 		$tsql .= "'$telefon','$eMail','$notiz') ";
 }
-	else{
+	else {
 		$betrGrpID = $_POST['betrGrpID'];
 
 		$tsql =  "UPDATE betreuerGruppen SET firma = '$firma',anzahlMitarbeiter = '$anzahlMitarbeiter', ";
