@@ -17,13 +17,13 @@ if($id == "gipscAdm") {
 
   	if($modus == "new"){
 
-  		$tsql = "INSERT INTO gipscommAdmins(username,passHash) ";
-  		$tsql .= "VALUES ('$username','$passwort') ";
+  		$tsql = "INSERT INTO gipscommAdmins(username, passHash, position, man_ID) ";
+  		$tsql .= "VALUES ('$username','$passwort', 'gipsAdm', 1) ";
     }
   	else{
   		$gipscAdmID = $_POST['gipscAdmID'];
 
-  		$tsql =  "UPDATE gipscommAdmins SET username = '$username',passHash = '$passwort' ";
+  		$tsql =  "UPDATE gipscommAdmins SET username = '$username', passHash = '$passwort' ";
   		$tsql .= "WHERE gipsAdm_ID = '$gipscAdmID' ";
   	}
 }
