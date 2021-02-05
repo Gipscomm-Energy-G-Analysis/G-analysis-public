@@ -140,58 +140,140 @@ elseif($id == 'intBdeIMw'){
 			$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
 			$query3 .= "WHERE type = '$zeitintervallAnl' ";
 
-			$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
-			$query4 .= "WHERE type = '$zeitintervallAnl' ";
+			//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
+			//$query4 .= "WHERE type = '$zeitintervallAnl' ";
 		
 }elseif($id == 'masseneingabeAlertRangeMinMax'){
 	$type = $_POST['zeitintervallAnl'];
 	$mstID = $_POST['mstID'];
 	$date = $_POST['date'];
-	$query1 = "SELECT Top 1 val From masseneingabeSucheErgebnisIMw ";
-	$query1 .= "WHERE type = '$type' ";
-	$query1 .= "AND mst_ID = '$mstID' ";
-	$query1 .= "AND on_date  >= DATEADD(day,-5, '$date') ";
-	$query1 .= "AND on_date <= '$date' ";
-	$query1 .= "Order by val desc";
+		
+	if($type==2){
+	    $expDate =explode("-", $date);
+	    $on_week = $expDate[0]; //week val   
+	    $on_date = $expDate[1]; //year val
 
-	$query2 = "SELECT Top 1 val From masseneingabeSucheErgebnisIMw ";
-	$query2 .= "WHERE type = '$type' ";
-	$query2 .= "AND mst_ID = '$mstID' ";
-	$query2 .= "AND on_date  >= DATEADD(day,-5, '$date') ";
-	$query2 .= "AND on_date <= '$date' ";
-	$query2 .= "Order by val asc";	
+	    $query1 = "SELECT TOP 5 val From masseneingabeSucheErgebnisIMw ";
+		$query1 .= "WHERE type = '$type' ";
+		$query1 .= "AND mst_ID = '$mstID' ";
+		$query1 .= "AND on_date <= '$on_date' ";
+		$query1 .= "AND on_week <= '$on_week' ";
+		$query1 .= "Order by on_date DESC";
+
+		$query2 = "SELECT TOP 5 on_date FROM masseneingabeSucheIMw ";
+		$query2 .= "WHERE type = '$type' ";
+		$query2 .= "AND mst_ID = '$mstID' ";
+		$query2 .= "AND on_date <= '$on_date' ";
+		$query2 .= "AND on_week <= '$on_week' ";
+		$query2 .= "Order by on_date DESC";
+    }else{
+		$query1 = "SELECT TOP 5 val From masseneingabeSucheErgebnisIMw ";
+		$query1 .= "WHERE type = '$type' ";
+		$query1 .= "AND mst_ID = '$mstID' ";
+		$query1 .= "AND on_date <= '$date' ";
+		$query1 .= "Order by on_date DESC";
+
+		$query2 = "SELECT TOP 5 on_date FROM masseneingabeSucheIMw ";
+		$query2 .= "WHERE type = '$type' ";
+		$query2 .= "AND mst_ID = '$mstID' ";
+		$query2 .= "AND on_date <= '$date' ";
+		$query2 .= "Order by on_date DESC";
+    }
+	
 }elseif($id == 'masseneingabeAlertRangeLastInptValue'){
 	$type = $_POST['zeitintervallAnl'];
 	$mstID = $_POST['mstID'];
 	$date = $_POST['date'];
-	$query1 = "SELECT val FROM masseneingabeSucheIMw ";
-	$query1 .= "WHERE type = '$type' ";
-	$query1 .= "AND mst_ID = '$mstID' ";
-	$query1 .= "AND on_date  >= DATEADD(day,-1, '$date') ";
-	$query1 .= "AND on_date <= '$date' ";
+	if($type==2){
+	    $expDate =explode("-", $date);
+	    $on_week = $expDate[0]; //week val   
+	    $on_date = $expDate[1]; //year val
+	    $query1 = "SELECT Top 1 val FROM masseneingabeSucheIMw ";
+		$query1 .= "WHERE type = '$type' ";
+		$query1 .= "AND mst_ID = '$mstID' ";
+		$query1 .= "AND on_date < '$on_date' ";
+		$query1 .= "AND on_week < '$on_week' ";
+		$query1 .= "Order by on_date DESC";
+		
+		$query2 = "SELECT Top 1 val FROM masseneingabeSucheErgebnisIMw ";
+		$query2 .= "WHERE type = '$type' ";
+		$query2 .= "AND mst_ID = '$mstID' ";
+		$query2 .= "AND on_date < '$on_date' ";
+		$query2 .= "AND on_week < '$on_week' ";	
+		$query2 .= "Order by on_date DESC";
+    }else{
+	    $query1 = "SELECT Top 1 val FROM masseneingabeSucheIMw ";
+		$query1 .= "WHERE type = '$type' ";
+		$query1 .= "AND mst_ID = '$mstID' ";
+		$query1 .= "AND on_date < '$date' ";
+		$query1 .= "Order by on_date DESC";
+		
+		$query2 = "SELECT Top 1 val FROM masseneingabeSucheErgebnisIMw ";
+		$query2 .= "WHERE type = '$type' ";
+		$query2 .= "AND mst_ID = '$mstID' ";
+		$query2 .= "AND on_date < '$date' ";
+		$query2 .= "Order by on_date DESC";
+    }
 	
-	$query2 = "SELECT val FROM masseneingabeSucheErgebnisIMw ";
-	$query2 .= "WHERE type = '$type' ";
-	$query2 .= "AND mst_ID = '$mstID' ";
-	$query2 .= "AND on_date  >= DATEADD(day,-1, '$date') ";
-	$query2 .= "AND on_date <= '$date' ";	
+}else if($id == 'masseneingabeAlertRangeFirstInptValue'){
+  $type = $_POST['zeitintervallAnl'];
+  $mstID = $_POST['mstID'];
+  $date = $_POST['date'];
+  //$checkDay = -365; 
+  if($type==1){
+    $query1 = "SELECT Top 1 on_date FROM masseneingabeSucheIMw ";
+    $query1 .= "WHERE type = '$type' ";
+    $query1 .= "AND mst_ID = '$mstID' ";
+    /*$query1 .= "AND on_date  >= DATEADD(day,-365, '$date') ";*/
+    /*$query1 .= "AND on_date <= '$date' ";*/
+    $query1 .= "Order by on_date asc";
+    
+    $query2 = "SELECT Top 1 on_date FROM masseneingabeSucheIMw ";
+    $query2 .= "WHERE type = '$type' ";
+    $query2 .= "AND mst_ID = '$mstID' ";
+    /*$query2 .= "AND on_date  >= DATEADD(day,-365, '$date') ";*/
+    /*$query2 .= "AND on_date <= '$date' ";*/
+    $query2 .= "Order by on_date desc";
+  }
+  if($type==4){
+    $query1 = "SELECT Top 1 on_date FROM masseneingabeSucheIMw ";
+    $query1 .= "WHERE type = '$type' ";
+    $query1 .= "AND mst_ID = '$mstID' ";
+    /*$query1 .= "AND on_date  >= DATEADD(year,-365, '$date') ";
+    $query1 .= "AND on_date <= '$date' ";*/
+    $query1 .= "Order by on_date desc";
+    
+    $query2 = "SELECT Top 1 on_date FROM masseneingabeSucheErgebnisIMw ";
+    $query2 .= "WHERE type = '$type' ";
+    $query2 .= "AND mst_ID = '$mstID' ";
+    /*$query2 .= "AND on_date  >= DATEADD(year,-365, '$date') ";
+    $query2 .= "AND on_date <= '$date' ";*/ 
+    $query2 .= "Order by on_date asc";
+  }
 }
-//echo $query1;die;
+
 if($id == 'masseneingabeSearch'){
 	$records['query1'] = queryDB($conn, $query1, "read");
 	$records['query2'] = queryDB($conn, $query2, "read");
 	$records['query3'] = queryDB($conn, $query3, "read");
-	$records['query4'] = queryDB($conn, $query4, "read");
+	//$records['query4'] = queryDB($conn, $query4, "read");
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
 }else if($id == 'masseneingabeAlertRangeMinMax'){
-	//echo $query1;die;
-	$records['min'] = queryDB($conn, $query1, "read");
-	$records['max'] = queryDB($conn, $query2, "read");
+    //echo $query1;echo $query2;die;
+	$records['values'] = queryDB($conn, $query1, "read");
+	//$records['max'] = queryDB($conn, $query2, "read");
+	$records['lastDBDates'] = queryDB($conn, $query2, "read");
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
 }else if($id == 'masseneingabeAlertRangeLastInptValue'){
+	/*echo  $query1;echo  $query2;die;*/
 	$records['top'] = queryDB($conn, $query1, "read");
 	$records['bottom'] = queryDB($conn, $query2, "read");
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
+}else if($id == 'masseneingabeAlertRangeFirstInptValue'){
+  /*echo  $query1;echo  $query2;die;*/
+  $records['start'] = queryDB($conn, $query1, "read");
+  $records['end'] = queryDB($conn, $query2, "read");
+  echo json_encode($records, JSON_INVALID_UTF8_IGNORE); 
 }else{
 	$records= queryDB($conn, $query, "read");
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
