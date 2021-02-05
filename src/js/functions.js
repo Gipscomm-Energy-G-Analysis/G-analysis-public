@@ -12,6 +12,7 @@ const disableBtn =
     idBtn => {
         $(idBtn).text("Speichert...")
         $(idBtn).prop("disabled","disabled")
+        return `Speichert... ->${idBtn}`
     }
 
 
@@ -19,6 +20,7 @@ const enableBtn =
     idBtn => {
         $(idBtn).prop("disabled","")
         $(idBtn).text("Speichern")
+        return `Speichern ->${idBtn}`
     }
 
 
@@ -10272,6 +10274,8 @@ const jobSetupSuccess =
 
         alert(retVal)
 
+        enableBtn("#formelSpeichern")
+
         return retVal
     }
 
@@ -10296,7 +10300,6 @@ const configureVirtMessstelle =
         saveFormula()
         job
         .then(jobSetupSuccess(type))
-        .then(enableBtn("#formelSpeichern"))
 
         $("#virtMessstelleSave").dialog("close")
     }
