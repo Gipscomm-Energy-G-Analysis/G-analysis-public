@@ -9847,7 +9847,7 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 lengthPath: 1,
                 tab: "tabGipscAdm",
                 idElement: "gipscAdmID",
-                infos: "infosBetreuerGruppen",
+                infos: "infosGipscommAdmins",
                 aktivInstance: "gipscAdm"
             }, {
                 lengthPath: 1,
