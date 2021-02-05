@@ -4703,8 +4703,19 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
-                            0 < c.length ? ($("#betrGrpCount").val(c.length), [
-                                ["#betrGrpID", "betrGrp_ID"]["#firmaBetrGrp", "firma"]["#anzahlMitarbeiterBetrGrp", "anzahlMitarbeiter"]["#anschriftBetrGrp", "anschrift"]["#plzBetrGrp", "plz"]["#ortBetrGrp", "ort"]["#geschaeftsfuehrerBetrGrp", "geschaeftsfuehrer"]["#telefonBetrGrp", "telefon"]["#emailBetrGrp", "eMail"]["#notizBetrGrp", "notiz"]
+
+                            0 < c.length ? ($("#betrGrpCount").val(c.length),
+                            [
+                              ["#betrGrpID", "betrGrp_ID"]
+                            , ["#firmaBetrGrp", "firma"]
+                            , ["#anzahlMitarbeiterBetrGrp", "anzahlMitarbeiter"]
+                            , ["#anschriftBetrGrp", "anschrift"]
+                            , ["#plzBetrGrp", "plz"]
+                            , ["#ortBetrGrp", "ort"]
+                            , ["#geschaeftsfuehrerBetrGrp", "geschaeftsfuehrer"]
+                            , ["#telefonBetrGrp", "telefon"]
+                            , ["#emailBetrGrp", "eMail"]
+                            , ["#notizBetrGrp", "notiz"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             })) : clearFields("betrGrp")
