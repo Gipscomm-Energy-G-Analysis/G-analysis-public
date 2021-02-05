@@ -1,15 +1,14 @@
 <?php
-include('top-cache.php');
-ini_set ('display_errors', 'On');
+include('top-cache.php') ;
+ini_set ('display_errors', 'On') ;
 
-require 'DbOperations.php';
+require 'DbOperations.php' ;
 
-$nameDB = $_POST['nameDB'];
-$conn = connectToDB($nameDB);
-$query = "SELECT  * FROM gipscPw";
-$records = queryDB($conn, $query, "read");
+$conn = connectToDB("gipscomm") ;
+$query = "SELECT  * FROM gipscPw" ;
+$records = queryDB($conn, $query, "read") ;
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-include('bottom-cache.php');
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
+include('bottom-cache.php') ;
 
 ?>
