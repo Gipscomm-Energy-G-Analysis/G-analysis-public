@@ -58,11 +58,10 @@ elseif($id == "adm"){
 }
 
 elseif($id == "ben"){
+    $ins = $_POST['ins'];
+    $idIns = $_POST['insID'];
 
-  //$ins = $_POST['ins'];
-
- // $idIns = $_POST['insID'];
- $query = "SELECT * FROM benutzer;// WHERE $ins = '$idIns'";
+    $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
 }
 
 elseif($id == "man"){

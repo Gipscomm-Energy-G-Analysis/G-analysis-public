@@ -4809,6 +4809,7 @@ try {
                     break;
                 case "ben":
                     "optMan" == $("#manOderManGrp").val() ? (a = "man_ID", e = $("#manRechteID").val()) : (a = "manGrp_ID", e = $("#manGrpID").val());
+
                     $.ajax({
                         type: "POST",
                         async: !0,
@@ -4822,19 +4823,19 @@ try {
                         fail: function() {
                             alert("failed!!")
                         },
+
                         success: function(a) {
                             var c = $.parseJSON(a);
                             0 < c.length ? ($("#benCount").val(c.length),
-                                [
-                                    ["#benID", "ben_ID"],
-                                    ["#titelBen", "titel"],
-                                    ["#nameBen", "name"],
-                                    ["#vornameBen", "vorname"],
-                                    ["#emailBen", "eMail"],
-                                    ["#telefonBen", "telefon"],
-                                    ["#faxBen", "fax"],
-                                    ["#mobiltelefonBen", "mobiltelefon"],
-                                    ["#benutzernameBen", "benutzername"]
+                                [ ["#benID", "ben_ID"]
+                                , ["#titelBen", "titel"]
+                                , ["#nameBen", "name"]
+                                , ["#vornameBen", "vorname"]
+                                , ["#emailBen", "eMail"]
+                                , ["#telefonBen", "telefon"]
+                                , ["#faxBen", "fax"]
+                                , ["#mobiltelefonBen", "mobiltelefon"]
+                                , ["#benutzernameBen", "benutzername"]
                                 ].forEach(function(a) {
                                     $(a[0]).val(c[b][a[1]])
                                 })) : clearFields("benHinz")

@@ -1461,8 +1461,6 @@ $(document).ready(function() {
         readInstanzen("betrGrpFirst", $(".betrPfad").prop("selectedIndex"));
         readInstanzen("sAdmFirst", 0);
         manGrpEinlesen();
-        // readInstanzen("admFirst", 0);
-        // readInstanzen("benFirst", 0)
     });
     $(".manGrpPfad").change(function() {
         $(".manGrpPfad").val($(this).val());
