@@ -72,9 +72,9 @@ elseif($id == "sAdm") {
     if($modus == "new") {
         $betrGrpID = $_POST['betrGrpID'] ;
 
-        $tsql = "INSERT INTO superAdmins(betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, " ;
+        $tsql = "INSERT INTO superAdmins(man_ID,betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, " ;
         $tsql .= "faxSAdm, mobiltelefonSAdm, username, passHash, position) " ;
-        $tsql .= "VALUES ('$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
+        $tsql .= "VALUES (1,'$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
         $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
     }
     else {
