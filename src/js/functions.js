@@ -4720,7 +4720,8 @@ try {
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             }),
-                          readInstanzen("manGrpFirst", 0)) : clearFields("betrGrp")
+                          readInstanzen("manGrpFirst", 0)
+                        , manGrpEinlesen()) : clearFields("betrGrp")
                         }
                     });
                     break;
@@ -5955,6 +5956,7 @@ try {
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a))
+                        manGrpEinlesen()
                     }
                 })
             } else if ("admSpeichern" == a) $.ajax({
@@ -7324,7 +7326,7 @@ try {
                     readInstanzen("betrGrpLast", $("#betrGrpCount").val())
                     betrGrpEinlesen()
                 }
-            }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
+            }), betrGrpNavID = $("#betrGrpCount").val();
             else if ("sAdmSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7373,10 +7375,10 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a));
                         readInstanzen("manGrpLast", $("#manGrpCount").val())
+                        manGrpEinlesen()
                     }
                 });
                 manGrpNavID = $("#manGrpCount").val();
-                manGrpEinlesen()
             } else if ("admSpeichern" == a) {
                 var c;
                 "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val());
