@@ -58,34 +58,34 @@ elseif($id == "betrGrp") {
 }
 elseif($id == "sAdm") {
 
-$modus = $_POST['modus'];
-$titel = $_POST['titel'];
-$name = $_POST['name'];
-$vorname = $_POST['vorname'];
-$eMail = $_POST['eMail'];
-$telefon = $_POST['telefon'];
-$fax = $_POST['fax'];
-$mobiltelefon = $_POST['mobiltelefon'];
-$benutzername = $_POST['benutzername'];
-$passwort = $_POST['passwort'];
+    $modus = $_POST['modus'] ;
+    $titel = $_POST['titel'] ;
+    $name = $_POST['name'] ;
+    $vorname = $_POST['vorname'] ;
+    $eMail = $_POST['eMail'] ;
+    $telefon = $_POST['telefon'] ;
+    $fax = $_POST['fax'] ;
+    $mobiltelefon = $_POST['mobiltelefon'] ;
+    $benutzername = $_POST['benutzername'] ;
+    $passwort = $_POST['passwort'] ;
 
-	if($modus == "new"){
-  $betrGrpID = $_POST['betrGrpID'];
+    if($modus == "new") {
+        $betrGrpID = $_POST['betrGrpID'] ;
 
-		$tsql = "INSERT INTO superAdmins(betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, ";
-		$tsql .= "faxSAdm, mobiltelefonSAdm, benutzernameSAdm, passwortSAdm) ";
-		$tsql .= "VALUES ('$betrGrpID','$titel', '$name','$vorname','$eMail', ";
-		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
-}
-	else{
-		$sAdmID = $_POST['sAdmID'];
+        $tsql = "INSERT INTO superAdmins(betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, " ;
+        $tsql .= "faxSAdm, mobiltelefonSAdm, username, passHash, position) " ;
+        $tsql .= "VALUES ('$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
+        $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
+    }
+    else {
+        $sAdmID = $_POST['sAdmID'] ;
 
-		$tsql =  "UPDATE superAdmins SET titelSAdm = '$titel',nameSAdm = '$name', ";
-		$tsql .= "vornameSAdm = '$vorname',emailSAdm = '$eMail',telefonSAdm = '$telefon', ";
-		$tsql .= "faxSAdm = '$fax',mobiltelefonSAdm = '$mobiltelefon',benutzernameSAdm = '$benutzername', ";
-  $tsql .= "passwortSAdm = '$passwort' ";
-		$tsql .= "WHERE sAdm_ID = '$sAdmID' ";
-	}
+        $tsql =  "UPDATE superAdmins SET titelSAdm = '$titel',nameSAdm = '$name', " ;
+        $tsql .= "vornameSAdm = '$vorname',emailSAdm = '$eMail',telefonSAdm = '$telefon', " ;
+        $tsql .= "faxSAdm = '$fax',mobiltelefonSAdm = '$mobiltelefon',username = '$benutzername', " ;
+        $tsql .= "passHash = '$passwort' " ;
+        $tsql .= "WHERE sAdm_ID = '$sAdmID' " ;
+    }
 }
 elseif($id == "manGrp") {
 $modus = $_POST['modus'];

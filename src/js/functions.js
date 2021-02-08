@@ -7341,6 +7341,9 @@ try {
                     passwort: getHash($("#passwortSAdm").val())
                 },
                 success: function(a) {
+                    console.log("instanzErstellen sAdm query")
+                    console.log(a)
+
                     alert(datensatzGespeichert(a));
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
                 }
