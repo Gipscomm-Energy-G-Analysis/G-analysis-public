@@ -5933,8 +5933,12 @@ try {
                 }
             });
             else if ("manGrpSpeichern" == a) {
-                for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++)(void 0)[i] = tblMandantengruppe.cell(i, 0).data();
-                var b = (void 0).join(",");
+                const getManIDs =
+                    () =>
+                    array($("#tblMandantengruppe tbody tr").length)()()
+                    .map((_, i) => tblMandantengruppe.cell(i, 0).data())
+                    .join(",")
+
                 $.ajax({
                     type: "POST",
                     async: !0,
@@ -5944,7 +5948,7 @@ try {
                         nameDB: "gipscomm",
                         modus: "save",
                         manGrpID: $("#manGrpID").val(),
-                        mandatenIDs: b,
+                        mandatenIDs: getManIDs(),
                         name: $("#nameManGrp").val(),
                         kurz: $("#kurzManGrp").val(),
                         notiz: $("#notizManGrp").val()

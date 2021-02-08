@@ -10,7 +10,7 @@ $conn = connectToDB($nameDB);
 
 $betrGrpID = $_POST['betrGrpID'];
 
-$tsql = "SELECT * FROM mandanten WHERE betrGrp_ID = '$betrGrpID'";
+$query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$betrGrpID'";
 
 $records = queryDB($conn, $query, "read");
 

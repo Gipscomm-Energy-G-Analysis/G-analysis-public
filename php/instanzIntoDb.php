@@ -88,25 +88,25 @@ elseif($id == "sAdm") {
     }
 }
 elseif($id == "manGrp") {
-$modus = $_POST['modus'];
+    $modus = $_POST['modus'] ;
 
-$name = $_POST['name'];
-$kurz = $_POST['kurz'];
-$notiz = $_POST['notiz'];
-$mandantenIDs = $_POST['mandatenIDs'];
+    $name = $_POST['name'] ;
+    $kurz = $_POST['kurz'] ;
+    $notiz = $_POST['notiz'] ;
+    $mandantenIDs = $_POST['mandatenIDs'] ;
 
-	if($modus == "new"){
-  $betrGrpID = $_POST['betrGrpID'];
+    if($modus == "new") {
+        $betrGrpID = $_POST['betrGrpID'] ;
 
-		$tsql = "INSERT INTO mandantenGruppen(betrGrp_ID,name,kurz, notiz, mandantenIDs) ";
-		$tsql .= "VALUES ('$betrGrpID','$name', '$kurz','$notiz','$mandantenIDs') ";
-}
-	else{
-		$manGrpID = $_POST['manGrpID'];
+        $tsql = "INSERT INTO mandantenGruppen(betrGrp_ID,name,kurz, notiz, mandantenIDs) " ;
+        $tsql .= "VALUES ('$betrGrpID','$name', '$kurz','$notiz','$mandantenIDs') " ;
+    }
+    else {
+        $manGrpID = $_POST['manGrpID'] ;
 
-		$tsql =  "UPDATE mandantenGruppen SET name = '$name',kurz = '$kurz',notiz = '$notiz', mandantenIDs = '$mandantenIDs' ";
-		$tsql .= "WHERE manGrp_ID = '$manGrpID' ";
-	}
+        $tsql =  "UPDATE mandantenGruppen SET name = '$name',kurz = '$kurz',notiz = '$notiz', mandantenIDs = '$mandantenIDs' " ;
+        $tsql .= "WHERE manGrp_ID = '$manGrpID' " ;
+    }
 }
 elseif($id == "adm") {
 $modus = $_POST['modus'];
