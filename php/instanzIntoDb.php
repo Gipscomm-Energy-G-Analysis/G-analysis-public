@@ -141,37 +141,37 @@ $passwort = $_POST['passwort'];
 	}
 }
 elseif($id == "ben") {
-$modus = $_POST['modus'];
-$instanz = $_POST['ins'];
-$insID = $_POST['insID'];
+    $modus = $_POST['modus'];
+    $instanz = $_POST['ins'];
+    $insID = $_POST['insID'];
 
-$titel = $_POST['titel'];
-$name = $_POST['name'];
-$vorname = $_POST['vorname'];
-$eMail = $_POST['eMail'];
-$telefon = $_POST['telefon'];
-$fax = $_POST['fax'];
-$mobiltelefon = $_POST['mobiltelefon'];
-$benutzername = $_POST['benutzername'];
-$passwort = $_POST['passwort'];
+    $titel = $_POST['titel'];
+    $name = $_POST['name'];
+    $vorname = $_POST['vorname'];
+    $eMail = $_POST['eMail'];
+    $telefon = $_POST['telefon'];
+    $fax = $_POST['fax'];
+    $mobiltelefon = $_POST['mobiltelefon'];
+    $benutzername = $_POST['benutzername'];
+    $passwort = $_POST['passwort'];
 
-	if($modus == "new"){
-  $manID = $_POST['manID'];
+    	if($modus == "new"){
+          $manID = $_POST['manID'];
 
-		$tsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
-		$tsql .= "fax, mobiltelefon, benutzername, passHash) ";
-		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
-		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
-}
-	else{
-		$benID = $_POST['benID'];
+      		$tsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
+      		$tsql .= "fax, mobiltelefon, benutzername, passHash) ";
+      		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
+      		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+    }
+    else{
+        $benID = $_POST['benID'];
 
-		$tsql =  "UPDATE benutzer SET titel = '$titel',name = '$name', ";
-		$tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
-		$tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',benutzername = '$benutzername', ";
-  $tsql .= "passHash = '$passwort' ";
-		$tsql .= "WHERE ben_ID = '$benID' ";
-	}
+        $tsql =  "UPDATE benutzer SET titel = '$titel',name = '$name', ";
+        $tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
+        $tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',benutzername = '$benutzername', ";
+        $tsql .= "passHash = '$passwort' ";
+        $tsql .= "WHERE ben_ID = '$benID' ";
+    }
 }
 elseif($id == "org") {
 $modus = $_POST['modus'];
