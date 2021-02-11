@@ -1464,13 +1464,19 @@ $(document).ready(function() {
     });
     $(".manGrpPfad").change(function() {
         $(".manGrpPfad").val($(this).val());
+
         var a = $(".manGrpPfad  option").eq($(".manGrpPfad").prop("selectedIndex")).prop("id").split("_");
+
         $("#manOderManGrp").val(a[0]);
-        if ("optManGrp" == a[0]) $("#manGrpID").val(manGrpListe[a[1]].manGrpID), readInstanzen("manGrpFirst", $(".manGrpPfad").prop("selectedIndex"));
-        else
-            for (a = manGrpListe.length == mandantenliste.length ? $(".manGrpPfad").prop("selectedIndex") : $(".manGrpPfad").prop("selectedIndex") - manGrpListe.length, $("#manRechteID").val(mandantenliste[a].manID), n = 0; n < mandantenliste.length; n++);
-        readInstanzen("admFirst",
-            0);
+
+        if (head(a) === "optManGrp") {
+            $("#manGrpID").val(manGrpListe[last(a)].manGrpID)
+            readInstanzen("manGrpFirst", $(".manGrpPfad").prop("selectedIndex"))
+        }
+        else {
+            $("#manRechteID").val(mandantenliste[last(a)].manID)
+        }
+        readInstanzen("admFirst", 0)
         readInstanzen("benFirst", 0)
     });
     $(".manPfad").change(function() {
@@ -1488,8 +1494,7 @@ $(document).ready(function() {
         readInstanzen("berFirst", 0);
         berNavID = 0;
         readInstanzen("mstFirst", 0);
-        mstNavID =
-            0;
+        mstNavID = 0;
         readInstanzen("msmFirst", 0);
         msmNavID = 0;
         readInstanzen("stdFirst", 0);
