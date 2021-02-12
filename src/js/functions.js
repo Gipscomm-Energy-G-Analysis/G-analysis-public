@@ -15114,8 +15114,12 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
         if(zeitintervallAnl == 1){
             if (startDate > endDate){
                 alert("End days should be greater then start days");
-                $("." + sId + " .zeitintervallAnl_1 input").val("");
-                $("#tblMasseneingabeDataIMw").remove();
+                if(id==1){
+                      keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                }else{
+                    $("." + sId + " .zeitintervallAnl_1 input").val("");
+                    $("#tblMasseneingabeDataIMw").remove();
+                }
                 return false;
             }else{
                 return true;
@@ -15124,9 +15128,13 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
         else if(zeitintervallAnl == 2){
             if (startDate > endDate){
                 alert("End month should be greater then start month");
-                $("." + sId + " .zeitintervallAnl_2 input").val("");
-                $("." + sId + " .zeitintervallAnl_2 select").val("");
-                $("#tblMasseneingabeDataIMw").remove();
+                if(id==1){
+                      keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                }else{
+                    $("." + sId + " .zeitintervallAnl_2 input").val("");
+                    $("." + sId + " .zeitintervallAnl_2 select").val("");
+                    $("#tblMasseneingabeDataIMw").remove();
+                }
                 return false;
             }else{
                 return true;
@@ -15135,9 +15143,13 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
         else if(zeitintervallAnl == 3){
             if (startDate > endDate){
                 alert("End month should be greater then start month");
-                $("." + sId + " #monateMassEingDataAnlStart" + id + "").val("");
-                $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val("");
-                $("#tblMasseneingabeDataIMw").remove();
+                if(id==1){
+                      keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                }else{
+                    $("." + sId + " #monateMassEingDataAnlStart" + id + "").val("");
+                    $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val("");
+                    $("#tblMasseneingabeDataIMw").remove();
+                }
                 return false;
             }else{
                 return true;
@@ -15145,9 +15157,13 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
         }else if(zeitintervallAnl == 4){
             if (startDate > endDate){
                 alert("End year should be greater then start year");
-                $("." + sId + " #jahrMassEingDataAnlStart" + id + "").val("");
-                $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").val("");
-                $("#tblMasseneingabeDataIMw").remove();
+                if(id==1){
+                      keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                }else{
+                    $("." + sId + " #jahrMassEingDataAnlStart" + id + "").val("");
+                    $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").val("");
+                    $("#tblMasseneingabeDataIMw").remove();
+                }
                 return false;
             }else{
                 return true;
@@ -15476,7 +15492,10 @@ function datePickerForInterneBetriebsdaten(sId,id){
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }            
-            validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id); 
+            validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
+            if(id==1){
+                alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
+            }  
         }
     });    
     $("." + sId + " #monateMassEingDataAnlStart" +id+ "").focus(function () {
@@ -15506,7 +15525,10 @@ function datePickerForInterneBetriebsdaten(sId,id){
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }       
-            validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id) 
+            validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
+            if(id==1){
+                alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
+            } 
         }
     });    
     $("." + sId + " #monateMassEingDataAnlEnde" +id+ "").focus(function () {
@@ -15537,6 +15559,9 @@ function datePickerForInterneBetriebsdaten(sId,id){
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }   
             validateZeitintervallAnlSelectOpt(start3,end3,zeitintervallAnl,sId,id);
+            if(id==1){
+                alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
+            } 
         }
     });    
     $("." + sId + " #jahrMassEingDataAnlStart" +id+ "").focus(function () {
@@ -15566,6 +15591,9 @@ function datePickerForInterneBetriebsdaten(sId,id){
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }          
             validateZeitintervallAnlSelectOpt(start4,end4,zeitintervallAnl,sId,id);
+            if(id==1){
+                alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
+            } 
         }
     });    
     $("." + sId + " #jahrMassEingDataAnlEnde" +id+ "").focus(function () {
@@ -15597,6 +15625,13 @@ function datePickerForInterneBetriebsdaten(sId,id){
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }   
             validateZeitintervallAnlSelectOpt(start3,end3,zeitintervallAnl,sId,id);
+            if(id==1){
+                var week= $("." + sId + " #wochenWMassEingDataAnlStart1").val();
+                if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
+                    var date = week+'-'+this.value; 
+                    alertValidationforStartEndeDate($("#mstID").val(),date,zeitintervallAnl);
+                }
+            }
         }
     });    
     $("." + sId + " #wochenYMassEingDataAnlStart" +id+ "").focus(function () {
@@ -15626,6 +15661,13 @@ function datePickerForInterneBetriebsdaten(sId,id){
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }           
             validateZeitintervallAnlSelectOpt(start4,end4,zeitintervallAnl,sId,id);
+            if(id==1){
+                var week= $("." + sId + " #wochenWMassEingDataAnlEnde1").val();
+                if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
+                    var date = week+'-'+this.value; 
+                    alertValidationforStartEndeDate($("#mstID").val(),date,zeitintervallAnl);
+                }
+            }
         }
     });    
     $("." + sId + " #wochenYMassEingDataAnlEnde" +id+ "").focus(function () {
@@ -15643,6 +15685,11 @@ function datePickerForInterneBetriebsdaten(sId,id){
         numberOfMonths: 1,
         dateFormat: 'dd.mm.yy',
         onSelect: function(selected) {
+          if(id==1){
+            var type = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
+            var mstID = $("#mstID").val();var date = $(this).val();
+            alertValidationforStartEndeDate(mstID,date,type);
+          }
           $("." + sId + " #tageMassEingDataAnlEnde" +id+ "").datepicker("option","minDate", selected)
         }
     });
@@ -15650,6 +15697,11 @@ function datePickerForInterneBetriebsdaten(sId,id){
         numberOfMonths: 1,
         dateFormat: 'dd.mm.yy',
         onSelect: function(selected) {
+             if(id==1){
+                var type = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
+                var mstID = $("#mstID").val();var date = $(this).val();
+                alertValidationforStartEndeDate(mstID,date,type);
+             }
            $("." + sId + " #tageMassEingDataAnlStart" +id+ "").datepicker("option","maxDate", selected)
         }
     });  
@@ -15684,7 +15736,13 @@ function keinZeitIntervallZugewiesen(){
                     keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
                     $("#mstID").val(a[0]);
                     $("#anlIMw").val(a[1]);
-                    $("#anlNrIMw").val(a[2]); 
+                    $("#anlNrIMw").val(a[2]);
+                    $("#startDateDB").val(a[3]); 
+                    $("#endDateDB").val(a[4]); 
+                    setTimeout(function(){ 
+                    $("#unitIDB").val($(".infosIntBetriebsdaten #einheitAnl").val());
+                    $("#controlSysIDDB").val($(".infosIntBetriebsdaten #control_system").val());
+                     }, 3000);
             });
         }
     });
@@ -15891,48 +15949,50 @@ function returnStartDateAndEndDate(val,sId,id){
         return [startDate, endDate];
 }
 
-function zeitintervallChange(val,sId,id){            
-    $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
-    $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
-    $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
-    $("." + sId + " #anlIMwNoEnding").prop('checked', false);
-    $("." + sId + " .zeitintervallAnl_1 input").val("");
-    $("." + sId + " .zeitintervallAnl_2 input").val("");
-    $("." + sId + " .zeitintervallAnl_3 input").val("");
-    $("." + sId + " .zeitintervallAnl_4 input").val("");
+function zeitintervallChange(val,sId,id){
    
-       if(val == 1){
-            $("." + sId + " .zeitintervallAnl_1").show();
-            $("." + sId + " .zeitintervallAnl_2").hide();
-            $("." + sId + " .zeitintervallAnl_3").hide();
-            $("." + sId + " .zeitintervallAnl_4").hide();
-            $("." + sId + " .zeitintervallAnl_NoEnding").show();
-       }else if(val == 2){
-            $("." + sId + " .zeitintervallAnl_1").hide();
-            $("." + sId + " .zeitintervallAnl_2").show();
-            $("." + sId + " .zeitintervallAnl_3").hide();
-            $("." + sId + " .zeitintervallAnl_4").hide();
-            $("." + sId + " .zeitintervallAnl_NoEnding").show();
+    if(id !=1){
+        $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #anlIMwNoEnding").prop('checked', false);
+        $("." + sId + " .zeitintervallAnl_1 input").val("");
+        $("." + sId + " .zeitintervallAnl_2 input").val("");
+        $("." + sId + " .zeitintervallAnl_3 input").val("");
+        $("." + sId + " .zeitintervallAnl_4 input").val("");
+    }
+   if(val == 1){
+        $("." + sId + " .zeitintervallAnl_1").show();
+        $("." + sId + " .zeitintervallAnl_2").hide();
+        $("." + sId + " .zeitintervallAnl_3").hide();
+        $("." + sId + " .zeitintervallAnl_4").hide();
+        $("." + sId + " .zeitintervallAnl_NoEnding").show();
+   }else if(val == 2){
+        $("." + sId + " .zeitintervallAnl_1").hide();
+        $("." + sId + " .zeitintervallAnl_2").show();
+        $("." + sId + " .zeitintervallAnl_3").hide();
+        $("." + sId + " .zeitintervallAnl_4").hide();
+        $("." + sId + " .zeitintervallAnl_NoEnding").show();
 
-       }else if(val == 3){
-            $("." + sId + " .zeitintervallAnl_1").hide();
-           $("." + sId + " .zeitintervallAnl_2").hide();
-            $("." + sId + " .zeitintervallAnl_3").show();
-            $("." + sId + " .zeitintervallAnl_4").hide();
-            $("." + sId + " .zeitintervallAnl_NoEnding").show();  
-       }else if(val == 4){
-            $("." + sId + " .zeitintervallAnl_1").hide();
-            $("." + sId + " .zeitintervallAnl_2").hide();
-            $("." + sId + " .zeitintervallAnl_3").hide();
-            $("." + sId + " .zeitintervallAnl_4").show();
-            $("." + sId + " .zeitintervallAnl_NoEnding").show();
-       }else{
-            $("." + sId + " .zeitintervallAnl_1").hide();
-            $("." + sId + " .zeitintervallAnl_2").hide();
-            $("." + sId + " .zeitintervallAnl_3").hide();
-            $("." + sId + " .zeitintervallAnl_4").hide();
-            $("." + sId + " .zeitintervallAnl_NoEnding").hide();
-       }  
+   }else if(val == 3){
+        $("." + sId + " .zeitintervallAnl_1").hide();
+       $("." + sId + " .zeitintervallAnl_2").hide();
+        $("." + sId + " .zeitintervallAnl_3").show();
+        $("." + sId + " .zeitintervallAnl_4").hide();
+        $("." + sId + " .zeitintervallAnl_NoEnding").show();  
+   }else if(val == 4){
+        $("." + sId + " .zeitintervallAnl_1").hide();
+        $("." + sId + " .zeitintervallAnl_2").hide();
+        $("." + sId + " .zeitintervallAnl_3").hide();
+        $("." + sId + " .zeitintervallAnl_4").show();
+        $("." + sId + " .zeitintervallAnl_NoEnding").show();
+   }else{
+        $("." + sId + " .zeitintervallAnl_1").hide();
+        $("." + sId + " .zeitintervallAnl_2").hide();
+        $("." + sId + " .zeitintervallAnl_3").hide();
+        $("." + sId + " .zeitintervallAnl_4").hide();
+        $("." + sId + " .zeitintervallAnl_NoEnding").hide();
+   }  
 }
 
 function noEndingChange(val,sId,id){
@@ -16361,10 +16421,10 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                         if(inputVal !=''){
                                                 weekOfArr.push(String(i1 + '-' + yr1));
                                                 anlageObj[a.query1[e].mst_ID]=weekOfArr;
-                                        }else{
+                                        }/*else{
                                             anlageObj[a.query1[e].mst_ID]=weekOfArr;
-                                        }
-                                        //console.log(anlageObj);
+                                        }*/
+                                       // console.log(anlageObj);
                                     count1 ++; 
                                 }                                    
                             } 
@@ -16675,6 +16735,7 @@ function convertDateFormateForDataTbl(type,str){
 }
 
 function saveToDBMasseneingabeEingaben(key){
+
         var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
         var postDataEnabled =new Array();
         var enabledRow = [];
@@ -16843,6 +16904,7 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
         },
         open: function(event, ui) {    
             $("#intBdeConcern").on("click", function() { 
+                
                 var inputCurrId = $("#inputCurrId").val();
                 var inputCurPrevId = $("#inputCurPrevId").val();
                 var inputBottomCurrId = $("#inputBottomCurrId").val();
@@ -16855,13 +16917,12 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 
                 $("" + inputCurrId + "").removeClass("isShowPopup");
                 $("#intBdeConcernOrDeletePopUp").remove();
-                if(currInputID==0){ /*Nzp 03-02-2021*/
+                if(currInputID==0){ 
                    $("#inputPrevValDB").val("");  
                 }
-                
+                var inputDeleteBotmId = $("#inputDeleteBotmId").val();
                 var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
-              
-                var date =$(""+inputBottomCurrId+"").closest('td').attr("date");
+                var date =$(""+inputDeleteBotmId+"").closest('td').attr("date");
                 
                 saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs); 
                 if(anlageObj[rowMstID]){
@@ -16871,7 +16932,8 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                     }
                 }                
                 $($("#inputFocusedId").val()).focus();
-                $($("#inputFocusedId").val()).change();
+
+                //$($("#inputFocusedId").val()).change();
             });
             $("#intBdeDelete").on("click", function() {
                 var inputCurrId = $("#inputCurrId").val();
@@ -17205,3 +17267,88 @@ function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBo
                     }
                 });
     }
+
+/*Check alert validation for the start Date and end Date*/
+function alertValidationforStartEndeDate(mstID,date,type){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startDateRangeCheckValidation",
+                nameDB: $("#nameDB").val(),
+                mstID: mstID,
+                date: date,            
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a); 
+                var b=a.length;
+                console.log(a);
+                if(b>0){
+                   alert('Selected date value already filled up in record list. Please select other date.'); 
+                   keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
+                }
+            }            
+        });   
+}
+
+function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate,type){
+    if(inputId =='einheitAnl'){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startEndDateEinheitTypeCheckValidation",
+                nameDB: $("#nameDB").val(),
+                mstID: $("#mstID").val(),
+                einheitVal:selVal,
+                startDate: startDate, 
+                endDate:endDate,           
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a){
+                a = JSON.parse(a);
+                var b = a.length; 
+                if(b>0){
+                    alert('You could not set einheit. Please select different dates.');
+                    keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                }
+            }            
+        });
+    }
+    if(inputId =='control_system'){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startEndDatecontrolSysTypeCheckValidation",
+                nameDB: $("#nameDB").val(),
+                mstID: $("#mstID").val(),
+                controlSystem:selVal,
+                startDate: startDate, 
+                endDate:endDate,           
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a){
+                a = JSON.parse(a); console.log(a);
+                var b=a.length;
+                if(b>0){
+                    alert('You could not set control system. Please select different dates.');
+                    keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                }
+            }            
+        });
+    }
+ }

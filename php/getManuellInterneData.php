@@ -158,14 +158,14 @@ elseif($id == 'intBdeIMw'){
 		$query1 .= "AND mst_ID = '$mstID' ";
 		$query1 .= "AND on_date <= '$on_date' ";
 		$query1 .= "AND on_week <= '$on_week' ";
-		$query1 .= "Order by on_date DESC";
+		$query1 .= "Order by on_date,on_week DESC";
 
 		$query2 = "SELECT TOP 5 on_date FROM masseneingabeSucheIMw ";
 		$query2 .= "WHERE type = '$type' ";
 		$query2 .= "AND mst_ID = '$mstID' ";
 		$query2 .= "AND on_date <= '$on_date' ";
 		$query2 .= "AND on_week <= '$on_week' ";
-		$query2 .= "Order by on_date DESC";
+		$query2 .= "Order by on_date,on_week DESC";
     }else{
 		$query1 = "SELECT TOP 5 val From masseneingabeSucheErgebnisIMw ";
 		$query1 .= "WHERE type = '$type' ";
@@ -191,16 +191,16 @@ elseif($id == 'intBdeIMw'){
 	    $query1 = "SELECT Top 1 val FROM masseneingabeSucheIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND mst_ID = '$mstID' ";
-		$query1 .= "AND on_date < '$on_date' ";
-		$query1 .= "AND on_week < '$on_week' ";
-		$query1 .= "Order by on_date DESC";
+		$query1 .= "AND on_date <= '$on_date' ";
+		$query1 .= "AND on_week <= '$on_week' ";
+		$query1 .= "Order by on_date,on_week DESC";
 		
 		$query2 = "SELECT Top 1 val FROM masseneingabeSucheErgebnisIMw ";
 		$query2 .= "WHERE type = '$type' ";
 		$query2 .= "AND mst_ID = '$mstID' ";
-		$query2 .= "AND on_date < '$on_date' ";
-		$query2 .= "AND on_week < '$on_week' ";	
-		$query2 .= "Order by on_date DESC";
+		$query2 .= "AND on_date <= '$on_date' ";
+		$query2 .= "AND on_week <= '$on_week' ";	
+		$query2 .= "Order by on_date,on_week DESC";
     }else{
 	    $query1 = "SELECT Top 1 val FROM masseneingabeSucheIMw ";
 		$query1 .= "WHERE type = '$type' ";
@@ -215,43 +215,216 @@ elseif($id == 'intBdeIMw'){
 		$query2 .= "Order by on_date DESC";
     }
 	
-}else if($id == 'masseneingabeAlertRangeFirstInptValue'){
-  $type = $_POST['zeitintervallAnl'];
+}else if($id == 'startDateRangeCheckValidation'){
+  $type = $_POST['type'];
   $mstID = $_POST['mstID'];
-  $date = $_POST['date'];
-  //$checkDay = -365; 
+ 
   if($type==1){
-    $query1 = "SELECT Top 1 on_date FROM masseneingabeSucheIMw ";
-    $query1 .= "WHERE type = '$type' ";
-    $query1 .= "AND mst_ID = '$mstID' ";
-    /*$query1 .= "AND on_date  >= DATEADD(day,-365, '$date') ";*/
-    /*$query1 .= "AND on_date <= '$date' ";*/
-    $query1 .= "Order by on_date asc";
-    
-    $query2 = "SELECT Top 1 on_date FROM masseneingabeSucheIMw ";
-    $query2 .= "WHERE type = '$type' ";
-    $query2 .= "AND mst_ID = '$mstID' ";
-    /*$query2 .= "AND on_date  >= DATEADD(day,-365, '$date') ";*/
-    /*$query2 .= "AND on_date <= '$date' ";*/
-    $query2 .= "Order by on_date desc";
-  }
-  if($type==4){
-    $query1 = "SELECT Top 1 on_date FROM masseneingabeSucheIMw ";
-    $query1 .= "WHERE type = '$type' ";
-    $query1 .= "AND mst_ID = '$mstID' ";
-    /*$query1 .= "AND on_date  >= DATEADD(year,-365, '$date') ";
-    $query1 .= "AND on_date <= '$date' ";*/
-    $query1 .= "Order by on_date desc";
-    
-    $query2 = "SELECT Top 1 on_date FROM masseneingabeSucheErgebnisIMw ";
-    $query2 .= "WHERE type = '$type' ";
-    $query2 .= "AND mst_ID = '$mstID' ";
-    /*$query2 .= "AND on_date  >= DATEADD(year,-365, '$date') ";
-    $query2 .= "AND on_date <= '$date' ";*/ 
-    $query2 .= "Order by on_date asc";
-  }
-}
+  	  $postDate = $_POST['date'];
+	  $dateExplode =explode(".", $postDate);      
+	  $arrStart[] = $dateExplode[2];
+	  $arrStart[] = $dateExplode[1];      
+	  $arrStart[] = $dateExplode[0]; 
+	  $date = implode("-",$arrStart);
+	  $week ='';
+    }else if($type==2){
+	      $postDate = $_POST['date'];
+	      $dateExplode =explode("-", $postDate);
+	      $week = $dateExplode[0]; 
+	      $date = $dateExplode[1]; 
+    }else if($type==3){
+	      $postDate = $_POST['date'];
+	      $dateExplode =explode(".", $postDate);
+	      $arrStart[] = $dateExplode[1];     
+	      $arrStart[] = $dateExplode[0];
+	      $date = implode("-",$arrStart);
+	      $week ='';
+    }else{
+	      $date =$_POST['date'];
+	      $week ='';
+    }
+	$query = "SELECT * FROM masseneingabeSucheIMw ";
+	$query .= "WHERE type = '$type' ";
+	$query .= "AND mst_ID = '$mstID' ";
+	$query .= "AND on_date = '$date' ";
+	$query .= "AND on_week = '$week'";
 
+}else if($id == 'startEndDateEinheitTypeCheckValidation'){
+	//print_r($_POST);die;
+	$type = $_POST['type'];
+	if($type==1){
+	  if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+	  	  $sDate = $_POST['startDate'];
+		  $fromDate =explode(".", $sDate);      
+		  $arrStart[] = $fromDate[2];
+		  $arrStart[] = $fromDate[1];      
+		  $arrStart[] = $fromDate[0]; 
+	  }else{
+	  	$startDate = '';
+	  }
+	  if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+		  $eDate = $_POST['endDate']; 
+		  $toDate = explode(".", $eDate);
+		  $arrEnd[] =  $toDate[2]; 
+		  $arrEnd[] =  $toDate[1]; 
+		  $arrEnd[] =  $toDate[0]; 
+		  $endDate = implode("-",$arrEnd);
+	   }else{
+	   	$endDate ='';
+	   }
+	  $startDate = implode("-",$arrStart);
+		$startWeek ='';
+		$endWeek ='';	
+	}else if($type==2){
+		 if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+		      $sDate = $_POST['startDate'];
+		      $fromDate =explode("-", $sDate);
+		      $startWeek = $fromDate[0];
+		      $startDate = $fromDate[1]; 
+		  }
+		  if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+		      $eDate = $_POST['endDate']; 
+		      $toDate = explode("-", $eDate);
+		      $endWeek =  $toDate[0]; 
+		      $endDate =  $toDate[1]; 
+		  }
+	    }else if($type==3){
+	    	 if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+		      $sDate = $_POST['startDate'];
+		      $fromDate =explode(".", $sDate);
+		      $arrStart[] = $fromDate[1];      
+		      $arrStart[] = $fromDate[0];
+		      $startDate = implode("-",$arrStart);
+		  	 }else{
+		  	 	$startDate = '';
+		  	 }
+		  	 if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			      $eDate = $_POST['endDate'];
+			      $toDate = explode(".", $eDate);
+			      $arrEnd[] =  $toDate[1]; //second year input text value
+			      $arrEnd[] =  $toDate[0]; //second week selected value
+			      $endDate = implode("-",$arrEnd);
+		  	  }
+		      $startWeek ='';
+		      $endWeek ='';
+	    }else{
+	    	if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+		      $startDate =$_POST['startDate'];
+		    }else{
+		      $startDate ='';
+		    }
+		    if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+		      $endDate =$_POST['endDate']; 
+		    }else{
+		      $endDate ='';
+		    }
+		    $startWeek ='';
+		    $endWeek ='';
+	    }
+	  //$startDate = implode("-",$arrStart);	 
+	  $mstID = $_POST['mstID'];
+	  $einheitVal = $_POST['einheitVal'];
+      $query = "SELECT * FROM masseneingabeSucheIMw AS T1 ";
+	  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+	  $query .= "ON T1.mst_ID = T2.mst_ID ";
+	  $query .= "WHERE T1.type = '$type' ";
+	  $query .= "AND T2.unt_ID != '$einheitVal' ";
+	  $query .= "AND T1.mst_ID = '$mstID' ";
+	  $query .= "AND T1.on_date >= '$startDate' ";
+	  $query .= "AND T1.on_week >= '$startWeek' ";
+	  if(!empty($endDate)){
+      $query .= "AND T1.on_week <= '$endWeek' ";
+	  $query .= "AND T1.on_date <= '$endDate' ";
+	  }
+  
+}else if($id == 'startEndDatecontrolSysTypeCheckValidation'){
+	//print_r($_POST);die;
+
+	$mstID = $_POST['mstID'];
+	$controlSystem = $_POST['controlSystem'];
+	$type = $_POST['type'];
+	if($type==1){
+	  if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+	  	  $sDate = $_POST['startDate'];
+		  $fromDate =explode(".", $sDate);      
+		  $arrStart[] = $fromDate[2];
+		  $arrStart[] = $fromDate[1];      
+		  $arrStart[] = $fromDate[0]; 
+	  }else{
+	  	$startDate = '';
+	  }
+	  if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+		  $eDate = $_POST['endDate']; 
+		  $toDate = explode(".", $eDate);
+		  $arrEnd[] =  $toDate[2]; 
+		  $arrEnd[] =  $toDate[1]; 
+		  $arrEnd[] =  $toDate[0]; 
+		  $endDate = implode("-",$arrEnd);
+	   }else{
+	   	$endDate ='';
+	   }
+	  $startDate = implode("-",$arrStart);
+		$startWeek ='';
+		$endWeek ='';	
+	}else if($type==2){
+		 if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+		      $sDate = $_POST['startDate'];
+		      $fromDate =explode("-", $sDate);
+		      $startWeek = $fromDate[0];
+		      $startDate = $fromDate[1]; 
+		  }
+		  if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+		      $eDate = $_POST['endDate']; 
+		      $toDate = explode("-", $eDate);
+		      $endWeek =  $toDate[0]; 
+		      $endDate =  $toDate[1]; 
+		  }
+	    }else if($type==3){
+	    	 if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+		      $sDate = $_POST['startDate'];
+		      $fromDate =explode(".", $sDate);
+		      $arrStart[] = $fromDate[1];      
+		      $arrStart[] = $fromDate[0];
+		      $startDate = implode("-",$arrStart);
+		  	 }else{
+		  	 	$startDate = '';
+		  	 }
+		  	 if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			      $eDate = $_POST['endDate'];
+			      $toDate = explode(".", $eDate);
+			      $arrEnd[] =  $toDate[1]; //second year input text value
+			      $arrEnd[] =  $toDate[0]; //second week selected value
+			      $endDate = implode("-",$arrEnd);
+		  	  }
+		      $startWeek ='';
+		      $endWeek ='';
+	    }else{
+	    	if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+		      $startDate =$_POST['startDate'];
+		    }else{
+		      $startDate ='';
+		    }
+		    if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+		      $endDate =$_POST['endDate']; 
+		    }else{
+		      $endDate ='';
+		    }
+		    $startWeek ='';
+		    $endWeek ='';
+	    }
+	$query = "SELECT * FROM masseneingabeSucheIMw AS T1 ";
+	$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+	$query .= "ON T1.mst_ID = T2.mst_ID ";
+	$query .= "WHERE T1.type = '$type' ";
+	$query .= "AND T2.einheitControlSys != '$controlSystem' ";
+	$query .= "AND T1.mst_ID = '$mstID' ";
+	$query .= "AND T1.on_date >= '$startDate' ";
+	$query .= "AND T1.on_week >= '$startWeek' ";
+	if(!empty($endDate)){
+    $query .= "AND T1.on_week <= '$endWeek' ";
+	$query .= "AND T1.on_date <= '$endDate' ";
+	}
+}
 if($id == 'masseneingabeSearch'){
 	$records['query1'] = queryDB($conn, $query1, "read");
 	$records['query2'] = queryDB($conn, $query2, "read");
@@ -269,10 +442,15 @@ if($id == 'masseneingabeSearch'){
 	$records['top'] = queryDB($conn, $query1, "read");
 	$records['bottom'] = queryDB($conn, $query2, "read");
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);	
-}else if($id == 'masseneingabeAlertRangeFirstInptValue'){
-  /*echo  $query1;echo  $query2;die;*/
-  $records['start'] = queryDB($conn, $query1, "read");
-  $records['end'] = queryDB($conn, $query2, "read");
+}else if($id == 'startDateRangeCheckValidation'){
+  $records = queryDB($conn, $query, "read");
+  echo json_encode($records, JSON_INVALID_UTF8_IGNORE); 
+}else if($id == 'startEndDateEinheitTypeCheckValidation'){
+  $records = queryDB($conn, $query, "read");
+  echo json_encode($records, JSON_INVALID_UTF8_IGNORE); 
+}else if($id == 'startEndDatecontrolSysTypeCheckValidation'){
+	//echo $query;die;
+  $records = queryDB($conn, $query, "read");
   echo json_encode($records, JSON_INVALID_UTF8_IGNORE); 
 }else{
 	$records= queryDB($conn, $query, "read");
