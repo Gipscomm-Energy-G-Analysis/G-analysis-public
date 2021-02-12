@@ -1656,18 +1656,20 @@ try {
             liegenschaftenEinlesen()
         },
         organisationenEinlesen = function() {
-            $.ajax({
-                type: "POST",
-                async: !1,
-                url: "php/organisationenEinlesen.php",
-                data: {
+            if ($("#nameDB").val() !== "") {
+                $.ajax({
+                  type: "POST",
+                  async: !1,
+                  url: "php/organisationenEinlesen.php",
+                  data: {
                     nameDB: $("#nameDB").val()
-                },
-                success: function(a) {
+                  },
+                  success: function(a) {
                     a = JSON.parse(a);
                     organisationenInDropbox(a)
-                }
-            })
+                  }
+                })
+            }
         },
         manGrpInDropbox = function(a) {
             $(".manGrpPfad").empty();
@@ -2139,7 +2141,8 @@ try {
                 data: {
                     id: "letzteRng",
                     nameMst: a,
-                    nameDB: $("#nameDB").val()
+                    nameDB: $("#nameDB").val(),
+                    mstID: $("#mstIDERng").val()
                 },
                 success: function(a) {
                     a = JSON.parse(a);
@@ -2359,49 +2362,52 @@ try {
                 b = {},
                 e;
             "Anl" == a ? (e = $("#anlID").val(), b = tblDokumenteAnl) : "Msm" == a ? (e = $("#msmID").val(), b = tblDokumenteMsm) : e = $("#eRngID").val();
-            $.ajax({
+
+            if (a !== "") {
+              $.ajax({
                 url: "php/getDokumente.php",
                 type: "POST",
                 data: {
-                    nameDB: $("#nameDB").val(),
-                    verwaltung: $("#verwaltung").val(),
-                    id: e
+                  nameDB: $("#nameDB").val(),
+                  verwaltung: a,
+                  id: e
                 },
                 fail: function() {
-                    alert("Fehler!!!")
+                  alert("Fehler!!!")
                 },
                 success: function(c) {
-                    var e = "#tblDokumente" + a + " tbody";
-                    if ("null" != c) {
-                        c = JSON.parse(c);
+                  var e = "#tblDokumente" + a + " tbody";
+                  if ("null" != c) {
+                    c = JSON.parse(c);
 
-                        if(a !== "ERng") {
-                            b.clear().draw();   // CHANGE: Dokumentenlist table should be cleared before it is filled 27.05.2020
-                        } else {
-                            $("#aktuellesDokNameERng").val(""); // CHANGE: Clear Rechnungen Downloadfield 03.06.2020
-                        }
+                    if(a !== "ERng") {
+                      b.clear().draw();   // CHANGE: Dokumentenlist table should be cleared before it is filled 27.05.2020
+                    } else {
+                      $("#aktuellesDokNameERng").val(""); // CHANGE: Clear Rechnungen Downloadfield 03.06.2020
+                    }
 
-                        var f = c.length;
-                        if (0 < f)
-                            if ("ERng" == $("#verwaltung").val()) $("#aktuellesDokIDERng").val(c[f -
-                                1].dok_ID), $("#aktuellesDokNameERng").val(c[f - 1].nameDok), $("#aktuellesDokNameERng").off("dblclick"), $("#aktuellesDokNameERng").on("dblclick", function() {
-                                dokumentAuswaehlenUndAuslesen($("#aktuellesDokNameERng").val(), $("#aktuellesDokIDERng").val())
-                            });
-                            else if (b instanceof Object)
-                            for (b.clear().draw(), f = 0; f < c.length; f++) b.row.add([c[f].dok_ID, c[f].nameDok, c[f].erweiterungDok, c[f].kategorieDok]).draw(), b.column(0).visible(!1), $(e + "tr").css("cursor", "pointer"), $(e).off("dblclick", "tr"), $(e).on("dblclick",
-                                "tr",
-                                function() {
-                                    var a = b.row(this).data();
-                                    dokumentAuswaehlenUndAuslesen(a[1], a[0])
-                                })
+                    var f = c.length;
+                    if (0 < f)
+                    if ("ERng" == $("#verwaltung").val()) $("#aktuellesDokIDERng").val(c[f -
+                      1].dok_ID), $("#aktuellesDokNameERng").val(c[f - 1].nameDok), $("#aktuellesDokNameERng").off("dblclick"), $("#aktuellesDokNameERng").on("dblclick", function() {
+                        dokumentAuswaehlenUndAuslesen($("#aktuellesDokNameERng").val(), $("#aktuellesDokIDERng").val())
+                      });
+                      else if (b instanceof Object)
+                      for (b.clear().draw(), f = 0; f < c.length; f++) b.row.add([c[f].dok_ID, c[f].nameDok, c[f].erweiterungDok, c[f].kategorieDok]).draw(), b.column(0).visible(!1), $(e + "tr").css("cursor", "pointer"), $(e).off("dblclick", "tr"), $(e).on("dblclick",
+                      "tr",
+                      function() {
+                        var a = b.row(this).data();
+                        dokumentAuswaehlenUndAuslesen(a[1], a[0])
+                      })
                     } else if ("ERng" == $("#verwaltung").val()) $("#aktuellesDokIDERng").val(""), $("#aktuellesDokNameERng").val(""), $("#dokuAuswahlERng").val(""), $("#dokuAuswahlERng").text("");
                     else try {
-                        b.clear().draw()
+                      b.clear().draw()
                     } catch (h) {
-                        console.log("dokumentenListeErstellen() -> selDataTable.clear().draw(); cannot be executed")
+                      console.log("dokumentenListeErstellen() -> selDataTable.clear().draw(); cannot be executed")
                     }
-                }
-            })
+                  }
+                })
+            }
         },
         dokumenteLoeschen = function(a, b) {
             $.ajax({
@@ -4450,21 +4456,25 @@ try {
         }, checkboxenDerEntEnfEinlesen = function(a) {
             entOderEnf = $(a).prop("value");
             $("#frmEntEnfManZuordnung .controlDiv").remove();
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/checkboxenDerEntEnfEinlesen.php",
-                data: {
-                    id: $(a).prop("value"),
+
+            if (entOderEnf !== undefined) {
+                $.ajax({
+                  type: "POST",
+                  async: !0,
+                  url: "php/checkboxenDerEntEnfEinlesen.php",
+                  data: {
+                    id: entOderEnf,
                     nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
+                  },
+                  success: function(b) {
                     b = $.parseJSON(b);
                     var e;
                     for (i = 0; i < b.length; i++) "ent" == $(a).prop("value") ? (e = 1 == b[i].aktivEnt ? "checked" : "", $("#frmEntEnfManZuordnung").append("<div class='controlDiv' style='width:230px;margin-right:4px;'><label style='width:160px;'> " + b[i].nameEnt + "</br>(" + b[i].gueltigkeitEnt + ") </label > <input type='checkbox' style='width:45px;' " + e + " /></div >")) : (e = 1 == b[i].aktivEnf ? "checked" : "",
-                        $("#frmEntEnfManZuordnung").append("<div class='controlDiv' style='width:230px;margin-right:4px;'><label style='width:160px;'> " + b[i].nameEnf + "</br>(" + b[i].gueltigkeitEnf + ") </label > <input type='checkbox' style='width:45px;' " + e + " /></div >"))
-                }
-            })
+                    $("#frmEntEnfManZuordnung").append("<div class='controlDiv' style='width:230px;margin-right:4px;'><label style='width:160px;'> " + b[i].nameEnf + "</br>(" + b[i].gueltigkeitEnf + ") </label > <input type='checkbox' style='width:45px;' " + e + " /></div >"))
+                  }
+                })
+            }
+
         }, datensatzLoeschen = function(a) {
             var b = "",
                 e = 0;
@@ -4589,7 +4599,7 @@ try {
                     $("#aktivMst").prop("checked", !1)) : "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
                 "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
                 "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
-                    a = $("#nameDB").val(), $("#bildAllgemeinAnl").prop("src", "uploadsDownloads/images/" + a + "noImg.png"), $(".anlageAnl").text(""), $("#aktivAllgemeinAnl").prop("checked", !1), $("#mehrProdukteAllgemeinAnl").prop("checked", !1), $("#betriebsstundenAllgemeinAnl").val(0), $("#produktionsmenge1AllgemeinAnl").val(0), $("#anschlussleistung1Anl").val(0), $("#mittlereAuslastungProzent1Anl").val(0), $("#mittlereAuslastungKw1Anl").val(0), $("#betriebstemperatur1Anl").val(0), $("#abwaerme1Anl").val(0), $("#anschlussleistung2Anl").val(0), $("#mittlereAuslastungProzent2Anl").val(0),
+                    a = $("#nameDB").val(), $(".anlageAnl").text(""), $("#aktivAllgemeinAnl").prop("checked", !1), $("#mehrProdukteAllgemeinAnl").prop("checked", !1), $("#betriebsstundenAllgemeinAnl").val(0), $("#produktionsmenge1AllgemeinAnl").val(0), $("#anschlussleistung1Anl").val(0), $("#mittlereAuslastungProzent1Anl").val(0), $("#mittlereAuslastungKw1Anl").val(0), $("#betriebstemperatur1Anl").val(0), $("#abwaerme1Anl").val(0), $("#anschlussleistung2Anl").val(0), $("#mittlereAuslastungProzent2Anl").val(0),
                     $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) : "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
                 "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
                     $("#lblEntEinh2FaktorX1").text(""), $("#lblEntEinh3FaktorX1").text(""), $("#lblEntEinh1FaktorX2").text(""), $("#lblEntEinh2FaktorX2").text(""), $("#lblEntEinh3FaktorX2").text(""), $("#lblEntEinh1FaktorX3").text(""), $("#lblEntEinh2FaktorX3").text(""), $("#lblEntEinh3FaktorX3").text("")) : "enfHinz" == a ? (b = "#nameEnf #kuerzelEnf #notizEnf #einheit1Enf #einheit2Enf #einheit3Enf #enfEinh1FaktorKwh #enfEinh2FaktorKwh #enfEinh3FaktorKwh #enfEinh1FaktorCO2 #enfEinh2FaktorCO2 #enfEinh3FaktorCO2 #enfEinh1FaktorX1 #enfEinh2FaktorX1 #enfEinh3FaktorX1 #enfEinh1FaktorX2 #enfEinh2FaktorX2 #enfEinh3FaktorX2 #enfEinh1FaktorX3 #enfEinh2FaktorX3 #enfEinh3FaktorX3 #gueltigVomEnf #gueltigBisEnf".split(" "),
@@ -5223,7 +5233,7 @@ try {
                         success: function(a) {
                             var c = $.parseJSON(a);
                             $("#anlCount").val(c.length);
-                            0 < c.length ? ($("#bildAllgemeinAnl").prop("src", c[b].bildAnl), $(".anlageAnl").text(c[b].bezeichnungAnl), $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl), $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
+                            0 < c.length ? ($(".anlageAnl").text(c[b].bezeichnungAnl), $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl), $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
 
                             [1, 2, 3, 4]
                             .forEach(
@@ -5332,8 +5342,7 @@ try {
                             /*console.log("records readInstanzen messmittel");console.log(a);*/
                             var c = $.parseJSON(a);
                             $("#msmCount").val(c.length);
-                            0 < c.length ? ($("#msmID").val(c[b].msm_ID), $("#bildAllgemeinMsm").prop("src",
-                                    c[b].bildMsm), $("#multiboxAllgemeinMsm").prop("checked", c[b].multiboxMsm), $("#messtoleranzInformationenConfig").val(formatNumber("form", c[b].messtoleranzConfig)), $("#wandlungsfaktorTechnischeDetailsConfig").val(formatNumber("form", c[b].wandlungsfaktorMsm)), [
+                            0 < c.length ? ($("#msmID").val(c[b].msm_ID), $("#multiboxAllgemeinMsm").prop("checked", c[b].multiboxMsm), $("#messtoleranzInformationenConfig").val(formatNumber("form", c[b].messtoleranzConfig)), $("#wandlungsfaktorTechnischeDetailsConfig").val(formatNumber("form", c[b].wandlungsfaktorMsm)), [
                                     ["#messmittelNrAllgemeinMsm", "nrMsm"],
                                     ["#bezeichnungAllgemeinMsm", "bezeichnungMsm"],
                                     ["#messstelleAllgemeinMsm", "mst"],
