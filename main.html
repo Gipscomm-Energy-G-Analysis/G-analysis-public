@@ -738,7 +738,8 @@
                                 <li class="tab_hide_virtuelle_messstelle" style="background:#CED6DE;"><a class="berEdit" href="#tabs-3_berEdit" style="padding:1px;color:black;font-weight:lighter;">BDE-Produktionsverlauf</a></li>
                                 <li class="tab_hide_virtuelle_messstelle" style="background:#CED6DE;"><a class="berEdit" href="#tabs-4_berEdit" style="padding:1px;color:black;font-weight:lighter;">Produktstammdaten</a></li>
                                 <li class="tab_hide_virtuelle_messstelle"  style="background:#CED6DE;"><a class="berEdit" href="#tabs-5_berEdit" style="padding:1px;color:black;font-weight:lighter;">BDE-Schichtdaten</a></li>
-                                <li style="background:#CED6DE;"><a class="berEdit" href="#tabs-6_berEdit" style="padding:1px;color:black;font-weight:lighter;">Korrekturfaktor</a></li>
+                                <li style="background:#CED6DE;"><a class="berEdit" href="#tabs-6_berEdit" style="padding:1px;color:black;font-weight:lighter;">Statischer Korrekturfaktor</a></li>
+                                <li style="background:#CED6DE;"><a class="berEdit" href="#tabs-7_berEdit" style="padding:1px;color:black;font-weight:lighter;">Dynamischer Korrekturfaktor</a></li>
                             </ul>
                             <div id="tabs-1_berEdit" style="background:#CED6DE;margin-left:3px;border: 1px solid #A1A7AD;width:750px;">
                                 <!--05-03-2020 Formel Editiern button drag drop functioanality-->
@@ -6668,7 +6669,7 @@
                     <div class="controlDiv zeitintervallAnl_1">
                         <label for="tageMassEingDataAnlEnde1">End Tag</label>
                         <input type="text" id="tageMassEingDataAnlEnde1" placeholder="" class="">
-                    </div> 
+                    </div>
                     <div class="controlDiv zeitintervallAnl_2">
                         <label for="wochenYMassEingDataAnlStart1">Start Wochen</label>
                         <select id="wochenWMassEingDataAnlStart1" class="wochenInputZeitintervallAnl">
@@ -6702,7 +6703,7 @@
                             <option value="27">27</option>
                             <option value="28">28</option>
                             <option value="29">29</option>
-                            <option value="30">30</option>                            
+                            <option value="30">30</option>
                             <option value="31">31</option>
                             <option value="32">32</option>
                             <option value="33">33</option>
@@ -6763,7 +6764,7 @@
                             <option value="27">27</option>
                             <option value="28">28</option>
                             <option value="29">29</option>
-                            <option value="30">30</option>                            
+                            <option value="30">30</option>
                             <option value="31">31</option>
                             <option value="32">32</option>
                             <option value="33">33</option>
@@ -6790,7 +6791,7 @@
                         </select>
                         kw
                         <input type="text" id="wochenYMassEingDataAnlEnde1" placeholder="Year" class="wochenInputZeitintervallAnl ">
-                    </div>     
+                    </div>
                     <div class="controlDiv zeitintervallAnl_3">
                         <label for="monateMassEingDataAnlStart1">Start Monate</label>
                         <input type="text" id="monateMassEingDataAnlStart1" placeholder="" class="">
@@ -6798,7 +6799,7 @@
                     <div class="controlDiv zeitintervallAnl_3">
                         <label for="monateMassEingDataAnlEnde1">Ende Monate</label>
                         <input type="text" id="monateMassEingDataAnlEnde1" placeholder="" class="">
-                    </div>                   
+                    </div>
                     <div class="controlDiv zeitintervallAnl_4">
                         <label for="jahrMassEingDataAnlStart1">Start Jahr</label>
                         <input type="text" id="jahrMassEingDataAnlStart1" placeholder="" class="">
@@ -6840,23 +6841,23 @@
                         <input type="hidden" id="startDateDB">
                         <input type="hidden" id="endDateDB">
                          <input type="hidden" id="unitIDB">
-                        <input type="hidden" id="controlSysIDDB"> 
+                        <input type="hidden" id="controlSysIDDB">
                     </div>-->
-                    <h3>Kein Zeitintervall zugewiesen</h3> 
+                    <h3>Kein Zeitintervall zugewiesen</h3>
                     <div class="btnShowRecordsAnl">
                         <button id="btnShowRecordsAnlBtn">Show Anlage Data</button>
                      </div>
                     <table id="tblAnlOhneZeitintervallIMw" class="stripe hover row-border compact dt-left custom">
                         <thead>
                             <tr>
-                                <th>mst_ID</th>    
+                                <th>mst_ID</th>
                                 <th>Messstelle</th>
                                 <th>Anlage</th>
-                                <th>Start Date</th> 
+                                <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Einheit</th>
                                 <th>Control System</th>
-                                <th>Zeitintervall</th> 
+                                <th>Zeitintervall</th>
                                 <th>Notiz</th>
                             </tr>
                         </thead>
@@ -6867,14 +6868,14 @@
                         <table id="tblAnlOhneZeitintervallIMwSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;margin-right:10px;padding-top:20px;">
                             <thead>
                                 <tr>
-                                    <th>mst_ID</th>    
+                                    <th>mst_ID</th>
                                     <th>Messstelle</th>
                                     <th>Anlage</th>
-                                    <th>Start Date</th> 
+                                    <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Einheit</th>
                                     <th>Control System</th>
-                                    <th>Zeitintervall</th> 
+                                    <th>Zeitintervall</th>
                                     <th>Notiz</th>
                                 </tr>
                             </thead>
@@ -6906,11 +6907,11 @@
                             <tr>
                                 <th>ID</th>
                                 <th>histID</th>
-                                <th>anl_ID</th>  
-                                <th>Start Date</th> 
+                                <th>anl_ID</th>
+                                <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Einheit</th>
-                                <th>Zeitintervall</th>     
+                                <th>Zeitintervall</th>
                                 <th>Messstelle</th>
                                 <th>Anlage</th>
                                 <th>Notiz</th>
@@ -6945,7 +6946,7 @@
                                 </div>
                                 <div class="zeitintervallAnl_1">
                                     <input type="text" id="tageMassEingDataAnlEnde4" placeholder="End Tag" class="">
-                                </div> 
+                                </div>
                                 <div class="zeitintervallAnl_2">
                                     <select id="wochenWMassEingDataAnlStart4" class="wochenInputZeitintervallAnl">
                                         <option value="">Weeks</option>
@@ -6978,7 +6979,7 @@
                                         <option value="27">27</option>
                                         <option value="28">28</option>
                                         <option value="29">29</option>
-                                        <option value="30">30</option>                            
+                                        <option value="30">30</option>
                                         <option value="31">31</option>
                                         <option value="32">32</option>
                                         <option value="33">33</option>
@@ -7038,7 +7039,7 @@
                                         <option value="27">27</option>
                                         <option value="28">28</option>
                                         <option value="29">29</option>
-                                        <option value="30">30</option>                            
+                                        <option value="30">30</option>
                                         <option value="31">31</option>
                                         <option value="32">32</option>
                                         <option value="33">33</option>
@@ -7065,13 +7066,13 @@
                                     </select>
                                     kw
                                     <input type="text" id="wochenYMassEingDataAnlEnde4" placeholder="Year" class="wochenInputZeitintervallAnl ">
-                                </div>     
+                                </div>
                                 <div class="zeitintervallAnl_3">
                                     <input type="text" id="monateMassEingDataAnlStart4" placeholder="Start Monate" class="">
                                 </div>
                                 <div class="zeitintervallAnl_3">
                                     <input type="text" id="monateMassEingDataAnlEnde4" placeholder="Ende Monate" class="">
-                                </div>                   
+                                </div>
                                 <div class="zeitintervallAnl_4">
                                     <input type="text" id="jahrMassEingDataAnlStart4" placeholder="Start Jahr" class="">
                                 </div>
@@ -7084,11 +7085,11 @@
                             </div>
                             <br>
                             <br>
-                        
+
                         </div>
-                        
+
                         <div id="timeIntervalWerteEnergiedatenIMw" class="timeIntervalWerteEnergiedatenIMw">
-                        </div> 
+                        </div>
                         <div id="timeIntervalWerteEnergiedatenIMwHoldIds" class="timeIntervalWerteEnergiedatenIMwHoldIds">
                             <input type="hidden" id="currInputID"/>
                             <input type="hidden" id="rowMainIDDs"/>
@@ -7106,7 +7107,7 @@
                             <input type="hidden" id="inputBotmMax"/>
                             <input type="hidden" id="inputPrevValDB"/>
                             <input type="hidden" id="inputPrevBtmValDB"/>
-                            
+
                             <input type="hidden" id="inputLastValDB"/>
                             <input type="hidden" id="inputNextLastValDB"/>
                             <input type="hidden" id="inputNextLastIdDB"/>
@@ -7528,10 +7529,10 @@
             <!-- <br>
             <br>
             <label for="gueltigVonHistIntBdeIMw">Gültig von:</label>
-            <input id="gueltigVonHistIntBdeIMw"/> 
+            <input id="gueltigVonHistIntBdeIMw"/>
             <div id="gueltigVonHistIntBdeIMw"/></div>
             <label for="gueltigBisHistIntBdeIMw">Gültig bis:</label>
-            <input id="gueltigBisHistIntBdeIMw"/> 
+            <input id="gueltigBisHistIntBdeIMw"/>
            <div id="gueltigBisHistIntBdeIMw"/></div>-->
                 <div class="zeitintervallAnl_1">
                     <label for="tageMassEingDataAnlStart3">Gültig von:</label>
@@ -7540,7 +7541,7 @@
                 <div class="zeitintervallAnl_1">
                     <label for="tageMassEingDataAnlEnde3">Gültig bis:</label>
                     <input type="text" id="tageMassEingDataAnlEnde3" placeholder="" class="" >
-                </div> 
+                </div>
                 <div class="zeitintervallAnl_2">
                     <label for="wochenYMassEingDataAnlStart3">Gültig von:</label>
                     <select id="wochenWMassEingDataAnlStart3" class="wochenInputZeitintervallAnl" readonly>
@@ -7574,7 +7575,7 @@
                         <option value="27">27</option>
                         <option value="28">28</option>
                         <option value="29">29</option>
-                        <option value="30">30</option>                            
+                        <option value="30">30</option>
                         <option value="31">31</option>
                         <option value="32">32</option>
                         <option value="33">33</option>
@@ -7635,7 +7636,7 @@
                         <option value="27">27</option>
                         <option value="28">28</option>
                         <option value="29">29</option>
-                        <option value="30">30</option>                            
+                        <option value="30">30</option>
                         <option value="31">31</option>
                         <option value="32">32</option>
                         <option value="33">33</option>
@@ -7662,7 +7663,7 @@
                     </select>
                     kw
                     <input type="text" id="wochenYMassEingDataAnlEnde3" placeholder="" class="wochenInputZeitintervallAnl ">
-                </div>     
+                </div>
                 <div class="zeitintervallAnl_3">
                     <label for="monateMassEingDataAnlStart3">Gültig von:</label>
                     <input type="text" id="monateMassEingDataAnlStart3" placeholder="" class="" readonly>
@@ -7670,7 +7671,7 @@
                 <div class="zeitintervallAnl_3">
                     <label for="monateMassEingDataAnlEnde3">Gültig bis:</label>
                     <input type="text" id="monateMassEingDataAnlEnde3" placeholder="" class="" >
-                </div>                   
+                </div>
                 <div class="zeitintervallAnl_4">
                     <label for="jahrMassEingDataAnlStart3">Gültig von:</label>
                     <input type="text" id="jahrMassEingDataAnlStart3" placeholder="" readonly class="">
@@ -7693,7 +7694,7 @@
         <p>
              Warnung: Sie haben einen Wert besetzt, <br>
              der nicht mit der bereits gesetzten Datenlagen<br>
-             in der Abfolge übereinstimmen kann.  
+             in der Abfolge übereinstimmen kann.
         </p>
         <div id="intBdeConcernOrDeletePopUpDiv">
         <button id="intBdeConcern" >Concern</button>
@@ -7751,7 +7752,7 @@
                     <div class="controlDiv zeitintervallAnl_1">
                         <label for="tageMassEingDataAnlEnde2">End Tag</label>
                         <input type="text" id="tageMassEingDataAnlEnde2" placeholder="" class="">
-                    </div> 
+                    </div>
                     <div class="controlDiv zeitintervallAnl_2">
                         <label for="wochenYMassEingDataAnlStart2">Start Wochen</label>
                         <select id="wochenWMassEingDataAnlStart2" class="wochenInputZeitintervallAnl">
@@ -7785,7 +7786,7 @@
                             <option value="27">27</option>
                             <option value="28">28</option>
                             <option value="29">29</option>
-                            <option value="30">30</option>                            
+                            <option value="30">30</option>
                             <option value="31">31</option>
                             <option value="32">32</option>
                             <option value="33">33</option>
@@ -7846,7 +7847,7 @@
                             <option value="27">27</option>
                             <option value="28">28</option>
                             <option value="29">29</option>
-                            <option value="30">30</option>                            
+                            <option value="30">30</option>
                             <option value="31">31</option>
                             <option value="32">32</option>
                             <option value="33">33</option>
@@ -7873,7 +7874,7 @@
                         </select>
                         kw
                         <input type="text" id="wochenYMassEingDataAnlEnde2" placeholder="Year" class="wochenInputZeitintervallAnl ">
-                    </div>     
+                    </div>
                     <div class="controlDiv zeitintervallAnl_3">
                         <label for="monateMassEingDataAnlStart2">Start Monate</label>
                         <input type="text" id="monateMassEingDataAnlStart2" placeholder="" class="">
@@ -7881,7 +7882,7 @@
                     <div class="controlDiv zeitintervallAnl_3">
                         <label for="monateMassEingDataAnlEnde2">Ende Monate</label>
                         <input type="text" id="monateMassEingDataAnlEnde2" placeholder="" class="">
-                    </div>                   
+                    </div>
                     <div class="controlDiv zeitintervallAnl_4">
                         <label for="jahrMassEingDataAnlStart2">Start Jahr</label>
                         <input type="text" id="jahrMassEingDataAnlStart2" placeholder="" class="">
