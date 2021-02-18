@@ -69,6 +69,53 @@ elseif($id == 'intBdeIMw'){
 	   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
 	   $query .= "WHERE T1.deleted <> 'true' ";
 	   $query .= "AND T1.messartMst = 'manuell' ";
+}elseif($id == 'SearchKeinZeitintervallTbl'){
+	   /*new-mm-start*/
+	   $checkboxSearch = $_POST['checkboxSearch'];
+	   if($checkboxSearch == 1){
+		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		   $query .= "ON T1.mst_ID = T2.mst_ID ";
+		   $query .= "LEFT JOIN iMwUnits AS T3 ";
+		   $query .= "ON T3.unt_ID = T2.unt_ID ";
+		   $query .= "LEFT JOIN intervalType AS T4 ";
+		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
+		   $query .= "WHERE T1.deleted <> 'true' ";
+		   $query .= "AND T1.messartMst = 'manuell' ";
+		}
+		elseif($checkboxSearch == 2){
+		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		   $query .= "ON T1.mst_ID = T2.mst_ID ";
+		   $query .= "LEFT JOIN iMwUnits AS T3 ";
+		   $query .= "ON T3.unt_ID = T2.unt_ID ";
+		   $query .= "LEFT JOIN intervalType AS T4 ";
+		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
+		   $query .= "WHERE T1.deleted <> 'true' ";
+		   $query .= "AND T1.messartMst = 'manuell' ";
+		   $query .= "AND NULLIF(T2.startDate,'') IS NOT NULL ";
+		   /*WHERE
+		    NULLIF(x,'') IS NOT NULL
+		AND NULLIF(y,'') IS NOT NULL
+		AND NULLIF(z,'') IS NOT NULL*/		
+		}
+		elseif($checkboxSearch == 3){
+		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		   $query .= "ON T1.mst_ID = T2.mst_ID ";
+		   $query .= "LEFT JOIN iMwUnits AS T3 ";
+		   $query .= "ON T3.unt_ID = T2.unt_ID ";
+		   $query .= "LEFT JOIN intervalType AS T4 ";
+		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
+		   $query .= "WHERE T1.deleted <> 'true' ";
+		   $query .= "AND T1.messartMst = 'manuell' ";
+		   $query .= "AND NULLIF(T2.startDate,'') IS NULL ";
+
+           
+		   /*WHERE NULLIF(x,'') IS NULL
+		Or NULLIF(y,'') IS NULL
+		Or NULLIF(z,'') IS NULL*/
+		}
 }elseif($id == 'masseneingabeSearch'){
 	   $zeitintervallAnl = $_POST['zeitintervallAnl'];
 		if($zeitintervallAnl==1){

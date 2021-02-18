@@ -108,6 +108,9 @@ h3{
 #lblSpeziSpaEfVTble1Lieg{
   display: none;
 }
+#interneEnergieformenLieg{
+  display: none;
+}
 #intMesswerteLeftMenu{
   padding: 10px;
 }
@@ -512,10 +515,6 @@ nav {
 #btnGespDiag,
 #btnGespDiag2,
 #btnGespDiagKnz,
-#histDataJa,
-#histDataNein,
-#saveMstFormulaAbbrechen,
-#anlPrdLink
 #btnShowRecordsAnlBtn{
   border: 0px solid black;
   border-radius: 5px;
@@ -670,10 +669,6 @@ nav {
 #btnGespDiag:hover,
 #btnGespDiag2:hover,
 #btnGespDiagKnz:hover,
-#histDataJa:hover,
-#histDataNein:hover,
-#saveMstFormulaAbbrechen:hover,
-#anlPrdLink:hover 
 #btnShowRecordsAnlBtn:hover {
   background-color: white;
   cursor: pointer;

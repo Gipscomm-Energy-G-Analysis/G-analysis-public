@@ -15058,6 +15058,12 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
 /*Ajax Call for the Manuel module serach 18-09-2020*/
 function tblAnlOhneZeitintervallIMwSuchenMethod() {
         $("#tblAnlOhneZeitintervallIMwSearchContainer").css("display", "block");
+        /*new-mm-start*/
+
+        $('#searchImgBtnShowRecordsAnlBtn').show();
+                    
+        $('#searchImgBtnShowRecordsAnlBtn').val('1');
+        /*new-mm-end*/
         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog({
             height: $(window).height() - .125 * $(window).height(),
             width: $(window).width() - .125 * $(window).width(),
@@ -15739,15 +15745,84 @@ function keinZeitIntervallZugewiesen(){
                     $("#anlNrIMw").val(a[2]);
                     $("#startDateDB").val(a[3]); 
                     $("#endDateDB").val(a[4]); 
-                    setTimeout(function(){ 
-                    $("#unitIDB").val($(".infosIntBetriebsdaten #einheitAnl").val());
-                    $("#controlSysIDDB").val($(".infosIntBetriebsdaten #control_system").val());
-                     }, 3000);
+            });
+        }
+    });
+}
+/*checkbox search query*/
+/*new-mm-start*/
+function searchKeinZeitIntervallZugewiesen(checkboxSearch){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            id: "SearchKeinZeitintervallTbl",
+            nameDB: $("#nameDB").val(),
+            checkboxSearch:checkboxSearch,
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;console.log(a);
+            tblAnlOhneZeitintervallIMw.clear().draw();
+                for (var e = 0; e < b; e++){ 
+                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                    //tblAnlOhneZeitintervallIMw.column([0,1]).visible(!1);
+                    $("#tblAnlOhneZeitintervallIMw tr").css("cursor", "pointer");
+                    $("#tblAnlOhneZeitintervallIMw").off("dblclick", "tr");
+                } 
+                var columnHide = tblAnlOhneZeitintervallIMw.columns([0]);
+                columnHide.visible(! columnHide.visible() );
+                $("#tblAnlOhneZeitintervallIMw").on("dblclick", "tr", function() {
+                    var a = tblAnlOhneZeitintervallIMw.row(this).data();
+                    //console.log(a);    
+                    resetFormAllgemein('infosIntBetriebsdaten',1);           
+                    keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
+                    $("#mstID").val(a[0]);
+                    $("#anlIMw").val(a[1]);
+                    $("#anlNrIMw").val(a[2]);
+                    $("#startDateDB").val(a[3]); 
+                    $("#endDateDB").val(a[4]); 
             });
         }
     });
 }
 
+function searchImgKeinZeitIntervallZugewiesen(checkboxSearch){
+    $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "SearchKeinZeitintervallTbl",
+                nameDB: $("#nameDB").val(),
+                checkboxSearch: checkboxSearch,
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                var b = a.length;console.log(a);
+                tblAnlOhneZeitintervallIMwSuchen.clear().draw();
+                    for (var e = 0; e < b; e++){ 
+                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                        $("#tblAnlOhneZeitintervallIMwSuchen tr").css("cursor", "pointer");
+                        $("#tblAnlOhneZeitintervallIMwSuchen").off("dblclick", "tr");
+                    } 
+                    var columnHide = tblAnlOhneZeitintervallIMwSuchen.columns([0]);
+                    columnHide.visible(! columnHide.visible() );
+                    $("#tblAnlOhneZeitintervallIMwSuchen").on("dblclick", "tr", function() {
+                         var a = tblAnlOhneZeitintervallIMwSuchen.row(this).data();
+                        //console.log(a);    
+                        resetFormAllgemein('infosIntBetriebsdaten',1);           
+                        keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
+                        $("#mstID").val(a[0]);
+                        $("#anlIMw").val(a[1]);
+                        $("#anlNrIMw").val(a[2]);  
+                        $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close"); 
+                });
+            }
+        });
+}
+/*new-mm-end*/
 function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
         $.ajax({
         type: "POST",
@@ -16735,7 +16810,6 @@ function convertDateFormateForDataTbl(type,str){
 }
 
 function saveToDBMasseneingabeEingaben(key){
-
         var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
         var postDataEnabled =new Array();
         var enabledRow = [];
@@ -16784,10 +16858,13 @@ function saveToDBMasseneingabeEingaben(key){
                         alert("failed!!")
                     },
                     success: function(a) {
-                       alert(a);
-                       $("#masseneingabeSpeichernSrch").prop('disabled',false);
-                       $("#masseneingabeSrchImg").hide(); 
-                      /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
+                        /*new-mm-start*/
+                        $(".save-msg-box").append(a);
+                        $("#masseneingabeSpeichernSrch").prop('disabled',false);
+                        $("#masseneingabeSrchImg").hide(); 
+                        if(a.length >0){ 
+                            $(".save-msg-box").fadeOut(3000, function() { $(this).text(""); });
+                        }
                     }
                 });
     }
@@ -16932,7 +17009,7 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                     }
                 }                
                 $($("#inputFocusedId").val()).focus();
-
+                $("#masseneingabeSpeichernSrch").prop("disabled", false);
                 //$($("#inputFocusedId").val()).change();
             });
             $("#intBdeDelete").on("click", function() {
@@ -16949,12 +17026,7 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 $("#intBdeConcernOrDeletePopUp").remove(); 
                 var currInputID = $("#currInputID").val();
                 var rowMainIDDs = $("#rowMainIDDs").val();
-                if (typeof anlageObj[rowMstID] != "undefined" && anlageObj[rowMstID] != null && anlageObj[rowMstID].length != null && anlageObj[rowMstID].length > 0) {
-                    var inputCountLength = anlageObj[rowMstID].length;
-                    /*if(inputCountLength>5){
-                        //getLastInputValuesByCurrent(rowMainIDDs,rowMstID);
-                    }*/
-                 }
+                $("#masseneingabeSpeichernSrch").prop("disabled", false);
             });
          }
     }); 
@@ -17259,11 +17331,10 @@ function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBo
                         alert("failed!!")
                     },
                     success: function(a) {
-
                        //alert(a);
                        //$("#masseneingabeSpeichernSrch").prop('disabled',false);
                        //$("#masseneingabeSrchImg").hide(); 
-                      /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
+                        /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
                     }
                 });
     }
@@ -17352,3 +17423,29 @@ function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate
         });
     }
  }
+
+
+ function deleteFromDBMasseneingabeEingabenSingleInput(key,currentDate,mstID){
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "deleteCurrentInput",
+                  nameDB: $("#nameDB").val(),
+                  currentDate: currentDate,
+                  mstID:mstID,
+                  key:key
+                },                     
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+                   //console.log(a);
+                   /*var rowMainIDEn =$(this).closest('tr').attr('id');;
+                   var rowMainIDDs =$(this).closest('tr').next('tr').attr('id');
+                   saveToDBMasseneingabeEingabenSingleRow(key,rowMainIDEn,rowMainIDDs);*/
+                }
+            });
+    }

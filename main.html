@@ -240,9 +240,9 @@
                             <ul class="sub-menu">
                                 <li>
                                     <a id="intMswMenu" href="#">In. Messwerte</a>
-                                    <ul class="sub-menu">
-                                        <li><a id="intEngIMwMenu" href="#">Interne Energiedaten</a></li>
-                                        <li><a id="intBdeIMwMenu" href="#">Interne Betriebsdaten</a></li>
+                                    <ul class="sub-menu"><!-- new-mm-start -->
+                                        <li><a id="intEngIMwMenu" href="#">Interne Betriebsdaten</a></li>
+                                        <li><a id="intBdeIMwMenu" href="#">Interne Energiedaten</a></li><!-- new-mm-end -->                   
                                     </ul>
                                 </li>
                                 <li>
@@ -495,9 +495,9 @@
                       <!--24-02-2020 create calculator tab button html,18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren" -->
                 <!-- </div> -->
                 <div id="tabsManuell" style="display:none;">
-                    <div id="tabsIntMesswerte" style="display:none;">
-                        <button id="tabIntEnergiedatenIMw">Interne Energiedaten</button>
-                        <button id="tabIntBetriebsdatenIMw">Interne Betriebsdaten</button>
+                    <div id="tabsIntMesswerte" style="display:none;"><!-- new-mm-start -->
+                        <button id="tabIntEnergiedatenIMw">Interne Betriebsdaten</button>
+                        <button id="tabIntBetriebsdatenIMw">Interne Energiedaten</button><!-- new-mm-end -->
                         <button id="tabIntBetriebsdatenIMwHist">Historie</button>
                     </div>
                     <div id="tabsExterneRechnungen" style="display:none;">
@@ -6846,6 +6846,13 @@
                     <div class="btnShowRecordsAnl">
                         <button id="btnShowRecordsAnlBtn">Show Anlage Data</button>
                      </div>
+                    <!-- new-mm-start -->
+                    <select id="searchBtnShowRecordsAnlBtn" name="searchBtnShowRecordsAnlBtn" style="display: none;">
+                    <option value="1" selected >All</option>
+                    <option value="2">Completed</option>
+                    <option value="3">Not Completed</option>
+                    </select>
+                    <!-- new-mm-end -->
                     <table id="tblAnlOhneZeitintervallIMw" class="stripe hover row-border compact dt-left custom">
                         <thead>
                             <tr>
@@ -6864,6 +6871,13 @@
                     </table>
                     <!-- tblAnlOhneZeitintervallIMwSearchContainer modal view choosing from the search functionality Date - 18-09-2020-->
                     <div id="tblAnlOhneZeitintervallIMwSearchContainer" style="display:none;">
+                    <!-- new-mm-start -->
+                    <select id="searchImgBtnShowRecordsAnlBtn" name="searchImgBtnShowRecordsAnlBtn" style="display: none;">
+                    <option value="1" selected >All</option>
+                    <option value="2">Completed</option>
+                    <option value="3">Not Completed</option>
+                    </select>
+                    <!-- new-mm-end -->
                         <table id="tblAnlOhneZeitintervallIMwSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;margin-right:10px;padding-top:20px;">
                             <thead>
                                 <tr>
@@ -6931,6 +6945,7 @@
                         <br>
                         <br>
                         <button id="masseneingabeSpeichernSrch">Eingaben speichern</button><img id="masseneingabeSrchImg" src="images/waiting.gif">
+                        <span class='save-msg-box' style='width: 200px;display: none;'></span>
                         <div class="infosMasseneingabeInside">
                             <br>
                             <button id="btnTageMasseneingabeIMwNw" class="active" data-id="1">Tage</button>
