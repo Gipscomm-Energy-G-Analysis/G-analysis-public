@@ -110,8 +110,14 @@ elseif($id == "manGrp") {
 }
 elseif($id == "adm") {
 $modus = $_POST['modus'];
-$instanz = $_POST['ins'];
-$insID = $_POST['insID'];
+
+$instanz = '';
+if(isset($_POST['ins']))
+    $instanz = $_POST['ins'];
+
+$insID = '';
+if(isset($_POST['insID']))
+    $insID = $_POST['insID'];
 
 $titel = $_POST['titel'];
 $name = $_POST['name'];
@@ -126,7 +132,7 @@ $passwort = $_POST['passwort'];
 	if($modus == "new"){
 
 		$tsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
-		$tsql .= "fax, mobiltelefon, benutzername, passHash) ";
+		$tsql .= "fax, mobiltelefon, username, passHash) ";
 		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
 		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
 }
@@ -135,15 +141,21 @@ $passwort = $_POST['passwort'];
 
 		$tsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
 		$tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
-		$tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',benutzername = '$benutzername', ";
-  $tsql .= "passHash = '$passwort' ";
+		$tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
+        $tsql .= "passHash = '$passwort' ";
 		$tsql .= "WHERE adm_ID = '$admID' ";
 	}
 }
 elseif($id == "ben") {
     $modus = $_POST['modus'];
-    $instanz = $_POST['ins'];
-    $insID = $_POST['insID'];
+
+    $instanz = '';
+    if(isset($_POST['ins']))
+        $instanz = $_POST['ins'];
+
+    $insID = '';
+    if(isset($_POST['insID']))
+        $insID = $_POST['insID'];
 
     $titel = $_POST['titel'];
     $name = $_POST['name'];
@@ -159,7 +171,7 @@ elseif($id == "ben") {
           $manID = $_POST['manID'];
 
       		$tsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
-      		$tsql .= "fax, mobiltelefon, benutzername, passHash) ";
+      		$tsql .= "fax, mobiltelefon, username, passHash) ";
       		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
       		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
     }
@@ -168,7 +180,7 @@ elseif($id == "ben") {
 
         $tsql =  "UPDATE benutzer SET titel = '$titel',name = '$name', ";
         $tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
-        $tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',benutzername = '$benutzername', ";
+        $tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
         $tsql .= "passHash = '$passwort' ";
         $tsql .= "WHERE ben_ID = '$benID' ";
     }
@@ -3131,7 +3143,12 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
 
 if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  ) {
     $retState = queryDB( $conn, $tsql, "write" );
-    echo $tsql;
+
+    if ($retState == 'error') {
+        echo 'error';
+    } else {
+        echo "record added";
+    }
 }
 
 include('bottom-cache.php');

@@ -60,8 +60,19 @@ elseif($id == "adm"){
 elseif($id == "ben"){
     $ins = $_POST['ins'];
     $idIns = $_POST['insID'];
+    $recordSet = $_POST['recordSet'];
+    if($recordSet == 'first') {
+        $query = "SELECT TOP (1) * FROM benutzer ";
+    } elseif ($recordSet == 'last') {
+        $query = "SELECT TOP 1 * FROM benutzer ORDER BY man_ID DESC";
+    } elseif ($recordSet == 'next') {
+        $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
+    } elseif ($recordSet == 'previous') {
+        $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
+    } else {
+        $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
+    }
 
-    $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
 }
 
 elseif($id == "man"){

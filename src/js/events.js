@@ -1469,6 +1469,12 @@ $(document).ready(function() {
     $("#tblOptionenEPrd tbody").on("dblclick", "tr", function() {
         tblOptionenEPrd.row(this).remove().draw()
     });
+
+   
+    $("#tabAdm, #admMenu").click(function() {
+        manGrpEinlesen();
+    });
+    
     $(".betrPfad").change(function() {
 
         $(".betrPfad").val($(this).val());
@@ -1538,12 +1544,19 @@ $(document).ready(function() {
     $(".liegPfad").change(function() {
         liegPfadChange(this)
     });
-    $("#gipscAdmHinz, #betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
+    $("#gipscAdmHinz, #betrGrpHinz, #sAdmHinz, #manGrpHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
         clearFields(this.id);
         b = !0
     });
+
+    $("#admHinz,  #benHinz").click(function() {
+        instanzErstellen(this.id);
+        clearFields(this.id);
+    });
    /* $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern,\n                                #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern,\n                                #extDlSpeichern, #berSpeichern, #benSpeichern, #mstSpeichern, #stdSpeichern,\n                                #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern,\n                                #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern,\n                                #intBdeIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern,\n                                #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {*/
-     $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern,\n                                #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern,\n                                #extDlSpeichern, #berSpeichern, #benSpeichern, #mstSpeichern, #stdSpeichern,\n                                #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern,\n                                #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern,\n                                 #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern,\n                                #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
+     $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern,\n                                #extDlSpeichern, #berSpeichern, #benSpeichern, #mstSpeichern, #stdSpeichern,\n                                #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern,\n                                #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern,\n                                 #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern,\n                                #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
+        console.log("ID: ", this.id);
+        console.log("B: ", b);
         "gipscAdmSpeichern" ==
         this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"

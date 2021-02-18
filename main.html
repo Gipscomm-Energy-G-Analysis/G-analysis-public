@@ -1630,7 +1630,7 @@
                         </div>
                         <div class="controlDiv">
                             <label>Passwort</label>
-                            <input id="passwortGipscAdm" />
+                            <input type="password" id="passwortGipscAdm" />
                         </div>
                     </div>
                 </div>
@@ -1803,11 +1803,11 @@
                                 <img id="admSuchen" title="Admin suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                                 <img id="admMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" />
                                 <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
-                                <img id="admLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Admin" src="images/last.png" alt="letzte" />
-                                <img id="admNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Admin" src="images/next.png" alt="nächste" />
+                                <img id="admLast" data-record="last" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Admin" src="images/last.png" alt="letzte" />
+                                <img id="admNext" data-record="next" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Admin" src="images/next.png" alt="nächste" />
                                 <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
-                                <img id="admPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" />
-                                <img id="admFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" />
+                                <img id="admPrevious" data-record="previous" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" />
+                                <img id="admFirst" data-record="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" />
 
                                 <label>Betr. Gruppe:</label>
                                 <select class="betrPfad"></select>
@@ -1852,7 +1852,7 @@
                             </div>
                             <div class="controlDiv">
                                 <label>Passwort</label>
-                                <input id="passwortAdm" />
+                                <input type="password" id="passwortAdm" />
                             </div>
                         </div>
                     </div>
@@ -1864,11 +1864,11 @@
                             <img id="benSuchen" title="Benutzer suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                             <img id="benMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" />
                             <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
-                            <img id="benLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Benutzer" src="images/last.png" alt="letzte" />
-                            <img id="benNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Benutzer" src="images/next.png" alt="nächste" />
+                            <img id="benLast" data-record="last" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Benutzer" src="images/last.png" alt="letzte" />
+                            <img id="benNext" data-record="next" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Benutzer" src="images/next.png" alt="nächste" />
                             <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
-                            <img id="benPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Benutzer" src="images/previous.png" alt="vorherige" />
-                            <img id="benFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Benutzer" src="images/first.png" alt="erste" />
+                            <img id="benPrevious" data-record="previous" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Benutzer" src="images/previous.png" alt="vorherige" />
+                            <img id="benFirst" data-record="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Benutzer" src="images/first.png" alt="erste" />
 
                             <label>Betr. Gruppe:</label>
                             <select class="betrPfad"></select>
@@ -1914,7 +1914,7 @@
                             </div>
                             <div class="controlDiv">
                                 <label>Passwort</label>
-                                <input id="passwortBen" />
+                                <input type="password" id="passwortBen" />
                             </div>
                             <div class="sectionHeader">
                                 <label>Rechte</label>
@@ -8521,7 +8521,7 @@
     <div id="gipscAdmZugang" style="display:none;">
         <label style="font-size:16px;">Passwort:</label>
         <br />
-        <input id="pwGipscAdm"/>
+        <input type="password" id="pwGipscAdm"/>
         <br />
         <br />
         <button id="zugangOk">Ok</button>
