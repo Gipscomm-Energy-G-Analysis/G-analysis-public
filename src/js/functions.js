@@ -9978,6 +9978,18 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 aktivInstance: "ber"
             }, {
                 lengthPath: 3,
+                tab: "tabMstE",
+                idElement: "mstID",
+                infos: "infosMessstellenEng",
+                aktivInstance: "mstE"
+            }, {
+                lengthPath: 3,
+                tab: "tabMstB",
+                idElement: "mstID",
+                infos: "infosMessstellenBetr",
+                aktivInstance: "mstB"
+            }, {
+                lengthPath: 3,
                 tab: "tabStd",
                 idElement: "stdID",
                 infos: "infosStandorte",
