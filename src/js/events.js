@@ -1220,6 +1220,7 @@ $(document).ready(function() {
         datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
         $("#nextPrevMstID").val($("#mstID").val());
         $("body").removeClass('fullWidthMasseneingabe');
+         //interneEBTblShowHide();
     });
     $("#manMap, #orgMap, #liegMap, #berMap").click(function() {
         mapErstellen(this.id, $("#selectMap").val())
@@ -1317,7 +1318,9 @@ $(document).ready(function() {
         if(this.id=='tabIntBetriebsdatenIMw'){
             $("body").removeClass('fullWidthMasseneingabe');
             $("#tblMasseneingabeDataIMw").remove();
+
         }
+        //interneEBTblShowHide();
     });
     $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst,\n                #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstFirst, #stdFirst,\n                #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst,\n                #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "gipscAdmFirst" == this.id ?
@@ -1807,7 +1810,7 @@ jQuery.fn.NumericOnly = function() {
             var key = e.charCode || e.keyCode || 0;
             // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
             // home, end, period, and numpad decimal
-            if (key == 8 || key == 9 || key == 13 || key == 46 || key == 110 || key == 190 || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
+            if (key == 8 || key == 9 || key == 13 || key == 46 || key == 110 || key == 190 || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105) ) {
 
                 return true;
             } else {
@@ -2077,7 +2080,7 @@ $(".typeDynamicCF").change(function() {
     $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
     var selVal = $(this).val();
     if(selVal =='Zeit'){
-        console.log('Zeit');
+       // console.log('Zeit');
         $(".subtypeTimeDynamicCF option.zeitOption").show();
         $(".subtypeTimeDynamicCF option.temperaturOption").hide();
         $(".subtypeTimeDynamicCF").prop('disabled', false);
@@ -3484,19 +3487,23 @@ $("#DkFeSpeichern").click(function() {
    /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
     $(document).ready(function(){
         $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
+        $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().hide();
         /*new-mm-start*/
-        $('#searchBtnShowRecordsAnlBtn').hide();
+        $('#searchBtnShowRecordsAnlBtnDiv').hide();
+        $('#interneEBTblDiv').hide();
+        
         /*new-mm-end*/
         $("#btnShowRecordsAnlBtn").click(function(){
             //$(this).addClass('showTable');
             $(this).prop("disabled", true);
-            tblMstOhneZeitintervallIMw.clear().draw();
+            tblMstOhneZeitintervallIMwIE.clear().draw();
             $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
               
            keinZeitIntervallZugewiesen(InstanceMode.BDE);
-
+           //interneEBTblShowHide(1);
            /*new-mm-start*/
-            $('#searchBtnShowRecordsAnlBtn').show();
+            $('#searchBtnShowRecordsAnlBtnDiv').show();
+            $('#interneEBTblDiv').show();
             $('#searchBtnShowRecordsAnlBtn').val('1');
             /*new-mm-end*/
         });
@@ -3629,8 +3636,7 @@ $("#DkFeSpeichern").click(function() {
                 $("#inputFocusedId").val(inputCurrId);
                 if($("#currInputID").val()==0){ $("#inputCurPrevId").val("");
                 }
-                 
-                //$("#masseneingabeSpeichernSrch").prop("disabled",true);            
+                $("#masseneingabeSpeichernSrch").prop("disabled",true);            
             }
             //if(e.keyCode == 9){
                 //$("#currInputID").val("");
@@ -3683,7 +3689,6 @@ $("#DkFeSpeichern").click(function() {
             var inputCurrTopId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
             var inputCurrBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID; 
             var einheitVal = $(this).closest('tr').attr('data-einheit');
-           
             if((inputValFirst !='' && inputValCurrent !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValCurrent) !='undefined')){
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
                 if($.inArray(inptDate, anlageObj[mst_id]) === -1){
@@ -3800,7 +3805,7 @@ $("#DkFeSpeichern").click(function() {
                 if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){
                        
                     var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
-                    console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                    //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                     if($('#inputPrevValDB').val()){
                         $(inputNextBottomId).val(secBottomValDB);
                     }
@@ -3810,7 +3815,7 @@ $("#DkFeSpeichern").click(function() {
                 }
                 if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNextlast != "" && typeof(inputValNextlast) != 'undefined')){
                         var lastBottomValDB = $(inputIdNextlast).val() - $('#inputPrevValDB').val();
-                        console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$(inputIdNextlast).val()+"-"+$('#inputPrevValDB').val());
+                        //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$(inputIdNextlast).val()+"-"+$('#inputPrevValDB').val());
                         if($('#inputPrevValDB').val()){
                             $(inputNextLastBottomId).val(lastBottomValDB);
                         }
@@ -3827,7 +3832,7 @@ $("#DkFeSpeichern").click(function() {
                 if(allPrevVal.length == 0 ){    
                     if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){                       
                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
-                         console.log("allPrevVal.length0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                         //console.log("allPrevVal.length0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                         if($('#inputPrevValDB').val()){
                             $(inputNextBottomId).val(secBottomValDB);
                         }
@@ -3839,7 +3844,7 @@ $("#DkFeSpeichern").click(function() {
                     }
                     if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNextlast != "" && typeof(inputValNextlast) != 'undefined')){
                         var lastBottomValDB = $(inputIdNextlast).val() - $('#inputPrevValDB').val();
-                        console.log("allPrevVal.length0 : lastBottomValDB"+lastBottomValDB+"->"+$(inputIdNextlast).val()+"-"+$('#inputPrevValDB').val());
+                        //console.log("allPrevVal.length0 : lastBottomValDB"+lastBottomValDB+"->"+$(inputIdNextlast).val()+"-"+$('#inputPrevValDB').val());
                         if($('#inputPrevValDB').val()){
                             $(inputNextLastBottomId).val(lastBottomValDB);
                         }
@@ -3881,6 +3886,7 @@ $("#DkFeSpeichern").click(function() {
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
             var rowMstID = $(this).closest('td').attr('data-id');
             var date = $(this).closest('td').attr('date');
+            //$("#timeIntervalWerteEnergiedatenIMw .txtBoxSrch").NumericOnly();
             
             var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
             var inputBottomPrevNextId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevNextId;
@@ -3932,8 +3938,7 @@ $("#DkFeSpeichern").click(function() {
                      checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                 }  
             }
-           
-            
+
             if($(inputCurrId).val() !='' && typeof($(inputCurrId)) != 'undefined') {
                 //continue..
             }else{
@@ -4162,6 +4167,7 @@ $("#DkFeSpeichern").click(function() {
                              checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                         }  
                     }
+                    $("#masseneingabeSpeichernSrch").prop("disabled", false);
                     return false;
                 }
                 var inputLengthBottom = inputValBottom.length;
@@ -4184,7 +4190,8 @@ $("#DkFeSpeichern").click(function() {
                              //alert('concern 3');
                             intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
-                    }                   
+                    }
+                    //$("#masseneingabeSpeichernSrch").prop("disabled", false);                   
                 }
 
                 
@@ -4216,13 +4223,14 @@ $("#DkFeSpeichern").click(function() {
                             intBdeSearchConcernOrDeletePopUp(inputPrevLastId,inputNextId,inputBottomCurrId,rowMstID);
                         }
                     }
+                    //$("#masseneingabeSpeichernSrch").prop("disabled", false);
                 }
             }
             /*MM_25-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/
              //console.log(e);
                 if($('#intBdeConcernOrDeletePopUp').length==0){
                     $("#masseneingabeSpeichernSrch").prop("disabled",false);
-                    //saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs); 
+                    saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs); 
                 }
             e.stopPropagation();
             
@@ -4434,8 +4442,8 @@ $("#DkFeSpeichern").click(function() {
                                 return false;
                             }
                         }
-                        if(($("#inputLastValDB").val() !='' && $("#inputCurrId").val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($("#inputCurrId").val()) !='undefined')){
-                            if(checkPositiveValue($("#inputCurrId").val())==false || checkPositiveValue($("#inputLastValDB").val())==false){
+                        if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                            if(checkPositiveValue($(inputCurrId).val())==false || checkPositiveValue($("#inputLastValDB").val())==false){
                                 alert('Current value & previous value should be positive!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
@@ -4444,8 +4452,8 @@ $("#DkFeSpeichern").click(function() {
                                 return false;
                             }
                         }
-                        if(($("#inputNextLastValDB").val() !='' && $("#inputCurrId").val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($("#inputCurrId").val()) !='undefined')){
-                            if(checkPositiveValue($("#inputCurrId").val()) ==false || checkPositiveValue($("#inputNextLastValDB").val())==false){
+                        if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                            if(checkPositiveValue($(inputCurrId).val()) ==false || checkPositiveValue($("#inputNextLastValDB").val())==false){
                                 alert('Current value & next value should be positive!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
@@ -4482,6 +4490,7 @@ $("#DkFeSpeichern").click(function() {
                     var valRight = checkPositiveValue(inputValBottom);
                     if((inputBotmMin !='' && inputBotmMax !='') && (typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined')){
                          if (( inputValBottom !='' && typeof(inputValBottom) !='undefined' ) && ((inputValBottom <= Number(inputBotmMax)) && (inputValBottom >= Number(inputBotmMin)))){
+                           $("#masseneingabeSpeichernSrch").prop("disabled", false);
                              return false;
                         }
                     }
@@ -4531,7 +4540,7 @@ $("#DkFeSpeichern").click(function() {
 
             /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/
             if($('#intBdeConcernOrDeletePopUp').length==0){
-             $("#masseneingabeSpeichernSrch").prop("disabled",false);
+                $("#masseneingabeSpeichernSrch").prop("disabled",false);
             }
             e.stopPropagation();
         }); 
@@ -4754,8 +4763,8 @@ $("#DkFeSpeichern").click(function() {
                                 return false;
                             }
                         }
-                        if(($("#inputLastValDB").val() !='' && $("#inputCurrId").val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($("#inputCurrId").val()) !='undefined')){
-                            if(checkPositiveValue($("#inputCurrId").val())==false || checkPositiveValue($("#inputLastValDB").val())==false){
+                        if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                            if(checkPositiveValue($(inputCurrId).val())==false || checkPositiveValue($("#inputLastValDB").val())==false){
                                 alert('Current value & previous value should be positive!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
@@ -4764,8 +4773,8 @@ $("#DkFeSpeichern").click(function() {
                                 return false;
                             }
                         }
-                        if(($("#inputNextLastValDB").val() !='' && $("#inputCurrId").val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($("#inputCurrId").val()) !='undefined')){
-                            if(checkPositiveValue($("#inputCurrId").val()) ==false || checkPositiveValue($("#inputNextLastValDB").val())==false){
+                        if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
+                            if(checkPositiveValue($(inputCurrId).val()) ==false || checkPositiveValue($("#inputNextLastValDB").val())==false){
                                 alert('Current value & next value should be positive!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
@@ -4806,7 +4815,7 @@ $("#DkFeSpeichern").click(function() {
                                          checkAlertRangeMinMaxServerSide(type,rowMstID,date,rowMainIDDs);
                                     }  
                                 }
-                                
+                                $("#masseneingabeSpeichernSrch").prop("disabled", false);
                                 return false;
                             }
                              if((inputBotmMin !='' && inputBotmMax !='') && (typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined')){
@@ -4964,10 +4973,12 @@ $("#DkFeSpeichern").click(function() {
         $("body").addClass('fullWidthMasseneingabe');
         datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
          $("#tblMasseneingabeDataIMw").remove();
+         //interneEBTblShowHide(1);
      });
      $("#btnKonfigMstAnl").click(function() {
         $("body").removeClass('fullWidthMasseneingabe');
         $("#tblMasseneingabeDataIMw").remove();
+        //interneEBTblShowHide(1);
      }); 
 
     $("#masseneingabeSpeichernSrch").click(function() {  
@@ -4975,20 +4986,20 @@ $("#DkFeSpeichern").click(function() {
          var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
          //console.log($("#timeIntervalWerteEnergiedatenIMw").html());
          /*new-mm-start*/
-        if($("#tblMasseneingabeDataIMw").length !=0){
+         if($("#tblMasseneingabeDataIMw").length !=0){
                 //if(showPopupExist==false){
                     $(".save-msg-box").show();
-                    $("#masseneingabeSrchImg").show();  
+                    $("#masseneingabeSrchImg").show(); 
                     setTimeout(function(){
                         //if($("#intBdeConcernOrDeletePopUp").length ==0){
                             var key = $(".infosMasseneingabeInside button.active").attr('data-id');
-                            saveToDBMasseneingabeEingaben(key);
+                             saveToDBMasseneingabeEingaben(key);
                         // }
                     }, 300);
                 //}
-        }else{
-            alert("Please generate inputs first.");
-        }
+            }else{
+                alert("Please generate inputs first.");
+            }
          /*old-comment-start*/
        /*  if (confirm("Do you want to save？")) {
             if($("#tblMasseneingabeDataIMw").length !=0){
@@ -5082,7 +5093,8 @@ $("#DkFeSpeichern").click(function() {
 $(":not(#btnShowRecordsAnlBtn) button , .menu :not(#intBdeIMwMenu) a").click(function() {
     $("#tblAnlOhneZeitintervallIMw_wrapper").hide();
     $("#btnShowRecordsAnlBtn").prop("disabled", false);
-    $('#searchBtnShowRecordsAnlBtn').hide();
+    $('#searchBtnShowRecordsAnlBtnDiv').hide();
+    $('#interneEBTblDiv').hide();
 });
 /*new-mm-end*/
 /*Datatable CheckBox Query*/
@@ -5097,4 +5109,7 @@ $('#searchImgBtnShowRecordsAnlBtn').on('change', function () {
 });
 /*new-mm-end*/
 
-
+/*19-02-2021 radio button check */
+/*$("#interneEBTblDiv input[name='interneEBTbl']").on('change', function () {
+    interneEBTblShowHide(this.value);
+});*/

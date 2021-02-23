@@ -151,80 +151,69 @@ if($modus == "deleteCurrentInput"){
 	  $mstID = $_POST['mstID'];
 	  //$type = $_POST['type'];
 	  $currentDate = $_POST['currentDate'];
-	  if($type==2){
-	    $expDate =explode("-", $currentDate);
-	    $on_week = $expDate[0];   
-	    $on_date = $expDate[1];
-	    $query1 = "DELETE FROM masseneingabeSucheIMw";
-		$query1 .= " WHERE type = '$type'";
-		$query1 .= " AND mst_ID = '$mstID'";
-		$query1 .= " AND on_date = '$on_date' ";
-		$query1 .= " AND on_week = '$on_week'";
-		queryDB($conn, $query1, "write");
+		  if($type==2){
+		    $expDate =explode("-", $currentDate);
+		    $on_week = $expDate[0];   
+		    $on_date = $expDate[1];
+		    $query1 = "DELETE FROM masseneingabeSucheIMw";
+			$query1 .= " WHERE type = '$type'";
+			$query1 .= " AND mst_ID = '$mstID'";
+			$query1 .= " AND on_date = '$on_date' ";
+			$query1 .= " AND on_week = '$on_week'";
+			queryDB($conn, $query1, "write");
 
-		$query2 = "DELETE FROM masseneingabeSucheErgebnisIMw";
-		$query2 .= " WHERE type = '$type'";
-		$query2 .= " AND mst_ID = '$mstID'";
-		$query2 .= " AND on_date = '$on_date' ";
-		$query2 .= " AND on_week = '$on_week'";
-		queryDB($conn, $query2, "write");
+			$query2 = "DELETE FROM masseneingabeSucheErgebnisIMw";
+			$query2 .= " WHERE type = '$type'";
+			$query2 .= " AND mst_ID = '$mstID'";
+			$query2 .= " AND on_date = '$on_date' ";
+			$query2 .= " AND on_week = '$on_week'";
+			queryDB($conn, $query2, "write");
 
-	    $currentDateJustNext ="SELECT TOP 1 * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date >= '$on_date' AND on_week > '$on_week' AND type = '$type' ORDER BY on_week ASC";
-	    $currentDateJustPrev ="SELECT TOP 1 * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date <= '$on_date'  AND on_week < '$on_week' AND type = '$type' ORDER BY on_week DESC";
-		/*echo '<pre>';print_r(queryDB($conn, $currentDateJustNext, "read"));
-		echo '<pre>';print_r(queryDB($conn, $currentDateJustPrev, "read"));
-		die;*/
-		$r1 = queryDB($conn, $currentDateJustNext, "read");
-		$r2 = queryDB($conn, $currentDateJustPrev, "read");
-		//echo '<pre>';print_r($r1);echo '<pre>';print_r($r2);die;
-		$resultNxtVal = $r1[0]['val']-$r2[0]['val'];
-		$onDateNext = $r1[0]['on_date'];
-		//$onDatePrev = $r2[0]['on_date'];
-		$onWeekNext = $r1[0]['on_week'];
-		//$onWeekPrev = $r2[0]['on_week'];
-		//echo $r1[0]['val'];echo $r2[0]['val'];
-		//echo '<pre>';print_r($resultNxtVal);
-		$queryNxtValUpdate = "UPDATE masseneingabeSucheErgebnisIMw SET val = '$resultNxtVal' ";
-		$queryNxtValUpdate .= "WHERE mst_ID = '$mstID' ";
-		$queryNxtValUpdate .= "AND on_date = '$onDateNext' ";
-		$queryNxtValUpdate .= "AND on_week = '$onWeekNext' ";
-		$queryNxtValUpdate .= "AND type = '$type'";
-		//echo $queryNxtValUpdate;die;
-		queryDB($conn, $queryNxtValUpdate, "write");
-
+		    $currentDateJustNext ="SELECT TOP 1 * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date >= '$on_date' AND on_week > '$on_week' AND type = '$type' ORDER BY on_week ASC";
+		    $currentDateJustPrev ="SELECT TOP 1 * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date <= '$on_date'  AND on_week < '$on_week' AND type = '$type' ORDER BY on_week DESC";
+			$r1 = queryDB($conn, $currentDateJustNext, "read");
+			$r2 = queryDB($conn, $currentDateJustPrev, "read");
+			//echo '<pre>';print_r($r1);echo '<pre>';print_r($r2);die;
+			if((isset($r1) && !empty($r1)) && (isset($r2) && !empty($r2))){
+				$resultNxtVal = $r1[0]['val']-$r2[0]['val'];
+				$onDateNext = $r1[0]['on_date'];
+				$onWeekNext = $r1[0]['on_week'];
+				$queryNxtValUpdate = "UPDATE masseneingabeSucheErgebnisIMw SET val = '$resultNxtVal' ";
+				$queryNxtValUpdate .= "WHERE mst_ID = '$mstID' ";
+				$queryNxtValUpdate .= "AND on_date = '$onDateNext' ";
+				$queryNxtValUpdate .= "AND on_week = '$onWeekNext' ";
+				$queryNxtValUpdate .= "AND type = '$type'";
+				//echo $queryNxtValUpdate;die;
+				queryDB($conn, $queryNxtValUpdate, "write");
+		    }
 	   }else{
+			$query1 = "DELETE FROM masseneingabeSucheIMw";
+			$query1 .= " WHERE type = '$type'";
+			$query1 .= " AND mst_ID = '$mstID'";
+			$query1 .= " AND on_date = '$currentDate'";
+			queryDB($conn, $query1, "write");
 
-		$query1 = "DELETE FROM masseneingabeSucheIMw";
-		$query1 .= " WHERE type = '$type'";
-		$query1 .= " AND mst_ID = '$mstID'";
-		$query1 .= " AND on_date = '$currentDate'";
-		queryDB($conn, $query1, "write");
+			$query2 = "DELETE FROM masseneingabeSucheErgebnisIMw";
+			$query2 .= " WHERE type = '$type'";
+			$query2 .= " AND mst_ID = '$mstID'";
+			$query2 .= " AND on_date = '$currentDate'";
+			queryDB($conn, $query2, "write");
 
-		$query2 = "DELETE FROM masseneingabeSucheErgebnisIMw";
-		$query2 .= " WHERE type = '$type'";
-		$query2 .= " AND mst_ID = '$mstID'";
-		$query2 .= " AND on_date = '$currentDate'";
-		queryDB($conn, $query2, "write");
-
-		$currentDateJustNext ="SELECT TOP 1 * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date > '$currentDate' AND type = '$type' ORDER BY on_date ASC";
-		$currentDateJustPrev ="SELECT TOP 1 * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date < '$currentDate' AND type = '$type' ORDER BY on_date DESC";
-		/*echo '<pre>';print_r(queryDB($conn, $currentDateJustNext, "read"));
-		echo '<pre>';print_r(queryDB($conn, $currentDateJustPrev, "read"));*/
-		$r1 = queryDB($conn, $currentDateJustNext, "read");
-		$r2 = queryDB($conn, $currentDateJustPrev, "read");
-		$resultNxtVal = $r1[0]['val']-$r2[0]['val'];
-		$onDateNext = $r1[0]['on_date'];
-		//$onDatePrev = $r2[0]['on_date'];
-		//echo $r1[0]['val'];echo $r2[0]['val'];
-		//echo '<pre>';print_r($resultNxtVal);
-		$queryNxtValUpdate = "UPDATE masseneingabeSucheErgebnisIMw SET val = '$resultNxtVal' ";
-		$queryNxtValUpdate .= "WHERE mst_ID = '$mstID' ";
-		$queryNxtValUpdate .= "AND on_date = '$onDateNext' ";
-		$queryNxtValUpdate .= "AND type = '$type'";
-		//echo $queryNxtValUpdate;
-		queryDB($conn, $queryNxtValUpdate, "write");
+			$currentDateJustNext ="SELECT TOP 1 * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date > '$currentDate' AND type = '$type' ORDER BY on_date ASC";
+			$currentDateJustPrev ="SELECT TOP 1 * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date < '$currentDate' AND type = '$type' ORDER BY on_date DESC";
+			$r1 = queryDB($conn, $currentDateJustNext, "read");
+			$r2 = queryDB($conn, $currentDateJustPrev, "read");
+			if((isset($r1) && !empty($r1)) && (isset($r2) && !empty($r2))){
+				$resultNxtVal = $r1[0]['val']-$r2[0]['val'];
+				$onDateNext = $r1[0]['on_date'];
+				$queryNxtValUpdate = "UPDATE masseneingabeSucheErgebnisIMw SET val = '$resultNxtVal' ";
+				$queryNxtValUpdate .= "WHERE mst_ID = '$mstID' ";
+				$queryNxtValUpdate .= "AND on_date = '$onDateNext' ";
+				$queryNxtValUpdate .= "AND type = '$type'";
+				queryDB($conn, $queryNxtValUpdate, "write");
+			}
 	    }
-
+	    echo 1;
 	}
 
 }

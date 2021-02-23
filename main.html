@@ -478,7 +478,7 @@
                       <!--24-02-2020 create calculator tab button html, 18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren" -->
                           <button id="tabTaschenrechner" style="">statische Korrekturfaktoren</button>
                       <!--24-02-2020 create calculator tab button html,18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren" -->
-                      <!--<button id="tabHzk">Heizkurve</button>				-->
+                      <!--<button id="tabHzk">Heizkurve</button>                -->
 
                       <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
                           <button id="tabDynamicKorrekturFktr" style="">dynamische Korrekturfaktoren</button>
@@ -3347,7 +3347,7 @@
                         <label for="energieform2AllgemeinAnl">Energieform</label>
                         <input list="energieform2AllgemeinAnlList" id="energieform2AllgemeinAnl" >
                         <datalist id="energieform2AllgemeinAnlList" class="energieformenLieg">
-			            </select>
+                        </select>
                     </div>
                     <div class="controlDiv">
                         <label for="einheit2Anl">Einheit</label>
@@ -6845,13 +6845,23 @@
                     <h3>Kein Zeitintervall zugewiesen</h3> 
                     <div class="btnShowRecordsAnl">
                         <button id="btnShowRecordsAnlBtn">Show Anlage Data</button>
-                     </div>
+                    </div>
                     <!-- new-mm-start -->
-                    <select id="searchBtnShowRecordsAnlBtn" name="searchBtnShowRecordsAnlBtn" style="display: none;">
-                    <option value="1" selected >All</option>
-                    <option value="2">Completed</option>
-                    <option value="3">Not Completed</option>
-                    </select>
+                    <div id="interneEBTblDiv">
+                       Select Listing
+                      <input type="radio" id="interneEnergiedatenTbl" name="interneEBTbl" value="1" checked>
+                      <label for="interneEnergiedatenTbl">Interne Energiedaten</label>
+                      <input type="radio" id="interneBetriebsdatenTbl" name="interneEBTbl" value="2">
+                      <label for="interneBetriebsdatenTbl">Interne Betriebsdaten</label>
+                    </div>
+                    <div id="searchBtnShowRecordsAnlBtnDiv">
+                        <label>Filter</label>
+                        <select id="searchBtnShowRecordsAnlBtn" name="searchBtnShowRecordsAnlBtn">
+                            <option value="1" selected >Alle Einträge</option>
+                            <option value="2">Zugeordnete Anlagen</option>
+                            <option value="3">nicht zu. Anlagen</option>
+                        </select>
+                    </div>
                     <!-- new-mm-end -->
                     <table id="tblAnlOhneZeitintervallIMw" class="stripe hover row-border compact dt-left custom">
                         <thead>
@@ -6869,13 +6879,26 @@
                         </thead>
                         <tbody></tbody>
                     </table>
+                    <table id="tblMstOhneZeitintervallIMwIE" class="stripe hover row-border compact dt-left custom" >
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>mst_ID</th>
+                                <th>Messstelle</th>
+                                <th>Energieträger</th>
+                                <th>Anlage</th>
+                                <th>Ort</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                     <!-- tblAnlOhneZeitintervallIMwSearchContainer modal view choosing from the search functionality Date - 18-09-2020-->
                     <div id="tblAnlOhneZeitintervallIMwSearchContainer" style="display:none;">
                     <!-- new-mm-start -->
                     <select id="searchImgBtnShowRecordsAnlBtn" name="searchImgBtnShowRecordsAnlBtn" style="display: none;">
-                    <option value="1" selected >All</option>
-                    <option value="2">Completed</option>
-                    <option value="3">Not Completed</option>
+                        <option value="1" selected >Alle Einträge</option>
+                        <option value="2">Zugeordnete Anlagen</option>
+                        <option value="3">nicht zu. Anlagen</option>
                     </select>
                     <!-- new-mm-end -->
                         <table id="tblAnlOhneZeitintervallIMwSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;margin-right:10px;padding-top:20px;">
@@ -6944,7 +6967,8 @@
                         <button id="btnKonfigMstAnl">Konfiguration</button>
                         <br>
                         <br>
-                        <button id="masseneingabeSpeichernSrch">Eingaben speichern</button><img id="masseneingabeSrchImg" src="images/waiting.gif">
+                        <button id="masseneingabeSpeichernSrch">Eingaben speichern</button>
+                        <img id="masseneingabeSrchImg" src="images/waiting.gif" style='display: none;' />
                         <span class='save-msg-box' style='width: 200px;display: none;'></span>
                         <div class="infosMasseneingabeInside">
                             <br>
@@ -9428,7 +9452,7 @@
                 <script type="text/javascript" src="dist/js/objects.min.js"></script>
                 <script type="text/javascript" src="src/js/functions.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
-        		<script src="dist/js/pace.min.js" type="text/javascript"></script>
+                <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>
          </div>
       </div>

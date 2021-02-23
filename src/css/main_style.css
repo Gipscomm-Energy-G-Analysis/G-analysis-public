@@ -1402,6 +1402,16 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
 #masseneingabeSrchImg{
   height: 20px;
   width: 20px;
-  display: none;
+ /* display: none;*/
   margin: 0px 10px 0px 5px;
+}
+/*19-02-2021*/
+#interneEBTblDiv{
+    padding: 10px 0px 17px 6px;
+    font-size: 14px;
+    background: #a1a7ad;
+    margin: 56px 0px 22px 0px
+}
+#searchBtnShowRecordsAnlBtnDiv{
+  margin-left: 8px;
 }
