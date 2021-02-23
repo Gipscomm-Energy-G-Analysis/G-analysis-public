@@ -145,14 +145,12 @@ const disableBtn =
         return `Speichert... ->${idBtn}`
     }
 
-
 const enableBtn =
     idBtn => {
         $(idBtn).prop("disabled","")
         $(idBtn).text("Speichern")
         return `Speichern ->${idBtn}`
     }
-
 
 try {
     var dateTime = function(a) {
@@ -8462,8 +8460,8 @@ try {
                 "none"), "spaEfVTab1Menu" == a || "spaEfVTab2Menu" == a ? ($("#berichte, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2").css("display", "block"), "spaEfVTab1Menu" == a ? (tabControlNav("tabSpaEfV_Tbl1"), $("#verwaltung").val("ausw")) : "spaEfVTab2Menu" == a && (tabControlNav("tabSpaEfV_Tbl2"), $("#verwaltung").val("ausw"))) : $("#berichte, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2").css("display", "none")) : $("#tabsAuswertungen, #auswertungen").css("display", "none");
             "betrGrpMenu" == a || "manGrpMenu" == a || "sAdmMenu" == a || "admMenu" == a || "benMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
                 "none"), $("#tabsRechteverwaltung, #rechteverwaltung, #stammdaten").css("display", "block"), "betrGrpMenu" == a ? tabControlNav("tabBetrGrp") : "manGrpMenu" == a ? tabControlNav("tabManGrp") : "sAdmMenu" == a ? tabControlNav("tabSAdm") : "admMenu" == a ? tabControlNav("tabAdm") : "benMenu" == a && tabControlNav("tabBen")) : $("#tabsRechteverwaltung, #rechteverwaltung").css("display", "none");
-            "untMenu" == a || "manMenu" == a || "orgMenu" == a || "liegMenu" == a || "berMenu" == a || "stdMenu" == a || "stdDrMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
-                "none"), $("#tabsUnternehmensstruktur, #unternehmensstruktur, #stammdaten").css("display", "block"), "untMenu" == a || "manMenu" == a ? tabControlNav("tabMan") : "orgMenu" == a ? tabControlNav("tabOrg") : "liegMenu" == a ? tabControlNav("tabLieg") : "berMenu" == a ? (energietrInDBoxBer(), tabControlNav("tabBer")) : "stdMenu" == a ? tabControlNav("tabStd") : "stdDrMenu" == a && tabControlNav("tabStdDr")) : $("#tabsUnternehmensstruktur, #unternehmensstruktur").css("display", "none");
+            "untMenu" == a || "manMenu" == a || "orgMenu" == a || "liegMenu" == a || "berMenu" == a || "mstEMenu" == a || "mstBMenu" == a || "stdMenu" == a || "stdDrMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
+                "none"), $("#tabsUnternehmensstruktur, #unternehmensstruktur, #stammdaten").css("display", "block"), "untMenu" == a || "manMenu" == a ? tabControlNav("tabMan") : "orgMenu" == a ? tabControlNav("tabOrg") : "liegMenu" == a ? tabControlNav("tabLieg") : "berMenu" == a ? (energietrInDBoxBer(), tabControlNav("tabBer")) : "mstEMenu" == a ? tabControlNav("tabMstE") : "mstBMenu" == a ? tabControlNav("tabMstB") : "stdMenu" == a ? tabControlNav("tabStd") : "stdDrMenu" == a && tabControlNav("tabStdDr")) : $("#tabsUnternehmensstruktur, #unternehmensstruktur").css("display", "none");
             if ("anlMenu" == a || "anl_Eng_Menu" == a || "anl_Dok_Menu" == a || "anl_Hist_Menu" ==
                 a || "anl_Konfig_Menu" == a || "anl_Menu" == a) {
                 $("#tabsAnlagenverwaltung, #anlagenverwaltung, #stammdaten").css("display", "block");
