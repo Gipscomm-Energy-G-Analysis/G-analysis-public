@@ -478,7 +478,7 @@
                       <!--24-02-2020 create calculator tab button html, 18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren" -->
                           <button id="tabTaschenrechner" style="">statische Korrekturfaktoren</button>
                       <!--24-02-2020 create calculator tab button html,18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren" -->
-                      <!--<button id="tabHzk">Heizkurve</button>                -->
+                      <!--<button id="tabHzk">Heizkurve</button>				-->
 
                       <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
                           <button id="tabDynamicKorrekturFktr" style="">dynamische Korrekturfaktoren</button>
@@ -3347,7 +3347,7 @@
                         <label for="energieform2AllgemeinAnl">Energieform</label>
                         <input list="energieform2AllgemeinAnlList" id="energieform2AllgemeinAnl" >
                         <datalist id="energieform2AllgemeinAnlList" class="energieformenLieg">
-                        </select>
+			            </select>
                     </div>
                     <div class="controlDiv">
                         <label for="einheit2Anl">Einheit</label>
@@ -4247,7 +4247,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="infosBlock">
+                <div class="infosBlock produktionsAnlagenSec">
                     <div class="sectionHeader">
                         <label>Produktionsanlagen</label>
                     </div>
@@ -4256,16 +4256,28 @@
                             <label for="inpAnlage1Prd"><img id="imgBtnAnlage1Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 1</label>
                             <input id="inpAnlage1Prd" readonly/>
                             <input id="inpAnlage1IDPrd" style="display:none;"/>
+                            <select id="messartMstInpAnlage1Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                         <div class="controlDiv">
                             <label for="inpAnlage2Prd"><img id="imgBtnAnlage2Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 2</label>
                             <input id="inpAnlage2Prd" readonly/>
                             <input id="inpAnlage2IDPrd" style="display:none;"/>
+                             <select id="messartMstInpAnlage2Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                         <div class="controlDiv">
                             <label for="inpAnlage3Prd"><img id="imgBtnAnlage3Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 3</label>
                             <input id="inpAnlage3Prd" readonly/>
                             <input id="inpAnlage3IDPrd" style="display:none;"/>
+                             <select id="messartMstInpAnlage3Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                     </div>
                     <div id="divAnlPrd2" style="display:none;">
@@ -4273,16 +4285,28 @@
                             <label for="inpAnlage4Prd"><img id="imgBtnAnlage4Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 4</label>
                             <input id="inpAnlage4Prd" readonly/>
                             <input id="inpAnlage4IDPrd" style="display:none;"/>
+                            <select id="messartMstInpAnlage4Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                         <div class="controlDiv">
                             <label for="inpAnlage5Prd"><img id="imgBtnAnlage5Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 5</label>
                             <input id="inpAnlage5Prd" readonly/>
                             <input id="inpAnlage5IDPrd" style="display:none;"/>
+                             <select id="messartMstInpAnlage5Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                         <div class="controlDiv">
                             <label for="inpAnlage6Prd"><img id="imgBtnAnlage6Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 6</label>
                             <input id="inpAnlage6Prd" readonly/>
                             <input id="inpAnlage6IDPrd" style="display:none;"/>
+                             <select id="messartMstInpAnlage6Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                     </div>
                     <div id="divAnlPrd3" style="display:none;">
@@ -4290,16 +4314,28 @@
                             <label for="inpAnlage7Prd"><img id="imgBtnAnlage7Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 7</label>
                             <input id="inpAnlage7Prd" readonly/>
                             <input id="inpAnlage7IDPrd" style="display:none;"/>
+                             <select id="messartMstInpAnlage7Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                         <div class="controlDiv">
                             <label for="inpAnlage8Prd"><img id="imgBtnAnlage8Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 8</label>
                             <input id="inpAnlage8Prd" readonly/>
                             <input id="inpAnlage8IDPrd" style="display:none;"/>
+                             <select id="messartMstInpAnlage8Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                         <div class="controlDiv">
                             <label for="inpAnlage9Prd"><img id="imgBtnAnlage9Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 9</label>
                             <input id="inpAnlage9Prd" readonly/>
                             <input id="inpAnlage9IDPrd" style="display:none;"/>
+                             <select id="messartMstInpAnlage9Prd">
+                                <option value="manuel">Manuel </option>
+                                <option value="automatik" selected>Automatik</option>
+                            </select>
                         </div>
                     </div>
                     <button id="btnPlusAnlsPrd">zusätzliche Anlagen</button>
@@ -6847,13 +6883,13 @@
                         <button id="btnShowRecordsAnlBtn">Show Anlage Data</button>
                     </div>
                     <!-- new-mm-start -->
-                    <div id="interneEBTblDiv">
+                    <!-- <div id="interneEBTblDiv">
                        Select Listing
                       <input type="radio" id="interneEnergiedatenTbl" name="interneEBTbl" value="1" checked>
                       <label for="interneEnergiedatenTbl">Interne Energiedaten</label>
                       <input type="radio" id="interneBetriebsdatenTbl" name="interneEBTbl" value="2">
                       <label for="interneBetriebsdatenTbl">Interne Betriebsdaten</label>
-                    </div>
+                    </div> -->
                     <div id="searchBtnShowRecordsAnlBtnDiv">
                         <label>Filter</label>
                         <select id="searchBtnShowRecordsAnlBtn" name="searchBtnShowRecordsAnlBtn">
@@ -9452,7 +9488,7 @@
                 <script type="text/javascript" src="dist/js/objects.min.js"></script>
                 <script type="text/javascript" src="src/js/functions.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
-                <script src="dist/js/pace.min.js" type="text/javascript"></script>
+        		<script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>
          </div>
       </div>
