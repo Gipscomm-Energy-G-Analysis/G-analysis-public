@@ -2564,55 +2564,66 @@
                   </div>
                   <div id="infosMessstellenEng">
                      <div class="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="mstLoeschen" title="Messstelle löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="mstSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="mstHinz" title="Neue Messstelle erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="mstSuchen" title="Messstelle suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="mstLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="mstNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="mstPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="mstFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" /> </div>
+                        <div class="navDropBox" style="height:20px;padding:3px;">
+                            <img id="mstELoeschen" title="Messstelle löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
+                            <img id="mstESpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img id="mstEHinz" title="Neue Messstelle erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
+                            <img id="mstESuchen" title="Messstelle suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
+                            <img id="mstELast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Messstelle" src="images/last.png" alt="letzte" />
+                            <img id="mstENext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Messstelle" src="images/next.png" alt="nächste" />
+                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
+                            <img id="mstEPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Messstelle" src="images/previous.png" alt="vorherige" />
+                            <img id="mstEFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Messstelle" src="images/first.png" alt="erste" />
+                        </div>
                         <div class="sectionHeader">
                            <label>Definition der Messpunkte/Messstellen</label>
                         </div>
                         <div class="controlDiv">
                            <label>Name</label>
-                           <input id="nameMst" />
+                           <input id="nameMstE" />
                         </div>
                         <div class="controlDiv">
                            <label>Kürzel</label>
-                           <input id="kurzbezeichnungMst" />
+                           <input id="kurzbezeichnungMstE" />
                         </div>
                         <div class="controlDiv">
                            <label>Aktiv</label>
-                           <input id="aktivMst" type="checkbox" />
+                           <input id="aktivMstE" type="checkbox" />
                         </div>
                         <div class="controlDiv">
                            <label>Durchleitung</label>
-                           <input id="istDlMst" type="checkbox" />
+                           <input id="istDlMstE" type="checkbox" />
                         </div>
                         <div class="controlDiv">
-                           <label>Durchleitung an 3.<img id="ortSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <input id="dlAnMst" readonly/>
+                           <label>Durchleitung an 3.<img id="ortSuchenMst" title="Durchleitung suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="dlAnMstE" readonly/>
                         </div>
                         <div class="controlDiv">
                            <label>Energieträger</label>
-                           <select id="energietraegerMst" class="energietraegerLieg"></select>
+                           <select id="energietraegerMstE" class="energietraegerLieg"></select>
                         </div>
                         <div class="controlDiv">
                            <label>Interne Energieform</label>
-                           <select id="energieformMst" class="energieformenLieg"></select>
+                           <select id="energieformMstE" class="energieformenLieg"></select>
                         </div>
                         <div class="controlDiv">
-                           <label>Ort<img id="ortSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <input id="ortMst" readonly/>
+                           <label>Ort<img id="ortSuchenMstE" title="Ort suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="ortMstE" readonly/>
                         </div>
                         <div class="controlDiv">
                            <label>Kostenstelle</label>
-                           <input id="kostenstelleMst" />
+                           <input id="kostenstelleMstE" />
                         </div>
                         <div class="controlDiv">
                            <label>Vorgelagerte
-                           <br /> Messstelle<img id="mstSuchenVMessstelle" title="Messstelle suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <input id="vorgelagerteMst" readonly/>
+                           <br /> Messstelle<img id="mstSuchenVMessstelleE" title="Messstelle suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="vorgelagerteMstE" readonly/>
                         </div>
                         <div class="controlDiv">
                            <label>
                            <br />Messart</label>
-                           <select id="messartMst" class="messartMstSel">
+                           <select id="messartMstE" class="messartMstSel">
                               <option value="automatisch">automatisch eingelesen</option>
                               <option value="manuell">manuell eingegeben</option>
                               <option value="berechnet">berechnet</option>
@@ -2620,83 +2631,91 @@
                         </div>
                         <div class="controlDiv">
                            <label>
-                           <br />Anlage<img id="mstSuchenAnlage" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <input id="anlMst" readonly/>
-                           <input id="anlIDMst" style="display:none;" />
+                           <br />Anlage<img id="mstSuchenAnlageE" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="anlMstE" readonly/>
+                           <input id="anlIDMstE" style="display:none;" />
                         </div>
-                        <!--16-03-2020 Update the html- comment the img tag-->
                         <div class="controlDiv" style="width: 550px;">
-                           <label id="labelMessmittelMst" style="display:inline-block;">physikalisches
-                           <br /> Messmittel<img id="msmSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <label id="labelBerechnungslogikMst" style="display:none;">
+                           <label id="labelMessmittelMstE" style="display:inline-block;">physikalisches
+                           <br /> Messmittel<img id="msmSuchenMstE" title="Messmittel suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <label id="labelBerechnungslogikMstE" style="display:none;">
                               <br />Berechnungslogik
-                              <!-- <img id="msmSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;display: none;" /> -->
                            </label>
-                           <input id="messmittelBerechnungslogikMst" readonly/>
-                           <input id="messmittelIDMst" style="display:none;" />
-                           <input id="berechnungslogikMst" style="display:none;width:540px;" readonly/>
+                           <input id="messmittelBerechnungslogikMstE" readonly/>
+                           <input id="messmittelIDMstE" style="display:none;" />
+                           <input id="berechnungslogikMstE" style="display:none;width:540px;" readonly/>
                         </div>
-                        <!--16-03-2020 Update the html- comment the img tag-->
                         <button id="linkBerechnungslogikOderEingabemaske" style="margin-top: 0;">Berechnungslogik anlegen</button>
                         <div>
                            <div class="controlDiv" style="width:21.80cm;">
                               <label>Notiz</label>
-                              <textarea rows="3" id="notizAllgemeinMst" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                              <textarea rows="3" id="notizAllgemeinMstE" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
                            </div>
                         </div>
                      </div>
                   </div>
                   <div id="infosMessstellenBetr">
                      <div class="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="mstLoeschen" title="Messstelle löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="mstSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="mstHinz" title="Neue Messstelle erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="mstSuchen" title="Messstelle suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="mstLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="mstNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="mstPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="mstFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" /> </div>
+                        <div class="navDropBox" style="height:20px;padding:3px;">
+                            <img id="mstBLoeschen" title="Messstelle löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
+                            <img id="mstBSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img id="mstBHinz" title="Neue Messstelle erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
+                            <img id="mstBSuchen" title="Messstelle suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
+                            <img id="mstBLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Messstelle" src="images/last.png" alt="letzte" />
+                            <img id="mstBNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Messstelle" src="images/next.png" alt="nächste" />
+                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
+                            <img id="mstBPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Messstelle" src="images/previous.png" alt="vorherige" />
+                            <img id="mstBFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Messstelle" src="images/first.png" alt="erste" />
+                        </div>
                         <div class="sectionHeader">
                            <label>Definition der Messpunkte/Messstellen</label>
                         </div>
                         <div class="controlDiv">
                            <label>Name</label>
-                           <input id="nameMst" />
+                           <input id="nameMstB" />
                         </div>
                         <div class="controlDiv">
                            <label>Kürzel</label>
-                           <input id="kurzbezeichnungMst" />
+                           <input id="kurzbezeichnungMstB" />
                         </div>
                         <div class="controlDiv">
                            <label>Aktiv</label>
-                           <input id="aktivMst" type="checkbox" />
+                           <input id="aktivMstB" type="checkbox" />
                         </div>
                         <div class="controlDiv">
                            <label>Durchleitung</label>
-                           <input id="istDlMst" type="checkbox" />
+                           <input id="istDlMstB" type="checkbox" />
                         </div>
                         <div class="controlDiv">
-                           <label>Durchleitung an 3.<img id="ortSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <input id="dlAnMst" readonly/>
+                           <label>Durchleitung an 3.<img id="ortSuchenMst" title="Durchleitung suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="dlAnMstB" readonly/>
                         </div>
                         <div class="controlDiv">
-                           <label>Energieträger</label>
-                           <select id="energietraegerMst" class="energietraegerLieg"></select>
+                           <label>Beschreibung</label>
+                           <select id="beschreibungMstB">
+                               <option>Betriebsstunden</option>
+                               <option>Wasser</option>
+                               <option>Stückzahl</option>
+                           </select>
                         </div>
                         <div class="controlDiv">
-                           <label>Interne Energieform</label>
-                           <select id="energieformMst" class="energieformenLieg"></select>
-                        </div>
-                        <div class="controlDiv">
-                           <label>Ort<img id="ortSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <input id="ortMst" readonly/>
+                           <label>Ort<img id="ortSuchenMstB" title="Ort suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="ortMstB" readonly/>
                         </div>
                         <div class="controlDiv">
                            <label>Kostenstelle</label>
-                           <input id="kostenstelleMst" />
+                           <input id="kostenstelleMstB" />
                         </div>
                         <div class="controlDiv">
                            <label>Vorgelagerte
-                           <br /> Messstelle<img id="mstSuchenVMessstelle" title="Messstelle suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <input id="vorgelagerteMst" readonly/>
+                           <br /> Messstelle<img id="mstSuchenVMessstelleB" title="Messstelle suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="vorgelagerteMstB" readonly/>
                         </div>
                         <div class="controlDiv">
                            <label>
                            <br />Messart</label>
-                           <select id="messartMst" class="messartMstSel">
+                           <select id="messartMstB" class="messartMstSel">
                               <option value="automatisch">automatisch eingelesen</option>
                               <option value="manuell">manuell eingegeben</option>
                               <option value="berechnet">berechnet</option>
@@ -2704,28 +2723,28 @@
                         </div>
                         <div class="controlDiv">
                            <label>
-                           <br />Anlage<img id="mstSuchenAnlage" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <input id="anlMst" readonly/>
-                           <input id="anlIDMst" style="display:none;" />
+                           <br />Anlage<img id="mstSuchenAnlageB" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="anlMstB" readonly/>
+                           <input id="anlIDMstB" style="display:none;" />
                         </div>
                         <!--16-03-2020 Update the html- comment the img tag-->
                         <div class="controlDiv" style="width: 550px;">
-                           <label id="labelMessmittelMst" style="display:inline-block;">physikalisches
-                           <br /> Messmittel<img id="msmSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
-                           <label id="labelBerechnungslogikMst" style="display:none;">
+                           <label id="labelMessmittelMstB" style="display:inline-block;">physikalisches
+                           <br /> Messmittel<img id="msmSuchenMstB" title="Messmittel suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <label id="labelBerechnungslogikMstB" style="display:none;">
                               <br />Berechnungslogik
                               <!-- <img id="msmSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;display: none;" /> -->
                            </label>
-                           <input id="messmittelBerechnungslogikMst" readonly/>
-                           <input id="messmittelIDMst" style="display:none;" />
-                           <input id="berechnungslogikMst" style="display:none;width:540px;" readonly/>
+                           <input id="messmittelBerechnungslogikMstB" readonly/>
+                           <input id="messmittelIDMstB" style="display:none;" />
+                           <input id="berechnungslogikMstB" style="display:none;width:540px;" readonly/>
                         </div>
                         <!--16-03-2020 Update the html- comment the img tag-->
                         <button id="linkBerechnungslogikOderEingabemaske" style="margin-top: 0;">Berechnungslogik anlegen</button>
                         <div>
                            <div class="controlDiv" style="width:21.80cm;">
                               <label>Notiz</label>
-                              <textarea rows="3" id="notizAllgemeinMst" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                              <textarea rows="3" id="notizAllgemeinMstB" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
                            </div>
                         </div>
                      </div>

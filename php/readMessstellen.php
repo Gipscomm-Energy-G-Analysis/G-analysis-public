@@ -9,9 +9,11 @@ $nameDB = $_POST[ 'nameDB' ] ;
 $conn = connectToDB( $nameDB ) ;
 
 $berID = $_POST[ 'berID' ] ;
+$type = $_POST[ 'type' ] ;
 
 $query1  = "SELECT * FROM messstellen " ;
 $query1 .= "WHERE ber_ID = $berID " ;
+$query1 .= "AND typ = '$type' " ;
 $query1 .= "AND deleted <> 'true' " ;
 
 $records1 = queryDB( $conn, $query1, "read" ) ;

@@ -5109,47 +5109,70 @@ try {
                         }
                     });
                     break;
-                case "mst":
-                    $.ajax({
-                        type: "POST",
-                        async: !1,
-                        url: "php/readMessstellen.php",
-                        data: {
-                            berID: $("#berID").val(),
-                            nameDB: $("#nameDB").val()
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            var c = $.parseJSON(a);
+                case "mstE":
+                    berID = $("#berID").val()
+                    nameDB = $("#nameDB").val()
+                    type = "energiedaten"
 
-                            toggleMsmBerechnungslogik(c[b].messartMst)
+                    ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
+                    .then(result => {
+                        toggleMsmBerechnungslogik(result[b].messartMst)
 
-                            $("#mstCount").val(c.length);
-                            0 < c.length ? ($("#aktivMst").prop("checked", c[b].aktivMst), $("#istDlMst").prop("checked", c[b].isDurchleitung),
-                                    [
-                                        ["#mstID", "mst_ID"],
-                                        ["#nameMst", "nameMSt"],
-                                        ["#kurzbezeichnungMst", "kurzbezeichnungMst"],
-                                        ["#kostenstelleMst", "kostenstelleMst"],
-                                        ["#energietraegerMst", "energietraegerMst"],
-                                        ["#energieformMst", "energieformMst"],
-                                        ["#ortMst", "ortMst"],
-                                        ["#messartMst", "messartMst"],
-                                        ["#vorgelagerteMst", "vorgelagerteMessstelleMst"],
-                                        ["#anlMst", "anl"],
-                                        ["#anlIDMst", "anl_ID"],
-                                        ["#messmittelBerechnungslogikMst", "msm"],
-                                        ["#berechnungslogikMst", "messmittelBerechnungslogikMstNormal"],
-                                        ["#messmittelIDMst", "msm_ID"],
-                                        ["#notizAllgemeinMst", "notizMst"]
-                                    ].forEach(function(a) {
-                                        $(a[0]).val(c[b][a[1]])
-                                    })) :
-                                clearFields("mstHinz")
-                        }
-                    });
+                        $("#mstCount").val(result.length);
+                        0 < result.length ? ($("#aktivMst").prop("checked", result[b].aktivMst), $("#istDlMst").prop("checked", result[b].isDurchleitung),
+                                [
+                                    ["#mstID", "mst_ID"],
+                                    ["#nameMstE", "nameMSt"],
+                                    ["#kurzbezeichnungMstE", "kurzbezeichnungMst"],
+                                    ["#kostenstelleMstE", "kostenstelleMst"],
+                                    ["#energietraegerMstE", "energietraegerMst"],
+                                    ["#energieformMstE", "energieformMst"],
+                                    ["#ortMstE", "ortMst"],
+                                    ["#messartMstE", "messartMst"],
+                                    ["#vorgelagerteMstE", "vorgelagerteMessstelleMst"],
+                                    ["#anlMstE", "anl"],
+                                    ["#anlIDMstE", "anl_ID"],
+                                    ["#messmittelBerechnungslogikMstE", "msm"],
+                                    ["#berechnungslogikMstE", "messmittelBerechnungslogikMstNormal"],
+                                    ["#messmittelIDMstE", "msm_ID"],
+                                    ["#notizAllgemeinMstE", "notizMst"]
+                                ].forEach(function(a) {
+                                    $(a[0]).val(result[b][a[1]])
+                                })) :
+                            clearFields("mstHinz")
+                    })
+                    break;
+                case "mstB":
+                    berID = $("#berID").val()
+                    nameDB = $("#nameDB").val()
+                    type = "betriebsdaten"
+
+                    ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
+                    .then(result => {
+                        toggleMsmBerechnungslogik(result[b].messartMst)
+
+                        $("#mstCount").val(result.length);
+                        0 < result.length ? ($("#aktivMst").prop("checked", result[b].aktivMst), $("#istDlMst").prop("checked", result[b].isDurchleitung),
+                                [
+                                    ["#mstID", "mst_ID"],
+                                    ["#nameMstB", "nameMSt"],
+                                    ["#kurzbezeichnungMstB", "kurzbezeichnungMst"],
+                                    ["#kostenstelleMstB", "kostenstelleMst"],
+                                    ["#beschreibungMstB", "beschreibung"],
+                                    ["#ortMstB", "ortMst"],
+                                    ["#messartMstB", "messartMst"],
+                                    ["#vorgelagerteMstB", "vorgelagerteMessstelleMst"],
+                                    ["#anlMstB", "anl"],
+                                    ["#anlIDMstB", "anl_ID"],
+                                    ["#messmittelBerechnungslogikMstB", "msm"],
+                                    ["#berechnungslogikMstB", "messmittelBerechnungslogikMstNormal"],
+                                    ["#messmittelIDMstB", "msm_ID"],
+                                    ["#notizAllgemeinMstB", "notizMst"]
+                                ].forEach(function(a) {
+                                    $(a[0]).val(result[b][a[1]])
+                                })) :
+                            clearFields("mstHinz")
+                    })
                     break;
                 case "std":
                     $.ajax({
