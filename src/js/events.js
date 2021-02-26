@@ -60,7 +60,7 @@ $(document).ready(function() {
     $(".imgBtnAnlagePrd").click(function() {
         anlagenAuswahllisteErstellen(this.id)
     });
-    $(".btnFormelSymbol").click(function(){
+    $(".btnFormelSymbol").click(function() {
         var txt = $(this).text();
         if(txt == "AC"){
             $("#formelStringDarstellung, #formelIdDarstellung").val("");
