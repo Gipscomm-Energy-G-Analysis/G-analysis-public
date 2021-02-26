@@ -1739,8 +1739,10 @@ try {
             energietrInDBoxBer();
             readInstanzen("berFirst", 0);
             berNavID = 0;
-            readInstanzen("mstFirst", 0);
-            mstNavID = 0;
+            readInstanzen("mstEFirst", 0);
+            mstENavID = 0;
+            readInstanzen("mstBFirst", 0);
+            mstBNavID = 0;
             readInstanzen("msmFirst", 0);
             msmNavID = 0;
             readInstanzen("stdFirst", 0);
@@ -2680,7 +2682,8 @@ try {
             }
             readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"));
             readInstanzen("berFirst", 0);
-            readInstanzen("mstFirst", 0);
+            readInstanzen("mstEFirst", 0);
+            readInstanzen("mstBFirst", 0);
             readInstanzen("msmFirst", 0);
             readInstanzen("stdFirst", 0);
             readInstanzen("anlFirst", 0);
@@ -2695,8 +2698,8 @@ try {
             readInstanzen("orgFirst", $(".orgPfad").prop("selectedIndex"));
             readInstanzen("liegFirst", 0);
             readInstanzen("berFirst", 0);
-            readInstanzen("mstFirst",
-                0);
+            readInstanzen("mstEFirst", 0);
+            readInstanzen("mstBFirst", 0);
             liegenschaftenEinlesen()
         }, tabelleEinlesen = function(a) {
             $.ajax({
@@ -4408,7 +4411,8 @@ try {
                                 readInstanzen("liegFirst",
                                     a[0]);
                                 readInstanzen("berFirst", 0);
-                                readInstanzen("mstFirst", 0)
+                                readInstanzen("mstEFirst", 0)
+                                readInstanzen("mstBFirst", 0)
                             })
                         }
                     })
@@ -8494,7 +8498,7 @@ try {
                         $("#manPfadLieg").css("display", "none"), $("#orgPfadLieg").text($("#nameAllgemeinOrg").val()), energietrInDBoxLieg(), energiefrmInDBoxLieg();
                     else if ("tabExtDl" == a) readInstanzen("extDlFirst", 0);
                     else if ("tabStdDr" == a) readInstanzen("stdDrFirst", 0);
-                    else if ("tabBer" == a) clearFields("berHinz"), readInstanzen("berFirst", 0), $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val()), energiefrmInDBoxLieg();
+                    else if ("tabBer" == a) $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val()), energiefrmInDBoxLieg();
                     else if ("tabEPrd" == a) readBdeConfig($("#nameDB").val());
                     else if ("tabBen" == a) b = ["", ""], readInstanzen("benFirst", 0);
                     else if ("tabAnl" == a) getAnlagenAuswahlTblHeader(), energiefrmInDBoxLieg();

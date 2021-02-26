@@ -1351,9 +1351,9 @@ $(document).ready(function() {
         "benFirst" == this.id ? (benNavID = 0, readInstanzen(this.id, benNavID)) :
         "manFirst" == this.id ? (manNavID = 0, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgFirst" == this.id ? (orgNavID = 0, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-        "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) :
+        "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("stdFirst", 0)) :
         "extDlFirst" == this.id ? (extDlNavID = 0, readInstanzen(this.id, extDlNavID)) :
-        "berFirst" == this.id ? (mstENavID = mstBNavID = berNavID = 0, readInstanzen(this.id, berNavID), readInstanzen("mstFirst", 0)) :
+        "berFirst" == this.id ? (mstENavID = mstBNavID = berNavID = 0, readInstanzen(this.id, berNavID)) :
         "mstEFirst" == this.id ? (mstENavID = 0, readInstanzen(this.id, mstENavID)) :
         "mstBFirst" == this.id ? (mstBNavID = 0, readInstanzen(this.id, mstBNavID)) :
         "stdFirst" == this.id ? (stdNavID = 0, readInstanzen(this.id, stdNavID)) :
@@ -1384,9 +1384,9 @@ $(document).ready(function() {
         "benPrevious" == this.id ? 0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) :
         "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() { organisationenEinlesen() }, 1500), setTimeout(function() { liegenschaftenEinlesen() }, 2E3), readInstanzen("orgFirst", 0)) :
         "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID--), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-        "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) :
+        "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("stdFirst", 0)) :
         "extDlPrevious" == this.id ? 0 < extDlNavID && (extDlNavID--, readInstanzen(this.id, extDlNavID)) :
-        "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0), readInstanzen(this.id, berNavID)) :
+        "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen(this.id, berNavID)) :
         "mstEPrevious" == this.id ? 0 < mstENavID && (mstENavID--, readInstanzen(this.id, mstENavID)) :
         "mstBPrevious" == this.id ? 0 < mstBNavID && (mstBNavID--, readInstanzen(this.id, mstBNavID)) :
         "stdPrevious" == this.id ? 0 < stdNavID && (stdNavID--, readInstanzen(this.id, stdNavID)) :
@@ -1417,9 +1417,9 @@ $(document).ready(function() {
         "benNext" == this.id ? benNavID < $("#benCount").val() - 1 && (benNavID++, readInstanzen(this.id, benNavID)) :
         "manNext" == this.id ? manNavID < $("#manCount").val() - 1 && (manNavID++, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgNext" == this.id ? orgNavID < $("#orgCount").val() - 1 && (orgNavID++, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-        "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) :
+        "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("stdFirst", 0)) :
         "extDlNext" == this.id ? extDlNavID < $("#extDlCount").val() - 1 && (extDlNavID++, readInstanzen(this.id, extDlNavID)) :
-        "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) :
+        "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz")) :
         "mstENext" == this.id ? mstENavID < $("#mstCount").val() - 1 && (mstENavID++, readInstanzen(this.id, mstENavID)) :
         "mstBNext" == this.id ? mstBNavID < $("#mstCount").val() - 1 && (mstBNavID++, readInstanzen(this.id, mstBNavID)) :
         "stdNext" == this.id ? stdNavID < $("#stdCount").val() - 1 && (stdNavID++, readInstanzen(this.id, stdNavID)) :
@@ -1450,9 +1450,9 @@ $(document).ready(function() {
         "benLast" == this.id ? (benNavID = $("#benCount").val() - 1, readInstanzen(this.id, benNavID)) :
         "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-        "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0)) :
+        "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0)) :
         "extDlLast" == this.id ? (extDlNavID = $("#extDlCount").val() - 1, readInstanzen(this.id, extDlNavID)) :
-        "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) :
+        "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz")) :
         "mstELast" == this.id ? (mstENavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstENavID)) :
         "mstBLast" == this.id ? (mstBNavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstBNavID)) :
         "stdLast" == this.id ? (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) :
