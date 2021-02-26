@@ -4595,7 +4595,7 @@ try {
                 "liegHinz" == a ? (b = "#liegID #nameAllgemeinLieg #kuerzelAllgemeinLieg #gesellschaftsformAllgemeinLieg #anschriftAllgemeinLieg #landAllgemeinLieg #plzAllgemeinLieg #ortAllgemeinLieg #typAllgemeinLieg #titelAnsprechpartnerLieg #nameAnsprechpartnerLieg #vornameAnsprechpartnerLieg #emailAnsprechpartnerLieg #telefonAnsprechpartnerLieg #faxAnsprechpartnerLieg #mobiltelefonAnsprechpartnerLieg #titelEnergiebeauftragterLieg #nameEnergiebeauftragterLieg #vornameEnergiebeauftragterLieg #emailEnergiebeauftragterLieg #telefonEnergiebeauftragterLieg #faxEnergiebeauftragterLieg #mobiltelefonEnergiebeauftragterLieg #inputEnergietraeger1Lieg #inputEnergietraeger2Lieg #inputEnergietraeger3Lieg #inputEnergietraeger4Lieg #inputEnergietraeger5Lieg #inputEnergietraeger6Lieg #inputEnergietraeger7Lieg #inputEnergietraeger8Lieg #inputEnergietraeger9Lieg #energieform1Lieg #energieform2Lieg #energieform3Lieg #energieform4Lieg #energieform5Lieg #energieform6Lieg #energieform7Lieg #managementsystem1Lieg #erstzertifizierung1Lieg #managementsystem2Lieg #erstzertifizierung2Lieg #managementsystem3Lieg #erstzertifizierung3Lieg .energietraegerLieg".split(" "),
                     $("#eigenstaendigeformAllgemeinLieg").prop("checked", !1), $("#aktivAllgemeinLieg").prop("checked", !1), $("#hatDlAllgemeinLieg").prop("checked", !1), $("#energietraeger1Lieg").empty(), $("#energietraeger2Lieg").empty(), $("#energietraeger3Lieg").empty(), $("#energietraeger4Lieg").empty(), $("#energietraeger5Lieg").empty(), $("#energietraeger6Lieg").empty(), $("#energietraeger7Lieg").empty(), $("#energietraeger8Lieg").empty(), $("#energietraeger9Lieg").empty(), $("#entLiegErweitert").css("display", "none"), $("#weitereEntsLieg").text("weitere Energietr\u00e4ger")) :
                 "extDlHinz" == a ? (b = "#extDlID #nameExtDl #gesellschaftsformExtDl #anschriftExtDl #landExtDl #plzExtDl #ortExtDl #typExtDl #titelAnsprechpartnerExtDl #nameAnsprechpartnerExtDl #vornameAnsprechpartnerExtDl #emailAnsprechpartnerExtDl #telefonAnsprechpartnerExtDl #faxAnsprechpartnerExtDl #mobiltelefonAnsprechpartnerExtDl #energietraeger1ExtDl #messstelle1ExtDl #standort1ExtDl #energietraeger2ExtDl #messstelle2ExtDl #standort2ExtDl #energietraeger3ExtDl #messstelle3ExtDl #standort3ExtDl #energietraeger4ExtDl #messstelle4ExtDl #standort4ExtDl #energietraeger5ExtDl #messstelle5ExtDl #standort5ExtDl #energietraeger6ExtDl #messstelle6ExtDl #standort6ExtDl #energieRes1ExtDl #messstelleEngRes1ExtDl #standort1EngResExtDl #energieRes2ExtDl #messstelleEngRes2ExtDl #standort2EngResExtDl #energieRes3ExtDl #messstelleEngRes3ExtDl #standort3EngResExtDl #energieRes4ExtDl #messstelleEngRes4ExtDl #standort4EngResExtDl #energieRes5ExtDl #messstelleEngRes5ExtDl #standort5EngResExtDl #energieRes6ExtDl #messstelleEngRes6ExtDl #standort6EngResExtDl".split(" "),
-                    $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) : "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") : "mstHinz" == a ? (b = "#nameMst #kurzbezeichnungMst #kostenstelleMst #energieformMst #ortMst #messartMst #vorgelagerteMst #messmittelBerechnungslogikMst #berechnungslogikMst #notizAllgemeinMst #messmittelIDMst #anlMst #anlIDMst".split(" "),
+                    $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) : "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") : "mstHinz" == a ? (b = "#nameMst #kurzbezeichnungMst #kostenstelleMst #energieformMst #ortMst #messartMstE #messartMstB #vorgelagerteMst #messmittelBerechnungslogikMst #berechnungslogikMst #notizAllgemeinMst #messmittelIDMst #anlMst #anlIDMst".split(" "),
                     $("#aktivMst").prop("checked", !1)) : "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
                 "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
                 "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
@@ -5116,7 +5116,7 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
-                        toggleMsmBerechnungslogik(result[b].messartMst)
+                        toggleMsmBerechnungslogik(result[b].messartMst)("E")
 
                         $("#mstCount").val(result.length);
                         0 < result.length ? ($("#aktivMst").prop("checked", result[b].aktivMst), $("#istDlMst").prop("checked", result[b].isDurchleitung),
@@ -5149,7 +5149,7 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
-                        toggleMsmBerechnungslogik(result[b].messartMst)
+                        toggleMsmBerechnungslogik(result[b].messartMst)("B")
 
                         $("#mstCount").val(result.length);
                         0 < result.length ? ($("#aktivMst").prop("checked", result[b].aktivMst), $("#istDlMst").prop("checked", result[b].isDurchleitung),
@@ -7678,7 +7678,7 @@ try {
                     readInstanzen("berLast", $("#berCount").val())
                 }
             }), berNavID = $("#berCount").val();
-            else if ("mstSpeichern" == a) e = "", e = "berechnet" == $("#messartMst").val() ? $("#berechnungslogikMst").val() : $("#messmittelBerechnungslogikMst").val(), $.ajax({
+            else if ("mstESpeichern" == a) e = "", e = "berechnet" == $("#messartMstE").val() ? $("#berechnungslogikMstE").val() : $("#messmittelBerechnungslogikMstE").val(), $.ajax({
                     type: "POST",
                     async: !0,
                     url: "php/instanzIntoDb.php",
@@ -7706,8 +7706,36 @@ try {
                         alert(datensatzGespeichert(a));
                         readInstanzen("mstLast", $("#mstCount").val())
                     }
-                }), mstNavID =
-                $("#mstCount").val();
+                }), mstENavID = $("#mstCount").val();
+            else if ("mstBSpeichern" == a) e = "", e = "berechnet" == $("#messartMstB").val() ? $("#berechnungslogikMstB").val() : $("#messmittelBerechnungslogikMstB").val(), $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        id: "mst",
+                        modus: "new",
+                        berID: $("#berID").val(),
+                        nameDB: $("#nameDB").val(),
+                        messstellenbezeichnung: $("#nameMst").val(),
+                        kurzbezeichnung: $("#kurzbezeichnungMst").val(),
+                        kostenstelle: $("#kostenstelleMst").val(),
+                        aktiv: $("#aktivMst").is(":checked"),
+                        isDurchleitung: $("#istDlMst").is(":checked"),
+                        energietraeger: $("#energietraegerMst").val(),
+                        energieform: $("#energieformMst").val(),
+                        ort: $("#ortMst").val(),
+                        messart: $("#messartMst").val(),
+                        vorgelagerteMessstelle: $("#vorgelagerteMst").val(),
+                        messmittelBerechnungslogik: e,
+                        msmID: $("#messmittelIDMst").val(),
+                        anlID: $("#anlIDMst").val(),
+                        notiz: $("#notizAllgemeinMst").val()
+                    },
+                    success: function(a) {
+                        alert(datensatzGespeichert(a));
+                        readInstanzen("mstLast", $("#mstCount").val())
+                    }
+                }), mstBNavID = $("#mstCount").val();
             else if ("stdSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -10331,20 +10359,21 @@ const isCalculated =
 // Depending which messart was chosen labels and txtboxes
 // + button are shown or hidden
 const toggleMsmBerechnungslogik =
-    type => {
-        if(isCalculated(type)) {
-            $("#labelMessmittelMst").hide()
-            $("#messmittelBerechnungslogikMst").hide()
-            $("#labelBerechnungslogikMst").show()
-            $("#berechnungslogikMst").show()
-            $("#linkBerechnungslogikOderEingabemaske").show()
+    typeCalc =>
+    typeData => {
+        if(isCalculated(typeCalc)) {
+            $(`#labelMessmittelMst${typeData}`).hide()
+            $(`#messmittelBerechnungslogikMst${typeData}`).hide()
+            $(`#labelBerechnungslogikMst${typeData}`).show()
+            $(`#berechnungslogikMst${typeData}`).show()
+            $(`#linkBerechnungslogikOderEingabemaske${typeData}`).show()
         }
         else {
-            $("#linkBerechnungslogikOderEingabemaske").hide()
-            $("#labelBerechnungslogikMst").hide()
-            $("#berechnungslogikMst").hide()
-            $("#labelMessmittelMst").show()
-            $("#messmittelBerechnungslogikMst").show()
+            $(`#linkBerechnungslogikOderEingabemaske${typeData}`).hide()
+            $(`#labelBerechnungslogikMst${typeData}`).hide()
+            $(`#berechnungslogikMst${typeData}`).hide()
+            $(`#labelMessmittelMst${typeData}`).show()
+            $(`#messmittelBerechnungslogikMst${typeData}`).show()
         }
     }
 

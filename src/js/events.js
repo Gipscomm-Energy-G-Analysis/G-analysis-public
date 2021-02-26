@@ -441,7 +441,7 @@ $(document).ready(function() {
         changeYear: !0
     });
     var g, h, b = !1;
-    betrParNavID = knzInsNavID = knzNavID = prdNavID = ePrdNavID = eAnlNavID = zpNavID = iMwNavID = eRngNavID = enfNavID = entNavID = anlNavID = msmNavID = stdDrNavID = stdNavID = mstNavID = berNavID = extDlNavID = liegNavID = orgNavID = manNavID = benNavID = admNavID = manGrpNavID = gipscAdmNavID = sAdmNavID = betrGrpNavID = 0;
+    betrParNavID = knzInsNavID = knzNavID = prdNavID = ePrdNavID = eAnlNavID = zpNavID = iMwNavID = eRngNavID = enfNavID = entNavID = anlNavID = msmNavID = stdDrNavID = stdNavID = mstENavID = mstBNavID = berNavID = extDlNavID = liegNavID = orgNavID = manNavID = benNavID = admNavID = manGrpNavID = gipscAdmNavID = sAdmNavID = betrGrpNavID = 0;
     $("#sAdmID_1").val("");
     $("#sAdmID_2").val("");
     $("#nameDB").val("");
@@ -813,8 +813,19 @@ $(document).ready(function() {
     });
     /*17-03-2020 js event for the messaMart on change*/
     // 26-08-2020 simplified the logic
-    $("#messartMst").change(function() {
-        toggleMsmBerechnungslogik(this.value)
+    $("#messartMstE, #messartMstB").change(function() {
+        let type = ""
+        switch (this.id) {
+            case "messartMstE":
+                type = "E"
+                break;
+            case "messartMstB":
+                type = "B"
+                break;
+            default:
+                console.log("$('#messartMstE, #messartMstB').change -> Some unknown case occured !")
+        }
+        toggleMsmBerechnungslogik(this.value)(type)
     });
     /*17-03-2020 js event for the messaMart on change*/
     $("#mstSuchen").click(function() {
@@ -1343,8 +1354,9 @@ $(document).ready(function() {
         "orgFirst" == this.id ? (orgNavID = 0, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) :
         "extDlFirst" == this.id ? (extDlNavID = 0, readInstanzen(this.id, extDlNavID)) :
-        "berFirst" == this.id ? (mstNavID = berNavID = 0, readInstanzen(this.id, berNavID), readInstanzen("mstFirst", 0)) :
-        "mstFirst" == this.id ? (mstNavID = 0, readInstanzen(this.id, mstNavID)) :
+        "berFirst" == this.id ? (mstENavID = mstBNavID = berNavID = 0, readInstanzen(this.id, berNavID), readInstanzen("mstFirst", 0)) :
+        "mstEFirst" == this.id ? (mstENavID = 0, readInstanzen(this.id, mstENavID)) :
+        "mstBFirst" == this.id ? (mstBNavID = 0, readInstanzen(this.id, mstBNavID)) :
         "stdFirst" == this.id ? (stdNavID = 0, readInstanzen(this.id, stdNavID)) :
         "stdDrFirst" == this.id ? (stdDrNavID = 0, readInstanzen(this.id, stdDrNavID)) :
         "anlFirst" == this.id ? (anlNavID = 0, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
@@ -1375,8 +1387,9 @@ $(document).ready(function() {
         "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID--), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) :
         "extDlPrevious" == this.id ? 0 < extDlNavID && (extDlNavID--, readInstanzen(this.id, extDlNavID)) :
-        "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0), readInstanzen(this.id, berNavID)) :
-        "mstPrevious" == this.id ? 0 < mstNavID && (mstNavID--, readInstanzen(this.id, mstNavID)) :
+        "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0), readInstanzen(this.id, berNavID)) :
+        "mstEPrevious" == this.id ? 0 < mstENavID && (mstENavID--, readInstanzen(this.id, mstENavID)) :
+        "mstBPrevious" == this.id ? 0 < mstBNavID && (mstBNavID--, readInstanzen(this.id, mstBNavID)) :
         "stdPrevious" == this.id ? 0 < stdNavID && (stdNavID--, readInstanzen(this.id, stdNavID)) :
         "stdDrPrevious" == this.id ? 0 < stdDrNavID && (stdDrNavID--, readInstanzen(this.id, stdDrNavID)) :
         "anlPrevious" == this.id ? 0 < anlNavID && (anlNavID--, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
@@ -1407,8 +1420,9 @@ $(document).ready(function() {
         "orgNext" == this.id ? orgNavID < $("#orgCount").val() - 1 && (orgNavID++, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) :
         "extDlNext" == this.id ? extDlNavID < $("#extDlCount").val() - 1 && (extDlNavID++, readInstanzen(this.id, extDlNavID)) :
-        "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) :
-        "mstNext" == this.id ? mstNavID < $("#mstCount").val() - 1 && (mstNavID++, readInstanzen(this.id, mstNavID)) :
+        "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) :
+        "mstENext" == this.id ? mstENavID < $("#mstCount").val() - 1 && (mstENavID++, readInstanzen(this.id, mstENavID)) :
+        "mstBNext" == this.id ? mstBNavID < $("#mstCount").val() - 1 && (mstBNavID++, readInstanzen(this.id, mstBNavID)) :
         "stdNext" == this.id ? stdNavID < $("#stdCount").val() - 1 && (stdNavID++, readInstanzen(this.id, stdNavID)) :
         "stdDrNext" == this.id ? stdDrNavID < $("#stdDrCount").val() - 1 && (stdDrNavID++, readInstanzen(this.id, stdDrNavID)) :
         "anlNext" == this.id ? anlNavID < $("#anlCount").val() - 1 && (anlNavID++, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
@@ -1439,8 +1453,9 @@ $(document).ready(function() {
         "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0)) :
         "extDlLast" == this.id ? (extDlNavID = $("#extDlCount").val() - 1, readInstanzen(this.id, extDlNavID)) :
-        "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) :
-        "mstLast" == this.id ? (mstNavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstNavID)) :
+        "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) :
+        "mstELast" == this.id ? (mstENavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstENavID)) :
+        "mstBLast" == this.id ? (mstBNavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstBNavID)) :
         "stdLast" == this.id ? (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) :
         "stdDrLast" == this.id ? (stdDrNavID = $("#stdDrCount").val() - 1, readInstanzen(this.id, stdDrNavID)) :
         "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
@@ -1585,8 +1600,10 @@ $(document).ready(function() {
         energietrInDBoxBer();
         readInstanzen("berFirst", 0);
         berNavID = 0;
-        readInstanzen("mstFirst", 0);
-        mstNavID = 0;
+        readInstanzen("mstEFirst", 0);
+        mstENavID = 0;
+        readInstanzen("mstBFirst", 0);
+        mstBNavID = 0;
         readInstanzen("msmFirst", 0);
         msmNavID = 0;
         readInstanzen("stdFirst", 0);
@@ -1837,7 +1854,9 @@ $(".orgSuchenSpies").click(function() {
 /*On click menu Vers.Bereiche/Messstellen update lieg select options*/
 $("#berMenu").click(function() {
     $(".liegPfad option:eq(0)").prop('selected', 'selected').trigger('change');
-    toggleMsmBerechnungslogik($("#messartMst").val())
+    [ "E", "B"]
+    .forEach(a => toggleMsmBerechnungslogik($(`#messartMst${a}`).val()))
+
 });
 
 
