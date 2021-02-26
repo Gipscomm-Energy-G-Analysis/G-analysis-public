@@ -5116,10 +5116,12 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
-                        toggleMsmBerechnungslogik(result[b].messartMst)("E")
-
                         $("#mstCount").val(result.length);
-                        0 < result.length ? ($("#aktivMst").prop("checked", result[b].aktivMst), $("#istDlMst").prop("checked", result[b].isDurchleitung),
+
+                        0 < result.length ?
+                        (toggleMsmBerechnungslogik(result[b].messartMst)("E"),
+                        $("#aktivMst").prop("checked", result[b].aktivMst),
+                        $("#istDlMst").prop("checked", result[b].isDurchleitung),
                                 [
                                     ["#mstID", "mst_ID"],
                                     ["#nameMstE", "nameMSt"],
@@ -5149,10 +5151,12 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
-                        toggleMsmBerechnungslogik(result[b].messartMst)("B")
-
                         $("#mstCount").val(result.length);
-                        0 < result.length ? ($("#aktivMst").prop("checked", result[b].aktivMst), $("#istDlMst").prop("checked", result[b].isDurchleitung),
+
+                        0 < result.length ?
+                        (toggleMsmBerechnungslogik(result[b].messartMst)("B"),
+                        $("#aktivMst").prop("checked", result[b].aktivMst),
+                        $("#istDlMst").prop("checked", result[b].isDurchleitung),
                                 [
                                     ["#mstID", "mst_ID"],
                                     ["#nameMstB", "nameMSt"],
