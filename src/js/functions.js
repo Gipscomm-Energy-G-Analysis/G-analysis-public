@@ -6,7 +6,8 @@
 *  Original code by Angel Marin, Paul Johnston.
 *
 **/
-function SHA256(s){
+
+function SHA256(s) {
 
     let chrsz   = 8;
     let hexcase = 0;
@@ -1757,7 +1758,7 @@ try {
             anlNavID =
             entNavID =
             enfNavID =
-            eRngNavID = 
+            eRngNavID =
             iMwNavID =
             zpNavID = 0
         },
