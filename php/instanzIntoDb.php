@@ -448,38 +448,39 @@ elseif($id == "ber") {
         $tsql .= "WHERE ber_ID = '$berID'";
     }
 }
-elseif($id == "mst") {
+elseif($id == "mstE" || $id == "mstB") {
 
-    $modus = $_POST['modus'];
+    $modus = $_POST['modus'] ;
+    $typ = $id === "mstE" ? "energiedaten" : "betriebsdaten" ;
 
-    $messstellenbezeichnung= $_POST['messstellenbezeichnung'];
-    $kurzbezeichnung= $_POST['kurzbezeichnung'];
-    $kostenstelle = $_POST['kostenstelle'];
-    $aktiv = $_POST['aktiv'];
-    $isDurchleitung = $_POST['isDurchleitung'];
-    $energietraeger = $_POST['energietraeger'];
-    $energieform = $_POST['energieform'];
-    $ort = $_POST['ort'];
-    $messart = $_POST['messart'];
-    $vorgelagerteMessstelle = $_POST['vorgelagerteMessstelle'];
-    $messmittelBerechnungslogik = $_POST['messmittelBerechnungslogik'];
-    $msmID = $_POST['msmID'];
+    $messstellenbezeichnung= $_POST['messstellenbezeichnung'] ;
+    $kurzbezeichnung= $_POST['kurzbezeichnung'] ;
+    $kostenstelle = $_POST['kostenstelle'] ;
+    $aktiv = $_POST['aktiv'] ;
+    $isDurchleitung = $_POST['isDurchleitung'] ;
+    $energietraeger = $_POST['energietraeger'] ;
+    $energieform = $_POST['energieform'] ;
+    $ort = $_POST['ort'] ;
+    $messart = $_POST['messart'] ;
+    $vorgelagerteMessstelle = $_POST['vorgelagerteMessstelle'] ;
+    $messmittelBerechnungslogik = $_POST['messmittelBerechnungslogik'] ;
+    $msmID = $_POST['msmID'] ;
     $anlID = $_POST['anlID'] === "" ? 0 : $_POST['anlID'] ;
-    $notiz = $_POST['notiz'];
+    $notiz = $_POST['notiz'] ;
 
-    if($modus == "new"){
-    $berID = $_POST['berID'];
+    if ($modus == "new"){
+        $berID = $_POST['berID'] ;
 
-    	$tsql = "INSERT INTO messstellen(ber_ID,datumMst,nameMSt,kurzbezeichnungMst,kostenstelleMst,aktivMst,energietraegerMst,energieformMst,ortMst,messartMst,vorgelagerteMessstelleMst,messmittelBerechnungslogikMst,notizMst, deleted, anl_ID, msm_ID, isDurchleitung)
-    	         VALUES ('$berID',getdate(),'$messstellenbezeichnung',' $kurzbezeichnung','$kostenstelle','$aktiv','$energietraeger','$energieform','$ort','$messart','$vorgelagerteMessstelle','$messmittelBerechnungslogik','$notiz', 0, '$anlID', '$msmID', '$isDurchleitung') ";
+    	$tsql = "INSERT INTO messstellen(ber_ID,datumMst,nameMSt,kurzbezeichnungMst,kostenstelleMst,aktivMst,energietraegerMst,energieformMst,ortMst,messartMst,vorgelagerteMessstelleMst,messmittelBerechnungslogikMst,notizMst, deleted, anl_ID, msm_ID, isDurchleitung, typ)
+    	         VALUES ('$berID',getdate(),'$messstellenbezeichnung',' $kurzbezeichnung','$kostenstelle','$aktiv','$energietraeger','$energieform','$ort','$messart','$vorgelagerteMessstelle','$messmittelBerechnungslogik','$notiz', 0, '$anlID', '$msmID', '$isDurchleitung', '$typ') " ;
     }
-    else{
-    	$mstID = $_POST['mstID'];
+    else {
+    	$mstID = $_POST['mstID'] ;
 
     	$tsql =  "UPDATE messstellen SET datumMst = getdate(),nameMSt = '$messstellenbezeichnung', kurzbezeichnungMst = '$kurzbezeichnung', anl_ID = '$anlID', msm_ID = '$msmID', ";
     	$tsql .= "kostenstelleMst = '$kostenstelle',aktivMst = '$aktiv', energietraegerMst ='$energietraeger', messartMst = '$messart', vorgelagerteMessstelleMst = '$vorgelagerteMessstelle', " ;
-        $tsql .= "messmittelBerechnungslogikMst = '$messmittelBerechnungslogik', notizMst = '$notiz', ortMst = '$ort', energieformMst = '$energieform', isDurchleitung = '$isDurchleitung' " ;
-    	$tsql .= "WHERE mst_ID = '$mstID' ";
+        $tsql .= "messmittelBerechnungslogikMst = '$messmittelBerechnungslogik', notizMst = '$notiz', ortMst = '$ort', energieformMst = '$energieform', isDurchleitung = '$isDurchleitung', typ = '$typ' " ;
+    	$tsql .= "WHERE mst_ID = '$mstID' " ;
     }
 }
 elseif($id == "prd") {

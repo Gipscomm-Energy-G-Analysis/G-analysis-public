@@ -20,7 +20,6 @@ $records1 = queryDB( $conn, $query1, "read" ) ;
 
 for ( $i = 0; $i < count( $records1 ); $i++ ) {
 
-
   if ( $records1[ $i ][ "anl_ID" ] != 0 || $records1[ $i ][ "anl_ID" ] != null ) {
 
     $query2 = "SELECT nummerAnl + ' ' + bezeichnungAnl AS anlage FROM anlagen " ;

@@ -5000,8 +5000,15 @@ try {
                                     ["#erstzertifizierung3Lieg", "erstzertifizierung3"]
                                 ].forEach(function(a) {
                                     $(a[0]).val(c[b][a[1]])
-                                }), toggleExtDl("#hatDlAllgemeinLieg"), "" != $("#inputEnergietraeger7Lieg").val() ?
-                                $("#entLiegErweitert").css("display", "block") : $("#entLiegErweitert").css("display", "none"), energietrInDBoxLieg(), $(".liegPfad").val(c[b].nameLieg)) : clearFields("liegHinz")
+                                }), toggleExtDl("#hatDlAllgemeinLieg"),
+                                "" != $("#inputEnergietraeger7Lieg").val() ?
+                                $("#entLiegErweitert").css("display", "block") :
+                                $("#entLiegErweitert").css("display", "none"),
+                                energietrInDBoxLieg(),
+                                $(".liegPfad").val(c[b].nameLieg),
+                                readInstanzen("berFirst", 0)) :
+                                clearFields("liegHinz")
+
                         }
                     });
                     break;
@@ -5126,12 +5133,12 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
-                        $("#mstCount").val(result.length);
+                        $("#mstECount").val(result.length);
 
                         0 < result.length ?
                         (toggleMsmBerechnungslogik(result[b].messartMst)("E"),
-                        $("#aktivMst").prop("checked", result[b].aktivMst),
-                        $("#istDlMst").prop("checked", result[b].isDurchleitung),
+                        $("#aktivMstE").prop("checked", result[b].aktivMst),
+                        $("#istDlMstE").prop("checked", result[b].isDurchleitung),
                                 [
                                     ["#mstID", "mst_ID"],
                                     ["#nameMstE", "nameMSt"],
@@ -5915,7 +5922,14 @@ try {
                 default:
                     console.log('readInstanzen(instanz, index, id) :\n An invalid case ("' + a + '") was encountered!')
             }
-        }, instanzSpeichern = function(a) {
+        }
+        const messmittelOrBerechnungslogik =
+            type =>
+            "berechnet" == $(`#messartMst${type}`).val() ?
+            $(`#berechnungslogikMst${type}`).val() :
+            $(`#messmittelBerechnungslogikMst${type}`).val()
+
+        instanzSpeichern = function(a) {
             if ("gipscAdmSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -6004,8 +6018,8 @@ try {
                         alert(datensatzGespeichert(a))
                         manGrpEinlesen()
                     }
-                })
-            } else if ("admSpeichern" == a) $.ajax({
+                })}
+            else if ("admSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6271,38 +6285,57 @@ try {
                     alert(datensatzGespeichert(a))
                 }
             });
-            else if ("mstSpeichern" == a) {
-                var e = "",
-                    e = "berechnet" == $("#messartMst").val() ? $("#berechnungslogikMst").val() : $("#messmittelBerechnungslogikMst").val();
-                $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/instanzIntoDb.php",
-                    data: {
-                        id: "mst",
-                        modus: "save",
-                        mstID: $("#mstID").val(),
-                        nameDB: $("#nameDB").val(),
-                        messstellenbezeichnung: $("#nameMst").val(),
-                        kurzbezeichnung: $("#kurzbezeichnungMst").val(),
-                        kostenstelle: $("#kostenstelleMst").val(),
-                        aktiv: $("#aktivMst").is(":checked"),
-                        isDurchleitung: $("#istDlMst").is(":checked"),
-                        energietraeger: $("#energietraegerMst").val(),
-                        energieform: $("#energieformMst").val(),
-                        ort: $("#ortMst").val(),
-                        messart: $("#messartMst").val(),
-                        vorgelagerteMessstelle: $("#vorgelagerteMst").val(),
-                        messmittelBerechnungslogik: e,
-                        msmID: $("#messmittelIDMst").val(),
-                        anlID: $("#anlIDMst").val(),
-                        notiz: $("#notizAllgemeinMst").val()
-                    },
-                    success: function(a) {
-                        alert(datensatzGespeichert(a))
+            else if ("mstESpeichern" == a) {
+                data =
+                    { id: "mstE"
+                    , modus: "save"
+                    , mstID: $("#mstID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstE").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstE").val()
+                    , kostenstelle: $("#kostenstelleMstE").val()
+                    , aktiv: $("#aktivMstE").is(":checked")
+                    , isDurchleitung: $("#istDlMstE").is(":checked")
+                    , energietraeger: $("#energietraegerMstE").val()
+                    , energieform: $("#energieformMstE").val()
+                    , ort: $("#ortMstE").val()
+                    , messart: $("#messartMstE").val()
+                    , vorgelagerteMessstelle: $("#vorgelagerteMstE").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
+                    , msmID: $("#messmittelIDMstE").val()
+                    , anlID: $("#anlIDMstE").val()
+                    , notiz: $("#notizAllgemeinMstE").val()
                     }
-                })
-            } else if ("stdSpeichern" == a) $.ajax({
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => alert(datensatzGespeichert(result)))
+            }
+            else if ("mstBSpeichern" == a) {
+                data =
+                    { id: "mstB"
+                    , modus: "save"
+                    , mstID: $("#mstID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstB").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstB").val()
+                    , kostenstelle: $("#kostenstelleMstB").val()
+                    , aktiv: $("#aktivMstB").is(":checked")
+                    , isDurchleitung: $("#istDlMstB").is(":checked")
+                    , energietraeger: $("#energietraegerMstB").val()
+                    , energieform: $("#energieformMstB").val()
+                    , ort: $("#ortMstB").val()
+                    , messart: $("#messartMstB").val()
+                    , vorgelagerteMessstelle: $("#vorgelagerteMstB").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("B")
+                    , msmID: $("#messmittelIDMstB").val()
+                    , anlID: $("#anlIDMstB").val()
+                    , notiz: $("#notizAllgemeinMstB").val()
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => alert(datensatzGespeichert(result)))
+            }
+            else if ("stdSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6333,8 +6366,7 @@ try {
                     readInstanzen("stdLast", $("#stdCount").val())
                 }
             });
-            else if ("stdDrSpeichern" ==
-                a) $.ajax({
+            else if ("stdDrSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6466,8 +6498,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("anlVerschieben" == a) $.ajax({
+                })}
+            else if ("anlVerschieben" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6674,8 +6706,8 @@ try {
                         readInstanzen("prdLast", $("#prdCount").val())
                     }
                 });
-                prdNavID = $("#prdCount").val()
-            } else if ("prdSpeichernHist" == a) {
+                prdNavID = $("#prdCount").val()}
+            else if ("prdSpeichernHist" == a) {
                 f = changeTracker.getChanges();
                 h = f.length;
                 q = "";
@@ -6718,8 +6750,8 @@ try {
                         readInstanzen("prdLast", $("#prdCount").val())
                     }
                 });
-                prdNavID = $("#prdCount").val()
-            } else if ("entSpeichern" == a) $.ajax({
+                prdNavID = $("#prdCount").val()}
+            else if ("entSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6904,8 +6936,8 @@ try {
                         alert(datensatzGespeichert(a));
                         mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.ENERGY)
                     }
-                })
-            } else if ("intBdeIMwSpeichern" == a) {
+                })}
+            else if ("intBdeIMwSpeichern" == a) {
                 var t = "",
                     u = "INSERT INTO ";
                 $("#zeitintervallAnl").val() == TimeInterval.DAY && (t = "masseneingabeTage");
@@ -6932,8 +6964,8 @@ try {
                         alert(datensatzGespeichert(a));
                        // mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE)
                     }
-                })
-            } else if ("eAnlSpeichern" == a) {
+                })}
+            else if ("eAnlSpeichern" == a) {
                 var w = [];
                 for (i = 0; i < $("#tblOptionenEAnl tbody tr").length; i++) w[i] = tblOptionenEAnl.cell(i, 0).data();
                 var y = w.join(",");
@@ -6954,8 +6986,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("ePrdSpeichern" == a) {
+                })}
+            else if ("ePrdSpeichern" == a) {
                 w = [];
                 for (i = 0; i < $("#tblOptionenEPrd tbody tr").length; i++) w[i] = tblOptionenEPrd.cell(i, 0).data();
                 y = w.join(",");
@@ -6976,8 +7008,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("knzSpeichern" == a) {
+                })}
+            else if ("knzSpeichern" == a) {
                 for (var z = $("#btnTabKnzCont li").length, p = 0, A = 0; A < z + 1; A++)
                     if ("none" === $("#btnTabKnzCont li").eq(A).css("display") || 10 === A) {
                         p = A;
@@ -7311,8 +7343,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else "zpSpeichern" == a && $.ajax({
+                })}
+            else "zpSpeichern" == a && $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -7347,8 +7379,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("gipscAdmLast",
                         $("#gipscAdmCount").val())
-                }
-            }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
+                } }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
             else if ("betrGrpSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7371,8 +7402,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("betrGrpLast", $("#betrGrpCount").val())
                     betrGrpEinlesen()
-                }
-            }), betrGrpNavID = $("#betrGrpCount").val();
+                } }), betrGrpNavID = $("#betrGrpCount").val();
             else if ("sAdmSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7398,8 +7428,7 @@ try {
 
                     alert(datensatzGespeichert(a));
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
-                }
-            }), sAdmNavID = $("#sAdmCount").val();
+                } }), sAdmNavID = $("#sAdmCount").val();
             else if ("manGrpSpeichern" == a) {
                 var e = [];
                 for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++) e[i] = tblMandantengruppe.cell(i, 0).data();
@@ -7424,8 +7453,8 @@ try {
                         manGrpEinlesen()
                     }
                 });
-                manGrpNavID = $("#manGrpCount").val();
-            } else if ("admSpeichern" == a) {
+                manGrpNavID = $("#manGrpCount").val(); }
+            else if ("admSpeichern" == a) {
                 var c;
                 "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val());
                 $.ajax({
@@ -7453,9 +7482,8 @@ try {
                         readInstanzen("admLast", $("#admCount").val())
                     }
                 });
-                admNavID = $("#admCount").val()
-            } else if ("benSpeichern" ==
-                a) "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val()), $.ajax({
+                admNavID = $("#admCount").val() }
+            else if ("benSpeichern" == a) "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val()), $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -7478,8 +7506,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("benLast", $("#benCount").val())
-                }
-            }), benNavID = $("#benCount").val();
+                } }), benNavID = $("#benCount").val();
             else if ("manSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7496,8 +7523,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("manLast", $("#manCount").val())
-                }
-            }), manNavID = $("#manCount").val();
+                } }), manNavID = $("#manCount").val();
             else if ("orgSpeichern" == a) $.ajax({
                     type: "POST",
                     async: !0,
@@ -7533,8 +7559,7 @@ try {
                         organisationenEinlesen();
                         readInstanzen("orgLast", $("#orgCount").val())
                     }
-                }),
-                orgNavID = $("#orgCount").val();
+                }), orgNavID = $("#orgCount").val();
             else if ("liegSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7596,8 +7621,7 @@ try {
                     alert(datensatzGespeichert(a));
                     liegenschaftenEinlesen();
                     readInstanzen("liegLast", $("#liegCount").val())
-                }
-            }), liegNavID = $("#liegCount").val();
+                } }), liegNavID = $("#liegCount").val();
             else if ("extDlSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7663,8 +7687,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("extDlLast", $("#extDlCount").val())
-                }
-            }), extDlNavID = $("#extDlCount").val();
+                } }), extDlNavID = $("#extDlCount").val();
             else if ("berSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7690,66 +7713,67 @@ try {
 
                     alert(datensatzGespeichert(a));
                     readInstanzen("berLast", $("#berCount").val())
-                }
-            }), berNavID = $("#berCount").val();
-            else if ("mstESpeichern" == a) e = "", e = "berechnet" == $("#messartMstE").val() ? $("#berechnungslogikMstE").val() : $("#messmittelBerechnungslogikMstE").val(), $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/instanzIntoDb.php",
-                    data: {
-                        id: "mst",
-                        modus: "new",
-                        berID: $("#berID").val(),
-                        nameDB: $("#nameDB").val(),
-                        messstellenbezeichnung: $("#nameMst").val(),
-                        kurzbezeichnung: $("#kurzbezeichnungMst").val(),
-                        kostenstelle: $("#kostenstelleMst").val(),
-                        aktiv: $("#aktivMst").is(":checked"),
-                        isDurchleitung: $("#istDlMst").is(":checked"),
-                        energietraeger: $("#energietraegerMst").val(),
-                        energieform: $("#energieformMst").val(),
-                        ort: $("#ortMst").val(),
-                        messart: $("#messartMst").val(),
-                        vorgelagerteMessstelle: $("#vorgelagerteMst").val(),
-                        messmittelBerechnungslogik: e,
-                        msmID: $("#messmittelIDMst").val(),
-                        anlID: $("#anlIDMst").val(),
-                        notiz: $("#notizAllgemeinMst").val()
-                    },
-                    success: function(a) {
-                        alert(datensatzGespeichert(a));
-                        readInstanzen("mstLast", $("#mstCount").val())
+                } }), berNavID = $("#berCount").val();
+            else if ("mstESpeichern" == a) {
+                data =
+                    { id: "mstE"
+                    , modus: "new"
+                    , berID: $("#berID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstE").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstE").val()
+                    , kostenstelle: $("#kostenstelleMstE").val()
+                    , aktiv: $("#aktivMstE").is(":checked")
+                    , isDurchleitung: $("#istDlMstE").is(":checked")
+                    , energietraeger: $("#energietraegerMstE").val()
+                    , energieform: $("#energieformMstE").val()
+                    , ort: $("#ortMstE").val()
+                    , messart: $("#messartMstE").val()
+                    , vorgelagerteMessstelle: $("#vorgelagerteMstE").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
+                    , msmID: $("#messmittelIDMstE").val()
+                    , anlID: $("#anlIDMstE").val()
+                    , notiz: $("#notizAllgemeinMstE").val()
                     }
-                }), mstENavID = $("#mstCount").val();
-            else if ("mstBSpeichern" == a) e = "", e = "berechnet" == $("#messartMstB").val() ? $("#berechnungslogikMstB").val() : $("#messmittelBerechnungslogikMstB").val(), $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/instanzIntoDb.php",
-                    data: {
-                        id: "mst",
-                        modus: "new",
-                        berID: $("#berID").val(),
-                        nameDB: $("#nameDB").val(),
-                        messstellenbezeichnung: $("#nameMst").val(),
-                        kurzbezeichnung: $("#kurzbezeichnungMst").val(),
-                        kostenstelle: $("#kostenstelleMst").val(),
-                        aktiv: $("#aktivMst").is(":checked"),
-                        isDurchleitung: $("#istDlMst").is(":checked"),
-                        energietraeger: $("#energietraegerMst").val(),
-                        energieform: $("#energieformMst").val(),
-                        ort: $("#ortMst").val(),
-                        messart: $("#messartMst").val(),
-                        vorgelagerteMessstelle: $("#vorgelagerteMst").val(),
-                        messmittelBerechnungslogik: e,
-                        msmID: $("#messmittelIDMst").val(),
-                        anlID: $("#anlIDMst").val(),
-                        notiz: $("#notizAllgemeinMst").val()
-                    },
-                    success: function(a) {
-                        alert(datensatzGespeichert(a));
-                        readInstanzen("mstLast", $("#mstCount").val())
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                    readInstanzen("mstELast", $("#mstECount").val())
+                })
+
+                mstENavID = $("#mstECount").val()
+            }
+            else if ("mstBSpeichern" == a) {
+                data =
+                    { id: "mstB"
+                    , modus: "new"
+                    , berID: $("#berID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstB").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstB").val()
+                    , kostenstelle: $("#kostenstelleMstB").val()
+                    , aktiv: $("#aktivMstB").is(":checked")
+                    , isDurchleitung: $("#istDlMstB").is(":checked")
+                    , energietraeger: $("#energietraegerMstB").val()
+                    , energieform: $("#energieformMstB").val()
+                    , ort: $("#ortMstB").val()
+                    , messart: $("#messartMstB").val()
+                    , vorgelagerteMessstelle: $("#vorgelagerteMstB").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
+                    , msmID: $("#messmittelIDMstB").val()
+                    , anlID: $("#anlIDMstB").val()
+                    , notiz: $("#notizAllgemeinMstB").val()
                     }
-                }), mstBNavID = $("#mstCount").val();
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                    readInstanzen("mstBLast", $("#mstBCount").val())
+                })
+
+                mstBNavID = $("#mstBCount").val()
+            }
             else if ("stdSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7779,8 +7803,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("stdLast", $("#stdCount").val())
-                }
-            }), stdNavID = $("#stdCount").val();
+                } }), stdNavID = $("#stdCount").val();
             else if ("stdDrSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7810,10 +7833,8 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("stdDrLast", $("#stdDrCount").val())
-                }
-            }), stdDrNavID = $("#stdDrCount").val();
-            else if ("anlSpeichern" == a) e = $("#bildAllgemeinAnl").prop("src"),
-                e = e.split($("#nameDB").val()), $.ajax({
+                } }), stdDrNavID = $("#stdDrCount").val();
+            else if ("anlSpeichern" == a) e = $("#bildAllgemeinAnl").prop("src"), e = e.split($("#nameDB").val()), $.ajax({
                     type: "POST",
                     async: !0,
                     url: "php/instanzIntoDb.php",
@@ -7906,8 +7927,7 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a));
                         readInstanzen("anlLast", $("#anlCount").val())
-                    }
-                }), anlNavID = $("#anlCount").val();
+                    } }), anlNavID = $("#anlCount").val();
             else if ("msmSpeichern" == a) e = $("#bildAllgemeinMsm").prop("src"), e = e.split($("#nameDB").val()), $.ajax({
                 type: "POST",
                 async: !0,
@@ -7961,10 +7981,8 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("msmLast", $("#msmCount").val())
-                }
-            }), msmNavID = $("#msmCount").val();
-            else if ("prdSpeichern" == a) e = 0, e = "neueGrp" === b ?
-                Number($("#prdCount").val()) + 1 : $("#gruppenIDPrd").val(), $.ajax({
+                } }), msmNavID = $("#msmCount").val();
+            else if ("prdSpeichern" == a) e = 0, e = "neueGrp" === b ? Number($("#prdCount").val()) + 1 : $("#gruppenIDPrd").val(), $.ajax({
                     type: "POST",
                     async: !0,
                     url: "php/instanzIntoDb.php",
@@ -7995,8 +8013,7 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a));
                         readInstanzen("prdLast", $("#prdCount").val())
-                    }
-                }), prdNavID = $("#prdCount").val();
+                    } }), prdNavID = $("#prdCount").val();
             else if ("entSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
@@ -8047,8 +8064,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("entFirst", 0)
-                }
-            }), entNavID = $("#entCount").val();
+                } }), entNavID = $("#entCount").val();
             else if ("enfSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
@@ -8095,8 +8111,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("enfLast", $("#enfCount").val())
-                }
-            }), enfNavID = $("#enfCount").val();
+                } }), enfNavID = $("#enfCount").val();
             else if ("eRngSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -8157,8 +8172,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("eRngLast", $("#eRngCount").val())
-                }
-            }), eRngNavID = $("#eRngCount").val();
+                } }), eRngNavID = $("#eRngCount").val();
             else if ("iMwSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -8196,8 +8210,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("iMwLast",
                         $("#iMwCount").val())
-                }
-            }), iMwNavID = $("#iMwCount").val();
+                } }), iMwNavID = $("#iMwCount").val();
             else if ("eAnlSpeichern" == a) {
                 e = [];
                 for (i = 0; i < $("#tblOptionenEAnl tbody tr").length; i++) e[i] = tblOptionenEAnl.cell(i, 0).data();
@@ -8223,8 +8236,8 @@ try {
                         $("#eAnlFirst").trigger("click")
                     }
                 });
-                eAnlNavID = $("#eAnlCount").val()
-            } else if ("ePrdSpeichern" == a) {
+                eAnlNavID = $("#eAnlCount").val() }
+            else if ("ePrdSpeichern" == a) {
                 e = [];
                 for (i = 0; i < $("#tblOptionenEPrd tbody tr").length; i++) e[i] = tblOptionenEPrd.cell(i, 0).data();
                 e = e.join(",");
@@ -8247,8 +8260,8 @@ try {
                     }
                 });
                 ePrdNavID =
-                    $("#ePrdCount").val()
-            } else if ("knzSpeichern" == a) {
+                    $("#ePrdCount").val() }
+            else if ("knzSpeichern" == a) {
                 c = $("#btnTabKnzCont li").length;
                 for (var g = e = 0; g < c; g++)
                     if ("none" === $("#btnTabKnzCont li").eq(g).css("display")) {
@@ -8440,8 +8453,8 @@ try {
                         alert(datensatzGespeichert(a))
                     }
                 });
-                knzNavID = $("#knzCount").val()
-            } else "zpSpeichern" == a ? ($.ajax({
+                knzNavID = $("#knzCount").val() }
+            else "zpSpeichern" == a ? ($.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -8459,8 +8472,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("zpLast", $("#zpCount").val())
-                }
-            }), zpNavID = $("#zpCount").val()) : "betrParSpeichern" == a && (e = [], 0 < $("#checkEPrd").length && (e = JSON.stringify(Array.from($("#checkEPrd div")).map(function(a) {
+                } }), zpNavID = $("#zpCount").val()) : "betrParSpeichern" == a && (e = [], 0 < $("#checkEPrd").length && (e = JSON.stringify(Array.from($("#checkEPrd div")).map(function(a) {
                 return {
                     col: $("#" + a.children[0].id).text(),
                     state: $("#" + a.children[1].id).is(":checked"),

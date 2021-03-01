@@ -1351,7 +1351,7 @@ $(document).ready(function() {
         "benFirst" == this.id ? (benNavID = 0, readInstanzen(this.id, benNavID)) :
         "manFirst" == this.id ? (manNavID = 0, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgFirst" == this.id ? (orgNavID = 0, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-        "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("stdFirst", 0)) :
+        "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("stdFirst", 0)) :
         "extDlFirst" == this.id ? (extDlNavID = 0, readInstanzen(this.id, extDlNavID)) :
         "berFirst" == this.id ? (mstENavID = mstBNavID = berNavID = 0, readInstanzen(this.id, berNavID)) :
         "mstEFirst" == this.id ? (mstENavID = 0, readInstanzen(this.id, mstENavID)) :
@@ -1375,7 +1375,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious,\n                    #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious,\n                    #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious,\n                    #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious,\n                    #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
+    $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "gipscAdmPrevious" == this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) :
         "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) :
@@ -1408,7 +1408,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmNext, #betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext,\n                        #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext,\n                        #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext,\n                        #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
+    $("#gipscAdmNext, #betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
         "gipscAdmNext" == this.id ? gipscAdmNavID < $("#gipscAdmCount").val() - 1 && (gipscAdmNavID++, readInstanzen(this.id, gipscAdmNavID)) :
         "betrGrpNext" == this.id ? betrGrpNavID < $("#betrGrpCount").val() - 1 && (betrGrpNavID++, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmNext" == this.id ? sAdmNavID < $("#sAdmCount").val() - 1 && (sAdmNavID++, readInstanzen(this.id, sAdmNavID)) :
@@ -1417,11 +1417,11 @@ $(document).ready(function() {
         "benNext" == this.id ? benNavID < $("#benCount").val() - 1 && (benNavID++, readInstanzen(this.id, benNavID)) :
         "manNext" == this.id ? manNavID < $("#manCount").val() - 1 && (manNavID++, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgNext" == this.id ? orgNavID < $("#orgCount").val() - 1 && (orgNavID++, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-        "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("stdFirst", 0)) :
+        "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("stdFirst", 0)) :
         "extDlNext" == this.id ? extDlNavID < $("#extDlCount").val() - 1 && (extDlNavID++, readInstanzen(this.id, extDlNavID)) :
         "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz")) :
-        "mstENext" == this.id ? mstENavID < $("#mstCount").val() - 1 && (mstENavID++, readInstanzen(this.id, mstENavID)) :
-        "mstBNext" == this.id ? mstBNavID < $("#mstCount").val() - 1 && (mstBNavID++, readInstanzen(this.id, mstBNavID)) :
+        "mstENext" == this.id ? mstENavID < $("#mstECount").val() - 1 && (mstENavID++, readInstanzen(this.id, mstENavID)) :
+        "mstBNext" == this.id ? mstBNavID < $("#mstBCount").val() - 1 && (mstBNavID++, readInstanzen(this.id, mstBNavID)) :
         "stdNext" == this.id ? stdNavID < $("#stdCount").val() - 1 && (stdNavID++, readInstanzen(this.id, stdNavID)) :
         "stdDrNext" == this.id ? stdDrNavID < $("#stdDrCount").val() - 1 && (stdDrNavID++, readInstanzen(this.id, stdDrNavID)) :
         "anlNext" == this.id ? anlNavID < $("#anlCount").val() - 1 && (anlNavID++, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
@@ -1441,7 +1441,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmLast, #betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast,\n                            #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast,\n                            #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast,\n                            #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
+    $("#gipscAdmLast, #betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
         "gipscAdmLast" == this.id ? (gipscAdmNavID = $("#gipscAdmCount").val() - 1, readInstanzen(this.id, gipscAdmNavID)) :
         "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) :
@@ -1450,11 +1450,11 @@ $(document).ready(function() {
         "benLast" == this.id ? (benNavID = $("#benCount").val() - 1, readInstanzen(this.id, benNavID)) :
         "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-        "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0)) :
+        "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID)) :
         "extDlLast" == this.id ? (extDlNavID = $("#extDlCount").val() - 1, readInstanzen(this.id, extDlNavID)) :
         "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz")) :
-        "mstELast" == this.id ? (mstENavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstENavID)) :
-        "mstBLast" == this.id ? (mstBNavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstBNavID)) :
+        "mstELast" == this.id ? (mstENavID = $("#mstECount").val() - 1, readInstanzen(this.id, mstENavID)) :
+        "mstBLast" == this.id ? (mstBNavID = $("#mstBCount").val() - 1, readInstanzen(this.id, mstBNavID)) :
         "stdLast" == this.id ? (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) :
         "stdDrLast" == this.id ? (stdDrNavID = $("#stdDrCount").val() - 1, readInstanzen(this.id, stdDrNavID)) :
         "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
@@ -1634,7 +1634,7 @@ $(document).ready(function() {
         clearFields(this.id);
         b = !0
     });
-     $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern,# entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
+     $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
         "gipscAdmSpeichern" ==
         this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
             "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
@@ -1658,7 +1658,8 @@ $(document).ready(function() {
                 title: "Meldung!" })) :
             "berSpeichern" == this.id ? "" != $("#nameAllgemeinBer").val() && 1 == b ? (instanzErstellen(this.id), berNavID = $("#berCount").val(), b = !1) : "" != $("#nameAllgemeinBer").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!" })) :
-            "mstSpeichern" == this.id ? "" != $("#nameMst").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinMst").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+            "mstESpeichern" == this.id ? "" != $("#nameMstE").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstE").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+            "mstBSpeichern" == this.id ? "" != $("#nameMstB").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstB").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
             "stdSpeichern" == this.id ? "" != $("#nameStd").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStd").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!" })) :
             "stdDrSpeichern" == this.id ? "" != $("#nameStdDr").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStdDr").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
