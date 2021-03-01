@@ -20,7 +20,7 @@ function lastDate($conn, $tbl, $mstID) {
     }
     else {
       $query .= "SELECT TOP(1) time_de AS Time FROM ".$tbl." " ;
-      $query .= "WHERE power IS NOT NULL AND time_de IS NOT NULL " ;
+      $query .= "WHERE power IS NOT NULL AND time_de IS NOT NULL AND time_de <> '' " ;
       $query .= "ORDER BY time_de DESC " ;
     }
 
