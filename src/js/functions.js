@@ -17483,7 +17483,7 @@ function benutzerlisteErstellen() {
         async: !0,
         url: "php/readInstanzen.php",
         data: {
-            id: "admSuchen",
+            id: "benSuchen",
             nameDB: "gipscomm"
         },
         success: function(e) {
@@ -17500,7 +17500,7 @@ function benutzerlisteErstellen() {
                     e[c].name,
                     e[c].vorname,
                     e[c].username,
-                    e[c].email,
+                    e[c].eMail,
                     e[c].telefon,
                     e[c].mobiltelefon
                 ]).draw();

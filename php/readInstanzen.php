@@ -317,6 +317,9 @@ elseif($id == "betrPar"){
 } elseif($id == 'admSuchen') {
     $query = "SELECT * FROM admins ";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
+} elseif($id == 'benSuchen') {
+    $query = "SELECT * FROM benutzer ";
+    //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 }
 
 $records = queryDB($conn, $query, "read") ;
