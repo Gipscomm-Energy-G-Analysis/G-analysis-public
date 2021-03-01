@@ -1342,7 +1342,7 @@ $(document).ready(function() {
             $("#tblMasseneingabeDataIMw").remove();
         }
     });
-    $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst,\n                #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst,\n                #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst,\n                #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
+    $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "gipscAdmFirst" == this.id ? (gipscAdmNavID = 0, readInstanzen(this.id, gipscAdmNavID)) :
         "betrGrpFirst" == this.id ? (betrGrpNavID = 0, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmFirst" == this.id ? (sAdmNavID = 0, readInstanzen(this.id, sAdmNavID)) :
@@ -1376,6 +1376,7 @@ $(document).ready(function() {
         $(".lblAendern").css("display", "inline")
     });
     $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
+        console.log("PrevNav")
         "gipscAdmPrevious" == this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) :
         "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) :
@@ -1384,7 +1385,7 @@ $(document).ready(function() {
         "benPrevious" == this.id ? 0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) :
         "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() { organisationenEinlesen() }, 1500), setTimeout(function() { liegenschaftenEinlesen() }, 2E3), readInstanzen("orgFirst", 0)) :
         "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID--), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-        "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("stdFirst", 0)) :
+        "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("stdFirst", 0)) :
         "extDlPrevious" == this.id ? 0 < extDlNavID && (extDlNavID--, readInstanzen(this.id, extDlNavID)) :
         "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstENavID = mstBNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen(this.id, berNavID)) :
         "mstEPrevious" == this.id ? 0 < mstENavID && (mstENavID--, readInstanzen(this.id, mstENavID)) :
@@ -1635,154 +1636,153 @@ $(document).ready(function() {
         b = !0
     });
      $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
-        "gipscAdmSpeichern" ==
-        this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
-            "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "sAdmSpeichern" == this.id ? "" != $("#nameSAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameSAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "manGrpSpeichern" == this.id ? "" != $("#nameManGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameManGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "admSpeichern" == this.id ? "" != $("#nameAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display",
-                "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "benSpeichern" == this.id ? "" != $("#nameBen").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameBen").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "manSpeichern" == this.id ? "" != $("#nameAllgemeinMan").val() && 1 == b ? (instanzErstellen(this.id), mandantenEinlesen($("#betrGrpID").val(), "man_ID", $("#manID").val()), $(".manPfad").prop("selectedIndex", mandantenliste.length - 1), b = !1) : "" != $("#nameAllgemeinMan").val() && 0 == b ? (instanzSpeichern(this.id), $(".manPfad").prop("selectedIndex", manNavID)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "orgSpeichern" == this.id ? "" != $("#nameAllgemeinOrg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinOrg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "liegSpeichern" == this.id ? "" != $("#nameAllgemeinLieg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinLieg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "extDlSpeichern" == this.id ? "" != $("#nameExtDl").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameExtDl").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "berSpeichern" == this.id ? "" != $("#nameAllgemeinBer").val() && 1 == b ? (instanzErstellen(this.id), berNavID = $("#berCount").val(), b = !1) : "" != $("#nameAllgemeinBer").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "mstESpeichern" == this.id ? "" != $("#nameMstE").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstE").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
-            "mstBSpeichern" == this.id ? "" != $("#nameMstB").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstB").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
-            "stdSpeichern" == this.id ? "" != $("#nameStd").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStd").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "stdDrSpeichern" == this.id ? "" != $("#nameStdDr").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStdDr").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "anlSpeichern" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? $("#historyOrNot").dialog({
-                height: 400,
-                width: 450,
-                resize: "auto",
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    $("#histSpeichern").off("click");
-                    $("#histNichtSpeichern").off("click");
-                    $("#histOk").off("click");
-                    $("#histAbbrechen").off("click");
-                    $("#histSpeichern").on("click", function() {
-                        $("#infosBemerkungHist, #histOk").css("display", "inline");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "none")
-                    });
-                    $("#histNichtSpeichern").on("click", function() {
-                        $("#archiviertAnl").val("false");
-                        instanzSpeichern("anlSpeichern");
-                        $("#historyOrNot").dialog("close")
-                    });
-                    $("#histOk").on("click", function() {
-                        $("#archiviertAnl").val("true");
-                        instanzSpeichern("anlSpeichern");
-                        instanzErstellen("anlSpeichern");
-                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                        $("#infosBemerkungHist input").val("");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                        $("#historyOrNot").dialog("close")
-                    });
-                    $("#histAbbrechen").on("click", function() {
-                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                        $("#histSpeichern, #histNichtSpeichern").css("display",
-                            "inline");
-                        $("#infosBemerkungHist input").val("");
-                        $("#historyOrNot").dialog("close")
-                    })
-                },
-                close: function() {
-                    $("#infosBemerkungHist input").val("");
+        "gipscAdmSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+        "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "sAdmSpeichern" == this.id ? "" != $("#nameSAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameSAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "manGrpSpeichern" == this.id ? "" != $("#nameManGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameManGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "admSpeichern" == this.id ? "" != $("#nameAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display",
+            "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "benSpeichern" == this.id ? "" != $("#nameBen").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameBen").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "manSpeichern" == this.id ? "" != $("#nameAllgemeinMan").val() && 1 == b ? (instanzErstellen(this.id), mandantenEinlesen($("#betrGrpID").val(), "man_ID", $("#manID").val()), $(".manPfad").prop("selectedIndex", mandantenliste.length - 1), b = !1) : "" != $("#nameAllgemeinMan").val() && 0 == b ? (instanzSpeichern(this.id), $(".manPfad").prop("selectedIndex", manNavID)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "orgSpeichern" == this.id ? "" != $("#nameAllgemeinOrg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinOrg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "liegSpeichern" == this.id ? "" != $("#nameAllgemeinLieg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinLieg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "extDlSpeichern" == this.id ? "" != $("#nameExtDl").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameExtDl").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "berSpeichern" == this.id ? "" != $("#nameAllgemeinBer").val() && 1 == b ? (instanzErstellen(this.id), berNavID = $("#berCount").val(), b = !1) : "" != $("#nameAllgemeinBer").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "mstESpeichern" == this.id ? "" != $("#nameMstE").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstE").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+        "mstBSpeichern" == this.id ? "" != $("#nameMstB").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstB").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+        "stdSpeichern" == this.id ? "" != $("#nameStd").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStd").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "stdDrSpeichern" == this.id ? "" != $("#nameStdDr").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStdDr").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "anlSpeichern" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? $("#historyOrNot").dialog({
+            height: 400,
+            width: 450,
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open: function() {
+                $("#histSpeichern").off("click");
+                $("#histNichtSpeichern").off("click");
+                $("#histOk").off("click");
+                $("#histAbbrechen").off("click");
+                $("#histSpeichern").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "inline");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "none")
+                });
+                $("#histNichtSpeichern").on("click", function() {
+                    $("#archiviertAnl").val("false");
+                    instanzSpeichern("anlSpeichern");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histOk").on("click", function() {
+                    $("#archiviertAnl").val("true");
+                    instanzSpeichern("anlSpeichern");
+                    instanzErstellen("anlSpeichern");
                     $("#infosBemerkungHist, #histOk").css("display", "none");
-                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
-                } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? ($("#archiviertAnl").val(!0), instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "msmSpeichern" == this.id ? "" != $("#messmittelNrAllgemeinMsm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#messmittelNrAllgemeinMsm").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display",
-                "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (instanzErstellen(this.id), b = !1, energietrInDBoxLieg()) : "" != $("#nameEnt").val() && 0 == b ? (instanzSpeichern(this.id), energietrInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "enfSpeichern" == this.id ? "" != $("#nameEnf").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "eRngSpeichern" == this.id ? "" != $("#nrERng").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nrERng").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "intEngIMwSpeichern" == this.id ? instanzSpeichern(this.id) : "intBdeIMwSpeichern" == this.id ? instanzSpeichern(this.id) :
-            "eAnlSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "ePrdSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "grpDiagSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) :
-            "prdSpeichern" == this.id ? 1 == b ? ($("#archiviertPrd").val(!1), instanzErstellen(this.id, "neueGrp"), b = !1) : 0 == b ? $("#historyOrNot").dialog({
-                height: 400,
-                width: 450,
-                resize: "auto",
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    $("#histSpeichern,\n                                                        #histNichtSpeichern,\n                                                        #histOk,\n                                                        #histAbbrechen").off("click");
-                    $("#histSpeichern").on("click", function() {
-                        $("#infosBemerkungHist, #histOk").css("display", "inline");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "none")
-                    });
-                    $("#histNichtSpeichern").on("click", function() {
-                        $("#archiviertPrd").val("false");
-                        instanzSpeichern("prdSpeichern");
-                        $("#historyOrNot").dialog("close")
-                    });
-                    $("#histOk").on("click", function() {
-                        $("#archiviertPrd").val("true");
-                        instanzSpeichern("prdSpeichern");
-                        instanzErstellen("prdSpeichern");
-                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                        $("#infosBemerkungHist input").val("");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                        $("#historyOrNot").dialog("close")
-                    });
-                    $("#histAbbrechen").on("click", function() {
-                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                        $("#infosBemerkungHist input").val("");
-                        $("#historyOrNot").dialog("close")
-                    })
-                },
-                close: function() {
                     $("#infosBemerkungHist input").val("");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histAbbrechen").on("click", function() {
                     $("#infosBemerkungHist, #histOk").css("display", "none");
                     $("#histSpeichern, #histNichtSpeichern").css("display",
-                        "inline")
-                } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!" })) :
-            "betrParSpeichern" == this.id && (1 == b || 0 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+                        "inline");
+                    $("#infosBemerkungHist input").val("");
+                    $("#historyOrNot").dialog("close")
+                })
+            },
+            close: function() {
+                $("#infosBemerkungHist input").val("");
+                $("#infosBemerkungHist, #histOk").css("display", "none");
+                $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
+            } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? ($("#archiviertAnl").val(!0), instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "msmSpeichern" == this.id ? "" != $("#messmittelNrAllgemeinMsm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#messmittelNrAllgemeinMsm").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display",
+            "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (instanzErstellen(this.id), b = !1, energietrInDBoxLieg()) : "" != $("#nameEnt").val() && 0 == b ? (instanzSpeichern(this.id), energietrInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "enfSpeichern" == this.id ? "" != $("#nameEnf").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "eRngSpeichern" == this.id ? "" != $("#nrERng").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nrERng").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "intEngIMwSpeichern" == this.id ? instanzSpeichern(this.id) : "intBdeIMwSpeichern" == this.id ? instanzSpeichern(this.id) :
+        "eAnlSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "ePrdSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "grpDiagSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!"
+        })) :
+        "prdSpeichern" == this.id ? 1 == b ? ($("#archiviertPrd").val(!1), instanzErstellen(this.id, "neueGrp"), b = !1) : 0 == b ? $("#historyOrNot").dialog({
+            height: 400,
+            width: 450,
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open: function() {
+                $("#histSpeichern,\n                                                        #histNichtSpeichern,\n                                                        #histOk,\n                                                        #histAbbrechen").off("click");
+                $("#histSpeichern").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "inline");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "none")
+                });
+                $("#histNichtSpeichern").on("click", function() {
+                    $("#archiviertPrd").val("false");
+                    instanzSpeichern("prdSpeichern");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histOk").on("click", function() {
+                    $("#archiviertPrd").val("true");
+                    instanzSpeichern("prdSpeichern");
+                    instanzErstellen("prdSpeichern");
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#infosBemerkungHist input").val("");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histAbbrechen").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#infosBemerkungHist input").val("");
+                    $("#historyOrNot").dialog("close")
+                })
+            },
+            close: function() {
+                $("#infosBemerkungHist input").val("");
+                $("#infosBemerkungHist, #histOk").css("display", "none");
+                $("#histSpeichern, #histNichtSpeichern").css("display",
+                    "inline")
+            } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "betrParSpeichern" == this.id && (1 == b || 0 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
             })))
     });

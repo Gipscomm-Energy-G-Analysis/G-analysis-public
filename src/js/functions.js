@@ -1737,27 +1737,28 @@ try {
             readInstanzen("liegFirst", 0);
             liegNavID = 0;
             energietrInDBoxBer();
-            readInstanzen("berFirst", 0);
-            berNavID = 0;
-            readInstanzen("mstEFirst", 0);
-            mstENavID = 0;
-            readInstanzen("mstBFirst", 0);
-            mstBNavID = 0;
-            readInstanzen("msmFirst", 0);
-            msmNavID = 0;
-            readInstanzen("stdFirst", 0);
-            stdNavID = 0;
-            readInstanzen("anlFirst", 0);
-            anlNavID = 0;
-            readInstanzen("entFirst", 0);
-            entNavID = 0;
-            readInstanzen("enfFirst", 0);
-            enfNavID = 0;
-            readInstanzen("eRngFirst", 0);
-            eRngNavID = 0;
-            readInstanzen("iMwFirst", 0);
-            iMwNavID = 0;
-            readInstanzen("zpFirst", 0);
+            [ "ber"
+            , "mstE"
+            , "mstB"
+            , "msm"
+            , "std"
+            , "anl"
+            , "ent"
+            , "enf"
+            , "eRng"
+            , "iMw"
+            , "zp" ]
+            .forEach(ident => readInstanzen(`${ident}First`, 0))
+            berNavID =
+            mstENavID =
+            mstBNavID =
+            msmNavID =
+            stdNavID =
+            anlNavID =
+            entNavID =
+            enfNavID =
+            eRngNavID = 
+            iMwNavID =
             zpNavID = 0
         },
         mandantenEinlesen = function(a, b, e) {
@@ -4598,23 +4599,27 @@ try {
             $(".lblAendern").css("display", "none");
             var b = [];
             "gipscAdmHinz" == a ? b = ["#benutzernameGipscAdm", "#passwortGipscAdm"] : "betrGrpHinz" == a ? b = "#firmaBetrGrp #anzahlMitarbeiterBetrGrp #anschriftBetrGrp #plzBetrGrp #ortBetrGrp #geschaeftsfuehrerBetrGrp #telefonBetrGrp #emailBetrGrp #notizBetrGrp".split(" ") :
-                "sAdmHinz" == a ? b = "#titelSAdm #nameSAdm #vornameSAdm #emailSAdm #telefonSAdm #faxSAdm #mobiltelefonSAdm #benutzernameSAdm #passwortSAdm".split(" ") : "manGrpHinz" == a ? (b = ["#nameManGrp", "#kurzManGrp"], tblMandantengruppe.clear().draw()) : "admHinz" == a ? b = "#titelAdm #nameAdm #vornameAdm #emailAdm #telefonAdm #faxAdm #mobiltelefonAdm #benutzernameAdm #passwortAdm".split(" ") : "benHinz" == a ? b = "#titelBen #nameBen #vornameBen #emailBen #telefonBen #faxBen #mobiltelefonBen #benutzernameBen #passwortBen".split(" ") :
-                "manHinz" == a ? (b = "#manID #nameAllgemeinMan #dbKurz #holdingstrukturAllgemeinMan #liegenschaftenAllgemeinMan #titelSystemadminMan #nameSystemadminMan #vornameSystemadminMan #emailSystemadminMan #telefonSystemadminMan #faxSystemadminMan #mobiltelefonSystemadminMan #benutzernameSystemadminMan #passwortSystemadminMan".split(" "), $("#mehrbenutzerMan").prop("checked", !1)) : "orgHinz" == a ? b = "#orgID #nameAllgemeinOrg #gesellschaftsformAllgemeinOrg #firmenanschriftAllgemeinOrg #landAllgemeinOrg #plzAllgemeinOrg #ortAllgemeinOrg #hrbnummerAllgemeinOrg #titelGeschaeftsfuehrungOrg #nameGeschaeftsfuehrungOrg #vornameGeschaeftsfuehrungOrg #emailGeschaeftsfuehrungOrg #telefonGeschaeftsfuehrungOrg #faxGeschaeftsfuehrungOrg #mobiltelefonGeschaeftsfuehrungOrg #titelEnergiemanagementOrg #nameEnergiemanagementOrg #vornameEnergiemanagementOrg #emailEnergiemanagementOrg #telefonEnergiemanagementOrg #faxEnergiemanagementOrg #mobiltelefonEnergiemanagementOrg".split(" ") :
-                "liegHinz" == a ? (b = "#liegID #nameAllgemeinLieg #kuerzelAllgemeinLieg #gesellschaftsformAllgemeinLieg #anschriftAllgemeinLieg #landAllgemeinLieg #plzAllgemeinLieg #ortAllgemeinLieg #typAllgemeinLieg #titelAnsprechpartnerLieg #nameAnsprechpartnerLieg #vornameAnsprechpartnerLieg #emailAnsprechpartnerLieg #telefonAnsprechpartnerLieg #faxAnsprechpartnerLieg #mobiltelefonAnsprechpartnerLieg #titelEnergiebeauftragterLieg #nameEnergiebeauftragterLieg #vornameEnergiebeauftragterLieg #emailEnergiebeauftragterLieg #telefonEnergiebeauftragterLieg #faxEnergiebeauftragterLieg #mobiltelefonEnergiebeauftragterLieg #inputEnergietraeger1Lieg #inputEnergietraeger2Lieg #inputEnergietraeger3Lieg #inputEnergietraeger4Lieg #inputEnergietraeger5Lieg #inputEnergietraeger6Lieg #inputEnergietraeger7Lieg #inputEnergietraeger8Lieg #inputEnergietraeger9Lieg #energieform1Lieg #energieform2Lieg #energieform3Lieg #energieform4Lieg #energieform5Lieg #energieform6Lieg #energieform7Lieg #managementsystem1Lieg #erstzertifizierung1Lieg #managementsystem2Lieg #erstzertifizierung2Lieg #managementsystem3Lieg #erstzertifizierung3Lieg .energietraegerLieg".split(" "),
+            "sAdmHinz" == a ? b = "#titelSAdm #nameSAdm #vornameSAdm #emailSAdm #telefonSAdm #faxSAdm #mobiltelefonSAdm #benutzernameSAdm #passwortSAdm".split(" ") : "manGrpHinz" == a ? (b = ["#nameManGrp", "#kurzManGrp"], tblMandantengruppe.clear().draw()) : "admHinz" == a ? b = "#titelAdm #nameAdm #vornameAdm #emailAdm #telefonAdm #faxAdm #mobiltelefonAdm #benutzernameAdm #passwortAdm".split(" ") : "benHinz" == a ? b = "#titelBen #nameBen #vornameBen #emailBen #telefonBen #faxBen #mobiltelefonBen #benutzernameBen #passwortBen".split(" ") :
+            "manHinz" == a ? (b = "#manID #nameAllgemeinMan #dbKurz #holdingstrukturAllgemeinMan #liegenschaftenAllgemeinMan #titelSystemadminMan #nameSystemadminMan #vornameSystemadminMan #emailSystemadminMan #telefonSystemadminMan #faxSystemadminMan #mobiltelefonSystemadminMan #benutzernameSystemadminMan #passwortSystemadminMan".split(" "), $("#mehrbenutzerMan").prop("checked", !1)) : "orgHinz" == a ? b = "#orgID #nameAllgemeinOrg #gesellschaftsformAllgemeinOrg #firmenanschriftAllgemeinOrg #landAllgemeinOrg #plzAllgemeinOrg #ortAllgemeinOrg #hrbnummerAllgemeinOrg #titelGeschaeftsfuehrungOrg #nameGeschaeftsfuehrungOrg #vornameGeschaeftsfuehrungOrg #emailGeschaeftsfuehrungOrg #telefonGeschaeftsfuehrungOrg #faxGeschaeftsfuehrungOrg #mobiltelefonGeschaeftsfuehrungOrg #titelEnergiemanagementOrg #nameEnergiemanagementOrg #vornameEnergiemanagementOrg #emailEnergiemanagementOrg #telefonEnergiemanagementOrg #faxEnergiemanagementOrg #mobiltelefonEnergiemanagementOrg".split(" ") :
+            "liegHinz" == a ? (b = "#liegID #nameAllgemeinLieg #kuerzelAllgemeinLieg #gesellschaftsformAllgemeinLieg #anschriftAllgemeinLieg #landAllgemeinLieg #plzAllgemeinLieg #ortAllgemeinLieg #typAllgemeinLieg #titelAnsprechpartnerLieg #nameAnsprechpartnerLieg #vornameAnsprechpartnerLieg #emailAnsprechpartnerLieg #telefonAnsprechpartnerLieg #faxAnsprechpartnerLieg #mobiltelefonAnsprechpartnerLieg #titelEnergiebeauftragterLieg #nameEnergiebeauftragterLieg #vornameEnergiebeauftragterLieg #emailEnergiebeauftragterLieg #telefonEnergiebeauftragterLieg #faxEnergiebeauftragterLieg #mobiltelefonEnergiebeauftragterLieg #inputEnergietraeger1Lieg #inputEnergietraeger2Lieg #inputEnergietraeger3Lieg #inputEnergietraeger4Lieg #inputEnergietraeger5Lieg #inputEnergietraeger6Lieg #inputEnergietraeger7Lieg #inputEnergietraeger8Lieg #inputEnergietraeger9Lieg #energieform1Lieg #energieform2Lieg #energieform3Lieg #energieform4Lieg #energieform5Lieg #energieform6Lieg #energieform7Lieg #managementsystem1Lieg #erstzertifizierung1Lieg #managementsystem2Lieg #erstzertifizierung2Lieg #managementsystem3Lieg #erstzertifizierung3Lieg .energietraegerLieg".split(" "),
                     $("#eigenstaendigeformAllgemeinLieg").prop("checked", !1), $("#aktivAllgemeinLieg").prop("checked", !1), $("#hatDlAllgemeinLieg").prop("checked", !1), $("#energietraeger1Lieg").empty(), $("#energietraeger2Lieg").empty(), $("#energietraeger3Lieg").empty(), $("#energietraeger4Lieg").empty(), $("#energietraeger5Lieg").empty(), $("#energietraeger6Lieg").empty(), $("#energietraeger7Lieg").empty(), $("#energietraeger8Lieg").empty(), $("#energietraeger9Lieg").empty(), $("#entLiegErweitert").css("display", "none"), $("#weitereEntsLieg").text("weitere Energietr\u00e4ger")) :
-                "extDlHinz" == a ? (b = "#extDlID #nameExtDl #gesellschaftsformExtDl #anschriftExtDl #landExtDl #plzExtDl #ortExtDl #typExtDl #titelAnsprechpartnerExtDl #nameAnsprechpartnerExtDl #vornameAnsprechpartnerExtDl #emailAnsprechpartnerExtDl #telefonAnsprechpartnerExtDl #faxAnsprechpartnerExtDl #mobiltelefonAnsprechpartnerExtDl #energietraeger1ExtDl #messstelle1ExtDl #standort1ExtDl #energietraeger2ExtDl #messstelle2ExtDl #standort2ExtDl #energietraeger3ExtDl #messstelle3ExtDl #standort3ExtDl #energietraeger4ExtDl #messstelle4ExtDl #standort4ExtDl #energietraeger5ExtDl #messstelle5ExtDl #standort5ExtDl #energietraeger6ExtDl #messstelle6ExtDl #standort6ExtDl #energieRes1ExtDl #messstelleEngRes1ExtDl #standort1EngResExtDl #energieRes2ExtDl #messstelleEngRes2ExtDl #standort2EngResExtDl #energieRes3ExtDl #messstelleEngRes3ExtDl #standort3EngResExtDl #energieRes4ExtDl #messstelleEngRes4ExtDl #standort4EngResExtDl #energieRes5ExtDl #messstelleEngRes5ExtDl #standort5EngResExtDl #energieRes6ExtDl #messstelleEngRes6ExtDl #standort6EngResExtDl".split(" "),
-                    $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) : "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") :
-                "mstEHinz" == a ? (b = "#nameMstE #kurzbezeichnungMstE #kostenstelleMstE #energieformMstE #ortMstE #messartMstEE #messartMstBE #vorgelagerteMstE #messmittelBerechnungslogikMstE #berechnungslogikMstE #notizAllgemeinMstE #messmittelIDMstE #anlMstE #anlIDMstE".split(" "), $("#aktivMstE").prop("checked", !1)) :
-                "mstBHinz" == a ? (b = "#nameMstB #kurzbezeichnungMstB #kostenstelleMstB #energieformMstB #ortMstB #messartMstEB #messartMstBB #vorgelagerteMstB #messmittelBerechnungslogikMstB #berechnungslogikMstB #notizAllgemeinMstB #messmittelIDMstB #anlMstB #anlIDMstB".split(" "), $("#aktivMstB").prop("checked", !1)) :
-                    "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
-                "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
-                "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
+            "extDlHinz" == a ? (b = "#extDlID #nameExtDl #gesellschaftsformExtDl #anschriftExtDl #landExtDl #plzExtDl #ortExtDl #typExtDl #titelAnsprechpartnerExtDl #nameAnsprechpartnerExtDl #vornameAnsprechpartnerExtDl #emailAnsprechpartnerExtDl #telefonAnsprechpartnerExtDl #faxAnsprechpartnerExtDl #mobiltelefonAnsprechpartnerExtDl #energietraeger1ExtDl #messstelle1ExtDl #standort1ExtDl #energietraeger2ExtDl #messstelle2ExtDl #standort2ExtDl #energietraeger3ExtDl #messstelle3ExtDl #standort3ExtDl #energietraeger4ExtDl #messstelle4ExtDl #standort4ExtDl #energietraeger5ExtDl #messstelle5ExtDl #standort5ExtDl #energietraeger6ExtDl #messstelle6ExtDl #standort6ExtDl #energieRes1ExtDl #messstelleEngRes1ExtDl #standort1EngResExtDl #energieRes2ExtDl #messstelleEngRes2ExtDl #standort2EngResExtDl #energieRes3ExtDl #messstelleEngRes3ExtDl #standort3EngResExtDl #energieRes4ExtDl #messstelleEngRes4ExtDl #standort4EngResExtDl #energieRes5ExtDl #messstelleEngRes5ExtDl #standort5EngResExtDl #energieRes6ExtDl #messstelleEngRes6ExtDl #standort6EngResExtDl".split(" "),
+                    $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) :
+            "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") :
+            "mstEHinz" == a ? (b = "#nameMstE #kurzbezeichnungMstE #kostenstelleMstE #energieformMstE #ortMstE #messartMstEE #messartMstBE #vorgelagerteMstE #messmittelBerechnungslogikMstE #berechnungslogikMstE #notizAllgemeinMstE #messmittelIDMstE #anlMstE #anlIDMstE".split(" "), $("#aktivMstE").prop("checked", !1)) :
+            "mstBHinz" == a ? (b = "#nameMstB #kurzbezeichnungMstB #kostenstelleMstB #energieformMstB #ortMstB #messartMstEB #messartMstBB #vorgelagerteMstB #messmittelBerechnungslogikMstB #berechnungslogikMstB #notizAllgemeinMstB #messmittelIDMstB #anlMstB #anlIDMstB".split(" "), $("#aktivMstB").prop("checked", !1)) :
+            "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
+            "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
+            "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
                     a = $("#nameDB").val(), $(".anlageAnl").text(""), $("#aktivAllgemeinAnl").prop("checked", !1), $("#mehrProdukteAllgemeinAnl").prop("checked", !1), $("#betriebsstundenAllgemeinAnl").val(0), $("#produktionsmenge1AllgemeinAnl").val(0), $("#anschlussleistung1Anl").val(0), $("#mittlereAuslastungProzent1Anl").val(0), $("#mittlereAuslastungKw1Anl").val(0), $("#betriebstemperatur1Anl").val(0), $("#abwaerme1Anl").val(0), $("#anschlussleistung2Anl").val(0), $("#mittlereAuslastungProzent2Anl").val(0),
-                    $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) : "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
-                "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
+                    $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) :
+            "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
+            "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
                     $("#lblEntEinh2FaktorX1").text(""), $("#lblEntEinh3FaktorX1").text(""), $("#lblEntEinh1FaktorX2").text(""), $("#lblEntEinh2FaktorX2").text(""), $("#lblEntEinh3FaktorX2").text(""), $("#lblEntEinh1FaktorX3").text(""), $("#lblEntEinh2FaktorX3").text(""), $("#lblEntEinh3FaktorX3").text("")) : "enfHinz" == a ? (b = "#nameEnf #kuerzelEnf #notizEnf #einheit1Enf #einheit2Enf #einheit3Enf #enfEinh1FaktorKwh #enfEinh2FaktorKwh #enfEinh3FaktorKwh #enfEinh1FaktorCO2 #enfEinh2FaktorCO2 #enfEinh3FaktorCO2 #enfEinh1FaktorX1 #enfEinh2FaktorX1 #enfEinh3FaktorX1 #enfEinh1FaktorX2 #enfEinh2FaktorX2 #enfEinh3FaktorX2 #enfEinh1FaktorX3 #enfEinh2FaktorX3 #enfEinh3FaktorX3 #gueltigVomEnf #gueltigBisEnf".split(" "),
                     $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) : "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
-                "iMwHinz" == a ? b = [".iMwHinz"] : "intEngIMwFirst" == a ? b = [".iMwEngHinz"] : "eAnlHinz" == a ? (b = ["#nameEAnl", "#kuerzelEAnl", "#beschreibungEAnl", "#optionEAnl"], tblOptionenEAnl.clear().draw()) : "ePrdHinz" == a ? (b = ["#nameEPrd", "#kuerzelEPrd", "#beschreibungEPrd", "#optionEPrd"], tblOptionenEPrd.clear().draw()) : "zpHinz" == a ? b = ["#zaehlpunktNrZp", "#energietraegerZp", "#mstZp", "#messsystemZp", "#messgenauZp"] : "knzHinz" == a ? (b = "#bezKnz #instanzAllgemeinKnz #instanzAllgemeinIDKnz #zustaendigerMitarbeiterAllgemeinKnz #beschreibungAllgemeinKnz #bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
+            "iMwHinz" == a ? b = [".iMwHinz"] :
+            "intEngIMwFirst" == a ? b = [".iMwEngHinz"] :
+            "eAnlHinz" == a ? (b = ["#nameEAnl", "#kuerzelEAnl", "#beschreibungEAnl", "#optionEAnl"], tblOptionenEAnl.clear().draw()) : "ePrdHinz" == a ? (b = ["#nameEPrd", "#kuerzelEPrd", "#beschreibungEPrd", "#optionEPrd"], tblOptionenEPrd.clear().draw()) : "zpHinz" == a ? b = ["#zaehlpunktNrZp", "#energietraegerZp", "#mstZp", "#messsystemZp", "#messgenauZp"] : "knzHinz" == a ? (b = "#bezKnz #instanzAllgemeinKnz #instanzAllgemeinIDKnz #zustaendigerMitarbeiterAllgemeinKnz #beschreibungAllgemeinKnz #bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
                     uncheck_Ctrl({
                         firstPart: "#status",
                         secondPart: "Knz"
@@ -4623,8 +4628,8 @@ try {
                         secondPart: ""
                     }, {
                         von: 7,
-                        bis: 16
-                    })) : "knzOhneInstanz" == a && (b = "#bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
+                        bis: 16 })) :
+            "knzOhneInstanz" == a && (b = "#bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
                     $("#status1Knz").prop("checked", !1), $("#status2Knz").prop("checked", !1), $("#status3Knz").prop("checked", !1), $("#status4Knz").prop("checked", !1), $("#status5Knz").prop("checked", !1), $("#status6Knz").prop("checked", !1), $("#status7Knz").prop("checked", !1), $("#status8Knz").prop("checked", !1), $("#status9Knz").prop("checked", !1), $("#status10Knz").prop("checked", !1), $(".knzForms").eq(0).prop("aria-selected", true));
             b.forEach(function(a) {
                 $(a).val("")
@@ -4952,62 +4957,65 @@ try {
                             var c = $.parseJSON(a);
 
                             $("#liegCount").val(c.length);
-                            0 < c.length ? ($("#eigenstaendigeformAllgemeinLieg").prop("checked", c[b].eigenstaendigeFormLieg), $("#aktivAllgemeinLieg").prop("checked", c[b].aktivLieg), $("#hatDlAllgemeinLieg").prop("checked", c[b].hatDl), [
-                                    ["#liegID", "lieg_ID"],
-                                    ["#nameAllgemeinLieg", "nameLieg"],
-                                    ["#kuerzelAllgemeinLieg", "kuerzelLieg"],
-                                    ["#gesellschaftsformAllgemeinLieg", "gesellschaftsformLieg"],
-                                    ["#anschriftAllgemeinLieg", "anschriftLieg"],
-                                    ["#landAllgemeinLieg", "landLieg"],
-                                    ["#plzAllgemeinLieg", "plzLieg"],
-                                    ["#ortAllgemeinLieg","ortLieg"],
-                                    ["#typAllgemeinLieg", "typLieg"],
-                                    ["#titelAnsprechpartnerLieg", "titelAnsprechpartnerLieg"],
-                                    ["#nameAnsprechpartnerLieg", "nameAnsprechpartnerLieg"],
-                                    ["#vornameAnsprechpartnerLieg", "vornameAnsprechpartnerLieg"],
-                                    ["#emailAnsprechpartnerLieg", "eMailAnsprechpartnerLieg"],
-                                    ["#telefonAnsprechpartnerLieg", "telefonAnsprechpartnerLieg"],
-                                    ["#faxAnsprechpartnerLieg", "faxAnsprechpartnerLieg"],
-                                    ["#mobiltelefonAnsprechpartnerLieg", "mobiltelefonAnsprechpartnerLieg"],
-                                    ["#titelEnergiebeauftragterLieg", "titelEnergiebeauftragterLieg"],
-                                    ["#nameEnergiebeauftragterLieg", "nameEnergiebeauftragterLieg"],
-                                    ["#vornameEnergiebeauftragterLieg", "vornameEnergiebeauftragterLieg"],
-                                    ["#emailEnergiebeauftragterLieg", "eMailEnergiebeauftragterLieg"],
-                                    ["#telefonEnergiebeauftragterLieg", "telefonEnergiebeauftragterLieg"],
-                                    ["#faxEnergiebeauftragterLieg", "faxEnergiebeauftragterLieg"],
-                                    ["#mobiltelefonEnergiebeauftragterLieg", "mobiltelefonEnergiebeauftragterLieg"],
-                                    ["#inputEnergietraeger1Lieg", "energietraeger1"],
-                                    ["#inputEnergietraeger2Lieg", "energietraeger2"],
-                                    ["#inputEnergietraeger3Lieg", "energietraeger3"],
-                                    ["#inputEnergietraeger4Lieg", "energietraeger4"],
-                                    ["#inputEnergietraeger5Lieg", "energietraeger5"],
-                                    ["#inputEnergietraeger6Lieg", "energietraeger6"],
-                                    ["#inputEnergietraeger7Lieg", "energietraeger7"],
-                                    ["#inputEnergietraeger8Lieg", "energietraeger8"],
-                                    ["#inputEnergietraeger9Lieg", "energietraeger9"],
-                                    ["#energieform1Lieg", "energieform1"],
-                                    ["#energieform2Lieg", "energieform2"],
-                                    ["#energieform3Lieg", "energieform3"],
-                                    ["#energieform4Lieg", "energieform4"],
-                                    ["#energieform5Lieg", "energieform5"],
-                                    ["#energieform6Lieg", "energieform6"],
-                                    ["#energieform7Lieg", "energieform7"],
-                                    ["#managementsystem1Lieg", "managementsystem1"],
-                                    ["#erstzertifizierung1Lieg", "erstzertifizierung1"],
-                                    ["#managementsystem2Lieg", "managementsystem2"],
-                                    ["#erstzertifizierung2Lieg", "erstzertifizierung2"],
-                                    ["#managementsystem3Lieg", "managementsystem3"],
-                                    ["#erstzertifizierung3Lieg", "erstzertifizierung3"]
-                                ].forEach(function(a) {
-                                    $(a[0]).val(c[b][a[1]])
-                                }), toggleExtDl("#hatDlAllgemeinLieg"),
-                                "" != $("#inputEnergietraeger7Lieg").val() ?
-                                $("#entLiegErweitert").css("display", "block") :
-                                $("#entLiegErweitert").css("display", "none"),
-                                energietrInDBoxLieg(),
-                                $(".liegPfad").val(c[b].nameLieg),
-                                readInstanzen("berFirst", 0)) :
-                                clearFields("liegHinz")
+                            0 < c.length ?
+                            ($("#eigenstaendigeformAllgemeinLieg").prop("checked", c[b].eigenstaendigeFormLieg),
+                            $("#aktivAllgemeinLieg").prop("checked", c[b].aktivLieg),
+                            $("#hatDlAllgemeinLieg").prop("checked", c[b].hatDl),
+                            [ ["#liegID", "lieg_ID"]
+                            , ["#nameAllgemeinLieg", "nameLieg"]
+                            , ["#kuerzelAllgemeinLieg", "kuerzelLieg"]
+                            , ["#gesellschaftsformAllgemeinLieg", "gesellschaftsformLieg"]
+                            , ["#anschriftAllgemeinLieg", "anschriftLieg"]
+                            , ["#landAllgemeinLieg", "landLieg"]
+                            , ["#plzAllgemeinLieg", "plzLieg"]
+                            , ["#ortAllgemeinLieg","ortLieg"]
+                            , ["#typAllgemeinLieg", "typLieg"]
+                            , ["#titelAnsprechpartnerLieg", "titelAnsprechpartnerLieg"]
+                            , ["#nameAnsprechpartnerLieg", "nameAnsprechpartnerLieg"]
+                            , ["#vornameAnsprechpartnerLieg", "vornameAnsprechpartnerLieg"]
+                            , ["#emailAnsprechpartnerLieg", "eMailAnsprechpartnerLieg"]
+                            , ["#telefonAnsprechpartnerLieg", "telefonAnsprechpartnerLieg"]
+                            , ["#faxAnsprechpartnerLieg", "faxAnsprechpartnerLieg"]
+                            , ["#mobiltelefonAnsprechpartnerLieg", "mobiltelefonAnsprechpartnerLieg"]
+                            , ["#titelEnergiebeauftragterLieg", "titelEnergiebeauftragterLieg"]
+                            , ["#nameEnergiebeauftragterLieg", "nameEnergiebeauftragterLieg"]
+                            , ["#vornameEnergiebeauftragterLieg", "vornameEnergiebeauftragterLieg"]
+                            , ["#emailEnergiebeauftragterLieg", "eMailEnergiebeauftragterLieg"]
+                            , ["#telefonEnergiebeauftragterLieg", "telefonEnergiebeauftragterLieg"]
+                            , ["#faxEnergiebeauftragterLieg", "faxEnergiebeauftragterLieg"]
+                            , ["#mobiltelefonEnergiebeauftragterLieg", "mobiltelefonEnergiebeauftragterLieg"]
+                            , ["#inputEnergietraeger1Lieg", "energietraeger1"]
+                            , ["#inputEnergietraeger2Lieg", "energietraeger2"]
+                            , ["#inputEnergietraeger3Lieg", "energietraeger3"]
+                            , ["#inputEnergietraeger4Lieg", "energietraeger4"]
+                            , ["#inputEnergietraeger5Lieg", "energietraeger5"]
+                            , ["#inputEnergietraeger6Lieg", "energietraeger6"]
+                            , ["#inputEnergietraeger7Lieg", "energietraeger7"]
+                            , ["#inputEnergietraeger8Lieg", "energietraeger8"]
+                            , ["#inputEnergietraeger9Lieg", "energietraeger9"]
+                            , ["#energieform1Lieg", "energieform1"]
+                            , ["#energieform2Lieg", "energieform2"]
+                            , ["#energieform3Lieg", "energieform3"]
+                            , ["#energieform4Lieg", "energieform4"]
+                            , ["#energieform5Lieg", "energieform5"]
+                            , ["#energieform6Lieg", "energieform6"]
+                            , ["#energieform7Lieg", "energieform7"]
+                            , ["#managementsystem1Lieg", "managementsystem1"]
+                            , ["#erstzertifizierung1Lieg", "erstzertifizierung1"]
+                            , ["#managementsystem2Lieg", "managementsystem2"]
+                            , ["#erstzertifizierung2Lieg", "erstzertifizierung2"]
+                            , ["#managementsystem3Lieg", "managementsystem3"]
+                            , ["#erstzertifizierung3Lieg", "erstzertifizierung3"]
+                            ].forEach(function(a) {
+                                $(a[0]).val(c[b][a[1]])
+                            }), toggleExtDl("#hatDlAllgemeinLieg"),
+                            "" != $("#inputEnergietraeger7Lieg").val() ?
+                            $("#entLiegErweitert").css("display", "block") :
+                            $("#entLiegErweitert").css("display", "none"),
+                            energietrInDBoxLieg(),
+                            $(".liegPfad").val(c[b].nameLieg),
+                            readInstanzen("berFirst", 0)) :
+                            clearFields("liegHinz")
 
                         }
                     });
@@ -5106,7 +5114,9 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
+
                             $("#berCount").val(c.length);
+
                             0 < c.length ?
                             ($("#ber").text(c[b].nameBer),
                             [ ["#berID", "ber_ID"]
@@ -5119,12 +5129,9 @@ try {
                             , ["#levelAuswahlAllgemeinBer", "ausgewaehltesLevelBer"]
                             , ["#vorgelagerteBereiche1AllgemeinBer", "vorgelagerterBereich1Ber"]
                             , ["#vorgelagerteBereiche2AllgemeinBer", "vorgelagerterBereich2Ber"]
-                            ].forEach(function(a) {
-                                $(a[0]).val(c[b][a[1]])
-                            }),
+                            ].forEach(a => $(a[0]).val(c[b][a[1]])),
                             readInstanzen("mstEFirst", 0),
-                            readInstanzen("mstBFirst", 0)
-                            ) : 
+                            readInstanzen("mstBFirst", 0)) :
                             clearFields("berHinz")
                         }
                     });
@@ -5136,7 +5143,7 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
-                        $("#mstECount").val(result.length);
+                        $("#mstECount").val(result.length)
 
                         0 < result.length ?
                         (toggleMsmBerechnungslogik(result[b].messartMst)("E"),
@@ -5157,9 +5164,7 @@ try {
                         , ["#berechnungslogikMstE", "messmittelBerechnungslogikMstNormal"]
                         , ["#messmittelIDMstE", "msm_ID"]
                         , ["#notizAllgemeinMstE", "notizMst"]
-                        ].forEach(function(a) {
-                            $(a[0]).val(result[b][a[1]])
-                        })) :
+                        ].forEach(a => $(a[0]).val(result[b][a[1]]))) :
                         clearFields("mstEHinz")
                     })
                     break;
@@ -5170,31 +5175,28 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
-                        $("#mstCount").val(result.length);
+                        $("#mstBCount").val(result.length)
 
                         0 < result.length ?
                         (toggleMsmBerechnungslogik(result[b].messartMst)("B"),
                         $("#aktivMst").prop("checked", result[b].aktivMst),
                         $("#istDlMst").prop("checked", result[b].isDurchleitung),
-                                [
-                                    ["#mstID", "mst_ID"],
-                                    ["#nameMstB", "nameMSt"],
-                                    ["#kurzbezeichnungMstB", "kurzbezeichnungMst"],
-                                    ["#kostenstelleMstB", "kostenstelleMst"],
-                                    ["#beschreibungMstB", "beschreibung"],
-                                    ["#ortMstB", "ortMst"],
-                                    ["#messartMstB", "messartMst"],
-                                    ["#vorgelagerteMstB", "vorgelagerteMessstelleMst"],
-                                    ["#anlMstB", "anl"],
-                                    ["#anlIDMstB", "anl_ID"],
-                                    ["#messmittelBerechnungslogikMstB", "msm"],
-                                    ["#berechnungslogikMstB", "messmittelBerechnungslogikMstNormal"],
-                                    ["#messmittelIDMstB", "msm_ID"],
-                                    ["#notizAllgemeinMstB", "notizMst"]
-                                ].forEach(function(a) {
-                                    $(a[0]).val(result[b][a[1]])
-                                })) :
-                            clearFields("mstBHinz")
+                        [ ["#mstID", "mst_ID"]
+                        , ["#nameMstB", "nameMSt"]
+                        , ["#kurzbezeichnungMstB", "kurzbezeichnungMst"]
+                        , ["#kostenstelleMstB", "kostenstelleMst"]
+                        , ["#beschreibungMstB", "beschreibung"]
+                        , ["#ortMstB", "ortMst"]
+                        , ["#messartMstB", "messartMst"]
+                        , ["#vorgelagerteMstB", "vorgelagerteMessstelleMst"]
+                        , ["#anlMstB", "anl"]
+                        , ["#anlIDMstB", "anl_ID"]
+                        , ["#messmittelBerechnungslogikMstB", "msm"]
+                        , ["#berechnungslogikMstB", "messmittelBerechnungslogikMstNormal"]
+                        , ["#messmittelIDMstB", "msm_ID"]
+                        , ["#notizAllgemeinMstB", "notizMst"]
+                        ].forEach(a => $(a[0]).val(result[b][a[1]]))) :
+                        clearFields("mstBHinz")
                     })
                     break;
                 case "std":
