@@ -5107,22 +5107,25 @@ try {
                         success: function(a) {
                             var c = $.parseJSON(a);
                             $("#berCount").val(c.length);
-                            0 < c.length ? ($("#ber").text(c[b].nameBer), [
-                                ["#berID", "ber_ID"],
-                                ["#nameAllgemeinBer", "nameBer"],
-                                ["#bereichAllgemeinAnl", "nameBer"],
-                                ["#kurzbezeichnungAllgemeinBer", "kurzbezeichnungBer"],
-                                ["#KostenstelleAllgemeinBer", "kostenstelleBer"],
-                                ["#ortBer", "ortBer"],
-                                ["#notizAllgemeinBer", "notizBer"],
-                                ["#levelAuswahlAllgemeinBer", "ausgewaehltesLevelBer"],
-                                ["#vorgelagerteBereiche1AllgemeinBer",
-                                    "vorgelagerterBereich1Ber"
-                                ],
-                                ["#vorgelagerteBereiche2AllgemeinBer", "vorgelagerterBereich2Ber"]
+                            0 < c.length ?
+                            ($("#ber").text(c[b].nameBer),
+                            [ ["#berID", "ber_ID"]
+                            , ["#nameAllgemeinBer", "nameBer"]
+                            , ["#bereichAllgemeinAnl", "nameBer"]
+                            , ["#kurzbezeichnungAllgemeinBer", "kurzbezeichnungBer"]
+                            , ["#KostenstelleAllgemeinBer", "kostenstelleBer"]
+                            , ["#ortBer", "ortBer"]
+                            , ["#notizAllgemeinBer", "notizBer"]
+                            , ["#levelAuswahlAllgemeinBer", "ausgewaehltesLevelBer"]
+                            , ["#vorgelagerteBereiche1AllgemeinBer", "vorgelagerterBereich1Ber"]
+                            , ["#vorgelagerteBereiche2AllgemeinBer", "vorgelagerterBereich2Ber"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
-                            })) : clearFields("berHinz")
+                            }),
+                            readInstanzen("mstEFirst", 0),
+                            readInstanzen("mstBFirst", 0)
+                            ) : 
+                            clearFields("berHinz")
                         }
                     });
                     break;
@@ -5139,26 +5142,25 @@ try {
                         (toggleMsmBerechnungslogik(result[b].messartMst)("E"),
                         $("#aktivMstE").prop("checked", result[b].aktivMst),
                         $("#istDlMstE").prop("checked", result[b].isDurchleitung),
-                                [
-                                    ["#mstID", "mst_ID"],
-                                    ["#nameMstE", "nameMSt"],
-                                    ["#kurzbezeichnungMstE", "kurzbezeichnungMst"],
-                                    ["#kostenstelleMstE", "kostenstelleMst"],
-                                    ["#energietraegerMstE", "energietraegerMst"],
-                                    ["#energieformMstE", "energieformMst"],
-                                    ["#ortMstE", "ortMst"],
-                                    ["#messartMstE", "messartMst"],
-                                    ["#vorgelagerteMstE", "vorgelagerteMessstelleMst"],
-                                    ["#anlMstE", "anl"],
-                                    ["#anlIDMstE", "anl_ID"],
-                                    ["#messmittelBerechnungslogikMstE", "msm"],
-                                    ["#berechnungslogikMstE", "messmittelBerechnungslogikMstNormal"],
-                                    ["#messmittelIDMstE", "msm_ID"],
-                                    ["#notizAllgemeinMstE", "notizMst"]
-                                ].forEach(function(a) {
-                                    $(a[0]).val(result[b][a[1]])
-                                })) :
-                            clearFields("mstEHinz")
+                        [ ["#mstID", "mst_ID"]
+                        , ["#nameMstE", "nameMSt"]
+                        , ["#kurzbezeichnungMstE", "kurzbezeichnungMst"]
+                        , ["#kostenstelleMstE", "kostenstelleMst"]
+                        , ["#energietraegerMstE", "energietraegerMst"]
+                        , ["#energieformMstE", "energieformMst"]
+                        , ["#ortMstE", "ortMst"]
+                        , ["#messartMstE", "messartMst"]
+                        , ["#vorgelagerteMstE", "vorgelagerteMessstelleMst"]
+                        , ["#anlMstE", "anl"]
+                        , ["#anlIDMstE", "anl_ID"]
+                        , ["#messmittelBerechnungslogikMstE", "msm"]
+                        , ["#berechnungslogikMstE", "messmittelBerechnungslogikMstNormal"]
+                        , ["#messmittelIDMstE", "msm_ID"]
+                        , ["#notizAllgemeinMstE", "notizMst"]
+                        ].forEach(function(a) {
+                            $(a[0]).val(result[b][a[1]])
+                        })) :
+                        clearFields("mstEHinz")
                     })
                     break;
                 case "mstB":
