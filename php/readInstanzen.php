@@ -314,6 +314,9 @@ elseif($id == "betrPar"){
 
   $query = "SELECT * FROM config.betriebsparameter ";
 
+} elseif($id == 'admSuchen') {
+    $query = "SELECT * FROM admins ";
+    //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 }
 
 $records = queryDB($conn, $query, "read") ;

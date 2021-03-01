@@ -4683,7 +4683,6 @@ try {
             })
         }, readInstanzen = function(a, b, e) {
             
-            console.log('next: '+a+' : '+b+' : '+e);
             $(".lblNeu").css("display", "none");
             $(".lblAendern").css("display",
                 "inline");
@@ -4790,6 +4789,7 @@ try {
                     });
                     break;
                 case "adm":
+                    var record_set = $('#' + a).data("record");
                     "optMan" == $("#manOderManGrp").val() ? (a = "man_ID", e = $("#manRechteID").val()) : (a = "manGrp_ID", e = $("#manGrpID").val());
                     $.ajax({
                         type: "POST",
@@ -4799,7 +4799,8 @@ try {
                             id: "adm",
                             nameDB: "gipscomm",
                             ins: a,
-                            insID: e
+                            insID: e,
+                            recordSet:record_set
                         },
                         fail: function() {
                             alert("failed!!")
@@ -4827,9 +4828,6 @@ try {
                 case "ben":
                     var record_set = $('#' + a).data("record");
                     "optMan" == $("#manOderManGrp").val() ? (a = "man_ID", e = $("#manRechteID").val()) : (a = "manGrp_ID", e = $("#manGrpID").val());
-                    
-                    
-                    console.log('recordSet: '+record_set);
                     $.ajax({
                         type: "POST",
                         async: !0,
@@ -9771,6 +9769,56 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         colReorder: !0
     });
     tblAnlagen = $("#anlagenListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblAdminlisteErstellen = $("#tblAdminlisteErstellen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+     tblBenutzerlisteErstellen = $("#tblBenutzerlisteErstellen").DataTable({
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -17374,3 +17422,106 @@ function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate
         });
     }
  }
+
+ /*Ajax Call for the admin 22-02-2021*/
+function adminlisteErstellen() {
+    var a = itemSessionGet("nameDB");
+    //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "admSuchen",
+            nameDB: "gipscomm"
+        },
+        success: function(e) {
+            console.log('Working fine');
+            e = json(e);
+            //console.log(e);
+
+            tblAdminlisteErstellen.colReorder.reset();
+            tblAdminlisteErstellen.clear().draw();
+            for (var c = 0; c < e.length; c++) {
+                console.log(e[c].email);
+                tblAdminlisteErstellen.row.add([
+                    e[c].titel,
+                    e[c].name,
+                    e[c].vorname,
+                    e[c].username,
+                    e[c].email,
+                    e[c].telefon,
+                    e[c].mobiltelefon
+                ]).draw();
+            }
+            $("#admListeContainer").css("display", "block");
+            $("#admListeContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    console.log('open popup');
+                }
+            })
+        }
+    })
+}
+
+function benutzerlisteErstellen() {
+    var a = itemSessionGet("nameDB");
+    //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "admSuchen",
+            nameDB: "gipscomm"
+        },
+        success: function(e) {
+            console.log('Working fine');
+            e = json(e);
+            //console.log(e);
+
+            tblBenutzerlisteErstellen.colReorder.reset();
+            tblBenutzerlisteErstellen.clear().draw();
+            for (var c = 0; c < e.length; c++) {
+                console.log(e[c].email);
+                tblBenutzerlisteErstellen.row.add([
+                    e[c].titel,
+                    e[c].name,
+                    e[c].vorname,
+                    e[c].username,
+                    e[c].email,
+                    e[c].telefon,
+                    e[c].mobiltelefon
+                ]).draw();
+            }
+            $("#benutzerListeContainer").css("display", "block");
+            $("#benutzerListeContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    console.log('open popup');
+                }
+            })
+        }
+    })
+}

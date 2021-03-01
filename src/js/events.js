@@ -1282,6 +1282,12 @@ $(document).ready(function() {
     $("#knzSuchen").click(function() {
         kennzahlInstanzenlisteErstellen()
     });
+    $("#admSuchen").click(function() {
+        adminlisteErstellen()
+    });
+        $("#benSuchen").click(function() {
+        benutzerlisteErstellen()
+    });
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
         switch ($("#bermstmod").val()) {

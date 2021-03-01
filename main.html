@@ -9370,51 +9370,95 @@
             <tbody></tbody>
         </table>
     </div>
-            <div id="externeJsDateien">
-                <script type="text/javascript" src="dist/js/jquery.min.js" crossorigin="anonymous"></script>
-                <script type="text/javascript">
-                   $.ajax({
-                     type: 'POST',
-                     async: true,
-                     url: 'php/getLoginState.php',
-                     data: {
+    <div id="admListeContainer" style="display:none;font-size:12px;">
+        <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
+            
+        </div> -->
+        <div id="buttonsUndTabelle" style="margin-left:0px;">
+            <table id="tblAdminlisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                <thead>
+                    <tr>
+                        <th>Titel</th>
+                        <th>Name</th>
+                        <th>Vorname</th>
+                        <th>Benutzername</th>
+                        <th>E-Mail</th>
+                        <th>Telefon</th>
+                        <th>Mobiltelefon</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
 
-                     },
-                     success: function (records) {
-                       if(records){
 
-                       } else {
-                         window.open("index.html", "_self");
-                       }
-                     }
-                   });
-                </script>
-                <script type="text/javascript" src="dist/js/jqueryui/jquery-ui.min.js"></script>
-                <script type="text/javascript" src="dist/js/mathquill/mathquill.min.js"></script>
-                <script type="text/javascript" src="dist/js/table2csv.min.js"></script>
-                <script type="text/javascript" src="dist/js/FileSaver.min.js"></script>
-                <script type="text/javascript" src="dist/js/tableExport.min.js"></script>
-                <script type="text/javascript" src="dist/js/date_fns.min.js"></script>
-                <script type="text/javascript" src="dist/js/d3.v3.min.js"></script>
-                <script type="text/javascript" src="dist/js/jquery.dataTables.min.js"></script>
-                <script type="text/javascript" src="dist/js/dataTables.buttons.min.js"></script>
-                <script type="text/javascript" src="dist/js/dataTables.colReorder.min.js"></script>
-                <script type="text/javascript" src="dist/js/buttons.flash.min.js"></script>
-                <script type="text/javascript" src="dist/js/jszip.min.js"></script>
-                <script type="text/javascript" src="dist/js/pdfmake.min.js"></script>
-                <script type="text/javascript" src="dist/js/vfs_fonts.min.js"></script>
-                <script type="text/javascript" src="dist/js/buttons.html5.min.js"></script>
-                <script type="text/javascript" src="dist/js/buttons.print.min.js"></script>
-                <script type="text/javascript" src="dist/js/jspdf.debug.min.js"></script>
-                <script type="text/javascript" src="dist/js/printThis.min.js"></script>
-                <script type="text/javascript" src="dist/js/fpCore.min.js"></script>
-                <script type="text/javascript" src="dist/js/Synchronizer.min.js"></script>
-                <script type="text/javascript" src="dist/js/DataMachine.min.js"></script>
-                <script type="text/javascript" src="dist/js/objects.min.js"></script>
-                <script type="text/javascript" src="src/js/functions.js"></script>
-                <script type="text/javascript" src="src/js/events.js"></script>
-        		<script src="dist/js/pace.min.js" type="text/javascript"></script>
-            </div>
+    <div id="benutzerListeContainer" style="display:none;font-size:12px;">
+        <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
+            
+        </div> -->
+        <div id="buttonsUndTabelle" style="margin-left:0px;">
+            <table id="tblBenutzerlisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                <thead>
+                    <tr>
+                        <th>Titel</th>
+                        <th>Name</th>
+                        <th>Vorname</th>
+                        <th>Benutzername</th>
+                        <th>E-Mail</th>
+                        <th>Telefon</th>
+                        <th>Mobiltelefon</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div id="externeJsDateien">
+        <script type="text/javascript" src="dist/js/jquery.min.js" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+           $.ajax({
+             type: 'POST',
+             async: true,
+             url: 'php/getLoginState.php',
+             data: {
+
+             },
+             success: function (records) {
+               if(records){
+
+               } else {
+                 window.open("index.html", "_self");
+               }
+             }
+           });
+        </script>
+        <script type="text/javascript" src="dist/js/jqueryui/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="dist/js/mathquill/mathquill.min.js"></script>
+        <script type="text/javascript" src="dist/js/table2csv.min.js"></script>
+        <script type="text/javascript" src="dist/js/FileSaver.min.js"></script>
+        <script type="text/javascript" src="dist/js/tableExport.min.js"></script>
+        <script type="text/javascript" src="dist/js/date_fns.min.js"></script>
+        <script type="text/javascript" src="dist/js/d3.v3.min.js"></script>
+        <script type="text/javascript" src="dist/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="dist/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="dist/js/dataTables.colReorder.min.js"></script>
+        <script type="text/javascript" src="dist/js/buttons.flash.min.js"></script>
+        <script type="text/javascript" src="dist/js/jszip.min.js"></script>
+        <script type="text/javascript" src="dist/js/pdfmake.min.js"></script>
+        <script type="text/javascript" src="dist/js/vfs_fonts.min.js"></script>
+        <script type="text/javascript" src="dist/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="dist/js/buttons.print.min.js"></script>
+        <script type="text/javascript" src="dist/js/jspdf.debug.min.js"></script>
+        <script type="text/javascript" src="dist/js/printThis.min.js"></script>
+        <script type="text/javascript" src="dist/js/fpCore.min.js"></script>
+        <script type="text/javascript" src="dist/js/Synchronizer.min.js"></script>
+        <script type="text/javascript" src="dist/js/DataMachine.min.js"></script>
+        <script type="text/javascript" src="dist/js/objects.min.js"></script>
+        <script type="text/javascript" src="src/js/functions.js"></script>
+        <script type="text/javascript" src="src/js/events.js"></script>
+		<script src="dist/js/pace.min.js" type="text/javascript"></script>
+    </div>
          </div>
       </div>
    </body>
