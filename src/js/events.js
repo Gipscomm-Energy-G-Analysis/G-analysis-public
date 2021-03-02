@@ -905,6 +905,9 @@ $(document).ready(function() {
     $("#berSuchenOrt, #ortSuchenMstE, #ortSuchenMstB, #anlAuswahlStd").click(function() {
         standorteAuswahllisteErstellen(this)
     });
+    $("#extDlSuchenMstE, #extDlSuchenMstB").click(function() {
+        durchleitungAuswahllisteErstellen(this)
+    });
     $("#anlAuswahlZugVerbr1, #anlAuswahlZugVerbr2 ,#anlAuswahlZugVerbr3, #anlAuswahlZugVerbr4, #anlAuswahlZugVerbr5, #anlAuswahlZugVerbr6").click(function() {
         anlagenAuswahllisteErstellen(this.id)
     });

@@ -2876,6 +2876,64 @@ try {
                     }
                 })
             })
+        }, durchleitungAuswahllisteErstellen = function(a) {
+            nameDB = $("#nameDB").val()
+            liegID = $("#liegID").val()
+
+            ajaxPost("php/getExtDurchleitungen.php")({nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameExtDl
+                        , a.anschriftExtDl
+                        , `${a.nameAnsprechpartnerExtDl}, ${a.vornameAnsprechpartnerExtDl}`
+                        ]
+                    )
+
+                const fillStandorteTbl =
+                    data => {
+                        clearTable(tblExtDurchleitungenAuswahl)
+                        intoTable(tblExtDurchleitungenAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblExtDurchleitungenAuswahl.row(this_).data()
+
+                        "extDlSuchenMstE" === a.id ?
+                        $("#dlAnMstE").val(head(selectedData)) :
+                        $("#dlAnMstB").val(head(selectedData)) 
+                    }
+
+                    fillStandorteTbl(result)
+
+                    $("#extDurchleitungenAuswahlContainer").css("display", "block")
+                    $("#extDurchleitungenAuswahlContainer").dialog({
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblExtDurchleitungenAuswahl tbody tr").css("cursor", "pointer")
+                        $("#tblExtDurchleitungenAuswahl tbody").off("dblclick", "tr")
+                        $("#tblExtDurchleitungenAuswahl tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#extDurchleitungenAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
+            })
         }, kanalauswahlTabelleErstellen = function(a) {
             $.ajax({
                 type: "POST",
@@ -9767,6 +9825,31 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 columns: ":visible"
             }
         }*/],
+        pageLength: 20,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblExtDurchleitungenAuswahl = $("#tblExtDurchleitungenAuswahl").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
         pageLength: 20,
         bAutoWidth: !1,
         colReorder: !0
