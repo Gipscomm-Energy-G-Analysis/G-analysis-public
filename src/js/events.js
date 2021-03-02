@@ -1285,8 +1285,17 @@ $(document).ready(function() {
     $("#admSuchen").click(function() {
         adminlisteErstellen()
     });
-        $("#benSuchen").click(function() {
+    $("#benSuchen").click(function() {
         benutzerlisteErstellen()
+    });
+    $("#betrGrpSuchen").click(function() {
+        betrGrplisteErstellen()
+    });
+    $("#sAdmSuchen").click(function() {
+        sAdmSuchenlisteErstellen()
+    });
+    $("#gipscAdmSuchen").click(function() {
+        gipscAdmSuchenlisteErstellen()
     });
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
@@ -1352,7 +1361,7 @@ $(document).ready(function() {
     $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious,\n                    #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious,\n                    #mstPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious,\n                    #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious,\n                    #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "gipscAdmPrevious" ==
         this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) : "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) : "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) : "manGrpPrevious" == this.id ? 0 < manGrpNavID && (manGrpNavID--, readInstanzen(this.id, manGrpNavID)) : "admPrevious" == this.id ? 0 < admNavID && (admNavID--, readInstanzen(this.id, admNavID)) : "benPrevious" == this.id ?
-            0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) : "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() {
+            (0 < benNavID) && (benNavID--, readInstanzen(this.id, benNavID)) : "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() {
                 organisationenEinlesen()
             }, 1500), setTimeout(function() {
                 liegenschaftenEinlesen()
@@ -1379,8 +1388,7 @@ $(document).ready(function() {
         $(".lblAendern").css("display", "inline")
     });
     $("#gipscAdmLast, #betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast,\n                            #orgLast, #liegLast, #extDlLast, #berLast, #mstLast, #stdLast, #stdDrLast,\n                            #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast,\n                            #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
-        "gipscAdmLast" ==
-        this.id ? (gipscAdmNavID = $("#gipscAdmCount").val() - 1, readInstanzen(this.id, gipscAdmNavID)) : "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) : "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) : "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) : "admLast" == this.id ? (admNavID = $("#admCount").val() - 1, readInstanzen(this.id, admNavID)) :
+        "gipscAdmLast" == this.id ? (gipscAdmNavID = $("#gipscAdmCount").val() - 1, readInstanzen(this.id, gipscAdmNavID)) : "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) : "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) : "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) : "admLast" == this.id ? (admNavID = $("#admCount").val() - 1, readInstanzen(this.id, admNavID)) :
             "benLast" == this.id ? (benNavID = $("#benCount").val() - 1, readInstanzen(this.id, benNavID)) : "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) : "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) : "liegLast" == this.id ? (liegNavID =
                 $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0)) : "extDlLast" == this.id ? (extDlNavID = $("#extDlCount").val() - 1, readInstanzen(this.id, extDlNavID)) : "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) : "mstLast" == this.id ? (mstNavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstNavID)) : "stdLast" == this.id ?
             (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) : "stdDrLast" == this.id ? (stdDrNavID = $("#stdDrCount").val() - 1, readInstanzen(this.id, stdDrNavID)) : "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) : "msmLast" == this.id ? (msmNavID = $("#msmCount").val() - 1, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) : "prdLast" == this.id ? (prdNavID = $("#prdCount").val() - 1, readInstanzen(this.id, prdNavID)) : "entLast" == this.id ? (entNavID = $("#entCount").val() -
