@@ -902,7 +902,7 @@ $(document).ready(function() {
     $("#btnAnlOeffnen").click(function() {
         $("#anlMenu").trigger("click")
     });
-    $("#berSuchenOrt, #ortSuchenMst, #anlAuswahlStd").click(function() {
+    $("#berSuchenOrt, #ortSuchenMstE, #ortSuchenMstB, #anlAuswahlStd").click(function() {
         standorteAuswahllisteErstellen(this)
     });
     $("#anlAuswahlZugVerbr1, #anlAuswahlZugVerbr2 ,#anlAuswahlZugVerbr3, #anlAuswahlZugVerbr4, #anlAuswahlZugVerbr5, #anlAuswahlZugVerbr6").click(function() {

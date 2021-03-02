@@ -2818,44 +2818,63 @@ try {
                 }
             })
         }, standorteAuswahllisteErstellen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getStandorte.php",
-                data: {
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblStandorteAuswahl.colReorder.reset();
-                    tblStandorteAuswahl.clear().draw();
-                    for (var e = 0; e < b.length; e++) tblStandorteAuswahl.row.add([b[e].nameStd, b[e].kurzbezeichnungStd, b[e].flaecheStd]).draw();
+            nameDB = $("#nameDB").val()
+            liegID = $("#liegID").val()
+
+            ajaxPost("php/getStandorte.php")({nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameStd
+                        , a.kurzbezeichnungStd
+                        , a.flaecheStd
+                        ]
+                    )
+
+                const fillStandorteTbl =
+                    data => {
+                        clearTable(tblStandorteAuswahl)
+                        intoTable(tblStandorteAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblStandorteAuswahl.row(this_).data()
+
+                        "berSuchenOrt" === a.id ? $("#ortBer").val(head(selectedData)) :
+                        "ortSuchenMstE" === a.id ? $("#ortMstE").val(head(selectedData)) :
+                        "ortSuchenMstB" === a.id ? $("#ortMstB").val(head(selectedData)) :
+                        "anlAuswahlStd" === a.id && $("#standortAllgemeinAnl").val(head(selectedData))
+                    }
+
+                    fillStandorteTbl(result)
+
                     $("#standorteAuswahlContainer").css("display", "block");
                     $("#standorteAuswahlContainer").dialog({
-                        height: $(window).height() - .25 * $(window).height(),
-                        width: $(window).width() - .25 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblStandorteAuswahl tbody tr").css("cursor",
-                                "pointer");
-                            $("#tblStandorteAuswahl tbody").off("dblclick", "tr");
-                            $("#tblStandorteAuswahl tbody").on("dblclick", "tr", function() {
-                                var b = tblStandorteAuswahl.row(this).data();
-                                "berSuchenOrt" == a.id ? $("#ortBer").val(b[0]) : "ortSuchenMst" == a.id ? $("#ortMst").val(b[0]) : "anlAuswahlStd" == a.id && $("#standortAllgemeinAnl").val(b[0]);
-                                $("#standorteAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblStandorteAuswahl tbody tr").css("cursor", "pointer");
+                        $("#tblStandorteAuswahl tbody").off("dblclick", "tr");
+                        $("#tblStandorteAuswahl tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#standorteAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, kanalauswahlTabelleErstellen = function(a) {
             $.ajax({
