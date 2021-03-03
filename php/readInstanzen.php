@@ -51,13 +51,10 @@ for($n = 1; $n < count($mandantenIDs);$n++){
 
 elseif($id == "adm"){
 
-  $ins = $_POST['ins'];
-  $idIns = $_POST['insID'];
-  if(!empty($idIns)) {
-    $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
-  } else {
-    $query = "SELECT * FROM admins";
-  }
+  // $ins = $_POST['ins'];
+  // $idIns = $_POST['insID'];
+  // $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
+  $query = "SELECT * FROM admins";
 }
 
 elseif($id == "ben"){
