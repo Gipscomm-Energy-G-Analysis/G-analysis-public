@@ -24,9 +24,10 @@ $query = "SELECT * FROM betreuerGruppen";
 }
 
 elseif($id == "sAdm"){
-
-$betrGrpID = $_POST['betrGrpID'];
-$query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID'";
+// Comment By Jayesh
+//$betrGrpID = $_POST['betrGrpID'];
+//$query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID'";
+$query = "SELECT * FROM superAdmins";
 }
 
 elseif($id == "manGrp"){
@@ -51,10 +52,12 @@ for($n = 1; $n < count($mandantenIDs);$n++){
 elseif($id == "adm"){
 
   $ins = $_POST['ins'];
-
   $idIns = $_POST['insID'];
-  $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
-
+  if(!empty($idIns)) {
+    $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
+  } else {
+    $query = "SELECT * FROM admins";
+  }
 }
 
 elseif($id == "ben"){
@@ -66,9 +69,9 @@ elseif($id == "ben"){
     } elseif ($recordSet == 'last') {
         $query = "SELECT TOP 1 * FROM benutzer ORDER BY man_ID DESC";
     } elseif ($recordSet == 'next') {
-        $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
+        $query = "SELECT * FROM benutzer"; //WHERE $ins = '$idIns'";
     } elseif ($recordSet == 'previous') {
-        $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
+        $query = "SELECT * FROM benutzer"; //WHERE $ins = '$idIns'";
     } else {
         $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
     }
