@@ -24,10 +24,8 @@ $query = "SELECT * FROM betreuerGruppen";
 }
 
 elseif($id == "sAdm"){
-// Comment By Jayesh
-//$betrGrpID = $_POST['betrGrpID'];
-//$query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID'";
-$query = "SELECT * FROM superAdmins";
+$betrGrpID = $_POST['betrGrpID'];
+$query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID'";
 }
 
 elseif($id == "manGrp"){

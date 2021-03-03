@@ -17676,7 +17676,8 @@ function sAdmSuchenlisteErstellen() {
         url: "php/readInstanzen.php",
         data: {
             id: "sAdm",
-            nameDB: "gipscomm"
+            nameDB: "gipscomm",
+            betrGrpID: $('#betrGrpID').val()
         },
         success: function(e) {
             console.log('Working fine');
