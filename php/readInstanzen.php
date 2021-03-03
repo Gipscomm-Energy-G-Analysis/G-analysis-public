@@ -49,16 +49,29 @@ for($n = 1; $n < count($mandantenIDs);$n++){
 
 elseif($id == "adm"){
 
-  // $ins = $_POST['ins'];
-  // $idIns = $_POST['insID'];
-  // $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
-  $query = "SELECT * FROM admins";
+  $ins = $_POST['ins'];
+  $idIns = $_POST['insID'];
+  //$query = "SELECT * FROM admins WHERE $ins = '$idIns'";
+  // $query = "SELECT * FROM admins";
+  $recordSet = $_POST['recordSet'];
+    if($recordSet == 'first') {
+        $query = "SELECT TOP (1) * FROM admins ";
+    } elseif ($recordSet == 'last') {
+        $query = "SELECT TOP 1 * FROM admins ORDER BY man_ID DESC";
+    } elseif ($recordSet == 'next') {
+        $query = "SELECT * FROM admins"; //WHERE $ins = '$idIns'";
+    } elseif ($recordSet == 'previous') {
+        $query = "SELECT * FROM admins"; //WHERE $ins = '$idIns'";
+    } else {
+        $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
+    }
 }
 
 elseif($id == "ben"){
     $ins = $_POST['ins'];
     $idIns = $_POST['insID'];
     $recordSet = $_POST['recordSet'];
+    
     if($recordSet == 'first') {
         $query = "SELECT TOP (1) * FROM benutzer ";
     } elseif ($recordSet == 'last') {
@@ -70,7 +83,6 @@ elseif($id == "ben"){
     } else {
         $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
     }
-
 }
 
 elseif($id == "man"){
