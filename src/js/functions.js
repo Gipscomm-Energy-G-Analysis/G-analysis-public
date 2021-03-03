@@ -4701,6 +4701,9 @@ try {
                         },
                         success: function(a) {
                             a = $.parseJSON(a);
+                            if(b == -1) {
+                                b = a.length - 1;
+                            }
                             0 < a.length ? ($("#gipscAdmCount").val(a.length), $("#gipscAdmID").val(a[b].gipsAdm_ID), $("#benutzernameGipscAdm").val(a[b].username)) : clearFields("gipscAdm")
                         }
                     });
@@ -4852,6 +4855,9 @@ try {
 
                         success: function(a) {
                             var c = $.parseJSON(a);
+                            if(b == -1) {
+                                b = c.length - 1;
+                            }
                             0 < c.length ? ($("#benCount").val(c.length),
                                 [ ["#benID", "ben_ID"]
                                 , ["#titelBen", "titel"]
@@ -5901,7 +5907,7 @@ try {
                 data: {
                     id: "gipscAdm",
                     nameDB: "gipscomm",
-                    gipscAdmID: $("gipscAdmID").val(),
+                    gipscAdmID: $("#gipscAdmID").val(),
                     modus: "save",
                     benutzername: $("#benutzernameGipscAdm").val(),
                     passwort: getHash($("#passwortGipscAdm").val())
