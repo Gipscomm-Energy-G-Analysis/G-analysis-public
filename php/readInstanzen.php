@@ -53,6 +53,7 @@ elseif($id == "adm"){
   $idIns = $_POST['insID'];
   $recordSet = $_POST['recordSet'];
 
+  $query = '';
   if(!empty($idIns)) {
     $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
   }
@@ -74,13 +75,13 @@ elseif($id == "ben"){
     $ins = $_POST['ins'];
     $idIns = $_POST['insID'];
     $recordSet = $_POST['recordSet'];
-    
+    $query = '';
     if(!empty($idIns)) {
       $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
     }
 
     // Comment By Jayesh
-    
+
     // if($recordSet == 'first') {
     //     $query = "SELECT TOP (1) * FROM benutzer ";
     // } elseif ($recordSet == 'last') {
