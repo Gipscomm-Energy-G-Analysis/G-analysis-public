@@ -2974,7 +2974,7 @@ try {
                 }
             })
         }, messmittelAuswahllisteErstellen = function(a) {
-            const id = a
+            const id = a.id
             const nameDB = $("#nameDB").val()
             const liegID = $("#liegID").val()
 
