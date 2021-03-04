@@ -4815,9 +4815,6 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
-                            if(b == -1) {
-                                b = c.length - 1;
-                            }
                             0 < c.length ? ($("#admCount").val(c.length),
                             [
                               ["#admID", "adm_ID"]
@@ -4855,9 +4852,6 @@ try {
 
                         success: function(a) {
                             var c = $.parseJSON(a);
-                            if(b == -1) {
-                                b = c.length - 1;
-                            }
                             0 < c.length ? ($("#benCount").val(c.length),
                                 [ ["#benID", "ben_ID"]
                                 , ["#titelBen", "titel"]
