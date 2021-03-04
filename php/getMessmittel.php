@@ -11,7 +11,7 @@ $conn = connectToDB($nameDB);
 $id = $_POST['id'];
 $liegID = $_POST['liegID'];
 
-if ( $id == "msmSuchen" || $id == "msmMst" ) {
+if ( $id == "msmSuchen" || $id == "msmSuchenMstE" || $id == "msmSuchenMstB" ) {
 	$query1 = "SELECT * FROM messmittel ";
 	$query1 .= "WHERE lieg_ID = '$liegID'";
 	$query1 .= "AND deleted <> 'true' ";

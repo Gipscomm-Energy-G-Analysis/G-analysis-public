@@ -2818,8 +2818,8 @@ try {
                 }
             })
         }, standorteAuswahllisteErstellen = function(a) {
-            nameDB = $("#nameDB").val()
-            liegID = $("#liegID").val()
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
 
             ajaxPost("php/getStandorte.php")({nameDB, liegID})
             .then(result => {
@@ -2893,7 +2893,7 @@ try {
                         ]
                     )
 
-                const fillStandorteTbl =
+                const fillDurchleitungenTbl =
                     data => {
                         clearTable(tblExtDurchleitungenAuswahl)
                         intoTable(tblExtDurchleitungenAuswahl)(prepareTableData(data))
@@ -2905,10 +2905,10 @@ try {
 
                         "extDlSuchenMstE" === a.id ?
                         $("#dlAnMstE").val(head(selectedData)) :
-                        $("#dlAnMstB").val(head(selectedData)) 
+                        $("#dlAnMstB").val(head(selectedData))
                     }
 
-                    fillStandorteTbl(result)
+                    fillDurchleitungenTbl(result)
 
                     $("#extDurchleitungenAuswahlContainer").css("display", "block")
                     $("#extDurchleitungenAuswahlContainer").dialog({
@@ -2974,91 +2974,152 @@ try {
                 }
             })
         }, messmittelAuswahllisteErstellen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessmittel.php",
-                data: {
-                    id: a,
-                    liegID: $("#liegID").val(),
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblMessmittel.clear().draw();
-                    for (var e = 0; e < b.length; e++) tblMessmittel.row.add([b[e].nrMsm, b[e].typNrMsm, b[e].anlageMsm, b[e].energietraegerMsm, b[e].msm_ID]).draw();
+            const id = a
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            ajaxPost("php/getMessmittel.php")({id, nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nrMsm
+                        , a.typNrMsm
+                        , a.anlageMsm
+                        , a.energietraegerMsm
+                        , a.msm_ID
+                        ]
+                    )
+
+                const fillMessmittelTbl =
+                    data => {
+                        clearTable(tblMessmittel)
+                        intoTable(tblMessmittel)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblMessmittel.row(this_).data()
+
+                        "msmSuchenMstE" === a.id ?
+                        ($("#messmittelBerechnungslogikMstE").val(head(selectedData)), $("#messmittelIDMstE").val(selectedData[4])) :
+                        ($("#messmittelBerechnungslogikMstB").val(head(selectedData)), $("#messmittelIDMstB").val(selectedData[4]))
+                    }
+
+                    fillMessmittelTbl(result)
+
                     $("#messmittelAuswahlContainer").css("display", "block");
                     $("#messmittelAuswahlContainer").dialog({
-                        height: 400,
-                        width: 600,
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessmittel tbody tr").css("cursor", "pointer");
-                            $("#tblMessmittel tbody").off("dblclick", "tr");
-                            $("#tblMessmittel tbody").on("dblclick", "tr", function() {
-                                var b =
-                                    tblMessmittel.row(this).data();
-                                "msmMst" == a && ($("#messmittelBerechnungslogikMst").val(b[0]), $("#messmittelIDMst").val(b[4]), sync.setCurrentLocation(CurrentLocation.MESSSTELLENVERWALTUNG), sync.setIDMessstelle($("#mstID").val()), sync.setIDMessmittel($("#messmittelIDMst").val()), sync.synchronize());
-                                $("#messmittelAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessmittel tbody tr").css("cursor", "pointer");
+                        $("#tblMessmittel tbody").off("dblclick", "tr");
+                        $("#tblMessmittel tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#messmittelAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, anlagenAuswahllisteErstellen = function(a, b) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getAnlagen.php",
-                data: {
-                    ins: a,
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val(),
-                    orgID: $("#orgID").val()
-                },
-                success: function(e) {
-                    e = JSON.parse(e);
-                    tblAnlagenII.colReorder.reset();
-                    tblAnlagenII.clear().draw();
-                    for (var c = 0; c < e.length; c++) tblAnlagenII.row.add([e[c].nummerAnl, e[c].bezeichnungAnl, e[c].typAnl, e[c].custom1Anl, e[c].custom2Anl, e[c].custom3Anl, e[c].custom4Anl, e[c].custom5Anl, e[c].custom6Anl, e[c].anl_ID]).draw();
+            const ins = a
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+            const orgID = $("#orgID").val()
+
+            ajaxPost("php/getAnlagen.php")({ins, nameDB, liegID, orgID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nummerAnl
+                        , a.bezeichnungAnl
+                        , a.typAnl
+                        , a.custom1Anl
+                        , a.custom2Anl
+                        , a.custom3Anl
+                        , a.custom4Anl
+                        , a.custom5Anl
+                        , a.custom6Anl
+                        , a.anl_ID
+                        ]
+                    )
+
+                const fillAnlagenTbl =
+                    data => {
+                        clearTable(tblAnlagenII)
+                        intoTable(tblAnlagenII)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        for (var c = tblAnlagenII.row(this_).data(), e = []; e.length;) e.pop();
+                        e = a.split("Verbr");
+                        "anlMsm" == a ? ($("#anlMsm").val(c[0] + " " + c[1]), $("#anlIDMsm").val(c[9])) :
+                        "anlMstE" == a ? ($("#anlMstE").val(c[0] + " " + c[1]), $("#anlIDMstE").val(c[9])) :
+                        "anlMstB" == a ? ($("#anlMstB").val(c[0] + " " + c[1]), $("#anlIDMstB").val(c[9])) :
+                        "imgBtnAnlage1Prd" == a ? ($("#inpAnlage1Prd").val(c[0] + " " + c[1]), $("#inpAnlage1IDPrd").val(c[9])) :
+                        "imgBtnAnlage2Prd" == a ? ($("#inpAnlage2Prd").val(c[0] + " " + c[1]), $("#inpAnlage2IDPrd").val(c[9])) :
+                        "imgBtnAnlage3Prd" == a ? ($("#inpAnlage3Prd").val(c[0] + " " + c[1]), $("#inpAnlage3IDPrd").val(c[9])) :
+                        "imgBtnAnlage4Prd" == a ? ($("#inpAnlage4Prd").val(c[0] + " " + c[1]), $("#inpAnlage4IDPrd").val(c[9])) :
+                        "imgBtnAnlage5Prd" == a ? ($("#inpAnlage5Prd").val(c[0] + " " + c[1]), $("#inpAnlage5IDPrd").val(c[9])) :
+                        "imgBtnAnlage6Prd" == a ? ($("#inpAnlage6Prd").val(c[0] + " " + c[1]), $("#inpAnlage6IDPrd").val(c[9])) :
+                        "imgBtnAnlage7Prd" == a ? ($("#inpAnlage7Prd").val(c[0] + " " + c[1]), $("#inpAnlage7IDPrd").val(c[9])) :
+                        "imgBtnAnlage8Prd" == a ? ($("#inpAnlage8Prd").val(c[0] + " " + c[1]), $("#inpAnlage8IDPrd").val(c[9])) :
+                        "imgBtnAnlage9Prd" == a ? ($("#inpAnlage9Prd").val(c[0] + " " + c[1]), $("#inpAnlage9IDPrd").val(c[9])) :
+                        "imgBtnAnlage1PrdHist" == a ? $("#inpAnlage1PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage2PrdHist" == a ? $("#inpAnlage2PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage3PrdHist" == a ? $("#inpAnlage3PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage4PrdHist" == a ? $("#inpAnlage4PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage5PrdHist" == a ? $("#inpAnlage5PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage6PrdHist" == a ? $("#inpAnlage6PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage7PrdHist" == a ? $("#inpAnlage7PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage8PrdHist" == a ? $("#inpAnlage8PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage9PrdHist" == a ? $("#inpAnlage9PrdHist").val(c[0] + " " + c[1]) :
+                        0 < e.length && "anlAuswahlZug" == e[0] ? ($("#zugeordneterVerbraucher" + e[1] + "AllgemeinAnl").val(c[0] + " " + c[1]), $("#zugeordneterVerbraucherID" + e[1] + "AllgemeinAnl").val(c[9])) :
+                        "anlVorlFrm" == a && (e = "[" + (c[0] + "_" + c[1]).trim().replace(/\s/g, "_") + "]", c = "anl_" + c[9], $("#inpAuswahlVorlFrmIns" + b).val(e), $("#inpAuswahlVorlFrmIDIns" + b).val(c))
+                    }
+
+                    fillAnlagenTbl(result)
+
                     $("#anlagenlisteAuswahlContainer").css("display", "block");
                     $("#anlagenlisteAuswahlContainer").dialog({
-                        height: $(window).height() - .125 * $(window).height(),
-                        width: $(window).width() -
-                            .125 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblAnlagenListe2 tbody tr").css("cursor", "pointer");
-                            $("#tblAnlagenListe2 tbody").off("dblclick");
-                            $("#tblAnlagenListe2 tbody").on("dblclick", "tr", function() {
-                                for (var c = tblAnlagenII.row(this).data(), e = []; e.length;) e.pop();
-                                e = a.split("Verbr");
-                                "anlMsm" == a ? ($("#anlMsm").val(c[0] + " " + c[1]), $("#anlIDMsm").val(c[9])) : "anlMst" == a ? ($("#anlMst").val(c[0] + " " + c[1]), $("#anlIDMst").val(c[9])) :
-                                    "imgBtnAnlage1Prd" == a ? ($("#inpAnlage1Prd").val(c[0] + " " + c[1]), $("#inpAnlage1IDPrd").val(c[9])) : "imgBtnAnlage2Prd" == a ? ($("#inpAnlage2Prd").val(c[0] + " " + c[1]), $("#inpAnlage2IDPrd").val(c[9])) : "imgBtnAnlage3Prd" == a ? ($("#inpAnlage3Prd").val(c[0] + " " + c[1]), $("#inpAnlage3IDPrd").val(c[9])) : "imgBtnAnlage4Prd" == a ? ($("#inpAnlage4Prd").val(c[0] + " " + c[1]), $("#inpAnlage4IDPrd").val(c[9])) : "imgBtnAnlage5Prd" == a ? ($("#inpAnlage5Prd").val(c[0] + " " + c[1]), $("#inpAnlage5IDPrd").val(c[9])) : "imgBtnAnlage6Prd" == a ? ($("#inpAnlage6Prd").val(c[0] +
-                                        " " + c[1]), $("#inpAnlage6IDPrd").val(c[9])) : "imgBtnAnlage7Prd" == a ? ($("#inpAnlage7Prd").val(c[0] + " " + c[1]), $("#inpAnlage7IDPrd").val(c[9])) : "imgBtnAnlage8Prd" == a ? ($("#inpAnlage8Prd").val(c[0] + " " + c[1]), $("#inpAnlage8IDPrd").val(c[9])) : "imgBtnAnlage9Prd" == a ? ($("#inpAnlage9Prd").val(c[0] + " " + c[1]), $("#inpAnlage9IDPrd").val(c[9])) : "imgBtnAnlage1PrdHist" == a ? $("#inpAnlage1PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage2PrdHist" == a ? $("#inpAnlage2PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage3PrdHist" == a ? $("#inpAnlage3PrdHist").val(c[0] +
-                                        " " + c[1]) : "imgBtnAnlage4PrdHist" == a ? $("#inpAnlage4PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage5PrdHist" == a ? $("#inpAnlage5PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage6PrdHist" == a ? $("#inpAnlage6PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage7PrdHist" == a ? $("#inpAnlage7PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage8PrdHist" == a ? $("#inpAnlage8PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage9PrdHist" == a ? $("#inpAnlage9PrdHist").val(c[0] + " " + c[1]) : 0 < e.length && "anlAuswahlZug" == e[0] ? ($("#zugeordneterVerbraucher" + e[1] + "AllgemeinAnl").val(c[0] +
-                                        " " + c[1]), $("#zugeordneterVerbraucherID" + e[1] + "AllgemeinAnl").val(c[9])) : "anlVorlFrm" == a && (e = "[" + (c[0] + "_" + c[1]).trim().replace(/\s/g, "_") + "]", c = "anl_" + c[9], $("#inpAuswahlVorlFrmIns" + b).val(e), $("#inpAuswahlVorlFrmIDIns" + b).val(c));
-                                $("#anlagenlisteAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblAnlagenListe2 tbody tr").css("cursor", "pointer");
+                        $("#tblAnlagenListe2 tbody").off("dblclick", "tr");
+                        $("#tblAnlagenListe2 tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#anlagenlisteAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, messstellenAuswahllisteErstellen = function(a, b, e) {
             $.ajax({

@@ -928,23 +928,16 @@ $(document).ready(function() {
             this.id ? a = "mstEngRes6ExtDl" : "imgBtnMstDiag11" == this.id ? a = "mstDiag1" : "imgBtnMstDiag12" == this.id ? a = "mstDiag2" : "imgBtnMstDiag13" == this.id ? a = "mstDiag3" : "imgBtnMstDiag2" == this.id ? a = "mstCompDiag" : "imgBtnMstDatenexport" == this.id ? a = "mstDatenexport" : "mstSuchenVergl1" == this.id ? a = "mstSuchenVergl1" : "mstSuchenVergl2" == this.id && (a = "mstSuchenVergl2");
         messstellenAuswahllisteErstellen(a, b)
     });
-    $("#msmSuchenMst").click(function() {
-        switch ($("#messartMst").val()) {
-            case "manuell":
-            case "automatisch":
-                messmittelAuswahllisteErstellen("msmMst");
-                break;
-            case "berechnet":
-                formelAuswahllisteErstellen("frmMst");
-                break;
-            default:
-                alert('$("#msmSuchenMst").click(): No fitting case !!')
-        }
+    $("#msmSuchenMstE, #msmSuchenMstB").click(function() {
+        messmittelAuswahllisteErstellen(this)
     });
-    $("#msmSuchenAnlage, #mstSuchenAnlage").click(function() {
-        var a;
-        "msmSuchenAnlage" == this.id ? a = "anlMsm" : "mstSuchenAnlage" == this.id && (a = "anlMst");
-        anlagenAuswahllisteErstellen(a)
+    $("#msmSuchenAnlage, #mstESuchenAnlage, #mstBSuchenAnlage").click(function() {
+        const ident =
+            "msmSuchenAnlage" == this.id ? "anlMsm" :
+            "mstESuchenAnlage" == this.id ? "anlMstE" :
+            "anlMstB"
+
+        anlagenAuswahllisteErstellen(ident)
     });
     $(".msmSuchen").click(function() {
         messmittellisteErstellen()
@@ -1206,8 +1199,7 @@ $(document).ready(function() {
     });
     $("#menuVorlagenformeln, #menuBerechnungsformeln, #menuProduktionAusw, #verbExportMenu, #mstVerglMenu, #zeitVerglMenu, #knzDarst").click(function() {
         $("#auswertungen").css("display", "block");
-        $("#manuell").css("display",
-            "none");
+        $("#manuell").css("display", "none");
         $("#optionen").css("display", "none");
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id);
