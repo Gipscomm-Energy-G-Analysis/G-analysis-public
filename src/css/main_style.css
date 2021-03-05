@@ -1197,15 +1197,16 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 }
 
 
-/*21-09-2020*/
-.btnShowRecordsAnl{
+/*21-09-2020*/ /*added class btnShowRecordsAnlPrdkt 03-03-2021*/
+.btnShowRecordsAnl,
+.btnShowRecordsAnlPrdkt{
   float: right;
   padding-bottom: 27px;
   padding-right: 3px;
 }
 
 /*22-09-2020*/
-#btnMassEingAnl,#btnShowRecordsAnlBtn{
+#btnMassEingAnl,#btnShowRecordsAnlBtn,#btnMassEingMst{
   background-color: white !important;
   cursor: pointer !important;
 }
@@ -1223,7 +1224,8 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
   width: 1.5cm !important;
 }
 
-.wochenInputZeitintervallAnl{
+.wochenInputZeitintervallAnl,
+.wochenInputZeitintervallAnlPrdkt{
   width: 1.2cm !important;
 }
 

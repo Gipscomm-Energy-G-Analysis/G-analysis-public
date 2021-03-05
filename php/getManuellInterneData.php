@@ -60,6 +60,9 @@ elseif($id == 'intBdeIMw'){
 
 	}
 }elseif($id == 'KeinZeitintervallTbl'){
+
+	   $typ = $_POST['typ'];
+
 	   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
 	   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
 	   $query .= "ON T1.mst_ID = T2.mst_ID ";
@@ -69,9 +72,12 @@ elseif($id == 'intBdeIMw'){
 	   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
 	   $query .= "WHERE T1.deleted <> 'true' ";
 	   $query .= "AND T1.messartMst = 'manuell' ";
+	   $query .= "AND T1.typ = '$typ' ";
+	   
 }elseif($id == 'SearchKeinZeitintervallTbl'){
 	   /*new-mm-start*/
 	   $checkboxSearch = $_POST['checkboxSearch'];
+	   $typ = $_POST['typ'];
 	   if($checkboxSearch == 1){
 		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
 		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
@@ -82,6 +88,7 @@ elseif($id == 'intBdeIMw'){
 		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
 		   $query .= "WHERE T1.deleted <> 'true' ";
 		   $query .= "AND T1.messartMst = 'manuell' ";
+		   $query .= "AND T1.typ = '$typ' ";
 		}
 		elseif($checkboxSearch == 2){
 		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
@@ -93,6 +100,7 @@ elseif($id == 'intBdeIMw'){
 		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
 		   $query .= "WHERE T1.deleted <> 'true' ";
 		   $query .= "AND T1.messartMst = 'manuell' ";
+		   $query .= "AND T1.typ = '$typ' ";
 		   $query .= "AND NULLIF(T2.startDate,'') IS NOT NULL ";
 		   /*WHERE
 		    NULLIF(x,'') IS NOT NULL
@@ -109,6 +117,7 @@ elseif($id == 'intBdeIMw'){
 		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
 		   $query .= "WHERE T1.deleted <> 'true' ";
 		   $query .= "AND T1.messartMst = 'manuell' ";
+		   $query .= "AND T1.typ = '$typ' ";
 		   $query .= "AND NULLIF(T2.startDate,'') IS NULL ";
 
            
@@ -471,6 +480,54 @@ elseif($id == 'intBdeIMw'){
     $query .= "AND T1.on_week <= '$endWeek' ";
 	$query .= "AND T1.on_date <= '$endDate' ";
 	}
+}elseif($id == 'ProdukteTbl'){
+	    $query  = "SELECT DISTINCT prd_ID,ca.[col] as anl_Col, ca.[id] as anl_ID, namePrd,artikelNrPrd,anlagen.[bezeichnungAnl]"; 
+	    $query .= " FROM produkte"; 
+	    $query .= " CROSS APPLY (";
+        $query .= " Values  ('anl01_ID' , anl01_ID),('anl02_ID' , anl02_ID),('anl03_ID' , anl03_ID),";
+        $query .= "         ('anl04_ID' , anl04_ID),('anl05_ID' , anl05_ID),('anl06_ID' , anl06_ID),";
+		$query .= "         ('anl07_ID' , anl07_ID),('anl08_ID' , anl08_ID),('anl09_ID' , anl09_ID)";
+        $query .= " )AS CA (col, id)";
+        $query .= " LEFT JOIN anlagen ON ca.[id] =  anlagen.anl_ID";
+        $query .= " Where anl_ID != 0";
+
+}elseif($id == 'ProdukteAnlDataTbl'){
+	   //$query  = "SELECT prd_id as prd_ID, anl_col as anl_Col, anl_id as anl_ID, produkte.[namePrd],produkte.[artikelNrPrd],anlagen.[bezeichnungAnl]"; 
+	    // $query = "SELECT prd_id ,type FROM produktionsAnlagenMoreOpt As T1 ";
+     //    $query .= " LEFT JOIN produkte AS T2";
+     //    $query .= " ON T1.prd_id =  T2.prd_ID";
+     //    $query .= " LEFT JOIN anlagen AS T3 ";
+     //    $query .= " ON T1.anl_id =  T3.anl_ID";
+     //    $query .= " WHERE produktionsAnlagenMoreOpt.type = 2";
+	$query = "SELECT DISTINCT T1.prd_id,T1.anl_col,T1.anl_id,T1.type ,T2.namePrd,T2.artikelNrPrd,T3.bezeichnungAnl FROM produktionsAnlagenMoreOpt As T1";
+	$query .= " LEFT JOIN produkte AS T2 ON T1.prd_id = T2.prd_ID";
+    $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
+    $query .= " WHERE T1.type = 2";
+
+
+}elseif($id == 'displayDataPrdkt'){
+
+	    $Prd_Id = $_POST['Prd_Id'];
+	    $Anl_Col = $_POST['Anl_Col'];
+	    $Anl_Id = $_POST['Anl_Id'];
+
+	    $query  = " SELECT namePrd, artikelNrPrd , anlagen.[bezeichnungAnl] "; 
+	    $query .= " FROM produkte";
+	    $query .= " LEFT JOIN anlagen ON $Anl_Id =  anlagen.anl_ID"; 
+	    $query .= " WHERE prd_ID = $Prd_Id ";
+        $query .= " AND $Anl_Col = $Anl_Id ";
+}
+elseif($id == 'displayDataPrdktAnlage'){
+
+	    $Prd_Id = $_POST['Prd_Id'];
+	    $Anl_Col = $_POST['Anl_Col'];
+	    $Anl_Id = $_POST['Anl_Id'];
+
+	    $query  = " SELECT namePrd , artikelNrPrd , anlagen.[bezeichnungAnl] "; 
+	    $query .= " FROM produkte";
+	    $query .= " LEFT JOIN anlagen ON $Anl_Id =  anlagen.anl_ID"; 
+	    $query .= " WHERE prd_ID = $Prd_Id ";
+        $query .= " AND $Anl_Col = $Anl_Id ";
 }
 if($id == 'masseneingabeSearch'){
 	$records['query1'] = queryDB($conn, $query1, "read");
@@ -500,7 +557,9 @@ if($id == 'masseneingabeSearch'){
   $records = queryDB($conn, $query, "read");
   echo json_encode($records, JSON_INVALID_UTF8_IGNORE); 
 }else{
+    //echo $query;die;
 	$records= queryDB($conn, $query, "read");
+
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }
 ?>

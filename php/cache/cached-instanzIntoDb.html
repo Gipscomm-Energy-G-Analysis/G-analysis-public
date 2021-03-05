@@ -1,1 +1,7 @@
-INSERT INTO produkte(datum, org_ID, namePrd, artikelNrPrd, custom1, custom2, custom3, custom4, custom5, custom6, anl01_ID, anl02_ID, anl03_ID, anl04_ID, anl05_ID, anl06_ID, anl07_ID, anl08_ID, anl09_ID, gruppenID, deleted, archiviert) VALUES (getdate(), '5', '', '', 'fg', 'arg1', 'T1', '', 'test', 'test', '', '', '', '', '', '', '', '', '', ,'false','false') 
+<br />
+<b>Notice</b>:  Undefined index: zeitintervall in <b>C:\xampp\htdocs\g-analysis\G-Analysis---Energiemanagement\php\instanzIntoDb.php</b> on line <b>2146</b><br />
+<br />
+<b>Notice</b>:  Undefined index: einheit in <b>C:\xampp\htdocs\g-analysis\G-Analysis---Energiemanagement\php\instanzIntoDb.php</b> on line <b>2147</b><br />
+<br />
+<b>Notice</b>:  Undefined index: notiz in <b>C:\xampp\htdocs\g-analysis\G-Analysis---Energiemanagement\php\instanzIntoDb.php</b> on line <b>2148</b><br />
+UPDATE messstellen SET zeitintervallMst = '', einheitMst = '', notizMesswertManuell = '' WHERE mst_ID = '23'

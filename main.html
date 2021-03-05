@@ -1953,6 +1953,11 @@
                         <input id="stdCount" />
                         <input id="stdDrCount" />
                         <input id="nextPrevMstID" />
+
+                        <input id="prd_ID" />
+                        <input id="anl_Col" />
+                        <input id="anl_ID" />
+
                     </div>
                     <div id="infosMandanten">
                         <div class="navDropBox" style="height:20px;padding:3px;">
@@ -6562,10 +6567,12 @@
                 <input id="intEngIMwID"/>
                 <input id="intBdeIMwID"/>
             </div>
-            <div id="infosIntEnergiedaten">
+            <div id="infosIntEnergiedaten" class="infosIntEnergiedaten">
                 <div class="navDropBox" style="height:20px;padding:3px;">
                     <img id="intEngIMwLoeschen" title="Messwert löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
-                    <img id="intEngIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                    <!-- <img id="intEngIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> -->
+                    <img id="intBdePrdktIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                    <img id="intBdeMessetelleIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;display: none;" />
                     <img id="intEngIMwHinz" title="Neuen Messwert erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
                     <img id="intEngIMwSuchen" title="Messwerte suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                     <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
@@ -6583,17 +6590,37 @@
                     <div class="sectionHeader">
                         <label>Allgemein</label>
                     </div>
-                    <div class="controlDiv">
+                    <div class="controlDiv mstIMwDiv">
                         <label for="mstIMw">Messstelle</label>
-                        <input id="mstIMw" class="iMwEngHinz" readonly>
+                        <input id="mstIMw" class="iMwEngHinz" required />
                     </div>
-                    <div class="controlDiv">
+                    <!-- <div class="controlDiv">
                         <label for="energietraegerIMw">Energieträger</label>
                         <input id="energietraegerIMw" class="iMwEngHinz" readonly/>
+                    </div> -->
+                    <div class="controlDiv artikelnummerIntBdeDiv">
+                        <label for="artikelnummerIntBde">Artikelnummer</label>
+                        <input id="artikelnummerIntBde" class="iMwEngHinz" readonly  />
                     </div>
+                    <div class="controlDiv bezeichnungIntBdeDiv">
+                        <label for="bezeichnungIntBde">Bezeichnung</label>
+                        <input id="bezeichnungIntBde" class="iMwEngHinz" readonly  />
+                    </div>
+                    
+                    <div class="controlDiv anlageIntBdeDiv">
+                        <label for="anlageIntBde">Anlage</label>
+                        <input id="anlageIntBde" class="iMwEngHinz" readonly  />
+                    </div>
+                    <div class="controlDiv anlageMessstelleIntBdeDiv" style="display: none;">
+                        <label for="anlageMessstelleIntBde">Anlage</label>
+                        <input id="anlageMessstelleIntBde" class="iMwEngHinz" readonly />
+                    </div>
+
+                    <!-- Produkte mm 01-03-2021 -->
+                    <!-- new-mm-start -->
                     <div class="controlDiv">
-                        <label for="zeitintervallMst">Zeitintervall</label>
-                        <select id="zeitintervallMst" class="iMwEngHinz">
+                        <label for="zeitintervallAnlPrdkt">Zeitintervall</label>
+                        <select id="zeitintervallAnlPrdkt" class="iMwEngHinz" onchange="zeitintervallAnlPrdktChange(this.value,'infosIntEnergiedaten',1);">
                             <option value="0" selected></option>
                             <option value="1">Tage</option>
                             <option value="2">Wochen</option>
@@ -6601,7 +6628,186 @@
                             <option value="4">Jahre</option>
                         </select>
                     </div>
+                    <!-- new-mm-end -->
+                    <!-- new-mm-start -->
+                    <div class="controlDiv zeitintervallAnlPrdkt_1">
+                        <label for="tageMassEingDataAnlPrdktStart1">StartTag</label>
+                        <input type="text" id="tageMassEingDataAnlPrdktStart1" placeholder="" class="">
+                    </div>
+                    <div class="controlDiv zeitintervallAnlPrdkt_1">
+                        <label for="tageMassEingDataAnlPrdktEnde1">End Tag</label>
+                        <input type="text" id="tageMassEingDataAnlPrdktEnde1" placeholder="" class="">
+                    </div> 
+                    <div class="controlDiv zeitintervallAnlPrdkt_2">
+                        <label for="wochenYMassEingDataAnlPrdktStart1">Start Wochen</label>
+                        <select id="wochenWMassEingDataAnlPrdktStart1" class="wochenInputZeitintervallAnlPrdkt">
+                            <option value="">Weeks</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>                            
+                            <option value="31">31</option>
+                            <option value="32">32</option>
+                            <option value="33">33</option>
+                            <option value="34">34</option>
+                            <option value="35">35</option>
+                            <option value="36">36</option>
+                            <option value="37">37</option>
+                            <option value="38">38</option>
+                            <option value="39">39</option>
+                            <option value="40">40</option>
+                            <option value="41">41</option>
+                            <option value="42">42</option>
+                            <option value="43">43</option>
+                            <option value="44">44</option>
+                            <option value="45">45</option>
+                            <option value="46">46</option>
+                            <option value="47">47</option>
+                            <option value="48">48</option>
+                            <option value="49">49</option>
+                            <option value="50">50</option>
+                            <option value="51">51</option>
+                            <option value="52">52</option>
+                            <option value="53">53</option>
+                        </select>
+                        kw
+                        <input type="text" id="wochenYMassEingDataAnlPrdktStart1" placeholder="Year" class="wochenInputZeitintervallAnlPrdkt ">
+                    </div>
+                    <div class="controlDiv zeitintervallAnlPrdkt_2">
+                        <label for="wochenWMassEingDataAnlPrdktEnde1">Ende Wochen</label>
+                        <select id="wochenWMassEingDataAnlPrdktEnde1" class="wochenInputZeitintervallAnlPrdkt">
+                            <option value="">Weeks</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>                            
+                            <option value="31">31</option>
+                            <option value="32">32</option>
+                            <option value="33">33</option>
+                            <option value="34">34</option>
+                            <option value="35">35</option>
+                            <option value="36">36</option>
+                            <option value="37">37</option>
+                            <option value="38">38</option>
+                            <option value="39">39</option>
+                            <option value="40">40</option>
+                            <option value="41">41</option>
+                            <option value="42">42</option>
+                            <option value="43">43</option>
+                            <option value="44">44</option>
+                            <option value="45">45</option>
+                            <option value="46">46</option>
+                            <option value="47">47</option>
+                            <option value="48">48</option>
+                            <option value="49">49</option>
+                            <option value="50">50</option>
+                            <option value="51">51</option>
+                            <option value="52">52</option>
+                            <option value="53">53</option>
+                        </select>
+                        kw
+                        <input type="text" id="wochenYMassEingDataAnlPrdktEnde1" placeholder="Year" class="wochenInputZeitintervallAnlPrdkt ">
+                    </div>     
+                    <div class="controlDiv zeitintervallAnlPrdkt_3">
+                        <label for="monateMassEingDataAnlPrdktStart1">Start Monate</label>
+                        <input type="text" id="monateMassEingDataAnlPrdktStart1" placeholder="" class="">
+                    </div>
+                    <div class="controlDiv zeitintervallAnlPrdkt_3">
+                        <label for="monateMassEingDataAnlPrdktEnde1">Ende Monate</label>
+                        <input type="text" id="monateMassEingDataAnlPrdktEnde1" placeholder="" class="">
+                    </div>                   
+                    <div class="controlDiv zeitintervallAnlPrdkt_4">
+                        <label for="jahrMassEingDataAnlPrdktStart1">Start Jahr</label>
+                        <input type="text" id="jahrMassEingDataAnlPrdktStart1" placeholder="" class="">
+                    </div>
+                    <div class="controlDiv zeitintervallAnlPrdkt_4">
+                        <label for="jahrMassEingDataAnlPrdktEnde1">Ende Jahr</label>
+                        <input type="text" id="jahrMassEingDataAnlPrdktEnde1" placeholder="" class="">
+                    </div>
+                    <div class="controlDiv zeitintervallAnlPrdkt_NoEnding" style="clear:left;">
+                        <label for="anlPrdktIMwNoEnding">No Ending</label>
+                        <input id="anlPrdktIMwNoEnding" type="checkbox" value="0" onchange="noEndingAnlPrdktChange(this.checked,'infosIntEnergiedaten',1);">
+                    </div>
                     <div class="controlDiv">
+                        <label for="einheitAnlPrdkt">Einheit</label>
+                        <select id="einheitAnlPrdkt" class="iMwEngHinz">
+                            <option> </option>
+                            <option value="1">Betriebsstunden</option>
+                            <option value="2">Energie kWh</option>
+                            <option value="3">Energie m³</option>
+                            <option value="4">Energie l </option>
+                            <option value="5">Energie kg </option>
+                        </select>
+                    </div>
+                    <div class="controlDiv control_system_div_AnlPrdkt" style="display: none;">
+                        <label for="control_system_AnlPrdkt">Control System</label>
+                        <select id="control_system_AnlPrdkt">
+                            <option> </option>
+                            <option value="1" class="invisible">Count Up Stunden </option>
+                            <option value="2" class="invisible">Count Up Energie </option>
+                            <option value="3" class="invisible">Genullte Stunden </option>
+                            <option value="4" class="invisible">Genullte Energiewerte  </option>
+                        </select>
+                    </div>
+                    <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
+                        <label>Notiz</label>
+                        <textarea rows="3" id="notizBdeIMwAnlPrdkt" class="iMwHinz" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                    </div>
+                    <!-- new-mm-end -->
+                    <!-- old-mm-comment -->
+                    <!-- <div class="controlDiv">
                         <label for="jahrMassEingDataMst">Jahr</label>
                         <select id="jahrMassEingDataMst" class="iMwEngHinz">
                             <option>2010</option>
@@ -6629,17 +6835,55 @@
                     <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
                         <label>Notiz</label>
                         <textarea rows="3" id="notizMesswertManuell" class="iMwEngHinz" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
-                    </div>
+                    </div> -->
+                    <!-- old-mm-comment -->
                     <h3>Kein Zeitintervall zugewiesen</h3>
+                    <div class="btnShowRecordsAnlPrdkt">
+                        <button id="btnShowRecordsAnlBtnPrdkt">Show Anlage Data</button>
+                    </div>
+
+                    <div id="searchBtnShowRecordsPrdktAnlMstBtnDiv" style="display: none;">
+                        <label>Filter</label>
+
+
+                        <input type="radio" name="BetriebsdatenFilter" id="ErgDatenProdukte" checked="checked" value="1">Produkte
+                        <input type="radio" name="BetriebsdatenFilter" id="ErgDatenMessstelle" value="2">Messstelle
+
+
+                        <select id="searchBtnShowRecordsPrdktAnlMstBtn" name="searchBtnShowRecordsPrdktAnlMstBtn" style="display: none;">
+                            <option value="1" selected >Produkte</option>
+                            <option value="2">Messstelle</option>
+                        </select>
+                    </div>
                     <table id="tblMstOhneZeitintervallIMw" class="stripe hover row-border compact dt-left custom">
                         <thead>
                             <tr>
-                                <th>id</th>
-                                <th>mst_ID</th>
-                                <th>Messstelle</th>
-                                <th>Energieträger</th>
+                                <th>prd_ID</th>
+                                <th>anl_Col</th>
+                                <th>anl_ID</th>
+                                <th>Type</th>                                
+                                <th>Artikelnummer</th>
+                                <th>Bezeichnung</th>
                                 <th>Anlage</th>
-                                <th>Ort</th>
+
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <table id="tblMstOhneZeitintervallIMwMessstelle" class="stripe hover row-border compact dt-left custom">
+                        <thead>
+                            <tr>
+                                <th>mst_ID</th>    
+                                <th>Messstelle</th>
+                                <th>Anlage</th>
+                                <th>Start Date</th> 
+                                <th>End Date</th>
+                                <th>Einheit</th>
+                                <th>Control System</th>
+                                <th>Zeitintervall</th> 
+                                <th>Notiz</th>
+
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -7762,6 +8006,181 @@
         <button id="intBdeIMwHistNichtSpeichern" style="margin-left:50px;">Nein</button>
         <button id="intBdeIMwHistAbbrechen" style="margin-left:50px;">Abbrechen</button>
     </div>
+
+    <!--Interne Betriebsdaten Produkte and Messetelle dialog box Historie 04-03-2021-->
+    <!-- new-mm-start -->
+    <div id="intBdePrdktIMwHistoriePopUp" class="intBdePrdktIMwHistoriePopUp" style="display:none;">
+        <p>
+            Soll der alte Datensatz archiviert werden?<br>
+            Wenn Sie 'nein' wählen, werden die Daten <br>
+            ohne Eintrag in die Historie gespeichert.<br>
+        </p>
+        <div id="infosIntBdePrdktIMwHistoriePopUpDiv" style="display:none;">
+            <label for="bemerkungHistIntBdePrdktIMw">Bemerkung</label>
+            <textarea id="bemerkungHistIntBdePrdktIMw" placeholder="Bemerkung" style="height:50px;width:250px;">
+            </textarea>
+            <!-- <br>
+            <br>
+            <label for="gueltigVonHistIntBdeIMw">Gültig von:</label>
+            <input id="gueltigVonHistIntBdeIMw"/> 
+            <div id="gueltigVonHistIntBdeIMw"/></div>
+            <label for="gueltigBisHistIntBdeIMw">Gültig bis:</label>
+            <input id="gueltigBisHistIntBdeIMw"/> 
+           <div id="gueltigBisHistIntBdeIMw"/></div>-->
+                <div class="zeitintervallAnlPrdkt_1">
+                    <label for="tageMassEingDataAnlPrdktStart3">Gültig von:</label>
+                    <input type="text" id="tageMassEingDataAnlPrdktStart3" placeholder="" class="" readonly>
+                </div>
+                <div class="zeitintervallAnlPrdkt_1">
+                    <label for="tageMassEingDataAnlPrdktEnde3">Gültig bis:</label>
+                    <input type="text" id="tageMassEingDataAnlPrdktEnde3" placeholder="" class="" >
+                </div> 
+                <div class="zeitintervallAnlPrdkt_2">
+                    <label for="wochenYMassEingDataAnlPrdktStart3">Gültig von:</label>
+                    <select id="wochenWMassEingDataAnlPrdktStart3" class="wochenInputZeitintervallAnl" readonly>
+                        <option value="">Weeks</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>                            
+                        <option value="31">31</option>
+                        <option value="32">32</option>
+                        <option value="33">33</option>
+                        <option value="34">34</option>
+                        <option value="35">35</option>
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                        <option value="42">42</option>
+                        <option value="43">43</option>
+                        <option value="44">44</option>
+                        <option value="45">45</option>
+                        <option value="46">46</option>
+                        <option value="47">47</option>
+                        <option value="48">48</option>
+                        <option value="49">49</option>
+                        <option value="50">50</option>
+                        <option value="51">51</option>
+                        <option value="52">52</option>
+                        <option value="53">53</option>
+                    </select>
+                    kw
+                    <input type="text" id="wochenYMassEingDataAnlStart3" placeholder="Year" class="wochenInputZeitintervallAnl " readonly>
+                </div>
+                <div class="zeitintervallAnlPrdkt_2">
+                    <label for="wochenYMassEingDataAnlPrdktEnde3">Gültig bis:</label>
+                    <select id="wochenWMassEingDataAnlPrdktEnde3" class="wochenInputZeitintervallAnl" >
+                        <option value="">Weeks</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>                            
+                        <option value="31">31</option>
+                        <option value="32">32</option>
+                        <option value="33">33</option>
+                        <option value="34">34</option>
+                        <option value="35">35</option>
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                        <option value="42">42</option>
+                        <option value="43">43</option>
+                        <option value="44">44</option>
+                        <option value="45">45</option>
+                        <option value="46">46</option>
+                        <option value="47">47</option>
+                        <option value="48">48</option>
+                        <option value="49">49</option>
+                        <option value="50">50</option>
+                        <option value="51">51</option>
+                        <option value="52">52</option>
+                        <option value="53">53</option>
+                    </select>
+                    kw
+                    <input type="text" id="wochenYMassEingDataAnlEnde3" placeholder="" class="wochenInputZeitintervallAnl ">
+                </div>     
+                <div class="zeitintervallAnlPrdkt_3">
+                    <label for="monateMassEingDataAnlPrdktStart3">Gültig von:</label>
+                    <input type="text" id="monateMassEingDataAnlPrdktStart3" placeholder="" class="" readonly>
+                </div>
+                <div class="zeitintervallAnlPrdkt_3">
+                    <label for="monateMassEingDataAnlPrdktEnde3">Gültig bis:</label>
+                    <input type="text" id="monateMassEingDataAnlPrdktEnde3" placeholder="" class="" >
+                </div>                   
+                <div class="zeitintervallAnlPrdkt_4">
+                    <label for="jahrMassEingDataAnlPrdktStart3">Gültig von:</label>
+                    <input type="text" id="jahrMassEingDataAnlPrdktStart3" placeholder="" readonly class="">
+                </div>
+                <div class="zeitintervallAnlPrdkt_4">
+                    <label for="jahrMassEingDataAnlPrdktEnde3">Gültig bis:</label>
+                    <input type="text" id="jahrMassEingDataAnlPrdktEnde3" placeholder="" class="">
+                </div>
+
+        </div>
+        <br>
+        <button id="intBdePrdktIMwHistOk" style="display:none;">Ok</button>
+        <button id="intBdePrdktIMwHistSpeichern">Ja</button>
+        <button id="intBdePrdktIMwHistNichtSpeichern" style="margin-left:50px;">Nein</button>
+        <button id="intBdePrdktIMwHistAbbrechen" style="margin-left:50px;">Abbrechen</button>
+    </div><!-- new-mm-end -->
     <!--Interne Betriebsdaten  Historie 07-10-2020-->
     <!--Start Interne Betriebsdaten search confirmation 11-12-2020-->
     <!-- <div id="intBdeConcernOrDeletePopUp" class="intBdeConcernOrDeletePopUp" style="display:none;">
