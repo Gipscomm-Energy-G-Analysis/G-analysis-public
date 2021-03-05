@@ -17758,3 +17758,86 @@ function gipscAdmSuchenlisteErstellen() {
         }
     })
 }
+
+/** Benutzer Delete Functionality */
+
+function benLoeschen() {
+    if (confirm("Benutzer löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'ben',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                benID: $("#benID").val()
+            },
+            success: function(a) {
+                clearFields("benHinz");
+            }
+        });
+    }
+    return false;
+}
+
+function admLoeschen() {
+    if (confirm("Admins löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'adm',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                admID: $("#admID").val()
+            },
+            success: function(a) {
+                clearFields("admHinz");
+            }
+        });
+    }
+    return false;
+}
+
+function betrGrpLoeschen() {
+    if (confirm("Betreuergruppen/Superadmins löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'betrGrp',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                betrGrpID: $("#betrGrpID").val()
+            },
+            success: function(a) {
+                clearFields("betrGrpHinz");
+                clearFields("sAdmHinz");
+            }
+        });
+    }
+    return false;
+}
+
+function sAdmLoeschen() {
+    if (confirm("Superadmins löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'sAdm',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                sAdmID: $("#sAdmID").val()
+            },
+            success: function(a) {
+                clearFields("sAdmHinz");
+            }
+        });
+    }
+    return false;
+}

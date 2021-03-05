@@ -13,19 +13,19 @@ $id = $_POST['id'];
 
 if($id == "gipscAdm"){
 
-$query = "SELECT * FROM gipscommAdmins";
+$query = "SELECT * FROM gipscommAdmins WHERE deleted_at IS NULL";
 
 }
 
 elseif($id == "betrGrp"){
 
-$query = "SELECT * FROM betreuerGruppen";
+$query = "SELECT * FROM betreuerGruppen WHERE deleted_at IS NULL";
 
 }
 
 elseif($id == "sAdm"){
 $betrGrpID = $_POST['betrGrpID'];
-$query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID'";
+$query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID' AND deleted_at IS NULL";
 }
 
 elseif($id == "manGrp"){
@@ -55,7 +55,7 @@ elseif($id == "adm"){
 
   $query = '';
   if(!empty($idIns)) {
-    $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
+    $query = "SELECT * FROM admins WHERE $ins = '$idIns' AND deleted_at IS NULL";
   }
   // Comment By Jayesh
     // if($recordSet == 'first') {
@@ -77,7 +77,7 @@ elseif($id == "ben"){
     $recordSet = $_POST['recordSet'];
     $query = '';
     if(!empty($idIns)) {
-      $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
+      $query = "SELECT * FROM benutzer WHERE $ins = '$idIns' AND deleted_at IS NULL";
     }
 
     // Comment By Jayesh

@@ -5076,3 +5076,25 @@ $("#DkFeSpeichern").click(function() {
             alertValidationforStartEndeDate($("#mstID").val(),date,zeitintervallAnl);
         }
     });
+
+
+    /** Benutzer Delete Functionality */
+
+    $("#benLoeschen").on('click', function() {
+        benLoeschen();
+    });
+
+    /** Admin Delete Functionality */
+    $("#admLoeschen").on('click', function() {
+        admLoeschen();
+    });
+
+    /** BetreGroup/Superadmin Delete Functionality */
+    $("#betrGrpLoeschen").on('click', function() {
+        betrGrpLoeschen();
+    });
+    
+    /** Superadmin Delete Functionality */
+    $("#sAdmLoeschen").on('click', function() {
+        sAdmLoeschen();
+    });

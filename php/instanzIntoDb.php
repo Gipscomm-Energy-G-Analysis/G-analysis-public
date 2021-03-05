@@ -29,56 +29,98 @@ if($id == "gipscAdm") {
 }
 elseif($id == "betrGrp") {
 
-    $modus = $_POST['modus'] ;
-    $firma = $_POST['firma'] ;
-    $anzahlMitarbeiter = $_POST['anzahlMitarbeiter'] ;
-    $anschrift = $_POST['anschrift'] ;
-    $plz = $_POST['plz'] ;
-    $ort = $_POST['ort'] ;
-    $geschaeftsfuehrer = $_POST['geschaeftsfuehrer'] ;
-    $telefon = $_POST['telefon'] ;
-    $eMail = $_POST['eMail'] ;
-    $notiz = $_POST['notiz'] ;
+  $modus = $_POST['modus'] ;
+    
 
 	if($modus == "new") {
 
-		$tsql = "INSERT INTO betreuerGruppen(firma,anzahlMitarbeiter, anschrift, plz, ort, ";
-		$tsql .= "geschaeftsfuehrer, telefon, eMail, notiz) ";
-		$tsql .= "VALUES ('$firma','$anzahlMitarbeiter','$anschrift', '$plz','$ort','$geschaeftsfuehrer', ";
-		$tsql .= "'$telefon','$eMail','$notiz') ";
-}
-	else {
-		$betrGrpID = $_POST['betrGrpID'];
+      $firma = $_POST['firma'] ;
+      $anzahlMitarbeiter = $_POST['anzahlMitarbeiter'] ;
+      $anschrift = $_POST['anschrift'] ;
+      $plz = $_POST['plz'] ;
+      $ort = $_POST['ort'] ;
+      $geschaeftsfuehrer = $_POST['geschaeftsfuehrer'] ;
+      $telefon = $_POST['telefon'] ;
+      $eMail = $_POST['eMail'] ;
+      $notiz = $_POST['notiz'] ;
 
-		$tsql =  "UPDATE betreuerGruppen SET firma = '$firma',anzahlMitarbeiter = '$anzahlMitarbeiter', ";
-		$tsql .= "anschrift = '$anschrift',plz = '$plz',ort = '$ort',geschaeftsfuehrer = '$geschaeftsfuehrer', ";
-		$tsql .= "telefon = '$telefon',eMail = '$eMail',notiz = '$notiz' ";
-		$tsql .= "WHERE betrGrp_ID = '$betrGrpID' ";
+      $tsql = "INSERT INTO betreuerGruppen(firma,anzahlMitarbeiter, anschrift, plz, ort, ";
+      $tsql .= "geschaeftsfuehrer, telefon, eMail, notiz) ";
+      $tsql .= "VALUES ('$firma','$anzahlMitarbeiter','$anschrift', '$plz','$ort','$geschaeftsfuehrer', ";
+      $tsql .= "'$telefon','$eMail','$notiz') ";
+
+  } elseif($modus == "delete") {
+        
+      $betrGrpID = $_POST['betrGrpID'];
+      $dateTime = date("Y-m-d H:i:s");
+      if(!empty($betrGrpID)) {
+        $tsql =  "UPDATE betreuerGruppen SET deleted_at = '$dateTime' WHERE betrGrp_ID = '$betrGrpID'";
+        
+        $tsql .= "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE betrGrp_ID = '$betrGrpID'";
+      }
+
+  } else {
+
+      $betrGrpID = $_POST['betrGrpID'];
+      $firma = $_POST['firma'] ;
+      $anzahlMitarbeiter = $_POST['anzahlMitarbeiter'] ;
+      $anschrift = $_POST['anschrift'] ;
+      $plz = $_POST['plz'] ;
+      $ort = $_POST['ort'] ;
+      $geschaeftsfuehrer = $_POST['geschaeftsfuehrer'] ;
+      $telefon = $_POST['telefon'] ;
+      $eMail = $_POST['eMail'] ;
+      $notiz = $_POST['notiz'] ;
+
+      $tsql =  "UPDATE betreuerGruppen SET firma = '$firma',anzahlMitarbeiter = '$anzahlMitarbeiter', ";
+      $tsql .= "anschrift = '$anschrift',plz = '$plz',ort = '$ort',geschaeftsfuehrer = '$geschaeftsfuehrer', ";
+      $tsql .= "telefon = '$telefon',eMail = '$eMail',notiz = '$notiz' ";
+      $tsql .= "WHERE betrGrp_ID = '$betrGrpID' ";
 	}
 }
 elseif($id == "sAdm") {
 
     $modus = $_POST['modus'] ;
-    $titel = $_POST['titel'] ;
-    $name = $_POST['name'] ;
-    $vorname = $_POST['vorname'] ;
-    $eMail = $_POST['eMail'] ;
-    $telefon = $_POST['telefon'] ;
-    $fax = $_POST['fax'] ;
-    $mobiltelefon = $_POST['mobiltelefon'] ;
-    $benutzername = $_POST['benutzername'] ;
-    $passwort = $_POST['passwort'] ;
 
     if($modus == "new") {
         $betrGrpID = $_POST['betrGrpID'] ;
+
+        $titel = $_POST['titel'] ;
+        $name = $_POST['name'] ;
+        $vorname = $_POST['vorname'] ;
+        $eMail = $_POST['eMail'] ;
+        $telefon = $_POST['telefon'] ;
+        $fax = $_POST['fax'] ;
+        $mobiltelefon = $_POST['mobiltelefon'] ;
+        $benutzername = $_POST['benutzername'] ;
+        $passwort = $_POST['passwort'] ;
 
         $tsql = "INSERT INTO superAdmins(man_ID,betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, " ;
         $tsql .= "faxSAdm, mobiltelefonSAdm, username, passHash, position) " ;
         $tsql .= "VALUES (1,'$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
         $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
-    }
-    else {
+
+    } elseif($modus == "delete") {
+        
+      $sAdmID = $_POST['sAdmID'] ;
+      $dateTime = date("Y-m-d H:i:s");
+      if(!empty($sAdmID)) {
+        $tsql .= "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE sAdm_ID = '$sAdmID'";
+      }
+
+    } else {
+
         $sAdmID = $_POST['sAdmID'] ;
+
+        $titel = $_POST['titel'] ;
+        $name = $_POST['name'] ;
+        $vorname = $_POST['vorname'] ;
+        $eMail = $_POST['eMail'] ;
+        $telefon = $_POST['telefon'] ;
+        $fax = $_POST['fax'] ;
+        $mobiltelefon = $_POST['mobiltelefon'] ;
+        $benutzername = $_POST['benutzername'] ;
+        $passwort = $_POST['passwort'] ;
 
         $tsql =  "UPDATE superAdmins SET titelSAdm = '$titel',nameSAdm = '$name', " ;
         $tsql .= "vornameSAdm = '$vorname',emailSAdm = '$eMail',telefonSAdm = '$telefon', " ;
@@ -119,25 +161,43 @@ $insID = '';
 if(isset($_POST['insID']))
     $insID = $_POST['insID'];
 
-$titel = $_POST['titel'];
-$name = $_POST['name'];
-$vorname = $_POST['vorname'];
-$eMail = $_POST['eMail'];
-$telefon = $_POST['telefon'];
-$fax = $_POST['fax'];
-$mobiltelefon = $_POST['mobiltelefon'];
-$benutzername = $_POST['benutzername'];
-$passwort = $_POST['passwort'];
-
 	if($modus == "new"){
+    $titel = $_POST['titel'];
+    $name = $_POST['name'];
+    $vorname = $_POST['vorname'];
+    $eMail = $_POST['eMail'];
+    $telefon = $_POST['telefon'];
+    $fax = $_POST['fax'];
+    $mobiltelefon = $_POST['mobiltelefon'];
+    $benutzername = $_POST['benutzername'];
+    $passwort = $_POST['passwort'];
 
 		$tsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
 		$tsql .= "fax, mobiltelefon, username, passHash) ";
 		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
 		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
-}
-	else{
+
+  } elseif($modus == "delete") {
+        
+    $admID = $_POST['admID'];
+    $dateTime = date("Y-m-d H:i:s");
+    if(!empty($admID)) {
+      $tsql =  "UPDATE admins SET deleted_at = '$dateTime'";
+      $tsql .= "WHERE adm_ID = '$admID'";
+    }
+
+  } else {
+
 		$admID = $_POST['admID'];
+    $titel = $_POST['titel'];
+    $name = $_POST['name'];
+    $vorname = $_POST['vorname'];
+    $eMail = $_POST['eMail'];
+    $telefon = $_POST['telefon'];
+    $fax = $_POST['fax'];
+    $mobiltelefon = $_POST['mobiltelefon'];
+    $benutzername = $_POST['benutzername'];
+    $passwort = $_POST['passwort'];
 
 		$tsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
 		$tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
@@ -157,26 +217,44 @@ elseif($id == "ben") {
     if(isset($_POST['insID']))
         $insID = $_POST['insID'];
 
-    $titel = $_POST['titel'];
-    $name = $_POST['name'];
-    $vorname = $_POST['vorname'];
-    $eMail = $_POST['eMail'];
-    $telefon = $_POST['telefon'];
-    $fax = $_POST['fax'];
-    $mobiltelefon = $_POST['mobiltelefon'];
-    $benutzername = $_POST['benutzername'];
-    $passwort = $_POST['passwort'];
+    
 
-    	if($modus == "new"){
+    if($modus == "new"){
           $manID = $_POST['manID'];
+          $titel = $_POST['titel'];
+          $name = $_POST['name'];
+          $vorname = $_POST['vorname'];
+          $eMail = $_POST['eMail'];
+          $telefon = $_POST['telefon'];
+          $fax = $_POST['fax'];
+          $mobiltelefon = $_POST['mobiltelefon'];
+          $benutzername = $_POST['benutzername'];
+          $passwort = $_POST['passwort'];
 
       		$tsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
       		$tsql .= "fax, mobiltelefon, username, passHash) ";
       		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
       		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
-    }
-    else{
+
+    } elseif($modus == "delete") {
+      
         $benID = $_POST['benID'];
+        $dateTime = date("Y-m-d H:i:s");
+        if(!empty($benID)) {
+          $tsql =  "UPDATE benutzer SET deleted_at = '$dateTime'";
+          $tsql .= "WHERE ben_ID = '$benID' ";
+        }
+    } else{
+        $benID = $_POST['benID'];
+        $titel = $_POST['titel'];
+        $name = $_POST['name'];
+        $vorname = $_POST['vorname'];
+        $eMail = $_POST['eMail'];
+        $telefon = $_POST['telefon'];
+        $fax = $_POST['fax'];
+        $mobiltelefon = $_POST['mobiltelefon'];
+        $benutzername = $_POST['benutzername'];
+        $passwort = $_POST['passwort'];
 
         $tsql =  "UPDATE benutzer SET titel = '$titel',name = '$name', ";
         $tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
