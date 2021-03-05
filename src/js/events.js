@@ -828,8 +828,8 @@ $(document).ready(function() {
         toggleMsmBerechnungslogik(this.value)(type)
     });
     /*17-03-2020 js event for the messaMart on change*/
-    $("#mstSuchen").click(function() {
-        messstellenlisteErstellen()
+    $("#mstESuchen, #mstBSuchen").click(function() {
+        messstellenlisteErstellen(this)
     });
     //Mittlere Auslastung in MsmVerwaltung je nach Eingabe in % oder kWh umrechnen
     $(".auslastung").blur(function () {

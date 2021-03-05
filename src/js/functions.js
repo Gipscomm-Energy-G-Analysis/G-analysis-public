@@ -4103,49 +4103,77 @@ try {
                     }
                 }
             })
-        }, messstellenlisteErstellen =
-        function() {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessstellen.php",
-                data: {
-                    ins: "mstSuchen",
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val()
-                },
-                success: function(a) {
-                    a = JSON.parse(a);
-                    tblMessstellenSuchen.colReorder.reset();
-                    tblMessstellenSuchen.clear().draw();
-                    for (var b = 0; b < a.length; b++) tblMessstellenSuchen.row.add([b, a[b].nameMSt, a[b].kurzbezeichnungMst, a[b].kostenstelleMst, a[b].energietraegerMst, a[b].messmittelBerechnungslogikMst, a[b].anlageMst, a[b].ortMst]).draw();
-                    tblMessstellenSuchen.column(0).visible(!1);
-                    $("#messstellenSuchenContainer").css("display", "block");
-                    $("#messstellenSuchenContainer").dialog({
-                        height: $(window).height() - .125 * $(window).height(),
-                        width: $(window).width() - .125 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessstellenSuchen tbody tr").css("cursor", "pointer");
-                            $("#tblMessstellenSuchen tbody").on("dblclick", "tr", function() {
-                                var a = tblMessstellenSuchen.row(this).data();
-                                $("#messstellenSuchenContainer").dialog("close");
-                                clearFields("mstEHinz");
-                                clearFields("mstBHinz");
-                                readInstanzen("mstEFirst", a[0])
-                                readInstanzen("mstBFirst", a[0])
-                            })
-                        }
-                    })
-                }
+        }, messstellenlisteErstellen = function(this_) {
+
+            const ins = this_.id
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            ajaxPost("php/getMessstellen.php")({ins, nameDB, liegID})
+            .then(result => {
+
+                console.log("messstellenlisteErstellen")
+                console.log(result)
+
+                const prepareTableData =
+                    data =>
+                    data.map(
+                        (a, i) =>
+                        [ i
+                        , a.nameMSt
+                        , a.kurzbezeichnungMst
+                        , a.kostenstelleMst
+                        , a.energietraegerMst
+                        , a.messmittelBerechnungslogikMst
+                        , a.anlageMst
+                        , a.ortMst
+                        ]
+                    )
+
+                const firstColInvisible =
+                    () =>
+                    tblMessstellenSuchen.column(0).visible(!1)
+
+                const fillMessstellenTbl =
+                    data => {
+                        clearTable(tblMessstellenSuchen)
+                        intoTable(tblMessstellenSuchen)(prepareTableData(data))
+                    }
+
+                const readInRecord =
+                    this__ => {
+                        const rowData = tblMessstellenSuchen.row(this__).data()
+
+                        ins === "mstESuchen" ?
+                        (clearFields("mstEHinz"), readInstanzen("mstEFirst", head(rowData))) :
+                        (clearFields("mstBHinz"), readInstanzen("mstBFirst", head(rowData)))
+
+                        $("#messstellenSuchenContainer").dialog("close")
+                    }
+
+                fillMessstellenTbl(result)
+                firstColInvisible()
+
+                $("#messstellenSuchenContainer").css("display", "block");
+                $("#messstellenSuchenContainer").dialog({
+                    height: $(window).height() - .125 * $(window).height(),
+                    width: $(window).width() - .125 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessstellenSuchen tbody tr").css("cursor", "pointer");
+                        $("#tblMessstellenSuchen tbody").on("dblclick", "tr", function() {
+                            readInRecord(this)
+                        })
+                    }
+                })
             })
         }, formellisteErstellen = function(a) {
             var b = void 0,
