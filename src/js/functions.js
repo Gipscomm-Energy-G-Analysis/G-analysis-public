@@ -1516,125 +1516,59 @@ try {
                     $(".energietraegerLieg").empty();
                     $(".energietraegerLieg").append("<option></option>");
                     for (i = 0; i < a.length; i++) $(".energietraegerLieg").append("<option>" + a[i].nameEnt + "</option>");
-                    energietrInDBoxBer()
                 }
             })
-        },
-        energietrInDBoxBer = function() {
-            $(".entBer option").remove();
-            for (i = 1; 5 > i; i++) null != $("#energietraeger" + i + "Lieg").val() && $(".entBer").append("<option>" + $("#inputEnergietraeger" + i + "Lieg").val() + "</option>")
         },
         dbFuerEnergietraegerFestlegen = function(a) {
             entDB = "Global" == a ? "gipscomm" : $("#nameDB").val()
         },
-        bereicheInTabelle = function(a, b) {
-            $("#bereichWaehlen tr").not("#bereichWaehlen tr:nth-child(1)").remove();
+        bereicheInDropbox = function(a) {
             bereicheliste = [];
-            for (var e = 0; e < b.length; e++) {
-                bereicheliste[e] = new Bereich(b[e].nameOrg, b[e].nameLieg, b[e].nameBer,
-                    b[e].ber_ID);
-                var c = "<tr class='bereichX'>",
-                    c = c + ("<td>" + bereicheliste[e].nameOrg + "</td>"),
-                    c = c + ("<td>" + bereicheliste[e].nameLieg + "</td>"),
-                    c = c + ("<td>" + bereicheliste[e].nameBer + "</td>"),
-                    c = c + ("<td style='display:none;'>" + bereicheliste[e].berID + "</td>"),
-                    c = c + "</tr>";
-                $("#tblBereicheAnl").append(c)
+
+            $(".berPfad").empty()
+
+            const addBereich =
+                record =>
+                bereicheliste
+                .push(new Bereich($(".orgPfad").val(), $(".liegPfad").val(), record.nameBer, record.ber_ID))
+
+            const fillBereicheliste =
+                data =>
+                data.forEach(addBereich)
+
+            const addOption =
+                ber =>
+                $(".berPfad").append("<option>" + ber.nameBer + "</option>")
+
+            const fillDropbox =
+                () =>
+                bereicheliste.forEach(addOption)
+
+            fillBereicheliste(a)
+            fillDropbox()
+        },
+        bereicheEinlesen = function() {
+            const id = "berAuswahl"
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            if (liegID !== "") {
+                ajaxPost("php/getBereiche.php")({id, nameDB, liegID})
+                .then(bereicheInDropbox)
             }
-            $("#bereichWaehlen").css("display", "block");
-            $("#bereichWaehlen").dialog({
-                height: 400,
-                width: 500,
-                resize: "auto",
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    $("#sucheBereichAnl").val("");
-                    $(".bereichX").on("dblclick", function() {
-                        $("#berID").val($(this).children("td:nth-child(4)").text());
-                        $("#ber").text($(this).children("td:nth-child(3)").text());
-                        $("#bereichAllgemeinAnl").val($(this).children("td:nth-child(3)").text());
-                        $("#bereichWaehlen").dialog("close");
-                        "ber" == a.id && (clearFields("anlHinz"), readInstanzen("anlFirst", 0))
-                    });
-                    $(".berDialogButton").click(function() {
-                        $("#bereichWaehlen").dialog("close")
-                    });
-                    $("#berSuchenAnl, #berResetAnl").click(function() {
-                        if ("berResetAnl" != this.id) var b = $("#sucheBereichAnl").val();
-                        else $("#sucheBereichAnl").val(""), b = "";
-                        $("#tblBereicheAnl tr").not("#tblBereicheAnl tr:nth-child(1)").remove();
-                        for (var c = 0; c < bereicheliste.length; c++) {
-                            var e = bereicheliste[c].nameLieg,
-                                q = bereicheliste[c].nameOrg,
-                                r = bereicheliste[c].nameBer.indexOf(b),
-                                e = e.indexOf(b),
-                                q = q.indexOf(b);
-                            if (-1 != r || -1 != e || -1 != q || "" == b) r = "<tr class='bereichX'>", r += "<td>" + bereicheliste[c].nameOrg + "</td>", r += "<td>" + bereicheliste[c].nameLieg + "</td>", r += "<td>" + bereicheliste[c].nameBer + "</td>", r += "<td style='display:none;'>" + bereicheliste[c].berID +
-                                "</td>", r += "</tr>", $("#tblBereicheAnl tbody").append(r);
-                            $("#tblBereicheAnl").DataTable({
-                                dom: "Bgrtip",
-                                buttons: ["excel", "pdf"]
-                            })
-                        }
-                        $(".bereichX").on("dblclick", function() {
-                            $("#berID").val($(this).children("td:nth-child(4)").text());
-                            $("#ber").text($(this).children("td:nth-child(3)").text());
-                            $("#bereichAllgemeinAnl").val($(this).children("td:nth-child(3)").text());
-                            $("#bereichWaehlen").dialog("close");
-                            "ber" == a.id && (clearFields("anlHinz"), readInstanzen("anlFirst", 0))
-                        })
-                    })
-                }
-            });
-            $("#anlListeContainer").dialog("close")
-        },
-        bereicheEinlesen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getBereiche.php",
-                data: {
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    bereicheInTabelle(a, b)
-                }
-            })
-        },
-        bereicheAnzeigenEinlesen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getBereiche.php",
-                data: {
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    bereicheInTabelle(a, b)
-                }
-            })
         },
         liegenschaftenInDropbox = function(a) {
             $(".liegPfad").empty();
             liegenschaftenliste = [];
             liegenschaft.Name = "";
             liegenschaft.LiegID = "";
-            for (var b =
-                    0; b < a.length; b++) liegenschaft.Name = a[b].nameLieg, liegenschaft.LiegID = a[b].lieg_ID, liegenschaftenliste[b] = liegenschaft, $(".liegPfad").append("<option>" + liegenschaftenliste[b].Name + "</option>")
+            for (var b = 0; b < a.length; b++) liegenschaft.Name = a[b].nameLieg, liegenschaft.LiegID = a[b].lieg_ID, liegenschaftenliste[b] = liegenschaft, $(".liegPfad").append("<option>" + liegenschaftenliste[b].Name + "</option>")
+            bereicheEinlesen()
         },
         liegenschaftenEinlesen = function() {
             "" !== $("#orgID").val() && $.ajax({
                 type: "POST",
-                async: !0,
+                async: true,
                 url: "php/liegenschaftenEinlesen.php",
                 data: {
                     nameDB: $("#nameDB").val(),
@@ -1658,13 +1592,13 @@ try {
             if ($("#nameDB").val() !== "") {
                 $.ajax({
                   type: "POST",
-                  async: !1,
+                  async: true,
                   url: "php/organisationenEinlesen.php",
                   data: {
                     nameDB: $("#nameDB").val()
                   },
                   success: function(a) {
-                    a = JSON.parse(a);
+                    a = JSON.parse(a)
                     organisationenInDropbox(a)
                   }
                 })
@@ -1734,14 +1668,8 @@ try {
             organisationenEinlesen();
             dbFuerEnergietraegerFestlegen($("#nameDB").val());
             energietrInDBoxLieg();
-            liegenschaftenEinlesen();
             readInstanzen("liegFirst", 0);
-            liegNavID = 0;
-            energietrInDBoxBer();
-            [ "ber"
-            , "mstE"
-            , "mstB"
-            , "msm"
+            [ "msm"
             , "std"
             , "anl"
             , "ent"
@@ -1750,6 +1678,7 @@ try {
             , "iMw"
             , "zp" ]
             .forEach(ident => readInstanzen(`${ident}First`, 0))
+            liegNavID =
             berNavID =
             mstENavID =
             mstBNavID =
@@ -2675,6 +2604,21 @@ try {
                     tblAnlagen.colReorder.order(0, 1, a)
                 }
             })
+        }, berPfadChange = function(this_) {
+            $(".berPfad").val($(this_).val());
+            $("#berID").val(bereicheliste[$(".berPfad").prop("selectedIndex")].berID)
+
+            readInstanzen("berFirst", $(".berPfad").prop("selectedIndex"))
+            readInstanzen("mstEFirst", 0)
+            readInstanzen("mstBFirst", 0)
+            readInstanzen("msmFirst", 0)
+            readInstanzen("stdFirst", 0)
+            readInstanzen("anlFirst", 0)
+            readInstanzen("entFirst", 0)
+            readInstanzen("enfFirst", 0)
+            readInstanzen("eRngFirst", 0)
+            readInstanzen("iMwFirst", 0)
+            readInstanzen("zpFirst", 0)
         }, liegPfadChange = function(a) {
             $(".liegPfad").val($(a).val());
             if (liegenschaftenliste[$(".liegPfad").prop("selectedIndex")] === "undefined") {
@@ -2682,18 +2626,20 @@ try {
             } else {
                 $("#liegID").val('');
             }
-            readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"));
-            readInstanzen("berFirst", 0);
-            readInstanzen("mstEFirst", 0);
-            readInstanzen("mstBFirst", 0);
-            readInstanzen("msmFirst", 0);
-            readInstanzen("stdFirst", 0);
-            readInstanzen("anlFirst", 0);
-            readInstanzen("entFirst", 0);
-            readInstanzen("enfFirst", 0);
-            readInstanzen("eRngFirst", 0);
-            readInstanzen("iMwFirst", 0);
+
+            readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"))
+            readInstanzen("berFirst", 0)
+            readInstanzen("mstEFirst", 0)
+            readInstanzen("mstBFirst", 0)
+            readInstanzen("msmFirst", 0)
+            readInstanzen("stdFirst", 0)
+            readInstanzen("anlFirst", 0)
+            readInstanzen("entFirst", 0)
+            readInstanzen("enfFirst", 0)
+            readInstanzen("eRngFirst", 0)
+            readInstanzen("iMwFirst", 0)
             readInstanzen("zpFirst", 0)
+            bereicheEinlesen()
         }, orgPfadChange = function(a) {
             $(".orgPfad").val($(a).val());
             $("#orgID").val(organisationenliste[$(".orgPfad").prop("selectedIndex")].OrgID);
@@ -2703,6 +2649,7 @@ try {
             readInstanzen("mstEFirst", 0);
             readInstanzen("mstBFirst", 0);
             liegenschaftenEinlesen()
+            bereicheEinlesen()
         }, tabelleEinlesen = function(a) {
             $.ajax({
                 type: "POST",
@@ -4107,13 +4054,10 @@ try {
 
             const ins = this_.id
             const nameDB = $("#nameDB").val()
-            const liegID = $("#liegID").val()
+            const berID = $("#berID").val()
 
-            ajaxPost("php/getMessstellen.php")({ins, nameDB, liegID})
+            ajaxPost("php/getMessstellen.php")({ins, nameDB, berID})
             .then(result => {
-
-                console.log("messstellenlisteErstellen")
-                console.log(result)
 
                 const prepareTableData =
                     data =>
@@ -4200,9 +4144,6 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
-
-                    console.log("Formula search records :");
-                    console.log(a);
 
                     tblformelSuchen.colReorder.reset();
                     tblformelSuchen.clear().draw();
@@ -4412,10 +4353,11 @@ try {
                             $("#tblBereicheSuchen tbody").on("dblclick", "tr", function() {
                                 var a = tblBereicheSuchen.row(this).data();
                                 $("#bereichSuchenContainer").dialog("close");
-                                clearFields("berHinz");
-                                clearFields("mstEHinz");
-                                clearFields("mstBHinz");
-                                readInstanzen("berFirst", a[0]);
+                                clearFields("berHinz")
+                                clearFields("mstEHinz")
+                                clearFields("mstBHinz")
+
+                                readInstanzen("berFirst", a[0])
                                 readInstanzen("mstEFirst", 0)
                                 readInstanzen("mstBFirst", 0)
                             })
@@ -4576,9 +4518,8 @@ try {
                             $("#tblLiegenschaftenSuchen tbody").on("dblclick", "tr", function() {
                                 var a = tblLiegenschaftenSuchen.row(this).data();
                                 $("#liegenschaftenSuchenContainer").dialog("close");
-                                readInstanzen("liegFirst",
-                                    a[0]);
-                                readInstanzen("berFirst", 0);
+                                readInstanzen("liegFirst", a[0])
+                                readInstanzen("berFirst", 0)
                                 readInstanzen("mstEFirst", 0)
                                 readInstanzen("mstBFirst", 0)
                             })
@@ -5183,7 +5124,6 @@ try {
                             $(".liegPfad").val(c[b].nameLieg),
                             readInstanzen("berFirst", 0)) :
                             clearFields("liegHinz")
-
                         }
                     });
                     break;
@@ -5297,6 +5237,7 @@ try {
                             , ["#vorgelagerteBereiche1AllgemeinBer", "vorgelagerterBereich1Ber"]
                             , ["#vorgelagerteBereiche2AllgemeinBer", "vorgelagerterBereich2Ber"]
                             ].forEach(a => $(a[0]).val(c[b][a[1]])),
+                            $(".berPfad").val(c[b].nameBer),
                             readInstanzen("mstEFirst", 0),
                             readInstanzen("mstBFirst", 0)) :
                             clearFields("berHinz")
@@ -5448,7 +5389,10 @@ try {
                         success: function(a) {
                             var c = $.parseJSON(a);
                             $("#anlCount").val(c.length);
-                            0 < c.length ? ($(".anlageAnl").text(c[b].bezeichnungAnl), $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl), $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
+                            0 < c.length ?
+                            ($(".anlageAnl").text(c[b].bezeichnungAnl),
+                            $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl),
+                            $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
 
                             [1, 2, 3, 4]
                             .forEach(
@@ -5465,7 +5409,6 @@ try {
                             [ [ "#anlID", "anl_ID" ]
                             , [ "#idAllgemeinAnl", "anl_ID" ]
                             , [ "#bereichAllgemeinAnl", "nameBer" ]
-                            , [ "#berID", "ber_ID" ]
                             , [ "#anlagennummerAllgemeinAnl", "nummerAnl" ]
                             , [ "#bezeichnungAllgemeinAnl", "bezeichnungAnl" ]
                             , [ "#typAllgemeinAnl", "typAnl" ]
@@ -5532,7 +5475,7 @@ try {
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             })) :
-                            (clearFields("anlHinz"))
+                            clearFields("anlHinz")
 
                             dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
@@ -5554,7 +5497,6 @@ try {
                             alert("failed!!")
                         },
                         success: function(a) {
-                            /*console.log("records readInstanzen messmittel");console.log(a);*/
                             var c = $.parseJSON(a);
                             $("#msmCount").val(c.length);
                             0 < c.length ? ($("#msmID").val(c[b].msm_ID), $("#multiboxAllgemeinMsm").prop("checked", c[b].multiboxMsm), $("#messtoleranzInformationenConfig").val(formatNumber("form", c[b].messtoleranzConfig)), $("#wandlungsfaktorTechnischeDetailsConfig").val(formatNumber("form", c[b].wandlungsfaktorMsm)), [
@@ -6289,8 +6231,6 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a))
                     organisationenEinlesen()
-                    console.log("Save org query");
-                    console.log(a);
                 }
             });
             else if ("liegSpeichern" == a) $.ajax({
@@ -7594,9 +7534,6 @@ try {
                     passwort: getHash($("#passwortSAdm").val())
                 },
                 success: function(a) {
-                    console.log("instanzErstellen sAdm query")
-                    console.log(a)
-
                     alert(datensatzGespeichert(a));
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
                 } }), sAdmNavID = $("#sAdmCount").val();
@@ -7878,11 +7815,8 @@ try {
                     notiz: $("#notizAllgemeinBer").val()
                 },
                 success: function(a) {
-
-                    console.log("Ber save");
-                    console.log(a);
-
                     alert(datensatzGespeichert(a));
+                    bereicheEinlesen()
                     readInstanzen("berLast", $("#berCount").val())
                 } }), berNavID = $("#berCount").val();
             else if ("mstESpeichern" == a) {
@@ -8709,7 +8643,7 @@ try {
             "betrGrpMenu" == a || "manGrpMenu" == a || "sAdmMenu" == a || "admMenu" == a || "benMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
                 "none"), $("#tabsRechteverwaltung, #rechteverwaltung, #stammdaten").css("display", "block"), "betrGrpMenu" == a ? tabControlNav("tabBetrGrp") : "manGrpMenu" == a ? tabControlNav("tabManGrp") : "sAdmMenu" == a ? tabControlNav("tabSAdm") : "admMenu" == a ? tabControlNav("tabAdm") : "benMenu" == a && tabControlNav("tabBen")) : $("#tabsRechteverwaltung, #rechteverwaltung").css("display", "none");
             "untMenu" == a || "manMenu" == a || "orgMenu" == a || "liegMenu" == a || "berMenu" == a || "mstEMenu" == a || "mstBMenu" == a || "stdMenu" == a || "stdDrMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
-                "none"), $("#tabsUnternehmensstruktur, #unternehmensstruktur, #stammdaten").css("display", "block"), "untMenu" == a || "manMenu" == a ? tabControlNav("tabMan") : "orgMenu" == a ? tabControlNav("tabOrg") : "liegMenu" == a ? tabControlNav("tabLieg") : "berMenu" == a ? (energietrInDBoxBer(), tabControlNav("tabBer")) : "mstEMenu" == a ? tabControlNav("tabMstE") : "mstBMenu" == a ? tabControlNav("tabMstB") : "stdMenu" == a ? tabControlNav("tabStd") : "stdDrMenu" == a && tabControlNav("tabStdDr")) : $("#tabsUnternehmensstruktur, #unternehmensstruktur").css("display", "none");
+                "none"), $("#tabsUnternehmensstruktur, #unternehmensstruktur, #stammdaten").css("display", "block"), "untMenu" == a || "manMenu" == a ? tabControlNav("tabMan") : "orgMenu" == a ? tabControlNav("tabOrg") : "liegMenu" == a ? tabControlNav("tabLieg") : "berMenu" == a ? (tabControlNav("tabBer")) : "mstEMenu" == a ? tabControlNav("tabMstE") : "mstBMenu" == a ? tabControlNav("tabMstB") : "stdMenu" == a ? tabControlNav("tabStd") : "stdDrMenu" == a && tabControlNav("tabStdDr")) : $("#tabsUnternehmensstruktur, #unternehmensstruktur").css("display", "none");
             if ("anlMenu" == a || "anl_Eng_Menu" == a || "anl_Dok_Menu" == a || "anl_Hist_Menu" ==
                 a || "anl_Konfig_Menu" == a || "anl_Menu" == a) {
                 $("#tabsAnlagenverwaltung, #anlagenverwaltung, #stammdaten").css("display", "block");

@@ -66,17 +66,19 @@ elseif ( $ins == "mstZp" ) {
 }
 else {
 	if($ins === "mstESuchen"){
-		$liegID = $_POST [ 'liegID' ] ;
+		$berID = $_POST [ 'berID' ] ;
 
 		$query = "SELECT * FROM MessstellenAnlagen " ;
 		$query .= "WHERE deleted <> 'true' " ;
+		$query .= "AND ber_ID = $berID " ;
 		$query .= "AND typ = 'energiedaten' " ;
 	}
 	elseif($ins === "mstBSuchen"){
-		$liegID = $_POST [ 'liegID' ] ;
+		$berID = $_POST [ 'berID' ] ;
 
 		$query = "SELECT * FROM MessstellenAnlagen " ;
 		$query .= "WHERE deleted <> 'true' " ;
+		$query .= "AND ber_ID = $berID " ;
 		$query .= "AND typ = 'betriebsdaten' " ;
 	}
 	elseif($dl = $ins == "mst1ExtDl" || $ins == "mst2ExtDl" || $ins == "mst3ExtDl" || $ins == "mst4ExtDl" || $ins == "mst5ExtDl" || $ins == "mst6ExtDl"){
