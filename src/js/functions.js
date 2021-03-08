@@ -2191,8 +2191,7 @@ try {
                     var b = JSON.parse(a);
                     $("#aktivAllgemeinAnlHist").prop("checked", b[0].aktivAnl);
                     $("#bildAllgemeinAnlHist").prop("src", b[0].bildAnl);
-                    $("#mehrProdukteAllgemeinAnlHist").prop("checked",
-                        b[0].mehrProdukteAnl);
+                    $("#mehrProdukteAllgemeinAnlHist").prop("checked", b[0].mehrProdukteAnl);
                     [
                         ["#anlIDHist", "anl_ID"],
                         ["#idAllgemeinAnlHist", "anl_ID"],
@@ -2609,8 +2608,6 @@ try {
             $("#berID").val(bereicheliste[$(".berPfad").prop("selectedIndex")].berID)
 
             readInstanzen("berFirst", $(".berPfad").prop("selectedIndex"))
-            readInstanzen("mstEFirst", 0)
-            readInstanzen("mstBFirst", 0)
             readInstanzen("msmFirst", 0)
             readInstanzen("stdFirst", 0)
             readInstanzen("anlFirst", 0)
@@ -2620,7 +2617,7 @@ try {
             readInstanzen("iMwFirst", 0)
             readInstanzen("zpFirst", 0)
         }, liegPfadChange = function(a) {
-            $(".liegPfad").val($(a).val());
+            $(".liegPfad").val($(a).val())
             if (liegenschaftenliste[$(".liegPfad").prop("selectedIndex")] === "undefined") {
                 $("#liegID").val(liegenschaftenliste[$(".liegPfad").prop("selectedIndex")].LiegID);
             } else {
@@ -2628,9 +2625,6 @@ try {
             }
 
             readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"))
-            readInstanzen("berFirst", 0)
-            readInstanzen("mstEFirst", 0)
-            readInstanzen("mstBFirst", 0)
             readInstanzen("msmFirst", 0)
             readInstanzen("stdFirst", 0)
             readInstanzen("anlFirst", 0)
@@ -2644,12 +2638,7 @@ try {
             $(".orgPfad").val($(a).val());
             $("#orgID").val(organisationenliste[$(".orgPfad").prop("selectedIndex")].OrgID);
             readInstanzen("orgFirst", $(".orgPfad").prop("selectedIndex"));
-            readInstanzen("liegFirst", 0);
-            readInstanzen("berFirst", 0);
-            readInstanzen("mstEFirst", 0);
-            readInstanzen("mstBFirst", 0);
             liegenschaftenEinlesen()
-            bereicheEinlesen()
         }, tabelleEinlesen = function(a) {
             $.ajax({
                 type: "POST",
@@ -4113,6 +4102,7 @@ try {
                     },
                     open: function() {
                         $("#tblMessstellenSuchen tbody tr").css("cursor", "pointer");
+                        $("#tblMessstellenSuchen tbody").off("dblclick")
                         $("#tblMessstellenSuchen tbody").on("dblclick", "tr", function() {
                             readInRecord(this)
                         })
@@ -5016,7 +5006,7 @@ try {
                             $("#orgCount").val(c.length);
                             1 == c.length ? $(".orgPfad, .orgPfadLbl").css("display",
                                 "none") : $(".orgPfad, .orgPfadLbl").css("display", "inline");
-                            0 < c.length ? [
+                            0 < c.length ? ([
                                 ["#orgID", "org_ID"],
                                 ["#nameAllgemeinOrg", "nameOrg"],
                                 ["#gesellschaftsformAllgemeinOrg", "gesellschaftsformOrg"],
@@ -5044,7 +5034,9 @@ try {
                                 ["#mobiltelefonEnergiemanagementOrg", "mobiltelefonEnergiemanagementOrg"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
-                            }) : clearFields("orgHinz")
+                            }),
+                            readInstanzen("liegFirst", 0)) :
+                            clearFields("orgHinz")
                         }
                     });
                     break;
@@ -5062,9 +5054,10 @@ try {
                             alert("failed!!")
                         },
                         success: function(a) {
-                            var c = $.parseJSON(a);
+                            var c = $.parseJSON(a)
 
-                            $("#liegCount").val(c.length);
+                            $("#liegCount").val(c.length)
+
                             0 < c.length ?
                             ($("#eigenstaendigeformAllgemeinLieg").prop("checked", c[b].eigenstaendigeFormLieg),
                             $("#aktivAllgemeinLieg").prop("checked", c[b].aktivLieg),

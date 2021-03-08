@@ -1588,23 +1588,10 @@ $(document).ready(function() {
         readInstanzen("orgFirst", 0);
         dbFuerEnergietraegerFestlegen($("#nameDB").val());
         energietrInDBoxLieg();
-        readInstanzen("liegFirst", 0);
-        liegNavID = 0;
-        readInstanzen("berFirst", 0);
-        berNavID = 0;
-
-        readInstanzen("mstEFirst", 0);
-        mstENavID = 0;
-
-        readInstanzen("mstBFirst", 0);
-        mstBNavID = 0;
-
         readInstanzen("msmFirst", 0);
         msmNavID = 0;
-
         readInstanzen("stdFirst", 0);
         stdNavID = 0;
-
         readInstanzen("anlFirst", 0);
         anlNavID = 0;
         anlagenGruppenEinlesen();
