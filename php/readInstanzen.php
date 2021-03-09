@@ -340,6 +340,8 @@ elseif($id == "betrPar"){
 } elseif($id == 'benSuchen') {
     $query = "SELECT * FROM benutzer ";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
+} elseif($id == 'rollenUndBerechtigungenSuperadmin') {
+    $query = "SELECT * FROM accessibleTab ";
 }
 
 $records = queryDB($conn, $query, "read") ;

@@ -1297,6 +1297,9 @@ $(document).ready(function() {
     $("#gipscAdmSuchen").click(function() {
         gipscAdmSuchenlisteErstellen()
     });
+    $("#sAdmRollenUndBerechtigungen").click(function() {
+        sAdmRollenUndBerechtigungen()
+    });
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
         switch ($("#bermstmod").val()) {

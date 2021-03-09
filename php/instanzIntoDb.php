@@ -95,18 +95,35 @@ elseif($id == "sAdm") {
         $benutzername = $_POST['benutzername'] ;
         $passwort = $_POST['passwort'] ;
 
-        $tsql = "INSERT INTO superAdmins(man_ID,betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, " ;
-        $tsql .= "faxSAdm, mobiltelefonSAdm, username, passHash, position) " ;
-        $tsql .= "VALUES (1,'$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
-        $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
+        $sAdmsql = "INSERT INTO superAdmins(man_ID,betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, " ;
+        $sAdmsql .= "faxSAdm, mobiltelefonSAdm, username, passHash, position) " ;
+        $sAdmsql .= "VALUES (1,'$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
+        $sAdmsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
+
+        queryDB( $conn, $sAdmsql, "write" );
+        echo "Daten erfolgreich gespeichert";
 
     } elseif($modus == "delete") {
         
       $sAdmID = $_POST['sAdmID'] ;
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($sAdmID)) {
-        $tsql .= "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE sAdm_ID = '$sAdmID'";
+        $sAdmsql .= "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE sAdm_ID = '$sAdmID'";
+        queryDB( $conn, $sAdmsql, "write" );
+        echo "Daten erfolgreich gespeichert";
       }
+
+    } elseif($modus == 'saveRolePermission') {
+
+      $role_id = $_POST['role_id'] ;
+      $tab_ids = $_POST['tab_id'] ;
+      
+      foreach($tab_ids as $tabId) {
+        $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id) ";
+        $sAdmsql .= "VALUES ('$role_id','$tabId') ";
+        queryDB( $conn, $sAdmsql, "write" );
+      }
+      echo "Daten erfolgreich gespeichert";
 
     } else {
 
@@ -122,11 +139,14 @@ elseif($id == "sAdm") {
         $benutzername = $_POST['benutzername'] ;
         $passwort = $_POST['passwort'] ;
 
-        $tsql =  "UPDATE superAdmins SET titelSAdm = '$titel',nameSAdm = '$name', " ;
-        $tsql .= "vornameSAdm = '$vorname',emailSAdm = '$eMail',telefonSAdm = '$telefon', " ;
-        $tsql .= "faxSAdm = '$fax',mobiltelefonSAdm = '$mobiltelefon',username = '$benutzername', " ;
-        $tsql .= "passHash = '$passwort' " ;
-        $tsql .= "WHERE sAdm_ID = '$sAdmID' " ;
+        $sAdmsql =  "UPDATE superAdmins SET titelSAdm = '$titel',nameSAdm = '$name', " ;
+        $sAdmsql .= "vornameSAdm = '$vorname',emailSAdm = '$eMail',telefonSAdm = '$telefon', " ;
+        $sAdmsql .= "faxSAdm = '$fax',mobiltelefonSAdm = '$mobiltelefon',username = '$benutzername', " ;
+        $sAdmsql .= "passHash = '$passwort' " ;
+        $sAdmsql .= "WHERE sAdm_ID = '$sAdmID' " ;
+
+        queryDB( $conn, $sAdmsql, "write" );
+        echo "Daten erfolgreich gespeichert";
     }
 }
 elseif($id == "manGrp") {
@@ -3219,7 +3239,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
   }
 }
 
-if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  ) {
+if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm") {
     $retState = queryDB( $conn, $tsql, "write" );
 
     if ($retState == 'error') {

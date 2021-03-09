@@ -17841,3 +17841,41 @@ function sAdmLoeschen() {
     }
     return false;
 }
+// Roles and Permissions Data get from the database
+$(document).ready(function() {
+    $('div#rollenUndBerechtigungenSuperadmin').html(localStorage.getItem('content'));
+});
+
+
+// Roles and Permission Ids According to Users.
+
+/*
+    1 - Gipscomm Admin
+    2 - SuperAdmin
+    3 - Mandantengruppen
+    4 - Admins
+    5 - Benutzer
+*/
+
+function sAdmRollenUndBerechtigungen() {
+    var arr = [];
+    $.each($('input[name="rolesPermission[]"]:checked'), function() {
+    var value = $(this).val()
+    arr.push(value)
+    })
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "sAdm",
+            nameDB: "gipscomm",
+            modus: "saveRolePermission",
+            role_id: 2,
+            tab_id: arr,
+        },
+        success: function(a) {
+            alert(a)
+        }
+    });
+}
