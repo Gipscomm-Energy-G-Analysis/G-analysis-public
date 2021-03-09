@@ -1826,15 +1826,6 @@ $(".orgSuchenSpies").click(function() {
 
 });
 
-/*On click menu Vers.Bereiche/Messstellen update lieg select options*/
-$("#berMenu").click(function() {
-    $(".liegPfad option:eq(0)").prop('selected', 'selected').trigger('change');
-    [ "E", "B"]
-    .forEach(a => toggleMsmBerechnungslogik($(`#messartMst${a}`).val()))
-
-});
-
-
 /*24-02-2020 Crete correction factor options add more functionality,
 21-03-2020 added the description option*/
 $("#btnOptionHinzEPrdKff").click(function() {

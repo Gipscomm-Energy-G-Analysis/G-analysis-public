@@ -1522,6 +1522,23 @@ try {
         dbFuerEnergietraegerFestlegen = function(a) {
             entDB = "Global" == a ? "gipscomm" : $("#nameDB").val()
         },
+        bereicheVorhanden =
+            () => {
+                const activeMstTab =
+                    $("#activeInstance").val() === "mstE" || $("#activeInstance").val() === "mstB"
+
+                const noBereiche =
+                    bereicheliste.length === 0
+
+                if (noBereiche && activeMstTab) {
+                    alert("Bitte legen Sie erst einen oder mehrere Bereiche an um dies/em/en Messstellen zuzuordnen !")
+                    clearFields("mstEHinz")
+                    clearFields("mstBHinz")
+                    tabControlNav("tabBer")
+                }
+                return bereicheliste.length !== 0
+            }
+
         bereicheInDropbox = function(a) {
             bereicheliste = [];
 
@@ -1546,6 +1563,7 @@ try {
 
             fillBereicheliste(a)
             fillDropbox()
+            bereicheVorhanden()
         },
         bereicheEinlesen = function() {
             const id = "berAuswahl"
@@ -2625,6 +2643,7 @@ try {
             }
 
             readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"))
+
             readInstanzen("msmFirst", 0)
             readInstanzen("stdFirst", 0)
             readInstanzen("anlFirst", 0)
@@ -4791,9 +4810,8 @@ try {
                 for (var b = c, e = b.length, f = 0; f < e; f++) $("#" + b[f].htmlID).val(a[0][b[f].dbColumnName])
             })
         }, readInstanzen = function(a, b, e) {
-            $(".lblNeu").css("display", "none");
-            $(".lblAendern").css("display",
-                "inline");
+            $(".lblNeu").css("display", "none")
+            $(".lblAendern").css("display", "inline")
             switch (isInstance(a)) {
                 case "gipscAdm":
                     $.ajax({
@@ -5114,7 +5132,6 @@ try {
                             $("#entLiegErweitert").css("display", "block") :
                             $("#entLiegErweitert").css("display", "none"),
                             energietrInDBoxLieg(),
-                            $(".liegPfad").val(c[b].nameLieg),
                             readInstanzen("berFirst", 0)) :
                             clearFields("liegHinz")
                         }
@@ -8613,6 +8630,7 @@ try {
                     else if ("tabBen" == a) b = ["", ""], readInstanzen("benFirst", 0);
                     else if ("tabAnl" == a) getAnlagenAuswahlTblHeader(), energiefrmInDBoxLieg();
                     else if ("tabMsm" == a) getAnlagenAuswahlTblHeader();
+                    else if ("tabMstE" == a | "tabMstB" == a) bereicheVorhanden();
                     else if ("tabKnz" == a) $("#asideRight2").css("display", "block"), knzEinheitenEinlesen();
                     else if ("tabExtRechnungen" == a) $("#asideRight").css("display", "block"), versorgerUndEinheitBefuellen(), energietrInDBoxERngVergleich(), energietrInDBoxLieg();
                     else if ("tabAusw_eRng_iMw" == a) energietrInDBoxERngVergleich(), energietrInDBoxLieg(), externeRechnungenListeErstellen("vergleich");
