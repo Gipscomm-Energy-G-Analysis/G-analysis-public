@@ -17879,3 +17879,97 @@ function sAdmRollenUndBerechtigungen() {
         }
     });
 }
+
+function adminsRollenUndBerechtigungen() {
+    var arr = [];
+    $.each($('input[name="rolesPermission[]"]:checked'), function() {
+    var value = $(this).val()
+    arr.push(value)
+    })
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "adm",
+            nameDB: "gipscomm",
+            modus: "saveRolePermission",
+            role_id: 4,
+            tab_id: arr,
+        },
+        success: function(a) {
+            alert(a)
+        }
+    });
+}
+
+function sAdmGetRollenUndBerechtigungen() {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "sAdmGetRolePermission",
+            nameDB: "gipscomm",
+            role_id: 2,
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                $.each(c, function(i, item) {
+                    $('input[value="'+item.tab_id+'"]').prop("checked", true);
+                });
+            } else {
+                $('div#rollenUndBerechtigungenSuperadmin').html(localStorage.getItem('content'));
+            }
+        }
+    });
+}
+function adminsGetRollenUndBerechtigungen() {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "sAdmGetRolePermission",
+            nameDB: "gipscomm",
+            role_id: 4,
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                $.each(c, function(i, admTab) {
+                    $('input[data-id="'+admTab.tab_id+'"]').prop("checked", true);
+                });
+            } else {
+                $('div#rollenUndBerechtigungenSuperadmin').html(localStorage.getItem('content'));
+            }
+        }
+    });
+}
+
+function alleNutzerRollenUndBerechtigungen(roleId) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "alleNutzerGetRolePermission",
+            nameDB: "gipscomm",
+            role_id: roleId,
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                $.each(c, function(i, item) {
+                    // if(item.role_id != 1){
+                    //     //console.log(item.tab_id);
+                    //     $("#"+item.tab_id).css("display", "none");
+                    // } else {
+                    //     $("#"+item.tab_id).css("display", "block");
+                    // }
+                });
+            }
+        }
+    });
+}

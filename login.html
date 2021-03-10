@@ -78,7 +78,7 @@
             success: function(a) {
                 a = JSON.parse(a); 
                 $.each(a, function(i, item) {
-                    rolesCheckbox += '<div class="controlDiv"><label>'+item.tab_name+'</label><input name="rolesPermission[]" type="checkbox" value="'+item.tab_id+'" /></div>';
+                    rolesCheckbox += '<div class="controlDiv"><label>'+item.tab_name+'</label><input name="rolesPermission[]" type="checkbox" data-id="'+item.tab_id+'" value="'+item.tab_id+'" /></div>';
                 });
                 localStorage.setItem('content', rolesCheckbox);
             }            

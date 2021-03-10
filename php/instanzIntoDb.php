@@ -117,7 +117,18 @@ elseif($id == "sAdm") {
 
       $role_id = $_POST['role_id'] ;
       $tab_ids = $_POST['tab_id'] ;
-      
+
+      if(!empty($role_id)) {
+        $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
+        $record = queryDB($conn, $query, "read") ;
+
+        if(count($record)>0) {
+          $query .= "DELETE rolePermission WHERE role_id = '$role_id'";
+          queryDB( $conn, $query, "write" );
+        }
+      }
+      // print_r(count($record));
+      // die;
       foreach($tab_ids as $tabId) {
         $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id) ";
         $sAdmsql .= "VALUES ('$role_id','$tabId') ";
@@ -192,19 +203,46 @@ if(isset($_POST['insID']))
     $benutzername = $_POST['benutzername'];
     $passwort = $_POST['passwort'];
 
-		$tsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
-		$tsql .= "fax, mobiltelefon, username, passHash) ";
-		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
-		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+		$admtsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
+		$admtsql .= "fax, mobiltelefon, username, passHash) ";
+		$admtsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
+		$admtsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+
+    queryDB( $conn, $admtsql, "write" );
+    echo "Daten erfolgreich gespeichert";
 
   } elseif($modus == "delete") {
         
     $admID = $_POST['admID'];
     $dateTime = date("Y-m-d H:i:s");
     if(!empty($admID)) {
-      $tsql =  "UPDATE admins SET deleted_at = '$dateTime'";
-      $tsql .= "WHERE adm_ID = '$admID'";
+      $admtsql =  "UPDATE admins SET deleted_at = '$dateTime'";
+      $admtsql .= "WHERE adm_ID = '$admID'";
+      queryDB( $conn, $admtsql, "write" );
+      echo "Daten erfolgreich gespeichert";
     }
+
+  } elseif($modus == 'saveRolePermission') {
+
+    $role_id = $_POST['role_id'] ;
+    $tab_ids = $_POST['tab_id'] ;
+
+    if(!empty($role_id)) {
+      $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
+      $record = queryDB($conn, $query, "read") ;
+
+      if(count($record)>0) {
+        $query .= "DELETE rolePermission WHERE role_id = '$role_id'";
+        queryDB( $conn, $query, "write" );
+      }
+    }
+   
+    foreach($tab_ids as $tabId) {
+      $admtsql = "INSERT INTO rolePermission(role_id,tab_id) ";
+      $admtsql .= "VALUES ('$role_id','$tabId') ";
+      queryDB( $conn, $admtsql, "write" );
+    }
+    echo "Daten erfolgreich gespeichert";
 
   } else {
 
@@ -219,11 +257,14 @@ if(isset($_POST['insID']))
     $benutzername = $_POST['benutzername'];
     $passwort = $_POST['passwort'];
 
-		$tsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
-		$tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
-		$tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
-        $tsql .= "passHash = '$passwort' ";
-		$tsql .= "WHERE adm_ID = '$admID' ";
+		$admtsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
+		$admtsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
+		$admtsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
+    $admtsql .= "passHash = '$passwort' ";
+		$admtsql .= "WHERE adm_ID = '$admID' ";
+
+    queryDB( $conn, $admtsql, "write" );
+    echo "Daten erfolgreich gespeichert";
 	}
 }
 elseif($id == "ben") {
@@ -3239,7 +3280,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
   }
 }
 
-if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm") {
+if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm" && $id != "adm") {
     $retState = queryDB( $conn, $tsql, "write" );
 
     if ($retState == 'error') {

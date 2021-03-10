@@ -28,6 +28,17 @@ $betrGrpID = $_POST['betrGrpID'];
 $query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID' AND deleted_at IS NULL";
 }
 
+elseif($id == "sAdmGetRolePermission"){
+  $roleId = $_POST['role_id'];
+  $query = "SELECT * FROM rolePermission WHERE role_id = '$roleId' ";
+}
+
+elseif($id == "alleNutzerGetRolePermission"){
+  $roleId = $_POST['role_id'];
+  $query = "SELECT accessibleTab.tab_id FROM accessibleTab WHERE accessibleTab.tab_id NOT IN ";
+  $query .= "( SELECT rolePermission.tab_id FROM rolePermission WHERE rolePermission.role_id = $roleId )";
+}
+
 elseif($id == "manGrp"){
 $betrGrpID = $_POST['betrGrpID'];
 $query = "SELECT * FROM mandantenGruppen WHERE betrGrp_ID = '$betrGrpID'";
