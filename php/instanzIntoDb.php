@@ -115,26 +115,27 @@ elseif($id == "sAdm") {
 
     } elseif($modus == 'saveRolePermission') {
 
-      $role_id = $_POST['role_id'] ;
-      $tab_ids = $_POST['tab_id'] ;
-
+      $role_id = $_POST['role_id'];
+      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+      
       if(!empty($role_id)) {
         $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
         $record = queryDB($conn, $query, "read") ;
 
         if(count($record)>0) {
-          $query .= "DELETE rolePermission WHERE role_id = '$role_id'";
+          $query = "DELETE rolePermission WHERE role_id = '$role_id'";
           queryDB( $conn, $query, "write" );
         }
       }
-      // print_r(count($record));
-      // die;
-      foreach($tab_ids as $tabId) {
-        $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id) ";
-        $sAdmsql .= "VALUES ('$role_id','$tabId') ";
-        queryDB( $conn, $sAdmsql, "write" );
+      
+      if(!empty($tab_ids)) {
+        foreach($tab_ids as $tabId) {
+          $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id) ";
+          $sAdmsql .= "VALUES ('$role_id','$tabId') ";
+          queryDB( $conn, $sAdmsql, "write" );
+        }
+        echo "Daten erfolgreich gespeichert";
       }
-      echo "Daten erfolgreich gespeichert";
 
     } else {
 
@@ -225,24 +226,25 @@ if(isset($_POST['insID']))
   } elseif($modus == 'saveRolePermission') {
 
     $role_id = $_POST['role_id'] ;
-    $tab_ids = $_POST['tab_id'] ;
+    $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
 
     if(!empty($role_id)) {
       $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
       $record = queryDB($conn, $query, "read") ;
 
       if(count($record)>0) {
-        $query .= "DELETE rolePermission WHERE role_id = '$role_id'";
+        $query = "DELETE rolePermission WHERE role_id = '$role_id'";
         queryDB( $conn, $query, "write" );
       }
     }
-   
-    foreach($tab_ids as $tabId) {
-      $admtsql = "INSERT INTO rolePermission(role_id,tab_id) ";
-      $admtsql .= "VALUES ('$role_id','$tabId') ";
-      queryDB( $conn, $admtsql, "write" );
+    if(!empty($tab_ids)) {
+      foreach($tab_ids as $tabId) {
+        $admtsql = "INSERT INTO rolePermission(role_id,tab_id) ";
+        $admtsql .= "VALUES ('$role_id','$tabId') ";
+        queryDB( $conn, $admtsql, "write" );
+      }
+      echo "Daten erfolgreich gespeichert";
     }
-    echo "Daten erfolgreich gespeichert";
 
   } else {
 
@@ -292,19 +294,47 @@ elseif($id == "ben") {
           $benutzername = $_POST['benutzername'];
           $passwort = $_POST['passwort'];
 
-      		$tsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
-      		$tsql .= "fax, mobiltelefon, username, passHash) ";
-      		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
-      		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+      		$bentsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
+      		$bentsql .= "fax, mobiltelefon, username, passHash) ";
+      		$bentsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
+      		$bentsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+
+          queryDB( $conn, $bentsql, "write" );
+          echo "Daten erfolgreich gespeichert";
 
     } elseif($modus == "delete") {
       
         $benID = $_POST['benID'];
         $dateTime = date("Y-m-d H:i:s");
         if(!empty($benID)) {
-          $tsql =  "UPDATE benutzer SET deleted_at = '$dateTime'";
-          $tsql .= "WHERE ben_ID = '$benID' ";
+          $bentsql =  "UPDATE benutzer SET deleted_at = '$dateTime'";
+          $bentsql .= "WHERE ben_ID = '$benID' ";
+          queryDB( $conn, $bentsql, "write" );
+          echo "Daten erfolgreich gespeichert";
         }
+    } elseif($modus == 'saveRolePermission') {
+
+      $role_id = $_POST['role_id'] ;
+      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+  
+      if(!empty($role_id)) {
+        $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
+        $record = queryDB($conn, $query, "read") ;
+  
+        if(count($record)>0) {
+          $query .= "DELETE rolePermission WHERE role_id = '$role_id'";
+          queryDB( $conn, $query, "write" );
+        }
+      }
+      if(!empty($tab_ids)) {
+        foreach($tab_ids as $tabId) {
+          $bentsql = "INSERT INTO rolePermission(role_id,tab_id) ";
+          $bentsql .= "VALUES ('$role_id','$tabId') ";
+          queryDB( $conn, $bentsql, "write" );
+        }
+        echo "Daten erfolgreich gespeichert";
+      }
+  
     } else{
         $benID = $_POST['benID'];
         $titel = $_POST['titel'];
@@ -317,11 +347,13 @@ elseif($id == "ben") {
         $benutzername = $_POST['benutzername'];
         $passwort = $_POST['passwort'];
 
-        $tsql =  "UPDATE benutzer SET titel = '$titel',name = '$name', ";
-        $tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
-        $tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
-        $tsql .= "passHash = '$passwort' ";
-        $tsql .= "WHERE ben_ID = '$benID' ";
+        $bentsql =  "UPDATE benutzer SET titel = '$titel',name = '$name', ";
+        $bentsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
+        $bentsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
+        $bentsql .= "passHash = '$passwort' ";
+        $bentsql .= "WHERE ben_ID = '$benID' ";
+        queryDB( $conn, $bentsql, "write" );
+        echo "Daten erfolgreich gespeichert";
     }
 }
 elseif($id == "org") {
@@ -3280,7 +3312,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
   }
 }
 
-if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm" && $id != "adm") {
+if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm" && $id != "adm" && $id != "bentsql") {
     $retState = queryDB( $conn, $tsql, "write" );
 
     if ($retState == 'error') {

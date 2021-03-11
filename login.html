@@ -63,7 +63,11 @@
     }
 
     function rollenUndBerechtigungenSuperadmin(){
-        var rolesCheckbox = '';
+        var gipsAdmrolesCheckbox = '';
+        var sAdmrolesCheckbox = '';
+        var admrolesCheckbox = '';
+        var benrolesCheckbox = '';
+        var manrolesCheckbox = '';
         $.ajax({
             type: "POST",
             async: !0,
@@ -77,10 +81,31 @@
             },
             success: function(a) {
                 a = JSON.parse(a); 
-                $.each(a, function(i, item) {
-                    rolesCheckbox += '<div class="controlDiv"><label>'+item.tab_name+'</label><input name="rolesPermission[]" type="checkbox" data-id="'+item.tab_id+'" value="'+item.tab_id+'" /></div>';
+                $.each(a, function(i, gipsAdm) {
+                    console.log(gipsAdm)
+                    gipsAdmrolesCheckbox += '<div class="controlDiv"><label>'+gipsAdm.tab_name+'</label><input name="gipsAdmRolesPermission[]" type="checkbox" value="'+gipsAdm.tab_id+'" /></div>';
                 });
-                localStorage.setItem('content', rolesCheckbox);
+                localStorage.setItem('gipsAdm', gipsAdmrolesCheckbox);
+            
+                $.each(a, function(j, sAdm) {
+                    sAdmrolesCheckbox += '<div class="controlDiv"><label>'+sAdm.tab_name+'</label><input name="sAdmRolesPermission[]" type="checkbox"  value="'+sAdm.tab_id+'" /></div>';
+                });
+                localStorage.setItem('sAdm', sAdmrolesCheckbox);
+            
+                $.each(a, function(k, adm) {
+                    admrolesCheckbox += '<div class="controlDiv"><label>'+adm.tab_name+'</label><input name="admRolesPermission[]" type="checkbox" value="'+adm.tab_id+'" /></div>';
+                });
+                localStorage.setItem('adm', admrolesCheckbox);
+            
+                $.each(a, function(l, ben) {
+                    benrolesCheckbox += '<div class="controlDiv"><label>'+ben.tab_name+'</label><input name="benRolesPermission[]" type="checkbox" value="'+ben.tab_id+'" /></div>';
+                });
+                localStorage.setItem('ben', benrolesCheckbox);
+            
+                $.each(a, function(m, man) {
+                    manrolesCheckbox += '<div class="controlDiv"><label>'+man.tab_name+'</label><input name="manRolesPermission[]" type="checkbox" value="'+man.tab_id+'" /></div>';
+                });
+                localStorage.setItem('man', manrolesCheckbox);
             }            
         });   
 }

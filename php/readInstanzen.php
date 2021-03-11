@@ -35,8 +35,7 @@ elseif($id == "sAdmGetRolePermission"){
 
 elseif($id == "alleNutzerGetRolePermission"){
   $roleId = $_POST['role_id'];
-  $query = "SELECT accessibleTab.tab_id FROM accessibleTab WHERE accessibleTab.tab_id NOT IN ";
-  $query .= "( SELECT rolePermission.tab_id FROM rolePermission WHERE rolePermission.role_id = $roleId )";
+  $query = "SELECT rolePermission.role_id, accessibleTab.tab_id, accessibleTab.tab_name FROM rolePermission RIGHT JOIN accessibleTab ON accessibleTab.tab_id = rolePermission.tab_id AND rolePermission.role_id = '$roleId' ";
 }
 
 elseif($id == "manGrp"){

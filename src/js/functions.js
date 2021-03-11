@@ -17843,7 +17843,9 @@ function sAdmLoeschen() {
 }
 // Roles and Permissions Data get from the database
 $(document).ready(function() {
-    $('div#rollenUndBerechtigungenSuperadmin').html(localStorage.getItem('content'));
+    $('div#superadminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('sAdm'));
+    $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
+    $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
 });
 
 
@@ -17857,12 +17859,11 @@ $(document).ready(function() {
     5 - Benutzer
 */
 
-function sAdmRollenUndBerechtigungen() {
-    var arr = [];
-    $.each($('input[name="rolesPermission[]"]:checked'), function() {
-    var value = $(this).val()
-    arr.push(value)
-    })
+function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and Permission
+    var sAdmArr = new Array();
+    $('input[name="sAdmRolesPermission[]"]:checked').each(function() {
+        sAdmArr.push(this.value);
+    });
     $.ajax({
         type: "POST",
         async: !0,
@@ -17872,7 +17873,7 @@ function sAdmRollenUndBerechtigungen() {
             nameDB: "gipscomm",
             modus: "saveRolePermission",
             role_id: 2,
-            tab_id: arr,
+            tab_id: sAdmArr,
         },
         success: function(a) {
             alert(a)
@@ -17880,12 +17881,11 @@ function sAdmRollenUndBerechtigungen() {
     });
 }
 
-function adminsRollenUndBerechtigungen() {
-    var arr = [];
-    $.each($('input[name="rolesPermission[]"]:checked'), function() {
-    var value = $(this).val()
-    arr.push(value)
-    })
+function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Permission
+    var adminArr = new Array();
+    $('input[name="admRolesPermission[]"]:checked').each(function() {
+        adminArr.push(this.value);
+    });
     $.ajax({
         type: "POST",
         async: !0,
@@ -17895,7 +17895,28 @@ function adminsRollenUndBerechtigungen() {
             nameDB: "gipscomm",
             modus: "saveRolePermission",
             role_id: 4,
-            tab_id: arr,
+            tab_id: adminArr,
+        },
+        success: function(a) {
+            alert(a)
+        }
+    });
+}
+function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and Permission
+    var benArr = new Array();
+    $('input[name="benRolesPermission[]"]:checked').each(function() {
+        benArr.push(this.value);
+    });
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "ben",
+            nameDB: "gipscomm",
+            modus: "saveRolePermission",
+            role_id: 5,
+            tab_id: benArr,
         },
         success: function(a) {
             alert(a)
@@ -17903,7 +17924,7 @@ function adminsRollenUndBerechtigungen() {
     });
 }
 
-function sAdmGetRollenUndBerechtigungen() {
+function sAdmGetRollenUndBerechtigungen() {     // Superadmin selected checkbox from database
     $.ajax({
         type: "POST",
         async: !0,
@@ -17920,12 +17941,13 @@ function sAdmGetRollenUndBerechtigungen() {
                     $('input[value="'+item.tab_id+'"]').prop("checked", true);
                 });
             } else {
-                $('div#rollenUndBerechtigungenSuperadmin').html(localStorage.getItem('content'));
+                $('div#superadminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('sAdm'));
             }
         }
     });
 }
-function adminsGetRollenUndBerechtigungen() {
+
+function adminsGetRollenUndBerechtigungen() {       // Admin selected checkbox from database
     $.ajax({
         type: "POST",
         async: !0,
@@ -17938,11 +17960,36 @@ function adminsGetRollenUndBerechtigungen() {
         success: function(a) {
             c = JSON.parse(a)
             if(c.length != 0) {
+                $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
                 $.each(c, function(i, admTab) {
-                    $('input[data-id="'+admTab.tab_id+'"]').prop("checked", true);
+                    $('input[value="'+admTab.tab_id+'"]').prop("checked", true);
                 });
             } else {
-                $('div#rollenUndBerechtigungenSuperadmin').html(localStorage.getItem('content'));
+                $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
+            }
+        }
+    });
+}
+
+function benutzerGetRollenUndBerechtigungen() {       // Admin selected checkbox from database
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "sAdmGetRolePermission",
+            nameDB: "gipscomm",
+            role_id: 5,
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
+                $.each(c, function(i, admTab) {
+                    $('input[value="'+admTab.tab_id+'"]').prop("checked", true);
+                });
+            } else {
+                $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
             }
         }
     });
@@ -17962,12 +18009,13 @@ function alleNutzerRollenUndBerechtigungen(roleId) {
             c = JSON.parse(a)
             if(c.length != 0) {
                 $.each(c, function(i, item) {
-                    // if(item.role_id != 1){
-                    //     //console.log(item.tab_id);
-                    //     $("#"+item.tab_id).css("display", "none");
-                    // } else {
-                    //     $("#"+item.tab_id).css("display", "block");
-                    // }
+                    if(roleId != 1) {
+                        if(item.role_id == null){
+                            $("#"+item.tab_id).css("display", "none");
+                        } else {
+                            $("#"+item.tab_id).css("display", "block");
+                        }
+                    }
                 });
             }
         }

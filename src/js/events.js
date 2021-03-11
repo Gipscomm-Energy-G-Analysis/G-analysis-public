@@ -45,7 +45,11 @@ $(document).ready(function() {
     $("#liegRngVergleich").trigger("change");
     $("#logout").click(function() {
         sessionStorage.clear();
-        localStorage.removeItem('content');
+        localStorage.removeItem('gipsAdm');
+        localStorage.removeItem('sAdm');
+        localStorage.removeItem('adm');
+        localStorage.removeItem('ben');
+        localStorage.removeItem('man');
         $.ajax({
             type: "POST",
             async: !0,
@@ -1333,12 +1337,20 @@ $(document).ready(function() {
     $("#adminsRollenUndBerechtigungen").click(function() {
         adminsRollenUndBerechtigungen()
     });
+    $("#benutzerRollenUndBerechtigungen").click(function() {
+        benutzerRollenUndBerechtigungen()
+    });
     
+    // Get Checked data from database
+
     $("#betrGrpMenu, #tabBetrGrp, #betrGrpMenu").click(function() {
         sAdmGetRollenUndBerechtigungen()
     });
     $("#admMenu, #tabAdm").click(function() {
         adminsGetRollenUndBerechtigungen()
+    });
+    $("#tabBen").click(function() {
+        benutzerGetRollenUndBerechtigungen()
     });
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
