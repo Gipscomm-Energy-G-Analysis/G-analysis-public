@@ -5282,6 +5282,7 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
+
                         $("#mstECount").val(result.length)
 
                         0 < result.length ?
@@ -5291,12 +5292,15 @@ try {
                         [ ["#mstID", "mst_ID"]
                         , ["#nameMstE", "nameMSt"]
                         , ["#kurzbezeichnungMstE", "kurzbezeichnungMst"]
+                        , ["#vorgelagerteMstE", "vorgelMst"]
+                        , ["#vorgelagerteMstIDE", "vorgelMst_ID"]
                         , ["#kostenstelleMstE", "kostenstelleMst"]
+                        , ["#dlAnMstE", "extDl"]
+                        , ["#dlAnMstIDE", "extDl_ID"]
                         , ["#energietraegerMstE", "energietraegerMst"]
                         , ["#energieformMstE", "energieformMst"]
                         , ["#ortMstE", "ortMst"]
                         , ["#messartMstE", "messartMst"]
-                        , ["#vorgelagerteMstE", "vorgelagerteMessstelleMst"]
                         , ["#anlMstE", "anl"]
                         , ["#anlIDMstE", "anl_ID"]
                         , ["#messmittelBerechnungslogikMstE", "msm"]
@@ -5314,20 +5318,24 @@ try {
 
                     ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
                     .then(result => {
+
                         $("#mstBCount").val(result.length)
 
                         0 < result.length ?
                         (toggleMsmBerechnungslogik(result[b].messartMst)("B"),
-                        $("#aktivMst").prop("checked", result[b].aktivMst),
-                        $("#istDlMst").prop("checked", result[b].isDurchleitung),
+                        $("#aktivMstB").prop("checked", result[b].aktivMst),
+                        $("#istDlMstB").prop("checked", result[b].isDurchleitung),
                         [ ["#mstID", "mst_ID"]
                         , ["#nameMstB", "nameMSt"]
                         , ["#kurzbezeichnungMstB", "kurzbezeichnungMst"]
+                        , ["#vorgelagerteMstB", "vorgelMst"]
+                        , ["#vorgelagerteMstIDB", "vorgelMst_ID"]
                         , ["#kostenstelleMstB", "kostenstelleMst"]
+                        , ["#dlAnMstB", "extDl"]
+                        , ["#dlAnMstIDB", "extDl_ID"]
                         , ["#beschreibungMstB", "beschreibung"]
                         , ["#ortMstB", "ortMst"]
                         , ["#messartMstB", "messartMst"]
-                        , ["#vorgelagerteMstB", "vorgelagerteMessstelleMst"]
                         , ["#anlMstB", "anl"]
                         , ["#anlIDMstB", "anl_ID"]
                         , ["#messmittelBerechnungslogikMstB", "msm"]
@@ -6438,11 +6446,13 @@ try {
                     , kostenstelle: $("#kostenstelleMstE").val()
                     , aktiv: $("#aktivMstE").is(":checked")
                     , isDurchleitung: $("#istDlMstE").is(":checked")
+                    , extDlID: $("#dlAnMstIDE").val()
                     , energietraeger: $("#energietraegerMstE").val()
                     , energieform: $("#energieformMstE").val()
+                    , beschreibung: ""
                     , ort: $("#ortMstE").val()
                     , messart: $("#messartMstE").val()
-                    , vorgelagerteMessstelle: $("#vorgelagerteMstE").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDE").val()
                     , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
                     , msmID: $("#messmittelIDMstE").val()
                     , anlID: $("#anlIDMstE").val()
@@ -6463,11 +6473,13 @@ try {
                     , kostenstelle: $("#kostenstelleMstB").val()
                     , aktiv: $("#aktivMstB").is(":checked")
                     , isDurchleitung: $("#istDlMstB").is(":checked")
-                    , energietraeger: $("#energietraegerMstB").val()
-                    , energieform: $("#energieformMstB").val()
+                    , extDlID: $("#dlAnMstIDB").val()
+                    , energietraeger: ""
+                    , energieform: ""
+                    , beschreibung: $("#beschreibungMstB").val()
                     , ort: $("#ortMstB").val()
                     , messart: $("#messartMstB").val()
-                    , vorgelagerteMessstelle: $("#vorgelagerteMstB").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDB").val()
                     , messmittelBerechnungslogik: messmittelOrBerechnungslogik("B")
                     , msmID: $("#messmittelIDMstB").val()
                     , anlID: $("#anlIDMstB").val()
