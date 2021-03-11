@@ -317,109 +317,109 @@ elseif($id == "lieg") {
     }
 }
 elseif($id == "extDl") {
-$modus = $_POST['modus'];
-$nameAllgemein = $_POST['nameAllgemein'];
-$aktiv = $_POST['aktiv'];
-$gesellschaftsform = $_POST['gesellschaftsform'];
-$anschrift = $_POST['anschrift'];
-$land = $_POST['land'];
-$plz = $_POST['plz'];
-$ort = $_POST['ort'];
-$typ= $_POST['typ'];
-$standortdatenDritte = $_POST['standortdatenDritte'];
-$titelAnsprechpartner = $_POST['titelAnsprechpartner'];
-$nameAnsprechpartner = $_POST['nameAnsprechpartner'];
-$vornameAnsprechpartner = $_POST['vornameAnsprechpartner'];
-$eMailAnsprechpartner = $_POST['eMailAnsprechpartner'];
-$telefonAnsprechpartner = $_POST['telefonAnsprechpartner'];
-$faxAnsprechpartner = $_POST['faxAnsprechpartner'];
-$mobiltelefonAnsprechpartner = $_POST['mobiltelefonAnsprechpartner'];
+    $modus = $_POST['modus'];
+    $nameAllgemein = $_POST['nameAllgemein'];
+    $aktiv = $_POST['aktiv'];
+    $gesellschaftsform = $_POST['gesellschaftsform'];
+    $anschrift = $_POST['anschrift'];
+    $land = $_POST['land'];
+    $plz = $_POST['plz'];
+    $ort = $_POST['ort'];
+    $typ= $_POST['typ'];
+    $standortdatenDritte = $_POST['standortdatenDritte'];
+    $titelAnsprechpartner = $_POST['titelAnsprechpartner'];
+    $nameAnsprechpartner = $_POST['nameAnsprechpartner'];
+    $vornameAnsprechpartner = $_POST['vornameAnsprechpartner'];
+    $eMailAnsprechpartner = $_POST['eMailAnsprechpartner'];
+    $telefonAnsprechpartner = $_POST['telefonAnsprechpartner'];
+    $faxAnsprechpartner = $_POST['faxAnsprechpartner'];
+    $mobiltelefonAnsprechpartner = $_POST['mobiltelefonAnsprechpartner'];
 
-$energietraeger1 =$_POST['energietraeger1'];
-$messstelle1Ent =$_POST['messstelle1Ent'];
-$standort1Ent = $_POST['standort1Ent'];
-$energietraeger2 =$_POST['energietraeger2'];
-$messstelle2Ent =$_POST['messstelle2Ent'];
-$standort2Ent = $_POST['standort2Ent'];
-$energietraeger3 =$_POST['energietraeger3'];
-$messstelle3Ent =$_POST['messstelle3Ent'];
-$standort3Ent = $_POST['standort3Ent'];
-$energietraeger4 =$_POST['energietraeger4'];
-$messstelle4Ent =$_POST['messstelle4Ent'];
-$standort4Ent = $_POST['standort4Ent'];
-$energietraeger5 =$_POST['energietraeger5'];
-$messstelle5Ent =$_POST['messstelle5Ent'];
-$standort5Ent = $_POST['standort5Ent'];
-$energietraeger6 =$_POST['energietraeger6'];
-$messstelle6Ent =$_POST['messstelle6Ent'];
-$standort6Ent = $_POST['standort6Ent'];
+    $energietraeger1 =$_POST['energietraeger1'];
+    $messstelle1Ent =$_POST['messstelle1Ent'];
+    $standort1Ent = $_POST['standort1Ent'];
+    $energietraeger2 =$_POST['energietraeger2'];
+    $messstelle2Ent =$_POST['messstelle2Ent'];
+    $standort2Ent = $_POST['standort2Ent'];
+    $energietraeger3 =$_POST['energietraeger3'];
+    $messstelle3Ent =$_POST['messstelle3Ent'];
+    $standort3Ent = $_POST['standort3Ent'];
+    $energietraeger4 =$_POST['energietraeger4'];
+    $messstelle4Ent =$_POST['messstelle4Ent'];
+    $standort4Ent = $_POST['standort4Ent'];
+    $energietraeger5 =$_POST['energietraeger5'];
+    $messstelle5Ent =$_POST['messstelle5Ent'];
+    $standort5Ent = $_POST['standort5Ent'];
+    $energietraeger6 =$_POST['energietraeger6'];
+    $messstelle6Ent =$_POST['messstelle6Ent'];
+    $standort6Ent = $_POST['standort6Ent'];
 
-$energieRes1 =$_POST['energieRes1'];
-$messstelle1EnfRes =$_POST['messstelle1EnfRes'];
-$standort1EnfRes = $_POST['standort1EnfRes'];
-$energieRes2 =$_POST['energieRes2'];
-$messstelle2EnfRes =$_POST['messstelle2EnfRes'];
-$standort2EnfRes = $_POST['standort2EnfRes'];
-$energieRes3 =$_POST['energieRes3'];
-$messstelle3EnfRes =$_POST['messstelle3EnfRes'];
-$standort3EnfRes = $_POST['standort3EnfRes'];
-$energieRes4 =$_POST['energieRes4'];
-$messstelle4EnfRes =$_POST['messstelle4EnfRes'];
-$standort4EnfRes = $_POST['standort4EnfRes'];
-$energieRes5 =$_POST['energieRes5'];
-$messstelle5EnfRes =$_POST['messstelle5EnfRes'];
-$standort5EnfRes = $_POST['standort5EnfRes'];
-$energieRes6 =$_POST['energieRes6'];
-$messstelle6EnfRes =$_POST['messstelle6EnfRes'];
-$standort6EnfRes = $_POST['standort6EnfRes'];
+    $energieRes1 =$_POST['energieRes1'];
+    $messstelle1EnfRes =$_POST['messstelle1EnfRes'];
+    $standort1EnfRes = $_POST['standort1EnfRes'];
+    $energieRes2 =$_POST['energieRes2'];
+    $messstelle2EnfRes =$_POST['messstelle2EnfRes'];
+    $standort2EnfRes = $_POST['standort2EnfRes'];
+    $energieRes3 =$_POST['energieRes3'];
+    $messstelle3EnfRes =$_POST['messstelle3EnfRes'];
+    $standort3EnfRes = $_POST['standort3EnfRes'];
+    $energieRes4 =$_POST['energieRes4'];
+    $messstelle4EnfRes =$_POST['messstelle4EnfRes'];
+    $standort4EnfRes = $_POST['standort4EnfRes'];
+    $energieRes5 =$_POST['energieRes5'];
+    $messstelle5EnfRes =$_POST['messstelle5EnfRes'];
+    $standort5EnfRes = $_POST['standort5EnfRes'];
+    $energieRes6 =$_POST['energieRes6'];
+    $messstelle6EnfRes =$_POST['messstelle6EnfRes'];
+    $standort6EnfRes = $_POST['standort6EnfRes'];
 
-if($modus == "new"){
-$liegID = $_POST['liegID'];
+    if($modus == "new") {
+        $liegID = $_POST['liegID'];
 
-	$tsql = "INSERT INTO externeDurchleitungen(lieg_ID,datumExtDl,nameExtDl,aktivExtDl,gesellschaftsformExtDl,anschriftExtDl,";
-	$tsql .= "landExtDl,plzExtDl,ortExtDl,typExtDl,standortdatenDritte,titelAnsprechpartnerExtDl,nameAnsprechpartnerExtDl,vornameAnsprechpartnerExtDl,eMailAnsprechpartnerExtDl,";
-	$tsql .= "telefonAnsprechpartnerExtDl, faxAnsprechpartnerExtDl,mobiltelefonAnsprechpartnerExtDl,";
-$tsql .= "energietraeger1,messstelle1ExtDl,standort1ExtDl,energietraeger2,messstelle2ExtDl,standort2ExtDl,";
-$tsql .= "energietraeger3,messstelle3ExtDl,standort3ExtDl,energietraeger4,messstelle4ExtDl,standort4ExtDl,";
-	$tsql .= "energietraeger5,messstelle5ExtDl,standort5ExtDl,energietraeger6,messstelle6ExtDl,standort6ExtDl,";
-$tsql .= "energieRes1ExtDl,messstelleEngRes1ExtDl,standortEngRes1ExtDl,energieRes2ExtDl,messstelleEngRes2ExtDl,standortEngRes2ExtDl,";
-$tsql .= "energieRes3ExtDl,messstelleEngRes3ExtDl,standortEngRes3ExtDl,energieRes4ExtDl,messstelleEngRes4ExtDl,standortEngRes4ExtDl,";
-$tsql .= "energieRes5ExtDl,messstelleEngRes5ExtDl,standortEngRes5ExtDl,energieRes6ExtDl,messstelleEngRes6ExtDl,standortEngRes6ExtDl) ";
+    	$tsql = "INSERT INTO externeDurchleitungen(lieg_ID,datumExtDl,nameExtDl,aktivExtDl,gesellschaftsformExtDl,anschriftExtDl,";
+    	$tsql .= "landExtDl,plzExtDl,ortExtDl,typExtDl,standortdatenDritte,titelAnsprechpartnerExtDl,nameAnsprechpartnerExtDl,vornameAnsprechpartnerExtDl,eMailAnsprechpartnerExtDl,";
+    	$tsql .= "telefonAnsprechpartnerExtDl, faxAnsprechpartnerExtDl,mobiltelefonAnsprechpartnerExtDl,";
+        $tsql .= "energietraeger1,messstelle1ExtDl,standort1ExtDl,energietraeger2,messstelle2ExtDl,standort2ExtDl,";
+        $tsql .= "energietraeger3,messstelle3ExtDl,standort3ExtDl,energietraeger4,messstelle4ExtDl,standort4ExtDl,";
+        	$tsql .= "energietraeger5,messstelle5ExtDl,standort5ExtDl,energietraeger6,messstelle6ExtDl,standort6ExtDl,";
+        $tsql .= "energieRes1ExtDl,messstelleEngRes1ExtDl,standortEngRes1ExtDl,energieRes2ExtDl,messstelleEngRes2ExtDl,standortEngRes2ExtDl,";
+        $tsql .= "energieRes3ExtDl,messstelleEngRes3ExtDl,standortEngRes3ExtDl,energieRes4ExtDl,messstelleEngRes4ExtDl,standortEngRes4ExtDl,";
+        $tsql .= "energieRes5ExtDl,messstelleEngRes5ExtDl,standortEngRes5ExtDl,energieRes6ExtDl,messstelleEngRes6ExtDl,standortEngRes6ExtDl) ";
 
-	$tsql .= "VALUES ('$liegID',getdate(),'$nameAllgemein','$aktiv','$gesellschaftsform','$anschrift','$land','$plz','$ort','$typ','$standortdatenDritte',";
-	$tsql .= "'$titelAnsprechpartner','$nameAnsprechpartner','$vornameAnsprechpartner','$eMailAnsprechpartner','$telefonAnsprechpartner',";
-	$tsql .= "'$faxAnsprechpartner','$mobiltelefonAnsprechpartner',";
-$tsql .= "'$energietraeger1','$messstelle1Ent','$standort1Ent','$energietraeger2','$messstelle2Ent','$standort2Ent',";
-$tsql .= "'$energietraeger3','$messstelle3Ent','$standort3Ent','$energietraeger4','$messstelle4Ent','$standort4Ent',";
-	$tsql .= "'$energietraeger5','$messstelle5Ent','$standort5Ent','$energietraeger6','$messstelle6Ent','$standort6Ent',";
-$tsql .= "'$energieRes1','$messstelle1EnfRes','$standort1EnfRes','$energieRes2','$messstelle2EnfRes','$standort2EnfRes',";
-	$tsql .= "'$energieRes3','$messstelle3EnfRes','$standort3EnfRes','$energieRes4','$messstelle4EnfRes','$standort4EnfRes',";
-$tsql .= "'$energieRes5','$messstelle5EnfRes','$standort5EnfRes','$energieRes6','$messstelle6EnfRes','$standort6EnfRes')";
-}
-else{
-	$extDlID = $_POST['extDlID'];
+        	$tsql .= "VALUES ('$liegID',getdate(),'$nameAllgemein','$aktiv','$gesellschaftsform','$anschrift','$land','$plz','$ort','$typ','$standortdatenDritte',";
+        	$tsql .= "'$titelAnsprechpartner','$nameAnsprechpartner','$vornameAnsprechpartner','$eMailAnsprechpartner','$telefonAnsprechpartner',";
+        	$tsql .= "'$faxAnsprechpartner','$mobiltelefonAnsprechpartner',";
+        $tsql .= "'$energietraeger1','$messstelle1Ent','$standort1Ent','$energietraeger2','$messstelle2Ent','$standort2Ent',";
+        $tsql .= "'$energietraeger3','$messstelle3Ent','$standort3Ent','$energietraeger4','$messstelle4Ent','$standort4Ent',";
+        	$tsql .= "'$energietraeger5','$messstelle5Ent','$standort5Ent','$energietraeger6','$messstelle6Ent','$standort6Ent',";
+        $tsql .= "'$energieRes1','$messstelle1EnfRes','$standort1EnfRes','$energieRes2','$messstelle2EnfRes','$standort2EnfRes',";
+        	$tsql .= "'$energieRes3','$messstelle3EnfRes','$standort3EnfRes','$energieRes4','$messstelle4EnfRes','$standort4EnfRes',";
+        $tsql .= "'$energieRes5','$messstelle5EnfRes','$standort5EnfRes','$energieRes6','$messstelle6EnfRes','$standort6EnfRes')";
+    }
+    else {
+    	$extDlID = $_POST['extDlID'];
 
-	$tsql = "UPDATE externeDurchleitungen SET datumExtDl = getdate(),nameExtDl = '$nameAllgemein',aktivExtDl = '$aktiv',";
-	$tsql .= "gesellschaftsformExtDl = '$gesellschaftsform',anschriftExtDl = '$anschrift',landExtDl = '$land',plzExtDl = '$plz',ortExtDl = '$ort',typExtDl = '$typ',";
-	$tsql .= "standortdatenDritte = '$standortdatenDritte',titelAnsprechpartnerExtDl = '$titelAnsprechpartner',nameAnsprechpartnerExtDl = '$nameAnsprechpartner',";
-	$tsql .= "vornameAnsprechpartnerExtDl = '$vornameAnsprechpartner',eMailAnsprechpartnerExtDl = '$eMailAnsprechpartner',";
-	$tsql .= "telefonAnsprechpartnerExtDl = '$telefonAnsprechpartner',faxAnsprechpartnerExtDl = '$faxAnsprechpartner',";
-	$tsql .= "mobiltelefonAnsprechpartnerExtDl = '$mobiltelefonAnsprechpartner',";
-	$tsql .= "energietraeger1 = '$energietraeger1',messstelle1ExtDl = '$messstelle1Ent',standort1ExtDl = '$standort1Ent',";
-$tsql .= "energietraeger2 = '$energietraeger2',messstelle2ExtDl = '$messstelle2Ent',standort2ExtDl = '$standort2Ent',";
-$tsql .= "energietraeger3 = '$energietraeger3',messstelle3ExtDl = '$messstelle3Ent',standort3ExtDl = '$standort3Ent',";
-$tsql .= "energietraeger4 = '$energietraeger4',messstelle4ExtDl = '$messstelle4Ent',standort4ExtDl = '$standort4Ent',";
-	$tsql .= "energietraeger5 = '$energietraeger5',messstelle5ExtDl = '$messstelle5Ent',standort5ExtDl = '$standort5Ent',";
-$tsql .= "energietraeger6 = '$energietraeger6',messstelle6ExtDl = '$messstelle6Ent',standort6ExtDl = '$standort6Ent',";
+    	$tsql = "UPDATE externeDurchleitungen SET datumExtDl = getdate(),nameExtDl = '$nameAllgemein',aktivExtDl = '$aktiv',";
+    	$tsql .= "gesellschaftsformExtDl = '$gesellschaftsform',anschriftExtDl = '$anschrift',landExtDl = '$land',plzExtDl = '$plz',ortExtDl = '$ort',typExtDl = '$typ',";
+    	$tsql .= "standortdatenDritte = '$standortdatenDritte',titelAnsprechpartnerExtDl = '$titelAnsprechpartner',nameAnsprechpartnerExtDl = '$nameAnsprechpartner',";
+    	$tsql .= "vornameAnsprechpartnerExtDl = '$vornameAnsprechpartner',eMailAnsprechpartnerExtDl = '$eMailAnsprechpartner',";
+    	$tsql .= "telefonAnsprechpartnerExtDl = '$telefonAnsprechpartner',faxAnsprechpartnerExtDl = '$faxAnsprechpartner',";
+    	$tsql .= "mobiltelefonAnsprechpartnerExtDl = '$mobiltelefonAnsprechpartner',";
+    	$tsql .= "energietraeger1 = '$energietraeger1',messstelle1ExtDl = '$messstelle1Ent',standort1ExtDl = '$standort1Ent',";
+        $tsql .= "energietraeger2 = '$energietraeger2',messstelle2ExtDl = '$messstelle2Ent',standort2ExtDl = '$standort2Ent',";
+        $tsql .= "energietraeger3 = '$energietraeger3',messstelle3ExtDl = '$messstelle3Ent',standort3ExtDl = '$standort3Ent',";
+        $tsql .= "energietraeger4 = '$energietraeger4',messstelle4ExtDl = '$messstelle4Ent',standort4ExtDl = '$standort4Ent',";
+        	$tsql .= "energietraeger5 = '$energietraeger5',messstelle5ExtDl = '$messstelle5Ent',standort5ExtDl = '$standort5Ent',";
+        $tsql .= "energietraeger6 = '$energietraeger6',messstelle6ExtDl = '$messstelle6Ent',standort6ExtDl = '$standort6Ent',";
 
-$tsql .= "energieRes1ExtDl = '$energieRes1',messstelleEngRes1ExtDl = '$messstelle1EnfRes',standortEngRes1ExtDl = '$standort1EnfRes',";
-	$tsql .= "energieRes2ExtDl = '$energieRes2',messstelleEngRes2ExtDl = '$messstelle2EnfRes',standortEngRes2ExtDl = '$standort2EnfRes',";
-$tsql .= "energieRes3ExtDl = '$energieRes3',messstelleEngRes3ExtDl = '$messstelle3EnfRes',standortEngRes3ExtDl = '$standort3EnfRes',";
-$tsql .= "energieRes4ExtDl = '$energieRes4',messstelleEngRes4ExtDl = '$messstelle4EnfRes',standortEngRes4ExtDl = '$standort4EnfRes',";
-$tsql .= "energieRes5ExtDl = '$energieRes5',messstelleEngRes5ExtDl = '$messstelle5EnfRes',standortEngRes5ExtDl = '$standort5EnfRes',";
-$tsql .= "energieRes6ExtDl = '$energieRes6',messstelleEngRes6ExtDl = '$messstelle6EnfRes',standortEngRes6ExtDl = '$standort6EnfRes' ";
-	$tsql .= "WHERE extDl_ID = '$extDlID'";
-}
+        $tsql .= "energieRes1ExtDl = '$energieRes1',messstelleEngRes1ExtDl = '$messstelle1EnfRes',standortEngRes1ExtDl = '$standort1EnfRes',";
+        	$tsql .= "energieRes2ExtDl = '$energieRes2',messstelleEngRes2ExtDl = '$messstelle2EnfRes',standortEngRes2ExtDl = '$standort2EnfRes',";
+        $tsql .= "energieRes3ExtDl = '$energieRes3',messstelleEngRes3ExtDl = '$messstelle3EnfRes',standortEngRes3ExtDl = '$standort3EnfRes',";
+        $tsql .= "energieRes4ExtDl = '$energieRes4',messstelleEngRes4ExtDl = '$messstelle4EnfRes',standortEngRes4ExtDl = '$standort4EnfRes',";
+        $tsql .= "energieRes5ExtDl = '$energieRes5',messstelleEngRes5ExtDl = '$messstelle5EnfRes',standortEngRes5ExtDl = '$standort5EnfRes',";
+        $tsql .= "energieRes6ExtDl = '$energieRes6',messstelleEngRes6ExtDl = '$messstelle6EnfRes',standortEngRes6ExtDl = '$standort6EnfRes' ";
+    	$tsql .= "WHERE extDl_ID = '$extDlID'";
+    }
 }
 elseif($id == "ber") {
     $modus = $_POST['modus'];
@@ -457,12 +457,14 @@ elseif($id == "mstE" || $id == "mstB") {
     $kurzbezeichnung= $_POST['kurzbezeichnung'] ;
     $kostenstelle = $_POST['kostenstelle'] ;
     $aktiv = $_POST['aktiv'] ;
+    $extDlID = $_POST['extDlID'] ;
     $isDurchleitung = $_POST['isDurchleitung'] ;
     $energietraeger = $_POST['energietraeger'] ;
     $energieform = $_POST['energieform'] ;
+    $beschreibung = $_POST['beschreibung'] ;
     $ort = $_POST['ort'] ;
     $messart = $_POST['messart'] ;
-    $vorgelagerteMessstelle = $_POST['vorgelagerteMessstelle'] ;
+    $vorgelMstID = $_POST['vorgelMstID'] ;
     $messmittelBerechnungslogik = $_POST['messmittelBerechnungslogik'] ;
     $msmID = $_POST['msmID'] ;
     $anlID = $_POST['anlID'] === "" ? 0 : $_POST['anlID'] ;
@@ -471,15 +473,15 @@ elseif($id == "mstE" || $id == "mstB") {
     if ($modus == "new"){
         $berID = $_POST['berID'] ;
 
-    	$tsql = "INSERT INTO messstellen(ber_ID,datumMst,nameMSt,kurzbezeichnungMst,kostenstelleMst,aktivMst,energietraegerMst,energieformMst,ortMst,messartMst,vorgelagerteMessstelleMst,messmittelBerechnungslogikMst,notizMst, deleted, anl_ID, msm_ID, isDurchleitung, typ)
-    	         VALUES ('$berID',getdate(),'$messstellenbezeichnung',' $kurzbezeichnung','$kostenstelle','$aktiv','$energietraeger','$energieform','$ort','$messart','$vorgelagerteMessstelle','$messmittelBerechnungslogik','$notiz', 0, '$anlID', '$msmID', '$isDurchleitung', '$typ') " ;
+    	$tsql = "INSERT INTO messstellen(ber_ID,datumMst,nameMSt,kurzbezeichnungMst,kostenstelleMst,aktivMst,energietraegerMst,energieformMst,ortMst,messartMst,vorgelMst_ID,messmittelBerechnungslogikMst,notizMst, deleted, anl_ID, msm_ID, extDl_ID, isDurchleitung, beschreibung, typ) " ;
+        $tsql .= "VALUES ('$berID',getdate(),'$messstellenbezeichnung',' $kurzbezeichnung','$kostenstelle','$aktiv','$energietraeger','$energieform','$ort','$messart','$vorgelMstID','$messmittelBerechnungslogik','$notiz', 0, '$anlID', '$msmID', '$extDlID', '$isDurchleitung', '$beschreibung', '$typ') " ;
     }
     else {
     	$mstID = $_POST['mstID'] ;
 
     	$tsql =  "UPDATE messstellen SET datumMst = getdate(),nameMSt = '$messstellenbezeichnung', kurzbezeichnungMst = '$kurzbezeichnung', anl_ID = '$anlID', msm_ID = '$msmID', ";
-    	$tsql .= "kostenstelleMst = '$kostenstelle',aktivMst = '$aktiv', energietraegerMst ='$energietraeger', messartMst = '$messart', vorgelagerteMessstelleMst = '$vorgelagerteMessstelle', " ;
-        $tsql .= "messmittelBerechnungslogikMst = '$messmittelBerechnungslogik', notizMst = '$notiz', ortMst = '$ort', energieformMst = '$energieform', isDurchleitung = '$isDurchleitung', typ = '$typ' " ;
+    	$tsql .= "kostenstelleMst = '$kostenstelle',aktivMst = '$aktiv', energietraegerMst ='$energietraeger', messartMst = '$messart', vorgelMst_ID = '$vorgelMstID', " ;
+        $tsql .= "messmittelBerechnungslogikMst = '$messmittelBerechnungslogik', notizMst = '$notiz', ortMst = '$ort', energieformMst = '$energieform', extDl_ID = '$extDlID', isDurchleitung = '$isDurchleitung', beschreibung = '$beschreibung' " ;
     	$tsql .= "WHERE mst_ID = '$mstID' " ;
     }
 }
@@ -3131,8 +3133,8 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
 }
 
 if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  ) {
-    $retState = queryDB( $conn, $tsql, "write" );
-    echo $tsql;
+    $retState = queryDB( $conn, $tsql, "write" ) ;
+    echo json_encode(["query" => $tsql]) ;
 }
 
 include('bottom-cache.php');

@@ -920,12 +920,26 @@ $(document).ready(function() {
         mainMenuNav("prdMenu")
       }
     )
-    $("#mstSuchenVMessstelle, #anlSuchenMst, #eRngSuchenMst, #anlEnt1SuchenMst, #anlEnt2SuchenMst, #anlEnt3SuchenMst, #anlEnt4SuchenMst,#zpSuchenMst, #mstSuchenExtDl1, #mstSuchenExtDl2, #mstSuchenExtDl3, #mstSuchenExtDl4, #mstSuchenExtDl5, #mstSuchenExtDl6,#mstSuchenExtDlEngRes1, #mstSuchenExtDlEngRes2, #mstSuchenExtDlEngRes3, #mstSuchenExtDlEngRes4, #mstSuchenExtDlEngRes5, #mstSuchenExtDlEngRes6,#imgBtnMstDiag11, #imgBtnMstDiag12, #imgBtnMstDiag13, #imgBtnMstDiag2, #imgBtnMstDatenexport, #mstSuchenVergl1, #mstSuchenVergl2").click(function() {
+    $("#mstSuchenVMessstelleE, #mstSuchenVMessstelleB, #anlSuchenMst, #eRngSuchenMst, #anlEnt1SuchenMst, #anlEnt2SuchenMst, #anlEnt3SuchenMst, #anlEnt4SuchenMst,#zpSuchenMst, #mstSuchenExtDl1, #mstSuchenExtDl2, #mstSuchenExtDl3, #mstSuchenExtDl4, #mstSuchenExtDl5, #mstSuchenExtDl6,#mstSuchenExtDlEngRes1, #mstSuchenExtDlEngRes2, #mstSuchenExtDlEngRes3, #mstSuchenExtDlEngRes4, #mstSuchenExtDlEngRes5, #mstSuchenExtDlEngRes6,#imgBtnMstDiag11, #imgBtnMstDiag12, #imgBtnMstDiag13, #imgBtnMstDiag2, #imgBtnMstDatenexport, #mstSuchenVergl1, #mstSuchenVergl2").click(function() {
         var a,
             b;
-        "mstSuchenVMessstelle" == this.id ? a = "vorgMst" : "anlSuchenMst" == this.id ? a = "mstMsm" : "eRngSuchenMst" == this.id ? a = "mstERng" : "anlEnt1SuchenMst" == this.id ? (a = "mst1Anl", b = $("#energietraeger1AllgemeinAnl").val()) : "anlEnt2SuchenMst" == this.id ? (a = "mst2Anl", b = $("#energietraeger2AllgemeinAnl").val()) : "anlEnt3SuchenMst" == this.id ? (a = "mst3Anl", b = $("#energietraeger3AllgemeinAnl").val()) : "anlEnt4SuchenMst" == this.id ? (a = "mst4Anl", b = $("#energietraeger4AllgemeinAnl").val()) : "zpSuchenMst" == this.id ? a = "mstZp" : "mstSuchenExtDl1" ==
-            this.id ? a = "mst1ExtDl" : "mstSuchenExtDl2" == this.id ? a = "mst2ExtDl" : "mstSuchenExtDl3" == this.id ? a = "mst3ExtDl" : "mstSuchenExtDl4" == this.id ? a = "mst4ExtDl" : "mstSuchenExtDl5" == this.id ? a = "mst5ExtDl" : "mstSuchenExtDl6" == this.id ? a = "mst6ExtDl" : "mstSuchenExtDlEngRes1" == this.id ? a = "mstEngRes1ExtDl" : "mstSuchenExtDlEngRes2" == this.id ? a = "mstEngRes2ExtDl" : "mstSuchenExtDlEngRes3" == this.id ? a = "mstEngRes3ExtDl" : "mstSuchenExtDlEngRes4" == this.id ? a = "mstEngRes4ExtDl" : "mstSuchenExtDlEngRes5" == this.id ? a = "mstEngRes5ExtDl" : "mstSuchenExtDlEngRes6" ==
-            this.id ? a = "mstEngRes6ExtDl" : "imgBtnMstDiag11" == this.id ? a = "mstDiag1" : "imgBtnMstDiag12" == this.id ? a = "mstDiag2" : "imgBtnMstDiag13" == this.id ? a = "mstDiag3" : "imgBtnMstDiag2" == this.id ? a = "mstCompDiag" : "imgBtnMstDatenexport" == this.id ? a = "mstDatenexport" : "mstSuchenVergl1" == this.id ? a = "mstSuchenVergl1" : "mstSuchenVergl2" == this.id && (a = "mstSuchenVergl2");
+        "mstSuchenVMessstelleE" == this.id ? a = "vorgelagerteMstE" :
+        "mstSuchenVMessstelleB" == this.id ? a = "vorgelagerteMstB" :
+        "anlSuchenMst" == this.id ? a = "mstMsm" :
+        "eRngSuchenMst" == this.id ? a = "mstERng" : "anlEnt1SuchenMst" == this.id ? (a = "mst1Anl", b = $("#energietraeger1AllgemeinAnl").val()) : "anlEnt2SuchenMst" == this.id ? (a = "mst2Anl", b = $("#energietraeger2AllgemeinAnl").val()) : "anlEnt3SuchenMst" == this.id ? (a = "mst3Anl", b = $("#energietraeger3AllgemeinAnl").val()) : "anlEnt4SuchenMst" == this.id ? (a = "mst4Anl", b = $("#energietraeger4AllgemeinAnl").val()) :
+        "zpSuchenMst" == this.id ? a = "mstZp" :
+        "mstSuchenExtDl1" == this.id ? a = "mst1ExtDl" :
+        "mstSuchenExtDl2" == this.id ? a = "mst2ExtDl" : "mstSuchenExtDl3" == this.id ? a = "mst3ExtDl" : "mstSuchenExtDl4" == this.id ? a = "mst4ExtDl" : "mstSuchenExtDl5" == this.id ? a = "mst5ExtDl" : "mstSuchenExtDl6" == this.id ? a = "mst6ExtDl" : "mstSuchenExtDlEngRes1" == this.id ? a = "mstEngRes1ExtDl" : "mstSuchenExtDlEngRes2" == this.id ? a = "mstEngRes2ExtDl" : "mstSuchenExtDlEngRes3" == this.id ? a = "mstEngRes3ExtDl" :
+        "mstSuchenExtDlEngRes4" == this.id ? a = "mstEngRes4ExtDl":
+        "mstSuchenExtDlEngRes5" == this.id ? a = "mstEngRes5ExtDl" :
+        "mstSuchenExtDlEngRes6" == this.id ? a = "mstEngRes6ExtDl" :
+        "imgBtnMstDiag11" == this.id ? a = "mstDiag1" :
+        "imgBtnMstDiag12" == this.id ? a = "mstDiag2" :
+        "imgBtnMstDiag13" == this.id ? a = "mstDiag3" :
+        "imgBtnMstDiag2" == this.id ? a = "mstCompDiag" :
+        "imgBtnMstDatenexport" == this.id ? a = "mstDatenexport" :
+        "mstSuchenVergl1" == this.id ? a = "mstSuchenVergl1" :
+        "mstSuchenVergl2" == this.id && (a = "mstSuchenVergl2");
         messstellenAuswahllisteErstellen(a, b)
     });
     $("#msmSuchenMstE, #msmSuchenMstB").click(function() {

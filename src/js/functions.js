@@ -2845,6 +2845,7 @@ try {
                         [ a.nameExtDl
                         , a.anschriftExtDl
                         , `${a.nameAnsprechpartnerExtDl}, ${a.vornameAnsprechpartnerExtDl}`
+                        , a.extDl_ID
                         ]
                     )
 
@@ -2859,8 +2860,8 @@ try {
                         const selectedData = tblExtDurchleitungenAuswahl.row(this_).data()
 
                         "extDlSuchenMstE" === a.id ?
-                        $("#dlAnMstE").val(head(selectedData)) :
-                        $("#dlAnMstB").val(head(selectedData))
+                        ($("#dlAnMstE").val(head(selectedData)), $("#dlAnMstIDE").val(selectedData[3])) :
+                        ($("#dlAnMstB").val(head(selectedData)), $("#dlAnMstIDB").val(selectedData[3]))
                     }
 
                     fillDurchleitungenTbl(result)
@@ -3077,80 +3078,100 @@ try {
                 })
             })
         }, messstellenAuswahllisteErstellen = function(a, b, e) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessstellen.php",
-                data: {
-                    ins: a,
-                    berID: $("#berID").val(),
-                    liegID: $("#liegID").val(),
-                    orgID: $("#orgID").val(),
-                    nameEnt: b,
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblMessstelleAuswahl.clear().draw();
-                    for (var c = 0; c < b.length; c++) tblMessstelleAuswahl.row.add([b[c].nameMSt, b[c].kurzbezeichnungMst, b[c].kostenstelleMst, b[c].messmittelBerechnungslogikMst, b[c].mst_ID, b[c].messartMst]).draw();
-                    $("#messstellenAuswahlContainer").css("display", "block");
-                    $("#messstellenAuswahlContainer").dialog({
-                        height: 400,
-                        width: 600,
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessstellenlisteMst tbody tr").css("cursor", "pointer");
-                            $("#tblMessstellenlisteMst tbody").off("dblclick", "tr");
-                            $("#tblMessstellenlisteMst tbody").on("dblclick", "tr", function() {
-                                var b = tblMessstelleAuswahl.row(this).data();
-                                if ("vorgMst" == a) $("#vorgelagerteMst").val(b[0]);
-                                else if ("mstMsm" == a) $("#messstelleAllgemeinMsm").val(b[0]), $("#messstelleIDAllgemeinMsm").val(b[4]);
-                                else if ("mstERng" == a) $("#mstERng").val(b[0]), $("#mstIDERng").val(b[4]), $("#mstERng").trigger("change");
-                                else if ("mst1Anl" == a) $("#mst1Anl").val(b[0]), $("#ber1Anl").val(b[2]), $("#mst1IDAnl").val(b[4]);
-                                else if ("mst2Anl" == a) $("#mst2Anl").val(b[0]), $("#ber2Anl").val(b[2]), $("#mst2IDAnl").val(b[4]);
-                                else if ("mst3Anl" == a) $("#mst3Anl").val(b[0]), $("#ber3Anl").val(b[2]), $("#mst3IDAnl").val(b[4]);
-                                else if ("mst4Anl" == a) $("#mst4Anl").val(b[0]), $("#ber4Anl").val(b[2]), $("#mst4IDAnl").val(b[4]);
-                                else if ("mstZp" == a) $("#mstZp").val(b[0]), $("#mstZp").trigger("change");
-                                else if ("mst1ExtDl" == a) $("#messstelle1ExtDl").val(b[0]);
-                                else if ("mst2ExtDl" == a) $("#messstelle2ExtDl").val(b[0]);
-                                else if ("mst3ExtDl" == a) $("#messstelle3ExtDl").val(b[0]);
-                                else if ("mst4ExtDl" == a) $("#messstelle4ExtDl").val(b[0]);
-                                else if ("mst5ExtDl" == a) $("#messstelle5ExtDl").val(b[0]);
-                                else if ("mst6ExtDl" == a) $("#messstelle6ExtDl").val(b[0]);
-                                else if ("mstEngRes1ExtDl" == a) $("#messstelleEngRes1ExtDl").val(b[0]);
-                                else if ("mstEngRes2ExtDl" == a) $("#messstelleEngRes2ExtDl").val(b[0]);
-                                else if ("mstEngRes3ExtDl" == a) $("#messstelleEngRes3ExtDl").val(b[0]);
-                                else if ("mstEngRes4ExtDl" == a) $("#messstelleEngRes4ExtDl").val(b[0]);
-                                else if ("mstEngRes5ExtDl" == a) $("#messstelleEngRes5ExtDl").val(b[0]);
-                                else if ("mstEngRes6ExtDl" == a) $("#messstelleEngRes6ExtDl").val(b[0]);
-                                else if ("mstDiag1" == a) $("#mstDiag1").val(b[0]), $("#mstIDDiag1").val(b[4]), $("#mstMessart1").val(b[5]);
-                                else if ("mstDiag2" == a) $("#mstDiag2").val(b[0]), $("#mstIDDiag2").val(b[4]), $("#mstMessart2").val(b[5]);
-                                else if ("mstDiag3" == a) $("#mstDiag3").val(b[0]), $("#mstIDDiag3").val(b[4]), $("#mstMessart3").val(b[5]);
-                                else if ("mstCompDiag" == a) $("#mstDiag").val(b[0]), $("#mstIDDiag").val(b[4]);
-                                else if ("mstDatenexport" == a) $("#mstDatenexport").val(b[0]), $("#mstIDDatenexport").val(b[4]);
-                                else if ("mstSuchenVergl1" == a) $("#vergMst1ERng").val(b[0]),
-                                    vergleichUpdaten("vergMst1ERng");
-                                else if ("mstSuchenVergl2" == a) $("#vergMst2ERng").val(b[0]), vergleichUpdaten("vergMst2ERng");
-                                else if ("mstVorlFrm" == a) {
-                                    var c = "[" + ("" + b[0]).trim().replace(/\s/g, "_") + "]",
-                                        b = "mst_" + b[4];
-                                    $("#inpAuswahlVorlFrmIns" + e).val(c);
-                                    $("#inpAuswahlVorlFrmIDIns" + e).val(b)
-                                }
-                                $("#messstellenAuswahlContainer").css("display","none")
-                                $("#messstellenAuswahlContainer").dialog("close")
-                            })
+            const ins = a
+            const nameDB = $("#nameDB").val()
+            const orgID = $("#orgID").val()
+            const liegID = $("#liegID").val()
+            const berID = $("#berID").val()
+            const nameEnt = b
+
+            ajaxPost("php/getMessstellen.php")({ins, nameDB, orgID, liegID, berID, nameEnt})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameMSt
+                        , a.kurzbezeichnungMst
+                        , a.kostenstelleMst
+                        , a.messmittelBerechnungslogikMst
+                        , a.mst_ID
+                        , a.messartMst
+                        ]
+                    )
+
+                const fillMessstellenTbl =
+                    data => {
+                        clearTable(tblMessstelleAuswahl)
+                        intoTable(tblMessstelleAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblMessstelleAuswahl.row(this_).data()
+
+                        if ("vorgelagerteMstE" === a) $("#vorgelagerteMstE").val(selectedData[0]), $("#vorgelagerteMstIDE").val(selectedData[4]);
+                        else if ("vorgelagerteMstB" === a) $("#vorgelagerteMstB").val(selectedData[0]), $("#vorgelagerteMstIDB").val(selectedData[4]);
+                        else if ("mstMsm" == a) $("#messstelleAllgemeinMsm").val(selectedData[0]), $("#messstelleIDAllgemeinMsm").val(selectedData[4]);
+                        else if ("mstERng" == a) $("#mstERng").val(selectedData[0]), $("#mstIDERng").val(b[4]), $("#mstERng").trigger("change");
+                        else if ("mst1Anl" == a) $("#mst1Anl").val(selectedData[0]), $("#ber1Anl").val(selectedData[2]), $("#mst1IDAnl").val(selectedData[4]);
+                        else if ("mst2Anl" == a) $("#mst2Anl").val(selectedData[0]), $("#ber2Anl").val(selectedData[2]), $("#mst2IDAnl").val(selectedData[4]);
+                        else if ("mst3Anl" == a) $("#mst3Anl").val(selectedData[0]), $("#ber3Anl").val(selectedData[2]), $("#mst3IDAnl").val(selectedData[4]);
+                        else if ("mst4Anl" == a) $("#mst4Anl").val(selectedData[0]), $("#ber4Anl").val(selectedData[2]), $("#mst4IDAnl").val(selectedData[4]);
+                        else if ("mstZp" == a) $("#mstZp").val(selectedData[0]), $("#mstZp").trigger("change");
+                        else if ("mst1ExtDl" == a) $("#messstelle1ExtDl").val(selectedData[0]);
+                        else if ("mst2ExtDl" == a) $("#messstelle2ExtDl").val(selectedData[0]);
+                        else if ("mst3ExtDl" == a) $("#messstelle3ExtDl").val(selectedData[0]);
+                        else if ("mst4ExtDl" == a) $("#messstelle4ExtDl").val(selectedData[0]);
+                        else if ("mst5ExtDl" == a) $("#messstelle5ExtDl").val(selectedData[0]);
+                        else if ("mst6ExtDl" == a) $("#messstelle6ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes1ExtDl" == a) $("#messstelleEngRes1ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes2ExtDl" == a) $("#messstelleEngRes2ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes3ExtDl" == a) $("#messstelleEngRes3ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes4ExtDl" == a) $("#messstelleEngRes4ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes5ExtDl" == a) $("#messstelleEngRes5ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes6ExtDl" == a) $("#messstelleEngRes6ExtDl").val(selectedData[0]);
+                        else if ("mstDiag1" == a) $("#mstDiag1").val(selectedData[0]), $("#mstIDDiag1").val(selectedData[4]), $("#mstMessart1").val(selectedData[5]);
+                        else if ("mstDiag2" == a) $("#mstDiag2").val(selectedData[0]), $("#mstIDDiag2").val(selectedData[4]), $("#mstMessart2").val(selectedData[5]);
+                        else if ("mstDiag3" == a) $("#mstDiag3").val(selectedData[0]), $("#mstIDDiag3").val(selectedData[4]), $("#mstMessart3").val(selectedData[5]);
+                        else if ("mstCompDiag" == a) $("#mstDiag").val(selectedData[0]), $("#mstIDDiag").val(selectedData[4]);
+                        else if ("mstDatenexport" == a) $("#mstDatenexport").val(selectedData[0]), $("#mstIDDatenexport").val(selectedData[4]);
+                        else if ("mstSuchenVergl1" == a) $("#vergMst1ERng").val(selectedData[0]), vergleichUpdaten("vergMst1ERng");
+                        else if ("mstSuchenVergl2" == a) $("#vergMst2ERng").val(selectedData[0]), vergleichUpdaten("vergMst2ERng");
+                        else if ("mstVorlFrm" == a) {
+                            var c = "[" + ("" + selectedData[0]).trim().replace(/\s/g, "_") + "]",
+                                b = "mst_" + selectedData[4];
+                            $("#inpAuswahlVorlFrmIns" + e).val(c);
+                            $("#inpAuswahlVorlFrmIDIns" + e).val(b)
                         }
-                    })
-                }
+                    }
+
+                    fillMessstellenTbl(result)
+
+                    $("#messstellenAuswahlContainer").css("display", "block")
+                    $("#messstellenAuswahlContainer").dialog({
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessstellenlisteMst tbody tr").css("cursor", "pointer")
+                        $("#tblMessstellenlisteMst tbody").off("dblclick", "tr")
+                        $("#tblMessstellenlisteMst tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#messstellenAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, bereichsAuswahllisteErstellen = function(a) {
             ("berSuchenVBereich1" == a.id || "berSuchenVBereich2" == a.id && 0 == $("#vorgelagerteBereiche2AllgemeinBer").prop("disabled") ||
@@ -4723,8 +4744,8 @@ try {
             "extDlHinz" == a ? (b = "#extDlID #nameExtDl #gesellschaftsformExtDl #anschriftExtDl #landExtDl #plzExtDl #ortExtDl #typExtDl #titelAnsprechpartnerExtDl #nameAnsprechpartnerExtDl #vornameAnsprechpartnerExtDl #emailAnsprechpartnerExtDl #telefonAnsprechpartnerExtDl #faxAnsprechpartnerExtDl #mobiltelefonAnsprechpartnerExtDl #energietraeger1ExtDl #messstelle1ExtDl #standort1ExtDl #energietraeger2ExtDl #messstelle2ExtDl #standort2ExtDl #energietraeger3ExtDl #messstelle3ExtDl #standort3ExtDl #energietraeger4ExtDl #messstelle4ExtDl #standort4ExtDl #energietraeger5ExtDl #messstelle5ExtDl #standort5ExtDl #energietraeger6ExtDl #messstelle6ExtDl #standort6ExtDl #energieRes1ExtDl #messstelleEngRes1ExtDl #standort1EngResExtDl #energieRes2ExtDl #messstelleEngRes2ExtDl #standort2EngResExtDl #energieRes3ExtDl #messstelleEngRes3ExtDl #standort3EngResExtDl #energieRes4ExtDl #messstelleEngRes4ExtDl #standort4EngResExtDl #energieRes5ExtDl #messstelleEngRes5ExtDl #standort5EngResExtDl #energieRes6ExtDl #messstelleEngRes6ExtDl #standort6EngResExtDl".split(" "),
                     $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) :
             "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") :
-            "mstEHinz" == a ? (b = "#nameMstE #kurzbezeichnungMstE #kostenstelleMstE #energieformMstE #ortMstE #messartMstEE #messartMstBE #vorgelagerteMstE #messmittelBerechnungslogikMstE #berechnungslogikMstE #notizAllgemeinMstE #messmittelIDMstE #anlMstE #anlIDMstE".split(" "), $("#aktivMstE").prop("checked", !1)) :
-            "mstBHinz" == a ? (b = "#nameMstB #kurzbezeichnungMstB #kostenstelleMstB #energieformMstB #ortMstB #messartMstEB #messartMstBB #vorgelagerteMstB #messmittelBerechnungslogikMstB #berechnungslogikMstB #notizAllgemeinMstB #messmittelIDMstB #anlMstB #anlIDMstB".split(" "), $("#aktivMstB").prop("checked", !1)) :
+            "mstEHinz" == a ? (b = "#dlAnMstE #dlAnMstIDE #nameMstE #kurzbezeichnungMstE #kostenstelleMstE #energietraegerMstE #energieformMstE #ortMstE #messartMstE #vorgelagerteMstE #vorgelagerteMstIDE #messmittelBerechnungslogikMstE #berechnungslogikMstE #notizAllgemeinMstE #messmittelIDMstE #anlMstE #anlIDMstE".split(" "), $("#aktivMstE").prop("checked", !1)) :
+            "mstBHinz" == a ? (b = "#beschreibungMstB #dlAnMstB #dlAnMstIDB #nameMstB #kurzbezeichnungMstB #kostenstelleMstB #ortMstB #messartMstB #vorgelagerteMstB #vorgelagerteMstIDB #messmittelBerechnungslogikMstB #berechnungslogikMstB #notizAllgemeinMstB #messmittelIDMstB #anlMstB #anlIDMstB".split(" "), $("#aktivMstB").prop("checked", !1)) :
             "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
             "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
             "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
@@ -7840,11 +7861,13 @@ try {
                     , kostenstelle: $("#kostenstelleMstE").val()
                     , aktiv: $("#aktivMstE").is(":checked")
                     , isDurchleitung: $("#istDlMstE").is(":checked")
+                    , extDlID: $("#dlAnMstIDE").val()
                     , energietraeger: $("#energietraegerMstE").val()
                     , energieform: $("#energieformMstE").val()
+                    , beschreibung: ""
                     , ort: $("#ortMstE").val()
                     , messart: $("#messartMstE").val()
-                    , vorgelagerteMessstelle: $("#vorgelagerteMstE").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDE").val()
                     , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
                     , msmID: $("#messmittelIDMstE").val()
                     , anlID: $("#anlIDMstE").val()
@@ -7870,12 +7893,14 @@ try {
                     , kostenstelle: $("#kostenstelleMstB").val()
                     , aktiv: $("#aktivMstB").is(":checked")
                     , isDurchleitung: $("#istDlMstB").is(":checked")
-                    , energietraeger: $("#energietraegerMstB").val()
-                    , energieform: $("#energieformMstB").val()
+                    , extDlID: $("#dlAnMstIDB").val()
+                    , energietraeger: ""
+                    , energieform: ""
+                    , beschreibung: $("#beschreibungMstB").val()
                     , ort: $("#ortMstB").val()
                     , messart: $("#messartMstB").val()
-                    , vorgelagerteMessstelle: $("#vorgelagerteMstB").val()
-                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
+                    , vorgelMstID: $("#vorgelagerteMstIDB").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("B")
                     , msmID: $("#messmittelIDMstB").val()
                     , anlID: $("#anlIDMstB").val()
                     , notiz: $("#notizAllgemeinMstB").val()
@@ -10400,7 +10425,8 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
             }).join().split(","))
         },
         datensatzGespeichert = function(a) {
-            return -1 === a.search("error") ? "Datensatz wurde erfolgreich gespeichert!" : "ACHTUNG!!! Datensatz konnte nicht gespeichert werden!"
+            const testStr = typeof a === "string" ? a : (a.query)
+            return -1 === testStr.search("error") ? "Datensatz wurde erfolgreich gespeichert!" : "ACHTUNG!!! Datensatz konnte nicht gespeichert werden!"
         },
         zerlegeFormel = function(a) {
             return a.split(" ")
