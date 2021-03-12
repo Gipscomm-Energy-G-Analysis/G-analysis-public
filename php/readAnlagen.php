@@ -18,7 +18,7 @@ $query .= ",* " ;
 $query .= "FROM [dbo].[anlagen] " ;
 $query .= "WHERE lieg_ID = $liegID " ;
 $query .= "AND deleted <> 'true' " ;
-$query .= "AND archiviertAnl <> 'true' ";
+$query .= "AND archiviertAnl <> 'true' " ;
 
 $records = queryDB( $conn, $query, "read" ) ;
 
@@ -33,7 +33,7 @@ for ( $i = 0; $i < count( $records ); $i++ ) {
       $zugVerbrID = "zugeordneterVerbraucherID".$j ;
       $zugVerbrName = "zugeordneterVerbraucher".$j ;
 
-      if ( $records[ $i ][ $zugVerbrID ] != 0 || $records[ $i ][ $zugVerbrID ] != null) {
+      if ( $records[ $i ][ $zugVerbrID ] != 0 && $records[ $i ][ $zugVerbrID ] != null) {
 
           foreach ($records as $anl) {
 
