@@ -18009,9 +18009,16 @@ function alleNutzerRollenUndBerechtigungen(roleId) {
             c = JSON.parse(a)
             if(c.length != 0) {
                 $.each(c, function(i, item) {
+                    var id = item.tab_id;
                     if(roleId != 1) {
                         if(item.role_id == null){
                             $("#"+item.tab_id).css("display", "none");
+                            var res = id.split(",");
+                            if(res.length > 1) {
+                                for (i=0;i<res.length;i++){
+                                    $("#"+res[i]).css("display", "none");
+                                }
+                            }
                         } else {
                             $("#"+item.tab_id).css("display", "block");
                         }
