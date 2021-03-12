@@ -17960,7 +17960,6 @@ function adminsGetRollenUndBerechtigungen() {       // Admin selected checkbox f
         success: function(a) {
             c = JSON.parse(a)
             if(c.length != 0) {
-                $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
                 $.each(c, function(i, admTab) {
                     $('input[value="'+admTab.tab_id+'"]').prop("checked", true);
                 });
@@ -17984,7 +17983,6 @@ function benutzerGetRollenUndBerechtigungen() {       // Admin selected checkbox
         success: function(a) {
             c = JSON.parse(a)
             if(c.length != 0) {
-                $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
                 $.each(c, function(i, admTab) {
                     $('input[value="'+admTab.tab_id+'"]').prop("checked", true);
                 });

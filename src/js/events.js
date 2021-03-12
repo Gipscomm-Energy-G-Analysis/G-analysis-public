@@ -1347,9 +1347,11 @@ $(document).ready(function() {
         sAdmGetRollenUndBerechtigungen()
     });
     $("#admMenu, #tabAdm").click(function() {
+        $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
         adminsGetRollenUndBerechtigungen()
     });
     $("#tabBen").click(function() {
+        $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
         benutzerGetRollenUndBerechtigungen()
     });
     $("#frmSuchenBerEdi").click(function() {
