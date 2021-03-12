@@ -1711,8 +1711,7 @@ $(document).ready(function() {
             close: function() {
                 $("#infosBemerkungHist input").val("");
                 $("#infosBemerkungHist, #histOk").css("display", "none");
-                $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
-            } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+                $("#histSpeichern, #histNichtSpeichern").css("display", "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? ($("#archiviertAnl").val(!0), instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
@@ -1776,8 +1775,7 @@ $(document).ready(function() {
                 $("#infosBemerkungHist input").val("");
                 $("#infosBemerkungHist, #histOk").css("display", "none");
                 $("#histSpeichern, #histNichtSpeichern").css("display",
-                    "inline")
-            } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+                    "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :

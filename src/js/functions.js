@@ -5186,9 +5186,7 @@ try {
                                 ["#typExtDl", "typExtDl"],
                                 ["#titelAnsprechpartnerExtDl", "titelAnsprechpartnerExtDl"],
                                 ["#nameAnsprechpartnerExtDl", "nameAnsprechpartnerExtDl"],
-                                ["#vornameAnsprechpartnerExtDl",
-                                    "vornameAnsprechpartnerExtDl"
-                                ],
+                                ["#vornameAnsprechpartnerExtDl", "vornameAnsprechpartnerExtDl"],
                                 ["#emailAnsprechpartnerExtDl", "eMailAnsprechpartnerExtDl"],
                                 ["#telefonAnsprechpartnerExtDl", "telefonAnsprechpartnerExtDl"],
                                 ["#faxAnsprechpartnerExtDl", "faxAnsprechpartnerExtDl"],
@@ -5198,9 +5196,7 @@ try {
                                 ["#standort1ExtDl", "standort1ExtDl"],
                                 ["#energietraeger2ExtDl", "energietraeger2"],
                                 ["#messstelle2ExtDl", "messstelle2ExtDl"],
-                                ["#standort2ExtDl",
-                                    "standort2ExtDl"
-                                ],
+                                ["#standort2ExtDl", "standort2ExtDl"],
                                 ["#energietraeger3ExtDl", "energietraeger3"],
                                 ["#messstelle3ExtDl", "messstelle3ExtDl"],
                                 ["#standort3ExtDl", "standort3ExtDl"],
