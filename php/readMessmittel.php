@@ -17,6 +17,8 @@ $query  = "SELECT (SELECT nummerAnl + ' ' + bezeichnungAnl FROM anlagen WHERE an
 $query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [messmittel].[mst_ID]) AS mst " ;
 $query .= ", * " ;
 $query .= "FROM [dbo].[messmittel] " ;
+$query .= "WHERE lieg_ID = $liegID " ;
+$query .= "AND deleted <> 'true' " ;
 
 $records = queryDB( $conn, $query, "read" ) ;
 
