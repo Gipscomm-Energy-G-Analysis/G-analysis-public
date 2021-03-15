@@ -3114,7 +3114,7 @@ try {
                         if ("vorgelagerteMstE" === a) $("#vorgelagerteMstE").val(selectedData[0]), $("#vorgelagerteMstIDE").val(selectedData[4]);
                         else if ("vorgelagerteMstB" === a) $("#vorgelagerteMstB").val(selectedData[0]), $("#vorgelagerteMstIDB").val(selectedData[4]);
                         else if ("mstMsm" == a) $("#messstelleAllgemeinMsm").val(selectedData[0]), $("#messstelleIDAllgemeinMsm").val(selectedData[4]);
-                        else if ("mstERng" == a) $("#mstERng").val(selectedData[0]), $("#mstIDERng").val(b[4]), $("#mstERng").trigger("change");
+                        else if ("mstERng" == a) $("#mstERng").val(selectedData[0]), $("#mstIDERng").val(selectedData[4]), $("#mstERng").trigger("change");
                         else if ("mst1Anl" == a) $("#mst1Anl").val(selectedData[0]), $("#ber1Anl").val(selectedData[2]), $("#mst1IDAnl").val(selectedData[4]);
                         else if ("mst2Anl" == a) $("#mst2Anl").val(selectedData[0]), $("#ber2Anl").val(selectedData[2]), $("#mst2IDAnl").val(selectedData[4]);
                         else if ("mst3Anl" == a) $("#mst3Anl").val(selectedData[0]), $("#ber3Anl").val(selectedData[2]), $("#mst3IDAnl").val(selectedData[4]);
