@@ -480,8 +480,7 @@ $(document).ready(function() {
     $("#mitUntERng").click(function() {
         var a = !$(c).is(":checked");
         (function() {
-            a ? $(".standRng, .evuRng, .bafaRng").css("background-color",
-                "white") : function() {}
+            a ? $(".standRng, .evuRng, .bafaRng").css("background-color", "white") : function() {}
         })()
     });
     $("#typDiag").change(function() {
