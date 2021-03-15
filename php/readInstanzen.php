@@ -351,17 +351,7 @@ elseif($id == "betrPar"){
     $query = "SELECT * FROM benutzer ";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 } elseif($id == 'rollenUndBerechtigungenSuperadmin') {
-
-    // if($_POST['displaysAdm'] == 'sAdm') {
-      $query = "SELECT * FROM accessibleTab";
-    // } 
-    // if ($_POST['displayAdmin'] == 'adm') {
-    //   $query = "SELECT * FROM accessibleTab WHERE display_admin = 1";
-    // } 
-    // if($_POST['displayBen'] == 'ben') {
-    //   $query = "SELECT * FROM accessibleTab WHERE display_benutzer = 1";
-    // }
-    
+    $query = "SELECT * FROM accessibleTab"; 
 }
 
 $records = queryDB($conn, $query, "read") ;
