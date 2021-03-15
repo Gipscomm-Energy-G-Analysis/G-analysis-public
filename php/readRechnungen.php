@@ -17,6 +17,6 @@ $query .= "AND deleted <> 'true' " ;
 
 $records = queryDB( $conn, $query, "read" ) ;
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-include('bottom-cache.php');
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
+include('bottom-cache.php') ;
 ?>
