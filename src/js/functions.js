@@ -4754,7 +4754,8 @@ try {
             "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
             "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
                     $("#lblEntEinh2FaktorX1").text(""), $("#lblEntEinh3FaktorX1").text(""), $("#lblEntEinh1FaktorX2").text(""), $("#lblEntEinh2FaktorX2").text(""), $("#lblEntEinh3FaktorX2").text(""), $("#lblEntEinh1FaktorX3").text(""), $("#lblEntEinh2FaktorX3").text(""), $("#lblEntEinh3FaktorX3").text("")) : "enfHinz" == a ? (b = "#nameEnf #kuerzelEnf #notizEnf #einheit1Enf #einheit2Enf #einheit3Enf #enfEinh1FaktorKwh #enfEinh2FaktorKwh #enfEinh3FaktorKwh #enfEinh1FaktorCO2 #enfEinh2FaktorCO2 #enfEinh3FaktorCO2 #enfEinh1FaktorX1 #enfEinh2FaktorX1 #enfEinh3FaktorX1 #enfEinh1FaktorX2 #enfEinh2FaktorX2 #enfEinh3FaktorX2 #enfEinh1FaktorX3 #enfEinh2FaktorX3 #enfEinh3FaktorX3 #gueltigVomEnf #gueltigBisEnf".split(" "),
-                    $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) : "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
+                    $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) :
+            "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
             "iMwHinz" == a ? b = [".iMwHinz"] :
             "intEngIMwFirst" == a ? b = [".iMwEngHinz"] :
             "eAnlHinz" == a ? (b = ["#nameEAnl", "#kuerzelEAnl", "#beschreibungEAnl", "#optionEAnl"], tblOptionenEAnl.clear().draw()) : "ePrdHinz" == a ? (b = ["#nameEPrd", "#kuerzelEPrd", "#beschreibungEPrd", "#optionEPrd"], tblOptionenEPrd.clear().draw()) : "zpHinz" == a ? b = ["#zaehlpunktNrZp", "#energietraegerZp", "#mstZp", "#messsystemZp", "#messgenauZp"] : "knzHinz" == a ? (b = "#bezKnz #instanzAllgemeinKnz #instanzAllgemeinIDKnz #zustaendigerMitarbeiterAllgemeinKnz #beschreibungAllgemeinKnz #bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
@@ -5801,34 +5802,98 @@ try {
                     )
                     break;
                 case "eRng":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readRechnungen.php",
-                        data: {
-                            id: "eRng",
-                            nameDB: $("#nameDB").val(),
-                            liegID: $("#liegID").val(),
-                            modus: "new"
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            a = $.parseJSON(a);
-                            0 < a.length ? ($("#eRngID").val(a[b].eRng_ID), $("#eRngCount").val(a.length), $("#eRngID").val(a[b].eRng_ID), $("#entERng").val(a[b].entERng), $("#modusERng").val(a[b].rechnungsmodusERng),
-                                $("#nrERng").val(a[b].nrERng), $("#zpNrERng").val(a[b].zpNrERng), $("#mstERng").val(a[b].mst), $("#mstIDERng").val(a[b].mst_ID), $("#datumERng").val(a[b].datumERng), $("#vomERng").val(a[b].vomERng), $("#bisERng").val(a[b].bisERng), $("#einERng").val(a[b].einERng), $("#mengeERng").val(formatNumber("form", a[b].mengeERng)), $("#verbrauchERng").val(formatNumber("form", a[b].verbrauchERng)), $("#kostenERng").val(a[b].kostenERng), $("#kostenstelleERng").val(a[b].kostenstelleERng), $("#versorgerERng").val(a[b].versorgerERng),
-                                0 == a[b].tagstromVerbrERng && 0 == a[b].tagstromKostERng && 0 == a[b].nachtstromVerbrERng && 0 == a[b].nachtstromKostERng ? ($("#htNt").css("display", "none"), $(".htNtInp").val(""), $(this).text("HT/NT aktivieren")) : ($("#htNt").css("display", "block"), $(this).text("HT/NT deaktivieren")), versorgerUndEinheitBefuellen(), $("#tagstromVerbrERng").val(formatNumber("form", a[b].tagstromVerbrERng)), $("#tagstromKostERng").val(formatNumber("form", a[b].tagstromKostERng)), $("#nachtstromVerbrERng").val(formatNumber("form", a[b].nachtstromVerbrERng)),
-                                $("#nachtstromKostERng").val(formatNumber("form", a[b].nachtstromKostERng)), $("#blindstromERng").val(formatNumber("form", a[b].blindstromERng)), $("#lastspitzeERng").val(formatNumber("form", a[b].lastspitzeERng)), $("#leistungspreisERng").val(formatNumber("form", a[b].leistungspreisERng)), $("#abpWirkERng").val(formatNumber("form", a[b].abpWirkERng)), $("#strSteuERng").val(formatNumber("form", a[b].strSteuERng)), $("#eegERng").val(formatNumber("form", a[b].eegERng)), $("#eegUntERng").val(formatNumber("form", a[b].eegUntERng)),
-                                $("#eegUebERng").val(formatNumber("form", a[b].eegUebERng)), $("#abpNetzERng").val(formatNumber("form", a[b].abpNetzERng)), $("#konzERng").val(formatNumber("form", a[b].konzERng)), $("#kwkUntERng").val(formatNumber("form", a[b].kwkUntERng)), $("#kwkObERng").val(formatNumber("form", a[b].kwkObERng)), $("#nevUntERng").val(formatNumber("form", a[b].nevUntERng)), $("#nevObERng").val(formatNumber("form", a[b].nevObERng)), $("#offUntERng").val(formatNumber("form", a[b].offUntERng)), $("#offObERng").val(formatNumber("form",
-                                    a[b].offObERng)), $("#lblCustom1ERng").text(a[b].lblCustom1ERng), $("#custom1ERng").val(formatNumber("form", a[b].Custom1ERng)), $("#lblCustom2ERng").text(a[b].lblCustom2ERng), $("#custom2ERng").val(formatNumber("form", a[b].Custom2ERng)), $("#lblCustom3ERng").text(a[b].lblCustom3ERng), $("#custom3ERng").val(formatNumber("form", a[b].Custom3ERng)), $("#lblCustom4ERng").text(a[b].lblCustom4ERng), $("#custom4ERng").val(formatNumber("form", a[b].Custom4ERng)), $("#lblCustom5ERng").text(a[b].lblCustom5ERng), $("#custom5ERng").val(formatNumber("form",
-                                    a[b].Custom5ERng)), $("#lblCustom6ERng").text(a[b].lblCustom6ERng), $("#custom6ERng").val(formatNumber("form", a[b].Custom6ERng))) : clearFields("eRngHinz");
-                            $("#modusERng").trigger("change");
-                            $("#mstERng").trigger("change");
-                            $("#kostenERng").trigger("change");
-                            dokumentenListeErstellen()
-                        }
-                    });
+                    nameDB = $("#nameDB").val()
+                    liegID = $("#liegID").val()
+
+                    const noHt =
+                        record =>
+                        record.tagstromVerbrERng === 0
+                        && record.tagstromKostERng === 0
+
+                    const noNt =
+                        record =>
+                        record.nachtstromVerbrERng === 0
+                        && record.nachtstromKostERng === 0
+
+                    const hideHtNt =
+                        () =>
+                        ( $("#htNt").css("display", "none")
+                        , $(".htNtInp").val("")
+                        , $(this).text("HT/NT aktivieren")
+                        )
+
+                    const showHtNt =
+                        () =>
+                        ( $("#htNt").css("display", "block")
+                        , $(this).text("HT/NT deaktivieren")
+                        )
+
+                    const activateHtNt =
+                        record =>
+                        noHt(record) && noNt(record) ?
+                        hideHtNt() :
+                        showHtNt()
+
+                    ajaxPost("php/readRechnungen.php")({nameDB, liegID})
+                    .then(result => {
+
+                        result.length > 0 ?
+                        (activateHtNt(result[b]),
+                        $("#eRngCount").val(result.length),
+                        [ ["#eRngID", "eRng_ID"]
+                        , ["#entERng", "entERng"]
+                        , ["#modusERng", "rechnungsmodusERng"]
+                        , ["#nrERng", "nrERng"]
+                        , ["#zpNrERng", "zpNrERng"]
+                        , ["#mstERng", "mst"]
+                        , ["#mstIDERng", "mst_ID"]
+                        , ["#datumERng", "datumERng"]
+                        , ["#vomERng", "vomERng"]
+                        , ["#bisERng", "bisERng"]
+                        , ["#einERng", "einERng"]
+                        , ["#kostenstelleERng", "kostenstelleERng"]
+                        , ["#versorgerERng", "versorgerERng"]
+                        ].forEach(a => $(a[0]).val(result[b][a[1]])),
+                        versorgerUndEinheitBefuellen(),
+
+                        [ ["#mengeERng", "mengeERng"]
+                        , ["#verbrauchERng", "verbrauchERng"]
+                        , ["#kostenERng", "kostenERng"]
+                        , ["#mwstPercentERng", "mwstPercentERng"]
+                        , ["#tagstromVerbrERng", "tagstromVerbrERng"]
+                        , ["#nachtstromKostERng", "nachtstromKostERng"]
+                        , ["#eegUntERng", "eegUntERng"]
+                        , ["#abpNetzERng", "abpNetzERng"]
+                        , ["#konzERng", "konzERng"]
+                        , ["#kwkUntERng", "kwkUntERng"]
+                        , ["#kwkObERng", "kwkObERng"]
+                        , ["#nevUntERng", "nevUntERng"]
+                        , ["#nevObERng", "nevObERng"]
+                        , ["#offUntERng", "offUntERng"]
+                        , ["#offObERng", "offObERng"]
+                        , ["#custom1ERng", "Custom1ERng"]
+                        , ["#custom2ERng", "Custom2ERng"]
+                        , ["#custom3ERng", "Custom3ERng"]
+                        , ["#custom4ERng", "Custom4ERng"]
+                        , ["#custom5ERng", "Custom5ERng"]
+                        , ["#custom6ERng", "Custom6ERng"]
+                        ].forEach(a => $(a[0]).val(formatNumber("form", result[b][a[1]]))),
+
+                        [ ["#lblCustom1ERng", "lblCustom1ERng"]
+                        , ["#lblCustom2ERng", "lblCustom2ERng"]
+                        , ["#lblCustom3ERng", "lblCustom3ERng"]
+                        , ["#lblCustom4ERng", "lblCustom4ERng"]
+                        , ["#lblCustom5ERng", "lblCustom5ERng"]
+                        , ["#lblCustom6ERng", "lblCustom6ERng"]
+                        ].forEach(a => $(a[0]).text(result[b][a[1]]))) :
+                        clearFields("eRngHinz")
+
+                        $("#modusERng").trigger("change")
+                        $("#mstERng").trigger("change")
+                        $("#kostenERng").trigger("change")
+
+                        dokumentenListeErstellen()
+                    })
                     break;
                 case "intEngIMw":
                     $.ajax({
@@ -7000,68 +7065,67 @@ try {
                     alert(datensatzGespeichert(a))
                 }
             });
-            else if ("eRngSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "eRng",
-                    modus: "save",
-                    nameDB: $("#nameDB").val(),
-                    eRngID: $("#eRngID").val(),
-                    liegID: $("#liegID").val(),
-                    versorger: $("#versorgerERng").val(),
-                    rechnungsmodus: $("#modusERng").val(),
-                    rechnungsnummer: $("#nrERng").val(),
-                    zaehlpunktnummer: $("#zpNrERng").val(),
-                    mstID: $("#mstIDERng").val(),
-                    rechnungsdatum: $("#datumERng").val(),
-                    abrechnungszeitVom: $("#vomERng").val(),
-                    abrechnungszeitBis: $("#bisERng").val(),
-                    energietraeger: $("#entERng").val(),
-                    einheit: $("#einERng").val(),
-                    menge: formatNumber("deform", $("#mengeERng").val()),
-                    verbrauch: formatNumber("deform", $("#verbrauchERng").val()),
-                    kostenstelle: $("#kostenstelleERng").val(),
-                    kosten: formatNumber("deform", $("#kostenERng").val()),
-                    tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val()),
-                    tagstromKost: formatNumber("deform", $("#tagstromKostERng").val()),
-                    nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val()),
-                    nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val()),
-                    blindstrom: formatNumber("deform", $("#blindstromERng").val()),
-                    lastspitze: formatNumber("deform", $("#lastspitzeERng").val()),
-                    leistungspreis: formatNumber("deform", $("#leistungspreisERng").val()),
-                    arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val()),
-                    stromsteuer: formatNumber("deform", $("#strSteuERng").val()),
-                    arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val()),
-                    konzessionsabgabe: formatNumber("deform", $("#konzERng").val()),
-                    eegUmlage: formatNumber("deform", $("#eegERng").val()),
-                    eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val()),
-                    eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val()),
-                    kwkUnter: formatNumber("deform", $("#kwkUntERng").val()),
-                    kwkUeber: formatNumber("deform",
-                        $("#kwkObERng").val()),
-                    nevUnter: formatNumber("deform", $("#nevUntERng").val()),
-                    nevUeber: formatNumber("deform", $("#nevObERng").val()),
-                    offUnter: formatNumber("deform", $("#offUntERng").val()),
-                    offUeber: formatNumber("deform", $("#offObERng").val()),
-                    lblCustom1: $("#lblCustom1ERng").text(),
-                    Custom1: formatNumber("deform", $("#custom1ERng").val()),
-                    lblCustom2: $("#lblCustom2ERng").text(),
-                    Custom2: formatNumber("deform", $("#custom2ERng").val()),
-                    lblCustom3: $("#lblCustom3ERng").text(),
-                    Custom3: formatNumber("deform", $("#custom3ERng").val()),
-                    lblCustom4: $("#lblCustom4ERng").text(),
-                    Custom4: formatNumber("deform", $("#custom4ERng").val()),
-                    lblCustom5: $("#lblCustom5ERng").text(),
-                    Custom5: formatNumber("deform", $("#custom5ERng").val()),
-                    lblCustom6: $("#lblCustom6ERng").text(),
-                    Custom6: formatNumber("deform", $("#custom6ERng").val())
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a))
-                }
-            });
+            else if ("eRngSpeichern" == a) {
+                data =
+                    { id: "eRng"
+                    , modus: "save"
+                    , nameDB: $("#nameDB").val()
+                    , eRngID: $("#eRngID").val()
+                    , liegID: $("#liegID").val()
+                    , versorger: $("#versorgerERng").val()
+                    , rechnungsmodus: $("#modusERng").val()
+                    , rechnungsnummer: $("#nrERng").val()
+                    , zaehlpunktnummer: $("#zpNrERng").val()
+                    , mstID: $("#mstIDERng").val()
+                    , rechnungsdatum: $("#datumERng").val()
+                    , abrechnungszeitVom: $("#vomERng").val()
+                    , abrechnungszeitBis: $("#bisERng").val()
+                    , energietraeger: $("#entERng").val()
+                    , einheit: $("#einERng").val()
+                    , menge: formatNumber("deform", $("#mengeERng").val())
+                    , verbrauch: formatNumber("deform", $("#verbrauchERng").val())
+                    , kostenstelle: $("#kostenstelleERng").val()
+                    , kosten: formatNumber("deform", $("#kostenERng").val())
+                    , mwst: formatNumber("deform", $("#mwstPercentERng").val())
+                    , tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val())
+                    , tagstromKost: formatNumber("deform", $("#tagstromKostERng").val())
+                    , nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val())
+                    , nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val())
+                    , blindstrom: formatNumber("deform", $("#blindstromERng").val())
+                    , lastspitze: formatNumber("deform", $("#lastspitzeERng").val())
+                    , leistungspreis: formatNumber("deform", $("#leistungspreisERng").val())
+                    , arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val())
+                    , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
+                    , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
+                    , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
+                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
+                    , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
+                    , nevUnter: formatNumber("deform", $("#nevUntERng").val())
+                    , nevUeber: formatNumber("deform", $("#nevObERng").val())
+                    , offUnter: formatNumber("deform", $("#offUntERng").val())
+                    , offUeber: formatNumber("deform", $("#offObERng").val())
+                    , lblCustom1: $("#lblCustom1ERng").text()
+                    , Custom1: formatNumber("deform", $("#custom1ERng").val())
+                    , lblCustom2: $("#lblCustom2ERng").text()
+                    , Custom2: formatNumber("deform", $("#custom2ERng").val())
+                    , lblCustom3: $("#lblCustom3ERng").text()
+                    , Custom3: formatNumber("deform", $("#custom3ERng").val())
+                    , lblCustom4: $("#lblCustom4ERng").text()
+                    , Custom4: formatNumber("deform", $("#custom4ERng").val())
+                    , lblCustom5: $("#lblCustom5ERng").text()
+                    , Custom5: formatNumber("deform", $("#custom5ERng").val())
+                    , lblCustom6: $("#lblCustom6ERng").text()
+                    , Custom6: formatNumber("deform", $("#custom6ERng").val())
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                })
+            }
             else if ("intEngIMwSpeichern" == a) {
                 var x = "",
                     u = "INSERT INTO ";
@@ -8260,67 +8324,72 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("enfLast", $("#enfCount").val())
                 } }), enfNavID = $("#enfCount").val();
-            else if ("eRngSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "eRng",
-                    modus: "new",
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val(),
-                    rechnungsmodus: $("#modusERng").val(),
-                    versorger: $("#versorgerERng").val(),
-                    rechnungsnummer: $("#nrERng").val(),
-                    zaehlpunktnummer: $("#zpNrERng").val(),
-                    mstID: $("#mstIDERng").val(),
-                    rechnungsdatum: $("#datumERng").val(),
-                    abrechnungszeitVom: $("#vomERng").val(),
-                    abrechnungszeitBis: $("#bisERng").val(),
-                    energietraeger: $("#entERng").val(),
-                    einheit: $("#einERng").val(),
-                    menge: formatNumber("deform", $("#mengeERng").val()),
-                    verbrauch: formatNumber("deform",
-                        $("#verbrauchERng").val()),
-                    kostenstelle: $("#kostenstelleERng").val(),
-                    kosten: formatNumber("deform", $("#kostenERng").val()),
-                    tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val()),
-                    tagstromKost: formatNumber("deform", $("#tagstromKostERng").val()),
-                    nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val()),
-                    nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val()),
-                    blindstrom: formatNumber("deform", $("#blindstromERng").val()),
-                    lastspitze: formatNumber("deform", $("#lastspitzeERng").val()),
-                    leistungspreis: formatNumber("deform", $("#leistungspreisERng").val()),
-                    arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val()),
-                    stromsteuer: formatNumber("deform", $("#strSteuERng").val()),
-                    arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val()),
-                    konzessionsabgabe: formatNumber("deform", $("#konzERng").val()),
-                    eegUmlage: formatNumber("deform", $("#eegERng").val()),
-                    eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val()),
-                    eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val()),
-                    kwkUnter: formatNumber("deform", $("#kwkUntERng").val()),
-                    kwkUeber: formatNumber("deform", $("#kwkObERng").val()),
-                    nevUnter: formatNumber("deform", $("#nevUntERng").val()),
-                    nevUeber: formatNumber("deform", $("#nevObERng").val()),
-                    offUnter: formatNumber("deform", $("#offUntERng").val()),
-                    offUeber: formatNumber("deform", $("#offObERng").val()),
-                    lblCustom1: $("#lblCustom1ERng").text(),
-                    Custom1: formatNumber("deform", $("#custom1ERng").val()),
-                    lblCustom2: $("#lblCustom2ERng").text(),
-                    Custom2: formatNumber("deform", $("#custom2ERng").val()),
-                    lblCustom3: $("#lblCustom3ERng").text(),
-                    Custom3: formatNumber("deform", $("#custom3ERng").val()),
-                    lblCustom4: $("#lblCustom4ERng").text(),
-                    Custom4: formatNumber("deform", $("#custom4ERng").val()),
-                    lblCustom5: $("#lblCustom5ERng").text(),
-                    Custom5: formatNumber("deform", $("#custom5ERng").val()),
-                    lblCustom6: $("#lblCustom6ERng").text(),
-                    Custom6: formatNumber("deform", $("#custom6ERng").val())
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a));
+            else if ("eRngSpeichern" == a) {
+                data =
+                    { id: "eRng"
+                    , modus: "new"
+                    , nameDB: $("#nameDB").val()
+                    , liegID: $("#liegID").val()
+                    , rechnungsmodus: $("#modusERng").val()
+                    , versorger: $("#versorgerERng").val()
+                    , rechnungsnummer: $("#nrERng").val()
+                    , zaehlpunktnummer: $("#zpNrERng").val()
+                    , mstID: $("#mstIDERng").val()
+                    , rechnungsdatum: $("#datumERng").val()
+                    , abrechnungszeitVom: $("#vomERng").val()
+                    , abrechnungszeitBis: $("#bisERng").val()
+                    , energietraeger: $("#entERng").val()
+                    , einheit: $("#einERng").val()
+                    , menge: formatNumber("deform", $("#mengeERng").val())
+                    , verbrauch: formatNumber("deform", $("#verbrauchERng").val())
+                    , kostenstelle: $("#kostenstelleERng").val()
+                    , kosten: formatNumber("deform", $("#kostenERng").val())
+                    , mwst: formatNumber("deform", $("#mwstPercentERng").val())
+                    , tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val())
+                    , tagstromKost: formatNumber("deform", $("#tagstromKostERng").val())
+                    , nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val())
+                    , nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val())
+                    , blindstrom: formatNumber("deform", $("#blindstromERng").val())
+                    , lastspitze: formatNumber("deform", $("#lastspitzeERng").val())
+                    , leistungspreis: formatNumber("deform", $("#leistungspreisERng").val())
+                    , arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val())
+                    , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
+                    , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
+                    , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
+                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
+                    , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
+                    , nevUnter: formatNumber("deform", $("#nevUntERng").val())
+                    , nevUeber: formatNumber("deform", $("#nevObERng").val())
+                    , offUnter: formatNumber("deform", $("#offUntERng").val())
+                    , offUeber: formatNumber("deform", $("#offObERng").val())
+                    , lblCustom1: $("#lblCustom1ERng").text()
+                    , Custom1: formatNumber("deform", $("#custom1ERng").val())
+                    , lblCustom2: $("#lblCustom2ERng").text()
+                    , Custom2: formatNumber("deform", $("#custom2ERng").val())
+                    , lblCustom3: $("#lblCustom3ERng").text()
+                    , Custom3: formatNumber("deform", $("#custom3ERng").val())
+                    , lblCustom4: $("#lblCustom4ERng").text()
+                    , Custom4: formatNumber("deform", $("#custom4ERng").val())
+                    , lblCustom5: $("#lblCustom5ERng").text()
+                    , Custom5: formatNumber("deform", $("#custom5ERng").val())
+                    , lblCustom6: $("#lblCustom6ERng").text()
+                    , Custom6: formatNumber("deform", $("#custom6ERng").val())
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    
+                    console.log("result eRngSpeichern")
+                    console.log(result)
+
+                    alert(datensatzGespeichert(result))
                     readInstanzen("eRngLast", $("#eRngCount").val())
-                } }), eRngNavID = $("#eRngCount").val();
+                })
+                eRngNavID = $("#eRngCount").val()
+            }
             else if ("iMwSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,

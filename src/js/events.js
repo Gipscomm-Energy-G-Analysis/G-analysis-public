@@ -474,8 +474,15 @@ $(document).ready(function() {
     $("#berList").val("");
     var m = !1;
     $("#kostenERng, #tagstromVerbrERng, #tagstromKostERng, #nachtstromVerbrERng, #nachtstromKostERng, #lastspitzeERng,#leistungspreisERng, #abpWirkERng, #abpNetzERng, #strSteuERng, #blindstromERng, #konzERng, #eegERng, #eegUntERng,#eegUebERng, #kwkUntERng, #nevUntERng, #offUntERng, #kwkObERng, #nevObERng, #offObERng, #custom1ERng, #custom2ERng,#custom3ERng, #custom4ERng, #custom5ERng, #custom6ERng, #mengeERng").blur(function() {
-        m ? $.isNumeric(formatNumber("deform", this.value)) && (isValid = !0, $("#mitUntERng").is(":checked") &&
-            $(this).css("background-color", "#4AB872"), m = !1) : "" !== this.value && ($.isNumeric(formatNumber("deform", this.value)) ? ($("#mitUntERng").is(":checked") && $(this).css("background-color", "#4AB872"), m = !1) : ($("#mitUntERng").is(":checked") && $(this).css("background-color", "#DB504A"), alert("Das Format des eingegebenen Wertes ist inkorrekt!\nEin Beispiel wie es aussehen sollte: 120233,12 oder 120.233,12"), $(this).select(), m = !0))
+        m ?
+        $.isNumeric(formatNumber("deform", this.value))
+        && (isValid = !0, $("#mitUntERng").is(":checked")
+        && $(this).css("background-color", "#4AB872"), m = !1) :
+        "" !== this.value && ($.isNumeric(formatNumber("deform", this.value)) ?
+        ($("#mitUntERng").is(":checked") && $(this).css("background-color", "#4AB872"), m = !1) :
+        ($("#mitUntERng").is(":checked") && $(this).css("background-color", "#DB504A"),
+        alert("Das Format des eingegebenen Wertes ist inkorrekt!\nEin Beispiel wie es aussehen sollte: 120233,12 oder 120.233,12"),
+        $(this).select(), m = !0))
     });
     $("#mitUntERng").click(function() {
         var a = !$(c).is(":checked");
@@ -705,19 +712,19 @@ $(document).ready(function() {
         $("#kostenERng").val(formatNumber("form", a));
         $("#kostenERng").trigger("change")
     });
-    $("#kostenERng").change(function() {
-        -1 != $(this).val().indexOf(",") && $(this).val(formatNumber("deform", $(this).val()));
+    $("#kostenERng, #mwstPercentERng").change(function() {
+        -1 != $("#kostenERng").val().indexOf(",") && $("#kostenERng").val(formatNumber("deform", $("#kostenERng").val()));
         $("#liegRngVergleich").change(function() {
             externeRechnungenListeErstellen("vergleich")
         });
-        var a = $(this).val(),
+        var a = $("#kostenERng").val(),
             a = parseFloat(a),
             b;
-        b = (19 * a / 100).toFixed(2);
+        b = (formatNumber("deform", $("#mwstPercentERng").val()) * a / 100).toFixed(2);
         b = parseFloat(b);
         a = (a + b).toFixed(2);
         a = parseFloat(a);
-        $(this).val(formatNumber("form", $(this).val()));
+        $("#kostenERng").val(formatNumber("form", $("#kostenERng").val()));
         $("#mwstERng").val(formatNumber("form", b));
         $("#kostenMitMwstERng").val(formatNumber("form", a))
     });

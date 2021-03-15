@@ -1728,262 +1728,270 @@ elseif ($id == "enf") {
 }
 elseif($id == "eRng") {
 
-$modus = $_POST['modus'];
-$liegID = $_POST['liegID'];
-$versorger = $_POST['versorger'];
-$rechnungsmodus = $_POST['rechnungsmodus'];
-$rechnungsnummer = $_POST['rechnungsnummer'];
-$zaehlpunktnummer = $_POST['zaehlpunktnummer'];
-$mstID = $_POST['mstID'];
-$rechnungsdatum = $_POST['rechnungsdatum'];
-$abrechnungszeitVom = $_POST['abrechnungszeitVom'];
-$abrechnungszeitBis = $_POST['abrechnungszeitBis'];
-$energietraeger = $_POST['energietraeger'];
-$einheit = $_POST['einheit'];
-$kostenstelle = $_POST['kostenstelle'];
+    $modus = $_POST['modus'];
+    $liegID = $_POST['liegID'];
+    $versorger = $_POST['versorger'];
+    $rechnungsmodus = $_POST['rechnungsmodus'];
+    $rechnungsnummer = $_POST['rechnungsnummer'];
+    $zaehlpunktnummer = $_POST['zaehlpunktnummer'];
+    $mstID = $_POST['mstID'];
+    $rechnungsdatum = $_POST['rechnungsdatum'];
+    $abrechnungszeitVom = $_POST['abrechnungszeitVom'];
+    $abrechnungszeitBis = $_POST['abrechnungszeitBis'];
+    $energietraeger = $_POST['energietraeger'];
+    $einheit = $_POST['einheit'];
+    $kostenstelle = $_POST['kostenstelle'];
 
 
-if($_POST['menge'] == ""){
-	$menge = 0;
-}
-else{
-	$menge = $_POST['menge'];
-}
-if($_POST['kosten'] == ""){
-	$kosten = 0;
-}
-else{
-	$kosten = $_POST['kosten'];
-}
+    if($_POST['menge'] == ""){
+    	$menge = 0;
+    }
+    else{
+    	$menge = $_POST['menge'];
+    }
 
-if($_POST['verbrauch'] == ""){
-	$verbrauch = 0;
-}
-else{
-	$verbrauch = $_POST['verbrauch'];
-}
+    if($_POST['kosten'] == ""){
+    	$kosten = 0;
+    }
+    else{
+    	$kosten = $_POST['kosten'];
+    }
 
-if($_POST['tagstromVerbr'] == ""){
-	$tagstromVerbr = 0;
-}
-else{
-	$tagstromVerbr = $_POST['tagstromVerbr'];
-}
+    if($_POST['mwst'] == ""){
+    	$mwst = 0;
+    }
+    else{
+    	$mwst = $_POST['mwst'];
+    }
 
-if($_POST['tagstromKost'] == ""){
-	$tagstromKost = 0;
-}
-else{
-	$tagstromKost = $_POST['tagstromKost'];
-}
+    if($_POST['verbrauch'] == ""){
+    	$verbrauch = 0;
+    }
+    else{
+    	$verbrauch = $_POST['verbrauch'];
+    }
 
-if($_POST['nachtstromVerbr'] == ""){
-	$nachtstromVerbr = 0;
-}
-else{
-	$nachtstromVerbr = $_POST['nachtstromVerbr'];
-}
+    if($_POST['tagstromVerbr'] == ""){
+    	$tagstromVerbr = 0;
+    }
+    else{
+    	$tagstromVerbr = $_POST['tagstromVerbr'];
+    }
 
-if($_POST['nachtstromKost'] == ""){
-	$nachtstromKost = 0;
-}
-else{
-	$nachtstromKost = $_POST['nachtstromKost'];
-}
-if($_POST['blindstrom'] == ""){
-	$blindstrom = 0;
-}
-else{
-	$blindstrom = $_POST['blindstrom'];
-}
+    if($_POST['tagstromKost'] == ""){
+    	$tagstromKost = 0;
+    }
+    else{
+    	$tagstromKost = $_POST['tagstromKost'];
+    }
 
-if($_POST['lastspitze'] == ""){
-	$lastspitze = 0;
-}
-else{
-	$lastspitze = $_POST['lastspitze'];
-}
+    if($_POST['nachtstromVerbr'] == ""){
+    	$nachtstromVerbr = 0;
+    }
+    else{
+    	$nachtstromVerbr = $_POST['nachtstromVerbr'];
+    }
 
-if($_POST['leistungspreis'] == ""){
-	$leistungspreis = 0;
-}
-else{
-	$leistungspreis = $_POST['leistungspreis'];
-}
+    if($_POST['nachtstromKost'] == ""){
+    	$nachtstromKost = 0;
+    }
+    else{
+    	$nachtstromKost = $_POST['nachtstromKost'];
+    }
+    if($_POST['blindstrom'] == ""){
+    	$blindstrom = 0;
+    }
+    else{
+    	$blindstrom = $_POST['blindstrom'];
+    }
 
-if($_POST['arbeitspreisWirkstrom'] == ""){
-	$arbeitspreisWirkstrom = 0;
-}
-else{
-	$arbeitspreisWirkstrom = $_POST['arbeitspreisWirkstrom'];
-}
+    if($_POST['lastspitze'] == ""){
+    	$lastspitze = 0;
+    }
+    else{
+    	$lastspitze = $_POST['lastspitze'];
+    }
 
-if($_POST['stromsteuer'] == ""){
-	$stromsteuer = 0;
-}
-else{
-	$stromsteuer = $_POST['stromsteuer'];
-}
+    if($_POST['leistungspreis'] == ""){
+    	$leistungspreis = 0;
+    }
+    else{
+    	$leistungspreis = $_POST['leistungspreis'];
+    }
 
-if($_POST['eegUmlage'] == ""){
-	$eegUmlage = 0;
-}
-else{
-	$eegUmlage = $_POST['eegUmlage'];
-}
+    if($_POST['arbeitspreisWirkstrom'] == ""){
+    	$arbeitspreisWirkstrom = 0;
+    }
+    else{
+    	$arbeitspreisWirkstrom = $_POST['arbeitspreisWirkstrom'];
+    }
 
-if($_POST['eegUmlageUntMill'] == ""){
-	$eegUmlageUntMill = 0;
-}
-else{
-	$eegUmlageUntMill = $_POST['eegUmlageUntMill'];
-}
+    if($_POST['stromsteuer'] == ""){
+    	$stromsteuer = 0;
+    }
+    else{
+    	$stromsteuer = $_POST['stromsteuer'];
+    }
 
-if($_POST['eegUmlageUebMill'] == ""){
-	$eegUmlageUebMill = 0;
-}
-else{
-	$eegUmlageUebMill = $_POST['eegUmlageUebMill'];
-}
+    if($_POST['eegUmlage'] == ""){
+    	$eegUmlage = 0;
+    }
+    else{
+    	$eegUmlage = $_POST['eegUmlage'];
+    }
 
-if($_POST['arbeitspreisNetz'] == ""){
-	$arbeitspreisNetz = 0;
-}
-else{
-	$arbeitspreisNetz = $_POST['arbeitspreisNetz'];
-}
+    if($_POST['eegUmlageUntMill'] == ""){
+    	$eegUmlageUntMill = 0;
+    }
+    else{
+    	$eegUmlageUntMill = $_POST['eegUmlageUntMill'];
+    }
 
-if($_POST['konzessionsabgabe'] == ""){
-	$konzessionsabgabe = 0;
-}
-else{
-	$konzessionsabgabe = $_POST['konzessionsabgabe'];
-}
+    if($_POST['eegUmlageUebMill'] == ""){
+    	$eegUmlageUebMill = 0;
+    }
+    else{
+    	$eegUmlageUebMill = $_POST['eegUmlageUebMill'];
+    }
 
-if($_POST['kwkUnter'] == ""){
-	$kwkUnter = 0;
-}
-else{
-	$kwkUnter = $_POST['kwkUnter'];
-}
+    if($_POST['arbeitspreisNetz'] == ""){
+    	$arbeitspreisNetz = 0;
+    }
+    else{
+    	$arbeitspreisNetz = $_POST['arbeitspreisNetz'];
+    }
 
-if($_POST['kwkUeber'] == ""){
-	$kwkUeber = 0;
-}
-else{
-	$kwkUeber = $_POST['kwkUeber'];
-}
+    if($_POST['konzessionsabgabe'] == ""){
+    	$konzessionsabgabe = 0;
+    }
+    else{
+    	$konzessionsabgabe = $_POST['konzessionsabgabe'];
+    }
 
-if($_POST['nevUnter'] == ""){
-	$nevUnter = 0;
-}
-else{
-	$nevUnter = $_POST['nevUnter'];
-}
+    if($_POST['kwkUnter'] == ""){
+    	$kwkUnter = 0;
+    }
+    else{
+    	$kwkUnter = $_POST['kwkUnter'];
+    }
 
-if($_POST['nevUeber'] == ""){
-	$nevUeber = 0;
-}
-else{
-	$nevUeber = $_POST['nevUeber'];
-}
+    if($_POST['kwkUeber'] == ""){
+    	$kwkUeber = 0;
+    }
+    else{
+    	$kwkUeber = $_POST['kwkUeber'];
+    }
 
-if($_POST['offUnter'] == ""){
-	$offUnter = 0;
-}
-else{
-	$offUnter = $_POST['offUnter'];
-}
+    if($_POST['nevUnter'] == ""){
+    	$nevUnter = 0;
+    }
+    else{
+    	$nevUnter = $_POST['nevUnter'];
+    }
 
-if($_POST['offUeber'] == ""){
-	$offUeber = 0;
-}
-else{
-	$offUeber = $_POST['offUeber'];
-}
+    if($_POST['nevUeber'] == ""){
+    	$nevUeber = 0;
+    }
+    else{
+    	$nevUeber = $_POST['nevUeber'];
+    }
 
-$lblCustom1 = $_POST['lblCustom1'];
-$lblCustom2 = $_POST['lblCustom2'];
-$lblCustom3 = $_POST['lblCustom3'];
-$lblCustom4 = $_POST['lblCustom4'];
-$lblCustom5 = $_POST['lblCustom5'];
-$lblCustom6 = $_POST['lblCustom6'];
+    if($_POST['offUnter'] == ""){
+    	$offUnter = 0;
+    }
+    else{
+    	$offUnter = $_POST['offUnter'];
+    }
 
-if($_POST['Custom1'] == ""){
-	$Custom1 = 0;
-}
-else{
-	$Custom1 = $_POST['Custom1'];
-}
+    if($_POST['offUeber'] == ""){
+    	$offUeber = 0;
+    }
+    else{
+    	$offUeber = $_POST['offUeber'];
+    }
 
-if($_POST['Custom2'] == ""){
-	$Custom2 = 0;
-}
-else{
-	$Custom2 = $_POST['Custom2'];
-}
+    $lblCustom1 = $_POST['lblCustom1'];
+    $lblCustom2 = $_POST['lblCustom2'];
+    $lblCustom3 = $_POST['lblCustom3'];
+    $lblCustom4 = $_POST['lblCustom4'];
+    $lblCustom5 = $_POST['lblCustom5'];
+    $lblCustom6 = $_POST['lblCustom6'];
 
-if($_POST['Custom3'] == ""){
-	$Custom3 = 0;
-}
-else{
-	$Custom3 = $_POST['Custom3'];
-}
+    if($_POST['Custom1'] == ""){
+    	$Custom1 = 0;
+    }
+    else{
+    	$Custom1 = $_POST['Custom1'];
+    }
 
-if($_POST['Custom4'] == ""){
-	$Custom4 = 0;
-}
-else{
-	$Custom4 = $_POST['Custom4'];
-}
+    if($_POST['Custom2'] == ""){
+    	$Custom2 = 0;
+    }
+    else{
+    	$Custom2 = $_POST['Custom2'];
+    }
 
-if($_POST['Custom5'] == ""){
-	$Custom5 = 0;
-}
-else{
-	$Custom5 = $_POST['Custom5'];
-}
+    if($_POST['Custom3'] == ""){
+    	$Custom3 = 0;
+    }
+    else{
+    	$Custom3 = $_POST['Custom3'];
+    }
 
-if($_POST['Custom6'] == ""){
-	$Custom6 = 0;
-}
-else{
-	$Custom6 = $_POST['Custom6'];
-}
+    if($_POST['Custom4'] == ""){
+    	$Custom4 = 0;
+    }
+    else{
+    	$Custom4 = $_POST['Custom4'];
+    }
+
+    if($_POST['Custom5'] == ""){
+    	$Custom5 = 0;
+    }
+    else{
+    	$Custom5 = $_POST['Custom5'];
+    }
+
+    if($_POST['Custom6'] == ""){
+    	$Custom6 = 0;
+    }
+    else{
+    	$Custom6 = $_POST['Custom6'];
+    }
 
 
-if($modus == "new"){
+    if($modus == "new"){
 
-	$tsql = "INSERT INTO externeRechnungen(lieg_ID,versorgerERng,rechnungsmodusERng,nrERng,zpNrERng,mst_ID,datumERng,vomERng,bisERng,entERng,einERng,mengeERng,verbrauchERng,kostenERng,";
-	$tsql .= "tagstromVerbrERng,tagstromKostERng,nachtstromVerbrERng,nachtstromKostERng,blindstromERng,lastspitzeERng,leistungspreisERng,abpWirkERng,strSteuERng,eegERng,";
-	$tsql .= "eegUntERng,eegUebERng,abpNetzERng,konzERng,kwkUntERng,kwkObERng,nevUntERng,nevObERng,offUntERng,offObERng,";
-	$tsql .= "lblCustom1ERng,Custom1ERng,lblCustom2ERng,Custom2ERng,lblCustom3ERng,Custom3ERng,lblCustom4ERng,Custom4ERng,lblCustom5ERng,Custom5ERng,lblCustom6ERng,Custom6ERng,kostenstelleERng) ";
+    	$tsql = "INSERT INTO externeRechnungen(lieg_ID,versorgerERng,rechnungsmodusERng,nrERng,zpNrERng,mst_ID,datumERng,vomERng,bisERng,entERng,einERng,mengeERng,verbrauchERng,kostenERng,";
+    	$tsql .= "tagstromVerbrERng,tagstromKostERng,nachtstromVerbrERng,nachtstromKostERng,blindstromERng,lastspitzeERng,leistungspreisERng,abpWirkERng,strSteuERng,eegERng,";
+    	$tsql .= "eegUntERng,eegUebERng,abpNetzERng,konzERng,kwkUntERng,kwkObERng,nevUntERng,nevObERng,offUntERng,offObERng,mwstPercentERng,";
+    	$tsql .= "lblCustom1ERng,Custom1ERng,lblCustom2ERng,Custom2ERng,lblCustom3ERng,Custom3ERng,lblCustom4ERng,Custom4ERng,lblCustom5ERng,Custom5ERng,lblCustom6ERng,Custom6ERng,kostenstelleERng) ";
 
-	$tsql .= "VALUES ('$liegID', '$versorger', '$rechnungsmodus','$rechnungsnummer', '$zaehlpunktnummer','$mstID','$rechnungsdatum', '$abrechnungszeitVom','$abrechnungszeitBis','$energietraeger',";
-	$tsql .= "'$einheit',$menge,$verbrauch,$kosten, $tagstromVerbr, $tagstromKost, $nachtstromVerbr, $nachtstromKost, $blindstrom, $lastspitze, $leistungspreis, $arbeitspreisWirkstrom, $stromsteuer, $eegUmlage,";
-	$tsql .= "$eegUmlageUntMill, $eegUmlageUebMill, $arbeitspreisNetz, $konzessionsabgabe, ";
-	$tsql .= "$kwkUnter, $kwkUeber, $nevUnter, $nevUeber, $offUnter, $offUeber,";
+    	$tsql .= "VALUES ('$liegID', '$versorger', '$rechnungsmodus','$rechnungsnummer', '$zaehlpunktnummer','$mstID','$rechnungsdatum', '$abrechnungszeitVom','$abrechnungszeitBis','$energietraeger',";
+    	$tsql .= "'$einheit',$menge,$verbrauch,$kosten, $tagstromVerbr, $tagstromKost, $nachtstromVerbr, $nachtstromKost, $blindstrom, $lastspitze, $leistungspreis, $arbeitspreisWirkstrom, $stromsteuer, $eegUmlage,";
+    	$tsql .= "$eegUmlageUntMill, $eegUmlageUebMill, $arbeitspreisNetz, $konzessionsabgabe, ";
+    	$tsql .= "$kwkUnter, $kwkUeber, $nevUnter, $nevUeber, $offUnter, $offUeber, $mwst, ";
 
-	$tsql .= "'$lblCustom1', $Custom1, '$lblCustom2', $Custom2, '$lblCustom3', $Custom3, '$lblCustom4', $Custom4, '$lblCustom5', $Custom5,";
-	$tsql .= "'$lblCustom6', $Custom6, '$kostenstelle')";
-}
-else {
-	$eRngID = $_POST['eRngID'];
+    	$tsql .= "'$lblCustom1', $Custom1, '$lblCustom2', $Custom2, '$lblCustom3', $Custom3, '$lblCustom4', $Custom4, '$lblCustom5', $Custom5,";
+    	$tsql .= "'$lblCustom6', $Custom6, '$kostenstelle')";
+    }
+    else {
+    	$eRngID = $_POST['eRngID'];
 
-	$tsql =  "UPDATE externeRechnungen SET versorgerERng = '$versorger',rechnungsmodusERng = '$rechnungsmodus', nrERng = '$rechnungsnummer', zpNrERng = '$zaehlpunktnummer',mst_ID = $mstID, datumERng = '$rechnungsdatum', vomERng = '$abrechnungszeitVom',";
-	$tsql .= "bisERng = '$abrechnungszeitBis',entERng = '$energietraeger',einERng = '$einheit',mengeERng = $menge, verbrauchERng = $verbrauch,";
-	$tsql .= "kostenERng = $kosten, tagstromVerbrERng = $tagstromVerbr, tagstromKostERng = $tagstromKost,nachtstromVerbrERng = $nachtstromVerbr,nachtstromKostERng = $nachtstromKost, blindstromERng= $blindstrom,lastspitzeERng = $lastspitze,";
-	$tsql .= "leistungspreisERng = $leistungspreis,abpWirkERng = $arbeitspreisWirkstrom,strSteuERng = $stromsteuer,";
-	$tsql .= "eegERng = $eegUmlage,eegUntERng = $eegUmlageUntMill,eegUebERng = $eegUmlageUebMill, abpNetzERng = $arbeitspreisNetz, konzERng = $konzessionsabgabe,";
-	$tsql .= "kwkUntERng = $kwkUnter, kwkObERng = $kwkUeber, nevUntERng = $nevUnter,";
-	$tsql .= "nevObERng = $nevUeber, offUntERng = $offUnter, offObERng = $offUeber,";
+    	$tsql =  "UPDATE externeRechnungen SET versorgerERng = '$versorger',rechnungsmodusERng = '$rechnungsmodus', nrERng = '$rechnungsnummer', zpNrERng = '$zaehlpunktnummer',mst_ID = $mstID, datumERng = '$rechnungsdatum', vomERng = '$abrechnungszeitVom',";
+    	$tsql .= "bisERng = '$abrechnungszeitBis',entERng = '$energietraeger',einERng = '$einheit',mengeERng = $menge, verbrauchERng = $verbrauch,";
+    	$tsql .= "kostenERng = $kosten, tagstromVerbrERng = $tagstromVerbr, tagstromKostERng = $tagstromKost,nachtstromVerbrERng = $nachtstromVerbr,nachtstromKostERng = $nachtstromKost, blindstromERng= $blindstrom,lastspitzeERng = $lastspitze,";
+    	$tsql .= "leistungspreisERng = $leistungspreis,abpWirkERng = $arbeitspreisWirkstrom,strSteuERng = $stromsteuer,";
+    	$tsql .= "eegERng = $eegUmlage,eegUntERng = $eegUmlageUntMill,eegUebERng = $eegUmlageUebMill, abpNetzERng = $arbeitspreisNetz, konzERng = $konzessionsabgabe,";
+    	$tsql .= "kwkUntERng = $kwkUnter, kwkObERng = $kwkUeber, nevUntERng = $nevUnter,";
+    	$tsql .= "nevObERng = $nevUeber, offUntERng = $offUnter, offObERng = $offUeber, mwstPercentERng = $mwst,";
 
-	$tsql .= "lblCustom1ERng = '$lblCustom1',Custom1ERng = $Custom1,lblCustom2ERng = '$lblCustom2',Custom2ERng = $Custom2,";
-	$tsql .= "lblCustom3ERng = '$lblCustom3',Custom3ERng = $Custom3,lblCustom4ERng = '$lblCustom4',Custom4ERng = $Custom4,";
-	$tsql .= "lblCustom5ERng = '$lblCustom5',Custom5ERng = $Custom5,lblCustom6ERng = '$lblCustom6',Custom6ERng = $Custom6, kostenstelleERng = '$kostenstelle' ";
+    	$tsql .= "lblCustom1ERng = '$lblCustom1',Custom1ERng = $Custom1,lblCustom2ERng = '$lblCustom2',Custom2ERng = $Custom2,";
+    	$tsql .= "lblCustom3ERng = '$lblCustom3',Custom3ERng = $Custom3,lblCustom4ERng = '$lblCustom4',Custom4ERng = $Custom4,";
+    	$tsql .= "lblCustom5ERng = '$lblCustom5',Custom5ERng = $Custom5,lblCustom6ERng = '$lblCustom6',Custom6ERng = $Custom6, kostenstelleERng = '$kostenstelle' ";
 
-	$tsql .= "WHERE eRng_ID = '$eRngID'";
-}
+    	$tsql .= "WHERE eRng_ID = '$eRngID'";
+    }
 }
 elseif($id == "intEngIMw") {
 $modus = $_POST['modus'];
