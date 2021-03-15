@@ -8381,10 +8381,6 @@ try {
 
                 ajaxPost("php/instanzIntoDb.php")(data)
                 .then(result => {
-                    
-                    console.log("result eRngSpeichern")
-                    console.log(result)
-
                     alert(datensatzGespeichert(result))
                     readInstanzen("eRngLast", $("#eRngCount").val())
                 })
