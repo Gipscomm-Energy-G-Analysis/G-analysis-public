@@ -3312,7 +3312,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
   }
 }
 
-if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm" && $id != "adm" && $id != "bentsql") {
+if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm" && $id != "adm" && $id != "ben") {
     $retState = queryDB( $conn, $tsql, "write" );
 
     if ($retState == 'error') {

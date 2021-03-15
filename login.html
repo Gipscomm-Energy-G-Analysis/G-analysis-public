@@ -74,7 +74,7 @@
             url: "php/readInstanzen.php",
             data: {
                 id: "rollenUndBerechtigungenSuperadmin",
-                nameDB: "gipscomm"
+                nameDB: "gipscomm",
                 },
             fail: function() {
                 alert("failed!!")
@@ -87,17 +87,23 @@
                 localStorage.setItem('gipsAdm', gipsAdmrolesCheckbox);
             
                 $.each(a, function(j, sAdm) {
-                    sAdmrolesCheckbox += '<div class="controlDiv"><label>'+sAdm.tab_name+'</label><input name="sAdmRolesPermission[]" type="checkbox"  value="'+sAdm.tab_id+'" /></div>';
+                    if(sAdm.display_superadmin == 1) {
+                        sAdmrolesCheckbox += '<div class="controlDiv"><label>'+sAdm.tab_name+'</label><input name="sAdmRolesPermission[]" type="checkbox"  value="'+sAdm.tab_id+'" /></div>';
+                    }
                 });
                 localStorage.setItem('sAdm', sAdmrolesCheckbox);
             
                 $.each(a, function(k, adm) {
-                    admrolesCheckbox += '<div class="controlDiv"><label>'+adm.tab_name+'</label><input name="admRolesPermission[]" type="checkbox" value="'+adm.tab_id+'" /></div>';
+                    if(adm.display_admin == 1) {
+                        admrolesCheckbox += '<div class="controlDiv"><label>'+adm.tab_name+'</label><input name="admRolesPermission[]" type="checkbox" value="'+adm.tab_id+'" /></div>';
+                    }
                 });
                 localStorage.setItem('adm', admrolesCheckbox);
             
                 $.each(a, function(l, ben) {
-                    benrolesCheckbox += '<div class="controlDiv"><label>'+ben.tab_name+'</label><input name="benRolesPermission[]" type="checkbox" value="'+ben.tab_id+'" /></div>';
+                    if(ben.display_benutzer == 1) {
+                        benrolesCheckbox += '<div class="controlDiv"><label>'+ben.tab_name+'</label><input name="benRolesPermission[]" type="checkbox" value="'+ben.tab_id+'" /></div>';
+                    }
                 });
                 localStorage.setItem('ben', benrolesCheckbox);
             
