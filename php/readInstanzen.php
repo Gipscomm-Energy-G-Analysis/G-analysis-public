@@ -59,24 +59,37 @@ for($n = 1; $n < count($mandantenIDs);$n++){
 
 elseif($id == "adm"){
 
-  $ins = $_POST['ins'];
-  $idIns = $_POST['insID'];
-  $recordSet = $_POST['recordSet'];
-
   $query = '';
-  if(!empty($idIns)) {
-    $query = "SELECT * FROM admins WHERE $ins = '$idIns' AND deleted_at IS NULL";
+  if(!empty($_POST['admID'])) {
+    $admID = $_POST['admID'];
+    $query = "SELECT * FROM admins WHERE adm_ID = '$admID' AND deleted_at IS NULL";
+
+  } else {
+
+    $ins = $_POST['ins'];
+    $idIns = $_POST['insID'];
+    $recordSet = $_POST['recordSet'];
+    
+    if(!empty($idIns)) {
+      $query = "SELECT * FROM admins WHERE $ins = '$idIns' AND deleted_at IS NULL";
+    }
   }
 }
 
 elseif($id == "ben"){
+  $query = '';
+  if(!empty($_POST['benID'])) {
+    $benID = $_POST['benID'];
+    $query = "SELECT * FROM benutzer WHERE ben_ID = '$benID' AND deleted_at IS NULL";
+  } else {
     $ins = $_POST['ins'];
     $idIns = $_POST['insID'];
     $recordSet = $_POST['recordSet'];
-    $query = '';
+    
     if(!empty($idIns)) {
       $query = "SELECT * FROM benutzer WHERE $ins = '$idIns' AND deleted_at IS NULL";
     }
+  }
 }
 
 elseif($id == "man"){

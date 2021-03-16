@@ -4825,7 +4825,7 @@ try {
                             , ["#telefonAdm", "telefon"]
                             , ["#faxAdm", "fax"]
                             , ["#mobiltelefonAdm", "mobiltelefon"]
-                            , ["#benutzernameAdm", "benutzername"]
+                            , ["#benutzernameAdm", "username"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             })) : clearFields("admHinz")
@@ -4861,7 +4861,7 @@ try {
                                 , ["#telefonBen", "telefon"]
                                 , ["#faxBen", "fax"]
                                 , ["#mobiltelefonBen", "mobiltelefon"]
-                                , ["#benutzernameBen", "benutzername"]
+                                , ["#benutzernameBen", "username"]
                                 ].forEach(function(a) {
                                     $(a[0]).val(c[b][a[1]])
                                 })) : clearFields("benHinz")
@@ -6007,7 +6007,6 @@ try {
                         passwort: getHash($("#passwortAdm").val())
                     },
                     success: function(a) {
-                        console.log('5975');
                         alert(datensatzGespeichert(a))
                     }
                 });
@@ -17527,7 +17526,7 @@ function adminlisteErstellen() {
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblAdminlisteErstellen.row.add([
-                    c,
+                    e[c].adm_ID,
                     e[c].titel,
                     e[c].name,
                     e[c].vorname,
@@ -17556,7 +17555,32 @@ function adminlisteErstellen() {
                     $("#tblAdminlisteErstellen tbody").on("dblclick", "tr", function() {
                         var a = tblAdminlisteErstellen.row(this).data();
                         $("#admListeContainer").dialog("close");
-                        readInstanzen("admFirst", a[0])
+                        //readInstanzen("admFirst", a[0])
+                        $.ajax({
+                            type: "POST",
+                            async: !0,
+                            url: "php/readInstanzen.php",
+                            data: {
+                                id: "adm",
+                                nameDB: "gipscomm",
+                                admID: a[0]
+                            },
+                            fail: function() {
+                                alert("failed!!")
+                            },
+                            success: function(a) {
+                                var c = $.parseJSON(a);
+                                $('#admID').val(c[0].adm_ID);
+                                $('#titelAdm').val(c[0].titel);
+                                $('#nameAdm').val(c[0].name);
+                                $('#vornameAdm').val(c[0].vorname);
+                                $('#emailAdm').val(c[0].email);
+                                $('#telefonAdm').val(c[0].telefon);
+                                $('#faxAdm').val(c[0].fax);
+                                $('#mobiltelefonAdm').val(c[0].mobiltelefon);
+                                $('#benutzernameAdm').val(c[0].username);
+                            }
+                        });
                     })
                 }
             })
@@ -17583,8 +17607,9 @@ function benutzerlisteErstellen() {
             tblBenutzerlisteErstellen.colReorder.reset();
             tblBenutzerlisteErstellen.clear().draw();
             for (var c = 0; c < e.length; c++) {
-                console.log(e[c].email);
+                //console.log(e[c].email);
                 tblBenutzerlisteErstellen.row.add([
+                    e[c].ben_ID,
                     e[c].titel,
                     e[c].name,
                     e[c].vorname,
@@ -17609,6 +17634,37 @@ function benutzerlisteErstellen() {
                 },
                 open: function() {
                     console.log('open popup');
+                    $("#tblBenutzerlisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblBenutzerlisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblBenutzerlisteErstellen.row(this).data();
+                        $("#benutzerListeContainer").dialog("close");
+                        //readInstanzen("benFirst", a[0])
+                        $.ajax({
+                            type: "POST",
+                            async: !0,
+                            url: "php/readInstanzen.php",
+                            data: {
+                                id: "ben",
+                                nameDB: "gipscomm",
+                                benID: a[0]
+                            },
+                            fail: function() {
+                                alert("failed!!")
+                            },
+                            success: function(a) {
+                                var c = $.parseJSON(a);
+                                $('#benID').val(c[0].ben_ID);
+                                $('#titelBen').val(c[0].titel);
+                                $('#nameBen').val(c[0].name);
+                                $('#vornameBen').val(c[0].vorname);
+                                $('#emailBen').val(c[0].eMail);
+                                $('#telefonBen').val(c[0].telefon);
+                                $('#faxBen').val(c[0].fax);
+                                $('#mobiltelefonBen').val(c[0].mobiltelefon);
+                                $('#benutzernameBen').val(c[0].username);
+                            }
+                        });
+                    })
                 }
             })
         }

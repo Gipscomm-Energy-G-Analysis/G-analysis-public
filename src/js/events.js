@@ -1356,7 +1356,7 @@ $(document).ready(function() {
         $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
         adminsGetRollenUndBerechtigungen()
     });
-    $("#tabBen").click(function() {
+    $("#tabBen, #benMenuLi").click(function() {
         $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
         benutzerGetRollenUndBerechtigungen()
     });
