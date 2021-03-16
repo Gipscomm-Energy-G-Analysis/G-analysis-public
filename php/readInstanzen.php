@@ -13,7 +13,7 @@ $id = $_POST['id'];
 
 if($id == "gipscAdm"){
 
-$query = "SELECT * FROM gipscommAdmins WHERE deleted_at IS NULL";
+$query = "SELECT * FROM gipscommAdmins";
 
 }
 
