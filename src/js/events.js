@@ -18,6 +18,8 @@ $(document).ready(function() {
         var roleId = 4;
         alleNutzerRollenUndBerechtigungen(roleId);
         mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
+        $("#adminRoles").css("display", "none");
+        $("#adminsRollenUndBerechtigungen").css("display", "none");
     } else if(sessionStorage.getItem("position") == 'ben') {
         var roleId = 5;
         alleNutzerRollenUndBerechtigungen(roleId);
