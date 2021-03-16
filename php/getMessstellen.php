@@ -52,10 +52,10 @@ function messstellenAnlagen ( $berOrLieg, $connLink ) {
 	return json_encode ( $records1, JSON_INVALID_UTF8_IGNORE ) ;
 }
 
-if ( $ins == "vorgMst" ) {
+if ( $ins == "vorgelagerteMstE" || $ins == "vorgelagerteMstB") {
 	echo messstellenAnlagen( "ber", $conn ) ;
 }
-elseif ( $ins = "mstSuchenVergl1" || $ins = "mstSuchenVergl1" || $ins == "mstMsm" || $ins == "mstERng" || $ins == "mstDiag1" || $ins == "mstDiag2" || $ins == "mstDiag3" || $ins == "mstCompDiag" || $ins == "mstDatenexport" ) {
+elseif ( $ins === "mstSuchenVergl1" || $ins === "mstSuchenVergl1" || $ins == "mstMsm" || $ins == "mstERng" || $ins == "mstDiag1" || $ins == "mstDiag2" || $ins == "mstDiag3" || $ins == "mstCompDiag" || $ins == "mstDatenexport" ) {
 	echo messstellenAnlagen( "lieg", $conn ) ;
 }
 elseif ( $ins == "mst1Anl" || $ins == "mst2Anl" || $ins == "mst3Anl" || $ins == "mst4Anl" ) {
@@ -65,11 +65,21 @@ elseif ( $ins == "mstZp" ) {
  echo	messstellenAnlagen ( "none", $conn ) ;
 }
 else {
-	if($ins == "mstSuchen"){
-		$liegID = $_POST [ 'liegID' ] ;
+	if($ins === "mstESuchen"){
+		$berID = $_POST [ 'berID' ] ;
 
 		$query = "SELECT * FROM MessstellenAnlagen " ;
 		$query .= "WHERE deleted <> 'true' " ;
+		$query .= "AND ber_ID = $berID " ;
+		$query .= "AND typ = 'energiedaten' " ;
+	}
+	elseif($ins === "mstBSuchen"){
+		$berID = $_POST [ 'berID' ] ;
+
+		$query = "SELECT * FROM MessstellenAnlagen " ;
+		$query .= "WHERE deleted <> 'true' " ;
+		$query .= "AND ber_ID = $berID " ;
+		$query .= "AND typ = 'betriebsdaten' " ;
 	}
 	elseif($dl = $ins == "mst1ExtDl" || $ins == "mst2ExtDl" || $ins == "mst3ExtDl" || $ins == "mst4ExtDl" || $ins == "mst5ExtDl" || $ins == "mst6ExtDl"){
 		$liegID = $_POST [ 'liegID' ] ;

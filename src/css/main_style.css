@@ -316,7 +316,7 @@ nav {
   float: left;
 }
 /*24-02-2020 tab html designed calculator*/
-#tabGipscAdm, #tabBetrGrp, #tabSAdm, #tabManGrp, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl ,#tabStdDr, #tabBer, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm,
+#tabGipscAdm, #tabBetrGrp, #tabSAdm, #tabManGrp, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl ,#tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm,
 #tabMsg, #tabKnz, #tabAlm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabEng, #tabZp, #tabBerechnungsformeln,
 #tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist,#tabIntBetriebsdatenIMwHistPrdkt,#tabIntBetriebsdatenIMwHistMesssetelle, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
 #tabEPrd, #tabPrd, #tabPrd_historie, #tabVorlagenformeln, #tabAnl_weitereKonfig, #tabPrd_konfig, #tabDiagKnz,
@@ -360,6 +360,8 @@ nav {
 #infosExtDurchleitungen,
 #infosStandorteDritte,
 #infosBereiche,
+#infosMessstellenEng,
+#infosMessstellenBetr,
 #infosStandorte,
 #infosAnlagen,
 #infosAnlagenHistorie,
@@ -541,9 +543,14 @@ nav {
 #berResetAnl:hover,
 #feldHinzufuegenStd:hover,
 #linkBerechnungslogikOderEingabemaske:hover,
-#mstSuchenVMessstelle:hover,
-#msmSuchenMst:hover,
-#ortSuchenMst:hover,
+#mstSuchenVMessstelleE:hover,
+#mstSuchenVMessstelleB:hover,
+#msmSuchenMstE:hover,
+#msmSuchenMstB:hover,
+#ortSuchenMstE:hover,
+#ortSuchenMstB:hover,
+#extDlSuchenMstE:hover,
+#extDlSuchenMstB:hover,
 .btn:hover,
 #anlAuswahlBer:hover,
 #anlAuswahlStd:hover,
@@ -562,7 +569,8 @@ nav {
 #btnHtNt:hover,
 #eRngSuchenMst:hover,
 #weitereEntsLieg:hover,
-#mstSuchenAnlage:hover,
+#mstESuchenAnlage:hover,
+#mstBSuchenAnlage:hover,
 #anlEnt1SuchenMst:hover,
 #anlEnt2SuchenMst:hover,
 #anlEnt3SuchenMst:hover,
@@ -673,6 +681,10 @@ nav {
 #btnGespDiag:hover,
 #btnGespDiag2:hover,
 #btnGespDiagKnz:hover,
+#histDataJa:hover,
+#histDataNein:hover,
+#saveMstFormulaAbbrechen:hover,
+#anlPrdLink:hover
 #btnShowRecordsAnlBtn:hover {
   background-color: white;
   cursor: pointer;
@@ -1235,7 +1247,7 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
   width: 1.2cm !important;
 }
 
-#infosIntBetriebsdaten input[readonly], 
+#infosIntBetriebsdaten input[readonly],
 #infosIntBdeIMwHistoriePopUpDiv input[readonly],
 #infosIntBdeIMwHistoriePopUpDiv select[readonly],
 #intBdeIMwHistorieContainer input[readonly]
@@ -1267,7 +1279,7 @@ div#intBdeMesssetelleIMwHistorieDiv .controlDiv label
     font-size: 12px;
     padding-left: 0.1cm;
     border: none;
-} 
+}
 div#intBdeIMwHistorieDiv .controlDiv input{
     margin-left: 0.1cm;
     margin-top: 0.1cm;
@@ -1282,9 +1294,9 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 
 
 /*02-11-2020 create html for second page Masseneingabe Button */
-.infosMasseneingabeDateRangeDiv .zeitintervallAnl_1, 
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_1,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2,
-.infosMasseneingabeDateRangeDiv .zeitintervallAnl_3, 
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_3,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_4 ,
 .infosMasseneingabeDateRangeDiv .btnMasseneingabeIMwSearchDiv{
     width: 22%;
@@ -1342,7 +1354,7 @@ table#tblMasseneingabeDataIMwTbl {
   width: 100%;
 }
 
-table#tblMasseneingabeDataIMwTbl td, 
+table#tblMasseneingabeDataIMwTbl td,
 table#tblMasseneingabeDataIMwTbl th {
   border: 1px solid #dddddd;
   text-align: left;

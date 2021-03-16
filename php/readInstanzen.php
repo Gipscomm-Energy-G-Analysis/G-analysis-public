@@ -49,47 +49,35 @@ for($n = 1; $n < count($mandantenIDs);$n++){
 }
 
 elseif($id == "adm"){
+    $ins = $_POST['ins'] ;
 
-  $ins = $_POST['ins'];
-
-  $idIns = $_POST['insID'];
-  $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
+    $idIns = $_POST['insID'] ;
+    $query = "SELECT * FROM admins WHERE $ins = '$idIns'" ;
 
 }
-
 elseif($id == "ben"){
-    $ins = $_POST['ins'];
-    $idIns = $_POST['insID'];
+    $ins = $_POST['ins'] ;
+    $idIns = $_POST['insID'] ;
 
-    $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
+    $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'" ;
 }
-
 elseif($id == "man"){
- $manID = $_POST['manID'];
-$query = "SELECT * FROM mandanten ";
- $query .= "WHERE man_ID = '$manID' ";
+    $manID = $_POST['manID'] ;
+
+    $query = "SELECT * FROM mandanten " ;
+    $query .= "WHERE man_ID = '$manID' " ;
 
 }
-
-
 elseif($id == "org"){
-$query = "SELECT
- * FROM organisationen ";
-$query .= "WHERE deleted <> 'true' ";
-
+    $query = "SELECT * FROM organisationen " ;
+    $query .= "WHERE deleted <> 'true' " ;
 }
-
-
 elseif($id == "lieg"){
+    $orgID = $_POST['orgID'] ;
 
-$orgID = $_POST['orgID'];
-
-$query = "SELECT * FROM liegenschaften ";
-
-  $query .= "WHERE org_ID = ".$orgID." ";
-
-$query .= "AND deleted <> 'true' ";
-
+    $query = "SELECT * FROM liegenschaften " ;
+    $query .= "WHERE org_ID = ".$orgID." " ;
+    $query .= "AND deleted <> 'true' " ;
 }
 
 

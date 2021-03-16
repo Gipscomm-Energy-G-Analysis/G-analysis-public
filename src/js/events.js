@@ -6,8 +6,10 @@ var anlageObj={};
 var allPrevVal = [];
 $(document).ready(function() {
     var c = this;
-    "gipsAdm" == sessionStorage.getItem("position") ? mandantenEinlesen("alle", null, null) : "sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : "adm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi, #manGrpMenuLi, #admMenuLi").css("display",
-        "none"), $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabAdm").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0)) : "ben" == sessionStorage.getItem("position") && ($("#rechtMenuLi").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID",
+    "gipsAdm" == sessionStorage.getItem("position") ?
+     mandantenEinlesen("alle", null, null) : "sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : "adm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi, #manGrpMenuLi, #admMenuLi").css("display",
+        "none"), $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabAdm").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0)) : "ben" == sessionStorage.getItem("position") && ($("#rechtMenuLi").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ?
+        mandantenEinlesen(null, "man_ID",
         sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0));
     betrGrpEinlesen();
     manGrpEinlesen();
@@ -60,7 +62,7 @@ $(document).ready(function() {
     $(".imgBtnAnlagePrd").click(function() {
         anlagenAuswahllisteErstellen(this.id)
     });
-    $(".btnFormelSymbol").click(function(){
+    $(".btnFormelSymbol").click(function() {
         var txt = $(this).text();
         if(txt == "AC"){
             $("#formelStringDarstellung, #formelIdDarstellung").val("");
@@ -454,7 +456,7 @@ $(document).ready(function() {
         changeYear: !0
     });
     var g, h, b = !1;
-    betrParNavID = knzInsNavID = knzNavID = prdNavID = ePrdNavID = eAnlNavID = zpNavID = iMwNavID = eRngNavID = enfNavID = entNavID = anlNavID = msmNavID = stdDrNavID = stdNavID = mstNavID = berNavID = extDlNavID = liegNavID = orgNavID = manNavID = benNavID = admNavID = manGrpNavID = gipscAdmNavID = sAdmNavID = betrGrpNavID = 0;
+    betrParNavID = knzInsNavID = knzNavID = prdNavID = ePrdNavID = eAnlNavID = zpNavID = iMwNavID = eRngNavID = enfNavID = entNavID = anlNavID = msmNavID = stdDrNavID = stdNavID = mstENavID = mstBNavID = berNavID = extDlNavID = liegNavID = orgNavID = manNavID = benNavID = admNavID = manGrpNavID = gipscAdmNavID = sAdmNavID = betrGrpNavID = 0;
     $("#sAdmID_1").val("");
     $("#sAdmID_2").val("");
     $("#nameDB").val("");
@@ -473,7 +475,6 @@ $(document).ready(function() {
     $("#manID").val("");
     $("#orgID").val("");
     $("#liegID").val("");
-    $("#berID").val("");
     $("#mstID").val("");
     $("#stdID").val("");
     $("#knzInsID").val("");
@@ -486,14 +487,20 @@ $(document).ready(function() {
     $("#berList").val("");
     var m = !1;
     $("#kostenERng, #tagstromVerbrERng, #tagstromKostERng, #nachtstromVerbrERng, #nachtstromKostERng, #lastspitzeERng,#leistungspreisERng, #abpWirkERng, #abpNetzERng, #strSteuERng, #blindstromERng, #konzERng, #eegERng, #eegUntERng,#eegUebERng, #kwkUntERng, #nevUntERng, #offUntERng, #kwkObERng, #nevObERng, #offObERng, #custom1ERng, #custom2ERng,#custom3ERng, #custom4ERng, #custom5ERng, #custom6ERng, #mengeERng").blur(function() {
-        m ? $.isNumeric(formatNumber("deform", this.value)) && (isValid = !0, $("#mitUntERng").is(":checked") &&
-            $(this).css("background-color", "#4AB872"), m = !1) : "" !== this.value && ($.isNumeric(formatNumber("deform", this.value)) ? ($("#mitUntERng").is(":checked") && $(this).css("background-color", "#4AB872"), m = !1) : ($("#mitUntERng").is(":checked") && $(this).css("background-color", "#DB504A"), alert("Das Format des eingegebenen Wertes ist inkorrekt!\nEin Beispiel wie es aussehen sollte: 120233,12 oder 120.233,12"), $(this).select(), m = !0))
+        m ?
+        $.isNumeric(formatNumber("deform", this.value))
+        && (isValid = !0, $("#mitUntERng").is(":checked")
+        && $(this).css("background-color", "#4AB872"), m = !1) :
+        "" !== this.value && ($.isNumeric(formatNumber("deform", this.value)) ?
+        ($("#mitUntERng").is(":checked") && $(this).css("background-color", "#4AB872"), m = !1) :
+        ($("#mitUntERng").is(":checked") && $(this).css("background-color", "#DB504A"),
+        alert("Das Format des eingegebenen Wertes ist inkorrekt!\nEin Beispiel wie es aussehen sollte: 120233,12 oder 120.233,12"),
+        $(this).select(), m = !0))
     });
     $("#mitUntERng").click(function() {
         var a = !$(c).is(":checked");
         (function() {
-            a ? $(".standRng, .evuRng, .bafaRng").css("background-color",
-                "white") : function() {}
+            a ? $(".standRng, .evuRng, .bafaRng").css("background-color", "white") : function() {}
         })()
     });
     $("#typDiag").change(function() {
@@ -717,19 +724,19 @@ $(document).ready(function() {
         $("#kostenERng").val(formatNumber("form", a));
         $("#kostenERng").trigger("change")
     });
-    $("#kostenERng").change(function() {
-        -1 != $(this).val().indexOf(",") && $(this).val(formatNumber("deform", $(this).val()));
+    $("#kostenERng, #mwstPercentERng").change(function() {
+        -1 != $("#kostenERng").val().indexOf(",") && $("#kostenERng").val(formatNumber("deform", $("#kostenERng").val()));
         $("#liegRngVergleich").change(function() {
             externeRechnungenListeErstellen("vergleich")
         });
-        var a = $(this).val(),
+        var a = $("#kostenERng").val(),
             a = parseFloat(a),
             b;
-        b = (19 * a / 100).toFixed(2);
+        b = (formatNumber("deform", $("#mwstPercentERng").val()) * a / 100).toFixed(2);
         b = parseFloat(b);
         a = (a + b).toFixed(2);
         a = parseFloat(a);
-        $(this).val(formatNumber("form", $(this).val()));
+        $("#kostenERng").val(formatNumber("form", $("#kostenERng").val()));
         $("#mwstERng").val(formatNumber("form", b));
         $("#kostenMitMwstERng").val(formatNumber("form", a))
     });
@@ -799,7 +806,6 @@ $(document).ready(function() {
         dbFuerEnergietraegerFestlegen($(this).val())
     });
     organisationenEinlesen();
-    liegenschaftenEinlesen();
     $("#btnInMstVerwaltungSpringen, #btnInKnzVerwaltungSpringen").click(function() {
         var a = "";
         switch (this.id) {
@@ -825,12 +831,23 @@ $(document).ready(function() {
     });
     /*17-03-2020 js event for the messaMart on change*/
     // 26-08-2020 simplified the logic
-    $("#messartMst").change(function() {
-        toggleMsmBerechnungslogik(this.value)
+    $("#messartMstE, #messartMstB").change(function() {
+        let type = ""
+        switch (this.id) {
+            case "messartMstE":
+                type = "E"
+                break;
+            case "messartMstB":
+                type = "B"
+                break;
+            default:
+                console.log("$('#messartMstE, #messartMstB').change -> Some unknown case occured !")
+        }
+        toggleMsmBerechnungslogik(this.value)(type)
     });
     /*17-03-2020 js event for the messaMart on change*/
-    $("#mstSuchen").click(function() {
-        messstellenlisteErstellen()
+    $("#mstESuchen, #mstBSuchen").click(function() {
+        messstellenlisteErstellen(this)
     });
     $(".auslastung").blur(function() {
         if ("mittlereAuslastungKw1Anl" == this.id) {
@@ -868,8 +885,11 @@ $(document).ready(function() {
     $("#btnAnlOeffnen").click(function() {
         $("#anlMenu").trigger("click")
     });
-    $("#berSuchenOrt, #ortSuchenMst, #anlAuswahlStd").click(function() {
+    $("#berSuchenOrt, #ortSuchenMstE, #ortSuchenMstB, #anlAuswahlStd").click(function() {
         standorteAuswahllisteErstellen(this)
+    });
+    $("#extDlSuchenMstE, #extDlSuchenMstB").click(function() {
+        durchleitungAuswahllisteErstellen(this)
     });
     $("#anlAuswahlZugVerbr1, #anlAuswahlZugVerbr2 ,#anlAuswahlZugVerbr3, #anlAuswahlZugVerbr4, #anlAuswahlZugVerbr5, #anlAuswahlZugVerbr6").click(function() {
         anlagenAuswahllisteErstellen(this.id)
@@ -877,31 +897,45 @@ $(document).ready(function() {
     $("#berSuchenVBereich1, #berSuchenVBereich2, #anlAuswahlBer").click(function() {
         bereichsAuswahllisteErstellen(this)
     });
-    $("#mstSuchenVMessstelle, #anlSuchenMst, #eRngSuchenMst, #anlEnt1SuchenMst, #anlEnt2SuchenMst, #anlEnt3SuchenMst, #anlEnt4SuchenMst,#zpSuchenMst, #mstSuchenExtDl1, #mstSuchenExtDl2, #mstSuchenExtDl3, #mstSuchenExtDl4, #mstSuchenExtDl5, #mstSuchenExtDl6,#mstSuchenExtDlEngRes1, #mstSuchenExtDlEngRes2, #mstSuchenExtDlEngRes3, #mstSuchenExtDlEngRes4, #mstSuchenExtDlEngRes5, #mstSuchenExtDlEngRes6,#imgBtnMstDiag11, #imgBtnMstDiag12, #imgBtnMstDiag13, #imgBtnMstDiag2, #imgBtnMstDatenexport, #mstSuchenVergl1, #mstSuchenVergl2").click(function() {
+    // Jump from Anlagen to Produkte
+    $("#anlPrdLink").click(
+      () => {
+        mainMenuNav("prdMenu")
+      }
+    )
+
+    $("#mstSuchenVMessstelleE, #mstSuchenVMessstelleB, #anlSuchenMst, #eRngSuchenMst, #anlEnt1SuchenMst, #anlEnt2SuchenMst, #anlEnt3SuchenMst, #anlEnt4SuchenMst,#zpSuchenMst, #mstSuchenExtDl1, #mstSuchenExtDl2, #mstSuchenExtDl3, #mstSuchenExtDl4, #mstSuchenExtDl5, #mstSuchenExtDl6,#mstSuchenExtDlEngRes1, #mstSuchenExtDlEngRes2, #mstSuchenExtDlEngRes3, #mstSuchenExtDlEngRes4, #mstSuchenExtDlEngRes5, #mstSuchenExtDlEngRes6,#imgBtnMstDiag11, #imgBtnMstDiag12, #imgBtnMstDiag13, #imgBtnMstDiag2, #imgBtnMstDatenexport, #mstSuchenVergl1, #mstSuchenVergl2").click(function() {
         var a,
             b;
-        "mstSuchenVMessstelle" == this.id ? a = "vorgMst" : "anlSuchenMst" == this.id ? a = "mstMsm" : "eRngSuchenMst" == this.id ? a = "mstERng" : "anlEnt1SuchenMst" == this.id ? (a = "mst1Anl", b = $("#energietraeger1AllgemeinAnl").val()) : "anlEnt2SuchenMst" == this.id ? (a = "mst2Anl", b = $("#energietraeger2AllgemeinAnl").val()) : "anlEnt3SuchenMst" == this.id ? (a = "mst3Anl", b = $("#energietraeger3AllgemeinAnl").val()) : "anlEnt4SuchenMst" == this.id ? (a = "mst4Anl", b = $("#energietraeger4AllgemeinAnl").val()) : "zpSuchenMst" == this.id ? a = "mstZp" : "mstSuchenExtDl1" ==
-            this.id ? a = "mst1ExtDl" : "mstSuchenExtDl2" == this.id ? a = "mst2ExtDl" : "mstSuchenExtDl3" == this.id ? a = "mst3ExtDl" : "mstSuchenExtDl4" == this.id ? a = "mst4ExtDl" : "mstSuchenExtDl5" == this.id ? a = "mst5ExtDl" : "mstSuchenExtDl6" == this.id ? a = "mst6ExtDl" : "mstSuchenExtDlEngRes1" == this.id ? a = "mstEngRes1ExtDl" : "mstSuchenExtDlEngRes2" == this.id ? a = "mstEngRes2ExtDl" : "mstSuchenExtDlEngRes3" == this.id ? a = "mstEngRes3ExtDl" : "mstSuchenExtDlEngRes4" == this.id ? a = "mstEngRes4ExtDl" : "mstSuchenExtDlEngRes5" == this.id ? a = "mstEngRes5ExtDl" : "mstSuchenExtDlEngRes6" ==
-            this.id ? a = "mstEngRes6ExtDl" : "imgBtnMstDiag11" == this.id ? a = "mstDiag1" : "imgBtnMstDiag12" == this.id ? a = "mstDiag2" : "imgBtnMstDiag13" == this.id ? a = "mstDiag3" : "imgBtnMstDiag2" == this.id ? a = "mstCompDiag" : "imgBtnMstDatenexport" == this.id ? a = "mstDatenexport" : "mstSuchenVergl1" == this.id ? a = "mstSuchenVergl1" : "mstSuchenVergl2" == this.id && (a = "mstSuchenVergl2");
+        "mstSuchenVMessstelleE" == this.id ? a = "vorgelagerteMstE" :
+        "mstSuchenVMessstelleB" == this.id ? a = "vorgelagerteMstB" :
+        "anlSuchenMst" == this.id ? a = "mstMsm" :
+        "eRngSuchenMst" == this.id ? a = "mstERng" : "anlEnt1SuchenMst" == this.id ? (a = "mst1Anl", b = $("#energietraeger1AllgemeinAnl").val()) : "anlEnt2SuchenMst" == this.id ? (a = "mst2Anl", b = $("#energietraeger2AllgemeinAnl").val()) : "anlEnt3SuchenMst" == this.id ? (a = "mst3Anl", b = $("#energietraeger3AllgemeinAnl").val()) : "anlEnt4SuchenMst" == this.id ? (a = "mst4Anl", b = $("#energietraeger4AllgemeinAnl").val()) :
+        "zpSuchenMst" == this.id ? a = "mstZp" :
+        "mstSuchenExtDl1" == this.id ? a = "mst1ExtDl" :
+        "mstSuchenExtDl2" == this.id ? a = "mst2ExtDl" : "mstSuchenExtDl3" == this.id ? a = "mst3ExtDl" : "mstSuchenExtDl4" == this.id ? a = "mst4ExtDl" : "mstSuchenExtDl5" == this.id ? a = "mst5ExtDl" : "mstSuchenExtDl6" == this.id ? a = "mst6ExtDl" : "mstSuchenExtDlEngRes1" == this.id ? a = "mstEngRes1ExtDl" : "mstSuchenExtDlEngRes2" == this.id ? a = "mstEngRes2ExtDl" : "mstSuchenExtDlEngRes3" == this.id ? a = "mstEngRes3ExtDl" :
+        "mstSuchenExtDlEngRes4" == this.id ? a = "mstEngRes4ExtDl":
+        "mstSuchenExtDlEngRes5" == this.id ? a = "mstEngRes5ExtDl" :
+        "mstSuchenExtDlEngRes6" == this.id ? a = "mstEngRes6ExtDl" :
+        "imgBtnMstDiag11" == this.id ? a = "mstDiag1" :
+        "imgBtnMstDiag12" == this.id ? a = "mstDiag2" :
+        "imgBtnMstDiag13" == this.id ? a = "mstDiag3" :
+        "imgBtnMstDiag2" == this.id ? a = "mstCompDiag" :
+        "imgBtnMstDatenexport" == this.id ? a = "mstDatenexport" :
+        "mstSuchenVergl1" == this.id ? a = "mstSuchenVergl1" :
+        "mstSuchenVergl2" == this.id && (a = "mstSuchenVergl2");
         messstellenAuswahllisteErstellen(a, b)
     });
-    $("#msmSuchenMst").click(function() {
-        switch ($("#messartMst").val()) {
-            case "manuell":
-            case "automatisch":
-                messmittelAuswahllisteErstellen("msmMst");
-                break;
-            case "berechnet":
-                formelAuswahllisteErstellen("frmMst");
-                break;
-            default:
-                alert('$("#msmSuchenMst").click(): No fitting case !!')
-        }
+    $("#msmSuchenMstE, #msmSuchenMstB").click(function() {
+        messmittelAuswahllisteErstellen(this)
     });
-    $("#msmSuchenAnlage, #mstSuchenAnlage").click(function() {
-        var a;
-        "msmSuchenAnlage" == this.id ? a = "anlMsm" : "mstSuchenAnlage" == this.id && (a = "anlMst");
-        anlagenAuswahllisteErstellen(a)
+    $("#msmSuchenAnlage, #mstESuchenAnlage, #mstBSuchenAnlage").click(function() {
+        const ident =
+            "msmSuchenAnlage" == this.id ? "anlMsm" :
+            "mstESuchenAnlage" == this.id ? "anlMstE" :
+            "anlMstB"
+
+        anlagenAuswahllisteErstellen(ident)
     });
     $(".msmSuchen").click(function() {
         messmittellisteErstellen()
@@ -1177,8 +1211,7 @@ $(document).ready(function() {
     });
     $("#menuVorlagenformeln, #menuBerechnungsformeln, #menuProduktionAusw, #verbExportMenu, #mstVerglMenu, #zeitVerglMenu, #knzDarst").click(function() {
         $("#auswertungen").css("display", "block");
-        $("#manuell").css("display",
-            "none");
+        $("#manuell").css("display", "none");
         $("#optionen").css("display", "none");
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id);
@@ -1190,7 +1223,7 @@ $(document).ready(function() {
         }
         $("body").removeClass('fullWidthMasseneingabe');
     });
-    $("#betrGrpMenu, #sAdmMenu, #manGrpMenu, #admMenu, #benMenu, #untMenu, #anlMenu, #pmMenu, #msmMenu, #knz_almMenu, #manMenu, #orgMenu, #liegMenu, #berMenu, #stdMenu, #stdDrMenu, #anl_Menu, #msgMenu, #knzMenu, #almMenu, #prdMenu,#anl_Eng_Menu, #anl_Dok_Menu, #anl_Hist_Menu, #anl_Konfig_Menu,#prd_Menu, #prd_Konfig_Menu, #prd_Hist_Menu").click(function() {
+    $("#betrGrpMenu, #sAdmMenu, #manGrpMenu, #admMenu, #benMenu, #untMenu, #anlMenu, #pmMenu, #msmMenu, #knz_almMenu, #manMenu, #orgMenu, #liegMenu, #berMenu, #mstEMenu, #mstBMenu, #stdMenu, #stdDrMenu, #anl_Menu, #msgMenu, #knzMenu, #almMenu, #prdMenu,#anl_Eng_Menu, #anl_Dok_Menu, #anl_Hist_Menu, #anl_Konfig_Menu,#prd_Menu, #prd_Konfig_Menu, #prd_Hist_Menu").click(function() {
         $("#auswertungen").css("display", "none");
         $("#stammdaten").css("display", "block");
         $(".infoBody").css("display", "inline-block");
@@ -1332,12 +1365,11 @@ $(document).ready(function() {
             b = parseInt(b) + parseInt($("#pruefzyklusPruefinformationenMsm").val());
         $("#naechstePruefungPruefinformationenMsm").val(a.substring(0, 6) + b)
     });
-    $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag,#tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
+    $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag,#tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
         tabControlNav(this.id);
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline");
         addExtraWidthToDynamischeFaktor();
-        //alert(this.id);
         if(this.id=='tabIntBetriebsdatenIMw'){
 
             $("body").removeClass('fullWidthMasseneingabe');
@@ -1359,54 +1391,134 @@ $(document).ready(function() {
 
         //interneEBTblShowHide();
     });
-    $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst,\n                #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstFirst, #stdFirst,\n                #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst,\n                #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
-        "gipscAdmFirst" == this.id ?
-            (gipscAdmNavID = 0, readInstanzen(this.id, gipscAdmNavID)) : "betrGrpFirst" == this.id ? (betrGrpNavID = 0, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) : "sAdmFirst" == this.id ? (sAdmNavID = 0, readInstanzen(this.id, sAdmNavID)) : "manGrpFirst" == this.id ? (manGrpNavID = 0, readInstanzen(this.id, manGrpNavID)) : "admFirst" == this.id ? (admNavID = 0, readInstanzen(this.id, admNavID)) : "benFirst" == this.id ? (benNavID = 0, readInstanzen(this.id, benNavID)) : "manFirst" == this.id ? (manNavID = 0, $(".manPfad").prop("selectedIndex",
-                manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) : "orgFirst" == this.id ? (orgNavID = 0, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) : "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) : "extDlFirst" == this.id ?
-            (extDlNavID = 0, readInstanzen(this.id, extDlNavID)) : "berFirst" == this.id ? (mstNavID = berNavID = 0, readInstanzen(this.id, berNavID), readInstanzen("mstFirst", 0)) : "mstFirst" == this.id ? (mstNavID = 0, readInstanzen(this.id, mstNavID)) : "stdFirst" == this.id ? (stdNavID = 0, readInstanzen(this.id, stdNavID)) : "stdDrFirst" == this.id ? (stdDrNavID = 0, readInstanzen(this.id, stdDrNavID)) : "anlFirst" == this.id ? (anlNavID = 0, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) : "msmFirst" == this.id ? (msmNavID = 0, readInstanzen(this.id, msmNavID),
-                dokumentenListeErstellen()) : "prdFirst" == this.id ? (prdNavID = 0, readInstanzen(this.id, prdNavID), dokumentenListeErstellen()) : "entFirst" == this.id ? (entNavID = 0, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) : "enfFirst" == this.id ? (enfNavID = 0, readInstanzen(this.id, enfNavID)) : "eRngFirst" == this.id ? (eRngNavID = 0, readInstanzen(this.id, eRngNavID)) : "intEngIMwFirst" == this.id ? (g = 0, readInstanzen(this.id, g)) : "intBdeIMwFirst" == this.id ? (h = 0, readInstanzen(this.id, h)) : "eAnlFirst" == this.id ? (eAnlNavID = 0, readInstanzen(this.id,
-                eAnlNavID)) : "ePrdFirst" == this.id ? (ePrdNavID = 0, readInstanzen(this.id, ePrdNavID)) : "zpFirst" == this.id ? (zpNavID = 0, readInstanzen(this.id, zpNavID)) : "knzFirst" == this.id ? (knzNavID = 0, readInstanzen(this.id, knzNavID)) : "betrParFirst" == this.id && (betrParNavID = 0, readInstanzen(this.id, betrParNavID));
+    $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
+        "gipscAdmFirst" == this.id ? (gipscAdmNavID = 0, readInstanzen(this.id, gipscAdmNavID)) :
+        "betrGrpFirst" == this.id ? (betrGrpNavID = 0, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
+        "sAdmFirst" == this.id ? (sAdmNavID = 0, readInstanzen(this.id, sAdmNavID)) :
+        "manGrpFirst" == this.id ? (manGrpNavID = 0, readInstanzen(this.id, manGrpNavID)) :
+        "admFirst" == this.id ? (admNavID = 0, readInstanzen(this.id, admNavID)) :
+        "benFirst" == this.id ? (benNavID = 0, readInstanzen(this.id, benNavID)) :
+        "manFirst" == this.id ? (manNavID = 0, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
+        "orgFirst" == this.id ? (orgNavID = 0, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
+        "extDlFirst" == this.id ? (extDlNavID = 0, readInstanzen(this.id, extDlNavID)) :
+        "berFirst" == this.id ? (mstENavID = mstBNavID = berNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID)) :
+        "mstEFirst" == this.id ? (mstENavID = 0, readInstanzen(this.id, mstENavID)) :
+        "mstBFirst" == this.id ? (mstBNavID = 0, readInstanzen(this.id, mstBNavID)) :
+        "stdFirst" == this.id ? (stdNavID = 0, readInstanzen(this.id, stdNavID)) :
+        "stdDrFirst" == this.id ? (stdDrNavID = 0, readInstanzen(this.id, stdDrNavID)) :
+        "anlFirst" == this.id ? (anlNavID = 0, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
+        "msmFirst" == this.id ? (msmNavID = 0, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) :
+        "prdFirst" == this.id ? (prdNavID = 0, readInstanzen(this.id, prdNavID), dokumentenListeErstellen()) :
+        "entFirst" == this.id ? (entNavID = 0, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
+        "enfFirst" == this.id ? (enfNavID = 0, readInstanzen(this.id, enfNavID)) :
+        "eRngFirst" == this.id ? (eRngNavID = 0, readInstanzen(this.id, eRngNavID)) :
+        "intEngIMwFirst" == this.id ? (g = 0, readInstanzen(this.id, g)) :
+        "intBdeIMwFirst" == this.id ? (h = 0, readInstanzen(this.id, h)) :
+        "eAnlFirst" == this.id ? (eAnlNavID = 0, readInstanzen(this.id, eAnlNavID)) :
+        "ePrdFirst" == this.id ? (ePrdNavID = 0, readInstanzen(this.id, ePrdNavID)) :
+        "zpFirst" == this.id ? (zpNavID = 0, readInstanzen(this.id, zpNavID)) :
+        "knzFirst" == this.id ? (knzNavID = 0, readInstanzen(this.id, knzNavID)) :
+        "betrParFirst" == this.id && (betrParNavID = 0, readInstanzen(this.id, betrParNavID));
         b = !1;
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious,\n                    #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious,\n                    #mstPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious,\n                    #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious,\n                    #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
-        "gipscAdmPrevious" ==
-        this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) : "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) : "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) : "manGrpPrevious" == this.id ? 0 < manGrpNavID && (manGrpNavID--, readInstanzen(this.id, manGrpNavID)) : "admPrevious" == this.id ? 0 < admNavID && (admNavID--, readInstanzen(this.id, admNavID)) : "benPrevious" == this.id ?
-            0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) : "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() {
-                organisationenEinlesen()
-            }, 1500), setTimeout(function() {
-                liegenschaftenEinlesen()
-            }, 2E3), readInstanzen("orgFirst", 0)) : "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID--), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) : "liegPrevious" ==
-            this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) : "extDlPrevious" == this.id ? 0 < extDlNavID && (extDlNavID--, readInstanzen(this.id, extDlNavID)) : "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0), readInstanzen(this.id, berNavID)) : "mstPrevious" == this.id ? 0 < mstNavID && (mstNavID--,
-                readInstanzen(this.id, mstNavID)) : "stdPrevious" == this.id ? 0 < stdNavID && (stdNavID--, readInstanzen(this.id, stdNavID)) : "stdDrPrevious" == this.id ? 0 < stdDrNavID && (stdDrNavID--, readInstanzen(this.id, stdDrNavID)) : "anlPrevious" == this.id ? 0 < anlNavID && (anlNavID--, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) : "msmPrevious" == this.id ? 0 < msmNavID && (msmNavID--, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) : "prdPrevious" == this.id ? 0 < prdNavID && (prdNavID--, readInstanzen(this.id, prdNavID), dokumentenListeErstellen()) :
-            "entPrevious" == this.id ? 0 < entNavID && (entNavID--, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) : "enfPrevious" == this.id ? 0 < enfNavID && (enfNavID--, readInstanzen(this.id, enfNavID)) : "eRngPrevious" == this.id ? 0 < eRngNavID && (eRngNavID--, readInstanzen(this.id, eRngNavID)) : "intEngIMwPrevious" == this.id ? 0 < g && (g--, readInstanzen(this.id, g)) : "intBdeIMwPrevious" == this.id ? 0 < h && (h--, readInstanzen(this.id, h)) : "eAnlPrevious" == this.id ? 0 < eAnlNavID && (eAnlNavID--, readInstanzen(this.id, eAnlNavID)) : "ePrdPrevious" ==
-            this.id ? 0 < ePrdNavID && (ePrdNavID--, readInstanzen(this.id, ePrdNavID)) : "zpPrevious" == this.id ? 0 < zpNavID && (zpNavID--, readInstanzen(this.id, zpNavID)) : "knzPrevious" == this.id ? 0 < knzNavID && (knzNavID--, readInstanzen(this.id, knzNavID)) : "betrParPrevious" == this.id && 0 < betrParNavID && (betrParNavID--, readInstanzen(this.id, betrParNavID));
+    $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
+        "gipscAdmPrevious" == this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) :
+        "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
+        "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) :
+        "manGrpPrevious" == this.id ? 0 < manGrpNavID && (manGrpNavID--, readInstanzen(this.id, manGrpNavID)) :
+        "admPrevious" == this.id ? 0 < admNavID && (admNavID--, readInstanzen(this.id, admNavID)) :
+        "benPrevious" == this.id ? 0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) :
+        "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() { organisationenEinlesen() }, 1500), readInstanzen("orgFirst", 0)) :
+        "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID--), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
+        "extDlPrevious" == this.id ? 0 < extDlNavID && (extDlNavID--, readInstanzen(this.id, extDlNavID)) :
+        "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen(this.id, berNavID)) :
+        "mstEPrevious" == this.id ? 0 < mstENavID && (mstENavID--, readInstanzen(this.id, mstENavID)) :
+        "mstBPrevious" == this.id ? 0 < mstBNavID && (mstBNavID--, readInstanzen(this.id, mstBNavID)) :
+        "stdPrevious" == this.id ? 0 < stdNavID && (stdNavID--, readInstanzen(this.id, stdNavID)) :
+        "stdDrPrevious" == this.id ? 0 < stdDrNavID && (stdDrNavID--, readInstanzen(this.id, stdDrNavID)) :
+        "anlPrevious" == this.id ? 0 < anlNavID && (anlNavID--, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
+        "msmPrevious" == this.id ? 0 < msmNavID && (msmNavID--, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) :
+        "prdPrevious" == this.id ? 0 < prdNavID && (prdNavID--, readInstanzen(this.id, prdNavID), dokumentenListeErstellen()) :
+        "entPrevious" == this.id ? 0 < entNavID && (entNavID--, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
+        "enfPrevious" == this.id ? 0 < enfNavID && (enfNavID--, readInstanzen(this.id, enfNavID)) :
+        "eRngPrevious" == this.id ? 0 < eRngNavID && (eRngNavID--, readInstanzen(this.id, eRngNavID)) :
+        "intEngIMwPrevious" == this.id ? 0 < g && (g--, readInstanzen(this.id, g)) :
+        "intBdeIMwPrevious" == this.id ? 0 < h && (h--, readInstanzen(this.id, h)) :
+        "eAnlPrevious" == this.id ? 0 < eAnlNavID && (eAnlNavID--, readInstanzen(this.id, eAnlNavID)) :
+        "ePrdPrevious" == this.id ? 0 < ePrdNavID && (ePrdNavID--, readInstanzen(this.id, ePrdNavID)) :
+        "zpPrevious" == this.id ? 0 < zpNavID && (zpNavID--, readInstanzen(this.id, zpNavID)) :
+        "knzPrevious" == this.id ? 0 < knzNavID && (knzNavID--, readInstanzen(this.id, knzNavID)) :
+        "betrParPrevious" == this.id && 0 < betrParNavID && (betrParNavID--, readInstanzen(this.id, betrParNavID));
         b = !1;
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmNext, #betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext,\n                        #orgNext, #liegNext, #extDlNext, #berNext, #mstNext, #stdNext, #stdDrNext,\n                        #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext,\n                        #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
-        "gipscAdmNext" ==
-        this.id ? gipscAdmNavID < $("#gipscAdmCount").val() - 1 && (gipscAdmNavID++, readInstanzen(this.id, gipscAdmNavID)) : "betrGrpNext" == this.id ? betrGrpNavID < $("#betrGrpCount").val() - 1 && (betrGrpNavID++, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) : "sAdmNext" == this.id ? sAdmNavID < $("#sAdmCount").val() - 1 && (sAdmNavID++, readInstanzen(this.id, sAdmNavID)) : "manGrpNext" == this.id ? manGrpNavID < $("#manGrpCount").val() - 1 && (manGrpNavID++, readInstanzen(this.id, manGrpNavID)) : "admNext" == this.id ?
-            admNavID < $("#admCount").val() - 1 && (admNavID++, readInstanzen(this.id, admNavID)) : "benNext" == this.id ? benNavID < $("#benCount").val() - 1 && (benNavID++, readInstanzen(this.id, benNavID)) : "manNext" == this.id ? manNavID < $("#manCount").val() - 1 && (manNavID++, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) : "orgNext" == this.id ? orgNavID < $("#orgCount").val() - 1 && (orgNavID++, $(".orgPfad").prop("selectedIndex", orgNavID),
-                readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) : "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0), readInstanzen("stdFirst", 0)) : "extDlNext" == this.id ? extDlNavID < $("#extDlCount").val() - 1 && (extDlNavID++, readInstanzen(this.id, extDlNavID)) : "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstNavID = 0,
-                readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) : "mstNext" == this.id ? mstNavID < $("#mstCount").val() - 1 && (mstNavID++, readInstanzen(this.id, mstNavID)) : "stdNext" == this.id ? stdNavID < $("#stdCount").val() - 1 && (stdNavID++, readInstanzen(this.id, stdNavID)) : "stdDrNext" == this.id ? stdDrNavID < $("#stdDrCount").val() - 1 && (stdDrNavID++, readInstanzen(this.id, stdDrNavID)) : "anlNext" == this.id ? anlNavID < $("#anlCount").val() - 1 && (anlNavID++, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
-            "msmNext" == this.id ? msmNavID < $("#msmCount").val() - 1 && (msmNavID++, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) : "prdNext" == this.id ? prdNavID < $("#prdCount").val() - 1 && (prdNavID++, readInstanzen(this.id, prdNavID)) : "entNext" == this.id ? entNavID < $("#entCount").val() - 1 && (entNavID++, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) : "enfNext" == this.id ? enfNavID < $("#enfCount").val() - 1 && (enfNavID++, readInstanzen(this.id, enfNavID)) : "eRngNext" == this.id ? eRngNavID < $("#eRngCount").val() - 1 && (eRngNavID++,
-                readInstanzen(this.id, eRngNavID)) : "intEngIMwNext" == this.id ? g < $("#intEngIMwCount").val() - 1 && (g++, readInstanzen(this.id, g)) : "intBdeIMwNext" == this.id ? h < $("#intBdeIMwCount").val() - 1 && (h++, readInstanzen(this.id, h)) : "eAnlNext" == this.id ? eAnlNavID < $("#eAnlCount").val() - 1 && (eAnlNavID++, readInstanzen(this.id, eAnlNavID)) : "ePrdNext" == this.id ? ePrdNavID < $("#ePrdCount").val() - 1 && (ePrdNavID++, readInstanzen(this.id, ePrdNavID)) : "zpNext" == this.id ? zpNavID < $("#zpCount").val() - 1 && (zpNavID++, readInstanzen(this.id, zpNavID)) :
-            "knzNext" == this.id ? knzNavID < $("#knzInsCount").val() - 1 && (knzNavID++, readInstanzen(this.id, knzNavID)) : "betrParNext" == this.id && betrParNavID < $("#betrParCount").val() - 1 && (betrParNavID++, readInstanzen(this.id, betrParNavID));
+    $("#gipscAdmNext, #betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
+        "gipscAdmNext" == this.id ? gipscAdmNavID < $("#gipscAdmCount").val() - 1 && (gipscAdmNavID++, readInstanzen(this.id, gipscAdmNavID)) :
+        "betrGrpNext" == this.id ? betrGrpNavID < $("#betrGrpCount").val() - 1 && (betrGrpNavID++, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
+        "sAdmNext" == this.id ? sAdmNavID < $("#sAdmCount").val() - 1 && (sAdmNavID++, readInstanzen(this.id, sAdmNavID)) :
+        "manGrpNext" == this.id ? manGrpNavID < $("#manGrpCount").val() - 1 && (manGrpNavID++, readInstanzen(this.id, manGrpNavID)) :
+        "admNext" == this.id ? admNavID < $("#admCount").val() - 1 && (admNavID++, readInstanzen(this.id, admNavID)) :
+        "benNext" == this.id ? benNavID < $("#benCount").val() - 1 && (benNavID++, readInstanzen(this.id, benNavID)) :
+        "manNext" == this.id ? manNavID < $("#manCount").val() - 1 && (manNavID++, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
+        "orgNext" == this.id ? orgNavID < $("#orgCount").val() - 1 && (orgNavID++, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
+        "extDlNext" == this.id ? extDlNavID < $("#extDlCount").val() - 1 && (extDlNavID++, readInstanzen(this.id, extDlNavID)) :
+        "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstHinz")) :
+        "mstENext" == this.id ? mstENavID < $("#mstECount").val() - 1 && (mstENavID++, readInstanzen(this.id, mstENavID)) :
+        "mstBNext" == this.id ? mstBNavID < $("#mstBCount").val() - 1 && (mstBNavID++, readInstanzen(this.id, mstBNavID)) :
+        "stdNext" == this.id ? stdNavID < $("#stdCount").val() - 1 && (stdNavID++, readInstanzen(this.id, stdNavID)) :
+        "stdDrNext" == this.id ? stdDrNavID < $("#stdDrCount").val() - 1 && (stdDrNavID++, readInstanzen(this.id, stdDrNavID)) :
+        "anlNext" == this.id ? anlNavID < $("#anlCount").val() - 1 && (anlNavID++, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
+        "msmNext" == this.id ? msmNavID < $("#msmCount").val() - 1 && (msmNavID++, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) :
+        "prdNext" == this.id ? prdNavID < $("#prdCount").val() - 1 && (prdNavID++, readInstanzen(this.id, prdNavID)) :
+        "entNext" == this.id ? entNavID < $("#entCount").val() - 1 && (entNavID++, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
+        "enfNext" == this.id ? enfNavID < $("#enfCount").val() - 1 && (enfNavID++, readInstanzen(this.id, enfNavID)) :
+        "eRngNext" == this.id ? eRngNavID < $("#eRngCount").val() - 1 && (eRngNavID++, readInstanzen(this.id, eRngNavID)) :
+        "intEngIMwNext" == this.id ? g < $("#intEngIMwCount").val() - 1 && (g++, readInstanzen(this.id, g)) :
+        "intBdeIMwNext" == this.id ? h < $("#intBdeIMwCount").val() - 1 && (h++, readInstanzen(this.id, h)) :
+        "eAnlNext" == this.id ? eAnlNavID < $("#eAnlCount").val() - 1 && (eAnlNavID++, readInstanzen(this.id, eAnlNavID)) :
+        "ePrdNext" == this.id ? ePrdNavID < $("#ePrdCount").val() - 1 && (ePrdNavID++, readInstanzen(this.id, ePrdNavID)) :
+        "zpNext" == this.id ? zpNavID < $("#zpCount").val() - 1 && (zpNavID++, readInstanzen(this.id, zpNavID)) :
+        "knzNext" == this.id ? knzNavID < $("#knzInsCount").val() - 1 && (knzNavID++, readInstanzen(this.id, knzNavID)) :
+        "betrParNext" == this.id && betrParNavID < $("#betrParCount").val() - 1 && (betrParNavID++, readInstanzen(this.id, betrParNavID));
         b = !1;
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmLast, #betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast,\n                            #orgLast, #liegLast, #extDlLast, #berLast, #mstLast, #stdLast, #stdDrLast,\n                            #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast,\n                            #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
-        "gipscAdmLast" ==
-        this.id ? (gipscAdmNavID = $("#gipscAdmCount").val() - 1, readInstanzen(this.id, gipscAdmNavID)) : "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) : "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) : "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) : "admLast" == this.id ? (admNavID = $("#admCount").val() - 1, readInstanzen(this.id, admNavID)) :
-            "benLast" == this.id ? (benNavID = $("#benCount").val() - 1, readInstanzen(this.id, benNavID)) : "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), liegenschaftenEinlesen(), readInstanzen("orgFirst", 0)) : "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) : "liegLast" == this.id ? (liegNavID =
-                $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), readInstanzen("berFirst", 0), readInstanzen("mstFirst", 0)) : "extDlLast" == this.id ? (extDlNavID = $("#extDlCount").val() - 1, readInstanzen(this.id, extDlNavID)) : "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstNavID = 0, readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen("mstFirst", 0)) : "mstLast" == this.id ? (mstNavID = $("#mstCount").val() - 1, readInstanzen(this.id, mstNavID)) : "stdLast" == this.id ?
-            (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) : "stdDrLast" == this.id ? (stdDrNavID = $("#stdDrCount").val() - 1, readInstanzen(this.id, stdDrNavID)) : "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) : "msmLast" == this.id ? (msmNavID = $("#msmCount").val() - 1, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) : "prdLast" == this.id ? (prdNavID = $("#prdCount").val() - 1, readInstanzen(this.id, prdNavID)) : "entLast" == this.id ? (entNavID = $("#entCount").val() -
-                1, enfNavID = 0, readInstanzen(this.id, entNavID), clearFields("enfHinz"), readInstanzen("enfFirst", 0), $("#modusVers").val("alt")) : "enfLast" == this.id ? (enfNavID = $("#enfCount").val() - 1, readInstanzen(this.id, enfNavID)) : "eRngLast" == this.id ? (eRngNavID = $("#eRngCount").val() - 1, readInstanzen(this.id, eRngNavID)) : "intEngIMwLast" == this.id ? (g = $("#intEngIMwCount").val() - 1, readInstanzen(this.id, g)) : "intBdeIMwLast" == this.id ? (h = $("#intBdeIMwCount").val() - 1, readInstanzen(this.id, h)) : "eAnlLast" == this.id ? (eAnlNavID = $("#eAnlCount").val() -
-                1, readInstanzen(this.id, eAnlNavID)) : "ePrdLast" == this.id ? (ePrdNavID = $("#ePrdCount").val() - 1, readInstanzen(this.id, ePrdNavID)) : "zpLast" == this.id ? (zpNavID = $("#zpCount").val() - 1, readInstanzen(this.id, zpNavID)) : "knzLast" == this.id ? (knzNavID = $("#knzInsCount").val() - 1, readInstanzen(this.id, knzNavID)) : "betrParLast" == this.id && (betrParNavID = $("#betrParCount").val() - 1, readInstanzen(this.id, betrParNavID));
+    $("#gipscAdmLast, #betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
+        "gipscAdmLast" == this.id ? (gipscAdmNavID = $("#gipscAdmCount").val() - 1, readInstanzen(this.id, gipscAdmNavID)) :
+        "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
+        "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) :
+        "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) :
+        "admLast" == this.id ? (admNavID = $("#admCount").val() - 1, readInstanzen(this.id, admNavID)) :
+        "benLast" == this.id ? (benNavID = $("#benCount").val() - 1, readInstanzen(this.id, benNavID)) :
+        "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
+        "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen()) :
+        "extDlLast" == this.id ? (extDlNavID = $("#extDlCount").val() - 1, readInstanzen(this.id, extDlNavID)) :
+        "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstEHinz"), clearFields("mstBHinz")) :
+        "mstELast" == this.id ? (mstENavID = $("#mstECount").val() - 1, readInstanzen(this.id, mstENavID)) :
+        "mstBLast" == this.id ? (mstBNavID = $("#mstBCount").val() - 1, readInstanzen(this.id, mstBNavID)) :
+        "stdLast" == this.id ? (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) :
+        "stdDrLast" == this.id ? (stdDrNavID = $("#stdDrCount").val() - 1, readInstanzen(this.id, stdDrNavID)) :
+        "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
+        "msmLast" == this.id ? (msmNavID = $("#msmCount").val() - 1, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) :
+        "prdLast" == this.id ? (prdNavID = $("#prdCount").val() - 1, readInstanzen(this.id, prdNavID)) :
+        "entLast" == this.id ? (entNavID = $("#entCount").val() - 1, enfNavID = 0, readInstanzen(this.id, entNavID), clearFields("enfHinz"), readInstanzen("enfFirst", 0), $("#modusVers").val("alt")) :
+        "enfLast" == this.id ? (enfNavID = $("#enfCount").val() - 1, readInstanzen(this.id, enfNavID)) :
+        "eRngLast" == this.id ? (eRngNavID = $("#eRngCount").val() - 1, readInstanzen(this.id, eRngNavID)) :
+        "intEngIMwLast" == this.id ? (g = $("#intEngIMwCount").val() - 1, readInstanzen(this.id, g)) :
+        "intBdeIMwLast" == this.id ? (h = $("#intBdeIMwCount").val() - 1, readInstanzen(this.id, h)) :
+        "eAnlLast" == this.id ? (eAnlNavID = $("#eAnlCount").val() - 1, readInstanzen(this.id, eAnlNavID)) :
+        "ePrdLast" == this.id ? (ePrdNavID = $("#ePrdCount").val() - 1, readInstanzen(this.id, ePrdNavID)) :
+        "zpLast" == this.id ? (zpNavID = $("#zpCount").val() - 1, readInstanzen(this.id, zpNavID)) :
+        "knzLast" == this.id ? (knzNavID = $("#knzInsCount").val() - 1, readInstanzen(this.id, knzNavID)) :
+        "betrParLast" == this.id && (betrParNavID = $("#betrParCount").val() - 1, readInstanzen(this.id, betrParNavID));
         b = !1;
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
@@ -1525,16 +1637,6 @@ $(document).ready(function() {
         readInstanzen("orgFirst", 0);
         dbFuerEnergietraegerFestlegen($("#nameDB").val());
         energietrInDBoxLieg();
-        energiefrmInDBoxLieg();
-        liegenschaftenEinlesen();
-        readInstanzen("liegFirst", 0);
-        liegNavID = 0;
-        energietrInDBoxBer();
-        readInstanzen("berFirst", 0);
-        berNavID = 0;
-        readInstanzen("mstFirst", 0);
-        mstNavID =
-            0;
         readInstanzen("msmFirst", 0);
         msmNavID = 0;
         readInstanzen("stdFirst", 0);
@@ -1563,95 +1665,88 @@ $(document).ready(function() {
     $(".liegPfad").change(function() {
         liegPfadChange(this)
     });
-    $("#gipscAdmHinz, #betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
+    $(".berPfad").change(function() {
+        berPfadChange(this)
+    });
+    $("#gipscAdmHinz, #betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
         clearFields(this.id);
         b = !0
     });
-   /* $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern,\n                                #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern,\n                                #extDlSpeichern, #berSpeichern, #benSpeichern, #mstSpeichern, #stdSpeichern,\n                                #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern,\n                                #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern,\n                                #intBdeIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern,\n                                #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {*/
-     $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern,\n                                #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern,\n                                #extDlSpeichern, #berSpeichern, #benSpeichern, #mstSpeichern, #stdSpeichern,\n                                #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern,\n                                #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern,\n                                 #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern,\n                                #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
-        "gipscAdmSpeichern" ==
-        this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "sAdmSpeichern" == this.id ? "" != $("#nameSAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameSAdm").val() &&
-            0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "manGrpSpeichern" == this.id ? "" != $("#nameManGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameManGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "admSpeichern" == this.id ? "" != $("#nameAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display",
-                "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "benSpeichern" == this.id ? "" != $("#nameBen").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameBen").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "manSpeichern" == this.id ? "" != $("#nameAllgemeinMan").val() && 1 == b ? (instanzErstellen(this.id), mandantenEinlesen($("#betrGrpID").val(), "man_ID", $("#manID").val()), $(".manPfad").prop("selectedIndex", mandantenliste.length - 1), b = !1) : "" !=
-            $("#nameAllgemeinMan").val() && 0 == b ? (instanzSpeichern(this.id), $(".manPfad").prop("selectedIndex", manNavID)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "orgSpeichern" == this.id ? "" != $("#nameAllgemeinOrg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinOrg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "liegSpeichern" == this.id ? "" != $("#nameAllgemeinLieg").val() && 1 == b ? (instanzErstellen(this.id),
-                b = !1) : "" != $("#nameAllgemeinLieg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "extDlSpeichern" == this.id ? "" != $("#nameExtDl").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameExtDl").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "berSpeichern" == this.id ? "" != $("#nameAllgemeinBer").val() && 1 == b ? (instanzErstellen(this.id), berNavID = $("#berCount").val(),
-                b = !1) : "" != $("#nameAllgemeinBer").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "mstSpeichern" == this.id ? "" != $("#nameMst").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinMst").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "stdSpeichern" == this.id ? "" != $("#nameStd").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStd").val() && 0 == b ? instanzSpeichern(this.id) :
-            ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "stdDrSpeichern" == this.id ? "" != $("#nameStdDr").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStdDr").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "anlSpeichern" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? $("#historyOrNot").dialog({
-                height: 400,
-                width: 450,
-                resize: "auto",
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    $("#histSpeichern").off("click");
-                    $("#histNichtSpeichern").off("click");
-                    $("#histOk").off("click");
-                    $("#histAbbrechen").off("click");
-                    $("#histSpeichern").on("click", function() {
-                        $("#infosBemerkungHist, #histOk").css("display", "inline");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "none")
-                    });
-                    $("#histNichtSpeichern").on("click", function() {
-                        $("#archiviertAnl").val("false");
-                        instanzSpeichern("anlSpeichern");
-                        $("#historyOrNot").dialog("close")
-                    });
-                    $("#histOk").on("click", function() {
-                        $("#archiviertAnl").val("true");
-                        instanzSpeichern("anlSpeichern");
-                        instanzErstellen("anlSpeichern");
-                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                        $("#infosBemerkungHist input").val("");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                        $("#historyOrNot").dialog("close")
-                    });
-                    $("#histAbbrechen").on("click", function() {
-                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                        $("#histSpeichern, #histNichtSpeichern").css("display",
-                            "inline");
-                        $("#infosBemerkungHist input").val("");
-                        $("#historyOrNot").dialog("close")
-                    })
-                },
-                close: function() {
-                    $("#infosBemerkungHist input").val("");
+     $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
+        "gipscAdmSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+        "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "sAdmSpeichern" == this.id ? "" != $("#nameSAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameSAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "manGrpSpeichern" == this.id ? "" != $("#nameManGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameManGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "admSpeichern" == this.id ? "" != $("#nameAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display",
+            "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "benSpeichern" == this.id ? "" != $("#nameBen").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameBen").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "manSpeichern" == this.id ? "" != $("#nameAllgemeinMan").val() && 1 == b ? (instanzErstellen(this.id), mandantenEinlesen($("#betrGrpID").val(), "man_ID", $("#manID").val()), $(".manPfad").prop("selectedIndex", mandantenliste.length - 1), b = !1) : "" != $("#nameAllgemeinMan").val() && 0 == b ? (instanzSpeichern(this.id), $(".manPfad").prop("selectedIndex", manNavID)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "orgSpeichern" == this.id ? "" != $("#nameAllgemeinOrg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinOrg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "liegSpeichern" == this.id ? "" != $("#nameAllgemeinLieg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinLieg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "extDlSpeichern" == this.id ? "" != $("#nameExtDl").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameExtDl").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "berSpeichern" == this.id ? "" != $("#nameAllgemeinBer").val() && 1 == b ? (instanzErstellen(this.id), berNavID = $("#berCount").val(), b = !1) : "" != $("#nameAllgemeinBer").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "mstESpeichern" == this.id ? "" != $("#nameMstE").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstE").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+        "mstBSpeichern" == this.id ? "" != $("#nameMstB").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstB").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+        "stdSpeichern" == this.id ? "" != $("#nameStd").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStd").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "stdDrSpeichern" == this.id ? "" != $("#nameStdDr").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStdDr").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "anlSpeichern" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? $("#historyOrNot").dialog({
+            height: 400,
+            width: 450,
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open: function() {
+                $("#histSpeichern").off("click");
+                $("#histNichtSpeichern").off("click");
+                $("#histOk").off("click");
+                $("#histAbbrechen").off("click");
+                $("#histSpeichern").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "inline");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "none")
+                }),
+                $("#histNichtSpeichern").on("click", function() {
+                    $("#archiviertAnl").val("false");
+                    instanzSpeichern("anlSpeichern");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histOk").on("click", function() {
+                    $("#archiviertAnl").val("true");
+                    instanzSpeichern("anlSpeichern");
+                    instanzErstellen("anlSpeichern");
                     $("#infosBemerkungHist, #histOk").css("display", "none");
                     $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
-                }
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histAbbrechen").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#infosBemerkungHist input").val("");
+                    $("#historyOrNot").dialog("close")
+                })
+            },
+            close: function() {
+                $("#infosBemerkungHist input").val("");
+                $("#infosBemerkungHist, #histOk").css("display", "none");
+                $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
+            }
             }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
             })) : "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() &&
@@ -1717,8 +1812,7 @@ $(document).ready(function() {
                 close: function() {
                     $("#infosBemerkungHist input").val("");
                     $("#infosBemerkungHist, #histOk").css("display", "none");
-                    $("#histSpeichern, #histNichtSpeichern").css("display",
-                        "inline")
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
                 }
             }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
@@ -1727,6 +1821,8 @@ $(document).ready(function() {
             })) : "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
             })) : "betrParSpeichern" == this.id && (1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+// =======
+
                 title: "Meldung!"
             })))
     });
@@ -1782,13 +1878,6 @@ $(".orgSuchenSpies").click(function() {
     spiesOrganisationenSearch(this.id);
 
 });
-
-/*On click menu Vers.Bereiche/Messstellen update lieg select options*/
-$("#berMenu").click(function() {
-    $(".liegPfad option:eq(0)").prop('selected', 'selected').trigger('change');
-    toggleMsmBerechnungslogik($("#messartMst").val())
-});
-
 
 /*24-02-2020 Crete correction factor options add more functionality,
 21-03-2020 added the description option*/
@@ -5350,6 +5439,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
         $(this).closest('tr').addClass('rowFocus');
          var rowMstID = $(this).closest('td').attr('data-id');
         $('#inputBotmMin').val(''); $('#inputBotmMax').val('');
+
         }
     });
 

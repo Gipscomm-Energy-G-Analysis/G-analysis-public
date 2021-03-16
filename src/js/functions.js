@@ -6,7 +6,8 @@
 *  Original code by Angel Marin, Paul Johnston.
 *
 **/
-function SHA256(s){
+
+function SHA256(s) {
 
     let chrsz   = 8;
     let hexcase = 0;
@@ -145,14 +146,12 @@ const disableBtn =
         return `Speichert... ->${idBtn}`
     }
 
-
 const enableBtn =
     idBtn => {
         $(idBtn).prop("disabled","")
         $(idBtn).text("Speichern")
         return `Speichern ->${idBtn}`
     }
-
 
 try {
     var dateTime = function(a) {
@@ -1518,125 +1517,77 @@ try {
                     $(".energietraegerLieg").empty();
                     $(".energietraegerLieg").append("<option></option>");
                     for (i = 0; i < a.length; i++) $(".energietraegerLieg").append("<option>" + a[i].nameEnt + "</option>");
-                    energietrInDBoxBer()
                 }
             })
-        },
-        energietrInDBoxBer = function() {
-            $(".entBer option").remove();
-            for (i = 1; 5 > i; i++) null != $("#energietraeger" + i + "Lieg").val() && $(".entBer").append("<option>" + $("#inputEnergietraeger" + i + "Lieg").val() + "</option>")
         },
         dbFuerEnergietraegerFestlegen = function(a) {
             entDB = "Global" == a ? "gipscomm" : $("#nameDB").val()
         },
-        bereicheInTabelle = function(a, b) {
-            $("#bereichWaehlen tr").not("#bereichWaehlen tr:nth-child(1)").remove();
-            bereicheliste = [];
-            for (var e = 0; e < b.length; e++) {
-                bereicheliste[e] = new Bereich(b[e].nameOrg, b[e].nameLieg, b[e].nameBer,
-                    b[e].ber_ID);
-                var c = "<tr class='bereichX'>",
-                    c = c + ("<td>" + bereicheliste[e].nameOrg + "</td>"),
-                    c = c + ("<td>" + bereicheliste[e].nameLieg + "</td>"),
-                    c = c + ("<td>" + bereicheliste[e].nameBer + "</td>"),
-                    c = c + ("<td style='display:none;'>" + bereicheliste[e].berID + "</td>"),
-                    c = c + "</tr>";
-                $("#tblBereicheAnl").append(c)
+        bereicheVorhanden =
+            () => {
+                const activeMstTab =
+                    $("#activeInstance").val() === "mstE" || $("#activeInstance").val() === "mstB"
+
+                const noBereiche =
+                    bereicheliste.length === 0
+
+                if (noBereiche && activeMstTab) {
+                    alert("Bitte legen Sie erst einen oder mehrere Bereiche an um dies/em/en Messstellen zuzuordnen !")
+                    clearFields("mstEHinz")
+                    clearFields("mstBHinz")
+                    tabControlNav("tabBer")
+                }
+                return bereicheliste.length !== 0
             }
-            $("#bereichWaehlen").css("display", "block");
-            $("#bereichWaehlen").dialog({
-                height: 400,
-                width: 500,
-                resize: "auto",
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    $("#sucheBereichAnl").val("");
-                    $(".bereichX").on("dblclick", function() {
-                        $("#berID").val($(this).children("td:nth-child(4)").text());
-                        $("#ber").text($(this).children("td:nth-child(3)").text());
-                        $("#bereichAllgemeinAnl").val($(this).children("td:nth-child(3)").text());
-                        $("#bereichWaehlen").dialog("close");
-                        "ber" == a.id && (clearFields("anlHinz"), readInstanzen("anlFirst", 0))
-                    });
-                    $(".berDialogButton").click(function() {
-                        $("#bereichWaehlen").dialog("close")
-                    });
-                    $("#berSuchenAnl, #berResetAnl").click(function() {
-                        if ("berResetAnl" != this.id) var b = $("#sucheBereichAnl").val();
-                        else $("#sucheBereichAnl").val(""), b = "";
-                        $("#tblBereicheAnl tr").not("#tblBereicheAnl tr:nth-child(1)").remove();
-                        for (var c = 0; c < bereicheliste.length; c++) {
-                            var e = bereicheliste[c].nameLieg,
-                                q = bereicheliste[c].nameOrg,
-                                r = bereicheliste[c].nameBer.indexOf(b),
-                                e = e.indexOf(b),
-                                q = q.indexOf(b);
-                            if (-1 != r || -1 != e || -1 != q || "" == b) r = "<tr class='bereichX'>", r += "<td>" + bereicheliste[c].nameOrg + "</td>", r += "<td>" + bereicheliste[c].nameLieg + "</td>", r += "<td>" + bereicheliste[c].nameBer + "</td>", r += "<td style='display:none;'>" + bereicheliste[c].berID +
-                                "</td>", r += "</tr>", $("#tblBereicheAnl tbody").append(r);
-                            $("#tblBereicheAnl").DataTable({
-                                dom: "Bgrtip",
-                                buttons: ["excel", "pdf"]
-                            })
-                        }
-                        $(".bereichX").on("dblclick", function() {
-                            $("#berID").val($(this).children("td:nth-child(4)").text());
-                            $("#ber").text($(this).children("td:nth-child(3)").text());
-                            $("#bereichAllgemeinAnl").val($(this).children("td:nth-child(3)").text());
-                            $("#bereichWaehlen").dialog("close");
-                            "ber" == a.id && (clearFields("anlHinz"), readInstanzen("anlFirst", 0))
-                        })
-                    })
-                }
-            });
-            $("#anlListeContainer").dialog("close")
+
+        bereicheInDropbox = function(a) {
+            bereicheliste = [];
+
+            $(".berPfad").empty()
+
+            const addBereich =
+                record =>
+                bereicheliste
+                .push(new Bereich($(".orgPfad").val(), $(".liegPfad").val(), record.nameBer, record.ber_ID))
+
+            const fillBereicheliste =
+                data =>
+                data.forEach(addBereich)
+
+            const addOption =
+                ber =>
+                $(".berPfad").append("<option>" + ber.nameBer + "</option>")
+
+            const fillDropbox =
+                () =>
+                bereicheliste.forEach(addOption)
+
+            fillBereicheliste(a)
+            fillDropbox()
+            bereicheVorhanden()
         },
-        bereicheEinlesen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getBereiche.php",
-                data: {
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    bereicheInTabelle(a, b)
-                }
-            })
-        },
-        bereicheAnzeigenEinlesen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getBereiche.php",
-                data: {
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    bereicheInTabelle(a, b)
-                }
-            })
+        bereicheEinlesen = function() {
+            const id = "berAuswahl"
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            if (liegID !== "") {
+                ajaxPost("php/getBereiche.php")({id, nameDB, liegID})
+                .then(bereicheInDropbox)
+            }
         },
         liegenschaftenInDropbox = function(a) {
             $(".liegPfad").empty();
             liegenschaftenliste = [];
             liegenschaft.Name = "";
             liegenschaft.LiegID = "";
-            for (var b =
-                    0; b < a.length; b++) liegenschaft.Name = a[b].nameLieg, liegenschaft.LiegID = a[b].lieg_ID, liegenschaftenliste[b] = liegenschaft, $(".liegPfad").append("<option>" + liegenschaftenliste[b].Name + "</option>")
+            for (var b = 0; b < a.length; b++) liegenschaft.Name = a[b].nameLieg, liegenschaft.LiegID = a[b].lieg_ID, liegenschaftenliste[b] = liegenschaft, $(".liegPfad").append("<option>" + liegenschaftenliste[b].Name + "</option>")
+            bereicheEinlesen()
         },
         liegenschaftenEinlesen = function() {
             "" !== $("#orgID").val() && $.ajax({
                 type: "POST",
-                async: !0,
+                async: true,
                 url: "php/liegenschaftenEinlesen.php",
                 data: {
                     nameDB: $("#nameDB").val(),
@@ -1660,13 +1611,13 @@ try {
             if ($("#nameDB").val() !== "") {
                 $.ajax({
                   type: "POST",
-                  async: !1,
+                  async: true,
                   url: "php/organisationenEinlesen.php",
                   data: {
                     nameDB: $("#nameDB").val()
                   },
                   success: function(a) {
-                    a = JSON.parse(a);
+                    a = JSON.parse(a)
                     organisationenInDropbox(a)
                   }
                 })
@@ -1736,29 +1687,27 @@ try {
             organisationenEinlesen();
             dbFuerEnergietraegerFestlegen($("#nameDB").val());
             energietrInDBoxLieg();
-            liegenschaftenEinlesen();
             readInstanzen("liegFirst", 0);
-            liegNavID = 0;
-            energietrInDBoxBer();
-            readInstanzen("berFirst", 0);
-            berNavID = 0;
-            readInstanzen("mstFirst", 0);
-            mstNavID = 0;
-            readInstanzen("msmFirst", 0);
-            msmNavID = 0;
-            readInstanzen("stdFirst", 0);
-            stdNavID = 0;
-            readInstanzen("anlFirst", 0);
-            anlNavID = 0;
-            readInstanzen("entFirst", 0);
-            entNavID = 0;
-            readInstanzen("enfFirst", 0);
-            enfNavID = 0;
-            readInstanzen("eRngFirst", 0);
-            eRngNavID = 0;
-            readInstanzen("iMwFirst", 0);
-            iMwNavID = 0;
-            readInstanzen("zpFirst", 0);
+            [ "msm"
+            , "std"
+            , "anl"
+            , "ent"
+            , "enf"
+            , "eRng"
+            , "iMw"
+            , "zp" ]
+            .forEach(ident => readInstanzen(`${ident}First`, 0))
+            liegNavID =
+            berNavID =
+            mstENavID =
+            mstBNavID =
+            msmNavID =
+            stdNavID =
+            anlNavID =
+            entNavID =
+            enfNavID =
+            eRngNavID =
+            iMwNavID =
             zpNavID = 0
         },
         mandantenEinlesen = function(a, b, e) {
@@ -2206,9 +2155,7 @@ try {
                     [
                         ["#bezeichnungPrdHist", "namePrd"],
                         ["#artklnrPrdHist", "artikelNrPrd"],
-                        ["#custom1PrdHist",
-                            "custom1"
-                        ],
+                        ["#custom1PrdHist","custom1"],
                         ["#custom2PrdHist", "custom2"],
                         ["#custom3PrdHist", "custom3"],
                         ["#custom4PrdHist", "custom4"],
@@ -2219,21 +2166,26 @@ try {
                         ["#gueltigBis1PrdHist", "gueltigBis1"],
                         ["#inpAnlage2PrdHist", "anl2"],
                         ["#gueltigVon2PrdHist", "gueltigVon2"],
-                        ["#gueltigBis2PrdHist", "gueltigBis2"]["#inpAnlage3PrdHist", "anl3"],
+                        ["#gueltigBis2PrdHist", "gueltigBis2"],
+                        ["#inpAnlage3PrdHist", "anl3"],
                         ["#gueltigVon3PrdHist", "gueltigVon3"],
-                        ["#gueltigBis3PrdHist", "gueltigBis3"]["#inpAnlage4PrdHist", "anl4"],
+                        ["#gueltigBis3PrdHist", "gueltigBis3"],
+                        ["#inpAnlage4PrdHist", "anl4"],
                         ["#gueltigVon4PrdHist", "gueltigVon4"],
-                        ["#gueltigBis4PrdHist", "gueltigBis4"]["#inpAnlage5PrdHist", "anl5"],
+                        ["#gueltigBis4PrdHist", "gueltigBis4"],
+                        ["#inpAnlage5PrdHist", "anl5"],
                         ["#gueltigVon5PrdHist", "gueltigVon5"],
-                        ["#gueltigBis5PrdHist", "gueltigBis5"]["#inpAnlage6PrdHist", "anl6"],
+                        ["#gueltigBis5PrdHist", "gueltigBis5"],
+                        ["#inpAnlage6PrdHist", "anl6"],
                         ["#gueltigVon6PrdHist", "gueltigVon6"],
-                        ["#gueltigBis6PrdHist", "gueltigBis6"]["#inpAnlage7PrdHist", "anl7"],
+                        ["#gueltigBis6PrdHist", "gueltigBis6"],
+                        ["#inpAnlage7PrdHist", "anl7"],
                         ["#gueltigVon7PrdHist", "gueltigVon7"],
-                        ["#gueltigBis7PrdHist", "gueltigBis7"]["#inpAnlage8PrdHist", "anl8"],
+                        ["#gueltigBis7PrdHist", "gueltigBis7"],
+                        ["#inpAnlage8PrdHist", "anl8"],
                         ["#gueltigVon8PrdHist", "gueltigVon8"],
-                        ["#gueltigBis8PrdHist", "gueltigBis8"]["#inpAnlage9PrdHist",
-                            "anl9"
-                        ],
+                        ["#gueltigBis8PrdHist", "gueltigBis8"],
+                        ["#inpAnlage9PrdHist","anl9"],
                         ["#gueltigVon9PrdHist", "gueltigVon9"],
                         ["#gueltigBis9PrdHist", "gueltigBis9"]
                     ].forEach(function(a) {
@@ -2258,8 +2210,7 @@ try {
                     var b = JSON.parse(a);
                     $("#aktivAllgemeinAnlHist").prop("checked", b[0].aktivAnl);
                     $("#bildAllgemeinAnlHist").prop("src", b[0].bildAnl);
-                    $("#mehrProdukteAllgemeinAnlHist").prop("checked",
-                        b[0].mehrProdukteAnl);
+                    $("#mehrProdukteAllgemeinAnlHist").prop("checked", b[0].mehrProdukteAnl);
                     [
                         ["#anlIDHist", "anl_ID"],
                         ["#idAllgemeinAnlHist", "anl_ID"],
@@ -2671,32 +2622,42 @@ try {
                     tblAnlagen.colReorder.order(0, 1, a)
                 }
             })
+        }, berPfadChange = function(this_) {
+            $(".berPfad").val($(this_).val());
+            $("#berID").val(bereicheliste[$(".berPfad").prop("selectedIndex")].berID)
+
+            readInstanzen("berFirst", $(".berPfad").prop("selectedIndex"))
+            readInstanzen("msmFirst", 0)
+            readInstanzen("stdFirst", 0)
+            readInstanzen("anlFirst", 0)
+            readInstanzen("entFirst", 0)
+            readInstanzen("enfFirst", 0)
+            readInstanzen("eRngFirst", 0)
+            readInstanzen("iMwFirst", 0)
+            readInstanzen("zpFirst", 0)
         }, liegPfadChange = function(a) {
-            $(".liegPfad").val($(a).val());
+            $(".liegPfad").val($(a).val())
             if (liegenschaftenliste[$(".liegPfad").prop("selectedIndex")] === "undefined") {
                 $("#liegID").val(liegenschaftenliste[$(".liegPfad").prop("selectedIndex")].LiegID);
             } else {
                 $("#liegID").val('');
             }
-            readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"));
-            readInstanzen("berFirst", 0);
-            readInstanzen("mstFirst", 0);
-            readInstanzen("msmFirst", 0);
-            readInstanzen("stdFirst", 0);
-            readInstanzen("anlFirst", 0);
-            readInstanzen("entFirst", 0);
-            readInstanzen("enfFirst", 0);
-            readInstanzen("eRngFirst", 0);
-            readInstanzen("iMwFirst", 0);
+
+            readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"))
+
+            readInstanzen("msmFirst", 0)
+            readInstanzen("stdFirst", 0)
+            readInstanzen("anlFirst", 0)
+            readInstanzen("entFirst", 0)
+            readInstanzen("enfFirst", 0)
+            readInstanzen("eRngFirst", 0)
+            readInstanzen("iMwFirst", 0)
             readInstanzen("zpFirst", 0)
+            bereicheEinlesen()
         }, orgPfadChange = function(a) {
             $(".orgPfad").val($(a).val());
             $("#orgID").val(organisationenliste[$(".orgPfad").prop("selectedIndex")].OrgID);
             readInstanzen("orgFirst", $(".orgPfad").prop("selectedIndex"));
-            readInstanzen("liegFirst", 0);
-            readInstanzen("berFirst", 0);
-            readInstanzen("mstFirst",
-                0);
             liegenschaftenEinlesen()
         }, tabelleEinlesen = function(a) {
             $.ajax({
@@ -2813,44 +2774,122 @@ try {
                 }
             })
         }, standorteAuswahllisteErstellen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getStandorte.php",
-                data: {
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblStandorteAuswahl.colReorder.reset();
-                    tblStandorteAuswahl.clear().draw();
-                    for (var e = 0; e < b.length; e++) tblStandorteAuswahl.row.add([b[e].nameStd, b[e].kurzbezeichnungStd, b[e].flaecheStd]).draw();
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            ajaxPost("php/getStandorte.php")({nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameStd
+                        , a.kurzbezeichnungStd
+                        , a.flaecheStd
+                        ]
+                    )
+
+                const fillStandorteTbl =
+                    data => {
+                        clearTable(tblStandorteAuswahl)
+                        intoTable(tblStandorteAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblStandorteAuswahl.row(this_).data()
+
+                        "berSuchenOrt" === a.id ? $("#ortBer").val(head(selectedData)) :
+                        "ortSuchenMstE" === a.id ? $("#ortMstE").val(head(selectedData)) :
+                        "ortSuchenMstB" === a.id ? $("#ortMstB").val(head(selectedData)) :
+                        "anlAuswahlStd" === a.id && $("#standortAllgemeinAnl").val(head(selectedData))
+                    }
+
+                    fillStandorteTbl(result)
+
                     $("#standorteAuswahlContainer").css("display", "block");
                     $("#standorteAuswahlContainer").dialog({
-                        height: $(window).height() - .25 * $(window).height(),
-                        width: $(window).width() - .25 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblStandorteAuswahl tbody tr").css("cursor",
-                                "pointer");
-                            $("#tblStandorteAuswahl tbody").off("dblclick", "tr");
-                            $("#tblStandorteAuswahl tbody").on("dblclick", "tr", function() {
-                                var b = tblStandorteAuswahl.row(this).data();
-                                "berSuchenOrt" == a.id ? $("#ortBer").val(b[0]) : "ortSuchenMst" == a.id ? $("#ortMst").val(b[0]) : "anlAuswahlStd" == a.id && $("#standortAllgemeinAnl").val(b[0]);
-                                $("#standorteAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblStandorteAuswahl tbody tr").css("cursor", "pointer");
+                        $("#tblStandorteAuswahl tbody").off("dblclick", "tr");
+                        $("#tblStandorteAuswahl tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#standorteAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
+            })
+        }, durchleitungAuswahllisteErstellen = function(a) {
+            nameDB = $("#nameDB").val()
+            liegID = $("#liegID").val()
+
+            ajaxPost("php/getExtDurchleitungen.php")({nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameExtDl
+                        , a.anschriftExtDl
+                        , `${a.nameAnsprechpartnerExtDl}, ${a.vornameAnsprechpartnerExtDl}`
+                        , a.extDl_ID
+                        ]
+                    )
+
+                const fillDurchleitungenTbl =
+                    data => {
+                        clearTable(tblExtDurchleitungenAuswahl)
+                        intoTable(tblExtDurchleitungenAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblExtDurchleitungenAuswahl.row(this_).data()
+
+                        "extDlSuchenMstE" === a.id ?
+                        ($("#dlAnMstE").val(head(selectedData)), $("#dlAnMstIDE").val(selectedData[3])) :
+                        ($("#dlAnMstB").val(head(selectedData)), $("#dlAnMstIDB").val(selectedData[3]))
+                    }
+
+                    fillDurchleitungenTbl(result)
+
+                    $("#extDurchleitungenAuswahlContainer").css("display", "block")
+                    $("#extDurchleitungenAuswahlContainer").dialog({
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblExtDurchleitungenAuswahl tbody tr").css("cursor", "pointer")
+                        $("#tblExtDurchleitungenAuswahl tbody").off("dblclick", "tr")
+                        $("#tblExtDurchleitungenAuswahl tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#extDurchleitungenAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, kanalauswahlTabelleErstellen = function(a) {
             $.ajax({
@@ -2892,167 +2931,248 @@ try {
                 }
             })
         }, messmittelAuswahllisteErstellen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessmittel.php",
-                data: {
-                    id: a,
-                    liegID: $("#liegID").val(),
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblMessmittel.clear().draw();
-                    for (var e = 0; e < b.length; e++) tblMessmittel.row.add([b[e].nrMsm, b[e].typNrMsm, b[e].anlageMsm, b[e].energietraegerMsm, b[e].msm_ID]).draw();
+            const id = a.id
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            ajaxPost("php/getMessmittel.php")({id, nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nrMsm
+                        , a.typNrMsm
+                        , a.anlageMsm
+                        , a.energietraegerMsm
+                        , a.msm_ID
+                        ]
+                    )
+
+                const fillMessmittelTbl =
+                    data => {
+                        clearTable(tblMessmittel)
+                        intoTable(tblMessmittel)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblMessmittel.row(this_).data()
+
+                        "msmSuchenMstE" === a.id ?
+                        ($("#messmittelBerechnungslogikMstE").val(head(selectedData)), $("#messmittelIDMstE").val(selectedData[4])) :
+                        ($("#messmittelBerechnungslogikMstB").val(head(selectedData)), $("#messmittelIDMstB").val(selectedData[4]))
+                    }
+
+                    fillMessmittelTbl(result)
+
                     $("#messmittelAuswahlContainer").css("display", "block");
                     $("#messmittelAuswahlContainer").dialog({
-                        height: 400,
-                        width: 600,
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessmittel tbody tr").css("cursor", "pointer");
-                            $("#tblMessmittel tbody").off("dblclick", "tr");
-                            $("#tblMessmittel tbody").on("dblclick", "tr", function() {
-                                var b =
-                                    tblMessmittel.row(this).data();
-                                "msmMst" == a && ($("#messmittelBerechnungslogikMst").val(b[0]), $("#messmittelIDMst").val(b[4]), sync.setCurrentLocation(CurrentLocation.MESSSTELLENVERWALTUNG), sync.setIDMessstelle($("#mstID").val()), sync.setIDMessmittel($("#messmittelIDMst").val()), sync.synchronize());
-                                $("#messmittelAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessmittel tbody tr").css("cursor", "pointer");
+                        $("#tblMessmittel tbody").off("dblclick", "tr");
+                        $("#tblMessmittel tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#messmittelAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, anlagenAuswahllisteErstellen = function(a, b) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getAnlagen.php",
-                data: {
-                    ins: a,
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val(),
-                    orgID: $("#orgID").val()
-                },
-                success: function(e) {
-                    e = JSON.parse(e);
-                    tblAnlagenII.colReorder.reset();
-                    tblAnlagenII.clear().draw();
-                    for (var c = 0; c < e.length; c++) tblAnlagenII.row.add([e[c].nummerAnl, e[c].bezeichnungAnl, e[c].typAnl, e[c].custom1Anl, e[c].custom2Anl, e[c].custom3Anl, e[c].custom4Anl, e[c].custom5Anl, e[c].custom6Anl, e[c].anl_ID]).draw();
+            const ins = a
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+            const orgID = $("#orgID").val()
+
+            ajaxPost("php/getAnlagen.php")({ins, nameDB, liegID, orgID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nummerAnl
+                        , a.bezeichnungAnl
+                        , a.typAnl
+                        , a.custom1Anl
+                        , a.custom2Anl
+                        , a.custom3Anl
+                        , a.custom4Anl
+                        , a.custom5Anl
+                        , a.custom6Anl
+                        , a.anl_ID
+                        ]
+                    )
+
+                const fillAnlagenTbl =
+                    data => {
+                        clearTable(tblAnlagenII)
+                        intoTable(tblAnlagenII)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        for (var c = tblAnlagenII.row(this_).data(), e = []; e.length;) e.pop();
+                        e = a.split("Verbr");
+                        "anlMsm" == a ? ($("#anlMsm").val(c[0] + " " + c[1]), $("#anlIDMsm").val(c[9])) :
+                        "anlMstE" == a ? ($("#anlMstE").val(c[0] + " " + c[1]), $("#anlIDMstE").val(c[9])) :
+                        "anlMstB" == a ? ($("#anlMstB").val(c[0] + " " + c[1]), $("#anlIDMstB").val(c[9])) :
+                        "imgBtnAnlage1Prd" == a ? ($("#inpAnlage1Prd").val(c[0] + " " + c[1]), $("#inpAnlage1IDPrd").val(c[9])) :
+                        "imgBtnAnlage2Prd" == a ? ($("#inpAnlage2Prd").val(c[0] + " " + c[1]), $("#inpAnlage2IDPrd").val(c[9])) :
+                        "imgBtnAnlage3Prd" == a ? ($("#inpAnlage3Prd").val(c[0] + " " + c[1]), $("#inpAnlage3IDPrd").val(c[9])) :
+                        "imgBtnAnlage4Prd" == a ? ($("#inpAnlage4Prd").val(c[0] + " " + c[1]), $("#inpAnlage4IDPrd").val(c[9])) :
+                        "imgBtnAnlage5Prd" == a ? ($("#inpAnlage5Prd").val(c[0] + " " + c[1]), $("#inpAnlage5IDPrd").val(c[9])) :
+                        "imgBtnAnlage6Prd" == a ? ($("#inpAnlage6Prd").val(c[0] + " " + c[1]), $("#inpAnlage6IDPrd").val(c[9])) :
+                        "imgBtnAnlage7Prd" == a ? ($("#inpAnlage7Prd").val(c[0] + " " + c[1]), $("#inpAnlage7IDPrd").val(c[9])) :
+                        "imgBtnAnlage8Prd" == a ? ($("#inpAnlage8Prd").val(c[0] + " " + c[1]), $("#inpAnlage8IDPrd").val(c[9])) :
+                        "imgBtnAnlage9Prd" == a ? ($("#inpAnlage9Prd").val(c[0] + " " + c[1]), $("#inpAnlage9IDPrd").val(c[9])) :
+                        "imgBtnAnlage1PrdHist" == a ? $("#inpAnlage1PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage2PrdHist" == a ? $("#inpAnlage2PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage3PrdHist" == a ? $("#inpAnlage3PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage4PrdHist" == a ? $("#inpAnlage4PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage5PrdHist" == a ? $("#inpAnlage5PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage6PrdHist" == a ? $("#inpAnlage6PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage7PrdHist" == a ? $("#inpAnlage7PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage8PrdHist" == a ? $("#inpAnlage8PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage9PrdHist" == a ? $("#inpAnlage9PrdHist").val(c[0] + " " + c[1]) :
+                        0 < e.length && "anlAuswahlZug" == e[0] ? ($("#zugeordneterVerbraucher" + e[1] + "AllgemeinAnl").val(c[0] + " " + c[1]), $("#zugeordneterVerbraucherID" + e[1] + "AllgemeinAnl").val(c[9])) :
+                        "anlVorlFrm" == a && (e = "[" + (c[0] + "_" + c[1]).trim().replace(/\s/g, "_") + "]", c = "anl_" + c[9], $("#inpAuswahlVorlFrmIns" + b).val(e), $("#inpAuswahlVorlFrmIDIns" + b).val(c))
+                    }
+
+                    fillAnlagenTbl(result)
+
                     $("#anlagenlisteAuswahlContainer").css("display", "block");
                     $("#anlagenlisteAuswahlContainer").dialog({
-                        height: $(window).height() - .125 * $(window).height(),
-                        width: $(window).width() -
-                            .125 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblAnlagenListe2 tbody tr").css("cursor", "pointer");
-                            $("#tblAnlagenListe2 tbody").off("dblclick");
-                            $("#tblAnlagenListe2 tbody").on("dblclick", "tr", function() {
-                                for (var c = tblAnlagenII.row(this).data(), e = []; e.length;) e.pop();
-                                e = a.split("Verbr");
-                                "anlMsm" == a ? ($("#anlMsm").val(c[0] + " " + c[1]), $("#anlIDMsm").val(c[9])) : "anlMst" == a ? ($("#anlMst").val(c[0] + " " + c[1]), $("#anlIDMst").val(c[9])) :
-                                    "imgBtnAnlage1Prd" == a ? ($("#inpAnlage1Prd").val(c[0] + " " + c[1]), $("#inpAnlage1IDPrd").val(c[9])) : "imgBtnAnlage2Prd" == a ? ($("#inpAnlage2Prd").val(c[0] + " " + c[1]), $("#inpAnlage2IDPrd").val(c[9])) : "imgBtnAnlage3Prd" == a ? ($("#inpAnlage3Prd").val(c[0] + " " + c[1]), $("#inpAnlage3IDPrd").val(c[9])) : "imgBtnAnlage4Prd" == a ? ($("#inpAnlage4Prd").val(c[0] + " " + c[1]), $("#inpAnlage4IDPrd").val(c[9])) : "imgBtnAnlage5Prd" == a ? ($("#inpAnlage5Prd").val(c[0] + " " + c[1]), $("#inpAnlage5IDPrd").val(c[9])) : "imgBtnAnlage6Prd" == a ? ($("#inpAnlage6Prd").val(c[0] +
-                                        " " + c[1]), $("#inpAnlage6IDPrd").val(c[9])) : "imgBtnAnlage7Prd" == a ? ($("#inpAnlage7Prd").val(c[0] + " " + c[1]), $("#inpAnlage7IDPrd").val(c[9])) : "imgBtnAnlage8Prd" == a ? ($("#inpAnlage8Prd").val(c[0] + " " + c[1]), $("#inpAnlage8IDPrd").val(c[9])) : "imgBtnAnlage9Prd" == a ? ($("#inpAnlage9Prd").val(c[0] + " " + c[1]), $("#inpAnlage9IDPrd").val(c[9])) : "imgBtnAnlage1PrdHist" == a ? $("#inpAnlage1PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage2PrdHist" == a ? $("#inpAnlage2PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage3PrdHist" == a ? $("#inpAnlage3PrdHist").val(c[0] +
-                                        " " + c[1]) : "imgBtnAnlage4PrdHist" == a ? $("#inpAnlage4PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage5PrdHist" == a ? $("#inpAnlage5PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage6PrdHist" == a ? $("#inpAnlage6PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage7PrdHist" == a ? $("#inpAnlage7PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage8PrdHist" == a ? $("#inpAnlage8PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage9PrdHist" == a ? $("#inpAnlage9PrdHist").val(c[0] + " " + c[1]) : 0 < e.length && "anlAuswahlZug" == e[0] ? ($("#zugeordneterVerbraucher" + e[1] + "AllgemeinAnl").val(c[0] +
-                                        " " + c[1]), $("#zugeordneterVerbraucherID" + e[1] + "AllgemeinAnl").val(c[9])) : "anlVorlFrm" == a && (e = "[" + (c[0] + "_" + c[1]).trim().replace(/\s/g, "_") + "]", c = "anl_" + c[9], $("#inpAuswahlVorlFrmIns" + b).val(e), $("#inpAuswahlVorlFrmIDIns" + b).val(c));
-                                $("#anlagenlisteAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblAnlagenListe2 tbody tr").css("cursor", "pointer");
+                        $("#tblAnlagenListe2 tbody").off("dblclick", "tr");
+                        $("#tblAnlagenListe2 tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#anlagenlisteAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, messstellenAuswahllisteErstellen = function(a, b, e) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessstellen.php",
-                data: {
-                    ins: a,
-                    berID: $("#berID").val(),
-                    liegID: $("#liegID").val(),
-                    orgID: $("#orgID").val(),
-                    nameEnt: b,
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblMessstelleAuswahl.clear().draw();
-                    for (var c = 0; c < b.length; c++) tblMessstelleAuswahl.row.add([b[c].nameMSt, b[c].kurzbezeichnungMst, b[c].kostenstelleMst, b[c].messmittelBerechnungslogikMst, b[c].mst_ID, b[c].messartMst]).draw();
-                    $("#messstellenAuswahlContainer").css("display", "block");
-                    $("#messstellenAuswahlContainer").dialog({
-                        height: 400,
-                        width: 600,
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessstellenlisteMst tbody tr").css("cursor", "pointer");
-                            $("#tblMessstellenlisteMst tbody").off("dblclick", "tr");
-                            $("#tblMessstellenlisteMst tbody").on("dblclick", "tr", function() {
-                                var b = tblMessstelleAuswahl.row(this).data();
-                                if ("vorgMst" == a) $("#vorgelagerteMst").val(b[0]);
-                                else if ("mstMsm" == a) $("#messstelleAllgemeinMsm").val(b[0]), $("#messstelleIDAllgemeinMsm").val(b[4]);
-                                else if ("mstERng" == a) $("#mstERng").val(b[0]), $("#mstIDERng").val(b[4]), $("#mstERng").trigger("change");
-                                else if ("mst1Anl" == a) $("#mst1Anl").val(b[0]), $("#ber1Anl").val(b[2]), $("#mst1IDAnl").val(b[4]);
-                                else if ("mst2Anl" == a) $("#mst2Anl").val(b[0]), $("#ber2Anl").val(b[2]), $("#mst2IDAnl").val(b[4]);
-                                else if ("mst3Anl" == a) $("#mst3Anl").val(b[0]), $("#ber3Anl").val(b[2]), $("#mst3IDAnl").val(b[4]);
-                                else if ("mst4Anl" == a) $("#mst4Anl").val(b[0]), $("#ber4Anl").val(b[2]), $("#mst4IDAnl").val(b[4]);
-                                else if ("mstZp" == a) $("#mstZp").val(b[0]), $("#mstZp").trigger("change");
-                                else if ("mst1ExtDl" == a) $("#messstelle1ExtDl").val(b[0]);
-                                else if ("mst2ExtDl" == a) $("#messstelle2ExtDl").val(b[0]);
-                                else if ("mst3ExtDl" == a) $("#messstelle3ExtDl").val(b[0]);
-                                else if ("mst4ExtDl" == a) $("#messstelle4ExtDl").val(b[0]);
-                                else if ("mst5ExtDl" == a) $("#messstelle5ExtDl").val(b[0]);
-                                else if ("mst6ExtDl" == a) $("#messstelle6ExtDl").val(b[0]);
-                                else if ("mstEngRes1ExtDl" == a) $("#messstelleEngRes1ExtDl").val(b[0]);
-                                else if ("mstEngRes2ExtDl" == a) $("#messstelleEngRes2ExtDl").val(b[0]);
-                                else if ("mstEngRes3ExtDl" == a) $("#messstelleEngRes3ExtDl").val(b[0]);
-                                else if ("mstEngRes4ExtDl" == a) $("#messstelleEngRes4ExtDl").val(b[0]);
-                                else if ("mstEngRes5ExtDl" == a) $("#messstelleEngRes5ExtDl").val(b[0]);
-                                else if ("mstEngRes6ExtDl" == a) $("#messstelleEngRes6ExtDl").val(b[0]);
-                                else if ("mstDiag1" == a) $("#mstDiag1").val(b[0]), $("#mstIDDiag1").val(b[4]), $("#mstMessart1").val(b[5]);
-                                else if ("mstDiag2" == a) $("#mstDiag2").val(b[0]), $("#mstIDDiag2").val(b[4]), $("#mstMessart2").val(b[5]);
-                                else if ("mstDiag3" == a) $("#mstDiag3").val(b[0]), $("#mstIDDiag3").val(b[4]), $("#mstMessart3").val(b[5]);
-                                else if ("mstCompDiag" == a) $("#mstDiag").val(b[0]), $("#mstIDDiag").val(b[4]);
-                                else if ("mstDatenexport" == a) $("#mstDatenexport").val(b[0]), $("#mstIDDatenexport").val(b[4]);
-                                else if ("mstSuchenVergl1" == a) $("#vergMst1ERng").val(b[0]),
-                                    vergleichUpdaten("vergMst1ERng");
-                                else if ("mstSuchenVergl2" == a) $("#vergMst2ERng").val(b[0]), vergleichUpdaten("vergMst2ERng");
-                                else if ("mstVorlFrm" == a) {
-                                    var c = "[" + ("" + b[0]).trim().replace(/\s/g, "_") + "]",
-                                        b = "mst_" + b[4];
-                                    $("#inpAuswahlVorlFrmIns" + e).val(c);
-                                    $("#inpAuswahlVorlFrmIDIns" + e).val(b)
-                                }
-                                $("#messstellenAuswahlContainer").css("display","none")
-                                $("#messstellenAuswahlContainer").dialog("close")
-                            })
+            const ins = a
+            const nameDB = $("#nameDB").val()
+            const orgID = $("#orgID").val()
+            const liegID = $("#liegID").val()
+            const berID = $("#berID").val()
+            const nameEnt = b
+
+            ajaxPost("php/getMessstellen.php")({ins, nameDB, orgID, liegID, berID, nameEnt})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameMSt
+                        , a.kurzbezeichnungMst
+                        , a.kostenstelleMst
+                        , a.messmittelBerechnungslogikMst
+                        , a.mst_ID
+                        , a.messartMst
+                        ]
+                    )
+
+                const fillMessstellenTbl =
+                    data => {
+                        clearTable(tblMessstelleAuswahl)
+                        intoTable(tblMessstelleAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblMessstelleAuswahl.row(this_).data()
+
+                        if ("vorgelagerteMstE" === a) $("#vorgelagerteMstE").val(selectedData[0]), $("#vorgelagerteMstIDE").val(selectedData[4]);
+                        else if ("vorgelagerteMstB" === a) $("#vorgelagerteMstB").val(selectedData[0]), $("#vorgelagerteMstIDB").val(selectedData[4]);
+                        else if ("mstMsm" == a) $("#messstelleAllgemeinMsm").val(selectedData[0]), $("#messstelleIDAllgemeinMsm").val(selectedData[4]);
+                        else if ("mstERng" == a) $("#mstERng").val(selectedData[0]), $("#mstIDERng").val(selectedData[4]), $("#mstERng").trigger("change");
+                        else if ("mst1Anl" == a) $("#mst1Anl").val(selectedData[0]), $("#ber1Anl").val(selectedData[2]), $("#mst1IDAnl").val(selectedData[4]);
+                        else if ("mst2Anl" == a) $("#mst2Anl").val(selectedData[0]), $("#ber2Anl").val(selectedData[2]), $("#mst2IDAnl").val(selectedData[4]);
+                        else if ("mst3Anl" == a) $("#mst3Anl").val(selectedData[0]), $("#ber3Anl").val(selectedData[2]), $("#mst3IDAnl").val(selectedData[4]);
+                        else if ("mst4Anl" == a) $("#mst4Anl").val(selectedData[0]), $("#ber4Anl").val(selectedData[2]), $("#mst4IDAnl").val(selectedData[4]);
+                        else if ("mstZp" == a) $("#mstZp").val(selectedData[0]), $("#mstZp").trigger("change");
+                        else if ("mst1ExtDl" == a) $("#messstelle1ExtDl").val(selectedData[0]);
+                        else if ("mst2ExtDl" == a) $("#messstelle2ExtDl").val(selectedData[0]);
+                        else if ("mst3ExtDl" == a) $("#messstelle3ExtDl").val(selectedData[0]);
+                        else if ("mst4ExtDl" == a) $("#messstelle4ExtDl").val(selectedData[0]);
+                        else if ("mst5ExtDl" == a) $("#messstelle5ExtDl").val(selectedData[0]);
+                        else if ("mst6ExtDl" == a) $("#messstelle6ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes1ExtDl" == a) $("#messstelleEngRes1ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes2ExtDl" == a) $("#messstelleEngRes2ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes3ExtDl" == a) $("#messstelleEngRes3ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes4ExtDl" == a) $("#messstelleEngRes4ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes5ExtDl" == a) $("#messstelleEngRes5ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes6ExtDl" == a) $("#messstelleEngRes6ExtDl").val(selectedData[0]);
+                        else if ("mstDiag1" == a) $("#mstDiag1").val(selectedData[0]), $("#mstIDDiag1").val(selectedData[4]), $("#mstMessart1").val(selectedData[5]);
+                        else if ("mstDiag2" == a) $("#mstDiag2").val(selectedData[0]), $("#mstIDDiag2").val(selectedData[4]), $("#mstMessart2").val(selectedData[5]);
+                        else if ("mstDiag3" == a) $("#mstDiag3").val(selectedData[0]), $("#mstIDDiag3").val(selectedData[4]), $("#mstMessart3").val(selectedData[5]);
+                        else if ("mstCompDiag" == a) $("#mstDiag").val(selectedData[0]), $("#mstIDDiag").val(selectedData[4]);
+                        else if ("mstDatenexport" == a) $("#mstDatenexport").val(selectedData[0]), $("#mstIDDatenexport").val(selectedData[4]);
+                        else if ("mstSuchenVergl1" == a) $("#vergMst1ERng").val(selectedData[0]), vergleichUpdaten("vergMst1ERng");
+                        else if ("mstSuchenVergl2" == a) $("#vergMst2ERng").val(selectedData[0]), vergleichUpdaten("vergMst2ERng");
+                        else if ("mstVorlFrm" == a) {
+                            var c = "[" + ("" + selectedData[0]).trim().replace(/\s/g, "_") + "]",
+                                b = "mst_" + selectedData[4];
+                            $("#inpAuswahlVorlFrmIns" + e).val(c);
+                            $("#inpAuswahlVorlFrmIDIns" + e).val(b)
                         }
-                    })
-                }
+                    }
+
+                    fillMessstellenTbl(result)
+
+                    $("#messstellenAuswahlContainer").css("display", "block")
+                    $("#messstellenAuswahlContainer").dialog({
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessstellenlisteMst tbody tr").css("cursor", "pointer")
+                        $("#tblMessstellenlisteMst tbody").off("dblclick", "tr")
+                        $("#tblMessstellenlisteMst tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#messstellenAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, bereichsAuswahllisteErstellen = function(a) {
             ("berSuchenVBereich1" == a.id || "berSuchenVBereich2" == a.id && 0 == $("#vorgelagerteBereiche2AllgemeinBer").prop("disabled") ||
@@ -3960,47 +4080,75 @@ try {
                     }
                 }
             })
-        }, messstellenlisteErstellen =
-        function() {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessstellen.php",
-                data: {
-                    ins: "mstSuchen",
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val()
-                },
-                success: function(a) {
-                    a = JSON.parse(a);
-                    tblMessstellenSuchen.colReorder.reset();
-                    tblMessstellenSuchen.clear().draw();
-                    for (var b = 0; b < a.length; b++) tblMessstellenSuchen.row.add([b, a[b].nameMSt, a[b].kurzbezeichnungMst, a[b].kostenstelleMst, a[b].energietraegerMst, a[b].messmittelBerechnungslogikMst, a[b].anlageMst, a[b].ortMst]).draw();
-                    tblMessstellenSuchen.column(0).visible(!1);
-                    $("#messstellenSuchenContainer").css("display", "block");
-                    $("#messstellenSuchenContainer").dialog({
-                        height: $(window).height() - .125 * $(window).height(),
-                        width: $(window).width() - .125 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessstellenSuchen tbody tr").css("cursor", "pointer");
-                            $("#tblMessstellenSuchen tbody").on("dblclick", "tr", function() {
-                                var a = tblMessstellenSuchen.row(this).data();
-                                $("#messstellenSuchenContainer").dialog("close");
-                                clearFields("mstHinz");
-                                readInstanzen("mstFirst", a[0])
-                            })
-                        }
-                    })
-                }
+        }, messstellenlisteErstellen = function(this_) {
+
+            const ins = this_.id
+            const nameDB = $("#nameDB").val()
+            const berID = $("#berID").val()
+
+            ajaxPost("php/getMessstellen.php")({ins, nameDB, berID})
+            .then(result => {
+
+                const prepareTableData =
+                    data =>
+                    data.map(
+                        (a, i) =>
+                        [ i
+                        , a.nameMSt
+                        , a.kurzbezeichnungMst
+                        , a.kostenstelleMst
+                        , a.energietraegerMst
+                        , a.messmittelBerechnungslogikMst
+                        , a.anlageMst
+                        , a.ortMst
+                        ]
+                    )
+
+                const firstColInvisible =
+                    () =>
+                    tblMessstellenSuchen.column(0).visible(!1)
+
+                const fillMessstellenTbl =
+                    data => {
+                        clearTable(tblMessstellenSuchen)
+                        intoTable(tblMessstellenSuchen)(prepareTableData(data))
+                    }
+
+                const readInRecord =
+                    this__ => {
+                        const rowData = tblMessstellenSuchen.row(this__).data()
+
+                        ins === "mstESuchen" ?
+                        (clearFields("mstEHinz"), readInstanzen("mstEFirst", head(rowData))) :
+                        (clearFields("mstBHinz"), readInstanzen("mstBFirst", head(rowData)))
+
+                        $("#messstellenSuchenContainer").dialog("close")
+                    }
+
+                fillMessstellenTbl(result)
+                firstColInvisible()
+
+                $("#messstellenSuchenContainer").css("display", "block");
+                $("#messstellenSuchenContainer").dialog({
+                    height: $(window).height() - .125 * $(window).height(),
+                    width: $(window).width() - .125 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessstellenSuchen tbody tr").css("cursor", "pointer");
+                        $("#tblMessstellenSuchen tbody").off("dblclick")
+                        $("#tblMessstellenSuchen tbody").on("dblclick", "tr", function() {
+                            readInRecord(this)
+                        })
+                    }
+                })
             })
         }, formellisteErstellen = function(a) {
             var b = void 0,
@@ -4027,9 +4175,6 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
-
-                    console.log("Formula search records :");
-                    console.log(a);
 
                     tblformelSuchen.colReorder.reset();
                     tblformelSuchen.clear().draw();
@@ -4239,10 +4384,13 @@ try {
                             $("#tblBereicheSuchen tbody").on("dblclick", "tr", function() {
                                 var a = tblBereicheSuchen.row(this).data();
                                 $("#bereichSuchenContainer").dialog("close");
-                                clearFields("berHinz");
-                                clearFields("mstHinz");
-                                readInstanzen("berFirst", a[0]);
-                                readInstanzen("mstFirst", 0)
+                                clearFields("berHinz")
+                                clearFields("mstEHinz")
+                                clearFields("mstBHinz")
+
+                                readInstanzen("berFirst", a[0])
+                                readInstanzen("mstEFirst", 0)
+                                readInstanzen("mstBFirst", 0)
                             })
                         }
                     })
@@ -4401,10 +4549,10 @@ try {
                             $("#tblLiegenschaftenSuchen tbody").on("dblclick", "tr", function() {
                                 var a = tblLiegenschaftenSuchen.row(this).data();
                                 $("#liegenschaftenSuchenContainer").dialog("close");
-                                readInstanzen("liegFirst",
-                                    a[0]);
-                                readInstanzen("berFirst", 0);
-                                readInstanzen("mstFirst", 0)
+                                readInstanzen("liegFirst", a[0])
+                                readInstanzen("berFirst", 0)
+                                readInstanzen("mstEFirst", 0)
+                                readInstanzen("mstBFirst", 0)
                             })
                         }
                     })
@@ -4590,21 +4738,28 @@ try {
             $(".lblAendern").css("display", "none");
             var b = [];
             "gipscAdmHinz" == a ? b = ["#benutzernameGipscAdm", "#passwortGipscAdm"] : "betrGrpHinz" == a ? b = "#firmaBetrGrp #anzahlMitarbeiterBetrGrp #anschriftBetrGrp #plzBetrGrp #ortBetrGrp #geschaeftsfuehrerBetrGrp #telefonBetrGrp #emailBetrGrp #notizBetrGrp".split(" ") :
-                "sAdmHinz" == a ? b = "#titelSAdm #nameSAdm #vornameSAdm #emailSAdm #telefonSAdm #faxSAdm #mobiltelefonSAdm #benutzernameSAdm #passwortSAdm".split(" ") : "manGrpHinz" == a ? (b = ["#nameManGrp", "#kurzManGrp"], tblMandantengruppe.clear().draw()) : "admHinz" == a ? b = "#titelAdm #nameAdm #vornameAdm #emailAdm #telefonAdm #faxAdm #mobiltelefonAdm #benutzernameAdm #passwortAdm".split(" ") : "benHinz" == a ? b = "#titelBen #nameBen #vornameBen #emailBen #telefonBen #faxBen #mobiltelefonBen #benutzernameBen #passwortBen".split(" ") :
-                "manHinz" == a ? (b = "#manID #nameAllgemeinMan #dbKurz #holdingstrukturAllgemeinMan #liegenschaftenAllgemeinMan #titelSystemadminMan #nameSystemadminMan #vornameSystemadminMan #emailSystemadminMan #telefonSystemadminMan #faxSystemadminMan #mobiltelefonSystemadminMan #benutzernameSystemadminMan #passwortSystemadminMan".split(" "), $("#mehrbenutzerMan").prop("checked", !1)) : "orgHinz" == a ? b = "#orgID #nameAllgemeinOrg #gesellschaftsformAllgemeinOrg #firmenanschriftAllgemeinOrg #landAllgemeinOrg #plzAllgemeinOrg #ortAllgemeinOrg #hrbnummerAllgemeinOrg #titelGeschaeftsfuehrungOrg #nameGeschaeftsfuehrungOrg #vornameGeschaeftsfuehrungOrg #emailGeschaeftsfuehrungOrg #telefonGeschaeftsfuehrungOrg #faxGeschaeftsfuehrungOrg #mobiltelefonGeschaeftsfuehrungOrg #titelEnergiemanagementOrg #nameEnergiemanagementOrg #vornameEnergiemanagementOrg #emailEnergiemanagementOrg #telefonEnergiemanagementOrg #faxEnergiemanagementOrg #mobiltelefonEnergiemanagementOrg".split(" ") :
-                "liegHinz" == a ? (b = "#liegID #nameAllgemeinLieg #kuerzelAllgemeinLieg #gesellschaftsformAllgemeinLieg #anschriftAllgemeinLieg #landAllgemeinLieg #plzAllgemeinLieg #ortAllgemeinLieg #typAllgemeinLieg #titelAnsprechpartnerLieg #nameAnsprechpartnerLieg #vornameAnsprechpartnerLieg #emailAnsprechpartnerLieg #telefonAnsprechpartnerLieg #faxAnsprechpartnerLieg #mobiltelefonAnsprechpartnerLieg #titelEnergiebeauftragterLieg #nameEnergiebeauftragterLieg #vornameEnergiebeauftragterLieg #emailEnergiebeauftragterLieg #telefonEnergiebeauftragterLieg #faxEnergiebeauftragterLieg #mobiltelefonEnergiebeauftragterLieg #inputEnergietraeger1Lieg #inputEnergietraeger2Lieg #inputEnergietraeger3Lieg #inputEnergietraeger4Lieg #inputEnergietraeger5Lieg #inputEnergietraeger6Lieg #inputEnergietraeger7Lieg #inputEnergietraeger8Lieg #inputEnergietraeger9Lieg #energieform1Lieg #energieform2Lieg #energieform3Lieg #energieform4Lieg #energieform5Lieg #energieform6Lieg #energieform7Lieg #managementsystem1Lieg #erstzertifizierung1Lieg #managementsystem2Lieg #erstzertifizierung2Lieg #managementsystem3Lieg #erstzertifizierung3Lieg .energietraegerLieg".split(" "),
+            "sAdmHinz" == a ? b = "#titelSAdm #nameSAdm #vornameSAdm #emailSAdm #telefonSAdm #faxSAdm #mobiltelefonSAdm #benutzernameSAdm #passwortSAdm".split(" ") : "manGrpHinz" == a ? (b = ["#nameManGrp", "#kurzManGrp"], tblMandantengruppe.clear().draw()) : "admHinz" == a ? b = "#titelAdm #nameAdm #vornameAdm #emailAdm #telefonAdm #faxAdm #mobiltelefonAdm #benutzernameAdm #passwortAdm".split(" ") : "benHinz" == a ? b = "#titelBen #nameBen #vornameBen #emailBen #telefonBen #faxBen #mobiltelefonBen #benutzernameBen #passwortBen".split(" ") :
+            "manHinz" == a ? (b = "#manID #nameAllgemeinMan #dbKurz #holdingstrukturAllgemeinMan #liegenschaftenAllgemeinMan #titelSystemadminMan #nameSystemadminMan #vornameSystemadminMan #emailSystemadminMan #telefonSystemadminMan #faxSystemadminMan #mobiltelefonSystemadminMan #benutzernameSystemadminMan #passwortSystemadminMan".split(" "), $("#mehrbenutzerMan").prop("checked", !1)) : "orgHinz" == a ? b = "#orgID #nameAllgemeinOrg #gesellschaftsformAllgemeinOrg #firmenanschriftAllgemeinOrg #landAllgemeinOrg #plzAllgemeinOrg #ortAllgemeinOrg #hrbnummerAllgemeinOrg #titelGeschaeftsfuehrungOrg #nameGeschaeftsfuehrungOrg #vornameGeschaeftsfuehrungOrg #emailGeschaeftsfuehrungOrg #telefonGeschaeftsfuehrungOrg #faxGeschaeftsfuehrungOrg #mobiltelefonGeschaeftsfuehrungOrg #titelEnergiemanagementOrg #nameEnergiemanagementOrg #vornameEnergiemanagementOrg #emailEnergiemanagementOrg #telefonEnergiemanagementOrg #faxEnergiemanagementOrg #mobiltelefonEnergiemanagementOrg".split(" ") :
+            "liegHinz" == a ? (b = "#liegID #nameAllgemeinLieg #kuerzelAllgemeinLieg #gesellschaftsformAllgemeinLieg #anschriftAllgemeinLieg #landAllgemeinLieg #plzAllgemeinLieg #ortAllgemeinLieg #typAllgemeinLieg #titelAnsprechpartnerLieg #nameAnsprechpartnerLieg #vornameAnsprechpartnerLieg #emailAnsprechpartnerLieg #telefonAnsprechpartnerLieg #faxAnsprechpartnerLieg #mobiltelefonAnsprechpartnerLieg #titelEnergiebeauftragterLieg #nameEnergiebeauftragterLieg #vornameEnergiebeauftragterLieg #emailEnergiebeauftragterLieg #telefonEnergiebeauftragterLieg #faxEnergiebeauftragterLieg #mobiltelefonEnergiebeauftragterLieg #inputEnergietraeger1Lieg #inputEnergietraeger2Lieg #inputEnergietraeger3Lieg #inputEnergietraeger4Lieg #inputEnergietraeger5Lieg #inputEnergietraeger6Lieg #inputEnergietraeger7Lieg #inputEnergietraeger8Lieg #inputEnergietraeger9Lieg #energieform1Lieg #energieform2Lieg #energieform3Lieg #energieform4Lieg #energieform5Lieg #energieform6Lieg #energieform7Lieg #managementsystem1Lieg #erstzertifizierung1Lieg #managementsystem2Lieg #erstzertifizierung2Lieg #managementsystem3Lieg #erstzertifizierung3Lieg .energietraegerLieg".split(" "),
                     $("#eigenstaendigeformAllgemeinLieg").prop("checked", !1), $("#aktivAllgemeinLieg").prop("checked", !1), $("#hatDlAllgemeinLieg").prop("checked", !1), $("#energietraeger1Lieg").empty(), $("#energietraeger2Lieg").empty(), $("#energietraeger3Lieg").empty(), $("#energietraeger4Lieg").empty(), $("#energietraeger5Lieg").empty(), $("#energietraeger6Lieg").empty(), $("#energietraeger7Lieg").empty(), $("#energietraeger8Lieg").empty(), $("#energietraeger9Lieg").empty(), $("#entLiegErweitert").css("display", "none"), $("#weitereEntsLieg").text("weitere Energietr\u00e4ger")) :
-                "extDlHinz" == a ? (b = "#extDlID #nameExtDl #gesellschaftsformExtDl #anschriftExtDl #landExtDl #plzExtDl #ortExtDl #typExtDl #titelAnsprechpartnerExtDl #nameAnsprechpartnerExtDl #vornameAnsprechpartnerExtDl #emailAnsprechpartnerExtDl #telefonAnsprechpartnerExtDl #faxAnsprechpartnerExtDl #mobiltelefonAnsprechpartnerExtDl #energietraeger1ExtDl #messstelle1ExtDl #standort1ExtDl #energietraeger2ExtDl #messstelle2ExtDl #standort2ExtDl #energietraeger3ExtDl #messstelle3ExtDl #standort3ExtDl #energietraeger4ExtDl #messstelle4ExtDl #standort4ExtDl #energietraeger5ExtDl #messstelle5ExtDl #standort5ExtDl #energietraeger6ExtDl #messstelle6ExtDl #standort6ExtDl #energieRes1ExtDl #messstelleEngRes1ExtDl #standort1EngResExtDl #energieRes2ExtDl #messstelleEngRes2ExtDl #standort2EngResExtDl #energieRes3ExtDl #messstelleEngRes3ExtDl #standort3EngResExtDl #energieRes4ExtDl #messstelleEngRes4ExtDl #standort4EngResExtDl #energieRes5ExtDl #messstelleEngRes5ExtDl #standort5EngResExtDl #energieRes6ExtDl #messstelleEngRes6ExtDl #standort6EngResExtDl".split(" "),
-                    $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) : "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") : "mstHinz" == a ? (b = "#nameMst #kurzbezeichnungMst #kostenstelleMst #energieformMst #ortMst #messartMst #vorgelagerteMst #messmittelBerechnungslogikMst #berechnungslogikMst #notizAllgemeinMst #messmittelIDMst #anlMst #anlIDMst".split(" "),
-                    $("#aktivMst").prop("checked", !1)) : "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
-                "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
-                "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
+            "extDlHinz" == a ? (b = "#extDlID #nameExtDl #gesellschaftsformExtDl #anschriftExtDl #landExtDl #plzExtDl #ortExtDl #typExtDl #titelAnsprechpartnerExtDl #nameAnsprechpartnerExtDl #vornameAnsprechpartnerExtDl #emailAnsprechpartnerExtDl #telefonAnsprechpartnerExtDl #faxAnsprechpartnerExtDl #mobiltelefonAnsprechpartnerExtDl #energietraeger1ExtDl #messstelle1ExtDl #standort1ExtDl #energietraeger2ExtDl #messstelle2ExtDl #standort2ExtDl #energietraeger3ExtDl #messstelle3ExtDl #standort3ExtDl #energietraeger4ExtDl #messstelle4ExtDl #standort4ExtDl #energietraeger5ExtDl #messstelle5ExtDl #standort5ExtDl #energietraeger6ExtDl #messstelle6ExtDl #standort6ExtDl #energieRes1ExtDl #messstelleEngRes1ExtDl #standort1EngResExtDl #energieRes2ExtDl #messstelleEngRes2ExtDl #standort2EngResExtDl #energieRes3ExtDl #messstelleEngRes3ExtDl #standort3EngResExtDl #energieRes4ExtDl #messstelleEngRes4ExtDl #standort4EngResExtDl #energieRes5ExtDl #messstelleEngRes5ExtDl #standort5EngResExtDl #energieRes6ExtDl #messstelleEngRes6ExtDl #standort6EngResExtDl".split(" "),
+                    $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) :
+            "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") :
+            "mstEHinz" == a ? (b = "#dlAnMstE #dlAnMstIDE #nameMstE #kurzbezeichnungMstE #kostenstelleMstE #energietraegerMstE #energieformMstE #ortMstE #messartMstE #vorgelagerteMstE #vorgelagerteMstIDE #messmittelBerechnungslogikMstE #berechnungslogikMstE #notizAllgemeinMstE #messmittelIDMstE #anlMstE #anlIDMstE".split(" "), $("#aktivMstE").prop("checked", !1)) :
+            "mstBHinz" == a ? (b = "#beschreibungMstB #dlAnMstB #dlAnMstIDB #nameMstB #kurzbezeichnungMstB #kostenstelleMstB #ortMstB #messartMstB #vorgelagerteMstB #vorgelagerteMstIDB #messmittelBerechnungslogikMstB #berechnungslogikMstB #notizAllgemeinMstB #messmittelIDMstB #anlMstB #anlIDMstB".split(" "), $("#aktivMstB").prop("checked", !1)) :
+            "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
+            "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
+            "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
                     a = $("#nameDB").val(), $(".anlageAnl").text(""), $("#aktivAllgemeinAnl").prop("checked", !1), $("#mehrProdukteAllgemeinAnl").prop("checked", !1), $("#betriebsstundenAllgemeinAnl").val(0), $("#produktionsmenge1AllgemeinAnl").val(0), $("#anschlussleistung1Anl").val(0), $("#mittlereAuslastungProzent1Anl").val(0), $("#mittlereAuslastungKw1Anl").val(0), $("#betriebstemperatur1Anl").val(0), $("#abwaerme1Anl").val(0), $("#anschlussleistung2Anl").val(0), $("#mittlereAuslastungProzent2Anl").val(0),
-                    $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) : "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
-                "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
+                    $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) :
+            "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
+            "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
                     $("#lblEntEinh2FaktorX1").text(""), $("#lblEntEinh3FaktorX1").text(""), $("#lblEntEinh1FaktorX2").text(""), $("#lblEntEinh2FaktorX2").text(""), $("#lblEntEinh3FaktorX2").text(""), $("#lblEntEinh1FaktorX3").text(""), $("#lblEntEinh2FaktorX3").text(""), $("#lblEntEinh3FaktorX3").text("")) : "enfHinz" == a ? (b = "#nameEnf #kuerzelEnf #notizEnf #einheit1Enf #einheit2Enf #einheit3Enf #enfEinh1FaktorKwh #enfEinh2FaktorKwh #enfEinh3FaktorKwh #enfEinh1FaktorCO2 #enfEinh2FaktorCO2 #enfEinh3FaktorCO2 #enfEinh1FaktorX1 #enfEinh2FaktorX1 #enfEinh3FaktorX1 #enfEinh1FaktorX2 #enfEinh2FaktorX2 #enfEinh3FaktorX2 #enfEinh1FaktorX3 #enfEinh2FaktorX3 #enfEinh3FaktorX3 #gueltigVomEnf #gueltigBisEnf".split(" "),
-                    $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) : "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
-                "iMwHinz" == a ? b = [".iMwHinz"] : "intEngIMwFirst" == a ? b = [".iMwEngHinz"] : "eAnlHinz" == a ? (b = ["#nameEAnl", "#kuerzelEAnl", "#beschreibungEAnl", "#optionEAnl"], tblOptionenEAnl.clear().draw()) : "ePrdHinz" == a ? (b = ["#nameEPrd", "#kuerzelEPrd", "#beschreibungEPrd", "#optionEPrd"], tblOptionenEPrd.clear().draw()) : "zpHinz" == a ? b = ["#zaehlpunktNrZp", "#energietraegerZp", "#mstZp", "#messsystemZp", "#messgenauZp"] : "knzHinz" == a ? (b = "#bezKnz #instanzAllgemeinKnz #instanzAllgemeinIDKnz #zustaendigerMitarbeiterAllgemeinKnz #beschreibungAllgemeinKnz #bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
+                    $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) :
+            "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
+            "iMwHinz" == a ? b = [".iMwHinz"] :
+            "intEngIMwFirst" == a ? b = [".iMwEngHinz"] :
+            "eAnlHinz" == a ? (b = ["#nameEAnl", "#kuerzelEAnl", "#beschreibungEAnl", "#optionEAnl"], tblOptionenEAnl.clear().draw()) : "ePrdHinz" == a ? (b = ["#nameEPrd", "#kuerzelEPrd", "#beschreibungEPrd", "#optionEPrd"], tblOptionenEPrd.clear().draw()) : "zpHinz" == a ? b = ["#zaehlpunktNrZp", "#energietraegerZp", "#mstZp", "#messsystemZp", "#messgenauZp"] : "knzHinz" == a ? (b = "#bezKnz #instanzAllgemeinKnz #instanzAllgemeinIDKnz #zustaendigerMitarbeiterAllgemeinKnz #beschreibungAllgemeinKnz #bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
                     uncheck_Ctrl({
                         firstPart: "#status",
                         secondPart: "Knz"
@@ -4613,8 +4768,8 @@ try {
                         secondPart: ""
                     }, {
                         von: 7,
-                        bis: 16
-                    })) : "knzOhneInstanz" == a && (b = "#bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
+                        bis: 16 })) :
+            "knzOhneInstanz" == a && (b = "#bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
                     $("#status1Knz").prop("checked", !1), $("#status2Knz").prop("checked", !1), $("#status3Knz").prop("checked", !1), $("#status4Knz").prop("checked", !1), $("#status5Knz").prop("checked", !1), $("#status6Knz").prop("checked", !1), $("#status7Knz").prop("checked", !1), $("#status8Knz").prop("checked", !1), $("#status9Knz").prop("checked", !1), $("#status10Knz").prop("checked", !1), $(".knzForms").eq(0).prop("aria-selected", true));
             b.forEach(function(a) {
                 $(a).val("")
@@ -4678,9 +4833,8 @@ try {
                 for (var b = c, e = b.length, f = 0; f < e; f++) $("#" + b[f].htmlID).val(a[0][b[f].dbColumnName])
             })
         }, readInstanzen = function(a, b, e) {
-            $(".lblNeu").css("display", "none");
-            $(".lblAendern").css("display",
-                "inline");
+            $(".lblNeu").css("display", "none")
+            $(".lblAendern").css("display", "inline")
             switch (isInstance(a)) {
                 case "gipscAdm":
                     $.ajax({
@@ -4893,7 +5047,7 @@ try {
                             $("#orgCount").val(c.length);
                             1 == c.length ? $(".orgPfad, .orgPfadLbl").css("display",
                                 "none") : $(".orgPfad, .orgPfadLbl").css("display", "inline");
-                            0 < c.length ? [
+                            0 < c.length ? ([
                                 ["#orgID", "org_ID"],
                                 ["#nameAllgemeinOrg", "nameOrg"],
                                 ["#gesellschaftsformAllgemeinOrg", "gesellschaftsformOrg"],
@@ -4921,7 +5075,9 @@ try {
                                 ["#mobiltelefonEnergiemanagementOrg", "mobiltelefonEnergiemanagementOrg"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
-                            }) : clearFields("orgHinz")
+                            }),
+                            readInstanzen("liegFirst", 0)) :
+                            clearFields("orgHinz")
                         }
                     });
                     break;
@@ -4939,59 +5095,68 @@ try {
                             alert("failed!!")
                         },
                         success: function(a) {
-                            var c = $.parseJSON(a);
+                            var c = $.parseJSON(a)
 
-                            $("#liegCount").val(c.length);
-                            0 < c.length ? ($("#eigenstaendigeformAllgemeinLieg").prop("checked", c[b].eigenstaendigeFormLieg), $("#aktivAllgemeinLieg").prop("checked", c[b].aktivLieg), $("#hatDlAllgemeinLieg").prop("checked", c[b].hatDl), [
-                                    ["#liegID", "lieg_ID"],
-                                    ["#nameAllgemeinLieg", "nameLieg"],
-                                    ["#kuerzelAllgemeinLieg", "kuerzelLieg"],
-                                    ["#gesellschaftsformAllgemeinLieg", "gesellschaftsformLieg"],
-                                    ["#anschriftAllgemeinLieg", "anschriftLieg"],
-                                    ["#landAllgemeinLieg", "landLieg"],
-                                    ["#plzAllgemeinLieg", "plzLieg"],
-                                    ["#ortAllgemeinLieg","ortLieg"],
-                                    ["#typAllgemeinLieg", "typLieg"],
-                                    ["#titelAnsprechpartnerLieg", "titelAnsprechpartnerLieg"],
-                                    ["#nameAnsprechpartnerLieg", "nameAnsprechpartnerLieg"],
-                                    ["#vornameAnsprechpartnerLieg", "vornameAnsprechpartnerLieg"],
-                                    ["#emailAnsprechpartnerLieg", "eMailAnsprechpartnerLieg"],
-                                    ["#telefonAnsprechpartnerLieg", "telefonAnsprechpartnerLieg"],
-                                    ["#faxAnsprechpartnerLieg", "faxAnsprechpartnerLieg"],
-                                    ["#mobiltelefonAnsprechpartnerLieg", "mobiltelefonAnsprechpartnerLieg"],
-                                    ["#titelEnergiebeauftragterLieg", "titelEnergiebeauftragterLieg"],
-                                    ["#nameEnergiebeauftragterLieg", "nameEnergiebeauftragterLieg"],
-                                    ["#vornameEnergiebeauftragterLieg", "vornameEnergiebeauftragterLieg"],
-                                    ["#emailEnergiebeauftragterLieg", "eMailEnergiebeauftragterLieg"],
-                                    ["#telefonEnergiebeauftragterLieg", "telefonEnergiebeauftragterLieg"],
-                                    ["#faxEnergiebeauftragterLieg", "faxEnergiebeauftragterLieg"],
-                                    ["#mobiltelefonEnergiebeauftragterLieg", "mobiltelefonEnergiebeauftragterLieg"],
-                                    ["#inputEnergietraeger1Lieg", "energietraeger1"],
-                                    ["#inputEnergietraeger2Lieg", "energietraeger2"],
-                                    ["#inputEnergietraeger3Lieg", "energietraeger3"],
-                                    ["#inputEnergietraeger4Lieg", "energietraeger4"],
-                                    ["#inputEnergietraeger5Lieg", "energietraeger5"],
-                                    ["#inputEnergietraeger6Lieg", "energietraeger6"],
-                                    ["#inputEnergietraeger7Lieg", "energietraeger7"],
-                                    ["#inputEnergietraeger8Lieg", "energietraeger8"],
-                                    ["#inputEnergietraeger9Lieg", "energietraeger9"],
-                                    ["#energieform1Lieg", "energieform1"],
-                                    ["#energieform2Lieg", "energieform2"],
-                                    ["#energieform3Lieg", "energieform3"],
-                                    ["#energieform4Lieg", "energieform4"],
-                                    ["#energieform5Lieg", "energieform5"],
-                                    ["#energieform6Lieg", "energieform6"],
-                                    ["#energieform7Lieg", "energieform7"],
-                                    ["#managementsystem1Lieg", "managementsystem1"],
-                                    ["#erstzertifizierung1Lieg", "erstzertifizierung1"],
-                                    ["#managementsystem2Lieg", "managementsystem2"],
-                                    ["#erstzertifizierung2Lieg", "erstzertifizierung2"],
-                                    ["#managementsystem3Lieg", "managementsystem3"],
-                                    ["#erstzertifizierung3Lieg", "erstzertifizierung3"]
-                                ].forEach(function(a) {
-                                    $(a[0]).val(c[b][a[1]])
-                                }), toggleExtDl("#hatDlAllgemeinLieg"), "" != $("#inputEnergietraeger7Lieg").val() ?
-                                $("#entLiegErweitert").css("display", "block") : $("#entLiegErweitert").css("display", "none"), energietrInDBoxLieg(), $(".liegPfad").val(c[b].nameLieg)) : clearFields("liegHinz")
+                            $("#liegCount").val(c.length)
+
+                            0 < c.length ?
+                            ($("#eigenstaendigeformAllgemeinLieg").prop("checked", c[b].eigenstaendigeFormLieg),
+                            $("#aktivAllgemeinLieg").prop("checked", c[b].aktivLieg),
+                            $("#hatDlAllgemeinLieg").prop("checked", c[b].hatDl),
+                            [ ["#liegID", "lieg_ID"]
+                            , ["#nameAllgemeinLieg", "nameLieg"]
+                            , ["#kuerzelAllgemeinLieg", "kuerzelLieg"]
+                            , ["#gesellschaftsformAllgemeinLieg", "gesellschaftsformLieg"]
+                            , ["#anschriftAllgemeinLieg", "anschriftLieg"]
+                            , ["#landAllgemeinLieg", "landLieg"]
+                            , ["#plzAllgemeinLieg", "plzLieg"]
+                            , ["#ortAllgemeinLieg","ortLieg"]
+                            , ["#typAllgemeinLieg", "typLieg"]
+                            , ["#titelAnsprechpartnerLieg", "titelAnsprechpartnerLieg"]
+                            , ["#nameAnsprechpartnerLieg", "nameAnsprechpartnerLieg"]
+                            , ["#vornameAnsprechpartnerLieg", "vornameAnsprechpartnerLieg"]
+                            , ["#emailAnsprechpartnerLieg", "eMailAnsprechpartnerLieg"]
+                            , ["#telefonAnsprechpartnerLieg", "telefonAnsprechpartnerLieg"]
+                            , ["#faxAnsprechpartnerLieg", "faxAnsprechpartnerLieg"]
+                            , ["#mobiltelefonAnsprechpartnerLieg", "mobiltelefonAnsprechpartnerLieg"]
+                            , ["#titelEnergiebeauftragterLieg", "titelEnergiebeauftragterLieg"]
+                            , ["#nameEnergiebeauftragterLieg", "nameEnergiebeauftragterLieg"]
+                            , ["#vornameEnergiebeauftragterLieg", "vornameEnergiebeauftragterLieg"]
+                            , ["#emailEnergiebeauftragterLieg", "eMailEnergiebeauftragterLieg"]
+                            , ["#telefonEnergiebeauftragterLieg", "telefonEnergiebeauftragterLieg"]
+                            , ["#faxEnergiebeauftragterLieg", "faxEnergiebeauftragterLieg"]
+                            , ["#mobiltelefonEnergiebeauftragterLieg", "mobiltelefonEnergiebeauftragterLieg"]
+                            , ["#inputEnergietraeger1Lieg", "energietraeger1"]
+                            , ["#inputEnergietraeger2Lieg", "energietraeger2"]
+                            , ["#inputEnergietraeger3Lieg", "energietraeger3"]
+                            , ["#inputEnergietraeger4Lieg", "energietraeger4"]
+                            , ["#inputEnergietraeger5Lieg", "energietraeger5"]
+                            , ["#inputEnergietraeger6Lieg", "energietraeger6"]
+                            , ["#inputEnergietraeger7Lieg", "energietraeger7"]
+                            , ["#inputEnergietraeger8Lieg", "energietraeger8"]
+                            , ["#inputEnergietraeger9Lieg", "energietraeger9"]
+                            , ["#energieform1Lieg", "energieform1"]
+                            , ["#energieform2Lieg", "energieform2"]
+                            , ["#energieform3Lieg", "energieform3"]
+                            , ["#energieform4Lieg", "energieform4"]
+                            , ["#energieform5Lieg", "energieform5"]
+                            , ["#energieform6Lieg", "energieform6"]
+                            , ["#energieform7Lieg", "energieform7"]
+                            , ["#managementsystem1Lieg", "managementsystem1"]
+                            , ["#erstzertifizierung1Lieg", "erstzertifizierung1"]
+                            , ["#managementsystem2Lieg", "managementsystem2"]
+                            , ["#erstzertifizierung2Lieg", "erstzertifizierung2"]
+                            , ["#managementsystem3Lieg", "managementsystem3"]
+                            , ["#erstzertifizierung3Lieg", "erstzertifizierung3"]
+                            ].forEach(function(a) {
+                                $(a[0]).val(c[b][a[1]])
+                            }), toggleExtDl("#hatDlAllgemeinLieg"),
+                            "" != $("#inputEnergietraeger7Lieg").val() ?
+                            $("#entLiegErweitert").css("display", "block") :
+                            $("#entLiegErweitert").css("display", "none"),
+                            energietrInDBoxLieg(),
+                            readInstanzen("berFirst", 0)) :
+                            clearFields("liegHinz")
                         }
                     });
                     break;
@@ -5023,9 +5188,7 @@ try {
                                 ["#typExtDl", "typExtDl"],
                                 ["#titelAnsprechpartnerExtDl", "titelAnsprechpartnerExtDl"],
                                 ["#nameAnsprechpartnerExtDl", "nameAnsprechpartnerExtDl"],
-                                ["#vornameAnsprechpartnerExtDl",
-                                    "vornameAnsprechpartnerExtDl"
-                                ],
+                                ["#vornameAnsprechpartnerExtDl", "vornameAnsprechpartnerExtDl"],
                                 ["#emailAnsprechpartnerExtDl", "eMailAnsprechpartnerExtDl"],
                                 ["#telefonAnsprechpartnerExtDl", "telefonAnsprechpartnerExtDl"],
                                 ["#faxAnsprechpartnerExtDl", "faxAnsprechpartnerExtDl"],
@@ -5035,9 +5198,7 @@ try {
                                 ["#standort1ExtDl", "standort1ExtDl"],
                                 ["#energietraeger2ExtDl", "energietraeger2"],
                                 ["#messstelle2ExtDl", "messstelle2ExtDl"],
-                                ["#standort2ExtDl",
-                                    "standort2ExtDl"
-                                ],
+                                ["#standort2ExtDl", "standort2ExtDl"],
                                 ["#energietraeger3ExtDl", "energietraeger3"],
                                 ["#messstelle3ExtDl", "messstelle3ExtDl"],
                                 ["#standort3ExtDl", "standort3ExtDl"],
@@ -5089,67 +5250,99 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
+
                             $("#berCount").val(c.length);
-                            0 < c.length ? ($("#ber").text(c[b].nameBer), [
-                                ["#berID", "ber_ID"],
-                                ["#nameAllgemeinBer", "nameBer"],
-                                ["#bereichAllgemeinAnl", "nameBer"],
-                                ["#kurzbezeichnungAllgemeinBer", "kurzbezeichnungBer"],
-                                ["#KostenstelleAllgemeinBer", "kostenstelleBer"],
-                                ["#ortBer", "ortBer"],
-                                ["#notizAllgemeinBer", "notizBer"],
-                                ["#levelAuswahlAllgemeinBer", "ausgewaehltesLevelBer"],
-                                ["#vorgelagerteBereiche1AllgemeinBer",
-                                    "vorgelagerterBereich1Ber"
-                                ],
-                                ["#vorgelagerteBereiche2AllgemeinBer", "vorgelagerterBereich2Ber"]
-                            ].forEach(function(a) {
-                                $(a[0]).val(c[b][a[1]])
-                            })) : clearFields("berHinz")
+
+                            0 < c.length ?
+                            ($("#ber").text(c[b].nameBer),
+                            [ ["#berID", "ber_ID"]
+                            , ["#nameAllgemeinBer", "nameBer"]
+                            , ["#bereichAllgemeinAnl", "nameBer"]
+                            , ["#kurzbezeichnungAllgemeinBer", "kurzbezeichnungBer"]
+                            , ["#KostenstelleAllgemeinBer", "kostenstelleBer"]
+                            , ["#ortBer", "ortBer"]
+                            , ["#notizAllgemeinBer", "notizBer"]
+                            , ["#levelAuswahlAllgemeinBer", "ausgewaehltesLevelBer"]
+                            , ["#vorgelagerteBereiche1AllgemeinBer", "vorgelagerterBereich1Ber"]
+                            , ["#vorgelagerteBereiche2AllgemeinBer", "vorgelagerterBereich2Ber"]
+                            ].forEach(a => $(a[0]).val(c[b][a[1]])),
+                            $(".berPfad").val(c[b].nameBer),
+                            readInstanzen("mstEFirst", 0),
+                            readInstanzen("mstBFirst", 0)) :
+                            clearFields("berHinz")
                         }
                     });
                     break;
-                case "mst":
-                    $.ajax({
-                        type: "POST",
-                        async: !1,
-                        url: "php/readMessstellen.php",
-                        data: {
-                            berID: $("#berID").val(),
-                            nameDB: $("#nameDB").val()
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            var c = $.parseJSON(a);
+                case "mstE":
+                    berID = $("#berID").val()
+                    nameDB = $("#nameDB").val()
+                    type = "energiedaten"
 
-                            toggleMsmBerechnungslogik(c[b].messartMst)
+                    ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
+                    .then(result => {
 
-                            $("#mstCount").val(c.length);
-                            0 < c.length ? ($("#aktivMst").prop("checked", c[b].aktivMst), $("#istDlMst").prop("checked", c[b].isDurchleitung),
-                                    [
-                                        ["#mstID", "mst_ID"],
-                                        ["#nameMst", "nameMSt"],
-                                        ["#kurzbezeichnungMst", "kurzbezeichnungMst"],
-                                        ["#kostenstelleMst", "kostenstelleMst"],
-                                        ["#energietraegerMst", "energietraegerMst"],
-                                        ["#energieformMst", "energieformMst"],
-                                        ["#ortMst", "ortMst"],
-                                        ["#messartMst", "messartMst"],
-                                        ["#vorgelagerteMst", "vorgelagerteMessstelleMst"],
-                                        ["#anlMst", "anl"],
-                                        ["#anlIDMst", "anl_ID"],
-                                        ["#messmittelBerechnungslogikMst", "msm"],
-                                        ["#berechnungslogikMst", "messmittelBerechnungslogikMstNormal"],
-                                        ["#messmittelIDMst", "msm_ID"],
-                                        ["#notizAllgemeinMst", "notizMst"]
-                                    ].forEach(function(a) {
-                                        $(a[0]).val(c[b][a[1]])
-                                    })) :
-                                clearFields("mstHinz")
-                        }
-                    });
+                        $("#mstECount").val(result.length)
+
+                        0 < result.length ?
+                        (toggleMsmBerechnungslogik(result[b].messartMst)("E"),
+                        $("#aktivMstE").prop("checked", result[b].aktivMst),
+                        $("#istDlMstE").prop("checked", result[b].isDurchleitung),
+                        [ ["#mstID", "mst_ID"]
+                        , ["#nameMstE", "nameMSt"]
+                        , ["#kurzbezeichnungMstE", "kurzbezeichnungMst"]
+                        , ["#vorgelagerteMstE", "vorgelMst"]
+                        , ["#vorgelagerteMstIDE", "vorgelMst_ID"]
+                        , ["#kostenstelleMstE", "kostenstelleMst"]
+                        , ["#dlAnMstE", "extDl"]
+                        , ["#dlAnMstIDE", "extDl_ID"]
+                        , ["#energietraegerMstE", "energietraegerMst"]
+                        , ["#energieformMstE", "energieformMst"]
+                        , ["#ortMstE", "ortMst"]
+                        , ["#messartMstE", "messartMst"]
+                        , ["#anlMstE", "anl"]
+                        , ["#anlIDMstE", "anl_ID"]
+                        , ["#messmittelBerechnungslogikMstE", "msm"]
+                        , ["#berechnungslogikMstE", "messmittelBerechnungslogikMstNormal"]
+                        , ["#messmittelIDMstE", "msm_ID"]
+                        , ["#notizAllgemeinMstE", "notizMst"]
+                        ].forEach(a => $(a[0]).val(result[b][a[1]]))) :
+                        clearFields("mstEHinz")
+                    })
+                    break;
+                case "mstB":
+                    berID = $("#berID").val()
+                    nameDB = $("#nameDB").val()
+                    type = "betriebsdaten"
+
+                    ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
+                    .then(result => {
+
+                        $("#mstBCount").val(result.length)
+
+                        0 < result.length ?
+                        (toggleMsmBerechnungslogik(result[b].messartMst)("B"),
+                        $("#aktivMstB").prop("checked", result[b].aktivMst),
+                        $("#istDlMstB").prop("checked", result[b].isDurchleitung),
+                        [ ["#mstID", "mst_ID"]
+                        , ["#nameMstB", "nameMSt"]
+                        , ["#kurzbezeichnungMstB", "kurzbezeichnungMst"]
+                        , ["#vorgelagerteMstB", "vorgelMst"]
+                        , ["#vorgelagerteMstIDB", "vorgelMst_ID"]
+                        , ["#kostenstelleMstB", "kostenstelleMst"]
+                        , ["#dlAnMstB", "extDl"]
+                        , ["#dlAnMstIDB", "extDl_ID"]
+                        , ["#beschreibungMstB", "beschreibung"]
+                        , ["#ortMstB", "ortMst"]
+                        , ["#messartMstB", "messartMst"]
+                        , ["#anlMstB", "anl"]
+                        , ["#anlIDMstB", "anl_ID"]
+                        , ["#messmittelBerechnungslogikMstB", "msm"]
+                        , ["#berechnungslogikMstB", "messmittelBerechnungslogikMstNormal"]
+                        , ["#messmittelIDMstB", "msm_ID"]
+                        , ["#notizAllgemeinMstB", "notizMst"]
+                        ].forEach(a => $(a[0]).val(result[b][a[1]]))) :
+                        clearFields("mstBHinz")
+                    })
                     break;
                 case "std":
                     $.ajax({
@@ -5233,7 +5426,10 @@ try {
                         success: function(a) {
                             var c = $.parseJSON(a);
                             $("#anlCount").val(c.length);
-                            0 < c.length ? ($(".anlageAnl").text(c[b].bezeichnungAnl), $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl), $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
+                            0 < c.length ?
+                            ($(".anlageAnl").text(c[b].bezeichnungAnl),
+                            $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl),
+                            $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
 
                             [1, 2, 3, 4]
                             .forEach(
@@ -5250,7 +5446,6 @@ try {
                             [ [ "#anlID", "anl_ID" ]
                             , [ "#idAllgemeinAnl", "anl_ID" ]
                             , [ "#bereichAllgemeinAnl", "nameBer" ]
-                            , [ "#berID", "ber_ID" ]
                             , [ "#anlagennummerAllgemeinAnl", "nummerAnl" ]
                             , [ "#bezeichnungAllgemeinAnl", "bezeichnungAnl" ]
                             , [ "#typAllgemeinAnl", "typAnl" ]
@@ -5317,7 +5512,7 @@ try {
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             })) :
-                            (clearFields("anlHinz"))
+                            clearFields("anlHinz")
 
                             dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
@@ -5339,7 +5534,6 @@ try {
                             alert("failed!!")
                         },
                         success: function(a) {
-                            /*console.log("records readInstanzen messmittel");console.log(a);*/
                             var c = $.parseJSON(a);
                             $("#msmCount").val(c.length);
                             0 < c.length ? ($("#msmID").val(c[b].msm_ID), $("#multiboxAllgemeinMsm").prop("checked", c[b].multiboxMsm), $("#messtoleranzInformationenConfig").val(formatNumber("form", c[b].messtoleranzConfig)), $("#wandlungsfaktorTechnischeDetailsConfig").val(formatNumber("form", c[b].wandlungsfaktorMsm)), [
@@ -5609,34 +5803,98 @@ try {
                     )
                     break;
                 case "eRng":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readRechnungen.php",
-                        data: {
-                            id: "eRng",
-                            nameDB: $("#nameDB").val(),
-                            liegID: $("#liegID").val(),
-                            modus: "new"
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            a = $.parseJSON(a);
-                            0 < a.length ? ($("#eRngID").val(a[b].eRng_ID), $("#eRngCount").val(a.length), $("#eRngID").val(a[b].eRng_ID), $("#entERng").val(a[b].entERng), $("#modusERng").val(a[b].rechnungsmodusERng),
-                                $("#nrERng").val(a[b].nrERng), $("#zpNrERng").val(a[b].zpNrERng), $("#mstERng").val(a[b].mst), $("#mstIDERng").val(a[b].mst_ID), $("#datumERng").val(a[b].datumERng), $("#vomERng").val(a[b].vomERng), $("#bisERng").val(a[b].bisERng), $("#einERng").val(a[b].einERng), $("#mengeERng").val(formatNumber("form", a[b].mengeERng)), $("#verbrauchERng").val(formatNumber("form", a[b].verbrauchERng)), $("#kostenERng").val(a[b].kostenERng), $("#kostenstelleERng").val(a[b].kostenstelleERng), $("#versorgerERng").val(a[b].versorgerERng),
-                                0 == a[b].tagstromVerbrERng && 0 == a[b].tagstromKostERng && 0 == a[b].nachtstromVerbrERng && 0 == a[b].nachtstromKostERng ? ($("#htNt").css("display", "none"), $(".htNtInp").val(""), $(this).text("HT/NT aktivieren")) : ($("#htNt").css("display", "block"), $(this).text("HT/NT deaktivieren")), versorgerUndEinheitBefuellen(), $("#tagstromVerbrERng").val(formatNumber("form", a[b].tagstromVerbrERng)), $("#tagstromKostERng").val(formatNumber("form", a[b].tagstromKostERng)), $("#nachtstromVerbrERng").val(formatNumber("form", a[b].nachtstromVerbrERng)),
-                                $("#nachtstromKostERng").val(formatNumber("form", a[b].nachtstromKostERng)), $("#blindstromERng").val(formatNumber("form", a[b].blindstromERng)), $("#lastspitzeERng").val(formatNumber("form", a[b].lastspitzeERng)), $("#leistungspreisERng").val(formatNumber("form", a[b].leistungspreisERng)), $("#abpWirkERng").val(formatNumber("form", a[b].abpWirkERng)), $("#strSteuERng").val(formatNumber("form", a[b].strSteuERng)), $("#eegERng").val(formatNumber("form", a[b].eegERng)), $("#eegUntERng").val(formatNumber("form", a[b].eegUntERng)),
-                                $("#eegUebERng").val(formatNumber("form", a[b].eegUebERng)), $("#abpNetzERng").val(formatNumber("form", a[b].abpNetzERng)), $("#konzERng").val(formatNumber("form", a[b].konzERng)), $("#kwkUntERng").val(formatNumber("form", a[b].kwkUntERng)), $("#kwkObERng").val(formatNumber("form", a[b].kwkObERng)), $("#nevUntERng").val(formatNumber("form", a[b].nevUntERng)), $("#nevObERng").val(formatNumber("form", a[b].nevObERng)), $("#offUntERng").val(formatNumber("form", a[b].offUntERng)), $("#offObERng").val(formatNumber("form",
-                                    a[b].offObERng)), $("#lblCustom1ERng").text(a[b].lblCustom1ERng), $("#custom1ERng").val(formatNumber("form", a[b].Custom1ERng)), $("#lblCustom2ERng").text(a[b].lblCustom2ERng), $("#custom2ERng").val(formatNumber("form", a[b].Custom2ERng)), $("#lblCustom3ERng").text(a[b].lblCustom3ERng), $("#custom3ERng").val(formatNumber("form", a[b].Custom3ERng)), $("#lblCustom4ERng").text(a[b].lblCustom4ERng), $("#custom4ERng").val(formatNumber("form", a[b].Custom4ERng)), $("#lblCustom5ERng").text(a[b].lblCustom5ERng), $("#custom5ERng").val(formatNumber("form",
-                                    a[b].Custom5ERng)), $("#lblCustom6ERng").text(a[b].lblCustom6ERng), $("#custom6ERng").val(formatNumber("form", a[b].Custom6ERng))) : clearFields("eRngHinz");
-                            $("#modusERng").trigger("change");
-                            $("#mstERng").trigger("change");
-                            $("#kostenERng").trigger("change");
-                            dokumentenListeErstellen()
-                        }
-                    });
+                    nameDB = $("#nameDB").val()
+                    liegID = $("#liegID").val()
+
+                    const noHt =
+                        record =>
+                        record.tagstromVerbrERng === 0
+                        && record.tagstromKostERng === 0
+
+                    const noNt =
+                        record =>
+                        record.nachtstromVerbrERng === 0
+                        && record.nachtstromKostERng === 0
+
+                    const hideHtNt =
+                        () =>
+                        ( $("#htNt").css("display", "none")
+                        , $(".htNtInp").val("")
+                        , $(this).text("HT/NT aktivieren")
+                        )
+
+                    const showHtNt =
+                        () =>
+                        ( $("#htNt").css("display", "block")
+                        , $(this).text("HT/NT deaktivieren")
+                        )
+
+                    const activateHtNt =
+                        record =>
+                        noHt(record) && noNt(record) ?
+                        hideHtNt() :
+                        showHtNt()
+
+                    ajaxPost("php/readRechnungen.php")({nameDB, liegID})
+                    .then(result => {
+
+                        result.length > 0 ?
+                        (activateHtNt(result[b]),
+                        $("#eRngCount").val(result.length),
+                        [ ["#eRngID", "eRng_ID"]
+                        , ["#entERng", "entERng"]
+                        , ["#modusERng", "rechnungsmodusERng"]
+                        , ["#nrERng", "nrERng"]
+                        , ["#zpNrERng", "zpNrERng"]
+                        , ["#mstERng", "mst"]
+                        , ["#mstIDERng", "mst_ID"]
+                        , ["#datumERng", "datumERng"]
+                        , ["#vomERng", "vomERng"]
+                        , ["#bisERng", "bisERng"]
+                        , ["#einERng", "einERng"]
+                        , ["#kostenstelleERng", "kostenstelleERng"]
+                        , ["#versorgerERng", "versorgerERng"]
+                        ].forEach(a => $(a[0]).val(result[b][a[1]])),
+                        versorgerUndEinheitBefuellen(),
+
+                        [ ["#mengeERng", "mengeERng"]
+                        , ["#verbrauchERng", "verbrauchERng"]
+                        , ["#kostenERng", "kostenERng"]
+                        , ["#mwstPercentERng", "mwstPercentERng"]
+                        , ["#tagstromVerbrERng", "tagstromVerbrERng"]
+                        , ["#nachtstromKostERng", "nachtstromKostERng"]
+                        , ["#eegUntERng", "eegUntERng"]
+                        , ["#abpNetzERng", "abpNetzERng"]
+                        , ["#konzERng", "konzERng"]
+                        , ["#kwkUntERng", "kwkUntERng"]
+                        , ["#kwkObERng", "kwkObERng"]
+                        , ["#nevUntERng", "nevUntERng"]
+                        , ["#nevObERng", "nevObERng"]
+                        , ["#offUntERng", "offUntERng"]
+                        , ["#offObERng", "offObERng"]
+                        , ["#custom1ERng", "Custom1ERng"]
+                        , ["#custom2ERng", "Custom2ERng"]
+                        , ["#custom3ERng", "Custom3ERng"]
+                        , ["#custom4ERng", "Custom4ERng"]
+                        , ["#custom5ERng", "Custom5ERng"]
+                        , ["#custom6ERng", "Custom6ERng"]
+                        ].forEach(a => $(a[0]).val(formatNumber("form", result[b][a[1]]))),
+
+                        [ ["#lblCustom1ERng", "lblCustom1ERng"]
+                        , ["#lblCustom2ERng", "lblCustom2ERng"]
+                        , ["#lblCustom3ERng", "lblCustom3ERng"]
+                        , ["#lblCustom4ERng", "lblCustom4ERng"]
+                        , ["#lblCustom5ERng", "lblCustom5ERng"]
+                        , ["#lblCustom6ERng", "lblCustom6ERng"]
+                        ].forEach(a => $(a[0]).text(result[b][a[1]]))) :
+                        clearFields("eRngHinz")
+
+                        $("#modusERng").trigger("change")
+                        $("#mstERng").trigger("change")
+                        $("#kostenERng").trigger("change")
+
+                        dokumentenListeErstellen()
+                    })
                     break;
                 case "intEngIMw":
                     $.ajax({
@@ -5878,7 +6136,14 @@ try {
                 default:
                     console.log('readInstanzen(instanz, index, id) :\n An invalid case ("' + a + '") was encountered!')
             }
-        }, instanzSpeichern = function(a) {
+        }
+        const messmittelOrBerechnungslogik =
+            type =>
+            "berechnet" == $(`#messartMst${type}`).val() ?
+            $(`#berechnungslogikMst${type}`).val() :
+            $(`#messmittelBerechnungslogikMst${type}`).val()
+
+        instanzSpeichern = function(a) {
             if ("gipscAdmSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -5967,8 +6232,8 @@ try {
                         alert(datensatzGespeichert(a))
                         manGrpEinlesen()
                     }
-                })
-            } else if ("admSpeichern" == a) $.ajax({
+                })}
+            else if ("admSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6067,8 +6332,6 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a))
                     organisationenEinlesen()
-                    console.log("Save org query");
-                    console.log(a);
                 }
             });
             else if ("liegSpeichern" == a) $.ajax({
@@ -6234,38 +6497,61 @@ try {
                     alert(datensatzGespeichert(a))
                 }
             });
-            else if ("mstSpeichern" == a) {
-                var e = "",
-                    e = "berechnet" == $("#messartMst").val() ? $("#berechnungslogikMst").val() : $("#messmittelBerechnungslogikMst").val();
-                $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/instanzIntoDb.php",
-                    data: {
-                        id: "mst",
-                        modus: "save",
-                        mstID: $("#mstID").val(),
-                        nameDB: $("#nameDB").val(),
-                        messstellenbezeichnung: $("#nameMst").val(),
-                        kurzbezeichnung: $("#kurzbezeichnungMst").val(),
-                        kostenstelle: $("#kostenstelleMst").val(),
-                        aktiv: $("#aktivMst").is(":checked"),
-                        isDurchleitung: $("#istDlMst").is(":checked"),
-                        energietraeger: $("#energietraegerMst").val(),
-                        energieform: $("#energieformMst").val(),
-                        ort: $("#ortMst").val(),
-                        messart: $("#messartMst").val(),
-                        vorgelagerteMessstelle: $("#vorgelagerteMst").val(),
-                        messmittelBerechnungslogik: e,
-                        msmID: $("#messmittelIDMst").val(),
-                        anlID: $("#anlIDMst").val(),
-                        notiz: $("#notizAllgemeinMst").val()
-                    },
-                    success: function(a) {
-                        alert(datensatzGespeichert(a))
+            else if ("mstESpeichern" == a) {
+                data =
+                    { id: "mstE"
+                    , modus: "save"
+                    , mstID: $("#mstID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstE").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstE").val()
+                    , kostenstelle: $("#kostenstelleMstE").val()
+                    , aktiv: $("#aktivMstE").is(":checked")
+                    , isDurchleitung: $("#istDlMstE").is(":checked")
+                    , extDlID: $("#dlAnMstIDE").val()
+                    , energietraeger: $("#energietraegerMstE").val()
+                    , energieform: $("#energieformMstE").val()
+                    , beschreibung: ""
+                    , ort: $("#ortMstE").val()
+                    , messart: $("#messartMstE").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDE").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
+                    , msmID: $("#messmittelIDMstE").val()
+                    , anlID: $("#anlIDMstE").val()
+                    , notiz: $("#notizAllgemeinMstE").val()
                     }
-                })
-            } else if ("stdSpeichern" == a) $.ajax({
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => alert(datensatzGespeichert(result)))
+            }
+            else if ("mstBSpeichern" == a) {
+                data =
+                    { id: "mstB"
+                    , modus: "save"
+                    , mstID: $("#mstID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstB").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstB").val()
+                    , kostenstelle: $("#kostenstelleMstB").val()
+                    , aktiv: $("#aktivMstB").is(":checked")
+                    , isDurchleitung: $("#istDlMstB").is(":checked")
+                    , extDlID: $("#dlAnMstIDB").val()
+                    , energietraeger: ""
+                    , energieform: ""
+                    , beschreibung: $("#beschreibungMstB").val()
+                    , ort: $("#ortMstB").val()
+                    , messart: $("#messartMstB").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDB").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("B")
+                    , msmID: $("#messmittelIDMstB").val()
+                    , anlID: $("#anlIDMstB").val()
+                    , notiz: $("#notizAllgemeinMstB").val()
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => alert(datensatzGespeichert(result)))
+            }
+            else if ("stdSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6296,8 +6582,7 @@ try {
                     readInstanzen("stdLast", $("#stdCount").val())
                 }
             });
-            else if ("stdDrSpeichern" ==
-                a) $.ajax({
+            else if ("stdDrSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6429,8 +6714,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("anlVerschieben" == a) $.ajax({
+                })}
+            else if ("anlVerschieben" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6731,8 +7016,8 @@ try {
                         readInstanzen("prdLast", $("#prdCount").val())
                     }
                 });
-                prdNavID = $("#prdCount").val()
-            } else if ("entSpeichern" == a) $.ajax({
+                prdNavID = $("#prdCount").val()}
+            else if ("entSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6831,68 +7116,67 @@ try {
                     alert(datensatzGespeichert(a))
                 }
             });
-            else if ("eRngSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "eRng",
-                    modus: "save",
-                    nameDB: $("#nameDB").val(),
-                    eRngID: $("#eRngID").val(),
-                    liegID: $("#liegID").val(),
-                    versorger: $("#versorgerERng").val(),
-                    rechnungsmodus: $("#modusERng").val(),
-                    rechnungsnummer: $("#nrERng").val(),
-                    zaehlpunktnummer: $("#zpNrERng").val(),
-                    mstID: $("#mstIDERng").val(),
-                    rechnungsdatum: $("#datumERng").val(),
-                    abrechnungszeitVom: $("#vomERng").val(),
-                    abrechnungszeitBis: $("#bisERng").val(),
-                    energietraeger: $("#entERng").val(),
-                    einheit: $("#einERng").val(),
-                    menge: formatNumber("deform", $("#mengeERng").val()),
-                    verbrauch: formatNumber("deform", $("#verbrauchERng").val()),
-                    kostenstelle: $("#kostenstelleERng").val(),
-                    kosten: formatNumber("deform", $("#kostenERng").val()),
-                    tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val()),
-                    tagstromKost: formatNumber("deform", $("#tagstromKostERng").val()),
-                    nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val()),
-                    nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val()),
-                    blindstrom: formatNumber("deform", $("#blindstromERng").val()),
-                    lastspitze: formatNumber("deform", $("#lastspitzeERng").val()),
-                    leistungspreis: formatNumber("deform", $("#leistungspreisERng").val()),
-                    arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val()),
-                    stromsteuer: formatNumber("deform", $("#strSteuERng").val()),
-                    arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val()),
-                    konzessionsabgabe: formatNumber("deform", $("#konzERng").val()),
-                    eegUmlage: formatNumber("deform", $("#eegERng").val()),
-                    eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val()),
-                    eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val()),
-                    kwkUnter: formatNumber("deform", $("#kwkUntERng").val()),
-                    kwkUeber: formatNumber("deform",
-                        $("#kwkObERng").val()),
-                    nevUnter: formatNumber("deform", $("#nevUntERng").val()),
-                    nevUeber: formatNumber("deform", $("#nevObERng").val()),
-                    offUnter: formatNumber("deform", $("#offUntERng").val()),
-                    offUeber: formatNumber("deform", $("#offObERng").val()),
-                    lblCustom1: $("#lblCustom1ERng").text(),
-                    Custom1: formatNumber("deform", $("#custom1ERng").val()),
-                    lblCustom2: $("#lblCustom2ERng").text(),
-                    Custom2: formatNumber("deform", $("#custom2ERng").val()),
-                    lblCustom3: $("#lblCustom3ERng").text(),
-                    Custom3: formatNumber("deform", $("#custom3ERng").val()),
-                    lblCustom4: $("#lblCustom4ERng").text(),
-                    Custom4: formatNumber("deform", $("#custom4ERng").val()),
-                    lblCustom5: $("#lblCustom5ERng").text(),
-                    Custom5: formatNumber("deform", $("#custom5ERng").val()),
-                    lblCustom6: $("#lblCustom6ERng").text(),
-                    Custom6: formatNumber("deform", $("#custom6ERng").val())
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a))
-                }
-            });
+            else if ("eRngSpeichern" == a) {
+                data =
+                    { id: "eRng"
+                    , modus: "save"
+                    , nameDB: $("#nameDB").val()
+                    , eRngID: $("#eRngID").val()
+                    , liegID: $("#liegID").val()
+                    , versorger: $("#versorgerERng").val()
+                    , rechnungsmodus: $("#modusERng").val()
+                    , rechnungsnummer: $("#nrERng").val()
+                    , zaehlpunktnummer: $("#zpNrERng").val()
+                    , mstID: $("#mstIDERng").val()
+                    , rechnungsdatum: $("#datumERng").val()
+                    , abrechnungszeitVom: $("#vomERng").val()
+                    , abrechnungszeitBis: $("#bisERng").val()
+                    , energietraeger: $("#entERng").val()
+                    , einheit: $("#einERng").val()
+                    , menge: formatNumber("deform", $("#mengeERng").val())
+                    , verbrauch: formatNumber("deform", $("#verbrauchERng").val())
+                    , kostenstelle: $("#kostenstelleERng").val()
+                    , kosten: formatNumber("deform", $("#kostenERng").val())
+                    , mwst: formatNumber("deform", $("#mwstPercentERng").val())
+                    , tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val())
+                    , tagstromKost: formatNumber("deform", $("#tagstromKostERng").val())
+                    , nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val())
+                    , nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val())
+                    , blindstrom: formatNumber("deform", $("#blindstromERng").val())
+                    , lastspitze: formatNumber("deform", $("#lastspitzeERng").val())
+                    , leistungspreis: formatNumber("deform", $("#leistungspreisERng").val())
+                    , arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val())
+                    , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
+                    , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
+                    , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
+                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
+                    , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
+                    , nevUnter: formatNumber("deform", $("#nevUntERng").val())
+                    , nevUeber: formatNumber("deform", $("#nevObERng").val())
+                    , offUnter: formatNumber("deform", $("#offUntERng").val())
+                    , offUeber: formatNumber("deform", $("#offObERng").val())
+                    , lblCustom1: $("#lblCustom1ERng").text()
+                    , Custom1: formatNumber("deform", $("#custom1ERng").val())
+                    , lblCustom2: $("#lblCustom2ERng").text()
+                    , Custom2: formatNumber("deform", $("#custom2ERng").val())
+                    , lblCustom3: $("#lblCustom3ERng").text()
+                    , Custom3: formatNumber("deform", $("#custom3ERng").val())
+                    , lblCustom4: $("#lblCustom4ERng").text()
+                    , Custom4: formatNumber("deform", $("#custom4ERng").val())
+                    , lblCustom5: $("#lblCustom5ERng").text()
+                    , Custom5: formatNumber("deform", $("#custom5ERng").val())
+                    , lblCustom6: $("#lblCustom6ERng").text()
+                    , Custom6: formatNumber("deform", $("#custom6ERng").val())
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                })
+            }
             else if ("intEngIMwSpeichern" == a) {
                 var x = "",
                     u = "INSERT INTO ";
@@ -6917,8 +7201,8 @@ try {
                         alert(datensatzGespeichert(a));
                         mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.ENERGY)
                     }
-                })
-            } else if ("intBdeIMwSpeichern" == a) {
+                })}
+            else if ("intBdeIMwSpeichern" == a) {
                 var t = "",
                     u = "INSERT INTO ";
                 $("#zeitintervallAnl").val() == TimeInterval.DAY && (t = "masseneingabeTage");
@@ -6945,8 +7229,8 @@ try {
                         alert(datensatzGespeichert(a));
                        // mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE)
                     }
-                })
-            } else if ("eAnlSpeichern" == a) {
+                })}
+            else if ("eAnlSpeichern" == a) {
                 var w = [];
                 for (i = 0; i < $("#tblOptionenEAnl tbody tr").length; i++) w[i] = tblOptionenEAnl.cell(i, 0).data();
                 var y = w.join(",");
@@ -6967,8 +7251,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("ePrdSpeichern" == a) {
+                })}
+            else if ("ePrdSpeichern" == a) {
                 w = [];
                 for (i = 0; i < $("#tblOptionenEPrd tbody tr").length; i++) w[i] = tblOptionenEPrd.cell(i, 0).data();
                 y = w.join(",");
@@ -6989,8 +7273,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("knzSpeichern" == a) {
+                })}
+            else if ("knzSpeichern" == a) {
                 for (var z = $("#btnTabKnzCont li").length, p = 0, A = 0; A < z + 1; A++)
                     if ("none" === $("#btnTabKnzCont li").eq(A).css("display") || 10 === A) {
                         p = A;
@@ -7324,8 +7608,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else "zpSpeichern" == a && $.ajax({
+                })}
+            else "zpSpeichern" == a && $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -7360,8 +7644,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("gipscAdmLast",
                         $("#gipscAdmCount").val())
-                }
-            }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
+                } }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
             else if ("betrGrpSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7384,8 +7667,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("betrGrpLast", $("#betrGrpCount").val())
                     betrGrpEinlesen()
-                }
-            }), betrGrpNavID = $("#betrGrpCount").val();
+                } }), betrGrpNavID = $("#betrGrpCount").val();
             else if ("sAdmSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7406,13 +7688,9 @@ try {
                     passwort: getHash($("#passwortSAdm").val())
                 },
                 success: function(a) {
-                    console.log("instanzErstellen sAdm query")
-                    console.log(a)
-
                     alert(datensatzGespeichert(a));
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
-                }
-            }), sAdmNavID = $("#sAdmCount").val();
+                } }), sAdmNavID = $("#sAdmCount").val();
             else if ("manGrpSpeichern" == a) {
                 var e = [];
                 for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++) e[i] = tblMandantengruppe.cell(i, 0).data();
@@ -7437,8 +7715,8 @@ try {
                         manGrpEinlesen()
                     }
                 });
-                manGrpNavID = $("#manGrpCount").val();
-            } else if ("admSpeichern" == a) {
+                manGrpNavID = $("#manGrpCount").val(); }
+            else if ("admSpeichern" == a) {
                 var c;
                 "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val());
                 $.ajax({
@@ -7466,9 +7744,8 @@ try {
                         readInstanzen("admLast", $("#admCount").val())
                     }
                 });
-                admNavID = $("#admCount").val()
-            } else if ("benSpeichern" ==
-                a) "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val()), $.ajax({
+                admNavID = $("#admCount").val() }
+            else if ("benSpeichern" == a) "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val()), $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -7491,8 +7768,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("benLast", $("#benCount").val())
-                }
-            }), benNavID = $("#benCount").val();
+                } }), benNavID = $("#benCount").val();
             else if ("manSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7509,8 +7785,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("manLast", $("#manCount").val())
-                }
-            }), manNavID = $("#manCount").val();
+                } }), manNavID = $("#manCount").val();
             else if ("orgSpeichern" == a) $.ajax({
                     type: "POST",
                     async: !0,
@@ -7546,8 +7821,7 @@ try {
                         organisationenEinlesen();
                         readInstanzen("orgLast", $("#orgCount").val())
                     }
-                }),
-                orgNavID = $("#orgCount").val();
+                }), orgNavID = $("#orgCount").val();
             else if ("liegSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7609,8 +7883,7 @@ try {
                     alert(datensatzGespeichert(a));
                     liegenschaftenEinlesen();
                     readInstanzen("liegLast", $("#liegCount").val())
-                }
-            }), liegNavID = $("#liegCount").val();
+                } }), liegNavID = $("#liegCount").val();
             else if ("extDlSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7676,8 +7949,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("extDlLast", $("#extDlCount").val())
-                }
-            }), extDlNavID = $("#extDlCount").val();
+                } }), extDlNavID = $("#extDlCount").val();
             else if ("berSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7697,44 +7969,74 @@ try {
                     notiz: $("#notizAllgemeinBer").val()
                 },
                 success: function(a) {
-
-                    console.log("Ber save");
-                    console.log(a);
-
                     alert(datensatzGespeichert(a));
+                    bereicheEinlesen()
                     readInstanzen("berLast", $("#berCount").val())
-                }
-            }), berNavID = $("#berCount").val();
-            else if ("mstSpeichern" == a) e = "", e = "berechnet" == $("#messartMst").val() ? $("#berechnungslogikMst").val() : $("#messmittelBerechnungslogikMst").val(), $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/instanzIntoDb.php",
-                    data: {
-                        id: "mst",
-                        modus: "new",
-                        berID: $("#berID").val(),
-                        nameDB: $("#nameDB").val(),
-                        messstellenbezeichnung: $("#nameMst").val(),
-                        kurzbezeichnung: $("#kurzbezeichnungMst").val(),
-                        kostenstelle: $("#kostenstelleMst").val(),
-                        aktiv: $("#aktivMst").is(":checked"),
-                        isDurchleitung: $("#istDlMst").is(":checked"),
-                        energietraeger: $("#energietraegerMst").val(),
-                        energieform: $("#energieformMst").val(),
-                        ort: $("#ortMst").val(),
-                        messart: $("#messartMst").val(),
-                        vorgelagerteMessstelle: $("#vorgelagerteMst").val(),
-                        messmittelBerechnungslogik: e,
-                        msmID: $("#messmittelIDMst").val(),
-                        anlID: $("#anlIDMst").val(),
-                        notiz: $("#notizAllgemeinMst").val()
-                    },
-                    success: function(a) {
-                        alert(datensatzGespeichert(a));
-                        readInstanzen("mstLast", $("#mstCount").val())
+                } }), berNavID = $("#berCount").val();
+            else if ("mstESpeichern" == a) {
+                data =
+                    { id: "mstE"
+                    , modus: "new"
+                    , berID: $("#berID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstE").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstE").val()
+                    , kostenstelle: $("#kostenstelleMstE").val()
+                    , aktiv: $("#aktivMstE").is(":checked")
+                    , isDurchleitung: $("#istDlMstE").is(":checked")
+                    , extDlID: $("#dlAnMstIDE").val()
+                    , energietraeger: $("#energietraegerMstE").val()
+                    , energieform: $("#energieformMstE").val()
+                    , beschreibung: ""
+                    , ort: $("#ortMstE").val()
+                    , messart: $("#messartMstE").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDE").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
+                    , msmID: $("#messmittelIDMstE").val()
+                    , anlID: $("#anlIDMstE").val()
+                    , notiz: $("#notizAllgemeinMstE").val()
                     }
-                }), mstNavID =
-                $("#mstCount").val();
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                    readInstanzen("mstELast", $("#mstECount").val())
+                })
+
+                mstENavID = $("#mstECount").val()
+            }
+            else if ("mstBSpeichern" == a) {
+                data =
+                    { id: "mstB"
+                    , modus: "new"
+                    , berID: $("#berID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstB").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstB").val()
+                    , kostenstelle: $("#kostenstelleMstB").val()
+                    , aktiv: $("#aktivMstB").is(":checked")
+                    , isDurchleitung: $("#istDlMstB").is(":checked")
+                    , extDlID: $("#dlAnMstIDB").val()
+                    , energietraeger: ""
+                    , energieform: ""
+                    , beschreibung: $("#beschreibungMstB").val()
+                    , ort: $("#ortMstB").val()
+                    , messart: $("#messartMstB").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDB").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("B")
+                    , msmID: $("#messmittelIDMstB").val()
+                    , anlID: $("#anlIDMstB").val()
+                    , notiz: $("#notizAllgemeinMstB").val()
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                    readInstanzen("mstBLast", $("#mstBCount").val())
+                })
+
+                mstBNavID = $("#mstBCount").val()
+            }
             else if ("stdSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7764,8 +8066,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("stdLast", $("#stdCount").val())
-                }
-            }), stdNavID = $("#stdCount").val();
+                } }), stdNavID = $("#stdCount").val();
             else if ("stdDrSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7795,10 +8096,8 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("stdDrLast", $("#stdDrCount").val())
-                }
-            }), stdDrNavID = $("#stdDrCount").val();
-            else if ("anlSpeichern" == a) e = $("#bildAllgemeinAnl").prop("src"),
-                e = e.split($("#nameDB").val()), $.ajax({
+                } }), stdDrNavID = $("#stdDrCount").val();
+            else if ("anlSpeichern" == a) e = $("#bildAllgemeinAnl").prop("src"), e = e.split($("#nameDB").val()), $.ajax({
                     type: "POST",
                     async: !0,
                     url: "php/instanzIntoDb.php",
@@ -7891,8 +8190,7 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a));
                         readInstanzen("anlLast", $("#anlCount").val())
-                    }
-                }), anlNavID = $("#anlCount").val();
+                    } }), anlNavID = $("#anlCount").val();
             else if ("msmSpeichern" == a) e = $("#bildAllgemeinMsm").prop("src"), e = e.split($("#nameDB").val()), $.ajax({
                 type: "POST",
                 async: !0,
@@ -7946,10 +8244,8 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("msmLast", $("#msmCount").val())
-                }
-            }), msmNavID = $("#msmCount").val();
-            else if ("prdSpeichern" == a) e = 0, e = "neueGrp" === b ?
-                Number($("#prdCount").val()) + 1 : $("#gruppenIDPrd").val(), $.ajax({
+                } }), msmNavID = $("#msmCount").val();
+            else if ("prdSpeichern" == a) e = 0, e = "neueGrp" === b ? Number($("#prdCount").val()) + 1 : $("#gruppenIDPrd").val(), $.ajax({
                     type: "POST",
                     async: !0,
                     url: "php/instanzIntoDb.php",
@@ -7989,8 +8285,7 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a));
                         readInstanzen("prdLast", $("#prdCount").val())
-                    }
-                }), prdNavID = $("#prdCount").val();
+                    } }), prdNavID = $("#prdCount").val();
             else if ("entSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
@@ -8041,8 +8336,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("entFirst", 0)
-                }
-            }), entNavID = $("#entCount").val();
+                } }), entNavID = $("#entCount").val();
             else if ("enfSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
@@ -8089,70 +8383,69 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("enfLast", $("#enfCount").val())
-                }
-            }), enfNavID = $("#enfCount").val();
-            else if ("eRngSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "eRng",
-                    modus: "new",
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val(),
-                    rechnungsmodus: $("#modusERng").val(),
-                    versorger: $("#versorgerERng").val(),
-                    rechnungsnummer: $("#nrERng").val(),
-                    zaehlpunktnummer: $("#zpNrERng").val(),
-                    mstID: $("#mstIDERng").val(),
-                    rechnungsdatum: $("#datumERng").val(),
-                    abrechnungszeitVom: $("#vomERng").val(),
-                    abrechnungszeitBis: $("#bisERng").val(),
-                    energietraeger: $("#entERng").val(),
-                    einheit: $("#einERng").val(),
-                    menge: formatNumber("deform", $("#mengeERng").val()),
-                    verbrauch: formatNumber("deform",
-                        $("#verbrauchERng").val()),
-                    kostenstelle: $("#kostenstelleERng").val(),
-                    kosten: formatNumber("deform", $("#kostenERng").val()),
-                    tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val()),
-                    tagstromKost: formatNumber("deform", $("#tagstromKostERng").val()),
-                    nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val()),
-                    nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val()),
-                    blindstrom: formatNumber("deform", $("#blindstromERng").val()),
-                    lastspitze: formatNumber("deform", $("#lastspitzeERng").val()),
-                    leistungspreis: formatNumber("deform", $("#leistungspreisERng").val()),
-                    arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val()),
-                    stromsteuer: formatNumber("deform", $("#strSteuERng").val()),
-                    arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val()),
-                    konzessionsabgabe: formatNumber("deform", $("#konzERng").val()),
-                    eegUmlage: formatNumber("deform", $("#eegERng").val()),
-                    eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val()),
-                    eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val()),
-                    kwkUnter: formatNumber("deform", $("#kwkUntERng").val()),
-                    kwkUeber: formatNumber("deform", $("#kwkObERng").val()),
-                    nevUnter: formatNumber("deform", $("#nevUntERng").val()),
-                    nevUeber: formatNumber("deform", $("#nevObERng").val()),
-                    offUnter: formatNumber("deform", $("#offUntERng").val()),
-                    offUeber: formatNumber("deform", $("#offObERng").val()),
-                    lblCustom1: $("#lblCustom1ERng").text(),
-                    Custom1: formatNumber("deform", $("#custom1ERng").val()),
-                    lblCustom2: $("#lblCustom2ERng").text(),
-                    Custom2: formatNumber("deform", $("#custom2ERng").val()),
-                    lblCustom3: $("#lblCustom3ERng").text(),
-                    Custom3: formatNumber("deform", $("#custom3ERng").val()),
-                    lblCustom4: $("#lblCustom4ERng").text(),
-                    Custom4: formatNumber("deform", $("#custom4ERng").val()),
-                    lblCustom5: $("#lblCustom5ERng").text(),
-                    Custom5: formatNumber("deform", $("#custom5ERng").val()),
-                    lblCustom6: $("#lblCustom6ERng").text(),
-                    Custom6: formatNumber("deform", $("#custom6ERng").val())
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a));
+                } }), enfNavID = $("#enfCount").val();
+            else if ("eRngSpeichern" == a) {
+                data =
+                    { id: "eRng"
+                    , modus: "new"
+                    , nameDB: $("#nameDB").val()
+                    , liegID: $("#liegID").val()
+                    , rechnungsmodus: $("#modusERng").val()
+                    , versorger: $("#versorgerERng").val()
+                    , rechnungsnummer: $("#nrERng").val()
+                    , zaehlpunktnummer: $("#zpNrERng").val()
+                    , mstID: $("#mstIDERng").val()
+                    , rechnungsdatum: $("#datumERng").val()
+                    , abrechnungszeitVom: $("#vomERng").val()
+                    , abrechnungszeitBis: $("#bisERng").val()
+                    , energietraeger: $("#entERng").val()
+                    , einheit: $("#einERng").val()
+                    , menge: formatNumber("deform", $("#mengeERng").val())
+                    , verbrauch: formatNumber("deform", $("#verbrauchERng").val())
+                    , kostenstelle: $("#kostenstelleERng").val()
+                    , kosten: formatNumber("deform", $("#kostenERng").val())
+                    , mwst: formatNumber("deform", $("#mwstPercentERng").val())
+                    , tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val())
+                    , tagstromKost: formatNumber("deform", $("#tagstromKostERng").val())
+                    , nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val())
+                    , nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val())
+                    , blindstrom: formatNumber("deform", $("#blindstromERng").val())
+                    , lastspitze: formatNumber("deform", $("#lastspitzeERng").val())
+                    , leistungspreis: formatNumber("deform", $("#leistungspreisERng").val())
+                    , arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val())
+                    , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
+                    , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
+                    , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
+                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
+                    , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
+                    , nevUnter: formatNumber("deform", $("#nevUntERng").val())
+                    , nevUeber: formatNumber("deform", $("#nevObERng").val())
+                    , offUnter: formatNumber("deform", $("#offUntERng").val())
+                    , offUeber: formatNumber("deform", $("#offObERng").val())
+                    , lblCustom1: $("#lblCustom1ERng").text()
+                    , Custom1: formatNumber("deform", $("#custom1ERng").val())
+                    , lblCustom2: $("#lblCustom2ERng").text()
+                    , Custom2: formatNumber("deform", $("#custom2ERng").val())
+                    , lblCustom3: $("#lblCustom3ERng").text()
+                    , Custom3: formatNumber("deform", $("#custom3ERng").val())
+                    , lblCustom4: $("#lblCustom4ERng").text()
+                    , Custom4: formatNumber("deform", $("#custom4ERng").val())
+                    , lblCustom5: $("#lblCustom5ERng").text()
+                    , Custom5: formatNumber("deform", $("#custom5ERng").val())
+                    , lblCustom6: $("#lblCustom6ERng").text()
+                    , Custom6: formatNumber("deform", $("#custom6ERng").val())
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
                     readInstanzen("eRngLast", $("#eRngCount").val())
-                }
-            }), eRngNavID = $("#eRngCount").val();
+                })
+                eRngNavID = $("#eRngCount").val()
+            }
             else if ("iMwSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -8190,8 +8483,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("iMwLast",
                         $("#iMwCount").val())
-                }
-            }), iMwNavID = $("#iMwCount").val();
+                } }), iMwNavID = $("#iMwCount").val();
             else if ("eAnlSpeichern" == a) {
                 e = [];
                 for (i = 0; i < $("#tblOptionenEAnl tbody tr").length; i++) e[i] = tblOptionenEAnl.cell(i, 0).data();
@@ -8217,8 +8509,8 @@ try {
                         $("#eAnlFirst").trigger("click")
                     }
                 });
-                eAnlNavID = $("#eAnlCount").val()
-            } else if ("ePrdSpeichern" == a) {
+                eAnlNavID = $("#eAnlCount").val() }
+            else if ("ePrdSpeichern" == a) {
                 e = [];
                 for (i = 0; i < $("#tblOptionenEPrd tbody tr").length; i++) e[i] = tblOptionenEPrd.cell(i, 0).data();
                 e = e.join(",");
@@ -8241,8 +8533,8 @@ try {
                     }
                 });
                 ePrdNavID =
-                    $("#ePrdCount").val()
-            } else if ("knzSpeichern" == a) {
+                    $("#ePrdCount").val() }
+            else if ("knzSpeichern" == a) {
                 c = $("#btnTabKnzCont li").length;
                 for (var g = e = 0; g < c; g++)
                     if ("none" === $("#btnTabKnzCont li").eq(g).css("display")) {
@@ -8434,8 +8726,8 @@ try {
                         alert(datensatzGespeichert(a))
                     }
                 });
-                knzNavID = $("#knzCount").val()
-            } else "zpSpeichern" == a ? ($.ajax({
+                knzNavID = $("#knzCount").val() }
+            else "zpSpeichern" == a ? ($.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -8453,8 +8745,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("zpLast", $("#zpCount").val())
-                }
-            }), zpNavID = $("#zpCount").val()) : "betrParSpeichern" == a && (e = [], 0 < $("#checkEPrd").length && (e = JSON.stringify(Array.from($("#checkEPrd div")).map(function(a) {
+                } }), zpNavID = $("#zpCount").val()) : "betrParSpeichern" == a && (e = [], 0 < $("#checkEPrd").length && (e = JSON.stringify(Array.from($("#checkEPrd div")).map(function(a) {
                 return {
                     col: $("#" + a.children[0].id).text(),
                     state: $("#" + a.children[1].id).is(":checked"),
@@ -8492,11 +8783,12 @@ try {
                         $("#manPfadLieg").css("display", "none"), $("#orgPfadLieg").text($("#nameAllgemeinOrg").val()), energietrInDBoxLieg(), energiefrmInDBoxLieg();
                     else if ("tabExtDl" == a) readInstanzen("extDlFirst", 0);
                     else if ("tabStdDr" == a) readInstanzen("stdDrFirst", 0);
-                    else if ("tabBer" == a) clearFields("berHinz"), readInstanzen("berFirst", 0), $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val()), energiefrmInDBoxLieg();
+                    else if ("tabBer" == a) $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val()), energiefrmInDBoxLieg();
                     else if ("tabEPrd" == a) readBdeConfig($("#nameDB").val());
                     else if ("tabBen" == a) b = ["", ""], readInstanzen("benFirst", 0);
                     else if ("tabAnl" == a) getAnlagenAuswahlTblHeader(), energiefrmInDBoxLieg();
                     else if ("tabMsm" == a) getAnlagenAuswahlTblHeader();
+                    else if ("tabMstE" == a | "tabMstB" == a) bereicheVorhanden();
                     else if ("tabKnz" == a) $("#asideRight2").css("display", "block"), knzEinheitenEinlesen();
                     else if ("tabExtRechnungen" == a) $("#asideRight").css("display", "block"), versorgerUndEinheitBefuellen(), energietrInDBoxERngVergleich(), energietrInDBoxLieg();
                     else if ("tabAusw_eRng_iMw" == a) energietrInDBoxERngVergleich(), energietrInDBoxLieg(), externeRechnungenListeErstellen("vergleich");
@@ -8519,8 +8811,8 @@ try {
                 "none"), "spaEfVTab1Menu" == a || "spaEfVTab2Menu" == a ? ($("#berichte, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2").css("display", "block"), "spaEfVTab1Menu" == a ? (tabControlNav("tabSpaEfV_Tbl1"), $("#verwaltung").val("ausw")) : "spaEfVTab2Menu" == a && (tabControlNav("tabSpaEfV_Tbl2"), $("#verwaltung").val("ausw"))) : $("#berichte, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2").css("display", "none")) : $("#tabsAuswertungen, #auswertungen").css("display", "none");
             "betrGrpMenu" == a || "manGrpMenu" == a || "sAdmMenu" == a || "admMenu" == a || "benMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
                 "none"), $("#tabsRechteverwaltung, #rechteverwaltung, #stammdaten").css("display", "block"), "betrGrpMenu" == a ? tabControlNav("tabBetrGrp") : "manGrpMenu" == a ? tabControlNav("tabManGrp") : "sAdmMenu" == a ? tabControlNav("tabSAdm") : "admMenu" == a ? tabControlNav("tabAdm") : "benMenu" == a && tabControlNav("tabBen")) : $("#tabsRechteverwaltung, #rechteverwaltung").css("display", "none");
-            "untMenu" == a || "manMenu" == a || "orgMenu" == a || "liegMenu" == a || "berMenu" == a || "stdMenu" == a || "stdDrMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
-                "none"), $("#tabsUnternehmensstruktur, #unternehmensstruktur, #stammdaten").css("display", "block"), "untMenu" == a || "manMenu" == a ? tabControlNav("tabMan") : "orgMenu" == a ? tabControlNav("tabOrg") : "liegMenu" == a ? tabControlNav("tabLieg") : "berMenu" == a ? (energietrInDBoxBer(), tabControlNav("tabBer")) : "stdMenu" == a ? tabControlNav("tabStd") : "stdDrMenu" == a && tabControlNav("tabStdDr")) : $("#tabsUnternehmensstruktur, #unternehmensstruktur").css("display", "none");
+            "untMenu" == a || "manMenu" == a || "orgMenu" == a || "liegMenu" == a || "berMenu" == a || "mstEMenu" == a || "mstBMenu" == a || "stdMenu" == a || "stdDrMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
+                "none"), $("#tabsUnternehmensstruktur, #unternehmensstruktur, #stammdaten").css("display", "block"), "untMenu" == a || "manMenu" == a ? tabControlNav("tabMan") : "orgMenu" == a ? tabControlNav("tabOrg") : "liegMenu" == a ? tabControlNav("tabLieg") : "berMenu" == a ? (tabControlNav("tabBer")) : "mstEMenu" == a ? tabControlNav("tabMstE") : "mstBMenu" == a ? tabControlNav("tabMstB") : "stdMenu" == a ? tabControlNav("tabStd") : "stdDrMenu" == a && tabControlNav("tabStdDr")) : $("#tabsUnternehmensstruktur, #unternehmensstruktur").css("display", "none");
             if ("anlMenu" == a || "anl_Eng_Menu" == a || "anl_Dok_Menu" == a || "anl_Hist_Menu" ==
                 a || "anl_Konfig_Menu" == a || "anl_Menu" == a) {
                 $("#tabsAnlagenverwaltung, #anlagenverwaltung, #stammdaten").css("display", "block");
@@ -9757,6 +10049,31 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+    tblExtDurchleitungenAuswahl = $("#tblExtDurchleitungenAuswahl").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 20,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
     tblStandorteAuswahl = $("#tblStandorteAuswahl").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -10063,6 +10380,18 @@ try {
                 aktivInstance: "ber"
             }, {
                 lengthPath: 3,
+                tab: "tabMstE",
+                idElement: "mstID",
+                infos: "infosMessstellenEng",
+                aktivInstance: "mstE"
+            }, {
+                lengthPath: 3,
+                tab: "tabMstB",
+                idElement: "mstID",
+                infos: "infosMessstellenBetr",
+                aktivInstance: "mstB"
+            }, {
+                lengthPath: 3,
                 tab: "tabStd",
                 idElement: "stdID",
                 infos: "infosStandorte",
@@ -10257,7 +10586,8 @@ try {
             }).join().split(","))
         },
         datensatzGespeichert = function(a) {
-            return -1 === a.search("error") ? "Datensatz wurde erfolgreich gespeichert!" : "ACHTUNG!!! Datensatz konnte nicht gespeichert werden!"
+            const testStr = typeof a === "string" ? a : (a.query)
+            return -1 === testStr.search("error") ? "Datensatz wurde erfolgreich gespeichert!" : "ACHTUNG!!! Datensatz konnte nicht gespeichert werden!"
         },
         zerlegeFormel = function(a) {
             return a.split(" ")
@@ -10383,20 +10713,21 @@ const isCalculated =
 // Depending which messart was chosen labels and txtboxes
 // + button are shown or hidden
 const toggleMsmBerechnungslogik =
-    type => {
-        if(isCalculated(type)) {
-            $("#labelMessmittelMst").hide()
-            $("#messmittelBerechnungslogikMst").hide()
-            $("#labelBerechnungslogikMst").show()
-            $("#berechnungslogikMst").show()
-            $("#linkBerechnungslogikOderEingabemaske").show()
+    typeCalc =>
+    typeData => {
+        if(isCalculated(typeCalc)) {
+            $(`#labelMessmittelMst${typeData}`).hide()
+            $(`#messmittelBerechnungslogikMst${typeData}`).hide()
+            $(`#labelBerechnungslogikMst${typeData}`).show()
+            $(`#berechnungslogikMst${typeData}`).show()
+            $(`#linkBerechnungslogikOderEingabemaske${typeData}`).show()
         }
         else {
-            $("#linkBerechnungslogikOderEingabemaske").hide()
-            $("#labelBerechnungslogikMst").hide()
-            $("#berechnungslogikMst").hide()
-            $("#labelMessmittelMst").show()
-            $("#messmittelBerechnungslogikMst").show()
+            $(`#linkBerechnungslogikOderEingabemaske${typeData}`).hide()
+            $(`#labelBerechnungslogikMst${typeData}`).hide()
+            $(`#berechnungslogikMst${typeData}`).hide()
+            $(`#labelMessmittelMst${typeData}`).show()
+            $(`#messmittelBerechnungslogikMst${typeData}`).show()
         }
     }
 

@@ -109,36 +109,36 @@ elseif($id == "manGrp") {
     }
 }
 elseif($id == "adm") {
-$modus = $_POST['modus'];
-$instanz = $_POST['ins'];
-$insID = $_POST['insID'];
+    $modus = $_POST['modus'];
+    $instanz = $_POST['ins'];
+    $insID = $_POST['insID'];
 
-$titel = $_POST['titel'];
-$name = $_POST['name'];
-$vorname = $_POST['vorname'];
-$eMail = $_POST['eMail'];
-$telefon = $_POST['telefon'];
-$fax = $_POST['fax'];
-$mobiltelefon = $_POST['mobiltelefon'];
-$benutzername = $_POST['benutzername'];
-$passwort = $_POST['passwort'];
+    $titel = $_POST['titel'];
+    $name = $_POST['name'];
+    $vorname = $_POST['vorname'];
+    $eMail = $_POST['eMail'];
+    $telefon = $_POST['telefon'];
+    $fax = $_POST['fax'];
+    $mobiltelefon = $_POST['mobiltelefon'];
+    $benutzername = $_POST['benutzername'];
+    $passwort = $_POST['passwort'];
 
-	if($modus == "new"){
+    if($modus == "new"){
 
-		$tsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
-		$tsql .= "fax, mobiltelefon, benutzername, passHash) ";
-		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
-		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
-}
-	else{
-		$admID = $_POST['admID'];
+        $tsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
+        $tsql .= "fax, mobiltelefon, benutzername, passHash) ";
+        $tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
+        $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+    }
+    else{
+        $admID = $_POST['admID'];
 
-		$tsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
-		$tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
-		$tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',benutzername = '$benutzername', ";
-  $tsql .= "passHash = '$passwort' ";
-		$tsql .= "WHERE adm_ID = '$admID' ";
-	}
+        $tsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
+        $tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
+        $tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',benutzername = '$benutzername', ";
+        $tsql .= "passHash = '$passwort' ";
+        $tsql .= "WHERE adm_ID = '$admID' ";
+    }
 }
 elseif($id == "ben") {
     $modus = $_POST['modus'];
@@ -155,13 +155,13 @@ elseif($id == "ben") {
     $benutzername = $_POST['benutzername'];
     $passwort = $_POST['passwort'];
 
-    	if($modus == "new"){
-          $manID = $_POST['manID'];
+    if($modus == "new"){
+        $manID = $_POST['manID'];
 
-      		$tsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
-      		$tsql .= "fax, mobiltelefon, benutzername, passHash) ";
-      		$tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
-      		$tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+        $tsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
+        $tsql .= "fax, mobiltelefon, benutzername, passHash) ";
+        $tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
+        $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
     }
     else{
         $benID = $_POST['benID'];
@@ -317,109 +317,109 @@ elseif($id == "lieg") {
     }
 }
 elseif($id == "extDl") {
-$modus = $_POST['modus'];
-$nameAllgemein = $_POST['nameAllgemein'];
-$aktiv = $_POST['aktiv'];
-$gesellschaftsform = $_POST['gesellschaftsform'];
-$anschrift = $_POST['anschrift'];
-$land = $_POST['land'];
-$plz = $_POST['plz'];
-$ort = $_POST['ort'];
-$typ= $_POST['typ'];
-$standortdatenDritte = $_POST['standortdatenDritte'];
-$titelAnsprechpartner = $_POST['titelAnsprechpartner'];
-$nameAnsprechpartner = $_POST['nameAnsprechpartner'];
-$vornameAnsprechpartner = $_POST['vornameAnsprechpartner'];
-$eMailAnsprechpartner = $_POST['eMailAnsprechpartner'];
-$telefonAnsprechpartner = $_POST['telefonAnsprechpartner'];
-$faxAnsprechpartner = $_POST['faxAnsprechpartner'];
-$mobiltelefonAnsprechpartner = $_POST['mobiltelefonAnsprechpartner'];
+    $modus = $_POST['modus'];
+    $nameAllgemein = $_POST['nameAllgemein'];
+    $aktiv = $_POST['aktiv'];
+    $gesellschaftsform = $_POST['gesellschaftsform'];
+    $anschrift = $_POST['anschrift'];
+    $land = $_POST['land'];
+    $plz = $_POST['plz'];
+    $ort = $_POST['ort'];
+    $typ= $_POST['typ'];
+    $standortdatenDritte = $_POST['standortdatenDritte'];
+    $titelAnsprechpartner = $_POST['titelAnsprechpartner'];
+    $nameAnsprechpartner = $_POST['nameAnsprechpartner'];
+    $vornameAnsprechpartner = $_POST['vornameAnsprechpartner'];
+    $eMailAnsprechpartner = $_POST['eMailAnsprechpartner'];
+    $telefonAnsprechpartner = $_POST['telefonAnsprechpartner'];
+    $faxAnsprechpartner = $_POST['faxAnsprechpartner'];
+    $mobiltelefonAnsprechpartner = $_POST['mobiltelefonAnsprechpartner'];
 
-$energietraeger1 =$_POST['energietraeger1'];
-$messstelle1Ent =$_POST['messstelle1Ent'];
-$standort1Ent = $_POST['standort1Ent'];
-$energietraeger2 =$_POST['energietraeger2'];
-$messstelle2Ent =$_POST['messstelle2Ent'];
-$standort2Ent = $_POST['standort2Ent'];
-$energietraeger3 =$_POST['energietraeger3'];
-$messstelle3Ent =$_POST['messstelle3Ent'];
-$standort3Ent = $_POST['standort3Ent'];
-$energietraeger4 =$_POST['energietraeger4'];
-$messstelle4Ent =$_POST['messstelle4Ent'];
-$standort4Ent = $_POST['standort4Ent'];
-$energietraeger5 =$_POST['energietraeger5'];
-$messstelle5Ent =$_POST['messstelle5Ent'];
-$standort5Ent = $_POST['standort5Ent'];
-$energietraeger6 =$_POST['energietraeger6'];
-$messstelle6Ent =$_POST['messstelle6Ent'];
-$standort6Ent = $_POST['standort6Ent'];
+    $energietraeger1 =$_POST['energietraeger1'];
+    $messstelle1Ent =$_POST['messstelle1Ent'];
+    $standort1Ent = $_POST['standort1Ent'];
+    $energietraeger2 =$_POST['energietraeger2'];
+    $messstelle2Ent =$_POST['messstelle2Ent'];
+    $standort2Ent = $_POST['standort2Ent'];
+    $energietraeger3 =$_POST['energietraeger3'];
+    $messstelle3Ent =$_POST['messstelle3Ent'];
+    $standort3Ent = $_POST['standort3Ent'];
+    $energietraeger4 =$_POST['energietraeger4'];
+    $messstelle4Ent =$_POST['messstelle4Ent'];
+    $standort4Ent = $_POST['standort4Ent'];
+    $energietraeger5 =$_POST['energietraeger5'];
+    $messstelle5Ent =$_POST['messstelle5Ent'];
+    $standort5Ent = $_POST['standort5Ent'];
+    $energietraeger6 =$_POST['energietraeger6'];
+    $messstelle6Ent =$_POST['messstelle6Ent'];
+    $standort6Ent = $_POST['standort6Ent'];
 
-$energieRes1 =$_POST['energieRes1'];
-$messstelle1EnfRes =$_POST['messstelle1EnfRes'];
-$standort1EnfRes = $_POST['standort1EnfRes'];
-$energieRes2 =$_POST['energieRes2'];
-$messstelle2EnfRes =$_POST['messstelle2EnfRes'];
-$standort2EnfRes = $_POST['standort2EnfRes'];
-$energieRes3 =$_POST['energieRes3'];
-$messstelle3EnfRes =$_POST['messstelle3EnfRes'];
-$standort3EnfRes = $_POST['standort3EnfRes'];
-$energieRes4 =$_POST['energieRes4'];
-$messstelle4EnfRes =$_POST['messstelle4EnfRes'];
-$standort4EnfRes = $_POST['standort4EnfRes'];
-$energieRes5 =$_POST['energieRes5'];
-$messstelle5EnfRes =$_POST['messstelle5EnfRes'];
-$standort5EnfRes = $_POST['standort5EnfRes'];
-$energieRes6 =$_POST['energieRes6'];
-$messstelle6EnfRes =$_POST['messstelle6EnfRes'];
-$standort6EnfRes = $_POST['standort6EnfRes'];
+    $energieRes1 =$_POST['energieRes1'];
+    $messstelle1EnfRes =$_POST['messstelle1EnfRes'];
+    $standort1EnfRes = $_POST['standort1EnfRes'];
+    $energieRes2 =$_POST['energieRes2'];
+    $messstelle2EnfRes =$_POST['messstelle2EnfRes'];
+    $standort2EnfRes = $_POST['standort2EnfRes'];
+    $energieRes3 =$_POST['energieRes3'];
+    $messstelle3EnfRes =$_POST['messstelle3EnfRes'];
+    $standort3EnfRes = $_POST['standort3EnfRes'];
+    $energieRes4 =$_POST['energieRes4'];
+    $messstelle4EnfRes =$_POST['messstelle4EnfRes'];
+    $standort4EnfRes = $_POST['standort4EnfRes'];
+    $energieRes5 =$_POST['energieRes5'];
+    $messstelle5EnfRes =$_POST['messstelle5EnfRes'];
+    $standort5EnfRes = $_POST['standort5EnfRes'];
+    $energieRes6 =$_POST['energieRes6'];
+    $messstelle6EnfRes =$_POST['messstelle6EnfRes'];
+    $standort6EnfRes = $_POST['standort6EnfRes'];
 
-if($modus == "new"){
-$liegID = $_POST['liegID'];
+    if($modus == "new") {
+        $liegID = $_POST['liegID'];
 
-	$tsql = "INSERT INTO externeDurchleitungen(lieg_ID,datumExtDl,nameExtDl,aktivExtDl,gesellschaftsformExtDl,anschriftExtDl,";
-	$tsql .= "landExtDl,plzExtDl,ortExtDl,typExtDl,standortdatenDritte,titelAnsprechpartnerExtDl,nameAnsprechpartnerExtDl,vornameAnsprechpartnerExtDl,eMailAnsprechpartnerExtDl,";
-	$tsql .= "telefonAnsprechpartnerExtDl, faxAnsprechpartnerExtDl,mobiltelefonAnsprechpartnerExtDl,";
-$tsql .= "energietraeger1,messstelle1ExtDl,standort1ExtDl,energietraeger2,messstelle2ExtDl,standort2ExtDl,";
-$tsql .= "energietraeger3,messstelle3ExtDl,standort3ExtDl,energietraeger4,messstelle4ExtDl,standort4ExtDl,";
-	$tsql .= "energietraeger5,messstelle5ExtDl,standort5ExtDl,energietraeger6,messstelle6ExtDl,standort6ExtDl,";
-$tsql .= "energieRes1ExtDl,messstelleEngRes1ExtDl,standortEngRes1ExtDl,energieRes2ExtDl,messstelleEngRes2ExtDl,standortEngRes2ExtDl,";
-$tsql .= "energieRes3ExtDl,messstelleEngRes3ExtDl,standortEngRes3ExtDl,energieRes4ExtDl,messstelleEngRes4ExtDl,standortEngRes4ExtDl,";
-$tsql .= "energieRes5ExtDl,messstelleEngRes5ExtDl,standortEngRes5ExtDl,energieRes6ExtDl,messstelleEngRes6ExtDl,standortEngRes6ExtDl) ";
+    	$tsql = "INSERT INTO externeDurchleitungen(lieg_ID,datumExtDl,nameExtDl,aktivExtDl,gesellschaftsformExtDl,anschriftExtDl,";
+    	$tsql .= "landExtDl,plzExtDl,ortExtDl,typExtDl,standortdatenDritte,titelAnsprechpartnerExtDl,nameAnsprechpartnerExtDl,vornameAnsprechpartnerExtDl,eMailAnsprechpartnerExtDl,";
+    	$tsql .= "telefonAnsprechpartnerExtDl, faxAnsprechpartnerExtDl,mobiltelefonAnsprechpartnerExtDl,";
+        $tsql .= "energietraeger1,messstelle1ExtDl,standort1ExtDl,energietraeger2,messstelle2ExtDl,standort2ExtDl,";
+        $tsql .= "energietraeger3,messstelle3ExtDl,standort3ExtDl,energietraeger4,messstelle4ExtDl,standort4ExtDl,";
+        	$tsql .= "energietraeger5,messstelle5ExtDl,standort5ExtDl,energietraeger6,messstelle6ExtDl,standort6ExtDl,";
+        $tsql .= "energieRes1ExtDl,messstelleEngRes1ExtDl,standortEngRes1ExtDl,energieRes2ExtDl,messstelleEngRes2ExtDl,standortEngRes2ExtDl,";
+        $tsql .= "energieRes3ExtDl,messstelleEngRes3ExtDl,standortEngRes3ExtDl,energieRes4ExtDl,messstelleEngRes4ExtDl,standortEngRes4ExtDl,";
+        $tsql .= "energieRes5ExtDl,messstelleEngRes5ExtDl,standortEngRes5ExtDl,energieRes6ExtDl,messstelleEngRes6ExtDl,standortEngRes6ExtDl) ";
 
-	$tsql .= "VALUES ('$liegID',getdate(),'$nameAllgemein','$aktiv','$gesellschaftsform','$anschrift','$land','$plz','$ort','$typ','$standortdatenDritte',";
-	$tsql .= "'$titelAnsprechpartner','$nameAnsprechpartner','$vornameAnsprechpartner','$eMailAnsprechpartner','$telefonAnsprechpartner',";
-	$tsql .= "'$faxAnsprechpartner','$mobiltelefonAnsprechpartner',";
-$tsql .= "'$energietraeger1','$messstelle1Ent','$standort1Ent','$energietraeger2','$messstelle2Ent','$standort2Ent',";
-$tsql .= "'$energietraeger3','$messstelle3Ent','$standort3Ent','$energietraeger4','$messstelle4Ent','$standort4Ent',";
-	$tsql .= "'$energietraeger5','$messstelle5Ent','$standort5Ent','$energietraeger6','$messstelle6Ent','$standort6Ent',";
-$tsql .= "'$energieRes1','$messstelle1EnfRes','$standort1EnfRes','$energieRes2','$messstelle2EnfRes','$standort2EnfRes',";
-	$tsql .= "'$energieRes3','$messstelle3EnfRes','$standort3EnfRes','$energieRes4','$messstelle4EnfRes','$standort4EnfRes',";
-$tsql .= "'$energieRes5','$messstelle5EnfRes','$standort5EnfRes','$energieRes6','$messstelle6EnfRes','$standort6EnfRes')";
-}
-else{
-	$extDlID = $_POST['extDlID'];
+        	$tsql .= "VALUES ('$liegID',getdate(),'$nameAllgemein','$aktiv','$gesellschaftsform','$anschrift','$land','$plz','$ort','$typ','$standortdatenDritte',";
+        	$tsql .= "'$titelAnsprechpartner','$nameAnsprechpartner','$vornameAnsprechpartner','$eMailAnsprechpartner','$telefonAnsprechpartner',";
+        	$tsql .= "'$faxAnsprechpartner','$mobiltelefonAnsprechpartner',";
+        $tsql .= "'$energietraeger1','$messstelle1Ent','$standort1Ent','$energietraeger2','$messstelle2Ent','$standort2Ent',";
+        $tsql .= "'$energietraeger3','$messstelle3Ent','$standort3Ent','$energietraeger4','$messstelle4Ent','$standort4Ent',";
+        	$tsql .= "'$energietraeger5','$messstelle5Ent','$standort5Ent','$energietraeger6','$messstelle6Ent','$standort6Ent',";
+        $tsql .= "'$energieRes1','$messstelle1EnfRes','$standort1EnfRes','$energieRes2','$messstelle2EnfRes','$standort2EnfRes',";
+        	$tsql .= "'$energieRes3','$messstelle3EnfRes','$standort3EnfRes','$energieRes4','$messstelle4EnfRes','$standort4EnfRes',";
+        $tsql .= "'$energieRes5','$messstelle5EnfRes','$standort5EnfRes','$energieRes6','$messstelle6EnfRes','$standort6EnfRes')";
+    }
+    else {
+    	$extDlID = $_POST['extDlID'];
 
-	$tsql = "UPDATE externeDurchleitungen SET datumExtDl = getdate(),nameExtDl = '$nameAllgemein',aktivExtDl = '$aktiv',";
-	$tsql .= "gesellschaftsformExtDl = '$gesellschaftsform',anschriftExtDl = '$anschrift',landExtDl = '$land',plzExtDl = '$plz',ortExtDl = '$ort',typExtDl = '$typ',";
-	$tsql .= "standortdatenDritte = '$standortdatenDritte',titelAnsprechpartnerExtDl = '$titelAnsprechpartner',nameAnsprechpartnerExtDl = '$nameAnsprechpartner',";
-	$tsql .= "vornameAnsprechpartnerExtDl = '$vornameAnsprechpartner',eMailAnsprechpartnerExtDl = '$eMailAnsprechpartner',";
-	$tsql .= "telefonAnsprechpartnerExtDl = '$telefonAnsprechpartner',faxAnsprechpartnerExtDl = '$faxAnsprechpartner',";
-	$tsql .= "mobiltelefonAnsprechpartnerExtDl = '$mobiltelefonAnsprechpartner',";
-	$tsql .= "energietraeger1 = '$energietraeger1',messstelle1ExtDl = '$messstelle1Ent',standort1ExtDl = '$standort1Ent',";
-$tsql .= "energietraeger2 = '$energietraeger2',messstelle2ExtDl = '$messstelle2Ent',standort2ExtDl = '$standort2Ent',";
-$tsql .= "energietraeger3 = '$energietraeger3',messstelle3ExtDl = '$messstelle3Ent',standort3ExtDl = '$standort3Ent',";
-$tsql .= "energietraeger4 = '$energietraeger4',messstelle4ExtDl = '$messstelle4Ent',standort4ExtDl = '$standort4Ent',";
-	$tsql .= "energietraeger5 = '$energietraeger5',messstelle5ExtDl = '$messstelle5Ent',standort5ExtDl = '$standort5Ent',";
-$tsql .= "energietraeger6 = '$energietraeger6',messstelle6ExtDl = '$messstelle6Ent',standort6ExtDl = '$standort6Ent',";
+    	$tsql = "UPDATE externeDurchleitungen SET datumExtDl = getdate(),nameExtDl = '$nameAllgemein',aktivExtDl = '$aktiv',";
+    	$tsql .= "gesellschaftsformExtDl = '$gesellschaftsform',anschriftExtDl = '$anschrift',landExtDl = '$land',plzExtDl = '$plz',ortExtDl = '$ort',typExtDl = '$typ',";
+    	$tsql .= "standortdatenDritte = '$standortdatenDritte',titelAnsprechpartnerExtDl = '$titelAnsprechpartner',nameAnsprechpartnerExtDl = '$nameAnsprechpartner',";
+    	$tsql .= "vornameAnsprechpartnerExtDl = '$vornameAnsprechpartner',eMailAnsprechpartnerExtDl = '$eMailAnsprechpartner',";
+    	$tsql .= "telefonAnsprechpartnerExtDl = '$telefonAnsprechpartner',faxAnsprechpartnerExtDl = '$faxAnsprechpartner',";
+    	$tsql .= "mobiltelefonAnsprechpartnerExtDl = '$mobiltelefonAnsprechpartner',";
+    	$tsql .= "energietraeger1 = '$energietraeger1',messstelle1ExtDl = '$messstelle1Ent',standort1ExtDl = '$standort1Ent',";
+        $tsql .= "energietraeger2 = '$energietraeger2',messstelle2ExtDl = '$messstelle2Ent',standort2ExtDl = '$standort2Ent',";
+        $tsql .= "energietraeger3 = '$energietraeger3',messstelle3ExtDl = '$messstelle3Ent',standort3ExtDl = '$standort3Ent',";
+        $tsql .= "energietraeger4 = '$energietraeger4',messstelle4ExtDl = '$messstelle4Ent',standort4ExtDl = '$standort4Ent',";
+        	$tsql .= "energietraeger5 = '$energietraeger5',messstelle5ExtDl = '$messstelle5Ent',standort5ExtDl = '$standort5Ent',";
+        $tsql .= "energietraeger6 = '$energietraeger6',messstelle6ExtDl = '$messstelle6Ent',standort6ExtDl = '$standort6Ent',";
 
-$tsql .= "energieRes1ExtDl = '$energieRes1',messstelleEngRes1ExtDl = '$messstelle1EnfRes',standortEngRes1ExtDl = '$standort1EnfRes',";
-	$tsql .= "energieRes2ExtDl = '$energieRes2',messstelleEngRes2ExtDl = '$messstelle2EnfRes',standortEngRes2ExtDl = '$standort2EnfRes',";
-$tsql .= "energieRes3ExtDl = '$energieRes3',messstelleEngRes3ExtDl = '$messstelle3EnfRes',standortEngRes3ExtDl = '$standort3EnfRes',";
-$tsql .= "energieRes4ExtDl = '$energieRes4',messstelleEngRes4ExtDl = '$messstelle4EnfRes',standortEngRes4ExtDl = '$standort4EnfRes',";
-$tsql .= "energieRes5ExtDl = '$energieRes5',messstelleEngRes5ExtDl = '$messstelle5EnfRes',standortEngRes5ExtDl = '$standort5EnfRes',";
-$tsql .= "energieRes6ExtDl = '$energieRes6',messstelleEngRes6ExtDl = '$messstelle6EnfRes',standortEngRes6ExtDl = '$standort6EnfRes' ";
-	$tsql .= "WHERE extDl_ID = '$extDlID'";
-}
+        $tsql .= "energieRes1ExtDl = '$energieRes1',messstelleEngRes1ExtDl = '$messstelle1EnfRes',standortEngRes1ExtDl = '$standort1EnfRes',";
+        	$tsql .= "energieRes2ExtDl = '$energieRes2',messstelleEngRes2ExtDl = '$messstelle2EnfRes',standortEngRes2ExtDl = '$standort2EnfRes',";
+        $tsql .= "energieRes3ExtDl = '$energieRes3',messstelleEngRes3ExtDl = '$messstelle3EnfRes',standortEngRes3ExtDl = '$standort3EnfRes',";
+        $tsql .= "energieRes4ExtDl = '$energieRes4',messstelleEngRes4ExtDl = '$messstelle4EnfRes',standortEngRes4ExtDl = '$standort4EnfRes',";
+        $tsql .= "energieRes5ExtDl = '$energieRes5',messstelleEngRes5ExtDl = '$messstelle5EnfRes',standortEngRes5ExtDl = '$standort5EnfRes',";
+        $tsql .= "energieRes6ExtDl = '$energieRes6',messstelleEngRes6ExtDl = '$messstelle6EnfRes',standortEngRes6ExtDl = '$standort6EnfRes' ";
+    	$tsql .= "WHERE extDl_ID = '$extDlID'";
+    }
 }
 elseif($id == "ber") {
     $modus = $_POST['modus'];
@@ -448,38 +448,41 @@ elseif($id == "ber") {
         $tsql .= "WHERE ber_ID = '$berID'";
     }
 }
-elseif($id == "mst") {
+elseif($id == "mstE" || $id == "mstB") {
 
-    $modus = $_POST['modus'];
+    $modus = $_POST['modus'] ;
+    $typ = $id === "mstE" ? "energiedaten" : "betriebsdaten" ;
 
-    $messstellenbezeichnung= $_POST['messstellenbezeichnung'];
-    $kurzbezeichnung= $_POST['kurzbezeichnung'];
-    $kostenstelle = $_POST['kostenstelle'];
-    $aktiv = $_POST['aktiv'];
-    $isDurchleitung = $_POST['isDurchleitung'];
-    $energietraeger = $_POST['energietraeger'];
-    $energieform = $_POST['energieform'];
-    $ort = $_POST['ort'];
-    $messart = $_POST['messart'];
-    $vorgelagerteMessstelle = $_POST['vorgelagerteMessstelle'];
-    $messmittelBerechnungslogik = $_POST['messmittelBerechnungslogik'];
-    $msmID = $_POST['msmID'];
+    $messstellenbezeichnung= $_POST['messstellenbezeichnung'] ;
+    $kurzbezeichnung= $_POST['kurzbezeichnung'] ;
+    $kostenstelle = $_POST['kostenstelle'] ;
+    $aktiv = $_POST['aktiv'] ;
+    $extDlID = $_POST['extDlID'] ;
+    $isDurchleitung = $_POST['isDurchleitung'] ;
+    $energietraeger = $_POST['energietraeger'] ;
+    $energieform = $_POST['energieform'] ;
+    $beschreibung = $_POST['beschreibung'] ;
+    $ort = $_POST['ort'] ;
+    $messart = $_POST['messart'] ;
+    $vorgelMstID = $_POST['vorgelMstID'] ;
+    $messmittelBerechnungslogik = $_POST['messmittelBerechnungslogik'] ;
+    $msmID = $_POST['msmID'] ;
     $anlID = $_POST['anlID'] === "" ? 0 : $_POST['anlID'] ;
-    $notiz = $_POST['notiz'];
+    $notiz = $_POST['notiz'] ;
 
-    if($modus == "new"){
-    $berID = $_POST['berID'];
+    if ($modus == "new"){
+        $berID = $_POST['berID'] ;
 
-    	$tsql = "INSERT INTO messstellen(ber_ID,datumMst,nameMSt,kurzbezeichnungMst,kostenstelleMst,aktivMst,energietraegerMst,energieformMst,ortMst,messartMst,vorgelagerteMessstelleMst,messmittelBerechnungslogikMst,notizMst, deleted, anl_ID, msm_ID, isDurchleitung)
-    	         VALUES ('$berID',getdate(),'$messstellenbezeichnung',' $kurzbezeichnung','$kostenstelle','$aktiv','$energietraeger','$energieform','$ort','$messart','$vorgelagerteMessstelle','$messmittelBerechnungslogik','$notiz', 0, '$anlID', '$msmID', '$isDurchleitung') ";
+    	$tsql = "INSERT INTO messstellen(ber_ID,datumMst,nameMSt,kurzbezeichnungMst,kostenstelleMst,aktivMst,energietraegerMst,energieformMst,ortMst,messartMst,vorgelMst_ID,messmittelBerechnungslogikMst,notizMst, deleted, anl_ID, msm_ID, extDl_ID, isDurchleitung, beschreibung, typ) " ;
+        $tsql .= "VALUES ('$berID',getdate(),'$messstellenbezeichnung',' $kurzbezeichnung','$kostenstelle','$aktiv','$energietraeger','$energieform','$ort','$messart','$vorgelMstID','$messmittelBerechnungslogik','$notiz', 0, '$anlID', '$msmID', '$extDlID', '$isDurchleitung', '$beschreibung', '$typ') " ;
     }
-    else{
-    	$mstID = $_POST['mstID'];
+    else {
+    	$mstID = $_POST['mstID'] ;
 
     	$tsql =  "UPDATE messstellen SET datumMst = getdate(),nameMSt = '$messstellenbezeichnung', kurzbezeichnungMst = '$kurzbezeichnung', anl_ID = '$anlID', msm_ID = '$msmID', ";
-    	$tsql .= "kostenstelleMst = '$kostenstelle',aktivMst = '$aktiv', energietraegerMst ='$energietraeger', messartMst = '$messart', vorgelagerteMessstelleMst = '$vorgelagerteMessstelle', " ;
-        $tsql .= "messmittelBerechnungslogikMst = '$messmittelBerechnungslogik', notizMst = '$notiz', ortMst = '$ort', energieformMst = '$energieform', isDurchleitung = '$isDurchleitung' " ;
-    	$tsql .= "WHERE mst_ID = '$mstID' ";
+    	$tsql .= "kostenstelleMst = '$kostenstelle',aktivMst = '$aktiv', energietraegerMst ='$energietraeger', messartMst = '$messart', vorgelMst_ID = '$vorgelMstID', " ;
+        $tsql .= "messmittelBerechnungslogikMst = '$messmittelBerechnungslogik', notizMst = '$notiz', ortMst = '$ort', energieformMst = '$energieform', extDl_ID = '$extDlID', isDurchleitung = '$isDurchleitung', beschreibung = '$beschreibung' " ;
+    	$tsql .= "WHERE mst_ID = '$mstID' " ;
     }
 }
 elseif($id == "prd") {
@@ -518,7 +521,7 @@ $anl = array();
     $anl[] = $_POST['anl07ID'];
     $anl[] = $_POST['anl08ID'];
     $anl[] = $_POST['anl09ID'];
-    
+
     $anlType = array();
     $anlType[] = $_POST['anlType01'];
     $anlType[] = $_POST['anlType02'];
@@ -549,16 +552,16 @@ if($modus == "new"){
             }
             else if($anlType[$i] == 'manuel'){
                 $Anltype = 2;
-            }            
+            }
             $j = $i+1;
             $prdktQuery = "INSERT INTO produktionsAnlagenMoreOpt(prd_id,type,anl_id,anl_col,anlarge)";
-            $prdktQuery .= " VALUES ('".$lastPrdktID[0]['prd_ID']."','".$Anltype."','".$anl[$i]."','anl0".$j."_ID','')";            
+            $prdktQuery .= " VALUES ('".$lastPrdktID[0]['prd_ID']."','".$Anltype."','".$anl[$i]."','anl0".$j."_ID','')";
             queryDB( $conn, $prdktQuery, "write" );
             //echo($prdktQuery);//die();
         }
         else{
             continue;
-        }          
+        }
     }
     /*new-mm-end*/
 }
@@ -591,7 +594,7 @@ else {
             }
             else if($anlType[$i] == 'manuel'){
                 $Anltype = 2;
-            }            
+            }
             $j = $i+1;
             $queryCheckPrdktAnl="SELECT * FROM produktionsAnlagenMoreOpt WHERE prd_ID = '".$prdID."' AND anl_col = 'anl0".$j."'";
             $recordsCheckPrdktAnl = queryDB($conn, $queryCheckPrdktAnl, "read");
@@ -607,20 +610,20 @@ else {
                 //echo($queryPrdktAnlUpdate);//die();
             }else{
                 $prdktQuery = "INSERT INTO produktionsAnlagenMoreOpt(prd_id,type,anl_id,anl_col,anlarge)";
-                $prdktQuery .= " VALUES ('".$prdID."','".$Anltype."','".$anl[$i]."','anl0".$j."_ID','')";                
+                $prdktQuery .= " VALUES ('".$prdID."','".$Anltype."','".$anl[$i]."','anl0".$j."_ID','')";
                 queryDB( $conn, $prdktQuery, "write" );
                 //echo($prdktQuery);//die();
             }
         }
         else{
             continue;
-        }            
+        }
     }
     /*new-mm-end*/
 }
 }
 }
-if($id == "prd" && $modus != "new"){ 
+if($id == "prd" && $modus != "new"){
     $retState = queryDB( $conn, $tsql, "write" );
     echo $tsql;
 }
@@ -640,7 +643,7 @@ elseif($id == "prdktAnl"){
     $anl[] = $_POST['anl07ID'];
     $anl[] = $_POST['anl08ID'];
     $anl[] = $_POST['anl09ID'];
-    
+
     $anlType = array();
     $anlType[] = $_POST['anlType01'];
     $anlType[] = $_POST['anlType02'];
@@ -673,9 +676,9 @@ elseif($id == "prdktAnl"){
             $prdktQuery .= "VALUES ('".$prdID."','".$anl[$i]."','".$anlType[$i]."','false','false')";
             echo($prdktQuery); die();
             //queryDB( $conn, $prdktQuery, "write" );
-        }       
+        }
         // $prdktQuery = "INSERT INTO produkteAnlargeDummy(prd_id,type,anl_id,anl_col,anlarge)";
-        // $prdktQuery .= "VALUES ('$prdID','$anlType','','','false')";      
+        // $prdktQuery .= "VALUES ('$prdID','$anlType','','','false')";
     }
     /*  foreach ($anl01ID as $key => $value) {
             $anlType = $anlType[$key];
@@ -1882,262 +1885,270 @@ elseif ($id == "enf") {
 }
 elseif($id == "eRng") {
 
-$modus = $_POST['modus'];
-$liegID = $_POST['liegID'];
-$versorger = $_POST['versorger'];
-$rechnungsmodus = $_POST['rechnungsmodus'];
-$rechnungsnummer = $_POST['rechnungsnummer'];
-$zaehlpunktnummer = $_POST['zaehlpunktnummer'];
-$mstID = $_POST['mstID'];
-$rechnungsdatum = $_POST['rechnungsdatum'];
-$abrechnungszeitVom = $_POST['abrechnungszeitVom'];
-$abrechnungszeitBis = $_POST['abrechnungszeitBis'];
-$energietraeger = $_POST['energietraeger'];
-$einheit = $_POST['einheit'];
-$kostenstelle = $_POST['kostenstelle'];
+    $modus = $_POST['modus'];
+    $liegID = $_POST['liegID'];
+    $versorger = $_POST['versorger'];
+    $rechnungsmodus = $_POST['rechnungsmodus'];
+    $rechnungsnummer = $_POST['rechnungsnummer'];
+    $zaehlpunktnummer = $_POST['zaehlpunktnummer'];
+    $mstID = $_POST['mstID'];
+    $rechnungsdatum = $_POST['rechnungsdatum'];
+    $abrechnungszeitVom = $_POST['abrechnungszeitVom'];
+    $abrechnungszeitBis = $_POST['abrechnungszeitBis'];
+    $energietraeger = $_POST['energietraeger'];
+    $einheit = $_POST['einheit'];
+    $kostenstelle = $_POST['kostenstelle'];
 
 
-if($_POST['menge'] == ""){
-	$menge = 0;
-}
-else{
-	$menge = $_POST['menge'];
-}
-if($_POST['kosten'] == ""){
-	$kosten = 0;
-}
-else{
-	$kosten = $_POST['kosten'];
-}
+    if($_POST['menge'] == ""){
+    	$menge = 0;
+    }
+    else{
+    	$menge = $_POST['menge'];
+    }
 
-if($_POST['verbrauch'] == ""){
-	$verbrauch = 0;
-}
-else{
-	$verbrauch = $_POST['verbrauch'];
-}
+    if($_POST['kosten'] == ""){
+    	$kosten = 0;
+    }
+    else{
+    	$kosten = $_POST['kosten'];
+    }
 
-if($_POST['tagstromVerbr'] == ""){
-	$tagstromVerbr = 0;
-}
-else{
-	$tagstromVerbr = $_POST['tagstromVerbr'];
-}
+    if($_POST['mwst'] == ""){
+    	$mwst = 0;
+    }
+    else{
+    	$mwst = $_POST['mwst'];
+    }
 
-if($_POST['tagstromKost'] == ""){
-	$tagstromKost = 0;
-}
-else{
-	$tagstromKost = $_POST['tagstromKost'];
-}
+    if($_POST['verbrauch'] == ""){
+    	$verbrauch = 0;
+    }
+    else{
+    	$verbrauch = $_POST['verbrauch'];
+    }
 
-if($_POST['nachtstromVerbr'] == ""){
-	$nachtstromVerbr = 0;
-}
-else{
-	$nachtstromVerbr = $_POST['nachtstromVerbr'];
-}
+    if($_POST['tagstromVerbr'] == ""){
+    	$tagstromVerbr = 0;
+    }
+    else{
+    	$tagstromVerbr = $_POST['tagstromVerbr'];
+    }
 
-if($_POST['nachtstromKost'] == ""){
-	$nachtstromKost = 0;
-}
-else{
-	$nachtstromKost = $_POST['nachtstromKost'];
-}
-if($_POST['blindstrom'] == ""){
-	$blindstrom = 0;
-}
-else{
-	$blindstrom = $_POST['blindstrom'];
-}
+    if($_POST['tagstromKost'] == ""){
+    	$tagstromKost = 0;
+    }
+    else{
+    	$tagstromKost = $_POST['tagstromKost'];
+    }
 
-if($_POST['lastspitze'] == ""){
-	$lastspitze = 0;
-}
-else{
-	$lastspitze = $_POST['lastspitze'];
-}
+    if($_POST['nachtstromVerbr'] == ""){
+    	$nachtstromVerbr = 0;
+    }
+    else{
+    	$nachtstromVerbr = $_POST['nachtstromVerbr'];
+    }
 
-if($_POST['leistungspreis'] == ""){
-	$leistungspreis = 0;
-}
-else{
-	$leistungspreis = $_POST['leistungspreis'];
-}
+    if($_POST['nachtstromKost'] == ""){
+    	$nachtstromKost = 0;
+    }
+    else{
+    	$nachtstromKost = $_POST['nachtstromKost'];
+    }
+    if($_POST['blindstrom'] == ""){
+    	$blindstrom = 0;
+    }
+    else{
+    	$blindstrom = $_POST['blindstrom'];
+    }
 
-if($_POST['arbeitspreisWirkstrom'] == ""){
-	$arbeitspreisWirkstrom = 0;
-}
-else{
-	$arbeitspreisWirkstrom = $_POST['arbeitspreisWirkstrom'];
-}
+    if($_POST['lastspitze'] == ""){
+    	$lastspitze = 0;
+    }
+    else{
+    	$lastspitze = $_POST['lastspitze'];
+    }
 
-if($_POST['stromsteuer'] == ""){
-	$stromsteuer = 0;
-}
-else{
-	$stromsteuer = $_POST['stromsteuer'];
-}
+    if($_POST['leistungspreis'] == ""){
+    	$leistungspreis = 0;
+    }
+    else{
+    	$leistungspreis = $_POST['leistungspreis'];
+    }
 
-if($_POST['eegUmlage'] == ""){
-	$eegUmlage = 0;
-}
-else{
-	$eegUmlage = $_POST['eegUmlage'];
-}
+    if($_POST['arbeitspreisWirkstrom'] == ""){
+    	$arbeitspreisWirkstrom = 0;
+    }
+    else{
+    	$arbeitspreisWirkstrom = $_POST['arbeitspreisWirkstrom'];
+    }
 
-if($_POST['eegUmlageUntMill'] == ""){
-	$eegUmlageUntMill = 0;
-}
-else{
-	$eegUmlageUntMill = $_POST['eegUmlageUntMill'];
-}
+    if($_POST['stromsteuer'] == ""){
+    	$stromsteuer = 0;
+    }
+    else{
+    	$stromsteuer = $_POST['stromsteuer'];
+    }
 
-if($_POST['eegUmlageUebMill'] == ""){
-	$eegUmlageUebMill = 0;
-}
-else{
-	$eegUmlageUebMill = $_POST['eegUmlageUebMill'];
-}
+    if($_POST['eegUmlage'] == ""){
+    	$eegUmlage = 0;
+    }
+    else{
+    	$eegUmlage = $_POST['eegUmlage'];
+    }
 
-if($_POST['arbeitspreisNetz'] == ""){
-	$arbeitspreisNetz = 0;
-}
-else{
-	$arbeitspreisNetz = $_POST['arbeitspreisNetz'];
-}
+    if($_POST['eegUmlageUntMill'] == ""){
+    	$eegUmlageUntMill = 0;
+    }
+    else{
+    	$eegUmlageUntMill = $_POST['eegUmlageUntMill'];
+    }
 
-if($_POST['konzessionsabgabe'] == ""){
-	$konzessionsabgabe = 0;
-}
-else{
-	$konzessionsabgabe = $_POST['konzessionsabgabe'];
-}
+    if($_POST['eegUmlageUebMill'] == ""){
+    	$eegUmlageUebMill = 0;
+    }
+    else{
+    	$eegUmlageUebMill = $_POST['eegUmlageUebMill'];
+    }
 
-if($_POST['kwkUnter'] == ""){
-	$kwkUnter = 0;
-}
-else{
-	$kwkUnter = $_POST['kwkUnter'];
-}
+    if($_POST['arbeitspreisNetz'] == ""){
+    	$arbeitspreisNetz = 0;
+    }
+    else{
+    	$arbeitspreisNetz = $_POST['arbeitspreisNetz'];
+    }
 
-if($_POST['kwkUeber'] == ""){
-	$kwkUeber = 0;
-}
-else{
-	$kwkUeber = $_POST['kwkUeber'];
-}
+    if($_POST['konzessionsabgabe'] == ""){
+    	$konzessionsabgabe = 0;
+    }
+    else{
+    	$konzessionsabgabe = $_POST['konzessionsabgabe'];
+    }
 
-if($_POST['nevUnter'] == ""){
-	$nevUnter = 0;
-}
-else{
-	$nevUnter = $_POST['nevUnter'];
-}
+    if($_POST['kwkUnter'] == ""){
+    	$kwkUnter = 0;
+    }
+    else{
+    	$kwkUnter = $_POST['kwkUnter'];
+    }
 
-if($_POST['nevUeber'] == ""){
-	$nevUeber = 0;
-}
-else{
-	$nevUeber = $_POST['nevUeber'];
-}
+    if($_POST['kwkUeber'] == ""){
+    	$kwkUeber = 0;
+    }
+    else{
+    	$kwkUeber = $_POST['kwkUeber'];
+    }
 
-if($_POST['offUnter'] == ""){
-	$offUnter = 0;
-}
-else{
-	$offUnter = $_POST['offUnter'];
-}
+    if($_POST['nevUnter'] == ""){
+    	$nevUnter = 0;
+    }
+    else{
+    	$nevUnter = $_POST['nevUnter'];
+    }
 
-if($_POST['offUeber'] == ""){
-	$offUeber = 0;
-}
-else{
-	$offUeber = $_POST['offUeber'];
-}
+    if($_POST['nevUeber'] == ""){
+    	$nevUeber = 0;
+    }
+    else{
+    	$nevUeber = $_POST['nevUeber'];
+    }
 
-$lblCustom1 = $_POST['lblCustom1'];
-$lblCustom2 = $_POST['lblCustom2'];
-$lblCustom3 = $_POST['lblCustom3'];
-$lblCustom4 = $_POST['lblCustom4'];
-$lblCustom5 = $_POST['lblCustom5'];
-$lblCustom6 = $_POST['lblCustom6'];
+    if($_POST['offUnter'] == ""){
+    	$offUnter = 0;
+    }
+    else{
+    	$offUnter = $_POST['offUnter'];
+    }
 
-if($_POST['Custom1'] == ""){
-	$Custom1 = 0;
-}
-else{
-	$Custom1 = $_POST['Custom1'];
-}
+    if($_POST['offUeber'] == ""){
+    	$offUeber = 0;
+    }
+    else{
+    	$offUeber = $_POST['offUeber'];
+    }
 
-if($_POST['Custom2'] == ""){
-	$Custom2 = 0;
-}
-else{
-	$Custom2 = $_POST['Custom2'];
-}
+    $lblCustom1 = $_POST['lblCustom1'];
+    $lblCustom2 = $_POST['lblCustom2'];
+    $lblCustom3 = $_POST['lblCustom3'];
+    $lblCustom4 = $_POST['lblCustom4'];
+    $lblCustom5 = $_POST['lblCustom5'];
+    $lblCustom6 = $_POST['lblCustom6'];
 
-if($_POST['Custom3'] == ""){
-	$Custom3 = 0;
-}
-else{
-	$Custom3 = $_POST['Custom3'];
-}
+    if($_POST['Custom1'] == ""){
+    	$Custom1 = 0;
+    }
+    else{
+    	$Custom1 = $_POST['Custom1'];
+    }
 
-if($_POST['Custom4'] == ""){
-	$Custom4 = 0;
-}
-else{
-	$Custom4 = $_POST['Custom4'];
-}
+    if($_POST['Custom2'] == ""){
+    	$Custom2 = 0;
+    }
+    else{
+    	$Custom2 = $_POST['Custom2'];
+    }
 
-if($_POST['Custom5'] == ""){
-	$Custom5 = 0;
-}
-else{
-	$Custom5 = $_POST['Custom5'];
-}
+    if($_POST['Custom3'] == ""){
+    	$Custom3 = 0;
+    }
+    else{
+    	$Custom3 = $_POST['Custom3'];
+    }
 
-if($_POST['Custom6'] == ""){
-	$Custom6 = 0;
-}
-else{
-	$Custom6 = $_POST['Custom6'];
-}
+    if($_POST['Custom4'] == ""){
+    	$Custom4 = 0;
+    }
+    else{
+    	$Custom4 = $_POST['Custom4'];
+    }
+
+    if($_POST['Custom5'] == ""){
+    	$Custom5 = 0;
+    }
+    else{
+    	$Custom5 = $_POST['Custom5'];
+    }
+
+    if($_POST['Custom6'] == ""){
+    	$Custom6 = 0;
+    }
+    else{
+    	$Custom6 = $_POST['Custom6'];
+    }
 
 
-if($modus == "new"){
+    if($modus == "new"){
 
-	$tsql = "INSERT INTO externeRechnungen(lieg_ID,versorgerERng,rechnungsmodusERng,nrERng,zpNrERng,mst_ID,datumERng,vomERng,bisERng,entERng,einERng,mengeERng,verbrauchERng,kostenERng,";
-	$tsql .= "tagstromVerbrERng,tagstromKostERng,nachtstromVerbrERng,nachtstromKostERng,blindstromERng,lastspitzeERng,leistungspreisERng,abpWirkERng,strSteuERng,eegERng,";
-	$tsql .= "eegUntERng,eegUebERng,abpNetzERng,konzERng,kwkUntERng,kwkObERng,nevUntERng,nevObERng,offUntERng,offObERng,";
-	$tsql .= "lblCustom1ERng,Custom1ERng,lblCustom2ERng,Custom2ERng,lblCustom3ERng,Custom3ERng,lblCustom4ERng,Custom4ERng,lblCustom5ERng,Custom5ERng,lblCustom6ERng,Custom6ERng,kostenstelleERng) ";
+    	$tsql = "INSERT INTO externeRechnungen(lieg_ID,versorgerERng,rechnungsmodusERng,nrERng,zpNrERng,mst_ID,datumERng,vomERng,bisERng,entERng,einERng,mengeERng,verbrauchERng,kostenERng,";
+    	$tsql .= "tagstromVerbrERng,tagstromKostERng,nachtstromVerbrERng,nachtstromKostERng,blindstromERng,lastspitzeERng,leistungspreisERng,abpWirkERng,strSteuERng,eegERng,";
+    	$tsql .= "eegUntERng,eegUebERng,abpNetzERng,konzERng,kwkUntERng,kwkObERng,nevUntERng,nevObERng,offUntERng,offObERng,mwstPercentERng,";
+    	$tsql .= "lblCustom1ERng,Custom1ERng,lblCustom2ERng,Custom2ERng,lblCustom3ERng,Custom3ERng,lblCustom4ERng,Custom4ERng,lblCustom5ERng,Custom5ERng,lblCustom6ERng,Custom6ERng,kostenstelleERng) ";
 
-	$tsql .= "VALUES ('$liegID', '$versorger', '$rechnungsmodus','$rechnungsnummer', '$zaehlpunktnummer','$mstID','$rechnungsdatum', '$abrechnungszeitVom','$abrechnungszeitBis','$energietraeger',";
-	$tsql .= "'$einheit',$menge,$verbrauch,$kosten, $tagstromVerbr, $tagstromKost, $nachtstromVerbr, $nachtstromKost, $blindstrom, $lastspitze, $leistungspreis, $arbeitspreisWirkstrom, $stromsteuer, $eegUmlage,";
-	$tsql .= "$eegUmlageUntMill, $eegUmlageUebMill, $arbeitspreisNetz, $konzessionsabgabe, ";
-	$tsql .= "$kwkUnter, $kwkUeber, $nevUnter, $nevUeber, $offUnter, $offUeber,";
+    	$tsql .= "VALUES ('$liegID', '$versorger', '$rechnungsmodus','$rechnungsnummer', '$zaehlpunktnummer','$mstID','$rechnungsdatum', '$abrechnungszeitVom','$abrechnungszeitBis','$energietraeger',";
+    	$tsql .= "'$einheit',$menge,$verbrauch,$kosten, $tagstromVerbr, $tagstromKost, $nachtstromVerbr, $nachtstromKost, $blindstrom, $lastspitze, $leistungspreis, $arbeitspreisWirkstrom, $stromsteuer, $eegUmlage,";
+    	$tsql .= "$eegUmlageUntMill, $eegUmlageUebMill, $arbeitspreisNetz, $konzessionsabgabe, ";
+    	$tsql .= "$kwkUnter, $kwkUeber, $nevUnter, $nevUeber, $offUnter, $offUeber, $mwst, ";
 
-	$tsql .= "'$lblCustom1', $Custom1, '$lblCustom2', $Custom2, '$lblCustom3', $Custom3, '$lblCustom4', $Custom4, '$lblCustom5', $Custom5,";
-	$tsql .= "'$lblCustom6', $Custom6, '$kostenstelle')";
-}
-else {
-	$eRngID = $_POST['eRngID'];
+    	$tsql .= "'$lblCustom1', $Custom1, '$lblCustom2', $Custom2, '$lblCustom3', $Custom3, '$lblCustom4', $Custom4, '$lblCustom5', $Custom5,";
+    	$tsql .= "'$lblCustom6', $Custom6, '$kostenstelle')";
+    }
+    else {
+    	$eRngID = $_POST['eRngID'];
 
-	$tsql =  "UPDATE externeRechnungen SET versorgerERng = '$versorger',rechnungsmodusERng = '$rechnungsmodus', nrERng = '$rechnungsnummer', zpNrERng = '$zaehlpunktnummer',mst_ID = $mstID, datumERng = '$rechnungsdatum', vomERng = '$abrechnungszeitVom',";
-	$tsql .= "bisERng = '$abrechnungszeitBis',entERng = '$energietraeger',einERng = '$einheit',mengeERng = $menge, verbrauchERng = $verbrauch,";
-	$tsql .= "kostenERng = $kosten, tagstromVerbrERng = $tagstromVerbr, tagstromKostERng = $tagstromKost,nachtstromVerbrERng = $nachtstromVerbr,nachtstromKostERng = $nachtstromKost, blindstromERng= $blindstrom,lastspitzeERng = $lastspitze,";
-	$tsql .= "leistungspreisERng = $leistungspreis,abpWirkERng = $arbeitspreisWirkstrom,strSteuERng = $stromsteuer,";
-	$tsql .= "eegERng = $eegUmlage,eegUntERng = $eegUmlageUntMill,eegUebERng = $eegUmlageUebMill, abpNetzERng = $arbeitspreisNetz, konzERng = $konzessionsabgabe,";
-	$tsql .= "kwkUntERng = $kwkUnter, kwkObERng = $kwkUeber, nevUntERng = $nevUnter,";
-	$tsql .= "nevObERng = $nevUeber, offUntERng = $offUnter, offObERng = $offUeber,";
+    	$tsql =  "UPDATE externeRechnungen SET versorgerERng = '$versorger',rechnungsmodusERng = '$rechnungsmodus', nrERng = '$rechnungsnummer', zpNrERng = '$zaehlpunktnummer',mst_ID = $mstID, datumERng = '$rechnungsdatum', vomERng = '$abrechnungszeitVom',";
+    	$tsql .= "bisERng = '$abrechnungszeitBis',entERng = '$energietraeger',einERng = '$einheit',mengeERng = $menge, verbrauchERng = $verbrauch,";
+    	$tsql .= "kostenERng = $kosten, tagstromVerbrERng = $tagstromVerbr, tagstromKostERng = $tagstromKost,nachtstromVerbrERng = $nachtstromVerbr,nachtstromKostERng = $nachtstromKost, blindstromERng= $blindstrom,lastspitzeERng = $lastspitze,";
+    	$tsql .= "leistungspreisERng = $leistungspreis,abpWirkERng = $arbeitspreisWirkstrom,strSteuERng = $stromsteuer,";
+    	$tsql .= "eegERng = $eegUmlage,eegUntERng = $eegUmlageUntMill,eegUebERng = $eegUmlageUebMill, abpNetzERng = $arbeitspreisNetz, konzERng = $konzessionsabgabe,";
+    	$tsql .= "kwkUntERng = $kwkUnter, kwkObERng = $kwkUeber, nevUntERng = $nevUnter,";
+    	$tsql .= "nevObERng = $nevUeber, offUntERng = $offUnter, offObERng = $offUeber, mwstPercentERng = $mwst,";
 
-	$tsql .= "lblCustom1ERng = '$lblCustom1',Custom1ERng = $Custom1,lblCustom2ERng = '$lblCustom2',Custom2ERng = $Custom2,";
-	$tsql .= "lblCustom3ERng = '$lblCustom3',Custom3ERng = $Custom3,lblCustom4ERng = '$lblCustom4',Custom4ERng = $Custom4,";
-	$tsql .= "lblCustom5ERng = '$lblCustom5',Custom5ERng = $Custom5,lblCustom6ERng = '$lblCustom6',Custom6ERng = $Custom6, kostenstelleERng = '$kostenstelle' ";
+    	$tsql .= "lblCustom1ERng = '$lblCustom1',Custom1ERng = $Custom1,lblCustom2ERng = '$lblCustom2',Custom2ERng = $Custom2,";
+    	$tsql .= "lblCustom3ERng = '$lblCustom3',Custom3ERng = $Custom3,lblCustom4ERng = '$lblCustom4',Custom4ERng = $Custom4,";
+    	$tsql .= "lblCustom5ERng = '$lblCustom5',Custom5ERng = $Custom5,lblCustom6ERng = '$lblCustom6',Custom6ERng = $Custom6, kostenstelleERng = '$kostenstelle' ";
 
-	$tsql .= "WHERE eRng_ID = '$eRngID'";
-}
+    	$tsql .= "WHERE eRng_ID = '$eRngID'";
+    }
 }
 elseif($id == "intEngIMw") {
 $modus = $_POST['modus'];
@@ -2961,7 +2972,7 @@ elseif ($id == "betrPar") {
 elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdaten*/
 
  $modus = $_POST['modus'];
- 
+
  if($modus == "save"){
    //echo '<pre>'; print_r($_POST);die;
     $anlID = $_POST['anlID'];
@@ -2976,35 +2987,35 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
     $einheitAnl = $_POST['einheitAnl'];
     $einheitControlSys = $_POST['einheitControlSys'];
     $notizBdeIMw = $_POST['notizBdeIMw'];
-    $ending = $_POST['ending'];  
+    $ending = $_POST['ending'];
 
     if($zeitintervallAnl==1){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
-        $fromDate =explode(".", $sDate);      
+        $fromDate =explode(".", $sDate);
         $arrStart[] = $fromDate[2];
-        $arrStart[] = $fromDate[1];      
-        $arrStart[] = $fromDate[0]; 
+        $arrStart[] = $fromDate[1];
+        $arrStart[] = $fromDate[0];
         $startDate = implode("-",$arrStart);
       }else{
         $startDate = $_POST['startDate'];
-      }      
+      }
       if($eDate){
         $toDate = explode(".", $eDate);
-        $arrEnd[] =  $toDate[2]; 
-        $arrEnd[] =  $toDate[1]; 
-        $arrEnd[] =  $toDate[0];       
+        $arrEnd[] =  $toDate[2];
+        $arrEnd[] =  $toDate[1];
+        $arrEnd[] =  $toDate[0];
         $endDate = implode("-",$arrEnd);
       }else{
         $endDate = $_POST['endDate'];
-      }      
+      }
       $startWeek ='';
       $endWeek ='';
 
     }else if($zeitintervallAnl==2){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode("-", $sDate);
       $startWeek = $fromDate[0]; //first week selected value
       $startDate = $fromDate[1]; //first year input text value
@@ -3020,10 +3031,10 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
 
     }else if($zeitintervallAnl==3){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
         $fromDate =explode(".", $sDate);
-        $arrStart[] = $fromDate[1]; //first year input text value      
+        $arrStart[] = $fromDate[1]; //first year input text value
         $arrStart[] = $fromDate[0]; //first week selected value
         $startDate = implode("-",$arrStart);
       }else{
@@ -3035,29 +3046,29 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
         $arrEnd[] =  $toDate[0]; //second week selected value
         $endDate = implode("-",$arrEnd);
       }else{
-        $endDate = $_POST['endDate']; 
+        $endDate = $_POST['endDate'];
       }
       $startWeek ='';
       $endWeek ='';
     }else{
         $startDate =$_POST['startDate'];
-        $endDate =$_POST['endDate']; 
+        $endDate =$_POST['endDate'];
         $startWeek ='';
         $endWeek ='';
     }
     /*if($zeitintervallAnl==1){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
 
-      $fromDate =explode(".", $sDate);      
+      $fromDate =explode(".", $sDate);
       $arrStart[] = $fromDate[2];
-      $arrStart[] = $fromDate[1];      
-      $arrStart[] = $fromDate[0]; 
+      $arrStart[] = $fromDate[1];
+      $arrStart[] = $fromDate[0];
 
       $toDate = explode(".", $eDate);
-      $arrEnd[] =  $toDate[2]; 
-      $arrEnd[] =  $toDate[1]; 
-      $arrEnd[] =  $toDate[0]; 
+      $arrEnd[] =  $toDate[2];
+      $arrEnd[] =  $toDate[1];
+      $arrEnd[] =  $toDate[0];
 
       $startDate = implode("-",$arrStart);
       $endDate = implode("-",$arrEnd);
@@ -3067,7 +3078,7 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
     }
     else if($zeitintervallAnl==2){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode("-", $sDate);
       $startWeek = $fromDate[0]; //first week selected value
       $startDate = $fromDate[1]; //first year input text value
@@ -3078,10 +3089,10 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
 
     }else if($zeitintervallAnl==3){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode(".", $sDate);
-      
-      $arrStart[] = $fromDate[1]; //first year input text value      
+
+      $arrStart[] = $fromDate[1]; //first year input text value
       $arrStart[] = $fromDate[0]; //first week selected value
 
       $toDate = explode(".", $eDate);
@@ -3095,7 +3106,7 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
       $endWeek ='';
     }else{
         $startDate =$_POST['startDate'];
-        $endDate =$_POST['endDate']; 
+        $endDate =$_POST['endDate'];
         $startWeek ='';
         $endWeek ='';
     }*/
@@ -3107,7 +3118,7 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
 elseif($id == "intBdePrdktIMwHistOkConfig") { /*10-03-2021 History save intern Betriebsdaten Produkte and Messsetelle*/
 
  $modus = $_POST['modus'];
- 
+
  if($modus == "save"){
    //echo '<pre>'; print_r($_POST);die;
 
@@ -3132,38 +3143,38 @@ elseif($id == "intBdePrdktIMwHistOkConfig") { /*10-03-2021 History save intern B
     $einheitAnl = $_POST['einheitAnl'];
 
     $note = $_POST['note'];
-    $ending = $_POST['ending']; 
+    $ending = $_POST['ending'];
     $einheitControlSys = $_POST['einheitControlSys'];
     $iBdeType = $_POST['iBdeType'];
 
 
     if($zeitintervallAnl==1){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
-        $fromDate =explode(".", $sDate);      
+        $fromDate =explode(".", $sDate);
         $arrStart[] = $fromDate[2];
-        $arrStart[] = $fromDate[1];      
-        $arrStart[] = $fromDate[0]; 
+        $arrStart[] = $fromDate[1];
+        $arrStart[] = $fromDate[0];
         $startDate = implode("-",$arrStart);
       }else{
         $startDate = $_POST['startDate'];
-      }      
+      }
       if($eDate){
         $toDate = explode(".", $eDate);
-        $arrEnd[] =  $toDate[2]; 
-        $arrEnd[] =  $toDate[1]; 
-        $arrEnd[] =  $toDate[0];       
+        $arrEnd[] =  $toDate[2];
+        $arrEnd[] =  $toDate[1];
+        $arrEnd[] =  $toDate[0];
         $endDate = implode("-",$arrEnd);
       }else{
         $endDate = $_POST['endDate'];
-      }      
+      }
       $startWeek ='';
       $endWeek ='';
 
     }else if($zeitintervallAnl==2){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode("-", $sDate);
       $startWeek = $fromDate[0]; //first week selected value
       $startDate = $fromDate[1]; //first year input text value
@@ -3179,10 +3190,10 @@ elseif($id == "intBdePrdktIMwHistOkConfig") { /*10-03-2021 History save intern B
 
     }else if($zeitintervallAnl==3){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
         $fromDate =explode(".", $sDate);
-        $arrStart[] = $fromDate[1]; //first year input text value      
+        $arrStart[] = $fromDate[1]; //first year input text value
         $arrStart[] = $fromDate[0]; //first week selected value
         $startDate = implode("-",$arrStart);
       }else{
@@ -3194,13 +3205,13 @@ elseif($id == "intBdePrdktIMwHistOkConfig") { /*10-03-2021 History save intern B
         $arrEnd[] =  $toDate[0]; //second week selected value
         $endDate = implode("-",$arrEnd);
       }else{
-        $endDate = $_POST['endDate']; 
+        $endDate = $_POST['endDate'];
       }
       $startWeek ='';
       $endWeek ='';
     }else{
         $startDate =$_POST['startDate'];
-        $endDate =$_POST['endDate']; 
+        $endDate =$_POST['endDate'];
         $startWeek ='';
         $endWeek ='';
     }
@@ -3215,7 +3226,7 @@ elseif($id == "intBdePrdktIMwHistOkConfig") { /*10-03-2021 History save intern B
     deleted) ";
     $tsql .= "VALUES ( '$mst_ID', '$prd_ID', '$anl_ID', '$anl_Col',
      '$archiviert', '$bemerkung',
-     '$gueltigVon', '$gueltigBis', 
+     '$gueltigVon', '$gueltigBis',
      '$mstIMw', '$artikelnummerIntBde','$bezeichnungIntBde' , '$anlageIntBde', '$anlageMessstelleIntBde',
      '$zeitintervallAnl', '$einheitAnl',
      '$note',
@@ -3226,7 +3237,7 @@ elseif($id == "intBdePrdktIMwHistOkConfig") { /*10-03-2021 History save intern B
 elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betriebsdaten*/
 
  $modus = $_POST['modus'];
- 
+
  if($modus == "save"){
    //echo '<pre>'; print_r($_POST);die;
     $mstID = $_POST['mstID'];
@@ -3239,31 +3250,31 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
     $ending = $_POST['ending'];
     if($intTp_ID==1){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
-        $fromDate =explode(".", $sDate);      
+        $fromDate =explode(".", $sDate);
         $arrStart[] = $fromDate[2];
-        $arrStart[] = $fromDate[1];      
-        $arrStart[] = $fromDate[0]; 
+        $arrStart[] = $fromDate[1];
+        $arrStart[] = $fromDate[0];
         $startDate = implode("-",$arrStart);
       }else{
         $startDate = $_POST['startDate'];
-      }      
+      }
       if($eDate){
         $toDate = explode(".", $eDate);
-        $arrEnd[] =  $toDate[2]; 
-        $arrEnd[] =  $toDate[1]; 
-        $arrEnd[] =  $toDate[0];       
+        $arrEnd[] =  $toDate[2];
+        $arrEnd[] =  $toDate[1];
+        $arrEnd[] =  $toDate[0];
         $endDate = implode("-",$arrEnd);
       }else{
         $endDate = $_POST['endDate'];
-      }      
+      }
       $startWeek ='';
       $endWeek ='';
 
     }else if($intTp_ID==2){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode("-", $sDate);
       $startWeek = $fromDate[0]; //first week selected value
       $startDate = $fromDate[1]; //first year input text value
@@ -3279,10 +3290,10 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
 
     }else if($intTp_ID==3){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
         $fromDate =explode(".", $sDate);
-        $arrStart[] = $fromDate[1]; //first year input text value      
+        $arrStart[] = $fromDate[1]; //first year input text value
         $arrStart[] = $fromDate[0]; //first week selected value
         $startDate = implode("-",$arrStart);
       }else{
@@ -3294,13 +3305,13 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
         $arrEnd[] =  $toDate[0]; //second week selected value
         $endDate = implode("-",$arrEnd);
       }else{
-        $endDate = $_POST['endDate']; 
+        $endDate = $_POST['endDate'];
       }
       $startWeek ='';
       $endWeek ='';
     }else{
         $startDate =$_POST['startDate'];
-        $endDate =$_POST['endDate']; 
+        $endDate =$_POST['endDate'];
         $startWeek ='';
         $endWeek ='';
     }
@@ -3308,20 +3319,20 @@ elseif($id == "interneMesswerteConfig") { /*20-10-2020 History save intern Betri
     $records = queryDB($conn, $query, "read");
 
     if(count($records) > 0){
-      $tsql = "UPDATE interneMesswerteConfig SET intTp_ID = '$intTp_ID', 
+      $tsql = "UPDATE interneMesswerteConfig SET intTp_ID = '$intTp_ID',
       unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note',einheitControlSys = '$einheitControlSys'";
       $tsql .= " WHERE mst_ID = $mstID ";
     }
     else {
       $tsql = "INSERT INTO interneMesswerteConfig (intTp_ID,unt_ID, mst_ID, startDate,endDate,startWeek,endWeek,ending,note,einheitControlSys) ";
       $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note','$einheitControlSys') ";
-    }  
+    }
   }
 }
 elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save intern Betriebsdaten Produkte and Messsetelle*/
 
  $modus = $_POST['modus'];
- 
+
  if($modus == "save"){
    // echo '<pre>'; print_r($_POST);die;
 
@@ -3334,41 +3345,41 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
     $prd_ID = $_POST['prd_ID'];
     $anl_ID = $_POST['anl_ID'];
     $anl_Col = $_POST['anl_Col'];
-    
+
     $note = $_POST['note'];
     $einheitControlSys = $_POST['einheitControlSys'];
     $mstIMw =$_POST['mstIMw'];
-         
+
     /*$startDate = $_POST['startDate'];
     $endDate = $_POST['endDate'];  */
     $ending = $_POST['ending'];
     if($intTp_ID==1){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
-        $fromDate =explode(".", $sDate);      
+        $fromDate =explode(".", $sDate);
         $arrStart[] = $fromDate[2];
-        $arrStart[] = $fromDate[1];      
-        $arrStart[] = $fromDate[0]; 
+        $arrStart[] = $fromDate[1];
+        $arrStart[] = $fromDate[0];
         $startDate = implode("-",$arrStart);
       }else{
         $startDate = $_POST['startDate'];
-      }      
+      }
       if($eDate){
         $toDate = explode(".", $eDate);
-        $arrEnd[] =  $toDate[2]; 
-        $arrEnd[] =  $toDate[1]; 
-        $arrEnd[] =  $toDate[0];       
+        $arrEnd[] =  $toDate[2];
+        $arrEnd[] =  $toDate[1];
+        $arrEnd[] =  $toDate[0];
         $endDate = implode("-",$arrEnd);
       }else{
         $endDate = $_POST['endDate'];
-      }      
+      }
       $startWeek ='';
       $endWeek ='';
 
     }else if($intTp_ID==2){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode("-", $sDate);
       $startWeek = $fromDate[0]; //first week selected value
       $startDate = $fromDate[1]; //first year input text value
@@ -3384,10 +3395,10 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
 
     }else if($intTp_ID==3){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
         $fromDate =explode(".", $sDate);
-        $arrStart[] = $fromDate[1]; //first year input text value      
+        $arrStart[] = $fromDate[1]; //first year input text value
         $arrStart[] = $fromDate[0]; //first week selected value
         $startDate = implode("-",$arrStart);
       }else{
@@ -3399,13 +3410,13 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
         $arrEnd[] =  $toDate[0]; //second week selected value
         $endDate = implode("-",$arrEnd);
       }else{
-        $endDate = $_POST['endDate']; 
+        $endDate = $_POST['endDate'];
       }
       $startWeek ='';
       $endWeek ='';
     }else{
         $startDate =$_POST['startDate'];
-        $endDate =$_POST['endDate']; 
+        $endDate =$_POST['endDate'];
         $startWeek ='';
         $endWeek ='';
     }
@@ -3416,7 +3427,7 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
         $records = queryDB($conn, $query, "read");
 
         if(count($records) > 0){
-          $tsql = "UPDATE produktionsAnlagenConfig SET intTp_ID = '$intTp_ID', 
+          $tsql = "UPDATE produktionsAnlagenConfig SET intTp_ID = '$intTp_ID',
           unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note',einheitControlSys = '$einheitControlSys',iBdeType = '$iBdeType',mstIMw = '$mstIMw'";
           $tsql .= " WHERE prd_id = '$prd_ID' AND anl_id = '$anl_ID' AND anl_col = '$anl_Col' ";
         }
@@ -3430,7 +3441,7 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
         $records = queryDB($conn, $query, "read");
 
         if(count($records) > 0){
-          $tsql = "UPDATE produktionsAnlagenConfig SET intTp_ID = '$intTp_ID', 
+          $tsql = "UPDATE produktionsAnlagenConfig SET intTp_ID = '$intTp_ID',
           unt_ID = '$unt_ID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note',einheitControlSys = '$einheitControlSys',iBdeType = '$iBdeType',mstIMw = '$mstIMw'";
           $tsql .= "WHERE mst_ID = '$mstID' ";
         }
@@ -3438,13 +3449,13 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
            $tsql = "INSERT INTO produktionsAnlagenConfig (intTp_ID,unt_ID, mst_ID,prd_id,anl_id,anl_col,startDate,endDate,startWeek,endWeek,ending,note,einheitControlSys,iBdeType,mstIMw) ";
            $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$prd_ID' , '$anl_ID' , '$anl_Col' , '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note','$einheitControlSys' , '$iBdeType','$mstIMw') ";
          }
-    } 
+    }
   }
 }
 elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebsdaten*/
 
  $modus = $_POST['modus'];
-  
+
  if($modus == "update"){
   // echo '<pre>'; print_r($_POST);die;
     $liegID = $_POST['liegID'];
@@ -3465,17 +3476,17 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
     $ending = $_POST['ending'];
     if($zeitintervallAnl==1){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
 
-      $fromDate =explode(".", $sDate);      
+      $fromDate =explode(".", $sDate);
       $arrStart[] = $fromDate[2];
-      $arrStart[] = $fromDate[1];      
-      $arrStart[] = $fromDate[0]; 
+      $arrStart[] = $fromDate[1];
+      $arrStart[] = $fromDate[0];
 
       $toDate = explode(".", $eDate);
-      $arrEnd[] =  $toDate[2]; 
-      $arrEnd[] =  $toDate[1]; 
-      $arrEnd[] =  $toDate[0]; 
+      $arrEnd[] =  $toDate[2];
+      $arrEnd[] =  $toDate[1];
+      $arrEnd[] =  $toDate[0];
 
       $startDate = implode("-",$arrStart);
       $endDate = implode("-",$arrEnd);
@@ -3484,7 +3495,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
 
     }else if($zeitintervallAnl==2){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode("-", $sDate);
       $startWeek = $fromDate[0]; //first week selected value
       $startDate = $fromDate[1]; //first year input text value
@@ -3500,10 +3511,10 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
 
     }else if($zeitintervallAnl==3){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode(".", $sDate);
 
-      $arrStart[] = $fromDate[1]; //first year input text value      
+      $arrStart[] = $fromDate[1]; //first year input text value
       $arrStart[] = $fromDate[0]; //first week selected value
 
       $toDate = explode(".", $eDate);
@@ -3518,10 +3529,10 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
 
     }else{
         $startDate =$_POST['startDate'];
-        $endDate =$_POST['endDate']; 
+        $endDate =$_POST['endDate'];
         $startWeek ='';
         $endWeek ='';
-    }  
+    }
 
     $tsql = "UPDATE interneBetriebsdatenHistorie SET anlNrIMw = '$anlNrIMw' , zeitintervallAnl = '$zeitintervallAnl', einheitAnl = '$einheitAnl', notizBdeIMw = '$notizBdeIMw', bemerkung = '$bemerkung', gueltigVon = '$gueltigVon', gueltigBis = '$gueltigBis', startDate = '$startDate', endDate = '$endDate' ,startWeek = '$startWeek',endWeek = '$endWeek', ending = '$ending', einheitControlSys = '$einheitControlSys' ";
     //$tsql .= " WHERE mstID = '$mstID'";
@@ -3532,7 +3543,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
 elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update intern Betriebsdaten Produkte and Messsetelle*/
 
  $modus = $_POST['modus'];
- 
+
  if($modus == "update"){
    //echo '<pre>'; print_r($_POST);die;
 
@@ -3566,38 +3577,38 @@ elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update inter
     $einheitAnl = $_POST['einheitAnl'];
 
     $note = $_POST['note'];
-    $ending = $_POST['ending']; 
+    $ending = $_POST['ending'];
     $einheitControlSys = $_POST['einheitControlSys'];
 
 
 
     if($zeitintervallAnl==1){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
-        $fromDate =explode(".", $sDate);      
+        $fromDate =explode(".", $sDate);
         $arrStart[] = $fromDate[2];
-        $arrStart[] = $fromDate[1];      
-        $arrStart[] = $fromDate[0]; 
+        $arrStart[] = $fromDate[1];
+        $arrStart[] = $fromDate[0];
         $startDate = implode("-",$arrStart);
       }else{
         $startDate = $_POST['startDate'];
-      }      
+      }
       if($eDate){
         $toDate = explode(".", $eDate);
-        $arrEnd[] =  $toDate[2]; 
-        $arrEnd[] =  $toDate[1]; 
-        $arrEnd[] =  $toDate[0];       
+        $arrEnd[] =  $toDate[2];
+        $arrEnd[] =  $toDate[1];
+        $arrEnd[] =  $toDate[0];
         $endDate = implode("-",$arrEnd);
       }else{
         $endDate = $_POST['endDate'];
-      }      
+      }
       $startWeek ='';
       $endWeek ='';
 
     }else if($zeitintervallAnl==2){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       $fromDate =explode("-", $sDate);
       $startWeek = $fromDate[0]; //first week selected value
       $startDate = $fromDate[1]; //first year input text value
@@ -3613,10 +3624,10 @@ elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update inter
 
     }else if($zeitintervallAnl==3){
       $sDate = $_POST['startDate'];
-      $eDate = $_POST['endDate']; 
+      $eDate = $_POST['endDate'];
       if($sDate){
         $fromDate =explode(".", $sDate);
-        $arrStart[] = $fromDate[1]; //first year input text value      
+        $arrStart[] = $fromDate[1]; //first year input text value
         $arrStart[] = $fromDate[0]; //first week selected value
         $startDate = implode("-",$arrStart);
       }else{
@@ -3628,17 +3639,17 @@ elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update inter
         $arrEnd[] =  $toDate[0]; //second week selected value
         $endDate = implode("-",$arrEnd);
       }else{
-        $endDate = $_POST['endDate']; 
+        $endDate = $_POST['endDate'];
       }
       $startWeek ='';
       $endWeek ='';
     }else{
         $startDate =$_POST['startDate'];
-        $endDate =$_POST['endDate']; 
+        $endDate =$_POST['endDate'];
         $startWeek ='';
         $endWeek ='';
     }
-    
+
     if($iBdeType == 1){
 
 
@@ -3652,7 +3663,7 @@ elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update inter
         $tsql = "UPDATE produktionsAnlagenHistorie SET zeitintervallAnl = '$zeitintervallAnl', einheitAnl = '$einheitAnl',einheitControlSys = '$einheitControlSys', bemerkung = '$bemerkung', gueltigVon = '$gueltigVon', gueltigBis = '$gueltigBis', startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note'";
         $tsql .= " WHERE iBdeType = '$iBdeType'";
         $tsql .= " AND prdktHist_ID = '$prdktHist_ID'";
-    }   
+    }
 
 
   }
