@@ -76,12 +76,12 @@ elseif ($modus == "intBdePrdktIMwGetHistSingle") {
   //echo $query;die;
 }
 elseif ($modus == "intBdeMesssetelleIMwGetHistSingle") {
-  $mst_ID = $_POST['mst_ID'];
+ // $mst_ID = $_POST['mst_ID'];
   $prdktHist_ID = $_POST['prdktHist_ID'];
   $query = "SELECT * FROM produktionsAnlagenHistorie ";
    // $query .= "WHERE archiviert = 'true'";
   $query .= "WHERE prdktHist_ID = '$prdktHist_ID' ";
-  $query .= "AND mst_ID = '$mst_ID' ";
+ // $query .= "AND mst_ID = '$mst_ID' ";
   //echo $query;die;
 }
 elseif ($modus == "intBdePdktIMwGetHistReset") {

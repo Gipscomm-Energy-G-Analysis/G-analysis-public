@@ -3626,9 +3626,17 @@ $("#DkFeSpeichern").click(function() {
 
     /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
     $("#intBdeIMwSuchen").click(function(){
-            tblAnlOhneZeitintervallIMwSuchenMethod();
+        tblAnlOhneZeitintervallIMwSuchenMethod();
     });
    /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
+
+    /*16-03-2021 on click serach icon show popup for Interne Betriebsdaten Produkte and Messetelle*/
+    /*mm-new-start*/
+    $("#intBdePrdktIMwSuchen").click(function(){
+        tblAnlPrdktOhneZeitintervallIMwSuchenMethod();
+    });
+    /*mm-new-end*/
+
     $(document).ready(function(){
         $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
 
@@ -3655,9 +3663,9 @@ $("#DkFeSpeichern").click(function() {
         });
         /*Produkte mm show Anlage Data*/
         /*new-mm-start*/
-//tblMstOhneZeitintervallIMw_wrapper
-$('#tblMstOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
-$('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').first().hide();
+    //tblMstOhneZeitintervallIMw_wrapper
+    $('#tblMstOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
+    $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').first().hide();
 
         $("#btnShowRecordsAnlBtnPrdkt").click(function(){
             $(this).prop("disabled", true);
@@ -5144,7 +5152,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
 
     });
 
-     $("#btnMasseneingabeIMwSearch").click(function(){
+    $("#btnMasseneingabeIMwSearch").click(function(){
         $("#inputBotmMax").val('');
         $("#inputBotmMin").val('');
         var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
@@ -5175,26 +5183,26 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
         }else{
             getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate);
         }
-     });
+    });
 
-     $("#btnMassEingAnl").click(function() {
+    $("#btnMassEingAnl").click(function() {
         $("body").addClass('fullWidthMasseneingabe');
         datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
          $("#tblMasseneingabeDataIMw").remove();
          //interneEBTblShowHide(1);
-     });
-     $("#btnKonfigMstAnl").click(function() {
+    });
+    $("#btnKonfigMstAnl").click(function() {
         $("body").removeClass('fullWidthMasseneingabe');
         $("#tblMasseneingabeDataIMw").remove();
         //interneEBTblShowHide(1);
-     });
+    });
 
     $("#masseneingabeSpeichernSrch").click(function() {
-         var inputCurrId = $("#inputCurrId").val();
-         var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
-         //console.log($("#timeIntervalWerteEnergiedatenIMw").html());
-         /*new-mm-start*/
-         if($("#tblMasseneingabeDataIMw").length !=0){
+        var inputCurrId = $("#inputCurrId").val();
+        var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
+        //console.log($("#timeIntervalWerteEnergiedatenIMw").html());
+        /*new-mm-start*/
+        if($("#tblMasseneingabeDataIMw").length !=0){
                 //if(showPopupExist==false){
                     $(".save-msg-box").show();
                     $("#masseneingabeSrchImg").show();
@@ -5205,11 +5213,11 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                         // }
                     }, 300);
                 //}
-            }else{
-                alert("Please generate inputs first.");
-            }
-         /*old-comment-start*/
-       /*  if (confirm("Do you want to save？")) {
+        }else{
+            alert("Please generate inputs first.");
+        }
+        /*old-comment-start*/
+        /*  if (confirm("Do you want to save？")) {
             if($("#tblMasseneingabeDataIMw").length !=0){
                 //if(showPopupExist==false){
                     $("#masseneingabeSrchImg").show();
@@ -5229,8 +5237,8 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
          /*new-mm-end*/
     });
 
-   /*On change Einheit create Control System select option */
-   $(".infosIntBetriebsdaten #einheitAnl,.infosIntBetriebsdaten #control_system").change(function() {
+    /*On change Einheit create Control System select option */
+    $(".infosIntBetriebsdaten #einheitAnl,.infosIntBetriebsdaten #control_system").change(function() {
         //var einheitVal  = this.value;
         var type = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
         if(type==1){
@@ -5264,12 +5272,12 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
         if(this.id=='control_system'){
             alertValidationforEinheitControlSystem(this.id,this.value,startDate,endDate,type);
         }
-   });
-   /*On change Einheit create Control System select option */
+    });
+    /*On change Einheit create Control System select option */
 
-   /*On change Einheit create Control System select option  History tab Popup 12-03-2021*/
-   /*new-mm-start*/
-   $(".intBdeIMwHistorieContainer #einheitAnl,.intBdeIMwHistorieContainer #control_system").change(function() {
+    /*On change Einheit create Control System select option  History tab Popup 12-03-2021*/
+    /*new-mm-start*/
+    $(".intBdeIMwHistorieContainer #einheitAnl,.intBdeIMwHistorieContainer #control_system").change(function() {
         //var einheitVal  = this.value;
         var type = $(".intBdeIMwHistorieContainer #zeitintervallAnl").val();
         if(type==1){
@@ -5303,16 +5311,16 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
         if(this.id=='control_system'){
            // alertValidationforEinheitControlSystem(this.id,this.value,startDate,endDate,type);
         }
-   });
+    });
     /*new-mm-end*/
-   /*On change Einheit create Control System select option */
+    /*On change Einheit create Control System select option */
 
 
 
-   /*For Produkte Module 08-03-2021*/
-   /*On change Einheit Prdkt create Control System Prdkt select option */
-   /*new-mm-start*/
-   $(".infosIntEnergiedaten #einheitAnlPrdkt,.infosIntEnergiedaten #control_system_AnlPrdkt").change(function() {
+    /*For Produkte Module 08-03-2021*/
+    /*On change Einheit Prdkt create Control System Prdkt select option */
+    /*new-mm-start*/
+    $(".infosIntEnergiedaten #einheitAnlPrdkt,.infosIntEnergiedaten #control_system_AnlPrdkt").change(function() {
         //var einheitVal  = this.value;
         var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
         if(type==1){
@@ -5347,8 +5355,8 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
         if(this.id=='control_system_AnlPrdkt'){
            // alertValidationforEinheitControlSystemPrdkt(this.id,this.value,startDate,endDate,type);
         }
-   });
-   /*new-mm-end*/
+    });
+    /*new-mm-end*/
 
 
    /*For IntBde Produkte History Module 12-03-2021*/
@@ -5599,7 +5607,113 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
             }
 });
 /*new-mm-end*/
+/*On Radio Check Produkte and messettlen DataTable show and Hide 03-03-2021*/
+/*new-start-mm*/
+$('input:radio[name=searchImgBetriebsdatenFilter]').change(function () {
+            if ($("input[name='searchImgBetriebsdatenFilter']:checked").val() == '1') {
 
+                $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").show();
+                $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").hide();
+
+                //$("#mstIMw").prop("disabled",false);
+                $("#mstIMw").val("").prop("readonly",false);
+                $("#mstIMw").prop("disabled",false);
+
+                $(".artikelnummerIntBdeDiv").show();
+                $(".bezeichnungIntBdeDiv").show();
+                $(".anlageIntBdeDiv").show();
+                $(".anlageMessstelleIntBdeDiv").hide();
+
+                $("#artikelnummerIntBde").val("").prop("disabled",false);
+                $("#bezeichnungIntBde").val("").prop("disabled",false);
+                $("#anlageIntBde").val("").prop("disabled",false);
+                $("#anlageMessstelleIntBde").val("").prop("disabled",false);
+
+                $("#zeitintervallAnlPrdkt").val("0").change();
+                $("#einheitAnlPrdkt").val("").change();
+                $("#notizBdeIMwAnlPrdkt").val("");
+                $("#control_system_AnlPrdkt").val("").change();
+
+                $("#tageMassEingDataAnlPrdktStart1").val("");
+                $("#tageMassEingDataAnlPrdktEnde1").val("");
+                $("#anlPrdktIMwNoEnding").val("0").prop("checked",false);
+
+                $("#wochenWMassEingDataAnlPrdktStart1").val("").change();
+                $("#wochenYMassEingDataAnlPrdktStart1").val("");
+                $("#wochenWMassEingDataAnlPrdktEnde1").val("").change();
+                $("#wochenYMassEingDataAnlPrdktEnde1").val("");
+
+                $("#monateMassEingDataAnlPrdktStart1").val("");
+                $("#monateMassEingDataAnlPrdktEnde1").val("");
+
+                $("#jahrMassEingDataAnlPrdktStart1").val("");
+                $("#jahrMassEingDataAnlPrdktEnde1").val("");
+
+                /*save img*/
+                //  $("#intBdeMessetelleIMwSpeichern").hide();
+                //  $("#intBdePrdktIMwSpeichern").show();
+                $("mstID").val("");
+
+                /*new-mm-start 10-03-2021*/
+                $("#tabIntBetriebsdatenIMwHistPrdkt").show();
+                $("#tabIntBetriebsdatenIMwHistMesssetelle").hide();
+                /*new-mm-start 10-03-2021*/
+
+                searchImgprodukteAnlargeDataTable();
+            }
+            if ($("input[name='searchImgBetriebsdatenFilter']:checked").val() == '2') {
+                $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").hide();
+                $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").show();
+
+                $("#mstIMw").val("").prop("readonly",true);
+
+                $(".bezeichnungIntBdeDiv").hide();
+                $(".artikelnummerIntBdeDiv").hide();
+                $(".anlageIntBdeDiv").hide();
+                $(".anlageMessstelleIntBdeDiv").show();
+                //$("#anlageMessstelleIntBde").prop("disabled",true);
+
+                $("#artikelnummerIntBde").val("").prop("disabled",false);
+                $("#bezeichnungIntBde").val("").prop("disabled",false);
+                $("#anlageIntBde").val("").prop("disabled",false);
+                $("#anlageMessstelleIntBde").val("").prop("disabled",false);
+
+                $("#zeitintervallAnlPrdkt").val("0").change();
+                $("#einheitAnlPrdkt").val("").change();
+                $("#notizBdeIMwAnlPrdkt").val("");
+                $("#control_system_AnlPrdkt").val("").change();
+
+                $("#tageMassEingDataAnlPrdktStart1").val("");
+                $("#tageMassEingDataAnlPrdktEnde1").val("");
+                $("#anlPrdktIMwNoEnding").val("0").prop("checked",false);
+
+                $("#wochenWMassEingDataAnlPrdktStart1").val("").change();
+                $("#wochenYMassEingDataAnlPrdktStart1").val("");
+                $("#wochenWMassEingDataAnlPrdktEnde1").val("").change();
+                $("#wochenYMassEingDataAnlPrdktEnde1").val("");
+
+                $("#monateMassEingDataAnlPrdktStart1").val("");
+                $("#monateMassEingDataAnlPrdktEnde1").val("");
+
+                $("#jahrMassEingDataAnlPrdktStart1").val("");
+                $("#jahrMassEingDataAnlPrdktEnde1").val("");
+
+
+                /*save img*/
+                // $("#intBdePrdktIMwSpeichern").hide();
+                // $("#intBdeMessetelleIMwSpeichern").show();
+
+                $("#prd_ID").val("");
+                $("#anl_Col").val("");
+                $("#anl_ID").val("");
+                /*new-mm-start 10-03-2021*/
+                $("#tabIntBetriebsdatenIMwHistPrdkt").hide();
+                $("#tabIntBetriebsdatenIMwHistMesssetelle").show();
+                /*new-mm-start 10-03-2021*/
+                searchImgMesssetelleIntBDE("2");
+            }
+});
+/*new-mm-end*/
 /*new-mm-end*/
 /*19-02-2021 radio button check */
 /*$("#interneEBTblDiv input[name='interneEBTbl']").on('change', function () {

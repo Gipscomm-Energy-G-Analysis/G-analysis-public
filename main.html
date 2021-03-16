@@ -6232,7 +6232,8 @@
                     <img id="intBdePrdktIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                     <img id="intBdeMessetelleIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;display: none;" />
                     <img id="intEngIMwHinz" title="Neuen Messwert erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
-                    <img id="intEngIMwSuchen" title="Messwerte suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                    <!-- <img id="intEngIMwSuchen" title="Messwerte suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> -->
+                    <img id="intBdePrdktIMwSuchen" title="Messwerte suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                     <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
                     <img id="intEngIMwLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" />
                     <img id="intEngIMwNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" />
@@ -6546,6 +6547,56 @@
                         </thead>
                         <tbody></tbody>
                     </table>
+
+                    <!-- tblAnlPrdktMStOhneZeitintervallIMwSearchContainer modal view choosing from the search functionality Date - 16-03-2021-->
+                    <!-- new-mm-start -->
+                    <div id="tblAnlPrdktMStOhneZeitintervallIMwSearchContainer" style="display:none;">
+                    
+                    <div id="searchImgBtnShowRecordsPrdktAnlMstBtnDiv" style="display: none;">
+                        <label>Filter</label>
+                        <input type="radio" name="searchImgBetriebsdatenFilter" id="searchImgErgDatenProdukte" checked="checked" value="1">Produkte
+                        <input type="radio" name="searchImgBetriebsdatenFilter" id="searchImgErgDatenMessstelle" value="2">Messstelle
+
+                        <select id="searchImgBtnShowRecordsPrdktAnlMstBtn" name="searchImgBtnShowRecordsPrdktAnlMstBtn" style="display: none;">
+                            <option value="1" selected >Produkte</option>
+                            <option value="2">Messstelle</option>
+                        </select>
+                    </div>                    
+                    <table id="tblMstOhneZeitintervallIMwPrdktSuche" class="stripe hover row-border compact dt-left custom">
+                        <thead>
+                            <tr>
+                                <th>prd_ID</th>
+                                <th>anl_Col</th>
+                                <th>anl_ID</th>
+                                <th>Type</th>                                
+                                <th>Artikelnummer</th>
+                                <th>Bezeichnung</th>
+                                <th>Anlage</th>
+
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <table id="tblMstOhneZeitintervallIMwMessstelleSuche" class="stripe hover row-border compact dt-left custom" >
+                        <thead>
+                            <tr>
+                                <th>mst_ID</th>    
+                                <th>Messstelle</th>
+                                <th>Anlage</th>
+                                <th>Start Date</th> 
+                                <th>End Date</th>
+                                <th>Einheit</th>
+                                <th>Control System</th>
+                                <th>Zeitintervall</th> 
+                                <th>Notiz</th>
+
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    </div>
+                    <!-- new-mm-end -->
+                    <!-- tblAnlPrdktMStOhneZeitintervallIMwSearchContainer modal view choosing from the search functionality  Date - 16-03-2021-->
                 </div>
                 <button id="btnMassEingMst">Masseneingabe</button>
             </div>
