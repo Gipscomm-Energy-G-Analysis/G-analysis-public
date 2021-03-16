@@ -1330,7 +1330,9 @@ $(document).ready(function() {
     });
 
     // Save Roles and Permissions
-
+    $("#gipscommRollenUndBerechtigungen").click(function() {
+        gipscommRollenUndBerechtigungen()
+    });
     $("#sAdmRollenUndBerechtigungen").click(function() {
         sAdmRollenUndBerechtigungen()
     });
@@ -1343,6 +1345,10 @@ $(document).ready(function() {
     
     // Get Checked data from database
 
+    $("#tabGipscAdm").click(function() {
+        $('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
+        gipscommGetRollenUndBerechtigungen()
+    });
     $("#betrGrpMenu, #tabBetrGrp, #betrGrpMenu").click(function() {
         sAdmGetRollenUndBerechtigungen()
     });

@@ -12,19 +12,54 @@ $id = $_POST['id'];
 if($id == "gipscAdm") {
 
     $modus = $_POST['modus'];
-    $username = $_POST['benutzername'];
-    $passwort = $_POST['passwort'];
+    
 
   	if($modus == "new"){
 
-  		$tsql = "INSERT INTO gipscommAdmins(username, passHash, position, man_ID) ";
-  		$tsql .= "VALUES ('$username','$passwort', 'gipsAdm', 1) ";
-    }
-  	else{
+      $username = $_POST['benutzername'];
+      $passwort = $_POST['passwort'];
+
+  		$gipscommsql = "INSERT INTO gipscommAdmins(username, passHash, position, man_ID) ";
+  		$gipscommsql .= "VALUES ('$username','$passwort', 'gipsAdm', 1) ";
+
+      queryDB( $conn, $gipscommsql, "write" );
+      echo "Daten erfolgreich gespeichert";
+
+    } elseif($modus == 'saveRolePermission') {
+
+      $role_id = $_POST['role_id'];
+      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+      
+      if(!empty($role_id)) {
+        $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
+        $record = queryDB($conn, $query, "read") ;
+
+        if(count($record)>0) {
+          $query = "DELETE rolePermission WHERE role_id = '$role_id'";
+          queryDB( $conn, $query, "write" );
+        }
+      }
+      
+      if(!empty($tab_ids)) {
+        foreach($tab_ids as $tabId) {
+          $gipscommsql = "INSERT INTO rolePermission(role_id,tab_id) ";
+          $gipscommsql .= "VALUES ('$role_id','$tabId') ";
+          queryDB( $conn, $gipscommsql, "write" );
+        }
+        echo "Daten erfolgreich gespeichert";
+      }
+
+    } else {
   		$gipscAdmID = $_POST['gipscAdmID'];
 
-  		$tsql =  "UPDATE gipscommAdmins SET username = '$username', passHash = '$passwort' ";
-  		$tsql .= "WHERE gipsAdm_ID = '$gipscAdmID' ";
+      $username = $_POST['benutzername'];
+      $passwort = $_POST['passwort'];
+
+  		$gipscommsql =  "UPDATE gipscommAdmins SET username = '$username', passHash = '$passwort' ";
+  		$gipscommsql .= "WHERE gipsAdm_ID = '$gipscAdmID' ";
+
+      queryDB( $conn, $gipscommsql, "write" );
+      echo "Daten erfolgreich gespeichert";
   	}
 }
 elseif($id == "betrGrp") {
@@ -3312,7 +3347,7 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
   }
 }
 
-if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm" && $id != "adm" && $id != "ben") {
+if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  && $id != "sAdm" && $id != "adm" && $id != "ben" && $id != "gipscAdm") {
     $retState = queryDB( $conn, $tsql, "write" );
 
     if ($retState == 'error') {

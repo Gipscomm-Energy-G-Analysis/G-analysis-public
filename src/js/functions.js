@@ -17515,7 +17515,7 @@ function adminlisteErstellen() {
         url: "php/readInstanzen.php",
         data: {
             id: "admSuchen",
-            nameDB: "gipscomm"
+            nameDB: "gipscomm",
         },
         success: function(e) {
             console.log('Working fine');
@@ -17525,8 +17525,9 @@ function adminlisteErstellen() {
             tblAdminlisteErstellen.colReorder.reset();
             tblAdminlisteErstellen.clear().draw();
             for (var c = 0; c < e.length; c++) {
-                console.log(e[c].email);
+                //console.log(e[c].email);
                 tblAdminlisteErstellen.row.add([
+                    c,
                     e[c].titel,
                     e[c].name,
                     e[c].vorname,
@@ -17551,6 +17552,12 @@ function adminlisteErstellen() {
                 },
                 open: function() {
                     console.log('open popup');
+                    $("#tblAdminlisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblAdminlisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblAdminlisteErstellen.row(this).data();
+                        $("#admListeContainer").dialog("close");
+                        readInstanzen("admFirst", a[0])
+                    })
                 }
             })
         }
@@ -17566,7 +17573,7 @@ function benutzerlisteErstellen() {
         url: "php/readInstanzen.php",
         data: {
             id: "benSuchen",
-            nameDB: "gipscomm"
+            nameDB: "gipscomm",
         },
         success: function(e) {
             console.log('Working fine');
@@ -17629,6 +17636,7 @@ function betrGrplisteErstellen() {
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblBetrGrplisteErstellen.row.add([
+                    c,
                     e[c].firma,
                     e[c].anzahlMitarbeiter,
                     e[c].anschrift,
@@ -17655,6 +17663,12 @@ function betrGrplisteErstellen() {
                 },
                 open: function() {
                     console.log('open popup');
+                    $("#tblBetrGrplisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblBetrGrplisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblBetrGrplisteErstellen.row(this).data();
+                        $("#betrGrpListeContainer").dialog("close");
+                        readInstanzen("betrGrpFirst", a[0])
+                    })
                 }
             })
         }
@@ -17683,6 +17697,7 @@ function sAdmSuchenlisteErstellen() {
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblsAdmSuchenlisteErstellen.row.add([
+                    c,
                     e[c].titelSAdm,
                     e[c].nameSAdm,
                     e[c].vornameSAdm,
@@ -17708,6 +17723,12 @@ function sAdmSuchenlisteErstellen() {
                 },
                 open: function() {
                     console.log('open popup');
+                    $("#tblsAdmSuchenlisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblsAdmSuchenlisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblsAdmSuchenlisteErstellen.row(this).data();
+                        $("#sAdmSuchenListeContainer").dialog("close");
+                        readInstanzen("sAdmFirst", a[0])
+                    })
                 }
             })
         }
@@ -17843,6 +17864,7 @@ function sAdmLoeschen() {
 }
 // Roles and Permissions Data get from the database
 $(document).ready(function() {
+    $('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
     $('div#superadminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('sAdm'));
     $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
     $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
@@ -17858,6 +17880,28 @@ $(document).ready(function() {
     4 - Admins
     5 - Benutzer
 */
+
+function gipscommRollenUndBerechtigungen() {            // Save Gipscomm Admin Roles and Permission
+    var gipsArr = new Array();
+    $('input[name="gipsAdmRolesPermission[]"]:checked').each(function() {
+        gipsArr.push(this.value);
+    });
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "gipscAdm",
+            nameDB: "gipscomm",
+            modus: "saveRolePermission",
+            role_id: 1,
+            tab_id: gipsArr,
+        },
+        success: function(a) {
+            alert(a)
+        }
+    });
+}
 
 function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and Permission
     var sAdmArr = new Array();
@@ -17920,6 +17964,29 @@ function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and P
         },
         success: function(a) {
             alert(a)
+        }
+    });
+}
+
+function gipscommGetRollenUndBerechtigungen() {     // Gipscomm Admin selected checkbox from database
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "sAdmGetRolePermission",
+            nameDB: "gipscomm",
+            role_id: 1,
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                $.each(c, function(i, item) {
+                    $('input[value="'+item.tab_id+'"]').prop("checked", true);
+                });
+            } else {
+                $('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
+            }
         }
     });
 }

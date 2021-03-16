@@ -67,18 +67,6 @@ elseif($id == "adm"){
   if(!empty($idIns)) {
     $query = "SELECT * FROM admins WHERE $ins = '$idIns' AND deleted_at IS NULL";
   }
-  // Comment By Jayesh
-    // if($recordSet == 'first') {
-    //     $query = "SELECT TOP (1) * FROM admins ";
-    // } elseif ($recordSet == 'last') {
-    //     $query = "SELECT TOP 1 * FROM admins ORDER BY man_ID DESC";
-    // } elseif ($recordSet == 'next') {
-    //     $query = "SELECT * FROM admins"; //WHERE $ins = '$idIns'";
-    // } elseif ($recordSet == 'previous') {
-    //     $query = "SELECT * FROM admins"; //WHERE $ins = '$idIns'";
-    // } else {
-    //     $query = "SELECT * FROM admins WHERE $ins = '$idIns'";
-    // }
 }
 
 elseif($id == "ben"){
@@ -89,20 +77,6 @@ elseif($id == "ben"){
     if(!empty($idIns)) {
       $query = "SELECT * FROM benutzer WHERE $ins = '$idIns' AND deleted_at IS NULL";
     }
-
-    // Comment By Jayesh
-
-    // if($recordSet == 'first') {
-    //     $query = "SELECT TOP (1) * FROM benutzer ";
-    // } elseif ($recordSet == 'last') {
-    //     $query = "SELECT TOP 1 * FROM benutzer ORDER BY man_ID DESC";
-    // } elseif ($recordSet == 'next') {
-    //     $query = "SELECT * FROM benutzer"; //WHERE $ins = '$idIns'";
-    // } elseif ($recordSet == 'previous') {
-    //     $query = "SELECT * FROM benutzer"; //WHERE $ins = '$idIns'";
-    // } else {
-    //     $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'";
-    // }
 }
 
 elseif($id == "man"){
@@ -345,10 +319,10 @@ elseif($id == "betrPar"){
   $query = "SELECT * FROM config.betriebsparameter ";
 
 } elseif($id == 'admSuchen') {
-    $query = "SELECT * FROM admins ";
+    $query = "SELECT * FROM admins WHERE deleted_at IS NULL";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 } elseif($id == 'benSuchen') {
-    $query = "SELECT * FROM benutzer ";
+    $query = "SELECT * FROM benutzer WHERE deleted_at IS NULL";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 } elseif($id == 'rollenUndBerechtigungenSuperadmin') {
     $query = "SELECT * FROM accessibleTab"; 
