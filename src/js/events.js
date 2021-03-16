@@ -53,7 +53,7 @@ $(document).ready(function() {
     $("#verschAbbrechen").click(function() {
         $("#anlageVerschieben").dialog("close")
     });
-    $("#inputEnergietraeger1Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger3Lieg, #inputEnergietraeger4Lieg, #inputEnergietraeger5Lieg, #inputEnergietraeger6Lieg, #inputEnergietraeger7Lieg, #inputEnergietraeger8Lieg, #inputEnergietraeger9Lieg").click(function() {
+    $("#inputEnergietraeger1Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger3Lieg, #inputEnergietraeger4Lieg, #inputEnergietraeger5Lieg, #inputEnergietraeger6Lieg, #inputEnergietraeger7Lieg, #inputEnergietraeger8Lieg, #inputEnergietraeger9Lieg, #energieform1Lieg, #energieform2Lieg, #energieform3Lieg, #energieform4Lieg, #energieform5Lieg, #energieform6Lieg, #energieform7Lieg, #energieform1AllgemeinAnl, #energieform2AllgemeinAnl, #energieform3AllgemeinAnl, #energieform4AllgemeinAnl").click(function() {
         $(this).val("")
     });
     $("#mapDrucken").click(function() {
@@ -177,19 +177,13 @@ $(document).ready(function() {
         }
     });
     $("#formelSpeichern").click(function() {
-        const formula = {
-            modus: $("#bermstmod").val(),
-            berechneteMstID: $("#berechneteMstID").val().split("_")[1],
-            bezug: $("#inpBezugKnz").val(),
-            formelString: btoa($("#formelStringDarstellung").val()),
-            idString: btoa($("#formelIdDarstellung").val())
-        };
         if(readyToSave($("#formelIdDarstellung").val())) {
-
-            writeFormulaToDB(formula);
-            setTimeout(function() {
-                messstellenInAuswertungsEditorTabelleEinlesen();
-            }, 2000);
+            if ($("#bermstmod").val() === "Virtuelle Messstelle") {
+                virtMessstelleSaveDialog()
+            }
+            else {
+                saveFormula()
+            }
         }
         else {
             alert("Dies ist keine gültige Formel. Nur wenn alle Klammern geschlossen sind und das letzte Element entweder eine schließende Klammer, eine Zahl oder eine Instanz ist, ist die Formel gültig.")
@@ -436,13 +430,6 @@ $(document).ready(function() {
     $("#btnPrdOeffnen").click(function() {
         mainMenuNav("prdMenu")
     });
-    $(".inputEnergietraegerLieg").change(function() {
-        "-Energietr\u00e4ger hinzuf\u00fcgen-" ==
-        $(this).val() && (b ? (instanzErstellen("liegSpeichern"), b = !1) : instanzSpeichern("liegSpeichern"), lastNav.setRecordsNavID(liegNavID), lastNav.setFieldsNavInfo([{
-            type: "comboBox",
-            id: this.id
-        }]), lastNav.enableJump(!0), $("#entHinz").trigger("click"), mainMenuNav("entMenu"))
-    });
     $.fn.dataTableExt.sErrMode = "throw";
     $(window).resize(function() {
         menuUndMainZentrieren()
@@ -601,7 +588,8 @@ $(document).ready(function() {
         "Produktparameter einblenden" === $(this).text() ? ($(".customParDiv").css("display", "block"), $(this).text("Produktparameter ausblenden")) : ($(".customParDiv").css("display", "none"), $(this).text("Produktparameter einblenden"))
     });
     $(document).on("input", ".bezeichnungKnz", function() {
-        $(".knzForms").eq(subtract(1, extractNumber(this.id))).text(this.value)
+
+        $(".knzForms").eq(decr(extractNumber(this.id))).text(this.value)
     });
     $(".btnVorlFormeln").click(function() {
         $("#nrKnz").val(extractNumber(this.id));
@@ -849,15 +837,50 @@ $(document).ready(function() {
     $("#mstESuchen, #mstBSuchen").click(function() {
         messstellenlisteErstellen(this)
     });
-    $(".auslastung").blur(function() {
-        if ("mittlereAuslastungKw1Anl" == this.id) {
-            var a = 100 * $("#mittlereAuslastungKw1Anl").val() / $("#anschlussleistung1Anl").val(),
-                a = a.toFixed(2);
-            $("#mittlereAuslastungProzent1Anl").val(a)
-        } else "mittlereAuslastungProzent1Anl" == this.id ? (a = $("#mittlereAuslastungProzent1Anl").val() / 100 * $("#anschlussleistung1Anl").val(), a = a.toFixed(3), $("#mittlereAuslastungKw1Anl").val(a)) : "mittlereAuslastungKw2Anl" == this.id ? (a = 100 * $("#mittlereAuslastungKw2Anl").val() /
-            $("#anschlussleistung2Anl").val(), a = a.toFixed(2), $("#mittlereAuslastungProzent2Anl").val(a)) : "mittlereAuslastungProzent2Anl" == this.id ? (a = $("#mittlereAuslastungProzent2Anl").val() / 100 * $("#anschlussleistung2Anl").val(), a = a.toFixed(3), $("#mittlereAuslastungKw2Anl").val(a)) : "mittlereAuslastungKw3Anl" == this.id ? (a = 100 * $("#mittlereAuslastungKw3Anl").val() / $("#anschlussleistung3Anl").val(), a = a.toFixed(2), $("#mittlereAuslastungProzent3Anl").val(a)) : "mittlereAuslastungProzent3Anl" == this.id ? (a = $("#mittlereAuslastungProzent3Anl").val() /
-            100 * $("#anschlussleistung3Anl").val(), a = a.toFixed(3), $("#mittlereAuslastungKw3Anl").val(a)) : "mittlereAuslastungKw4Anl" == this.id ? (a = 100 * $("#mittlereAuslastungKw4Anl").val() / $("#anschlussleistung4Anl").val(), a = a.toFixed(2), $("#mittlereAuslastungProzent4Anl").val(a)) : "mittlereAuslastungProzent4Anl" == this.id && (a = $("#mittlereAuslastungProzent4Anl").val() / 100 * $("#anschlussleistung4Anl").val(), a = a.toFixed(3), $("#mittlereAuslastungKw4Anl").val(a))
+    //Mittlere Auslastung in MsmVerwaltung je nach Eingabe in % oder kWh umrechnen
+    $(".auslastung").blur(function () {
+        if (this.id == "mittlereAuslastungKw1Anl") {
+            var mAkW = formatNumber("deform", $("#mittlereAuslastungKw1Anl").val()) * 100 / formatNumber("deform", $("#anschlussleistung1Anl").val());
+            mAkW = mAkW.toFixed(2);
+            $("#mittlereAuslastungProzent1Anl").val(formatNumber("form", mAkW));
+        }
+        else if (this.id == "mittlereAuslastungProzent1Anl") {
+            var mAPro = formatNumber("deform", $("#mittlereAuslastungProzent1Anl").val()) / 100 * formatNumber("deform", $("#anschlussleistung1Anl").val());
+            mAPro = mAPro.toFixed(3);
+            $("#mittlereAuslastungKw1Anl").val(formatNumber("form", mAPro));
+        }
+        else if (this.id == "mittlereAuslastungKw2Anl") {
+            var mAkW = formatNumber("deform", $("#mittlereAuslastungKw2Anl").val()) * 100 / formatNumber("deform", $("#anschlussleistung2Anl").val());
+            mAkW = mAkW.toFixed(2);
+            $("#mittlereAuslastungProzent2Anl").val(formatNumber("form", mAkW));
+        }
+        else if (this.id == "mittlereAuslastungProzent2Anl") {
+            var mAPro = formatNumber("deform", $("#mittlereAuslastungProzent2Anl").val()) / 100 * formatNumber("deform", $("#anschlussleistung2Anl").val());
+            mAPro = mAPro.toFixed(3);
+            $("#mittlereAuslastungKw2Anl").val(formatNumber("form", mAPro));
+        }
+        else if (this.id == "mittlereAuslastungKw3Anl") {
+            var mAkW = formatNumber("deform", $("#mittlereAuslastungKw3Anl").val()) * 100 / formatNumber("deform", $("#anschlussleistung3Anl").val());
+            mAkW = mAkW.toFixed(2);
+            $("#mittlereAuslastungProzent3Anl").val(formatNumber("form", mAkW));
+        }
+        else if (this.id == "mittlereAuslastungProzent3Anl") {
+            var mAPro = formatNumber("deform", $("#mittlereAuslastungProzent3Anl").val()) / 100 * formatNumber("deform", $("#anschlussleistung3Anl").val());
+            mAPro = mAPro.toFixed(3);
+            $("#mittlereAuslastungKw3Anl").val(formatNumber("form", mAPro));
+        }
+        else if (this.id == "mittlereAuslastungKw4Anl") {
+            var mAkW = formatNumber("deform", $("#mittlereAuslastungKw4Anl").val()) * 100 / formatNumber("deform", $("#anschlussleistung4Anl").val());
+            mAkW = mAkW.toFixed(2);
+            $("#mittlereAuslastungProzent4Anl").val(formatNumber("form", mAkW));
+        }
+        else if (this.id == "mittlereAuslastungProzent4Anl") {
+            var mAPro = formatNumber("deform", $("#mittlereAuslastungProzent4Anl").val()) / 100 * formatNumber("deform", $("#anschlussleistung4Anl").val());
+            mAPro = mAPro.toFixed(3);
+            $("#mittlereAuslastungKw4Anl").val(formatNumber("form", mAPro));
+        }
     });
+
     $("#feldHinzufuegenStd").click(function() {
         createCustomField("std")
     });
@@ -903,7 +926,6 @@ $(document).ready(function() {
         mainMenuNav("prdMenu")
       }
     )
-
     $("#mstSuchenVMessstelleE, #mstSuchenVMessstelleB, #anlSuchenMst, #eRngSuchenMst, #anlEnt1SuchenMst, #anlEnt2SuchenMst, #anlEnt3SuchenMst, #anlEnt4SuchenMst,#zpSuchenMst, #mstSuchenExtDl1, #mstSuchenExtDl2, #mstSuchenExtDl3, #mstSuchenExtDl4, #mstSuchenExtDl5, #mstSuchenExtDl6,#mstSuchenExtDlEngRes1, #mstSuchenExtDlEngRes2, #mstSuchenExtDlEngRes3, #mstSuchenExtDlEngRes4, #mstSuchenExtDlEngRes5, #mstSuchenExtDlEngRes6,#imgBtnMstDiag11, #imgBtnMstDiag12, #imgBtnMstDiag13, #imgBtnMstDiag2, #imgBtnMstDatenexport, #mstSuchenVergl1, #mstSuchenVergl2").click(function() {
         var a,
             b;
@@ -1027,21 +1049,7 @@ $(document).ready(function() {
         var a, b;
         "Berechnungslogik anlegen" == $(this).text() ? (a = mstNavID, b = ["messmittelBerechnungslogikMst", "berechnungslogikMst"], $("#menuBerechnungsformeln").trigger("click"), formelerweiterungNachDrop("berechneteMstName", $("#mstID").val(), $("#nameMst").val(),
             !0)) : (a = msmNavID, b = ["messmittelBerechnungslogikMst"], $("#msmMenu").trigger("click"));
-        lastNav.setBasicNavInfo({
-            db: $("#nameDB").val(),
-            organisation: $("#orgID").val(),
-            liegenschaft: $("#liegID").val(),
-            bereich: $("#berID").val()
-        }, "ber");
-        lastNav.setRecordsNavID(a);
-        lastNav.setFieldsNavInfo([{
-            type: "textbox",
-            id: b[0]
-        }, {
-            type: "textbox",
-            id: b[1]
-        }]);
-        lastNav.enableJump(!0)
+
     });
     $("#btnDiagrammErst").click(function() {
         chartInNewWindow()
@@ -1250,33 +1258,9 @@ $(document).ready(function() {
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id)
         addExtraWidthToDynamischeFaktor();
-        /*old-mm-comment*/
-        //datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
-        /*old-mm-comment*/
+        datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
         $("#nextPrevMstID").val($("#mstID").val());
         $("body").removeClass('fullWidthMasseneingabe');
-         //interneEBTblShowHide();
-
-        /*Produkte mm 25-02-2021*/
-        if("intEngIMwMenu" == this.id){
-            /*new-mm-start 10-03-2021*/
-            $("#tabIntBetriebsdatenIMwHistPrdkt").show();
-            $("#tabIntBetriebsdatenIMwHistMesssetelle").hide();
-            /*new-mm-start 10-03-2021*/
-            /*new-mm-start 03-03-2021*/
-            /*Reset InterneBetriebsdaten Inputs on menu click*/
-            resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
-            /*new-mm-end 03-03-2021*/
-            datePickerForInterneBetriebsdatenAnlPrdkt('infosIntEnergiedaten',1);
-
-        }
-
-        /*Produkte mm 01-03-2021*/
-        /*new-mm-start*/
-        if("intBdeIMwMenu" == this.id){
-            datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
-        }
-        /*new-mm-end*/
     });
     $("#manMap, #orgMap, #liegMap, #berMap").click(function() {
         mapErstellen(this.id, $("#selectMap").val())
@@ -1290,6 +1274,9 @@ $(document).ready(function() {
     });
     $(".anlSuchen").click(function() {
         anlagenlisteErstellen()
+    });
+    $("#eAnlSuchen").click(function() {
+        eAnlagenlisteErstellen()
     });
     $("#berSuchen").click(function() {
         bereichelisteErstellen()
@@ -1349,9 +1336,6 @@ $(document).ready(function() {
         }
         formellisteErstellen(a)
     });
-    $("#erweiternEnfLieg").click(function() {
-        energieformenEinAusblenden()
-    });
     $("#formelVorfeldLeeren").click(function() {
         $("#formelVorStringDarstellung").val("")
     });
@@ -1367,29 +1351,11 @@ $(document).ready(function() {
     });
     $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag,#tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
         tabControlNav(this.id);
-        $(".lblNeu").css("display", "none");
-        $(".lblAendern").css("display", "inline");
         addExtraWidthToDynamischeFaktor();
         if(this.id=='tabIntBetriebsdatenIMw'){
-
             $("body").removeClass('fullWidthMasseneingabe');
             $("#tblMasseneingabeDataIMw").remove();
-
-
         }
-         if(this.id=='tabIntEnergiedatenIMw'){
-
-            $("body").removeClass('fullWidthMasseneingabe');
-            $("#tblMasseneingabeDataIMw").remove();
-            $("#infosIntBetriebsdatenHistPrdkt").hide();
-            $("#infosIntBetriebsdatenHistMesssetelle").hide();
-            $("#tabIntBetriebsdatenIMwHistPrdkt").show();
-            $("#tabIntBetriebsdatenIMwHistMesssetelle").hide();
-
-
-        }
-
-        //interneEBTblShowHide();
     });
     $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "gipscAdmFirst" == this.id ? (gipscAdmNavID = 0, readInstanzen(this.id, gipscAdmNavID)) :
@@ -1572,7 +1538,7 @@ $(document).ready(function() {
         for (var b = 1; b < Math.floor(a) + 1; b++) $("#masseneingabeNameIMw input:nth-child(" + b + ")").css("visibility", "hidden")
     });
     $("#bermstmod").change(function() {
-        "Berechnung" == this.value ? ($(".berFormel").css("display", "block"), $(".knzFormel").css("display", "none"), $("#formelSuchenTyp").val("mst")) :
+        "Virtuelle Messstelle" == this.value ? ($(".berFormel").css("display", "block"), $(".knzFormel").css("display", "none"), $("#formelSuchenTyp").val("mst")) :
             "Kennzahl" == this.value ? ($(".berFormel").css("display", "none"), $(".knzFormel").css("display", "block"), $("#formelSuchenTyp").val("knz")) : logToConsole('$("#bermstmod").change()', "ERROR", "Something went wrong!")
     });
     $("#formelfeldLeeren").click(function() {
@@ -1609,24 +1575,29 @@ $(document).ready(function() {
         tblOptionenEPrd.row(this).remove().draw()
     });
     $(".betrPfad").change(function() {
+
         $(".betrPfad").val($(this).val());
+
         $("#betrGrpID").val(betrGrpListe[$(".betrPfad").prop("selectedIndex")].betrGrpID);
         readInstanzen("betrGrpFirst", $(".betrPfad").prop("selectedIndex"));
         readInstanzen("sAdmFirst", 0);
-        readInstanzen("manGrpFirst", 0);
         manGrpEinlesen();
-        readInstanzen("admFirst", 0);
-        readInstanzen("benFirst", 0)
     });
     $(".manGrpPfad").change(function() {
         $(".manGrpPfad").val($(this).val());
+
         var a = $(".manGrpPfad  option").eq($(".manGrpPfad").prop("selectedIndex")).prop("id").split("_");
+
         $("#manOderManGrp").val(a[0]);
-        if ("optManGrp" == a[0]) $("#manGrpID").val(manGrpListe[a[1]].manGrpID), readInstanzen("manGrpFirst", $(".manGrpPfad").prop("selectedIndex"));
-        else
-            for (a = manGrpListe.length == mandantenliste.length ? $(".manGrpPfad").prop("selectedIndex") : $(".manGrpPfad").prop("selectedIndex") - manGrpListe.length, $("#manRechteID").val(mandantenliste[a].manID), n = 0; n < mandantenliste.length; n++);
-        readInstanzen("admFirst",
-            0);
+
+        if (head(a) === "optManGrp") {
+            $("#manGrpID").val(manGrpListe[last(a)].manGrpID)
+            readInstanzen("manGrpFirst", $(".manGrpPfad").prop("selectedIndex"))
+        }
+        else {
+            $("#manRechteID").val(mandantenliste[last(a)].manID)
+        }
+        readInstanzen("admFirst", 0)
         readInstanzen("benFirst", 0)
     });
     $(".manPfad").change(function() {
@@ -1656,7 +1627,6 @@ $(document).ready(function() {
         iMwNavID = 0;
         readInstanzen("zpFirst", 0);
         zpNavID = 0;
-        standardVorlagenEinlesen();
         externeRechnungenListeErstellen("vergleich")
     });
     $(".orgPfad").change(function() {
@@ -1721,7 +1691,7 @@ $(document).ready(function() {
                 $("#histSpeichern").on("click", function() {
                     $("#infosBemerkungHist, #histOk").css("display", "inline");
                     $("#histSpeichern, #histNichtSpeichern").css("display", "none")
-                }),
+                });
                 $("#histNichtSpeichern").on("click", function() {
                     $("#archiviertAnl").val("false");
                     instanzSpeichern("anlSpeichern");
@@ -1732,7 +1702,72 @@ $(document).ready(function() {
                     instanzSpeichern("anlSpeichern");
                     instanzErstellen("anlSpeichern");
                     $("#infosBemerkungHist, #histOk").css("display", "none");
-                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
+                    $("#infosBemerkungHist input").val("");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histAbbrechen").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#histSpeichern, #histNichtSpeichern").css("display",
+                        "inline");
+                    $("#infosBemerkungHist input").val("");
+                    $("#historyOrNot").dialog("close")
+                })
+            },
+            close: function() {
+                $("#infosBemerkungHist input").val("");
+                $("#infosBemerkungHist, #histOk").css("display", "none");
+                $("#histSpeichern, #histNichtSpeichern").css("display", "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? ($("#archiviertAnl").val(!0), instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "msmSpeichern" == this.id ? "" != $("#messmittelNrAllgemeinMsm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#messmittelNrAllgemeinMsm").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display",
+            "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (instanzErstellen(this.id), b = !1, energietrInDBoxLieg()) : "" != $("#nameEnt").val() && 0 == b ? (instanzSpeichern(this.id), energietrInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "enfSpeichern" == this.id ? "" != $("#nameEnf").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "eRngSpeichern" == this.id ? "" != $("#nrERng").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nrERng").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "intEngIMwSpeichern" == this.id ? instanzSpeichern(this.id) : "intBdeIMwSpeichern" == this.id ? instanzSpeichern(this.id) :
+        "eAnlSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "ePrdSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "grpDiagSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!"
+        })) :
+        "prdSpeichern" == this.id ? 1 == b ? ($("#archiviertPrd").val(!1), instanzErstellen(this.id, "neueGrp"), b = !1) : 0 == b ? $("#historyOrNot").dialog({
+            height: 400,
+            width: 450,
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open: function() {
+                $("#histSpeichern,\n                                                        #histNichtSpeichern,\n                                                        #histOk,\n                                                        #histAbbrechen").off("click");
+                $("#histSpeichern").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "inline");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "none")
+                });
+                $("#histNichtSpeichern").on("click", function() {
+                    $("#archiviertPrd").val("false");
+                    instanzSpeichern("prdSpeichern");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histOk").on("click", function() {
+                    $("#archiviertPrd").val("true");
+                    instanzSpeichern("prdSpeichern");
+                    instanzErstellen("prdSpeichern");
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#infosBemerkungHist input").val("");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
                     $("#historyOrNot").dialog("close")
                 });
                 $("#histAbbrechen").on("click", function() {
@@ -1745,88 +1780,18 @@ $(document).ready(function() {
             close: function() {
                 $("#infosBemerkungHist input").val("");
                 $("#infosBemerkungHist, #histOk").css("display", "none");
-                $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
-            }
-            }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() &&
-            0 == b ? ($("#archiviertAnl").val(!0), instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "msmSpeichern" == this.id ? "" != $("#messmittelNrAllgemeinMsm").val() && 1 == b ? (lastNav.setReturnValues([$("#bezeichnungAllgemeinMsm").val()]), instanzErstellen(this.id), b = !1, lastNav.jump()) : "" != $("#messmittelNrAllgemeinMsm").val() && 0 == b ? (lastNav.setReturnValues([$("#bezeichnungAllgemeinMsm").val()]), instanzSpeichern(this.id), lastNav.jump()) : ($("#meldung").css("display",
-                "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (lastNav.setReturnValues([$("#nameEnt").val()]), instanzErstellen(this.id), b = !1, energietrInDBoxLieg(), lastNav.jump()) : "" != $("#nameEnt").val() && 0 == b ? (lastNav.setReturnValues([$("#nameEnt").val()]), instanzSpeichern(this.id), energietrInDBoxLieg(), lastNav.jump()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "enfSpeichern" == this.id ? "" != $("#nameEnf").val() && 1 == b ? (instanzErstellen(this.id),
-                b = !1, energiefrmInDBoxLieg()) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id), energiefrmInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "eRngSpeichern" == this.id ? "" != $("#nrERng").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nrERng").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "intEngIMwSpeichern" == this.id ? instanzSpeichern(this.id) : "intBdeIMwSpeichern" == this.id ? instanzSpeichern(this.id) :
-            "eAnlSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "ePrdSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "grpDiagSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) :
-            "prdSpeichern" == this.id ? 1 == b ? ($("#archiviertPrd").val(!1), instanzErstellen(this.id, "neueGrp"), b = !1) : 0 == b ? $("#historyOrNot").dialog({
-                height: 400,
-                width: 450,
-                resize: "auto",
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    $("#histSpeichern,\n                                                        #histNichtSpeichern,\n                                                        #histOk,\n                                                        #histAbbrechen").off("click");
-                    $("#histSpeichern").on("click", function() {
-                        $("#infosBemerkungHist, #histOk").css("display", "inline");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "none")
-                    });
-                    $("#histNichtSpeichern").on("click", function() {
-                        $("#archiviertPrd").val("false");
-                        instanzSpeichern("prdSpeichern");
-                        $("#historyOrNot").dialog("close")
-                    });
-                    $("#histOk").on("click", function() {
-                        $("#archiviertPrd").val("true");
-                        instanzSpeichern("prdSpeichern");
-                        instanzErstellen("prdSpeichern");
-                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                        $("#infosBemerkungHist input").val("");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                        $("#historyOrNot").dialog("close")
-                    });
-                    $("#histAbbrechen").on("click", function() {
-                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                        $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                        $("#infosBemerkungHist input").val("");
-                        $("#historyOrNot").dialog("close")
-                    })
-                },
-                close: function() {
-                    $("#infosBemerkungHist input").val("");
-                    $("#infosBemerkungHist, #histOk").css("display", "none");
-                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline")
-                }
-            }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                title: "Meldung!"
-            })) : "betrParSpeichern" == this.id && (1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-// =======
-
+                $("#histSpeichern, #histNichtSpeichern").css("display",
+                    "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "betrParSpeichern" == this.id && (1 == b || 0 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
                 title: "Meldung!"
             })))
     });
-    $("#orgLoeschen, #liegLoeschen, #extDlLoeschen, #berLoeschen,#mstLoeschen, #stdLoeschen, #stdDrLoeschen, #anlLoeschen,#msmLoeschen, #eRngLoeschen, #zpLoeschen, #eAnlLoeschen, #prdLoeschen").click(function() {
+    $("#orgLoeschen, #liegLoeschen, #extDlLoeschen, #berLoeschen,#mstLoeschen, #stdLoeschen, #stdDrLoeschen, #anlLoeschen,#msmLoeschen, #eRngLoeschen, #zpLoeschen, #eAnlLoeschen, #prdLoeschen, #entLoeschen").click(function() {
         fensterLoeschenmeldung(this.id)
     })
 });
@@ -1888,11 +1853,6 @@ $("#btnOptionHinzEPrdKff").click(function() {
     var d = $("#groupStaticCF option:selected").text();
     var id = $("#groupStaticCF").val();
 
-    if(b == '' || b == null || b == 0 ){
-        alert("Wert sollte nicht Null seine");
-        return false;
-    }
-
     if (b != '') {
         var wertRep = b.replace(",", ".");
         var bComma = b.replace(".", ",");
@@ -1910,6 +1870,7 @@ $("#btnOptionHinzEPrdKff").click(function() {
             return false;
         }
     }
+
     if (a != '' && bComma != '' && c != '' && d != '' && id != '') {
         var rowNode = tblOptionenEPrdKff.row.add([a, bComma, c, d]).draw().node();
         $(rowNode).attr('data-id', id);
@@ -1940,7 +1901,7 @@ jQuery.fn.NumericOnly = function() {
             var key = e.charCode || e.keyCode || 0;
             // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
             // home, end, period, and numpad decimal
-            if (key == 8 || key == 9 || key == 13 || key == 46 || key == 110 || key == 190 || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105) ) {
+            if (key == 8 || key == 9 || key == 13 || key == 46 || key == 110 || key == 190 || (key >= 35 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
 
                 return true;
             } else {
@@ -1952,7 +1913,6 @@ jQuery.fn.NumericOnly = function() {
     });
 };
 
-(25426.10000 / 0.001) - (71624.30000 / 0.001) + (100001.60000 / 0.001) * (57580.20000 / 0.001)
 $(document).ready(function() {
     jQuery(".KorrekturFaktorFrm .inp_valid").NumericOnly();
     virtuelleMessstelle(); /*25-02-2020 hide the select box on page load*/
@@ -2210,7 +2170,7 @@ $(".typeDynamicCF").change(function() {
     $('#tblOptionenEPrdDKff').parents('div.dataTables_wrapper').first().hide();
     var selVal = $(this).val();
     if(selVal =='Zeit'){
-       // console.log('Zeit');
+        console.log('Zeit');
         $(".subtypeTimeDynamicCF option.zeitOption").show();
         $(".subtypeTimeDynamicCF option.temperaturOption").hide();
         $(".subtypeTimeDynamicCF").prop('disabled', false);
@@ -2384,20 +2344,6 @@ $("#btnOptionHinzEPrdDKff").click(function() {
     /*20-08-2020 BereichName and BereichID popup variable define*/
 
     /*02-06-2020 Faktor 4 functionality*/
-    /*dynamische Korrekturfaktoren mm 26-02-2021*/
-    /*new-mm-start*/
-
-    if(basisFktr2Wert == "" || basisFktr2Wert == null || basisFktr2Wert == 0){
-        alert("Wert sollte nicht null sein");
-        $("#subtypeTxtBasisFaktor3Wert").val("");
-        return false;
-    }
-    /*else if(basisFktr2Wert < 0 || basisFktr2Wert == null){
-        alert("Wert sollte nicht negativ sein");
-        $('#optionWert').val("");
-        return false;
-    }*/
-    /*new-mm-end*/
 
     var calculationType = $(".calculationTypeDKff").val();
      if(typeVal =='1' || typeVal =='4' || typeVal =='5' || typeVal =='6' || typeVal =='7' || typeVal =='8' || typeVal =='9'){
@@ -3631,61 +3577,19 @@ $("#DkFeSpeichern").click(function() {
    /*18-09-2020 on click serach icon show popup for Interne Betriebsdaten */
     $(document).ready(function(){
         $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
-
-        $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().hide();
-        /*new-mm-start*/
-        $('#searchBtnShowRecordsAnlBtnDiv').hide();
-        $('#searchBtnShowRecordsPrdktAnlMstBtnDiv').hide();
-        $('#interneEBTblDiv').hide();
-
-        /*new-mm-end*/
         $("#btnShowRecordsAnlBtn").click(function(){
             //$(this).addClass('showTable');
             $(this).prop("disabled", true);
-            tblMstOhneZeitintervallIMwIE.clear().draw();
+            tblMstOhneZeitintervallIMw.clear().draw();
             $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
 
            keinZeitIntervallZugewiesen(InstanceMode.BDE);
-           //interneEBTblShowHide(1);
-           /*new-mm-start*/
-            $('#searchBtnShowRecordsAnlBtnDiv').show();
-            $('#interneEBTblDiv').show();
-            $('#searchBtnShowRecordsAnlBtn').val('1');
-            /*new-mm-end*/
         });
-        /*Produkte mm show Anlage Data*/
-        /*new-mm-start*/
-//tblMstOhneZeitintervallIMw_wrapper
-$('#tblMstOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
-$('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').first().hide();
-
-        $("#btnShowRecordsAnlBtnPrdkt").click(function(){
-            $(this).prop("disabled", true);
-            $('#searchBtnShowRecordsPrdktAnlMstBtnDiv').show();
-            $('#searchBtnShowRecordsPrdktAnlMstBtn').val('1');
-            $("#ErgDatenProdukte").prop("checked", true);
-            tblMstOhneZeitintervallIMw.clear().draw();
-            $('#tblMstOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
-            //produkteDataTable();
-           // resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
-            produkteAnlargeDataTable();
-
-        });
-        /*new-mm-end*/
         $(".zeitintervallAnl_1").hide();
         $(".zeitintervallAnl_2").hide();
         $(".zeitintervallAnl_3").hide();
         $(".zeitintervallAnl_4").hide();
         $(".zeitintervallAnl_NoEnding").hide();
-
-        /*Produkte mm 01-03-2021*/
-        /*new-mm-start*/
-        $(".zeitintervallAnlPrdkt_1").hide();
-        $(".zeitintervallAnlPrdkt_2").hide();
-        $(".zeitintervallAnlPrdkt_3").hide();
-        $(".zeitintervallAnlPrdkt_4").hide();
-        $(".zeitintervallAnlPrdkt_NoEnding").hide();
-        /*new-mm-end*/
 
         btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDiv',4);
         datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
@@ -3808,9 +3712,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                 $("#inputNextBottomId").val(inputNextBottomId);
                 $("#rowMainIDEn").val(rowMainIDEn);
                 $("#inputFocusedId").val(inputCurrId);
-                if($("#currInputID").val()==0){ $("#inputCurPrevId").val("");
-                }
-                $("#masseneingabeSpeichernSrch").prop("disabled",true);
+
             }
             //if(e.keyCode == 9){
                 //$("#currInputID").val("");
@@ -3863,6 +3765,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
             var inputCurrTopId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
             var inputCurrBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
             var einheitVal = $(this).closest('tr').attr('data-einheit');
+
             if((inputValFirst !='' && inputValCurrent !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValCurrent) !='undefined')){
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
                 if($.inArray(inptDate, anlageObj[mst_id]) === -1){
@@ -3878,10 +3781,6 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                  $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(calcVal);
             }else{
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val('');
-            }
-            if(this.value ==''){
-                //console.log('000');
-                deleteFromDBMasseneingabeEingabenSingleInput(zeitIntervallAnl,date,mst_id);
             }
             //console.log(anlageObj);
             if(anlageObj[mst_id]){
@@ -3979,7 +3878,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                 if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){
 
                     var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
-                    //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                    console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                     if($('#inputPrevValDB').val()){
                         $(inputNextBottomId).val(secBottomValDB);
                     }
@@ -3989,7 +3888,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                 }
                 if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNextlast != "" && typeof(inputValNextlast) != 'undefined')){
                         var lastBottomValDB = $(inputIdNextlast).val() - $('#inputPrevValDB').val();
-                        //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$(inputIdNextlast).val()+"-"+$('#inputPrevValDB').val());
+                        console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$(inputIdNextlast).val()+"-"+$('#inputPrevValDB').val());
                         if($('#inputPrevValDB').val()){
                             $(inputNextLastBottomId).val(lastBottomValDB);
                         }
@@ -4006,7 +3905,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                 if(allPrevVal.length == 0 ){
                     if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){
                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
-                         //console.log("allPrevVal.length0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                         console.log("allPrevVal.length0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                         if($('#inputPrevValDB').val()){
                             $(inputNextBottomId).val(secBottomValDB);
                         }
@@ -4018,7 +3917,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                     }
                     if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNextlast != "" && typeof(inputValNextlast) != 'undefined')){
                         var lastBottomValDB = $(inputIdNextlast).val() - $('#inputPrevValDB').val();
-                        //console.log("allPrevVal.length0 : lastBottomValDB"+lastBottomValDB+"->"+$(inputIdNextlast).val()+"-"+$('#inputPrevValDB').val());
+                        console.log("allPrevVal.length0 : lastBottomValDB"+lastBottomValDB+"->"+$(inputIdNextlast).val()+"-"+$('#inputPrevValDB').val());
                         if($('#inputPrevValDB').val()){
                             $(inputNextLastBottomId).val(lastBottomValDB);
                         }
@@ -4060,7 +3959,6 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
             var rowMstID = $(this).closest('td').attr('data-id');
             var date = $(this).closest('td').attr('date');
-            //$("#timeIntervalWerteEnergiedatenIMw .txtBoxSrch").NumericOnly();
 
             var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
             var inputBottomPrevNextId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevNextId;
@@ -4112,6 +4010,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                      checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                 }
             }
+
 
             if($(inputCurrId).val() !='' && typeof($(inputCurrId)) != 'undefined') {
                 //continue..
@@ -4341,7 +4240,6 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                              checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                         }
                     }
-                    $("#masseneingabeSpeichernSrch").prop("disabled", false);
                     return false;
                 }
                 var inputLengthBottom = inputValBottom.length;
@@ -4356,7 +4254,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                             //alert('concern 1');
                             intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
-                    }else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
+                    }/*else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
                              //alert('concern 2');
                             intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                     }else if(valLeft ==false && valRight ==false) {
@@ -4364,10 +4262,12 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                              //alert('concern 3');
                             intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
-                    }
-                    //$("#masseneingabeSpeichernSrch").prop("disabled", false);
+                    }        */
                 }
-
+                //console.log(e);
+                if($('#intBdeConcernOrDeletePopUp').length==0){
+                    //saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs);
+                }
 
             }
 
@@ -4397,15 +4297,10 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                             intBdeSearchConcernOrDeletePopUp(inputPrevLastId,inputNextId,inputBottomCurrId,rowMstID);
                         }
                     }
-                    //$("#masseneingabeSpeichernSrch").prop("disabled", false);
                 }
             }
             /*MM_25-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/
-             //console.log(e);
-                if($('#intBdeConcernOrDeletePopUp').length==0){
-                    $("#masseneingabeSpeichernSrch").prop("disabled",false);
-                    saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs);
-                }
+
             e.stopPropagation();
 
         });
@@ -4616,8 +4511,8 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                                 return false;
                             }
                         }
-                        if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
-                            if(checkPositiveValue($(inputCurrId).val())==false || checkPositiveValue($("#inputLastValDB").val())==false){
+                        if(($("#inputLastValDB").val() !='' && $("#inputCurrId").val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($("#inputCurrId").val()) !='undefined')){
+                            if(checkPositiveValue($("#inputCurrId").val())==false || checkPositiveValue($("#inputLastValDB").val())==false){
                                 alert('Current value & previous value should be positive!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
@@ -4626,8 +4521,8 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                                 return false;
                             }
                         }
-                        if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
-                            if(checkPositiveValue($(inputCurrId).val()) ==false || checkPositiveValue($("#inputNextLastValDB").val())==false){
+                        if(($("#inputNextLastValDB").val() !='' && $("#inputCurrId").val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($("#inputCurrId").val()) !='undefined')){
+                            if(checkPositiveValue($("#inputCurrId").val()) ==false || checkPositiveValue($("#inputNextLastValDB").val())==false){
                                 alert('Current value & next value should be positive!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
@@ -4664,7 +4559,6 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                     var valRight = checkPositiveValue(inputValBottom);
                     if((inputBotmMin !='' && inputBotmMax !='') && (typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined')){
                          if (( inputValBottom !='' && typeof(inputValBottom) !='undefined' ) && ((inputValBottom <= Number(inputBotmMax)) && (inputValBottom >= Number(inputBotmMin)))){
-                           $("#masseneingabeSpeichernSrch").prop("disabled", false);
                              return false;
                         }
                     }
@@ -4673,7 +4567,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                              //alert('concern 5');
                             intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
-                    }else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
+                    }/*else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
                          //alert('concern 6');
                         intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                     }else if(valLeft ==false && valRight ==false) {
@@ -4681,7 +4575,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                              //alert('concern 7');
                             intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
-                    }
+                    }  */
                 }
             }
             /*MM_27-01-2020 Concern popup on if prevlast and current bottom val().length are diffrent*/
@@ -4713,9 +4607,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
             }
 
             /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/
-            if($('#intBdeConcernOrDeletePopUp').length==0){
-                $("#masseneingabeSpeichernSrch").prop("disabled",false);
-            }
+
             e.stopPropagation();
         });
         $("body").on('click','#infosMasseneingabe', function (event) {
@@ -4937,8 +4829,8 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                                 return false;
                             }
                         }
-                        if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
-                            if(checkPositiveValue($(inputCurrId).val())==false || checkPositiveValue($("#inputLastValDB").val())==false){
+                        if(($("#inputLastValDB").val() !='' && $("#inputCurrId").val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($("#inputCurrId").val()) !='undefined')){
+                            if(checkPositiveValue($("#inputCurrId").val())==false || checkPositiveValue($("#inputLastValDB").val())==false){
                                 alert('Current value & previous value should be positive!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
@@ -4947,8 +4839,8 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                                 return false;
                             }
                         }
-                        if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
-                            if(checkPositiveValue($(inputCurrId).val()) ==false || checkPositiveValue($("#inputNextLastValDB").val())==false){
+                        if(($("#inputNextLastValDB").val() !='' && $("#inputCurrId").val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($("#inputCurrId").val()) !='undefined')){
+                            if(checkPositiveValue($("#inputCurrId").val()) ==false || checkPositiveValue($("#inputNextLastValDB").val())==false){
                                 alert('Current value & next value should be positive!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
@@ -4989,7 +4881,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                                          checkAlertRangeMinMaxServerSide(type,rowMstID,date,rowMainIDDs);
                                     }
                                 }
-                                $("#masseneingabeSpeichernSrch").prop("disabled", false);
+
                                 return false;
                             }
                              if((inputBotmMin !='' && inputBotmMax !='') && (typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined')){
@@ -5007,7 +4899,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                                      //alert('concern 9');
                                     intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputCurrId,inputBottomCurrId,rowMstID);
                                 }
-                            }else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
+                            }/*else if((valLeft ==true && valRight ==false) || (valLeft ==false && valRight ==true)){
                                  //alert('concern 10');
                                     intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputCurrId,inputBottomCurrId,rowMstID);
                             }else if(valLeft ==false && valRight ==false) {
@@ -5015,7 +4907,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                                      //alert('concern 11');
                                     intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputCurrId,inputBottomCurrId,rowMstID);
                                 }
-                            }
+                            } */
                         }
                     }
 
@@ -5047,13 +4939,9 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
                         }
                     }
                     /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/
-                    if($('#intBdeConcernOrDeletePopUp').length==0){
-                     $("#masseneingabeSpeichernSrch").prop("disabled",false);
-                    }
                 }
             }
         });
-    //e.stopPropagation();
     });
 
    /*save icon click event for the Interne Betriebsdaten Speichern 05-10-2020*/
@@ -5069,46 +4957,12 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
         }
     });
 
-    /* Save icon click event for the
-    *  Interne Betriebsdaten Module
-    *  Podukte and Messsetelle Speichern
-    *  04-03-2021
-    */
-    /*new-mm-start*/
-    $("#intBdePrdktIMwSpeichern").click(function(){
-        //var anlIMw =$("#anlIMw").val();
-        var zeitintervallAnlPrdkt =$("#zeitintervallAnlPrdkt").val();
-        var NoEndingAnlPrdkt =$("#anlPrdktIMwNoEnding").is(":checked");
-        /*var validate = validateIntBdeFrm(noEnding,zeitintervallAnl,'infosIntEnergiedaten',1);
-        if(validate==false){
-            return false;
-        }else{
-            intBdeIMwHistorieSpeichernPopUp();
-        }*/
-        var validatePrdk = validateIntBdePrdktFrm(NoEndingAnlPrdkt,zeitintervallAnlPrdkt,'infosIntEnergiedaten',1);
-        if(validatePrdk==false){
-            return false;
-        }else{
-            intBdePrdktIMwHistorieSpeichernPopUp();
-        }
-
-    });
-    /*new-mm-end*/
     $("#tabIntBetriebsdatenIMwHist").click(function(){
         intBdeIMwHistOkGetHistorie();
         $("body").removeClass('fullWidthMasseneingabe');
         $("#infosMasseneingabe").hide();
     });
-    $("#tabIntBetriebsdatenIMwHistPrdkt").click(function(){
-        intBdeIMwHistOkGetHistoriePrdkt();
-        $("body").removeClass('fullWidthMasseneingabe');
-        $("#infosMasseneingabe").hide();
-    });
-    $("#tabIntBetriebsdatenIMwHistMesssetelle").click(function(){
-        intBdeIMwHistOkGetHistorieMesssetelle();
-        $("body").removeClass('fullWidthMasseneingabe');
-        $("#infosMasseneingabe").hide();
-    });
+
      $("#intBdeIMwLastMst,#intBdeIMwNextMst,#intBdeIMwPreviousMst,#intBdeIMwFirstMst").click(function(){
         //alert(this.id);
             var countRecord = $("#intBdeIMwCount").val();
@@ -5181,35 +5035,17 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
         $("body").addClass('fullWidthMasseneingabe');
         datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
          $("#tblMasseneingabeDataIMw").remove();
-         //interneEBTblShowHide(1);
      });
      $("#btnKonfigMstAnl").click(function() {
         $("body").removeClass('fullWidthMasseneingabe');
         $("#tblMasseneingabeDataIMw").remove();
-        //interneEBTblShowHide(1);
      });
 
     $("#masseneingabeSpeichernSrch").click(function() {
          var inputCurrId = $("#inputCurrId").val();
          var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
          //console.log($("#timeIntervalWerteEnergiedatenIMw").html());
-         /*new-mm-start*/
-         if($("#tblMasseneingabeDataIMw").length !=0){
-                //if(showPopupExist==false){
-                    $(".save-msg-box").show();
-                    $("#masseneingabeSrchImg").show();
-                    setTimeout(function(){
-                        //if($("#intBdeConcernOrDeletePopUp").length ==0){
-                            var key = $(".infosMasseneingabeInside button.active").attr('data-id');
-                             saveToDBMasseneingabeEingaben(key);
-                        // }
-                    }, 300);
-                //}
-            }else{
-                alert("Please generate inputs first.");
-            }
-         /*old-comment-start*/
-       /*  if (confirm("Do you want to save？")) {
+         if (confirm("Do you want to save？")) {
             if($("#tblMasseneingabeDataIMw").length !=0){
                 //if(showPopupExist==false){
                     $("#masseneingabeSrchImg").show();
@@ -5224,9 +5060,7 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
            return true;
          }else{
            return false;
-         }*/
-         /*old-comment-end*/
-         /*new-mm-end*/
+         }
     });
 
    /*On change Einheit create Control System select option */
@@ -5267,171 +5101,6 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
    });
    /*On change Einheit create Control System select option */
 
-   /*On change Einheit create Control System select option  History tab Popup 12-03-2021*/
-   /*new-mm-start*/
-   $(".intBdeIMwHistorieContainer #einheitAnl,.intBdeIMwHistorieContainer #control_system").change(function() {
-        //var einheitVal  = this.value;
-        var type = $(".intBdeIMwHistorieContainer #zeitintervallAnl").val();
-        if(type==1){
-            var startDate = $(".intBdeIMwHistorieContainer #tageMassEingDataAnlStart1").val();
-            var endDate = $( ".intBdeIMwHistorieContainer #tageMassEingDataAnlEnde1" ).val();
-        }
-        if(type==2){
-            var startWeek = $(".intBdeIMwHistorieContainer #wochenWMassEingDataAnlStart1").val();
-            var startYear = $(".intBdeIMwHistorieContainer #wochenYMassEingDataAnlStart1").val();
-            var endWeek = $(".intBdeIMwHistorieContainer #wochenWMassEingDataAnlEnde1").val();
-            var endYear = $( ".intBdeIMwHistorieContainer #wochenYMassEingDataAnlEnde1" ).val();
-            if((startWeek !='' && startYear !='') && (typeof(startWeek) !='undefined' && typeof(startYear) !='undefined')){
-                var startDate = startWeek+'-'+startYear;
-            }
-            if((endWeek !='' && endYear !='') && (typeof(endWeek) !='undefined' && typeof(endYear) !='undefined')){
-                var endDate = endWeek+'-'+endYear;
-            }
-        }
-        if(type==3){
-            var startDate = $(".intBdeIMwHistorieContainer #monateMassEingDataAnlStart1").val();
-            var endDate = $( ".intBdeIMwHistorieContainer #monateMassEingDataAnlEnde1" ).val();
-        }
-        if(type==4){
-            var startDate = $(".intBdeIMwHistorieContainer #jahrMassEingDataAnlStart1").val();
-            var endDate = $( ".intBdeIMwHistorieContainer #jahrMassEingDataAnlEnde1" ).val();
-        }
-        if(this.id=='einheitAnl'){
-            einheitAnlHistOnChangeChildSelectOpt(this.value);
-           // alertValidationforEinheitControlSystem(this.id,this.value,startDate,endDate,type);
-        }
-        if(this.id=='control_system'){
-           // alertValidationforEinheitControlSystem(this.id,this.value,startDate,endDate,type);
-        }
-   });
-    /*new-mm-end*/
-   /*On change Einheit create Control System select option */
-
-
-
-   /*For Produkte Module 08-03-2021*/
-   /*On change Einheit Prdkt create Control System Prdkt select option */
-   /*new-mm-start*/
-   $(".infosIntEnergiedaten #einheitAnlPrdkt,.infosIntEnergiedaten #control_system_AnlPrdkt").change(function() {
-        //var einheitVal  = this.value;
-        var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
-        if(type==1){
-            var startDate = $(".infosIntEnergiedaten #tageMassEingDataAnlPrdktStart1").val();
-            var endDate = $( ".infosIntEnergiedaten #tageMassEingDataAnlPrdktEnde1" ).val();
-        }
-        if(type==2){
-            var startWeek = $(".infosIntEnergiedaten #wochenWMassEingDataAnlPrdktStart1").val();
-            var startYear = $(".infosIntEnergiedaten #wochenYMassEingDataAnlPrdktStart1").val();
-            var endWeek = $(".infosIntEnergiedaten #wochenWMassEingDataAnlPrdktEnde1").val();
-            var endYear = $( ".infosIntEnergiedaten #wochenYMassEingDataAnlPrdktEnde1" ).val();
-            if((startWeek !='' && startYear !='') && (typeof(startWeek) !='undefined' && typeof(startYear) !='undefined')){
-                var startDate = startWeek+'-'+startYear;
-            }
-            if((endWeek !='' && endYear !='') && (typeof(endWeek) !='undefined' && typeof(endYear) !='undefined')){
-                var endDate = endWeek+'-'+endYear;
-            }
-        }
-        if(type==3){
-            var startDate = $(".infosIntEnergiedaten #monateMassEingDataAnlPrdktStart1").val();
-            var endDate = $( ".infosIntEnergiedaten #monateMassEingDataAnlPrdktEnde1" ).val();
-        }
-        if(type==4){
-            var startDate = $(".infosIntEnergiedaten #jahrMassEingDataAnlPrdktStart1").val();
-            var endDate = $( ".infosIntEnergiedaten #jahrMassEingDataAnlPrdktEnde1" ).val();
-        }
-        if(this.id=='einheitAnlPrdkt'){
-
-            einheitAnlPrdktMstHistOnChangeChildSelectOpt(this.value,'infosIntEnergiedaten');
-           // alertValidationforEinheitControlSystemPrdkt(this.id,this.value,startDate,endDate,type);
-        }
-        if(this.id=='control_system_AnlPrdkt'){
-           // alertValidationforEinheitControlSystemPrdkt(this.id,this.value,startDate,endDate,type);
-        }
-   });
-   /*new-mm-end*/
-
-
-   /*For IntBde Produkte History Module 12-03-2021*/
-   /*On change Einheit Prdkt create Control System Prdkt select option */
-   /*new-mm-start*/
-   $(".intBdePrdktIMwHistorieContainer #einheitAnlPrdkt,.intBdePrdktIMwHistorieContainer #control_system_AnlPrdkt").change(function() {
-        //var einheitVal  = this.value;
-        var type = $(".intBdePrdktIMwHistorieContainer #zeitintervallAnlPrdkt").val();
-        if(type==1){
-            var startDate = $(".intBdePrdktIMwHistorieContainer #tageMassEingDataAnlPrdktStart2").val();
-            var endDate = $( ".intBdePrdktIMwHistorieContainer #tageMassEingDataAnlPrdktEnde2" ).val();
-        }
-        if(type==2){
-            var startWeek = $(".intBdePrdktIMwHistorieContainer #wochenWMassEingDataAnlPrdktStart2").val();
-            var startYear = $(".intBdePrdktIMwHistorieContainer #wochenYMassEingDataAnlPrdktStart2").val();
-            var endWeek = $(".intBdePrdktIMwHistorieContainer #wochenWMassEingDataAnlPrdktEnde2").val();
-            var endYear = $( ".intBdePrdktIMwHistorieContainer #wochenYMassEingDataAnlPrdktEnde2" ).val();
-            if((startWeek !='' && startYear !='') && (typeof(startWeek) !='undefined' && typeof(startYear) !='undefined')){
-                var startDate = startWeek+'-'+startYear;
-            }
-            if((endWeek !='' && endYear !='') && (typeof(endWeek) !='undefined' && typeof(endYear) !='undefined')){
-                var endDate = endWeek+'-'+endYear;
-            }
-        }
-        if(type==3){
-            var startDate = $(".intBdePrdktIMwHistorieContainer #monateMassEingDataAnlPrdktStart2").val();
-            var endDate = $( ".intBdePrdktIMwHistorieContainer #monateMassEingDataAnlPrdktEnde2" ).val();
-        }
-        if(type==4){
-            var startDate = $(".intBdePrdktIMwHistorieContainer #jahrMassEingDataAnlPrdktStart2").val();
-            var endDate = $( ".intBdePrdktIMwHistorieContainer #jahrMassEingDataAnlPrdktEnde2" ).val();
-        }
-        if(this.id=='einheitAnlPrdkt'){
-
-            einheitAnlPrdktMstHistOnChangeChildSelectOpt(this.value,'intBdePrdktIMwHistorieContainer');
-           // alertValidationforEinheitControlSystemPrdkt(this.id,this.value,startDate,endDate,type);
-        }
-        if(this.id=='control_system_AnlPrdkt'){
-           // alertValidationforEinheitControlSystemPrdkt(this.id,this.value,startDate,endDate,type);
-        }
-   });
-   /*new-mm-end*/
-      /*For IntBde MesssetelleintBdePrdktIMwHistorieContainer History Module 12-03-2021*/
-   /*On change Einheit Prdkt create Control System Prdkt select option */
-   /*new-mm-start*/
-   $(".intBdeMesssetelleIMwHistorieContainer #einheitAnlPrdkt,.intBdeMesssetelleIMwHistorieContainer #control_system_AnlPrdkt").change(function() {
-        //var einheitVal  = this.value;
-        var type = $(".intBdeMesssetelleIMwHistorieContainer #zeitintervallAnlPrdkt").val();
-        if(type==1){
-            var startDate = $(".intBdeMesssetelleIMwHistorieContainer #tageMassEingDataAnlPrdktStart2").val();
-            var endDate = $( ".intBdeMesssetelleIMwHistorieContainer #tageMassEingDataAnlPrdktEnde2" ).val();
-        }
-        if(type==2){
-            var startWeek = $(".intBdeMesssetelleIMwHistorieContainer #wochenWMassEingDataAnlPrdktStart2").val();
-            var startYear = $(".intBdeMesssetelleIMwHistorieContainer #wochenYMassEingDataAnlPrdktStart2").val();
-            var endWeek = $(".intBdeMesssetelleIMwHistorieContainer #wochenWMassEingDataAnlPrdktEnde2").val();
-            var endYear = $( ".intBdeMesssetelleIMwHistorieContainer #wochenYMassEingDataAnlPrdktEnde2" ).val();
-            if((startWeek !='' && startYear !='') && (typeof(startWeek) !='undefined' && typeof(startYear) !='undefined')){
-                var startDate = startWeek+'-'+startYear;
-            }
-            if((endWeek !='' && endYear !='') && (typeof(endWeek) !='undefined' && typeof(endYear) !='undefined')){
-                var endDate = endWeek+'-'+endYear;
-            }
-        }
-        if(type==3){
-            var startDate = $(".intBdeMesssetelleIMwHistorieContainer #monateMassEingDataAnlPrdktStart2").val();
-            var endDate = $( ".intBdeMesssetelleIMwHistorieContainer #monateMassEingDataAnlPrdktEnde2" ).val();
-        }
-        if(type==4){
-            var startDate = $(".intBdeMesssetelleIMwHistorieContainer #jahrMassEingDataAnlPrdktStart2").val();
-            var endDate = $( ".intBdeMesssetelleIMwHistorieContainer #jahrMassEingDataAnlPrdktEnde2" ).val();
-        }
-        if(this.id=='einheitAnlPrdkt'){
-
-            einheitAnlPrdktMstHistOnChangeChildSelectOpt(this.value,'intBdeMesssetelleIMwHistorieContainer');
-           // alertValidationforEinheitControlSystemPrdkt(this.id,this.value,startDate,endDate,type);
-        }
-        if(this.id=='control_system_AnlPrdkt'){
-           // alertValidationforEinheitControlSystemPrdkt(this.id,this.value,startDate,endDate,type);
-        }
-   });
-   /*new-mm-end*/
-
 
   $('body').on('focusin','#tblMasseneingabeDataIMwTbl .txtBoxSrch',function () {
     if (!$(this).closest('tr').hasClass('rowFocus')) {
@@ -5459,219 +5128,3 @@ $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').fir
             alertValidationforStartEndeDate($("#mstID").val(),date,zeitintervallAnl);
         }
     });
-
-
-/*Datatable CheckBox Query*/
-/*new-mm-start*/
-$('#searchBtnShowRecordsAnlBtn').on('change', function () {
-    var checkboxSearch = $(this).val();
-    searchKeinZeitIntervallZugewiesen(checkboxSearch);
-});
-$('#searchImgBtnShowRecordsAnlBtn').on('change', function () {
-    var checkboxSearch = $(this).val();
-    searchImgKeinZeitIntervallZugewiesen(checkboxSearch);
-});
-/*new-mm-end*/
-/*Produkte Int BDE mm 03-03-2021*/
-/*new-mm-start*/
-/*On Select Change Produkte and messettlen DataTable show and Hide*/
-$('#searchBtnShowRecordsPrdktAnlMstBtn').on('change', function () {
-    var checkboxSearch = $(this).val();
-    if(checkboxSearch == 1){
-       $("#tblMstOhneZeitintervallIMw_wrapper").show();
-       $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").hide();
-        produkteAnlargeDataTable();
-
-    }
-    else if(checkboxSearch == 2){
-        $("#tblMstOhneZeitintervallIMw_wrapper").hide();
-        $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").show();
-        searchProdukteAnlageIntBDE(checkboxSearch);
-
-    }
-});
-
-
-/*On Radio Check Produkte and messettlen DataTable show and Hide 03-03-2021*/
-/*new-start-mm*/
-$('input:radio[name=BetriebsdatenFilter]').change(function () {
-            if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
-
-                $("#tblMstOhneZeitintervallIMw_wrapper").show();
-                $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").hide();
-
-                //$("#mstIMw").prop("disabled",false);
-                $("#mstIMw").val("").prop("readonly",false);
-                $("#mstIMw").prop("disabled",false);
-
-                $(".artikelnummerIntBdeDiv").show();
-                $(".bezeichnungIntBdeDiv").show();
-                $(".anlageIntBdeDiv").show();
-                $(".anlageMessstelleIntBdeDiv").hide();
-
-                $("#artikelnummerIntBde").val("").prop("disabled",false);
-                $("#bezeichnungIntBde").val("").prop("disabled",false);
-                $("#anlageIntBde").val("").prop("disabled",false);
-                $("#anlageMessstelleIntBde").val("").prop("disabled",false);
-
-                $("#zeitintervallAnlPrdkt").val("0").change();
-                $("#einheitAnlPrdkt").val("").change();
-                $("#notizBdeIMwAnlPrdkt").val("");
-                $("#control_system_AnlPrdkt").val("").change();
-
-                $("#tageMassEingDataAnlPrdktStart1").val("");
-                $("#tageMassEingDataAnlPrdktEnde1").val("");
-                $("#anlPrdktIMwNoEnding").val("0").prop("checked",false);
-
-                $("#wochenWMassEingDataAnlPrdktStart1").val("").change();
-                $("#wochenYMassEingDataAnlPrdktStart1").val("");
-                $("#wochenWMassEingDataAnlPrdktEnde1").val("").change();
-                $("#wochenYMassEingDataAnlPrdktEnde1").val("");
-
-                $("#monateMassEingDataAnlPrdktStart1").val("");
-                $("#monateMassEingDataAnlPrdktEnde1").val("");
-
-                $("#jahrMassEingDataAnlPrdktStart1").val("");
-                $("#jahrMassEingDataAnlPrdktEnde1").val("");
-
-                /*save img*/
-                //  $("#intBdeMessetelleIMwSpeichern").hide();
-                //  $("#intBdePrdktIMwSpeichern").show();
-                $("mstID").val("");
-
-                /*new-mm-start 10-03-2021*/
-                $("#tabIntBetriebsdatenIMwHistPrdkt").show();
-                $("#tabIntBetriebsdatenIMwHistMesssetelle").hide();
-                /*new-mm-start 10-03-2021*/
-
-                produkteAnlargeDataTable();
-            }
-            if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
-                $("#tblMstOhneZeitintervallIMw_wrapper").hide();
-                $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").show();
-
-                $("#mstIMw").val("").prop("readonly",true);
-
-                $(".bezeichnungIntBdeDiv").hide();
-                $(".artikelnummerIntBdeDiv").hide();
-                $(".anlageIntBdeDiv").hide();
-                $(".anlageMessstelleIntBdeDiv").show();
-                //$("#anlageMessstelleIntBde").prop("disabled",true);
-
-                $("#artikelnummerIntBde").val("").prop("disabled",false);
-                $("#bezeichnungIntBde").val("").prop("disabled",false);
-                $("#anlageIntBde").val("").prop("disabled",false);
-                $("#anlageMessstelleIntBde").val("").prop("disabled",false);
-
-                $("#zeitintervallAnlPrdkt").val("0").change();
-                $("#einheitAnlPrdkt").val("").change();
-                $("#notizBdeIMwAnlPrdkt").val("");
-                $("#control_system_AnlPrdkt").val("").change();
-
-                $("#tageMassEingDataAnlPrdktStart1").val("");
-                $("#tageMassEingDataAnlPrdktEnde1").val("");
-                $("#anlPrdktIMwNoEnding").val("0").prop("checked",false);
-
-                $("#wochenWMassEingDataAnlPrdktStart1").val("").change();
-                $("#wochenYMassEingDataAnlPrdktStart1").val("");
-                $("#wochenWMassEingDataAnlPrdktEnde1").val("").change();
-                $("#wochenYMassEingDataAnlPrdktEnde1").val("");
-
-                $("#monateMassEingDataAnlPrdktStart1").val("");
-                $("#monateMassEingDataAnlPrdktEnde1").val("");
-
-                $("#jahrMassEingDataAnlPrdktStart1").val("");
-                $("#jahrMassEingDataAnlPrdktEnde1").val("");
-
-
-                /*save img*/
-                // $("#intBdePrdktIMwSpeichern").hide();
-                // $("#intBdeMessetelleIMwSpeichern").show();
-
-                $("#prd_ID").val("");
-                $("#anl_Col").val("");
-                $("#anl_ID").val("");
-                /*new-mm-start 10-03-2021*/
-                $("#tabIntBetriebsdatenIMwHistPrdkt").hide();
-                $("#tabIntBetriebsdatenIMwHistMesssetelle").show();
-                /*new-mm-start 10-03-2021*/
-                searchProdukteAnlageIntBDE("2");
-            }
-});
-/*new-mm-end*/
-
-/*new-mm-end*/
-/*19-02-2021 radio button check */
-/*$("#interneEBTblDiv input[name='interneEBTbl']").on('change', function () {
-    interneEBTblShowHide(this.value);
-});*/
-
-/*statische Korrekturfaktoren 26-02-2021*/
-/* new-mm-start */
-$('#optionWert').on('blur', function () {
-    var optionWert = $(this).val();
-    if(optionWert == 0 || optionWert == null){
-        alert("Wert sollte nicht Null sein");
-        $('#optionWert').val("");
-    }
-    /*else if(optionWert < 0 || optionWert == null){
-        alert("Wert sollte nicht negativ sein");
-        $('#optionWert').val("");
-    }*/
-});
-/* new-mm-end */
-
-/*Hide Datatable*/
-/*new-mm-start*/
-$(":not(#btnShowRecordsAnlBtn) button , .menu :not(#intBdeIMwMenu) a").click(function() {
-    $("#tblAnlOhneZeitintervallIMw_wrapper").hide();
-    $("#btnShowRecordsAnlBtn").prop("disabled", false);
-    $('#searchBtnShowRecordsAnlBtnDiv').hide();
-    $('#interneEBTblDiv').hide();
-});
-/*Produkte mm 25-02-21*/
-/*new-mm-start*/
-$(":not(#btnShowRecordsAnlBtnPrdkt) button").click(function() {
-
-    tblMstOhneZeitintervallIMw.clear();
-    $("#tblMstOhneZeitintervallIMw_wrapper").hide();
-    $("#searchBtnShowRecordsPrdktAnlMstBtnDiv").hide();
-    $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").hide();
-    //$('#tblMstOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
-    $("#btnShowRecordsAnlBtnPrdkt").prop("disabled", false);
-    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
-});
-/*new-mm-end*/
-/*new-mm-end*/
-/*Interne Betriebsdaten Modute Hide Produkte and Messsetelle historie Tab  mm 10-03-21*/
-/*new-mm-start*/
-$(".menu :not(#intEngIMwMenu) a").click(function() {
-
-    tblMstOhneZeitintervallIMw.clear();
-
-    $("#tabIntBetriebsdatenIMwHistPrdkt").hide();
-    $("#tabIntBetriebsdatenIMwHistMesssetelle").hide();
-    $("#infosIntBetriebsdatenHistPrdkt").hide();
-    $("#infosIntBetriebsdatenHistMesssetelle").hide();
-    $("#tabIntEnergiedatenIMw").hide();
-    $("#infosIntEnergiedaten").hide();
-    $("#tblMstOhneZeitintervallIMw_wrapper").hide();
-    $("#searchBtnShowRecordsPrdktAnlMstBtnDiv").hide();
-    $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").hide();
-    $("#btnShowRecordsAnlBtnPrdkt").prop("disabled", false);
-    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
-
-});
-$("#tabIntBetriebsdatenIMwHistPrdkt").click(function() {
-    $("#infosIntEnergiedaten").hide();
-    $("#infosIntBetriebsdatenHistMesssetelle").hide();
-    $("#infosIntBetriebsdatenHistPrdkt").show();
-
-});
-$("#tabIntBetriebsdatenIMwHistMesssetelle").click(function() {
-    $("#infosIntEnergiedaten").hide();
-    $("#infosIntBetriebsdatenHistPrdkt").hide();
-    $("#infosIntBetriebsdatenHistMesssetelle").show();
-
-});
-/*new-mm-end*/
