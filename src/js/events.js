@@ -13,6 +13,7 @@ $(document).ready(function() {
     } else if(sessionStorage.getItem("position") == 'sAdm') {
         var roleId = 2;
         alleNutzerRollenUndBerechtigungen(roleId);
+        $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID"));
         mandantenEinlesen($("#betrGrpID").val(), null, null);
     } else if(sessionStorage.getItem("position") == 'adm') {
         var roleId = 4;
@@ -23,7 +24,8 @@ $(document).ready(function() {
     } else if(sessionStorage.getItem("position") == 'ben') {
         var roleId = 5;
         alleNutzerRollenUndBerechtigungen(roleId);
-        mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
+        //mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
+        $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")): $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID"));
     } else {
         var roleId = 3;
         alleNutzerRollenUndBerechtigungen(roleId);
@@ -31,7 +33,7 @@ $(document).ready(function() {
     }
     //"gipsAdm" == sessionStorage.getItem("position") ? mandantenEinlesen("alle", null, null) : '' ;
     // : 
-    // "sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : 
+    //"sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : 
     // "adm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi, #manGrpMenuLi, #admMenuLi").css("display",
     //     "none"), $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabAdm").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")) : 
     //$.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0)) : 
