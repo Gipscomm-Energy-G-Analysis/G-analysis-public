@@ -332,10 +332,16 @@ elseif($id == "betrPar"){
   $query = "SELECT * FROM config.betriebsparameter ";
 
 } elseif($id == 'admSuchen') {
-    $query = "SELECT * FROM admins WHERE deleted_at IS NULL";
+    
+    $man_ID = $_POST['manID'];
+
+    $query = "SELECT * FROM admins WHERE deleted_at IS NULL AND man_ID = '$man_ID' OR manGrp_ID = '$man_ID'";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 } elseif($id == 'benSuchen') {
-    $query = "SELECT * FROM benutzer WHERE deleted_at IS NULL";
+  
+  $man_ID = $_POST['manID'];
+
+  $query = "SELECT * FROM benutzer WHERE deleted_at IS NULL AND man_ID = '$man_ID' OR manGrp_ID = '$man_ID' ";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 } elseif($id == 'rollenUndBerechtigungenSuperadmin') {
     $query = "SELECT * FROM accessibleTab"; 

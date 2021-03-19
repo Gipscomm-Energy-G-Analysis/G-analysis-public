@@ -1675,12 +1675,12 @@ try {
             $(".manGrpPfad").empty();
             $(".manGrpPfad").append("<optgroup label='Mandantengruppen'>");
             $(".manGrpPfad").append("</optgroup>");
-            for (n = 0; n < a.length; n++) manGrpListe[n] = new manGrp(a[n].name, a[n].manGrp_ID), $(".manGrpPfad optgroup").append("<option id='optManGrp_" + n + "'>" + manGrpListe[n].name + "</option>");
+            for (n = 0; n < a.length; n++) manGrpListe[n] = new manGrp(a[n].name, a[n].manGrp_ID), $(".manGrpPfad optgroup").append("<option value='"+a[n].manGrp_ID+"' id='optManGrp_" + n + "'>" + manGrpListe[n].name + "</option>");
             $(".manGrpPfad").append("<optgroup label='Mandanten'>");
             $(".manGrpPfad").append("</optgroup>");
             a = $(".manPfad option").length / $(".manPfad").length;
-            for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
-                $(".manPfad option").eq(m).text() + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text() + "</option>")
+            for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option value='"+ $(".manPfad option").eq(m).val() +"' id='optMan_" + m + "'>" +
+                $(".manPfad option").eq(m).text() + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option value='"+ $(".manPfad option").eq(m).val() +"' id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text() + "</option>")
         },
         manGrpEinlesen = function() {
             $.ajax({
@@ -1727,7 +1727,7 @@ try {
         },
         mandantenInDropbox = function(a) {
             $(".manPfad").empty();
-            for (var b = 0; b < a.length; b++) mandantenliste[b] = new mandant(a[b].dbName, a[b].man_ID, a[b].nameMan), $(".manPfad").append("<option>" +
+            for (var b = 0; b < a.length; b++) mandantenliste[b] = new mandant(a[b].dbName, a[b].man_ID, a[b].nameMan), $(".manPfad").append("<option value='"+a[b].man_ID+"'>" +
                 mandantenliste[b].name + "</option>");
             $("#manID").val(mandantenliste[0].manID);
             readInstanzen("manFirst", null);
@@ -17515,6 +17515,7 @@ function adminlisteErstellen() {
         data: {
             id: "admSuchen",
             nameDB: "gipscomm",
+            manID: $(".manGrpPfad").val()
         },
         success: function(e) {
             console.log('Working fine');
@@ -17598,6 +17599,7 @@ function benutzerlisteErstellen() {
         data: {
             id: "benSuchen",
             nameDB: "gipscomm",
+            manID: $(".manGrpPfad").val()
         },
         success: function(e) {
             console.log('Working fine');
