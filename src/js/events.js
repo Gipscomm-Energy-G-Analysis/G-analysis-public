@@ -712,21 +712,13 @@ $(document).ready(function() {
         $("#kostenERng").val(formatNumber("form", a));
         $("#kostenERng").trigger("change")
     });
-    $("#kostenERng, #mwstPercentERng").change(function() {
+    $("#kostenERng, #mwstPercentERng, #kostenMitMwstERng").change(function() {
         -1 != $("#kostenERng").val().indexOf(",") && $("#kostenERng").val(formatNumber("deform", $("#kostenERng").val()));
         $("#liegRngVergleich").change(function() {
             externeRechnungenListeErstellen("vergleich")
         });
-        var a = $("#kostenERng").val(),
-            a = parseFloat(a),
-            b;
-        b = (formatNumber("deform", $("#mwstPercentERng").val()) * a / 100).toFixed(2);
-        b = parseFloat(b);
-        a = (a + b).toFixed(2);
-        a = parseFloat(a);
-        $("#kostenERng").val(formatNumber("form", $("#kostenERng").val()));
-        $("#mwstERng").val(formatNumber("form", b));
-        $("#kostenMitMwstERng").val(formatNumber("form", a))
+
+        setCostRng(this.id)
     });
     $("#btnSpaEfVTbl1Erstellen, #btnSpaEfVTbl2Erstellen").click(function() {
         var a =

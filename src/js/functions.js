@@ -8381,7 +8381,7 @@ try {
 
                 ajaxPost("php/instanzIntoDb.php")(data)
                 .then(result => {
-                    
+
                     console.log("result eRngSpeichern")
                     console.log(result)
 
@@ -10891,6 +10891,43 @@ const virtMessstelleSaveDialog =
             }
         })
 }
+
+const calcCostWithoutMwst =
+    amountWithMwst =>
+    percentMwst =>
+    round((100 * amountWithMwst) / (100 + percentMwst))(2)
+
+const calcCostWithMwst =
+    amountWithoutMwst =>
+    percentMwst =>
+    round(((percentMwst  * amountWithoutMwst) / 100) + amountWithoutMwst)(2)
+
+// Calculates Kosten in Rechnungen depending on change event
+const setCostRng =
+    id => {
+        const amountWithMwst = parseFloat(formatNumber("deform", $("#kostenMitMwstERng").val()))
+        const amountWithoutMwst = parseFloat(formatNumber("deform", $("#kostenERng").val()))
+        const percentMwst = parseFloat(formatNumber("deform", $("#mwstPercentERng").val()))
+        let amountMwst = 0, cost = 0
+
+        if (id === "kostenMitMwstERng") {
+            cost = calcCostWithoutMwst(amountWithMwst)(percentMwst)
+            amountMwst = round(amountWithMwst - cost)(2)
+
+            $("#kostenMitMwstERng").val(formatNumber("form", $("#kostenMitMwstERng").val()))
+            $("#kostenERng").val(formatNumber("form", cost))
+            $("#mwstERng").val(formatNumber("form",amountMwst))
+        }
+        else {
+            cost = calcCostWithMwst(amountWithoutMwst)(percentMwst)
+            amountMwst = round(cost - amountWithoutMwst)(2)
+
+            $("#kostenERng").val(formatNumber("form", $("#kostenERng").val()))
+            $("#kostenMitMwstERng").val(formatNumber("form", cost))
+            $("#mwstERng").val(formatNumber("form", amountMwst))
+        }
+    }
+
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
 function spiesOrganisationenSearch() {
