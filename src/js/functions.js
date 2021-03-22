@@ -1,4 +1,4 @@
-/**
+*
 *
 *  Secure Hash Algorithm (SHA256)
 *  http://www.webtoolkit.info/
@@ -963,7 +963,8 @@ try {
             $("#masseneingabeZeitintervallIMw label:not(label[data-month='" + $("#monatMasseneingabeIMw").val() + "'])").css("display", "none");
             $("#masseneingabeInputIMw input:not(input[data-month='" + $("#monatMasseneingabeIMw").val() + "'])").css("display", "none")
         },
-        mstOderAnlOhneZeitzuordnungInTbl = function(a) {
+        /*mm-commented 22-03-2021*/
+        /*mstOderAnlOhneZeitzuordnungInTbl = function(a) {
             var b =
                 null,
                 e = new DataMachine,
@@ -999,7 +1000,8 @@ try {
                     readInstanzNachID(r, a[1])
                 })
             })
-        },
+        },*/
+        /*mm-commented 22-03-2021*/
         masseneingabeJahreEinlesen = function(a) {
             ME.resetObj();
             ME.setTimeInterval(TimeInterval.YEAR);
@@ -9263,6 +9265,22 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+    /*new-mm-start 22-03-2021*/
+    tblMstOhneZeitintervallIMwMessstelle = $("#tblMstOhneZeitintervallIMwMessstelle").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblMstOhneZeitintervallIMwIE = $("#tblMstOhneZeitintervallIMwIE").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    /*new-mm-end 22-03-2021*/
     tblVerbrauchsdatenExp = $("#tblVerbrauchsdatenExp").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -16772,8 +16790,8 @@ function produkteAnlargeDataTable(){
 /* new-mm-end */
 
 /*mm-comment 22-03-2021*/
-/*$("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
-    var rowdata = tblMstOhneZeitintervallIMw.row(this).data();
+/*$("#tblMstOhneZeitintervall_IMw").on("dblclick", "tr", function() {
+    var rowdata = tblMstOhneZeitintervall_IMw.row(this).data();
     //resetFormAllgemein('infosIntEnergiedaten',1);
     //produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
     produkteAnlageListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
@@ -19110,3 +19128,117 @@ function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate
         });
     }
  }
+
+/*new-mm-start 22-03-2021*/
+function alertValidationforEinheitControlSystemPrdkt(inputId,selVal,startDate,endDate,type){
+    if(inputId =='einheitAnlPrdkt'){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startEndDateEinheitTypeCheckValidation_prdkt_mm",
+                nameDB: $("#nameDB").val(),
+                mstID: $("#mstID").val(),
+                einheitVal:selVal,
+                startDate: startDate, 
+                endDate:endDate,           
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a){
+                a = JSON.parse(a);
+                var b = a.length; 
+                if(b>0){
+                    alert('You could not set einheit. Please select different dates.');
+                    //keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntEnergiedaten');
+                    produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+
+                }
+            }            
+        });
+    }
+    if(inputId =='control_system_AnlPrdkt'){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startEndDatecontrolSysTypeCheckValidation_prdkt_mm",
+                nameDB: $("#nameDB").val(),
+                mstID: $("#mstID").val(),
+                controlSystem:selVal,
+                startDate: startDate, 
+                endDate:endDate,           
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a){
+                a = JSON.parse(a); 
+                //console.log(a);
+                var b=a.length;
+                if(b>0){
+                    alert('You could not set control system. Please select different dates.');
+                    //keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntEnergiedaten');
+                    produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+
+                }
+            }            
+        });
+    }
+}
+/*new-mm-end 22-03-2021*/
+
+/*new-mm-start 22-03-2021*/
+function deleteFromDBMasseneingabeEingabenSingleInput(key,currentDate,mstID){
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "deleteCurrentInput",
+                  nameDB: $("#nameDB").val(),
+                  currentDate: currentDate,
+                  mstID:mstID,
+                  key:key
+                },                     
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+                    if(a==1){
+                        setTimeout(function(){  
+                            $("#masseneingabeSpeichernSrch").prop("disabled",false);
+                        }, 300);
+                    }
+                }
+            });
+}
+/*new-mm-end 22-03-2021*/
+
+    /*19-02-2021 interne Energiedaten Betriebsdaten table show hide*/
+    /* function interneEBTblShowHide(id){
+        $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().hide();
+        $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
+        if(id==1){
+            $("#tblMstOhneZeitintervallIMwIE").hide();
+            $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().hide();
+            $("#searchBtnShowRecordsAnlBtnDiv").show();
+            $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().show();
+            $('#searchBtnShowRecordsAnlBtn').val(1);
+            searchKeinZeitIntervallZugewiesen(1);
+            $("#interneEnergiedatenTbl").prop("checked",true);
+        }
+        if(id==2){
+            $("#searchBtnShowRecordsAnlBtnDiv").hide();
+            $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
+            $("#tblMstOhneZeitintervallIMwIE").show();
+            $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().show();
+            $("#interneBetriebsdatenTbl").prop("checked",true);
+        }
+    }
