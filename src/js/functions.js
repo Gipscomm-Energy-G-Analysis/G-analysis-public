@@ -6942,7 +6942,16 @@ try {
                         anl06ID: $("#inpAnlage6IDPrd").val(),
                         anl07ID: $("#inpAnlage7IDPrd").val(),
                         anl08ID: $("#inpAnlage8IDPrd").val(),
-                        anl09ID: $("#inpAnlage9IDPrd").val()
+                        anl09ID: $("#inpAnlage9IDPrd").val(),
+                        anlType01: $("#messartMstInpAnlage1Prd").val(),
+                        anlType02: $("#messartMstInpAnlage2Prd").val(),
+                        anlType03: $("#messartMstInpAnlage3Prd").val(),
+                        anlType04: $("#messartMstInpAnlage4Prd").val(),
+                        anlType05: $("#messartMstInpAnlage5Prd").val(),
+                        anlType06: $("#messartMstInpAnlage6Prd").val(),
+                        anlType07: $("#messartMstInpAnlage7Prd").val(),
+                        anlType08: $("#messartMstInpAnlage8Prd").val(),
+                        anlType09: $("#messartMstInpAnlage9Prd").val()
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a));
@@ -8248,7 +8257,16 @@ try {
                         anl06ID: $("#inpAnlage6IDPrd").val(),
                         anl07ID: $("#inpAnlage7IDPrd").val(),
                         anl08ID: $("#inpAnlage8IDPrd").val(),
-                        anl09ID: $("#inpAnlage9IDPrd").val()
+                        anl09ID: $("#inpAnlage9IDPrd").val(),
+                        anlType01: $("#messartMstInpAnlage1Prd").val(),
+                        anlType02: $("#messartMstInpAnlage2Prd").val(),
+                        anlType03: $("#messartMstInpAnlage3Prd").val(),
+                        anlType04: $("#messartMstInpAnlage4Prd").val(),
+                        anlType05: $("#messartMstInpAnlage5Prd").val(),
+                        anlType06: $("#messartMstInpAnlage6Prd").val(),
+                        anlType07: $("#messartMstInpAnlage7Prd").val(),
+                        anlType08: $("#messartMstInpAnlage8Prd").val(),
+                        anlType09: $("#messartMstInpAnlage9Prd").val()
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a));
