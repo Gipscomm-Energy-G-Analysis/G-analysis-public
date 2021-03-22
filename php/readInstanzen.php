@@ -273,6 +273,10 @@ elseif($id == "intBdeIMw"){
   $query .= "WHERE deleted <> 'true' ";
 
   $query .= "AND archiviertAnl <> 'true' ";
+  /*17-03-2021*/
+  /*new-mm-start*/
+  // $query .= "AND tpy <> 'energiedaten' ";
+  /*new-mm end*/
 
 }
 

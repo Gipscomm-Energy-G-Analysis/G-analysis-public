@@ -41,7 +41,6 @@ elseif($id == 'intBdeIMw'){
 		  $query .= "AND T1.mst_ID <".$_POST['mst_ID']." ";
 		  $query .= "ORDER BY T1.mst_ID DESC";
 
-
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwLastMst'){
 		$query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
 		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
@@ -59,7 +58,158 @@ elseif($id == 'intBdeIMw'){
 		  $query .= "ORDER BY T1.mst_ID ASC";
 
 	}
-}elseif($id == 'KeinZeitintervallTbl'){
+}
+/*17-03-2021*/
+/*new-mm-start*/
+elseif($id == 'intBdePrdktIMw'){
+	if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwNextMst'){
+
+		/*$query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produktionsAnlagenConfig AS T1 ";
+	    $query .= " LEFT JOIN produkte AS T2 ";
+		$query .= " ON T1.prd_ID = T2.prd_ID ";
+	    // $query .= " LEFT JOIN anlagen AS T3 "; 
+	    // $query .= " ON T1.anl_id =  T3.anl_ID"; 
+	    $query .= " WHERE T1.iBdeType = '1' ";
+	    $query .= " AND T1.iBdePrdktConf_ID >".$_POST['iBdePrdktConf_ID']." ";
+	    $query .= " ORDER BY T1.iBdePrdktConf_ID ASC";*/
+
+	    /*$query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produkte AS T2 ";
+	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T1 ";
+		$query .= " ON T1.prd_ID = T2.prd_ID ";
+	    $query .= " LEFT JOIN anlagen AS T3 "; 
+	    $query .= " ON T1.anl_id =  T3.anl_ID"; 
+	    $query .= " WHERE T1.iBdeType = '1' ";
+	    $query .= " AND T1.iBdePrdktConf_ID >".$_POST['iBdePrdktConf_ID']." ";*/
+	    //$query .= " ORDER BY T1.iBdePrdktConf_ID ASC";
+
+
+    	/*$query = "SELECT DISTINCT T1.prd_id,T1.anl_col,T1.anl_id,T1.type ,T2.namePrd,T2.artikelNrPrd,T3.bezeichnungAnl FROM produktionsAnlagenMoreOpt As T1";
+		$query .= " LEFT JOIN produkte AS T2 ON T1.prd_id = T2.prd_ID";
+	    $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
+	    $query .= " WHERE T1.type = 2";*/
+
+
+	    $query  = " SELECT TOP 1 T1.id,T4.iBdePrdktConf_ID,T2.namePrd "; 
+	    $query .= " FROM produktionsAnlagenMoreOpt As T1";
+	    $query .= " LEFT JOIN produkte AS T2 ON T1.prd_id = T2.prd_ID";
+	    $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
+	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
+		$query .= " ON T1.prd_ID = T4.prd_ID  AND T1.prd_ID = T4.prd_ID ";
+	    $query .= " WHERE T1.type = 2";
+	    //$query .= " FROM produkte AS T2 ";
+	 	//$query .= " LEFT JOIN produktionsAnlagenConfig AS T1 ";
+		//$query .= " ON T1.prd_ID = T2.prd_ID ";
+	 	//$query .= " LEFT JOIN anlagen AS T3 "; 
+	    //$query .= " ON T1.anl_id =  T3.anl_ID"; 
+
+	    //$query .= " AND T4.iBdeType = '1' ";
+	   // $query .= " AND T4.iBdePrdktConf_ID >".$_POST['iBdePrdktConf_ID']." ";
+	    //$query .= " ORDER BY T1.iBdePrdktConf_ID ASC";
+
+	    echo $query;die();
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwPreviousMst'){
+
+		$query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produktionsAnlagenConfig AS T1 ";
+	    $query .= " LEFT JOIN produkte AS T2 ";
+		$query .= " ON T1.prd_ID = T2.prd_ID ";
+	    $query .= " LEFT JOIN anlagen AS T3 "; 
+	    $query .= " ON T1.anl_id =  T3.anl_ID"; 
+	    $query .= " WHERE T1.iBdeType = '1' ";
+	    $query .= " AND T1.iBdePrdktConf_ID <".$_POST['iBdePrdktConf_ID']." ";
+	    $query .= " ORDER BY T1.iBdePrdktConf_ID DESC";
+	    echo $query;die();
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwLastMst'){
+
+		$query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produktionsAnlagenConfig AS T1 ";
+	    $query .= " LEFT JOIN produkte AS T2 ";
+		$query .= " ON T1.prd_ID = T2.prd_ID ";
+	    $query .= " LEFT JOIN anlagen AS T3 "; 
+	    $query .= " ON T1.anl_id =  T3.anl_ID"; 
+	    $query .= " WHERE T1.iBdeType = '1' ";
+	    $query .= " ORDER BY T1.iBdePrdktConf_ID DESC";
+	    //echo $query;die();
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwFirstMst'){
+
+		$query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produktionsAnlagenConfig AS T1 ";
+	    $query .= " LEFT JOIN produkte AS T2 ";
+		$query .= " ON T1.prd_ID = T2.prd_ID ";
+	    $query .= " LEFT JOIN anlagen AS T3 "; 
+	    $query .= " ON T1.anl_id =  T3.anl_ID"; 
+	    $query .= " WHERE T1.iBdeType = '1' ";
+	    $query .= " ORDER BY T1.iBdePrdktConf_ID ASC";
+
+	}
+}
+elseif($id == 'intBdeMesssetelleIMw'){
+	if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwNextMst'){
+
+	    $query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produktionsAnlagenConfig AS T1 ";
+	    $query .= " LEFT JOIN MessstellenAnlagen AS T2 ";
+		$query .= " ON T1.mst_ID = T2.mst_ID ";
+	    $query .= " WHERE T1.iBdeType = '2' ";
+	    $query .= " AND T2.deleted <> 'true' ";
+		$query .= " AND T2.messartMst = 'manuell' ";
+		$query .= " AND T2.typ = 'betriebsdaten' ";
+		$query .= " AND T1.iBdePrdktConf_ID >".$_POST['iBdePrdktConf_ID']." ";
+	    $query .= " ORDER BY T1.iBdePrdktConf_ID ASC";
+	    //$query .= "ORDER BY T2.mst_ID ASC";
+	    //echo $query;die();
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwPreviousMst'){
+
+	    $query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produktionsAnlagenConfig AS T1 ";
+	    $query .= " LEFT JOIN MessstellenAnlagen AS T2 ";
+		$query .= " ON T1.mst_ID = T2.mst_ID ";
+	    $query .= " WHERE T1.iBdeType = '2' ";
+	    $query .= " AND T2.deleted <> 'true' ";
+		$query .= " AND T2.messartMst = 'manuell' ";
+		$query .= " AND T2.typ = 'betriebsdaten' ";
+		$query .= " AND T1.iBdePrdktConf_ID <".$_POST['iBdePrdktConf_ID']." ";
+	    //$query .= " ORDER BY T1.iBdePrdktConf_ID DESC";
+	    $query .= "ORDER BY T2.mst_ID DESC";
+	    //echo $query;die();
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwLastMst'){
+
+		$query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produktionsAnlagenConfig AS T1 ";
+	    $query .= " LEFT JOIN MessstellenAnlagen AS T2 ";
+		$query .= " ON T1.mst_ID = T2.mst_ID ";
+	    $query .= " WHERE T1.iBdeType = '2' ";
+	    $query .= " AND T2.deleted <> 'true' ";
+		$query .= " AND T2.messartMst = 'manuell' ";
+		$query .= " AND T2.typ = 'betriebsdaten' ";
+	    $query .= " ORDER BY T1.iBdePrdktConf_ID DESC";
+	    //$query .= "ORDER BY T2.mst_ID DESC";
+	    //echo $query;die();
+
+	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwFirstMst'){
+
+		$query  = " SELECT TOP 1 * "; 
+	    $query .= " FROM produktionsAnlagenConfig AS T1 ";
+	    $query .= " LEFT JOIN MessstellenAnlagen AS T2 ";
+		$query .= " ON T1.mst_ID = T2.mst_ID ";
+	    $query .= " WHERE T1.iBdeType = '2' ";
+	    $query .= " AND T2.deleted <> 'true' ";
+		$query .= " AND T2.messartMst = 'manuell' ";
+		$query .= " AND T2.typ = 'betriebsdaten' ";
+	    $query .= " ORDER BY T1.iBdePrdktConf_ID ASC";
+	    //$query .= "ORDER BY T2.mst_ID ASC";
+	}
+}
+/*new-mm-end*/
+
+elseif($id == 'KeinZeitintervallTbl'){
 
 	   $typ = $_POST['typ'];
 
@@ -80,9 +230,10 @@ elseif($id == 'MesssetelleTbl'){
 	   $typ = $_POST['typ'];
 
 	   $query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
+	   //$query = "SELECT * FROM MessstellenAnlagen AS T1 ";
 	   $query .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
-	   //$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-	   $query .= "ON T1.mst_ID  = T2.mst_ID ";
+	   $query .= "ON T1.mst_ID = T2.mst_ID ";
+	   //$query .= "ON T1.mst_ID AS T1_mst_ID = T2.mst_ID AS T2_mst_ID ";
 	   $query .= "LEFT JOIN iMwUnits AS T3 ";
 	   $query .= "ON T2.unt_ID = T3.unt_ID ";
 	   $query .= "LEFT JOIN intervalType AS T4 ";
@@ -90,8 +241,6 @@ elseif($id == 'MesssetelleTbl'){
 	   $query .= "WHERE T1.deleted <> 'true' ";
 	   $query .= "AND T1.messartMst = 'manuell' ";
 	   $query .= "AND T1.typ = '$typ' ";
-	   //$query .= "WHERE T1.typ = '$typ' ";
-
 	   //echo $query;die();
 	   
 }elseif($id == 'SearchKeinZeitintervallTbl'){
@@ -109,6 +258,7 @@ elseif($id == 'MesssetelleTbl'){
 		   $query .= "WHERE T1.deleted <> 'true' ";
 		   $query .= "AND T1.messartMst = 'manuell' ";
 		   $query .= "AND T1.typ = '$typ' ";
+		   //echo $query;die();
 		}
 		elseif($checkboxSearch == 2){
 		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
@@ -122,10 +272,9 @@ elseif($id == 'MesssetelleTbl'){
 		   $query .= "AND T1.messartMst = 'manuell' ";
 		   $query .= "AND T1.typ = '$typ' ";
 		   $query .= "AND NULLIF(T2.startDate,'') IS NOT NULL ";
-		   /*WHERE
-		    NULLIF(x,'') IS NOT NULL
-		AND NULLIF(y,'') IS NOT NULL
-		AND NULLIF(z,'') IS NOT NULL*/		
+		   /*WHERE NULLIF(x,'') IS NOT NULL
+			AND NULLIF(y,'') IS NOT NULL
+			AND NULLIF(z,'') IS NOT NULL*/		
 		}
 		elseif($checkboxSearch == 3){
 		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
@@ -138,12 +287,10 @@ elseif($id == 'MesssetelleTbl'){
 		   $query .= "WHERE T1.deleted <> 'true' ";
 		   $query .= "AND T1.messartMst = 'manuell' ";
 		   $query .= "AND T1.typ = '$typ' ";
-		   $query .= "AND NULLIF(T2.startDate,'') IS NULL ";
-
-           
+		   $query .= "AND NULLIF(T2.startDate,'') IS NULL ";           
 		   /*WHERE NULLIF(x,'') IS NULL
-		Or NULLIF(y,'') IS NULL
-		Or NULLIF(z,'') IS NULL*/
+			Or NULLIF(y,'') IS NULL
+			Or NULLIF(z,'') IS NULL*/
 		}
 }elseif($id == 'masseneingabeSearch'){
 	   $zeitintervallAnl = $_POST['zeitintervallAnl'];
@@ -524,6 +671,8 @@ elseif($id == 'MesssetelleTbl'){
     $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
     $query .= " WHERE T1.type = 2";
 
+    //echo $query;die();
+
 
 }elseif($id == 'displayDataPrdkt'){
 
@@ -553,7 +702,7 @@ elseif($id == 'displayDataPrdktAnlage'){
 	    $query .= " LEFT JOIN anlagen AS T3 "; 
 	    $query .= " ON T3.anl_ID =  $Anl_Id"; 
 	    $query .= " WHERE T1.prd_ID = $Prd_Id ";
-
+        $query .= "ORDER BY T2.iBdePrdktConf_ID ASC";
 	    // $query .= " AND T2.prd_id = $Prd_Id ";
         // $query .= " AND T2.anl_col = '$Anl_Col' ";
         // $query .= " AND T2.anl_id = $Anl_Id ";
@@ -580,6 +729,7 @@ elseif($id == 'displayDataMesssetelle'){
 		$query .= "WHERE T1.typ = '$typ' ";
 	    $query .= "AND T1.mst_ID = '$mst_ID' ";
         $query .= "AND T2.iBdeType = '$iBdeType' ";
+        $query .= "ORDER BY T2.iBdePrdktConf_ID DESC";
 	    // echo $query ;die();
 }
 if($id == 'masseneingabeSearch'){
