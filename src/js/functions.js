@@ -16673,11 +16673,109 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
 }
 /* new-mm-end */
 
+/* Produkte DataTable Old Cross Apply Query mm 25-02-2021*/
+/* new-mm-start */
+/*mm-comment*/
+        // function produkteDataTable(){
+        //    
+        //     $.ajax({
+        //         type: "POST",
+        //         async: !0,
+        //         url: "php/getManuellInterneData.php",
+        //         data: {
+        //             id: "ProdukteTbl",
+        //             nameDB: $("#nameDB").val()
+        //         },
+        //         success: function(a) {
+        //             a = JSON.parse(a);
+        //             var b = a.length;
+        //             //console.log(a);
 
-$("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
+        //             tblMstOhneZeitintervallIMw.clear().draw();
+        //                 for (var e = 0; e < b; e++){ 
+        //                     tblMstOhneZeitintervallIMw.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw(); 
+        //                     //tblMstOhneZeitintervallIMw.column([0,1]).visible(!1);
+
+        //                     $("#tblMstOhneZeitintervallIMw tr").css("cursor", "pointer");
+        //                     $("#tblMstOhneZeitintervallIMw").off("dblclick", "tr");
+
+        //                 } 
+        //                var columnHide = tblMstOhneZeitintervallIMw.columns([1,2]);
+        //                columnHide.visible(! columnHide.visible() );
+
+
+        //                 $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
+        //                     var rowdata = tblMstOhneZeitintervallIMw.row(this).data();   
+        //                     //resetFormAllgemein('infosIntEnergiedaten',1);           
+        //                     produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
+        //                    
+        //                     //produkteListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+        //                     //var prd_id_data = rowdata[0];
+        //                     //alert(prd_id_data);
+        //                     $("#prd_ID").val(rowdata[0]);
+        //                     $("#anl_Col").val(rowdata[1]); 
+        //                     $("#anl_ID").val(rowdata[2]); 
+        //                     // $("#namePrd").val(rowdata[3]);
+        //                     // $("#artikelNrPrd").val(rowdata[4]);
+        //                     // $("#bezeichnungAnl").val(rowdata[5]); 
+                             
+        //                     });
+        //                 }
+        //     });
+        // }
+/*mm-comment*/
+/* new-mm-end */
+
+
+/* Produkte Anlarge New DataTable mm 02-03-2021*/
+/* new-mm-start */
+function produkteAnlargeDataTable(){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            id: "ProdukteAnlDataTbl",
+            nameDB: $("#nameDB").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+            tblMstOhneZeitintervallIMw.clear().draw();
+                for (var e = 0; e < b; e++){ 
+                    // tblMstOhneZeitintervallIMw.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].type,a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw();
+                    tblMstOhneZeitintervallIMw.row.add( [a[e].prd_id,a[e].anl_col,a[e].anl_id,a[e].type,a[e].artikelNrPrd,a[e].namePrd,a[e].bezeichnungAnl]).draw();  
+                    //tblMstOhneZeitintervallIMw.column([0,1]).visible(!1);
+                    $("#tblMstOhneZeitintervallIMw tr").css("cursor", "pointer");
+                    $("#tblMstOhneZeitintervallIMw").off("dblclick", "tr");
+                } 
+                var columnHide = tblMstOhneZeitintervallIMw.columns([0,1,2,3]);
+                columnHide.visible(! columnHide.visible() );
+
+                $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
+                    var rowdata = tblMstOhneZeitintervallIMw.row(this).data();   
+                    //resetFormAllgemein('infosIntEnergiedaten',1);           
+                    /*produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');*/
+                    produkteAnlageListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
+                    $("#prd_ID").val(rowdata[0]);
+                    $("#anl_Col").val(rowdata[1]); 
+                    $("#anl_ID").val(rowdata[2]);
+                    // $("#namePrd").val(rowdata[3]);
+                    // $("#artikelNrPrd").val(rowdata[4]);
+                    // $("#bezeichnungAnl").val(rowdata[5]);                      
+                    });
+                }
+    });
+}
+
+/* new-mm-end */
+
+/*mm-comment 22-03-2021*/
+/*$("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
     var rowdata = tblMstOhneZeitintervallIMw.row(this).data();
     //resetFormAllgemein('infosIntEnergiedaten',1);
-    /*produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');*/
+    //produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
     produkteAnlageListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
     $("#prd_ID").val(rowdata[0]);
     $("#anl_Col").val(rowdata[1]);
@@ -16685,8 +16783,8 @@ $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
     // $("#namePrd").val(rowdata[3]);
     // $("#artikelNrPrd").val(rowdata[4]);
     // $("#bezeichnungAnl").val(rowdata[5]);
-    });
-
+    });*/
+/*mm-comment 22-03-2021*/
 
 /* new-mm-end */
 
