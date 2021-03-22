@@ -2361,6 +2361,20 @@ $("#btnOptionHinzEPrdDKff").click(function() {
     /*20-08-2020 BereichName and BereichID popup variable define*/
 
     /*02-06-2020 Faktor 4 functionality*/
+    /*dynamische Korrekturfaktoren mm 26-02-2021*/
+    /*new-mm-start*/
+
+    if(basisFktr2Wert == "" || basisFktr2Wert == null || basisFktr2Wert == 0){
+        alert("Wert sollte nicht null sein");
+        $("#subtypeTxtBasisFaktor3Wert").val("");
+        return false;
+    }
+    /*else if(basisFktr2Wert < 0 || basisFktr2Wert == null){
+        alert("Wert sollte nicht negativ sein");
+        $('#optionWert').val("");
+        return false;
+    }*/ 
+    /*new-mm-end*/
 
     var calculationType = $(".calculationTypeDKff").val();
      if(typeVal =='1' || typeVal =='4' || typeVal =='5' || typeVal =='6' || typeVal =='7' || typeVal =='8' || typeVal =='9'){
@@ -3602,13 +3616,23 @@ $("#DkFeSpeichern").click(function() {
 
     $(document).ready(function(){
         $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
+        /*new-mm-start 22-03-2021*/
+        $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().hide();
+        $('#searchBtnShowRecordsAnlBtnDiv').hide();
+        $('#searchBtnShowRecordsPrdktAnlMstBtnDiv').hide();
+        $('#interneEBTblDiv').hide();
+        /*new-mm-end 22-03-2021*/
         $("#btnShowRecordsAnlBtn").click(function(){
             //$(this).addClass('showTable');
             $(this).prop("disabled", true);
             tblMstOhneZeitintervallIMw.clear().draw();
             $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
-
-           keinZeitIntervallZugewiesen(InstanceMode.BDE);
+            keinZeitIntervallZugewiesen(InstanceMode.BDE);
+            /*new-mm-start 22-03-2021*/
+            $('#searchBtnShowRecordsAnlBtnDiv').show();
+            $('#interneEBTblDiv').show();
+            $('#searchBtnShowRecordsAnlBtn').val('1');
+            /*new-mm-end 22-03-2021*/
         });
         /*Produkte mm show Anlage Data*/
         /*new-mm-start*/
@@ -3624,7 +3648,7 @@ $("#DkFeSpeichern").click(function() {
             tblMstOhneZeitintervallIMw.clear().draw();
             $('#tblMstOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
             //produkteDataTable();
-           // resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
+            //resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
             produkteAnlargeDataTable();
 
         });
@@ -3634,6 +3658,15 @@ $("#DkFeSpeichern").click(function() {
         $(".zeitintervallAnl_3").hide();
         $(".zeitintervallAnl_4").hide();
         $(".zeitintervallAnl_NoEnding").hide();
+
+        /*Produkte mm 01-03-2021*/
+        /*new-mm-start 22-03-2021*/
+        $(".zeitintervallAnlPrdkt_1").hide();
+        $(".zeitintervallAnlPrdkt_2").hide();
+        $(".zeitintervallAnlPrdkt_3").hide();
+        $(".zeitintervallAnlPrdkt_4").hide();
+        $(".zeitintervallAnlPrdkt_NoEnding").hide();
+        /*new-mm-end 22-03-2021*/
 
         btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDiv',4);
         datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
@@ -5000,7 +5033,31 @@ $("#DkFeSpeichern").click(function() {
             intBdeIMwHistorieSpeichernPopUp();
         }
     });
+    /* Save icon click event for the 
+    *  Interne Betriebsdaten Module 
+    *  Podukte and Messsetelle Speichern 
+    *  04-03-2021 
+    */
+    /*new-mm-start 22-03-2021*/
+    $("#intBdePrdktIMwSpeichern").click(function(){
+        //var anlIMw =$("#anlIMw").val();
+        var zeitintervallAnlPrdkt =$("#zeitintervallAnlPrdkt").val();
+        var NoEndingAnlPrdkt =$("#anlPrdktIMwNoEnding").is(":checked");
+        /*var validate = validateIntBdeFrm(noEnding,zeitintervallAnl,'infosIntEnergiedaten',1);
+        if(validate==false){
+            return false;
+        }else{            
+            intBdeIMwHistorieSpeichernPopUp();
+        }*/        
+        var validatePrdk = validateIntBdePrdktFrm(NoEndingAnlPrdkt,zeitintervallAnlPrdkt,'infosIntEnergiedaten',1);
+        if(validatePrdk==false){
+            return false;
+        }else{            
+            intBdePrdktIMwHistorieSpeichernPopUp();
+        }
 
+    });
+    /*new-mm-end 22-03-2021*/
     $("#tabIntBetriebsdatenIMwHist").click(function(){
         intBdeIMwHistOkGetHistorie();
         $("body").removeClass('fullWidthMasseneingabe');
