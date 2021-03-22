@@ -17092,7 +17092,54 @@ function zeitintervallChange(val,sId,id){
         $("." + sId + " .zeitintervallAnl_NoEnding").hide();
    }
 }
+/*Produkte mm 01-03-2021*/
+/*new-mm-start*/
+function zeitintervallAnlPrdktChange(val,sId,id){
 
+    if(id !=1){
+        $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', false);
+        $("." + sId + " .zeitintervallAnlPrdkt_1 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_3 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_4 input").val("");
+    }
+   if(val == 1){
+        $("." + sId + " .zeitintervallAnlPrdkt_1").show();
+        $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+   }else if(val == 2){
+        $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_2").show();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+
+   }else if(val == 3){
+        $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+       $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").show();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();  
+   }else if(val == 4){
+        $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").show();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+   }else{
+        $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
+   }  
+}
+/*new-mm-end*/
 function noEndingChange(val,sId,id){
      var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
      if(zeitintervallAnl == 1){
@@ -17141,8 +17188,59 @@ function noEndingChange(val,sId,id){
             $("." + sId + " .zeitintervallAnl_4").hide();
             $("." + sId + " .zeitintervallAnl_NoEnding").hide();
        }
+}
+/*Produkte mm 01-03-2021*/ 
+/*new-mm-start*/ 
+function noEndingAnlPrdktChange(val,sId,id){
+     var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val(); 
+     if(zeitintervallAnl == 1){
+        if(val==true){
+            $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val('');
+            $("." + sId + " #anlPrdktIMwNoEnding").val(1);
+        } else {
+           $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+           $("." + sId + " #anlPrdktIMwNoEnding").val(0);
+        }               
+       }else if(zeitintervallAnl == 2){
+        if(val==true){
+            $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val('');
+            $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val('');
+             $("." + sId + " #anlPrdktIMwNoEnding").val(1);
+        } else {
+           $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+           $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+          $("." + sId + " #anlPrdktIMwNoEnding").val(0);
+        }               
+       }else if(zeitintervallAnl == 3){
+        if(val==true){
+            $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val('');
+            $("." + sId + " #anlPrdktIMwNoEnding").val(1);
+        } else {
+           $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+           $("." + sId + " #anlPrdktIMwNoEnding").val(0);
+        }      
+       }else if(zeitintervallAnl == 4){
+        if(val==true){
+            $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+             $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val('');
+             $("." + sId + " #anlPrdktIMwNoEnding").val(1);
+        } else {
+           $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+           $("." + sId + " #anlPrdktIMwNoEnding").val(0);
+        }  
+       }else{
+            $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
+       } 
   }
-
+/*new-mm-end*/
 function intBdeIMwNextPrev(key,countRecord,mst_ID){
     $.ajax({
             type: "POST",
