@@ -1,4 +1,4 @@
-*
+/**
 *
 *  Secure Hash Algorithm (SHA256)
 *  http://www.webtoolkit.info/
@@ -19808,4 +19808,4 @@ function deleteFromDBMasseneingabeEingabenSingleInput(key,currentDate,mstID){
             $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().show();
             $("#interneBetriebsdatenTbl").prop("checked",true);
         }
-    }
+    }*/
