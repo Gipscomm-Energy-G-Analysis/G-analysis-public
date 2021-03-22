@@ -16432,6 +16432,248 @@ function datePickerForInterneBetriebsdaten(sId,id){
     });
 }
 
+/*datePickerForInterneBetriebsdatenAnlPrdkt*/
+
+/*Produkte mm 01-03-2021*/
+/*new-mm-start */
+/*Validation for the start date and end date*/
+function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){   
+    $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+"").datepicker({ 
+        dateFormat: 'mm.yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {  
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var strtStr1 = $(this).val();
+            var start1 = strtStr1.split('.');
+            var endStr1 = $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").val();
+            var end1 = endStr1.split('.');
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }            
+                validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
+            if(id==1){
+               // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+            }  
+        }
+    });    
+    $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });        
+    });
+    $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").datepicker({ 
+        dateFormat: 'mm.yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {  
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var strtStr2 = $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+ "").val();
+            var start2 = strtStr2.split('.');
+            var endStr2 = $(this).val();   
+            var end2 = endStr2.split('.'); 
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }       
+                validateZeitintervallAnlPrdktSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
+            if(id==1){
+               // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+            } 
+        }
+    });    
+    $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });        
+    }); 
+
+    /*Year*/
+    $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").datepicker({ 
+        dateFormat: 'yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {  
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var start3 = $(this).val();
+            var end3 = $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").val();
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }   
+                validateZeitintervallAnlPrdktSelectOpt(start3,end3,zeitintervallAnl,sId,id);
+            if(id==1){
+               // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+            } 
+        }
+    });    
+    $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-month").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });        
+    });
+    $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").datepicker({ 
+        dateFormat: 'yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {  
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+            $(this).datepicker('setDate', new Date(year, month, 1)); 
+            var start4 = $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").val();
+            var end4 = $(this).val();    
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }          
+            validateZeitintervallAnlPrdktSelectOpt(start4,end4,zeitintervallAnl,sId,id);
+            if(id==1){
+               // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+            } 
+        }
+    });    
+    $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-month").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });        
+    }); 
+     /*Year*/  
+      /*Week Year*/
+    $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").datepicker({ 
+        dateFormat: 'yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {  
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var start3 = $(this).val();
+            var end3 = $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").val();
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }   
+            validateZeitintervallAnlPrdktSelectOpt(start3,end3,zeitintervallAnl,sId,id);
+            if(id==1){
+                var week= $("." + sId + " #wochenWMassEingDataAnlPrdktStart1").val();
+                if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
+                    var date = week+'-'+this.value; 
+                 //   alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,zeitintervallAnl);
+                }
+            }
+        }
+    });    
+    $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-month").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });        
+    });
+    $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").datepicker({ 
+        dateFormat: 'yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {  
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+            $(this).datepicker('setDate', new Date(year, month, 1)); 
+            var start4 = $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").val();
+            var end4 = $(this).val();    
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }           
+            validateZeitintervallAnlPrdktSelectOpt(start4,end4,zeitintervallAnl,sId,id);
+            if(id==1){
+                var week= $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val();
+                if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
+                    var date = week+'-'+this.value; 
+                  //  alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,zeitintervallAnl);
+                }
+            }
+        }
+    });    
+    $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();      
+        $(".ui-datepicker-month").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });        
+    }); 
+    $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker({
+        numberOfMonths: 1,
+        dateFormat: 'dd.mm.yy',
+        onSelect: function(selected) {
+          if(id == 1){
+            var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+            var mstID = $("#mstID").val();var date = $(this).val();
+           // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,type);
+          }
+
+          $("." + sId + " #tageMassEingDataAnlPrdktEnde" +id+ "").datepicker("option","minDate", selected)
+        }
+    });
+    $("." + sId + " #tageMassEingDataAnlPrdktEnde" +id+ "").datepicker({ 
+        numberOfMonths: 1,
+        dateFormat: 'dd.mm.yy',
+        onSelect: function(selected) {
+             if(id==1){
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();
+              //  alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,type);
+             }
+           $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker("option","maxDate", selected)
+        }
+    });  
+}
+/* new-mm-end */
+
+
 $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
     var rowdata = tblMstOhneZeitintervallIMw.row(this).data();
     //resetFormAllgemein('infosIntEnergiedaten',1);
