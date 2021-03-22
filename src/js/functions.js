@@ -18345,7 +18345,129 @@ function einheitAnlOnChangeChildSelectOpt(einheitAnlVal){
         $(".infosIntBetriebsdaten .control_system_div").hide();
     }
 }
+/*For Interne Energiedaten Module 12-03-2021*/
+/*On change Einheit History Tab PopUp History Update From 
+Create Control System Select option inner function */
+/*new-mm-start*/
+function einheitAnlHistOnChangeChildSelectOpt(einheitAnlVal){
+       $('.intBdeIMwHistorieContainer #control_system > option').each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $(".intBdeIMwHistorieContainer .control_system_div").show();
+                $(".intBdeIMwHistorieContainer #control_system option[value='1']").addClass('visible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='2']").addClass('visible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='1']").removeClass('invisible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $(".intBdeIMwHistorieContainer .control_system_div").show();
+                $(".intBdeIMwHistorieContainer #control_system option[value='2']").addClass('visible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='4']").addClass('visible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='2']").removeClass('invisible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $(".intBdeIMwHistorieContainer .control_system_div").hide();
+    }
+}
+/*new-mm-end*/
 
+/*For Produkte Module 08-03-2021*/
+/*On change Einheit Prdkt create Control System Prdkt select option inner function */
+/*new-mm-start*/
+/*function einheitAnlPrdktMstHistOnChangeChildSelectOpt(einheitAnlVal){
+       $('.infosIntEnergiedaten #control_system_AnlPrdkt > option').each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").show();
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='1']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='1']").removeClass('invisible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").show();
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='4']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").hide();
+    }
+}*/
+function einheitAnlPrdktMstHistOnChangeChildSelectOpt(einheitAnlVal,sId){
+       $("." + sId + " #control_system_AnlPrdkt > option").each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $("." + sId + " .control_system_div_AnlPrdkt").show();
+                $("." + sId + " #control_system_AnlPrdkt option[value='1']").addClass('visible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='1']").removeClass('invisible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $("." + sId + " .control_system_div_AnlPrdkt").show();
+                $("." + sId + " #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='4']").addClass('visible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $("." + sId + " .control_system_div_AnlPrdkt").hide();
+    }
+}
+/*new-mm-end*/
+
+/*For IntBde Produkte Module 12-03-2021*/
+/*On change Einheit Prdkt History Tab PopUp History Update From create Control System Prdkt select option inner function */
+/*new-mm-start*/
+function einheitAnlPrdktHistOnChangeChildSelectOpt(einheitAnlVal){
+       $('.infosIntEnergiedaten #control_system_AnlPrdkt > option').each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").show();
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='1']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='1']").removeClass('invisible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").show();
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='4']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").hide();
+    }
+}
+/*new-mm-end*/
 
 function typeValueEinheitControlSys($val){
     var opt;
