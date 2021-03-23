@@ -17204,6 +17204,9 @@ function keinZeitIntervallZugewiesen(){
         url: "php/getManuellInterneData.php",
         data: {
             id: "KeinZeitintervallTbl",
+            /*new-mm-start 23-03-2021*/
+            typ: "energiedaten",
+            /*new-mm-end 23-03-2021*/
             nameDB: $("#nameDB").val()
         },
         success: function(a) {
