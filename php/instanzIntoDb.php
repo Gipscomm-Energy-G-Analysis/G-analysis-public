@@ -485,57 +485,216 @@ elseif($id == "mstE" || $id == "mstB") {
     	$tsql .= "WHERE mst_ID = '$mstID' " ;
     }
 }
+/*new-mm-start 23-03-2021*/
 elseif($id == "prd") {
-$modus = $_POST['modus'];
-$orgID = $_POST['orgID'];
-$bezeichnung = $_POST['bezeichnung'];
-$artikelnummer = $_POST['artikelnummer'];
-$grpID = $_POST['gruppenID'];
-$custom1 = $_POST['custom1'];
-$custom2 = $_POST['custom2'];
-$custom3 = $_POST['custom3'];
-$custom4 = $_POST['custom4'];
-$custom5 = $_POST['custom5'];
-$custom6 = $_POST['custom6'];
-$anl01ID = $_POST['anl01ID'];
-$anl02ID = $_POST['anl02ID'];
-$anl03ID = $_POST['anl03ID'];
-$anl04ID = $_POST['anl04ID'];
-$anl05ID = $_POST['anl05ID'];
-$anl06ID = $_POST['anl06ID'];
-$anl07ID = $_POST['anl07ID'];
-$anl08ID = $_POST['anl08ID'];
-$anl09ID = $_POST['anl09ID'];
+    $modus = $_POST['modus'];
+    $orgID = $_POST['orgID'];
+    $bezeichnung = $_POST['bezeichnung'];
+    $artikelnummer = $_POST['artikelnummer'];
+    $grpID = $_POST['gruppenID'];
+    $custom1 = $_POST['custom1'];
+    $custom2 = $_POST['custom2'];
+    $custom3 = $_POST['custom3'];
+    $custom4 = $_POST['custom4'];
+    $custom5 = $_POST['custom5'];
+    $custom6 = $_POST['custom6'];
+    $anl01ID = $_POST['anl01ID'];
+    $anl02ID = $_POST['anl02ID'];
+    $anl03ID = $_POST['anl03ID'];
+    $anl04ID = $_POST['anl04ID'];
+    $anl05ID = $_POST['anl05ID'];
+    $anl06ID = $_POST['anl06ID'];
+    $anl07ID = $_POST['anl07ID'];
+    $anl08ID = $_POST['anl08ID'];
+    $anl09ID = $_POST['anl09ID'];
 
-if($modus == "new"){
-	$tsql = "INSERT INTO produkte(datum, org_ID, namePrd, artikelNrPrd, custom1, custom2, custom3, custom4, custom5, custom6, ";
-	$tsql .= "anl01_ID, anl02_ID, anl03_ID, anl04_ID, anl05_ID, anl06_ID, anl07_ID, anl08_ID, anl09_ID, gruppenID, deleted, archiviert) ";
-	$tsql .= "VALUES (getdate(), '$orgID', '$bezeichnung', '$artikelnummer', '$custom1', '$custom2', '$custom3', '$custom4', '$custom5', '$custom6', ";
- $tsql .= "'$anl01ID', '$anl02ID', '$anl03ID', '$anl04ID', '$anl05ID', '$anl06ID', '$anl07ID', '$anl08ID', '$anl09ID', $grpID,'false','false') ";
-}
-else {
-$archiviert = $_POST['archiviert'];
-$prdID = $_POST['prdID'];
+    /*add variable for new product table */
+    $anl = array();
+        $anl[] = $_POST['anl01ID'];
+        $anl[] = $_POST['anl02ID'];
+        $anl[] = $_POST['anl03ID'];
+        $anl[] = $_POST['anl04ID'];
+        $anl[] = $_POST['anl05ID'];
+        $anl[] = $_POST['anl06ID'];
+        $anl[] = $_POST['anl07ID'];
+        $anl[] = $_POST['anl08ID'];
+        $anl[] = $_POST['anl09ID'];
+        
+        $anlType = array();
+        $anlType[] = $_POST['anlType01'];
+        $anlType[] = $_POST['anlType02'];
+        $anlType[] = $_POST['anlType03'];
+        $anlType[] = $_POST['anlType04'];
+        $anlType[] = $_POST['anlType05'];
+        $anlType[] = $_POST['anlType06'];
+        $anlType[] = $_POST['anlType07'];
+        $anlType[] = $_POST['anlType08'];
+        $anlType[] = $_POST['anlType09'];
 
-if($archiviert == "true"){
-  $bemerkung = $_POST['bemerkung'];
-  $info = $_POST['info'];
-  $gueltigVon = $_POST['gueltigVon'];
-  $gueltigBis = $_POST['gueltigBis'];
+    /*end*/
 
-  $tsql = "UPDATE produkte SET archiviert = 'true', ";
-  $tsql .= "aenderungsBemerkung = '$bemerkung', aenderungsInfo = '$info', ";
-  $tsql .= "gueltigVonPrd = '$gueltigVon', gueltigBisPrd = '$gueltigBis' ";
-  $tsql .= "WHERE prd_ID = '$prdID' ";
+    if($modus == "new"){
+        $tsql = "INSERT INTO produkte(datum, org_ID, namePrd, artikelNrPrd, custom1, custom2, custom3, custom4, custom5, custom6, ";
+        $tsql .= "anl01_ID, anl02_ID, anl03_ID, anl04_ID, anl05_ID, anl06_ID, anl07_ID, anl08_ID, anl09_ID, gruppenID, deleted, archiviert) ";
+        $tsql .= "VALUES (getdate(), '$orgID', '$bezeichnung', '$artikelnummer', '$custom1', '$custom2', '$custom3', '$custom4', '$custom5', '$custom6', ";
+        $tsql .= "'$anl01ID', '$anl02ID', '$anl03ID', '$anl04ID', '$anl05ID', '$anl06ID', '$anl07ID', '$anl08ID', '$anl09ID', $grpID,'false','false') ";
+        $retState = queryDB( $conn, $tsql, "write" );
+        echo $tsql;
+        /*new-mm-start*/
+        $lastIdQuery = "SELECT TOP 1 prd_ID FROM produkte ORDER BY prd_ID DESC";
+        $lastPrdktID = queryDB($conn, $lastIdQuery, "read");
+        for ($i=0; $i <= 8; $i++) {
+            if($anl[$i] || !empty($anl[$i])){
+                if($anlType[$i] == 'automatik'){
+                    $Anltype = 1;
+                }
+                else if($anlType[$i] == 'manuel'){
+                    $Anltype = 2;
+                }            
+                $j = $i+1;
+                $prdktQuery = "INSERT INTO produktionsAnlagenMoreOpt(prd_id,type,anl_id,anl_col,anlarge)";
+                $prdktQuery .= " VALUES ('".$lastPrdktID[0]['prd_ID']."','".$Anltype."','".$anl[$i]."','anl0".$j."_ID','')";            
+                queryDB( $conn, $prdktQuery, "write" );
+                //echo($prdktQuery);//die();
+            }
+            else{
+                continue;
+            }          
+        }
+        /*new-mm-end*/
+    }
+    else {
+        $archiviert = $_POST['archiviert'];
+        $prdID = $_POST['prdID'];
+
+        if($archiviert == "true"){
+          $bemerkung = $_POST['bemerkung'];
+          $info = $_POST['info'];
+          $gueltigVon = $_POST['gueltigVon'];
+          $gueltigBis = $_POST['gueltigBis'];
+
+          $tsql = "UPDATE produkte SET archiviert = 'true', ";
+          $tsql .= "aenderungsBemerkung = '$bemerkung', aenderungsInfo = '$info', ";
+          $tsql .= "gueltigVonPrd = '$gueltigVon', gueltigBisPrd = '$gueltigBis' ";
+          $tsql .= "WHERE prd_ID = '$prdID' ";
+        }
+        else {
+            $tsql = "UPDATE produkte SET datum = getdate(), namePrd = '$bezeichnung', artikelNrPrd = '$artikelnummer', custom1 = '$custom1', custom2 = '$custom2', ";
+            $tsql .= "custom3 = '$custom3',custom4 = '$custom4',custom5 = '$custom5',custom6 = '$custom6', anl01_ID = '$anl01ID', anl02_ID = '$anl02ID', anl03_ID = '$anl03ID', ";
+            $tsql .= "anl04_ID = '$anl04ID', anl05_ID = '$anl05ID', anl06_ID = '$anl06ID', anl07_ID = '$anl07ID', anl08_ID = '$anl08ID', anl09_ID = '$anl09ID', gruppenID = '$grpID' ";
+            $tsql .= "WHERE prd_ID = $prdID ";
+
+            /*new-mm-start*/
+            for ($i=0; $i <= 8; $i++) {
+                if($anl[$i] || !empty($anl[$i])){
+                    if($anlType[$i] == 'automatik'){
+                        $Anltype = 1;
+                    }
+                    else if($anlType[$i] == 'manuel'){
+                        $Anltype = 2;
+                    }            
+                    $j = $i+1;
+                    $queryCheckPrdktAnl="SELECT * FROM produktionsAnlagenMoreOpt WHERE prd_ID = '".$prdID."' AND anl_col = 'anl0".$j."'";
+                    $recordsCheckPrdktAnl = queryDB($conn, $queryCheckPrdktAnl, "read");
+                    //echo($queryCheckPrdktAnl);//die();
+                    if(count($recordsCheckPrdktAnl) > 0){
+                        $queryPrdktAnlUpdate = "UPDATE produktionsAnlagenMoreOpt SET
+                          anl_id = '".$anl[$i]."',type = '".$Anltype."' ";
+                        $queryPrdktAnlUpdate .= "WHERE prd_ID = '".$prdID."' ";
+                        // $queryPrdktAnlUpdate .= "AND anl_id = '".$anl[$i]."' ";
+                        // $queryPrdktAnlUpdate .= "AND type = '".$Anltype."' ";
+                        $queryPrdktAnlUpdate .= "AND anl_col = 'anl0".$j."_ID'";
+                        queryDB($conn, $queryPrdktAnlUpdate, "write");
+                        //echo($queryPrdktAnlUpdate);//die();
+                    }else{
+                        $prdktQuery = "INSERT INTO produktionsAnlagenMoreOpt(prd_id,type,anl_id,anl_col,anlarge)";
+                        $prdktQuery .= " VALUES ('".$prdID."','".$Anltype."','".$anl[$i]."','anl0".$j."_ID','')";                
+                        queryDB( $conn, $prdktQuery, "write" );
+                        //echo($prdktQuery);//die();
+                    }
+                }
+                else{
+                    continue;
+                }            
+            }
+            /*new-mm-end*/
+        }
+    }
 }
-else {
-  $tsql = "UPDATE produkte SET datum = getdate(), namePrd = '$bezeichnung', artikelNrPrd = '$artikelnummer', custom1 = '$custom1', custom2 = '$custom2', ";
-  $tsql .= "custom3 = '$custom3',custom4 = '$custom4',custom5 = '$custom5',custom6 = '$custom6', anl01_ID = '$anl01ID', anl02_ID = '$anl02ID', anl03_ID = '$anl03ID', ";
-  $tsql .= "anl04_ID = '$anl04ID', anl05_ID = '$anl05ID', anl06_ID = '$anl06ID', anl07_ID = '$anl07ID', anl08_ID = '$anl08ID', anl09_ID = '$anl09ID', gruppenID = '$grpID' ";
-  $tsql .= "WHERE prd_ID = $prdID ";
+/*new-mm-end 23-03-2021*/
+/*new-mm-start 23-03-2021*/
+if($id == "prd" && $modus != "new"){ 
+    $retState = queryDB( $conn, $tsql, "write" );
+    echo $tsql;
 }
+/*new-mm-end 23-03-2021*/
+/*new-mm-start 23-03-2021*/
+elseif($id == "prdktAnl"){
+
+    $modus = $_POST['modus'];
+    $prdID = $_POST['prdID'];
+
+    $anl = array();
+    $anl[] = $_POST['anl01ID'];
+    $anl[] = $_POST['anl02ID'];
+    $anl[] = $_POST['anl03ID'];
+    $anl[] = $_POST['anl04ID'];
+    $anl[] = $_POST['anl05ID'];
+    $anl[] = $_POST['anl06ID'];
+    $anl[] = $_POST['anl07ID'];
+    $anl[] = $_POST['anl08ID'];
+    $anl[] = $_POST['anl09ID'];
+    
+    $anlType = array();
+    $anlType[] = $_POST['anlType01'];
+    $anlType[] = $_POST['anlType02'];
+    $anlType[] = $_POST['anlType03'];
+    $anlType[] = $_POST['anlType04'];
+    $anlType[] = $_POST['anlType05'];
+    $anlType[] = $_POST['anlType06'];
+    $anlType[] = $_POST['anlType07'];
+    $anlType[] = $_POST['anlType08'];
+    $anlType[] = $_POST['anlType09'];
+
+    echo "test_post_modus : ".$_POST['modus'];
+    /*echo"<pre>";
+    print_r($_POST);die();*/
+
+    if($modus == "save"){
+    //print_r($anl);
+    for ($i=0; $i <= 9; $i++) {
+
+        //print_r($anl[$i]);
+        //print_r($anlType[$i]);
+        if($anl[$i]){
+
+            /*echo"<pre>";
+            print_r($anl[$i]);
+            print_r($anlType[$i]);
+            die();*/
+
+            $prdktQuery = "INSERT INTO produkteAnlargeDummy(prd_id,type,anl_id,anl_col,anlarge)";
+            $prdktQuery .= "VALUES ('".$prdID."','".$anl[$i]."','".$anlType[$i]."','false','false')";
+            echo($prdktQuery); die();
+            //queryDB( $conn, $prdktQuery, "write" );
+        }       
+        // $prdktQuery = "INSERT INTO produkteAnlargeDummy(prd_id,type,anl_id,anl_col,anlarge)";
+        // $prdktQuery .= "VALUES ('$prdID','$anlType','','','false')";      
+    }
+    /*  foreach ($anl01ID as $key => $value) {
+            $anlType = $anlType[$key];
+            $desc = $zOptionDesc[$i];
+            $prdktQuery = "INSERT INTO produkteAnlargeDummy(prd_id,type,anl_id,anl_col,anlarge)";
+            $prdktQuery .= "VALUES ('$prdID','$anlType','','','false')";
+            queryDB( $conn, $prdktQuery, "write" );
+            $i++;
+
+        }*/
+    }
+    die();
+
 }
-}
+/*new-mm-end 23-03-2021*/
 elseif($id == "std") {
 
 $modus = $_POST['modus'];
@@ -3515,10 +3674,18 @@ elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update inter
   }
 }
 /*new-mm-end 23-03-2021*/
-if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  ) {
-    $retState = queryDB( $conn, $tsql, "write" ) ;
-    echo json_encode(["query" => $tsql]) ;
+/*new-mm-start 23-03-2021*/
+if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult" && $id != "prdktAnl" && $id != "prd"   ) {
+    $retState = queryDB( $conn, $tsql, "write" );
+    echo $tsql;
 }
+// else if ($id == "intBdePrdktMstIMwHistEditor") {
 
+//     $query = "SELECT prd_id,anl_ID,anl_col FROM produktionsAnlagenHistorie ";
+//     $query .= "WHERE prdktHist_ID = '$prdktHist_ID' ";
+//     $records = queryDB($conn, $query, "read");
+//     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+// }
+/*new-mm-end 23-03-2021*/
 include('bottom-cache.php');
 ?>
