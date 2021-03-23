@@ -1008,8 +1008,8 @@ $(document).ready(function() {
         $("#kostenERng").val(formatNumber("form", a))
     });
     $("#eegUntERng, #eegUebERng").change(function() {
-        var a = parseFloat($("#eegUntERng").val()),
-            b = parseFloat($("#eegUebERng").val()),
+        var a = parseFloat(formatNumber("deform", $("#eegUntERng").val())),
+            b = parseFloat(formatNumber("deform", $("#eegUebERng").val())),
             a = (a + b).toFixed(2);
         $("#eegERng").val(a)
     });
@@ -2383,7 +2383,7 @@ $("#btnOptionHinzEPrdDKff").click(function() {
         alert("Wert sollte nicht negativ sein");
         $('#optionWert').val("");
         return false;
-    }*/ 
+    }*/
     /*new-mm-end*/
 
     var calculationType = $(".calculationTypeDKff").val();
@@ -5043,10 +5043,10 @@ $("#DkFeSpeichern").click(function() {
             intBdeIMwHistorieSpeichernPopUp();
         }
     });
-    /* Save icon click event for the 
-    *  Interne Betriebsdaten Module 
-    *  Podukte and Messsetelle Speichern 
-    *  04-03-2021 
+    /* Save icon click event for the
+    *  Interne Betriebsdaten Module
+    *  Podukte and Messsetelle Speichern
+    *  04-03-2021
     */
     /*new-mm-start 22-03-2021*/
     $("#intBdePrdktIMwSpeichern").click(function(){
@@ -5056,13 +5056,13 @@ $("#DkFeSpeichern").click(function() {
         /*var validate = validateIntBdeFrm(noEnding,zeitintervallAnl,'infosIntEnergiedaten',1);
         if(validate==false){
             return false;
-        }else{            
+        }else{
             intBdeIMwHistorieSpeichernPopUp();
-        }*/        
+        }*/
         var validatePrdk = validateIntBdePrdktFrm(NoEndingAnlPrdkt,zeitintervallAnlPrdkt,'infosIntEnergiedaten',1);
         if(validatePrdk==false){
             return false;
-        }else{            
+        }else{
             intBdePrdktIMwHistorieSpeichernPopUp();
         }
 
@@ -5073,7 +5073,7 @@ $("#DkFeSpeichern").click(function() {
         $("body").removeClass('fullWidthMasseneingabe');
         $("#infosMasseneingabe").hide();
     });
-    /*new-mm-start 23-03-2021*/    
+    /*new-mm-start 23-03-2021*/
     $("#tabIntBetriebsdatenIMwHistPrdkt").click(function(){
         intBdeIMwHistOkGetHistoriePrdkt();
         $("body").removeClass('fullWidthMasseneingabe');
@@ -5083,7 +5083,7 @@ $("#DkFeSpeichern").click(function() {
         intBdeIMwHistOkGetHistorieMesssetelle();
         $("body").removeClass('fullWidthMasseneingabe');
         $("#infosMasseneingabe").hide();
-    }); 
+    });
     /*new-mm-end 23-03-2021*/
     $("#intBdeIMwLastMst,#intBdeIMwNextMst,#intBdeIMwPreviousMst,#intBdeIMwFirstMst").click(function(){
         //alert(this.id);

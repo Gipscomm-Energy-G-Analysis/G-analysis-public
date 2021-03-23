@@ -5865,6 +5865,7 @@ try {
                         , ["#tagstromVerbrERng", "tagstromVerbrERng"]
                         , ["#nachtstromKostERng", "nachtstromKostERng"]
                         , ["#eegUntERng", "eegUntERng"]
+                        , ["#eegUebERng", "eegUebERng"]
                         , ["#abpNetzERng", "abpNetzERng"]
                         , ["#konzERng", "konzERng"]
                         , ["#kwkUntERng", "kwkUntERng"]
@@ -5893,6 +5894,7 @@ try {
                         $("#modusERng").trigger("change")
                         $("#mstERng").trigger("change")
                         $("#kostenERng").trigger("change")
+                        $("#eegUntERng").trigger("change")
 
                         dokumentenListeErstellen()
                     })
@@ -6969,7 +6971,7 @@ try {
                         id: "prdktAnl",
                         nameDB: $("#nameDB").val(),
                         prdID: $("#prdID").val(),
-                        orgID: $("#orgID").val(),                    
+                        orgID: $("#orgID").val(),
                         anl01ID: $("#inpAnlage1IDPrd").val(),
                         anl02ID: $("#inpAnlage2IDPrd").val(),
                         anl03ID: $("#inpAnlage3IDPrd").val(),
@@ -15772,7 +15774,7 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
                 return true;
             }
         }
-        
+
 }
 /*new -mm-end*/
 //30-09-2020 dynamic function for validations #zeitintervallAnl
@@ -15893,10 +15895,10 @@ function intBdeIMwHistorieSpeichernPopUp() {
     });
 
 }
-/* Ajax Call for the    
-*  Interne Betriebsdaten Module 
-*  Podukte and Messsetelle Speichern 
-*  04-03-2021 
+/* Ajax Call for the
+*  Interne Betriebsdaten Module
+*  Podukte and Messsetelle Speichern
+*  04-03-2021
 */
 /*new-mm-start 22-03-2021*/
 function intBdePrdktIMwHistorieSpeichernPopUp() {
@@ -15920,7 +15922,7 @@ function intBdePrdktIMwHistorieSpeichernPopUp() {
         var dates = returnStartDateAndEndDatePrdkt(zeitintervallAnl,'infosIntEnergiedaten',1);
         ///console.log(dates);
         var startDate =dates[0];
-        var endDate =dates[1]; 
+        var endDate =dates[1];
         zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitintervallAnl,startDate,endDate,'','intBdePrdktIMwHistoriePopUp',3);
 
         datePickerForInterneBetriebsdatenAnlPrdkt('intBdePrdktIMwHistoriePopUp',3);
@@ -15929,12 +15931,12 @@ function intBdePrdktIMwHistorieSpeichernPopUp() {
         $("#wochenYMassEingDataAnlPrdktStart3").datepicker("destroy");
         $("#monateMassEingDataAnlPrdktStart3").datepicker("destroy");
         $("#jahrMassEingDataAnlPrdktStart3").datepicker("destroy");
-         
+
         $("#intBdePrdktIMwHistSpeichern").off("click");
         $("#intBdePrdktIMwHistNichtSpeichern").off("click");
         $("#intBdePrdktIMwHistOk").off("click");
         $("#intBdePrdktIMwHistAbbrechen").off("click");
-        $("button#intBdePrdktIMwHistSpeichern").on("click", function() { 
+        $("button#intBdePrdktIMwHistSpeichern").on("click", function() {
             $("#infosIntBdePrdktIMwHistoriePopUpDiv, #intBdePrdktIMwHistOk").css("display", "inline");
             $("#intBdePrdktIMwHistSpeichern, #intBdePrdktIMwHistNichtSpeichern").css("display", "none");
         });
@@ -15968,7 +15970,7 @@ function intBdePrdktIMwHistorieSpeichernPopUp() {
         $("#intBdePrdktIMwHistSpeichern, #intBdePrdktIMwHistNichtSpeichern").css("display", "inline");
         }
     });
-        
+
 }
 /*new-mm-end 22-03-2021*/
 /*Ajax Call for the Manuel module serach 18-09-2020*/
@@ -16019,24 +16021,24 @@ function intBdeIMwHistOkSpeichernMethodPrdkt(){
     var endDate =dates[1];
     var iBdeType = $("input[name='BetriebsdatenFilter']:checked").val();
     $("#archiviertIntBdePrdktIMw").val('true');
-    
+
     $.ajax({
         type: "POST",
         async: !0,
         url: "php/instanzIntoDb.php",
         data: {
             id: "intBdePrdktIMwHistOkConfig",
-            modus: "save",            
+            modus: "save",
             //anlID: $("#anlID").val(),
             nameDB: $("#nameDB").val(),
             liegID: $("#liegID").val(),
-            
+
             mst_ID:$("#mstID").val(),
             prd_ID:  $("#prd_ID").val(),
             anl_ID:  $("#anl_ID").val(),
-            anl_Col:  $("#anl_Col").val(),           
+            anl_Col:  $("#anl_Col").val(),
             archiviert: $("#archiviertIntBdePrdktIMw").val(),
-            bemerkung: $("#bemerkungHistIntBdePrdktIMw").val(),            
+            bemerkung: $("#bemerkungHistIntBdePrdktIMw").val(),
             gueltigVon: startDate,
             gueltigBis: endDate,
             mstIMw:$("#mstIMw").val(),
@@ -16300,7 +16302,7 @@ function intBdePrdktHistorieUpdatePopUp(prdktHist_ID,prd_id,sId){
     open: function() {
         $("#intBdeprdktIMwHistSpeichernDblClick").off("click");
         $("button#intBdePrdktIMwHistSpeichernDblClick").on("click", function() {
-            $("#archiviertIntBdeIMw").val("true");          
+            $("#archiviertIntBdeIMw").val("true");
             intBdePrdktMstHistSpeichernMethodDblClickEditorPopUp('intBdePrdktIMwHistorieContainer');
         });
     },
@@ -16324,29 +16326,29 @@ function intBdePrdktHistorieUpdatePopUp(prdktHist_ID,prd_id,sId){
             var b = a.length;
             //console.log(a);
 
-            $("." + sId + " #prdktHist_IDEditor").val(a[0].prdktHist_ID); 
-            $("." + sId + " #mstIMw").val(a[0]['mstIMw']).prop('disabled',false);  
+            $("." + sId + " #prdktHist_IDEditor").val(a[0].prdktHist_ID);
+            $("." + sId + " #mstIMw").val(a[0]['mstIMw']).prop('disabled',false);
             $("." + sId + " #artikelnummerIntBde").val(a[0]['artikelnummerIntBde']).prop('disabled',true);
-            $("." + sId + " #bezeichnungIntBde").val(a[0]['bezeichnungIntBde']).prop('disabled',true);               
+            $("." + sId + " #bezeichnungIntBde").val(a[0]['bezeichnungIntBde']).prop('disabled',true);
             $("." + sId + " #anlageIntBde").val(a[0]['anlageIntBde']).prop('disabled',true);
-            
-                             
+
+
             var sDt = convertDateFormateForDataTbl(a[0]['zeitintervallAnl'],a[0]['startDate']);
             var eDt = convertDateFormateForDataTbl(a[0]['zeitintervallAnl'],a[0]['endDate']);
             $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['zeitintervallAnl']);
             $("." + sId + " #einheitAnlPrdkt").val(a[0]['einheitAnl']);
             $("." + sId + " #notizBdeIMwAnlPrdkt").val(a[0]['note']);
-            zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['zeitintervallAnl'],sDt,eDt,a[0]['ending'],sId,4);  
+            zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['zeitintervallAnl'],sDt,eDt,a[0]['ending'],sId,4);
 
 
             $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', a[0]['ending']);
             $("." + sId + " #anlPrdktIMwNoEnding").val(a[0]['ending']);
             if(a[0]['zeitintervallAnl']==2){
                 $("." + sId + " #wochenWMassEingDataAnlPrdktStart4").val(a[0]['startWeek']);
-                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde4").val(a[0]['endWeek']);                                       
-            } 
-            $("." + sId + " .control_system_div_AnlPrdkt").show();  
-            $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']); 
+                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde4").val(a[0]['endWeek']);
+            }
+            $("." + sId + " .control_system_div_AnlPrdkt").show();
+            $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
 
             $("." + sId + " #bemerkungHistIntBdePrdktIMwEditor").val(a[0].bemerkung);
             $("." + sId + " #gueltigVonHistIntBdePrdktIMwEditor").val(a[0].gueltigVon);
@@ -16800,15 +16802,15 @@ function datePickerForInterneBetriebsdaten(sId,id){
 /*Produkte mm 01-03-2021*/
 /*new-mm-start */
 /*Validation for the start date and end date*/
-function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){   
-    $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+"").datepicker({ 
+function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
+    $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+"").datepicker({
         dateFormat: 'mm.yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
             var strtStr1 = $(this).val();
             var start1 = strtStr1.split('.');
@@ -16818,13 +16820,13 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
-            }            
+            }
                 validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
             if(id==1){
                // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
-            }  
+            }
         }
-    });    
+    });
     $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-widget-content .ui-datepicker-current").hide();
@@ -16832,32 +16834,32 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
+            });
     });
-    $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").datepicker({ 
+    $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").datepicker({
         dateFormat: 'mm.yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
             var strtStr2 = $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+ "").val();
             var start2 = strtStr2.split('.');
-            var endStr2 = $(this).val();   
-            var end2 = endStr2.split('.'); 
+            var endStr2 = $(this).val();
+            var end2 = endStr2.split('.');
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
-            }       
+            }
                 validateZeitintervallAnlPrdktSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
             if(id==1){
                // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
-            } 
+            }
         }
-    });    
+    });
     $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-widget-content .ui-datepicker-current").hide();
@@ -16865,18 +16867,18 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
-    }); 
+            });
+    });
 
     /*Year*/
-    $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").datepicker({ 
+    $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").datepicker({
         dateFormat: 'yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
             var start3 = $(this).val();
             var end3 = $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").val();
@@ -16884,13 +16886,13 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
-            }   
+            }
                 validateZeitintervallAnlPrdktSelectOpt(start3,end3,zeitintervallAnl,sId,id);
             if(id==1){
                // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
-            } 
+            }
         }
-    });    
+    });
     $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-datepicker-month").hide();
@@ -16899,30 +16901,30 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
+            });
     });
-    $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").datepicker({ 
+    $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").datepicker({
         dateFormat: 'yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
-            $(this).datepicker('setDate', new Date(year, month, 1)); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
             var start4 = $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").val();
-            var end4 = $(this).val();    
+            var end4 = $(this).val();
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
-            }          
+            }
             validateZeitintervallAnlPrdktSelectOpt(start4,end4,zeitintervallAnl,sId,id);
             if(id==1){
                // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
-            } 
+            }
         }
-    });    
+    });
     $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-datepicker-month").hide();
@@ -16931,18 +16933,18 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
-    }); 
-     /*Year*/  
+            });
+    });
+     /*Year*/
       /*Week Year*/
-    $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").datepicker({ 
+    $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").datepicker({
         dateFormat: 'yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
             var start3 = $(this).val();
             var end3 = $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").val();
@@ -16950,17 +16952,17 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
-            }   
+            }
             validateZeitintervallAnlPrdktSelectOpt(start3,end3,zeitintervallAnl,sId,id);
             if(id==1){
                 var week= $("." + sId + " #wochenWMassEingDataAnlPrdktStart1").val();
                 if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
-                    var date = week+'-'+this.value; 
+                    var date = week+'-'+this.value;
                  //   alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,zeitintervallAnl);
                 }
             }
         }
-    });    
+    });
     $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-datepicker-month").hide();
@@ -16969,45 +16971,45 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
+            });
     });
-    $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").datepicker({ 
+    $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").datepicker({
         dateFormat: 'yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
-            $(this).datepicker('setDate', new Date(year, month, 1)); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
             var start4 = $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").val();
-            var end4 = $(this).val();    
+            var end4 = $(this).val();
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
-            }           
+            }
             validateZeitintervallAnlPrdktSelectOpt(start4,end4,zeitintervallAnl,sId,id);
             if(id==1){
                 var week= $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val();
                 if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
-                    var date = week+'-'+this.value; 
+                    var date = week+'-'+this.value;
                   //  alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,zeitintervallAnl);
                 }
             }
         }
-    });    
+    });
     $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
-        $(".ui-datepicker-calendar").hide();      
+        $(".ui-datepicker-calendar").hide();
         $(".ui-datepicker-month").hide();
         $(".ui-widget-content .ui-datepicker-current").hide();
-        
+
         $("#ui-datepicker-div").position({
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
-    }); 
+            });
+    });
     $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker({
         numberOfMonths: 1,
         dateFormat: 'dd.mm.yy',
@@ -17021,7 +17023,7 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
           $("." + sId + " #tageMassEingDataAnlPrdktEnde" +id+ "").datepicker("option","minDate", selected)
         }
     });
-    $("." + sId + " #tageMassEingDataAnlPrdktEnde" +id+ "").datepicker({ 
+    $("." + sId + " #tageMassEingDataAnlPrdktEnde" +id+ "").datepicker({
         numberOfMonths: 1,
         dateFormat: 'dd.mm.yy',
         onSelect: function(selected) {
@@ -17032,7 +17034,7 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
              }
            $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker("option","maxDate", selected)
         }
-    });  
+    });
 }
 /* new-mm-end */
 
@@ -17040,7 +17042,7 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
 /* new-mm-start */
 /*mm-comment*/
         // function produkteDataTable(){
-        //    
+        //
         //     $.ajax({
         //         type: "POST",
         //         async: !0,
@@ -17055,33 +17057,33 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
         //             //console.log(a);
 
         //             tblMstOhneZeitintervallIMw.clear().draw();
-        //                 for (var e = 0; e < b; e++){ 
-        //                     tblMstOhneZeitintervallIMw.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw(); 
+        //                 for (var e = 0; e < b; e++){
+        //                     tblMstOhneZeitintervallIMw.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw();
         //                     //tblMstOhneZeitintervallIMw.column([0,1]).visible(!1);
 
         //                     $("#tblMstOhneZeitintervallIMw tr").css("cursor", "pointer");
         //                     $("#tblMstOhneZeitintervallIMw").off("dblclick", "tr");
 
-        //                 } 
+        //                 }
         //                var columnHide = tblMstOhneZeitintervallIMw.columns([1,2]);
         //                columnHide.visible(! columnHide.visible() );
 
 
         //                 $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
-        //                     var rowdata = tblMstOhneZeitintervallIMw.row(this).data();   
-        //                     //resetFormAllgemein('infosIntEnergiedaten',1);           
+        //                     var rowdata = tblMstOhneZeitintervallIMw.row(this).data();
+        //                     //resetFormAllgemein('infosIntEnergiedaten',1);
         //                     produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
-        //                    
+        //
         //                     //produkteListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
         //                     //var prd_id_data = rowdata[0];
         //                     //alert(prd_id_data);
         //                     $("#prd_ID").val(rowdata[0]);
-        //                     $("#anl_Col").val(rowdata[1]); 
-        //                     $("#anl_ID").val(rowdata[2]); 
+        //                     $("#anl_Col").val(rowdata[1]);
+        //                     $("#anl_ID").val(rowdata[2]);
         //                     // $("#namePrd").val(rowdata[3]);
         //                     // $("#artikelNrPrd").val(rowdata[4]);
-        //                     // $("#bezeichnungAnl").val(rowdata[5]); 
-                             
+        //                     // $("#bezeichnungAnl").val(rowdata[5]);
+
         //                     });
         //                 }
         //     });
@@ -17106,27 +17108,27 @@ function produkteAnlargeDataTable(){
             var b = a.length;
             //console.log(a);
             tblMstOhneZeitintervallIMw.clear().draw();
-                for (var e = 0; e < b; e++){ 
+                for (var e = 0; e < b; e++){
                     // tblMstOhneZeitintervallIMw.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].type,a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw();
-                    tblMstOhneZeitintervallIMw.row.add( [a[e].prd_id,a[e].anl_col,a[e].anl_id,a[e].type,a[e].artikelNrPrd,a[e].namePrd,a[e].bezeichnungAnl]).draw();  
+                    tblMstOhneZeitintervallIMw.row.add( [a[e].prd_id,a[e].anl_col,a[e].anl_id,a[e].type,a[e].artikelNrPrd,a[e].namePrd,a[e].bezeichnungAnl]).draw();
                     //tblMstOhneZeitintervallIMw.column([0,1]).visible(!1);
                     $("#tblMstOhneZeitintervallIMw tr").css("cursor", "pointer");
                     $("#tblMstOhneZeitintervallIMw").off("dblclick", "tr");
-                } 
+                }
                 var columnHide = tblMstOhneZeitintervallIMw.columns([0,1,2,3]);
                 columnHide.visible(! columnHide.visible() );
 
                 $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
-                    var rowdata = tblMstOhneZeitintervallIMw.row(this).data();   
-                    //resetFormAllgemein('infosIntEnergiedaten',1);           
+                    var rowdata = tblMstOhneZeitintervallIMw.row(this).data();
+                    //resetFormAllgemein('infosIntEnergiedaten',1);
                     /*produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');*/
                     produkteAnlageListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
                     $("#prd_ID").val(rowdata[0]);
-                    $("#anl_Col").val(rowdata[1]); 
+                    $("#anl_Col").val(rowdata[1]);
                     $("#anl_ID").val(rowdata[2]);
                     // $("#namePrd").val(rowdata[3]);
                     // $("#artikelNrPrd").val(rowdata[4]);
-                    // $("#bezeichnungAnl").val(rowdata[5]);                      
+                    // $("#bezeichnungAnl").val(rowdata[5]);
                     });
                 }
     });
@@ -17253,24 +17255,24 @@ function searchKeinZeitIntervallZugewiesen(checkboxSearch){
             var b = a.length;
             //console.log(a);
             tblAnlOhneZeitintervallIMw.clear().draw();
-                for (var e = 0; e < b; e++){ 
-                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                for (var e = 0; e < b; e++){
+                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
                     //tblAnlOhneZeitintervallIMw.column([0,1]).visible(!1);
                     $("#tblAnlOhneZeitintervallIMw tr").css("cursor", "pointer");
                     $("#tblAnlOhneZeitintervallIMw").off("dblclick", "tr");
-                } 
+                }
                 var columnHide = tblAnlOhneZeitintervallIMw.columns([0]);
                 columnHide.visible(! columnHide.visible() );
                 $("#tblAnlOhneZeitintervallIMw").on("dblclick", "tr", function() {
                     var a = tblAnlOhneZeitintervallIMw.row(this).data();
-                    //console.log(a);    
-                    resetFormAllgemein('infosIntBetriebsdaten',1);           
+                    //console.log(a);
+                    resetFormAllgemein('infosIntBetriebsdaten',1);
                     keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
                     $("#mstID").val(a[0]);
                     $("#anlIMw").val(a[1]);
                     $("#anlNrIMw").val(a[2]);
-                    $("#startDateDB").val(a[3]); 
-                    $("#endDateDB").val(a[4]); 
+                    $("#startDateDB").val(a[3]);
+                    $("#endDateDB").val(a[4]);
             });
         }
     });
@@ -17292,22 +17294,22 @@ function searchImgKeinZeitIntervallZugewiesen(checkboxSearch){
                 var b = a.length;
                 //console.log(a);
                 tblAnlOhneZeitintervallIMwSuchen.clear().draw();
-                    for (var e = 0; e < b; e++){ 
-                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                    for (var e = 0; e < b; e++){
+                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
                         $("#tblAnlOhneZeitintervallIMwSuchen tr").css("cursor", "pointer");
                         $("#tblAnlOhneZeitintervallIMwSuchen").off("dblclick", "tr");
-                    } 
+                    }
                     var columnHide = tblAnlOhneZeitintervallIMwSuchen.columns([0]);
                     columnHide.visible(! columnHide.visible() );
                     $("#tblAnlOhneZeitintervallIMwSuchen").on("dblclick", "tr", function() {
                          var a = tblAnlOhneZeitintervallIMwSuchen.row(this).data();
-                        //console.log(a);    
-                        resetFormAllgemein('infosIntBetriebsdaten',1);           
+                        //console.log(a);
+                        resetFormAllgemein('infosIntBetriebsdaten',1);
                         keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
                         $("#mstID").val(a[0]);
                         $("#anlIMw").val(a[1]);
-                        $("#anlNrIMw").val(a[2]);  
-                        $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close"); 
+                        $("#anlNrIMw").val(a[2]);
+                        $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");
                 });
             }
         });
@@ -17716,7 +17718,7 @@ function zeitintervallAnlInputsVisibleInvisible(zeitIntVal,startDate,endDate,end
 }
 /*Produkte 04-03-2021*/
 /*new-mm-start 22-03-2021*/
-function zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitIntVal,startDate,endDate,ending,sId,id){ 
+function zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitIntVal,startDate,endDate,ending,sId,id){
 //alert(startDate);alert(endDate);
     $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
     $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
@@ -17745,7 +17747,7 @@ function zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitIntVal,startDate,endDat
                 $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
             }else{
                  $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
-            }   
+            }
        }else if(zeitIntVal == 2){
             $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
             $("." + sId + " .zeitintervallAnlPrdkt_2").show();
@@ -17756,21 +17758,21 @@ function zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitIntVal,startDate,endDat
                 var startDateSplit = startDate.split('-');
                 var endDateSplit = endDate.split('-');
                 $("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val(startDateSplit[0]);
-                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val(endDateSplit[0]);   
+                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val(endDateSplit[0]);
                 $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val(startDateSplit[1]);
-                $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val(endDateSplit[1]); 
+                $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val(endDateSplit[1]);
             }else{
                $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val(startDate);
-                $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val(endDate); 
+                $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val(endDate);
             }
-            
+
             if(ending==1){
                 $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
                 $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
             }else{
                  $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
                  $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
-            }  
+            }
        }else if(zeitIntVal == 3){
             $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
             $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
@@ -17778,12 +17780,12 @@ function zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitIntVal,startDate,endDat
             $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
             $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
             $("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val(startDate);
-            $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val(endDate); 
+            $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val(endDate);
             if(ending==1){
                 $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
             }else{
                  $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
-            }          
+            }
        }else if(zeitIntVal == 4){
             $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
             $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
@@ -17803,7 +17805,7 @@ function zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitIntVal,startDate,endDat
             $("#" + sId + " .zeitintervallAnlPrdkt_3").hide();
             $("#" + sId + " .zeitintervallAnlPrdkt_4").hide();
             $("#" + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
-       } 
+       }
 }
 /*new-mm-end 22-03-2021*/
 function interneMesswerteConfigSpeichernMethod(){
@@ -17880,7 +17882,7 @@ function interneMesswerteConfigSpeichernMethodPrdkt(){
             else if(iBdeType == 2){
                 searchProdukteAnlageIntBDE("2");
             }
-            
+
         }
     });
 }
@@ -17932,21 +17934,21 @@ function returnStartDateAndEndDate(val,sId,id){
 /*Produkte 04-03-2021*/
 /*new-mm-start 22-03-2021*/
 function returnStartDateAndEndDatePrdkt(val,sId,id){
-        if(val ==1){ 
-            var startDate = $("." + sId + " #tageMassEingDataAnlPrdktStart" + id + "").val(); 
+        if(val ==1){
+            var startDate = $("." + sId + " #tageMassEingDataAnlPrdktStart" + id + "").val();
             var endDate = $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val();
         }else if(val ==2){
-            var startWeek = $("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val(); 
+            var startWeek = $("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val();
             var endWeek = $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val();
-            var startYear = $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val(); 
+            var startYear = $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val();
             var endYear= $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val();
             var startDate = startWeek + '-' +startYear;
             var endDate = endWeek + '-' +endYear;
         }else if(val ==3){
-            var startDate = $("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val(); 
+            var startDate = $("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val();
             var endDate = $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val();
         }else if(val ==4){
-            var startDate = $("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val(); 
+            var startDate = $("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val();
             var endDate = $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val();
         }
         return [startDate, endDate];
@@ -18029,7 +18031,7 @@ function zeitintervallAnlPrdktChange(val,sId,id){
        $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
         $("." + sId + " .zeitintervallAnlPrdkt_3").show();
         $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
-        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();  
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
    }else if(val == 4){
         $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
         $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
@@ -18042,7 +18044,7 @@ function zeitintervallAnlPrdktChange(val,sId,id){
         $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
         $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
         $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
-   }  
+   }
 }
 /*new-mm-end*/
 function noEndingChange(val,sId,id){
@@ -18094,10 +18096,10 @@ function noEndingChange(val,sId,id){
             $("." + sId + " .zeitintervallAnl_NoEnding").hide();
        }
 }
-/*Produkte mm 01-03-2021*/ 
-/*new-mm-start*/ 
+/*Produkte mm 01-03-2021*/
+/*new-mm-start*/
 function noEndingAnlPrdktChange(val,sId,id){
-     var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val(); 
+     var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
      if(zeitintervallAnl == 1){
         if(val==true){
             $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
@@ -18106,7 +18108,7 @@ function noEndingAnlPrdktChange(val,sId,id){
         } else {
            $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
            $("." + sId + " #anlPrdktIMwNoEnding").val(0);
-        }               
+        }
        }else if(zeitintervallAnl == 2){
         if(val==true){
             $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
@@ -18118,7 +18120,7 @@ function noEndingAnlPrdktChange(val,sId,id){
            $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
            $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
           $("." + sId + " #anlPrdktIMwNoEnding").val(0);
-        }               
+        }
        }else if(zeitintervallAnl == 3){
         if(val==true){
             $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
@@ -18127,7 +18129,7 @@ function noEndingAnlPrdktChange(val,sId,id){
         } else {
            $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
            $("." + sId + " #anlPrdktIMwNoEnding").val(0);
-        }      
+        }
        }else if(zeitintervallAnl == 4){
         if(val==true){
             $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
@@ -18136,14 +18138,14 @@ function noEndingAnlPrdktChange(val,sId,id){
         } else {
            $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
            $("." + sId + " #anlPrdktIMwNoEnding").val(0);
-        }  
+        }
        }else{
             $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
             $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
             $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
             $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
             $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
-       } 
+       }
   }
 /*new-mm-end*/
 function intBdeIMwNextPrev(key,countRecord,mst_ID){
@@ -18987,7 +18989,7 @@ function saveToDBMasseneingabeEingaben(key){
                     success: function(a) {
                        /*new-mm-start 22-03-2021*/
                         $("#masseneingabeSpeichernSrch").prop('disabled',false);
-                        if(a.length >0){ 
+                        if(a.length >0){
                             $(".save-msg-box").append(a);
                             $(".save-msg-box").fadeOut(3000, function() { $(this).text(""); });
                         }
@@ -19255,7 +19257,7 @@ function einheitAnlOnChangeChildSelectOpt(einheitAnlVal){
     }
 }
 /*For Interne Energiedaten Module 12-03-2021*/
-/*On change Einheit History Tab PopUp History Update From 
+/*On change Einheit History Tab PopUp History Update From
 Create Control System Select option inner function */
 /*new-mm-start*/
 function einheitAnlHistOnChangeChildSelectOpt(einheitAnlVal){
@@ -19636,23 +19638,23 @@ function alertValidationforPrdktStartEndeDate(prd_ID,anl_Col,anl_ID,date,type){
                 prd_ID: prd_ID,
                 anl_Col:anl_Col,
                 anl_ID:anl_ID,
-                date: date,            
+                date: date,
                 type:type
                 },
             fail: function() {
                 alert("failed!!")
             },
             success: function(a) {
-                a = JSON.parse(a); 
+                a = JSON.parse(a);
                 var b=a.length;
                 //console.log(a);
                 if(b>0){
-                   alert('Selected date value already filled up in record list. Please select other date.'); 
+                   alert('Selected date value already filled up in record list. Please select other date.');
                    //keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
                    produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
                 }
-            }            
-        });   
+            }
+        });
 }
 /*new-mm-end 22-03-2021*/
 function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate,type){
@@ -19724,8 +19726,8 @@ function alertValidationforEinheitControlSystemPrdkt(inputId,selVal,startDate,en
                 nameDB: $("#nameDB").val(),
                 mstID: $("#mstID").val(),
                 einheitVal:selVal,
-                startDate: startDate, 
-                endDate:endDate,           
+                startDate: startDate,
+                endDate:endDate,
                 type:type
                 },
             fail: function() {
@@ -19733,14 +19735,14 @@ function alertValidationforEinheitControlSystemPrdkt(inputId,selVal,startDate,en
             },
             success: function(a){
                 a = JSON.parse(a);
-                var b = a.length; 
+                var b = a.length;
                 if(b>0){
                     alert('You could not set einheit. Please select different dates.');
                     //keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntEnergiedaten');
                     produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
 
                 }
-            }            
+            }
         });
     }
     if(inputId =='control_system_AnlPrdkt'){
@@ -19753,15 +19755,15 @@ function alertValidationforEinheitControlSystemPrdkt(inputId,selVal,startDate,en
                 nameDB: $("#nameDB").val(),
                 mstID: $("#mstID").val(),
                 controlSystem:selVal,
-                startDate: startDate, 
-                endDate:endDate,           
+                startDate: startDate,
+                endDate:endDate,
                 type:type
                 },
             fail: function() {
                 alert("failed!!")
             },
             success: function(a){
-                a = JSON.parse(a); 
+                a = JSON.parse(a);
                 //console.log(a);
                 var b=a.length;
                 if(b>0){
@@ -19770,7 +19772,7 @@ function alertValidationforEinheitControlSystemPrdkt(inputId,selVal,startDate,en
                     produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
 
                 }
-            }            
+            }
         });
     }
 }
@@ -19789,13 +19791,13 @@ function deleteFromDBMasseneingabeEingabenSingleInput(key,currentDate,mstID){
                   currentDate: currentDate,
                   mstID:mstID,
                   key:key
-                },                     
+                },
                 fail: function() {
                     alert("failed!!")
                 },
                 success: function(a) {
                     if(a==1){
-                        setTimeout(function(){  
+                        setTimeout(function(){
                             $("#masseneingabeSpeichernSrch").prop("disabled",false);
                         }, 300);
                     }
