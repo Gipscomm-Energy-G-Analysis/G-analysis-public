@@ -31,6 +31,35 @@ elseif ($modus == "intBdeIMwGetHist") {
    $query .= "WHERE archiviert = 'true' ";
    $query .= "AND mstID = '$mstID' ";
 }
+/*new-mm-start 23-03-2021*/
+elseif ($modus == "intBdePrdktIMwGetHist") {
+  //echo '<pre>'; print_r($_POST);die;
+   $prd_ID = $_POST['prd_ID'];
+   $anl_ID = $_POST['anl_ID'];
+   $anl_Col = $_POST['anl_Col'];
+   $query = "SELECT * FROM produktionsAnlagenHistorie AS T1 ";
+   $query .= "LEFT JOIN iMwUnits AS T2 ";
+   $query .= "ON T1.einheitAnl = T2.unt_ID ";
+   $query .= "LEFT JOIN intervalType AS T3 ";
+   $query .= "ON T1.zeitintervallAnl = T3.intTp_ID ";
+   $query .= "WHERE T1.iBdeType = '1' ";
+   $query .= "AND T1.prd_id = '$prd_ID' ";
+   $query .= "AND T1.anl_col = '$anl_Col' ";
+   $query .= "AND T1.anl_id = '$anl_ID' ";
+
+}
+elseif ($modus == "intBdeIMwGetMesssetelle") {
+   //echo '<pre>'; print_r($_POST);die;
+   $mstID = $_POST['mstID'];
+   $query = "SELECT * FROM produktionsAnlagenHistorie AS T1 ";
+   $query .= "LEFT JOIN iMwUnits AS T2 ";
+   $query .= "ON T1.einheitAnl = T2.unt_ID ";
+   $query .= "LEFT JOIN intervalType AS T3 ";
+   $query .= "ON T1.zeitintervallAnl = T3.intTp_ID ";
+   $query .= "WHERE T1.iBdeType = '2' ";
+   $query .= "AND T1.mst_ID = '$mstID' ";
+}
+/*new-mm-end 23-03-2021*/
 elseif ($modus == "intBdeIMwGetHistSingle") {
 	$mstID = $_POST['mstID'];
 	$histID = $_POST['histID'];
