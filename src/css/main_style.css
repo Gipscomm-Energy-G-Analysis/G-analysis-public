@@ -1435,6 +1435,9 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
 {
   display: none;
 }
+.infosBlock.produktionsAnlagenSec .controlDiv input[readonly], .infosBlock.produktionsAnlagenSec .controlDiv label, .infosBlock.produktionsAnlagenSec .controlDiv select {
+    width: 2cm;
+}
 .control_system_div #control_system .visible,
 .control_system_div_AnlPrdkt #control_system_AnlPrdkt .visible{
   display: block;
