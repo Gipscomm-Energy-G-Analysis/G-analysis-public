@@ -9419,6 +9419,22 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+    /*new-mm-start 23-03-2021*/
+    tblHistorieIntBdeIMwPrdkt = $("#tblHistorieIntBdeIMwPrdkt").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblHistorieIntBdeIMwMesssetelle = $("#tblHistorieIntBdeIMwMesssetelle").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    /*new-mm-end 23-03-2021*/
     tblHistoriePrd = $("#tblHistoriePrd").DataTable({
         dom: "Bfrtip",
         buttons: [{

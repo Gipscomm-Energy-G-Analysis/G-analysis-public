@@ -1373,6 +1373,16 @@ $(document).ready(function() {
             $("body").removeClass('fullWidthMasseneingabe');
             $("#tblMasseneingabeDataIMw").remove();
         }
+        /*new-mm-start 23-03-2021*/
+        if(this.id=='tabIntEnergiedatenIMw'){
+            $("body").removeClass('fullWidthMasseneingabe');
+            $("#tblMasseneingabeDataIMw").remove();
+            $("#infosIntBetriebsdatenHistPrdkt").hide();
+            $("#infosIntBetriebsdatenHistMesssetelle").hide();
+            $("#tabIntBetriebsdatenIMwHistPrdkt").show();
+            $("#tabIntBetriebsdatenIMwHistMesssetelle").hide();
+        }
+        /*new-mm-end 23-03-2021*/
     });
     $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "gipscAdmFirst" == this.id ? (gipscAdmNavID = 0, readInstanzen(this.id, gipscAdmNavID)) :
@@ -5063,8 +5073,19 @@ $("#DkFeSpeichern").click(function() {
         $("body").removeClass('fullWidthMasseneingabe');
         $("#infosMasseneingabe").hide();
     });
-
-     $("#intBdeIMwLastMst,#intBdeIMwNextMst,#intBdeIMwPreviousMst,#intBdeIMwFirstMst").click(function(){
+    /*new-mm-start 23-03-2021*/    
+    $("#tabIntBetriebsdatenIMwHistPrdkt").click(function(){
+        intBdeIMwHistOkGetHistoriePrdkt();
+        $("body").removeClass('fullWidthMasseneingabe');
+        $("#infosMasseneingabe").hide();
+    });
+    $("#tabIntBetriebsdatenIMwHistMesssetelle").click(function(){
+        intBdeIMwHistOkGetHistorieMesssetelle();
+        $("body").removeClass('fullWidthMasseneingabe');
+        $("#infosMasseneingabe").hide();
+    }); 
+    /*new-mm-end 23-03-2021*/
+    $("#intBdeIMwLastMst,#intBdeIMwNextMst,#intBdeIMwPreviousMst,#intBdeIMwFirstMst").click(function(){
         //alert(this.id);
             var countRecord = $("#intBdeIMwCount").val();
             var mst_id = $("#nextPrevMstID").val();
