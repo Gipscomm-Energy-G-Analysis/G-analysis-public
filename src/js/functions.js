@@ -5863,6 +5863,8 @@ try {
                         , ["#kostenERng", "kostenERng"]
                         , ["#mwstPercentERng", "mwstPercentERng"]
                         , ["#tagstromVerbrERng", "tagstromVerbrERng"]
+                        , ["#tagstromKostERng", "tagstromKostERng"]
+                        , ["#nachtstromVerbrERng", "nachtstromVerbrERng"]
                         , ["#nachtstromKostERng", "nachtstromKostERng"]
                         , ["#lastspitzeERng", "lastspitzeERng"]
                         , ["#leistungspreisERng", "leistungspreisERng"]
@@ -19102,9 +19104,9 @@ function validateIntBdeFrm(noEnding,Zeitintervall,sId,id){
   }
 
 /* Validate Before Save
-*  Interne Betriebsdaten Module 
-*  Podukte and Messsetelle Speichern 
-*  03-03-2021 
+*  Interne Betriebsdaten Module
+*  Podukte and Messsetelle Speichern
+*  03-03-2021
 */
 /*new-mm-start 23-03-2021*/
 function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
@@ -19124,15 +19126,15 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
                 return false;
             }else{
                 return true;
-            }            
+            }
         }else if(noEnding==false) {
             if($("." + sId + " #tageMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val()==''){
                 alert('start tage or end tage should not be empty');
                 return false;
             }else{
                 return true;
-            } 
-        }               
+            }
+        }
        }else if(Zeitintervall == 2){
         if(noEnding==true){
             if($("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val()==''  ){
@@ -19140,14 +19142,14 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
                 return false;
             }else{
                 return true;
-            }            
+            }
         }else if(noEnding==false) {
            if($("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val()==''){
                 alert('start week or end week should not be empty');
                 return false;
             }else{
                 return true;
-            } 
+            }
         }
         }else if(Zeitintervall == 3){
             if(noEnding==true){
@@ -19156,15 +19158,15 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
                     return false;
                 }else{
                     return true;
-                }            
+                }
             }else if(noEnding==false) {
                 if($("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val()==''){
                     alert('start Monate or end Monate should not be empty');
                     return false;
                 }else{
                     return true;
-                } 
-            }        
+                }
+            }
        }else if(Zeitintervall == 4){
             if(noEnding==true){
                 if($("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val()==''){
@@ -19172,15 +19174,15 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
                         return false;
                     }else{
                         return true;
-                }            
+                }
             }else if(noEnding==false) {
                     if($("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val()==''){
                         alert('start Jahr or end Jahr should not be empty');
                         return false;
                     }else{
                         return true;
-                } 
-            }  
+                }
+            }
        }
     }
 }
