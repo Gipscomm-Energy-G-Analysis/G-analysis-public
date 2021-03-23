@@ -19101,7 +19101,90 @@ function validateIntBdeFrm(noEnding,Zeitintervall,sId,id){
     }
   }
 
+/* Validate Before Save
+*  Interne Betriebsdaten Module 
+*  Podukte and Messsetelle Speichern 
+*  03-03-2021 
+*/
+/*new-mm-start 23-03-2021*/
+function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
+    var mstIMw =$("#mstIMw").val();
+    var zeitintervallAnlPrdkt =$("#zeitintervallAnlPrdkt").val();
+    var notizBdeIMwAnlPrdkt =$("#notizBdeIMwAnlPrdkt").val();
+    var einheitAnlPrdkt =$("#einheitAnlPrdkt").val();
 
+    if(mstIMw =='' || zeitintervallAnlPrdkt == 0 || notizBdeIMwAnlPrdkt=='' || einheitAnlPrdkt==''){
+        alert("Bitte füllen Sie die Felder aus");
+        return false;
+    }else{
+     if(Zeitintervall == 1){
+        if(noEnding==true){
+            if($("." + sId + " #tageMassEingDataAnlPrdktStart" + id + "").val()==''){
+                alert('Please enter start tage');
+                return false;
+            }else{
+                return true;
+            }            
+        }else if(noEnding==false) {
+            if($("." + sId + " #tageMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val()==''){
+                alert('start tage or end tage should not be empty');
+                return false;
+            }else{
+                return true;
+            } 
+        }               
+       }else if(Zeitintervall == 2){
+        if(noEnding==true){
+            if($("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val()==''  ){
+                alert('Please enter start week');
+                return false;
+            }else{
+                return true;
+            }            
+        }else if(noEnding==false) {
+           if($("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val()==''){
+                alert('start week or end week should not be empty');
+                return false;
+            }else{
+                return true;
+            } 
+        }
+        }else if(Zeitintervall == 3){
+            if(noEnding==true){
+                if($("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val()==''){
+                    alert('Please enter start Monate');
+                    return false;
+                }else{
+                    return true;
+                }            
+            }else if(noEnding==false) {
+                if($("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val()==''){
+                    alert('start Monate or end Monate should not be empty');
+                    return false;
+                }else{
+                    return true;
+                } 
+            }        
+       }else if(Zeitintervall == 4){
+            if(noEnding==true){
+                if($("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val()==''){
+                        alert('Please enter start Jahr');
+                        return false;
+                    }else{
+                        return true;
+                }            
+            }else if(noEnding==false) {
+                    if($("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val()==''){
+                        alert('start Jahr or end Jahr should not be empty');
+                        return false;
+                    }else{
+                        return true;
+                } 
+            }  
+       }
+    }
+}
+/*new-mm-end 23-03-2021*/
 /*Concern Delete popup for the search functionality 05-10-2020*/
 function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
    $("#intBdeConcernOrDeletePopUp").remove();
