@@ -3385,7 +3385,136 @@ elseif($id == "intBdeIMwHistEditor") { /*06-10-2020 History save intern Betriebs
 
   }
 }
+/*new-mm-start 23-03-2021*/
+elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update intern Betriebsdaten Produkte and Messsetelle*/
 
+ $modus = $_POST['modus'];
+ 
+ if($modus == "update"){
+   //echo '<pre>'; print_r($_POST);die;
+
+    //$anlID = $_POST['anlID'];
+    $prdktHist_ID = $_POST['prdktHist_ID'];
+    $iBdeType = $_POST['iBdeType'];
+    if($iBdeType == 1){
+        $prd_ID = $_POST['prd_ID'];
+        $anl_ID = $_POST['anl_ID'];
+        $anl_Col = $_POST['anl_Col'];
+        $artikelnummerIntBde = $_POST['artikelnummerIntBde'];
+        $bezeichnungIntBde = $_POST['bezeichnungIntBde'];
+        $anlageIntBde = $_POST['anlageIntBde'];
+    }
+    else if($iBdeType == 2){
+        $anlageMessstelleIntBde = $_POST['anlageMessstelleIntBde'];
+    }
+    $mst_ID = $_POST['mst_ID'];
+
+
+    $archiviert = $_POST['archiviert'];
+    $bemerkung = $_POST['bemerkung'];
+    $gueltigVon = $_POST['gueltigVon'];
+    $gueltigBis = $_POST['gueltigBis'];
+
+    $mstIMw = $_POST['mstIMw'];
+
+
+
+    $zeitintervallAnl = $_POST['zeitintervallAnl'];
+    $einheitAnl = $_POST['einheitAnl'];
+
+    $note = $_POST['note'];
+    $ending = $_POST['ending']; 
+    $einheitControlSys = $_POST['einheitControlSys'];
+
+
+
+    if($zeitintervallAnl==1){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      if($sDate){
+        $fromDate =explode(".", $sDate);      
+        $arrStart[] = $fromDate[2];
+        $arrStart[] = $fromDate[1];      
+        $arrStart[] = $fromDate[0]; 
+        $startDate = implode("-",$arrStart);
+      }else{
+        $startDate = $_POST['startDate'];
+      }      
+      if($eDate){
+        $toDate = explode(".", $eDate);
+        $arrEnd[] =  $toDate[2]; 
+        $arrEnd[] =  $toDate[1]; 
+        $arrEnd[] =  $toDate[0];       
+        $endDate = implode("-",$arrEnd);
+      }else{
+        $endDate = $_POST['endDate'];
+      }      
+      $startWeek ='';
+      $endWeek ='';
+
+    }else if($zeitintervallAnl==2){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      $fromDate =explode("-", $sDate);
+      $startWeek = $fromDate[0]; //first week selected value
+      $startDate = $fromDate[1]; //first year input text value
+
+      $toDate = explode("-", $eDate);
+      if($ending==0){
+        $endWeek =  $toDate[0]; //second week selected value
+        $endDate =  $toDate[1]; //second year input text value
+      }else{
+        $endWeek =  ''; //second week selected value
+        $endDate =  ''; //second year input text value
+      }
+
+    }else if($zeitintervallAnl==3){
+      $sDate = $_POST['startDate'];
+      $eDate = $_POST['endDate']; 
+      if($sDate){
+        $fromDate =explode(".", $sDate);
+        $arrStart[] = $fromDate[1]; //first year input text value      
+        $arrStart[] = $fromDate[0]; //first week selected value
+        $startDate = implode("-",$arrStart);
+      }else{
+         $startDate = $_POST['startDate'];
+      }
+      if($eDate){
+        $toDate = explode(".", $eDate);
+        $arrEnd[] =  $toDate[1]; //second year input text value
+        $arrEnd[] =  $toDate[0]; //second week selected value
+        $endDate = implode("-",$arrEnd);
+      }else{
+        $endDate = $_POST['endDate']; 
+      }
+      $startWeek ='';
+      $endWeek ='';
+    }else{
+        $startDate =$_POST['startDate'];
+        $endDate =$_POST['endDate']; 
+        $startWeek ='';
+        $endWeek ='';
+    }
+    
+    if($iBdeType == 1){
+
+
+        $tsql = "UPDATE produktionsAnlagenHistorie SET zeitintervallAnl = '$zeitintervallAnl', einheitAnl = '$einheitAnl', einheitControlSys = '$einheitControlSys', bemerkung = '$bemerkung', gueltigVon = '$gueltigVon', gueltigBis = '$gueltigBis', startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note'";
+        $tsql .= " WHERE iBdeType = '$iBdeType'";
+        $tsql .= " AND prdktHist_ID = '$prdktHist_ID'";
+    }
+    else if($iBdeType == 2){
+
+
+        $tsql = "UPDATE produktionsAnlagenHistorie SET zeitintervallAnl = '$zeitintervallAnl', einheitAnl = '$einheitAnl',einheitControlSys = '$einheitControlSys', bemerkung = '$bemerkung', gueltigVon = '$gueltigVon', gueltigBis = '$gueltigBis', startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note'";
+        $tsql .= " WHERE iBdeType = '$iBdeType'";
+        $tsql .= " AND prdktHist_ID = '$prdktHist_ID'";
+    }   
+
+
+  }
+}
+/*new-mm-end 23-03-2021*/
 if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult"  ) {
     $retState = queryDB( $conn, $tsql, "write" ) ;
     echo json_encode(["query" => $tsql]) ;
