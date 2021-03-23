@@ -313,9 +313,10 @@ nav {
   float: left;
 }
 /*24-02-2020 tab html designed calculator*/
+/*new-mm-start 23-03-2021*/
 #tabGipscAdm, #tabBetrGrp, #tabSAdm, #tabManGrp, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl ,#tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm,
 #tabMsg, #tabKnz, #tabAlm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabEng, #tabZp, #tabBerechnungsformeln,
-#tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
+#tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist,#tabIntBetriebsdatenIMwHistPrdkt,#tabIntBetriebsdatenIMwHistMesssetelle, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
 #tabEPrd, #tabPrd, #tabPrd_historie, #tabVorlagenformeln, #tabAnl_weitereKonfig, #tabPrd_konfig, #tabDiagKnz,
 #tabGrpDiag, #tabHzk,#tabTaschenrechner,#tabDynamicKorrekturFktr {
   display: inline;
@@ -327,6 +328,7 @@ nav {
   border-top-left-radius: 8px;
   float: left;
 }
+/*new-mm-end 23-03-2021*/
 .infoBody{
   background-color:#CED6DE;
   border:1px solid #A1A7AD;
@@ -345,6 +347,7 @@ nav {
   padding:10px;
 }
 /*24-02-2020 tab detail html designed calculator*/
+/*new-mm-start 23-03-2021*/
 #infosGipscommAdmins,
 #infosBetreuerGruppen,
 #infosSuperAdmins,
@@ -380,6 +383,8 @@ nav {
 #infosIntEnergiedaten,
 #infosIntBetriebsdaten,
 #infosIntBetriebsdatenHist,
+#infosIntBetriebsdatenHistPrdkt,
+#infosIntBetriebsdatenHistMesssetelle,
 #infosMasseneingabe,
 #infosAuswertungManuell,
 #infosSpaEfVTabelle1,
@@ -402,7 +407,9 @@ nav {
 #infosGruppierungDiagramme,
 #infosKorrekturFaktor,
 #infosDynamicKorrekturFaktor,
-#intBdeIMwHistorieDiv {
+#intBdeIMwHistorieDiv,
+#intBdePrdktIMwHistorieDiv,
+#intBdeMesssetelleIMwHistorieDiv {
   background-color: #B9C0C7;
   margin: 10px;
   width: 21.85cm;
@@ -413,6 +420,7 @@ nav {
   clear: both;
   padding: 2px;
 }
+/*new-mm-end 23-03-2021*/
 .navDropBox img{
   float:right;
   cursor:pointer;
@@ -1211,22 +1219,29 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 
 
 /*21-09-2020*/
-.btnShowRecordsAnl{
+/*new-mm-start 23-03-2021*/
+.btnShowRecordsAnl,
+.btnShowRecordsAnlPrdkt{
   float: right;
   padding-bottom: 27px;
   padding-right: 3px;
 }
-
+/*new-mm-end 23-03-2021*/
 /*22-09-2020*/
-#btnMassEingAnl,#btnShowRecordsAnlBtn{
+/*new-mm-start 23-03-2021*/
+#btnMassEingAnl,#btnShowRecordsAnlBtn,#btnMassEingMst{
   background-color: white !important;
   cursor: pointer !important;
 }
+/*new-mm-end 23-03-2021*/
 
-#intBdeIMwHistorieDiv input, #intBdeIMwHistorieDiv select{
+/*new-mm-start 23-03-2021*/
+#intBdeIMwHistorieDiv input, #intBdeIMwHistorieDiv select,
+#intBdePrdktIMwHistorieDiv input, #intBdePrdktIMwHistorieDiv select,
+#intBdeMesssetelleIMwHistorieDiv input, #intBdeMesssetelleIMwHistorieDiv select{
   font-size:13px;
 }
-
+/*new-mm-end 23-03-2021*/
 #intBdeIMwHistSpeichernDblClick img{
   width: 20px;
   margin-left: 0px;
@@ -1235,11 +1250,12 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 .monthInputZeitintervallAnl{
   width: 1.5cm !important;
 }
-
-.wochenInputZeitintervallAnl{
+/*new-mm-start 23-03-2021*/
+.wochenInputZeitintervallAnl,
+.wochenInputZeitintervallAnlPrdkt{
   width: 1.2cm !important;
 }
-
+/*new-mm-end 23-03-2021*/
 #infosIntBetriebsdaten input[readonly],
 #infosIntBdeIMwHistoriePopUpDiv input[readonly],
 #infosIntBdeIMwHistoriePopUpDiv select[readonly],
@@ -1251,14 +1267,21 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 div#infosIntBdeIMwHistoriePopUpDiv input {
     margin: 16px 0px 9px 8px;
 }
-
-div#intBdeIMwHistorieDiv .controlDiv{
+/*new-mm-start 23-03-2021*/
+div#intBdeIMwHistorieDiv .controlDiv,
+div#intBdePrdktIMwHistorieDiv .controlDiv,
+div#intBdeMesssetelleIMwHistorieDiv .controlDiv{
   display: inline-block;
   background-color: #A1A7AD;
   margin-bottom: 0.1cm;
   width: 7.0cm;
 }
-div#intBdeIMwHistorieDiv .controlDiv label{
+/*new-mm-end 23-03-2021*/
+
+/*new-mm-start 23-03-2021*/
+div#intBdeIMwHistorieDiv .controlDiv label,
+div#intBdePrdktIMwHistorieDiv .controlDiv label,
+div#intBdeMesssetelleIMwHistorieDiv .controlDiv label{
     display: inline-block;
     width: 2.9cm;
     height: 0.5cm;
@@ -1267,6 +1290,7 @@ div#intBdeIMwHistorieDiv .controlDiv label{
     padding-left: 0.1cm;
     border: none;
 }
+/*new-mm-end 23-03-2021*/
 div#intBdeIMwHistorieDiv .controlDiv input{
     margin-left: 0.1cm;
     margin-top: 0.1cm;
@@ -1405,16 +1429,38 @@ div#intBdeConcernOrDeletePopUpDiv button {
 div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
     margin-left: 10px;
 }
-
-.control_system_div #control_system .invisible{
+/*new-mm-start 23-03-2021*/
+.control_system_div #control_system .invisible,
+.control_system_div_AnlPrdkt #control_system_AnlPrdkt .invisible
+{
   display: none;
 }
-.control_system_div #control_system .visible{
+.control_system_div #control_system .visible,
+.control_system_div_AnlPrdkt #control_system_AnlPrdkt .visible{
   display: block;
 }
 #masseneingabeSrchImg{
   height: 20px;
   width: 20px;
-  display: none;
+  /*display: none;*/
   margin: 0px 10px 0px 5px;
 }
+
+/*19-02-2021*/
+/*#interneEBTblDiv{
+    padding: 10px 0px 17px 6px;
+    font-size: 14px;
+    background: #a1a7ad;
+    margin: 56px 0px 22px 0px
+}*/
+#searchBtnShowRecordsAnlBtnDiv{
+  margin-left: 8px;
+}
+.infosBlock.produktionsAnlagenSec .controlDiv input[readonly],
+.infosBlock.produktionsAnlagenSec .controlDiv label,
+.infosBlock.produktionsAnlagenSec .controlDiv select
+{
+    width: 2cm;
+}
+
+/*new-mm-end 23-03-2021*/
