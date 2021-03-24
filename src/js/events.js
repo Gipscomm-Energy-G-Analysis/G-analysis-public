@@ -1242,6 +1242,7 @@ $(document).ready(function() {
         addExtraWidthToDynamischeFaktor();
         $("body").removeClass('fullWidthMasseneingabe');
     });
+    /*new-mm-start 24-03-2021*/
     $("#extRngMenu, #intEngIMwMenu, #intBdeIMwMenu, #eRngVergleichMenu, #spaEfVTab1Menu, #spaEfVTab2Menu").click(function() {
         $("#auswertungen").css("display",
             "none");
@@ -1250,7 +1251,9 @@ $(document).ready(function() {
         $("#stammdaten").css("display", "none");
         mainMenuNav(this.id)
         addExtraWidthToDynamischeFaktor();
-        datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
+        /*old-mm-comment*/
+        //datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
+        /*old-mm-comment*/
         $("#nextPrevMstID").val($("#mstID").val());
         $("body").removeClass('fullWidthMasseneingabe');
          //interneEBTblShowHide();
@@ -1279,6 +1282,7 @@ $(document).ready(function() {
         }
         /*new-mm-end*/
     });
+    /*new-mm-end 24-03-2021*/
     $("#manMap, #orgMap, #liegMap, #berMap").click(function() {
         mapErstellen(this.id, $("#selectMap").val())
     });
