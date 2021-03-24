@@ -17601,7 +17601,7 @@ function searchImgMesssetelleIntBDE(checkboxSearch){
                     // resetFormAllgemein('infosIntBetriebsdaten',1);
                     // tblMstOhneZeitintervallIMwMessstelleDblClickRow(a[0],'infosIntBetriebsdaten');
                     resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);                   
-                    MesssetelleListingDblClickRow(rowdata_messtbl[0],rowdata_messtbl[1],rowdata_messtbl[2],'infosIntEnergiedaten');
+                    MesssetelleListingDblClickRow(rowdata_messtbl[0],'infosIntEnergiedaten');
                     $("#mstIMw").val(rowdata_messtbl[1]);
                     $("#anlageMessstelleIntBde").val(rowdata_messtbl[2]);
                     $("#mstID").val(rowdata_messtbl[0]);                 
@@ -18254,7 +18254,8 @@ function intBdePrdktIMwNextPrev(key,countRecord,prd_ID){
                     $("." + sId + " .control_system_div_AnlPrdkt").show();
                     $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                     einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
-                    $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
+                    $("#nextPrevMstIDPrdktID").val(a[0]['id']);
+                    alert("id"+a[0]['id']);
                     //mm-last
                 }
             }
@@ -18283,7 +18284,6 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
                 if (b>0) {
 
                     var sId = "infosIntEnergiedaten";
-
                     $("." + sId + " #mstIMw").val(a[0]['nameMSt']).prop('disabled',true);
                     $("." + sId + " #anlageMessstelleIntBde").val(a[0]['anlageMst']).prop('disabled',true);
 
@@ -18302,7 +18302,8 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
                     $("." + sId + " .control_system_div_AnlPrdkt").show();
                     $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                     einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
-                    $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
+                    $("#nextPrevMstIDPrdktID").val(a[0]['T1_mst_ID']);
+                    alert("id"+a[0]['T1_mst_ID']);
 
                 }
             }
