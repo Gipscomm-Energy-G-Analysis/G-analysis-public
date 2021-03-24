@@ -1272,12 +1272,15 @@ $(document).ready(function() {
             resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
             /*new-mm-end 03-03-2021*/
             datePickerForInterneBetriebsdatenAnlPrdkt('infosIntEnergiedaten',1);
-
         }
 
         /*Produkte mm 01-03-2021*/
         /*new-mm-start*/
         if("intBdeIMwMenu" == this.id){
+            /*used resetFormAllgemein function to reset input values */
+            /*new-mm-start 24-03-2021*/
+            resetFormAllgemein('infosIntBetriebsdaten',1);
+            /*new-mm-end 24-03-2021*/
             datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
         }
         /*new-mm-end*/
@@ -5766,6 +5769,12 @@ $(":not(#btnShowRecordsAnlBtn) button , .menu :not(#intBdeIMwMenu) a").click(fun
     $("#btnShowRecordsAnlBtn").prop("disabled", false);
     $('#searchBtnShowRecordsAnlBtnDiv').hide();
     $('#interneEBTblDiv').hide();
+    /*used resetFormAllgemein function to  reset input values */
+    /*new-mm-start 24-03-2021*/
+    resetFormAllgemein('infosIntBetriebsdaten',1);
+    /*new-mm-end 24-03-2021*/
+
+
 });
 /*Produkte mm 25-02-21*/
 /*new-mm-start*/

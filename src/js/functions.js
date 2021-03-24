@@ -17548,11 +17548,14 @@ function searchProdukteAnlageIntBDE(checkboxSearch){
                 $("#tblMstOhneZeitintervallIMwMessstelle").on("dblclick", "tr", function() {
                     var rowdata_messtbl = tblMstOhneZeitintervallIMwMessstelle.row(this).data();
                    // console.log(rowdata_messtbl);
-                   // alert("mstid : "+rowdata_messtbl[0]);
+                    //alert("mstid : "+rowdata_messtbl[0]+"nameMSt"+rowdata_messtbl[1]);
                     // resetFormAllgemein('infosIntBetriebsdaten',1);
                     // tblMstOhneZeitintervallIMwMessstelleDblClickRow(a[0],'infosIntBetriebsdaten');
                     resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
                     MesssetelleListingDblClickRow(rowdata_messtbl[0],'infosIntEnergiedaten');
+
+                    $("#mstIMw").val(rowdata_messtbl[1]);
+                    $("#anlageMessstelleIntBde").val(rowdata_messtbl[2]);
 
                     $("#mstID").val(rowdata_messtbl[0]);
                     //$("#anlIMw").val(a[1]);
@@ -17584,7 +17587,7 @@ function searchImgMesssetelleIntBDE(checkboxSearch){
             console.log(a);
             tblMstOhneZeitintervallIMwMessstelleSuche.clear().draw();
                 for (var e = 0; e < b; e++){
-                    tblMstOhneZeitintervallIMwMessstelleSuche.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    tblMstOhneZeitintervallIMwMessstelleSuche.row.add( [a[e].T1_mst_ID, a[e].T1_nameMSt, a[e].T1_anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
                     //tblMstOhneZeitintervallIMwMessstelle.column([0,1]).visible(!1);
                     $("#tblMstOhneZeitintervallIMwMessstelleSuche tr").css("cursor", "pointer");
                     $("#tblMstOhneZeitintervallIMwMessstelleSuche").off("dblclick", "tr");
@@ -17594,13 +17597,14 @@ function searchImgMesssetelleIntBDE(checkboxSearch){
                 $("#tblMstOhneZeitintervallIMwMessstelleSuche").on("dblclick", "tr", function() {
                     var rowdata_messtbl = tblMstOhneZeitintervallIMwMessstelleSuche.row(this).data();
                    // console.log(rowdata_messtbl);
-                   // alert("mstid : "+rowdata_messtbl[0]);
+                    //alert("mstid : "+rowdata_messtbl[0]);
                     // resetFormAllgemein('infosIntBetriebsdaten',1);
                     // tblMstOhneZeitintervallIMwMessstelleDblClickRow(a[0],'infosIntBetriebsdaten');
-                    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
-                    MesssetelleListingDblClickRow(rowdata_messtbl[0],'infosIntEnergiedaten');
-
-                    $("#mstID").val(rowdata_messtbl[0]);
+                    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);                   
+                    MesssetelleListingDblClickRow(rowdata_messtbl[0],rowdata_messtbl[1],rowdata_messtbl[2],'infosIntEnergiedaten');
+                    $("#mstIMw").val(rowdata_messtbl[1]);
+                    $("#anlageMessstelleIntBde").val(rowdata_messtbl[2]);
+                    $("#mstID").val(rowdata_messtbl[0]);                 
                     //$("#anlIMw").val(a[1]);
                     //$("#anlNrIMw").val(a[2]);
                     //$("#startDateDB").val(a[3]);

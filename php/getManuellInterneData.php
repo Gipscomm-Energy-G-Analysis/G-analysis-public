@@ -229,7 +229,7 @@ elseif($id == 'MesssetelleTbl'){
 
 	   $typ = $_POST['typ'];
 
-	   $query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
+	   $query = "SELECT T1.mst_ID AS T1_mst_ID, T1.nameMSt AS T1_nameMSt,T1.anlageMst AS T1_anlageMst, * FROM MessstellenAnlagen AS T1 ";
 	   //$query = "SELECT * FROM MessstellenAnlagen AS T1 ";
 	   $query .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
 	   $query .= "ON T1.mst_ID = T2.mst_ID ";
@@ -716,21 +716,22 @@ elseif($id == 'displayDataMesssetelle'){
 		// $query = "SELECT * FROM produktionsAnlagenConfig ";
 		// $query .= "WHERE mst_ID  = '$mst_ID' AND iBdeType = '$iBdeType' ";
 
-	   	$query = "SELECT * FROM MessstellenAnlagen AS T1 ";
-		$query .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
-		$query .= "ON T1.mst_ID = T2.mst_ID ";
+	   	$query  = " SELECT * FROM MessstellenAnlagen AS T1 ";
+
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
+		$query .= " ON T1.mst_ID = T2.mst_ID ";
 		// $query .= "LEFT JOIN iMwUnits AS T3 ";
 		// $query .= "ON T2.unt_ID = T3.unt_ID ";
-		$query .= "LEFT JOIN intervalType AS T4 ";
-		$query .= "ON T2.intTp_ID = T4.intTp_ID ";
+		$query .= " LEFT JOIN intervalType AS T4 ";
+		$query .= " ON T2.intTp_ID = T4.intTp_ID ";
 		//$query .= "WHERE T1.deleted <> 'true' ";
 		//$query .= "AND T1.messartMst = 'manuell' ";
 		//$query .= "AND T1.typ = '$typ' ";
-		$query .= "WHERE T1.typ = '$typ' ";
-	    $query .= "AND T1.mst_ID = '$mst_ID' ";
-        $query .= "AND T2.iBdeType = '$iBdeType' ";
+		$query .= " WHERE T1.typ = '$typ' ";
+	    $query .= " AND T1.mst_ID = '$mst_ID' ";
+        $query .= " AND T2.iBdeType = '$iBdeType' ";
         $query .= "ORDER BY T2.iBdePrdktConf_ID DESC";
-	    // echo $query ;die();
+	    //echo $query ;die();
 }
 if($id == 'masseneingabeSearch'){
 	$records['query1'] = queryDB($conn, $query1, "read");

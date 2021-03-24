@@ -21,15 +21,21 @@ elseif ($modus == "prd") {
   $query .= "WHERE gruppenID = $gruppenID ";
 }
 elseif ($modus == "intBdeIMwGetHist") {
-	 $anlagenNr = $_POST['anlagenNr'];
-   $mstID = $_POST['mstID'];
-   $query = "SELECT * FROM interneBetriebsdatenHistorie AS T1 ";
-   $query .= "LEFT JOIN iMwUnits AS T2 ";
-   $query .= "ON T1.einheitAnl = T2.unt_ID ";
-   $query .= "LEFT JOIN intervalType AS T3 ";
-   $query .= "ON T1.zeitintervallAnl = T3.intTp_ID ";
-   $query .= "WHERE archiviert = 'true' ";
-   $query .= "AND mstID = '$mstID' ";
+	$anlagenNr = $_POST['anlagenNr'];
+  $mstID = $_POST['mstID'];
+  if ($mstID != null || $mstID != ''){
+    $query = "SELECT * FROM interneBetriebsdatenHistorie AS T1 ";
+    $query .= "LEFT JOIN iMwUnits AS T2 ";
+    $query .= "ON T1.einheitAnl = T2.unt_ID ";
+    $query .= "LEFT JOIN intervalType AS T3 ";
+    $query .= "ON T1.zeitintervallAnl = T3.intTp_ID ";
+    $query .= "WHERE archiviert = 'true' ";
+    $query .= "AND mstID = '$mstID' "; 
+   }
+   else{
+    die();
+   }
+
 }
 /*new-mm-start 23-03-2021*/
 elseif ($modus == "intBdePrdktIMwGetHist") {
