@@ -18210,6 +18210,7 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
 }
 /*17-03-2021*/
 /*new-mm-start*/
+/*new-mm-start 25-03-2021*/
 function intBdePrdktIMwNextPrev(key,countRecord,prd_ID){
     $.ajax({
             type: "POST",
@@ -18255,12 +18256,14 @@ function intBdePrdktIMwNextPrev(key,countRecord,prd_ID){
                     $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                     einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
                     $("#nextPrevMstIDPrdktID").val(a[0]['id']);
-                    alert("id"+a[0]['id']);
+                    //alert("id"+a[0]['id']);
                     //mm-last
                 }
             }
         });
 }
+/*new-mm-end 25-03-2021*/
+/*new-mm-start 25-03-2021*/
 function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
     $.ajax({
             type: "POST",
@@ -18303,12 +18306,13 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
                     $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                     einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
                     $("#nextPrevMstIDPrdktID").val(a[0]['T1_mst_ID']);
-                    alert("id"+a[0]['T1_mst_ID']);
+                    //alert("id"+a[0]['T1_mst_ID']);
 
                 }
             }
         });
 }
+/*new-mm-end 25-03-2021*/
 /*new-mm-end*/
     /*02-11-2020 btn Masseneingabe IMw functionality*/
     function btnMasseneingabeIMwChange(val,sId,id){

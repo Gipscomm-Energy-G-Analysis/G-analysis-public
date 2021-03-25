@@ -1676,7 +1676,7 @@ $(document).ready(function() {
         clearFields(this.id);
         b = !0
     });
-     $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
+    $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
         "gipscAdmSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
         "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
@@ -5822,3 +5822,10 @@ $("#tabIntBetriebsdatenIMwHistMesssetelle").click(function() {
 
 });
 /*new-mm-end*/
+/*new-mm-start 23-03-2021*/
+$("#intBdePrdktIMwHinz").click(function() {
+    
+    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
+    /*resetFormAllgemein*/
+});
+/*new-mm-end 23-03-2021*/
