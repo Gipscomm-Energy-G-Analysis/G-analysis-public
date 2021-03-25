@@ -1734,8 +1734,8 @@ try {
         },
         versorgerUndEinheitBefuellen = function() {
             var a =
-                $("#entERng").val(),
-                a = "" != a ? $("#entERng").val() : "";
+                $("#inputEntERng").val(),
+                a = "" != a ? $("#inputEntERng").val() : "";
             $.ajax({
                 type: "POST",
                 async: !0,
@@ -5843,7 +5843,7 @@ try {
                         (activateHtNt(result[b]),
                         $("#eRngCount").val(result.length),
                         [ ["#eRngID", "eRng_ID"]
-                        , ["#entERng", "entERng"]
+                        , ["#inputEntERng", "entERng"]
                         , ["#modusERng", "rechnungsmodusERng"]
                         , ["#nrERng", "nrERng"]
                         , ["#zpNrERng", "zpNrERng"]
@@ -7168,7 +7168,7 @@ try {
                     , rechnungsdatum: $("#datumERng").val()
                     , abrechnungszeitVom: $("#vomERng").val()
                     , abrechnungszeitBis: $("#bisERng").val()
-                    , energietraeger: $("#entERng").val()
+                    , energietraeger: $("#inputEntERng").val()
                     , einheit: $("#einERng").val()
                     , menge: formatNumber("deform", $("#mengeERng").val())
                     , verbrauch: formatNumber("deform", $("#verbrauchERng").val())
@@ -8435,7 +8435,7 @@ try {
                     , rechnungsdatum: $("#datumERng").val()
                     , abrechnungszeitVom: $("#vomERng").val()
                     , abrechnungszeitBis: $("#bisERng").val()
-                    , energietraeger: $("#entERng").val()
+                    , energietraeger: $("#inputEntERng").val()
                     , einheit: $("#einERng").val()
                     , menge: formatNumber("deform", $("#mengeERng").val())
                     , verbrauch: formatNumber("deform", $("#verbrauchERng").val())
@@ -8478,10 +8478,6 @@ try {
 
                 ajaxPost("php/instanzIntoDb.php")(data)
                 .then(result => {
-
-                    console.log("result eRngSpeichern")
-                    console.log(result)
-
                     alert(datensatzGespeichert(result))
                     readInstanzen("eRngLast", $("#eRngCount").val())
                 })
@@ -16006,7 +16002,7 @@ function intBdeIMwHistOkSpeichernMethod(){
             /*gueltigVon: $("#gueltigVonHistIntBdeIMw").val(),
             gueltigBis: $("#gueltigBisHistIntBdeIMw").val(),*/
             gueltigVon: startDate,
-            gueltigBis: endDate,             
+            gueltigBis: endDate,
             anlIMw: $("#anlIMw").val(),
             anlNrIMw: $("#anlNrIMw").val(),
             zeitintervallAnl: $("#zeitintervallAnl").val(),
@@ -16461,7 +16457,7 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
             archiviert: $("." + sId + " #archiviertIntBdeIMw").val(),
             bemerkung: $("." + sId + " #bemerkungHistIntBdeIMwEditor").val(),
             gueltigVon: $("." + sId + " #gueltigVonHistIntBdeIMwEditor").val(),
-            gueltigBis: $("." + sId + " #gueltigBisHistIntBdeIMwEditor").val(),            
+            gueltigBis: $("." + sId + " #gueltigBisHistIntBdeIMwEditor").val(),
             anlIMw: $("." + sId + " #anlIMw").val(),
             anlNrIMw: $("." + sId + " #anlNrIMw").val(),
             zeitintervallAnl: $("." + sId + " #zeitintervallAnl").val(),
@@ -16476,7 +16472,7 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
             alert("Verlauf erfolgreich aktualisiert");
             $("#"+sId+" input").val("");
             $("#"+sId+"").dialog("close");
-            intBdeIMwHistOkGetHistorie();            
+            intBdeIMwHistOkGetHistorie();
             //intBdeIMwHistOkGetHistorie();
         }
     });
@@ -17568,7 +17564,7 @@ function searchProdukteAnlageIntBDE(checkboxSearch){
                     /*new-mm-start 24-03-2021*/
                     $("#mstIMw").val(rowdata_messtbl[1]);
                     $("#anlageMessstelleIntBde").val(rowdata_messtbl[2]);
-                    /*new-mm-end 24-03-2021*/                    
+                    /*new-mm-end 24-03-2021*/
                     /*new-mm-start 25-03-2021*/
                     $("#nextPrevMstIDPrdktID").val(rowdata_messtbl[0]);
                     /*new-mm-end 25-03-2021*/
@@ -17615,7 +17611,7 @@ function searchImgMesssetelleIntBDE(checkboxSearch){
                     //alert("mstid : "+rowdata_messtbl[0]);
                     // resetFormAllgemein('infosIntBetriebsdaten',1);
                     // tblMstOhneZeitintervallIMwMessstelleDblClickRow(a[0],'infosIntBetriebsdaten');
-                    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);                   
+                    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
                     MesssetelleListingDblClickRow(rowdata_messtbl[0],'infosIntEnergiedaten');
                     $("#mstID").val(rowdata_messtbl[0]);
                     /*new-mm-start 23 or 24-03-2021*/
@@ -17624,7 +17620,7 @@ function searchImgMesssetelleIntBDE(checkboxSearch){
                     /*new-mm-end 23 or 24-03-2021*/
                     /*new-mm-start 25-03-2021*/
                     $("#nextPrevMstIDPrdktID").val(rowdata_messtbl[0]);
-                    /*new-mm-end 25-03-2021*/                 
+                    /*new-mm-end 25-03-2021*/
                     //$("#anlIMw").val(a[1]);
                     //$("#anlNrIMw").val(a[2]);
                     //$("#startDateDB").val(a[3]);

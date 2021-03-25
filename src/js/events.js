@@ -53,7 +53,7 @@ $(document).ready(function() {
     $("#verschAbbrechen").click(function() {
         $("#anlageVerschieben").dialog("close")
     });
-    $("#inputEnergietraeger1Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger3Lieg, #inputEnergietraeger4Lieg, #inputEnergietraeger5Lieg, #inputEnergietraeger6Lieg, #inputEnergietraeger7Lieg, #inputEnergietraeger8Lieg, #inputEnergietraeger9Lieg, #energieform1Lieg, #energieform2Lieg, #energieform3Lieg, #energieform4Lieg, #energieform5Lieg, #energieform6Lieg, #energieform7Lieg, #energieform1AllgemeinAnl, #energieform2AllgemeinAnl, #energieform3AllgemeinAnl, #energieform4AllgemeinAnl").click(function() {
+    $("#inputEntERng, #inputEnergietraeger1Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger2Lieg, #inputEnergietraeger3Lieg, #inputEnergietraeger4Lieg, #inputEnergietraeger5Lieg, #inputEnergietraeger6Lieg, #inputEnergietraeger7Lieg, #inputEnergietraeger8Lieg, #inputEnergietraeger9Lieg, #energieform1Lieg, #energieform2Lieg, #energieform3Lieg, #energieform4Lieg, #energieform5Lieg, #energieform6Lieg, #energieform7Lieg, #energieform1AllgemeinAnl, #energieform2AllgemeinAnl, #energieform3AllgemeinAnl, #energieform4AllgemeinAnl").click(function() {
         $(this).val("")
     });
     $("#mapDrucken").click(function() {
