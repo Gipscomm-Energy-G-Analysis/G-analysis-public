@@ -5809,25 +5809,25 @@ try {
 
                     const noHt =
                         record =>
-                        record.tagstromVerbrERng === 0
-                        && record.tagstromKostERng === 0
+                        record.tagstromVerbrERng == 0.00
+                        && record.tagstromKostERng == 0.00
 
                     const noNt =
                         record =>
-                        record.nachtstromVerbrERng === 0
-                        && record.nachtstromKostERng === 0
+                        record.nachtstromVerbrERng == 0.00
+                        && record.nachtstromKostERng == 0.00
 
                     const hideHtNt =
                         () =>
                         ( $("#htNt").css("display", "none")
                         , $(".htNtInp").val("")
-                        , $(this).text("HT/NT aktivieren")
+                        , $("#btnHtNt").text("HT/NT aktivieren")
                         )
 
                     const showHtNt =
                         () =>
                         ( $("#htNt").css("display", "block")
-                        , $(this).text("HT/NT deaktivieren")
+                        , $("#btnHtNt").text("HT/NT deaktivieren")
                         )
 
                     const activateHtNt =
