@@ -5822,10 +5822,10 @@ $("#tabIntBetriebsdatenIMwHistMesssetelle").click(function() {
 
 });
 /*new-mm-end*/
-/*new-mm-start 23-03-2021*/
+/*new-mm-start 25-03-2021*/
 $("#intBdePrdktIMwHinz").click(function() {
-    
+
     resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
     /*resetFormAllgemein*/
 });
-/*new-mm-end 23-03-2021*/
+/*new-mm-end 25-03-2021*/
