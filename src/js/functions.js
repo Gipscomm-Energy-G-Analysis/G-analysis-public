@@ -17110,6 +17110,7 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
 
 /* Produkte Anlarge New DataTable mm 02-03-2021*/
 /* new-mm-start */
+/*new-mm-start 25-03-2021*/
 function produkteAnlargeDataTable(){
     $.ajax({
         type: "POST",
@@ -17126,22 +17127,26 @@ function produkteAnlargeDataTable(){
             tblMstOhneZeitintervallIMw.clear().draw();
                 for (var e = 0; e < b; e++){
                     // tblMstOhneZeitintervallIMw.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].type,a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw();
-                    tblMstOhneZeitintervallIMw.row.add( [a[e].prd_id,a[e].anl_col,a[e].anl_id,a[e].type,a[e].artikelNrPrd,a[e].namePrd,a[e].bezeichnungAnl]).draw();
+                    tblMstOhneZeitintervallIMw.row.add( [a[e].id,a[e].prd_id,a[e].anl_col,a[e].anl_id,a[e].type,a[e].artikelNrPrd,a[e].namePrd,a[e].bezeichnungAnl]).draw();
                     //tblMstOhneZeitintervallIMw.column([0,1]).visible(!1);
                     $("#tblMstOhneZeitintervallIMw tr").css("cursor", "pointer");
                     $("#tblMstOhneZeitintervallIMw").off("dblclick", "tr");
                 }
-                var columnHide = tblMstOhneZeitintervallIMw.columns([0,1,2,3]);
+                var columnHide = tblMstOhneZeitintervallIMw.columns([0,1,2,3,4]);
                 columnHide.visible(! columnHide.visible() );
 
                 $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
                     var rowdata = tblMstOhneZeitintervallIMw.row(this).data();
                     //resetFormAllgemein('infosIntEnergiedaten',1);
                     /*produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');*/
-                    produkteAnlageListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
-                    $("#prd_ID").val(rowdata[0]);
-                    $("#anl_Col").val(rowdata[1]);
-                    $("#anl_ID").val(rowdata[2]);
+                    produkteAnlageListingDblClickRow(rowdata[1],rowdata[2],rowdata[3],'infosIntEnergiedaten');
+                    $("#prd_ID").val(rowdata[1]);
+                    $("#anl_Col").val(rowdata[2]);
+                    $("#anl_ID").val(rowdata[3]);
+                    /*new-mm-start 25-03-2021*/
+                    $("#nextPrevMstIDPrdktID").val(rowdata[0]);
+                    /*new-mm-end 25-03-2021*/
+                    //alert(rowdata[0]);
                     // $("#namePrd").val(rowdata[3]);
                     // $("#artikelNrPrd").val(rowdata[4]);
                     // $("#bezeichnungAnl").val(rowdata[5]);
@@ -17149,7 +17154,7 @@ function produkteAnlargeDataTable(){
                 }
     });
 }
-
+/*new-mm-start 25-03-2021*/
 /* new-mm-end */
 
 /*mm-comment 22-03-2021*/
@@ -17419,7 +17424,9 @@ function produkteAnlageListingDblClickRow(Prd_Id,Anl_Col,Anl_Id,sId){
                 $("." + sId + " .control_system_div_AnlPrdkt").show();
                 $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                 einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
-                $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
+               // $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
+
+               // /**/ $("#nextPrevMstIDPrdktID").val(rowdata[0]);
              }
         }
     })
@@ -17476,7 +17483,7 @@ function MesssetelleListingDblClickRow(mst_Id,sId){
                 $("." + sId + " .control_system_div_AnlPrdkt").show();
                 $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                 einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
-                $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
+               // $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
 
             }
         }
@@ -17491,6 +17498,10 @@ function resetInterneBetriebsdatenInputs(sId,id){
     $("#prd_ID").val("");
     $("#anl_Col").val("");
     $("#anl_ID").val("");
+    /*new-mm-start 25-03-2021*/
+    $("#nextPrevMstIDPrdktID").val("");
+    /*new-mm-end 25-03-2021*/
+
 
     $("." + sId + " #mstIMw").val("");
     $("." + sId + " #artikelnummerIntBde").val("").prop('disabled',false);
@@ -17553,11 +17564,15 @@ function searchProdukteAnlageIntBDE(checkboxSearch){
                     // tblMstOhneZeitintervallIMwMessstelleDblClickRow(a[0],'infosIntBetriebsdaten');
                     resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
                     MesssetelleListingDblClickRow(rowdata_messtbl[0],'infosIntEnergiedaten');
-
+                    $("#mstID").val(rowdata_messtbl[0]);
+                    /*new-mm-start 24-03-2021*/
                     $("#mstIMw").val(rowdata_messtbl[1]);
                     $("#anlageMessstelleIntBde").val(rowdata_messtbl[2]);
+                    /*new-mm-end 24-03-2021*/                    
+                    /*new-mm-start 25-03-2021*/
+                    $("#nextPrevMstIDPrdktID").val(rowdata_messtbl[0]);
+                    /*new-mm-end 25-03-2021*/
 
-                    $("#mstID").val(rowdata_messtbl[0]);
                     //$("#anlIMw").val(a[1]);
                     //$("#anlNrIMw").val(a[2]);
                     //$("#startDateDB").val(a[3]);
@@ -17602,9 +17617,14 @@ function searchImgMesssetelleIntBDE(checkboxSearch){
                     // tblMstOhneZeitintervallIMwMessstelleDblClickRow(a[0],'infosIntBetriebsdaten');
                     resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);                   
                     MesssetelleListingDblClickRow(rowdata_messtbl[0],'infosIntEnergiedaten');
+                    $("#mstID").val(rowdata_messtbl[0]);
+                    /*new-mm-start 23 or 24-03-2021*/
                     $("#mstIMw").val(rowdata_messtbl[1]);
                     $("#anlageMessstelleIntBde").val(rowdata_messtbl[2]);
-                    $("#mstID").val(rowdata_messtbl[0]);                 
+                    /*new-mm-end 23 or 24-03-2021*/
+                    /*new-mm-start 25-03-2021*/
+                    $("#nextPrevMstIDPrdktID").val(rowdata_messtbl[0]);
+                    /*new-mm-end 25-03-2021*/                 
                     //$("#anlIMw").val(a[1]);
                     //$("#anlNrIMw").val(a[2]);
                     //$("#startDateDB").val(a[3]);
@@ -18256,6 +18276,9 @@ function intBdePrdktIMwNextPrev(key,countRecord,prd_ID){
                     $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                     einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
                     $("#nextPrevMstIDPrdktID").val(a[0]['id']);
+                    /*new-mm-start 25-03-2021*/
+                    //$("#mstID").val(a[0]['id']);
+                    /*new-mm-end 25-03-2021*/
                     //alert("id"+a[0]['id']);
                     //mm-last
                 }
@@ -18306,6 +18329,9 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
                     $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                     einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
                     $("#nextPrevMstIDPrdktID").val(a[0]['T1_mst_ID']);
+                    /*new-mm-start 25-03-2021*/
+                    $("#mstID").val(a[0]['T1_mst_ID']);
+                    /*new-mm-end 25-03-2021*/
                     //alert("id"+a[0]['T1_mst_ID']);
 
                 }

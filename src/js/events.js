@@ -5116,7 +5116,6 @@ $("#DkFeSpeichern").click(function() {
             var countPrdktRecord = $("#intBdePrdktIMwCount").val();
             var prd_id = $("#nextPrevMstIDPrdktID").val();
             if(this.id == "intBdePrdktIMwNextMst"){
-
                 intBdePrdktIMwNextPrev(this.id,countPrdktRecord,prd_id);
             }else if(this.id =="intBdePrdktIMwPreviousMst"){
                 intBdePrdktIMwNextPrev(this.id,countPrdktRecord,prd_id);
@@ -5680,7 +5679,9 @@ $('input:radio[name=searchImgBetriebsdatenFilter]').change(function () {
                 //  $("#intBdeMessetelleIMwSpeichern").hide();
                 //  $("#intBdePrdktIMwSpeichern").show();
                 $("mstID").val("");
-
+                /*new-mm-start 25-03-2021*/
+                $("#nextPrevMstIDPrdktID").val("");
+                /*new-mm-end 25-03-2021*/
                 /*new-mm-start 10-03-2021*/
                 $("#tabIntBetriebsdatenIMwHistPrdkt").show();
                 $("#tabIntBetriebsdatenIMwHistMesssetelle").hide();
@@ -5733,6 +5734,9 @@ $('input:radio[name=searchImgBetriebsdatenFilter]').change(function () {
                 $("#prd_ID").val("");
                 $("#anl_Col").val("");
                 $("#anl_ID").val("");
+                /*new-mm-start 25-03-2021*/
+                $("#nextPrevMstIDPrdktID").val("");
+                /*new-mm-end 25-03-2021*/
                 /*new-mm-start 10-03-2021*/
                 $("#tabIntBetriebsdatenIMwHistPrdkt").hide();
                 $("#tabIntBetriebsdatenIMwHistMesssetelle").show();
@@ -5824,8 +5828,7 @@ $("#tabIntBetriebsdatenIMwHistMesssetelle").click(function() {
 /*new-mm-end*/
 /*new-mm-start 25-03-2021*/
 $("#intBdePrdktIMwHinz").click(function() {
-
     resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
-    /*resetFormAllgemein*/
+
 });
 /*new-mm-end 25-03-2021*/

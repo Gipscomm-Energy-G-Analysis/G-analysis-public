@@ -652,23 +652,18 @@ elseif($id == 'MesssetelleTbl'){
         $query .= " LEFT JOIN anlagen ON ca.[id] =  anlagen.anl_ID";
         $query .= " Where anl_ID != 0";
 
-}elseif($id == 'ProdukteAnlDataTbl'){
-	//    $query  = "SELECT prd_id as prd_ID, anl_col as anl_Col, anl_id as anl_ID, produkte.[namePrd],produkte.[artikelNrPrd],anlagen.[bezeichnungAnl]";
-	//    $query = "SELECT prd_id ,type FROM produktionsAnlagenMoreOpt As T1 ";
-	//    $query .= " LEFT JOIN produkte AS T2";
-	//    $query .= " ON T1.prd_id =  T2.prd_ID";
-	//    $query .= " LEFT JOIN anlagen AS T3 ";
-	//    $query .= " ON T1.anl_id =  T3.anl_ID";
-	//    $query .= " WHERE produktionsAnlagenMoreOpt.type = 2";
-	$query = "SELECT DISTINCT T1.prd_id,T1.anl_col,T1.anl_id,T1.type ,T2.namePrd,T2.artikelNrPrd,T3.bezeichnungAnl FROM produktionsAnlagenMoreOpt As T1";
+}
+/*new-mm-start 25-03-2021*/
+elseif($id == 'ProdukteAnlDataTbl'){
+
+	$query = "SELECT DISTINCT T1.prd_id,T1.anl_col,T1.anl_id,T1.type ,T2.namePrd,T2.artikelNrPrd,T3.bezeichnungAnl,T1.id FROM produktionsAnlagenMoreOpt As T1";
 	$query .= " LEFT JOIN produkte AS T2 ON T1.prd_id = T2.prd_ID";
     $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
     $query .= " WHERE T1.type = 2";
-
     //echo $query;die();
-
-
-}elseif($id == 'displayDataPrdkt'){
+}
+/*new-mm-start 25-03-2021*/
+elseif($id == 'displayDataPrdkt'){
 
 	    $Prd_Id = $_POST['Prd_Id'];
 	    $Anl_Col = $_POST['Anl_Col'];
@@ -695,6 +690,7 @@ elseif($id == 'displayDataPrdktAnlage'){
 		//$query .= " AND $Anl_Col = T2.anl_Col ";
 	    $query .= " LEFT JOIN anlagen AS T3 ";
 	    $query .= " ON T3.anl_ID =  $Anl_Id";
+
 	    $query .= " WHERE T1.prd_ID = $Prd_Id ";
         $query .= "ORDER BY T2.iBdePrdktConf_ID ASC";
 	    // $query .= " AND T2.prd_id = $Prd_Id ";
