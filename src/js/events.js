@@ -1011,7 +1011,7 @@ $(document).ready(function() {
         var a = parseFloat(formatNumber("deform", $("#eegUntERng").val())),
             b = parseFloat(formatNumber("deform", $("#eegUebERng").val())),
             a = (a + b).toFixed(2);
-        $("#eegERng").val(a)
+        $("#eegERng").val(formatNumber("form", a))
     });
     $("#mstERng").change(function() {
         letzteRechnungenInTbl($(this).val());
