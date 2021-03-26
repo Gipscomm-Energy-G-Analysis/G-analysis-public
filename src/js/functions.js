@@ -17312,7 +17312,9 @@ function searchKeinZeitIntervallZugewiesen(checkboxSearch){
             //console.log(a);
             tblAnlOhneZeitintervallIMw.clear().draw();
                 for (var e = 0; e < b; e++){
-                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    /*new-mm-start 26-03-2021*/
+                    tblAnlOhneZeitintervallIMw.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    /*new-mm-end 26-03-2021*/
                     //tblAnlOhneZeitintervallIMw.column([0,1]).visible(!1);
                     $("#tblAnlOhneZeitintervallIMw tr").css("cursor", "pointer");
                     $("#tblAnlOhneZeitintervallIMw").off("dblclick", "tr");
@@ -17329,6 +17331,10 @@ function searchKeinZeitIntervallZugewiesen(checkboxSearch){
                     $("#anlNrIMw").val(a[2]);
                     $("#startDateDB").val(a[3]);
                     $("#endDateDB").val(a[4]);
+                    /*new-mm-start 26-03-2021*/
+                    $("#nextPrevMstID").val(a[0]);
+                    /*new-mm-end 26-03-2021*/
+
             });
         }
     });
@@ -17351,7 +17357,9 @@ function searchImgKeinZeitIntervallZugewiesen(checkboxSearch){
                 //console.log(a);
                 tblAnlOhneZeitintervallIMwSuchen.clear().draw();
                     for (var e = 0; e < b; e++){
-                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                        /*new-mm-start 26-03-2021*/
+                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                        /*new-mm-end 26-03-2021*/
                         $("#tblAnlOhneZeitintervallIMwSuchen tr").css("cursor", "pointer");
                         $("#tblAnlOhneZeitintervallIMwSuchen").off("dblclick", "tr");
                     }
@@ -17365,6 +17373,10 @@ function searchImgKeinZeitIntervallZugewiesen(checkboxSearch){
                         $("#mstID").val(a[0]);
                         $("#anlIMw").val(a[1]);
                         $("#anlNrIMw").val(a[2]);
+
+                        /*new-mm-start 26-03-2021*/
+                        $("#nextPrevMstID").val(a[0]);
+                        /*new-mm-end 26-03-2021*/
                         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");
                 });
             }

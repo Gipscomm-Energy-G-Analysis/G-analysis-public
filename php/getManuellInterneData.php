@@ -267,7 +267,9 @@ elseif($id == 'MesssetelleTbl'){
 	   $checkboxSearch = $_POST['checkboxSearch'];
 	   $typ = $_POST['typ'];
 	   if($checkboxSearch == 1){
-		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+	   	   /*new-mm-start 26-03-2021*/
+		   $query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
+		   /*new-mm-end 26-03-2021*/
 		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
 		   $query .= "ON T1.mst_ID = T2.mst_ID ";
 		   $query .= "LEFT JOIN iMwUnits AS T3 ";
@@ -277,10 +279,15 @@ elseif($id == 'MesssetelleTbl'){
 		   $query .= "WHERE T1.deleted <> 'true' ";
 		   $query .= "AND T1.messartMst = 'manuell' ";
 		   $query .= "AND T1.typ = '$typ' ";
+		   /*new-mm-start 26-03-2021*/
+	       $query .= " ORDER BY T1.mst_ID ASC";
+	       /*new-mm-end 26-03-2021*/
 		   //echo $query;die();
 		}
 		elseif($checkboxSearch == 2){
-		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+		   /*new-mm-start 26-03-2021*/
+		   $query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
+		   /*new-mm-end 26-03-2021*/
 		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
 		   $query .= "ON T1.mst_ID = T2.mst_ID ";
 		   $query .= "LEFT JOIN iMwUnits AS T3 ";
@@ -291,12 +298,17 @@ elseif($id == 'MesssetelleTbl'){
 		   $query .= "AND T1.messartMst = 'manuell' ";
 		   $query .= "AND T1.typ = '$typ' ";
 		   $query .= "AND NULLIF(T2.startDate,'') IS NOT NULL ";
+		   /*new-mm-start 26-03-2021*/
+	       $query .= " ORDER BY T1.mst_ID ASC";
+	       /*new-mm-end 26-03-2021*/
 		   /*WHERE NULLIF(x,'') IS NOT NULL
 			AND NULLIF(y,'') IS NOT NULL
 			AND NULLIF(z,'') IS NOT NULL*/
 		}
 		elseif($checkboxSearch == 3){
-		   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+		   /*new-mm-start 26-03-2021*/
+		   $query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
+		   /*new-mm-end 26-03-2021*/
 		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
 		   $query .= "ON T1.mst_ID = T2.mst_ID ";
 		   $query .= "LEFT JOIN iMwUnits AS T3 ";
@@ -307,6 +319,9 @@ elseif($id == 'MesssetelleTbl'){
 		   $query .= "AND T1.messartMst = 'manuell' ";
 		   $query .= "AND T1.typ = '$typ' ";
 		   $query .= "AND NULLIF(T2.startDate,'') IS NULL ";
+		   /*new-mm-start 26-03-2021*/
+	       $query .= " ORDER BY T1.mst_ID ASC";
+	       /*new-mm-end 26-03-2021*/
 		   /*WHERE NULLIF(x,'') IS NULL
 			Or NULLIF(y,'') IS NULL
 			Or NULLIF(z,'') IS NULL*/
