@@ -3627,6 +3627,17 @@ $("#DkFeSpeichern").click(function() {
     /*16-03-2021 on click serach icon show popup for Interne Betriebsdaten Produkte and Messetelle*/
     /*mm-new-start*/
     $("#intBdePrdktIMwSuchen").click(function(){
+
+        /*new-mm-start 26-03-2021*/
+        tblMstOhneZeitintervallIMw.clear();
+        $("#tblMstOhneZeitintervallIMw_wrapper").hide();
+        $("#searchBtnShowRecordsPrdktAnlMstBtnDiv").hide();
+        $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").hide();
+        //$('#tblMstOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
+        $("#btnShowRecordsAnlBtnPrdkt").prop("disabled", false);
+        resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
+        /*new-mm-end 26-03-2021*/
+        
         tblAnlPrdktOhneZeitintervallIMwSuchenMethod();
     });
     /*mm-new-end*/
