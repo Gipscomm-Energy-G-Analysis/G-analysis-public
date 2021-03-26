@@ -24,38 +24,58 @@ elseif($id == 'displayData'){
 }
 elseif($id == 'intBdeIMw'){
 	if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwNextMst'){
-		$query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
-		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-		  $query .= "ON T1.mst_ID = T2.mst_ID ";
-		  $query .= "WHERE T1.messartMst = 'manuell' ";
-		  $query .= "AND T1.deleted <> 'true' ";
-		  $query .= "AND T1.mst_ID >".$_POST['mst_ID']." ";
-		  $query .= "ORDER BY T1.mst_ID ASC";
+		/*new-mm-start 26-03-2021*/
+		$query = "SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen As T1 ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		$query .= "ON T1.mst_ID = T2.mst_ID ";
+		$query .= "WHERE T1.messartMst = 'manuell' ";
+		$query .= "AND T1.deleted <> 'true' ";
+		$query .= "AND T1.mst_ID >".$_POST['mst_ID']." ";
+		/*new-mm-start 26-03-2021*/
+		$query .= "AND T1.typ = 'energiedaten' ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "ORDER BY T1.mst_ID ASC";
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwPreviousMst'){
-		$query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
-		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-		  $query .= "ON T1.mst_ID = T2.mst_ID ";
-		  $query .= "WHERE T1.messartMst = 'manuell' ";
-		  $query .= "AND T1.deleted <> 'true' ";
-		  $query .= "AND T1.mst_ID <".$_POST['mst_ID']." ";
-		  $query .= "ORDER BY T1.mst_ID DESC";
+		/*new-mm-start 26-03-2021*/
+		$query = "SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen As T1 ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		$query .= "ON T1.mst_ID = T2.mst_ID ";
+		$query .= "WHERE T1.messartMst = 'manuell' ";
+		$query .= "AND T1.deleted <> 'true' ";
+		$query .= "AND T1.mst_ID <".$_POST['mst_ID']." ";
+		/*new-mm-start 26-03-2021*/
+		$query .= "AND T1.typ = 'energiedaten' ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "ORDER BY T1.mst_ID DESC";
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwLastMst'){
-		$query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
-		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-		  $query .= "ON T1.mst_ID = T2.mst_ID ";
-		  $query .= "WHERE T1.messartMst = 'manuell' ";
-		  $query .= "AND T1.deleted <> 'true' ";
-		  $query .= "ORDER BY T1.mst_ID DESC";
+		/*new-mm-start 26-03-2021*/
+		$query = "SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen As T1 ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		$query .= "ON T1.mst_ID = T2.mst_ID ";
+		$query .= "WHERE T1.messartMst = 'manuell' ";
+		$query .= "AND T1.deleted <> 'true' ";
+		/*new-mm-start 26-03-2021*/
+		$query .= "AND T1.typ = 'energiedaten' ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "ORDER BY T1.mst_ID DESC";
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdeIMwFirstMst'){
-		  $query = "SELECT TOP 1 * FROM MessstellenAnlagen As T1 ";
-		  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-		  $query .= "ON T1.mst_ID = T2.mst_ID ";
-		  $query .= "WHERE T1.messartMst = 'manuell' ";
-		  $query .= "AND T1.deleted <> 'true' ";
-		  $query .= "ORDER BY T1.mst_ID ASC";
+		/*new-mm-start 26-03-2021*/
+		$query = "SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen As T1 ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		$query .= "ON T1.mst_ID = T2.mst_ID ";
+		$query .= "WHERE T1.messartMst = 'manuell' ";
+		$query .= "AND T1.deleted <> 'true' ";
+		/*new-mm-start 26-03-2021*/
+		$query .= "AND T1.typ = 'energiedaten' ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "ORDER BY T1.mst_ID ASC";
 
 	}
 }
@@ -198,7 +218,6 @@ elseif($id == 'intBdeMesssetelleIMw'){
 
         //echo $query;die();
 
-	     /*last-mm*/
 	}
 }
 /*new-mm-end 24-03-2021*/
@@ -206,8 +225,9 @@ elseif($id == 'intBdeMesssetelleIMw'){
 elseif($id == 'KeinZeitintervallTbl'){
 
 	   $typ = $_POST['typ'];
-
-	   $query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+	   /*new-mm-start 26-03-2021*/
+	   $query = "SELECT T1.mst_ID AS T1_mst_ID, * FROM MessstellenAnlagen AS T1 ";
+	   /*new-mm-end 26-03-2021*/
 	   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
 	   $query .= "ON T1.mst_ID = T2.mst_ID ";
 	   $query .= "LEFT JOIN iMwUnits AS T3 ";
@@ -217,6 +237,11 @@ elseif($id == 'KeinZeitintervallTbl'){
 	   $query .= "WHERE T1.deleted <> 'true' ";
 	   $query .= "AND T1.messartMst = 'manuell' ";
 	   $query .= "AND T1.typ = '$typ' ";
+	   /*new-mm-start 26-03-2021*/
+	   $query .= " ORDER BY T1.mst_ID ASC";
+	   /*new-mm-end 26-03-2021*/
+       
+	     /*last-mm*/
 
 }
 elseif($id == 'MesssetelleTbl'){

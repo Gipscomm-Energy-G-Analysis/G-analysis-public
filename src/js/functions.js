@@ -15601,7 +15601,9 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                 var b = a.length;console.log(a);
                 tblAnlOhneZeitintervallIMwSuchen.clear().draw();
                     for (var e = 0; e < b; e++){
-                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                        /*new-mm-start 26-03-2021*/
+                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                        /*new-mm-end 26-03-2021*/
                         //tblAnlOhneZeitintervallIMwSuchen.column([0,1]).visible(!1);
                         $("#tblAnlOhneZeitintervallIMwSuchen tr").css("cursor", "pointer");
                         $("#tblAnlOhneZeitintervallIMwSuchen").off("dblclick", "tr");
@@ -15616,6 +15618,10 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                         $("#mstID").val(a[0]);
                         $("#anlIMw").val(a[1]);
                         $("#anlNrIMw").val(a[2]);
+
+                        /*new-mm-start 26-03-2021*/
+                         $("#nextPrevMstID").val(a[0]);                       
+                        /*new-mm-end 26-03-2021*/
                         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");
                 });
             }
@@ -17255,7 +17261,9 @@ function keinZeitIntervallZugewiesen(){
             var b = a.length;console.log(a);
             tblAnlOhneZeitintervallIMw.clear().draw();
                 for (var e = 0; e < b; e++){
-                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    /*new-mm-start 26-03-2021*/
+                    tblAnlOhneZeitintervallIMw.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    /*new-mm-start 26-03-2021*/
                     //tblAnlOhneZeitintervallIMw.column([0,1]).visible(!1);
                     $("#tblAnlOhneZeitintervallIMw tr").css("cursor", "pointer");
                     $("#tblAnlOhneZeitintervallIMw").off("dblclick", "tr");
@@ -17272,6 +17280,10 @@ function keinZeitIntervallZugewiesen(){
                     $("#anlNrIMw").val(a[2]);
                     $("#startDateDB").val(a[3]);
                     $("#endDateDB").val(a[4]);
+
+                    /*new-mm-start 26-03-2021*/
+                    $("#nextPrevMstID").val(a[0]);
+                    /*new-mm-end 26-03-2021*/
                     setTimeout(function(){
                     $("#unitIDB").val($(".infosIntBetriebsdaten #einheitAnl").val());
                     $("#controlSysIDDB").val($(".infosIntBetriebsdaten #control_system").val());
@@ -18243,8 +18255,11 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
                     zeitintervallAnlInputsVisibleInvisible(c[0]['intTp_ID'],sDt,eDt,c[0]['ending'],'infosIntBetriebsdaten',1);
                     $(".infosIntBetriebsdaten #anlIMwNoEnding").prop('checked', c[0]['ending']);
                     $(".infosIntBetriebsdaten #anlIMwNoEnding").val(c[0]['ending']);
-                    $("#nextPrevMstID").val(c[0].mst_ID);
-                    $("#mstID").val(c[0].mst_ID);
+                    /*new-mm-start 26-03-2021*/
+                    $("#nextPrevMstID").val(c[0].T1_mst_ID);
+                    $("#mstID").val(c[0].T1_mst_ID);
+                    //alert(c[0].T1_mst_ID);
+                     /*new-mm-end 26-03-2021*/
                  }
             }
     });
