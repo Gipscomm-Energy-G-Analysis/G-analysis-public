@@ -16121,7 +16121,9 @@ function intBdeIMwHistOkGetHistorie(){
                 $("#tblHistorieIntBdeIMw").on("dblclick", "tr", function() {
                     var a = tblHistorieIntBdeIMw.row(this).data();
                     intBdeIMwDatensatzAusHistorieEinlesenAnl(a[1],a[2],'intBdeIMwHistorieContainer');
+                    /*new-mm-start 26-03-2021*/
                     $("#mstID").val(a[2]);
+                    /*new-mm-end 26-03-2021*/
                     datePickerForInterneBetriebsdaten('intBdeIMwHistorieContainer',2);
             })
         }
@@ -16157,6 +16159,11 @@ function intBdeIMwHistOkGetHistoriePrdkt(){
                 $("#tblHistorieIntBdeIMwPrdkt").on("dblclick", "tr", function() {
                 var a = tblHistorieIntBdeIMwPrdkt.row(this).data();
                 intBdePrdktHistorieUpdatePopUp(a[1],a[2],'intBdePrdktIMwHistorieContainer');
+                /*new-mm-start 26-03-2021*/
+                //$("#prd_ID").val(a[2]);
+                //$("#anl_ID").val(a[3]);
+                //$("#anl_Col").val(a[4]);
+                /*new-mm-end 26-03-2021*/
                 datePickerForInterneBetriebsdatenAnlPrdkt('intBdePrdktIMwHistorieContainer',4);
             })
         }
@@ -16190,6 +16197,9 @@ function intBdeIMwHistOkGetHistorieMesssetelle(){
                 $("#tblHistorieIntBdeIMwMesssetelle").on("dblclick", "tr", function() {
                 var a = tblHistorieIntBdeIMwMesssetelle.row(this).data();
                 intBdeMesssetelleHistorieUpdatePopUp(a[1],a[2],'intBdeMesssetelleIMwHistorieContainer');
+                /*new-mm-start 26-03-2021*/
+                $("#mstID").val(a[2]);
+                 /*new-mm-end 26-03-2021*/
                 datePickerForInterneBetriebsdatenAnlPrdkt('intBdeMesssetelleIMwHistorieContainer',5);
             })
         }
@@ -16516,7 +16526,7 @@ function intBdePrdktMstHistSpeichernMethodDblClickEditorPopUp(sId){
      //var dates = returnStartDateAndEndDatePrdkt(zeitintervallAnl,sId,4);
      startDate =dates[0];
      endDate =dates[1];
-    // var iBdeType = $("input[name='BetriebsdatenFilter']:checked").val();
+    var iBdeType = $("input[name='BetriebsdatenFilter']:checked").val();
      $("#archiviertIntBdePrdktIMw").val('true');
      $.ajax({
         type: "POST",
@@ -16528,7 +16538,7 @@ function intBdePrdktMstHistSpeichernMethodDblClickEditorPopUp(sId){
             nameDB: $("#nameDB").val(),
             liegID: $("#liegID").val(),
             prdktHist_ID: $("." + sId + " #prdktHist_IDEditor").val(),
-            mst_ID:$("#mstID").val(),
+            mst_ID: $("#mstID").val(),
             prd_ID:  $("#prd_ID").val(),
             anl_ID:  $("#anl_ID").val(),
             anl_Col:  $("#anl_Col").val(),
@@ -16552,38 +16562,17 @@ function intBdePrdktMstHistSpeichernMethodDblClickEditorPopUp(sId){
         },
         success: function(a) {
             alert("Verlauf erfolgreich aktualisiert");
-             $("#"+sId+" input").val("");
-             $("#"+sId+"").dialog("close");
+            $("#"+sId+" input").val("");
+            $("#"+sId+"").dialog("close");
             //intBdeIMwHistOkGetHistorie();
             // $("." + sId + " #prdktHist_IDEditor").val("");
             if(iBdeType == 1){
-                //alert("1");
-                /*mm-new-start*/
-                // $.ajax({
-                //     type: "POST",
-                //     async: !0,
-                //     url: "php/getHistorie.php",
-                //     data: {
-                //         modus: "intBdePdktIMwGetHistReset",
-                //         nameDB: $("#nameDB").val(),
-                //         liegID: $("#liegID").val(),
-                //         prdktHist_ID: $("." + sId + " #prdktHist_IDEditor").val(),
-
-                //     },
-                //     success: function(a) {
-                //         a = JSON.parse(a);
-                //         var b = a.length;
-                //         alert(a[0].prd_id);
-
-                //     }
-                // });
-                /*mm-new-end*/
-                // $("#prd_ID").val(a[0].prd_id);
-                // $("#anl_ID").val(a[0].anl_ID);
-                // $("#anl_Col").val(a[0].anl_col);
-                //intBdeIMwHistOkGetHistoriePrdkt();
                 tblHistorieIntBdeIMwPrdkt.clear().draw();
+
+                /*new-mm-start 26-03-2021*/
                 //intBdeIMwHistOkGetHistoriePrdkt();
+                /*new-mm-end 26-03-2021*/
+
                 // $("#prd_ID").val("");
                 // $("#anl_ID").val("");
                 // $("#anl_Col").val("");
@@ -16591,7 +16580,9 @@ function intBdePrdktMstHistSpeichernMethodDblClickEditorPopUp(sId){
             else if(iBdeType == 2){
                // alert("2");
                tblHistorieIntBdeIMwMesssetelle.clear().draw();
+               /*new-mm-start 26-03-2021*/
                //intBdeIMwHistOkGetHistorieMesssetelle();
+               /*new-mm-end 26-03-2021*/
             }
         }
     });
