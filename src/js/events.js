@@ -3637,7 +3637,7 @@ $("#DkFeSpeichern").click(function() {
         $("#btnShowRecordsAnlBtnPrdkt").prop("disabled", false);
         resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
         /*new-mm-end 26-03-2021*/
-        
+
         tblAnlPrdktOhneZeitintervallIMwSuchenMethod();
     });
     /*mm-new-end*/
@@ -5649,6 +5649,10 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
 /*new-start-mm*/
 $('input:radio[name=searchImgBetriebsdatenFilter]').change(function () {
             if ($("input[name='searchImgBetriebsdatenFilter']:checked").val() == '1') {
+
+                /*new-mm-start 26-03-2021*/
+                $("input[name='BetriebsdatenFilter'][value=1]").prop('checked',true);
+                /*new-mm-start 26-03-2021*/
                 $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").show();
                 $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").hide();
 
@@ -5701,6 +5705,11 @@ $('input:radio[name=searchImgBetriebsdatenFilter]').change(function () {
                 searchImgprodukteAnlargeDataTable();
             }
             if ($("input[name='searchImgBetriebsdatenFilter']:checked").val() == '2') {
+
+                /*new-mm-start 26-03-2021*/
+                $("input[name='BetriebsdatenFilter'][value=2]").prop('checked',true);
+                /*new-mm-start 26-03-2021*/
+
                 $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").hide();
                 $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").show();
 

@@ -17486,8 +17486,9 @@ function MesssetelleListingDblClickRow(mst_Id,sId){
                     $("." + sId + " #mstIMw").prop("readonly",true);
                     $("." + sId + " #mstIMw").prop("disabled",true);
                 }
-                $("." + sId + " #anlageMessstelleIntBde").val(a[0]['anlageMst']).prop('disabled',true);
-
+                /*new-mm-start 26-03-2021*/
+                //$("." + sId + " #anlageMessstelleIntBde").val(a[0]['anlageMst']).prop('disabled',true);
+                /*new-mm-end 26-03-2021*/
                 var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
                 var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
                 $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['intTp_ID']);
