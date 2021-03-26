@@ -15626,6 +15626,7 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
 
 //Ajax Call for the Manuel module serach 16-03-2020
 /*mm-new-start*/
+/*new-mm-start 26-03-2021*/
 function tblAnlPrdktOhneZeitintervallIMwSuchenMethod() {
         $("#tblAnlPrdktMStOhneZeitintervallIMwSearchContainer").css("display", "block");
         /*new-mm-start*/
@@ -15649,8 +15650,25 @@ function tblAnlPrdktOhneZeitintervallIMwSuchenMethod() {
                 duration: 300
             }
         });
-        searchImgprodukteAnlargeDataTable();
+        /*new-mm-start 26-03-2021*/
+        if(iBdeType == 1){
+            $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").show();
+            $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").hide();
+            searchImgprodukteAnlargeDataTable();
+        }
+        else if(iBdeType == 2){
+            $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").hide();
+            $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").show();
+            searchImgMesssetelleIntBDE("2");
+        }
+        else{
+            $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").show();
+            $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").hide();
+            searchImgprodukteAnlargeDataTable();
+        }
+        /*new-mm-end 26-03-2021*/
 }
+/*new-mm-end 26-03-2021*/
 /*mm-new-end*/
 //30-09-2020 dynamic function for validations #zeitintervallAnl
 function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
