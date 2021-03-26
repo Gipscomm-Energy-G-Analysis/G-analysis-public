@@ -16121,6 +16121,7 @@ function intBdeIMwHistOkGetHistorie(){
                 $("#tblHistorieIntBdeIMw").on("dblclick", "tr", function() {
                     var a = tblHistorieIntBdeIMw.row(this).data();
                     intBdeIMwDatensatzAusHistorieEinlesenAnl(a[1],a[2],'intBdeIMwHistorieContainer');
+                    $("#mstID").val(a[2]);
                     datePickerForInterneBetriebsdaten('intBdeIMwHistorieContainer',2);
             })
         }
@@ -16497,7 +16498,6 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
             $("#"+sId+" input").val("");
             $("#"+sId+"").dialog("close");
             intBdeIMwHistOkGetHistorie();
-            //intBdeIMwHistOkGetHistorie();
         }
     });
 }
