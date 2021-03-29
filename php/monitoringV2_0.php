@@ -10,9 +10,16 @@ define("connGipscomm", connectToDB("gipscomm")) ;
 
 function mstsInvalidDate($db) {
 
-    $query  = "SELECT '$db' AS db, div1.mst_ID, nameMSt AS Name FROM " ;
-    $query .= "	    (SELECT mst_ID, nameMSt FROM messstellen " ;
-    $query .= "	    WHERE messartMst = 'automatisch') AS div1 " ;
+    $query  = "SELECT '$db' AS db " ;
+    $query .= "  , div1.mst_ID " ;
+    $query .= "  , nameMSt AS Name " ;
+    $query .= "  , kanal1Msm AS Channel1 " ;
+    $query .= "  , kanal2Msm AS Channel2 " ;
+    $query .= "  , kanal3Msm AS Channel3 FROM " ;
+    $query .= "     (SELECT messstellen.mst_ID, nameMSt, kanal1Msm, kanal2Msm, kanal3Msm FROM messstellen " ;
+    $query .= "	    INNER JOIN messmittel " ;
+    $query .= "	    ON messstellen.mst_ID = messmittel.mst_ID " ;
+    $query .= "     WHERE messartMst = 'automatisch' AND messstellen.deleted = 0 AND messmittel.deleted = 0) AS div1 " ;
     $query .= "LEFT JOIN " ;
     $query .= "	    (SELECT mst_ID, Name FROM " ;
     $query .= "		   (SELECT TOP (5000) mst_ID, Name " ;
@@ -22,7 +29,7 @@ function mstsInvalidDate($db) {
     $query .= "	    GROUP BY mst_ID, Name) As div3 " ;
     $query .= "ON div1.mst_ID = div3.mst_ID " ;
     $query .= "WHERE Name IS NULL " ;
-    $query .= "ORDER BY div1.mst_ID " ;
+    $query .= "ORDER BY div1.nameMSt " ;
 
     return queryDB(connectToDB($db) , $query, "read") ;
 }
@@ -36,9 +43,12 @@ function sendAlertEmails($mstsWithoutData) {
     function buildStringMst($acc, $mst) {
         return $acc.
             "<tr>
-                <th>".$mst["db"]."</th>
-                <th>".$mst["mst_ID"]."</th>
-                <th>".$mst["Name"]."</th>
+                <td>".$mst["db"]."</td>
+                <td>".$mst["mst_ID"]."</td>
+                <td>".$mst["Name"]."</td>
+                <td>".$mst["Channel1"]."</td>
+                <td>".$mst["Channel2"]."</td>
+                <td>".$mst["Channel3"]."</td>
             </tr>" ;
     }
 
@@ -62,7 +72,7 @@ function sendAlertEmails($mstsWithoutData) {
 
     $betreff = "Daten kommen nicht mehr an (G-Analysis)" ;
 
-    $emailText  = "Bei folgenden Messstellen kommen keine Daten mehr an : <br><br>" ;
+    $emailText  = "<h3>Bei folgenden Messstellen kommen keine aktuellen Daten mehr an : </h3><br>" ;
     $emailText .= " <style>
                         table, td, th {
                             border: 1px solid black;
@@ -81,6 +91,9 @@ function sendAlertEmails($mstsWithoutData) {
                                 <th>Kunde</th>
                                 <th>mst_ID</th>
                                 <th>Name</th>
+                                <th>Channel 1</th>
+                                <th>Channel 2</th>
+                                <th>Channel 3</th>
                             </tr>
                         </thead>
                         <tbody>".buildStringMstsDBs($mstsWithoutData)."</tbody>
@@ -88,9 +101,9 @@ function sendAlertEmails($mstsWithoutData) {
 
     echo $emailText ;
 
-    // eMail($empfaenger[0], $betreff, $emailText) ;
-    // eMail($empfaenger[1], $betreff, $emailText) ;
-    // eMail($empfaenger[2], $betreff, $emailText) ;
+    eMail($empfaenger[0], $betreff, $emailText) ;
+    eMail($empfaenger[1], $betreff, $emailText) ;
+    eMail($empfaenger[2], $betreff, $emailText) ;
     // eMail($empfaenger[3], $betreff, $emailText) ;
 }
 
