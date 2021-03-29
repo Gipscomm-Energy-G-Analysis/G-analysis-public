@@ -8,6 +8,14 @@ require 'helpers.php';
 
 define("connGipscomm", connectToDB("gipscomm")) ;
 
+function indexAssocArray($arr) {
+    for ($i=0; $i < count($arr); $i++) {
+        $arr[$i]["index"] = $i + 1 ;
+    }
+
+    return $arr ;
+}
+
 function mstsInvalidDate($db) {
 
     $query  = "SELECT '$db' AS db " ;
@@ -19,7 +27,7 @@ function mstsInvalidDate($db) {
     $query .= "     (SELECT messstellen.mst_ID, nameMSt, kanal1Msm, kanal2Msm, kanal3Msm FROM messstellen " ;
     $query .= "	    INNER JOIN messmittel " ;
     $query .= "	    ON messstellen.mst_ID = messmittel.mst_ID " ;
-    $query .= "     WHERE messartMst = 'automatisch' AND messstellen.deleted = 0 AND messmittel.deleted = 0) AS div1 " ;
+    $query .= "     WHERE messartMst = 'automatisch' AND messstellen.deleted = 0 AND messmittel.deleted = 0 AND messstellen.aktivMst = 1) AS div1 " ;
     $query .= "LEFT JOIN " ;
     $query .= "	    (SELECT mst_ID, Name FROM " ;
     $query .= "		   (SELECT TOP (5000) mst_ID, Name " ;
@@ -31,7 +39,7 @@ function mstsInvalidDate($db) {
     $query .= "WHERE Name IS NULL " ;
     $query .= "ORDER BY div1.nameMSt " ;
 
-    return queryDB(connectToDB($db) , $query, "read") ;
+    return indexAssocArray(queryDB(connectToDB($db) , $query, "read")) ;
 }
 
 function mstsDbsWithInvalidDate($dbs) {
@@ -43,6 +51,7 @@ function sendAlertEmails($mstsWithoutData) {
     function buildStringMst($acc, $mst) {
         return $acc.
             "<tr>
+                <td>".$mst["index"]."</td>
                 <td>".$mst["db"]."</td>
                 <td>".$mst["mst_ID"]."</td>
                 <td>".$mst["Name"]."</td>
@@ -64,47 +73,61 @@ function sendAlertEmails($mstsWithoutData) {
         return array_reduce($mstsDbs, 'buildStringDBs') ;
     }
 
-    $empfaenger = [ "sdm@energie-gipscomm.de"
-                  , "info@energie-gipscomm.de"
-                  , "tmm@energie-gipscomm.de"
-                  , "cmu@energie-gipscomm.de"
-                  ] ;
+    function sendMails($tblData) {
 
-    $betreff = "Daten kommen nicht mehr an (G-Analysis)" ;
+        $empfaenger = [ "sdm@energie-gipscomm.de"
+                      , "info@energie-gipscomm.de"
+                      , "tmm@energie-gipscomm.de"
+                      , "cmu@energie-gipscomm.de"
+                      ] ;
 
-    $emailText  = "<h3>Bei folgenden Messstellen kommen keine aktuellen Daten mehr an : </h3><br>" ;
-    $emailText .= " <style>
-                        table, td, th {
-                            border: 1px solid black;
-                            text-align: left;
-                        }
-                        table {
-                            border-collapse: collapse;
-                        }
-                        td, th {
-                            padding: 5px 10px;
-                        }
-                    </style>
-                    <table style='border:2px solid black;'>
-                        <thead>
-                            <tr>
-                                <th>Kunde</th>
-                                <th>mst_ID</th>
-                                <th>Name</th>
-                                <th>Channel 1</th>
-                                <th>Channel 2</th>
-                                <th>Channel 3</th>
-                            </tr>
-                        </thead>
-                        <tbody>".buildStringMstsDBs($mstsWithoutData)."</tbody>
-                    </table><br><br>" ;
+        $betreff = "Daten kommen nicht mehr an (G-Analysis)" ;
 
-    echo $emailText ;
+        $emailText  = "<h3>Bei folgenden Messstellen kommen keine aktuellen Daten mehr an : </h3><br>" ;
+        $emailText .= " <style>
+                            table, td, th {
+                                border: 1px solid black;
+                                text-align: left;
+                            }
+                            table {
+                                border-collapse: collapse;
+                            }
+                            td, th {
+                                padding: 5px 10px;
+                            }
+                        </style>
+                        <table style='border:2px solid black;'>
+                            <thead>
+                                <tr>
+                                    <th>Zeile</th>
+                                    <th>Kunde</th>
+                                    <th>mst_ID</th>
+                                    <th>Name</th>
+                                    <th>Channel 1</th>
+                                    <th>Channel 2</th>
+                                    <th>Channel 3</th>
+                                </tr>
+                            </thead>
+                            <tbody>".$tblData."</tbody>
+                        </table><br><br>" ;
 
-    eMail($empfaenger[0], $betreff, $emailText) ;
-    eMail($empfaenger[1], $betreff, $emailText) ;
-    eMail($empfaenger[2], $betreff, $emailText) ;
-    // eMail($empfaenger[3], $betreff, $emailText) ;
+        echo $emailText ;
+
+        // eMail($empfaenger[0], $betreff, $emailText) ;
+        // eMail($empfaenger[1], $betreff, $emailText) ;
+        // eMail($empfaenger[2], $betreff, $emailText) ;
+        // eMail($empfaenger[3], $betreff, $emailText) ;
+    }
+
+    $rowsString = buildStringMstsDBs($mstsWithoutData) ;
+
+    if ($rowsString === "") {
+        echo "All Data Up To Date !!" ;
+    }
+    else {
+        sendMails($rowsString) ;
+    }
+
 }
 
 $start = hrtime(true) ;
