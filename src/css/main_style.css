@@ -347,7 +347,9 @@ nav {
   padding:10px;
 }
 /*24-02-2020 tab detail html designed calculator*/
-/*new-mm-start 23-03-2021*/
+/*new-mm-start 23-03-2021,
+* Added #infosMasseneingabePrdkt,#infosMasseneingabeMesssetelle 30-03-2021
+*/
 #infosGipscommAdmins,
 #infosBetreuerGruppen,
 #infosSuperAdmins,
@@ -386,6 +388,8 @@ nav {
 #infosIntBetriebsdatenHistPrdkt,
 #infosIntBetriebsdatenHistMesssetelle,
 #infosMasseneingabe,
+#infosMasseneingabePrdkt,
+#infosMasseneingabeMesssetelle,
 #infosAuswertungManuell,
 #infosSpaEfVTabelle1,
 #infosSpaEfVTabelle2,
@@ -409,7 +413,8 @@ nav {
 #infosDynamicKorrekturFaktor,
 #intBdeIMwHistorieDiv,
 #intBdePrdktIMwHistorieDiv,
-#intBdeMesssetelleIMwHistorieDiv {
+#intBdeMesssetelleIMwHistorieDiv
+ {
   background-color: #B9C0C7;
   margin: 10px;
   width: 21.85cm;
@@ -490,7 +495,11 @@ nav {
 #masseneingabeLaden,
 #btnMassEingMst,
 #btnMassEingAnl,
+#btnMassEingPrdkt,
+#btnMassEingMesssetelle,
 #btnKonfigMstAnl,
+#btnKonfigPrdkt,
+#btnKonfigMesssetelle,
 #btnAnlagenNrOderName,
 #formelSpeichern,
 #btnVerbrauchsdatenExport,
@@ -631,7 +640,11 @@ nav {
 #masseneingabeLaden:hover,
 #btnMassEingMst:hover,
 #btnMassEingAnl:hover,
+#btnMassEingPrdkt:hover,
+#btnMassEingMesssetelle:hover,
 #btnKonfigMstAnl:hover,
+#btnKonfigPrdkt:hover,
+#btnKonfigMesssetelle:hover,
 #btnAnlagenNrOderName:hover,
 #formelSpeichern:hover,
 #btnVerbrauchsdatenExport:hover,
@@ -1228,8 +1241,11 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 }
 /*new-mm-end 23-03-2021*/
 /*22-09-2020*/
-/*new-mm-start 23-03-2021*/
-#btnMassEingAnl,#btnShowRecordsAnlBtn,#btnMassEingMst{
+/*new-mm-start 23-03-2021,
+* Added #btnMassEingPrdkt,#btnMassEingMesssetelle 30-03-2021*/
+#btnMassEingAnl,#btnShowRecordsAnlBtn,#btnMassEingMst,
+#btnMassEingPrdkt,
+#btnMassEingMesssetelle{
   background-color: white !important;
   cursor: pointer !important;
 }
@@ -1394,10 +1410,13 @@ table#tblMasseneingabeDataIMwTbl td input {
     overflow-x: auto;
     height: 150px;
 }
-
-.fullWidthMasseneingabe #infosMasseneingabe{
+/*new-mm-start 30-03-2021*/
+.fullWidthMasseneingabe #infosMasseneingabe,
+.fullWidthMasseneingabe #infosMasseneingabePrdkt,
+.fullWidthMasseneingabe #infosMasseneingabeMesssetelle{
   width:1100px;
 }
+/*new-mm-end 30-03-2021*/
 .fullWidthMasseneingabe #interneMesswerte{
   width:1125px;
 }
