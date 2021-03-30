@@ -593,6 +593,17 @@ $(document).ready(function() {
         $("#infosMasseneingabe").css("display", "none");
         "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
     });
+
+    /*new-mm-start 30-03-2021*/
+    $("#btnKonfigPrdkt").click(function() {
+        $("#infosMasseneingabePrdkt").css("display", "none");
+        "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
+    }); 
+    $("#btnKonfigMesssetelle").click(function() {
+        $("#infosMasseneingabeMesssetelle").css("display", "none");
+        "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
+    });
+    /*new-mm-end 30-03-2021*/
     $("#btnVerbrauchsdatenExport").click(function() {
         verbrauchsdatenExportieren()
     });
@@ -5614,6 +5625,11 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
                 $("#tabIntBetriebsdatenIMwHistMesssetelle").hide();
                 /*new-mm-start 10-03-2021*/
 
+                /*new-mm-start 30-03-2021*/
+                $("#btnMassEingPrdkt").show();
+                $("#btnMassEingMesssetelle").hide();                
+                /*new-mm-start 30-03-2021*/
+
                 produkteAnlargeDataTable();
             }
             if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
@@ -5670,6 +5686,12 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
                 $("#tabIntBetriebsdatenIMwHistPrdkt").hide();
                 $("#tabIntBetriebsdatenIMwHistMesssetelle").show();
                 /*new-mm-start 10-03-2021*/
+
+                /*new-mm-start 30-03-2021*/
+                $("#btnMassEingMesssetelle").show();
+                $("#btnMassEingPrdkt").hide();                
+                /*new-mm-start 30-03-2021*/
+                
                 searchProdukteAnlageIntBDE("2");
             }
 });
