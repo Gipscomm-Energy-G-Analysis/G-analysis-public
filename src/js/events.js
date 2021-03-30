@@ -562,10 +562,33 @@ $(document).ready(function() {
         $("#dokDlOderLoeschenContainer").dialog("close");
         dokumenteLoeschen(1, $("#dokID").val())
     });
-    $("#btnMassEingMst, #btnMassEingAnl").click(function() {
+    /*mm-comment 30-03-2021*/
+    /*$("#btnMassEingMst, #btnMassEingAnl").click(function() {        
         $("#infosMasseneingabe").css("display", "block");
         $("#infosIntEnergiedaten, #infosIntBetriebsdaten").css("display", "none")
+    });*/
+    /*mm-comment 30-03-2021*/           
+    /*new-mm-start 30-03-2021*/
+    $("#btnMassEingAnl").click(function() {        
+        $("#infosMasseneingabe").css("display", "block");
+        $("#infosIntBetriebsdaten").css("display", "none")
     });
+    /*new-mm-end 30-03-2021*/
+    /*new-mm-start 30-03-2021*/
+    $("#btnMassEingPrdkt, #btnMassEingMesssetelle").click(function() {  
+        if("btnMassEingPrdkt" == this.id){
+            $("#infosMasseneingabePrdkt").css("display", "block");
+        }
+        else if("btnMassEingMesssetelle" == this.id){
+            $("#infosMasseneingabeMesssetelle").css("display", "block");
+        }
+        else{
+            $("#infosMasseneingabePrdkt").css("display", "block");            
+        }  
+        $("#infosIntEnergiedaten").css("display", "none")
+    });
+    /*new-mm-end 30-03-2021*/
+
     $("#btnKonfigMstAnl").click(function() {
         $("#infosMasseneingabe").css("display", "none");
         "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
