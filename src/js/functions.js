@@ -2308,59 +2308,85 @@ try {
                 height: 1200,
                 width: 900
             })
-        },
-        dokumentenListeErstellen = function() {
-            var a = $("#verwaltung").val(),
-                b = {},
-                e;
-            "Anl" == a ? (e = $("#anlID").val(), b = tblDokumenteAnl) : "Msm" == a ? (e = $("#msmID").val(), b = tblDokumenteMsm) : e = $("#eRngID").val();
+        };
+        const createDocumentList =
+            ins => {
+                const nameDB = $("#nameDB").val()
+                const verwaltung = ins
+                const id =
+                    ins === "Anl" ?
+                    $("#anlID").val() :
+                    ins === "Msm" ?
+                    $("#msmID").val() :
+                    $("#eRngID").val()
 
-            if (a !== "") {
-              $.ajax({
-                url: "php/getDokumente.php",
-                type: "POST",
-                data: {
-                  nameDB: $("#nameDB").val(),
-                  verwaltung: a,
-                  id: e
-                },
-                fail: function() {
-                  alert("Fehler!!!")
-                },
-                success: function(c) {
-                  var e = "#tblDokumente" + a + " tbody";
-                  if ("null" != c) {
-                    c = JSON.parse(c);
+                ajaxPost("php/getDokumente.php")({nameDB, verwaltung, id})
+                .then(
+                    result => {
+                        const len = result.length
 
-                    if(a !== "ERng") {
-                      b.clear().draw();   // CHANGE: Dokumentenlist table should be cleared before it is filled 27.05.2020
-                    } else {
-                      $("#aktuellesDokNameERng").val(""); // CHANGE: Clear Rechnungen Downloadfield 03.06.2020
+                        const tblDataTable =
+                            ins === "Anl" ?
+                            tblDokumenteAnl :
+                            ins === "Msm" ?
+                            tblDokumenteMsm :
+                            {}
+
+                        if (len > 0) {
+
+                            const tblHtmlSelect = `#tblDokumente${verwaltung} tbody`
+
+                            if (verwaltung === "ERng") {
+                                $("#aktuellesDokNameERng").val("")
+
+                                $("#aktuellesDokIDERng").val(result[len - 1].dok_ID)
+                                $("#aktuellesDokNameERng").val(result[len - 1].nameDok)
+
+                                $("#aktuellesDokNameERng").off("dblclick")
+                                $("#aktuellesDokNameERng").on("dblclick",
+                                    () => dokumentAuswaehlenUndAuslesen($("#aktuellesDokNameERng").val(), $("#aktuellesDokIDERng").val())
+                                )
+
+                            }
+                            else {
+                                clearTable(tblDataTable)
+
+                                const prepareTableData =
+                                    records =>
+                                    records.map(
+                                        a =>
+                                        [ a.dok_ID
+                                        , a.nameDok
+                                        , a.erweiterungDok
+                                        , a.kategorieDok
+                                        ]
+                                    )
+
+                                intoTable(tblDataTable)(prepareTableData(result))
+
+                                tblDataTable.column(0).visible(false)
+
+                                $(tblHtmlSelect + "tr").css("cursor", "pointer")
+                                $(tblHtmlSelect).off("dblclick", "tr")
+                                $(tblHtmlSelect).on("dblclick", "tr",
+                                function() {
+                                  var a = tblDataTable.row(this).data();
+                                  dokumentAuswaehlenUndAuslesen(a[1], a[0])
+                                })
+                            }
+                        }
+                        else if (verwaltung === "ERng") {
+                            $("#aktuellesDokIDERng").val("")
+                            $("#aktuellesDokNameERng").val("")
+                            $("#dokuAuswahlERng").val("")
+                            $("#dokuAuswahlERng").text("")
+                        }
+                        else {
+                            clearTable(tblDataTable)
+                        }
                     }
-
-                    var f = c.length;
-                    if (0 < f)
-                    if ("ERng" == $("#verwaltung").val()) $("#aktuellesDokIDERng").val(c[f -
-                      1].dok_ID), $("#aktuellesDokNameERng").val(c[f - 1].nameDok), $("#aktuellesDokNameERng").off("dblclick"), $("#aktuellesDokNameERng").on("dblclick", function() {
-                        dokumentAuswaehlenUndAuslesen($("#aktuellesDokNameERng").val(), $("#aktuellesDokIDERng").val())
-                      });
-                      else if (b instanceof Object)
-                      for (b.clear().draw(), f = 0; f < c.length; f++) b.row.add([c[f].dok_ID, c[f].nameDok, c[f].erweiterungDok, c[f].kategorieDok]).draw(), b.column(0).visible(!1), $(e + "tr").css("cursor", "pointer"), $(e).off("dblclick", "tr"), $(e).on("dblclick",
-                      "tr",
-                      function() {
-                        var a = b.row(this).data();
-                        dokumentAuswaehlenUndAuslesen(a[1], a[0])
-                      })
-                    } else if ("ERng" == $("#verwaltung").val()) $("#aktuellesDokIDERng").val(""), $("#aktuellesDokNameERng").val(""), $("#dokuAuswahlERng").val(""), $("#dokuAuswahlERng").text("");
-                    else try {
-                      b.clear().draw()
-                    } catch (h) {
-                      console.log("dokumentenListeErstellen() -> selDataTable.clear().draw(); cannot be executed")
-                    }
-                  }
-                })
+                )
             }
-        },
         dokumenteLoeschen = function(a, b) {
             $.ajax({
                 url: "uploadsDownloads/php/dokumenteLoeschen.php",
@@ -2371,7 +2397,10 @@ try {
                     fileID: b
                 },
                 success: function(a) {
-                    dokumentenListeErstellen()
+                    [ "Anl"
+                    , "Msm"
+                    , "ERng"
+                    ].forEach(createDocumentList)
                 }
             })
         };
@@ -5515,7 +5544,7 @@ try {
                             })) :
                             clearFields("anlHinz")
 
-                            dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
+                            createDocumentList("Anl") // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
                     });
                     changeTracker.setRecordsNavID(anlNavID);
@@ -5580,7 +5609,7 @@ try {
                                 })) :
                                 (clearFields("msmHinz"))
 
-                                dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
+                                createDocumentList("Msm") // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
                     });
                     break;
@@ -5905,7 +5934,7 @@ try {
                         $("#kostenERng").trigger("change")
                         $("#eegUntERng").trigger("change")
 
-                        dokumentenListeErstellen()
+                        createDocumentList("ERng")
                     })
                     break;
                 /*mm-comment*/
@@ -15620,7 +15649,7 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                         $("#anlNrIMw").val(a[2]);
 
                         /*new-mm-start 26-03-2021*/
-                         $("#nextPrevMstID").val(a[0]);                       
+                         $("#nextPrevMstID").val(a[0]);
                         /*new-mm-end 26-03-2021*/
                         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");
                 });

@@ -538,7 +538,13 @@ $(document).ready(function() {
         }
     });
     $("#imgUploadAnl, #imgUploadMsm, #dokuAuswahlAnl, #dokuAuswahlMsm, #dokuAuswahlERng").on("change", dokumentAuswaehlenUndEinlesen);
-    $("#dokuDownAnl, #dokuDownMsm, #dokuDownERng").on("click", dokumentenListeErstellen);
+    $("#dokuDownAnl, #dokuDownMsm, #dokuDownERng").on("click",
+        () =>
+        [ "Anl"
+        , "Msm"
+        , "ERng"
+        ].forEach(createDocumentList)
+    )
     $("#tblDokumenteAnl tbody, #tblDokumenteMsm tbody").on("dblclick", "tr", function() {
         var a;
         a = tblDokumente.row(this).data();
@@ -1407,9 +1413,9 @@ $(document).ready(function() {
         "mstBFirst" == this.id ? (mstBNavID = 0, readInstanzen(this.id, mstBNavID)) :
         "stdFirst" == this.id ? (stdNavID = 0, readInstanzen(this.id, stdNavID)) :
         "stdDrFirst" == this.id ? (stdDrNavID = 0, readInstanzen(this.id, stdDrNavID)) :
-        "anlFirst" == this.id ? (anlNavID = 0, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
-        "msmFirst" == this.id ? (msmNavID = 0, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) :
-        "prdFirst" == this.id ? (prdNavID = 0, readInstanzen(this.id, prdNavID), dokumentenListeErstellen()) :
+        "anlFirst" == this.id ? (anlNavID = 0, readInstanzen(this.id, anlNavID)) :
+        "msmFirst" == this.id ? (msmNavID = 0, readInstanzen(this.id, msmNavID)) :
+        "prdFirst" == this.id ? (prdNavID = 0, readInstanzen(this.id, prdNavID)) :
         "entFirst" == this.id ? (entNavID = 0, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
         "enfFirst" == this.id ? (enfNavID = 0, readInstanzen(this.id, enfNavID)) :
         "eRngFirst" == this.id ? (eRngNavID = 0, readInstanzen(this.id, eRngNavID)) :
@@ -1440,9 +1446,9 @@ $(document).ready(function() {
         "mstBPrevious" == this.id ? 0 < mstBNavID && (mstBNavID--, readInstanzen(this.id, mstBNavID)) :
         "stdPrevious" == this.id ? 0 < stdNavID && (stdNavID--, readInstanzen(this.id, stdNavID)) :
         "stdDrPrevious" == this.id ? 0 < stdDrNavID && (stdDrNavID--, readInstanzen(this.id, stdDrNavID)) :
-        "anlPrevious" == this.id ? 0 < anlNavID && (anlNavID--, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
-        "msmPrevious" == this.id ? 0 < msmNavID && (msmNavID--, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) :
-        "prdPrevious" == this.id ? 0 < prdNavID && (prdNavID--, readInstanzen(this.id, prdNavID), dokumentenListeErstellen()) :
+        "anlPrevious" == this.id ? 0 < anlNavID && (anlNavID--, readInstanzen(this.id, anlNavID)) :
+        "msmPrevious" == this.id ? 0 < msmNavID && (msmNavID--, readInstanzen(this.id, msmNavID)) :
+        "prdPrevious" == this.id ? 0 < prdNavID && (prdNavID--, readInstanzen(this.id, prdNavID)) :
         "entPrevious" == this.id ? 0 < entNavID && (entNavID--, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
         "enfPrevious" == this.id ? 0 < enfNavID && (enfNavID--, readInstanzen(this.id, enfNavID)) :
         "eRngPrevious" == this.id ? 0 < eRngNavID && (eRngNavID--, readInstanzen(this.id, eRngNavID)) :
@@ -1473,8 +1479,8 @@ $(document).ready(function() {
         "mstBNext" == this.id ? mstBNavID < $("#mstBCount").val() - 1 && (mstBNavID++, readInstanzen(this.id, mstBNavID)) :
         "stdNext" == this.id ? stdNavID < $("#stdCount").val() - 1 && (stdNavID++, readInstanzen(this.id, stdNavID)) :
         "stdDrNext" == this.id ? stdDrNavID < $("#stdDrCount").val() - 1 && (stdDrNavID++, readInstanzen(this.id, stdDrNavID)) :
-        "anlNext" == this.id ? anlNavID < $("#anlCount").val() - 1 && (anlNavID++, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
-        "msmNext" == this.id ? msmNavID < $("#msmCount").val() - 1 && (msmNavID++, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) :
+        "anlNext" == this.id ? anlNavID < $("#anlCount").val() - 1 && (anlNavID++, readInstanzen(this.id, anlNavID)) :
+        "msmNext" == this.id ? msmNavID < $("#msmCount").val() - 1 && (msmNavID++, readInstanzen(this.id, msmNavID)) :
         "prdNext" == this.id ? prdNavID < $("#prdCount").val() - 1 && (prdNavID++, readInstanzen(this.id, prdNavID)) :
         "entNext" == this.id ? entNavID < $("#entCount").val() - 1 && (entNavID++, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
         "enfNext" == this.id ? enfNavID < $("#enfCount").val() - 1 && (enfNavID++, readInstanzen(this.id, enfNavID)) :
@@ -1506,8 +1512,8 @@ $(document).ready(function() {
         "mstBLast" == this.id ? (mstBNavID = $("#mstBCount").val() - 1, readInstanzen(this.id, mstBNavID)) :
         "stdLast" == this.id ? (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) :
         "stdDrLast" == this.id ? (stdDrNavID = $("#stdDrCount").val() - 1, readInstanzen(this.id, stdDrNavID)) :
-        "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID), dokumentenListeErstellen()) :
-        "msmLast" == this.id ? (msmNavID = $("#msmCount").val() - 1, readInstanzen(this.id, msmNavID), dokumentenListeErstellen()) :
+        "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID)) :
+        "msmLast" == this.id ? (msmNavID = $("#msmCount").val() - 1, readInstanzen(this.id, msmNavID)) :
         "prdLast" == this.id ? (prdNavID = $("#prdCount").val() - 1, readInstanzen(this.id, prdNavID)) :
         "entLast" == this.id ? (entNavID = $("#entCount").val() - 1, enfNavID = 0, readInstanzen(this.id, entNavID), clearFields("enfHinz"), readInstanzen("enfFirst", 0), $("#modusVers").val("alt")) :
         "enfLast" == this.id ? (enfNavID = $("#enfCount").val() - 1, readInstanzen(this.id, enfNavID)) :
