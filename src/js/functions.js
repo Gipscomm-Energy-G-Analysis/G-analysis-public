@@ -2376,9 +2376,11 @@ try {
                             }
                         }
                         else if (verwaltung === "ERng") {
-                            $("#aktuellesDokIDERng").val("")
-                            $("#aktuellesDokNameERng").val("")
-                            $("#dokuAuswahlERng").val("")
+                            [ "#aktuellesDokIDERng"
+                            , "#aktuellesDokNameERng"
+                            , "#dokuAuswahlERng"
+                            ].forEach(a => $(a).val(""))
+
                             $("#dokuAuswahlERng").text("")
                         }
                         else {
@@ -8868,7 +8870,7 @@ try {
                         a) $("#berechnungsformelnLeft").css("display", "none"),
                            $("#interneMesswerteLeft, #interneMesswerte").css("display", "block"),
                            $("#infosMasseneingabe").css("display", "none"),
-                           
+
                            /*new-mm-start 30-03-2021*/
                            $("#infosMasseneingabePrdkt").css("display", "none"),
                            $("#infosMasseneingabeMesssetelle").css("display", "none"),
