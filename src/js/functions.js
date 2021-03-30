@@ -2433,100 +2433,106 @@ try {
             })
         };
         function dokumentAuswaehlenUndEinlesen(evt) {
-
             var file = evt.target.files[0];
 
             var fileName = file.name;
-            fileName = umlauteZuErsatzzeichenKonvertieren(fileName);
 
-            var formData = new FormData();
+            if (fileName.length < 30) {
 
-            formData.append('file', file);
-            formData.append('fileName', fileName);
-            formData.append('nameDB', $("#nameDB").val());
+                fileName = umlauteZuErsatzzeichenKonvertieren(fileName);
 
-            var isImg = false;
-            var imgVerw = false;
-            var firstPartUrl = "uploadsDownloads/php/";
-            var dokUploadsUrl = firstPartUrl + "upload.php";
+                var formData = new FormData();
 
-            if (this.id == "imgUploadAnl") {
-                var url = firstPartUrl + 'uploadImage.php';
+                formData.append('file', file);
+                formData.append('fileName', fileName);
+                formData.append('nameDB', $("#nameDB").val());
 
-                isImg = true;
-                imgVerw = "Anl";
-            } else if (this.id == "imgUploadMsm") {
-                var url = firstPartUrl + 'uploadImage.php';
+                var isImg = false;
+                var imgVerw = false;
+                var firstPartUrl = "uploadsDownloads/php/";
+                var dokUploadsUrl = firstPartUrl + "upload.php";
 
-                isImg = true;
-                imgVerw = "Msm";
-            } else if (this.id == "dokuAuswahlAnl") {
+                if (this.id == "imgUploadAnl") {
+                    var url = firstPartUrl + 'uploadImage.php';
 
-                formData.append('id', $("#anlID").val());
-                formData.append('verwaltung', "Anl");
-                formData.append('kategorie', $("#kategorie").val());
+                    isImg = true;
+                    imgVerw = "Anl";
+                } else if (this.id == "imgUploadMsm") {
+                    var url = firstPartUrl + 'uploadImage.php';
 
-                var url = dokUploadsUrl;
+                    isImg = true;
+                    imgVerw = "Msm";
+                } else if (this.id == "dokuAuswahlAnl") {
 
-            } else if (this.id == "dokuAuswahlMsm") {
-                formData.append('id', $("#msmID").val());
-                formData.append('verwaltung', "Msm");
-                formData.append('kategorie', $("#kategorie").val());
-                var url = dokUploadsUrl;
-            } else if (this.id == "dokuAuswahlERng") {
-                formData.append('id', $("#eRngID").val());
-                formData.append('verwaltung', "ERng");
-                formData.append('kategorie', $("#kategorie").val());
+                    formData.append('id', $("#anlID").val());
+                    formData.append('verwaltung', "Anl");
+                    formData.append('kategorie', $("#kategorie").val());
 
-                var url = dokUploadsUrl;
-            }
+                    var url = dokUploadsUrl;
 
-            var ladenSymbolID = toggleLabelUndLadenSymbol();
+                } else if (this.id == "dokuAuswahlMsm") {
+                    formData.append('id', $("#msmID").val());
+                    formData.append('verwaltung', "Msm");
+                    formData.append('kategorie', $("#kategorie").val());
+                    var url = dokUploadsUrl;
+                } else if (this.id == "dokuAuswahlERng") {
+                    formData.append('id', $("#eRngID").val());
+                    formData.append('verwaltung', "ERng");
+                    formData.append('kategorie', $("#kategorie").val());
 
-            $(ladenSymbolID).css("display", "inline");
+                    var url = dokUploadsUrl;
+                }
 
-            const idVerwaltung = this.id
+                var ladenSymbolID = toggleLabelUndLadenSymbol();
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: formData,
-                processData: false, // tell jQuery not to process the data
-                contentType: false, // tell jQuery not to set contentType
-                success: function (data) {
-                    result = json(data)
+                $(ladenSymbolID).css("display", "inline");
 
-                    $(ladenSymbolID).css("display", "none");
+                const idVerwaltung = this.id
 
-                    if (isImg) {
-                        var imgID;
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false, // tell jQuery not to process the data
+                    contentType: false, // tell jQuery not to set contentType
+                    success: function (data) {
+                        result = json(data)
 
-                        if (imgVerw == "Anl") {
-                            imgID = "#bildAllgemeinAnl";
-                        } else {
-                            imgID = "#bildAllgemeinMsm";
+                        $(ladenSymbolID).css("display", "none");
+
+                        if (isImg) {
+                            var imgID;
+
+                            if (imgVerw == "Anl") {
+                                imgID = "#bildAllgemeinAnl";
+                            } else {
+                                imgID = "#bildAllgemeinMsm";
+                            }
+                            $(imgID)
+                            .prop("src", "uploadsDownloads/images/" + $("#nameDB")
+                            .val() + "/" + data);
                         }
-                        $(imgID)
-                        .prop("src", "uploadsDownloads/images/" + $("#nameDB")
-                        .val() + "/" + data);
-                    }
-                    else {
-                        let table;
-                        switch (idVerwaltung) {
-                            case "dokuAuswahlAnl" :
+                        else {
+                            let table;
+                            switch (idVerwaltung) {
+                                case "dokuAuswahlAnl" :
                                 intoTable(tblDokumenteAnl)([result])  // CHANGE: fills table with Anlagen Dokumente 03.06.2020
                                 break;
-                            case "dokuAuswahlMsm" :
+                                case "dokuAuswahlMsm" :
                                 intoTable(tblDokumenteMsm)([result])  // CHANGE: fills table with Messmittel Dokumente 03.06.2020
                                 break;
-                            default :
+                                default :
                                 $("#aktuellesDokNameERng").val(result[1])  // CHANGE: changes name of Downloadfield to name of currently uploaded file 03.06.2020
                                 break;
-                        }
+                            }
 
+                        }
                     }
-                }
-            });
+                });
+            }
+            else {
+                alert("Der Dateiname des Dokuments ist zu lang ! (max 30 Zeichen)")
+            }
         };
         kategorieWaehlen = function() {
             $("#dokKategorieWaehlenFenster").css("display", "block");
