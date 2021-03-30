@@ -562,20 +562,31 @@ $(document).ready(function() {
         $("#dokDlOderLoeschenContainer").dialog("close");
         dokumenteLoeschen(1, $("#dokID").val())
     });
+    
     /*mm-comment 30-03-2021*/
     /*$("#btnMassEingMst, #btnMassEingAnl").click(function() {        
         $("#infosMasseneingabe").css("display", "block");
         $("#infosIntEnergiedaten, #infosIntBetriebsdaten").css("display", "none")
     });*/
-    /*mm-comment 30-03-2021*/           
+    /*mm-comment 30-03-2021*/
+
     /*new-mm-start 30-03-2021*/
     $("#btnMassEingAnl").click(function() {        
         $("#infosMasseneingabe").css("display", "block");
-        $("#infosIntBetriebsdaten").css("display", "none")
+        $("#infosIntBetriebsdaten").css("display", "none");
+
+        $("body").addClass('fullWidthMasseneingabe');
+        datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
+        $("#tblMasseneingabeDataIMw").remove();
     });
     /*new-mm-end 30-03-2021*/
     /*new-mm-start 30-03-2021*/
-    $("#btnMassEingPrdkt, #btnMassEingMesssetelle").click(function() {  
+    $("#btnMassEingPrdkt, #btnMassEingMesssetelle").click(function() {
+
+        $("body").addClass('fullWidthMasseneingabe');
+        datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
+        $("#tblMasseneingabeDataIMw").remove();
+
         if("btnMassEingPrdkt" == this.id){
             $("#infosMasseneingabePrdkt").css("display", "block");
         }
@@ -592,16 +603,25 @@ $(document).ready(function() {
     $("#btnKonfigMstAnl").click(function() {
         $("#infosMasseneingabe").css("display", "none");
         "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
+    
+        $("body").removeClass('fullWidthMasseneingabe');
+        $("#tblMasseneingabeDataIMw").remove();
     });
 
     /*new-mm-start 30-03-2021*/
     $("#btnKonfigPrdkt").click(function() {
         $("#infosMasseneingabePrdkt").css("display", "none");
         "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
+    
+        $("body").removeClass('fullWidthMasseneingabe');
+        $("#tblMasseneingabeDataIMw").remove();
     }); 
     $("#btnKonfigMesssetelle").click(function() {
         $("#infosMasseneingabeMesssetelle").css("display", "none");
         "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
+
+        $("body").removeClass('fullWidthMasseneingabe');
+        $("#tblMasseneingabeDataIMw").remove();
     });
     /*new-mm-end 30-03-2021*/
     $("#btnVerbrauchsdatenExport").click(function() {
@@ -5258,18 +5278,21 @@ $("#DkFeSpeichern").click(function() {
             getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate);
         }
     });
-
-    $("#btnMassEingAnl").click(function() {
+    /*mm-comment 30-03-2021*/
+    /*$("#btnMassEingAnl").click(function() {
         $("body").addClass('fullWidthMasseneingabe');
         datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
          $("#tblMasseneingabeDataIMw").remove();
          //interneEBTblShowHide(1);
-    });
-    $("#btnKonfigMstAnl").click(function() {
+    });*/
+    /*mm-comment 30-03-2021*/
+    /*mm-comment 30-03-2021*/
+    /*$("#btnKonfigMstAnl").click(function() {
         $("body").removeClass('fullWidthMasseneingabe');
         $("#tblMasseneingabeDataIMw").remove();
         //interneEBTblShowHide(1);
-    });
+    });*/
+     /*mm-comment 30-03-2021*/
 
     $("#masseneingabeSpeichernSrch").click(function() {
         var inputCurrId = $("#inputCurrId").val();
@@ -5691,7 +5714,7 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
                 $("#btnMassEingMesssetelle").show();
                 $("#btnMassEingPrdkt").hide();                
                 /*new-mm-start 30-03-2021*/
-                
+
                 searchProdukteAnlageIntBDE("2");
             }
 });
@@ -5889,11 +5912,21 @@ $("#tabIntBetriebsdatenIMwHistPrdkt").click(function() {
     $("#infosIntBetriebsdatenHistMesssetelle").hide();
     $("#infosIntBetriebsdatenHistPrdkt").show();
 
+    /*new-mm-start 30-03-2021*/
+    $("#infosMasseneingabePrdkt").hide();
+    $("#infosMasseneingabeMesssetelle").hide();   
+    /*new-mm-end 30-03-2021*/
+
 });
 $("#tabIntBetriebsdatenIMwHistMesssetelle").click(function() {
     $("#infosIntEnergiedaten").hide();
     $("#infosIntBetriebsdatenHistPrdkt").hide();
     $("#infosIntBetriebsdatenHistMesssetelle").show();
+
+    /*new-mm-start 30-03-2021*/
+    $("#infosMasseneingabePrdkt").hide();
+    $("#infosMasseneingabeMesssetelle").hide();   
+    /*new-mm-end 30-03-2021*/
 
 });
 /*new-mm-end*/

@@ -8867,7 +8867,14 @@ try {
                     else if ("tabIntEnergiedatenIMw" == a || "tabIntBetriebsdatenIMw" ==
                         a) $("#berechnungsformelnLeft").css("display", "none"),
                            $("#interneMesswerteLeft, #interneMesswerte").css("display", "block"),
-                           $("#infosMasseneingabe").css("display", "none"), $("#btnMassEingAnl, #btnMassEingMst").text("Masseneingabe") /*mm-comment 22-03-2021*/  /*,
+                           $("#infosMasseneingabe").css("display", "none"),
+                           
+                           /*new-mm-start 30-03-2021*/
+                           $("#infosMasseneingabePrdkt").css("display", "none"),
+                           $("#infosMasseneingabeMesssetelle").css("display", "none"),
+                           /*new-mm-end 30-03-2021*/
+
+                           $("#btnMassEingAnl, #btnMassEingMst").text("Masseneingabe") /*mm-comment 22-03-2021*/  /*,
                            "tabIntEnergiedatenIMw" == a ? mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.ENERGY) : "tabIntBetriebsdatenIMw" == a;*/ /*mm-comment 22-03-2021*/  /*&& mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE);*/
                     else if ("tabBerechnungsformeln" == a || "tabVorlagenformeln" == a) $("#tabsAuswertungen").css("display", "block"), $("#tabBerechnungsformeln, #tabVorlagenformeln").css("display",
                         "inline-block"), $("#asideLeft").css("display", "block"), $("#berechnungsformelnLeft").css("display", "block"), $("#interneMesswerteLeft").css("display", "none"), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), $("#berechneteMstName").val(""), messstellenInAuswertungsEditorTabelleEinlesen(), anlagenInAuswertungsEditorTabelleEinlesen(), dynBdeDatenInAuswertungsEditorTabelleEinlesen(), produkteInFormeleditorEinlesen();
