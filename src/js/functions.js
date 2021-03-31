@@ -19698,7 +19698,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
             async: !0,
             url: "php/getManuellInterneData.php",
             data: {
-                id: "masseneingabeSearch",
+                id: "masseneingabeMesssetelleSearch",
                 nameDB: $("#nameDB").val(),
                 startDate: startDate,
                 endDate:endDate,

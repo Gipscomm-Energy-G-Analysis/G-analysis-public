@@ -406,7 +406,92 @@ elseif($id == 'MesssetelleTbl'){
 			//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
 			//$query4 .= "WHERE type = '$zeitintervallAnl' ";
 
-}elseif($id == 'masseneingabeAlertRangeMinMax'){
+}
+/* masseneingabe Page  Messsetelle Inputs Search */
+/*new-mm-start 31-03-2021*/
+elseif($id == 'masseneingabeMesssetelleSearch'){
+	   $zeitintervallAnl = $_POST['zeitintervallAnl'];
+		if($zeitintervallAnl==1){
+		      $sDate = $_POST['startDate'];
+		      $eDate = $_POST['endDate'];
+
+		      $fromDate =explode(".", $sDate);
+		      $arrStart[] = $fromDate[2];
+		      $arrStart[] = $fromDate[1];
+		      $arrStart[] = $fromDate[0];
+
+		      $toDate = explode(".", $eDate);
+		      $arrEnd[] =  $toDate[2];
+		      $arrEnd[] =  $toDate[1];
+		      $arrEnd[] =  $toDate[0];
+
+		      $startDate = implode("-",$arrStart);
+		      $endDate = implode("-",$arrEnd);
+		      $startWeek ='';
+		      $endWeek ='';
+
+	    }else if($zeitintervallAnl==2){
+		      $sDate = $_POST['startDate'];
+		      $eDate = $_POST['endDate'];
+		      $fromDate =explode("-", $sDate);
+		      $startWeek = $fromDate[0]; //first week selected value
+		      $startDate = $fromDate[1]; //first year input text value
+
+		      $toDate = explode("-", $eDate);
+		      $endWeek =  $toDate[0]; //second week selected value
+		      $endDate =  $toDate[1]; //second year input text value
+
+	    }else if($zeitintervallAnl==3){
+		      $sDate = $_POST['startDate'];
+		      $eDate = $_POST['endDate'];
+
+		      $fromDate =explode(".", $sDate);
+		      $arrStart[] = $fromDate[1]; //first year input text value
+		      $arrStart[] = $fromDate[0]; //first week selected value
+
+
+		      $toDate = explode(".", $eDate);
+		      $arrEnd[] =  $toDate[1]; //second year input text value
+		      $arrEnd[] =  $toDate[0]; //second week selected value
+
+		      $startDate = implode("-",$arrStart);
+		      $endDate = implode("-",$arrEnd);
+		      $startWeek ='';
+		      $endWeek ='';
+
+	    }else{
+		      $startDate =$_POST['startDate'];
+		      $endDate =$_POST['endDate'];
+		      $startWeek ='';
+		      $endWeek ='';
+	    }
+			$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
+			$query1 .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
+			$query1 .= "ON T1.mst_ID = T2.mst_ID ";
+			$query1 .= "WHERE T1.messartMst = 'manuell' ";
+			$query1 .= "AND T1.deleted <> 'true' ";
+
+			/*use for show only betriebsdaten type*/
+			$query1 .= "AND T1.typ = 'betriebsdaten' ";
+
+
+			$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+			$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+			$query1 .= "ORDER BY T1.mst_ID ASC";
+
+			$query2 = "SELECT * FROM masseneingabeSucheIMw ";
+			$query2 .= "WHERE type = '$zeitintervallAnl' ";
+
+			$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
+			$query3 .= "WHERE type = '$zeitintervallAnl' ";
+
+			//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
+			//$query4 .= "WHERE type = '$zeitintervallAnl' ";
+
+}
+/*new-mm-end 31-03-2021*/
+
+elseif($id == 'masseneingabeAlertRangeMinMax'){
 	$type = $_POST['zeitintervallAnl'];
 	$mstID = $_POST['mstID'];
 	$date = $_POST['date'];
@@ -774,7 +859,17 @@ if($id == 'masseneingabeSearch'){
 	$records['query3'] = queryDB($conn, $query3, "read");
 	//$records['query4'] = queryDB($conn, $query4, "read");
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-}else if($id == 'masseneingabeAlertRangeMinMax'){
+}
+/*new-mm-start 31-03-2021*/
+else if($id == 'masseneingabeMesssetelleSearch'){
+	$records['query1'] = queryDB($conn, $query1, "read");
+	$records['query2'] = queryDB($conn, $query2, "read");
+	$records['query3'] = queryDB($conn, $query3, "read");
+	//$records['query4'] = queryDB($conn, $query4, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+}
+/*new-mm-end 31-03-2021*/
+else if($id == 'masseneingabeAlertRangeMinMax'){
     //echo $query1;echo $query2;die;
 	$records['values'] = queryDB($conn, $query1, "read");
 	//$records['max'] = queryDB($conn, $query2, "read");
