@@ -594,7 +594,7 @@ $(document).ready(function() {
         else if("btnMassEingMesssetelle" == this.id){
             $("#infosMasseneingabeMesssetelle").css("display", "block");
             $("body").addClass('fullWidthMasseneingabe');
-            datePickerForInterneBetriebsdatenAnlPrdkt('infosMasseneingabeDateRangeDivMesssetelle',6);
+            datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDivMesssetelle',5);
             $("#tblMasseneingabeDataIMw").remove();
         }
         else{
@@ -5273,6 +5273,27 @@ $("#DkFeSpeichern").click(function() {
 
     });
     /*new-mm-end 30-03-2021*/
+
+    /*new-mm-start 31-03-2021*/
+    $("#btnTageMasseneingabeIMwNwMesssetelle,#btnWochenMasseneingabeIMwNwMesssetelle,#btnMonateMasseneingabeIMwNwMesssetelle,#btnJahreMasseneingabeIMwNwMesssetelle").click(function(){
+           $(".infosMasseneingabeInside button").removeClass('active');
+            $("#tblMasseneingabeDataIMw").remove();
+            $("#intBdeConcernOrDeletePopUp").remove();
+            if(this.id =="btnTageMasseneingabeIMwNwMesssetelle"){
+                btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDivMesssetelle',5);
+            }else if(this.id =="btnWochenMasseneingabeIMwNwMesssetelle"){
+                btnMasseneingabeIMwChange(2,'infosMasseneingabeDateRangeDivMesssetelle',5);
+            }else if(this.id =="btnMonateMasseneingabeIMwNwMesssetelle"){
+                btnMasseneingabeIMwChange(3,'infosMasseneingabeDateRangeDivMesssetelle',5);
+            }else if(this.id =="btnJahreMasseneingabeIMwNwMesssetelle"){
+                btnMasseneingabeIMwChange(4,'infosMasseneingabeDateRangeDivMesssetelle',5);
+            }
+            datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDivMesssetelle',5);
+            $(this).addClass('active');
+            resetSearchFormMasseneingabe('infosMasseneingabeDateRangeDivMesssetelle');
+
+    });
+    /*new-mm-end 31-03-2021*/
 
     $("#btnMasseneingabeIMwSearch").click(function(){
         $("#inputBotmMax").val('');
