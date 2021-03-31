@@ -728,6 +728,18 @@ nav {
   white-space: nowrap;
   font-size: 12px;
 }
+/*new-mm-start 31-03-2021*/
+#timeIntervalWerteEnergiedatenIMwPrdkt{
+  height: 600px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+#timeIntervalWerteEnergiedatenIMwMesssetelle{
+  height: 600px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+/*new-mm-end 31-03-2021*/
 #aktuellesDokNameERng{
   font-size: 12px;
   padding: 5px 5px;
@@ -1348,10 +1360,10 @@ div#intBdeIMwHistorieDiv .controlDiv input{
     display: inline;
 }
 /*new-mm-start 31-03-2021*/
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_1,
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_2,
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_3,
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_4 ,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_1,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_2,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_3,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_4 ,
 .infosMasseneingabeDateRangeDivPrdkt .btnMasseneingabeIMwSearchDiv{
     width: 22%;
     display: inline;
@@ -1377,9 +1389,9 @@ div#intBdeIMwHistorieDiv .controlDiv input{
     border-color: none;
 }
 /*new-mm-start 31-03-2021*/
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_1 input,
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_3 input,
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_4 input {
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_1 input,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_3 input,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_4 input {
     width: 20%;
     height: 24px;
     border-radius: 3px;
@@ -1402,13 +1414,13 @@ div#intBdeIMwHistorieDiv .controlDiv input{
     height: 30px;
 }
 /*new-mm-start 31-03-2021*/
-.infosMasseneingabeDateRangeDivPrdkt input#btnMasseneingabeIMwSearch {
+.infosMasseneingabeDateRangeDivPrdkt input#btnMasseneingabeIMwSearchPrdkt {
     width: 5cm;
     height: 30px;
 }
 /*new-mm-end 31-03-2021*/
 /*new-mm-start 31-03-2021*/
-.infosMasseneingabeDateRangeDivMesssetelle input#btnMasseneingabeIMwSearch {
+.infosMasseneingabeDateRangeDivMesssetelle input#btnMasseneingabeIMwSearchMesssetelle {
     width: 5cm;
     height: 30px;
 }
@@ -1422,7 +1434,7 @@ div#intBdeIMwHistorieDiv .controlDiv input{
     border-color: none;
 }
 /*new-mm-start 31-03-2021*/
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_2 input {
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_2 input {
     width: 9% !important;
     height: 24px;
     border-radius: 3px;
@@ -1446,7 +1458,7 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 }
 
 /*new-mm-start 31-03-2021*/
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_2 select {
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_2 select {
     width: 8% !important;
     height: 30px;
     border-radius: 3px;
@@ -1492,7 +1504,7 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 
 /*new-mm-start 31-03-2021*/
 
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_2{
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_2{
   padding: 0px 35px 0 0;
   font-size: 18px;
 }
@@ -1510,9 +1522,9 @@ div#intBdeIMwHistorieDiv .controlDiv input{
   padding: 0px 30px 0 0;
 }
 /*new-mm-start 31-03-2021*/
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_1,
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_3,
-.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_4{
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_1,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_3,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_4{
   padding: 0px 30px 0 0;
 }
 .infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1,
@@ -1571,6 +1583,18 @@ table#tblMasseneingabeDataIMwTbl td input {
     overflow-x: auto;
     height: 150px;
 }
+/*new-mm-start 31-03-2021*/
+#timeIntervalWerteEnergiedatenIMwPrdkt{
+    width: 1100px;
+    overflow-x: auto;
+    height: 150px;
+}
+#timeIntervalWerteEnergiedatenIMwMesssetelle{
+    width: 1100px;
+    overflow-x: auto;
+    height: 150px;
+}
+/*new-mm-start 31-03-2021*/
 /*new-mm-start 30-03-2021*/
 .fullWidthMasseneingabe #infosMasseneingabe,
 .fullWidthMasseneingabe #infosMasseneingabePrdkt,

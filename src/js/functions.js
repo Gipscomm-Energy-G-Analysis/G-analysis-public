@@ -15896,7 +15896,53 @@ function validateNullValZeitintervallAnlSelectOpt(start,end,zeitintervallAnl){
         }
 
 }
+/*new-mm-start 31-03-2021*/
+function validateNullValZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl){
+        if(zeitintervallAnl == 1){
+            if (start =='' ||  end ==''){
+                alert("Please enter days value into inputs");
+                $("#tblMasseneingabeDataIMw").remove();
+                return false;
+            }else{
+                return true;
+            }
+        }
+        else if(zeitintervallAnl == 2){
+            var from = start.split("-");
+            var startWk = from[0]; //first week selected value
+            var startYr = from[1]; //first year input text value
 
+            var to = end.split("-");
+            var endWk =  to[0]; //second week selected value
+            var endYr =  to[1]; //second year input text value
+            if (startWk =='' ||  endWk =='' || startYr =='' ||  endYr ==''){
+                alert("Please enter week values into inputs");
+                $("#tblMasseneingabeDataIMw").remove();
+                return false;
+            }else{
+                return true;
+            }
+        }
+        else if(zeitintervallAnl == 3){
+           if (start =='' ||  end ==''){
+                alert("Please enter month value into inputs");
+                $("#tblMasseneingabeDataIMw").remove();
+                return false;
+            }else{
+                return true;
+            }
+        }else if(zeitintervallAnl == 4){
+           if (start =='' ||  end ==''){
+                alert("Please enter year value into inputs");
+                $("#tblMasseneingabeDataIMw").remove();
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+}
+/*new-mm-end 31-03-2021*/
 /*Ajax Call for the Interne Betriebsdaten Speichern 05-10-2020*/
 function intBdeIMwHistorieSpeichernPopUp() {
    // alert('test');
@@ -18584,10 +18630,10 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
 
 /*new-mm-start 30-03-2021*/
     function btnMasseneingabeIMwChangePrdkt(val,sId,id){
-        $("." + sId + " .zeitintervallAnl_1 input").val("");
-        $("." + sId + " .zeitintervallAnl_2 input").val("");
-        $("." + sId + " .zeitintervallAnl_3 input").val("");
-        $("." + sId + " .zeitintervallAnl_4 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_1 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_3 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_4 input").val("");
         /*Months Start*/
         var date = new Date();
         var eYY3  =date.getFullYear();
@@ -18641,19 +18687,19 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
         /*Wochen End*/
 
            if(val == 1){
-                $("." + sId + " .zeitintervallAnl_1").show();
-                $("." + sId + " .zeitintervallAnl_2").hide();
-                $("." + sId + " .zeitintervallAnl_3").hide();
-                $("." + sId + " .zeitintervallAnl_4").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_1").show();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
                 $("." + sId + " #tageMassEingDataAnlPrdktStart"+id).val(startDate_1);
                 $("." + sId + " #tageMassEingDataAnlPrdktEnde"+id).val(endDate_1);
                 //alert(startDate_1);
            }else if(val == 2){
-                $("." + sId + " .zeitintervallAnl_1").hide();
-                $("." + sId + " .zeitintervallAnl_2").show();
-                $("." + sId + " .zeitintervallAnl_3").hide();
-                $("." + sId + " .zeitintervallAnl_4").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").show();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
                 setTimeout(function(){
 
@@ -18663,32 +18709,33 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
                 $("." + sId + " #wochenWMassEingDataAnlPrdktEnde"+id).val(endWk_2);
                 }, 300);
            }else if(val == 3){
-                $("." + sId + " .zeitintervallAnl_1").hide();
-                $("." + sId + " .zeitintervallAnl_2").hide();
-                $("." + sId + " .zeitintervallAnl_3").show();
-                $("." + sId + " .zeitintervallAnl_4").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").show();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
                 $("." + sId + " #monateMassEingDataAnlPrdktStart"+id).val(startDate_3);
                 $("." + sId + " #monateMassEingDataAnlPrdktEnde"+id).val(endDate_3);
            }else if(val == 4){
-                $("." + sId + " .zeitintervallAnl_1").hide();
-                $("." + sId + " .zeitintervallAnl_2").hide();
-                $("." + sId + " .zeitintervallAnl_3").hide();
-                $("." + sId + " .zeitintervallAnl_4").show();
+                $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").show();
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
                 $("." + sId + " #jahrMassEingDataAnlPrdktStart"+id).val(startDate_4);
                 $("." + sId + " #jahrMassEingDataAnlPrdktEnde"+id).val(endDate_4);
            }else{
-                $("." + sId + " .zeitintervallAnl_1").hide();
-                $("." + sId + " .zeitintervallAnl_2").hide();
-                $("." + sId + " .zeitintervallAnl_3").hide();
-                $("." + sId + " .zeitintervallAnl_4").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").hide();
            }
     }
 /*new-mm-end 30-03-2021*/
   /*Interne Messwerte Start 20-10-2020*/
 function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
+        alert("1");
         $.ajax({
             type: "POST",
             async: !0,
@@ -19164,6 +19211,964 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
             }
         });
 }
+/*new-mm-start 31-03-2021*/
+function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
+        alert("2");
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeSearch",
+                nameDB: $("#nameDB").val(),
+                startDate: startDate,
+                endDate:endDate,
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+            //console.log(a);
+                var b = a.query1.length;
+                if(b>0){
+                if(zeitintervallAnl == 1){
+                    var from = startDate.split(".");
+                    var to = endDate.split(".");
+
+                    var newStartDate = [from[2],from[1],from[0]].join('-');
+                    var newEndDate = [to[2], to[1], to[0]].join('-');
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getDatesInToArray(From_date, To_date);
+                    //console.log('dateArr='+dateArr);
+                    //findArrValueByDate('2020-11-15',23,a.query2);
+
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.floor(diff_date/day);
+                   $("#tblMasseneingabeDataIMw").remove();
+                   $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                   for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= days; r++){
+
+                                  $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
+
+
+                            }
+                            $row += '</tr>';
+                        }
+                    }
+
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                           //console.log(anlageObj[a.query1[e].mst_ID]);
+                           //console.log(anlageObj);
+                           var datesOfArr = [];
+                           var p=0;var z;
+                           for (var r = 0; r <= days; r++){
+                                var n='';
+                                //console.log(a[e].ending);
+                                if(a.query1[e].ending ==0){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                        n='disabled';
+                                    }else if(a.query1[e].endDate < dateArr[r]){
+                                         n='disabled';
+                                    }
+                                }
+                                if(a.query1[e].ending ==1){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                    }
+                                }
+
+                                if(n !='disabled'){
+                                    if(p < 5){
+                                      z="checkAlertRange";
+                                    }else{
+                                      z='';
+                                    }
+                                    p++;
+                                }
+                                var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup '+z+'" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
+                                if(inputVal !=''){
+                                     datesOfArr.push(dateArr[r]);
+                                    anlageObj[a.query1[e].mst_ID]=datesOfArr;
+                                }else{
+                                    anlageObj[a.query1[e].mst_ID]=datesOfArr;
+                                }
+                            }
+
+                        $row += '</tr>';
+                        /*Second row for calculation*/
+                         $row += '<tr class="calcZeit1RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                           for (var r = 0; r <= days; r++){
+                                var n='';
+                                //console.log(a[e].ending);
+                                if(a.query1[e].ending ==0){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                        n='disabled';
+                                    }else if(a.query1[e].endDate < dateArr[r]){
+                                         n='disabled';
+                                    }
+                                }
+                                if(a.query1[e].ending ==1){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                    }
+                                }
+                               // console.log('n='+n);
+                                var rdOnly = '';
+                                if(n !== 'disabled'){
+                                    rdOnly = 'readonly';
+                                }
+                               var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                            }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $row );
+
+                }else if(zeitintervallAnl == 2){
+                    var from = startDate.split("-");
+                    var g = from[0]; //first week selected value
+                    var f = from[1]; //first year input text value
+
+                    var to = endDate.split("-");
+                    var s =  to[0]; //second week selected value
+                    var t =  to[1]; //second year input text value
+
+                    var years =  t - f;
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                             for (var r = 0; r <= years; r++){
+                                var yr = eval(f) + eval(r);
+                                var weekNum =53;
+                                if(t==yr){
+                                    weekNum =s;
+                                }
+                                for (var i = g; i <= weekNum; i++){
+                                        if(a.query1[e].startDate <= yr ){
+                                            if(a.query1[e].startDate == yr && a.query1[e].startWeek <= i){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr ){
+                                                m='';
+                                            }
+                                        }
+                                        if(yr >= a.query1[e].endDate){
+                                             if(yr > a.query1[e].endDate){
+                                                m='disabled';
+
+                                             }
+                                             if(yr == a.query1[e].endDate && a.query1[e].endWeek < i){
+                                                m='disabled';
+                                             }
+                                        }
+                                    $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + i + ' KW ' + yr + '</th>';
+                                    if(i>=53){
+                                        var g=1;
+                                    }
+                                }
+                            }
+
+                            $row += '</tr>';
+                        }
+                    }
+                    var weekOfArr=[];
+                    for (var e = 0; e < b; e++){
+                        var from1 = startDate.split("-");
+                        var g1 = g2=from1[0]; //first week selected value
+                        var f1 = f2=from1[1]; //first year input text value
+
+                        var to1 = endDate.split("-");
+                        var s1 =s2=  to1[0]; //second week selected value
+                        var t1 =t2=  to1[1]; //second year input text value
+
+                             $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                             var count1 = 0;
+                             for (var r1 = 0; r1 <= years; r1++){
+                                var m='disabled';
+                                var yr1 = eval(f1) + eval(r1);
+                                var weekNum =53;
+                                if(t1==yr1){
+                                    weekNum =s1;
+                                }
+                                for (var i1 = g1; i1 <= weekNum; i1++){
+                                        if(a.query1[e].startDate <= yr1 ){
+                                            if(a.query1[e].startDate == yr1 && a.query1[e].startWeek <= i1){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr1 ){
+                                                m='';
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==0){
+                                            if(yr1 >= a.query1[e].endDate){
+                                                 if(yr1 > a.query1[e].endDate){
+                                                    m='disabled';
+
+                                                 }
+                                                 if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
+                                                    m='disabled';
+                                                 }
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==1){
+                                            if(yr1 >= a.query1[e].endDate){
+                                                 /*if(yr1 > a.query1[e].endDate){
+                                                    m='';
+
+                                                 } */
+                                                 if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
+                                                    m='';
+                                                 }
+                                            }
+                                        }
+                                        var inputVal =  findArrValueByDateWeek(yr1,i1,a.query1[e].mst_ID,a.query2);
+                                        $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + i1 + '-' + yr1 + '"><input type="text" id="anlageMainRow_'+count1+'" name="masseneingabeInput'+i1+'[]" '+m+' class="txtBoxSrch isShowPopup" value="'+inputVal+'"/></td>';
+                                        if(i1>=53){
+                                            var g1=1;
+                                           // console.log('i1='+i1);
+                                        }
+                                        if(inputVal !=''){
+                                                weekOfArr.push(String(i1 + '-' + yr1));
+                                                anlageObj[a.query1[e].mst_ID]=weekOfArr;
+                                        }/*else{
+                                            anlageObj[a.query1[e].mst_ID]=weekOfArr;
+                                        }*/
+                                       // console.log(anlageObj);
+                                    count1 ++;
+                                }
+                            }
+
+                            $row += '</tr>';
+                            $row += '<tr class="calcZeit2RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                             var count2 = 0;
+                             for (var r2 = 0; r2 <= years; r2++){
+                                var m='disabled';
+                                var yr2 = eval(f2) + eval(r2);
+                                var weekNum =53;
+                                if(t2==yr2){
+                                    weekNum =s2;
+                                }
+                                for (var i2 = g2; i2 <= weekNum; i2++){
+                                        if(a.query1[e].startDate <= yr2 ){
+                                            if(a.query1[e].startDate == yr2 && a.query1[e].startWeek <= i2){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr2 ){
+                                                m='';
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==0){
+                                            if(yr2 >= a.query1[e].endDate){
+                                                 if(yr2 > a.query1[e].endDate){
+                                                    m='disabled';
+
+                                                 }
+                                                 if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
+                                                    m='disabled';
+                                                 }
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==1){
+                                            if(yr2 >= a.query1[e].endDate){
+                                                 /*if(yr2 > a.query1[e].endDate){
+                                                    m='';
+
+                                                 } */
+                                                 if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
+                                                    m='';
+                                                 }
+                                            }
+                                        }
+                                        var rdOnly = '';
+                                        if(m !== 'disabled'){
+                                            rdOnly = 'readonly';
+                                        }
+                                         var inputVal =  findArrValueByDateWeek(yr2,i2,a.query1[e].mst_ID,a.query3);
+                                        $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                                        if(i2>=53){
+                                            var g2=1;
+                                           // console.log('i2='+i2);
+                                        }
+                                    count2 ++;
+                                }
+                            }
+
+                            $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $row );
+
+                }else if(zeitintervallAnl == 3){
+                    //alert(3);
+                    var from_3 = startDate.split(".");
+                    var startMn_3 = from_3[0]; //first week selected value
+                    var startYr_3 = from_3[1]; //first year input text value
+
+                    var to_3 = endDate.split(".");
+                    var endMn_3 =  to_3[0]; //second week selected value
+                    var endYr_3 = to_3[1]; //second year input text value
+
+                    var newStartDate = [startYr_3,startMn_3].join('-');
+                    var newEndDate = [endYr_3,endMn_3].join('-');
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getMonthsInToArray(From_date, To_date);
+                    //console.log(dateArr);
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.ceil(diff_date/day);
+                    var months = Math.ceil(days/31);
+                    //var years = Math.ceil(months/12);
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= months; r++){
+                                $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
+                            }
+                            $row += '</tr>';
+                      }
+                    }
+                    var monthOfArr=[];
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        for (var r = 0; r <= months; r++){
+                            var n='';
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a.query1[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            if(inputVal !=''){
+                                monthOfArr.push(dateArr[r]);
+                                anlageObj[a.query1[e].mst_ID]=monthOfArr;
+                            }else{
+                                anlageObj[a.query1[e].mst_ID]=monthOfArr;
+                            }
+                        }
+                        $row += '</tr>';
+                        $row += '<tr class="calcZeit3RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                        for (var r = 0; r <= months; r++){
+                            var n='';
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a.query1[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                            var rdOnly = '';
+                            if(n !== 'disabled'){
+                                rdOnly = 'readonly';
+                            }
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                        }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $row );
+                }else if(zeitintervallAnl == 4){
+                    var years =  endDate - startDate;
+                    const getYearsInToArray = (start, end) => Array(end - start + 1)
+                            .fill(start)
+                            .map((year, index) => year + index);
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= years; r++){
+                                var yr = eval(startDate) + eval(r);
+                                $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
+                            }
+                            $row += '</tr>';
+                        }
+                    }
+                    var yearOfArr = [];
+                    for (var e = 0; e < b; e++){
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+
+                        for (var r = 0; r <= years; r++){
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
+                            var yr1 = eval(startDate) + eval(r);
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a.query1[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query2);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            if(inputVal !=''){
+                                yearOfArr.push(String(yearsBw[r]));
+                                anlageObj[a.query1[e].mst_ID]=yearOfArr;
+                            }else{
+                                anlageObj[a.query1[e].mst_ID]=yearOfArr;
+                            }
+                            //console.log(anlageObj);
+                        }
+                        $row += '</tr>';
+
+                        $row += '<tr class="calcZeit4RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                        for (var r = 0; r <= years; r++){
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
+                            var yr1 = eval(startDate) + eval(r);
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a.query1[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                            var rdOnly = '';
+                            if(t !== 'disabled'){
+                                rdOnly = 'readonly';
+                            }
+                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query3);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                        }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $row );
+                }
+              }else{
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $noRow ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl" style="border:1px solid #f3f3f3;background:#ccc;"';
+                            $noRow += '<tr><td style="text-align:center;">No Record Found ! Please enter valid dates into input.</td>';  $noRow += '</tr>';
+                    $noRow +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $noRow );
+              }
+            }
+        });
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,endDate){
+        alert("3");
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeSearch",
+                nameDB: $("#nameDB").val(),
+                startDate: startDate,
+                endDate:endDate,
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+            //console.log(a);
+                var b = a.query1.length;
+                if(b>0){
+                if(zeitintervallAnl == 1){
+                    var from = startDate.split(".");
+                    var to = endDate.split(".");
+
+                    var newStartDate = [from[2],from[1],from[0]].join('-');
+                    var newEndDate = [to[2], to[1], to[0]].join('-');
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getDatesInToArray(From_date, To_date);
+                    //console.log('dateArr='+dateArr);
+                    //findArrValueByDate('2020-11-15',23,a.query2);
+
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.floor(diff_date/day);
+                   $("#tblMasseneingabeDataIMw").remove();
+                   $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                   for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= days; r++){
+
+                                  $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
+
+
+                            }
+                            $row += '</tr>';
+                        }
+                    }
+
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                           //console.log(anlageObj[a.query1[e].mst_ID]);
+                           //console.log(anlageObj);
+                           var datesOfArr = [];
+                           var p=0;var z;
+                           for (var r = 0; r <= days; r++){
+                                var n='';
+                                //console.log(a[e].ending);
+                                if(a.query1[e].ending ==0){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                        n='disabled';
+                                    }else if(a.query1[e].endDate < dateArr[r]){
+                                         n='disabled';
+                                    }
+                                }
+                                if(a.query1[e].ending ==1){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                    }
+                                }
+
+                                if(n !='disabled'){
+                                    if(p < 5){
+                                      z="checkAlertRange";
+                                    }else{
+                                      z='';
+                                    }
+                                    p++;
+                                }
+                                var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup '+z+'" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
+                                if(inputVal !=''){
+                                     datesOfArr.push(dateArr[r]);
+                                    anlageObj[a.query1[e].mst_ID]=datesOfArr;
+                                }else{
+                                    anlageObj[a.query1[e].mst_ID]=datesOfArr;
+                                }
+                            }
+
+                        $row += '</tr>';
+                        /*Second row for calculation*/
+                         $row += '<tr class="calcZeit1RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                           for (var r = 0; r <= days; r++){
+                                var n='';
+                                //console.log(a[e].ending);
+                                if(a.query1[e].ending ==0){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                        n='disabled';
+                                    }else if(a.query1[e].endDate < dateArr[r]){
+                                         n='disabled';
+                                    }
+                                }
+                                if(a.query1[e].ending ==1){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                    }
+                                }
+                               // console.log('n='+n);
+                                var rdOnly = '';
+                                if(n !== 'disabled'){
+                                    rdOnly = 'readonly';
+                                }
+                               var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                            }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $row );
+
+                }else if(zeitintervallAnl == 2){
+                    var from = startDate.split("-");
+                    var g = from[0]; //first week selected value
+                    var f = from[1]; //first year input text value
+
+                    var to = endDate.split("-");
+                    var s =  to[0]; //second week selected value
+                    var t =  to[1]; //second year input text value
+
+                    var years =  t - f;
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                             for (var r = 0; r <= years; r++){
+                                var yr = eval(f) + eval(r);
+                                var weekNum =53;
+                                if(t==yr){
+                                    weekNum =s;
+                                }
+                                for (var i = g; i <= weekNum; i++){
+                                        if(a.query1[e].startDate <= yr ){
+                                            if(a.query1[e].startDate == yr && a.query1[e].startWeek <= i){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr ){
+                                                m='';
+                                            }
+                                        }
+                                        if(yr >= a.query1[e].endDate){
+                                             if(yr > a.query1[e].endDate){
+                                                m='disabled';
+
+                                             }
+                                             if(yr == a.query1[e].endDate && a.query1[e].endWeek < i){
+                                                m='disabled';
+                                             }
+                                        }
+                                    $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + i + ' KW ' + yr + '</th>';
+                                    if(i>=53){
+                                        var g=1;
+                                    }
+                                }
+                            }
+
+                            $row += '</tr>';
+                        }
+                    }
+                    var weekOfArr=[];
+                    for (var e = 0; e < b; e++){
+                        var from1 = startDate.split("-");
+                        var g1 = g2=from1[0]; //first week selected value
+                        var f1 = f2=from1[1]; //first year input text value
+
+                        var to1 = endDate.split("-");
+                        var s1 =s2=  to1[0]; //second week selected value
+                        var t1 =t2=  to1[1]; //second year input text value
+
+                             $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                             var count1 = 0;
+                             for (var r1 = 0; r1 <= years; r1++){
+                                var m='disabled';
+                                var yr1 = eval(f1) + eval(r1);
+                                var weekNum =53;
+                                if(t1==yr1){
+                                    weekNum =s1;
+                                }
+                                for (var i1 = g1; i1 <= weekNum; i1++){
+                                        if(a.query1[e].startDate <= yr1 ){
+                                            if(a.query1[e].startDate == yr1 && a.query1[e].startWeek <= i1){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr1 ){
+                                                m='';
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==0){
+                                            if(yr1 >= a.query1[e].endDate){
+                                                 if(yr1 > a.query1[e].endDate){
+                                                    m='disabled';
+
+                                                 }
+                                                 if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
+                                                    m='disabled';
+                                                 }
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==1){
+                                            if(yr1 >= a.query1[e].endDate){
+                                                 /*if(yr1 > a.query1[e].endDate){
+                                                    m='';
+
+                                                 } */
+                                                 if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
+                                                    m='';
+                                                 }
+                                            }
+                                        }
+                                        var inputVal =  findArrValueByDateWeek(yr1,i1,a.query1[e].mst_ID,a.query2);
+                                        $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + i1 + '-' + yr1 + '"><input type="text" id="anlageMainRow_'+count1+'" name="masseneingabeInput'+i1+'[]" '+m+' class="txtBoxSrch isShowPopup" value="'+inputVal+'"/></td>';
+                                        if(i1>=53){
+                                            var g1=1;
+                                           // console.log('i1='+i1);
+                                        }
+                                        if(inputVal !=''){
+                                                weekOfArr.push(String(i1 + '-' + yr1));
+                                                anlageObj[a.query1[e].mst_ID]=weekOfArr;
+                                        }/*else{
+                                            anlageObj[a.query1[e].mst_ID]=weekOfArr;
+                                        }*/
+                                       // console.log(anlageObj);
+                                    count1 ++;
+                                }
+                            }
+
+                            $row += '</tr>';
+                            $row += '<tr class="calcZeit2RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                             var count2 = 0;
+                             for (var r2 = 0; r2 <= years; r2++){
+                                var m='disabled';
+                                var yr2 = eval(f2) + eval(r2);
+                                var weekNum =53;
+                                if(t2==yr2){
+                                    weekNum =s2;
+                                }
+                                for (var i2 = g2; i2 <= weekNum; i2++){
+                                        if(a.query1[e].startDate <= yr2 ){
+                                            if(a.query1[e].startDate == yr2 && a.query1[e].startWeek <= i2){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr2 ){
+                                                m='';
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==0){
+                                            if(yr2 >= a.query1[e].endDate){
+                                                 if(yr2 > a.query1[e].endDate){
+                                                    m='disabled';
+
+                                                 }
+                                                 if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
+                                                    m='disabled';
+                                                 }
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==1){
+                                            if(yr2 >= a.query1[e].endDate){
+                                                 /*if(yr2 > a.query1[e].endDate){
+                                                    m='';
+
+                                                 } */
+                                                 if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
+                                                    m='';
+                                                 }
+                                            }
+                                        }
+                                        var rdOnly = '';
+                                        if(m !== 'disabled'){
+                                            rdOnly = 'readonly';
+                                        }
+                                         var inputVal =  findArrValueByDateWeek(yr2,i2,a.query1[e].mst_ID,a.query3);
+                                        $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                                        if(i2>=53){
+                                            var g2=1;
+                                           // console.log('i2='+i2);
+                                        }
+                                    count2 ++;
+                                }
+                            }
+
+                            $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $row );
+
+                }else if(zeitintervallAnl == 3){
+                    //alert(3);
+                    var from_3 = startDate.split(".");
+                    var startMn_3 = from_3[0]; //first week selected value
+                    var startYr_3 = from_3[1]; //first year input text value
+
+                    var to_3 = endDate.split(".");
+                    var endMn_3 =  to_3[0]; //second week selected value
+                    var endYr_3 = to_3[1]; //second year input text value
+
+                    var newStartDate = [startYr_3,startMn_3].join('-');
+                    var newEndDate = [endYr_3,endMn_3].join('-');
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getMonthsInToArray(From_date, To_date);
+                    //console.log(dateArr);
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.ceil(diff_date/day);
+                    var months = Math.ceil(days/31);
+                    //var years = Math.ceil(months/12);
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= months; r++){
+                                $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
+                            }
+                            $row += '</tr>';
+                      }
+                    }
+                    var monthOfArr=[];
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        for (var r = 0; r <= months; r++){
+                            var n='';
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a.query1[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            if(inputVal !=''){
+                                monthOfArr.push(dateArr[r]);
+                                anlageObj[a.query1[e].mst_ID]=monthOfArr;
+                            }else{
+                                anlageObj[a.query1[e].mst_ID]=monthOfArr;
+                            }
+                        }
+                        $row += '</tr>';
+                        $row += '<tr class="calcZeit3RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                        for (var r = 0; r <= months; r++){
+                            var n='';
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a.query1[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                            var rdOnly = '';
+                            if(n !== 'disabled'){
+                                rdOnly = 'readonly';
+                            }
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                        }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $row );
+                }else if(zeitintervallAnl == 4){
+                    var years =  endDate - startDate;
+                    const getYearsInToArray = (start, end) => Array(end - start + 1)
+                            .fill(start)
+                            .map((year, index) => year + index);
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= years; r++){
+                                var yr = eval(startDate) + eval(r);
+                                $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
+                            }
+                            $row += '</tr>';
+                        }
+                    }
+                    var yearOfArr = [];
+                    for (var e = 0; e < b; e++){
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+
+                        for (var r = 0; r <= years; r++){
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
+                            var yr1 = eval(startDate) + eval(r);
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a.query1[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query2);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            if(inputVal !=''){
+                                yearOfArr.push(String(yearsBw[r]));
+                                anlageObj[a.query1[e].mst_ID]=yearOfArr;
+                            }else{
+                                anlageObj[a.query1[e].mst_ID]=yearOfArr;
+                            }
+                            //console.log(anlageObj);
+                        }
+                        $row += '</tr>';
+
+                        $row += '<tr class="calcZeit4RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                        for (var r = 0; r <= years; r++){
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
+                            var yr1 = eval(startDate) + eval(r);
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a.query1[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                            var rdOnly = '';
+                            if(t !== 'disabled'){
+                                rdOnly = 'readonly';
+                            }
+                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query3);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                        }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $row );
+                }
+              }else{
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $noRow ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl" style="border:1px solid #f3f3f3;background:#ccc;"';
+                            $noRow += '<tr><td style="text-align:center;">No Record Found ! Please enter valid dates into input.</td>';  $noRow += '</tr>';
+                    $noRow +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $noRow );
+              }
+            }
+        });
+}
+/*new-mm-end 31-03-2021*/
 
 function getDatesInToArray(start, end) {
     var arr = new Array();
