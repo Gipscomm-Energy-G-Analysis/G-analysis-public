@@ -19303,6 +19303,26 @@ function resetSearchFormMasseneingabe(sId){
     $("." + sId + " .zeitintervallAnl_3").val("");
     $("." + sId + " .zeitintervallAnl_4").val("");
 }
+
+/*new-mm-start 31-03-2021*/
+function resetSearchFormMasseneingabePrdkt(sId){
+    $("." + sId + " .zeitintervallAnl_1").val("");
+    $("." + sId + " .zeitintervallAnl_2").val("");
+    $("." + sId + " .zeitintervallAnl_2 select").val("");
+    $("." + sId + " .zeitintervallAnl_3").val("");
+    $("." + sId + " .zeitintervallAnl_4").val("");
+}
+/*new-mm-end 31-03-2021*/
+
+/*new-mm-start 31-03-2021*/
+function resetSearchFormMasseneingabeMesssetelle(sId){
+    $("." + sId + " .zeitintervallAnl_1").val("");
+    $("." + sId + " .zeitintervallAnl_2").val("");
+    $("." + sId + " .zeitintervallAnl_2 select").val("");
+    $("." + sId + " .zeitintervallAnl_3").val("");
+    $("." + sId + " .zeitintervallAnl_4").val("");
+}
+/*new-mm-end 31-03-2021*/
 const capitalizeLetter = (s) => {
   if (typeof s !== 'string') return ''
   return s.charAt(0).toUpperCase() + s.slice(1)

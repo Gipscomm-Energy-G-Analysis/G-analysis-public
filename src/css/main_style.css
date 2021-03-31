@@ -1337,6 +1337,8 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 
 
 /*02-11-2020 create html for second page Masseneingabe Button */
+
+
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_1,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_3,
@@ -1345,6 +1347,26 @@ div#intBdeIMwHistorieDiv .controlDiv input{
     width: 22%;
     display: inline;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_1,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_2,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_3,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_4 ,
+.infosMasseneingabeDateRangeDivPrdkt .btnMasseneingabeIMwSearchDiv{
+    width: 22%;
+    display: inline;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_2,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_3,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_4 ,
+.infosMasseneingabeDateRangeDivMesssetelle .btnMasseneingabeIMwSearchDiv{
+    width: 22%;
+    display: inline;
+}
+/*new-mm-end 31-03-2021*/
 
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_1 input,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_3 input,
@@ -1354,36 +1376,151 @@ div#intBdeIMwHistorieDiv .controlDiv input{
     border-radius: 3px;
     border-color: none;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_1 input,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_3 input,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_4 input {
+    width: 20%;
+    height: 24px;
+    border-radius: 3px;
+    border-color: none;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1 input,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_3 input,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_4 input {
+    width: 20%;
+    height: 24px;
+    border-radius: 3px;
+    border-color: none;
+}
+/*new-mm-end 31-03-2021*/
+
 .infosMasseneingabeDateRangeDiv input#btnMasseneingabeIMwSearch {
     width: 5cm;
     height: 30px;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt input#btnMasseneingabeIMwSearch {
+    width: 5cm;
+    height: 30px;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle input#btnMasseneingabeIMwSearch {
+    width: 5cm;
+    height: 30px;
+}
+/*new-mm-end 31-03-2021*/
+
+
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2 input {
     width: 9% !important;
     height: 24px;
     border-radius: 3px;
     border-color: none;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_2 input {
+    width: 9% !important;
+    height: 24px;
+    border-radius: 3px;
+    border-color: none;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_2 input {
+    width: 9% !important;
+    height: 24px;
+    border-radius: 3px;
+    border-color: none;
+}
+/*new-mm-end 31-03-2021*/
+
+
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2 select {
     width: 8% !important;
     height: 30px;
     border-radius: 3px;
 }
+
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_2 select {
+    width: 8% !important;
+    height: 30px;
+    border-radius: 3px;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_2 select {
+    width: 8% !important;
+    height: 30px;
+    border-radius: 3px;
+}
+/*new-mm-end 31-03-2021*/
+
+
 .infosMasseneingabeDateRangeDiv {
     background: #ccc;
     padding: 12px 0px 12px 0px;
     text-align: center;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt  {
+    background: #ccc;
+    padding: 12px 0px 12px 0px;
+    text-align: center;
+}
+
+
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+
+.infosMasseneingabeDateRangeDivMesssetelle  {
+    background: #ccc;
+    padding: 12px 0px 12px 0px;
+    text-align: center;
+}
+/*new-mm-end 31-03-2021*/
+
+
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2{
   padding: 0px 35px 0 0;
   font-size: 18px;
 }
+
+/*new-mm-start 31-03-2021*/
+
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_2{
+  padding: 0px 35px 0 0;
+  font-size: 18px;
+}
+
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_2{
+  padding: 0px 35px 0 0;
+  font-size: 18px;
+}
+/*new-mm-end 31-03-2021*/
+
 
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_1,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_3,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_4{
   padding: 0px 30px 0 0;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_1,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_3,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnl_4{
+  padding: 0px 30px 0 0;
+}
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_3,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_4{
+  padding: 0px 30px 0 0;
+}
+/*new-mm-end 31-03-2021*/
 
 button#btnTageMasseneingabeIMwNw.active,
 button#btnTageMasseneingabeIMwNwPrdkt.active,
