@@ -18628,7 +18628,7 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
            }
   }
 
-/*new-mm-start 30-03-2021*/
+/*new-mm-start 31-03-2021*/
     function btnMasseneingabeIMwChangePrdkt(val,sId,id){
         $("." + sId + " .zeitintervallAnlPrdkt_1 input").val("");
         $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
@@ -18732,10 +18732,11 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").hide();
            }
     }
-/*new-mm-end 30-03-2021*/
+/*new-mm-end 31-03-2021*/
+
   /*Interne Messwerte Start 20-10-2020*/
 function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
-        alert("1");
+        //alert("1");
         $.ajax({
             type: "POST",
             async: !0,
@@ -19213,7 +19214,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
 }
 /*new-mm-start 31-03-2021*/
 function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
-        alert("2");
+        //alert("2");
         $.ajax({
             type: "POST",
             async: !0,
@@ -19692,7 +19693,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
 /*new-mm-end 31-03-2021*/
 /*new-mm-start 31-03-2021*/
 function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,endDate){
-        alert("3");
+        //alert("3");
         $.ajax({
             type: "POST",
             async: !0,

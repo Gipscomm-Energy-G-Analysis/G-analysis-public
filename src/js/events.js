@@ -5425,7 +5425,7 @@ $("#DkFeSpeichern").click(function() {
                     setTimeout(function(){
                         //if($("#intBdeConcernOrDeletePopUp").length ==0){
                             var key = $(".infosMasseneingabeInside button.active").attr('data-id');
-                             saveToDBMasseneingabeEingaben(key);
+                            saveToDBMasseneingabeEingaben(key);
                         // }
                     }, 300);
                 //}
@@ -5450,7 +5450,49 @@ $("#DkFeSpeichern").click(function() {
            return false;
        }*/
     });
-
+    /*new-mm-start 31-03-2021*/
+    $("#masseneingabeSpeichernSrchPrdkt").click(function() {
+        var inputCurrId = $("#inputCurrId").val();
+        var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
+        //console.log($("#timeIntervalWerteEnergiedatenIMw").html());
+        if($("#tblMasseneingabeDataIMw").length !=0){
+                //if(showPopupExist==false){
+                    $(".save-msg-box").show();
+                    $("#masseneingabeSrchImg").show();
+                    setTimeout(function(){
+                        //if($("#intBdeConcernOrDeletePopUp").length ==0){
+                            var key = $(".infosMasseneingabeInside button.active").attr('data-id');
+                             saveToDBMasseneingabeEingaben(key);
+                        // }
+                    }, 300);
+                //}
+        }else{
+            alert("Please generate inputs first.");
+        }
+        
+    });
+    /*new-mm-end 31-03-2021*/
+    /*new-mm-start 31-03-2021*/
+    $("#masseneingabeSpeichernSrchMesssetelle").click(function() {
+        var inputCurrId = $("#inputCurrId").val();
+        var showPopupExist = $(inputCurrId).hasClass("isShowPopup");
+        //console.log($("#timeIntervalWerteEnergiedatenIMw").html());
+        if($("#tblMasseneingabeDataIMw").length !=0){
+                //if(showPopupExist==false){
+                    $(".save-msg-box").show();
+                    $("#masseneingabeSrchImg").show();
+                    setTimeout(function(){
+                        //if($("#intBdeConcernOrDeletePopUp").length ==0){
+                            var key = $(".infosMasseneingabeInside button.active").attr('data-id');
+                             saveToDBMasseneingabeEingaben(key);
+                        // }
+                    }, 300);
+                //}
+        }else{
+            alert("Please generate inputs first.");
+        }
+    });
+    /*new-mm-end 31-03-2021*/
 
     /*On change Einheit create Control System select option */
     $(".infosIntBetriebsdaten #einheitAnl,.infosIntBetriebsdaten #control_system").change(function() {
