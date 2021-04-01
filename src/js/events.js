@@ -583,27 +583,34 @@ $(document).ready(function() {
     /*new-mm-start 30-03-2021*/
     $("#btnMassEingPrdkt, #btnMassEingMesssetelle").click(function() {
 
-        
-
         if("btnMassEingPrdkt" == this.id){
             $("#infosMasseneingabePrdkt").css("display", "block");
             $("body").addClass('fullWidthMasseneingabe');
+            /*new-mm-start 01-04-2021*/
+            btnMasseneingabeIMwChangePrdkt(1,'infosMasseneingabeDateRangeDivPrdkt',6);
+            /*new-mm-end 01-04-2021*/
             datePickerForInterneBetriebsdatenAnlPrdkt('infosMasseneingabeDateRangeDivPrdkt',6);
             $("#tblMasseneingabeDataIMw").remove();
         }
         else if("btnMassEingMesssetelle" == this.id){
             $("#infosMasseneingabeMesssetelle").css("display", "block");
             $("body").addClass('fullWidthMasseneingabe');
+            /*new-mm-start 01-04-2021*/
+            btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDivMesssetelle',5);
+            /*new-mm-end 01-04-2021*/
             datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDivMesssetelle',5);
             $("#tblMasseneingabeDataIMw").remove();
         }
         else{
             $("#infosMasseneingabePrdkt").css("display", "block");
             $("body").addClass('fullWidthMasseneingabe');
+            /*new-mm-start 01-04-2021*/
+            btnMasseneingabeIMwChangePrdkt(1,'infosMasseneingabeDateRangeDivPrdkt',6);
+            /*new-mm-end 01-04-2021*/
             datePickerForInterneBetriebsdatenAnlPrdkt('infosMasseneingabeDateRangeDivPrdkt',6);
             $("#tblMasseneingabeDataIMw").remove();            
         }  
-        $("#infosIntEnergiedaten").css("display", "none")
+        $("#infosIntEnergiedaten").css("display", "none");
     });
     /*new-mm-end 30-03-2021*/
 
@@ -3765,6 +3772,14 @@ $("#DkFeSpeichern").click(function() {
 
         btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDiv',4);
         datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDiv',4);
+        /*new-mm-start 01-04-2021*/
+        btnMasseneingabeIMwChangePrdkt(1,'infosMasseneingabeDateRangeDivPrdkt',6);
+        datePickerForInterneBetriebsdatenAnlPrdkt('infosMasseneingabeDateRangeDivPrdkt',6);
+        btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDivMesssetelle',5);
+        datePickerForInterneBetriebsdaten('infosMasseneingabeDateRangeDivMesssetelle',5);
+        /*new-mm-end 01-04-2021*/
+
+
         //30-09-2020 On change #zeitintervallAnl select option
         /*$('.txtBoxSrch').click(function(){
             console.log(this);
@@ -5276,7 +5291,7 @@ $("#DkFeSpeichern").click(function() {
 
     /*new-mm-start 31-03-2021*/
     $("#btnTageMasseneingabeIMwNwMesssetelle,#btnWochenMasseneingabeIMwNwMesssetelle,#btnMonateMasseneingabeIMwNwMesssetelle,#btnJahreMasseneingabeIMwNwMesssetelle").click(function(){
-           $(".infosMasseneingabeInside button").removeClass('active');
+            $(".infosMasseneingabeInside button").removeClass('active');
             $("#tblMasseneingabeDataIMw").remove();
             $("#intBdeConcernOrDeletePopUp").remove();
             if(this.id =="btnTageMasseneingabeIMwNwMesssetelle"){
