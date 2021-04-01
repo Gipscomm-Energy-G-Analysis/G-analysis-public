@@ -20505,8 +20505,9 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
 }
 /*new-mm-end 23-03-2021*/
 /*Concern Delete popup for the search functionality 05-10-2020*/
-function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
-   $("#intBdeConcernOrDeletePopUp").remove();
+/*new-mm-start 01-04-2021*/
+function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) { 
+   $("#intBdeConcernOrDeletePopUp").remove();   
    $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none;'> <p>Warnung: Sie haben einen Wert besetzt, <br>der nicht mit der bereits gesetzten Datenlagen<br>in der Abfolge übereinstimmen kann.</p><div id='intBdeConcernOrDeletePopUpDiv'><button id='intBdeConcern' >Concern</button><button id='intBdeDelete'>Delete</button></div></div>").dialog({
             height: 250,
             width: 450,
@@ -20521,9 +20522,9 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
             effect: "fade",
             duration: 500
         },
-        open: function(event, ui) {
-            $("#intBdeConcern").on("click", function() {
-
+        open: function(event, ui) {    
+            $("#intBdeConcern").on("click", function() { 
+                
                 var inputCurrId = $("#inputCurrId").val();
                 var inputCurPrevId = $("#inputCurPrevId").val();
                 var inputBottomCurrId = $("#inputBottomCurrId").val();
@@ -20533,25 +20534,25 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 $("" + prevID + "").removeClass("isShowPopup");
                 $("#inputValBottomCurr").val("");    //new
                 $("#inputCurrId").val("");           //new
-
+                
                 $("" + inputCurrId + "").removeClass("isShowPopup");
                 $("#intBdeConcernOrDeletePopUp").remove();
-                if(currInputID==0){
-                   $("#inputPrevValDB").val("");
+                if(currInputID==0){ 
+                   $("#inputPrevValDB").val("");  
                 }
                 var inputDeleteBotmId = $("#inputDeleteBotmId").val();
                 var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
                 var date =$(""+inputDeleteBotmId+"").closest('td').attr("date");
-
-                saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs);
+                
+                saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs); 
                 if(anlageObj[rowMstID]){
                     var inputCountLength = anlageObj[rowMstID].length;
                     if(inputCountLength>4){
                         checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                     }
-                }
+                }                
                 $($("#inputFocusedId").val()).focus();
-
+                $("#masseneingabeSpeichernSrch").prop("disabled", false);
                 //$($("#inputFocusedId").val()).change();
             });
             $("#intBdeDelete").on("click", function() {
@@ -20565,21 +20566,16 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 $("" + inputCurrId + "").focus();
                 $("" + prevID + "").removeClass("isShowPopup");
                 $("" + inputCurrId + "").removeClass("isShowPopup");
-                $("#intBdeConcernOrDeletePopUp").remove();
+                $("#intBdeConcernOrDeletePopUp").remove(); 
                 var currInputID = $("#currInputID").val();
                 var rowMainIDDs = $("#rowMainIDDs").val();
-                if (typeof anlageObj[rowMstID] != "undefined" && anlageObj[rowMstID] != null && anlageObj[rowMstID].length != null && anlageObj[rowMstID].length > 0) {
-                    var inputCountLength = anlageObj[rowMstID].length;
-                    /*if(inputCountLength>5){
-                        //getLastInputValuesByCurrent(rowMainIDDs,rowMstID);
-                    }*/
-                 }
+                $("#masseneingabeSpeichernSrch").prop("disabled", false);
             });
          }
-    });
+    }); 
     $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
 }
-
+/*new-mm-end 01-04-2021*/
 
 function checkPositiveValue(val){
     if (val>0) {
