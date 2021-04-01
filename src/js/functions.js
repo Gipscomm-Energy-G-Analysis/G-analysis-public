@@ -16357,6 +16357,11 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
                     $("." + sId + " #wochenWMassEingDataAnlEnde2").val(a[0].endWeek);
                 }
 
+            /*new-mm-start 01-04-2021*/
+            $("." + sId + " .control_system_div").show();
+            $("." + sId + " #control_system").val(a[0]['einheitControlSys']);
+            /*new-mm-end 01-04-2021*/  
+
         }
     })
 }
@@ -16591,7 +16596,9 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
             startDate:startDate,
             endDate:endDate,
             ending:$("." + sId + " #anlIMwNoEnding").val(),
+            /*new-mm-start 01-04-2021*/
             einheitControlSys:$("." + sId + " #control_system").val(),
+            /*new-mm-end 01-04-2021*/
         },
         success: function(a) {
             alert("Verlauf erfolgreich aktualisiert");
