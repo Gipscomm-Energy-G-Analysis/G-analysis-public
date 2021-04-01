@@ -20553,6 +20553,10 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 }                
                 $($("#inputFocusedId").val()).focus();
                 $("#masseneingabeSpeichernSrch").prop("disabled", false);
+                /*new-mm-start 01-04-2021*/
+                $("#masseneingabeSpeichernSrchPrdkt").prop("disabled", false);
+                $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled", false);
+                /*new-mm-end 01-04-2021*/
                 //$($("#inputFocusedId").val()).change();
             });
             $("#intBdeDelete").on("click", function() {
@@ -20570,6 +20574,10 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 var currInputID = $("#currInputID").val();
                 var rowMainIDDs = $("#rowMainIDDs").val();
                 $("#masseneingabeSpeichernSrch").prop("disabled", false);
+                /*new-mm-start 01-04-2021*/
+                $("#masseneingabeSpeichernSrchPrdkt").prop("disabled", false);
+                $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled", false);
+                /*new-mm-end 01-04-2021*/
             });
          }
     }); 
