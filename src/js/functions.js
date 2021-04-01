@@ -19227,7 +19227,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
             async: !0,
             url: "php/getManuellInterneData.php",
             data: {
-                id: "masseneingabeSearch",
+                id: "masseneingabePrdktSearch",
                 nameDB: $("#nameDB").val(),
                 startDate: startDate,
                 endDate:endDate,

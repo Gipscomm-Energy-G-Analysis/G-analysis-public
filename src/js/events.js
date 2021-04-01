@@ -4495,7 +4495,10 @@ $("#DkFeSpeichern").click(function() {
              //console.log(e);
                 if($('#intBdeConcernOrDeletePopUp').length==0){
                     $("#masseneingabeSpeichernSrch").prop("disabled",false);
-                    saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs); 
+                    /*mm-issue 01-04-2021*/
+                    //saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs);
+                    /*mm-issue 01-04-2021*/
+
                 }
             e.stopPropagation();
             
