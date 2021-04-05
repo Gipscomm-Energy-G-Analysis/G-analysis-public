@@ -464,25 +464,34 @@ elseif($id == 'masseneingabePrdktSearch'){
 		      $startWeek ='';
 		      $endWeek ='';
 	    }
-			$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
-			$query1 .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-			$query1 .= "ON T1.mst_ID = T2.mst_ID ";
-			$query1 .= "WHERE T1.messartMst = 'manuell' ";
-			$query1 .= "AND T1.deleted <> 'true' ";
+			//$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
+	        $query1 = "SELECT * FROM produktionsAnlagenMoreOpt As T1 ";
+			$query1 .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
+			$query1 .= "ON T1.prd_id = T2.prd_id ";
+			$query1 .= "AND T1.anl_id = T2.anl_id ";
+			//$query1 .= " LEFT JOIN produkte AS T3 ON T1.prd_id = T3.prd_ID";
+    		$query1 .= " LEFT JOIN anlagen AS T4 ON T1.anl_id = T4.anl_ID";
+   			$query1 .= " WHERE T1.type = 2";
+			//$query1 .= "WHERE T1.messartMst = 'manuell' ";
+			//$query1 .= "AND T1.deleted <> 'true' ";
+			
 
-			/*new-mm-start 25-03-2021*/ 
-			/*use for show only energiedaten type*/
-			$query1 .= "AND T1.typ = 'energiedaten' ";
-			/*new-mm-end 25-03-2021*/
+			//$query1 .= "WHERE T1.deleted <> 'true' ";
+			//getback
+
+
+			/*use for show only betriebsdaten type*/
+			//$query1 .= "AND T1.typ = 'betriebsdaten' ";
+
 
 			$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
 			$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
-			$query1 .= "ORDER BY T1.mst_ID ASC";
+			$query1 .= "ORDER BY T1.prd_id ASC";
 
-			$query2 = "SELECT * FROM masseneingabeSucheIMw ";
+			$query2 = "SELECT * FROM masseneingabeSuchePrdIMw ";
 			$query2 .= "WHERE type = '$zeitintervallAnl' ";
 
-			$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
+			$query3 = "SELECT * FROM masseneingabeSucheBetriebsPrdIMw ";
 			$query3 .= "WHERE type = '$zeitintervallAnl' ";
 
 			//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";

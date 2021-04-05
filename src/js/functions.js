@@ -19265,7 +19265,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                             $row += '<tr><td>Anlage</td>';
                             for (var r = 0; r <= days; r++){
 
-                                  $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
+                                  $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
 
 
                             }
@@ -19274,7 +19274,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                     }
 
                     for (var e = 0; e < b; e++){
-                       $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                       $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
                            //console.log(anlageObj[a.query1[e].mst_ID]);
                            //console.log(anlageObj);
                            var datesOfArr = [];
@@ -19303,13 +19303,13 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                                     }
                                     p++;
                                 }
-                                var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
-                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup '+z+'" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
+                                var inputVal = findArrValueByDatePrdkt(dateArr[r],a.query1[e].prd_anl_id,a.query2);
+                                $row += '<td data-id="'+a.query1[e].id+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup '+z+'" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
                                 if(inputVal !=''){
                                      datesOfArr.push(dateArr[r]);
-                                    anlageObj[a.query1[e].mst_ID]=datesOfArr;
+                                    anlageObj[a.query1[e].id]=datesOfArr;
                                 }else{
-                                    anlageObj[a.query1[e].mst_ID]=datesOfArr;
+                                    anlageObj[a.query1[e].id]=datesOfArr;
                                 }
                             }
 
@@ -19336,8 +19336,8 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                                 if(n !== 'disabled'){
                                     rdOnly = 'readonly';
                                 }
-                               var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
-                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                               var inputVal = findArrValueByDate(dateArr[r],a.query1[e].id,a.query3);
+                                $row += '<td data-id="'+a.query1[e].id+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
                             }
                         $row += '</tr>';
                     }
@@ -19384,7 +19384,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                                                 m='disabled';
                                              }
                                         }
-                                    $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + i + ' KW ' + yr + '</th>';
+                                    $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">' + i + ' KW ' + yr + '</th>';
                                     if(i>=53){
                                         var g=1;
                                     }
@@ -19404,7 +19404,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                         var s1 =s2=  to1[0]; //second week selected value
                         var t1 =t2=  to1[1]; //second year input text value
 
-                             $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                             $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
                              var count1 = 0;
                              for (var r1 = 0; r1 <= years; r1++){
                                 var m='disabled';
@@ -19444,15 +19444,15 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                                                  }
                                             }
                                         }
-                                        var inputVal =  findArrValueByDateWeek(yr1,i1,a.query1[e].mst_ID,a.query2);
-                                        $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + i1 + '-' + yr1 + '"><input type="text" id="anlageMainRow_'+count1+'" name="masseneingabeInput'+i1+'[]" '+m+' class="txtBoxSrch isShowPopup" value="'+inputVal+'"/></td>';
+                                        var inputVal =  findArrValueByDateWeek(yr1,i1,a.query1[e].id,a.query2);
+                                        $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + i1 + '-' + yr1 + '"><input type="text" id="anlageMainRow_'+count1+'" name="masseneingabeInput'+i1+'[]" '+m+' class="txtBoxSrch isShowPopup" value="'+inputVal+'"/></td>';
                                         if(i1>=53){
                                             var g1=1;
                                            // console.log('i1='+i1);
                                         }
                                         if(inputVal !=''){
                                                 weekOfArr.push(String(i1 + '-' + yr1));
-                                                anlageObj[a.query1[e].mst_ID]=weekOfArr;
+                                                anlageObj[a.query1[e].id]=weekOfArr;
                                         }/*else{
                                             anlageObj[a.query1[e].mst_ID]=weekOfArr;
                                         }*/
@@ -19506,8 +19506,8 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                                         if(m !== 'disabled'){
                                             rdOnly = 'readonly';
                                         }
-                                         var inputVal =  findArrValueByDateWeek(yr2,i2,a.query1[e].mst_ID,a.query3);
-                                        $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                                         var inputVal =  findArrValueByDateWeek(yr2,i2,a.query1[e].id,a.query3);
+                                        $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
                                         if(i2>=53){
                                             var g2=1;
                                            // console.log('i2='+i2);
@@ -19551,14 +19551,14 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                         if(e==0) {
                             $row += '<tr><td>Anlage</td>';
                             for (var r = 0; r <= months; r++){
-                                $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
+                                $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
                             }
                             $row += '</tr>';
                       }
                     }
                     var monthOfArr=[];
                     for (var e = 0; e < b; e++){
-                       $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                       $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
                         for (var r = 0; r <= months; r++){
                             var n='';
                             if(a.query1[e].ending ==0){
@@ -19573,13 +19573,13 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                                      n='disabled';
                                 }
                             }
-                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].id,a.query2);
+                            $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
                             if(inputVal !=''){
                                 monthOfArr.push(dateArr[r]);
-                                anlageObj[a.query1[e].mst_ID]=monthOfArr;
+                                anlageObj[a.query1[e].id]=monthOfArr;
                             }else{
-                                anlageObj[a.query1[e].mst_ID]=monthOfArr;
+                                anlageObj[a.query1[e].id]=monthOfArr;
                             }
                         }
                         $row += '</tr>';
@@ -19602,8 +19602,8 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                             if(n !== 'disabled'){
                                 rdOnly = 'readonly';
                             }
-                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].id,a.query3);
+                            $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
                         }
                         $row += '</tr>';
                     }
@@ -19621,14 +19621,14 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                             $row += '<tr><td>Anlage</td>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(startDate) + eval(r);
-                                $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
+                                $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">' + yr + '</th>';
                             }
                             $row += '</tr>';
                         }
                     }
                     var yearOfArr = [];
                     for (var e = 0; e < b; e++){
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
 
                         for (var r = 0; r <= years; r++){
                             let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
@@ -19646,13 +19646,13 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                                      t='disabled';
                                 }
                              }
-                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query2);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].id,a.query2);
+                            $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
                             if(inputVal !=''){
                                 yearOfArr.push(String(yearsBw[r]));
-                                anlageObj[a.query1[e].mst_ID]=yearOfArr;
+                                anlageObj[a.query1[e].id]=yearOfArr;
                             }else{
-                                anlageObj[a.query1[e].mst_ID]=yearOfArr;
+                                anlageObj[a.query1[e].id]=yearOfArr;
                             }
                             //console.log(anlageObj);
                         }
@@ -19679,8 +19679,8 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                             if(t !== 'disabled'){
                                 rdOnly = 'readonly';
                             }
-                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query3);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].id,a.query3);
+                            $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
                         }
                         $row += '</tr>';
                     }
@@ -20307,7 +20307,69 @@ function saveToDBMasseneingabeEingaben(key){
                     }
                 });
     }
+/*new-mm-start 05-04-2021*/
+function saveToDBMasseneingabePrdkt(key){
 
+        var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
+        var postDataEnabled =new Array();
+        var enabledRow = [];
+            $('#tblMasseneingabeDataIMwTbl tbody tr.enabledRow').each(function (index) {
+                enabledRow[index] = {};
+                $('td', this).each(function() {
+                    textValEnabled = $(this).find('input').val();
+                    mstIDEnabled = $(this).attr("data-id");
+                    dateEnabled = $(this).attr("date");
+                    enabledRow.push({
+                        'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
+                     });
+                });
+            });
+            var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
+            var postDataDisabled =new Array();
+            var disabledRow = [];
+             $('#tblMasseneingabeDataIMwTbl tbody tr.disabledRow').each(function (index) {
+                 disabledRow[index] = {};
+                $('td', this).each(function() {
+                    textValDisabled = $(this).find('input').val();
+                    mstIDDisabled = $(this).attr("data-id");
+                    dateDisabled = $(this).attr("date");
+                    disabledRow.push({
+                        'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
+                     });
+                });
+            });
+
+             var postDataEnabled = JSON.stringify(enabledRow);
+             var postDataDisabled = JSON.stringify(disabledRow);
+             $("#masseneingabeSpeichernSrch").prop('disabled',true);
+               $.ajax({
+                    type: "POST",
+                    url: "php/saveMasseneingabeEingaben.php",
+                    async: false,
+                    dataType: 'json',
+                    data:{
+                      modus: "savePrdkt",
+                      nameDB: $("#nameDB").val(),
+                      postDataEnabled: postDataEnabled,
+                      postDataDisabled:postDataDisabled,
+                      key:key
+                    },
+                    fail: function() {
+                        alert("failed!!")
+                    },
+                    success: function(a) {
+                       /*new-mm-start 22-03-2021*/
+                        $("#masseneingabeSpeichernSrch").prop('disabled',false);
+                        if(a.length >0){
+                            $(".save-msg-box").append(a);
+                            $(".save-msg-box").fadeOut(3000, function() { $(this).text(""); });
+                        }
+                        $("#masseneingabeSrchImg").hide();
+                        /*new-mm-end 22-03-2021*/
+                    }
+                });
+    }
+/*new-mm-end 05-04-2021*/
 
 function resetSearchFormMasseneingabe(sId){
     $("." + sId + " .zeitintervallAnl_1").val("");
@@ -20617,6 +20679,30 @@ function findArrValueByDateWeek(date,week,mst_ID,arrName){
     });
     return inpVal;
 }
+
+/*new-mm-start 05-04-2021*/
+function findArrValueByDatePrdkt(date,mst_ID,arrName){
+    let inpVal='';
+    const index = arrName.findIndex((element, index) => {
+      if (element.on_date == date && element.mst_ID == mst_ID) {
+         inpVal += element.val;
+      }
+    });
+    return inpVal;
+}
+/*new-mm-end 05-04-2021*/
+
+/*new-mm-start 05-04-2021*/
+function findArrValueByDateWeekPrdkt(date,week,mst_ID,arrName){
+    let inpVal='';
+    const index = arrName.findIndex((element, index) => {
+      if (element.on_date == date && element.mst_ID == mst_ID && element.on_week == week) {
+         inpVal += element.val;
+      }
+    });
+    return inpVal;
+}
+/*new-mm-end 05-04-2021*/
 
 function resetInputsSearchMasseneingabe(){
     $("#inputCurPrevId").val("");

@@ -6170,7 +6170,7 @@ $("#DkFeSpeichern").click(function() {
                     setTimeout(function(){
                         //if($("#intBdeConcernOrDeletePopUp").length ==0){
                             var key = $(".infosMasseneingabeInside button.active").attr('data-id');
-                             saveToDBMasseneingabeEingaben(key);
+                             saveToDBMasseneingabePrdkt(key);
                         // }
                     }, 300);
                 //}
