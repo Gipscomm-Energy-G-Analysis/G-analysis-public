@@ -477,8 +477,6 @@ elseif($id == 'masseneingabePrdktSearch'){
 			
 
 			//$query1 .= "WHERE T1.deleted <> 'true' ";
-			//getback
-
 
 			/*use for show only betriebsdaten type*/
 			//$query1 .= "AND T1.typ = 'betriebsdaten' ";
