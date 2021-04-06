@@ -586,6 +586,10 @@ $(document).ready(function() {
         if("btnMassEingPrdkt" == this.id){
             $("#infosMasseneingabePrdkt").css("display", "block");
             $("body").addClass('fullWidthMasseneingabe');
+            /*new-mm-start 06-04-2021*/
+            $('.infosMasseneingabeInside button').removeClass('active');
+            $('#btnTageMasseneingabeIMwNwPrdkt').addClass('active');
+            /*new-mm-end 06-04-2021*/
             /*new-mm-start 01-04-2021*/
             btnMasseneingabeIMwChangePrdkt(1,'infosMasseneingabeDateRangeDivPrdkt',6);
             /*new-mm-end 01-04-2021*/
@@ -595,6 +599,10 @@ $(document).ready(function() {
         else if("btnMassEingMesssetelle" == this.id){
             $("#infosMasseneingabeMesssetelle").css("display", "block");
             $("body").addClass('fullWidthMasseneingabe');
+            /*new-mm-start 06-04-2021*/
+            $('.infosMasseneingabeInside button').removeClass('active');
+            $('#btnTageMasseneingabeIMwNwMesssetelle').addClass('active');
+            /*new-mm-end 06-04-2021*/
             /*new-mm-start 01-04-2021*/
             btnMasseneingabeIMwChange(1,'infosMasseneingabeDateRangeDivMesssetelle',5);
             /*new-mm-end 01-04-2021*/
@@ -3751,6 +3759,11 @@ $("#DkFeSpeichern").click(function() {
             $('#tblMstOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
             //produkteDataTable();
             //resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
+            /*new-mm-start 06-04-2021*/
+            $("#btnMassEingPrdkt").show();
+            $("#btnMassEingMesssetelle").hide();  
+            $('input:radio[name=BetriebsdatenFilter]').change();
+            /*new-mm-end 06-04-2021*/
             produkteAnlargeDataTable();
 
         });
@@ -4297,7 +4310,7 @@ $("#DkFeSpeichern").click(function() {
             }
             if(this.value ==''){
                 //console.log('000');
-                deleteFromDBMasseneingabeEingabenSingleInput(zeitIntervallAnl,date,mst_id);
+                deleteFromDBMasseneingabeEingabenSingleInputPrdkt(zeitIntervallAnl,date,mst_id);
             }
             //console.log(anlageObj);
             if(anlageObj[mst_id]){

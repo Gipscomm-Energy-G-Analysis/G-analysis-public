@@ -16956,7 +16956,15 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             }
                 validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
             if(id==1){
-               // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+                /*new-mm-start 06-04-2021*/
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                   
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                   alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
+                } 
+                /*new-mm-start 06-04-2021*/   
+                // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
             }
         }
     });
@@ -17195,6 +17203,16 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
           if(id == 1){
             var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
             var mstID = $("#mstID").val();var date = $(this).val();
+
+            /*new-mm-start 06-04-2021*/
+            if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+               
+            }
+            if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+               alertValidationforStartEndeDate(mstID,date,type);
+            } 
+            /*new-mm-start 06-04-2021*/
+
            // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,type);
           }
 
@@ -17208,6 +17226,16 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
              if(id==1){
                 var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
                 var mstID = $("#mstID").val();var date = $(this).val();
+
+                /*new-mm-start 06-04-2021*/
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                   
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                   alertValidationforStartEndeDate(mstID,date,type);
+                } 
+                /*new-mm-start 06-04-2021*/ 
+
               //  alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,type);
              }
            $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker("option","maxDate", selected)
@@ -21452,6 +21480,34 @@ function deleteFromDBMasseneingabeEingabenSingleInput(key,currentDate,mstID){
             });
 }
 /*new-mm-end 22-03-2021*/
+
+/*new-mm-start 06-04-2021*/
+function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID){
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "deleteCurrentInputPrdkt",
+                  nameDB: $("#nameDB").val(),
+                  currentDate: currentDate,
+                  mstID:mstID,
+                  key:key
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+                    if(a==1){
+                        setTimeout(function(){
+                            $("#masseneingabeSpeichernSrchprdkt").prop("disabled",false);
+                        }, 300);
+                    }
+                }
+            });
+}
+/*new-mm-end 06-04-2021*/
 
     /*19-02-2021 interne Energiedaten Betriebsdaten table show hide*/
     /* function interneEBTblShowHide(id){
