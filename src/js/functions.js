@@ -16923,9 +16923,9 @@ function datePickerForInterneBetriebsdaten(sId,id){
 
 /*datePickerForInterneBetriebsdatenAnlPrdkt*/
 
-/*Produkte mm 01-03-2021*/
-/*new-mm-start */
+/* Produkte/Messsetelle mm 01-03-2021*/
 /*Validation for the start date and end date*/
+/*new-mm-start 06-04-2021*/
 function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
     $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+"").datepicker({
         dateFormat: 'mm.yy',
@@ -16957,14 +16957,16 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                 validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
             if(id==1){
                 /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();                
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
-                   
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
-                   alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
                 } 
-                /*new-mm-start 06-04-2021*/   
-                // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+                /*new-mm-start 06-04-2021*/
             }
         }
     });
@@ -17006,7 +17008,17 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             }
                 validateZeitintervallAnlPrdktSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
             if(id==1){
-               // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();                
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                } 
+                /*new-mm-start 06-04-2021*/
             }
         }
     });
@@ -17048,7 +17060,17 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             }
                 validateZeitintervallAnlPrdktSelectOpt(start3,end3,zeitintervallAnl,sId,id);
             if(id==1){
-               // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();                
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                } 
+                /*new-mm-start 06-04-2021*/
             }
         }
     });
@@ -17089,7 +17111,17 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             }
             validateZeitintervallAnlPrdktSelectOpt(start4,end4,zeitintervallAnl,sId,id);
             if(id==1){
-               // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),this.value,zeitintervallAnl);
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();                
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                } 
+                /*new-mm-start 06-04-2021*/
             }
         }
     });
@@ -17135,7 +17167,22 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                 var week= $("." + sId + " #wochenWMassEingDataAnlPrdktStart1").val();
                 if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
                     var date = week+'-'+this.value;
-                 //   alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,zeitintervallAnl);
+
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();
+                //var date = $(this).val();                
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                } 
+                /*new-mm-start 06-04-2021*/
+
+
+                 
                 }
             }
         }
@@ -17180,7 +17227,20 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                 var week= $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val();
                 if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
                     var date = week+'-'+this.value;
-                  //  alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,zeitintervallAnl);
+                
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();
+                //var date = $(this).val();                
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                } 
+                /*new-mm-start 06-04-2021*/
+
                 }
             }
         }
@@ -17205,15 +17265,15 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             var mstID = $("#mstID").val();var date = $(this).val();
 
             /*new-mm-start 06-04-2021*/
+            var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
             if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
-               
+               /*getback*/
+                alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
             }
             if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
-               alertValidationforStartEndeDate(mstID,date,type);
+                alertValidationforStartEndeDateMesssetelle(mstID,date,type);
             } 
             /*new-mm-start 06-04-2021*/
-
-           // alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,type);
           }
 
           $("." + sId + " #tageMassEingDataAnlPrdktEnde" +id+ "").datepicker("option","minDate", selected)
@@ -17228,21 +17288,22 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                 var mstID = $("#mstID").val();var date = $(this).val();
 
                 /*new-mm-start 06-04-2021*/
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
-                   
+                   /*getback*/
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
-                   alertValidationforStartEndeDate(mstID,date,type);
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
                 } 
                 /*new-mm-start 06-04-2021*/ 
 
-              //  alertValidationforPrdktStartEndeDate($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),date,type);
              }
            $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker("option","maxDate", selected)
         }
     });
 }
-/* new-mm-end */
+/*new-mm-start 06-04-2021*/
 
 /* Produkte DataTable Old Cross Apply Query mm 25-02-2021*/
 /* new-mm-start */
@@ -21293,26 +21354,55 @@ function alertValidationforStartEndeDate(mstID,date,type){
                 var b=a.length;
                 console.log(a);
                 if(b>0){
-                   alert('Selected date value already filled up in record list. Please select other date.');
-                   keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
+                    alert('Selected date value already filled up in record list. Please select other date.');
+                    keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
                 }
             }
         });
 }
-
-/*Prodkte mm 01-03-2021*/
-/*new-mm-start 22-03-2021*/
-function alertValidationforPrdktStartEndeDate(prd_ID,anl_Col,anl_ID,date,type){
+/*new-mm-start 06-04-2021*/
+function alertValidationforStartEndeDateMesssetelle(mstID,date,type){
         $.ajax({
             type: "POST",
             async: !0,
             url: "php/getManuellInterneData.php",
             data: {
-                id: "startDateRangeCheckValidation_",
+                id: "startDateRangeCheckValidation",
                 nameDB: $("#nameDB").val(),
-                prd_ID: prd_ID,
-                anl_Col:anl_Col,
-                anl_ID:anl_ID,
+                mstID: mstID,
+                date: date,
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                var b=a.length;
+                console.log(a);
+                if(b>0){
+                    alert('Selected date value already filled up in record list. Please select other date.');
+                    /*new-mm-start 06-04-2021*/
+                    if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                        MesssetelleListingDblClickRow(mstID,'infosIntEnergiedaten');
+                    }                   
+                    /*new-mm-end 06-04-2021*/
+                }
+            }
+        });
+}
+/*new-mm-end 06-04-2021*/
+/*Prodkte mm 01-03-2021*/
+/*new-mm-start 22-03-2021*/
+function alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startDateRangeCheckValidationPrdkt",
+                nameDB: $("#nameDB").val(),
+                prd_anl_ID: prd_anl_ID,
                 date: date,
                 type:type
                 },

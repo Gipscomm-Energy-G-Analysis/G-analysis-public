@@ -687,7 +687,46 @@ elseif($id == 'masseneingabeAlertRangeMinMax'){
 	$query .= "AND on_date = '$date' ";
 	$query .= "AND on_week = '$week'";
 
-}else if($id == 'startEndDateEinheitTypeCheckValidation'){
+}
+/*new-mm-start 06-04-2021*/
+else if($id == 'startDateRangeCheckValidationPrdkt'){
+  $type = $_POST['type'];
+  $prd_anl_ID = $_POST['prd_anl_ID'];
+
+  if($type==1){
+  	  $postDate = $_POST['date'];
+	  $dateExplode =explode(".", $postDate);
+	  $arrStart[] = $dateExplode[2];
+	  $arrStart[] = $dateExplode[1];
+	  $arrStart[] = $dateExplode[0];
+	  $date = implode("-",$arrStart);
+	  $week ='';
+    }else if($type==2){
+	      $postDate = $_POST['date'];
+	      $dateExplode =explode("-", $postDate);
+	      $week = $dateExplode[0];
+	      $date = $dateExplode[1];
+    }else if($type==3){
+	      $postDate = $_POST['date'];
+	      $dateExplode =explode(".", $postDate);
+	      $arrStart[] = $dateExplode[1];
+	      $arrStart[] = $dateExplode[0];
+	      $date = implode("-",$arrStart);
+	      $week ='';
+    }else{
+	      $date =$_POST['date'];
+	      $week ='';
+    }
+	$query = "SELECT * FROM masseneingabeSuchePrdIMw ";
+	$query .= "WHERE type = '$type' ";
+	$query .= "AND prd_anl_ID = '$prd_anl_ID' ";
+	$query .= "AND on_date = '$date' ";
+	$query .= "AND on_week = '$week'";
+
+}
+/*new-mm-end 06-04-2021*/
+
+else if($id == 'startEndDateEinheitTypeCheckValidation'){
 	//print_r($_POST);die;
 	$type = $_POST['type'];
 	if($type==1){
@@ -982,7 +1021,14 @@ else if($id == 'masseneingabeAlertRangeMinMax'){
 }else if($id == 'startDateRangeCheckValidation'){
   $records = queryDB($conn, $query, "read");
   echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-}else if($id == 'startEndDateEinheitTypeCheckValidation'){
+}
+/*new-mm-start 06-04-2021*/
+else if($id == 'startDateRangeCheckValidationPrdkt'){
+  $records = queryDB($conn, $query, "read");
+  echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+}
+/*new-mm-start 06-04-2021*/
+else if($id == 'startEndDateEinheitTypeCheckValidation'){
   $records = queryDB($conn, $query, "read");
   echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }else if($id == 'startEndDatecontrolSysTypeCheckValidation'){
