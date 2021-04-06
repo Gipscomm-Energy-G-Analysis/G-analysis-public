@@ -18218,6 +18218,11 @@ function resetFormAllgemein(sId,id){
     $("." + sId + " #anlIMwNoEnding").prop('checked', false);
     $("." + sId + " .zeitintervallAnl_1 input").val("");
     $("." + sId + " .zeitintervallAnl_2 input").val("");
+    /*new-mm-start 06-4-2021*/
+    //$("." + sId + " .zeitintervallAnl_2 select").val("").change();
+    $("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val("").change();
+    $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val("").change();
+    /*new-mm-end 06-04-2021*/
     $("." + sId + " .zeitintervallAnl_3 input").val("");
     $("." + sId + " .zeitintervallAnl_4 input").val("");
     $("." + sId + " #zeitintervallAnl").val("");
