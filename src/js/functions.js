@@ -15642,7 +15642,7 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
             },
             success: function(a) {
                 a = JSON.parse(a);
-                var b = a.length;console.log(a);
+                var b = a.length;//console.log(a);
                 tblAnlOhneZeitintervallIMwSuchen.clear().draw();
                     for (var e = 0; e < b; e++){
                         /*new-mm-start 26-03-2021*/
@@ -16335,7 +16335,7 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
         success: function(a) {
             a = JSON.parse(a);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             $("." + sId + " #anlIMw").val(a[0].anlIMw);
             $("." + sId + " #anlNrIMw").val(a[0].anlNrIMw);
             $("." + sId + " #zeitintervallAnl").val(a[0].zeitintervallAnl);
@@ -17267,7 +17267,7 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             /*new-mm-start 06-04-2021*/
             var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
             if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
-               /*getback*/
+               
                 alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
             }
             if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
@@ -17290,7 +17290,7 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                 /*new-mm-start 06-04-2021*/
                 var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
-                   /*getback*/
+                   
                     alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
@@ -17489,7 +17489,7 @@ function keinZeitIntervallZugewiesen(){
         },
         success: function(a) {
             a = JSON.parse(a);
-            var b = a.length;console.log(a);
+            var b = a.length;//console.log(a);
             tblAnlOhneZeitintervallIMw.clear().draw();
                 for (var e = 0; e < b; e++){
                     /*new-mm-start 26-03-2021*/
@@ -17631,7 +17631,7 @@ function produkteListingDblClickRow(Prd_Id,Anl_Col,Anl_Id,sId){
         success: function(e) {
             a = JSON.parse(e);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             if (b>0) {
 
                 $("#mstIMw").val(a[0]['namePrd']);
@@ -17673,7 +17673,7 @@ function produkteAnlageListingDblClickRow(Prd_Id,Anl_Col,Anl_Id,sId){
         success: function(e) {
             a = JSON.parse(e);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             if (b>0) {
 
 
@@ -17726,7 +17726,7 @@ function MesssetelleListingDblClickRow(mst_Id,sId){
         success: function(e) {
             a = JSON.parse(e);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             if (b>0) {
 
                 //$("." + sId + " #mstIMw").val(a[0]['nameMSt']).prop('disabled',false);
@@ -17822,7 +17822,7 @@ function searchProdukteAnlageIntBDE(checkboxSearch){
         success: function(a) {
             a = JSON.parse(a);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             tblMstOhneZeitintervallIMwMessstelle.clear().draw();
                 for (var e = 0; e < b; e++){
                     tblMstOhneZeitintervallIMwMessstelle.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
@@ -17875,7 +17875,7 @@ function searchImgMesssetelleIntBDE(checkboxSearch){
         success: function(a) {
             a = JSON.parse(a);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             tblMstOhneZeitintervallIMwMessstelleSuche.clear().draw();
                 for (var e = 0; e < b; e++){
                     tblMstOhneZeitintervallIMwMessstelleSuche.row.add( [a[e].T1_mst_ID, a[e].T1_nameMSt, a[e].T1_anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
@@ -17924,7 +17924,7 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
         success: function(e) {
             a = JSON.parse(e);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             if (b>0) {
                 var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
                 var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
@@ -18218,8 +18218,7 @@ function resetFormAllgemein(sId,id){
     $("." + sId + " #anlIMwNoEnding").prop('checked', false);
     $("." + sId + " .zeitintervallAnl_1 input").val("");
     $("." + sId + " .zeitintervallAnl_2 input").val("");
-    /*new-mm-start 06-4-2021*/
-    //$("." + sId + " .zeitintervallAnl_2 select").val("").change();
+    /*new-mm-start 06-04-2021*/
     $("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val("").change();
     $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val("").change();
     /*new-mm-end 06-04-2021*/
@@ -20788,7 +20787,7 @@ function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMst
                 if(anlageObj[rowMstID]){
                     var inputCountLength = anlageObj[rowMstID].length;
                     if(inputCountLength>4){
-                        checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
+                        checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                     }
                 }                
                 $($("#inputFocusedId").val()).focus();
@@ -21125,7 +21124,57 @@ function checkAlertRangeMinMaxServerSide(zeitintervallAnl,mstID,date,rowMainIDDs
         }
     });
 }
+/*new-mm-start 07-04-2021*/
+function checkAlertRangeMinMaxServerSidePrdkt(zeitintervallAnl,prdAnlID,date,rowMainIDDs){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeAlertRangeMinMaxPrdkt",
+                nameDB: $("#nameDB").val(),
+                prdAnlID: prdAnlID,
+                date:date,
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                //console.log(a);
+                // alert("test:checkAlertRangeMinMaxServerSidePrdkt");
+                var arr=[];
+                if(a.lastDBDates[0]){
+                 for (var i=0; i<a.lastDBDates.length; i++){
+                    if($.inArray(a.lastDBDates[i].on_date, anlageObj[prdAnlID]) === -1){
+                        anlageObj[prdAnlID].push(a.lastDBDates[i].on_date);
+                    }
+                 }
+                }
+                if($.inArray(date, anlageObj[prdAnlID]) === -1){
+                        anlageObj[prdAnlID].push(date);
+                }
+                if(a.values){
+                     for (i = 0; i <= a.values.length; i++) {
+                         if(a.values[i] !='' && typeof(a.values[i]) !='undefined'){
+                            arr.push(a.values[i].val);
+                            }
+                         }
+                     arr.sort(function(a, b) { return a - b });
 
+                    var minVal = arr[0]; // min
+                    var maxVal = arr[arr.length - 1]; // max
+                    $("#inputBotmMin").val(minVal);
+                    $("#inputBotmMax").val(maxVal);
+
+                }
+                //console.log(anlageObj);
+
+        }
+    });
+}
+/*new-mm-end 07-04-2021*/
 function checkAlertRangeLastInputValueExist(zeitintervallAnl,mstID,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId){
        $.ajax({
             type: "POST",
@@ -21169,7 +21218,51 @@ function checkAlertRangeLastInputValueExist(zeitintervallAnl,mstID,date,inputCur
         }
     });
 }
+/*new-mm-start 07-04-2021*/
+function checkAlertRangeLastInputValueExistPrdkt(zeitintervallAnl,prdAnlID,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId){
+       $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeAlertRangeLastInptValuePrdkt",
+                nameDB: $("#nameDB").val(),
+                prdAnlID: prdAnlID,
+                date:date,
+               /* checkDay:checkDay,*/
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                //console.log(a);
+                //alert("test:checkAlertRangeLastInputValueExistPrdkt");
+                if(a.bottom[0]){
+                var b = a.bottom[0].val.length;
+                if(b>0){
+                        var currTopVal = $(inputCurrTopId).val();
+                        if((currTopVal !='' && a.top[0].val !='') && (typeof(currTopVal) !='undefined' && typeof(a.top[0].val) !='undefined')){
+                            var calculate = currTopVal-a.top[0].val;
+                            $(inputCurrBottomId).val(calculate);
+                        }else{
+                            $(inputCurrBottomId).val("");
+                        }
+                        $("#inputPrevValDB").val(a.top[0].val);
+                        $("#inputPrevBtmValDB").val(a.bottom[0].val);
+                        $("#inputValBottomCurr").val($(inputCurrBottomId).val());
 
+                        /*add last prev value*/
+                        //$("#inputLastValDB").val(a.top[0].val);
+                        //$("#inputValBottomPrevLastDB").val(a.bottom[0].val);
+                        //checkAlertRangeMinMaxServerSide(zeitintervallAnl,mstID,date,rowMainIDDs,prevId);
+                }
+            }
+        }
+    });
+}
+/*new-mm-end 07-04-2021*/
 
 function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBottomId){
         //console.log('save running');
@@ -21194,8 +21287,8 @@ function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBo
         disabledRow.push({
             'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
          });
-        var postDataEnabled = JSON.stringify(enabledRow);console.log(postDataEnabled);
-        var postDataDisabled = JSON.stringify(disabledRow);console.log(postDataDisabled);
+        var postDataEnabled = JSON.stringify(enabledRow);//console.log(postDataEnabled);
+        var postDataDisabled = JSON.stringify(disabledRow);//console.log(postDataDisabled);
          //$("#masseneingabeSpeichernSrch").prop('disabled',true);
            $.ajax({
                 type: "POST",
@@ -21220,123 +21313,123 @@ function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBo
             });
     }
 
-    function saveToDBMasseneingabeEingabenSingleRow(key,rowMainIDEn,rowMainIDDs){
-        var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
-        var postDataEnabled =new Array();
-        var enabledRow = [];
-            $("#"+rowMainIDEn).each(function (index) {
-                enabledRow[index] = {};
-                $('td', this).each(function() {
-                    textValEnabled = $(this).find('input').val();
-                    mstIDEnabled = $(this).attr("data-id");
-                    dateEnabled = $(this).attr("date");
-                    enabledRow.push({
-                        'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
-                     });
-                });
+function saveToDBMasseneingabeEingabenSingleRow(key,rowMainIDEn,rowMainIDDs){
+    var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
+    var postDataEnabled =new Array();
+    var enabledRow = [];
+        $("#"+rowMainIDEn).each(function (index) {
+            enabledRow[index] = {};
+            $('td', this).each(function() {
+                textValEnabled = $(this).find('input').val();
+                mstIDEnabled = $(this).attr("data-id");
+                dateEnabled = $(this).attr("date");
+                enabledRow.push({
+                    'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
+                 });
             });
-            var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
-            var postDataDisabled =new Array();
-            var disabledRow = [];
-             $("#"+rowMainIDDs).each(function (index) {
-                 disabledRow[index] = {};
-                $('td', this).each(function() {
-                    textValDisabled = $(this).find('input').val();
-                    mstIDDisabled = $(this).attr("data-id");
-                    dateDisabled = $(this).attr("date");
-                    disabledRow.push({
-                        'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
-                     });
-                });
+        });
+        var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
+        var postDataDisabled =new Array();
+        var disabledRow = [];
+         $("#"+rowMainIDDs).each(function (index) {
+             disabledRow[index] = {};
+            $('td', this).each(function() {
+                textValDisabled = $(this).find('input').val();
+                mstIDDisabled = $(this).attr("data-id");
+                dateDisabled = $(this).attr("date");
+                disabledRow.push({
+                    'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
+                 });
             });
+        });
 
-             var postDataEnabled = JSON.stringify(enabledRow);
-             var postDataDisabled = JSON.stringify(disabledRow);
-             //$("#masseneingabeSpeichernSrch").prop('disabled',true);
-               $.ajax({
-                    type: "POST",
-                    url: "php/saveMasseneingabeEingaben.php",
-                    async: false,
-                    dataType: 'json',
-                    data:{
-                      modus: "saveCurrentRow",
-                      nameDB: $("#nameDB").val(),
-                      postDataEnabled: postDataEnabled,
-                      postDataDisabled:postDataDisabled,
-                      key:key
-                    },
-                    fail: function() {
-                        alert("failed!!")
-                    },
-                    success: function(a) {
+         var postDataEnabled = JSON.stringify(enabledRow);
+         var postDataDisabled = JSON.stringify(disabledRow);
+         //$("#masseneingabeSpeichernSrch").prop('disabled',true);
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "saveCurrentRow",
+                  nameDB: $("#nameDB").val(),
+                  postDataEnabled: postDataEnabled,
+                  postDataDisabled:postDataDisabled,
+                  key:key
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
 
-                       //alert(a);
-                       //$("#masseneingabeSpeichernSrch").prop('disabled',false);
-                       //$("#masseneingabeSrchImg").hide();
-                      /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
-                    }
-                });
-    }
-
-    /*new-mm-start 05-04-2021*/
-    function saveToDBMasseneingabeEingabenSingleRowPrdkt(key,rowMainIDEn,rowMainIDDs){
-        var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
-        var postDataEnabled =new Array();
-        var enabledRow = [];
-            $("#"+rowMainIDEn).each(function (index) {
-                enabledRow[index] = {};
-                $('td', this).each(function() {
-                    textValEnabled = $(this).find('input').val();
-                    mstIDEnabled = $(this).attr("data-id");
-                    dateEnabled = $(this).attr("date");
-                    enabledRow.push({
-                        'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
-                     });
-                });
+                   //alert(a);
+                   //$("#masseneingabeSpeichernSrch").prop('disabled',false);
+                   //$("#masseneingabeSrchImg").hide();
+                  /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
+                }
             });
-            var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
-            var postDataDisabled =new Array();
-            var disabledRow = [];
-             $("#"+rowMainIDDs).each(function (index) {
-                 disabledRow[index] = {};
-                $('td', this).each(function() {
-                    textValDisabled = $(this).find('input').val();
-                    mstIDDisabled = $(this).attr("data-id");
-                    dateDisabled = $(this).attr("date");
-                    disabledRow.push({
-                        'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
-                     });
-                });
+}
+
+/*new-mm-start 05-04-2021*/
+function saveToDBMasseneingabeEingabenSingleRowPrdkt(key,rowMainIDEn,rowMainIDDs){
+    var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
+    var postDataEnabled =new Array();
+    var enabledRow = [];
+        $("#"+rowMainIDEn).each(function (index) {
+            enabledRow[index] = {};
+            $('td', this).each(function() {
+                textValEnabled = $(this).find('input').val();
+                mstIDEnabled = $(this).attr("data-id");
+                dateEnabled = $(this).attr("date");
+                enabledRow.push({
+                    'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
+                 });
             });
+        });
+        var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
+        var postDataDisabled =new Array();
+        var disabledRow = [];
+         $("#"+rowMainIDDs).each(function (index) {
+             disabledRow[index] = {};
+            $('td', this).each(function() {
+                textValDisabled = $(this).find('input').val();
+                mstIDDisabled = $(this).attr("data-id");
+                dateDisabled = $(this).attr("date");
+                disabledRow.push({
+                    'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
+                 });
+            });
+        });
 
-             var postDataEnabled = JSON.stringify(enabledRow);
-             var postDataDisabled = JSON.stringify(disabledRow);
-             //$("#masseneingabeSpeichernSrch").prop('disabled',true);
-               $.ajax({
-                    type: "POST",
-                    url: "php/saveMasseneingabeEingaben.php",
-                    async: false,
-                    dataType: 'json',
-                    data:{
-                      modus: "saveCurrentRowPrdkt",
-                      nameDB: $("#nameDB").val(),
-                      postDataEnabled: postDataEnabled,
-                      postDataDisabled:postDataDisabled,
-                      key:key
-                    },
-                    fail: function() {
-                        alert("failed!!")
-                    },
-                    success: function(a) {
+         var postDataEnabled = JSON.stringify(enabledRow);
+         var postDataDisabled = JSON.stringify(disabledRow);
+         //$("#masseneingabeSpeichernSrch").prop('disabled',true);
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "saveCurrentRowPrdkt",
+                  nameDB: $("#nameDB").val(),
+                  postDataEnabled: postDataEnabled,
+                  postDataDisabled:postDataDisabled,
+                  key:key
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
 
-                       //alert(a);
-                       //$("#masseneingabeSpeichernSrch").prop('disabled',false);
-                       //$("#masseneingabeSrchImg").hide();
-                      /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
-                    }
-                });
-    }   
-    /*new-mm-end 05-04-2021*/
+                   //alert(a);
+                   //$("#masseneingabeSpeichernSrch").prop('disabled',false);
+                   //$("#masseneingabeSrchImg").hide();
+                  /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
+                }
+            });
+}   
+/*new-mm-end 05-04-2021*/
 
 /*Check alert validation for the start Date and end Date*/
 function alertValidationforStartEndeDate(mstID,date,type){
@@ -21357,7 +21450,7 @@ function alertValidationforStartEndeDate(mstID,date,type){
             success: function(a) {
                 a = JSON.parse(a);
                 var b=a.length;
-                console.log(a);
+                //console.log(a);
                 if(b>0){
                     alert('Selected date value already filled up in record list. Please select other date.');
                     keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
@@ -21384,7 +21477,7 @@ function alertValidationforStartEndeDateMesssetelle(mstID,date,type){
             success: function(a) {
                 a = JSON.parse(a);
                 var b=a.length;
-                console.log(a);
+                //console.log(a);
                 if(b>0){
                     alert('Selected date value already filled up in record list. Please select other date.');
                     /*new-mm-start 06-04-2021*/
@@ -21473,7 +21566,7 @@ function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate
                 alert("failed!!")
             },
             success: function(a){
-                a = JSON.parse(a); console.log(a);
+                a = JSON.parse(a); //console.log(a);
                 var b=a.length;
                 if(b>0){
                     alert('You could not set control system. Please select different dates.');

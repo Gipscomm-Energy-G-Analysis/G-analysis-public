@@ -618,7 +618,49 @@ elseif($id == 'masseneingabeAlertRangeMinMax'){
 		$query2 .= "Order by on_date DESC";
     }
 
-}elseif($id == 'masseneingabeAlertRangeLastInptValue'){
+}
+/*new-mm-start 07-04-2021*/
+elseif($id == 'masseneingabeAlertRangeMinMaxPrdkt'){
+	$type = $_POST['zeitintervallAnl'];
+	$prdAnlID = $_POST['prdAnlID'];
+	$date = $_POST['date'];
+
+	if($type==2){
+	    $expDate =explode("-", $date);
+	    $on_week = $expDate[0]; //week val
+	    $on_date = $expDate[1]; //year val
+
+	    $query1 = "SELECT TOP 5 val From masseneingabeSucheBetriebsPrdIMw ";
+		$query1 .= "WHERE type = '$type' ";
+		$query1 .= "AND prd_anl_ID = '$prdAnlID' ";
+		$query1 .= "AND on_date <= '$on_date' ";
+		$query1 .= "AND on_week <= '$on_week' ";
+		$query1 .= "Order by on_date,on_week DESC";
+
+		$query2 = "SELECT TOP 5 on_date FROM masseneingabeSuchePrdIMw ";
+		$query2 .= "WHERE type = '$type' ";
+		$query2 .= "AND prd_anl_ID = '$prdAnlID' ";
+		$query2 .= "AND on_date <= '$on_date' ";
+		$query2 .= "AND on_week <= '$on_week' ";
+		$query2 .= "Order by on_date,on_week DESC";
+    }else{
+		$query1 = "SELECT TOP 5 val From masseneingabeSucheBetriebsPrdIMw ";
+		$query1 .= "WHERE type = '$type' ";
+		$query1 .= "AND prd_anl_ID = '$prdAnlID' ";
+		$query1 .= "AND on_date <= '$date' ";
+		$query1 .= "Order by on_date DESC";
+
+		$query2 = "SELECT TOP 5 on_date FROM masseneingabeSuchePrdIMw ";
+		$query2 .= "WHERE type = '$type' ";
+		$query2 .= "AND prd_anl_ID = '$prdAnlID' ";
+		$query2 .= "AND on_date <= '$date' ";
+		$query2 .= "Order by on_date DESC";
+    }
+
+}
+/*new-mm-end 07-04-2021*/
+
+elseif($id == 'masseneingabeAlertRangeLastInptValue'){
 	$type = $_POST['zeitintervallAnl'];
 	$mstID = $_POST['mstID'];
 	$date = $_POST['date'];
@@ -653,7 +695,46 @@ elseif($id == 'masseneingabeAlertRangeMinMax'){
 		$query2 .= "Order by on_date DESC";
     }
 
-}else if($id == 'startDateRangeCheckValidation'){
+}
+/*new-mm-start 07-04-2021*/
+elseif($id == 'masseneingabeAlertRangeLastInptValuePrdkt'){
+	$type = $_POST['zeitintervallAnl'];
+	$prdAnlID = $_POST['prdAnlID'];
+	$date = $_POST['date'];
+	if($type==2){
+	    $expDate =explode("-", $date);
+	    $on_week = $expDate[0]; //week val
+	    $on_date = $expDate[1]; //year val
+	    $query1 = "SELECT Top 1 val FROM masseneingabeSuchePrdIMw ";
+		$query1 .= "WHERE type = '$type' ";
+		$query1 .= "AND prd_anl_ID = '$prdAnlID' ";
+		$query1 .= "AND on_date <= '$on_date' ";
+		$query1 .= "AND on_week <= '$on_week' ";
+		$query1 .= "Order by on_date,on_week DESC";
+
+		$query2 = "SELECT Top 1 val FROM masseneingabeSucheBetriebsPrdIMw ";
+		$query2 .= "WHERE type = '$type' ";
+		$query2 .= "AND prd_anl_ID = '$prdAnlID' ";
+		$query2 .= "AND on_date <= '$on_date' ";
+		$query2 .= "AND on_week <= '$on_week' ";
+		$query2 .= "Order by on_date,on_week DESC";
+    }else{
+	    $query1 = "SELECT Top 1 val FROM masseneingabeSuchePrdIMw ";
+		$query1 .= "WHERE type = '$type' ";
+		$query1 .= "AND prd_anl_ID = '$prdAnlID' ";
+		$query1 .= "AND on_date < '$date' ";
+		$query1 .= "Order by on_date DESC";
+
+		$query2 = "SELECT Top 1 val FROM masseneingabeSucheBetriebsPrdIMw ";
+		$query2 .= "WHERE type = '$type' ";
+		$query2 .= "AND prd_anl_ID = '$prdAnlID' ";
+		$query2 .= "AND on_date < '$date' ";
+		$query2 .= "Order by on_date DESC";
+    }
+
+}
+/*new-mm-end 07-04-2021*/
+else if($id == 'startDateRangeCheckValidation'){
   $type = $_POST['type'];
   $mstID = $_POST['mstID'];
 
@@ -1013,12 +1094,31 @@ else if($id == 'masseneingabeAlertRangeMinMax'){
 	//$records['max'] = queryDB($conn, $query2, "read");
 	$records['lastDBDates'] = queryDB($conn, $query2, "read");
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-}else if($id == 'masseneingabeAlertRangeLastInptValue'){
+}
+/*new-mm-start 07-04-2021*/
+else if($id == 'masseneingabeAlertRangeMinMaxPrdkt'){
+    //echo $query1;echo $query2;die;
+	$records['values'] = queryDB($conn, $query1, "read");
+	//$records['max'] = queryDB($conn, $query2, "read");
+	$records['lastDBDates'] = queryDB($conn, $query2, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+}
+/*new-mm-end 07-04-2021*/
+else if($id == 'masseneingabeAlertRangeLastInptValue'){
 	/*echo  $query1;echo  $query2;die;*/
 	$records['top'] = queryDB($conn, $query1, "read");
 	$records['bottom'] = queryDB($conn, $query2, "read");
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-}else if($id == 'startDateRangeCheckValidation'){
+}
+/*new-mm-start 07-04-2021*/
+else if($id == 'masseneingabeAlertRangeLastInptValuePrdkt'){
+	/*echo  $query1;echo  $query2;die;*/
+	$records['top'] = queryDB($conn, $query1, "read");
+	$records['bottom'] = queryDB($conn, $query2, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+}
+/*new-mm-end 07-04-2021*/
+else if($id == 'startDateRangeCheckValidation'){
   $records = queryDB($conn, $query, "read");
   echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }

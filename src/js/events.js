@@ -4316,7 +4316,7 @@ $("#DkFeSpeichern").click(function() {
             if(anlageObj[mst_id]){
                 var inputCountLength = anlageObj[mst_id].length;
                 if(inputCountLength>4){
-                     checkAlertRangeMinMaxServerSide(zeitIntervallAnl,mst_id,date,rowMainIDDs);
+                     checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,mst_id,date,rowMainIDDs);
                 }  
             }
 
@@ -4364,7 +4364,7 @@ $("#DkFeSpeichern").click(function() {
                 //  return false;
                 //console.log('inputVallast='+inputVallast);
                 if(typeof(inputVallast) =='undefined'){
-                     checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);             
+                     checkAlertRangeLastInputValueExistPrdkt(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);             
           
                 }
             }
@@ -4429,7 +4429,7 @@ $("#DkFeSpeichern").click(function() {
                     }
                 //var checkDay = -5 ;
                // checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
-                checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);             
+                checkAlertRangeLastInputValueExistPrdkt(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);             
             }
             else if(allPrevVal){
                 if(allPrevVal.length == 0 ){    
@@ -4907,7 +4907,7 @@ $("#DkFeSpeichern").click(function() {
             if(anlageObj[rowMstID]){
                 var inputCountLength = anlageObj[rowMstID].length;
                 if(inputCountLength>4){
-                     checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
+                     checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                 }  
             }
 
@@ -5136,7 +5136,7 @@ $("#DkFeSpeichern").click(function() {
                    if(anlageObj[rowMstID]){
                         var inputCountLength = anlageObj[rowMstID].length;
                         if(inputCountLength>4){
-                             checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
+                             checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                         }  
                     }
                     $("#masseneingabeSpeichernSrch").prop("disabled", false);
@@ -6132,7 +6132,7 @@ $("#DkFeSpeichern").click(function() {
                                 if(anlageObj[rowMstID]){
                                     var inputCountLength = anlageObj[rowMstID].length;
                                     if(inputCountLength>4){
-                                         checkAlertRangeMinMaxServerSide(type,rowMstID,date,rowMainIDDs);
+                                         checkAlertRangeMinMaxServerSidePrdkt(type,rowMstID,date,rowMainIDDs);
                                     }  
                                 }
                                 $("#masseneingabeSpeichernSrchPrdkt").prop("disabled", false);
@@ -6194,7 +6194,7 @@ $("#DkFeSpeichern").click(function() {
                     }
                     /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/ 
                     if($('#intBdeConcernOrDeletePopUp').length==0){
-                     $("#masseneingabeSpeichernSrchPrdkt").prop("disabled",false);
+                        $("#masseneingabeSpeichernSrchPrdkt").prop("disabled",false);
                     }
                 }                           
             }

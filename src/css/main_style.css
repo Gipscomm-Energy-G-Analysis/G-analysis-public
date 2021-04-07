@@ -544,8 +544,9 @@ nav {
 #histDataJa,
 #histDataNein,
 #saveMstFormulaAbbrechen,
-#anlPrdLink
-#btnShowRecordsAnlBtn{
+#anlPrdLink,
+#btnShowRecordsAnlBtn,
+#btnShowRecordsAnlBtnPrdkt{
   border: 0px solid black;
   border-radius: 5px;
   background-color: transparent;
@@ -1277,7 +1278,8 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 * Added #btnMassEingPrdkt,#btnMassEingMesssetelle 30-03-2021*/
 #btnMassEingAnl,#btnShowRecordsAnlBtn,#btnMassEingMst,
 #btnMassEingPrdkt,
-#btnMassEingMesssetelle{
+#btnMassEingMesssetelle,
+#btnShowRecordsAnlBtnPrdkt{
   background-color: white !important;
   cursor: pointer !important;
 }
