@@ -17922,7 +17922,7 @@ function sAdmLoeschen() {
 }
 // Roles and Permissions Data get from the database
 $(document).ready(function() {
-    $('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
+    //$('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
     $('div#superadminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('sAdm'));
     $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
     $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
@@ -17941,8 +17941,15 @@ $(document).ready(function() {
 
 function gipscommRollenUndBerechtigungen() {            // Save Gipscomm Admin Roles and Permission
     var gipsArr = new Array();
-    $('input[name="gipsAdmRolesPermission[]"]:checked').each(function() {
-        gipsArr.push(this.value);
+    // $('input[name="gipsAdmRolesPermission[]"]:checked').each(function() {
+    //     gipsArr.push(this.value);
+    // });
+    $('span.item').each(function(){
+        var $span = $(this).attr('check-value');
+        if($span == 1) {
+            var spanTxt = $(this).attr('data-tab_id');
+            gipsArr.push(spanTxt); 
+        }
     });
     $.ajax({
         type: "POST",
@@ -17954,6 +17961,7 @@ function gipscommRollenUndBerechtigungen() {            // Save Gipscomm Admin R
             modus: "saveRolePermission",
             role_id: 1,
             tab_id: gipsArr,
+            userId: $('#gipscAdmID').val()
         },
         success: function(a) {
             alert(a)
@@ -17963,8 +17971,15 @@ function gipscommRollenUndBerechtigungen() {            // Save Gipscomm Admin R
 
 function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and Permission
     var sAdmArr = new Array();
-    $('input[name="sAdmRolesPermission[]"]:checked').each(function() {
-        sAdmArr.push(this.value);
+    // $('input[name="sAdmRolesPermission[]"]:checked').each(function() {
+    //     sAdmArr.push(this.value);
+    // });
+    $('span.item').each(function(){
+        var $span = $(this).attr('check-value');
+        if($span == 1) {
+            var spanTxt = $(this).attr('data-tab_id');
+            sAdmArr.push(spanTxt); 
+        }
     });
     $.ajax({
         type: "POST",
@@ -17976,6 +17991,7 @@ function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and
             modus: "saveRolePermission",
             role_id: 2,
             tab_id: sAdmArr,
+            userId: $('#sAdmID').val()
         },
         success: function(a) {
             alert(a)
@@ -17985,8 +18001,12 @@ function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and
 
 function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Permission
     var adminArr = new Array();
-    $('input[name="admRolesPermission[]"]:checked').each(function() {
-        adminArr.push(this.value);
+    $('span.item').each(function(){
+        var $span = $(this).attr('check-value');
+        if($span == 1) {
+            var spanTxt = $(this).attr('data-tab_id');
+            adminArr.push(spanTxt); 
+        }
     });
     $.ajax({
         type: "POST",
@@ -17998,6 +18018,7 @@ function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Pe
             modus: "saveRolePermission",
             role_id: 4,
             tab_id: adminArr,
+            userId: $('#admID').val()
         },
         success: function(a) {
             alert(a)
@@ -18006,8 +18027,12 @@ function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Pe
 }
 function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and Permission
     var benArr = new Array();
-    $('input[name="benRolesPermission[]"]:checked').each(function() {
-        benArr.push(this.value);
+    $('span.item').each(function(){
+        var $span = $(this).attr('check-value');
+        if($span == 1) {
+            var spanTxt = $(this).attr('data-tab_id');
+            benArr.push(spanTxt); 
+        }
     });
     $.ajax({
         type: "POST",
@@ -18019,6 +18044,7 @@ function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and P
             modus: "saveRolePermission",
             role_id: 5,
             tab_id: benArr,
+            userId: $('#benID').val()
         },
         success: function(a) {
             alert(a)
@@ -18035,15 +18061,23 @@ function gipscommGetRollenUndBerechtigungen() {     // Gipscomm Admin selected c
             id: "sAdmGetRolePermission",
             nameDB: "gipscomm",
             role_id: 1,
+            userId: $('#gipscAdmID').val()
         },
         success: function(a) {
             c = JSON.parse(a)
+            console.log(c);
+            var gipsArr = new Array();
             if(c.length != 0) {
-                $.each(c, function(i, item) {
-                    $('input[value="'+item.tab_id+'"]').prop("checked", true);
+                $.each(c, function(i, item){
+                    $('span.item').each(function(){
+                        var spanTxt = $(this).attr('data-tab_id');
+                        if(spanTxt == item.tab_id) {
+                            gipsArr.push(spanTxt);
+                        }
+                    });
                 });
             } else {
-                $('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
+                //$('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
             }
         }
     });
@@ -18055,18 +18089,34 @@ function sAdmGetRollenUndBerechtigungen() {     // Superadmin selected checkbox 
         async: !0,
         url: "php/readInstanzen.php",
         data: {
-            id: "sAdmGetRolePermission",
+            id: "rollenUndBerechtigungenSuperadmin",
             nameDB: "gipscomm",
             role_id: 2,
+            userId: $('#sAdmID').val()
         },
         success: function(a) {
             c = JSON.parse(a)
             if(c.length != 0) {
-                $.each(c, function(i, item) {
-                    $('input[value="'+item.tab_id+'"]').prop("checked", true);
-                });
-            } else {
-                $('div#superadminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('sAdm'));
+                console.log(c);
+                $( "div#superadmincommTreeview" ).empty();
+                var treeObject = JSON.parse(a);
+                var tw = new TreeView(
+                    treeObject,
+                    {showAlwaysCheckBox:true,fold:false});
+                document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
+
+                // var superAdminArr = new Array();
+                // $.each(c, function(i, item){
+                //     $('span.item').each(function(){
+                //         var spanTxt = $(this).attr('data-tab_id');
+                //         if(spanTxt == item.tab_id) {
+                //             console.log(item.tab_id);
+                //             superAdminArr.push(spanTxt);
+                //             $('span[data-tab_id=berichteMenu]').attr('check-value', 1);
+                //             $('').addClass('fa fa-check-circle-o');
+                //         }
+                //     });
+                // });
             }
         }
     });
@@ -18078,18 +18128,21 @@ function adminsGetRollenUndBerechtigungen() {       // Admin selected checkbox f
         async: !0,
         url: "php/readInstanzen.php",
         data: {
-            id: "sAdmGetRolePermission",
+            id: "rollenUndBerechtigungenSuperadmin",
             nameDB: "gipscomm",
             role_id: 4,
+            userId:$('#admID').val()
         },
         success: function(a) {
-            c = JSON.parse(a)
+            c = JSON.parse(a);
+            console.log(c);
             if(c.length != 0) {
-                $.each(c, function(i, admTab) {
-                    $('input[value="'+admTab.tab_id+'"]').prop("checked", true);
-                });
-            } else {
-                $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
+                $( "div#admincommTreeview" ).empty();
+                var treeObject = JSON.parse(a);
+                var tw = new TreeView(
+                    treeObject,
+                    {showAlwaysCheckBox:true,fold:false});
+                document.getElementById("admincommTreeview").appendChild( tw.root	 )
             }
         }
     });
@@ -18101,24 +18154,27 @@ function benutzerGetRollenUndBerechtigungen() {       // Admin selected checkbox
         async: !0,
         url: "php/readInstanzen.php",
         data: {
-            id: "sAdmGetRolePermission",
+            id: "rollenUndBerechtigungenSuperadmin",
             nameDB: "gipscomm",
             role_id: 5,
+            userId: $('#benID').val()
         },
         success: function(a) {
             c = JSON.parse(a)
+            console.log(c);
             if(c.length != 0) {
-                $.each(c, function(i, admTab) {
-                    $('input[value="'+admTab.tab_id+'"]').prop("checked", true);
-                });
-            } else {
-                $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
+                $( "div#benutzerTreeview" ).empty();
+                var treeObject = JSON.parse(a);
+                var tw = new TreeView(
+                    treeObject,
+                    {showAlwaysCheckBox:true,fold:false});
+                document.getElementById("benutzerTreeview").appendChild( tw.root	 )
             }
         }
     });
 }
 
-function alleNutzerRollenUndBerechtigungen(roleId) {
+function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) {
     $.ajax({
         type: "POST",
         async: !0,
@@ -18127,23 +18183,27 @@ function alleNutzerRollenUndBerechtigungen(roleId) {
             id: "alleNutzerGetRolePermission",
             nameDB: "gipscomm",
             role_id: roleId,
+            userId: userId,
+            tableName: tableName,
+            userName: userName
         },
         success: function(a) {
             c = JSON.parse(a)
             if(c.length != 0) {
                 $.each(c, function(i, item) {
-                    var id = item.tab_id;
                     if(roleId != 1) {
-                        if(item.role_id == null){
-                            $("#"+item.tab_id).css("display", "none");
-                            var res = id.split(",");
-                            if(res.length > 1) {
-                                for (i=0;i<res.length;i++){
-                                    $("#"+res[i]).css("display", "none");
-                                }
+                        if(item.tab_id != '') {
+                            if(item.user_id == null){
+                                $("#"+item.tab_id).css("display", "none");
+                                // var res = id.split(",");
+                                // if(res.length > 1) {
+                                //     for (i=0;i<res.length;i++){
+                                //         $("#"+res[i]).css("display", "none");
+                                //     }
+                                // }
+                            } else {
+                                $("#"+item.tab_id).css("display", "block");
                             }
-                        } else {
-                            $("#"+item.tab_id).css("display", "block");
                         }
                     }
                 });

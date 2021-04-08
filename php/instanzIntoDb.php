@@ -27,26 +27,31 @@ if($id == "gipscAdm") {
 
     } elseif($modus == 'saveRolePermission') {
 
-      $role_id = $_POST['role_id'];
-      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+      $userId = $_POST['userId'];
+      if(!empty($userId)) {
+        $role_id = $_POST['role_id'];
+        $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
       
-      if(!empty($role_id)) {
-        $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
-        $record = queryDB($conn, $query, "read") ;
+        if(!empty($role_id)) {
+          $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+          $record = queryDB($conn, $query, "read") ;
 
-        if(count($record)>0) {
-          $query = "DELETE rolePermission WHERE role_id = '$role_id'";
-          queryDB( $conn, $query, "write" );
+          if(count($record)>0) {
+            $query = "DELETE rolePermission WHERE userr_id = '$userId'";
+            queryDB( $conn, $query, "write" );
+          }
         }
-      }
       
-      if(!empty($tab_ids)) {
-        foreach($tab_ids as $tabId) {
-          $gipscommsql = "INSERT INTO rolePermission(role_id,tab_id) ";
-          $gipscommsql .= "VALUES ('$role_id','$tabId') ";
-          queryDB( $conn, $gipscommsql, "write" );
+        if(!empty($tab_ids)) {
+          foreach($tab_ids as $tabId) {
+            $gipscommsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
+            $gipscommsql .= "VALUES ('$role_id','$tabId','$userId') ";
+            queryDB( $conn, $gipscommsql, "write" );
+          }
+          echo "Daten erfolgreich gespeichert";
         }
-        echo "Daten erfolgreich gespeichert";
+      } else {
+        echo "Benutzer ID nicht gefunden";
       }
 
     } else {
@@ -150,26 +155,32 @@ elseif($id == "sAdm") {
 
     } elseif($modus == 'saveRolePermission') {
 
-      $role_id = $_POST['role_id'];
-      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
-      
-      if(!empty($role_id)) {
-        $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
-        $record = queryDB($conn, $query, "read") ;
+      $userId = $_POST['userId'];
+      if(!empty($userId)) {
 
-        if(count($record)>0) {
-          $query = "DELETE rolePermission WHERE role_id = '$role_id'";
-          queryDB( $conn, $query, "write" );
+        $role_id = $_POST['role_id'];
+        $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+        
+        if(!empty($role_id)) {
+          $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+          $record = queryDB($conn, $query, "read") ;
+
+          if(count($record)>0) {
+            $query = "DELETE rolePermission WHERE user_id = '$userId'";
+            queryDB( $conn, $query, "write" );
+          }
         }
-      }
-      
-      if(!empty($tab_ids)) {
-        foreach($tab_ids as $tabId) {
-          $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id) ";
-          $sAdmsql .= "VALUES ('$role_id','$tabId') ";
-          queryDB( $conn, $sAdmsql, "write" );
+        
+        if(!empty($tab_ids)) {
+          foreach($tab_ids as $tabId) {
+            $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
+            $sAdmsql .= "VALUES ('$role_id','$tabId','$userId') ";
+            queryDB( $conn, $sAdmsql, "write" );
+          }
+          echo "Daten erfolgreich gespeichert";
         }
-        echo "Daten erfolgreich gespeichert";
+      } else {
+        echo "Benutzer ID nicht gefunden";
       }
 
     } else {
@@ -260,25 +271,32 @@ if(isset($_POST['insID']))
 
   } elseif($modus == 'saveRolePermission') {
 
-    $role_id = $_POST['role_id'] ;
-    $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+    $userId = $_POST['userId'];
+    if(!empty($userId)) {
 
-    if(!empty($role_id)) {
-      $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
-      $record = queryDB($conn, $query, "read") ;
+      $role_id = $_POST['role_id'];
+      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+      
+      if(!empty($role_id)) {
+        $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+        $record = queryDB($conn, $query, "read") ;
 
-      if(count($record)>0) {
-        $query = "DELETE rolePermission WHERE role_id = '$role_id'";
-        queryDB( $conn, $query, "write" );
+        if(count($record)>0) {
+          $query = "DELETE rolePermission WHERE user_id = '$userId'";
+          queryDB( $conn, $query, "write" );
+        }
       }
-    }
-    if(!empty($tab_ids)) {
-      foreach($tab_ids as $tabId) {
-        $admtsql = "INSERT INTO rolePermission(role_id,tab_id) ";
-        $admtsql .= "VALUES ('$role_id','$tabId') ";
-        queryDB( $conn, $admtsql, "write" );
+      
+      if(!empty($tab_ids)) {
+        foreach($tab_ids as $tabId) {
+          $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
+          $sAdmsql .= "VALUES ('$role_id','$tabId','$userId') ";
+          queryDB( $conn, $sAdmsql, "write" );
+        }
+        echo "Daten erfolgreich gespeichert";
       }
-      echo "Daten erfolgreich gespeichert";
+    } else {
+      echo "Benutzer ID nicht gefunden";
     }
 
   } else {
@@ -349,25 +367,32 @@ elseif($id == "ben") {
         }
     } elseif($modus == 'saveRolePermission') {
 
-      $role_id = $_POST['role_id'] ;
-      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+      $userId = $_POST['userId'];
+      if(!empty($userId)) {
   
-      if(!empty($role_id)) {
-        $query = "SELECT * FROM rolePermission WHERE role_id = '$role_id' ";
-        $record = queryDB($conn, $query, "read") ;
+        $role_id = $_POST['role_id'];
+        $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+        
+        if(!empty($role_id)) {
+          $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+          $record = queryDB($conn, $query, "read") ;
   
-        if(count($record)>0) {
-          $query .= "DELETE rolePermission WHERE role_id = '$role_id'";
-          queryDB( $conn, $query, "write" );
+          if(count($record)>0) {
+            $query = "DELETE rolePermission WHERE user_id = '$userId'";
+            queryDB( $conn, $query, "write" );
+          }
         }
-      }
-      if(!empty($tab_ids)) {
-        foreach($tab_ids as $tabId) {
-          $bentsql = "INSERT INTO rolePermission(role_id,tab_id) ";
-          $bentsql .= "VALUES ('$role_id','$tabId') ";
-          queryDB( $conn, $bentsql, "write" );
+        
+        if(!empty($tab_ids)) {
+          foreach($tab_ids as $tabId) {
+            $bentsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
+            $bentsql .= "VALUES ('$role_id','$tabId','$userId') ";
+            queryDB( $conn, $bentsql, "write" );
+          }
+          echo "Daten erfolgreich gespeichert";
         }
-        echo "Daten erfolgreich gespeichert";
+      } else {
+        echo "Benutzer ID nicht gefunden";
       }
   
     } else{

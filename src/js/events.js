@@ -8,27 +8,46 @@ $(document).ready(function() {
     var c = this;
     if(sessionStorage.getItem("position") == 'gipsAdm') {
         var roleId = 1;
-        alleNutzerRollenUndBerechtigungen(roleId);
+        //alleNutzerRollenUndBerechtigungen(roleId);
         mandantenEinlesen("alle", null, null);
     } else if(sessionStorage.getItem("position") == 'sAdm') {
         var roleId = 2;
-        alleNutzerRollenUndBerechtigungen(roleId);
+        var tableName = 'superAdmins';
+        var userName = sessionStorage.getItem("username");
+        var userId = sessionStorage.getItem("position");
+        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
         $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID"));
+        $("#sdmRoles").css("display", "none");
+        $("#sAdmRollenUndBerechtigungen").css("display", "none");
+        $("#adminsRollenUndBerechtigungen").css("display", "none");
+        $("#superadmincommTreeview").css("display", "none");
+        $("#adminRoles").css("display", "none");
+        $("#admincommTreeview").css("display", "none");
         mandantenEinlesen($("#betrGrpID").val(), null, null);
     } else if(sessionStorage.getItem("position") == 'adm') {
         var roleId = 4;
-        alleNutzerRollenUndBerechtigungen(roleId);
+        var tableName = 'admins';
+        var userName = sessionStorage.getItem("username");
+        var userId = sessionStorage.getItem("position");
+        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
         mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
-        $("#adminRoles").css("display", "none");
+        $("#sAdmRollenUndBerechtigungen").css("display", "none");
         $("#adminsRollenUndBerechtigungen").css("display", "none");
+        $("#superadmincommTreeview").css("display", "none");
+        $("#adminRoles").css("display", "none");
+        $("#admincommTreeview").css("display", "none");
     } else if(sessionStorage.getItem("position") == 'ben') {
         var roleId = 5;
-        alleNutzerRollenUndBerechtigungen(roleId);
+        var tableName = 'benutzer';
+        var userName = sessionStorage.getItem("username");
+        var userId = sessionStorage.getItem("position");
+        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
+        $("#benutzerRoles ").css("display", "none");
         //mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
         $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")): $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID"));
     } else {
         var roleId = 3;
-        alleNutzerRollenUndBerechtigungen(roleId);
+        //alleNutzerRollenUndBerechtigungen(roleId);
         mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0);
     }
     //"gipsAdm" == sessionStorage.getItem("position") ? mandantenEinlesen("alle", null, null) : '' ;
@@ -50,10 +69,6 @@ $(document).ready(function() {
     $("#logout").click(function() {
         sessionStorage.clear();
         localStorage.removeItem('gipsAdm');
-        localStorage.removeItem('sAdm');
-        localStorage.removeItem('adm');
-        localStorage.removeItem('ben');
-        localStorage.removeItem('man');
         $.ajax({
             type: "POST",
             async: !0,
@@ -1348,20 +1363,20 @@ $(document).ready(function() {
     });
     
     // Get Checked data from database
-
-    $("#tabGipscAdm").click(function() {
-        $('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
+    $("#gipscAdmLast, #gipscAdmNext, #gipscAdmPrevious, #gipscAdmFirst").click(function() {
+        //$('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
+        //$('#treeview').treeview({data: localStorage.getItem('gipsAdm')});
         gipscommGetRollenUndBerechtigungen()
     });
-    $("#betrGrpMenu, #tabBetrGrp, #betrGrpMenu").click(function() {
+    $("#sAdmLast, #sAdmFirst, #sAdmPrevious, #sAdmNext").click(function() {
         sAdmGetRollenUndBerechtigungen()
     });
-    $("#admMenu, #tabAdm").click(function() {
-        $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
+    $("#admLast, #admNext, #admPrevious, #admFirst").click(function() {
+        //$('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
         adminsGetRollenUndBerechtigungen()
     });
-    $("#tabBen, #benMenuLi").click(function() {
-        $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
+    $("#benFirst, #benLast, #benNext, #benPrevious").click(function() {
+        //$('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
         benutzerGetRollenUndBerechtigungen()
     });
     $("#frmSuchenBerEdi").click(function() {
