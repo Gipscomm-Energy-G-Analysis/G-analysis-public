@@ -15725,6 +15725,12 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
         var startDate = new Date(start);
         var endDate = new Date(end);
         if(zeitintervallAnl == 1){
+            /*new-mm-start 07-04-2021*/
+            var startarr = start.split('.');
+            var endarr = end.split('.');
+            startDate = new Date(startarr[2],startarr[1]-1,startarr[0]);
+            endDate = new Date(endarr[2],endarr[1]-1,endarr[0]);
+            /*new-mm-start 07-04-2021*/
             if (startDate > endDate){
                 alert("End days should be greater then start days");
                 if(id==1){
@@ -15787,9 +15793,33 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
 /*Prodkte mm 01-03-2021*/
 /*new-mm-start*/
 function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,id){
+
+        //getback
+        // console.log("start :");
+        // console.log(start);
+        // console.log("end :");
+        // console.log(end);
+        
         var startDate = new Date(start);
         var endDate = new Date(end);
+
+        // console.log("issue in format :");
+        // console.log("startDate :");
+        // console.log(startDate);
+        // console.log("endDate :");
+        // console.log(endDate);
+        // console.log("diff : ");
+        // console.log(endDate-startDate);
+
         if(zeitintervallAnl == 1){
+            /*new-mm-start 07-04-2021*/
+            var startarr = start.split('.');
+            var endarr = end.split('.');
+
+            startDate = new Date(startarr[2],startarr[1]-1,startarr[0]);
+            endDate = new Date(endarr[2],endarr[1]-1,endarr[0]);
+            /*new-mm-start 07-04-2021*/
+
             if (startDate > endDate){
                 alert("End days should be greater then start days");
                 if(id==1){
@@ -15804,7 +15834,61 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
             }
         }
         else if(zeitintervallAnl == 2){
-            if (startDate > endDate){
+            /*new-mm-start 07-04-2021*/
+            var startarr = start.split('-');
+            var endarr = end.split('-');
+
+            // console.log("startarr :");
+            // console.log(startarr);
+            // console.log("endarr :");
+            // console.log(endarr);
+
+            // console.log("startarr[0] :");
+            // console.log(startarr[0]);
+            // console.log("endarr[0] :");
+            // console.log(endarr[0]);
+            // console.log("startarr[1] :");
+            // console.log(startarr[1]);
+            // console.log("endarr[1] :");
+            // console.log(endarr[1]);
+            //  console.log("weeks diff :");
+            // console.log(endarr[0] - startarr[0]);
+            // console.log("years diff :");
+            // console.log(endarr[1] - startarr[1]);
+
+            var weekdiff = endarr[0] - startarr[0];
+
+            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != ''){               
+                if (startarr[1] > endarr[1]){
+                    alert("End year should be greater then start year");
+                    if(id==1){
+                          produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                    }else{
+                        $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+                        $("." + sId + " .zeitintervallAnlPrdkt_2 select").val("");
+                        $("#tblMasseneingabeDataIMw").remove();
+                    }
+                    return false;
+                }
+                else if (startarr[1] == endarr[1]){
+                    if (weekdiff < 0){
+                        alert("This End week should be greater then start week");
+                        if(id==1){
+                              produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                        }else{
+                            $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+                            $("." + sId + " .zeitintervallAnlPrdkt_2 select").val("");
+                            $("#tblMasseneingabeDataIMw").remove();
+                        }
+                        return false;
+                    }
+                }else{
+                    return true;
+                }
+            }
+            /*new-mm-end 07-04-2021*/
+            /*mm-comment*/
+            /*if (startDate > endDate){
                 alert("End month should be greater then start month");
                 if(id==1){
                       produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
@@ -15816,9 +15900,66 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
                 return false;
             }else{
                 return true;
-            }
+            }*/
+            /*mm-comment*/
         }
         else if(zeitintervallAnl == 3){
+
+            console.log("for month test :");
+            console.log("start :");
+            console.log(start);
+            console.log("end :");
+            console.log(end);
+        
+
+            /*new-mm-start 08-04-2021*/
+            if(start != "" && end != "" && start != 'undefined' && end != 'undefined' && start != 'invalid' && end != 'invalid'){
+                var startarr = start.split('.');
+                var endarr = end.split('.');
+            }
+
+            console.log("startarr :");
+            console.log(startarr);
+            console.log("endarr :");
+            console.log(endarr);
+
+            console.log("startarr[0] :");
+            console.log(startarr[0]);
+            console.log("endarr[0] :");
+            console.log(endarr[0]);
+            console.log("startarr[1] :");
+            console.log(startarr[1]);
+            console.log("endarr[1] :");
+            console.log(endarr[1]);
+             console.log("weeks diff :");
+            console.log(endarr[0] - startarr[0]);
+            console.log("years diff :");
+            console.log(endarr[1] - startarr[1]);
+
+            var weekdiff = endarr[0] - startarr[0];
+
+            if(start == end)
+            if(start != ""  && start != "undefined"){
+                console.log("1");
+                var startarr = start.split('.');
+            }
+            if(end != ""  && end != "undefined"){  
+                console.log("2");  
+                var endarr = end.split('.');
+            }
+
+            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && endarr[0] != 'undefined' &&  startarr[0] != 'undefined' && endarr[1] != 'undefined' &&  startarr[1] != 'undefined'){ 
+
+                startDate = new Date(startarr[1],startarr[0]-1,1);
+                endDate = new Date(endarr[1],endarr[0]-1,1);
+            }
+            else{    
+                startDate = new Date(start,0,1);
+                endDate = new Date(end,0,1);
+            }
+            /*new-mm-start 08-04-2021*/
+
+            /*mm-comment*/
             if (startDate > endDate){
                 alert("End month should be greater then start month");
                 if(id==1){
@@ -15832,6 +15973,7 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
             }else{
                 return true;
             }
+            /*mm-comment*/
         }else if(zeitintervallAnl == 4){
             if (startDate > endDate){
                 alert("End year should be greater then start year");
@@ -16954,7 +17096,16 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
             }
-                validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
+
+            /*new-mm-start 08-04-2021*/
+            if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
+                validateZeitintervallAnlPrdktSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id); 
+            }else{
+               validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id); 
+            }
+            /*new-mm-end 08-04-2021*/
+            
+
             if(id==1){
                 /*new-mm-start 06-04-2021*/
                 var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();

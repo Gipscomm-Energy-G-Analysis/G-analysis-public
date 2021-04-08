@@ -393,7 +393,11 @@ elseif($id == 'MesssetelleTbl'){
 			$query1 .= "AND T1.typ = 'energiedaten' ";
 			/*new-mm-end 25-03-2021*/
 
-			$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+			$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') 
+			            OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') 
+			            OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') 
+			            OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+
 			$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
 			$query1 .= "ORDER BY T1.mst_ID ASC";
 
