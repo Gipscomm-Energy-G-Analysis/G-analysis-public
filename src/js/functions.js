@@ -15666,6 +15666,12 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
                         /*new-mm-start 26-03-2021*/
                          $("#nextPrevMstID").val(a[0]);
                         /*new-mm-end 26-03-2021*/
+
+
+                        /*new-mm-start 09-04-2021 */
+                        $('.zeitintervallAnl_1 input').datepicker( "option" , { minDate: null, maxDate: null} );
+                        /*new-mm-end 09-04-2021*/
+
                         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");
                 });
             }
@@ -15745,7 +15751,46 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
             }
         }
         else if(zeitintervallAnl == 2){
-            if (startDate > endDate){
+
+
+            /*new-mm-start 09-04-2021*/
+            var startarr = start.split('-');
+            var endarr = end.split('-');
+
+            var weekdiff = endarr[0] - startarr[0];
+
+            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){               
+                if (startarr[1] > endarr[1]){
+                    alert("End year should be greater then start year");
+                    if(id==1){
+                          keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                    }else{
+                        $("." + sId + " .zeitintervallAnl_2 input").val("");
+                        $("." + sId + " .zeitintervallAnl_2 select").val("");
+                        $("#tblMasseneingabeDataIMw").remove();
+                    }
+                    return false;
+                }
+                else if (startarr[1] == endarr[1]){
+                    if (weekdiff < 0){
+                        alert("This End week should be greater then start week");
+                        if(id==1){
+                              keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                        }else{
+                            $("." + sId + " .zeitintervallAnl_2 input").val("");
+                            $("." + sId + " .zeitintervallAnl_2 select").val("");
+                            $("#tblMasseneingabeDataIMw").remove();
+                        }
+                        return false;
+                    }
+                }else{
+                    return true;
+                }
+            }
+            /*new-mm-end 09-04-2021*/
+
+            /*mm-comment  09-04-2021*/
+            /*if (startDate > endDate){
                 alert("End month should be greater then start month");
                 if(id==1){
                       keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
@@ -15757,9 +15802,48 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
                 return false;
             }else{
                 return true;
-            }
+            }*/
+            /*mm-comment*/
         }
         else if(zeitintervallAnl == 3){
+
+            /*new-mm-start 08-04-2021*/
+            if(id==6 || id==5 || id==4){
+
+                if(start != ""  && typeof(start) != "undefined"){
+                    var startarr = start.split('.');
+                }
+                else{
+                    return false;
+                }
+                if(end != ""  && typeof(end) != "undefined"){  
+
+                    var endarr = end.split('.');
+                }
+                else{
+                    return false;
+                }
+
+                if(endarr != '' &&  startarr != '' && typeof(endarr) != 'undefined' &&  typeof(startarr) != 'undefined'){
+                    if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){ 
+
+                        startDate = new Date(startarr[1],startarr[0]-1,1);
+                        endDate = new Date(endarr[1],endarr[0]-1,1);
+
+                    }
+                }    
+                else{    
+                    startDate = new Date(start,0,1);
+                    endDate = new Date(end,0,1);
+
+                }
+            }
+            else{
+                startDate = new Date(start);
+                endDate = new Date(end);
+            }
+
+            /*new-mm-start 08-04-2021*/
             if (startDate > endDate){
                 alert("End month should be greater then start month");
                 if(id==1){
@@ -15838,27 +15922,9 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
             var startarr = start.split('-');
             var endarr = end.split('-');
 
-            // console.log("startarr :");
-            // console.log(startarr);
-            // console.log("endarr :");
-            // console.log(endarr);
-
-            // console.log("startarr[0] :");
-            // console.log(startarr[0]);
-            // console.log("endarr[0] :");
-            // console.log(endarr[0]);
-            // console.log("startarr[1] :");
-            // console.log(startarr[1]);
-            // console.log("endarr[1] :");
-            // console.log(endarr[1]);
-            //  console.log("weeks diff :");
-            // console.log(endarr[0] - startarr[0]);
-            // console.log("years diff :");
-            // console.log(endarr[1] - startarr[1]);
-
             var weekdiff = endarr[0] - startarr[0];
 
-            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != ''){               
+            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){               
                 if (startarr[1] > endarr[1]){
                     alert("End year should be greater then start year");
                     if(id==1){
@@ -15905,58 +15971,43 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
         }
         else if(zeitintervallAnl == 3){
 
-            console.log("for month test :");
-            console.log("start :");
-            console.log(start);
-            console.log("end :");
-            console.log(end);
-        
 
             /*new-mm-start 08-04-2021*/
-            if(start != "" && end != "" && start != 'undefined' && end != 'undefined' && start != 'invalid' && end != 'invalid'){
-                var startarr = start.split('.');
-                var endarr = end.split('.');
+            if(id==6){
+
+                if(start != ""  && typeof(start) != "undefined"){
+                    var startarr = start.split('.');
+                }
+                else{
+                    return false;
+                }
+                if(end != ""  && typeof(end) != "undefined"){  
+
+                    var endarr = end.split('.');
+                }
+                else{
+                    return false;
+                }
+
+                if(endarr != '' &&  startarr != '' && typeof(endarr) != 'undefined' &&  typeof(startarr) != 'undefined'){
+                    if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){ 
+
+                        startDate = new Date(startarr[1],startarr[0]-1,1);
+                        endDate = new Date(endarr[1],endarr[0]-1,1);
+
+                    }
+                }    
+                else{    
+                    startDate = new Date(start,0,1);
+                    endDate = new Date(end,0,1);
+
+                }
+            }
+            else{
+                startDate = new Date(start);
+                endDate = new Date(end);
             }
 
-            console.log("startarr :");
-            console.log(startarr);
-            console.log("endarr :");
-            console.log(endarr);
-
-            console.log("startarr[0] :");
-            console.log(startarr[0]);
-            console.log("endarr[0] :");
-            console.log(endarr[0]);
-            console.log("startarr[1] :");
-            console.log(startarr[1]);
-            console.log("endarr[1] :");
-            console.log(endarr[1]);
-             console.log("weeks diff :");
-            console.log(endarr[0] - startarr[0]);
-            console.log("years diff :");
-            console.log(endarr[1] - startarr[1]);
-
-            var weekdiff = endarr[0] - startarr[0];
-
-            if(start == end)
-            if(start != ""  && start != "undefined"){
-                console.log("1");
-                var startarr = start.split('.');
-            }
-            if(end != ""  && end != "undefined"){  
-                console.log("2");  
-                var endarr = end.split('.');
-            }
-
-            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && endarr[0] != 'undefined' &&  startarr[0] != 'undefined' && endarr[1] != 'undefined' &&  startarr[1] != 'undefined'){ 
-
-                startDate = new Date(startarr[1],startarr[0]-1,1);
-                endDate = new Date(endarr[1],endarr[0]-1,1);
-            }
-            else{    
-                startDate = new Date(start,0,1);
-                endDate = new Date(end,0,1);
-            }
             /*new-mm-start 08-04-2021*/
 
             /*mm-comment*/
@@ -16845,10 +16896,26 @@ function datePickerForInterneBetriebsdaten(sId,id){
             var end1 = endStr1.split('.');
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
-            }else{
+            }
+            /*new-mm-start 09-04-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-start 09-04-2021*/
+            else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }
-            validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
+            /*mm-comment*/
+            //validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
+            /*mm-comment*/
+            /*new-mm-start 09-04-2021*/
+            if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5 || sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+                validateZeitintervallAnlSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id); 
+            }else{
+               validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id); 
+            }
+            /*new-mm-end 09-04-2021*/
+
             if(id==1){
                 alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
             }
@@ -16878,10 +16945,25 @@ function datePickerForInterneBetriebsdaten(sId,id){
             var end2 = endStr2.split('.');
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
-            }else{
+            }
+            /*new-mm-start 09-04-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-end 09-04-2021*/
+            else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }
-            validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
+            /*new-mm-start 09-04-2021*/
+            if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5 ){
+                validateZeitintervallAnlSelectOpt(strtStr2,endStr2,zeitintervallAnl,sId,id); 
+            }else{
+               validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id); 
+            }
+            /*new-mm-end 09-04-2021*/
+
+            //validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
+
             if(id==1){
                 alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
             }
@@ -16977,6 +17059,9 @@ function datePickerForInterneBetriebsdaten(sId,id){
             var end3 = $("." + sId + " #wochenYMassEingDataAnlEnde" +id+ "").val();
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
             }
@@ -17012,6 +17097,9 @@ function datePickerForInterneBetriebsdaten(sId,id){
             var start4 = $("." + sId + " #wochenYMassEingDataAnlStart" +id+ "").val();
             var end4 = $(this).val();
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
@@ -17069,6 +17157,8 @@ function datePickerForInterneBetriebsdaten(sId,id){
 /*Validation for the start date and end date*/
 /*new-mm-start 06-04-2021*/
 function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
+
+
     $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+"").datepicker({
         dateFormat: 'mm.yy',
         changeMonth: true,
@@ -17089,7 +17179,7 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             else if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }
-            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==6){
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }
             /*new-mm-end 30-03-2021*/
@@ -17098,7 +17188,7 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             }
 
             /*new-mm-start 08-04-2021*/
-            if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
+            if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6 ){
                 validateZeitintervallAnlPrdktSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id); 
             }else{
                validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id); 
@@ -17552,6 +17642,12 @@ function produkteAnlargeDataTable(){
                     // $("#namePrd").val(rowdata[3]);
                     // $("#artikelNrPrd").val(rowdata[4]);
                     // $("#bezeichnungAnl").val(rowdata[5]);
+
+                    /*new-mm-start 09-04-2021 */
+                    $('#tageMassEingDataAnlPrdktStart1').datepicker( "option" , { minDate: null, maxDate: null} );
+                    $('#tageMassEingDataAnlPrdktEnde1').datepicker( "option" , { minDate: null, maxDate: null} );
+                    /*new-mm-end 09-04-2021*/
+
                     });
                 }
     });
@@ -17618,6 +17714,12 @@ function searchImgprodukteAnlargeDataTable(){
                     // $("#namePrd").val(rowdata[3]);
                     // $("#artikelNrPrd").val(rowdata[4]);
                     // $("#bezeichnungAnl").val(rowdata[5]);
+
+                    /*new-mm-start 09-04-2021 */
+                    $('#tageMassEingDataAnlPrdktStart1').datepicker( "option" , { minDate: null, maxDate: null} );
+                    $('#tageMassEingDataAnlPrdktEnde1').datepicker( "option" , { minDate: null, maxDate: null} );
+                    /*new-mm-end 09-04-2021*/
+
                     $("#tblAnlPrdktMStOhneZeitintervallIMwSearchContainer").dialog("close");
                     });
                 }
@@ -17666,6 +17768,9 @@ function keinZeitIntervallZugewiesen(){
                     /*new-mm-start 26-03-2021*/
                     $("#nextPrevMstID").val(a[0]);
                     /*new-mm-end 26-03-2021*/
+                    /*new-mm-start 09-04-2021 */
+                    $('.zeitintervallAnl_1 input').datepicker( "option" , { minDate: null, maxDate: null} );
+                    /*new-mm-end 09-04-2021*/
                     setTimeout(function(){
                     $("#unitIDB").val($(".infosIntBetriebsdaten #einheitAnl").val());
                     $("#controlSysIDDB").val($(".infosIntBetriebsdaten #control_system").val());
@@ -18004,6 +18109,11 @@ function searchProdukteAnlageIntBDE(checkboxSearch){
                     //$("#anlNrIMw").val(a[2]);
                     //$("#startDateDB").val(a[3]);
                     //$("#endDateDB").val(a[4]);
+
+                    /*new-mm-start 09-04-2021*/
+                    $('#tageMassEingDataAnlPrdktStart1').datepicker( "option" , { minDate: null, maxDate: null} );
+                    $('#tageMassEingDataAnlPrdktEnde1').datepicker( "option" , { minDate: null, maxDate: null} );
+                    /*new-mm-end 09-04-2021*/
             });
         }
     });
@@ -18056,6 +18166,12 @@ function searchImgMesssetelleIntBDE(checkboxSearch){
                     //$("#anlNrIMw").val(a[2]);
                     //$("#startDateDB").val(a[3]);
                     //$("#endDateDB").val(a[4]);
+
+                    /*new-mm-start 09-04-2021*/
+                    $('#tageMassEingDataAnlPrdktStart1').datepicker( "option" , { minDate: null, maxDate: null} );
+                    $('#tageMassEingDataAnlPrdktEnde1').datepicker( "option" , { minDate: null, maxDate: null} );
+                    /*new-mm-end 09-04-2021*/
+
                     $("#tblAnlPrdktMStOhneZeitintervallIMwSearchContainer").dialog("close");
             });
         }
@@ -18122,6 +18238,12 @@ function zeitintervallAnlInputsVisibleInvisible(zeitIntVal,startDate,endDate,end
             $("." + sId + " .zeitintervallAnl_NoEnding").show();
             $("." + sId + " #tageMassEingDataAnlStart" + id + "").val(startDate);
             $("." + sId + " #tageMassEingDataAnlEnde" + id + "").val(endDate);
+
+            /*new-mm-start 09-04-2021*/
+            $("." + sId + " #tageMassEingDataAnlStart" + id + "").datepicker( "option" , { minDate: null, maxDate: null} );
+            $("." + sId + " #tageMassEingDataAnlEnde" + id + "").datepicker( "option" , { minDate: null, maxDate: null} );
+            /*new-mm-end 09-04-2021*/
+
             if(ending==1){
                 $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', true);
             }else{
@@ -18213,6 +18335,11 @@ function zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitIntVal,startDate,endDat
             $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
             $("." + sId + " #tageMassEingDataAnlPrdktStart" + id + "").val(startDate);
             $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val(endDate);
+
+            /*new-mm-start 09-04-2021*/
+            $("." + sId + " #tageMassEingDataAnlPrdktStart" + id + "").datepicker( "option" , { minDate: null, maxDate: null} );
+            $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").datepicker( "option" , { minDate: null, maxDate: null} );
+            /*new-mm-end 09-04-2021*/
             if(ending==1){
                 $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
             }else{
@@ -18446,6 +18573,11 @@ function zeitintervallChange(val,sId,id){
         $("." + sId + " .zeitintervallAnl_3").hide();
         $("." + sId + " .zeitintervallAnl_4").hide();
         $("." + sId + " .zeitintervallAnl_NoEnding").show();
+
+        /*new-mm-start 09-04-2021 */
+        $('.zeitintervallAnl_1 input').datepicker( "option" , { minDate: null, maxDate: null} );
+        /*new-mm-end 09-04-2021*/
+
    }else if(val == 2){
         $("." + sId + " .zeitintervallAnl_1").hide();
         $("." + sId + " .zeitintervallAnl_2").show();
@@ -18493,6 +18625,12 @@ function zeitintervallAnlPrdktChange(val,sId,id){
         $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
         $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
         $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+
+        /*new-mm-start 09-04-2021 */
+        $('#tageMassEingDataAnlPrdktStart1').datepicker( "option" , { minDate: null, maxDate: null} );
+        $('#tageMassEingDataAnlPrdktEnde1').datepicker( "option" , { minDate: null, maxDate: null} );
+        /*new-mm-end 09-04-2021*/
+
    }else if(val == 2){
         $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
         $("." + sId + " .zeitintervallAnlPrdkt_2").show();
@@ -18657,7 +18795,7 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
                     $("#nextPrevMstID").val(c[0].T1_mst_ID);
                     $("#mstID").val(c[0].T1_mst_ID);
                     //alert(c[0].T1_mst_ID);
-                     /*new-mm-end 26-03-2021*/
+                    /*new-mm-end 26-03-2021*/
                  }
             }
     });
@@ -18840,6 +18978,12 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
                 $("." + sId + " #tageMassEingDataAnlStart"+id).val(startDate_1);
                 $("." + sId + " #tageMassEingDataAnlEnde"+id).val(endDate_1);
+
+                /*new-mm-start 09-04-2021 */
+                $('#tageMassEingDataAnlStart'+id).datepicker( "option" , { minDate: null, maxDate: null} );
+                $('#tageMassEingDataAnlEnde'+id).datepicker( "option" , { minDate: null, maxDate: null} );
+                /*new-mm-end 09-04-2021*/
+
                 //alert(startDate_1);
            }else if(val == 2){
                 $("." + sId + " .zeitintervallAnl_1").hide();
@@ -18945,6 +19089,13 @@ function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
                 $("." + sId + " #tageMassEingDataAnlPrdktStart"+id).val(startDate_1);
                 $("." + sId + " #tageMassEingDataAnlPrdktEnde"+id).val(endDate_1);
+
+                /*new-mm-start 09-04-2021 */
+                $('#tageMassEingDataAnlPrdktStart'+id).datepicker( "option" , { minDate: null, maxDate: null} );
+                $('#tageMassEingDataAnlPrdktEnde'+id).datepicker( "option" , { minDate: null, maxDate: null} );
+                /*new-mm-end 09-04-2021*/
+
+
                 //alert(startDate_1);
            }else if(val == 2){
                 $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
@@ -21605,6 +21756,10 @@ function alertValidationforStartEndeDate(mstID,date,type){
                 if(b>0){
                     alert('Selected date value already filled up in record list. Please select other date.');
                     keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
+
+                    /*new-mm-start 09-04-2021*/
+                    $('.zeitintervallAnl_1 input').datepicker( "option" , { minDate: null, maxDate: null} );
+                    /*new-mm-end 09-04-2021*/
                 }
             }
         });
@@ -21636,6 +21791,9 @@ function alertValidationforStartEndeDateMesssetelle(mstID,date,type){
                         MesssetelleListingDblClickRow(mstID,'infosIntEnergiedaten');
                     }                   
                     /*new-mm-end 06-04-2021*/
+                    /*new-mm-start 09-04-2021*/
+                    $('.zeitintervallAnlPrdkt_1 input').datepicker( "option" , { minDate: null, maxDate: null} );
+                    /*new-mm-end 09-04-2021*/
                 }
             }
         });
@@ -21663,9 +21821,12 @@ function alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type){
                 var b=a.length;
                 //console.log(a);
                 if(b>0){
-                   alert('Selected date value already filled up in record list. Please select other date.');
-                   //keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
-                   produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                    alert('Selected date value already filled up in record list. Please select other date.');
+                    //keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
+                    produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                    /*new-mm-start 09-04-2021*/
+                    $('.zeitintervallAnlPrdkt_1 input').datepicker( "option" , { minDate: null, maxDate: null} );
+                    /*new-mm-end 09-04-2021*/
                 }
             }
         });

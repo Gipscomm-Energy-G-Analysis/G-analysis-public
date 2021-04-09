@@ -7021,6 +7021,7 @@ $("#DkFeSpeichern").click(function() {
             $("#intBdeConcernOrDeletePopUp").remove();
             if(this.id =="btnTageMasseneingabeIMwNwPrdkt"){
                 btnMasseneingabeIMwChangePrdkt(1,'infosMasseneingabeDateRangeDivPrdkt',6);
+                
             }else if(this.id =="btnWochenMasseneingabeIMwNwPrdkt"){
                 btnMasseneingabeIMwChangePrdkt(2,'infosMasseneingabeDateRangeDivPrdkt',6);
             }else if(this.id =="btnMonateMasseneingabeIMwNwPrdkt"){
@@ -7131,6 +7132,8 @@ $("#DkFeSpeichern").click(function() {
         var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosMasseneingabeDateRangeDivMesssetelle',5);
         var sDate =dates[0];
         var eDate =dates[1];
+
+
         resetInputsSearchMasseneingabe();
         if(zeitintervallAnl == 2 && sDate != '' && eDate != ''){
             var from = sDate.split("-");
@@ -7142,12 +7145,17 @@ $("#DkFeSpeichern").click(function() {
             var endDate = endDateV = to[1]; //second year input text value
             var startDate = dates[0];
             var endDate =dates[1];
-        }else{
+        }
+
+        else{
             var startDate = startDateV = dates[0];
             var endDate = endDateV = dates[1];
-        }
+        }       
         var validateNull= validateNullValZeitintervallAnlSelectOpt(sDate,eDate,zeitintervallAnl,'infosMasseneingabeDateRangeDivMesssetelle',5);
+        
         var validateSel = validateZeitintervallAnlSelectOpt(startDate,endDate,zeitintervallAnl,'infosMasseneingabeDateRangeDivMesssetelle',5);
+        
+
         if(validateNull==false){
             return false;
         }else if(validateSel==false){
