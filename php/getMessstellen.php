@@ -55,7 +55,7 @@ function messstellenAnlagen ( $berOrLieg, $connLink ) {
 if ( $ins == "vorgelagerteMstE" || $ins == "vorgelagerteMstB") {
 	echo messstellenAnlagen( "ber", $conn ) ;
 }
-elseif ( $ins === "mstSuchenVergl1" || $ins === "mstSuchenVergl1" || $ins == "mstMsm" || $ins == "mstERng" || $ins == "mstDiag1" || $ins == "mstDiag2" || $ins == "mstDiag3" || $ins == "mstCompDiag" || $ins == "mstDatenexport" ) {
+elseif ( $ins === "mstSuchenVergl1" || $ins === "mstSuchenVergl2" || $ins == "mstMsm" || $ins == "mstERng" || $ins == "mstDiag1" || $ins == "mstDiag2" || $ins == "mstDiag3" || $ins == "mstCompDiag" || $ins == "mstDatenexport" ) {
 	echo messstellenAnlagen( "lieg", $conn ) ;
 }
 elseif ( $ins == "mst1Anl" || $ins == "mst2Anl" || $ins == "mst3Anl" || $ins == "mst4Anl" ) {

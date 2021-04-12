@@ -1788,9 +1788,13 @@ try {
                 e = 0,
                 c = 0,
                 g, f, h;
-            "jahr1ERng" == a || "monate1ERng" == a || "vergEnt1ERng" == a || "vergMst1ERng" === a ? (h = tblAuswertung1ERng, b = [$("#jahr1ERng"), $("#monate1ERng"), $("#vergEnt1ERng"), $("#vergMst1ERng")], g = $("#summeVerbr1ERng"), f = $("#summeKosten1ERng")) : (h = tblAuswertung2ERng, b = [$("#jahr2ERng"),
-                $("#monate2ERng"), $("#vergEnt2ERng"), $("#vergMst2ERng")
-            ], g = $("#summeVerbr2ERng"), f = $("#summeKosten2ERng"));
+            "jahr1ERng" == a || "monate1ERng" == a || "vergEnt1ERng" == a || "vergMst1ERng" === a ?
+            (h = tblAuswertung1ERng
+            , b = [$("#jahr1ERng"), $("#monate1ERng"), $("#vergEnt1ERng"), $("#vergMst1ERng")]
+            , g = $("#summeVerbr1ERng"), f = $("#summeKosten1ERng")) :
+            (h = tblAuswertung2ERng
+            , b = [$("#jahr2ERng"), $("#monate2ERng"), $("#vergEnt2ERng"), $("#vergMst2ERng")]
+            , g = $("#summeVerbr2ERng"), f = $("#summeKosten2ERng"));
             h.search("").draw();
             h.columns().search("");
             h.columns(5).search(b[0].val()).draw();

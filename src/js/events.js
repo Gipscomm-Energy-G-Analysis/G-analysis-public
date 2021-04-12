@@ -1035,7 +1035,7 @@ $(document).ready(function() {
         "imgBtnMstDiag2" == this.id ? a = "mstCompDiag" :
         "imgBtnMstDatenexport" == this.id ? a = "mstDatenexport" :
         "mstSuchenVergl1" == this.id ? a = "mstSuchenVergl1" :
-        "mstSuchenVergl2" == this.id && (a = "mstSuchenVergl2");
+        a = "mstSuchenVergl2";
         messstellenAuswahllisteErstellen(a, b)
     });
     $("#msmSuchenMstE, #msmSuchenMstB").click(function() {
