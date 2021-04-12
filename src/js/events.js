@@ -564,14 +564,14 @@ $(document).ready(function() {
     });
 
     /*mm-comment 30-03-2021*/
-    /*$("#btnMassEingMst, #btnMassEingAnl").click(function() {        
+    /*$("#btnMassEingMst, #btnMassEingAnl").click(function() {
         $("#infosMasseneingabe").css("display", "block");
         $("#infosIntEnergiedaten, #infosIntBetriebsdaten").css("display", "none")
     });*/
     /*mm-comment 30-03-2021*/
 
     /*new-mm-start 30-03-2021*/
-    $("#btnMassEingAnl").click(function() {        
+    $("#btnMassEingAnl").click(function() {
         $("#infosMasseneingabe").css("display", "block");
         $("#infosIntBetriebsdaten").css("display", "none");
 
@@ -616,8 +616,8 @@ $(document).ready(function() {
             btnMasseneingabeIMwChangePrdkt(1,'infosMasseneingabeDateRangeDivPrdkt',6);
             /*new-mm-end 01-04-2021*/
             datePickerForInterneBetriebsdatenAnlPrdkt('infosMasseneingabeDateRangeDivPrdkt',6);
-            $("#tblMasseneingabeDataIMw").remove();            
-        }  
+            $("#tblMasseneingabeDataIMw").remove();
+        }
         $("#infosIntEnergiedaten").css("display", "none");
     });
     /*new-mm-end 30-03-2021*/
@@ -625,7 +625,7 @@ $(document).ready(function() {
     $("#btnKonfigMstAnl").click(function() {
         $("#infosMasseneingabe").css("display", "none");
         "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
-    
+
         $("body").removeClass('fullWidthMasseneingabe');
         $("#tblMasseneingabeDataIMw").remove();
         /*new-mm-start 08-04-2021*/
@@ -639,7 +639,7 @@ $(document).ready(function() {
     $("#btnKonfigPrdkt").click(function() {
         $("#infosMasseneingabePrdkt").css("display", "none");
         "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
-    
+
         $("body").removeClass('fullWidthMasseneingabe');
         $("#tblMasseneingabeDataIMw").remove();
         /*new-mm-start 08-04-2021*/
@@ -647,7 +647,7 @@ $(document).ready(function() {
         $('.infosMasseneingabeDateRangeDivPrdkt input').datepicker('setDate', null);
         resetInputsSearchMasseneingabe();
         /*new-mm-end 08-04-2021*/
-    }); 
+    });
     $("#btnKonfigMesssetelle").click(function() {
         $("#infosMasseneingabeMesssetelle").css("display", "none");
         "intEngIMw" == $("#activeInstance").val() ? $("#infosIntEnergiedaten").css("display", "block") : $("#infosIntBetriebsdaten").css("display", "block")
@@ -659,7 +659,7 @@ $(document).ready(function() {
         $('.infosMasseneingabeDateRangeDivMesssetelle input').datepicker('setDate', null);
         resetInputsSearchMasseneingabe();
         /*new-mm-end 08-04-2021*/
-        
+
     });
     /*new-mm-end 30-03-2021*/
     $("#btnVerbrauchsdatenExport").click(function() {
@@ -1530,7 +1530,7 @@ $(document).ready(function() {
         "admPrevious" == this.id ? 0 < admNavID && (admNavID--, readInstanzen(this.id, admNavID)) :
         "benPrevious" == this.id ? 0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) :
         "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() { organisationenEinlesen() }, 1500), readInstanzen("orgFirst", 0)) :
-        "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID--), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
         "extDlPrevious" == this.id ? 0 < extDlNavID && (extDlNavID--, readInstanzen(this.id, extDlNavID)) :
         "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen(this.id, berNavID)) :
@@ -3777,7 +3777,7 @@ $("#DkFeSpeichern").click(function() {
             //resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
             /*new-mm-start 06-04-2021*/
             $("#btnMassEingPrdkt").show();
-            $("#btnMassEingMesssetelle").hide();  
+            $("#btnMassEingMesssetelle").hide();
             $('input:radio[name=BetriebsdatenFilter]').change();
             /*new-mm-end 06-04-2021*/
             produkteAnlargeDataTable();
@@ -3837,7 +3837,7 @@ $("#DkFeSpeichern").click(function() {
             }
            event.stopPropagation();
         });
-        /*added selector #infosMasseneingabeMesssetelle .txtBoxSrch 05-04-2021*/  
+        /*added selector #infosMasseneingabeMesssetelle .txtBoxSrch 05-04-2021*/
         $('body').on('keyup input', '#infosMasseneingabe .txtBoxSrch , #infosMasseneingabeMesssetelle .txtBoxSrch', function(e){
             var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             var inputId=this.id;
@@ -3845,37 +3845,37 @@ $("#DkFeSpeichern").click(function() {
             var currID = splitId[1];
             var nextId = eval(splitId[1])+eval(1);
             var bottomPrevId = eval(splitId[1])-eval(1);
-            var bottomPrevNextId = eval(bottomPrevId)-eval(1); 
+            var bottomPrevNextId = eval(bottomPrevId)-eval(1);
             var rowMainIDEn = $(this).closest('tr').attr('id');
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
             //var inptDate = $(this).closest('td').attr('date');
-    
+
             var inputBottomCurrId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
             var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
             var inputCurPrevId = "#"+rowMainIDEn+" #anlageMainRow_"+bottomPrevId;
             var inputCurrId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
             var inputNextId = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
             var inputNextBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
-            var inputValBottomPrev=$(inputBottomPrevId).val();   
+            var inputValBottomPrev=$(inputBottomPrevId).val();
             var inputValBottomCurr=$(inputBottomCurrId).val();
             var inputValCurr=$(inputCurrId).val();
 
             /*mm_22-01-2021 Start Code to store Previous Last Value */
             var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
             var checkPrevInpDs = $(this).closest('td').prev('td').find('input').attr('disabled');
-            var prevId = eval(splitId[1])-eval(1); 
+            var prevId = eval(splitId[1])-eval(1);
             if(checkPrevVal =='' && typeof(checkPrevInpDs) =='undefined'){
                 do {
                 prevId--;
-                var inputIdPrevlast = "#"+rowMainIDEn+" #anlageMainRow_"+prevId;                
+                var inputIdPrevlast = "#"+rowMainIDEn+" #anlageMainRow_"+prevId;
                 var inputVallast = $(inputIdPrevlast).val();
                     if(inputVallast != "")
-                    { 
+                    {
                         $('#inputLastValDB').val(inputVallast);
                         $('#inputPrevLastIdDB').val(prevId);
                         $('#inputIdPrevlast').val(inputIdPrevlast);
                         var inputlastBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+prevId;
-                        var inputIdPrevBottomlastVal = $(inputlastBottomPrevId).val();                       
+                        var inputIdPrevBottomlastVal = $(inputlastBottomPrevId).val();
                         $('#inputValBottomPrevLastDB').val(inputIdPrevBottomlastVal);
                         $('#inputIdPrevBottomlast').val(inputlastBottomPrevId);
                         break;
@@ -3886,16 +3886,16 @@ $("#DkFeSpeichern").click(function() {
                 // return false;
             }
             var checkNextVal = $(this).closest('td').next('td').find('input').val();
-            var checkNextInpDs = $(this).closest('td').next('td').find('input').attr('disabled'); 
+            var checkNextInpDs = $(this).closest('td').next('td').find('input').attr('disabled');
 
             if(checkNextVal =='' && typeof(checkNextInpDs) =='undefined'){
                 do {
                 nextId++;
                 var inputIdNextlast = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
-                var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId; 
+                var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
                 var inputValNextlast = $(inputIdNextlast).val();
                     if(inputValNextlast != "")
-                    {                         
+                    {
                         $('#inputNextLastIdDB').val(nextId);
                         $('#inputNextLastValDB').val(inputValNextlast);
                         $('#inputIdNextlast').val(inputIdNextlast);
@@ -3907,7 +3907,7 @@ $("#DkFeSpeichern").click(function() {
                 while (inputValNextlast == "");
                 //return false;
             }
-            
+
             /*END Code to store Previous Last Value */
 
             if(e.keyCode != 9){
@@ -3924,23 +3924,23 @@ $("#DkFeSpeichern").click(function() {
                 $("#inputValBottomCurr").val(inputValBottomCurr);
                 $("#inputCurrVal").val(inputValCurr);
                 $("#rowMainIDDs").val(rowMainIDDs);
-                $("#inputDefaultShowPopup").val(true);   
+                $("#inputDefaultShowPopup").val(true);
                 $("#inputNextBottomId").val(inputNextBottomId);
                 $("#rowMainIDEn").val(rowMainIDEn);
                 $("#inputFocusedId").val(inputCurrId);
                 if($("#currInputID").val()==0){ $("#inputCurPrevId").val("");
                 }
                 $("#masseneingabeSpeichernSrch").prop("disabled",true);
-                $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled",true);             
+                $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled",true);
             }
             //if(e.keyCode == 9){
                 //$("#currInputID").val("");
                 //$("#inputCurrId").val("");
-               
+
                // getLastInputValuesByCurrent(currInputID,rowMainIDDs,4);
                // $("#inputCurrId").val("");
                 //resetInputsSearchMasseneingabe();
-                //getLastInputValuesByCurrent(currInputID-1,rowMainIDDs,4); 
+                //getLastInputValuesByCurrent(currInputID-1,rowMainIDDs,4);
             //}
 
             //alert($(inputCurrId).val());
@@ -3948,8 +3948,8 @@ $("#DkFeSpeichern").click(function() {
                // $("#currInputID").val("");
                 $("#inputCurrId").val("");
             }*/
-                                         
-            e.stopPropagation();         
+
+            e.stopPropagation();
         });
 
         /*new-mm-start 05-04-2021*/
@@ -3960,37 +3960,37 @@ $("#DkFeSpeichern").click(function() {
             var currID = splitId[1];
             var nextId = eval(splitId[1])+eval(1);
             var bottomPrevId = eval(splitId[1])-eval(1);
-            var bottomPrevNextId = eval(bottomPrevId)-eval(1); 
+            var bottomPrevNextId = eval(bottomPrevId)-eval(1);
             var rowMainIDEn = $(this).closest('tr').attr('id');
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
             //var inptDate = $(this).closest('td').attr('date');
-    
+
             var inputBottomCurrId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
             var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
             var inputCurPrevId = "#"+rowMainIDEn+" #anlageMainRow_"+bottomPrevId;
             var inputCurrId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
             var inputNextId = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
             var inputNextBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
-            var inputValBottomPrev=$(inputBottomPrevId).val();   
+            var inputValBottomPrev=$(inputBottomPrevId).val();
             var inputValBottomCurr=$(inputBottomCurrId).val();
             var inputValCurr=$(inputCurrId).val();
 
             /*mm_22-01-2021 Start Code to store Previous Last Value */
             var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
             var checkPrevInpDs = $(this).closest('td').prev('td').find('input').attr('disabled');
-            var prevId = eval(splitId[1])-eval(1); 
+            var prevId = eval(splitId[1])-eval(1);
             if(checkPrevVal =='' && typeof(checkPrevInpDs) =='undefined'){
                 do {
                 prevId--;
-                var inputIdPrevlast = "#"+rowMainIDEn+" #anlageMainRow_"+prevId;                
+                var inputIdPrevlast = "#"+rowMainIDEn+" #anlageMainRow_"+prevId;
                 var inputVallast = $(inputIdPrevlast).val();
                     if(inputVallast != "")
-                    { 
+                    {
                         $('#inputLastValDB').val(inputVallast);
                         $('#inputPrevLastIdDB').val(prevId);
                         $('#inputIdPrevlast').val(inputIdPrevlast);
                         var inputlastBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+prevId;
-                        var inputIdPrevBottomlastVal = $(inputlastBottomPrevId).val();                       
+                        var inputIdPrevBottomlastVal = $(inputlastBottomPrevId).val();
                         $('#inputValBottomPrevLastDB').val(inputIdPrevBottomlastVal);
                         $('#inputIdPrevBottomlast').val(inputlastBottomPrevId);
                         break;
@@ -4001,16 +4001,16 @@ $("#DkFeSpeichern").click(function() {
                 // return false;
             }
             var checkNextVal = $(this).closest('td').next('td').find('input').val();
-            var checkNextInpDs = $(this).closest('td').next('td').find('input').attr('disabled'); 
+            var checkNextInpDs = $(this).closest('td').next('td').find('input').attr('disabled');
 
             if(checkNextVal =='' && typeof(checkNextInpDs) =='undefined'){
                 do {
                 nextId++;
                 var inputIdNextlast = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
-                var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId; 
+                var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
                 var inputValNextlast = $(inputIdNextlast).val();
                     if(inputValNextlast != "")
-                    {                         
+                    {
                         $('#inputNextLastIdDB').val(nextId);
                         $('#inputNextLastValDB').val(inputValNextlast);
                         $('#inputIdNextlast').val(inputIdNextlast);
@@ -4022,7 +4022,7 @@ $("#DkFeSpeichern").click(function() {
                 while (inputValNextlast == "");
                 //return false;
             }
-            
+
             /*END Code to store Previous Last Value */
 
             if(e.keyCode != 9){
@@ -4039,7 +4039,7 @@ $("#DkFeSpeichern").click(function() {
                 $("#inputValBottomCurr").val(inputValBottomCurr);
                 $("#inputCurrVal").val(inputValCurr);
                 $("#rowMainIDDs").val(rowMainIDDs);
-                $("#inputDefaultShowPopup").val(true);   
+                $("#inputDefaultShowPopup").val(true);
                 $("#inputNextBottomId").val(inputNextBottomId);
                 $("#rowMainIDEn").val(rowMainIDEn);
                 $("#inputFocusedId").val(inputCurrId);
@@ -4047,15 +4047,15 @@ $("#DkFeSpeichern").click(function() {
                 }
                 /*new-mm-start 05-04-2021*/
                 $("#masseneingabeSpeichernSrchPrdkt").prop("disabled",true);
-                /*new-mm-start 05-04-2021*/            
+                /*new-mm-start 05-04-2021*/
             }
-                                         
-            e.stopPropagation();         
+
+            e.stopPropagation();
         });
-        /*new-mm-end 05-04-2021*/ 
+        /*new-mm-end 05-04-2021*/
 
 
-        /*added selector #infosMasseneingabeMesssetelle .txtBoxSrch 05-04-2021*/  
+        /*added selector #infosMasseneingabeMesssetelle .txtBoxSrch 05-04-2021*/
         $('body').on('change input', '#infosMasseneingabe .txtBoxSrch , #infosMasseneingabeMesssetelle .txtBoxSrch', function(e){
             var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             var inputId=this.id;
@@ -4064,22 +4064,22 @@ $("#DkFeSpeichern").click(function() {
             var splitId = inputId.split("_");
             var currID = splitId[1];
             var nextId = eval(splitId[1])+eval(1);
-            var prevId = eval(splitId[1])-eval(1); 
+            var prevId = eval(splitId[1])-eval(1);
 
             var inputIdNext = "#anlageMainRow_"+nextId;
             var inputIdPrev = "#anlageMainRow_"+prevId;
-            var inputValNext=$(this).closest('td').next('td').find(inputIdNext).val();   
+            var inputValNext=$(this).closest('td').next('td').find(inputIdNext).val();
             var inputValCurrent=$(this).closest('td').prev('td').find(inputIdPrev).val();
-            
+
             var calcVal = inputValNext-inputValFirst;
             var currCalcVal = inputValFirst-inputValCurrent;
             var inputVal=$(this).val();
 
             var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
-            var checkPrevInpDs = $(this).closest('td').prev('td').find('input').attr('disabled');    
+            var checkPrevInpDs = $(this).closest('td').prev('td').find('input').attr('disabled');
             var currInputID = $("#currInputID").val();
-            var rowMainIDDs = $("#rowMainIDDs").val();   
-            var inptDate = $(this).closest('td').attr('date');  
+            var rowMainIDDs = $("#rowMainIDDs").val();
+            var inptDate = $(this).closest('td').attr('date');
             var mst_id = $(this).closest('td').attr('data-id');
 
             var date = $(this).closest('td').attr('date');
@@ -4087,13 +4087,13 @@ $("#DkFeSpeichern").click(function() {
             var rowMainIDEn = $(this).closest('tr').attr('id');
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
             var inputCurrTopId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
-            var inputCurrBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID; 
+            var inputCurrBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
             var einheitVal = $(this).closest('tr').attr('data-einheit');
             if((inputValFirst !='' && inputValCurrent !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValCurrent) !='undefined')){
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
                 if($.inArray(inptDate, anlageObj[mst_id]) === -1){
                     anlageObj[mst_id].push(inptDate);
-                }    
+                }
             }else{
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val('');
                 if($.inArray(inptDate, anlageObj[mst_id]) !== -1){
@@ -4103,7 +4103,7 @@ $("#DkFeSpeichern").click(function() {
             if((inputValFirst !='' && inputValNext !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValNext) !='undefined')){
                  $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(calcVal);
             }else{
-                $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(''); 
+                $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val('');
             }
             if(this.value ==''){
                 //console.log('000');
@@ -4114,13 +4114,13 @@ $("#DkFeSpeichern").click(function() {
                 var inputCountLength = anlageObj[mst_id].length;
                 if(inputCountLength>4){
                      checkAlertRangeMinMaxServerSide(zeitIntervallAnl,mst_id,date,rowMainIDDs);
-                }  
+                }
             }
 
             /*MM_21-01-2021 Start:check previous/next value is null and last value*/
-            
+
             var checkNextVal = $(this).closest('td').next('td').find('input').val();
-            var checkNextInpDs = $(this).closest('td').next('td').find('input').attr('disabled'); 
+            var checkNextInpDs = $(this).closest('td').next('td').find('input').attr('disabled');
             var inputNextBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
 
             if(checkPrevVal =='' && typeof(checkPrevInpDs) =='undefined'){
@@ -4146,9 +4146,9 @@ $("#DkFeSpeichern").click(function() {
                         var diffval = "";
                     }
                     //var checkDay = -365 ;
-                    //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);             
+                    //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
                     if(inputVallast != "")
-                    { 
+                    {
                         $(inputCurrBottomId).val(diffval);
 
                         break;
@@ -4161,15 +4161,15 @@ $("#DkFeSpeichern").click(function() {
                 //  return false;
                 //console.log('inputVallast='+inputVallast);
                 if(typeof(inputVallast) =='undefined'){
-                     checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);             
-          
+                     checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);
+
                 }
             }
             if(checkNextVal =='' && typeof(checkNextInpDs) =='undefined'){
                 do {
                     nextId++;
                     var inputIdNextlast = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
-                    var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId; 
+                    var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
                     var inputValNextlast = $(inputIdNextlast).val();
                     if((inputValFirst != "" && typeof(inputValFirst) != 'undefined') && (inputValNextlast != "" && typeof(inputValNextlast) != 'undefined')){
                         var diffNextval = eval(inputValNextlast)-eval(inputValFirst);
@@ -4177,18 +4177,18 @@ $("#DkFeSpeichern").click(function() {
                     /*else if((inputValFirst == "") && (inputCurPrevId != "" && typeof(inputCurPrevId) != 'undefined') && (inputValNextlast != ""  && typeof(inputValNextlast) != 'undefined')){
 
                         var diffNextval = Number($('#inputNextLastValDB').val()) - Number($($(inputCurPrevId).val()).val());
-                    }*/                    
+                    }*/
                     else{
                         if($('#inputLastValDB').val()){
-                          var diffNextval = $('#inputNextLastValDB').val() - $('#inputLastValDB').val() ;  
+                          var diffNextval = $('#inputNextLastValDB').val() - $('#inputLastValDB').val() ;
                         }
                         if($($(inputCurPrevId).val()).val()){
                             var diffNextval = Number($('#inputNextLastValDB').val()) - Number($($(inputCurPrevId).val()).val());
                         }
-                        
+
                     }
                     if(inputValNextlast != "")
-                    {                         
+                    {
                         $(inputNextLastBottomId).val(diffNextval);
                         break;
                     }
@@ -4199,11 +4199,11 @@ $("#DkFeSpeichern").click(function() {
             }
             /*MM_21-01-2021 End:check previous value is null and last value*/
 
-            if($('#currInputID').val() == 0){                    
+            if($('#currInputID').val() == 0){
                 //$('#inputPrevValDB').val("");
                 //console.log(0);
                 if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){
-                       
+
                     var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                     //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                     if($('#inputPrevValDB').val()){
@@ -4222,15 +4222,15 @@ $("#DkFeSpeichern").click(function() {
                         else{
                             $(inputNextLastBottomId).val("");
                         }
-                        //$(inputNextLastBottomId).val("");                        
+                        //$(inputNextLastBottomId).val("");
                     }
                 //var checkDay = -5 ;
                // checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
-                checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);             
+                checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);
             }
             else if(allPrevVal){
-                if(allPrevVal.length == 0 ){    
-                    if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){                       
+                if(allPrevVal.length == 0 ){
+                    if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){
                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                          //console.log("allPrevVal.length0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                         if($('#inputPrevValDB').val()){
@@ -4238,9 +4238,9 @@ $("#DkFeSpeichern").click(function() {
                         }
                         else
                         {
-                         $(inputNextBottomId).val("");   
+                         $(inputNextBottomId).val("");
                         }
-                        
+
                     }
                     if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNextlast != "" && typeof(inputValNextlast) != 'undefined')){
                         var lastBottomValDB = $(inputIdNextlast).val() - $('#inputPrevValDB').val();
@@ -4251,16 +4251,16 @@ $("#DkFeSpeichern").click(function() {
                         else{
                             $(inputNextLastBottomId).val("");
                         }
-                        //$(inputNextLastBottomId).val("");                        
-                    }             
-                    
-                                             
+                        //$(inputNextLastBottomId).val("");
+                    }
+
+
                 }
-                //console.log('inputValCurrent='+inputValCurrent);  
+                //console.log('inputValCurrent='+inputValCurrent);
                 //if(inputValCurrent==''){
                     //var checkDay = -5 ;
                    // checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);
-                    //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay); 
+                    //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
 
                 //}
                 //console.log(1);
@@ -4271,10 +4271,10 @@ $("#DkFeSpeichern").click(function() {
                 //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
                 console.log(2);
             }*/
-            e.stopPropagation(); 
-                    
+            e.stopPropagation();
+
         });
-        /*new-mm-start 05-04-2021*/ 
+        /*new-mm-start 05-04-2021*/
         $('body').on('change input', '#infosMasseneingabePrdkt .txtBoxSrch', function(e){
             var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             var inputId=this.id;
@@ -4283,22 +4283,22 @@ $("#DkFeSpeichern").click(function() {
             var splitId = inputId.split("_");
             var currID = splitId[1];
             var nextId = eval(splitId[1])+eval(1);
-            var prevId = eval(splitId[1])-eval(1); 
+            var prevId = eval(splitId[1])-eval(1);
 
             var inputIdNext = "#anlageMainRow_"+nextId;
             var inputIdPrev = "#anlageMainRow_"+prevId;
-            var inputValNext=$(this).closest('td').next('td').find(inputIdNext).val();   
+            var inputValNext=$(this).closest('td').next('td').find(inputIdNext).val();
             var inputValCurrent=$(this).closest('td').prev('td').find(inputIdPrev).val();
-            
+
             var calcVal = inputValNext-inputValFirst;
             var currCalcVal = inputValFirst-inputValCurrent;
             var inputVal=$(this).val();
 
             var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
-            var checkPrevInpDs = $(this).closest('td').prev('td').find('input').attr('disabled');    
+            var checkPrevInpDs = $(this).closest('td').prev('td').find('input').attr('disabled');
             var currInputID = $("#currInputID").val();
-            var rowMainIDDs = $("#rowMainIDDs").val();   
-            var inptDate = $(this).closest('td').attr('date');  
+            var rowMainIDDs = $("#rowMainIDDs").val();
+            var inptDate = $(this).closest('td').attr('date');
             var mst_id = $(this).closest('td').attr('data-id');
 
             var date = $(this).closest('td').attr('date');
@@ -4306,13 +4306,13 @@ $("#DkFeSpeichern").click(function() {
             var rowMainIDEn = $(this).closest('tr').attr('id');
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
             var inputCurrTopId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
-            var inputCurrBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID; 
+            var inputCurrBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
             var einheitVal = $(this).closest('tr').attr('data-einheit');
             if((inputValFirst !='' && inputValCurrent !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValCurrent) !='undefined')){
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
                 if($.inArray(inptDate, anlageObj[mst_id]) === -1){
                     anlageObj[mst_id].push(inptDate);
-                }    
+                }
             }else{
                 $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val('');
                 if($.inArray(inptDate, anlageObj[mst_id]) !== -1){
@@ -4322,7 +4322,7 @@ $("#DkFeSpeichern").click(function() {
             if((inputValFirst !='' && inputValNext !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValNext) !='undefined')){
                  $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(calcVal);
             }else{
-                $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(''); 
+                $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val('');
             }
             if(this.value ==''){
                 //console.log('000');
@@ -4333,13 +4333,13 @@ $("#DkFeSpeichern").click(function() {
                 var inputCountLength = anlageObj[mst_id].length;
                 if(inputCountLength>4){
                      checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,mst_id,date,rowMainIDDs);
-                }  
+                }
             }
 
             /*MM_21-01-2021 Start:check previous/next value is null and last value*/
-            
+
             var checkNextVal = $(this).closest('td').next('td').find('input').val();
-            var checkNextInpDs = $(this).closest('td').next('td').find('input').attr('disabled'); 
+            var checkNextInpDs = $(this).closest('td').next('td').find('input').attr('disabled');
             var inputNextBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
 
             if(checkPrevVal =='' && typeof(checkPrevInpDs) =='undefined'){
@@ -4365,9 +4365,9 @@ $("#DkFeSpeichern").click(function() {
                         var diffval = "";
                     }
                     //var checkDay = -365 ;
-                    //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);             
+                    //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
                     if(inputVallast != "")
-                    { 
+                    {
                         $(inputCurrBottomId).val(diffval);
 
                         break;
@@ -4380,15 +4380,15 @@ $("#DkFeSpeichern").click(function() {
                 //  return false;
                 //console.log('inputVallast='+inputVallast);
                 if(typeof(inputVallast) =='undefined'){
-                     checkAlertRangeLastInputValueExistPrdkt(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);             
-          
+                     checkAlertRangeLastInputValueExistPrdkt(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);
+
                 }
             }
             if(checkNextVal =='' && typeof(checkNextInpDs) =='undefined'){
                 do {
                     nextId++;
                     var inputIdNextlast = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
-                    var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId; 
+                    var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
                     var inputValNextlast = $(inputIdNextlast).val();
                     if((inputValFirst != "" && typeof(inputValFirst) != 'undefined') && (inputValNextlast != "" && typeof(inputValNextlast) != 'undefined')){
                         var diffNextval = eval(inputValNextlast)-eval(inputValFirst);
@@ -4396,18 +4396,18 @@ $("#DkFeSpeichern").click(function() {
                     /*else if((inputValFirst == "") && (inputCurPrevId != "" && typeof(inputCurPrevId) != 'undefined') && (inputValNextlast != ""  && typeof(inputValNextlast) != 'undefined')){
 
                         var diffNextval = Number($('#inputNextLastValDB').val()) - Number($($(inputCurPrevId).val()).val());
-                    }*/                    
+                    }*/
                     else{
                         if($('#inputLastValDB').val()){
-                          var diffNextval = $('#inputNextLastValDB').val() - $('#inputLastValDB').val() ;  
+                          var diffNextval = $('#inputNextLastValDB').val() - $('#inputLastValDB').val() ;
                         }
                         if($($(inputCurPrevId).val()).val()){
                             var diffNextval = Number($('#inputNextLastValDB').val()) - Number($($(inputCurPrevId).val()).val());
                         }
-                        
+
                     }
                     if(inputValNextlast != "")
-                    {                         
+                    {
                         $(inputNextLastBottomId).val(diffNextval);
                         break;
                     }
@@ -4418,11 +4418,11 @@ $("#DkFeSpeichern").click(function() {
             }
             /*MM_21-01-2021 End:check previous value is null and last value*/
 
-            if($('#currInputID').val() == 0){                    
+            if($('#currInputID').val() == 0){
                 //$('#inputPrevValDB').val("");
                 //console.log(0);
                 if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){
-                       
+
                     var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                     //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                     if($('#inputPrevValDB').val()){
@@ -4441,15 +4441,15 @@ $("#DkFeSpeichern").click(function() {
                         else{
                             $(inputNextLastBottomId).val("");
                         }
-                        //$(inputNextLastBottomId).val("");                        
+                        //$(inputNextLastBottomId).val("");
                     }
                 //var checkDay = -5 ;
                // checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
-                checkAlertRangeLastInputValueExistPrdkt(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);             
+                checkAlertRangeLastInputValueExistPrdkt(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);
             }
             else if(allPrevVal){
-                if(allPrevVal.length == 0 ){    
-                    if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){                       
+                if(allPrevVal.length == 0 ){
+                    if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNext != "" && typeof(inputValNext) != 'undefined') ){
                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                          //console.log("allPrevVal.length0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                         if($('#inputPrevValDB').val()){
@@ -4457,9 +4457,9 @@ $("#DkFeSpeichern").click(function() {
                         }
                         else
                         {
-                         $(inputNextBottomId).val("");   
+                         $(inputNextBottomId).val("");
                         }
-                        
+
                     }
                     if((inputValFirst == "" && typeof(inputValFirst) != 'undefined') && (inputValNextlast != "" && typeof(inputValNextlast) != 'undefined')){
                         var lastBottomValDB = $(inputIdNextlast).val() - $('#inputPrevValDB').val();
@@ -4470,16 +4470,16 @@ $("#DkFeSpeichern").click(function() {
                         else{
                             $(inputNextLastBottomId).val("");
                         }
-                        //$(inputNextLastBottomId).val("");                        
-                    }             
-                    
-                                             
+                        //$(inputNextLastBottomId).val("");
+                    }
+
+
                 }
-                //console.log('inputValCurrent='+inputValCurrent);  
+                //console.log('inputValCurrent='+inputValCurrent);
                 //if(inputValCurrent==''){
                     //var checkDay = -5 ;
                    // checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId);
-                    //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay); 
+                    //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
 
                 //}
                 //console.log(1);
@@ -4490,12 +4490,12 @@ $("#DkFeSpeichern").click(function() {
                 //checkAlertRangeLastInputValueExist(zeitIntervallAnl,mst_id,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId,checkDay);
                 console.log(2);
             }*/
-            e.stopPropagation(); 
-                    
+            e.stopPropagation();
+
         });
         /*new-mm-end 05-04-2021*/
 
-        /*added selector #infosMasseneingabeMesssetelle .txtBoxSrch 05-04-2021*/      
+        /*added selector #infosMasseneingabeMesssetelle .txtBoxSrch 05-04-2021*/
         $('body').on('focus', '#infosMasseneingabe .txtBoxSrch , #infosMasseneingabeMesssetelle .txtBoxSrch', function(e){
             var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             var inputId=this.id;
@@ -4503,13 +4503,13 @@ $("#DkFeSpeichern").click(function() {
             var currID = splitId[1];
             var currNextID = eval(splitId[1])+eval(1);
             var bottomPrevId = eval(splitId[1])-eval(1);
-            var bottomPrevNextId = eval(bottomPrevId)-eval(1); 
+            var bottomPrevNextId = eval(bottomPrevId)-eval(1);
             var rowMainIDEn = $(this).closest('tr').attr('id');
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
             var rowMstID = $(this).closest('td').attr('data-id');
             var date = $(this).closest('td').attr('date');
             //$("#timeIntervalWerteEnergiedatenIMw .txtBoxSrch").NumericOnly();
-            
+
             var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
             var inputBottomPrevNextId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevNextId;
             var inputTopPrevNextId = "#"+rowMainIDEn+" #anlageMainRow_"+bottomPrevNextId;
@@ -4518,14 +4518,14 @@ $("#DkFeSpeichern").click(function() {
             var inputNextId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
 
             var inputBottomCurrId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
-            
+
             var einheitVal = $(this).closest('tr').attr('data-einheit');
             var inptCurPrevId = $("#inputCurPrevId").val();
             var inptCurrId= $("#inputCurrId").val();
 
             var inputCurNextId = $("#inputNextId").val();
-            var inputDeleteBotmId = $("#inputDeleteBotmId").val();                          
-            var inputDefaultShowPopup = $("#inputDefaultShowPopup").val(); 
+            var inputDeleteBotmId = $("#inputDeleteBotmId").val();
+            var inputDefaultShowPopup = $("#inputDefaultShowPopup").val();
 
 
             /*12-02-2021 new code for enable concern popup*/
@@ -4545,26 +4545,26 @@ $("#DkFeSpeichern").click(function() {
             //var NextIdCheck = Number(currID);
             //var inputNextBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+NextIdCheck;
             var inputNextBottomId = $("#inputNextBottomId").val();
-            var inputIdPrevlast = $('#inputLastValDB').val(); 
+            var inputIdPrevlast = $('#inputLastValDB').val();
             var inputNextLastValDB = $("#inputNextLastValDB").val();
             var nextId = $("#inputNextLastIdDB").val();
             var prevId = $("#inputPrevLastIdDB").val();
             var inputNextLastId = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
             var inputPrevLastId = "#"+rowMainIDEn+" #anlageMainRow_"+prevId;
-            var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId; 
+            var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
             var inputPrevLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+prevId;
 
             if(anlageObj[rowMstID]){
                 var inputCountLength = anlageObj[rowMstID].length;
                 if(inputCountLength>4){
                      checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
-                }  
+                }
             }
 
             if($(inputCurrId).val() !='' && typeof($(inputCurrId)) != 'undefined') {
                 //continue..
             }else{
-                 $(inputCurrBottomId).val("");  
+                 $(inputCurrBottomId).val("");
             }
 
             var nextPrevDiff = inputNextLastValDB -inputIdPrevlast;
@@ -4585,14 +4585,14 @@ $("#DkFeSpeichern").click(function() {
             /*bugtest 01-02-2021*/
             /*if(inptCurPrevId){
                 if( $(inptCurPrevId) != "" && typeof($(inptCurPrevId.val())) != 'undefined'){
-                    $("#inputPrevValDB").val($(inptCurPrevId).val());    
+                    $("#inputPrevValDB").val($(inptCurPrevId).val());
                 }
             }*/
             /*if($(inputCurNextId).val() != "" && $("#inputPrevValDB").val() != ""){
                 var prevDBDiff = $(inputCurNextId).val() - $("#inputPrevValDB").val();
                 alert(prevDBDiff);
             }
-            */            
+            */
             /*bugtest 01-02-2021*/
 
 
@@ -4605,7 +4605,7 @@ $("#DkFeSpeichern").click(function() {
             /*MM_21-01-2021 End:check previous value is null and last value*/
 
             if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
-                
+
                 if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                     if(Number($(inptCurrId).val()) <= Number($(inptCurPrevId).val())){
                         alert('Current value should be greater then previous value!');
@@ -4616,7 +4616,7 @@ $("#DkFeSpeichern").click(function() {
                                 $(inputNextBottomId).val(prevDiff);
                             }else{
                                 $(inputNextBottomId).val('');
-                            } 
+                            }
                         }
                         /*if($('#currInputID').val() == 0){
                             console.log(prevDBDiff);
@@ -4627,19 +4627,19 @@ $("#DkFeSpeichern").click(function() {
                         $(inptCurrId).focus();
                         resetInputsSearchMasseneingabe();
                         return false;
-                    }                   
+                    }
                 }else if(($("#inputPrevValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                     if(Number($(inptCurrId).val()) <= Number($("#inputPrevValDB").val())){
                         alert('Current value should be greater then previous value!');
                         $(inptCurrId).val('');
                         $(inputDeleteBotmId).val('');
                         $(inputNextLastBottomId).val(lastNextDiff);
-                        $(inptCurrId).focus();  
+                        $(inptCurrId).focus();
                         resetInputsSearchMasseneingabe();
                         return false;
                     }
                 }
-                
+
                 if(($(inputCurNextId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inputCurNextId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                     if(Number($(inptCurrId).val()) >= Number($(inputCurNextId).val())){
                         alert('Current value should not be greater then next value! ');
@@ -4655,25 +4655,25 @@ $("#DkFeSpeichern").click(function() {
                         resetInputsSearchMasseneingabe();
                         return false;
                     }
-                } 
+                }
                 if(($("#inputLastValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                     if(Number($(inptCurrId).val()) <= Number($('#inputLastValDB').val())){
                         if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined')
                          && ($(inptCurPrevId).val() == "" && typeof($(inptCurPrevId).val() ) !='undefined')){ /*nzp 04-02-2021*/
                           alert('Current value should be greater then last value!');
-                          //alert('lastbugtest');                          
+                          //alert('lastbugtest');
                           $(inptCurrId).val('');
                           $(inputDeleteBotmId).val('');
                           $(inputNextLastBottomId).val(nextPrevDiff);
                           if($(inputCurNextId).val() !=''){
                              $(inputNextBottomId).val(nextDiff);
-                          }                         
-                          $(inptCurrId).focus();                              
-                          resetInputsSearchMasseneingabe();                              
-                          return false; 
+                          }
+                          $(inptCurrId).focus();
+                          resetInputsSearchMasseneingabe();
+                          return false;
                         }
-                          
-                    }                   
+
+                    }
                 }
                 if(($("#inputNextLastValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                    if(Number($(inptCurrId).val()) >= Number($("#inputNextLastValDB").val())){
@@ -4694,13 +4694,13 @@ $("#DkFeSpeichern").click(function() {
                                 $(inputNextLastBottomId).val("");
                             }
 
-                        } 
-                       /*new_addon end mm-02-02-2021*/ 
+                        }
+                       /*new_addon end mm-02-02-2021*/
                       $(inptCurrId).focus();
                       resetInputsSearchMasseneingabe();
                      return false;
                    }
-                }                                                   
+                }
             }
             if((einheitVal==3 || einheitVal==4) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
                 if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
@@ -4754,7 +4754,7 @@ $("#DkFeSpeichern").click(function() {
                       resetInputsSearchMasseneingabe();
                       return false;
                    }
-                }                                                    
+                }
             }
             /*Check greater less condition*/
             $("#inputFocusedId").val(inputNextId);
@@ -4762,16 +4762,16 @@ $("#DkFeSpeichern").click(function() {
 
             if(($(inputBottomCurrIdNw).val() !='' && $(inputBottomPrevIdNw).val() !='') && (typeof($(inputBottomCurrIdNw).val()) !='undefined' && typeof($(inputBottomPrevIdNw).val()) !='undefined')){
                 var inputValBottomPrev= $(inputBottomPrevIdNw).val();
-                var inputValBottom=$(inputBottomCurrIdNw).val(); 
+                var inputValBottom=$(inputBottomCurrIdNw).val();
             }else{
                 var inputValBottomPrev= $("#inputPrevBtmValDB").val();
-                var inputValBottom=$("#inputValBottomCurr").val(); 
+                var inputValBottom=$("#inputValBottomCurr").val();
             }
             /*Min and Max condition*/
             var inputBotmMin = $("#inputBotmMin").val();
             var inputBotmMax = $("#inputBotmMax").val();
             var inputValBottomCurr = $("#inputValBottomCurr").val();
-            /*console.log('inptCurrId='+inptCurrId);    
+            /*console.log('inptCurrId='+inptCurrId);
             console.log('inputValBottom='+inputValBottom);
             console.log('inputValBottomPrev='+inputValBottomPrev);
             console.log('showPopupExist='+showPopupExist);
@@ -4781,13 +4781,13 @@ $("#DkFeSpeichern").click(function() {
                    if (( inputValBottomCurr !='' && typeof(inputValBottomCurr) !='undefined' && inputBotmMin !='' && inputBotmMax !='' ) && ((inputValBottomCurr <= Number(inputBotmMax)) && (inputValBottomCurr >= Number(inputBotmMin)))){
                     //var currInputID = $("#currInputID").val();
                     var rowMainIDDs = $("#rowMainIDDs").val();
-                   // getLastInputValuesByCurrent(currInputID,rowMainIDDs,4); 
-                   
+                   // getLastInputValuesByCurrent(currInputID,rowMainIDDs,4);
+
                    if(anlageObj[rowMstID]){
                         var inputCountLength = anlageObj[rowMstID].length;
                         if(inputCountLength>4){
                              checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
-                        }  
+                        }
                     }
                     $("#masseneingabeSpeichernSrch").prop("disabled", false);
                     /*new-mm-start 08-04-2021*/
@@ -4816,20 +4816,20 @@ $("#DkFeSpeichern").click(function() {
                             intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
                     }
-                    //$("#masseneingabeSpeichernSrch").prop("disabled", false);                   
+                    //$("#masseneingabeSpeichernSrch").prop("disabled", false);
                 }
 
-                
-            }  
+
+            }
 
             /*MM_25-01-2020 Concern popup on if prevlast and current bottom val().length are diffrent*/
 
             var showLastPopupExist = $(inputCurrId).hasClass("isShowPopup");
-           
+
             if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' && $("#inputValBottomCurr").val() != "" ){
                 var inputPrevLastBottomVal = $(inputPrevLastBottomId).val();
                 var inputBottomCurrVal = $("#inputValBottomCurr").val();
-                                
+
             }
             if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' ){
                 if(showLastPopupExist == true && inputDefaultShowPopup=='true'){
@@ -4837,14 +4837,14 @@ $("#DkFeSpeichern").click(function() {
                         var inputPrevLastBottomLength = inputPrevLastBottomVal.length;
                     }
                     if(inputBottomCurrVal !="" && typeof(inputBottomCurrVal) !='undefined'){
-                       var inputBottomCurrLength = inputBottomCurrVal.length; 
+                       var inputBottomCurrLength = inputBottomCurrVal.length;
                     }
                     var valLastLeft = checkPositiveValue(inputPrevLastBottomVal);
                     var valLastRight = checkPositiveValue(inputBottomCurrVal);
 
                     if(valLastLeft ==true && valLastRight ==true) {
-                        if(inputBottomCurrLength != inputPrevLastBottomLength){   
-                            //alert('concern 4');                               
+                        if(inputBottomCurrLength != inputPrevLastBottomLength){
+                            //alert('concern 4');
                             intBdeSearchConcernOrDeletePopUp(inputPrevLastId,inputNextId,inputBottomCurrId,rowMstID);
                         }
                     }
@@ -4864,10 +4864,10 @@ $("#DkFeSpeichern").click(function() {
 
                 }
             e.stopPropagation();
-            
+
         });
 
-        /*new-mm-start 05-04-2021*/ 
+        /*new-mm-start 05-04-2021*/
         $('body').on('focus', '#infosMasseneingabePrdkt .txtBoxSrch', function(e){
             var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             var inputId=this.id;
@@ -4875,13 +4875,13 @@ $("#DkFeSpeichern").click(function() {
             var currID = splitId[1];
             var currNextID = eval(splitId[1])+eval(1);
             var bottomPrevId = eval(splitId[1])-eval(1);
-            var bottomPrevNextId = eval(bottomPrevId)-eval(1); 
+            var bottomPrevNextId = eval(bottomPrevId)-eval(1);
             var rowMainIDEn = $(this).closest('tr').attr('id');
             var rowMainIDDs = $(this).closest('tr').next('tr').attr('id');
             var rowMstID = $(this).closest('td').attr('data-id');
             var date = $(this).closest('td').attr('date');
             //$("#timeIntervalWerteEnergiedatenIMw .txtBoxSrch").NumericOnly();
-            
+
             var inputBottomPrevId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevId;
             var inputBottomPrevNextId = "#"+rowMainIDDs+" #anlageCalculationRow_"+bottomPrevNextId;
             var inputTopPrevNextId = "#"+rowMainIDEn+" #anlageMainRow_"+bottomPrevNextId;
@@ -4890,14 +4890,14 @@ $("#DkFeSpeichern").click(function() {
             var inputNextId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
 
             var inputBottomCurrId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
-            
+
             var einheitVal = $(this).closest('tr').attr('data-einheit');
             var inptCurPrevId = $("#inputCurPrevId").val();
             var inptCurrId= $("#inputCurrId").val();
 
             var inputCurNextId = $("#inputNextId").val();
-            var inputDeleteBotmId = $("#inputDeleteBotmId").val();                          
-            var inputDefaultShowPopup = $("#inputDefaultShowPopup").val(); 
+            var inputDeleteBotmId = $("#inputDeleteBotmId").val();
+            var inputDefaultShowPopup = $("#inputDefaultShowPopup").val();
 
 
             /*12-02-2021 new code for enable concern popup*/
@@ -4917,26 +4917,26 @@ $("#DkFeSpeichern").click(function() {
             //var NextIdCheck = Number(currID);
             //var inputNextBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+NextIdCheck;
             var inputNextBottomId = $("#inputNextBottomId").val();
-            var inputIdPrevlast = $('#inputLastValDB').val(); 
+            var inputIdPrevlast = $('#inputLastValDB').val();
             var inputNextLastValDB = $("#inputNextLastValDB").val();
             var nextId = $("#inputNextLastIdDB").val();
             var prevId = $("#inputPrevLastIdDB").val();
             var inputNextLastId = "#"+rowMainIDEn+" #anlageMainRow_"+nextId;
             var inputPrevLastId = "#"+rowMainIDEn+" #anlageMainRow_"+prevId;
-            var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId; 
+            var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
             var inputPrevLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+prevId;
 
             if(anlageObj[rowMstID]){
                 var inputCountLength = anlageObj[rowMstID].length;
                 if(inputCountLength>4){
                      checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
-                }  
+                }
             }
 
             if($(inputCurrId).val() !='' && typeof($(inputCurrId)) != 'undefined') {
                 //continue..
             }else{
-                 $(inputCurrBottomId).val("");  
+                 $(inputCurrBottomId).val("");
             }
 
             var nextPrevDiff = inputNextLastValDB -inputIdPrevlast;
@@ -4957,14 +4957,14 @@ $("#DkFeSpeichern").click(function() {
             /*bugtest 01-02-2021*/
             /*if(inptCurPrevId){
                 if( $(inptCurPrevId) != "" && typeof($(inptCurPrevId.val())) != 'undefined'){
-                    $("#inputPrevValDB").val($(inptCurPrevId).val());    
+                    $("#inputPrevValDB").val($(inptCurPrevId).val());
                 }
             }*/
             /*if($(inputCurNextId).val() != "" && $("#inputPrevValDB").val() != ""){
                 var prevDBDiff = $(inputCurNextId).val() - $("#inputPrevValDB").val();
                 alert(prevDBDiff);
             }
-            */            
+            */
             /*bugtest 01-02-2021*/
 
 
@@ -4977,7 +4977,7 @@ $("#DkFeSpeichern").click(function() {
             /*MM_21-01-2021 End:check previous value is null and last value*/
 
             if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
-                
+
                 if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                     if(Number($(inptCurrId).val()) <= Number($(inptCurPrevId).val())){
                         alert('Current value should be greater then previous value!');
@@ -4988,7 +4988,7 @@ $("#DkFeSpeichern").click(function() {
                                 $(inputNextBottomId).val(prevDiff);
                             }else{
                                 $(inputNextBottomId).val('');
-                            } 
+                            }
                         }
                         /*if($('#currInputID').val() == 0){
                             console.log(prevDBDiff);
@@ -4999,19 +4999,19 @@ $("#DkFeSpeichern").click(function() {
                         $(inptCurrId).focus();
                         resetInputsSearchMasseneingabe();
                         return false;
-                    }                   
+                    }
                 }else if(($("#inputPrevValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                     if(Number($(inptCurrId).val()) <= Number($("#inputPrevValDB").val())){
                         alert('Current value should be greater then previous value!');
                         $(inptCurrId).val('');
                         $(inputDeleteBotmId).val('');
                         $(inputNextLastBottomId).val(lastNextDiff);
-                        $(inptCurrId).focus();  
+                        $(inptCurrId).focus();
                         resetInputsSearchMasseneingabe();
                         return false;
                     }
                 }
-                
+
                 if(($(inputCurNextId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inputCurNextId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                     if(Number($(inptCurrId).val()) >= Number($(inputCurNextId).val())){
                         alert('Current value should not be greater then next value! ');
@@ -5027,25 +5027,25 @@ $("#DkFeSpeichern").click(function() {
                         resetInputsSearchMasseneingabe();
                         return false;
                     }
-                } 
+                }
                 if(($("#inputLastValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                     if(Number($(inptCurrId).val()) <= Number($('#inputLastValDB').val())){
                         if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined')
                          && ($(inptCurPrevId).val() == "" && typeof($(inptCurPrevId).val() ) !='undefined')){ /*nzp 04-02-2021*/
                           alert('Current value should be greater then last value!');
-                          //alert('lastbugtest');                          
+                          //alert('lastbugtest');
                           $(inptCurrId).val('');
                           $(inputDeleteBotmId).val('');
                           $(inputNextLastBottomId).val(nextPrevDiff);
                           if($(inputCurNextId).val() !=''){
                              $(inputNextBottomId).val(nextDiff);
-                          }                         
-                          $(inptCurrId).focus();                              
-                          resetInputsSearchMasseneingabe();                              
-                          return false; 
+                          }
+                          $(inptCurrId).focus();
+                          resetInputsSearchMasseneingabe();
+                          return false;
                         }
-                          
-                    }                   
+
+                    }
                 }
                 if(($("#inputNextLastValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                    if(Number($(inptCurrId).val()) >= Number($("#inputNextLastValDB").val())){
@@ -5066,13 +5066,13 @@ $("#DkFeSpeichern").click(function() {
                                 $(inputNextLastBottomId).val("");
                             }
 
-                        } 
-                       /*new_addon end mm-02-02-2021*/ 
+                        }
+                       /*new_addon end mm-02-02-2021*/
                       $(inptCurrId).focus();
                       resetInputsSearchMasseneingabe();
                      return false;
                    }
-                }                                                   
+                }
             }
             if((einheitVal==3 || einheitVal==4) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
                 if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
@@ -5126,7 +5126,7 @@ $("#DkFeSpeichern").click(function() {
                       resetInputsSearchMasseneingabe();
                       return false;
                    }
-                }                                                    
+                }
             }
             /*Check greater less condition*/
             $("#inputFocusedId").val(inputNextId);
@@ -5134,16 +5134,16 @@ $("#DkFeSpeichern").click(function() {
 
             if(($(inputBottomCurrIdNw).val() !='' && $(inputBottomPrevIdNw).val() !='') && (typeof($(inputBottomCurrIdNw).val()) !='undefined' && typeof($(inputBottomPrevIdNw).val()) !='undefined')){
                 var inputValBottomPrev= $(inputBottomPrevIdNw).val();
-                var inputValBottom=$(inputBottomCurrIdNw).val(); 
+                var inputValBottom=$(inputBottomCurrIdNw).val();
             }else{
                 var inputValBottomPrev= $("#inputPrevBtmValDB").val();
-                var inputValBottom=$("#inputValBottomCurr").val(); 
+                var inputValBottom=$("#inputValBottomCurr").val();
             }
             /*Min and Max condition*/
             var inputBotmMin = $("#inputBotmMin").val();
             var inputBotmMax = $("#inputBotmMax").val();
             var inputValBottomCurr = $("#inputValBottomCurr").val();
-            /*console.log('inptCurrId='+inptCurrId);    
+            /*console.log('inptCurrId='+inptCurrId);
             console.log('inputValBottom='+inputValBottom);
             console.log('inputValBottomPrev='+inputValBottomPrev);
             console.log('showPopupExist='+showPopupExist);
@@ -5153,17 +5153,17 @@ $("#DkFeSpeichern").click(function() {
                    if (( inputValBottomCurr !='' && typeof(inputValBottomCurr) !='undefined' && inputBotmMin !='' && inputBotmMax !='' ) && ((inputValBottomCurr <= Number(inputBotmMax)) && (inputValBottomCurr >= Number(inputBotmMin)))){
                     //var currInputID = $("#currInputID").val();
                     var rowMainIDDs = $("#rowMainIDDs").val();
-                   // getLastInputValuesByCurrent(currInputID,rowMainIDDs,4); 
-                   
+                   // getLastInputValuesByCurrent(currInputID,rowMainIDDs,4);
+
                    if(anlageObj[rowMstID]){
                         var inputCountLength = anlageObj[rowMstID].length;
                         if(inputCountLength>4){
                              checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
-                        }  
+                        }
                     }
                     /*new-mm-start 08-04-2021*/
                     $("#masseneingabeSpeichernSrchPrdkt").prop("disabled",false);
-                    /*new-mm-end 08-04-2021*/   
+                    /*new-mm-end 08-04-2021*/
                     return false;
                 }
                 var inputLengthBottom = inputValBottom.length;
@@ -5187,20 +5187,20 @@ $("#DkFeSpeichern").click(function() {
                             intBdeSearchConcernOrDeletePopUpPrdkt(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
                     }
-                    //$("#masseneingabeSpeichernSrch").prop("disabled", false);                   
+                    //$("#masseneingabeSpeichernSrch").prop("disabled", false);
                 }
 
-                
-            }  
+
+            }
 
             /*MM_25-01-2020 Concern popup on if prevlast and current bottom val().length are diffrent*/
 
             var showLastPopupExist = $(inputCurrId).hasClass("isShowPopup");
-           
+
             if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' && $("#inputValBottomCurr").val() != "" ){
                 var inputPrevLastBottomVal = $(inputPrevLastBottomId).val();
                 var inputBottomCurrVal = $("#inputValBottomCurr").val();
-                                
+
             }
             if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' ){
                 if(showLastPopupExist == true && inputDefaultShowPopup=='true'){
@@ -5208,14 +5208,14 @@ $("#DkFeSpeichern").click(function() {
                         var inputPrevLastBottomLength = inputPrevLastBottomVal.length;
                     }
                     if(inputBottomCurrVal !="" && typeof(inputBottomCurrVal) !='undefined'){
-                       var inputBottomCurrLength = inputBottomCurrVal.length; 
+                       var inputBottomCurrLength = inputBottomCurrVal.length;
                     }
                     var valLastLeft = checkPositiveValue(inputPrevLastBottomVal);
                     var valLastRight = checkPositiveValue(inputBottomCurrVal);
 
                     if(valLastLeft ==true && valLastRight ==true) {
-                        if(inputBottomCurrLength != inputPrevLastBottomLength){   
-                            //alert('concern 4');                               
+                        if(inputBottomCurrLength != inputPrevLastBottomLength){
+                            //alert('concern 4');
                             intBdeSearchConcernOrDeletePopUpPrdkt(inputPrevLastId,inputNextId,inputBottomCurrId,rowMstID);
                         }
                     }
@@ -5238,8 +5238,8 @@ $("#DkFeSpeichern").click(function() {
 
                 }
             e.stopPropagation();
-            
-        }); 
+
+        });
         /*new-mm-end 05-04-2021*/
 
         /*added selector #infosMasseneingabeMesssetelle .disabledRow input 05-04-2021*/
@@ -5257,7 +5257,7 @@ $("#DkFeSpeichern").click(function() {
                     var inputVal=$(this).val();
                     var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
                     var inputCurrBottomId= $("#inputBottomCurrId").val();
-                    var inputIdPrevlast = $('#inputLastValDB').val(); 
+                    var inputIdPrevlast = $('#inputLastValDB').val();
                     var inputNextLastValDB = $("#inputNextLastValDB").val();
                     var nextId = $("#inputNextLastIdDB").val();
                     var prevId = $("#inputPrevLastIdDB").val();
@@ -5276,7 +5276,7 @@ $("#DkFeSpeichern").click(function() {
                     else if($("#inputPrevValDB").val() !=""){
                         var nextDiff = $(inputCurNextId).val() - $("#inputPrevValDB").val();
                     }
-                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();                    
+                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();
                     var prevDiff = $(inputCurNextId).val() - $(inputCurPrevId).val();
 
                     /*MM_27-01-2021 End:check previous value is null and last value*/
@@ -5295,7 +5295,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){       
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -5304,7 +5304,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -5314,7 +5314,7 @@ $("#DkFeSpeichern").click(function() {
                         }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
                                 alert('Current value should be greater then previous value!');
-                                
+
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
                                 $(inputNextLastBottomId).val(lastNextDiff);
@@ -5322,7 +5322,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -5331,7 +5331,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -5364,7 +5364,7 @@ $("#DkFeSpeichern").click(function() {
                         }
                         if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(''+inputCurrId+'').val()) <= Number($('#inputLastValDB').val())){
-                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined') 
+                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined')
                                     && ($(inputCurPrevId).val() == "" && typeof($(inputCurPrevId).val() ) !='undefined')){ /*nzp 04-02-2021*/
                                     alert('Current value should be greater then last value!');
                                     $(inputCurrId).val('');
@@ -5372,12 +5372,12 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextLastBottomId).val(nextPrevDiff);
                                     if($(inputCurNextId).val() !=''){
                                         $(inputNextBottomId).val(nextDiff);
-                                    }                         
+                                    }
                                     $(inputCurrId).focus();
-                                    resetInputsSearchMasseneingabe();                              
+                                    resetInputsSearchMasseneingabe();
                                     return false;
                                 }
-                            }                   
+                            }
                         }
                         if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) >= Number($("#inputNextLastValDB").val())){
@@ -5390,7 +5390,7 @@ $("#DkFeSpeichern").click(function() {
                                 }
                                 if($('#currInputID').val() == 0){
 
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -5401,8 +5401,8 @@ $("#DkFeSpeichern").click(function() {
                                         /*new_addon mm-02-02-2021*/
                                         if($('#inputPrevValDB').val() != ""){
                                             $(inputNextLastBottomId).val(lastBottomValDB);
-                                        }                           
-                                        //$(inputNextLastBottomId).val("");                        
+                                        }
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 /*new_addon mm-02-02-2021*/
@@ -5411,10 +5411,10 @@ $("#DkFeSpeichern").click(function() {
                                     if(allPrevVal.length == 0 && ( $("#inputPrevValDB").val() =='')){
                                         $(inputNextLastBottomId).val("");
                                     }
-                                } 
+                                }
                                 /*new_addon end mm-02-02-2021*/
 
-                                $(inputCurrId).focus();                              
+                                $(inputCurrId).focus();
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
@@ -5469,13 +5469,13 @@ $("#DkFeSpeichern").click(function() {
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
-                        }                                                    
-                    } 
+                        }
+                    }
             /*MM_27-01-2021 End:check previous value is null and last value*/
 
             /*Check greater less condition*/
             $("#inputFocusedId").val(inputCurrId);
-            var inputValBottom=$("#inputValBottomCurr").val();   
+            var inputValBottom=$("#inputValBottomCurr").val();
             var inputValBottomPrev=$("#inputValBottomPrev").val();
 
             /*Min and Max condition*/
@@ -5516,24 +5516,24 @@ $("#DkFeSpeichern").click(function() {
                              //alert('concern 7');
                             intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
-                    }                   
+                    }
                 }
             }
             /*MM_27-01-2020 Concern popup on if prevlast and current bottom val().length are diffrent*/
 
             var showLastPopupExist = $(inputCurrId).hasClass("isShowPopup");
-                  
+
             if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' && $("#inputValBottomCurr").val() != "" ){
                 var inputPrevLastBottomVal = $(inputPrevLastBottomId).val();
-                var inputBottomCurrVal = $("#inputValBottomCurr").val();               
+                var inputBottomCurrVal = $("#inputValBottomCurr").val();
             }
             if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' ){
-                if(showLastPopupExist == true ){  
+                if(showLastPopupExist == true ){
                     if(inputPrevLastBottomVal !="" && typeof(inputPrevLastBottomVal) !='undefined'){
                         var inputPrevLastBottomLength = inputPrevLastBottomVal.length;
                     }
                     if(inputBottomCurrVal !="" && typeof(inputBottomCurrVal) !='undefined'){
-                       var inputBottomCurrLength = inputBottomCurrVal.length; 
+                       var inputBottomCurrLength = inputBottomCurrVal.length;
                     }
                     var valLastLeft = checkPositiveValue(inputPrevLastBottomVal);
                     var valLastRight = checkPositiveValue(inputBottomCurrVal);
@@ -5569,7 +5569,7 @@ $("#DkFeSpeichern").click(function() {
                     var inputVal=$(this).val();
                     var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
                     var inputCurrBottomId= $("#inputBottomCurrId").val();
-                    var inputIdPrevlast = $('#inputLastValDB').val(); 
+                    var inputIdPrevlast = $('#inputLastValDB').val();
                     var inputNextLastValDB = $("#inputNextLastValDB").val();
                     var nextId = $("#inputNextLastIdDB").val();
                     var prevId = $("#inputPrevLastIdDB").val();
@@ -5588,7 +5588,7 @@ $("#DkFeSpeichern").click(function() {
                     else if($("#inputPrevValDB").val() !=""){
                         var nextDiff = $(inputCurNextId).val() - $("#inputPrevValDB").val();
                     }
-                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();                    
+                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();
                     var prevDiff = $(inputCurNextId).val() - $(inputCurPrevId).val();
 
                     /*MM_27-01-2021 End:check previous value is null and last value*/
@@ -5607,7 +5607,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){       
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -5616,7 +5616,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -5626,7 +5626,7 @@ $("#DkFeSpeichern").click(function() {
                         }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
                                 alert('Current value should be greater then previous value!');
-                                
+
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
                                 $(inputNextLastBottomId).val(lastNextDiff);
@@ -5634,7 +5634,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -5643,7 +5643,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -5676,7 +5676,7 @@ $("#DkFeSpeichern").click(function() {
                         }
                         if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(''+inputCurrId+'').val()) <= Number($('#inputLastValDB').val())){
-                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined') 
+                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined')
                                     && ($(inputCurPrevId).val() == "" && typeof($(inputCurPrevId).val() ) !='undefined')){ /*nzp 04-02-2021*/
                                     alert('Current value should be greater then last value!');
                                     $(inputCurrId).val('');
@@ -5684,12 +5684,12 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextLastBottomId).val(nextPrevDiff);
                                     if($(inputCurNextId).val() !=''){
                                         $(inputNextBottomId).val(nextDiff);
-                                    }                         
+                                    }
                                     $(inputCurrId).focus();
-                                    resetInputsSearchMasseneingabe();                              
+                                    resetInputsSearchMasseneingabe();
                                     return false;
                                 }
-                            }                   
+                            }
                         }
                         if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) >= Number($("#inputNextLastValDB").val())){
@@ -5702,7 +5702,7 @@ $("#DkFeSpeichern").click(function() {
                                 }
                                 if($('#currInputID').val() == 0){
 
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -5713,8 +5713,8 @@ $("#DkFeSpeichern").click(function() {
                                         /*new_addon mm-02-02-2021*/
                                         if($('#inputPrevValDB').val() != ""){
                                             $(inputNextLastBottomId).val(lastBottomValDB);
-                                        }                           
-                                        //$(inputNextLastBottomId).val("");                        
+                                        }
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 /*new_addon mm-02-02-2021*/
@@ -5723,10 +5723,10 @@ $("#DkFeSpeichern").click(function() {
                                     if(allPrevVal.length == 0 && ( $("#inputPrevValDB").val() =='')){
                                         $(inputNextLastBottomId).val("");
                                     }
-                                } 
+                                }
                                 /*new_addon end mm-02-02-2021*/
 
-                                $(inputCurrId).focus();                              
+                                $(inputCurrId).focus();
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
@@ -5781,13 +5781,13 @@ $("#DkFeSpeichern").click(function() {
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
-                        }                                                    
-                    } 
+                        }
+                    }
             /*MM_27-01-2021 End:check previous value is null and last value*/
 
             /*Check greater less condition*/
             $("#inputFocusedId").val(inputCurrId);
-            var inputValBottom=$("#inputValBottomCurr").val();   
+            var inputValBottom=$("#inputValBottomCurr").val();
             var inputValBottomPrev=$("#inputValBottomPrev").val();
 
             /*Min and Max condition*/
@@ -5827,24 +5827,24 @@ $("#DkFeSpeichern").click(function() {
                              //alert('concern 7');
                             intBdeSearchConcernOrDeletePopUpPrdkt(inputCurPrevId,inputNextId,inputBottomCurrId,rowMstID);
                         }
-                    }                   
+                    }
                 }
             }
             /*MM_27-01-2020 Concern popup on if prevlast and current bottom val().length are diffrent*/
 
             var showLastPopupExist = $(inputCurrId).hasClass("isShowPopup");
-                  
+
             if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' && $("#inputValBottomCurr").val() != "" ){
                 var inputPrevLastBottomVal = $(inputPrevLastBottomId).val();
-                var inputBottomCurrVal = $("#inputValBottomCurr").val();               
+                var inputBottomCurrVal = $("#inputValBottomCurr").val();
             }
             if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' ){
-                if(showLastPopupExist == true ){  
+                if(showLastPopupExist == true ){
                     if(inputPrevLastBottomVal !="" && typeof(inputPrevLastBottomVal) !='undefined'){
                         var inputPrevLastBottomLength = inputPrevLastBottomVal.length;
                     }
                     if(inputBottomCurrVal !="" && typeof(inputBottomCurrVal) !='undefined'){
-                       var inputBottomCurrLength = inputBottomCurrVal.length; 
+                       var inputBottomCurrLength = inputBottomCurrVal.length;
                     }
                     var valLastLeft = checkPositiveValue(inputPrevLastBottomVal);
                     var valLastRight = checkPositiveValue(inputBottomCurrVal);
@@ -5863,11 +5863,11 @@ $("#DkFeSpeichern").click(function() {
                 $("#masseneingabeSpeichernSrchPrdkt").prop("disabled",false);
             }
             e.stopPropagation();
-        });  
+        });
         /*new-mm-end 08-04-2021*/
         $("body").on('click','#infosMasseneingabe', function (event) {
             if (!$(event.target).closest('#btnTageMasseneingabeIMwNw,#btnWochenMasseneingabeIMwNw,#btnMonateMasseneingabeIMwNw,#btnJahreMasseneingabeIMwNw,#btnMasseneingabeIMwSearch').length) {
-                if ($('#timeIntervalWerteEnergiedatenIMw').html() != ""){ 
+                if ($('#timeIntervalWerteEnergiedatenIMw').html() != ""){
 
                     var inputCurPrevId = $("#inputCurPrevId").val();
                     var inputCurrId= $("#inputCurrId").val();
@@ -5882,11 +5882,11 @@ $("#DkFeSpeichern").click(function() {
                     var date = $(this).closest('td').attr('date');
                     var type = $(".infosMasseneingabeInside button.active").attr('data-id');
                     /*MM_27-01-2021 Start:check previous value is null and last value*/
-                    
+
                     var inputVal=$(this).val();
                     var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
                     var inputCurrBottomId= $("#inputBottomCurrId").val();
-                    var inputIdPrevlast = $('#inputLastValDB').val(); 
+                    var inputIdPrevlast = $('#inputLastValDB').val();
                     var inputNextLastValDB = $("#inputNextLastValDB").val();
                     var nextId = $("#inputNextLastIdDB").val();
                     var prevId = $("#inputPrevLastIdDB").val();
@@ -5900,10 +5900,10 @@ $("#DkFeSpeichern").click(function() {
                     /* if($("#inputCurrId").val() !='' && typeof($("#inputCurrId")) != 'undefined') {
                         //Continue...
                     }else{
-                        // $(inputCurrBottomId).val("");  
+                        // $(inputCurrBottomId).val("");
                     }
                     */
-                    
+
                     var nextPrevDiff = inputNextLastValDB - inputIdPrevlast;
 
                     if($("#inputPrevValDB").val() == "" && inputIdPrevlast !=""){
@@ -5912,7 +5912,7 @@ $("#DkFeSpeichern").click(function() {
                     else if($("#inputPrevValDB").val() !=""){
                         var nextDiff = $(inputCurNextId).val() - $("#inputPrevValDB").val();
                     }
-                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();                    
+                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();
                     var prevDiff = $(inputCurNextId).val() - $(inputCurPrevId).val();
 
                     /*MM_27-01-2021 End:check previous value is null and last value*/
@@ -5929,7 +5929,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){       
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -5938,7 +5938,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -5948,7 +5948,7 @@ $("#DkFeSpeichern").click(function() {
                         }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
                                 alert('Current value should be greater then previous value!');
-                                
+
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
                                 $(inputNextLastBottomId).val(lastNextDiff);
@@ -5956,7 +5956,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -5965,7 +5965,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -5998,7 +5998,7 @@ $("#DkFeSpeichern").click(function() {
                         }
                         if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(''+inputCurrId+'').val()) <= Number($('#inputLastValDB').val())){
-                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined') 
+                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined')
                                     && ($(inputCurPrevId).val() == "" && typeof($(inputCurPrevId).val() ) !='undefined')){ /*nzp 04-02-2021*/
                                     alert('Current value should be greater then last value!');
                                     $(inputCurrId).val('');
@@ -6006,12 +6006,12 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextLastBottomId).val(nextPrevDiff);
                                     if($(inputCurNextId).val() !=''){
                                         $(inputNextBottomId).val(nextDiff);
-                                    }                         
+                                    }
                                     $(inputCurrId).focus();
-                                    resetInputsSearchMasseneingabe();                              
+                                    resetInputsSearchMasseneingabe();
                                     return false;
                                 }
-                            }                   
+                            }
                         }
                         if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) >= Number($("#inputNextLastValDB").val())){
@@ -6024,7 +6024,7 @@ $("#DkFeSpeichern").click(function() {
                                 }
                                 if($('#currInputID').val() == 0){
 
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -6035,8 +6035,8 @@ $("#DkFeSpeichern").click(function() {
                                         /*new_addon mm-02-02-2021*/
                                         if($('#inputPrevValDB').val() != ""){
                                             $(inputNextLastBottomId).val(lastBottomValDB);
-                                        }                           
-                                        //$(inputNextLastBottomId).val("");                        
+                                        }
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 /*new_addon mm-02-02-2021*/
@@ -6045,10 +6045,10 @@ $("#DkFeSpeichern").click(function() {
                                     if(allPrevVal.length == 0 && ( $("#inputPrevValDB").val() =='')){
                                         $(inputNextLastBottomId).val("");
                                     }
-                                } 
+                                }
                                 /*new_addon end mm-02-02-2021*/
 
-                                $(inputCurrId).focus();                              
+                                $(inputCurrId).focus();
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
@@ -6103,16 +6103,16 @@ $("#DkFeSpeichern").click(function() {
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
-                        }                                                    
-                    } 
+                        }
+                    }
                     if(($("#inputValBottomCurr").val() !='' && $("#inputValBottomPrev").val() !='') && (typeof($("#inputValBottomCurr").val()) !='undefined' && typeof($("#inputValBottomPrev").val()) !='undefined')){
                         //console.log(1);
                         var inputValBottomCurr= $("#inputValBottomCurr").val();
-                        var inputValBottomPrev= $("#inputValBottomPrev").val(); 
+                        var inputValBottomPrev= $("#inputValBottomPrev").val();
                     }else{
                         //console.log(2);
                         var inputValBottomPrev= $("#inputPrevBtmValDB").val();
-                        var inputValBottomCurr=$("#inputValBottomCurr").val(); 
+                        var inputValBottomCurr=$("#inputValBottomCurr").val();
                     }
                     /*console.log('inputValBottomCurr='+inputValBottomCurr);
                     console.log('inputValBottomPrev='+inputValBottomPrev);
@@ -6124,7 +6124,7 @@ $("#DkFeSpeichern").click(function() {
                     var inputBotmMin = $("#inputBotmMin").val();
                     var inputBotmMax = $("#inputBotmMax").val();
                     /*Check greater less condition*/
-                    if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){                     
+                    if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
                         if(showPopupExist ==true && inputDefaultShowPopup=='true'){
                             if (( inputValBottomCurr !='' && typeof(inputValBottomCurr) !='undefined' && typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined') && ((inputValBottomCurr <= Number(inputBotmMax)) && (inputValBottomCurr >= Number(inputBotmMin)))){
                                 //var currInputID = $("#currInputID").val();
@@ -6134,7 +6134,7 @@ $("#DkFeSpeichern").click(function() {
                                     var inputCountLength = anlageObj[rowMstID].length;
                                     if(inputCountLength>4){
                                          checkAlertRangeMinMaxServerSide(type,rowMstID,date,rowMainIDDs);
-                                    }  
+                                    }
                                 }
                                 $("#masseneingabeSpeichernSrch").prop("disabled", false);
                                 return false;
@@ -6162,29 +6162,29 @@ $("#DkFeSpeichern").click(function() {
                                      //alert('concern 11');
                                     intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputCurrId,inputBottomCurrId,rowMstID);
                                 }
-                            }                   
+                            }
                         }
                     }
 
                     /*MM_27-01-2020 Concern popup on if prevlast and current bottom val().length are diffrent*/
 
                     var showLastPopupExist = $(inputCurrId).hasClass("isShowPopup");
-                   
+
                     if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' && $("#inputValBottomCurr").val() != "" ){
                         var inputPrevLastBottomVal = $(inputPrevLastBottomId).val();
-                        var inputBottomCurrVal = $("#inputValBottomCurr").val();                
+                        var inputBottomCurrVal = $("#inputValBottomCurr").val();
                     }
                     if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' ){
-                        if(showLastPopupExist == true && inputDefaultShowPopup=='true'){    
+                        if(showLastPopupExist == true && inputDefaultShowPopup=='true'){
                             if(inputPrevLastBottomVal !="" && typeof(inputPrevLastBottomVal) !='undefined'){
                                 var inputPrevLastBottomLength = inputPrevLastBottomVal.length;
                             }
                             if(inputBottomCurrVal !="" && typeof(inputBottomCurrVal) !='undefined'){
-                               var inputBottomCurrLength = inputBottomCurrVal.length; 
+                               var inputBottomCurrLength = inputBottomCurrVal.length;
                             }
                             var valLastLeft = checkPositiveValue(inputPrevLastBottomVal);
                             var valLastRight = checkPositiveValue(inputBottomCurrVal);
- 
+
                             if(valLastLeft ==true && valLastRight ==true) {
                                 if(inputBottomCurrLength != inputPrevLastBottomLength){
                                     // alert('concern 12');
@@ -6193,17 +6193,17 @@ $("#DkFeSpeichern").click(function() {
                             }
                         }
                     }
-                    /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/ 
+                    /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/
                     if($('#intBdeConcernOrDeletePopUp').length==0){
                      $("#masseneingabeSpeichernSrch").prop("disabled",false);
                     }
-                }                           
+                }
             }
         });
         /*new-mm-start 01-04-2021*/
         $("body").on('click','#infosMasseneingabePrdkt', function (event) {
             if (!$(event.target).closest('#btnTageMasseneingabeIMwNwPrdkt,#btnWochenMasseneingabeIMwNwPrdkt,#btnMonateMasseneingabeIMwNwPrdkt,#btnJahreMasseneingabeIMwNwPrdkt,#btnMasseneingabeIMwSearchPrdkt').length) {
-                if ($('#timeIntervalWerteEnergiedatenIMwPrdkt').html() != ""){ 
+                if ($('#timeIntervalWerteEnergiedatenIMwPrdkt').html() != ""){
 
                     var inputCurPrevId = $("#inputCurPrevId").val();
                     var inputCurrId= $("#inputCurrId").val();
@@ -6218,11 +6218,11 @@ $("#DkFeSpeichern").click(function() {
                     var date = $(this).closest('td').attr('date');
                     var type = $(".infosMasseneingabeInside button.active").attr('data-id');
                     /*MM_27-01-2021 Start:check previous value is null and last value*/
-                    
+
                     var inputVal=$(this).val();
                     var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
                     var inputCurrBottomId= $("#inputBottomCurrId").val();
-                    var inputIdPrevlast = $('#inputLastValDB').val(); 
+                    var inputIdPrevlast = $('#inputLastValDB').val();
                     var inputNextLastValDB = $("#inputNextLastValDB").val();
                     var nextId = $("#inputNextLastIdDB").val();
                     var prevId = $("#inputPrevLastIdDB").val();
@@ -6236,10 +6236,10 @@ $("#DkFeSpeichern").click(function() {
                     /* if($("#inputCurrId").val() !='' && typeof($("#inputCurrId")) != 'undefined') {
                         //Continue...
                     }else{
-                        // $(inputCurrBottomId).val("");  
+                        // $(inputCurrBottomId).val("");
                     }
                     */
-                    
+
                     var nextPrevDiff = inputNextLastValDB - inputIdPrevlast;
 
                     if($("#inputPrevValDB").val() == "" && inputIdPrevlast !=""){
@@ -6248,7 +6248,7 @@ $("#DkFeSpeichern").click(function() {
                     else if($("#inputPrevValDB").val() !=""){
                         var nextDiff = $(inputCurNextId).val() - $("#inputPrevValDB").val();
                     }
-                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();                    
+                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();
                     var prevDiff = $(inputCurNextId).val() - $(inputCurPrevId).val();
 
                     /*MM_27-01-2021 End:check previous value is null and last value*/
@@ -6265,7 +6265,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){       
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -6274,7 +6274,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -6284,7 +6284,7 @@ $("#DkFeSpeichern").click(function() {
                         }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
                                 alert('Current value should be greater then previous value!');
-                                
+
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
                                 $(inputNextLastBottomId).val(lastNextDiff);
@@ -6292,7 +6292,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -6301,7 +6301,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -6334,7 +6334,7 @@ $("#DkFeSpeichern").click(function() {
                         }
                         if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(''+inputCurrId+'').val()) <= Number($('#inputLastValDB').val())){
-                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined') 
+                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined')
                                     && ($(inputCurPrevId).val() == "" && typeof($(inputCurPrevId).val() ) !='undefined')){ /*nzp 04-02-2021*/
                                     alert('Current value should be greater then last value!');
                                     $(inputCurrId).val('');
@@ -6342,12 +6342,12 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextLastBottomId).val(nextPrevDiff);
                                     if($(inputCurNextId).val() !=''){
                                         $(inputNextBottomId).val(nextDiff);
-                                    }                         
+                                    }
                                     $(inputCurrId).focus();
-                                    resetInputsSearchMasseneingabe();                              
+                                    resetInputsSearchMasseneingabe();
                                     return false;
                                 }
-                            }                   
+                            }
                         }
                         if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) >= Number($("#inputNextLastValDB").val())){
@@ -6360,7 +6360,7 @@ $("#DkFeSpeichern").click(function() {
                                 }
                                 if($('#currInputID').val() == 0){
 
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -6371,8 +6371,8 @@ $("#DkFeSpeichern").click(function() {
                                         /*new_addon mm-02-02-2021*/
                                         if($('#inputPrevValDB').val() != ""){
                                             $(inputNextLastBottomId).val(lastBottomValDB);
-                                        }                           
-                                        //$(inputNextLastBottomId).val("");                        
+                                        }
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 /*new_addon mm-02-02-2021*/
@@ -6381,10 +6381,10 @@ $("#DkFeSpeichern").click(function() {
                                     if(allPrevVal.length == 0 && ( $("#inputPrevValDB").val() =='')){
                                         $(inputNextLastBottomId).val("");
                                     }
-                                } 
+                                }
                                 /*new_addon end mm-02-02-2021*/
 
-                                $(inputCurrId).focus();                              
+                                $(inputCurrId).focus();
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
@@ -6439,16 +6439,16 @@ $("#DkFeSpeichern").click(function() {
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
-                        }                                                    
-                    } 
+                        }
+                    }
                     if(($("#inputValBottomCurr").val() !='' && $("#inputValBottomPrev").val() !='') && (typeof($("#inputValBottomCurr").val()) !='undefined' && typeof($("#inputValBottomPrev").val()) !='undefined')){
                         //console.log(1);
                         var inputValBottomCurr= $("#inputValBottomCurr").val();
-                        var inputValBottomPrev= $("#inputValBottomPrev").val(); 
+                        var inputValBottomPrev= $("#inputValBottomPrev").val();
                     }else{
                         //console.log(2);
                         var inputValBottomPrev= $("#inputPrevBtmValDB").val();
-                        var inputValBottomCurr=$("#inputValBottomCurr").val(); 
+                        var inputValBottomCurr=$("#inputValBottomCurr").val();
                     }
                     /*console.log('inputValBottomCurr='+inputValBottomCurr);
                     console.log('inputValBottomPrev='+inputValBottomPrev);
@@ -6460,7 +6460,7 @@ $("#DkFeSpeichern").click(function() {
                     var inputBotmMin = $("#inputBotmMin").val();
                     var inputBotmMax = $("#inputBotmMax").val();
                     /*Check greater less condition*/
-                    if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){                     
+                    if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
                         if(showPopupExist ==true && inputDefaultShowPopup=='true'){
                             if (( inputValBottomCurr !='' && typeof(inputValBottomCurr) !='undefined' && typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined') && ((inputValBottomCurr <= Number(inputBotmMax)) && (inputValBottomCurr >= Number(inputBotmMin)))){
                                 //var currInputID = $("#currInputID").val();
@@ -6470,7 +6470,7 @@ $("#DkFeSpeichern").click(function() {
                                     var inputCountLength = anlageObj[rowMstID].length;
                                     if(inputCountLength>4){
                                          checkAlertRangeMinMaxServerSidePrdkt(type,rowMstID,date,rowMainIDDs);
-                                    }  
+                                    }
                                 }
                                 $("#masseneingabeSpeichernSrchPrdkt").prop("disabled", false);
                                 return false;
@@ -6498,29 +6498,29 @@ $("#DkFeSpeichern").click(function() {
                                      //alert('concern 11');
                                     intBdeSearchConcernOrDeletePopUpPrdkt(inputCurPrevId,inputCurrId,inputBottomCurrId,rowMstID);
                                 }
-                            }                   
+                            }
                         }
                     }
 
                     /*MM_27-01-2020 Concern popup on if prevlast and current bottom val().length are diffrent*/
 
                     var showLastPopupExist = $(inputCurrId).hasClass("isShowPopup");
-                   
+
                     if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' && $("#inputValBottomCurr").val() != "" ){
                         var inputPrevLastBottomVal = $(inputPrevLastBottomId).val();
-                        var inputBottomCurrVal = $("#inputValBottomCurr").val();                
+                        var inputBottomCurrVal = $("#inputValBottomCurr").val();
                     }
                     if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' ){
-                        if(showLastPopupExist == true && inputDefaultShowPopup=='true'){    
+                        if(showLastPopupExist == true && inputDefaultShowPopup=='true'){
                             if(inputPrevLastBottomVal !="" && typeof(inputPrevLastBottomVal) !='undefined'){
                                 var inputPrevLastBottomLength = inputPrevLastBottomVal.length;
                             }
                             if(inputBottomCurrVal !="" && typeof(inputBottomCurrVal) !='undefined'){
-                               var inputBottomCurrLength = inputBottomCurrVal.length; 
+                               var inputBottomCurrLength = inputBottomCurrVal.length;
                             }
                             var valLastLeft = checkPositiveValue(inputPrevLastBottomVal);
                             var valLastRight = checkPositiveValue(inputBottomCurrVal);
- 
+
                             if(valLastLeft ==true && valLastRight ==true) {
                                 if(inputBottomCurrLength != inputPrevLastBottomLength){
                                     // alert('concern 12');
@@ -6529,18 +6529,18 @@ $("#DkFeSpeichern").click(function() {
                             }
                         }
                     }
-                    /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/ 
+                    /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/
                     if($('#intBdeConcernOrDeletePopUp').length==0){
                         $("#masseneingabeSpeichernSrchPrdkt").prop("disabled",false);
                     }
-                }                           
+                }
             }
         });
         /*new-mm-end 01-04-2021*/
         /*new-mm-start 01-04-2021*/
         $("body").on('click','#infosMasseneingabeMesssetelle', function (event) {
             if (!$(event.target).closest('#btnTageMasseneingabeIMwNwMesssetelle,#btnWochenMasseneingabeIMwNwMesssetelle,#btnMonateMasseneingabeIMwNwMesssetelle,#btnJahreMasseneingabeIMwNwMesssetelle,#btnMasseneingabeIMwSearchMesssetelle').length) {
-                if ($('#timeIntervalWerteEnergiedatenIMwMesssetelle').html() != ""){ 
+                if ($('#timeIntervalWerteEnergiedatenIMwMesssetelle').html() != ""){
 
                     var inputCurPrevId = $("#inputCurPrevId").val();
                     var inputCurrId= $("#inputCurrId").val();
@@ -6555,11 +6555,11 @@ $("#DkFeSpeichern").click(function() {
                     var date = $(this).closest('td').attr('date');
                     var type = $(".infosMasseneingabeInside button.active").attr('data-id');
                     /*MM_27-01-2021 Start:check previous value is null and last value*/
-                    
+
                     var inputVal=$(this).val();
                     var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
                     var inputCurrBottomId= $("#inputBottomCurrId").val();
-                    var inputIdPrevlast = $('#inputLastValDB').val(); 
+                    var inputIdPrevlast = $('#inputLastValDB').val();
                     var inputNextLastValDB = $("#inputNextLastValDB").val();
                     var nextId = $("#inputNextLastIdDB").val();
                     var prevId = $("#inputPrevLastIdDB").val();
@@ -6573,10 +6573,10 @@ $("#DkFeSpeichern").click(function() {
                     /* if($("#inputCurrId").val() !='' && typeof($("#inputCurrId")) != 'undefined') {
                         //Continue...
                     }else{
-                        // $(inputCurrBottomId).val("");  
+                        // $(inputCurrBottomId).val("");
                     }
                     */
-                    
+
                     var nextPrevDiff = inputNextLastValDB - inputIdPrevlast;
 
                     if($("#inputPrevValDB").val() == "" && inputIdPrevlast !=""){
@@ -6585,7 +6585,7 @@ $("#DkFeSpeichern").click(function() {
                     else if($("#inputPrevValDB").val() !=""){
                         var nextDiff = $(inputCurNextId).val() - $("#inputPrevValDB").val();
                     }
-                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();                    
+                    var lastNextDiff  =  inputNextLastValDB - $(inputCurPrevId).val();
                     var prevDiff = $(inputCurNextId).val() - $(inputCurPrevId).val();
 
                     /*MM_27-01-2021 End:check previous value is null and last value*/
@@ -6602,7 +6602,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){       
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -6611,7 +6611,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -6621,7 +6621,7 @@ $("#DkFeSpeichern").click(function() {
                         }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
                                 alert('Current value should be greater then previous value!');
-                                
+
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
                                 $(inputNextLastBottomId).val(lastNextDiff);
@@ -6629,7 +6629,7 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextBottomId).val(prevDiff);
                                 }
                                 if($('#currInputID').val() == 0){
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -6638,7 +6638,7 @@ $("#DkFeSpeichern").click(function() {
                                         var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
                                         $(inputNextLastBottomId).val(lastBottomValDB);
-                                        //$(inputNextLastBottomId).val("");                        
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 $(inputCurrId).focus();
@@ -6671,7 +6671,7 @@ $("#DkFeSpeichern").click(function() {
                         }
                         if(($("#inputLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(''+inputCurrId+'').val()) <= Number($('#inputLastValDB').val())){
-                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined') 
+                                 if(($($(inputFocusedId).val()).val() !='' && typeof($($(inputFocusedId).val()).val() ) !='undefined')
                                     && ($(inputCurPrevId).val() == "" && typeof($(inputCurPrevId).val() ) !='undefined')){ /*nzp 04-02-2021*/
                                     alert('Current value should be greater then last value!');
                                     $(inputCurrId).val('');
@@ -6679,12 +6679,12 @@ $("#DkFeSpeichern").click(function() {
                                     $(inputNextLastBottomId).val(nextPrevDiff);
                                     if($(inputCurNextId).val() !=''){
                                         $(inputNextBottomId).val(nextDiff);
-                                    }                         
+                                    }
                                     $(inputCurrId).focus();
-                                    resetInputsSearchMasseneingabe();                              
+                                    resetInputsSearchMasseneingabe();
                                     return false;
                                 }
-                            }                   
+                            }
                         }
                         if(($("#inputNextLastValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputNextLastValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                             if(Number($(inputCurrId).val()) >= Number($("#inputNextLastValDB").val())){
@@ -6697,7 +6697,7 @@ $("#DkFeSpeichern").click(function() {
                                 }
                                 if($('#currInputID').val() == 0){
 
-                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){                                           
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
                                         var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                                         //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                                         $(inputNextBottomId).val(secBottomValDB);
@@ -6708,8 +6708,8 @@ $("#DkFeSpeichern").click(function() {
                                         /*new_addon mm-02-02-2021*/
                                         if($('#inputPrevValDB').val() != ""){
                                             $(inputNextLastBottomId).val(lastBottomValDB);
-                                        }                           
-                                        //$(inputNextLastBottomId).val("");                        
+                                        }
+                                        //$(inputNextLastBottomId).val("");
                                     }
                                 }
                                 /*new_addon mm-02-02-2021*/
@@ -6718,10 +6718,10 @@ $("#DkFeSpeichern").click(function() {
                                     if(allPrevVal.length == 0 && ( $("#inputPrevValDB").val() =='')){
                                         $(inputNextLastBottomId).val("");
                                     }
-                                } 
+                                }
                                 /*new_addon end mm-02-02-2021*/
 
-                                $(inputCurrId).focus();                              
+                                $(inputCurrId).focus();
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
@@ -6776,16 +6776,16 @@ $("#DkFeSpeichern").click(function() {
                                 resetInputsSearchMasseneingabe();
                                 return false;
                             }
-                        }                                                    
-                    } 
+                        }
+                    }
                     if(($("#inputValBottomCurr").val() !='' && $("#inputValBottomPrev").val() !='') && (typeof($("#inputValBottomCurr").val()) !='undefined' && typeof($("#inputValBottomPrev").val()) !='undefined')){
                         //console.log(1);
                         var inputValBottomCurr= $("#inputValBottomCurr").val();
-                        var inputValBottomPrev= $("#inputValBottomPrev").val(); 
+                        var inputValBottomPrev= $("#inputValBottomPrev").val();
                     }else{
                         //console.log(2);
                         var inputValBottomPrev= $("#inputPrevBtmValDB").val();
-                        var inputValBottomCurr=$("#inputValBottomCurr").val(); 
+                        var inputValBottomCurr=$("#inputValBottomCurr").val();
                     }
                     /*console.log('inputValBottomCurr='+inputValBottomCurr);
                     console.log('inputValBottomPrev='+inputValBottomPrev);
@@ -6797,7 +6797,7 @@ $("#DkFeSpeichern").click(function() {
                     var inputBotmMin = $("#inputBotmMin").val();
                     var inputBotmMax = $("#inputBotmMax").val();
                     /*Check greater less condition*/
-                    if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){                     
+                    if((inputValBottomCurr !='' && inputValBottomPrev !='') && (typeof(inputValBottomCurr) !='undefined' && typeof(inputValBottomPrev) !='undefined')){
                         if(showPopupExist ==true && inputDefaultShowPopup=='true'){
                             if (( inputValBottomCurr !='' && typeof(inputValBottomCurr) !='undefined' && typeof(inputBotmMin) !='undefined' && typeof(inputBotmMax) !='undefined') && ((inputValBottomCurr <= Number(inputBotmMax)) && (inputValBottomCurr >= Number(inputBotmMin)))){
                                 //var currInputID = $("#currInputID").val();
@@ -6807,7 +6807,7 @@ $("#DkFeSpeichern").click(function() {
                                     var inputCountLength = anlageObj[rowMstID].length;
                                     if(inputCountLength>4){
                                          checkAlertRangeMinMaxServerSide(type,rowMstID,date,rowMainIDDs);
-                                    }  
+                                    }
                                 }
                                 $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled", false);
                                 return false;
@@ -6835,29 +6835,29 @@ $("#DkFeSpeichern").click(function() {
                                      //alert('concern 11');
                                     intBdeSearchConcernOrDeletePopUp(inputCurPrevId,inputCurrId,inputBottomCurrId,rowMstID);
                                 }
-                            }                   
+                            }
                         }
                     }
 
                     /*MM_27-01-2020 Concern popup on if prevlast and current bottom val().length are diffrent*/
 
                     var showLastPopupExist = $(inputCurrId).hasClass("isShowPopup");
-                   
+
                     if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' && $("#inputValBottomCurr").val() != "" ){
                         var inputPrevLastBottomVal = $(inputPrevLastBottomId).val();
-                        var inputBottomCurrVal = $("#inputValBottomCurr").val();                
+                        var inputBottomCurrVal = $("#inputValBottomCurr").val();
                     }
                     if($(inputPrevLastBottomId).val() !='' && typeof($(inputPrevLastBottomId).val()) !='undefined' ){
-                        if(showLastPopupExist == true && inputDefaultShowPopup=='true'){    
+                        if(showLastPopupExist == true && inputDefaultShowPopup=='true'){
                             if(inputPrevLastBottomVal !="" && typeof(inputPrevLastBottomVal) !='undefined'){
                                 var inputPrevLastBottomLength = inputPrevLastBottomVal.length;
                             }
                             if(inputBottomCurrVal !="" && typeof(inputBottomCurrVal) !='undefined'){
-                               var inputBottomCurrLength = inputBottomCurrVal.length; 
+                               var inputBottomCurrLength = inputBottomCurrVal.length;
                             }
                             var valLastLeft = checkPositiveValue(inputPrevLastBottomVal);
                             var valLastRight = checkPositiveValue(inputBottomCurrVal);
- 
+
                             if(valLastLeft ==true && valLastRight ==true) {
                                 if(inputBottomCurrLength != inputPrevLastBottomLength){
                                     // alert('concern 12');
@@ -6866,11 +6866,11 @@ $("#DkFeSpeichern").click(function() {
                             }
                         }
                     }
-                    /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/ 
+                    /*MM_27-01-2020 End Concern popup on if prevlast and current bottom val().length are diffrent*/
                     if($('#intBdeConcernOrDeletePopUp').length==0){
                      $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled",false);
                     }
-                }                           
+                }
             }
         });
         /*new-mm-end 01-04-2021*/
@@ -7021,7 +7021,7 @@ $("#DkFeSpeichern").click(function() {
             $("#intBdeConcernOrDeletePopUp").remove();
             if(this.id =="btnTageMasseneingabeIMwNwPrdkt"){
                 btnMasseneingabeIMwChangePrdkt(1,'infosMasseneingabeDateRangeDivPrdkt',6);
-                
+
             }else if(this.id =="btnWochenMasseneingabeIMwNwPrdkt"){
                 btnMasseneingabeIMwChangePrdkt(2,'infosMasseneingabeDateRangeDivPrdkt',6);
             }else if(this.id =="btnMonateMasseneingabeIMwNwPrdkt"){
@@ -7150,11 +7150,11 @@ $("#DkFeSpeichern").click(function() {
         else{
             var startDate = startDateV = dates[0];
             var endDate = endDateV = dates[1];
-        }       
+        }
         var validateNull= validateNullValZeitintervallAnlSelectOpt(sDate,eDate,zeitintervallAnl,'infosMasseneingabeDateRangeDivMesssetelle',5);
-        
+
         var validateSel = validateZeitintervallAnlSelectOpt(startDate,endDate,zeitintervallAnl,'infosMasseneingabeDateRangeDivMesssetelle',5);
-        
+
 
         if(validateNull==false){
             return false;
@@ -7238,7 +7238,7 @@ $("#DkFeSpeichern").click(function() {
         }else{
             alert("Please generate inputs first.");
         }
-        
+
     });
     /*new-mm-end 31-03-2021*/
     /*new-mm-start 31-03-2021*/
@@ -7580,7 +7580,7 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
 
                 /*new-mm-start 30-03-2021*/
                 $("#btnMassEingPrdkt").show();
-                $("#btnMassEingMesssetelle").hide();                
+                $("#btnMassEingMesssetelle").hide();
                 /*new-mm-start 30-03-2021*/
 
                 produkteAnlargeDataTable();
@@ -7642,7 +7642,7 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
 
                 /*new-mm-start 30-03-2021*/
                 $("#btnMassEingMesssetelle").show();
-                $("#btnMassEingPrdkt").hide();                
+                $("#btnMassEingPrdkt").hide();
                 /*new-mm-start 30-03-2021*/
 
                 searchProdukteAnlageIntBDE("2");
@@ -7844,7 +7844,7 @@ $("#tabIntBetriebsdatenIMwHistPrdkt").click(function() {
 
     /*new-mm-start 30-03-2021*/
     $("#infosMasseneingabePrdkt").hide();
-    $("#infosMasseneingabeMesssetelle").hide();   
+    $("#infosMasseneingabeMesssetelle").hide();
     /*new-mm-end 30-03-2021*/
 
 });
@@ -7855,7 +7855,7 @@ $("#tabIntBetriebsdatenIMwHistMesssetelle").click(function() {
 
     /*new-mm-start 30-03-2021*/
     $("#infosMasseneingabePrdkt").hide();
-    $("#infosMasseneingabeMesssetelle").hide();   
+    $("#infosMasseneingabeMesssetelle").hide();
     /*new-mm-end 30-03-2021*/
 
 });
