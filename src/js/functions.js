@@ -4387,7 +4387,8 @@ try {
                             })
                         }
                     })
-                })
+                }
+            )
         bereichelisteErstellen = function() {
             $.ajax({
                 type: "POST",
@@ -4596,6 +4597,51 @@ try {
                     })
                 }
             })
+        },
+            organisationenlisteErstellen = function() {
+                const nameDB = $("#nameDB").val()
+
+                ajaxPost("php/getOrganisationen.php")({nameDB})
+                .then(result => {
+                        const prepareTableData =
+                            data =>
+                            data.map(
+                                (rec, i) => [ i
+                                            , rec.nameOrg
+                                            , rec.anschriftOrg
+                                            , rec.landOrg
+                                            , rec.org_ID
+                                            ]
+                            )
+                        clearTable(tblOrganisationenSuchen)
+                        intoTable(tblOrganisationenSuchen)(prepareTableData(result))
+                        $("#organisationenSuchenContainer").css("display", "block")
+                        $("#organisationenSuchenContainer").dialog({
+                            height: $(window).height() - .125 * $(window).height(),
+                            width: $(window).width() - .125 * $(window).width(),
+                            resize: "auto",
+                            show: {
+                                effect: "fade",
+                                duration: 500
+                            },
+                            hide: {
+                                effect: "fade",
+                                duration: 500
+                            },
+                            open: function() {
+                                $("#tblOrganisationenSuchen tbody tr").css("cursor", "pointer")
+                                $("#tblOrganisationenSuchen tbody").on("dblclick", "tr", function() {
+                                    var data = tblOrganisationenSuchen.row(this).data()
+                                    $("#organisationenSuchenContainer").dialog("close")
+                                    $("#organisationenSuchenContainer").css("display", "none")
+                                    clearFields("orgHinz")
+                                    readInstanzen("orgFirst", data[0])
+                                })
+                            }
+                        })
+                    }
+                )
+
         }, mapDrucken = function(a) {
             $("#mapOptionen").css("display", "none");
             $(a).printThis();
@@ -10023,7 +10069,7 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         bAutoWidth: !1,
         colReorder: !0
     });
-    spiesOrganisationenSearchDataTable = $("#spiesOrganisationenSearchDataTable").DataTable({
+    tblOrganisationenSuchen = $("#tblOrganisationenSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -11110,53 +11156,6 @@ const setCostRng =
             $("#mwstERng").val(formatNumber("form", amountMwst))
         }
     }
-
-
-/*Ajax Call for the Spies organization serach 21-01-2020*/
-function spiesOrganisationenSearch() {
-    var a = itemSessionGet("nameDB");
-    //console.log(a);
-    $.ajax({
-        type: "POST",
-        async: !0,
-        url: "php/organisationenEinlesen.php",
-        data: {
-            nameDB: $("#nameDB").val()
-        },
-        success: function(e) {
-            //console.log('Working fine');
-            e = json(e);
-            //console.log(e);
-            spiesOrganisationenSearchDataTable.colReorder.reset();
-            spiesOrganisationenSearchDataTable.clear().draw();
-            for (var c = 0; c < e.length; c++) {
-                spiesOrganisationenSearchDataTable.row.add([
-                    e[c].nameOrg,
-                    e[c].anschriftOrg,
-                    e[c].landOrg,
-                    e[c].org_ID
-                ]).draw();
-            }
-            $("#spiesOrganisationenSearchContainer").css("display", "block");
-            $("#spiesOrganisationenSearchContainer").dialog({
-                height: $(window).height() - .125 * $(window).height(),
-                width: $(window).width() - .125 * $(window).width(),
-                resize: "auto",
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    console.log('open popup');
-                }
-            })
-        }
-    })
-}
 
 /*24-02-2020 Correction factor add record row wise not quoma saperated,
 21-03-2020 send the optionDesc variable into ajax response*/
@@ -15759,7 +15758,7 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
 
             var weekdiff = endarr[0] - startarr[0];
 
-            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){               
+            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){
                 if (startarr[1] > endarr[1]){
                     alert("End year should be greater then start year");
                     if(id==1){
@@ -15816,7 +15815,7 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
                 else{
                     return false;
                 }
-                if(end != ""  && typeof(end) != "undefined"){  
+                if(end != ""  && typeof(end) != "undefined"){
 
                     var endarr = end.split('.');
                 }
@@ -15825,14 +15824,14 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
                 }
 
                 if(endarr != '' &&  startarr != '' && typeof(endarr) != 'undefined' &&  typeof(startarr) != 'undefined'){
-                    if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){ 
+                    if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){
 
                         startDate = new Date(startarr[1],startarr[0]-1,1);
                         endDate = new Date(endarr[1],endarr[0]-1,1);
 
                     }
-                }    
-                else{    
+                }
+                else{
                     startDate = new Date(start,0,1);
                     endDate = new Date(end,0,1);
 
@@ -15883,7 +15882,7 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
         // console.log(start);
         // console.log("end :");
         // console.log(end);
-        
+
         var startDate = new Date(start);
         var endDate = new Date(end);
 
@@ -15924,7 +15923,7 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
 
             var weekdiff = endarr[0] - startarr[0];
 
-            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){               
+            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){
                 if (startarr[1] > endarr[1]){
                     alert("End year should be greater then start year");
                     if(id==1){
@@ -15981,7 +15980,7 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
                 else{
                     return false;
                 }
-                if(end != ""  && typeof(end) != "undefined"){  
+                if(end != ""  && typeof(end) != "undefined"){
 
                     var endarr = end.split('.');
                 }
@@ -15990,14 +15989,14 @@ function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,i
                 }
 
                 if(endarr != '' &&  startarr != '' && typeof(endarr) != 'undefined' &&  typeof(startarr) != 'undefined'){
-                    if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){ 
+                    if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){
 
                         startDate = new Date(startarr[1],startarr[0]-1,1);
                         endDate = new Date(endarr[1],endarr[0]-1,1);
 
                     }
-                }    
-                else{    
+                }
+                else{
                     startDate = new Date(start,0,1);
                     endDate = new Date(end,0,1);
 
@@ -16553,7 +16552,7 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
             /*new-mm-start 01-04-2021*/
             $("." + sId + " .control_system_div").show();
             $("." + sId + " #control_system").val(a[0]['einheitControlSys']);
-            /*new-mm-end 01-04-2021*/  
+            /*new-mm-end 01-04-2021*/
 
         }
     })
@@ -16910,9 +16909,9 @@ function datePickerForInterneBetriebsdaten(sId,id){
             /*mm-comment*/
             /*new-mm-start 09-04-2021*/
             if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5 || sId == 'infosMasseneingabeDateRangeDiv' && id==4){
-                validateZeitintervallAnlSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id); 
+                validateZeitintervallAnlSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id);
             }else{
-               validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id); 
+               validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
             }
             /*new-mm-end 09-04-2021*/
 
@@ -16956,9 +16955,9 @@ function datePickerForInterneBetriebsdaten(sId,id){
             }
             /*new-mm-start 09-04-2021*/
             if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5 ){
-                validateZeitintervallAnlSelectOpt(strtStr2,endStr2,zeitintervallAnl,sId,id); 
+                validateZeitintervallAnlSelectOpt(strtStr2,endStr2,zeitintervallAnl,sId,id);
             }else{
-               validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id); 
+               validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
             }
             /*new-mm-end 09-04-2021*/
 
@@ -17189,24 +17188,24 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
 
             /*new-mm-start 08-04-2021*/
             if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6 ){
-                validateZeitintervallAnlPrdktSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id); 
+                validateZeitintervallAnlPrdktSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id);
             }else{
-               validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id); 
+               validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
             }
             /*new-mm-end 08-04-2021*/
-            
+
 
             if(id==1){
                 /*new-mm-start 06-04-2021*/
                 var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
-                var mstID = $("#mstID").val();var date = $(this).val();                
+                var mstID = $("#mstID").val();var date = $(this).val();
                 var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
                     alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                     alertValidationforStartEndeDateMesssetelle(mstID,date,type);
-                } 
+                }
                 /*new-mm-start 06-04-2021*/
             }
         }
@@ -17251,14 +17250,14 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             if(id==1){
                 /*new-mm-start 06-04-2021*/
                 var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
-                var mstID = $("#mstID").val();var date = $(this).val();                
+                var mstID = $("#mstID").val();var date = $(this).val();
                 var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
                     alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                     alertValidationforStartEndeDateMesssetelle(mstID,date,type);
-                } 
+                }
                 /*new-mm-start 06-04-2021*/
             }
         }
@@ -17303,14 +17302,14 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             if(id==1){
                 /*new-mm-start 06-04-2021*/
                 var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
-                var mstID = $("#mstID").val();var date = $(this).val();                
+                var mstID = $("#mstID").val();var date = $(this).val();
                 var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
                     alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                     alertValidationforStartEndeDateMesssetelle(mstID,date,type);
-                } 
+                }
                 /*new-mm-start 06-04-2021*/
             }
         }
@@ -17354,14 +17353,14 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             if(id==1){
                 /*new-mm-start 06-04-2021*/
                 var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
-                var mstID = $("#mstID").val();var date = $(this).val();                
+                var mstID = $("#mstID").val();var date = $(this).val();
                 var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
                     alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                     alertValidationforStartEndeDateMesssetelle(mstID,date,type);
-                } 
+                }
                 /*new-mm-start 06-04-2021*/
             }
         }
@@ -17412,18 +17411,18 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                 /*new-mm-start 06-04-2021*/
                 var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
                 var mstID = $("#mstID").val();
-                //var date = $(this).val();                
+                //var date = $(this).val();
                 var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
                     alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                     alertValidationforStartEndeDateMesssetelle(mstID,date,type);
-                } 
+                }
                 /*new-mm-start 06-04-2021*/
 
 
-                 
+
                 }
             }
         }
@@ -17468,18 +17467,18 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                 var week= $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val();
                 if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
                     var date = week+'-'+this.value;
-                
+
                 /*new-mm-start 06-04-2021*/
                 var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
                 var mstID = $("#mstID").val();
-                //var date = $(this).val();                
+                //var date = $(this).val();
                 var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
                     alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                     alertValidationforStartEndeDateMesssetelle(mstID,date,type);
-                } 
+                }
                 /*new-mm-start 06-04-2021*/
 
                 }
@@ -17508,12 +17507,12 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
             /*new-mm-start 06-04-2021*/
             var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
             if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
-               
+
                 alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
             }
             if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                 alertValidationforStartEndeDateMesssetelle(mstID,date,type);
-            } 
+            }
             /*new-mm-start 06-04-2021*/
           }
 
@@ -17531,13 +17530,13 @@ function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
                 /*new-mm-start 06-04-2021*/
                 var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
-                   
+
                     alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
                 }
                 if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                     alertValidationforStartEndeDateMesssetelle(mstID,date,type);
-                } 
-                /*new-mm-start 06-04-2021*/ 
+                }
+                /*new-mm-start 06-04-2021*/
 
              }
            $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker("option","maxDate", selected)
@@ -20964,8 +20963,8 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
 /*new-mm-end 23-03-2021*/
 /*Concern Delete popup for the search functionality 05-10-2020*/
 /*new-mm-start 01-04-2021*/
-function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) { 
-   $("#intBdeConcernOrDeletePopUp").remove();   
+function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
+   $("#intBdeConcernOrDeletePopUp").remove();
    $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none;'> <p>Warnung: Sie haben einen Wert besetzt, <br>der nicht mit der bereits gesetzten Datenlagen<br>in der Abfolge übereinstimmen kann.</p><div id='intBdeConcernOrDeletePopUpDiv'><button id='intBdeConcern' >Concern</button><button id='intBdeDelete'>Delete</button></div></div>").dialog({
             height: 250,
             width: 450,
@@ -20980,9 +20979,9 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
             effect: "fade",
             duration: 500
         },
-        open: function(event, ui) {    
-            $("#intBdeConcern").on("click", function() { 
-                
+        open: function(event, ui) {
+            $("#intBdeConcern").on("click", function() {
+
                 var inputCurrId = $("#inputCurrId").val();
                 var inputCurPrevId = $("#inputCurPrevId").val();
                 var inputBottomCurrId = $("#inputBottomCurrId").val();
@@ -20992,23 +20991,23 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 $("" + prevID + "").removeClass("isShowPopup");
                 $("#inputValBottomCurr").val("");    //new
                 $("#inputCurrId").val("");           //new
-                
+
                 $("" + inputCurrId + "").removeClass("isShowPopup");
                 $("#intBdeConcernOrDeletePopUp").remove();
-                if(currInputID==0){ 
-                   $("#inputPrevValDB").val("");  
+                if(currInputID==0){
+                   $("#inputPrevValDB").val("");
                 }
                 var inputDeleteBotmId = $("#inputDeleteBotmId").val();
                 var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
                 var date =$(""+inputDeleteBotmId+"").closest('td').attr("date");
-                
-                saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs); 
+
+                saveToDBMasseneingabeEingabenSingleRow(zeitIntervallAnl,rowMainIDEn,rowMainIDDs);
                 if(anlageObj[rowMstID]){
                     var inputCountLength = anlageObj[rowMstID].length;
                     if(inputCountLength>4){
                         checkAlertRangeMinMaxServerSide(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                     }
-                }                
+                }
                 $($("#inputFocusedId").val()).focus();
                 $("#masseneingabeSpeichernSrch").prop("disabled", false);
                 /*new-mm-start 01-04-2021*/
@@ -21029,7 +21028,7 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 $("" + inputCurrId + "").focus();
                 $("" + prevID + "").removeClass("isShowPopup");
                 $("" + inputCurrId + "").removeClass("isShowPopup");
-                $("#intBdeConcernOrDeletePopUp").remove(); 
+                $("#intBdeConcernOrDeletePopUp").remove();
                 var currInputID = $("#currInputID").val();
                 var rowMainIDDs = $("#rowMainIDDs").val();
                 $("#masseneingabeSpeichernSrch").prop("disabled", false);
@@ -21039,7 +21038,7 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 /*new-mm-end 01-04-2021*/
             });
          }
-    }); 
+    });
     $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
 }
 /*new-mm-end 01-04-2021*/
@@ -21047,8 +21046,8 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
 
 
 /*new-mm-start 05-04-2021*/
-function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMstID) { 
-   $("#intBdeConcernOrDeletePopUp").remove();   
+function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMstID) {
+   $("#intBdeConcernOrDeletePopUp").remove();
    $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none;'> <p>Warnung: Sie haben einen Wert besetzt, <br>der nicht mit der bereits gesetzten Datenlagen<br>in der Abfolge übereinstimmen kann.</p><div id='intBdeConcernOrDeletePopUpDiv'><button id='intBdeConcern' >Concern</button><button id='intBdeDelete'>Delete</button></div></div>").dialog({
             height: 250,
             width: 450,
@@ -21063,9 +21062,9 @@ function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMst
             effect: "fade",
             duration: 500
         },
-        open: function(event, ui) {    
-            $("#intBdeConcern").on("click", function() { 
-                
+        open: function(event, ui) {
+            $("#intBdeConcern").on("click", function() {
+
                 var inputCurrId = $("#inputCurrId").val();
                 var inputCurPrevId = $("#inputCurPrevId").val();
                 var inputBottomCurrId = $("#inputBottomCurrId").val();
@@ -21075,23 +21074,23 @@ function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMst
                 $("" + prevID + "").removeClass("isShowPopup");
                 $("#inputValBottomCurr").val("");    //new
                 $("#inputCurrId").val("");           //new
-                
+
                 $("" + inputCurrId + "").removeClass("isShowPopup");
                 $("#intBdeConcernOrDeletePopUp").remove();
-                if(currInputID==0){ 
-                   $("#inputPrevValDB").val("");  
+                if(currInputID==0){
+                   $("#inputPrevValDB").val("");
                 }
                 var inputDeleteBotmId = $("#inputDeleteBotmId").val();
                 var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
                 var date =$(""+inputDeleteBotmId+"").closest('td').attr("date");
-                
-                saveToDBMasseneingabeEingabenSingleRowPrdkt(zeitIntervallAnl,rowMainIDEn,rowMainIDDs); 
+
+                saveToDBMasseneingabeEingabenSingleRowPrdkt(zeitIntervallAnl,rowMainIDEn,rowMainIDDs);
                 if(anlageObj[rowMstID]){
                     var inputCountLength = anlageObj[rowMstID].length;
                     if(inputCountLength>4){
                         checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
                     }
-                }                
+                }
                 $($("#inputFocusedId").val()).focus();
                 $("#masseneingabeSpeichernSrch").prop("disabled", false);
                 /*new-mm-start 01-04-2021*/
@@ -21100,7 +21099,7 @@ function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMst
                 /*new-mm-end 01-04-2021*/
                 //$($("#inputFocusedId").val()).change();
             });
-            
+
             $("#intBdeDelete").on("click", function() {
                 var inputCurrId = $("#inputCurrId").val();
                 //var rowMainIDEn = $("#rowMainIDEn").val();   //new
@@ -21112,7 +21111,7 @@ function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMst
                 $("" + inputCurrId + "").focus();
                 $("" + prevID + "").removeClass("isShowPopup");
                 $("" + inputCurrId + "").removeClass("isShowPopup");
-                $("#intBdeConcernOrDeletePopUp").remove(); 
+                $("#intBdeConcernOrDeletePopUp").remove();
                 var currInputID = $("#currInputID").val();
                 var rowMainIDDs = $("#rowMainIDDs").val();
                 $("#masseneingabeSpeichernSrch").prop("disabled", false);
@@ -21122,7 +21121,7 @@ function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMst
                 /*new-mm-end 01-04-2021*/
             });
          }
-    }); 
+    });
     $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
 }
 /*new-mm-end 05-04-2021*/
@@ -21730,7 +21729,7 @@ function saveToDBMasseneingabeEingabenSingleRowPrdkt(key,rowMainIDEn,rowMainIDDs
                   /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
                 }
             });
-}   
+}
 /*new-mm-end 05-04-2021*/
 
 /*Check alert validation for the start Date and end Date*/
@@ -21789,7 +21788,7 @@ function alertValidationforStartEndeDateMesssetelle(mstID,date,type){
                     /*new-mm-start 06-04-2021*/
                     if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
                         MesssetelleListingDblClickRow(mstID,'infosIntEnergiedaten');
-                    }                   
+                    }
                     /*new-mm-end 06-04-2021*/
                     /*new-mm-start 09-04-2021*/
                     $('.zeitintervallAnlPrdkt_1 input').datepicker( "option" , { minDate: null, maxDate: null} );

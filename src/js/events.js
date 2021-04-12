@@ -1406,6 +1406,9 @@ $(document).ready(function() {
     $("#liegSuchen").click(function() {
         liegenschaftenlisteErstellen()
     });
+    $("#orgSuchen").click(function() {
+        organisationenlisteErstellen()
+    });
     $("#extDlSuchen").click(function() {
         extDurchleitungenlisteErstellen()
     });
@@ -1967,13 +1970,6 @@ $(".anlDialogSchlButton").click(function() {
 
 $(".berDialogButton").click(function() {
     $("#bereichSuchenContainer").dialog("close")
-});
-
-
-/*Click event for search spies 21-01-2020*/
-$(".orgSuchenSpies").click(function() {
-    spiesOrganisationenSearch(this.id);
-
 });
 
 /*24-02-2020 Crete correction factor options add more functionality,
