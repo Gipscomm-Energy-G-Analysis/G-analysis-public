@@ -6,7 +6,8 @@
 *  Original code by Angel Marin, Paul Johnston.
 *
 **/
-function SHA256(s){
+
+function SHA256(s) {
 
     let chrsz   = 8;
     let hexcase = 0;
@@ -145,14 +146,12 @@ const disableBtn =
         return `Speichert... ->${idBtn}`
     }
 
-
 const enableBtn =
     idBtn => {
         $(idBtn).prop("disabled","")
         $(idBtn).text("Speichern")
         return `Speichern ->${idBtn}`
     }
-
 
 try {
     var dateTime = function(a) {
@@ -964,7 +963,8 @@ try {
             $("#masseneingabeZeitintervallIMw label:not(label[data-month='" + $("#monatMasseneingabeIMw").val() + "'])").css("display", "none");
             $("#masseneingabeInputIMw input:not(input[data-month='" + $("#monatMasseneingabeIMw").val() + "'])").css("display", "none")
         },
-        mstOderAnlOhneZeitzuordnungInTbl = function(a) {
+        /*mm-commented 22-03-2021*/
+        /*mstOderAnlOhneZeitzuordnungInTbl = function(a) {
             var b =
                 null,
                 e = new DataMachine,
@@ -1000,7 +1000,8 @@ try {
                     readInstanzNachID(r, a[1])
                 })
             })
-        },
+        },*/
+        /*mm-commented 22-03-2021*/
         masseneingabeJahreEinlesen = function(a) {
             ME.resetObj();
             ME.setTimeInterval(TimeInterval.YEAR);
@@ -1517,125 +1518,77 @@ try {
                     $(".energietraegerLieg").empty();
                     $(".energietraegerLieg").append("<option></option>");
                     for (i = 0; i < a.length; i++) $(".energietraegerLieg").append("<option>" + a[i].nameEnt + "</option>");
-                    energietrInDBoxBer()
                 }
             })
-        },
-        energietrInDBoxBer = function() {
-            $(".entBer option").remove();
-            for (i = 1; 5 > i; i++) null != $("#energietraeger" + i + "Lieg").val() && $(".entBer").append("<option>" + $("#inputEnergietraeger" + i + "Lieg").val() + "</option>")
         },
         dbFuerEnergietraegerFestlegen = function(a) {
             entDB = "Global" == a ? "gipscomm" : $("#nameDB").val()
         },
-        bereicheInTabelle = function(a, b) {
-            $("#bereichWaehlen tr").not("#bereichWaehlen tr:nth-child(1)").remove();
-            bereicheliste = [];
-            for (var e = 0; e < b.length; e++) {
-                bereicheliste[e] = new Bereich(b[e].nameOrg, b[e].nameLieg, b[e].nameBer,
-                    b[e].ber_ID);
-                var c = "<tr class='bereichX'>",
-                    c = c + ("<td>" + bereicheliste[e].nameOrg + "</td>"),
-                    c = c + ("<td>" + bereicheliste[e].nameLieg + "</td>"),
-                    c = c + ("<td>" + bereicheliste[e].nameBer + "</td>"),
-                    c = c + ("<td style='display:none;'>" + bereicheliste[e].berID + "</td>"),
-                    c = c + "</tr>";
-                $("#tblBereicheAnl").append(c)
+        bereicheVorhanden =
+            () => {
+                const activeMstTab =
+                    $("#activeInstance").val() === "mstE" || $("#activeInstance").val() === "mstB"
+
+                const noBereiche =
+                    bereicheliste.length === 0
+
+                if (noBereiche && activeMstTab) {
+                    alert("Bitte legen Sie erst einen oder mehrere Bereiche an um dies/em/en Messstellen zuzuordnen !")
+                    clearFields("mstEHinz")
+                    clearFields("mstBHinz")
+                    tabControlNav("tabBer")
+                }
+                return bereicheliste.length !== 0
             }
-            $("#bereichWaehlen").css("display", "block");
-            $("#bereichWaehlen").dialog({
-                height: 400,
-                width: 500,
-                resize: "auto",
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    $("#sucheBereichAnl").val("");
-                    $(".bereichX").on("dblclick", function() {
-                        $("#berID").val($(this).children("td:nth-child(4)").text());
-                        $("#ber").text($(this).children("td:nth-child(3)").text());
-                        $("#bereichAllgemeinAnl").val($(this).children("td:nth-child(3)").text());
-                        $("#bereichWaehlen").dialog("close");
-                        "ber" == a.id && (clearFields("anlHinz"), readInstanzen("anlFirst", 0))
-                    });
-                    $(".berDialogButton").click(function() {
-                        $("#bereichWaehlen").dialog("close")
-                    });
-                    $("#berSuchenAnl, #berResetAnl").click(function() {
-                        if ("berResetAnl" != this.id) var b = $("#sucheBereichAnl").val();
-                        else $("#sucheBereichAnl").val(""), b = "";
-                        $("#tblBereicheAnl tr").not("#tblBereicheAnl tr:nth-child(1)").remove();
-                        for (var c = 0; c < bereicheliste.length; c++) {
-                            var e = bereicheliste[c].nameLieg,
-                                q = bereicheliste[c].nameOrg,
-                                r = bereicheliste[c].nameBer.indexOf(b),
-                                e = e.indexOf(b),
-                                q = q.indexOf(b);
-                            if (-1 != r || -1 != e || -1 != q || "" == b) r = "<tr class='bereichX'>", r += "<td>" + bereicheliste[c].nameOrg + "</td>", r += "<td>" + bereicheliste[c].nameLieg + "</td>", r += "<td>" + bereicheliste[c].nameBer + "</td>", r += "<td style='display:none;'>" + bereicheliste[c].berID +
-                                "</td>", r += "</tr>", $("#tblBereicheAnl tbody").append(r);
-                            $("#tblBereicheAnl").DataTable({
-                                dom: "Bgrtip",
-                                buttons: ["excel", "pdf"]
-                            })
-                        }
-                        $(".bereichX").on("dblclick", function() {
-                            $("#berID").val($(this).children("td:nth-child(4)").text());
-                            $("#ber").text($(this).children("td:nth-child(3)").text());
-                            $("#bereichAllgemeinAnl").val($(this).children("td:nth-child(3)").text());
-                            $("#bereichWaehlen").dialog("close");
-                            "ber" == a.id && (clearFields("anlHinz"), readInstanzen("anlFirst", 0))
-                        })
-                    })
-                }
-            });
-            $("#anlListeContainer").dialog("close")
+
+        bereicheInDropbox = function(a) {
+            bereicheliste = [];
+
+            $(".berPfad").empty()
+
+            const addBereich =
+                record =>
+                bereicheliste
+                .push(new Bereich($(".orgPfad").val(), $(".liegPfad").val(), record.nameBer, record.ber_ID))
+
+            const fillBereicheliste =
+                data =>
+                data.forEach(addBereich)
+
+            const addOption =
+                ber =>
+                $(".berPfad").append("<option>" + ber.nameBer + "</option>")
+
+            const fillDropbox =
+                () =>
+                bereicheliste.forEach(addOption)
+
+            fillBereicheliste(a)
+            fillDropbox()
+            bereicheVorhanden()
         },
-        bereicheEinlesen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getBereiche.php",
-                data: {
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    bereicheInTabelle(a, b)
-                }
-            })
-        },
-        bereicheAnzeigenEinlesen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getBereiche.php",
-                data: {
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    bereicheInTabelle(a, b)
-                }
-            })
+        bereicheEinlesen = function() {
+            const id = "berAuswahl"
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            if (liegID !== "") {
+                ajaxPost("php/getBereiche.php")({id, nameDB, liegID})
+                .then(bereicheInDropbox)
+            }
         },
         liegenschaftenInDropbox = function(a) {
             $(".liegPfad").empty();
             liegenschaftenliste = [];
             liegenschaft.Name = "";
             liegenschaft.LiegID = "";
-            for (var b =
-                    0; b < a.length; b++) liegenschaft.Name = a[b].nameLieg, liegenschaft.LiegID = a[b].lieg_ID, liegenschaftenliste[b] = liegenschaft, $(".liegPfad").append("<option>" + liegenschaftenliste[b].Name + "</option>")
+            for (var b = 0; b < a.length; b++) liegenschaft.Name = a[b].nameLieg, liegenschaft.LiegID = a[b].lieg_ID, liegenschaftenliste[b] = liegenschaft, $(".liegPfad").append("<option>" + liegenschaftenliste[b].Name + "</option>")
+            bereicheEinlesen()
         },
         liegenschaftenEinlesen = function() {
             "" !== $("#orgID").val() && $.ajax({
                 type: "POST",
-                async: !0,
+                async: true,
                 url: "php/liegenschaftenEinlesen.php",
                 data: {
                     nameDB: $("#nameDB").val(),
@@ -1659,13 +1612,13 @@ try {
             if ($("#nameDB").val() !== "") {
                 $.ajax({
                   type: "POST",
-                  async: !1,
+                  async: true,
                   url: "php/organisationenEinlesen.php",
                   data: {
                     nameDB: $("#nameDB").val()
                   },
                   success: function(a) {
-                    a = JSON.parse(a);
+                    a = JSON.parse(a)
                     organisationenInDropbox(a)
                   }
                 })
@@ -1675,12 +1628,12 @@ try {
             $(".manGrpPfad").empty();
             $(".manGrpPfad").append("<optgroup label='Mandantengruppen'>");
             $(".manGrpPfad").append("</optgroup>");
-            for (n = 0; n < a.length; n++) manGrpListe[n] = new manGrp(a[n].name, a[n].manGrp_ID), $(".manGrpPfad optgroup").append("<option value='"+a[n].manGrp_ID+"' id='optManGrp_" + n + "'>" + manGrpListe[n].name + "</option>");
+            for (n = 0; n < a.length; n++) manGrpListe[n] = new manGrp(a[n].name, a[n].manGrp_ID), $(".manGrpPfad optgroup").append("<option id='optManGrp_" + n + "'>" + manGrpListe[n].name + "</option>");
             $(".manGrpPfad").append("<optgroup label='Mandanten'>");
             $(".manGrpPfad").append("</optgroup>");
             a = $(".manPfad option").length / $(".manPfad").length;
-            for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option value='"+ $(".manPfad option").eq(m).val() +"' id='optMan_" + m + "'>" +
-                $(".manPfad option").eq(m).text() + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option value='"+ $(".manPfad option").eq(m).val() +"' id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text() + "</option>")
+            for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
+                $(".manPfad option").eq(m).text() + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text() + "</option>")
         },
         manGrpEinlesen = function() {
             $.ajax({
@@ -1689,7 +1642,7 @@ try {
                 url: "php/manGrpEinlesen.php",
                 data: {
                     nameDB: "gipscomm",
-                    betrGrpID: ($("#betrGrpID").val()) ? $("#betrGrpID").val() : 1,
+                    betrGrpID: $("#betrGrpID").val(),
                     manID: $("manID").val()
                 },
                 success: function(a) {
@@ -1727,7 +1680,7 @@ try {
         },
         mandantenInDropbox = function(a) {
             $(".manPfad").empty();
-            for (var b = 0; b < a.length; b++) mandantenliste[b] = new mandant(a[b].dbName, a[b].man_ID, a[b].nameMan), $(".manPfad").append("<option value='"+a[b].man_ID+"'>" +
+            for (var b = 0; b < a.length; b++) mandantenliste[b] = new mandant(a[b].dbName, a[b].man_ID, a[b].nameMan), $(".manPfad").append("<option>" +
                 mandantenliste[b].name + "</option>");
             $("#manID").val(mandantenliste[0].manID);
             readInstanzen("manFirst", null);
@@ -1735,29 +1688,27 @@ try {
             organisationenEinlesen();
             dbFuerEnergietraegerFestlegen($("#nameDB").val());
             energietrInDBoxLieg();
-            liegenschaftenEinlesen();
             readInstanzen("liegFirst", 0);
-            liegNavID = 0;
-            energietrInDBoxBer();
-            readInstanzen("berFirst", 0);
-            berNavID = 0;
-            readInstanzen("mstFirst", 0);
-            mstNavID = 0;
-            readInstanzen("msmFirst", 0);
-            msmNavID = 0;
-            readInstanzen("stdFirst", 0);
-            stdNavID = 0;
-            readInstanzen("anlFirst", 0);
-            anlNavID = 0;
-            readInstanzen("entFirst", 0);
-            entNavID = 0;
-            readInstanzen("enfFirst", 0);
-            enfNavID = 0;
-            readInstanzen("eRngFirst", 0);
-            eRngNavID = 0;
-            readInstanzen("iMwFirst", 0);
-            iMwNavID = 0;
-            readInstanzen("zpFirst", 0);
+            [ "msm"
+            , "std"
+            , "anl"
+            , "ent"
+            , "enf"
+            , "eRng"
+            , "iMw"
+            , "zp" ]
+            .forEach(ident => readInstanzen(`${ident}First`, 0))
+            liegNavID =
+            berNavID =
+            mstENavID =
+            mstBNavID =
+            msmNavID =
+            stdNavID =
+            anlNavID =
+            entNavID =
+            enfNavID =
+            eRngNavID =
+            iMwNavID =
             zpNavID = 0
         },
         mandantenEinlesen = function(a, b, e) {
@@ -1783,8 +1734,8 @@ try {
         },
         versorgerUndEinheitBefuellen = function() {
             var a =
-                $("#entERng").val(),
-                a = "" != a ? $("#entERng").val() : "";
+                $("#inputEntERng").val(),
+                a = "" != a ? $("#inputEntERng").val() : "";
             $.ajax({
                 type: "POST",
                 async: !0,
@@ -2132,7 +2083,7 @@ try {
                         var b = getHash($("#pwGipscAdm").val());
                         b.trim();
                         b == a ? ($("#tabGipscAdm").css("background-color", "#CED6DE"), $("#infosGipscommAdmins").css("display", "block"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close")) : (alert("Das Passwort ist falsch!"),
-                            $("#tabGipscAdm").css("background-color", "#B9C0C7"),  $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close")) //,$("#infosGipscommAdmins").css("display", "none"), $("#tabBetrGrp").trigger("click")
+                            $("#tabGipscAdm").css("background-color", "#B9C0C7"), $("#infosGipscommAdmins").css("display", "none"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close"), $("#tabBetrGrp").trigger("click"))
                     }
                 })
             })
@@ -2210,9 +2161,7 @@ try {
                     [
                         ["#bezeichnungPrdHist", "namePrd"],
                         ["#artklnrPrdHist", "artikelNrPrd"],
-                        ["#custom1PrdHist",
-                            "custom1"
-                        ],
+                        ["#custom1PrdHist","custom1"],
                         ["#custom2PrdHist", "custom2"],
                         ["#custom3PrdHist", "custom3"],
                         ["#custom4PrdHist", "custom4"],
@@ -2223,21 +2172,26 @@ try {
                         ["#gueltigBis1PrdHist", "gueltigBis1"],
                         ["#inpAnlage2PrdHist", "anl2"],
                         ["#gueltigVon2PrdHist", "gueltigVon2"],
-                        ["#gueltigBis2PrdHist", "gueltigBis2"]["#inpAnlage3PrdHist", "anl3"],
+                        ["#gueltigBis2PrdHist", "gueltigBis2"],
+                        ["#inpAnlage3PrdHist", "anl3"],
                         ["#gueltigVon3PrdHist", "gueltigVon3"],
-                        ["#gueltigBis3PrdHist", "gueltigBis3"]["#inpAnlage4PrdHist", "anl4"],
+                        ["#gueltigBis3PrdHist", "gueltigBis3"],
+                        ["#inpAnlage4PrdHist", "anl4"],
                         ["#gueltigVon4PrdHist", "gueltigVon4"],
-                        ["#gueltigBis4PrdHist", "gueltigBis4"]["#inpAnlage5PrdHist", "anl5"],
+                        ["#gueltigBis4PrdHist", "gueltigBis4"],
+                        ["#inpAnlage5PrdHist", "anl5"],
                         ["#gueltigVon5PrdHist", "gueltigVon5"],
-                        ["#gueltigBis5PrdHist", "gueltigBis5"]["#inpAnlage6PrdHist", "anl6"],
+                        ["#gueltigBis5PrdHist", "gueltigBis5"],
+                        ["#inpAnlage6PrdHist", "anl6"],
                         ["#gueltigVon6PrdHist", "gueltigVon6"],
-                        ["#gueltigBis6PrdHist", "gueltigBis6"]["#inpAnlage7PrdHist", "anl7"],
+                        ["#gueltigBis6PrdHist", "gueltigBis6"],
+                        ["#inpAnlage7PrdHist", "anl7"],
                         ["#gueltigVon7PrdHist", "gueltigVon7"],
-                        ["#gueltigBis7PrdHist", "gueltigBis7"]["#inpAnlage8PrdHist", "anl8"],
+                        ["#gueltigBis7PrdHist", "gueltigBis7"],
+                        ["#inpAnlage8PrdHist", "anl8"],
                         ["#gueltigVon8PrdHist", "gueltigVon8"],
-                        ["#gueltigBis8PrdHist", "gueltigBis8"]["#inpAnlage9PrdHist",
-                            "anl9"
-                        ],
+                        ["#gueltigBis8PrdHist", "gueltigBis8"],
+                        ["#inpAnlage9PrdHist","anl9"],
                         ["#gueltigVon9PrdHist", "gueltigVon9"],
                         ["#gueltigBis9PrdHist", "gueltigBis9"]
                     ].forEach(function(a) {
@@ -2262,8 +2216,7 @@ try {
                     var b = JSON.parse(a);
                     $("#aktivAllgemeinAnlHist").prop("checked", b[0].aktivAnl);
                     $("#bildAllgemeinAnlHist").prop("src", b[0].bildAnl);
-                    $("#mehrProdukteAllgemeinAnlHist").prop("checked",
-                        b[0].mehrProdukteAnl);
+                    $("#mehrProdukteAllgemeinAnlHist").prop("checked", b[0].mehrProdukteAnl);
                     [
                         ["#anlIDHist", "anl_ID"],
                         ["#idAllgemeinAnlHist", "anl_ID"],
@@ -2354,65 +2307,93 @@ try {
                 }
             })
         },
-        historieAendernFensterOeffnen = function(a) { 
+        historieAendernFensterOeffnen = function(a) {
             $(a).dialog({
                 title: "Editor Anlagenhistorie",
                 height: 1200,
                 width: 900
             })
-        },
-        dokumentenListeErstellen = function() {
-            var a = $("#verwaltung").val(),
-                b = {},
-                e;
-            "Anl" == a ? (e = $("#anlID").val(), b = tblDokumenteAnl) : "Msm" == a ? (e = $("#msmID").val(), b = tblDokumenteMsm) : e = $("#eRngID").val();
+        };
+        const createDocumentList =
+            ins => {
+                const nameDB = $("#nameDB").val()
+                const verwaltung = ins
+                const id =
+                    ins === "Anl" ?
+                    $("#anlID").val() :
+                    ins === "Msm" ?
+                    $("#msmID").val() :
+                    $("#eRngID").val()
 
-            if (a !== "") {
-              $.ajax({
-                url: "php/getDokumente.php",
-                type: "POST",
-                data: {
-                  nameDB: $("#nameDB").val(),
-                  verwaltung: a,
-                  id: e
-                },
-                fail: function() {
-                  alert("Fehler!!!")
-                },
-                success: function(c) {
-                  var e = "#tblDokumente" + a + " tbody";
-                  if ("null" != c) {
-                    c = JSON.parse(c);
+                ajaxPost("php/getDokumente.php")({nameDB, verwaltung, id})
+                .then(
+                    result => {
+                        const len = result.length
 
-                    if(a !== "ERng") {
-                      b.clear().draw();   // CHANGE: Dokumentenlist table should be cleared before it is filled 27.05.2020
-                    } else {
-                      $("#aktuellesDokNameERng").val(""); // CHANGE: Clear Rechnungen Downloadfield 03.06.2020
+                        const tblDataTable =
+                            ins === "Anl" ?
+                            tblDokumenteAnl :
+                            ins === "Msm" ?
+                            tblDokumenteMsm :
+                            {}
+
+                        if (len > 0) {
+
+                            const tblHtmlSelect = `#tblDokumente${verwaltung} tbody`
+
+                            if (verwaltung === "ERng") {
+                                $("#aktuellesDokNameERng").val("")
+
+                                $("#aktuellesDokIDERng").val(result[len - 1].dok_ID)
+                                $("#aktuellesDokNameERng").val(result[len - 1].nameDok)
+
+                                $("#aktuellesDokNameERng").off("dblclick")
+                                $("#aktuellesDokNameERng").on("dblclick",
+                                    () => dokumentAuswaehlenUndAuslesen($("#aktuellesDokNameERng").val(), $("#aktuellesDokIDERng").val())
+                                )
+
+                            }
+                            else {
+                                clearTable(tblDataTable)
+
+                                const prepareTableData =
+                                    records =>
+                                    records.map(
+                                        a =>
+                                        [ a.dok_ID
+                                        , a.nameDok
+                                        , a.erweiterungDok
+                                        , a.kategorieDok
+                                        ]
+                                    )
+
+                                intoTable(tblDataTable)(prepareTableData(result))
+
+                                tblDataTable.column(0).visible(false)
+
+                                $(tblHtmlSelect + "tr").css("cursor", "pointer")
+                                $(tblHtmlSelect).off("dblclick", "tr")
+                                $(tblHtmlSelect).on("dblclick", "tr",
+                                function() {
+                                  var a = tblDataTable.row(this).data();
+                                  dokumentAuswaehlenUndAuslesen(a[1], a[0])
+                                })
+                            }
+                        }
+                        else if (verwaltung === "ERng") {
+                            [ "#aktuellesDokIDERng"
+                            , "#aktuellesDokNameERng"
+                            , "#dokuAuswahlERng"
+                            ].forEach(a => $(a).val(""))
+
+                            $("#dokuAuswahlERng").text("")
+                        }
+                        else {
+                            clearTable(tblDataTable)
+                        }
                     }
-
-                    var f = c.length;
-                    if (0 < f)
-                    if ("ERng" == $("#verwaltung").val()) $("#aktuellesDokIDERng").val(c[f -
-                      1].dok_ID), $("#aktuellesDokNameERng").val(c[f - 1].nameDok), $("#aktuellesDokNameERng").off("dblclick"), $("#aktuellesDokNameERng").on("dblclick", function() {
-                        dokumentAuswaehlenUndAuslesen($("#aktuellesDokNameERng").val(), $("#aktuellesDokIDERng").val())
-                      });
-                      else if (b instanceof Object)
-                      for (b.clear().draw(), f = 0; f < c.length; f++) b.row.add([c[f].dok_ID, c[f].nameDok, c[f].erweiterungDok, c[f].kategorieDok]).draw(), b.column(0).visible(!1), $(e + "tr").css("cursor", "pointer"), $(e).off("dblclick", "tr"), $(e).on("dblclick",
-                      "tr",
-                      function() {
-                        var a = b.row(this).data();
-                        dokumentAuswaehlenUndAuslesen(a[1], a[0])
-                      })
-                    } else if ("ERng" == $("#verwaltung").val()) $("#aktuellesDokIDERng").val(""), $("#aktuellesDokNameERng").val(""), $("#dokuAuswahlERng").val(""), $("#dokuAuswahlERng").text("");
-                    else try {
-                      b.clear().draw()
-                    } catch (h) {
-                      console.log("dokumentenListeErstellen() -> selDataTable.clear().draw(); cannot be executed")
-                    }
-                  }
-                })
+                )
             }
-        },
         dokumenteLoeschen = function(a, b) {
             $.ajax({
                 url: "uploadsDownloads/php/dokumenteLoeschen.php",
@@ -2423,7 +2404,10 @@ try {
                     fileID: b
                 },
                 success: function(a) {
-                    dokumentenListeErstellen()
+                    [ "Anl"
+                    , "Msm"
+                    , "ERng"
+                    ].forEach(createDocumentList)
                 }
             })
         };
@@ -2456,100 +2440,106 @@ try {
             })
         };
         function dokumentAuswaehlenUndEinlesen(evt) {
-
             var file = evt.target.files[0];
 
             var fileName = file.name;
-            fileName = umlauteZuErsatzzeichenKonvertieren(fileName);
 
-            var formData = new FormData();
+            if (fileName.length < 30) {
 
-            formData.append('file', file);
-            formData.append('fileName', fileName);
-            formData.append('nameDB', $("#nameDB").val());
+                fileName = umlauteZuErsatzzeichenKonvertieren(fileName);
 
-            var isImg = false;
-            var imgVerw = false;
-            var firstPartUrl = "uploadsDownloads/php/";
-            var dokUploadsUrl = firstPartUrl + "upload.php";
+                var formData = new FormData();
 
-            if (this.id == "imgUploadAnl") {
-                var url = firstPartUrl + 'uploadImage.php';
+                formData.append('file', file);
+                formData.append('fileName', fileName);
+                formData.append('nameDB', $("#nameDB").val());
 
-                isImg = true;
-                imgVerw = "Anl";
-            } else if (this.id == "imgUploadMsm") {
-                var url = firstPartUrl + 'uploadImage.php';
+                var isImg = false;
+                var imgVerw = false;
+                var firstPartUrl = "uploadsDownloads/php/";
+                var dokUploadsUrl = firstPartUrl + "upload.php";
 
-                isImg = true;
-                imgVerw = "Msm";
-            } else if (this.id == "dokuAuswahlAnl") {
+                if (this.id == "imgUploadAnl") {
+                    var url = firstPartUrl + 'uploadImage.php';
 
-                formData.append('id', $("#anlID").val());
-                formData.append('verwaltung', "Anl");
-                formData.append('kategorie', $("#kategorie").val());
+                    isImg = true;
+                    imgVerw = "Anl";
+                } else if (this.id == "imgUploadMsm") {
+                    var url = firstPartUrl + 'uploadImage.php';
 
-                var url = dokUploadsUrl;
+                    isImg = true;
+                    imgVerw = "Msm";
+                } else if (this.id == "dokuAuswahlAnl") {
 
-            } else if (this.id == "dokuAuswahlMsm") {
-                formData.append('id', $("#msmID").val());
-                formData.append('verwaltung', "Msm");
-                formData.append('kategorie', $("#kategorie").val());
-                var url = dokUploadsUrl;
-            } else if (this.id == "dokuAuswahlERng") {
-                formData.append('id', $("#eRngID").val());
-                formData.append('verwaltung', "ERng");
-                formData.append('kategorie', $("#kategorie").val());
+                    formData.append('id', $("#anlID").val());
+                    formData.append('verwaltung', "Anl");
+                    formData.append('kategorie', $("#kategorie").val());
 
-                var url = dokUploadsUrl;
-            }
+                    var url = dokUploadsUrl;
 
-            var ladenSymbolID = toggleLabelUndLadenSymbol();
+                } else if (this.id == "dokuAuswahlMsm") {
+                    formData.append('id', $("#msmID").val());
+                    formData.append('verwaltung', "Msm");
+                    formData.append('kategorie', $("#kategorie").val());
+                    var url = dokUploadsUrl;
+                } else if (this.id == "dokuAuswahlERng") {
+                    formData.append('id', $("#eRngID").val());
+                    formData.append('verwaltung', "ERng");
+                    formData.append('kategorie', $("#kategorie").val());
 
-            $(ladenSymbolID).css("display", "inline");
+                    var url = dokUploadsUrl;
+                }
 
-            const idVerwaltung = this.id
+                var ladenSymbolID = toggleLabelUndLadenSymbol();
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: formData,
-                processData: false, // tell jQuery not to process the data
-                contentType: false, // tell jQuery not to set contentType
-                success: function (data) {
-                    result = json(data)
+                $(ladenSymbolID).css("display", "inline");
 
-                    $(ladenSymbolID).css("display", "none");
+                const idVerwaltung = this.id
 
-                    if (isImg) {
-                        var imgID;
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false, // tell jQuery not to process the data
+                    contentType: false, // tell jQuery not to set contentType
+                    success: function (data) {
+                        result = json(data)
 
-                        if (imgVerw == "Anl") {
-                            imgID = "#bildAllgemeinAnl";
-                        } else {
-                            imgID = "#bildAllgemeinMsm";
+                        $(ladenSymbolID).css("display", "none");
+
+                        if (isImg) {
+                            var imgID;
+
+                            if (imgVerw == "Anl") {
+                                imgID = "#bildAllgemeinAnl";
+                            } else {
+                                imgID = "#bildAllgemeinMsm";
+                            }
+                            $(imgID)
+                            .prop("src", "uploadsDownloads/images/" + $("#nameDB")
+                            .val() + "/" + data);
                         }
-                        $(imgID)
-                        .prop("src", "uploadsDownloads/images/" + $("#nameDB")
-                        .val() + "/" + data);
-                    }
-                    else {
-                        let table;
-                        switch (idVerwaltung) {
-                            case "dokuAuswahlAnl" :
+                        else {
+                            let table;
+                            switch (idVerwaltung) {
+                                case "dokuAuswahlAnl" :
                                 intoTable(tblDokumenteAnl)([result])  // CHANGE: fills table with Anlagen Dokumente 03.06.2020
                                 break;
-                            case "dokuAuswahlMsm" :
+                                case "dokuAuswahlMsm" :
                                 intoTable(tblDokumenteMsm)([result])  // CHANGE: fills table with Messmittel Dokumente 03.06.2020
                                 break;
-                            default :
+                                default :
                                 $("#aktuellesDokNameERng").val(result[1])  // CHANGE: changes name of Downloadfield to name of currently uploaded file 03.06.2020
                                 break;
-                        }
+                            }
 
+                        }
                     }
-                }
-            });
+                });
+            }
+            else {
+                alert("Der Dateiname des Dokuments ist zu lang ! (max 30 Zeichen)")
+            }
         };
         kategorieWaehlen = function() {
             $("#dokKategorieWaehlenFenster").css("display", "block");
@@ -2675,32 +2665,42 @@ try {
                     tblAnlagen.colReorder.order(0, 1, a)
                 }
             })
+        }, berPfadChange = function(this_) {
+            $(".berPfad").val($(this_).val());
+            $("#berID").val(bereicheliste[$(".berPfad").prop("selectedIndex")].berID)
+
+            readInstanzen("berFirst", $(".berPfad").prop("selectedIndex"))
+            readInstanzen("msmFirst", 0)
+            readInstanzen("stdFirst", 0)
+            readInstanzen("anlFirst", 0)
+            readInstanzen("entFirst", 0)
+            readInstanzen("enfFirst", 0)
+            readInstanzen("eRngFirst", 0)
+            readInstanzen("iMwFirst", 0)
+            readInstanzen("zpFirst", 0)
         }, liegPfadChange = function(a) {
-            $(".liegPfad").val($(a).val());
+            $(".liegPfad").val($(a).val())
             if (liegenschaftenliste[$(".liegPfad").prop("selectedIndex")] === "undefined") {
                 $("#liegID").val(liegenschaftenliste[$(".liegPfad").prop("selectedIndex")].LiegID);
             } else {
                 $("#liegID").val('');
             }
-            readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"));
-            readInstanzen("berFirst", 0);
-            readInstanzen("mstFirst", 0);
-            readInstanzen("msmFirst", 0);
-            readInstanzen("stdFirst", 0);
-            readInstanzen("anlFirst", 0);
-            readInstanzen("entFirst", 0);
-            readInstanzen("enfFirst", 0);
-            readInstanzen("eRngFirst", 0);
-            readInstanzen("iMwFirst", 0);
+
+            readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex"))
+
+            readInstanzen("msmFirst", 0)
+            readInstanzen("stdFirst", 0)
+            readInstanzen("anlFirst", 0)
+            readInstanzen("entFirst", 0)
+            readInstanzen("enfFirst", 0)
+            readInstanzen("eRngFirst", 0)
+            readInstanzen("iMwFirst", 0)
             readInstanzen("zpFirst", 0)
+            bereicheEinlesen()
         }, orgPfadChange = function(a) {
             $(".orgPfad").val($(a).val());
             $("#orgID").val(organisationenliste[$(".orgPfad").prop("selectedIndex")].OrgID);
             readInstanzen("orgFirst", $(".orgPfad").prop("selectedIndex"));
-            readInstanzen("liegFirst", 0);
-            readInstanzen("berFirst", 0);
-            readInstanzen("mstFirst",
-                0);
             liegenschaftenEinlesen()
         }, tabelleEinlesen = function(a) {
             $.ajax({
@@ -2817,44 +2817,122 @@ try {
                 }
             })
         }, standorteAuswahllisteErstellen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getStandorte.php",
-                data: {
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblStandorteAuswahl.colReorder.reset();
-                    tblStandorteAuswahl.clear().draw();
-                    for (var e = 0; e < b.length; e++) tblStandorteAuswahl.row.add([b[e].nameStd, b[e].kurzbezeichnungStd, b[e].flaecheStd]).draw();
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            ajaxPost("php/getStandorte.php")({nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameStd
+                        , a.kurzbezeichnungStd
+                        , a.flaecheStd
+                        ]
+                    )
+
+                const fillStandorteTbl =
+                    data => {
+                        clearTable(tblStandorteAuswahl)
+                        intoTable(tblStandorteAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblStandorteAuswahl.row(this_).data()
+
+                        "berSuchenOrt" === a.id ? $("#ortBer").val(head(selectedData)) :
+                        "ortSuchenMstE" === a.id ? $("#ortMstE").val(head(selectedData)) :
+                        "ortSuchenMstB" === a.id ? $("#ortMstB").val(head(selectedData)) :
+                        "anlAuswahlStd" === a.id && $("#standortAllgemeinAnl").val(head(selectedData))
+                    }
+
+                    fillStandorteTbl(result)
+
                     $("#standorteAuswahlContainer").css("display", "block");
                     $("#standorteAuswahlContainer").dialog({
-                        height: $(window).height() - .25 * $(window).height(),
-                        width: $(window).width() - .25 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblStandorteAuswahl tbody tr").css("cursor",
-                                "pointer");
-                            $("#tblStandorteAuswahl tbody").off("dblclick", "tr");
-                            $("#tblStandorteAuswahl tbody").on("dblclick", "tr", function() {
-                                var b = tblStandorteAuswahl.row(this).data();
-                                "berSuchenOrt" == a.id ? $("#ortBer").val(b[0]) : "ortSuchenMst" == a.id ? $("#ortMst").val(b[0]) : "anlAuswahlStd" == a.id && $("#standortAllgemeinAnl").val(b[0]);
-                                $("#standorteAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblStandorteAuswahl tbody tr").css("cursor", "pointer");
+                        $("#tblStandorteAuswahl tbody").off("dblclick", "tr");
+                        $("#tblStandorteAuswahl tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#standorteAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
+            })
+        }, durchleitungAuswahllisteErstellen = function(a) {
+            nameDB = $("#nameDB").val()
+            liegID = $("#liegID").val()
+
+            ajaxPost("php/getExtDurchleitungen.php")({nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameExtDl
+                        , a.anschriftExtDl
+                        , `${a.nameAnsprechpartnerExtDl}, ${a.vornameAnsprechpartnerExtDl}`
+                        , a.extDl_ID
+                        ]
+                    )
+
+                const fillDurchleitungenTbl =
+                    data => {
+                        clearTable(tblExtDurchleitungenAuswahl)
+                        intoTable(tblExtDurchleitungenAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblExtDurchleitungenAuswahl.row(this_).data()
+
+                        "extDlSuchenMstE" === a.id ?
+                        ($("#dlAnMstE").val(head(selectedData)), $("#dlAnMstIDE").val(selectedData[3])) :
+                        ($("#dlAnMstB").val(head(selectedData)), $("#dlAnMstIDB").val(selectedData[3]))
+                    }
+
+                    fillDurchleitungenTbl(result)
+
+                    $("#extDurchleitungenAuswahlContainer").css("display", "block")
+                    $("#extDurchleitungenAuswahlContainer").dialog({
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblExtDurchleitungenAuswahl tbody tr").css("cursor", "pointer")
+                        $("#tblExtDurchleitungenAuswahl tbody").off("dblclick", "tr")
+                        $("#tblExtDurchleitungenAuswahl tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#extDurchleitungenAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, kanalauswahlTabelleErstellen = function(a) {
             $.ajax({
@@ -2896,167 +2974,248 @@ try {
                 }
             })
         }, messmittelAuswahllisteErstellen = function(a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessmittel.php",
-                data: {
-                    id: a,
-                    liegID: $("#liegID").val(),
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblMessmittel.clear().draw();
-                    for (var e = 0; e < b.length; e++) tblMessmittel.row.add([b[e].nrMsm, b[e].typNrMsm, b[e].anlageMsm, b[e].energietraegerMsm, b[e].msm_ID]).draw();
+            const id = a.id
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+
+            ajaxPost("php/getMessmittel.php")({id, nameDB, liegID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nrMsm
+                        , a.typNrMsm
+                        , a.anlageMsm
+                        , a.energietraegerMsm
+                        , a.msm_ID
+                        ]
+                    )
+
+                const fillMessmittelTbl =
+                    data => {
+                        clearTable(tblMessmittel)
+                        intoTable(tblMessmittel)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblMessmittel.row(this_).data()
+
+                        "msmSuchenMstE" === a.id ?
+                        ($("#messmittelBerechnungslogikMstE").val(head(selectedData)), $("#messmittelIDMstE").val(selectedData[4])) :
+                        ($("#messmittelBerechnungslogikMstB").val(head(selectedData)), $("#messmittelIDMstB").val(selectedData[4]))
+                    }
+
+                    fillMessmittelTbl(result)
+
                     $("#messmittelAuswahlContainer").css("display", "block");
                     $("#messmittelAuswahlContainer").dialog({
-                        height: 400,
-                        width: 600,
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessmittel tbody tr").css("cursor", "pointer");
-                            $("#tblMessmittel tbody").off("dblclick", "tr");
-                            $("#tblMessmittel tbody").on("dblclick", "tr", function() {
-                                var b =
-                                    tblMessmittel.row(this).data();
-                                "msmMst" == a && ($("#messmittelBerechnungslogikMst").val(b[0]), $("#messmittelIDMst").val(b[4]), sync.setCurrentLocation(CurrentLocation.MESSSTELLENVERWALTUNG), sync.setIDMessstelle($("#mstID").val()), sync.setIDMessmittel($("#messmittelIDMst").val()), sync.synchronize());
-                                $("#messmittelAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessmittel tbody tr").css("cursor", "pointer");
+                        $("#tblMessmittel tbody").off("dblclick", "tr");
+                        $("#tblMessmittel tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#messmittelAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, anlagenAuswahllisteErstellen = function(a, b) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getAnlagen.php",
-                data: {
-                    ins: a,
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val(),
-                    orgID: $("#orgID").val()
-                },
-                success: function(e) {
-                    e = JSON.parse(e);
-                    tblAnlagenII.colReorder.reset();
-                    tblAnlagenII.clear().draw();
-                    for (var c = 0; c < e.length; c++) tblAnlagenII.row.add([e[c].nummerAnl, e[c].bezeichnungAnl, e[c].typAnl, e[c].custom1Anl, e[c].custom2Anl, e[c].custom3Anl, e[c].custom4Anl, e[c].custom5Anl, e[c].custom6Anl, e[c].anl_ID]).draw();
+            const ins = a
+            const nameDB = $("#nameDB").val()
+            const liegID = $("#liegID").val()
+            const orgID = $("#orgID").val()
+
+            ajaxPost("php/getAnlagen.php")({ins, nameDB, liegID, orgID})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nummerAnl
+                        , a.bezeichnungAnl
+                        , a.typAnl
+                        , a.custom1Anl
+                        , a.custom2Anl
+                        , a.custom3Anl
+                        , a.custom4Anl
+                        , a.custom5Anl
+                        , a.custom6Anl
+                        , a.anl_ID
+                        ]
+                    )
+
+                const fillAnlagenTbl =
+                    data => {
+                        clearTable(tblAnlagenII)
+                        intoTable(tblAnlagenII)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        for (var c = tblAnlagenII.row(this_).data(), e = []; e.length;) e.pop();
+                        e = a.split("Verbr");
+                        "anlMsm" == a ? ($("#anlMsm").val(c[0] + " " + c[1]), $("#anlIDMsm").val(c[9])) :
+                        "anlMstE" == a ? ($("#anlMstE").val(c[0] + " " + c[1]), $("#anlIDMstE").val(c[9])) :
+                        "anlMstB" == a ? ($("#anlMstB").val(c[0] + " " + c[1]), $("#anlIDMstB").val(c[9])) :
+                        "imgBtnAnlage1Prd" == a ? ($("#inpAnlage1Prd").val(c[0] + " " + c[1]), $("#inpAnlage1IDPrd").val(c[9])) :
+                        "imgBtnAnlage2Prd" == a ? ($("#inpAnlage2Prd").val(c[0] + " " + c[1]), $("#inpAnlage2IDPrd").val(c[9])) :
+                        "imgBtnAnlage3Prd" == a ? ($("#inpAnlage3Prd").val(c[0] + " " + c[1]), $("#inpAnlage3IDPrd").val(c[9])) :
+                        "imgBtnAnlage4Prd" == a ? ($("#inpAnlage4Prd").val(c[0] + " " + c[1]), $("#inpAnlage4IDPrd").val(c[9])) :
+                        "imgBtnAnlage5Prd" == a ? ($("#inpAnlage5Prd").val(c[0] + " " + c[1]), $("#inpAnlage5IDPrd").val(c[9])) :
+                        "imgBtnAnlage6Prd" == a ? ($("#inpAnlage6Prd").val(c[0] + " " + c[1]), $("#inpAnlage6IDPrd").val(c[9])) :
+                        "imgBtnAnlage7Prd" == a ? ($("#inpAnlage7Prd").val(c[0] + " " + c[1]), $("#inpAnlage7IDPrd").val(c[9])) :
+                        "imgBtnAnlage8Prd" == a ? ($("#inpAnlage8Prd").val(c[0] + " " + c[1]), $("#inpAnlage8IDPrd").val(c[9])) :
+                        "imgBtnAnlage9Prd" == a ? ($("#inpAnlage9Prd").val(c[0] + " " + c[1]), $("#inpAnlage9IDPrd").val(c[9])) :
+                        "imgBtnAnlage1PrdHist" == a ? $("#inpAnlage1PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage2PrdHist" == a ? $("#inpAnlage2PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage3PrdHist" == a ? $("#inpAnlage3PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage4PrdHist" == a ? $("#inpAnlage4PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage5PrdHist" == a ? $("#inpAnlage5PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage6PrdHist" == a ? $("#inpAnlage6PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage7PrdHist" == a ? $("#inpAnlage7PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage8PrdHist" == a ? $("#inpAnlage8PrdHist").val(c[0] + " " + c[1]) :
+                        "imgBtnAnlage9PrdHist" == a ? $("#inpAnlage9PrdHist").val(c[0] + " " + c[1]) :
+                        0 < e.length && "anlAuswahlZug" == e[0] ? ($("#zugeordneterVerbraucher" + e[1] + "AllgemeinAnl").val(c[0] + " " + c[1]), $("#zugeordneterVerbraucherID" + e[1] + "AllgemeinAnl").val(c[9])) :
+                        "anlVorlFrm" == a && (e = "[" + (c[0] + "_" + c[1]).trim().replace(/\s/g, "_") + "]", c = "anl_" + c[9], $("#inpAuswahlVorlFrmIns" + b).val(e), $("#inpAuswahlVorlFrmIDIns" + b).val(c))
+                    }
+
+                    fillAnlagenTbl(result)
+
                     $("#anlagenlisteAuswahlContainer").css("display", "block");
                     $("#anlagenlisteAuswahlContainer").dialog({
-                        height: $(window).height() - .125 * $(window).height(),
-                        width: $(window).width() -
-                            .125 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblAnlagenListe2 tbody tr").css("cursor", "pointer");
-                            $("#tblAnlagenListe2 tbody").off("dblclick");
-                            $("#tblAnlagenListe2 tbody").on("dblclick", "tr", function() {
-                                for (var c = tblAnlagenII.row(this).data(), e = []; e.length;) e.pop();
-                                e = a.split("Verbr");
-                                "anlMsm" == a ? ($("#anlMsm").val(c[0] + " " + c[1]), $("#anlIDMsm").val(c[9])) : "anlMst" == a ? ($("#anlMst").val(c[0] + " " + c[1]), $("#anlIDMst").val(c[9])) :
-                                    "imgBtnAnlage1Prd" == a ? ($("#inpAnlage1Prd").val(c[0] + " " + c[1]), $("#inpAnlage1IDPrd").val(c[9])) : "imgBtnAnlage2Prd" == a ? ($("#inpAnlage2Prd").val(c[0] + " " + c[1]), $("#inpAnlage2IDPrd").val(c[9])) : "imgBtnAnlage3Prd" == a ? ($("#inpAnlage3Prd").val(c[0] + " " + c[1]), $("#inpAnlage3IDPrd").val(c[9])) : "imgBtnAnlage4Prd" == a ? ($("#inpAnlage4Prd").val(c[0] + " " + c[1]), $("#inpAnlage4IDPrd").val(c[9])) : "imgBtnAnlage5Prd" == a ? ($("#inpAnlage5Prd").val(c[0] + " " + c[1]), $("#inpAnlage5IDPrd").val(c[9])) : "imgBtnAnlage6Prd" == a ? ($("#inpAnlage6Prd").val(c[0] +
-                                        " " + c[1]), $("#inpAnlage6IDPrd").val(c[9])) : "imgBtnAnlage7Prd" == a ? ($("#inpAnlage7Prd").val(c[0] + " " + c[1]), $("#inpAnlage7IDPrd").val(c[9])) : "imgBtnAnlage8Prd" == a ? ($("#inpAnlage8Prd").val(c[0] + " " + c[1]), $("#inpAnlage8IDPrd").val(c[9])) : "imgBtnAnlage9Prd" == a ? ($("#inpAnlage9Prd").val(c[0] + " " + c[1]), $("#inpAnlage9IDPrd").val(c[9])) : "imgBtnAnlage1PrdHist" == a ? $("#inpAnlage1PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage2PrdHist" == a ? $("#inpAnlage2PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage3PrdHist" == a ? $("#inpAnlage3PrdHist").val(c[0] +
-                                        " " + c[1]) : "imgBtnAnlage4PrdHist" == a ? $("#inpAnlage4PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage5PrdHist" == a ? $("#inpAnlage5PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage6PrdHist" == a ? $("#inpAnlage6PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage7PrdHist" == a ? $("#inpAnlage7PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage8PrdHist" == a ? $("#inpAnlage8PrdHist").val(c[0] + " " + c[1]) : "imgBtnAnlage9PrdHist" == a ? $("#inpAnlage9PrdHist").val(c[0] + " " + c[1]) : 0 < e.length && "anlAuswahlZug" == e[0] ? ($("#zugeordneterVerbraucher" + e[1] + "AllgemeinAnl").val(c[0] +
-                                        " " + c[1]), $("#zugeordneterVerbraucherID" + e[1] + "AllgemeinAnl").val(c[9])) : "anlVorlFrm" == a && (e = "[" + (c[0] + "_" + c[1]).trim().replace(/\s/g, "_") + "]", c = "anl_" + c[9], $("#inpAuswahlVorlFrmIns" + b).val(e), $("#inpAuswahlVorlFrmIDIns" + b).val(c));
-                                $("#anlagenlisteAuswahlContainer").dialog("close")
-                            })
-                        }
-                    })
-                }
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblAnlagenListe2 tbody tr").css("cursor", "pointer");
+                        $("#tblAnlagenListe2 tbody").off("dblclick", "tr");
+                        $("#tblAnlagenListe2 tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#anlagenlisteAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, messstellenAuswahllisteErstellen = function(a, b, e) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessstellen.php",
-                data: {
-                    ins: a,
-                    berID: $("#berID").val(),
-                    liegID: $("#liegID").val(),
-                    orgID: $("#orgID").val(),
-                    nameEnt: b,
-                    nameDB: $("#nameDB").val()
-                },
-                success: function(b) {
-                    b = JSON.parse(b);
-                    tblMessstelleAuswahl.clear().draw();
-                    for (var c = 0; c < b.length; c++) tblMessstelleAuswahl.row.add([b[c].nameMSt, b[c].kurzbezeichnungMst, b[c].kostenstelleMst, b[c].messmittelBerechnungslogikMst, b[c].mst_ID, b[c].messartMst]).draw();
-                    $("#messstellenAuswahlContainer").css("display", "block");
-                    $("#messstellenAuswahlContainer").dialog({
-                        height: 400,
-                        width: 600,
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessstellenlisteMst tbody tr").css("cursor", "pointer");
-                            $("#tblMessstellenlisteMst tbody").off("dblclick", "tr");
-                            $("#tblMessstellenlisteMst tbody").on("dblclick", "tr", function() {
-                                var b = tblMessstelleAuswahl.row(this).data();
-                                if ("vorgMst" == a) $("#vorgelagerteMst").val(b[0]);
-                                else if ("mstMsm" == a) $("#messstelleAllgemeinMsm").val(b[0]), $("#messstelleIDAllgemeinMsm").val(b[4]);
-                                else if ("mstERng" == a) $("#mstERng").val(b[0]), $("#mstIDERng").val(b[4]), $("#mstERng").trigger("change");
-                                else if ("mst1Anl" == a) $("#mst1Anl").val(b[0]), $("#ber1Anl").val(b[2]), $("#mst1IDAnl").val(b[4]);
-                                else if ("mst2Anl" == a) $("#mst2Anl").val(b[0]), $("#ber2Anl").val(b[2]), $("#mst2IDAnl").val(b[4]);
-                                else if ("mst3Anl" == a) $("#mst3Anl").val(b[0]), $("#ber3Anl").val(b[2]), $("#mst3IDAnl").val(b[4]);
-                                else if ("mst4Anl" == a) $("#mst4Anl").val(b[0]), $("#ber4Anl").val(b[2]), $("#mst4IDAnl").val(b[4]);
-                                else if ("mstZp" == a) $("#mstZp").val(b[0]), $("#mstZp").trigger("change");
-                                else if ("mst1ExtDl" == a) $("#messstelle1ExtDl").val(b[0]);
-                                else if ("mst2ExtDl" == a) $("#messstelle2ExtDl").val(b[0]);
-                                else if ("mst3ExtDl" == a) $("#messstelle3ExtDl").val(b[0]);
-                                else if ("mst4ExtDl" == a) $("#messstelle4ExtDl").val(b[0]);
-                                else if ("mst5ExtDl" == a) $("#messstelle5ExtDl").val(b[0]);
-                                else if ("mst6ExtDl" == a) $("#messstelle6ExtDl").val(b[0]);
-                                else if ("mstEngRes1ExtDl" == a) $("#messstelleEngRes1ExtDl").val(b[0]);
-                                else if ("mstEngRes2ExtDl" == a) $("#messstelleEngRes2ExtDl").val(b[0]);
-                                else if ("mstEngRes3ExtDl" == a) $("#messstelleEngRes3ExtDl").val(b[0]);
-                                else if ("mstEngRes4ExtDl" == a) $("#messstelleEngRes4ExtDl").val(b[0]);
-                                else if ("mstEngRes5ExtDl" == a) $("#messstelleEngRes5ExtDl").val(b[0]);
-                                else if ("mstEngRes6ExtDl" == a) $("#messstelleEngRes6ExtDl").val(b[0]);
-                                else if ("mstDiag1" == a) $("#mstDiag1").val(b[0]), $("#mstIDDiag1").val(b[4]), $("#mstMessart1").val(b[5]);
-                                else if ("mstDiag2" == a) $("#mstDiag2").val(b[0]), $("#mstIDDiag2").val(b[4]), $("#mstMessart2").val(b[5]);
-                                else if ("mstDiag3" == a) $("#mstDiag3").val(b[0]), $("#mstIDDiag3").val(b[4]), $("#mstMessart3").val(b[5]);
-                                else if ("mstCompDiag" == a) $("#mstDiag").val(b[0]), $("#mstIDDiag").val(b[4]);
-                                else if ("mstDatenexport" == a) $("#mstDatenexport").val(b[0]), $("#mstIDDatenexport").val(b[4]);
-                                else if ("mstSuchenVergl1" == a) $("#vergMst1ERng").val(b[0]),
-                                    vergleichUpdaten("vergMst1ERng");
-                                else if ("mstSuchenVergl2" == a) $("#vergMst2ERng").val(b[0]), vergleichUpdaten("vergMst2ERng");
-                                else if ("mstVorlFrm" == a) {
-                                    var c = "[" + ("" + b[0]).trim().replace(/\s/g, "_") + "]",
-                                        b = "mst_" + b[4];
-                                    $("#inpAuswahlVorlFrmIns" + e).val(c);
-                                    $("#inpAuswahlVorlFrmIDIns" + e).val(b)
-                                }
-                                $("#messstellenAuswahlContainer").css("display","none")
-                                $("#messstellenAuswahlContainer").dialog("close")
-                            })
+            const ins = a
+            const nameDB = $("#nameDB").val()
+            const orgID = $("#orgID").val()
+            const liegID = $("#liegID").val()
+            const berID = $("#berID").val()
+            const nameEnt = b
+
+            ajaxPost("php/getMessstellen.php")({ins, nameDB, orgID, liegID, berID, nameEnt})
+            .then(result => {
+
+                const prepareTableData =
+                    records =>
+                    records.map(
+                        a =>
+                        [ a.nameMSt
+                        , a.kurzbezeichnungMst
+                        , a.kostenstelleMst
+                        , a.messmittelBerechnungslogikMst
+                        , a.mst_ID
+                        , a.messartMst
+                        ]
+                    )
+
+                const fillMessstellenTbl =
+                    data => {
+                        clearTable(tblMessstelleAuswahl)
+                        intoTable(tblMessstelleAuswahl)(prepareTableData(data))
+                    }
+
+                const selectionIntoField =
+                    this_ => {
+                        const selectedData = tblMessstelleAuswahl.row(this_).data()
+
+                        if ("vorgelagerteMstE" === a) $("#vorgelagerteMstE").val(selectedData[0]), $("#vorgelagerteMstIDE").val(selectedData[4]);
+                        else if ("vorgelagerteMstB" === a) $("#vorgelagerteMstB").val(selectedData[0]), $("#vorgelagerteMstIDB").val(selectedData[4]);
+                        else if ("mstMsm" == a) $("#messstelleAllgemeinMsm").val(selectedData[0]), $("#messstelleIDAllgemeinMsm").val(selectedData[4]);
+                        else if ("mstERng" == a) $("#mstERng").val(selectedData[0]), $("#mstIDERng").val(selectedData[4]), $("#mstERng").trigger("change");
+                        else if ("mst1Anl" == a) $("#mst1Anl").val(selectedData[0]), $("#ber1Anl").val(selectedData[2]), $("#mst1IDAnl").val(selectedData[4]);
+                        else if ("mst2Anl" == a) $("#mst2Anl").val(selectedData[0]), $("#ber2Anl").val(selectedData[2]), $("#mst2IDAnl").val(selectedData[4]);
+                        else if ("mst3Anl" == a) $("#mst3Anl").val(selectedData[0]), $("#ber3Anl").val(selectedData[2]), $("#mst3IDAnl").val(selectedData[4]);
+                        else if ("mst4Anl" == a) $("#mst4Anl").val(selectedData[0]), $("#ber4Anl").val(selectedData[2]), $("#mst4IDAnl").val(selectedData[4]);
+                        else if ("mstZp" == a) $("#mstZp").val(selectedData[0]), $("#mstZp").trigger("change");
+                        else if ("mst1ExtDl" == a) $("#messstelle1ExtDl").val(selectedData[0]);
+                        else if ("mst2ExtDl" == a) $("#messstelle2ExtDl").val(selectedData[0]);
+                        else if ("mst3ExtDl" == a) $("#messstelle3ExtDl").val(selectedData[0]);
+                        else if ("mst4ExtDl" == a) $("#messstelle4ExtDl").val(selectedData[0]);
+                        else if ("mst5ExtDl" == a) $("#messstelle5ExtDl").val(selectedData[0]);
+                        else if ("mst6ExtDl" == a) $("#messstelle6ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes1ExtDl" == a) $("#messstelleEngRes1ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes2ExtDl" == a) $("#messstelleEngRes2ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes3ExtDl" == a) $("#messstelleEngRes3ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes4ExtDl" == a) $("#messstelleEngRes4ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes5ExtDl" == a) $("#messstelleEngRes5ExtDl").val(selectedData[0]);
+                        else if ("mstEngRes6ExtDl" == a) $("#messstelleEngRes6ExtDl").val(selectedData[0]);
+                        else if ("mstDiag1" == a) $("#mstDiag1").val(selectedData[0]), $("#mstIDDiag1").val(selectedData[4]), $("#mstMessart1").val(selectedData[5]);
+                        else if ("mstDiag2" == a) $("#mstDiag2").val(selectedData[0]), $("#mstIDDiag2").val(selectedData[4]), $("#mstMessart2").val(selectedData[5]);
+                        else if ("mstDiag3" == a) $("#mstDiag3").val(selectedData[0]), $("#mstIDDiag3").val(selectedData[4]), $("#mstMessart3").val(selectedData[5]);
+                        else if ("mstCompDiag" == a) $("#mstDiag").val(selectedData[0]), $("#mstIDDiag").val(selectedData[4]);
+                        else if ("mstDatenexport" == a) $("#mstDatenexport").val(selectedData[0]), $("#mstIDDatenexport").val(selectedData[4]);
+                        else if ("mstSuchenVergl1" == a) $("#vergMst1ERng").val(selectedData[0]), vergleichUpdaten("vergMst1ERng");
+                        else if ("mstSuchenVergl2" == a) $("#vergMst2ERng").val(selectedData[0]), vergleichUpdaten("vergMst2ERng");
+                        else if ("mstVorlFrm" == a) {
+                            var c = "[" + ("" + selectedData[0]).trim().replace(/\s/g, "_") + "]",
+                                b = "mst_" + selectedData[4];
+                            $("#inpAuswahlVorlFrmIns" + e).val(c);
+                            $("#inpAuswahlVorlFrmIDIns" + e).val(b)
                         }
-                    })
-                }
+                    }
+
+                    fillMessstellenTbl(result)
+
+                    $("#messstellenAuswahlContainer").css("display", "block")
+                    $("#messstellenAuswahlContainer").dialog({
+                    height: $(window).height() - .25 * $(window).height(),
+                    width: $(window).width() - .25 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessstellenlisteMst tbody tr").css("cursor", "pointer")
+                        $("#tblMessstellenlisteMst tbody").off("dblclick", "tr")
+                        $("#tblMessstellenlisteMst tbody").on("dblclick", "tr",
+                        function() {
+                            selectionIntoField(this)
+                            $("#messstellenAuswahlContainer").dialog("close")
+                        })
+                    }
+                })
             })
         }, bereichsAuswahllisteErstellen = function(a) {
             ("berSuchenVBereich1" == a.id || "berSuchenVBereich2" == a.id && 0 == $("#vorgelagerteBereiche2AllgemeinBer").prop("disabled") ||
@@ -3964,47 +4123,75 @@ try {
                     }
                 }
             })
-        }, messstellenlisteErstellen =
-        function() {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/getMessstellen.php",
-                data: {
-                    ins: "mstSuchen",
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val()
-                },
-                success: function(a) {
-                    a = JSON.parse(a);
-                    tblMessstellenSuchen.colReorder.reset();
-                    tblMessstellenSuchen.clear().draw();
-                    for (var b = 0; b < a.length; b++) tblMessstellenSuchen.row.add([b, a[b].nameMSt, a[b].kurzbezeichnungMst, a[b].kostenstelleMst, a[b].energietraegerMst, a[b].messmittelBerechnungslogikMst, a[b].anlageMst, a[b].ortMst]).draw();
-                    tblMessstellenSuchen.column(0).visible(!1);
-                    $("#messstellenSuchenContainer").css("display", "block");
-                    $("#messstellenSuchenContainer").dialog({
-                        height: $(window).height() - .125 * $(window).height(),
-                        width: $(window).width() - .125 * $(window).width(),
-                        resize: "auto",
-                        show: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "fade",
-                            duration: 500
-                        },
-                        open: function() {
-                            $("#tblMessstellenSuchen tbody tr").css("cursor", "pointer");
-                            $("#tblMessstellenSuchen tbody").on("dblclick", "tr", function() {
-                                var a = tblMessstellenSuchen.row(this).data();
-                                $("#messstellenSuchenContainer").dialog("close");
-                                clearFields("mstHinz");
-                                readInstanzen("mstFirst", a[0])
-                            })
-                        }
-                    })
-                }
+        }, messstellenlisteErstellen = function(this_) {
+
+            const ins = this_.id
+            const nameDB = $("#nameDB").val()
+            const berID = $("#berID").val()
+
+            ajaxPost("php/getMessstellen.php")({ins, nameDB, berID})
+            .then(result => {
+
+                const prepareTableData =
+                    data =>
+                    data.map(
+                        (a, i) =>
+                        [ i
+                        , a.nameMSt
+                        , a.kurzbezeichnungMst
+                        , a.kostenstelleMst
+                        , a.energietraegerMst
+                        , a.messmittelBerechnungslogikMst
+                        , a.anlageMst
+                        , a.ortMst
+                        ]
+                    )
+
+                const firstColInvisible =
+                    () =>
+                    tblMessstellenSuchen.column(0).visible(!1)
+
+                const fillMessstellenTbl =
+                    data => {
+                        clearTable(tblMessstellenSuchen)
+                        intoTable(tblMessstellenSuchen)(prepareTableData(data))
+                    }
+
+                const readInRecord =
+                    this__ => {
+                        const rowData = tblMessstellenSuchen.row(this__).data()
+
+                        ins === "mstESuchen" ?
+                        (clearFields("mstEHinz"), readInstanzen("mstEFirst", head(rowData))) :
+                        (clearFields("mstBHinz"), readInstanzen("mstBFirst", head(rowData)))
+
+                        $("#messstellenSuchenContainer").dialog("close")
+                    }
+
+                fillMessstellenTbl(result)
+                firstColInvisible()
+
+                $("#messstellenSuchenContainer").css("display", "block");
+                $("#messstellenSuchenContainer").dialog({
+                    height: $(window).height() - .125 * $(window).height(),
+                    width: $(window).width() - .125 * $(window).width(),
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function() {
+                        $("#tblMessstellenSuchen tbody tr").css("cursor", "pointer");
+                        $("#tblMessstellenSuchen tbody").off("dblclick")
+                        $("#tblMessstellenSuchen tbody").on("dblclick", "tr", function() {
+                            readInRecord(this)
+                        })
+                    }
+                })
             })
         }, formellisteErstellen = function(a) {
             var b = void 0,
@@ -4031,9 +4218,6 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
-
-                    console.log("Formula search records :");
-                    console.log(a);
 
                     tblformelSuchen.colReorder.reset();
                     tblformelSuchen.clear().draw();
@@ -4243,10 +4427,13 @@ try {
                             $("#tblBereicheSuchen tbody").on("dblclick", "tr", function() {
                                 var a = tblBereicheSuchen.row(this).data();
                                 $("#bereichSuchenContainer").dialog("close");
-                                clearFields("berHinz");
-                                clearFields("mstHinz");
-                                readInstanzen("berFirst", a[0]);
-                                readInstanzen("mstFirst", 0)
+                                clearFields("berHinz")
+                                clearFields("mstEHinz")
+                                clearFields("mstBHinz")
+
+                                readInstanzen("berFirst", a[0])
+                                readInstanzen("mstEFirst", 0)
+                                readInstanzen("mstBFirst", 0)
                             })
                         }
                     })
@@ -4405,10 +4592,10 @@ try {
                             $("#tblLiegenschaftenSuchen tbody").on("dblclick", "tr", function() {
                                 var a = tblLiegenschaftenSuchen.row(this).data();
                                 $("#liegenschaftenSuchenContainer").dialog("close");
-                                readInstanzen("liegFirst",
-                                    a[0]);
-                                readInstanzen("berFirst", 0);
-                                readInstanzen("mstFirst", 0)
+                                readInstanzen("liegFirst", a[0])
+                                readInstanzen("berFirst", 0)
+                                readInstanzen("mstEFirst", 0)
+                                readInstanzen("mstBFirst", 0)
                             })
                         }
                     })
@@ -4594,21 +4781,28 @@ try {
             $(".lblAendern").css("display", "none");
             var b = [];
             "gipscAdmHinz" == a ? b = ["#benutzernameGipscAdm", "#passwortGipscAdm"] : "betrGrpHinz" == a ? b = "#firmaBetrGrp #anzahlMitarbeiterBetrGrp #anschriftBetrGrp #plzBetrGrp #ortBetrGrp #geschaeftsfuehrerBetrGrp #telefonBetrGrp #emailBetrGrp #notizBetrGrp".split(" ") :
-                "sAdmHinz" == a ? b = "#titelSAdm #nameSAdm #vornameSAdm #emailSAdm #telefonSAdm #faxSAdm #mobiltelefonSAdm #benutzernameSAdm #passwortSAdm".split(" ") : "manGrpHinz" == a ? (b = ["#nameManGrp", "#kurzManGrp"], tblMandantengruppe.clear().draw()) : "admHinz" == a ? b = "#titelAdm #nameAdm #vornameAdm #emailAdm #telefonAdm #faxAdm #mobiltelefonAdm #benutzernameAdm #passwortAdm".split(" ") : "benHinz" == a ? b = "#titelBen #nameBen #vornameBen #emailBen #telefonBen #faxBen #mobiltelefonBen #benutzernameBen #passwortBen".split(" ") :
-                "manHinz" == a ? (b = "#manID #nameAllgemeinMan #dbKurz #holdingstrukturAllgemeinMan #liegenschaftenAllgemeinMan #titelSystemadminMan #nameSystemadminMan #vornameSystemadminMan #emailSystemadminMan #telefonSystemadminMan #faxSystemadminMan #mobiltelefonSystemadminMan #benutzernameSystemadminMan #passwortSystemadminMan".split(" "), $("#mehrbenutzerMan").prop("checked", !1)) : "orgHinz" == a ? b = "#orgID #nameAllgemeinOrg #gesellschaftsformAllgemeinOrg #firmenanschriftAllgemeinOrg #landAllgemeinOrg #plzAllgemeinOrg #ortAllgemeinOrg #hrbnummerAllgemeinOrg #titelGeschaeftsfuehrungOrg #nameGeschaeftsfuehrungOrg #vornameGeschaeftsfuehrungOrg #emailGeschaeftsfuehrungOrg #telefonGeschaeftsfuehrungOrg #faxGeschaeftsfuehrungOrg #mobiltelefonGeschaeftsfuehrungOrg #titelEnergiemanagementOrg #nameEnergiemanagementOrg #vornameEnergiemanagementOrg #emailEnergiemanagementOrg #telefonEnergiemanagementOrg #faxEnergiemanagementOrg #mobiltelefonEnergiemanagementOrg".split(" ") :
-                "liegHinz" == a ? (b = "#liegID #nameAllgemeinLieg #kuerzelAllgemeinLieg #gesellschaftsformAllgemeinLieg #anschriftAllgemeinLieg #landAllgemeinLieg #plzAllgemeinLieg #ortAllgemeinLieg #typAllgemeinLieg #titelAnsprechpartnerLieg #nameAnsprechpartnerLieg #vornameAnsprechpartnerLieg #emailAnsprechpartnerLieg #telefonAnsprechpartnerLieg #faxAnsprechpartnerLieg #mobiltelefonAnsprechpartnerLieg #titelEnergiebeauftragterLieg #nameEnergiebeauftragterLieg #vornameEnergiebeauftragterLieg #emailEnergiebeauftragterLieg #telefonEnergiebeauftragterLieg #faxEnergiebeauftragterLieg #mobiltelefonEnergiebeauftragterLieg #inputEnergietraeger1Lieg #inputEnergietraeger2Lieg #inputEnergietraeger3Lieg #inputEnergietraeger4Lieg #inputEnergietraeger5Lieg #inputEnergietraeger6Lieg #inputEnergietraeger7Lieg #inputEnergietraeger8Lieg #inputEnergietraeger9Lieg #energieform1Lieg #energieform2Lieg #energieform3Lieg #energieform4Lieg #energieform5Lieg #energieform6Lieg #energieform7Lieg #managementsystem1Lieg #erstzertifizierung1Lieg #managementsystem2Lieg #erstzertifizierung2Lieg #managementsystem3Lieg #erstzertifizierung3Lieg .energietraegerLieg".split(" "),
+            "sAdmHinz" == a ? b = "#titelSAdm #nameSAdm #vornameSAdm #emailSAdm #telefonSAdm #faxSAdm #mobiltelefonSAdm #benutzernameSAdm #passwortSAdm".split(" ") : "manGrpHinz" == a ? (b = ["#nameManGrp", "#kurzManGrp"], tblMandantengruppe.clear().draw()) : "admHinz" == a ? b = "#titelAdm #nameAdm #vornameAdm #emailAdm #telefonAdm #faxAdm #mobiltelefonAdm #benutzernameAdm #passwortAdm".split(" ") : "benHinz" == a ? b = "#titelBen #nameBen #vornameBen #emailBen #telefonBen #faxBen #mobiltelefonBen #benutzernameBen #passwortBen".split(" ") :
+            "manHinz" == a ? (b = "#manID #nameAllgemeinMan #dbKurz #holdingstrukturAllgemeinMan #liegenschaftenAllgemeinMan #titelSystemadminMan #nameSystemadminMan #vornameSystemadminMan #emailSystemadminMan #telefonSystemadminMan #faxSystemadminMan #mobiltelefonSystemadminMan #benutzernameSystemadminMan #passwortSystemadminMan".split(" "), $("#mehrbenutzerMan").prop("checked", !1)) : "orgHinz" == a ? b = "#orgID #nameAllgemeinOrg #gesellschaftsformAllgemeinOrg #firmenanschriftAllgemeinOrg #landAllgemeinOrg #plzAllgemeinOrg #ortAllgemeinOrg #hrbnummerAllgemeinOrg #titelGeschaeftsfuehrungOrg #nameGeschaeftsfuehrungOrg #vornameGeschaeftsfuehrungOrg #emailGeschaeftsfuehrungOrg #telefonGeschaeftsfuehrungOrg #faxGeschaeftsfuehrungOrg #mobiltelefonGeschaeftsfuehrungOrg #titelEnergiemanagementOrg #nameEnergiemanagementOrg #vornameEnergiemanagementOrg #emailEnergiemanagementOrg #telefonEnergiemanagementOrg #faxEnergiemanagementOrg #mobiltelefonEnergiemanagementOrg".split(" ") :
+            "liegHinz" == a ? (b = "#liegID #nameAllgemeinLieg #kuerzelAllgemeinLieg #gesellschaftsformAllgemeinLieg #anschriftAllgemeinLieg #landAllgemeinLieg #plzAllgemeinLieg #ortAllgemeinLieg #typAllgemeinLieg #titelAnsprechpartnerLieg #nameAnsprechpartnerLieg #vornameAnsprechpartnerLieg #emailAnsprechpartnerLieg #telefonAnsprechpartnerLieg #faxAnsprechpartnerLieg #mobiltelefonAnsprechpartnerLieg #titelEnergiebeauftragterLieg #nameEnergiebeauftragterLieg #vornameEnergiebeauftragterLieg #emailEnergiebeauftragterLieg #telefonEnergiebeauftragterLieg #faxEnergiebeauftragterLieg #mobiltelefonEnergiebeauftragterLieg #inputEnergietraeger1Lieg #inputEnergietraeger2Lieg #inputEnergietraeger3Lieg #inputEnergietraeger4Lieg #inputEnergietraeger5Lieg #inputEnergietraeger6Lieg #inputEnergietraeger7Lieg #inputEnergietraeger8Lieg #inputEnergietraeger9Lieg #energieform1Lieg #energieform2Lieg #energieform3Lieg #energieform4Lieg #energieform5Lieg #energieform6Lieg #energieform7Lieg #managementsystem1Lieg #erstzertifizierung1Lieg #managementsystem2Lieg #erstzertifizierung2Lieg #managementsystem3Lieg #erstzertifizierung3Lieg .energietraegerLieg".split(" "),
                     $("#eigenstaendigeformAllgemeinLieg").prop("checked", !1), $("#aktivAllgemeinLieg").prop("checked", !1), $("#hatDlAllgemeinLieg").prop("checked", !1), $("#energietraeger1Lieg").empty(), $("#energietraeger2Lieg").empty(), $("#energietraeger3Lieg").empty(), $("#energietraeger4Lieg").empty(), $("#energietraeger5Lieg").empty(), $("#energietraeger6Lieg").empty(), $("#energietraeger7Lieg").empty(), $("#energietraeger8Lieg").empty(), $("#energietraeger9Lieg").empty(), $("#entLiegErweitert").css("display", "none"), $("#weitereEntsLieg").text("weitere Energietr\u00e4ger")) :
-                "extDlHinz" == a ? (b = "#extDlID #nameExtDl #gesellschaftsformExtDl #anschriftExtDl #landExtDl #plzExtDl #ortExtDl #typExtDl #titelAnsprechpartnerExtDl #nameAnsprechpartnerExtDl #vornameAnsprechpartnerExtDl #emailAnsprechpartnerExtDl #telefonAnsprechpartnerExtDl #faxAnsprechpartnerExtDl #mobiltelefonAnsprechpartnerExtDl #energietraeger1ExtDl #messstelle1ExtDl #standort1ExtDl #energietraeger2ExtDl #messstelle2ExtDl #standort2ExtDl #energietraeger3ExtDl #messstelle3ExtDl #standort3ExtDl #energietraeger4ExtDl #messstelle4ExtDl #standort4ExtDl #energietraeger5ExtDl #messstelle5ExtDl #standort5ExtDl #energietraeger6ExtDl #messstelle6ExtDl #standort6ExtDl #energieRes1ExtDl #messstelleEngRes1ExtDl #standort1EngResExtDl #energieRes2ExtDl #messstelleEngRes2ExtDl #standort2EngResExtDl #energieRes3ExtDl #messstelleEngRes3ExtDl #standort3EngResExtDl #energieRes4ExtDl #messstelleEngRes4ExtDl #standort4EngResExtDl #energieRes5ExtDl #messstelleEngRes5ExtDl #standort5EngResExtDl #energieRes6ExtDl #messstelleEngRes6ExtDl #standort6EngResExtDl".split(" "),
-                    $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) : "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") : "mstHinz" == a ? (b = "#nameMst #kurzbezeichnungMst #kostenstelleMst #energieformMst #ortMst #messartMst #vorgelagerteMst #messmittelBerechnungslogikMst #berechnungslogikMst #notizAllgemeinMst #messmittelIDMst #anlMst #anlIDMst".split(" "),
-                    $("#aktivMst").prop("checked", !1)) : "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
-                "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
-                "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
+            "extDlHinz" == a ? (b = "#extDlID #nameExtDl #gesellschaftsformExtDl #anschriftExtDl #landExtDl #plzExtDl #ortExtDl #typExtDl #titelAnsprechpartnerExtDl #nameAnsprechpartnerExtDl #vornameAnsprechpartnerExtDl #emailAnsprechpartnerExtDl #telefonAnsprechpartnerExtDl #faxAnsprechpartnerExtDl #mobiltelefonAnsprechpartnerExtDl #energietraeger1ExtDl #messstelle1ExtDl #standort1ExtDl #energietraeger2ExtDl #messstelle2ExtDl #standort2ExtDl #energietraeger3ExtDl #messstelle3ExtDl #standort3ExtDl #energietraeger4ExtDl #messstelle4ExtDl #standort4ExtDl #energietraeger5ExtDl #messstelle5ExtDl #standort5ExtDl #energietraeger6ExtDl #messstelle6ExtDl #standort6ExtDl #energieRes1ExtDl #messstelleEngRes1ExtDl #standort1EngResExtDl #energieRes2ExtDl #messstelleEngRes2ExtDl #standort2EngResExtDl #energieRes3ExtDl #messstelleEngRes3ExtDl #standort3EngResExtDl #energieRes4ExtDl #messstelleEngRes4ExtDl #standort4EngResExtDl #energieRes5ExtDl #messstelleEngRes5ExtDl #standort5EngResExtDl #energieRes6ExtDl #messstelleEngRes6ExtDl #standort6EngResExtDl".split(" "),
+                    $("#aktivExtDl").prop("checked", !1), $("#stdExtDl").prop("checked", !1)) :
+            "berHinz" == a ? b = "#nameAllgemeinBer #kurzbezeichnungAllgemeinBer #KostenstelleAllgemeinBer #ortBer #levelAuswahlAllgemeinBer #vorgelagerteBereiche1AllgemeinBer #vorgelagerteBereiche2AllgemeinBer #notizAllgemeinBer #energietraeger1AllgemeinBer #energietraeger2AllgemeinBer #energietraeger3AllgemeinBer #energietraeger4AllgemeinBer".split(" ") :
+            "mstEHinz" == a ? (b = "#dlAnMstE #dlAnMstIDE #nameMstE #kurzbezeichnungMstE #kostenstelleMstE #energietraegerMstE #energieformMstE #ortMstE #messartMstE #vorgelagerteMstE #vorgelagerteMstIDE #messmittelBerechnungslogikMstE #berechnungslogikMstE #notizAllgemeinMstE #messmittelIDMstE #anlMstE #anlIDMstE".split(" "), $("#aktivMstE").prop("checked", !1)) :
+            "mstBHinz" == a ? (b = "#beschreibungMstB #dlAnMstB #dlAnMstIDB #nameMstB #kurzbezeichnungMstB #kostenstelleMstB #ortMstB #messartMstB #vorgelagerteMstB #vorgelagerteMstIDB #messmittelBerechnungslogikMstB #berechnungslogikMstB #notizAllgemeinMstB #messmittelIDMstB #anlMstB #anlIDMstB".split(" "), $("#aktivMstB").prop("checked", !1)) :
+            "msmHinz" == a ? (formatNumber("deform", $("#messtoleranzInformationenConfig").val()), formatNumber("deform", $("#wandlungsfaktorTechnischeDetailsConfig").val()), $("#multiboxAllgemeinMsm").is(":checked"), $("#aktivMst").prop("checked", !1), b = "#messmittelNrAllgemeinMsm #bezeichnungAllgemeinMsm #messstelleAllgemeinMsm #messstelleIDAllgemeinMsm #anlMsm #anlIDMsm #typAllgemeinMsm #typNrAllgemeinMsm #installationsdatumAllgemeinMsm #entMsm #einheitAllgemeinMsm #unitAllgemeinMsm #unitTypAllgemeinMsm #anzahlKanaeleAllgemeinMsm #messungsformAllgemeinMsm #kanal1AllgemeinMsm #kanal2AllgemeinMsm #kanal3AllgemeinMsm #notizAllgemeinMsm #beauftragterPruefinformationenMsm #beauftragterEmailPruefinformationenMsm #pruefzyklusPruefinformationenMsm #letztePruefungPruefinformationenMsm #naechstePruefungPruefinformationenMsm #notiz2AllgemeinMsm #messmethodeInformationenConfig #messzyklusInformationenConfig #notiz1InformationenConfig #verbrauchswertbildungConfig #geraetetypTechnischeDetailsConfig #ipTechnischeDetailsConfig #subnetMaskTechnischeDetailsConfig #gatewayTechnischeDetailsConfig #cgiPortTechnischeDetailsConfig #modbusPortTechnischeDetailsConfig #ftpPortTechnischeDetailsConfig #notiz2InformationenConfig".split(" ")) :
+            "stdHinz" == a ? (b = "#nameAllgemeinStd #kurzbezeichnungAllgemeinStd #flaecheAllgemeinStd #custom1EingabeStd #custom2EingabeStd #custom3EingabeStd #custom4EingabeStd #custom5EingabeStd #custom6EingabeStd #notizAllgemeinStd".split(" "), $("#custom6LabelStd").text(""), $("#custom5LabelStd").text(""), $("#custom4LabelStd").text(""), $("#custom3LabelStd").text(""), $("#custom2LabelStd").text(""), $("#custom1LabelStd").text("")) : "stdDrHinz" == a ? b = "#nameAllgemeinStdDr #kurzbezeichnungAllgemeinStdDr #flaecheAllgemeinStdDr #custom1EingabeStdDr #custom2EingabeStdDr #custom3EingabeStdDr #custom4EingabeStdDr #custom5EingabeStdDr #custom6EingabeStdDr #notizAllgemeinStdDr".split(" ") :
+            "anlHinz" == a ? (b = "#idAllgemeinAnl #bereichAllgemeinAnl #anlagennummerAllgemeinAnl #bezeichnungAllgemeinAnl #typAllgemeinAnl #serienNrAllgemeinAnl #standortAllgemeinAnl #datumAnschaffungAllgemeinAnl #baujahrAnl #notizAllgemeinAnl #produktAllgemeinAnl #einheitProduktionsmenge1AllgemeinAnl #produktnummer1AllgemeinAnl #zugeordneterVerbraucher1AllgemeinAnl #zugeordneterVerbraucher2AllgemeinAnl #zugeordneterVerbraucher3AllgemeinAnl #zugeordneterVerbraucher4AllgemeinAnl #zugeordneterVerbraucher5AllgemeinAnl #zugeordneterVerbraucher6AllgemeinAnl #energietraeger1AllgemeinAnl #energieform1AllgemeinAnl #einheit1Anl #nutzbarkeitAbwaerme1Anl #bewertungNutzbarkeitAbwaerme1Anl #energietraeger2AllgemeinAnl #energieform2AllgemeinAnl #einheit2Anl #nutzbarkeitAbwaerme2Anl #bewertungNutzbarkeitAbwaerme2Anl #energietraeger3AllgemeinAnl #energieform3AllgemeinAnl #einheit3Anl #nutzbarkeitAbwaerme3Anl #bewertungNutzbarkeitAbwaerme3Anl #energietraeger4AllgemeinAnl #energieform4AllgemeinAnl #einheit4Anl #nutzbarkeitAbwaerme4Anl #bewertungNutzbarkeitAbwaerme4Anl #mst1Anl #mst2Anl #mst3Anl #mst4Anl #mst1IDAnl #mst2IDAnl #mst3IDAnl #mst4IDAnl #dokuAuswahlAnl".split(" "),
                     a = $("#nameDB").val(), $(".anlageAnl").text(""), $("#aktivAllgemeinAnl").prop("checked", !1), $("#mehrProdukteAllgemeinAnl").prop("checked", !1), $("#betriebsstundenAllgemeinAnl").val(0), $("#produktionsmenge1AllgemeinAnl").val(0), $("#anschlussleistung1Anl").val(0), $("#mittlereAuslastungProzent1Anl").val(0), $("#mittlereAuslastungKw1Anl").val(0), $("#betriebstemperatur1Anl").val(0), $("#abwaerme1Anl").val(0), $("#anschlussleistung2Anl").val(0), $("#mittlereAuslastungProzent2Anl").val(0),
-                    $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) : "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
-                "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
+                    $("#mittlereAuslastungKw2Anl").val(0), $("#betriebstemperatur2Anl").val(0), $("#abwaerme2Anl").val(0), $("#anschlussleistung3Anl").val(0), $("#mittlereAuslastungProzent3Anl").val(0), $("#mittlereAuslastungKw3Anl").val(0), $("#betriebstemperatur3Anl").val(0), $("#abwaerme3Anl").val(0), $("#anschlussleistung4Anl").val(0), $("#mittlereAuslastungProzent4Anl").val(0), $("#mittlereAuslastungKw4Anl").val(0), $("#betriebstemperatur4Anl").val(0), $("#abwaerme4Anl").val(0)) :
+            "prdHinz" == a ? b = "#bezeichnungPrd #artklnrPrd #custom1Prd #custom2Prd #custom3Prd #custom4Prd #custom5Prd #custom6Prd #inpAnlage1Prd #inpAnlage1IDPrd #inpAnlage2Prd #inpAnlage2IDPrd #inpAnlage3Prd #inpAnlage3IDPrd #inpAnlage4Prd #inpAnlage4IDPrd #inpAnlage5Prd #inpAnlage5IDPrd #inpAnlage6Prd #inpAnlage6IDPrd #inpAnlage7Prd #inpAnlage7IDPrd #inpAnlage8Prd #inpAnlage8IDPrd #inpAnlage9Prd #inpAnlage9IDPrd".split(" ") :
+            "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
                     $("#lblEntEinh2FaktorX1").text(""), $("#lblEntEinh3FaktorX1").text(""), $("#lblEntEinh1FaktorX2").text(""), $("#lblEntEinh2FaktorX2").text(""), $("#lblEntEinh3FaktorX2").text(""), $("#lblEntEinh1FaktorX3").text(""), $("#lblEntEinh2FaktorX3").text(""), $("#lblEntEinh3FaktorX3").text("")) : "enfHinz" == a ? (b = "#nameEnf #kuerzelEnf #notizEnf #einheit1Enf #einheit2Enf #einheit3Enf #enfEinh1FaktorKwh #enfEinh2FaktorKwh #enfEinh3FaktorKwh #enfEinh1FaktorCO2 #enfEinh2FaktorCO2 #enfEinh3FaktorCO2 #enfEinh1FaktorX1 #enfEinh2FaktorX1 #enfEinh3FaktorX1 #enfEinh1FaktorX2 #enfEinh2FaktorX2 #enfEinh3FaktorX2 #enfEinh1FaktorX3 #enfEinh2FaktorX3 #enfEinh3FaktorX3 #gueltigVomEnf #gueltigBisEnf".split(" "),
-                    $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) : "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
-                "iMwHinz" == a ? b = [".iMwHinz"] : "intEngIMwFirst" == a ? b = [".iMwEngHinz"] : "eAnlHinz" == a ? (b = ["#nameEAnl", "#kuerzelEAnl", "#beschreibungEAnl", "#optionEAnl"], tblOptionenEAnl.clear().draw()) : "ePrdHinz" == a ? (b = ["#nameEPrd", "#kuerzelEPrd", "#beschreibungEPrd", "#optionEPrd"], tblOptionenEPrd.clear().draw()) : "zpHinz" == a ? b = ["#zaehlpunktNrZp", "#energietraegerZp", "#mstZp", "#messsystemZp", "#messgenauZp"] : "knzHinz" == a ? (b = "#bezKnz #instanzAllgemeinKnz #instanzAllgemeinIDKnz #zustaendigerMitarbeiterAllgemeinKnz #beschreibungAllgemeinKnz #bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
+                    $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) :
+            "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
+            "iMwHinz" == a ? b = [".iMwHinz"] :
+            "intEngIMwFirst" == a ? b = [".iMwEngHinz"] :
+            "eAnlHinz" == a ? (b = ["#nameEAnl", "#kuerzelEAnl", "#beschreibungEAnl", "#optionEAnl"], tblOptionenEAnl.clear().draw()) : "ePrdHinz" == a ? (b = ["#nameEPrd", "#kuerzelEPrd", "#beschreibungEPrd", "#optionEPrd"], tblOptionenEPrd.clear().draw()) : "zpHinz" == a ? b = ["#zaehlpunktNrZp", "#energietraegerZp", "#mstZp", "#messsystemZp", "#messgenauZp"] : "knzHinz" == a ? (b = "#bezKnz #instanzAllgemeinKnz #instanzAllgemeinIDKnz #zustaendigerMitarbeiterAllgemeinKnz #beschreibungAllgemeinKnz #bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
                     uncheck_Ctrl({
                         firstPart: "#status",
                         secondPart: "Knz"
@@ -4617,8 +4811,8 @@ try {
                         secondPart: ""
                     }, {
                         von: 7,
-                        bis: 16
-                    })) : "knzOhneInstanz" == a && (b = "#bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
+                        bis: 16 })) :
+            "knzOhneInstanz" == a && (b = "#bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
                     $("#status1Knz").prop("checked", !1), $("#status2Knz").prop("checked", !1), $("#status3Knz").prop("checked", !1), $("#status4Knz").prop("checked", !1), $("#status5Knz").prop("checked", !1), $("#status6Knz").prop("checked", !1), $("#status7Knz").prop("checked", !1), $("#status8Knz").prop("checked", !1), $("#status9Knz").prop("checked", !1), $("#status10Knz").prop("checked", !1), $(".knzForms").eq(0).prop("aria-selected", true));
             b.forEach(function(a) {
                 $(a).val("")
@@ -4682,10 +4876,8 @@ try {
                 for (var b = c, e = b.length, f = 0; f < e; f++) $("#" + b[f].htmlID).val(a[0][b[f].dbColumnName])
             })
         }, readInstanzen = function(a, b, e) {
-            
-            $(".lblNeu").css("display", "none");
-            $(".lblAendern").css("display",
-                "inline");
+            $(".lblNeu").css("display", "none")
+            $(".lblAendern").css("display", "inline")
             switch (isInstance(a)) {
                 case "gipscAdm":
                     $.ajax({
@@ -4807,8 +4999,7 @@ try {
                             id: "adm",
                             nameDB: "gipscomm",
                             ins: a,
-                            insID: e,
-                            recordSet:record_set
+                            insID: e
                         },
                         fail: function() {
                             alert("failed!!")
@@ -4908,7 +5099,7 @@ try {
                             $("#orgCount").val(c.length);
                             1 == c.length ? $(".orgPfad, .orgPfadLbl").css("display",
                                 "none") : $(".orgPfad, .orgPfadLbl").css("display", "inline");
-                            0 < c.length ? [
+                            0 < c.length ? ([
                                 ["#orgID", "org_ID"],
                                 ["#nameAllgemeinOrg", "nameOrg"],
                                 ["#gesellschaftsformAllgemeinOrg", "gesellschaftsformOrg"],
@@ -4936,7 +5127,9 @@ try {
                                 ["#mobiltelefonEnergiemanagementOrg", "mobiltelefonEnergiemanagementOrg"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
-                            }) : clearFields("orgHinz")
+                            }),
+                            readInstanzen("liegFirst", 0)) :
+                            clearFields("orgHinz")
                         }
                     });
                     break;
@@ -4954,59 +5147,68 @@ try {
                             alert("failed!!")
                         },
                         success: function(a) {
-                            var c = $.parseJSON(a);
+                            var c = $.parseJSON(a)
 
-                            $("#liegCount").val(c.length);
-                            0 < c.length ? ($("#eigenstaendigeformAllgemeinLieg").prop("checked", c[b].eigenstaendigeFormLieg), $("#aktivAllgemeinLieg").prop("checked", c[b].aktivLieg), $("#hatDlAllgemeinLieg").prop("checked", c[b].hatDl), [
-                                    ["#liegID", "lieg_ID"],
-                                    ["#nameAllgemeinLieg", "nameLieg"],
-                                    ["#kuerzelAllgemeinLieg", "kuerzelLieg"],
-                                    ["#gesellschaftsformAllgemeinLieg", "gesellschaftsformLieg"],
-                                    ["#anschriftAllgemeinLieg", "anschriftLieg"],
-                                    ["#landAllgemeinLieg", "landLieg"],
-                                    ["#plzAllgemeinLieg", "plzLieg"],
-                                    ["#ortAllgemeinLieg","ortLieg"],
-                                    ["#typAllgemeinLieg", "typLieg"],
-                                    ["#titelAnsprechpartnerLieg", "titelAnsprechpartnerLieg"],
-                                    ["#nameAnsprechpartnerLieg", "nameAnsprechpartnerLieg"],
-                                    ["#vornameAnsprechpartnerLieg", "vornameAnsprechpartnerLieg"],
-                                    ["#emailAnsprechpartnerLieg", "eMailAnsprechpartnerLieg"],
-                                    ["#telefonAnsprechpartnerLieg", "telefonAnsprechpartnerLieg"],
-                                    ["#faxAnsprechpartnerLieg", "faxAnsprechpartnerLieg"],
-                                    ["#mobiltelefonAnsprechpartnerLieg", "mobiltelefonAnsprechpartnerLieg"],
-                                    ["#titelEnergiebeauftragterLieg", "titelEnergiebeauftragterLieg"],
-                                    ["#nameEnergiebeauftragterLieg", "nameEnergiebeauftragterLieg"],
-                                    ["#vornameEnergiebeauftragterLieg", "vornameEnergiebeauftragterLieg"],
-                                    ["#emailEnergiebeauftragterLieg", "eMailEnergiebeauftragterLieg"],
-                                    ["#telefonEnergiebeauftragterLieg", "telefonEnergiebeauftragterLieg"],
-                                    ["#faxEnergiebeauftragterLieg", "faxEnergiebeauftragterLieg"],
-                                    ["#mobiltelefonEnergiebeauftragterLieg", "mobiltelefonEnergiebeauftragterLieg"],
-                                    ["#inputEnergietraeger1Lieg", "energietraeger1"],
-                                    ["#inputEnergietraeger2Lieg", "energietraeger2"],
-                                    ["#inputEnergietraeger3Lieg", "energietraeger3"],
-                                    ["#inputEnergietraeger4Lieg", "energietraeger4"],
-                                    ["#inputEnergietraeger5Lieg", "energietraeger5"],
-                                    ["#inputEnergietraeger6Lieg", "energietraeger6"],
-                                    ["#inputEnergietraeger7Lieg", "energietraeger7"],
-                                    ["#inputEnergietraeger8Lieg", "energietraeger8"],
-                                    ["#inputEnergietraeger9Lieg", "energietraeger9"],
-                                    ["#energieform1Lieg", "energieform1"],
-                                    ["#energieform2Lieg", "energieform2"],
-                                    ["#energieform3Lieg", "energieform3"],
-                                    ["#energieform4Lieg", "energieform4"],
-                                    ["#energieform5Lieg", "energieform5"],
-                                    ["#energieform6Lieg", "energieform6"],
-                                    ["#energieform7Lieg", "energieform7"],
-                                    ["#managementsystem1Lieg", "managementsystem1"],
-                                    ["#erstzertifizierung1Lieg", "erstzertifizierung1"],
-                                    ["#managementsystem2Lieg", "managementsystem2"],
-                                    ["#erstzertifizierung2Lieg", "erstzertifizierung2"],
-                                    ["#managementsystem3Lieg", "managementsystem3"],
-                                    ["#erstzertifizierung3Lieg", "erstzertifizierung3"]
-                                ].forEach(function(a) {
-                                    $(a[0]).val(c[b][a[1]])
-                                }), toggleExtDl("#hatDlAllgemeinLieg"), "" != $("#inputEnergietraeger7Lieg").val() ?
-                                $("#entLiegErweitert").css("display", "block") : $("#entLiegErweitert").css("display", "none"), energietrInDBoxLieg(), $(".liegPfad").val(c[b].nameLieg)) : clearFields("liegHinz")
+                            $("#liegCount").val(c.length)
+
+                            0 < c.length ?
+                            ($("#eigenstaendigeformAllgemeinLieg").prop("checked", c[b].eigenstaendigeFormLieg),
+                            $("#aktivAllgemeinLieg").prop("checked", c[b].aktivLieg),
+                            $("#hatDlAllgemeinLieg").prop("checked", c[b].hatDl),
+                            [ ["#liegID", "lieg_ID"]
+                            , ["#nameAllgemeinLieg", "nameLieg"]
+                            , ["#kuerzelAllgemeinLieg", "kuerzelLieg"]
+                            , ["#gesellschaftsformAllgemeinLieg", "gesellschaftsformLieg"]
+                            , ["#anschriftAllgemeinLieg", "anschriftLieg"]
+                            , ["#landAllgemeinLieg", "landLieg"]
+                            , ["#plzAllgemeinLieg", "plzLieg"]
+                            , ["#ortAllgemeinLieg","ortLieg"]
+                            , ["#typAllgemeinLieg", "typLieg"]
+                            , ["#titelAnsprechpartnerLieg", "titelAnsprechpartnerLieg"]
+                            , ["#nameAnsprechpartnerLieg", "nameAnsprechpartnerLieg"]
+                            , ["#vornameAnsprechpartnerLieg", "vornameAnsprechpartnerLieg"]
+                            , ["#emailAnsprechpartnerLieg", "eMailAnsprechpartnerLieg"]
+                            , ["#telefonAnsprechpartnerLieg", "telefonAnsprechpartnerLieg"]
+                            , ["#faxAnsprechpartnerLieg", "faxAnsprechpartnerLieg"]
+                            , ["#mobiltelefonAnsprechpartnerLieg", "mobiltelefonAnsprechpartnerLieg"]
+                            , ["#titelEnergiebeauftragterLieg", "titelEnergiebeauftragterLieg"]
+                            , ["#nameEnergiebeauftragterLieg", "nameEnergiebeauftragterLieg"]
+                            , ["#vornameEnergiebeauftragterLieg", "vornameEnergiebeauftragterLieg"]
+                            , ["#emailEnergiebeauftragterLieg", "eMailEnergiebeauftragterLieg"]
+                            , ["#telefonEnergiebeauftragterLieg", "telefonEnergiebeauftragterLieg"]
+                            , ["#faxEnergiebeauftragterLieg", "faxEnergiebeauftragterLieg"]
+                            , ["#mobiltelefonEnergiebeauftragterLieg", "mobiltelefonEnergiebeauftragterLieg"]
+                            , ["#inputEnergietraeger1Lieg", "energietraeger1"]
+                            , ["#inputEnergietraeger2Lieg", "energietraeger2"]
+                            , ["#inputEnergietraeger3Lieg", "energietraeger3"]
+                            , ["#inputEnergietraeger4Lieg", "energietraeger4"]
+                            , ["#inputEnergietraeger5Lieg", "energietraeger5"]
+                            , ["#inputEnergietraeger6Lieg", "energietraeger6"]
+                            , ["#inputEnergietraeger7Lieg", "energietraeger7"]
+                            , ["#inputEnergietraeger8Lieg", "energietraeger8"]
+                            , ["#inputEnergietraeger9Lieg", "energietraeger9"]
+                            , ["#energieform1Lieg", "energieform1"]
+                            , ["#energieform2Lieg", "energieform2"]
+                            , ["#energieform3Lieg", "energieform3"]
+                            , ["#energieform4Lieg", "energieform4"]
+                            , ["#energieform5Lieg", "energieform5"]
+                            , ["#energieform6Lieg", "energieform6"]
+                            , ["#energieform7Lieg", "energieform7"]
+                            , ["#managementsystem1Lieg", "managementsystem1"]
+                            , ["#erstzertifizierung1Lieg", "erstzertifizierung1"]
+                            , ["#managementsystem2Lieg", "managementsystem2"]
+                            , ["#erstzertifizierung2Lieg", "erstzertifizierung2"]
+                            , ["#managementsystem3Lieg", "managementsystem3"]
+                            , ["#erstzertifizierung3Lieg", "erstzertifizierung3"]
+                            ].forEach(function(a) {
+                                $(a[0]).val(c[b][a[1]])
+                            }), toggleExtDl("#hatDlAllgemeinLieg"),
+                            "" != $("#inputEnergietraeger7Lieg").val() ?
+                            $("#entLiegErweitert").css("display", "block") :
+                            $("#entLiegErweitert").css("display", "none"),
+                            energietrInDBoxLieg(),
+                            readInstanzen("berFirst", 0)) :
+                            clearFields("liegHinz")
                         }
                     });
                     break;
@@ -5038,9 +5240,7 @@ try {
                                 ["#typExtDl", "typExtDl"],
                                 ["#titelAnsprechpartnerExtDl", "titelAnsprechpartnerExtDl"],
                                 ["#nameAnsprechpartnerExtDl", "nameAnsprechpartnerExtDl"],
-                                ["#vornameAnsprechpartnerExtDl",
-                                    "vornameAnsprechpartnerExtDl"
-                                ],
+                                ["#vornameAnsprechpartnerExtDl", "vornameAnsprechpartnerExtDl"],
                                 ["#emailAnsprechpartnerExtDl", "eMailAnsprechpartnerExtDl"],
                                 ["#telefonAnsprechpartnerExtDl", "telefonAnsprechpartnerExtDl"],
                                 ["#faxAnsprechpartnerExtDl", "faxAnsprechpartnerExtDl"],
@@ -5050,9 +5250,7 @@ try {
                                 ["#standort1ExtDl", "standort1ExtDl"],
                                 ["#energietraeger2ExtDl", "energietraeger2"],
                                 ["#messstelle2ExtDl", "messstelle2ExtDl"],
-                                ["#standort2ExtDl",
-                                    "standort2ExtDl"
-                                ],
+                                ["#standort2ExtDl", "standort2ExtDl"],
                                 ["#energietraeger3ExtDl", "energietraeger3"],
                                 ["#messstelle3ExtDl", "messstelle3ExtDl"],
                                 ["#standort3ExtDl", "standort3ExtDl"],
@@ -5104,67 +5302,99 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
+
                             $("#berCount").val(c.length);
-                            0 < c.length ? ($("#ber").text(c[b].nameBer), [
-                                ["#berID", "ber_ID"],
-                                ["#nameAllgemeinBer", "nameBer"],
-                                ["#bereichAllgemeinAnl", "nameBer"],
-                                ["#kurzbezeichnungAllgemeinBer", "kurzbezeichnungBer"],
-                                ["#KostenstelleAllgemeinBer", "kostenstelleBer"],
-                                ["#ortBer", "ortBer"],
-                                ["#notizAllgemeinBer", "notizBer"],
-                                ["#levelAuswahlAllgemeinBer", "ausgewaehltesLevelBer"],
-                                ["#vorgelagerteBereiche1AllgemeinBer",
-                                    "vorgelagerterBereich1Ber"
-                                ],
-                                ["#vorgelagerteBereiche2AllgemeinBer", "vorgelagerterBereich2Ber"]
-                            ].forEach(function(a) {
-                                $(a[0]).val(c[b][a[1]])
-                            })) : clearFields("berHinz")
+
+                            0 < c.length ?
+                            ($("#ber").text(c[b].nameBer),
+                            [ ["#berID", "ber_ID"]
+                            , ["#nameAllgemeinBer", "nameBer"]
+                            , ["#bereichAllgemeinAnl", "nameBer"]
+                            , ["#kurzbezeichnungAllgemeinBer", "kurzbezeichnungBer"]
+                            , ["#KostenstelleAllgemeinBer", "kostenstelleBer"]
+                            , ["#ortBer", "ortBer"]
+                            , ["#notizAllgemeinBer", "notizBer"]
+                            , ["#levelAuswahlAllgemeinBer", "ausgewaehltesLevelBer"]
+                            , ["#vorgelagerteBereiche1AllgemeinBer", "vorgelagerterBereich1Ber"]
+                            , ["#vorgelagerteBereiche2AllgemeinBer", "vorgelagerterBereich2Ber"]
+                            ].forEach(a => $(a[0]).val(c[b][a[1]])),
+                            $(".berPfad").val(c[b].nameBer),
+                            readInstanzen("mstEFirst", 0),
+                            readInstanzen("mstBFirst", 0)) :
+                            clearFields("berHinz")
                         }
                     });
                     break;
-                case "mst":
-                    $.ajax({
-                        type: "POST",
-                        async: !1,
-                        url: "php/readMessstellen.php",
-                        data: {
-                            berID: $("#berID").val(),
-                            nameDB: $("#nameDB").val()
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            var c = $.parseJSON(a);
+                case "mstE":
+                    berID = $("#berID").val()
+                    nameDB = $("#nameDB").val()
+                    type = "energiedaten"
 
-                            toggleMsmBerechnungslogik(c[b].messartMst)
+                    ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
+                    .then(result => {
 
-                            $("#mstCount").val(c.length);
-                            0 < c.length ? ($("#aktivMst").prop("checked", c[b].aktivMst), $("#istDlMst").prop("checked", c[b].isDurchleitung),
-                                    [
-                                        ["#mstID", "mst_ID"],
-                                        ["#nameMst", "nameMSt"],
-                                        ["#kurzbezeichnungMst", "kurzbezeichnungMst"],
-                                        ["#kostenstelleMst", "kostenstelleMst"],
-                                        ["#energietraegerMst", "energietraegerMst"],
-                                        ["#energieformMst", "energieformMst"],
-                                        ["#ortMst", "ortMst"],
-                                        ["#messartMst", "messartMst"],
-                                        ["#vorgelagerteMst", "vorgelagerteMessstelleMst"],
-                                        ["#anlMst", "anl"],
-                                        ["#anlIDMst", "anl_ID"],
-                                        ["#messmittelBerechnungslogikMst", "msm"],
-                                        ["#berechnungslogikMst", "messmittelBerechnungslogikMstNormal"],
-                                        ["#messmittelIDMst", "msm_ID"],
-                                        ["#notizAllgemeinMst", "notizMst"]
-                                    ].forEach(function(a) {
-                                        $(a[0]).val(c[b][a[1]])
-                                    })) :
-                                clearFields("mstHinz")
-                        }
-                    });
+                        $("#mstECount").val(result.length)
+
+                        0 < result.length ?
+                        (toggleMsmBerechnungslogik(result[b].messartMst)("E"),
+                        $("#aktivMstE").prop("checked", result[b].aktivMst),
+                        $("#istDlMstE").prop("checked", result[b].isDurchleitung),
+                        [ ["#mstID", "mst_ID"]
+                        , ["#nameMstE", "nameMSt"]
+                        , ["#kurzbezeichnungMstE", "kurzbezeichnungMst"]
+                        , ["#vorgelagerteMstE", "vorgelMst"]
+                        , ["#vorgelagerteMstIDE", "vorgelMst_ID"]
+                        , ["#kostenstelleMstE", "kostenstelleMst"]
+                        , ["#dlAnMstE", "extDl"]
+                        , ["#dlAnMstIDE", "extDl_ID"]
+                        , ["#energietraegerMstE", "energietraegerMst"]
+                        , ["#energieformMstE", "energieformMst"]
+                        , ["#ortMstE", "ortMst"]
+                        , ["#messartMstE", "messartMst"]
+                        , ["#anlMstE", "anl"]
+                        , ["#anlIDMstE", "anl_ID"]
+                        , ["#messmittelBerechnungslogikMstE", "msm"]
+                        , ["#berechnungslogikMstE", "messmittelBerechnungslogikMstNormal"]
+                        , ["#messmittelIDMstE", "msm_ID"]
+                        , ["#notizAllgemeinMstE", "notizMst"]
+                        ].forEach(a => $(a[0]).val(result[b][a[1]]))) :
+                        clearFields("mstEHinz")
+                    })
+                    break;
+                case "mstB":
+                    berID = $("#berID").val()
+                    nameDB = $("#nameDB").val()
+                    type = "betriebsdaten"
+
+                    ajaxPost("php/readMessstellen.php")({berID, nameDB, type})
+                    .then(result => {
+
+                        $("#mstBCount").val(result.length)
+
+                        0 < result.length ?
+                        (toggleMsmBerechnungslogik(result[b].messartMst)("B"),
+                        $("#aktivMstB").prop("checked", result[b].aktivMst),
+                        $("#istDlMstB").prop("checked", result[b].isDurchleitung),
+                        [ ["#mstID", "mst_ID"]
+                        , ["#nameMstB", "nameMSt"]
+                        , ["#kurzbezeichnungMstB", "kurzbezeichnungMst"]
+                        , ["#vorgelagerteMstB", "vorgelMst"]
+                        , ["#vorgelagerteMstIDB", "vorgelMst_ID"]
+                        , ["#kostenstelleMstB", "kostenstelleMst"]
+                        , ["#dlAnMstB", "extDl"]
+                        , ["#dlAnMstIDB", "extDl_ID"]
+                        , ["#beschreibungMstB", "beschreibung"]
+                        , ["#ortMstB", "ortMst"]
+                        , ["#messartMstB", "messartMst"]
+                        , ["#anlMstB", "anl"]
+                        , ["#anlIDMstB", "anl_ID"]
+                        , ["#messmittelBerechnungslogikMstB", "msm"]
+                        , ["#berechnungslogikMstB", "messmittelBerechnungslogikMstNormal"]
+                        , ["#messmittelIDMstB", "msm_ID"]
+                        , ["#notizAllgemeinMstB", "notizMst"]
+                        ].forEach(a => $(a[0]).val(result[b][a[1]]))) :
+                        clearFields("mstBHinz")
+                    })
                     break;
                 case "std":
                     $.ajax({
@@ -5248,7 +5478,10 @@ try {
                         success: function(a) {
                             var c = $.parseJSON(a);
                             $("#anlCount").val(c.length);
-                            0 < c.length ? ($(".anlageAnl").text(c[b].bezeichnungAnl), $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl), $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
+                            0 < c.length ?
+                            ($(".anlageAnl").text(c[b].bezeichnungAnl),
+                            $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl),
+                            $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
 
                             [1, 2, 3, 4]
                             .forEach(
@@ -5265,7 +5498,6 @@ try {
                             [ [ "#anlID", "anl_ID" ]
                             , [ "#idAllgemeinAnl", "anl_ID" ]
                             , [ "#bereichAllgemeinAnl", "nameBer" ]
-                            , [ "#berID", "ber_ID" ]
                             , [ "#anlagennummerAllgemeinAnl", "nummerAnl" ]
                             , [ "#bezeichnungAllgemeinAnl", "bezeichnungAnl" ]
                             , [ "#typAllgemeinAnl", "typAnl" ]
@@ -5332,9 +5564,9 @@ try {
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             })) :
-                            (clearFields("anlHinz"))
+                            clearFields("anlHinz")
 
-                            dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
+                            createDocumentList("Anl") // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
                     });
                     changeTracker.setRecordsNavID(anlNavID);
@@ -5354,7 +5586,6 @@ try {
                             alert("failed!!")
                         },
                         success: function(a) {
-                            /*console.log("records readInstanzen messmittel");console.log(a);*/
                             var c = $.parseJSON(a);
                             $("#msmCount").val(c.length);
                             0 < c.length ? ($("#msmID").val(c[b].msm_ID), $("#multiboxAllgemeinMsm").prop("checked", c[b].multiboxMsm), $("#messtoleranzInformationenConfig").val(formatNumber("form", c[b].messtoleranzConfig)), $("#wandlungsfaktorTechnischeDetailsConfig").val(formatNumber("form", c[b].wandlungsfaktorMsm)), [
@@ -5400,7 +5631,7 @@ try {
                                 })) :
                                 (clearFields("msmHinz"))
 
-                                dokumentenListeErstellen() // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
+                                createDocumentList("Msm") // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
                         }
                     });
                     break;
@@ -5624,35 +5855,135 @@ try {
                     )
                     break;
                 case "eRng":
+                    nameDB = $("#nameDB").val()
+                    liegID = $("#liegID").val()
+
+                    const noHt =
+                        record =>
+                        record.tagstromVerbrERng == 0.00
+                        && record.tagstromKostERng == 0.00
+
+                    const noNt =
+                        record =>
+                        record.nachtstromVerbrERng == 0.00
+                        && record.nachtstromKostERng == 0.00
+
+                    const hideHtNt =
+                        () =>
+                        ( $("#htNt").css("display", "none")
+                        , $(".htNtInp").val("")
+                        , $("#btnHtNt").text("HT/NT aktivieren")
+                        )
+
+                    const showHtNt =
+                        () =>
+                        ( $("#htNt").css("display", "block")
+                        , $("#btnHtNt").text("HT/NT deaktivieren")
+                        )
+
+                    const activateHtNt =
+                        record =>
+                        noHt(record) && noNt(record) ?
+                        hideHtNt() :
+                        showHtNt()
+
+                    ajaxPost("php/readRechnungen.php")({nameDB, liegID})
+                    .then(result => {
+
+                        result.length > 0 ?
+                        (activateHtNt(result[b]),
+                        $("#eRngCount").val(result.length),
+                        [ ["#eRngID", "eRng_ID"]
+                        , ["#inputEntERng", "entERng"]
+                        , ["#modusERng", "rechnungsmodusERng"]
+                        , ["#nrERng", "nrERng"]
+                        , ["#zpNrERng", "zpNrERng"]
+                        , ["#mstERng", "mst"]
+                        , ["#mstIDERng", "mst_ID"]
+                        , ["#datumERng", "datumERng"]
+                        , ["#vomERng", "vomERng"]
+                        , ["#bisERng", "bisERng"]
+                        , ["#einERng", "einERng"]
+                        , ["#kostenstelleERng", "kostenstelleERng"]
+                        , ["#versorgerERng", "versorgerERng"]
+                        ].forEach(a => $(a[0]).val(result[b][a[1]])),
+                        versorgerUndEinheitBefuellen(),
+
+                        [ ["#mengeERng", "mengeERng"]
+                        , ["#verbrauchERng", "verbrauchERng"]
+                        , ["#kostenERng", "kostenERng"]
+                        , ["#mwstPercentERng", "mwstPercentERng"]
+                        , ["#tagstromVerbrERng", "tagstromVerbrERng"]
+                        , ["#tagstromKostERng", "tagstromKostERng"]
+                        , ["#nachtstromVerbrERng", "nachtstromVerbrERng"]
+                        , ["#nachtstromKostERng", "nachtstromKostERng"]
+                        , ["#lastspitzeERng", "lastspitzeERng"]
+                        , ["#leistungspreisERng", "leistungspreisERng"]
+                        , ["#abpWirkERng", "abpWirkERng"]
+                        , ["#abpNetzERng", "abpNetzERng"]
+                        , ["#strSteuERng", "strSteuERng"]
+                        , ["#blindstromERng", "blindstromERng"]
+                        , ["#konzERng", "konzERng"]
+                        , ["#eegUntERng", "eegUntERng"]
+                        , ["#eegUebERng", "eegUebERng"]
+                        , ["#abpNetzERng", "abpNetzERng"]
+                        , ["#konzERng", "konzERng"]
+                        , ["#kwkUntERng", "kwkUntERng"]
+                        , ["#kwkObERng", "kwkObERng"]
+                        , ["#nevUntERng", "nevUntERng"]
+                        , ["#nevObERng", "nevObERng"]
+                        , ["#offUntERng", "offUntERng"]
+                        , ["#offObERng", "offObERng"]
+                        , ["#custom1ERng", "Custom1ERng"]
+                        , ["#custom2ERng", "Custom2ERng"]
+                        , ["#custom3ERng", "Custom3ERng"]
+                        , ["#custom4ERng", "Custom4ERng"]
+                        , ["#custom5ERng", "Custom5ERng"]
+                        , ["#custom6ERng", "Custom6ERng"]
+                        ].forEach(a => $(a[0]).val(formatNumber("form", result[b][a[1]]))),
+
+                        [ ["#lblCustom1ERng", "lblCustom1ERng"]
+                        , ["#lblCustom2ERng", "lblCustom2ERng"]
+                        , ["#lblCustom3ERng", "lblCustom3ERng"]
+                        , ["#lblCustom4ERng", "lblCustom4ERng"]
+                        , ["#lblCustom5ERng", "lblCustom5ERng"]
+                        , ["#lblCustom6ERng", "lblCustom6ERng"]
+                        ].forEach(a => $(a[0]).text(result[b][a[1]]))) :
+                        clearFields("eRngHinz")
+
+                        $("#modusERng").trigger("change")
+                        $("#mstERng").trigger("change")
+                        $("#kostenERng").trigger("change")
+                        $("#eegUntERng").trigger("change")
+
+                        createDocumentList("ERng")
+                    })
+                    break;
+                /*mm-comment*/
+                /*case "intEngIMw":
                     $.ajax({
                         type: "POST",
                         async: !0,
-                        url: "php/readRechnungen.php",
+                        url: "php/readInstanzen.php",
                         data: {
-                            id: "eRng",
+                            id: "intEngIMw",
                             nameDB: $("#nameDB").val(),
                             liegID: $("#liegID").val(),
-                            modus: "new"
+                            intEngIMwID: $("#intEngIMwID").val()
                         },
                         fail: function() {
                             alert("failed!!")
                         },
                         success: function(a) {
                             a = $.parseJSON(a);
-                            0 < a.length ? ($("#eRngID").val(a[b].eRng_ID), $("#eRngCount").val(a.length), $("#eRngID").val(a[b].eRng_ID), $("#entERng").val(a[b].entERng), $("#modusERng").val(a[b].rechnungsmodusERng),
-                                $("#nrERng").val(a[b].nrERng), $("#zpNrERng").val(a[b].zpNrERng), $("#mstERng").val(a[b].mst), $("#mstIDERng").val(a[b].mst_ID), $("#datumERng").val(a[b].datumERng), $("#vomERng").val(a[b].vomERng), $("#bisERng").val(a[b].bisERng), $("#einERng").val(a[b].einERng), $("#mengeERng").val(formatNumber("form", a[b].mengeERng)), $("#verbrauchERng").val(formatNumber("form", a[b].verbrauchERng)), $("#kostenERng").val(a[b].kostenERng), $("#kostenstelleERng").val(a[b].kostenstelleERng), $("#versorgerERng").val(a[b].versorgerERng),
-                                0 == a[b].tagstromVerbrERng && 0 == a[b].tagstromKostERng && 0 == a[b].nachtstromVerbrERng && 0 == a[b].nachtstromKostERng ? ($("#htNt").css("display", "none"), $(".htNtInp").val(""), $(this).text("HT/NT aktivieren")) : ($("#htNt").css("display", "block"), $(this).text("HT/NT deaktivieren")), versorgerUndEinheitBefuellen(), $("#tagstromVerbrERng").val(formatNumber("form", a[b].tagstromVerbrERng)), $("#tagstromKostERng").val(formatNumber("form", a[b].tagstromKostERng)), $("#nachtstromVerbrERng").val(formatNumber("form", a[b].nachtstromVerbrERng)),
-                                $("#nachtstromKostERng").val(formatNumber("form", a[b].nachtstromKostERng)), $("#blindstromERng").val(formatNumber("form", a[b].blindstromERng)), $("#lastspitzeERng").val(formatNumber("form", a[b].lastspitzeERng)), $("#leistungspreisERng").val(formatNumber("form", a[b].leistungspreisERng)), $("#abpWirkERng").val(formatNumber("form", a[b].abpWirkERng)), $("#strSteuERng").val(formatNumber("form", a[b].strSteuERng)), $("#eegERng").val(formatNumber("form", a[b].eegERng)), $("#eegUntERng").val(formatNumber("form", a[b].eegUntERng)),
-                                $("#eegUebERng").val(formatNumber("form", a[b].eegUebERng)), $("#abpNetzERng").val(formatNumber("form", a[b].abpNetzERng)), $("#konzERng").val(formatNumber("form", a[b].konzERng)), $("#kwkUntERng").val(formatNumber("form", a[b].kwkUntERng)), $("#kwkObERng").val(formatNumber("form", a[b].kwkObERng)), $("#nevUntERng").val(formatNumber("form", a[b].nevUntERng)), $("#nevObERng").val(formatNumber("form", a[b].nevObERng)), $("#offUntERng").val(formatNumber("form", a[b].offUntERng)), $("#offObERng").val(formatNumber("form",
-                                    a[b].offObERng)), $("#lblCustom1ERng").text(a[b].lblCustom1ERng), $("#custom1ERng").val(formatNumber("form", a[b].Custom1ERng)), $("#lblCustom2ERng").text(a[b].lblCustom2ERng), $("#custom2ERng").val(formatNumber("form", a[b].Custom2ERng)), $("#lblCustom3ERng").text(a[b].lblCustom3ERng), $("#custom3ERng").val(formatNumber("form", a[b].Custom3ERng)), $("#lblCustom4ERng").text(a[b].lblCustom4ERng), $("#custom4ERng").val(formatNumber("form", a[b].Custom4ERng)), $("#lblCustom5ERng").text(a[b].lblCustom5ERng), $("#custom5ERng").val(formatNumber("form",
-                                    a[b].Custom5ERng)), $("#lblCustom6ERng").text(a[b].lblCustom6ERng), $("#custom6ERng").val(formatNumber("form", a[b].Custom6ERng))) : clearFields("eRngHinz");
-                            $("#modusERng").trigger("change");
-                            $("#mstERng").trigger("change");
-                            $("#kostenERng").trigger("change");
-                            dokumentenListeErstellen()
+                            $("#intEngIMwCount").val(a.length);
+                            0 < a.length ? ($("#mstID").val(a[b].mst_ID), $("#mstIMw").val(a[b].nameMSt), $("#energietraegerIMw").val(a[b].energietraegerMst), $("#zeitintervallMst").val(a[b].zeitintervallMst), $("#einheitMst").val(a[b].einheitMst), $("#notizMesswertManuell").val(a[b].notizMesswertManuell)) : clearFields("iMwHinz")
                         }
                     });
-                    break;
+                    break;*/
+                /*mm-comment*/
+                /*17-03-2021*/
+                /*new-mm-start*/
                 case "intEngIMw":
                     $.ajax({
                         type: "POST",
@@ -5674,6 +6005,7 @@ try {
                         }
                     });
                     break;
+                /*new-mm-end*/
                 case "intBdeIMw":
                     $.ajax({
                         type: "POST",
@@ -5893,7 +6225,14 @@ try {
                 default:
                     console.log('readInstanzen(instanz, index, id) :\n An invalid case ("' + a + '") was encountered!')
             }
-        }, instanzSpeichern = function(a) {
+        }
+        const messmittelOrBerechnungslogik =
+            type =>
+            "berechnet" == $(`#messartMst${type}`).val() ?
+            $(`#berechnungslogikMst${type}`).val() :
+            $(`#messmittelBerechnungslogikMst${type}`).val()
+
+        instanzSpeichern = function(a) {
             if ("gipscAdmSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -5984,7 +6323,7 @@ try {
                     }
                 })
             } else if ("admSpeichern" == a) {
-                var c;  
+                var c;
 "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val());
                 $.ajax({
                     type: "POST",
@@ -6010,7 +6349,7 @@ try {
                         alert(datensatzGespeichert(a))
                     }
                 });
-            } 
+            }
             else if ("benSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -6087,8 +6426,6 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a))
                     organisationenEinlesen()
-                    console.log("Save org query");
-                    console.log(a);
                 }
             });
             else if ("liegSpeichern" == a) $.ajax({
@@ -6254,38 +6591,61 @@ try {
                     alert(datensatzGespeichert(a))
                 }
             });
-            else if ("mstSpeichern" == a) {
-                var e = "",
-                    e = "berechnet" == $("#messartMst").val() ? $("#berechnungslogikMst").val() : $("#messmittelBerechnungslogikMst").val();
-                $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/instanzIntoDb.php",
-                    data: {
-                        id: "mst",
-                        modus: "save",
-                        mstID: $("#mstID").val(),
-                        nameDB: $("#nameDB").val(),
-                        messstellenbezeichnung: $("#nameMst").val(),
-                        kurzbezeichnung: $("#kurzbezeichnungMst").val(),
-                        kostenstelle: $("#kostenstelleMst").val(),
-                        aktiv: $("#aktivMst").is(":checked"),
-                        isDurchleitung: $("#istDlMst").is(":checked"),
-                        energietraeger: $("#energietraegerMst").val(),
-                        energieform: $("#energieformMst").val(),
-                        ort: $("#ortMst").val(),
-                        messart: $("#messartMst").val(),
-                        vorgelagerteMessstelle: $("#vorgelagerteMst").val(),
-                        messmittelBerechnungslogik: e,
-                        msmID: $("#messmittelIDMst").val(),
-                        anlID: $("#anlIDMst").val(),
-                        notiz: $("#notizAllgemeinMst").val()
-                    },
-                    success: function(a) {
-                        alert(datensatzGespeichert(a))
+            else if ("mstESpeichern" == a) {
+                data =
+                    { id: "mstE"
+                    , modus: "save"
+                    , mstID: $("#mstID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstE").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstE").val()
+                    , kostenstelle: $("#kostenstelleMstE").val()
+                    , aktiv: $("#aktivMstE").is(":checked")
+                    , isDurchleitung: $("#istDlMstE").is(":checked")
+                    , extDlID: $("#dlAnMstIDE").val()
+                    , energietraeger: $("#energietraegerMstE").val()
+                    , energieform: $("#energieformMstE").val()
+                    , beschreibung: ""
+                    , ort: $("#ortMstE").val()
+                    , messart: $("#messartMstE").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDE").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
+                    , msmID: $("#messmittelIDMstE").val()
+                    , anlID: $("#anlIDMstE").val()
+                    , notiz: $("#notizAllgemeinMstE").val()
                     }
-                })
-            } else if ("stdSpeichern" == a) $.ajax({
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => alert(datensatzGespeichert(result)))
+            }
+            else if ("mstBSpeichern" == a) {
+                data =
+                    { id: "mstB"
+                    , modus: "save"
+                    , mstID: $("#mstID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstB").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstB").val()
+                    , kostenstelle: $("#kostenstelleMstB").val()
+                    , aktiv: $("#aktivMstB").is(":checked")
+                    , isDurchleitung: $("#istDlMstB").is(":checked")
+                    , extDlID: $("#dlAnMstIDB").val()
+                    , energietraeger: ""
+                    , energieform: ""
+                    , beschreibung: $("#beschreibungMstB").val()
+                    , ort: $("#ortMstB").val()
+                    , messart: $("#messartMstB").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDB").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("B")
+                    , msmID: $("#messmittelIDMstB").val()
+                    , anlID: $("#anlIDMstB").val()
+                    , notiz: $("#notizAllgemeinMstB").val()
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => alert(datensatzGespeichert(result)))
+            }
+            else if ("stdSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6316,8 +6676,7 @@ try {
                     readInstanzen("stdLast", $("#stdCount").val())
                 }
             });
-            else if ("stdDrSpeichern" ==
-                a) $.ajax({
+            else if ("stdDrSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6449,8 +6808,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("anlVerschieben" == a) $.ajax({
+                })}
+            else if ("anlVerschieben" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6650,15 +7009,64 @@ try {
                         anl06ID: $("#inpAnlage6IDPrd").val(),
                         anl07ID: $("#inpAnlage7IDPrd").val(),
                         anl08ID: $("#inpAnlage8IDPrd").val(),
-                        anl09ID: $("#inpAnlage9IDPrd").val()
+                        anl09ID: $("#inpAnlage9IDPrd").val(),
+                        anlType01: $("#messartMstInpAnlage1Prd").val(),
+                        anlType02: $("#messartMstInpAnlage2Prd").val(),
+                        anlType03: $("#messartMstInpAnlage3Prd").val(),
+                        anlType04: $("#messartMstInpAnlage4Prd").val(),
+                        anlType05: $("#messartMstInpAnlage5Prd").val(),
+                        anlType06: $("#messartMstInpAnlage6Prd").val(),
+                        anlType07: $("#messartMstInpAnlage7Prd").val(),
+                        anlType08: $("#messartMstInpAnlage8Prd").val(),
+                        anlType09: $("#messartMstInpAnlage9Prd").val()
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a));
                         readInstanzen("prdLast", $("#prdCount").val())
                     }
                 });
-                prdNavID = $("#prdCount").val()
-            } else if ("prdSpeichernHist" == a) {
+                /*produkte mm 01-03-2021*/
+                /*new-mm-start*/
+                /*$.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        modus: "save",
+                        id: "prdktAnl",
+                        nameDB: $("#nameDB").val(),
+                        prdID: $("#prdID").val(),
+                        orgID: $("#orgID").val(),
+                        anl01ID: $("#inpAnlage1IDPrd").val(),
+                        anl02ID: $("#inpAnlage2IDPrd").val(),
+                        anl03ID: $("#inpAnlage3IDPrd").val(),
+                        anl04ID: $("#inpAnlage4IDPrd").val(),
+                        anl05ID: $("#inpAnlage5IDPrd").val(),
+                        anl06ID: $("#inpAnlage6IDPrd").val(),
+                        anl07ID: $("#inpAnlage7IDPrd").val(),
+                        anl08ID: $("#inpAnlage8IDPrd").val(),
+                        anl09ID: $("#inpAnlage9IDPrd").val(),
+                        anlType01: $("#messartMstInpAnlage1Prd").val(),
+                        anlType02: $("#messartMstInpAnlage2Prd").val(),
+                        anlType03: $("#messartMstInpAnlage3Prd").val(),
+
+                        anlType04: $("#messartMstInpAnlage4Prd").val(),
+                        anlType05: $("#messartMstInpAnlage5Prd").val(),
+                        anlType06: $("#messartMstInpAnlage6Prd").val(),
+
+                        anlType07: $("#messartMstInpAnlage7Prd").val(),
+                        anlType08: $("#messartMstInpAnlage8Prd").val(),
+                        anlType09: $("#messartMstInpAnlage9Prd").val()
+
+                    },
+                    success: function(a) {
+                        alert(datensatzGespeichert(a));
+                        readInstanzen("prdLast", $("#prdCount").val())
+                    }
+                });*/
+                /*new-mm-end*/
+                prdNavID = $("#prdCount").val()}
+            else if ("prdSpeichernHist" == a) {
                 f = changeTracker.getChanges();
                 h = f.length;
                 q = "";
@@ -6701,8 +7109,8 @@ try {
                         readInstanzen("prdLast", $("#prdCount").val())
                     }
                 });
-                prdNavID = $("#prdCount").val()
-            } else if ("entSpeichern" == a) $.ajax({
+                prdNavID = $("#prdCount").val()}
+            else if ("entSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6801,68 +7209,67 @@ try {
                     alert(datensatzGespeichert(a))
                 }
             });
-            else if ("eRngSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "eRng",
-                    modus: "save",
-                    nameDB: $("#nameDB").val(),
-                    eRngID: $("#eRngID").val(),
-                    liegID: $("#liegID").val(),
-                    versorger: $("#versorgerERng").val(),
-                    rechnungsmodus: $("#modusERng").val(),
-                    rechnungsnummer: $("#nrERng").val(),
-                    zaehlpunktnummer: $("#zpNrERng").val(),
-                    mstID: $("#mstIDERng").val(),
-                    rechnungsdatum: $("#datumERng").val(),
-                    abrechnungszeitVom: $("#vomERng").val(),
-                    abrechnungszeitBis: $("#bisERng").val(),
-                    energietraeger: $("#entERng").val(),
-                    einheit: $("#einERng").val(),
-                    menge: formatNumber("deform", $("#mengeERng").val()),
-                    verbrauch: formatNumber("deform", $("#verbrauchERng").val()),
-                    kostenstelle: $("#kostenstelleERng").val(),
-                    kosten: formatNumber("deform", $("#kostenERng").val()),
-                    tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val()),
-                    tagstromKost: formatNumber("deform", $("#tagstromKostERng").val()),
-                    nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val()),
-                    nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val()),
-                    blindstrom: formatNumber("deform", $("#blindstromERng").val()),
-                    lastspitze: formatNumber("deform", $("#lastspitzeERng").val()),
-                    leistungspreis: formatNumber("deform", $("#leistungspreisERng").val()),
-                    arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val()),
-                    stromsteuer: formatNumber("deform", $("#strSteuERng").val()),
-                    arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val()),
-                    konzessionsabgabe: formatNumber("deform", $("#konzERng").val()),
-                    eegUmlage: formatNumber("deform", $("#eegERng").val()),
-                    eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val()),
-                    eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val()),
-                    kwkUnter: formatNumber("deform", $("#kwkUntERng").val()),
-                    kwkUeber: formatNumber("deform",
-                        $("#kwkObERng").val()),
-                    nevUnter: formatNumber("deform", $("#nevUntERng").val()),
-                    nevUeber: formatNumber("deform", $("#nevObERng").val()),
-                    offUnter: formatNumber("deform", $("#offUntERng").val()),
-                    offUeber: formatNumber("deform", $("#offObERng").val()),
-                    lblCustom1: $("#lblCustom1ERng").text(),
-                    Custom1: formatNumber("deform", $("#custom1ERng").val()),
-                    lblCustom2: $("#lblCustom2ERng").text(),
-                    Custom2: formatNumber("deform", $("#custom2ERng").val()),
-                    lblCustom3: $("#lblCustom3ERng").text(),
-                    Custom3: formatNumber("deform", $("#custom3ERng").val()),
-                    lblCustom4: $("#lblCustom4ERng").text(),
-                    Custom4: formatNumber("deform", $("#custom4ERng").val()),
-                    lblCustom5: $("#lblCustom5ERng").text(),
-                    Custom5: formatNumber("deform", $("#custom5ERng").val()),
-                    lblCustom6: $("#lblCustom6ERng").text(),
-                    Custom6: formatNumber("deform", $("#custom6ERng").val())
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a))
-                }
-            });
+            else if ("eRngSpeichern" == a) {
+                data =
+                    { id: "eRng"
+                    , modus: "save"
+                    , nameDB: $("#nameDB").val()
+                    , eRngID: $("#eRngID").val()
+                    , liegID: $("#liegID").val()
+                    , versorger: $("#versorgerERng").val()
+                    , rechnungsmodus: $("#modusERng").val()
+                    , rechnungsnummer: $("#nrERng").val()
+                    , zaehlpunktnummer: $("#zpNrERng").val()
+                    , mstID: $("#mstIDERng").val()
+                    , rechnungsdatum: $("#datumERng").val()
+                    , abrechnungszeitVom: $("#vomERng").val()
+                    , abrechnungszeitBis: $("#bisERng").val()
+                    , energietraeger: $("#inputEntERng").val()
+                    , einheit: $("#einERng").val()
+                    , menge: formatNumber("deform", $("#mengeERng").val())
+                    , verbrauch: formatNumber("deform", $("#verbrauchERng").val())
+                    , kostenstelle: $("#kostenstelleERng").val()
+                    , kosten: formatNumber("deform", $("#kostenERng").val())
+                    , mwst: formatNumber("deform", $("#mwstPercentERng").val())
+                    , tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val())
+                    , tagstromKost: formatNumber("deform", $("#tagstromKostERng").val())
+                    , nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val())
+                    , nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val())
+                    , blindstrom: formatNumber("deform", $("#blindstromERng").val())
+                    , lastspitze: formatNumber("deform", $("#lastspitzeERng").val())
+                    , leistungspreis: formatNumber("deform", $("#leistungspreisERng").val())
+                    , arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val())
+                    , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
+                    , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
+                    , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
+                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
+                    , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
+                    , nevUnter: formatNumber("deform", $("#nevUntERng").val())
+                    , nevUeber: formatNumber("deform", $("#nevObERng").val())
+                    , offUnter: formatNumber("deform", $("#offUntERng").val())
+                    , offUeber: formatNumber("deform", $("#offObERng").val())
+                    , lblCustom1: $("#lblCustom1ERng").text()
+                    , Custom1: formatNumber("deform", $("#custom1ERng").val())
+                    , lblCustom2: $("#lblCustom2ERng").text()
+                    , Custom2: formatNumber("deform", $("#custom2ERng").val())
+                    , lblCustom3: $("#lblCustom3ERng").text()
+                    , Custom3: formatNumber("deform", $("#custom3ERng").val())
+                    , lblCustom4: $("#lblCustom4ERng").text()
+                    , Custom4: formatNumber("deform", $("#custom4ERng").val())
+                    , lblCustom5: $("#lblCustom5ERng").text()
+                    , Custom5: formatNumber("deform", $("#custom5ERng").val())
+                    , lblCustom6: $("#lblCustom6ERng").text()
+                    , Custom6: formatNumber("deform", $("#custom6ERng").val())
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                })
+            }
             else if ("intEngIMwSpeichern" == a) {
                 var x = "",
                     u = "INSERT INTO ";
@@ -6887,8 +7294,8 @@ try {
                         alert(datensatzGespeichert(a));
                         mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.ENERGY)
                     }
-                })
-            } else if ("intBdeIMwSpeichern" == a) {
+                })}
+            else if ("intBdeIMwSpeichern" == a) {
                 var t = "",
                     u = "INSERT INTO ";
                 $("#zeitintervallAnl").val() == TimeInterval.DAY && (t = "masseneingabeTage");
@@ -6915,8 +7322,8 @@ try {
                         alert(datensatzGespeichert(a));
                        // mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE)
                     }
-                })
-            } else if ("eAnlSpeichern" == a) {
+                })}
+            else if ("eAnlSpeichern" == a) {
                 var w = [];
                 for (i = 0; i < $("#tblOptionenEAnl tbody tr").length; i++) w[i] = tblOptionenEAnl.cell(i, 0).data();
                 var y = w.join(",");
@@ -6937,8 +7344,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("ePrdSpeichern" == a) {
+                })}
+            else if ("ePrdSpeichern" == a) {
                 w = [];
                 for (i = 0; i < $("#tblOptionenEPrd tbody tr").length; i++) w[i] = tblOptionenEPrd.cell(i, 0).data();
                 y = w.join(",");
@@ -6959,8 +7366,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else if ("knzSpeichern" == a) {
+                })}
+            else if ("knzSpeichern" == a) {
                 for (var z = $("#btnTabKnzCont li").length, p = 0, A = 0; A < z + 1; A++)
                     if ("none" === $("#btnTabKnzCont li").eq(A).css("display") || 10 === A) {
                         p = A;
@@ -7294,8 +7701,8 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a))
                     }
-                })
-            } else "zpSpeichern" == a && $.ajax({
+                })}
+            else "zpSpeichern" == a && $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -7332,8 +7739,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("gipscAdmLast",
                         $("#gipscAdmCount").val())
-                }
-            }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
+                } }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
             else if ("betrGrpSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7356,8 +7762,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("betrGrpLast", $("#betrGrpCount").val())
                     betrGrpEinlesen()
-                }
-            }), betrGrpNavID = $("#betrGrpCount").val();
+                } }), betrGrpNavID = $("#betrGrpCount").val();
             else if ("sAdmSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7378,13 +7783,9 @@ try {
                     passwort: getHash($("#passwortSAdm").val())
                 },
                 success: function(a) {
-                    console.log("instanzErstellen sAdm query")
-                    console.log(a)
-
                     alert(datensatzGespeichert(a));
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
-                }
-            }), sAdmNavID = $("#sAdmCount").val();
+                } }), sAdmNavID = $("#sAdmCount").val();
             else if ("manGrpSpeichern" == a) {
                 var e = [];
                 for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++) e[i] = tblMandantengruppe.cell(i, 0).data();
@@ -7409,8 +7810,8 @@ try {
                         manGrpEinlesen()
                     }
                 });
-                manGrpNavID = $("#manGrpCount").val();
-            } else if ("admHinz" == a) {
+                manGrpNavID = $("#manGrpCount").val(); }
+            else if ("admSpeichern" == a) {
                 var c;
                 "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val());
                 $.ajax({
@@ -7484,8 +7885,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("manLast", $("#manCount").val())
-                }
-            }), manNavID = $("#manCount").val();
+                } }), manNavID = $("#manCount").val();
             else if ("orgSpeichern" == a) $.ajax({
                     type: "POST",
                     async: !0,
@@ -7521,8 +7921,7 @@ try {
                         organisationenEinlesen();
                         readInstanzen("orgLast", $("#orgCount").val())
                     }
-                }),
-                orgNavID = $("#orgCount").val();
+                }), orgNavID = $("#orgCount").val();
             else if ("liegSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7584,8 +7983,7 @@ try {
                     alert(datensatzGespeichert(a));
                     liegenschaftenEinlesen();
                     readInstanzen("liegLast", $("#liegCount").val())
-                }
-            }), liegNavID = $("#liegCount").val();
+                } }), liegNavID = $("#liegCount").val();
             else if ("extDlSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7651,8 +8049,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("extDlLast", $("#extDlCount").val())
-                }
-            }), extDlNavID = $("#extDlCount").val();
+                } }), extDlNavID = $("#extDlCount").val();
             else if ("berSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7672,44 +8069,74 @@ try {
                     notiz: $("#notizAllgemeinBer").val()
                 },
                 success: function(a) {
-
-                    console.log("Ber save");
-                    console.log(a);
-
                     alert(datensatzGespeichert(a));
+                    bereicheEinlesen()
                     readInstanzen("berLast", $("#berCount").val())
-                }
-            }), berNavID = $("#berCount").val();
-            else if ("mstSpeichern" == a) e = "", e = "berechnet" == $("#messartMst").val() ? $("#berechnungslogikMst").val() : $("#messmittelBerechnungslogikMst").val(), $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/instanzIntoDb.php",
-                    data: {
-                        id: "mst",
-                        modus: "new",
-                        berID: $("#berID").val(),
-                        nameDB: $("#nameDB").val(),
-                        messstellenbezeichnung: $("#nameMst").val(),
-                        kurzbezeichnung: $("#kurzbezeichnungMst").val(),
-                        kostenstelle: $("#kostenstelleMst").val(),
-                        aktiv: $("#aktivMst").is(":checked"),
-                        isDurchleitung: $("#istDlMst").is(":checked"),
-                        energietraeger: $("#energietraegerMst").val(),
-                        energieform: $("#energieformMst").val(),
-                        ort: $("#ortMst").val(),
-                        messart: $("#messartMst").val(),
-                        vorgelagerteMessstelle: $("#vorgelagerteMst").val(),
-                        messmittelBerechnungslogik: e,
-                        msmID: $("#messmittelIDMst").val(),
-                        anlID: $("#anlIDMst").val(),
-                        notiz: $("#notizAllgemeinMst").val()
-                    },
-                    success: function(a) {
-                        alert(datensatzGespeichert(a));
-                        readInstanzen("mstLast", $("#mstCount").val())
+                } }), berNavID = $("#berCount").val();
+            else if ("mstESpeichern" == a) {
+                data =
+                    { id: "mstE"
+                    , modus: "new"
+                    , berID: $("#berID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstE").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstE").val()
+                    , kostenstelle: $("#kostenstelleMstE").val()
+                    , aktiv: $("#aktivMstE").is(":checked")
+                    , isDurchleitung: $("#istDlMstE").is(":checked")
+                    , extDlID: $("#dlAnMstIDE").val()
+                    , energietraeger: $("#energietraegerMstE").val()
+                    , energieform: $("#energieformMstE").val()
+                    , beschreibung: ""
+                    , ort: $("#ortMstE").val()
+                    , messart: $("#messartMstE").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDE").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("E")
+                    , msmID: $("#messmittelIDMstE").val()
+                    , anlID: $("#anlIDMstE").val()
+                    , notiz: $("#notizAllgemeinMstE").val()
                     }
-                }), mstNavID =
-                $("#mstCount").val();
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                    readInstanzen("mstELast", $("#mstECount").val())
+                })
+
+                mstENavID = $("#mstECount").val()
+            }
+            else if ("mstBSpeichern" == a) {
+                data =
+                    { id: "mstB"
+                    , modus: "new"
+                    , berID: $("#berID").val()
+                    , nameDB: $("#nameDB").val()
+                    , messstellenbezeichnung: $("#nameMstB").val()
+                    , kurzbezeichnung: $("#kurzbezeichnungMstB").val()
+                    , kostenstelle: $("#kostenstelleMstB").val()
+                    , aktiv: $("#aktivMstB").is(":checked")
+                    , isDurchleitung: $("#istDlMstB").is(":checked")
+                    , extDlID: $("#dlAnMstIDB").val()
+                    , energietraeger: ""
+                    , energieform: ""
+                    , beschreibung: $("#beschreibungMstB").val()
+                    , ort: $("#ortMstB").val()
+                    , messart: $("#messartMstB").val()
+                    , vorgelMstID: $("#vorgelagerteMstIDB").val()
+                    , messmittelBerechnungslogik: messmittelOrBerechnungslogik("B")
+                    , msmID: $("#messmittelIDMstB").val()
+                    , anlID: $("#anlIDMstB").val()
+                    , notiz: $("#notizAllgemeinMstB").val()
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                    readInstanzen("mstBLast", $("#mstBCount").val())
+                })
+
+                mstBNavID = $("#mstBCount").val()
+            }
             else if ("stdSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7739,8 +8166,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("stdLast", $("#stdCount").val())
-                }
-            }), stdNavID = $("#stdCount").val();
+                } }), stdNavID = $("#stdCount").val();
             else if ("stdDrSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7770,10 +8196,8 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("stdDrLast", $("#stdDrCount").val())
-                }
-            }), stdDrNavID = $("#stdDrCount").val();
-            else if ("anlSpeichern" == a) e = $("#bildAllgemeinAnl").prop("src"),
-                e = e.split($("#nameDB").val()), $.ajax({
+                } }), stdDrNavID = $("#stdDrCount").val();
+            else if ("anlSpeichern" == a) e = $("#bildAllgemeinAnl").prop("src"), e = e.split($("#nameDB").val()), $.ajax({
                     type: "POST",
                     async: !0,
                     url: "php/instanzIntoDb.php",
@@ -7866,8 +8290,7 @@ try {
                     success: function(a) {
                         alert(datensatzGespeichert(a));
                         readInstanzen("anlLast", $("#anlCount").val())
-                    }
-                }), anlNavID = $("#anlCount").val();
+                    } }), anlNavID = $("#anlCount").val();
             else if ("msmSpeichern" == a) e = $("#bildAllgemeinMsm").prop("src"), e = e.split($("#nameDB").val()), $.ajax({
                 type: "POST",
                 async: !0,
@@ -7921,10 +8344,8 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("msmLast", $("#msmCount").val())
-                }
-            }), msmNavID = $("#msmCount").val();
-            else if ("prdSpeichern" == a) e = 0, e = "neueGrp" === b ?
-                Number($("#prdCount").val()) + 1 : $("#gruppenIDPrd").val(), $.ajax({
+                } }), msmNavID = $("#msmCount").val();
+            else if ("prdSpeichern" == a) e = 0, e = "neueGrp" === b ? Number($("#prdCount").val()) + 1 : $("#gruppenIDPrd").val(), $.ajax({
                     type: "POST",
                     async: !0,
                     url: "php/instanzIntoDb.php",
@@ -7950,13 +8371,21 @@ try {
                         anl06ID: $("#inpAnlage6IDPrd").val(),
                         anl07ID: $("#inpAnlage7IDPrd").val(),
                         anl08ID: $("#inpAnlage8IDPrd").val(),
-                        anl09ID: $("#inpAnlage9IDPrd").val()
+                        anl09ID: $("#inpAnlage9IDPrd").val(),
+                        anlType01: $("#messartMstInpAnlage1Prd").val(),
+                        anlType02: $("#messartMstInpAnlage2Prd").val(),
+                        anlType03: $("#messartMstInpAnlage3Prd").val(),
+                        anlType04: $("#messartMstInpAnlage4Prd").val(),
+                        anlType05: $("#messartMstInpAnlage5Prd").val(),
+                        anlType06: $("#messartMstInpAnlage6Prd").val(),
+                        anlType07: $("#messartMstInpAnlage7Prd").val(),
+                        anlType08: $("#messartMstInpAnlage8Prd").val(),
+                        anlType09: $("#messartMstInpAnlage9Prd").val()
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a));
                         readInstanzen("prdLast", $("#prdCount").val())
-                    }
-                }), prdNavID = $("#prdCount").val();
+                    } }), prdNavID = $("#prdCount").val();
             else if ("entSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
@@ -8007,8 +8436,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("entFirst", 0)
-                }
-            }), entNavID = $("#entCount").val();
+                } }), entNavID = $("#entCount").val();
             else if ("enfSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
@@ -8055,70 +8483,69 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("enfLast", $("#enfCount").val())
-                }
-            }), enfNavID = $("#enfCount").val();
-            else if ("eRngSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "eRng",
-                    modus: "new",
-                    nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val(),
-                    rechnungsmodus: $("#modusERng").val(),
-                    versorger: $("#versorgerERng").val(),
-                    rechnungsnummer: $("#nrERng").val(),
-                    zaehlpunktnummer: $("#zpNrERng").val(),
-                    mstID: $("#mstIDERng").val(),
-                    rechnungsdatum: $("#datumERng").val(),
-                    abrechnungszeitVom: $("#vomERng").val(),
-                    abrechnungszeitBis: $("#bisERng").val(),
-                    energietraeger: $("#entERng").val(),
-                    einheit: $("#einERng").val(),
-                    menge: formatNumber("deform", $("#mengeERng").val()),
-                    verbrauch: formatNumber("deform",
-                        $("#verbrauchERng").val()),
-                    kostenstelle: $("#kostenstelleERng").val(),
-                    kosten: formatNumber("deform", $("#kostenERng").val()),
-                    tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val()),
-                    tagstromKost: formatNumber("deform", $("#tagstromKostERng").val()),
-                    nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val()),
-                    nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val()),
-                    blindstrom: formatNumber("deform", $("#blindstromERng").val()),
-                    lastspitze: formatNumber("deform", $("#lastspitzeERng").val()),
-                    leistungspreis: formatNumber("deform", $("#leistungspreisERng").val()),
-                    arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val()),
-                    stromsteuer: formatNumber("deform", $("#strSteuERng").val()),
-                    arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val()),
-                    konzessionsabgabe: formatNumber("deform", $("#konzERng").val()),
-                    eegUmlage: formatNumber("deform", $("#eegERng").val()),
-                    eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val()),
-                    eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val()),
-                    kwkUnter: formatNumber("deform", $("#kwkUntERng").val()),
-                    kwkUeber: formatNumber("deform", $("#kwkObERng").val()),
-                    nevUnter: formatNumber("deform", $("#nevUntERng").val()),
-                    nevUeber: formatNumber("deform", $("#nevObERng").val()),
-                    offUnter: formatNumber("deform", $("#offUntERng").val()),
-                    offUeber: formatNumber("deform", $("#offObERng").val()),
-                    lblCustom1: $("#lblCustom1ERng").text(),
-                    Custom1: formatNumber("deform", $("#custom1ERng").val()),
-                    lblCustom2: $("#lblCustom2ERng").text(),
-                    Custom2: formatNumber("deform", $("#custom2ERng").val()),
-                    lblCustom3: $("#lblCustom3ERng").text(),
-                    Custom3: formatNumber("deform", $("#custom3ERng").val()),
-                    lblCustom4: $("#lblCustom4ERng").text(),
-                    Custom4: formatNumber("deform", $("#custom4ERng").val()),
-                    lblCustom5: $("#lblCustom5ERng").text(),
-                    Custom5: formatNumber("deform", $("#custom5ERng").val()),
-                    lblCustom6: $("#lblCustom6ERng").text(),
-                    Custom6: formatNumber("deform", $("#custom6ERng").val())
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a));
+                } }), enfNavID = $("#enfCount").val();
+            else if ("eRngSpeichern" == a) {
+                data =
+                    { id: "eRng"
+                    , modus: "new"
+                    , nameDB: $("#nameDB").val()
+                    , liegID: $("#liegID").val()
+                    , rechnungsmodus: $("#modusERng").val()
+                    , versorger: $("#versorgerERng").val()
+                    , rechnungsnummer: $("#nrERng").val()
+                    , zaehlpunktnummer: $("#zpNrERng").val()
+                    , mstID: $("#mstIDERng").val()
+                    , rechnungsdatum: $("#datumERng").val()
+                    , abrechnungszeitVom: $("#vomERng").val()
+                    , abrechnungszeitBis: $("#bisERng").val()
+                    , energietraeger: $("#inputEntERng").val()
+                    , einheit: $("#einERng").val()
+                    , menge: formatNumber("deform", $("#mengeERng").val())
+                    , verbrauch: formatNumber("deform", $("#verbrauchERng").val())
+                    , kostenstelle: $("#kostenstelleERng").val()
+                    , kosten: formatNumber("deform", $("#kostenERng").val())
+                    , mwst: formatNumber("deform", $("#mwstPercentERng").val())
+                    , tagstromVerbr: formatNumber("deform", $("#tagstromVerbrERng").val())
+                    , tagstromKost: formatNumber("deform", $("#tagstromKostERng").val())
+                    , nachtstromVerbr: formatNumber("deform", $("#nachtstromVerbrERng").val())
+                    , nachtstromKost: formatNumber("deform", $("#nachtstromKostERng").val())
+                    , blindstrom: formatNumber("deform", $("#blindstromERng").val())
+                    , lastspitze: formatNumber("deform", $("#lastspitzeERng").val())
+                    , leistungspreis: formatNumber("deform", $("#leistungspreisERng").val())
+                    , arbeitspreisWirkstrom: formatNumber("deform", $("#abpWirkERng").val())
+                    , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
+                    , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
+                    , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
+                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
+                    , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
+                    , nevUnter: formatNumber("deform", $("#nevUntERng").val())
+                    , nevUeber: formatNumber("deform", $("#nevObERng").val())
+                    , offUnter: formatNumber("deform", $("#offUntERng").val())
+                    , offUeber: formatNumber("deform", $("#offObERng").val())
+                    , lblCustom1: $("#lblCustom1ERng").text()
+                    , Custom1: formatNumber("deform", $("#custom1ERng").val())
+                    , lblCustom2: $("#lblCustom2ERng").text()
+                    , Custom2: formatNumber("deform", $("#custom2ERng").val())
+                    , lblCustom3: $("#lblCustom3ERng").text()
+                    , Custom3: formatNumber("deform", $("#custom3ERng").val())
+                    , lblCustom4: $("#lblCustom4ERng").text()
+                    , Custom4: formatNumber("deform", $("#custom4ERng").val())
+                    , lblCustom5: $("#lblCustom5ERng").text()
+                    , Custom5: formatNumber("deform", $("#custom5ERng").val())
+                    , lblCustom6: $("#lblCustom6ERng").text()
+                    , Custom6: formatNumber("deform", $("#custom6ERng").val())
+                    }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
                     readInstanzen("eRngLast", $("#eRngCount").val())
-                }
-            }), eRngNavID = $("#eRngCount").val();
+                })
+                eRngNavID = $("#eRngCount").val()
+            }
             else if ("iMwSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -8156,8 +8583,7 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("iMwLast",
                         $("#iMwCount").val())
-                }
-            }), iMwNavID = $("#iMwCount").val();
+                } }), iMwNavID = $("#iMwCount").val();
             else if ("eAnlSpeichern" == a) {
                 e = [];
                 for (i = 0; i < $("#tblOptionenEAnl tbody tr").length; i++) e[i] = tblOptionenEAnl.cell(i, 0).data();
@@ -8183,8 +8609,8 @@ try {
                         $("#eAnlFirst").trigger("click")
                     }
                 });
-                eAnlNavID = $("#eAnlCount").val()
-            } else if ("ePrdSpeichern" == a) {
+                eAnlNavID = $("#eAnlCount").val() }
+            else if ("ePrdSpeichern" == a) {
                 e = [];
                 for (i = 0; i < $("#tblOptionenEPrd tbody tr").length; i++) e[i] = tblOptionenEPrd.cell(i, 0).data();
                 e = e.join(",");
@@ -8207,8 +8633,8 @@ try {
                     }
                 });
                 ePrdNavID =
-                    $("#ePrdCount").val()
-            } else if ("knzSpeichern" == a) {
+                    $("#ePrdCount").val() }
+            else if ("knzSpeichern" == a) {
                 c = $("#btnTabKnzCont li").length;
                 for (var g = e = 0; g < c; g++)
                     if ("none" === $("#btnTabKnzCont li").eq(g).css("display")) {
@@ -8400,8 +8826,8 @@ try {
                         alert(datensatzGespeichert(a))
                     }
                 });
-                knzNavID = $("#knzCount").val()
-            } else "zpSpeichern" == a ? ($.ajax({
+                knzNavID = $("#knzCount").val() }
+            else "zpSpeichern" == a ? ($.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -8419,8 +8845,7 @@ try {
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("zpLast", $("#zpCount").val())
-                }
-            }), zpNavID = $("#zpCount").val()) : "betrParSpeichern" == a && (e = [], 0 < $("#checkEPrd").length && (e = JSON.stringify(Array.from($("#checkEPrd div")).map(function(a) {
+                } }), zpNavID = $("#zpCount").val()) : "betrParSpeichern" == a && (e = [], 0 < $("#checkEPrd").length && (e = JSON.stringify(Array.from($("#checkEPrd div")).map(function(a) {
                 return {
                     col: $("#" + a.children[0].id).text(),
                     state: $("#" + a.children[1].id).is(":checked"),
@@ -8458,19 +8883,27 @@ try {
                         $("#manPfadLieg").css("display", "none"), $("#orgPfadLieg").text($("#nameAllgemeinOrg").val()), energietrInDBoxLieg(), energiefrmInDBoxLieg();
                     else if ("tabExtDl" == a) readInstanzen("extDlFirst", 0);
                     else if ("tabStdDr" == a) readInstanzen("stdDrFirst", 0);
-                    else if ("tabBer" == a) clearFields("berHinz"), readInstanzen("berFirst", 0), $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val()), energiefrmInDBoxLieg();
+                    else if ("tabBer" == a) $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val()), energiefrmInDBoxLieg();
                     else if ("tabEPrd" == a) readBdeConfig($("#nameDB").val());
                     else if ("tabBen" == a) b = ["", ""], readInstanzen("benFirst", 0);
                     else if ("tabAnl" == a) getAnlagenAuswahlTblHeader(), energiefrmInDBoxLieg();
                     else if ("tabMsm" == a) getAnlagenAuswahlTblHeader();
+                    else if ("tabMstE" == a | "tabMstB" == a) bereicheVorhanden();
                     else if ("tabKnz" == a) $("#asideRight2").css("display", "block"), knzEinheitenEinlesen();
                     else if ("tabExtRechnungen" == a) $("#asideRight").css("display", "block"), versorgerUndEinheitBefuellen(), energietrInDBoxERngVergleich(), energietrInDBoxLieg();
                     else if ("tabAusw_eRng_iMw" == a) energietrInDBoxERngVergleich(), energietrInDBoxLieg(), externeRechnungenListeErstellen("vergleich");
                     else if ("tabIntEnergiedatenIMw" == a || "tabIntBetriebsdatenIMw" ==
-                        a) $("#berechnungsformelnLeft").css("display", "none"), 
-                           $("#interneMesswerteLeft, #interneMesswerte").css("display", "block"), 
-                           $("#infosMasseneingabe").css("display", "none"), $("#btnMassEingAnl, #btnMassEingMst").text("Masseneingabe"), 
-                           "tabIntEnergiedatenIMw" == a ? mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.ENERGY) : "tabIntBetriebsdatenIMw" == a; /*&& mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE);*/
+                        a) $("#berechnungsformelnLeft").css("display", "none"),
+                           $("#interneMesswerteLeft, #interneMesswerte").css("display", "block"),
+                           $("#infosMasseneingabe").css("display", "none"),
+
+                           /*new-mm-start 30-03-2021*/
+                           $("#infosMasseneingabePrdkt").css("display", "none"),
+                           $("#infosMasseneingabeMesssetelle").css("display", "none"),
+                           /*new-mm-end 30-03-2021*/
+
+                           $("#btnMassEingAnl, #btnMassEingMst").text("Masseneingabe") /*mm-comment 22-03-2021*/  /*,
+                           "tabIntEnergiedatenIMw" == a ? mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.ENERGY) : "tabIntBetriebsdatenIMw" == a;*/ /*mm-comment 22-03-2021*/  /*&& mstOderAnlOhneZeitzuordnungInTbl(InstanceMode.BDE);*/
                     else if ("tabBerechnungsformeln" == a || "tabVorlagenformeln" == a) $("#tabsAuswertungen").css("display", "block"), $("#tabBerechnungsformeln, #tabVorlagenformeln").css("display",
                         "inline-block"), $("#asideLeft").css("display", "block"), $("#berechnungsformelnLeft").css("display", "block"), $("#interneMesswerteLeft").css("display", "none"), $("#formelStringDarstellung").val(""), $("#formelIdDarstellung").val(""), $("#berechneteMstName").val(""), messstellenInAuswertungsEditorTabelleEinlesen(), anlagenInAuswertungsEditorTabelleEinlesen(), dynBdeDatenInAuswertungsEditorTabelleEinlesen(), produkteInFormeleditorEinlesen();
                     1 > tabsData[e].lengthPath ? alert("The tabsData[tb].lengthPath is to small! It has to be at least 1. :tabControlNav(tab)") :
@@ -8485,8 +8918,8 @@ try {
                 "none"), "spaEfVTab1Menu" == a || "spaEfVTab2Menu" == a ? ($("#berichte, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2").css("display", "block"), "spaEfVTab1Menu" == a ? (tabControlNav("tabSpaEfV_Tbl1"), $("#verwaltung").val("ausw")) : "spaEfVTab2Menu" == a && (tabControlNav("tabSpaEfV_Tbl2"), $("#verwaltung").val("ausw"))) : $("#berichte, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2").css("display", "none")) : $("#tabsAuswertungen, #auswertungen").css("display", "none");
             "betrGrpMenu" == a || "manGrpMenu" == a || "sAdmMenu" == a || "admMenu" == a || "benMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
                 "none"), $("#tabsRechteverwaltung, #rechteverwaltung, #stammdaten").css("display", "block"), "betrGrpMenu" == a ? tabControlNav("tabBetrGrp") : "manGrpMenu" == a ? tabControlNav("tabManGrp") : "sAdmMenu" == a ? tabControlNav("tabSAdm") : "admMenu" == a ? tabControlNav("tabAdm") : "benMenu" == a && tabControlNav("tabBen")) : $("#tabsRechteverwaltung, #rechteverwaltung").css("display", "none");
-            "untMenu" == a || "manMenu" == a || "orgMenu" == a || "liegMenu" == a || "berMenu" == a || "stdMenu" == a || "stdDrMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
-                "none"), $("#tabsUnternehmensstruktur, #unternehmensstruktur, #stammdaten").css("display", "block"), "untMenu" == a || "manMenu" == a ? tabControlNav("tabMan") : "orgMenu" == a ? tabControlNav("tabOrg") : "liegMenu" == a ? tabControlNav("tabLieg") : "berMenu" == a ? (energietrInDBoxBer(), tabControlNav("tabBer")) : "stdMenu" == a ? tabControlNav("tabStd") : "stdDrMenu" == a && tabControlNav("tabStdDr")) : $("#tabsUnternehmensstruktur, #unternehmensstruktur").css("display", "none");
+            "untMenu" == a || "manMenu" == a || "orgMenu" == a || "liegMenu" == a || "berMenu" == a || "mstEMenu" == a || "mstBMenu" == a || "stdMenu" == a || "stdDrMenu" == a ? ($("#tabsOptionen, #tabsEditor, #tabsAuswertungen").css("display",
+                "none"), $("#tabsUnternehmensstruktur, #unternehmensstruktur, #stammdaten").css("display", "block"), "untMenu" == a || "manMenu" == a ? tabControlNav("tabMan") : "orgMenu" == a ? tabControlNav("tabOrg") : "liegMenu" == a ? tabControlNav("tabLieg") : "berMenu" == a ? (tabControlNav("tabBer")) : "mstEMenu" == a ? tabControlNav("tabMstE") : "mstBMenu" == a ? tabControlNav("tabMstB") : "stdMenu" == a ? tabControlNav("tabStd") : "stdDrMenu" == a && tabControlNav("tabStdDr")) : $("#tabsUnternehmensstruktur, #unternehmensstruktur").css("display", "none");
             if ("anlMenu" == a || "anl_Eng_Menu" == a || "anl_Dok_Menu" == a || "anl_Hist_Menu" ==
                 a || "anl_Konfig_Menu" == a || "anl_Menu" == a) {
                 $("#tabsAnlagenverwaltung, #anlagenverwaltung, #stammdaten").css("display", "block");
@@ -8946,6 +9379,20 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+    tblMstOhneZeitintervallIMwPrdktSuche = $("#tblMstOhneZeitintervallIMwPrdktSuche").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblMstOhneZeitintervallIMwMessstelleSuche = $("#tblMstOhneZeitintervallIMwMessstelleSuche").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
     tblMstOhneZeitintervallIMw = $("#tblMstOhneZeitintervallIMw").DataTable({
         dom: "Bfrtip",
         buttons: [],
@@ -8953,6 +9400,22 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+    /*new-mm-start 22-03-2021*/
+    tblMstOhneZeitintervallIMwMessstelle = $("#tblMstOhneZeitintervallIMwMessstelle").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblMstOhneZeitintervallIMwIE = $("#tblMstOhneZeitintervallIMwIE").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    /*new-mm-end 22-03-2021*/
     tblVerbrauchsdatenExp = $("#tblVerbrauchsdatenExp").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -9033,6 +9496,22 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+    /*new-mm-start 23-03-2021*/
+    tblHistorieIntBdeIMwPrdkt = $("#tblHistorieIntBdeIMwPrdkt").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblHistorieIntBdeIMwMesssetelle = $("#tblHistorieIntBdeIMwMesssetelle").DataTable({
+        dom: "Bfrtip",
+        buttons: [],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    /*new-mm-end 23-03-2021*/
     tblHistoriePrd = $("#tblHistoriePrd").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -9695,6 +10174,31 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         bAutoWidth: !1,
         colReorder: !0
     });
+    tblExtDurchleitungenAuswahl = $("#tblExtDurchleitungenAuswahl").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 20,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
     tblStandorteAuswahl = $("#tblStandorteAuswahl").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -10126,6 +10630,18 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 aktivInstance: "ber"
             }, {
                 lengthPath: 3,
+                tab: "tabMstE",
+                idElement: "mstID",
+                infos: "infosMessstellenEng",
+                aktivInstance: "mstE"
+            }, {
+                lengthPath: 3,
+                tab: "tabMstB",
+                idElement: "mstID",
+                infos: "infosMessstellenBetr",
+                aktivInstance: "mstB"
+            }, {
+                lengthPath: 3,
                 tab: "tabStd",
                 idElement: "stdID",
                 infos: "infosStandorte",
@@ -10320,7 +10836,8 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
             }).join().split(","))
         },
         datensatzGespeichert = function(a) {
-            return -1 === a.search("error") ? "Datensatz wurde erfolgreich gespeichert!" : "ACHTUNG!!! Datensatz konnte nicht gespeichert werden!"
+            const testStr = typeof a === "string" ? a : (a.query)
+            return -1 === testStr.search("error") ? "Datensatz wurde erfolgreich gespeichert!" : "ACHTUNG!!! Datensatz konnte nicht gespeichert werden!"
         },
         zerlegeFormel = function(a) {
             return a.split(" ")
@@ -10446,20 +10963,21 @@ const isCalculated =
 // Depending which messart was chosen labels and txtboxes
 // + button are shown or hidden
 const toggleMsmBerechnungslogik =
-    type => {
-        if(isCalculated(type)) {
-            $("#labelMessmittelMst").hide()
-            $("#messmittelBerechnungslogikMst").hide()
-            $("#labelBerechnungslogikMst").show()
-            $("#berechnungslogikMst").show()
-            $("#linkBerechnungslogikOderEingabemaske").show()
+    typeCalc =>
+    typeData => {
+        if(isCalculated(typeCalc)) {
+            $(`#labelMessmittelMst${typeData}`).hide()
+            $(`#messmittelBerechnungslogikMst${typeData}`).hide()
+            $(`#labelBerechnungslogikMst${typeData}`).show()
+            $(`#berechnungslogikMst${typeData}`).show()
+            $(`#linkBerechnungslogikOderEingabemaske${typeData}`).show()
         }
         else {
-            $("#linkBerechnungslogikOderEingabemaske").hide()
-            $("#labelBerechnungslogikMst").hide()
-            $("#berechnungslogikMst").hide()
-            $("#labelMessmittelMst").show()
-            $("#messmittelBerechnungslogikMst").show()
+            $(`#linkBerechnungslogikOderEingabemaske${typeData}`).hide()
+            $(`#labelBerechnungslogikMst${typeData}`).hide()
+            $(`#berechnungslogikMst${typeData}`).hide()
+            $(`#labelMessmittelMst${typeData}`).show()
+            $(`#messmittelBerechnungslogikMst${typeData}`).show()
         }
     }
 
@@ -10707,6 +11225,43 @@ const virtMessstelleSaveDialog =
             }
         })
 }
+
+const calcCostWithoutMwst =
+    amountWithMwst =>
+    percentMwst =>
+    round((100 * amountWithMwst) / (100 + percentMwst))(2)
+
+const calcCostWithMwst =
+    amountWithoutMwst =>
+    percentMwst =>
+    round(((percentMwst  * amountWithoutMwst) / 100) + amountWithoutMwst)(2)
+
+// Calculates Kosten in Rechnungen depending on change event
+const setCostRng =
+    id => {
+        const amountWithMwst = parseFloat(formatNumber("deform", $("#kostenMitMwstERng").val()))
+        const amountWithoutMwst = parseFloat(formatNumber("deform", $("#kostenERng").val()))
+        const percentMwst = parseFloat(formatNumber("deform", $("#mwstPercentERng").val()))
+        let amountMwst = 0, cost = 0
+
+        if (id === "kostenMitMwstERng") {
+            cost = calcCostWithoutMwst(amountWithMwst)(percentMwst)
+            amountMwst = round(amountWithMwst - cost)(2)
+
+            $("#kostenMitMwstERng").val(formatNumber("form", $("#kostenMitMwstERng").val()))
+            $("#kostenERng").val(formatNumber("form", cost))
+            $("#mwstERng").val(formatNumber("form",amountMwst))
+        }
+        else {
+            cost = calcCostWithMwst(amountWithoutMwst)(percentMwst)
+            amountMwst = round(cost - amountWithoutMwst)(2)
+
+            $("#kostenERng").val(formatNumber("form", $("#kostenERng").val()))
+            $("#kostenMitMwstERng").val(formatNumber("form", cost))
+            $("#mwstERng").val(formatNumber("form", amountMwst))
+        }
+    }
+
 
 /*Ajax Call for the Spies organization serach 21-01-2020*/
 function spiesOrganisationenSearch() {
@@ -11147,7 +11702,7 @@ function getDynamischeKorrekturfaktoren(id) {
                 console.log(a);
                 tblGetDyanamicheKorrekturfaktoren.colReorder.reset();
                 tblGetDyanamicheKorrekturfaktoren.clear().draw();
-                for (var e = 0; e < b; e++){ 
+                for (var e = 0; e < b; e++){
                  var rowNode = tblGetDyanamicheKorrekturfaktoren.row.add(
                         [a[e].subtypeTxtOptNameDKff,
                         a[e].subtypeTxtoptzBezugDkff,
@@ -15209,6 +15764,10 @@ function DynamischeKorrekturfaktorenDeleteBtnAktualisieren() {
 /*Ajax Call for the Manuel module serach 18-09-2020*/
 function tblAnlOhneZeitintervallIMwSuchenMethod() {
         $("#tblAnlOhneZeitintervallIMwSearchContainer").css("display", "block");
+        /*new-mm-start 22-03-2021*/
+        $('#searchImgBtnShowRecordsAnlBtn').show();
+        $('#searchImgBtnShowRecordsAnlBtn').val('1');
+        /*new-mm-end 22-03-2021*/
         $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog({
             height: $(window).height() - .125 * $(window).height(),
             width: $(window).width() - .125 * $(window).width(),
@@ -15229,40 +15788,100 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
             url: "php/getManuellInterneData.php",
             data: {
                 id: "KeinZeitintervallTbl",
-                nameDB: $("#nameDB").val()
+                nameDB: $("#nameDB").val(),
+                typ: "energiedaten",
             },
             success: function(a) {
                 a = JSON.parse(a);
-                var b = a.length;console.log(a);
+                var b = a.length;//console.log(a);
                 tblAnlOhneZeitintervallIMwSuchen.clear().draw();
-                    for (var e = 0; e < b; e++){ 
-                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                    for (var e = 0; e < b; e++){
+                        /*new-mm-start 26-03-2021*/
+                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                        /*new-mm-end 26-03-2021*/
                         //tblAnlOhneZeitintervallIMwSuchen.column([0,1]).visible(!1);
                         $("#tblAnlOhneZeitintervallIMwSuchen tr").css("cursor", "pointer");
                         $("#tblAnlOhneZeitintervallIMwSuchen").off("dblclick", "tr");
-                    } 
+                    }
                     var columnHide = tblAnlOhneZeitintervallIMwSuchen.columns([0]);
                     columnHide.visible(! columnHide.visible() );
                     $("#tblAnlOhneZeitintervallIMwSuchen").on("dblclick", "tr", function() {
                          var a = tblAnlOhneZeitintervallIMwSuchen.row(this).data();
-                        //console.log(a);    
-                        resetFormAllgemein('infosIntBetriebsdaten',1);           
+                        //console.log(a);
+                        resetFormAllgemein('infosIntBetriebsdaten',1);
                         keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
                         $("#mstID").val(a[0]);
                         $("#anlIMw").val(a[1]);
-                        $("#anlNrIMw").val(a[2]);  
-                        $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close"); 
+                        $("#anlNrIMw").val(a[2]);
+
+                        /*new-mm-start 26-03-2021*/
+                         $("#nextPrevMstID").val(a[0]);
+                        /*new-mm-end 26-03-2021*/
+                        $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");
                 });
             }
         });
 }
 
 
+
+//Ajax Call for the Manuel module serach 16-03-2020
+/*mm-new-start*/
+/*new-mm-start 26-03-2021*/
+function tblAnlPrdktOhneZeitintervallIMwSuchenMethod() {
+        $("#tblAnlPrdktMStOhneZeitintervallIMwSearchContainer").css("display", "block");
+        /*new-mm-start*/
+        //$('#searchImgBtnShowRecordsAnlBtn').show();
+        // $('#searchImgBtnShowRecordsAnlBtn').val('1');
+        $('#searchImgBtnShowRecordsPrdktAnlMstBtnDiv').show();
+        $('#tblMstOhneZeitintervallIMwPrdktSuche_wrapper').show();
+        $('#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper').hide();
+        var iBdeType = $("input[name='searchImgBetriebsdatenFilter']:checked").val();
+        /*new-mm-end*/
+        $("#tblAnlPrdktMStOhneZeitintervallIMwSearchContainer").dialog({
+            height: $(window).height() - .125 * $(window).height(),
+            width: $(window).width() - .125 * $(window).width(),
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 300
+            },
+            hide: {
+                effect: "fade",
+                duration: 300
+            }
+        });
+        /*new-mm-start 26-03-2021*/
+        if(iBdeType == 1){
+            $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").show();
+            $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").hide();
+            searchImgprodukteAnlargeDataTable();
+        }
+        else if(iBdeType == 2){
+            $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").hide();
+            $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").show();
+            searchImgMesssetelleIntBDE("2");
+        }
+        else{
+            $("#tblMstOhneZeitintervallIMwPrdktSuche_wrapper").show();
+            $("#tblMstOhneZeitintervallIMwMessstelleSuche_wrapper").hide();
+            searchImgprodukteAnlargeDataTable();
+        }
+        /*new-mm-end 26-03-2021*/
+}
+/*new-mm-end 26-03-2021*/
+/*mm-new-end*/
 //30-09-2020 dynamic function for validations #zeitintervallAnl
 function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
         var startDate = new Date(start);
         var endDate = new Date(end);
         if(zeitintervallAnl == 1){
+            /*new-mm-start 07-04-2021*/
+            var startarr = start.split('.');
+            var endarr = end.split('.');
+            startDate = new Date(startarr[2],startarr[1]-1,startarr[0]);
+            endDate = new Date(endarr[2],endarr[1]-1,endarr[0]);
+            /*new-mm-start 07-04-2021*/
             if (startDate > endDate){
                 alert("End days should be greater then start days");
                 if(id==1){
@@ -15277,7 +15896,46 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
             }
         }
         else if(zeitintervallAnl == 2){
-            if (startDate > endDate){
+
+
+            /*new-mm-start 09-04-2021*/
+            var startarr = start.split('-');
+            var endarr = end.split('-');
+
+            var weekdiff = endarr[0] - startarr[0];
+
+            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){               
+                if (startarr[1] > endarr[1]){
+                    alert("End year should be greater then start year");
+                    if(id==1){
+                          keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                    }else{
+                        $("." + sId + " .zeitintervallAnl_2 input").val("");
+                        $("." + sId + " .zeitintervallAnl_2 select").val("");
+                        $("#tblMasseneingabeDataIMw").remove();
+                    }
+                    return false;
+                }
+                else if (startarr[1] == endarr[1]){
+                    if (weekdiff < 0){
+                        alert("This End week should be greater then start week");
+                        if(id==1){
+                              keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
+                        }else{
+                            $("." + sId + " .zeitintervallAnl_2 input").val("");
+                            $("." + sId + " .zeitintervallAnl_2 select").val("");
+                            $("#tblMasseneingabeDataIMw").remove();
+                        }
+                        return false;
+                    }
+                }else{
+                    return true;
+                }
+            }
+            /*new-mm-end 09-04-2021*/
+
+            /*mm-comment  09-04-2021*/
+            /*if (startDate > endDate){
                 alert("End month should be greater then start month");
                 if(id==1){
                       keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
@@ -15289,9 +15947,48 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
                 return false;
             }else{
                 return true;
-            }
+            }*/
+            /*mm-comment*/
         }
         else if(zeitintervallAnl == 3){
+
+            /*new-mm-start 08-04-2021*/
+            if(id==6 || id==5){
+
+                if(start != ""  && typeof(start) != "undefined"){
+                    var startarr = start.split('.');
+                }
+                else{
+                    return false;
+                }
+                if(end != ""  && typeof(end) != "undefined"){  
+
+                    var endarr = end.split('.');
+                }
+                else{
+                    return false;
+                }
+
+                if(endarr != '' &&  startarr != '' && typeof(endarr) != 'undefined' &&  typeof(startarr) != 'undefined'){
+                    if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){ 
+
+                        startDate = new Date(startarr[1],startarr[0]-1,1);
+                        endDate = new Date(endarr[1],endarr[0]-1,1);
+
+                    }
+                }    
+                else{    
+                    startDate = new Date(start,0,1);
+                    endDate = new Date(end,0,1);
+
+                }
+            }
+            else{
+                startDate = new Date(start);
+                endDate = new Date(end);
+            }
+
+            /*new-mm-start 08-04-2021*/
             if (startDate > endDate){
                 alert("End month should be greater then start month");
                 if(id==1){
@@ -15320,9 +16017,177 @@ function validateZeitintervallAnlSelectOpt(start,end,zeitintervallAnl,sId,id){
                 return true;
             }
         }
-        
-}
 
+}
+/*Prodkte mm 01-03-2021*/
+/*new-mm-start*/
+function validateZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl,sId,id){
+
+        //getback
+        // console.log("start :");
+        // console.log(start);
+        // console.log("end :");
+        // console.log(end);
+        
+        var startDate = new Date(start);
+        var endDate = new Date(end);
+
+        // console.log("issue in format :");
+        // console.log("startDate :");
+        // console.log(startDate);
+        // console.log("endDate :");
+        // console.log(endDate);
+        // console.log("diff : ");
+        // console.log(endDate-startDate);
+
+        if(zeitintervallAnl == 1){
+            /*new-mm-start 07-04-2021*/
+            var startarr = start.split('.');
+            var endarr = end.split('.');
+
+            startDate = new Date(startarr[2],startarr[1]-1,startarr[0]);
+            endDate = new Date(endarr[2],endarr[1]-1,endarr[0]);
+            /*new-mm-start 07-04-2021*/
+
+            if (startDate > endDate){
+                alert("End days should be greater then start days");
+                if(id==1){
+                    produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                }else{
+                    $("." + sId + " .zeitintervallAnlPrdkt_1 input").val("");
+                    $("#tblMasseneingabeDataIMw").remove();
+                }
+                return false;
+            }else{
+                return true;
+            }
+        }
+        else if(zeitintervallAnl == 2){
+            /*new-mm-start 07-04-2021*/
+            var startarr = start.split('-');
+            var endarr = end.split('-');
+
+            var weekdiff = endarr[0] - startarr[0];
+
+            if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){               
+                if (startarr[1] > endarr[1]){
+                    alert("End year should be greater then start year");
+                    if(id==1){
+                          produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                    }else{
+                        $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+                        $("." + sId + " .zeitintervallAnlPrdkt_2 select").val("");
+                        $("#tblMasseneingabeDataIMw").remove();
+                    }
+                    return false;
+                }
+                else if (startarr[1] == endarr[1]){
+                    if (weekdiff < 0){
+                        alert("This End week should be greater then start week");
+                        if(id==1){
+                              produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                        }else{
+                            $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+                            $("." + sId + " .zeitintervallAnlPrdkt_2 select").val("");
+                            $("#tblMasseneingabeDataIMw").remove();
+                        }
+                        return false;
+                    }
+                }else{
+                    return true;
+                }
+            }
+            /*new-mm-end 07-04-2021*/
+            /*mm-comment*/
+            /*if (startDate > endDate){
+                alert("End month should be greater then start month");
+                if(id==1){
+                      produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                }else{
+                    $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+                    $("." + sId + " .zeitintervallAnlPrdkt_2 select").val("");
+                    $("#tblMasseneingabeDataIMw").remove();
+                }
+                return false;
+            }else{
+                return true;
+            }*/
+            /*mm-comment*/
+        }
+        else if(zeitintervallAnl == 3){
+
+
+            /*new-mm-start 08-04-2021*/
+            if(id==6){
+
+                if(start != ""  && typeof(start) != "undefined"){
+                    var startarr = start.split('.');
+                }
+                else{
+                    return false;
+                }
+                if(end != ""  && typeof(end) != "undefined"){  
+
+                    var endarr = end.split('.');
+                }
+                else{
+                    return false;
+                }
+
+                if(endarr != '' &&  startarr != '' && typeof(endarr) != 'undefined' &&  typeof(startarr) != 'undefined'){
+                    if(endarr[0] != '' &&  startarr[0] != '' && endarr[1] != '' &&  startarr[1] != '' && typeof(endarr[0]) != 'undefined' &&  typeof(startarr[0]) != 'undefined' && typeof(endarr[1]) != 'undefined' &&  typeof(startarr[1]) != 'undefined'){ 
+
+                        startDate = new Date(startarr[1],startarr[0]-1,1);
+                        endDate = new Date(endarr[1],endarr[0]-1,1);
+
+                    }
+                }    
+                else{    
+                    startDate = new Date(start,0,1);
+                    endDate = new Date(end,0,1);
+
+                }
+            }
+            else{
+                startDate = new Date(start);
+                endDate = new Date(end);
+            }
+
+            /*new-mm-start 08-04-2021*/
+
+            /*mm-comment*/
+            if (startDate > endDate){
+                alert("End month should be greater then start month");
+                if(id==1){
+                      produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                }else{
+                    $("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val("");
+                    $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val("");
+                    $("#tblMasseneingabeDataIMw").remove();
+                }
+                return false;
+            }else{
+                return true;
+            }
+            /*mm-comment*/
+        }else if(zeitintervallAnl == 4){
+            if (startDate > endDate){
+                alert("End year should be greater then start year");
+                if(id==1){
+                      produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                }else{
+                    $("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val("");
+                    $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val("");
+                    $("#tblMasseneingabeDataIMw").remove();
+                }
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+}
+/*new -mm-end*/
 //30-09-2020 dynamic function for validations #zeitintervallAnl
 function validateNullValZeitintervallAnlSelectOpt(start,end,zeitintervallAnl){
         if(zeitintervallAnl == 1){
@@ -15367,9 +16232,55 @@ function validateNullValZeitintervallAnlSelectOpt(start,end,zeitintervallAnl){
                 return true;
             }
         }
-        
-}
 
+}
+/*new-mm-start 31-03-2021*/
+function validateNullValZeitintervallAnlPrdktSelectOpt(start,end,zeitintervallAnl){
+        if(zeitintervallAnl == 1){
+            if (start =='' ||  end ==''){
+                alert("Please enter days value into inputs");
+                $("#tblMasseneingabeDataIMw").remove();
+                return false;
+            }else{
+                return true;
+            }
+        }
+        else if(zeitintervallAnl == 2){
+            var from = start.split("-");
+            var startWk = from[0]; //first week selected value
+            var startYr = from[1]; //first year input text value
+
+            var to = end.split("-");
+            var endWk =  to[0]; //second week selected value
+            var endYr =  to[1]; //second year input text value
+            if (startWk =='' ||  endWk =='' || startYr =='' ||  endYr ==''){
+                alert("Please enter week values into inputs");
+                $("#tblMasseneingabeDataIMw").remove();
+                return false;
+            }else{
+                return true;
+            }
+        }
+        else if(zeitintervallAnl == 3){
+           if (start =='' ||  end ==''){
+                alert("Please enter month value into inputs");
+                $("#tblMasseneingabeDataIMw").remove();
+                return false;
+            }else{
+                return true;
+            }
+        }else if(zeitintervallAnl == 4){
+           if (start =='' ||  end ==''){
+                alert("Please enter year value into inputs");
+                $("#tblMasseneingabeDataIMw").remove();
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+}
+/*new-mm-end 31-03-2021*/
 /*Ajax Call for the Interne Betriebsdaten Speichern 05-10-2020*/
 function intBdeIMwHistorieSpeichernPopUp() {
    // alert('test');
@@ -15392,7 +16303,7 @@ function intBdeIMwHistorieSpeichernPopUp() {
         var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosIntBetriebsdaten',1);
         ///console.log(dates);
         var startDate =dates[0];
-        var endDate =dates[1]; 
+        var endDate =dates[1];
         zeitintervallAnlInputsVisibleInvisible(zeitintervallAnl,startDate,endDate,'','intBdeIMwHistoriePopUp',3);
 
          datePickerForInterneBetriebsdaten('intBdeIMwHistoriePopUp',3);
@@ -15400,12 +16311,12 @@ function intBdeIMwHistorieSpeichernPopUp() {
          $("#wochenYMassEingDataAnlStart3").datepicker("destroy");
          $("#monateMassEingDataAnlStart3").datepicker("destroy");
          $("#jahrMassEingDataAnlStart3").datepicker("destroy");
-         
+
         $("#intBdeIMwHistSpeichern").off("click");
         $("#intBdeIMwHistNichtSpeichern").off("click");
         $("#intBdeIMwHistOk").off("click");
         $("#intBdeIMwHistAbbrechen").off("click");
-        $("button#intBdeIMwHistSpeichern").on("click", function() { 
+        $("button#intBdeIMwHistSpeichern").on("click", function() {
             $("#infosIntBdeIMwHistoriePopUpDiv, #intBdeIMwHistOk").css("display", "inline");
             $("#intBdeIMwHistSpeichern, #intBdeIMwHistNichtSpeichern").css("display", "none");
         });
@@ -15439,10 +16350,88 @@ function intBdeIMwHistorieSpeichernPopUp() {
         $("#intBdeIMwHistSpeichern, #intBdeIMwHistNichtSpeichern").css("display", "inline");
         }
     });
-        
+
 }
- 
+/* Ajax Call for the
+*  Interne Betriebsdaten Module
+*  Podukte and Messsetelle Speichern
+*  04-03-2021
+*/
+/*new-mm-start 22-03-2021*/
+function intBdePrdktIMwHistorieSpeichernPopUp() {
+    // alert('test');
+    $("#intBdePrdktIMwHistoriePopUp").css("display", "block");
+    $("#intBdePrdktIMwHistoriePopUp").dialog({
+        height: 400,
+        width: 450,
+        resize: "auto",
+        show: {
+        effect: "fade",
+        duration: 500
+    },
+    hide: {
+        effect: "fade",
+        duration: 500
+    },
+    open: function() {
+        $("#bemerkungHistIntBdePrdktIMw").val($("#notizBdeIMwAnlPrdkt").val());
+        var zeitintervallAnl = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+        var dates = returnStartDateAndEndDatePrdkt(zeitintervallAnl,'infosIntEnergiedaten',1);
+        ///console.log(dates);
+        var startDate =dates[0];
+        var endDate =dates[1];
+        zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitintervallAnl,startDate,endDate,'','intBdePrdktIMwHistoriePopUp',3);
+
+        datePickerForInterneBetriebsdatenAnlPrdkt('intBdePrdktIMwHistoriePopUp',3);
+
+        $("#tageMassEingDataAnlPrdktStart3").datepicker("destroy");
+        $("#wochenYMassEingDataAnlPrdktStart3").datepicker("destroy");
+        $("#monateMassEingDataAnlPrdktStart3").datepicker("destroy");
+        $("#jahrMassEingDataAnlPrdktStart3").datepicker("destroy");
+
+        $("#intBdePrdktIMwHistSpeichern").off("click");
+        $("#intBdePrdktIMwHistNichtSpeichern").off("click");
+        $("#intBdePrdktIMwHistOk").off("click");
+        $("#intBdePrdktIMwHistAbbrechen").off("click");
+        $("button#intBdePrdktIMwHistSpeichern").on("click", function() {
+            $("#infosIntBdePrdktIMwHistoriePopUpDiv, #intBdePrdktIMwHistOk").css("display", "inline");
+            $("#intBdePrdktIMwHistSpeichern, #intBdePrdktIMwHistNichtSpeichern").css("display", "none");
+        });
+        $("#intBdePrdktIMwHistNichtSpeichern").on("click", function() {
+            $("#archiviertIntBdePrdktIMw").val("false");
+            //instanzSpeichern("intBdeIMwSpeichern");
+            $("#intBdePrdktIMwHistoriePopUp").dialog("close");
+            interneMesswerteConfigSpeichernMethodPrdkt();
+
+        });
+        $("#intBdePrdktIMwHistOk").on("click", function() {
+            $("#archiviertIntBdePrdktIMw").val("true");
+            intBdeIMwHistOkSpeichernMethodPrdkt();
+            interneMesswerteConfigSpeichernMethodPrdkt();
+            $("#infosIntBdePrdktIMwHistoriePopUpDiv, #intBdePrdktIMwHistOk").css("display", "none");
+            $("#infosIntBdePrdktIMwHistoriePopUpDiv input").val("");
+            $("#intBdePrdktIMwHistSpeichern, #intBdePrdktIMwHistNichtSpeichern").css("display", "inline");
+            $("#intBdePrdktIMwHistoriePopUp").dialog("close");
+        });
+        $("#intBdePrdktIMwHistAbbrechen").on("click", function() {
+            $("#infosIntBdePrdktIMwHistoriePopUpDiv, #intBdePrdktIMwHistOk").css("display", "none");
+            $("#intBdePrdktIMwHistSpeichern, #intBdePrdktIMwHistNichtSpeichern").css("display",
+                "inline");
+            $("#infosIntBdePrdktIMwHistoriePopUpDiv input").val("");
+            $("#intBdePrdktIMwHistoriePopUp").dialog("close");
+        });
+    },
+    close: function() {
+        $("#infosIntBdePrdktIMwHistoriePopUpDiv input").val("");
+        $("#infosIntBdePrdktIMwHistoriePopUpDiv, #intBdePrdktIMwHistOk").css("display", "none");
+        $("#intBdePrdktIMwHistSpeichern, #intBdePrdktIMwHistNichtSpeichern").css("display", "inline");
+        }
+    });
+
+}
+/*new-mm-end 22-03-2021*/
 /*Ajax Call for the Manuel module serach 18-09-2020*/
+/*new-mm-start 24-03-2021*/
 function intBdeIMwHistOkSpeichernMethod(){
     var zeitintervallAnl = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
     var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosIntBetriebsdaten',1);
@@ -15465,7 +16454,7 @@ function intBdeIMwHistOkSpeichernMethod(){
             /*gueltigVon: $("#gueltigVonHistIntBdeIMw").val(),
             gueltigBis: $("#gueltigBisHistIntBdeIMw").val(),*/
             gueltigVon: startDate,
-            gueltigBis: endDate,             
+            gueltigBis: endDate,
             anlIMw: $("#anlIMw").val(),
             anlNrIMw: $("#anlNrIMw").val(),
             zeitintervallAnl: $("#zeitintervallAnl").val(),
@@ -15474,13 +16463,65 @@ function intBdeIMwHistOkSpeichernMethod(){
             startDate:startDate,
             endDate:endDate,
             ending:$("#anlIMwNoEnding").val(),
+            einheitControlSys:$("#control_system").val(),
         },
         success: function(a) {
             alert(datensatzGespeichert(a));
         }
     });
 }
+/*new-mm-end 24-03-2021*/
+/*Interne Betriebsdaten Module Save History For Produkte And Messsetelle 10-03-2021*/
+/*new-mm-start 22-03-2021*/
+function intBdeIMwHistOkSpeichernMethodPrdkt(){
+    //alert("saving history");
+    var zeitintervallAnl = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+    var dates = returnStartDateAndEndDatePrdkt(zeitintervallAnl,'infosIntEnergiedaten',1);
+    var startDate =dates[0];
+    var endDate =dates[1];
+    var iBdeType = $("input[name='BetriebsdatenFilter']:checked").val();
+    $("#archiviertIntBdePrdktIMw").val('true');
 
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "intBdePrdktIMwHistOkConfig",
+            modus: "save",
+            //anlID: $("#anlID").val(),
+            nameDB: $("#nameDB").val(),
+            liegID: $("#liegID").val(),
+
+            mst_ID:$("#mstID").val(),
+            prd_ID:  $("#prd_ID").val(),
+            anl_ID:  $("#anl_ID").val(),
+            anl_Col:  $("#anl_Col").val(),
+            archiviert: $("#archiviertIntBdePrdktIMw").val(),
+            bemerkung: $("#bemerkungHistIntBdePrdktIMw").val(),
+            gueltigVon: startDate,
+            gueltigBis: endDate,
+            mstIMw:$("#mstIMw").val(),
+            artikelnummerIntBde: $(".infosIntEnergiedaten #artikelnummerIntBde").val(),
+            bezeichnungIntBde: $(".infosIntEnergiedaten #bezeichnungIntBde").val(),
+            anlageIntBde: $(".infosIntEnergiedaten #anlageIntBde").val(),
+            anlageMessstelleIntBde: $(".infosIntEnergiedaten #anlageMessstelleIntBde").val(),
+            zeitintervallAnl: $("#zeitintervallAnlPrdkt").val(),
+            einheitAnl: $("#einheitAnlPrdkt").val(),
+            note:$("#notizBdeIMwAnlPrdkt").val(),
+            startDate:startDate,
+            endDate:endDate,
+            ending:$("#anlPrdktIMwNoEnding").val(),
+            einheitControlSys:$("#control_system_AnlPrdkt").val(),
+            iBdeType: iBdeType,
+
+        },
+        success: function(a) {
+            alert(datensatzGespeichert(a));
+        }
+    });
+}
+/*new-mm-end 22-03-2021*/
 /*Get history details*/
 function intBdeIMwHistOkGetHistorie(){
     $.ajax({
@@ -15497,23 +16538,102 @@ function intBdeIMwHistOkGetHistorie(){
             a = JSON.parse(a);
             var b = a.length;
             tblHistorieIntBdeIMw.clear().draw();
-                for (var e = 0; e < b; e++){ 
-                    tblHistorieIntBdeIMw.row.add( [e + 1,a[e].histID,a[e].mstID, a[e].startDate, a[e].endDate,a[e].unit, a[e].type, a[e].anlIMw, a[e].anlNrIMw, a[e].notizBdeIMw, a[e].bemerkung, a[e].gueltigVon, a[e].gueltigBis]).draw(); 
+                for (var e = 0; e < b; e++){
+                    tblHistorieIntBdeIMw.row.add( [e + 1,a[e].histID,a[e].mstID, a[e].startDate, a[e].endDate,a[e].unit, a[e].type, a[e].anlIMw, a[e].anlNrIMw, a[e].notizBdeIMw, a[e].bemerkung, a[e].gueltigVon, a[e].gueltigBis]).draw();
                     //tblHistorieIntBdeIMw.column([0,1]).visible(!1);
                     $("#tblHistorieIntBdeIMw tr").css("cursor", "pointer");
                     $("#tblHistorieIntBdeIMw").off("dblclick", "tr");
-                } 
+                }
                 var columnHide = tblHistorieIntBdeIMw.columns([0,1,2,3,4]);
                 columnHide.visible(! columnHide.visible() );
                 $("#tblHistorieIntBdeIMw").on("dblclick", "tr", function() {
                     var a = tblHistorieIntBdeIMw.row(this).data();
-                    intBdeIMwDatensatzAusHistorieEinlesenAnl(a[1],a[2],'intBdeIMwHistorieContainer');                    
+                    intBdeIMwDatensatzAusHistorieEinlesenAnl(a[1],a[2],'intBdeIMwHistorieContainer');
+                    /*new-mm-start 26-03-2021*/
+                    $("#mstID").val(a[2]);
+                    /*new-mm-end 26-03-2021*/
                     datePickerForInterneBetriebsdaten('intBdeIMwHistorieContainer',2);
             })
         }
     })
 }
+/*Get Produkte History*/
+/*new-mm-start*/
+function intBdeIMwHistOkGetHistoriePrdkt(){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getHistorie.php",
+        data: {
+            modus: "intBdePrdktIMwGetHist",
+            nameDB: $("#nameDB").val(),
 
+            prd_ID:  $("#prd_ID").val(),
+            anl_ID:  $("#anl_ID").val(),
+            anl_Col:  $("#anl_Col").val(),
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            tblHistorieIntBdeIMwPrdkt.clear().draw();
+                for (var e = 0; e < b; e++){
+                    tblHistorieIntBdeIMwPrdkt.row.add( [e + 1,a[e].prdktHist_ID,a[e].prd_id,a[e].anl_ID,a[e].anl_col, a[e].startDate, a[e].endDate,a[e].unit, a[e].type, a[e].mstIMw, a[e].anlageIntBde, a[e].note, a[e].bemerkung, a[e].gueltigVon, a[e].gueltigBis]).draw();
+                    //tblHistorieIntBdeIMw.column([0,1]).visible(!1);
+                    $("#tblHistorieIntBdeIMwPrdkt tr").css("cursor", "pointer");
+                    $("#tblHistorieIntBdeIMwPrdkt").off("dblclick", "tr");
+                }
+                var columnHide = tblHistorieIntBdeIMwPrdkt.columns([0,1,2,3,4,5,6]);
+                columnHide.visible(! columnHide.visible() );
+                $("#tblHistorieIntBdeIMwPrdkt").on("dblclick", "tr", function() {
+                var a = tblHistorieIntBdeIMwPrdkt.row(this).data();
+                intBdePrdktHistorieUpdatePopUp(a[1],a[2],'intBdePrdktIMwHistorieContainer');
+                /*new-mm-start 26-03-2021*/
+                //$("#prd_ID").val(a[2]);
+                //$("#anl_ID").val(a[3]);
+                //$("#anl_Col").val(a[4]);
+                /*new-mm-end 26-03-2021*/
+                datePickerForInterneBetriebsdatenAnlPrdkt('intBdePrdktIMwHistorieContainer',4);
+            })
+        }
+    })
+}
+/*new-mm-end*/
+/*Get Messsetelle History*/
+/*new-mm-start*/
+function intBdeIMwHistOkGetHistorieMesssetelle(){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getHistorie.php",
+        data: {
+            modus: "intBdeIMwGetMesssetelle",
+            nameDB: $("#nameDB").val(),
+            mstID:$("#mstID").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            tblHistorieIntBdeIMwMesssetelle.clear().draw();
+                for (var e = 0; e < b; e++){
+                    tblHistorieIntBdeIMwMesssetelle.row.add( [e + 1,a[e].prdktHist_ID,a[e].mst_ID, a[e].startDate, a[e].endDate,a[e].unit, a[e].type, a[e].mstIMw, a[e].anlageMessstelleIntBde, a[e].note, a[e].bemerkung, a[e].gueltigVon, a[e].gueltigBis]).draw();
+                    //tblHistorieIntBdeIMw.column([0,1]).visible(!1);
+                    $("#tblHistorieIntBdeIMwMesssetelle tr").css("cursor", "pointer");
+                    $("#tblHistorieIntBdeIMwMesssetelle").off("dblclick", "tr");
+                }
+               var columnHide = tblHistorieIntBdeIMwMesssetelle.columns([0,1,2,3,4]);
+               columnHide.visible(! columnHide.visible() );
+                $("#tblHistorieIntBdeIMwMesssetelle").on("dblclick", "tr", function() {
+                var a = tblHistorieIntBdeIMwMesssetelle.row(this).data();
+                intBdeMesssetelleHistorieUpdatePopUp(a[1],a[2],'intBdeMesssetelleIMwHistorieContainer');
+                /*new-mm-start 26-03-2021*/
+                $("#mstID").val(a[2]);
+                 /*new-mm-end 26-03-2021*/
+                datePickerForInterneBetriebsdatenAnlPrdkt('intBdeMesssetelleIMwHistorieContainer',5);
+            })
+        }
+    })
+}
+/*new-mm-end*/
 /*Get history details using anl_ID*/
 function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
     $('#intBdeIMwHistorieContainer').dialog({  height: 380,
@@ -15531,7 +16651,7 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
         $("#intBdeIMwHistSpeichernDblClick").off("click");
 
         $("button#intBdeIMwHistSpeichernDblClick").on("click", function() {
-            $("#archiviertIntBdeIMw").val("true");          
+            $("#archiviertIntBdeIMw").val("true");
             intBdeIMwHistSpeichernMethodDblClickEditorPopUp('intBdeIMwHistorieContainer');
         });
     },
@@ -15553,7 +16673,7 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
         success: function(a) {
             a = JSON.parse(a);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             $("." + sId + " #anlIMw").val(a[0].anlIMw);
             $("." + sId + " #anlNrIMw").val(a[0].anlNrIMw);
             $("." + sId + " #zeitintervallAnl").val(a[0].zeitintervallAnl);
@@ -15561,28 +16681,230 @@ function intBdeIMwDatensatzAusHistorieEinlesenAnl(histID,mstID,sId){
             $("." + sId + " #notizBdeIMw").val(a[0].notizBdeIMw);
             $("." + sId + " #anlIDEditor").val(a[0].anl_ID);
             $("." + sId + " #histIDEditor").val(a[0].histID);
-            $("." + sId + " #archiviertAnl").val("true");            
+            $("." + sId + " #archiviertAnl").val("true");
             $("." + sId + " #bemerkungHistIntBdeIMwEditor").val(a[0].bemerkung);
             $("." + sId + " #gueltigVonHistIntBdeIMwEditor").val(a[0].gueltigVon);
             $("." + sId + " #gueltigBisHistIntBdeIMwEditor").val(a[0].gueltigBis);
             var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
             var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
-            zeitintervallAnlInputsVisibleInvisible(a[0].zeitintervallAnl,sDt,eDt,a[0].ending,sId,2);  
+            zeitintervallAnlInputsVisibleInvisible(a[0].zeitintervallAnl,sDt,eDt,a[0].ending,sId,2);
             $("." + sId + " #anlIMwNoEnding").prop('checked', a[0].ending);
             $("." + sId + " #anlIMwNoEnding").val(a[0].ending);
              if(a[0].zeitintervallAnl==2){
                     $("." + sId + " #wochenWMassEingDataAnlStart2").val(a[0].startWeek);
                     $("." + sId + " #wochenWMassEingDataAnlEnde2").val(a[0].endWeek);
-                } 
+                }
+
+            /*new-mm-start 01-04-2021*/
+            $("." + sId + " .control_system_div").show();
+            $("." + sId + " #control_system").val(a[0]['einheitControlSys']);
+            /*new-mm-end 01-04-2021*/  
 
         }
     })
 }
 
 /*Ajax Call for the Manuel module serach 18-09-2020*/
-function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
+/*mm-commented 22-03-2021*/
+/*function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
     //alert("." + sId + " anlIDEditor");
     //alert("." + sId + " #zeitintervallAnl");
+     var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
+     var dates = returnStartDateAndEndDate(zeitintervallAnl,'intBdeIMwHistorieContainer',2);
+     startDate =dates[0];
+     endDate =dates[1];
+     $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            modus: "intBdePrdktIMwGetHistSingle",
+            nameDB: $("#nameDB").val(),
+            prd_id: prd_id,
+            prdktHist_ID:prdktHist_ID
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+
+            $("." + sId + " #prdktHist_IDEditor").val(a[0].prdktHist_ID);
+            $("." + sId + " #mstIMw").val(a[0]['mstIMw']).prop('disabled',false);
+            $("." + sId + " #artikelnummerIntBde").val(a[0]['artikelnummerIntBde']).prop('disabled',true);
+            $("." + sId + " #bezeichnungIntBde").val(a[0]['bezeichnungIntBde']).prop('disabled',true);
+            $("." + sId + " #anlageIntBde").val(a[0]['anlageIntBde']).prop('disabled',true);
+
+
+            var sDt = convertDateFormateForDataTbl(a[0]['zeitintervallAnl'],a[0]['startDate']);
+            var eDt = convertDateFormateForDataTbl(a[0]['zeitintervallAnl'],a[0]['endDate']);
+            $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['zeitintervallAnl']);
+            $("." + sId + " #einheitAnlPrdkt").val(a[0]['einheitAnl']);
+            $("." + sId + " #notizBdeIMwAnlPrdkt").val(a[0]['note']);
+            zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['zeitintervallAnl'],sDt,eDt,a[0]['ending'],sId,4);
+
+
+            $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', a[0]['ending']);
+            $("." + sId + " #anlPrdktIMwNoEnding").val(a[0]['ending']);
+            if(a[0]['zeitintervallAnl']==2){
+                $("." + sId + " #wochenWMassEingDataAnlPrdktStart4").val(a[0]['startWeek']);
+                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde4").val(a[0]['endWeek']);
+            }
+            $("." + sId + " .control_system_div_AnlPrdkt").show();
+            $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
+
+            $("." + sId + " #bemerkungHistIntBdePrdktIMwEditor").val(a[0].bemerkung);
+            $("." + sId + " #gueltigVonHistIntBdePrdktIMwEditor").val(a[0].gueltigVon);
+            $("." + sId + " #gueltigBisHistIntBdePrdktIMwEditor").val(a[0].gueltigBis);
+            einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['einheitAnl'],sId);
+        }
+    })
+}*/
+/*mm-commented 22-03-2021*/
+
+/*IntBde Product History Update Popup 11-03-2021*/
+/*new-mm-start*/
+function intBdePrdktHistorieUpdatePopUp(prdktHist_ID,prd_id,sId){
+    $('#intBdePrdktIMwHistorieContainer').dialog({  height: 380,
+        width: 910,
+        resize: "auto",
+        show: {
+        effect: "fade",
+        duration: 500
+    },
+    hide: {
+        effect: "fade",
+        duration: 500
+    },
+    open: function() {
+        $("#intBdeprdktIMwHistSpeichernDblClick").off("click");
+        $("button#intBdePrdktIMwHistSpeichernDblClick").on("click", function() {
+            $("#archiviertIntBdeIMw").val("true");
+            intBdePrdktMstHistSpeichernMethodDblClickEditorPopUp('intBdePrdktIMwHistorieContainer');
+        });
+    },
+    close: function() {
+        $("#intBdePrdktIMwHistorieContainer input").val("");
+        $("#intBdePrdktIMwHistorieContainer").dialog("close");
+        }
+    });
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getHistorie.php",
+        data: {
+            modus: "intBdePrdktIMwGetHistSingle",
+            nameDB: $("#nameDB").val(),
+            prd_id: prd_id,
+            prdktHist_ID:prdktHist_ID
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+
+            $("." + sId + " #prdktHist_IDEditor").val(a[0].prdktHist_ID);
+            $("." + sId + " #mstIMw").val(a[0]['mstIMw']).prop('disabled',false);
+            $("." + sId + " #artikelnummerIntBde").val(a[0]['artikelnummerIntBde']).prop('disabled',true);
+            $("." + sId + " #bezeichnungIntBde").val(a[0]['bezeichnungIntBde']).prop('disabled',true);
+            $("." + sId + " #anlageIntBde").val(a[0]['anlageIntBde']).prop('disabled',true);
+
+
+            var sDt = convertDateFormateForDataTbl(a[0]['zeitintervallAnl'],a[0]['startDate']);
+            var eDt = convertDateFormateForDataTbl(a[0]['zeitintervallAnl'],a[0]['endDate']);
+            $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['zeitintervallAnl']);
+            $("." + sId + " #einheitAnlPrdkt").val(a[0]['einheitAnl']);
+            $("." + sId + " #notizBdeIMwAnlPrdkt").val(a[0]['note']);
+            zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['zeitintervallAnl'],sDt,eDt,a[0]['ending'],sId,4);
+
+
+            $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', a[0]['ending']);
+            $("." + sId + " #anlPrdktIMwNoEnding").val(a[0]['ending']);
+            if(a[0]['zeitintervallAnl']==2){
+                $("." + sId + " #wochenWMassEingDataAnlPrdktStart4").val(a[0]['startWeek']);
+                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde4").val(a[0]['endWeek']);
+            }
+            $("." + sId + " .control_system_div_AnlPrdkt").show();
+            $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
+
+            $("." + sId + " #bemerkungHistIntBdePrdktIMwEditor").val(a[0].bemerkung);
+            $("." + sId + " #gueltigVonHistIntBdePrdktIMwEditor").val(a[0].gueltigVon);
+            $("." + sId + " #gueltigBisHistIntBdePrdktIMwEditor").val(a[0].gueltigBis);
+            einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['einheitAnl'],sId);
+        }
+    })
+}
+/*new-mm-end*/
+/*IntBde Messsetelle History Update Popup 11-03-2021*/
+/*new-mm-start*/
+function intBdeMesssetelleHistorieUpdatePopUp(prdktHist_ID,mst_ID,sId){
+    $('#intBdeMesssetelleIMwHistorieContainer').dialog({  height: 380,
+        width: 910,
+        resize: "auto",
+        show: {
+        effect: "fade",
+        duration: 500
+    },
+    hide: {
+        effect: "fade",
+        duration: 500
+    },
+    open: function() {
+        $("#intBdeMesssetelleIMwHistSpeichernDblClick").off("click");
+        $("button#intBdeMesssetelleIMwHistSpeichernDblClick").on("click", function() {
+            $("#archiviertIntBdePrdktIMw").val("true");
+            intBdePrdktMstHistSpeichernMethodDblClickEditorPopUp('intBdeMesssetelleIMwHistorieContainer');
+        });
+    },
+    close: function() {
+        $("#intBdeMesssetelleIMwHistorieContainer input").val("");
+        $("#intBdeMesssetelleIMwHistorieContainer").dialog("close");
+        }
+    });
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getHistorie.php",
+        data: {
+            modus: "intBdeMesssetelleIMwGetHistSingle",
+            nameDB: $("#nameDB").val(),
+            mst_ID: mst_ID,
+            prdktHist_ID:prdktHist_ID
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+
+            $("." + sId + " #prdktHist_IDEditor").val(a[0].prdktHist_ID);
+            $("." + sId + " #mstIMw").val(a[0]['mstIMw']).prop('disabled',true);
+            //$("." + sId + " #artikelnummerIntBde").val(a[0]['artikelNrPrd']).prop('disabled',true);
+            //$("." + sId + " #bezeichnungIntBde").val(a[0]['namePrd']).prop('disabled',true);
+            $("." + sId + " #anlageMessstelleIntBde").val(a[0]['anlageMessstelleIntBde']).prop('disabled',true);
+            var sDt = convertDateFormateForDataTbl(a[0]['zeitintervallAnl'],a[0]['startDate']);
+            var eDt = convertDateFormateForDataTbl(a[0]['zeitintervallAnl'],a[0]['endDate']);
+            $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['zeitintervallAnl']);
+            $("." + sId + " #einheitAnlPrdkt").val(a[0]['einheitAnl']);
+            $("." + sId + " #notizBdeIMwAnlPrdkt").val(a[0]['note']);
+            zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['zeitintervallAnl'],sDt,eDt,a[0]['ending'],sId,5);
+            $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', a[0]['ending']);
+            $("." + sId + " #anlPrdktIMwNoEnding").val(a[0]['ending']);
+            if(a[0]['zeitintervallAnl']==2){
+                $("." + sId + " #wochenWMassEingDataAnlPrdktStart5").val(a[0]['startWeek']);
+                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde5").val(a[0]['endWeek']);
+            }
+            $("." + sId + " .control_system_div_AnlPrdkt").show();
+            $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
+            $("." + sId + " #bemerkungHistIntBdePrdktIMwEditor").val(a[0].bemerkung);
+            $("." + sId + " #gueltigVonHistIntBdePrdktIMwEditor").val(a[0].gueltigVon);
+            $("." + sId + " #gueltigBisHistIntBdePrdktIMwEditor").val(a[0].gueltigBis);
+            einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['einheitAnl'],sId);
+        }
+    })
+}
+/*new-mm-end*/
+/*Ajax Call for the Manuel module serach 18-09-2020*/
+/*new-mm-start 24-03-2021*/
+function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
      var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
      var dates = returnStartDateAndEndDate(zeitintervallAnl,'intBdeIMwHistorieContainer',2);
      startDate =dates[0];
@@ -15598,12 +16920,12 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
             histID: $("." + sId + " #histIDEditor").val(),
             nameDB: $("#nameDB").val(),
             liegID: $("#liegID").val(),
-            mstID:$("#mstID").val(),
-            histID:$("." + sId + " #histIDEditor").val(),
+            mstID: $("#mstID").val(),
+            // histID:$("." + sId + " #histIDEditor").val(),
             archiviert: $("." + sId + " #archiviertIntBdeIMw").val(),
             bemerkung: $("." + sId + " #bemerkungHistIntBdeIMwEditor").val(),
             gueltigVon: $("." + sId + " #gueltigVonHistIntBdeIMwEditor").val(),
-            gueltigBis: $("." + sId + " #gueltigBisHistIntBdeIMwEditor").val(),            
+            gueltigBis: $("." + sId + " #gueltigBisHistIntBdeIMwEditor").val(),
             anlIMw: $("." + sId + " #anlIMw").val(),
             anlNrIMw: $("." + sId + " #anlNrIMw").val(),
             zeitintervallAnl: $("." + sId + " #zeitintervallAnl").val(),
@@ -15612,27 +16934,106 @@ function intBdeIMwHistSpeichernMethodDblClickEditorPopUp(sId){
             startDate:startDate,
             endDate:endDate,
             ending:$("." + sId + " #anlIMwNoEnding").val(),
+            /*new-mm-start 01-04-2021*/
+            einheitControlSys:$("." + sId + " #control_system").val(),
+            /*new-mm-end 01-04-2021*/
         },
         success: function(a) {
             alert("Verlauf erfolgreich aktualisiert");
-            $("#intBdeIMwHistorieContainer input").val("");
-            $("#intBdeIMwHistorieContainer").dialog("close");            
+            $("#"+sId+" input").val("");
+            $("#"+sId+"").dialog("close");
             intBdeIMwHistOkGetHistorie();
         }
     });
 }
+/*new-mm-end 24-03-2021*/
+/* IntBde Produckte Messsetelle History Update 12-03-2021*/
+/*new-mm-start*/
+function intBdePrdktMstHistSpeichernMethodDblClickEditorPopUp(sId){
+     var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+     var iBdeType = $("input[name='BetriebsdatenFilter']:checked").val();
+     if (iBdeType == 1){
+        var dates = returnStartDateAndEndDatePrdkt(zeitintervallAnl,sId,4);
+     }
+     else if (iBdeType == 2) {
+        var dates = returnStartDateAndEndDatePrdkt(zeitintervallAnl,sId,5);
+     }
+     //var dates = returnStartDateAndEndDatePrdkt(zeitintervallAnl,sId,4);
+     startDate =dates[0];
+     endDate =dates[1];
+    var iBdeType = $("input[name='BetriebsdatenFilter']:checked").val();
+     $("#archiviertIntBdePrdktIMw").val('true');
+     $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "intBdePrdktMstIMwHistEditor",
+            modus: "update",
+            nameDB: $("#nameDB").val(),
+            liegID: $("#liegID").val(),
+            prdktHist_ID: $("." + sId + " #prdktHist_IDEditor").val(),
+            mst_ID: $("#mstID").val(),
+            prd_ID:  $("#prd_ID").val(),
+            anl_ID:  $("#anl_ID").val(),
+            anl_Col:  $("#anl_Col").val(),
+            archiviert: $("#archiviertIntBdePrdktIMw").val(),
+            bemerkung: $("." + sId + " #bemerkungHistIntBdePrdktIMwEditor").val(),
+            gueltigVon: startDate,
+            gueltigBis: endDate,
+            mstIMw:$("." + sId + " #mstIMw").val(),
+            artikelnummerIntBde: $("." + sId + " #artikelnummerIntBde").val(),
+            bezeichnungIntBde: $("." + sId + " #bezeichnungIntBde").val(),
+            anlageIntBde: $("." + sId + " #anlageIntBde").val(),
+            anlageMessstelleIntBde: $("." + sId + " #anlageMessstelleIntBde").val(),
+            zeitintervallAnl: $("." + sId + " #zeitintervallAnlPrdkt").val(),
+            einheitAnl: $("." + sId + " #einheitAnlPrdkt").val(),
+            note:$("." + sId + " #notizBdeIMwAnlPrdkt").val(),
+            startDate:startDate,
+            endDate:endDate,
+            ending:$("." + sId + " #anlPrdktIMwNoEnding").val(),
+            einheitControlSys:$("." + sId + " #control_system_AnlPrdkt").val(),
+            iBdeType: iBdeType,
+        },
+        success: function(a) {
+            alert("Verlauf erfolgreich aktualisiert");
+            $("#"+sId+" input").val("");
+            $("#"+sId+"").dialog("close");
+            //intBdeIMwHistOkGetHistorie();
+            // $("." + sId + " #prdktHist_IDEditor").val("");
+            if(iBdeType == 1){
+                tblHistorieIntBdeIMwPrdkt.clear().draw();
 
+                /*new-mm-start 26-03-2021*/
+                //intBdeIMwHistOkGetHistoriePrdkt();
+                /*new-mm-end 26-03-2021*/
+
+                // $("#prd_ID").val("");
+                // $("#anl_ID").val("");
+                // $("#anl_Col").val("");
+            }
+            else if(iBdeType == 2){
+               // alert("2");
+               tblHistorieIntBdeIMwMesssetelle.clear().draw();
+               /*new-mm-start 26-03-2021*/
+               //intBdeIMwHistOkGetHistorieMesssetelle();
+               /*new-mm-end 26-03-2021*/
+            }
+        }
+    });
+}
+/*new-mm-end*/
 /*Validation for the start date and end date*/
 
-function datePickerForInterneBetriebsdaten(sId,id){   
-    $("." + sId + " #monateMassEingDataAnlStart" +id+"").datepicker({ 
+function datePickerForInterneBetriebsdaten(sId,id){
+    $("." + sId + " #monateMassEingDataAnlStart" +id+"").datepicker({
         dateFormat: 'mm.yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
             var strtStr1 = $(this).val();
             var start1 = strtStr1.split('.');
@@ -15640,15 +17041,30 @@ function datePickerForInterneBetriebsdaten(sId,id){
             var end1 = endStr1.split('.');
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
-            }else{
+            }
+            /*new-mm-start 09-04-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-start 09-04-2021*/
+            else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
-            }            
+            }
             validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id);
+
+            /*new-mm-start 09-04-2021*/
+            if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5 || sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+                validateZeitintervallAnlSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id); 
+            }else{
+               validateZeitintervallAnlSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id); 
+            }
+            /*new-mm-end 09-04-2021*/
+
             if(id==1){
                 alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
-            }  
+            }
         }
-    });    
+    });
     $("." + sId + " #monateMassEingDataAnlStart" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-widget-content .ui-datepicker-current").hide();
@@ -15656,32 +17072,47 @@ function datePickerForInterneBetriebsdaten(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
+            });
     });
-    $("." + sId + " #monateMassEingDataAnlEnde" +id+ "").datepicker({ 
+    $("." + sId + " #monateMassEingDataAnlEnde" +id+ "").datepicker({
         dateFormat: 'mm.yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
             var strtStr2 = $("." + sId + " #monateMassEingDataAnlStart" +id+ "").val();
             var start2 = strtStr2.split('.');
-            var endStr2 = $(this).val();   
-            var end2 = endStr2.split('.'); 
+            var endStr2 = $(this).val();
+            var end2 = endStr2.split('.');
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
-            }else{
+            }
+            /*new-mm-start 09-04-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-end 09-04-2021*/
+            else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
-            }       
-            validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
+            }
+            /*new-mm-start 09-04-2021*/
+            if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5 ){
+                validateZeitintervallAnlSelectOpt(strtStr2,endStr2,zeitintervallAnl,sId,id); 
+            }else{
+               validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id); 
+            }
+            /*new-mm-end 09-04-2021*/
+            
+            //validateZeitintervallAnlSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
+
             if(id==1){
                 alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
-            } 
+            }
         }
-    });    
+    });
     $("." + sId + " #monateMassEingDataAnlEnde" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-widget-content .ui-datepicker-current").hide();
@@ -15689,18 +17120,18 @@ function datePickerForInterneBetriebsdaten(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
-    }); 
+            });
+    });
 
     /*Year*/
-    $("." + sId + " #jahrMassEingDataAnlStart" +id+ "").datepicker({ 
+    $("." + sId + " #jahrMassEingDataAnlStart" +id+ "").datepicker({
         dateFormat: 'yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
             var start3 = $(this).val();
             var end3 = $("." + sId + " #jahrMassEingDataAnlEnde" +id+ "").val();
@@ -15708,13 +17139,13 @@ function datePickerForInterneBetriebsdaten(sId,id){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
-            }   
+            }
             validateZeitintervallAnlSelectOpt(start3,end3,zeitintervallAnl,sId,id);
             if(id==1){
                 alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
-            } 
+            }
         }
-    });    
+    });
     $("." + sId + " #jahrMassEingDataAnlStart" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-datepicker-month").hide();
@@ -15723,30 +17154,30 @@ function datePickerForInterneBetriebsdaten(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
+            });
     });
-    $("." + sId + " #jahrMassEingDataAnlEnde" +id+ "").datepicker({ 
+    $("." + sId + " #jahrMassEingDataAnlEnde" +id+ "").datepicker({
         dateFormat: 'yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
-            $(this).datepicker('setDate', new Date(year, month, 1)); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
             var start4 = $("." + sId + " #jahrMassEingDataAnlStart" +id+ "").val();
-            var end4 = $(this).val();    
+            var end4 = $(this).val();
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
-            }          
+            }
             validateZeitintervallAnlSelectOpt(start4,end4,zeitintervallAnl,sId,id);
             if(id==1){
                 alertValidationforStartEndeDate($("#mstID").val(),this.value,zeitintervallAnl);
-            } 
+            }
         }
-    });    
+    });
     $("." + sId + " #jahrMassEingDataAnlEnde" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-datepicker-month").hide();
@@ -15755,36 +17186,39 @@ function datePickerForInterneBetriebsdaten(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
-    }); 
-     /*Year*/  
+            });
+    });
+     /*Year*/
       /*Week Year*/
-    $("." + sId + " #wochenYMassEingDataAnlStart" +id+ "").datepicker({ 
+    $("." + sId + " #wochenYMassEingDataAnlStart" +id+ "").datepicker({
         dateFormat: 'yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
             var start3 = $(this).val();
             var end3 = $("." + sId + " #wochenYMassEingDataAnlEnde" +id+ "").val();
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
-            }   
+            }
             validateZeitintervallAnlSelectOpt(start3,end3,zeitintervallAnl,sId,id);
             if(id==1){
                 var week= $("." + sId + " #wochenWMassEingDataAnlStart1").val();
                 if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
-                    var date = week+'-'+this.value; 
+                    var date = week+'-'+this.value;
                     alertValidationforStartEndeDate($("#mstID").val(),date,zeitintervallAnl);
                 }
             }
         }
-    });    
+    });
     $("." + sId + " #wochenYMassEingDataAnlStart" +id+ "").focus(function () {
         $(".ui-datepicker-calendar").hide();
         $(".ui-datepicker-month").hide();
@@ -15793,45 +17227,48 @@ function datePickerForInterneBetriebsdaten(sId,id){
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
+            });
     });
-    $("." + sId + " #wochenYMassEingDataAnlEnde" +id+ "").datepicker({ 
+    $("." + sId + " #wochenYMassEingDataAnlEnde" +id+ "").datepicker({
         dateFormat: 'yy',
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        onClose: function(dateText, inst) {  
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
-            $(this).datepicker('setDate', new Date(year, month, 1)); 
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
             var start4 = $("." + sId + " #wochenYMassEingDataAnlStart" +id+ "").val();
-            var end4 = $(this).val();    
+            var end4 = $(this).val();
             if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
                var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
             }else{
                var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
-            }           
+            }
             validateZeitintervallAnlSelectOpt(start4,end4,zeitintervallAnl,sId,id);
             if(id==1){
                 var week= $("." + sId + " #wochenWMassEingDataAnlEnde1").val();
                 if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
-                    var date = week+'-'+this.value; 
+                    var date = week+'-'+this.value;
                     alertValidationforStartEndeDate($("#mstID").val(),date,zeitintervallAnl);
                 }
             }
         }
-    });    
+    });
     $("." + sId + " #wochenYMassEingDataAnlEnde" +id+ "").focus(function () {
-        $(".ui-datepicker-calendar").hide();      
+        $(".ui-datepicker-calendar").hide();
         $(".ui-datepicker-month").hide();
         $(".ui-widget-content .ui-datepicker-current").hide();
-        
+
         $("#ui-datepicker-div").position({
               my: "center top",
               at: "center bottom",
               of: $(this)
-            });        
-    }); 
+            });
+    });
     $("." + sId + " #tageMassEingDataAnlStart" +id+ "").datepicker({
         numberOfMonths: 1,
         dateFormat: 'dd.mm.yy',
@@ -15844,7 +17281,7 @@ function datePickerForInterneBetriebsdaten(sId,id){
           $("." + sId + " #tageMassEingDataAnlEnde" +id+ "").datepicker("option","minDate", selected)
         }
     });
-    $("." + sId + " #tageMassEingDataAnlEnde" +id+ "").datepicker({ 
+    $("." + sId + " #tageMassEingDataAnlEnde" +id+ "").datepicker({
         numberOfMonths: 1,
         dateFormat: 'dd.mm.yy',
         onSelect: function(selected) {
@@ -15855,9 +17292,571 @@ function datePickerForInterneBetriebsdaten(sId,id){
              }
            $("." + sId + " #tageMassEingDataAnlStart" +id+ "").datepicker("option","maxDate", selected)
         }
-    });  
+    });
 }
 
+/*datePickerForInterneBetriebsdatenAnlPrdkt*/
+
+/* Produkte/Messsetelle mm 01-03-2021*/
+/*Validation for the start date and end date*/
+/*new-mm-start 06-04-2021*/
+function datePickerForInterneBetriebsdatenAnlPrdkt(sId,id){
+    $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+"").datepicker({
+        dateFormat: 'mm.yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var strtStr1 = $(this).val();
+            var start1 = strtStr1.split('.');
+            var endStr1 = $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").val();
+            var end1 = endStr1.split('.');
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-start 30-03-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==5){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-end 30-03-2021*/
+            else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }
+
+            /*new-mm-start 08-04-2021*/
+            if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6 ){
+                validateZeitintervallAnlPrdktSelectOpt(strtStr1,endStr1,zeitintervallAnl,sId,id); 
+            }else{
+               validateZeitintervallAnlPrdktSelectOpt(start1[1],end1[1],zeitintervallAnl,sId,id); 
+            }
+            /*new-mm-end 08-04-2021*/
+            
+
+            if(id==1){
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                }
+                /*new-mm-start 06-04-2021*/
+            }
+        }
+    });
+    $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });
+    });
+    $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").datepicker({
+        dateFormat: 'mm.yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var strtStr2 = $("." + sId + " #monateMassEingDataAnlPrdktStart" +id+ "").val();
+            var start2 = strtStr2.split('.');
+            var endStr2 = $(this).val();
+            var end2 = endStr2.split('.');
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-start 30-03-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-end 30-03-2021*/
+            else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }
+                validateZeitintervallAnlPrdktSelectOpt(start2[1],end2[1],zeitintervallAnl,sId,id);
+            if(id==1){
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                }
+                /*new-mm-start 06-04-2021*/
+            }
+        }
+    });
+    $("." + sId + " #monateMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });
+    });
+
+    /*Year*/
+    $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").datepicker({
+        dateFormat: 'yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var start3 = $(this).val();
+            var end3 = $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").val();
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-start 30-03-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-end 30-03-2021*/
+            else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }
+                validateZeitintervallAnlPrdktSelectOpt(start3,end3,zeitintervallAnl,sId,id);
+            if(id==1){
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                }
+                /*new-mm-start 06-04-2021*/
+            }
+        }
+    });
+    $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-month").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });
+    });
+    $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").datepicker({
+        dateFormat: 'yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var start4 = $("." + sId + " #jahrMassEingDataAnlPrdktStart" +id+ "").val();
+            var end4 = $(this).val();
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-start 30-03-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-end 30-03-2021*/
+            else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }
+            validateZeitintervallAnlPrdktSelectOpt(start4,end4,zeitintervallAnl,sId,id);
+            if(id==1){
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                }
+                /*new-mm-start 06-04-2021*/
+            }
+        }
+    });
+    $("." + sId + " #jahrMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-month").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });
+    });
+     /*Year*/
+      /*Week Year*/
+    $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").datepicker({
+        dateFormat: 'yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var start3 = $(this).val();
+            var end3 = $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").val();
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-start 30-03-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-end 30-03-2021*/
+            else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }
+            validateZeitintervallAnlPrdktSelectOpt(start3,end3,zeitintervallAnl,sId,id);
+            if(id==1){
+                var week= $("." + sId + " #wochenWMassEingDataAnlPrdktStart1").val();
+                if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
+                    var date = week+'-'+this.value;
+
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();
+                //var date = $(this).val();
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                }
+                /*new-mm-start 06-04-2021*/
+
+
+
+                }
+            }
+        }
+    });
+    $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-month").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });
+    });
+    $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").datepicker({
+        dateFormat: 'yy',
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, month, 1));
+            var start4 = $("." + sId + " #wochenYMassEingDataAnlPrdktStart" +id+ "").val();
+            var end4 = $(this).val();
+            if(sId == 'infosMasseneingabeDateRangeDiv' && id==4){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-start 30-03-2021*/
+            else if(sId == 'infosMasseneingabeDateRangeDivPrdkt' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            else if(sId == 'infosMasseneingabeDateRangeDivMesssetelle' && id==6){
+               var zeitintervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+            }
+            /*new-mm-end 30-03-2021*/
+            else{
+               var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+            }
+            validateZeitintervallAnlPrdktSelectOpt(start4,end4,zeitintervallAnl,sId,id);
+            if(id==1){
+                var week= $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val();
+                if((week !='' && this.value !='') && (typeof(week) !='undefined' && typeof(this.value) !='undefined')){
+                    var date = week+'-'+this.value;
+
+                /*new-mm-start 06-04-2021*/
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();
+                //var date = $(this).val();
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                }
+                /*new-mm-start 06-04-2021*/
+
+                }
+            }
+        }
+    });
+    $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" +id+ "").focus(function () {
+        $(".ui-datepicker-calendar").hide();
+        $(".ui-datepicker-month").hide();
+        $(".ui-widget-content .ui-datepicker-current").hide();
+
+        $("#ui-datepicker-div").position({
+              my: "center top",
+              at: "center bottom",
+              of: $(this)
+            });
+    });
+    $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker({
+        numberOfMonths: 1,
+        dateFormat: 'dd.mm.yy',
+        onSelect: function(selected) {
+          if(id == 1){
+            var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+            var mstID = $("#mstID").val();var date = $(this).val();
+
+            /*new-mm-start 06-04-2021*/
+            var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+            if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+
+                alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+            }
+            if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+            }
+            /*new-mm-start 06-04-2021*/
+          }
+
+          $("." + sId + " #tageMassEingDataAnlPrdktEnde" +id+ "").datepicker("option","minDate", selected)
+        }
+    });
+    $("." + sId + " #tageMassEingDataAnlPrdktEnde" +id+ "").datepicker({
+        numberOfMonths: 1,
+        dateFormat: 'dd.mm.yy',
+        onSelect: function(selected) {
+             if(id==1){
+                var type = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+                var mstID = $("#mstID").val();var date = $(this).val();
+
+                /*new-mm-start 06-04-2021*/
+                var prd_anl_ID =  $("#nextPrevMstIDPrdktID").val();
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '1') {
+
+                    alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type);
+                }
+                if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                    alertValidationforStartEndeDateMesssetelle(mstID,date,type);
+                }
+                /*new-mm-start 06-04-2021*/
+
+             }
+           $("." + sId + " #tageMassEingDataAnlPrdktStart" +id+ "").datepicker("option","maxDate", selected)
+        }
+    });
+}
+/*new-mm-start 06-04-2021*/
+
+/* Produkte DataTable Old Cross Apply Query mm 25-02-2021*/
+/* new-mm-start */
+/*mm-comment*/
+        // function produkteDataTable(){
+        //
+        //     $.ajax({
+        //         type: "POST",
+        //         async: !0,
+        //         url: "php/getManuellInterneData.php",
+        //         data: {
+        //             id: "ProdukteTbl",
+        //             nameDB: $("#nameDB").val()
+        //         },
+        //         success: function(a) {
+        //             a = JSON.parse(a);
+        //             var b = a.length;
+        //             //console.log(a);
+
+        //             tblMstOhneZeitintervallIMw.clear().draw();
+        //                 for (var e = 0; e < b; e++){
+        //                     tblMstOhneZeitintervallIMw.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw();
+        //                     //tblMstOhneZeitintervallIMw.column([0,1]).visible(!1);
+
+        //                     $("#tblMstOhneZeitintervallIMw tr").css("cursor", "pointer");
+        //                     $("#tblMstOhneZeitintervallIMw").off("dblclick", "tr");
+
+        //                 }
+        //                var columnHide = tblMstOhneZeitintervallIMw.columns([1,2]);
+        //                columnHide.visible(! columnHide.visible() );
+
+
+        //                 $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
+        //                     var rowdata = tblMstOhneZeitintervallIMw.row(this).data();
+        //                     //resetFormAllgemein('infosIntEnergiedaten',1);
+        //                     produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
+        //
+        //                     //produkteListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+        //                     //var prd_id_data = rowdata[0];
+        //                     //alert(prd_id_data);
+        //                     $("#prd_ID").val(rowdata[0]);
+        //                     $("#anl_Col").val(rowdata[1]);
+        //                     $("#anl_ID").val(rowdata[2]);
+        //                     // $("#namePrd").val(rowdata[3]);
+        //                     // $("#artikelNrPrd").val(rowdata[4]);
+        //                     // $("#bezeichnungAnl").val(rowdata[5]);
+
+        //                     });
+        //                 }
+        //     });
+        // }
+/*mm-comment*/
+/* new-mm-end */
+
+
+/* Produkte Anlarge New DataTable mm 02-03-2021*/
+/* new-mm-start */
+/*new-mm-start 25-03-2021*/
+function produkteAnlargeDataTable(){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            id: "ProdukteAnlDataTbl",
+            nameDB: $("#nameDB").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+            tblMstOhneZeitintervallIMw.clear().draw();
+                for (var e = 0; e < b; e++){
+                    // tblMstOhneZeitintervallIMw.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].type,a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw();
+                    tblMstOhneZeitintervallIMw.row.add( [a[e].id,a[e].prd_id,a[e].anl_col,a[e].anl_id,a[e].type,a[e].artikelNrPrd,a[e].namePrd,a[e].bezeichnungAnl]).draw();
+                    //tblMstOhneZeitintervallIMw.column([0,1]).visible(!1);
+                    $("#tblMstOhneZeitintervallIMw tr").css("cursor", "pointer");
+                    $("#tblMstOhneZeitintervallIMw").off("dblclick", "tr");
+                }
+                var columnHide = tblMstOhneZeitintervallIMw.columns([0,1,2,3,4]);
+                columnHide.visible(! columnHide.visible() );
+
+                $("#tblMstOhneZeitintervallIMw").on("dblclick", "tr", function() {
+                    var rowdata = tblMstOhneZeitintervallIMw.row(this).data();
+                    //resetFormAllgemein('infosIntEnergiedaten',1);
+                    /*produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');*/
+                    produkteAnlageListingDblClickRow(rowdata[1],rowdata[2],rowdata[3],'infosIntEnergiedaten');
+                    $("#prd_ID").val(rowdata[1]);
+                    $("#anl_Col").val(rowdata[2]);
+                    $("#anl_ID").val(rowdata[3]);
+                    /*new-mm-start 25-03-2021*/
+                    $("#nextPrevMstIDPrdktID").val(rowdata[0]);
+                    /*new-mm-end 25-03-2021*/
+                    //alert(rowdata[0]);
+                    // $("#namePrd").val(rowdata[3]);
+                    // $("#artikelNrPrd").val(rowdata[4]);
+                    // $("#bezeichnungAnl").val(rowdata[5]);
+                    });
+                }
+    });
+}
+/*new-mm-start 25-03-2021*/
+/* new-mm-end */
+
+/*mm-comment 22-03-2021*/
+/*$("#tblMstOhneZeitintervall_IMw").on("dblclick", "tr", function() {
+    var rowdata = tblMstOhneZeitintervall_IMw.row(this).data();
+    //resetFormAllgemein('infosIntEnergiedaten',1);
+    //produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
+    produkteAnlageListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');
+    $("#prd_ID").val(rowdata[0]);
+    $("#anl_Col").val(rowdata[1]);
+    $("#anl_ID").val(rowdata[2]);
+    // $("#namePrd").val(rowdata[3]);
+    // $("#artikelNrPrd").val(rowdata[4]);
+    // $("#bezeichnungAnl").val(rowdata[5]);
+    });*/
+/*mm-comment 22-03-2021*/
+
+/* new-mm-end */
+
+/* Search Image Produkte Anlarge Popup New DataTable 16-03-2021*/
+/* new-mm-start */
+/*new-mm-start 26-03-2021*/
+function searchImgprodukteAnlargeDataTable(){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            id: "ProdukteAnlDataTbl",
+            nameDB: $("#nameDB").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+            tblMstOhneZeitintervallIMwPrdktSuche.clear().draw();
+                for (var e = 0; e < b; e++){
+                    // tblMstOhneZeitintervallIMwPrdktSuche.row.add( [a[e].prd_ID,a[e].anl_Col,a[e].anl_ID, a[e].type,a[e].namePrd, a[e].artikelNrPrd,a[e].bezeichnungAnl]).draw();
+                    tblMstOhneZeitintervallIMwPrdktSuche.row.add( [a[e].id,a[e].prd_id,a[e].anl_col,a[e].anl_id,a[e].type,a[e].artikelNrPrd,a[e].namePrd,a[e].bezeichnungAnl]).draw();
+                    //tblMstOhneZeitintervallIMw.column([0,1]).visible(!1);
+                    $("#tblMstOhneZeitintervallIMwPrdktSuche tr").css("cursor", "pointer");
+                    $("#tblMstOhneZeitintervallIMwPrdktSuche").off("dblclick", "tr");
+                }
+                var columnHide = tblMstOhneZeitintervallIMwPrdktSuche.columns([0,1,2,3,4]);
+                columnHide.visible(! columnHide.visible() );
+
+                $("#tblMstOhneZeitintervallIMwPrdktSuche").on("dblclick", "tr", function() {
+                    var rowdata = tblMstOhneZeitintervallIMwPrdktSuche.row(this).data();
+                    //resetFormAllgemein('infosIntEnergiedaten',1);
+                    /*produkteListingDblClickRow(rowdata[0],rowdata[1],rowdata[2],'infosIntEnergiedaten');*/
+                    produkteAnlageListingDblClickRow(rowdata[1],rowdata[2],rowdata[3],'infosIntEnergiedaten');
+                    $("#prd_ID").val(rowdata[1]);
+                    $("#anl_Col").val(rowdata[2]);
+                    $("#anl_ID").val(rowdata[3]);
+                    /*new-mm-start 26-03-2021*/
+                    $("#nextPrevMstIDPrdktID").val(rowdata[0]);
+                    /*new-mm-end 26-03-2021*/
+
+                    // $("#namePrd").val(rowdata[3]);
+                    // $("#artikelNrPrd").val(rowdata[4]);
+                    // $("#bezeichnungAnl").val(rowdata[5]);
+                    $("#tblAnlPrdktMStOhneZeitintervallIMwSearchContainer").dialog("close");
+                    });
+                }
+    });
+}
+/*new-mm-end 26-03-2021*/
+/* new-mm-end */
 /*Interne Messwerte Start 20-10-2020*/
 function keinZeitIntervallZugewiesen(){
     $.ajax({
@@ -15866,31 +17865,40 @@ function keinZeitIntervallZugewiesen(){
         url: "php/getManuellInterneData.php",
         data: {
             id: "KeinZeitintervallTbl",
+            /*new-mm-start 23-03-2021*/
+            typ: "energiedaten",
+            /*new-mm-end 23-03-2021*/
             nameDB: $("#nameDB").val()
         },
         success: function(a) {
             a = JSON.parse(a);
-            var b = a.length;console.log(a);
+            var b = a.length;//console.log(a);
             tblAnlOhneZeitintervallIMw.clear().draw();
-                for (var e = 0; e < b; e++){ 
-                    tblAnlOhneZeitintervallIMw.row.add( [a[e].mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw(); 
+                for (var e = 0; e < b; e++){
+                    /*new-mm-start 26-03-2021*/
+                    tblAnlOhneZeitintervallIMw.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    /*new-mm-start 26-03-2021*/
                     //tblAnlOhneZeitintervallIMw.column([0,1]).visible(!1);
                     $("#tblAnlOhneZeitintervallIMw tr").css("cursor", "pointer");
                     $("#tblAnlOhneZeitintervallIMw").off("dblclick", "tr");
-                } 
+                }
                 var columnHide = tblAnlOhneZeitintervallIMw.columns([0]);
                 columnHide.visible(! columnHide.visible() );
                 $("#tblAnlOhneZeitintervallIMw").on("dblclick", "tr", function() {
                     var a = tblAnlOhneZeitintervallIMw.row(this).data();
-                    //console.log(a);    
-                    resetFormAllgemein('infosIntBetriebsdaten',1);           
+                    //console.log(a);
+                    resetFormAllgemein('infosIntBetriebsdaten',1);
                     keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
                     $("#mstID").val(a[0]);
                     $("#anlIMw").val(a[1]);
                     $("#anlNrIMw").val(a[2]);
-                    $("#startDateDB").val(a[3]); 
-                    $("#endDateDB").val(a[4]); 
-                    setTimeout(function(){ 
+                    $("#startDateDB").val(a[3]);
+                    $("#endDateDB").val(a[4]);
+
+                    /*new-mm-start 26-03-2021*/
+                    $("#nextPrevMstID").val(a[0]);
+                    /*new-mm-end 26-03-2021*/
+                    setTimeout(function(){
                     $("#unitIDB").val($(".infosIntBetriebsdaten #einheitAnl").val());
                     $("#controlSysIDDB").val($(".infosIntBetriebsdaten #control_system").val());
                      }, 3000);
@@ -15899,6 +17907,393 @@ function keinZeitIntervallZugewiesen(){
     });
 }
 
+/*checkbox search query*/
+/*new-mm-start 22-03-2021*/
+function searchKeinZeitIntervallZugewiesen(checkboxSearch){
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            id: "SearchKeinZeitintervallTbl",
+            nameDB: $("#nameDB").val(),
+            typ: "energiedaten",
+            checkboxSearch:checkboxSearch,
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+            tblAnlOhneZeitintervallIMw.clear().draw();
+                for (var e = 0; e < b; e++){
+                    /*new-mm-start 26-03-2021*/
+                    tblAnlOhneZeitintervallIMw.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    /*new-mm-end 26-03-2021*/
+                    //tblAnlOhneZeitintervallIMw.column([0,1]).visible(!1);
+                    $("#tblAnlOhneZeitintervallIMw tr").css("cursor", "pointer");
+                    $("#tblAnlOhneZeitintervallIMw").off("dblclick", "tr");
+                }
+                var columnHide = tblAnlOhneZeitintervallIMw.columns([0]);
+                columnHide.visible(! columnHide.visible() );
+                $("#tblAnlOhneZeitintervallIMw").on("dblclick", "tr", function() {
+                    var a = tblAnlOhneZeitintervallIMw.row(this).data();
+                    //console.log(a);
+                    resetFormAllgemein('infosIntBetriebsdaten',1);
+                    keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
+                    $("#mstID").val(a[0]);
+                    $("#anlIMw").val(a[1]);
+                    $("#anlNrIMw").val(a[2]);
+                    $("#startDateDB").val(a[3]);
+                    $("#endDateDB").val(a[4]);
+                    /*new-mm-start 26-03-2021*/
+                    $("#nextPrevMstID").val(a[0]);
+                    /*new-mm-end 26-03-2021*/
+
+            });
+        }
+    });
+}
+
+function searchImgKeinZeitIntervallZugewiesen(checkboxSearch){
+    $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "SearchKeinZeitintervallTbl",
+                nameDB: $("#nameDB").val(),
+                checkboxSearch: checkboxSearch,
+                typ: "energiedaten",
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                var b = a.length;
+                //console.log(a);
+                tblAnlOhneZeitintervallIMwSuchen.clear().draw();
+                    for (var e = 0; e < b; e++){
+                        /*new-mm-start 26-03-2021*/
+                        tblAnlOhneZeitintervallIMwSuchen.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                        /*new-mm-end 26-03-2021*/
+                        $("#tblAnlOhneZeitintervallIMwSuchen tr").css("cursor", "pointer");
+                        $("#tblAnlOhneZeitintervallIMwSuchen").off("dblclick", "tr");
+                    }
+                    var columnHide = tblAnlOhneZeitintervallIMwSuchen.columns([0]);
+                    columnHide.visible(! columnHide.visible() );
+                    $("#tblAnlOhneZeitintervallIMwSuchen").on("dblclick", "tr", function() {
+                         var a = tblAnlOhneZeitintervallIMwSuchen.row(this).data();
+                        //console.log(a);
+                        resetFormAllgemein('infosIntBetriebsdaten',1);
+                        keinZeitIntervallZugewiesenDblClickRow(a[0],'infosIntBetriebsdaten');
+                        $("#mstID").val(a[0]);
+                        $("#anlIMw").val(a[1]);
+                        $("#anlNrIMw").val(a[2]);
+
+                        /*new-mm-start 26-03-2021*/
+                        $("#nextPrevMstID").val(a[0]);
+                        /*new-mm-end 26-03-2021*/
+                        $("#tblAnlOhneZeitintervallIMwSearchContainer").dialog("close");
+                });
+            }
+        });
+}
+/*new-mm-end 22-03-2021*/
+/*Produkte mm 26-02-2021*/
+/*new-mm-start*/
+function produkteListingDblClickRow(Prd_Id,Anl_Col,Anl_Id,sId){
+        $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            nameDB: $("#nameDB").val(),
+            id:'displayDataPrdkt',
+            Prd_Id:Prd_Id,
+            Anl_Col:Anl_Col,
+            Anl_Id:Anl_Id
+        },
+        success: function(e) {
+            a = JSON.parse(e);
+            var b = a.length;
+            //console.log(a);
+            if (b>0) {
+
+                $("#mstIMw").val(a[0]['namePrd']);
+                // var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
+                // var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
+                // $("." + sId + " #zeitintervallAnl").val(a[0]['intTp_ID']);
+                // $("." + sId + " #einheitAnl").val(a[0]['unt_ID']);
+                // $("." + sId + " #notizBdeIMw").val(a[0]['note']);
+                // zeitintervallAnlInputsVisibleInvisible(a[0]['intTp_ID'],sDt,eDt,a[0]['ending'],'infosIntBetriebsdaten',1);
+                // $("." + sId + " #anlIMwNoEnding").prop('checked', a[0]['ending']);
+                // $("." + sId + " #anlIMwNoEnding").val(a[0]['ending']);
+                // if(a[0]['intTp_ID']==2){
+                //     $("." + sId + " #wochenWMassEingDataAnlStart1").val(a[0]['startWeek']);
+                //     $("." + sId + " #wochenWMassEingDataAnlEnde1").val(a[0]['endWeek']);
+                // }
+                // $("." + sId + " .control_system_div").show();
+                // $("." + sId + " #control_system").val(a[0]['einheitControlSys']);
+                // einheitAnlOnChangeChildSelectOpt(a[0]['unt_ID']);
+             }
+        }
+    })
+ }
+/*new-mm-end*/
+/*Produkte Anlarge mm 03-03-2021*/
+/*new-mm-start*/
+function produkteAnlageListingDblClickRow(Prd_Id,Anl_Col,Anl_Id,sId){
+        $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            nameDB: $("#nameDB").val(),
+            id:'displayDataPrdktAnlage',
+            Prd_Id:Prd_Id,
+            Anl_Col:Anl_Col,
+            Anl_Id:Anl_Id
+
+        },
+        success: function(e) {
+            a = JSON.parse(e);
+            var b = a.length;
+            //console.log(a);
+            if (b>0) {
+
+
+                $("." + sId + " #mstIMw").val(a[0]['mstIMw']).prop('disabled',false);
+                $("." + sId + " #artikelnummerIntBde").val(a[0]['artikelNrPrd']).prop('disabled',true);
+                $("." + sId + " #bezeichnungIntBde").val(a[0]['namePrd']).prop('disabled',true);
+                $("." + sId + " #anlageIntBde").val(a[0]['bezeichnungAnl']).prop('disabled',true);
+
+
+
+                var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
+                var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
+                $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['intTp_ID']);
+                $("." + sId + " #einheitAnlPrdkt").val(a[0]['unt_ID']);
+                $("." + sId + " #notizBdeIMwAnlPrdkt").val(a[0]['note']);
+                zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['intTp_ID'],sDt,eDt,a[0]['ending'],'infosIntEnergiedaten',1);
+                $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', a[0]['ending']);
+                $("." + sId + " #anlPrdktIMwNoEnding").val(a[0]['ending']);
+                if(a[0]['intTp_ID']==2){
+                    $("." + sId + " #wochenWMassEingDataAnlPrdktStart1").val(a[0]['startWeek']);
+                    $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val(a[0]['endWeek']);
+                }
+                $("." + sId + " .control_system_div_AnlPrdkt").show();
+                $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
+                einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
+               // $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
+
+               // /**/ $("#nextPrevMstIDPrdktID").val(rowdata[0]);
+             }
+        }
+    })
+}
+/*new-mm-end*/
+/*Messsetelle Produckte double click function 08-03-2021*/
+/*new-mm-start*/
+function MesssetelleListingDblClickRow(mst_Id,sId){
+
+        $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            nameDB: $("#nameDB").val(),
+            id:'displayDataMesssetelle',
+            mst_ID:mst_Id,
+            typ : "betriebsdaten",
+            iBdeType: "2",
+
+        },
+        success: function(e) {
+            a = JSON.parse(e);
+            var b = a.length;
+            //console.log(a);
+            if (b>0) {
+
+                //$("." + sId + " #mstIMw").val(a[0]['nameMSt']).prop('disabled',false);
+                $("." + sId + " #mstIMw").val(a[0]['nameMSt']);
+
+                if( $("." + sId + " #mstIMw").val() == ""){
+
+                    $("." + sId + " #mstIMw").prop("readonly",false);
+                    $("." + sId + " #mstIMw").prop("disabled",false);
+                }
+                else{
+                    $("." + sId + " #mstIMw").prop("readonly",true);
+                    $("." + sId + " #mstIMw").prop("disabled",true);
+                }
+                /*new-mm-start 26-03-2021*/
+                //$("." + sId + " #anlageMessstelleIntBde").val(a[0]['anlageMst']).prop('disabled',true);
+                /*new-mm-end 26-03-2021*/
+                var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
+                var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
+                $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['intTp_ID']);
+                $("." + sId + " #einheitAnlPrdkt").val(a[0]['unt_ID']);
+                $("." + sId + " #notizBdeIMwAnlPrdkt").val(a[0]['note']);
+                zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['intTp_ID'],sDt,eDt,a[0]['ending'],'infosIntEnergiedaten',1);
+                $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', a[0]['ending']);
+                $("." + sId + " #anlPrdktIMwNoEnding").val(a[0]['ending']);
+                if(a[0]['intTp_ID']==2){
+                    $("." + sId + " #wochenWMassEingDataAnlPrdktStart1").val(a[0]['startWeek']);
+                    $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val(a[0]['endWeek']);
+                }
+                $("." + sId + " .control_system_div_AnlPrdkt").show();
+                $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
+                einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
+               // $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
+
+            }
+        }
+    })
+}
+/*new-mm-end*/
+
+function resetInterneBetriebsdatenInputs(sId,id){
+
+    //alert("reseting data for produkt module");
+    $("#mstID").val("");
+    $("#prd_ID").val("");
+    $("#anl_Col").val("");
+    $("#anl_ID").val("");
+    /*new-mm-start 25-03-2021*/
+    $("#nextPrevMstIDPrdktID").val("");
+    /*new-mm-end 25-03-2021*/
+
+
+    $("." + sId + " #mstIMw").val("");
+    $("." + sId + " #artikelnummerIntBde").val("").prop('disabled',false);
+    $("." + sId + " #bezeichnungIntBde").val("").prop('disabled',false);
+    $("." + sId + " #anlageIntBde").val("").prop('disabled',false);
+    $("." + sId + " #zeitintervallAnlPrdkt").val("0").change();
+    $("." + sId + " #einheitAnlPrdkt").val("").change();
+    $("." + sId + " #notizBdeIMwAnlPrdkt").val("");
+    $("." + sId + " #control_system_AnlPrdkt").val("").change();
+
+
+    /*for only messsetelle anlage reset*/
+    $("#anlageMessstelleIntBde").val("").prop("disabled",true);
+    /*for only messsetelle anlage reset*/
+
+    $("#tageMassEingDataAnlPrdktStart1").val("");
+    $("#tageMassEingDataAnlPrdktEnde1").val("");
+    $("#anlPrdktIMwNoEnding").val("0").prop("checked",false);
+
+    $("#wochenWMassEingDataAnlPrdktStart1").val("").change();
+    $("#wochenYMassEingDataAnlPrdktStart1").val("");
+    $("#wochenWMassEingDataAnlPrdktEnde1").val("").change();
+    $("#wochenYMassEingDataAnlPrdktEnde1").val("");
+
+    $("#monateMassEingDataAnlPrdktStart1").val("");
+    $("#monateMassEingDataAnlPrdktEnde1").val("");
+
+    $("#jahrMassEingDataAnlPrdktStart1").val("");
+    $("#jahrMassEingDataAnlPrdktEnde1").val("");
+}
+
+function searchProdukteAnlageIntBDE(checkboxSearch){
+     $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            id: "MesssetelleTbl",
+            typ: "betriebsdaten",
+            nameDB: $("#nameDB").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+            tblMstOhneZeitintervallIMwMessstelle.clear().draw();
+                for (var e = 0; e < b; e++){
+                    tblMstOhneZeitintervallIMwMessstelle.row.add( [a[e].T1_mst_ID, a[e].nameMSt, a[e].anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    //tblMstOhneZeitintervallIMwMessstelle.column([0,1]).visible(!1);
+                    $("#tblMstOhneZeitintervallIMwMessstelle tr").css("cursor", "pointer");
+                    $("#tblMstOhneZeitintervallIMwMessstelle").off("dblclick", "tr");
+                }
+                var columnHide = tblMstOhneZeitintervallIMwMessstelle.columns([0]);
+                columnHide.visible(! columnHide.visible() );
+                $("#tblMstOhneZeitintervallIMwMessstelle").on("dblclick", "tr", function() {
+                    var rowdata_messtbl = tblMstOhneZeitintervallIMwMessstelle.row(this).data();
+                   // console.log(rowdata_messtbl);
+                    //alert("mstid : "+rowdata_messtbl[0]+"nameMSt"+rowdata_messtbl[1]);
+                    // resetFormAllgemein('infosIntBetriebsdaten',1);
+                    // tblMstOhneZeitintervallIMwMessstelleDblClickRow(a[0],'infosIntBetriebsdaten');
+                    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
+                    MesssetelleListingDblClickRow(rowdata_messtbl[0],'infosIntEnergiedaten');
+                    $("#mstID").val(rowdata_messtbl[0]);
+                    /*new-mm-start 24-03-2021*/
+                    $("#mstIMw").val(rowdata_messtbl[1]);
+                    $("#anlageMessstelleIntBde").val(rowdata_messtbl[2]);
+                    /*new-mm-end 24-03-2021*/
+                    /*new-mm-start 25-03-2021*/
+                    $("#nextPrevMstIDPrdktID").val(rowdata_messtbl[0]);
+                    /*new-mm-end 25-03-2021*/
+
+                    //$("#anlIMw").val(a[1]);
+                    //$("#anlNrIMw").val(a[2]);
+                    //$("#startDateDB").val(a[3]);
+                    //$("#endDateDB").val(a[4]);
+            });
+        }
+    });
+}
+/*new-mm-end*/
+
+
+/*16-03-2021*/
+/*new-mm-start*/
+function searchImgMesssetelleIntBDE(checkboxSearch){
+     $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getManuellInterneData.php",
+        data: {
+            id: "MesssetelleTbl",
+            typ: "betriebsdaten",
+            nameDB: $("#nameDB").val()
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var b = a.length;
+            //console.log(a);
+            tblMstOhneZeitintervallIMwMessstelleSuche.clear().draw();
+                for (var e = 0; e < b; e++){
+                    tblMstOhneZeitintervallIMwMessstelleSuche.row.add( [a[e].T1_mst_ID, a[e].T1_nameMSt, a[e].T1_anlageMst,convertDateFormateForDataTbl(a[e].intTp_ID,a[e].startDate), convertDateFormateForDataTbl(a[e].intTp_ID,a[e].endDate),a[e].unit,typeValueEinheitControlSys(a[e].einheitControlSys), capitalizeLetter(a[e].type), a[e].note]).draw();
+                    //tblMstOhneZeitintervallIMwMessstelle.column([0,1]).visible(!1);
+                    $("#tblMstOhneZeitintervallIMwMessstelleSuche tr").css("cursor", "pointer");
+                    $("#tblMstOhneZeitintervallIMwMessstelleSuche").off("dblclick", "tr");
+                }
+                var columnHide = tblMstOhneZeitintervallIMwMessstelleSuche.columns([0]);
+                columnHide.visible(! columnHide.visible() );
+                $("#tblMstOhneZeitintervallIMwMessstelleSuche").on("dblclick", "tr", function() {
+                    var rowdata_messtbl = tblMstOhneZeitintervallIMwMessstelleSuche.row(this).data();
+                   // console.log(rowdata_messtbl);
+                    //alert("mstid : "+rowdata_messtbl[0]);
+                    // resetFormAllgemein('infosIntBetriebsdaten',1);
+                    // tblMstOhneZeitintervallIMwMessstelleDblClickRow(a[0],'infosIntBetriebsdaten');
+                    resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
+                    MesssetelleListingDblClickRow(rowdata_messtbl[0],'infosIntEnergiedaten');
+                    $("#mstID").val(rowdata_messtbl[0]);
+                    /*new-mm-start 23 or 24-03-2021*/
+                    $("#mstIMw").val(rowdata_messtbl[1]);
+                    $("#anlageMessstelleIntBde").val(rowdata_messtbl[2]);
+                    /*new-mm-end 23 or 24-03-2021*/
+                    /*new-mm-start 25-03-2021*/
+                    $("#nextPrevMstIDPrdktID").val(rowdata_messtbl[0]);
+                    /*new-mm-end 25-03-2021*/
+                    //$("#anlIMw").val(a[1]);
+                    //$("#anlNrIMw").val(a[2]);
+                    //$("#startDateDB").val(a[3]);
+                    //$("#endDateDB").val(a[4]);
+                    $("#tblAnlPrdktMStOhneZeitintervallIMwSearchContainer").dialog("close");
+            });
+        }
+    });
+}
+/*new-mm-end*/
 function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
         $.ajax({
         type: "POST",
@@ -15912,119 +18307,210 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
         success: function(e) {
             a = JSON.parse(e);
             var b = a.length;
-            console.log(a);
+            //console.log(a);
             if (b>0) {
                 var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
                 var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
                 $("." + sId + " #zeitintervallAnl").val(a[0]['intTp_ID']);
                 $("." + sId + " #einheitAnl").val(a[0]['unt_ID']);
                 $("." + sId + " #notizBdeIMw").val(a[0]['note']);
-                zeitintervallAnlInputsVisibleInvisible(a[0]['intTp_ID'],sDt,eDt,a[0]['ending'],'infosIntBetriebsdaten',1); 
+                zeitintervallAnlInputsVisibleInvisible(a[0]['intTp_ID'],sDt,eDt,a[0]['ending'],'infosIntBetriebsdaten',1);
                 $("." + sId + " #anlIMwNoEnding").prop('checked', a[0]['ending']);
                 $("." + sId + " #anlIMwNoEnding").val(a[0]['ending']);
                 if(a[0]['intTp_ID']==2){
                     $("." + sId + " #wochenWMassEingDataAnlStart1").val(a[0]['startWeek']);
                     $("." + sId + " #wochenWMassEingDataAnlEnde1").val(a[0]['endWeek']);
-                } 
-                $("." + sId + " .control_system_div").show();  
-                $("." + sId + " #control_system").val(a[0]['einheitControlSys']); 
+                }
+                $("." + sId + " .control_system_div").show();
+                $("." + sId + " #control_system").val(a[0]['einheitControlSys']);
                 einheitAnlOnChangeChildSelectOpt(a[0]['unt_ID']);
              }
         }
     })
  }
 
- function zeitintervallAnlInputsVisibleInvisible(zeitIntVal,startDate,endDate,ending,sId,id){ 
-    //alert(startDate);alert(endDate);
-        $("." + sId + " .zeitintervallAnl_1").hide();
-        $("." + sId + " .zeitintervallAnl_2").hide();
-        $("." + sId + " .zeitintervallAnl_3").hide();
-        $("." + sId + " .zeitintervallAnl_4").hide();
-        $("." + sId + " .zeitintervallAnl_NoEnding").hide();
+function zeitintervallAnlInputsVisibleInvisible(zeitIntVal,startDate,endDate,ending,sId,id){
+//alert(startDate);alert(endDate);
+    $("." + sId + " .zeitintervallAnl_1").hide();
+    $("." + sId + " .zeitintervallAnl_2").hide();
+    $("." + sId + " .zeitintervallAnl_3").hide();
+    $("." + sId + " .zeitintervallAnl_4").hide();
+    $("." + sId + " .zeitintervallAnl_NoEnding").hide();
 
-        $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
-        $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
-        $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
-        $("." + sId + " #anlIMwNoEnding").prop('checked', false);
+    $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
+    $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
+    $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
+    $("." + sId + " #anlIMwNoEnding").prop('checked', false);
 
-        $("." + sId + " .zeitintervallAnl_1 input").val("");
-        $("." + sId + " .zeitintervallAnl_2 input").val("");
-        $("." + sId + " .zeitintervallAnl_3 input").val("");
-        $("." + sId + " .zeitintervallAnl_4 input").val("");
-           if(zeitIntVal == 1){
-                $("." + sId + " .zeitintervallAnl_1").show();
-                $("." + sId + " .zeitintervallAnl_2").hide();
-                $("." + sId + " .zeitintervallAnl_3").hide();
-                $("." + sId + " .zeitintervallAnl_4").hide();
-                $("." + sId + " .zeitintervallAnl_NoEnding").show();
-                $("." + sId + " #tageMassEingDataAnlStart" + id + "").val(startDate);
-                $("." + sId + " #tageMassEingDataAnlEnde" + id + "").val(endDate);
-                if(ending==1){
-                    $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', true);
-                }else{
-                     $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
-                }   
-           }else if(zeitIntVal == 2){
-                $("." + sId + " .zeitintervallAnl_1").hide();
-                $("." + sId + " .zeitintervallAnl_2").show();
-                $("." + sId + " .zeitintervallAnl_3").hide();
-                $("." + sId + " .zeitintervallAnl_4").hide();
-                $("." + sId + " .zeitintervallAnl_NoEnding").show();
-                if(id==3){
-                    var startDateSplit = startDate.split('-');
-                    var endDateSplit = endDate.split('-');
-                    $("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val(startDateSplit[0]);
-                    $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val(endDateSplit[0]);   
-                    $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val(startDateSplit[1]);
-                    $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val(endDateSplit[1]); 
-                }else{
-                   $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val(startDate);
-                    $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val(endDate); 
-                }
-                
-                if(ending==1){
-                    $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").prop('disabled', true);
-                    $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").prop('disabled', true);
-                }else{
-                     $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").prop('disabled', false);
-                     $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").prop('disabled', false);
-                }  
-           }else if(zeitIntVal == 3){
-                $("." + sId + " .zeitintervallAnl_1").hide();
-                $("." + sId + " .zeitintervallAnl_2").hide();
-                $("." + sId + " .zeitintervallAnl_3").show();
-                $("." + sId + " .zeitintervallAnl_4").hide();
-                $("." + sId + " .zeitintervallAnl_NoEnding").show();
-                $("." + sId + " #monateMassEingDataAnlStart" + id + "").val(startDate);
-                $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val(endDate); 
-                if(ending==1){
-                    $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', true);
-                }else{
-                     $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
-                }          
-           }else if(zeitIntVal == 4){
-                $("." + sId + " .zeitintervallAnl_1").hide();
-                $("." + sId + " .zeitintervallAnl_2").hide();
-                $("." + sId + " .zeitintervallAnl_3").hide();
-                $("." + sId + " .zeitintervallAnl_4").show();
-                $("." + sId + " .zeitintervallAnl_NoEnding").show();
-                $("." + sId + " #jahrMassEingDataAnlStart" + id + "").val(startDate);
-                $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").val(endDate);
-                if(ending==1){
-                    $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', true);
-                }else{
-                     $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
-                }
-           }else{
-                $("#" + sId + " .zeitintervallAnl_1").hide();
-                $("#" + sId + " .zeitintervallAnl_2").hide();
-                $("#" + sId + " .zeitintervallAnl_3").hide();
-                $("#" + sId + " .zeitintervallAnl_4").hide();
-                $("#" + sId + " .zeitintervallAnl_NoEnding").hide();
-           } 
- }
+    $("." + sId + " .zeitintervallAnl_1 input").val("");
+    $("." + sId + " .zeitintervallAnl_2 input").val("");
+    $("." + sId + " .zeitintervallAnl_3 input").val("");
+    $("." + sId + " .zeitintervallAnl_4 input").val("");
+       if(zeitIntVal == 1){
+            $("." + sId + " .zeitintervallAnl_1").show();
+            $("." + sId + " .zeitintervallAnl_2").hide();
+            $("." + sId + " .zeitintervallAnl_3").hide();
+            $("." + sId + " .zeitintervallAnl_4").hide();
+            $("." + sId + " .zeitintervallAnl_NoEnding").show();
+            $("." + sId + " #tageMassEingDataAnlStart" + id + "").val(startDate);
+            $("." + sId + " #tageMassEingDataAnlEnde" + id + "").val(endDate);
+            if(ending==1){
+                $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', true);
+            }else{
+                 $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
+            }
+       }else if(zeitIntVal == 2){
+            $("." + sId + " .zeitintervallAnl_1").hide();
+            $("." + sId + " .zeitintervallAnl_2").show();
+            $("." + sId + " .zeitintervallAnl_3").hide();
+            $("." + sId + " .zeitintervallAnl_4").hide();
+            $("." + sId + " .zeitintervallAnl_NoEnding").show();
+            if(id==3){
+                var startDateSplit = startDate.split('-');
+                var endDateSplit = endDate.split('-');
+                $("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val(startDateSplit[0]);
+                $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val(endDateSplit[0]);
+                $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val(startDateSplit[1]);
+                $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val(endDateSplit[1]);
+            }else{
+               $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val(startDate);
+                $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val(endDate);
+            }
 
- function interneMesswerteConfigSpeichernMethod(){
+            if(ending==1){
+                $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").prop('disabled', true);
+                $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").prop('disabled', true);
+            }else{
+                 $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").prop('disabled', false);
+                 $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").prop('disabled', false);
+            }
+       }else if(zeitIntVal == 3){
+            $("." + sId + " .zeitintervallAnl_1").hide();
+            $("." + sId + " .zeitintervallAnl_2").hide();
+            $("." + sId + " .zeitintervallAnl_3").show();
+            $("." + sId + " .zeitintervallAnl_4").hide();
+            $("." + sId + " .zeitintervallAnl_NoEnding").show();
+            $("." + sId + " #monateMassEingDataAnlStart" + id + "").val(startDate);
+            $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val(endDate);
+            if(ending==1){
+                $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', true);
+            }else{
+                 $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
+            }
+       }else if(zeitIntVal == 4){
+            $("." + sId + " .zeitintervallAnl_1").hide();
+            $("." + sId + " .zeitintervallAnl_2").hide();
+            $("." + sId + " .zeitintervallAnl_3").hide();
+            $("." + sId + " .zeitintervallAnl_4").show();
+            $("." + sId + " .zeitintervallAnl_NoEnding").show();
+            $("." + sId + " #jahrMassEingDataAnlStart" + id + "").val(startDate);
+            $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").val(endDate);
+            if(ending==1){
+                $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', true);
+            }else{
+                 $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
+            }
+       }else{
+            $("#" + sId + " .zeitintervallAnl_1").hide();
+            $("#" + sId + " .zeitintervallAnl_2").hide();
+            $("#" + sId + " .zeitintervallAnl_3").hide();
+            $("#" + sId + " .zeitintervallAnl_4").hide();
+            $("#" + sId + " .zeitintervallAnl_NoEnding").hide();
+       }
+}
+/*Produkte 04-03-2021*/
+/*new-mm-start 22-03-2021*/
+function zeitintervallAnlInputsVisibleInvisiblePrdkt(zeitIntVal,startDate,endDate,ending,sId,id){
+//alert(startDate);alert(endDate);
+    $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+    $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+    $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+    $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+    $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
+
+    $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+    $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+    $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+    $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', false);
+
+    $("." + sId + " .zeitintervallAnlPrdkt_1 input").val("");
+    $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+    $("." + sId + " .zeitintervallAnlPrdkt_3 input").val("");
+    $("." + sId + " .zeitintervallAnlPrdkt_4 input").val("");
+       if(zeitIntVal == 1){
+            $("." + sId + " .zeitintervallAnlPrdkt_1").show();
+            $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+            $("." + sId + " #tageMassEingDataAnlPrdktStart" + id + "").val(startDate);
+            $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val(endDate);
+            if(ending==1){
+                $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            }else{
+                 $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+            }
+       }else if(zeitIntVal == 2){
+            $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_2").show();
+            $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+            if(id==3){
+                var startDateSplit = startDate.split('-');
+                var endDateSplit = endDate.split('-');
+                $("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val(startDateSplit[0]);
+                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val(endDateSplit[0]);
+                $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val(startDateSplit[1]);
+                $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val(endDateSplit[1]);
+            }else{
+               $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val(startDate);
+                $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val(endDate);
+            }
+
+            if(ending==1){
+                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+                $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            }else{
+                 $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+                 $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+            }
+       }else if(zeitIntVal == 3){
+            $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_3").show();
+            $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+            $("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val(startDate);
+            $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val(endDate);
+            if(ending==1){
+                $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            }else{
+                 $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+            }
+       }else if(zeitIntVal == 4){
+            $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_4").show();
+            $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+            $("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val(startDate);
+            $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val(endDate);
+            if(ending==1){
+                $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            }else{
+                 $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+            }
+       }else{
+            $("#" + sId + " .zeitintervallAnlPrdkt_1").hide();
+            $("#" + sId + " .zeitintervallAnlPrdkt_2").hide();
+            $("#" + sId + " .zeitintervallAnlPrdkt_3").hide();
+            $("#" + sId + " .zeitintervallAnlPrdkt_4").hide();
+            $("#" + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
+       }
+}
+/*new-mm-end 22-03-2021*/
+function interneMesswerteConfigSpeichernMethod(){
     var zeitintervallAnl = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
     var dates = returnStartDateAndEndDate(zeitintervallAnl,'infosIntBetriebsdaten',1);
     startDate =dates[0];
@@ -16054,7 +18540,55 @@ function keinZeitIntervallZugewiesenDblClickRow(mstID,sId){
         }
     });
 }
+/*save Int Bde Produkte Module 04-03-2021*/
+/*new-mm-start 22-03-2021*/
+function interneMesswerteConfigSpeichernMethodPrdkt(){
+    //var zeitintervallAnl = $(".infosIntBetriebsdaten #zeitintervallAnl").val();
+    var zeitintervallAnl = $(".infosIntEnergiedaten #zeitintervallAnlPrdkt").val();
+    var dates = returnStartDateAndEndDatePrdkt(zeitintervallAnl,'infosIntEnergiedaten',1);
+    var iBdeType = $("input[name='BetriebsdatenFilter']:checked").val();
 
+    startDate =dates[0];
+    endDate =dates[1];
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "interneBetriebsdatenProduktConfig",
+            modus: "save",
+            nameDB: $("#nameDB").val(),
+            intTp_ID: $("#zeitintervallAnlPrdkt").val(),
+            unt_ID: $("#einheitAnlPrdkt").val(),
+            mstID:  $("#mstID").val(),
+            prd_ID:  $("#prd_ID").val(),
+            anl_Col:  $("#anl_Col").val(),
+            anl_ID:  $("#anl_ID").val(),
+            iBdeType: iBdeType,
+            startDate:startDate,
+            endDate:endDate,
+            ending:$("#anlPrdktIMwNoEnding").val(),
+            note:$("#notizBdeIMwAnlPrdkt").val(),
+            einheitControlSys:$("#control_system_AnlPrdkt").val(),
+            mstIMw:$("#mstIMw").val(),
+
+        },
+        success: function(a) {
+            // alert(datensatzGespeichert(a));
+            //resetFormAllgemein('infosIntBetriebsdaten',1);
+            // keinZeitIntervallZugewiesen();
+            resetInterneBetriebsdatenInputs('infosIntEnergiedaten',1);
+            if(iBdeType == 1){
+                produkteAnlargeDataTable();
+            }
+            else if(iBdeType == 2){
+                searchProdukteAnlageIntBDE("2");
+            }
+
+        }
+    });
+}
+/*new-mm-end 22-03-2021*/
 function resetFormAllgemein(sId,id){
     $("." + sId + " .zeitintervallAnl_1").hide();
     $("." + sId + " .zeitintervallAnl_2").hide();
@@ -16067,6 +18601,10 @@ function resetFormAllgemein(sId,id){
     $("." + sId + " #anlIMwNoEnding").prop('checked', false);
     $("." + sId + " .zeitintervallAnl_1 input").val("");
     $("." + sId + " .zeitintervallAnl_2 input").val("");
+    /*new-mm-start 06-04-2021*/
+    $("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val("").change();
+    $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val("").change();
+    /*new-mm-end 06-04-2021*/
     $("." + sId + " .zeitintervallAnl_3 input").val("");
     $("." + sId + " .zeitintervallAnl_4 input").val("");
     $("." + sId + " #zeitintervallAnl").val("");
@@ -16080,28 +18618,50 @@ function resetFormAllgemein(sId,id){
 }
 
 function returnStartDateAndEndDate(val,sId,id){
-        if(val ==1){ 
-            var startDate = $("." + sId + " #tageMassEingDataAnlStart" + id + "").val(); 
+        if(val ==1){
+            var startDate = $("." + sId + " #tageMassEingDataAnlStart" + id + "").val();
             var endDate = $("." + sId + " #tageMassEingDataAnlEnde" + id + "").val();
         }else if(val ==2){
-            var startWeek = $("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val(); 
+            var startWeek = $("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val();
             var endWeek = $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val();
-            var startYear = $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val(); 
+            var startYear = $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val();
             var endYear= $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val();
             var startDate = startWeek + '-' +startYear;
             var endDate = endWeek + '-' +endYear;
         }else if(val ==3){
-            var startDate = $("." + sId + " #monateMassEingDataAnlStart" + id + "").val(); 
+            var startDate = $("." + sId + " #monateMassEingDataAnlStart" + id + "").val();
             var endDate = $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val();
         }else if(val ==4){
-            var startDate = $("." + sId + " #jahrMassEingDataAnlStart" + id + "").val(); 
+            var startDate = $("." + sId + " #jahrMassEingDataAnlStart" + id + "").val();
             var endDate = $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").val();
         }
         return [startDate, endDate];
 }
-
+/*Produkte 04-03-2021*/
+/*new-mm-start 22-03-2021*/
+function returnStartDateAndEndDatePrdkt(val,sId,id){
+        if(val ==1){
+            var startDate = $("." + sId + " #tageMassEingDataAnlPrdktStart" + id + "").val();
+            var endDate = $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val();
+        }else if(val ==2){
+            var startWeek = $("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val();
+            var endWeek = $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val();
+            var startYear = $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val();
+            var endYear= $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val();
+            var startDate = startWeek + '-' +startYear;
+            var endDate = endWeek + '-' +endYear;
+        }else if(val ==3){
+            var startDate = $("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val();
+            var endDate = $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val();
+        }else if(val ==4){
+            var startDate = $("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val();
+            var endDate = $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val();
+        }
+        return [startDate, endDate];
+}
+/*new-mm-end 22-03-2021*/
 function zeitintervallChange(val,sId,id){
-   
+
     if(id !=1){
         $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
         $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
@@ -16130,7 +18690,7 @@ function zeitintervallChange(val,sId,id){
        $("." + sId + " .zeitintervallAnl_2").hide();
         $("." + sId + " .zeitintervallAnl_3").show();
         $("." + sId + " .zeitintervallAnl_4").hide();
-        $("." + sId + " .zeitintervallAnl_NoEnding").show();  
+        $("." + sId + " .zeitintervallAnl_NoEnding").show();
    }else if(val == 4){
         $("." + sId + " .zeitintervallAnl_1").hide();
         $("." + sId + " .zeitintervallAnl_2").hide();
@@ -16143,11 +18703,58 @@ function zeitintervallChange(val,sId,id){
         $("." + sId + " .zeitintervallAnl_3").hide();
         $("." + sId + " .zeitintervallAnl_4").hide();
         $("." + sId + " .zeitintervallAnl_NoEnding").hide();
-   }  
+   }
 }
+/*Produkte mm 01-03-2021*/
+/*new-mm-start*/
+function zeitintervallAnlPrdktChange(val,sId,id){
 
+    if(id !=1){
+        $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+        $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', false);
+        $("." + sId + " .zeitintervallAnlPrdkt_1 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_3 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_4 input").val("");
+    }
+   if(val == 1){
+        $("." + sId + " .zeitintervallAnlPrdkt_1").show();
+        $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+   }else if(val == 2){
+        $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_2").show();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+
+   }else if(val == 3){
+        $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+       $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").show();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+   }else if(val == 4){
+        $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").show();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").show();
+   }else{
+        $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+        $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
+   }
+}
+/*new-mm-end*/
 function noEndingChange(val,sId,id){
-     var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val(); 
+     var zeitintervallAnl = $("." + sId + " #zeitintervallAnl").val();
      if(zeitintervallAnl == 1){
         if(val==true){
             $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', true);
@@ -16156,7 +18763,7 @@ function noEndingChange(val,sId,id){
         } else {
            $("." + sId + " #tageMassEingDataAnlEnde" + id + "").prop('disabled', false);
            $("." + sId + " #anlIMwNoEnding").val(0);
-        }               
+        }
        }else if(zeitintervallAnl == 2){
         if(val==true){
             $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").prop('disabled', true);
@@ -16168,7 +18775,7 @@ function noEndingChange(val,sId,id){
            $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").prop('disabled', false);
            $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").prop('disabled', false);
           $("." + sId + " #anlIMwNoEnding").val(0);
-        }               
+        }
        }else if(zeitintervallAnl == 3){
         if(val==true){
             $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', true);
@@ -16177,7 +18784,7 @@ function noEndingChange(val,sId,id){
         } else {
            $("." + sId + " #monateMassEingDataAnlEnde" + id + "").prop('disabled', false);
            $("." + sId + " #anlIMwNoEnding").val(0);
-        }      
+        }
        }else if(zeitintervallAnl == 4){
         if(val==true){
             $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', true);
@@ -16186,16 +18793,67 @@ function noEndingChange(val,sId,id){
         } else {
            $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").prop('disabled', false);
            $("." + sId + " #anlIMwNoEnding").val(0);
-        }  
+        }
        }else{
             $("." + sId + " .zeitintervallAnl_1").hide();
             $("." + sId + " .zeitintervallAnl_2").hide();
             $("." + sId + " .zeitintervallAnl_3").hide();
             $("." + sId + " .zeitintervallAnl_4").hide();
             $("." + sId + " .zeitintervallAnl_NoEnding").hide();
-       } 
+       }
+}
+/*Produkte mm 01-03-2021*/
+/*new-mm-start*/
+function noEndingAnlPrdktChange(val,sId,id){
+     var zeitintervallAnl = $("." + sId + " #zeitintervallAnlPrdkt").val();
+     if(zeitintervallAnl == 1){
+        if(val==true){
+            $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val('');
+            $("." + sId + " #anlPrdktIMwNoEnding").val(1);
+        } else {
+           $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+           $("." + sId + " #anlPrdktIMwNoEnding").val(0);
+        }
+       }else if(zeitintervallAnl == 2){
+        if(val==true){
+            $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val('');
+            $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val('');
+             $("." + sId + " #anlPrdktIMwNoEnding").val(1);
+        } else {
+           $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+           $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+          $("." + sId + " #anlPrdktIMwNoEnding").val(0);
+        }
+       }else if(zeitintervallAnl == 3){
+        if(val==true){
+            $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+            $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val('');
+            $("." + sId + " #anlPrdktIMwNoEnding").val(1);
+        } else {
+           $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+           $("." + sId + " #anlPrdktIMwNoEnding").val(0);
+        }
+       }else if(zeitintervallAnl == 4){
+        if(val==true){
+            $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', true);
+             $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val('');
+             $("." + sId + " #anlPrdktIMwNoEnding").val(1);
+        } else {
+           $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").prop('disabled', false);
+           $("." + sId + " #anlPrdktIMwNoEnding").val(0);
+        }
+       }else{
+            $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+            $("." + sId + " .zeitintervallAnlPrdkt_NoEnding").hide();
+       }
   }
-
+/*new-mm-end*/
 function intBdeIMwNextPrev(key,countRecord,mst_ID){
     $.ajax({
             type: "POST",
@@ -16224,16 +18882,130 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
                     $(".infosIntBetriebsdaten #zeitintervallAnl").val(c[0]['intTp_ID']);
                     $(".infosIntBetriebsdaten #einheitAnl").val(c[0]['unt_ID']);
                     $(".infosIntBetriebsdaten #notizBdeIMw").val(c[0]['note']);
-                    zeitintervallAnlInputsVisibleInvisible(c[0]['intTp_ID'],sDt,eDt,c[0]['ending'],'infosIntBetriebsdaten',1); 
+                    zeitintervallAnlInputsVisibleInvisible(c[0]['intTp_ID'],sDt,eDt,c[0]['ending'],'infosIntBetriebsdaten',1);
                     $(".infosIntBetriebsdaten #anlIMwNoEnding").prop('checked', c[0]['ending']);
                     $(".infosIntBetriebsdaten #anlIMwNoEnding").val(c[0]['ending']);
-                    $("#nextPrevMstID").val(c[0].mst_ID);
-                    $("#mstID").val(c[0].mst_ID);
+                    /*new-mm-start 26-03-2021*/
+                    $("#nextPrevMstID").val(c[0].T1_mst_ID);
+                    $("#mstID").val(c[0].T1_mst_ID);
+                    //alert(c[0].T1_mst_ID);
+                     /*new-mm-end 26-03-2021*/
                  }
             }
-        });
-    }
+    });
+}
+/*17-03-2021*/
+/*new-mm-start*/
+/*new-mm-start 25-03-2021*/
+function intBdePrdktIMwNextPrev(key,countRecord,prd_ID){
+    $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "intBdePrdktIMw",
+                nameDB: $("#nameDB").val(),
+                liegID: $("#liegID").val(),
+                key:key,
+                countRecord:countRecord,
+                iBdePrdktConf_ID:prd_ID
+            },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                var a = JSON.parse(a);
+                var b = a.length;
+                //console.log(c);
+                if (b>0) {
 
+                    var sId = "infosIntEnergiedaten";
+
+                    $("." + sId + " #mstIMw").val(a[0]['mstIMw']).prop('disabled',false);
+                    $("." + sId + " #artikelnummerIntBde").val(a[0]['artikelNrPrd']).prop('disabled',true);
+                    $("." + sId + " #bezeichnungIntBde").val(a[0]['namePrd']).prop('disabled',true);
+                    $("." + sId + " #anlageIntBde").val(a[0]['bezeichnungAnl']).prop('disabled',true);
+
+                    var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
+                    var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
+                    $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['intTp_ID']);
+                    $("." + sId + " #einheitAnlPrdkt").val(a[0]['unt_ID']);
+                    $("." + sId + " #notizBdeIMwAnlPrdkt").val(a[0]['note']);
+                    zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['intTp_ID'],sDt,eDt,a[0]['ending'],'infosIntEnergiedaten',1);
+                    $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', a[0]['ending']);
+                    $("." + sId + " #anlPrdktIMwNoEnding").val(a[0]['ending']);
+                    if(a[0]['intTp_ID']==2){
+                        $("." + sId + " #wochenWMassEingDataAnlPrdktStart1").val(a[0]['startWeek']);
+                        $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val(a[0]['endWeek']);
+                    }
+                    $("." + sId + " .control_system_div_AnlPrdkt").show();
+                    $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
+                    einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
+                    $("#nextPrevMstIDPrdktID").val(a[0]['id']);
+                    /*new-mm-start 25-03-2021*/
+                    //$("#mstID").val(a[0]['id']);
+                    /*new-mm-end 25-03-2021*/
+                    //alert("id"+a[0]['id']);
+                    //mm-last
+                }
+            }
+        });
+}
+/*new-mm-end 25-03-2021*/
+/*new-mm-start 25-03-2021*/
+function intBdeMesssetelleIMwNextPrev(key,countRecord,mst_ID){
+    $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "intBdeMesssetelleIMw",
+                nameDB: $("#nameDB").val(),
+                liegID: $("#liegID").val(),
+                key:key,
+                countRecord:countRecord,
+                iBdePrdktConf_ID:mst_ID
+            },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                var a = JSON.parse(a);
+                var b = a.length;
+                //console.log(c);
+                if (b>0) {
+
+                    var sId = "infosIntEnergiedaten";
+                    $("." + sId + " #mstIMw").val(a[0]['nameMSt']).prop('disabled',true);
+                    $("." + sId + " #anlageMessstelleIntBde").val(a[0]['anlageMst']).prop('disabled',true);
+
+                    var sDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['startDate']);
+                    var eDt = convertDateFormateForDataTbl(a[0]['intTp_ID'],a[0]['endDate']);
+                    $("." + sId + " #zeitintervallAnlPrdkt").val(a[0]['intTp_ID']);
+                    $("." + sId + " #einheitAnlPrdkt").val(a[0]['unt_ID']);
+                    $("." + sId + " #notizBdeIMwAnlPrdkt").val(a[0]['note']);
+                    zeitintervallAnlInputsVisibleInvisiblePrdkt(a[0]['intTp_ID'],sDt,eDt,a[0]['ending'],'infosIntEnergiedaten',1);
+                    $("." + sId + " #anlPrdktIMwNoEnding").prop('checked', a[0]['ending']);
+                    $("." + sId + " #anlPrdktIMwNoEnding").val(a[0]['ending']);
+                    if(a[0]['intTp_ID']==2){
+                        $("." + sId + " #wochenWMassEingDataAnlPrdktStart1").val(a[0]['startWeek']);
+                        $("." + sId + " #wochenWMassEingDataAnlPrdktEnde1").val(a[0]['endWeek']);
+                    }
+                    $("." + sId + " .control_system_div_AnlPrdkt").show();
+                    $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
+                    einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
+                    $("#nextPrevMstIDPrdktID").val(a[0]['T1_mst_ID']);
+                    /*new-mm-start 25-03-2021*/
+                    $("#mstID").val(a[0]['T1_mst_ID']);
+                    /*new-mm-end 25-03-2021*/
+                    //alert("id"+a[0]['T1_mst_ID']);
+
+                }
+            }
+        });
+}
+/*new-mm-end 25-03-2021*/
+/*new-mm-end*/
     /*02-11-2020 btn Masseneingabe IMw functionality*/
     function btnMasseneingabeIMwChange(val,sId,id){
         $("." + sId + " .zeitintervallAnl_1 input").val("");
@@ -16275,22 +19047,22 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
         var date2 = new Date();
         //var startYear_2  =date2.getFullYear();
         var endYear_2  =date2.getFullYear();
-        var oneJan =  new Date(date2.getFullYear(), 0, 1);      
-        var numberOfDays =  Math.floor((date2 - oneJan) / (24 * 60 * 60 * 1000));   
-        //var startWk_2 = Math.ceil(( date2.getDay() + 1 +numberOfDays - 28) / 7); 
-        var endWk_2 = Math.ceil(( date2.getDay() + 1 + numberOfDays) / 7); 
+        var oneJan =  new Date(date2.getFullYear(), 0, 1);
+        var numberOfDays =  Math.floor((date2 - oneJan) / (24 * 60 * 60 * 1000));
+        //var startWk_2 = Math.ceil(( date2.getDay() + 1 +numberOfDays - 28) / 7);
+        var endWk_2 = Math.ceil(( date2.getDay() + 1 + numberOfDays) / 7);
         //var endWk_2 = 5;
         var weekDiff = endWk_2-6;
         if (weekDiff > 0) {
             var startWk_2 = weekDiff;
             var startYear_2 = date2.getFullYear();
         }else{
-            var startWk_2 = 53+weekDiff; 
+            var startWk_2 = 53+weekDiff;
             var sDate2_set = date2.setFullYear(date2.getFullYear() - 1);
             var sDate2 = new Date(sDate2_set);
             var startYear_2 = date2.getFullYear();
         }
-        /*Wochen End*/ 
+        /*Wochen End*/
 
            if(val == 1){
                 $("." + sId + " .zeitintervallAnl_1").show();
@@ -16300,14 +19072,14 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
                 $("." + sId + " #tageMassEingDataAnlStart"+id).val(startDate_1);
                 $("." + sId + " #tageMassEingDataAnlEnde"+id).val(endDate_1);
-                //alert(startDate_1);                
+                //alert(startDate_1);
            }else if(val == 2){
                 $("." + sId + " .zeitintervallAnl_1").hide();
                 $("." + sId + " .zeitintervallAnl_2").show();
                 $("." + sId + " .zeitintervallAnl_3").hide();
                 $("." + sId + " .zeitintervallAnl_4").hide();
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
-                setTimeout(function(){ 
+                setTimeout(function(){
 
                 $("." + sId + " #wochenYMassEingDataAnlStart"+id).val(startYear_2);
                 $("." + sId + " #wochenYMassEingDataAnlEnde"+id).val(endYear_2);
@@ -16318,10 +19090,10 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
                 $("." + sId + " .zeitintervallAnl_1").hide();
                 $("." + sId + " .zeitintervallAnl_2").hide();
                 $("." + sId + " .zeitintervallAnl_3").show();
-                $("." + sId + " .zeitintervallAnl_4").hide(); 
+                $("." + sId + " .zeitintervallAnl_4").hide();
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
                 $("." + sId + " #monateMassEingDataAnlStart"+id).val(startDate_3);
-                $("." + sId + " #monateMassEingDataAnlEnde"+id).val(endDate_3);           
+                $("." + sId + " #monateMassEingDataAnlEnde"+id).val(endDate_3);
            }else if(val == 4){
                 $("." + sId + " .zeitintervallAnl_1").hide();
                 $("." + sId + " .zeitintervallAnl_2").hide();
@@ -16336,11 +19108,118 @@ function intBdeIMwNextPrev(key,countRecord,mst_ID){
                 $("." + sId + " .zeitintervallAnl_3").hide();
                 $("." + sId + " .zeitintervallAnl_4").hide();
                 $("." + sId + " .btnMasseneingabeIMwSearchDiv").hide();
-           }  
+           }
   }
+
+/*new-mm-start 31-03-2021*/
+    function btnMasseneingabeIMwChangePrdkt(val,sId,id){
+        $("." + sId + " .zeitintervallAnlPrdkt_1 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_2 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_3 input").val("");
+        $("." + sId + " .zeitintervallAnlPrdkt_4 input").val("");
+        /*Months Start*/
+        var date = new Date();
+        var eYY3  =date.getFullYear();
+        var eMM3  =("0" + (date.getMonth() + 1)).slice(-2);
+        var sDate3_set = date.setMonth(date.getMonth() - 3);
+        var sDate3 = new Date(sDate3_set);
+        var sYY3 = date.getFullYear();
+        var sMM3 = ("0" + (sDate3.getMonth() + 1)).slice(-2);
+        var startDate_3 = [sMM3,sYY3].join(".");
+        var endDate_3 = [eMM3,eYY3].join(".");
+        /*Months End*/
+        /*Tage Start*/
+        var date1 = new Date();
+        var eYY1  =date1.getFullYear();
+        var eMM1  =("0" + (date1.getMonth() + 1)).slice(-2);
+        var eDD1=("0" + date1.getDate()).slice(-2);
+        var sDate1_set = date1.setDate(date1.getDate() - 6);
+        var sDate1 = new Date(sDate1_set);
+        var sYY1 = date1.getFullYear();
+        var sMM1 = ("0" + (sDate1.getMonth() + 1)).slice(-2);
+        var sDD1 = ("0" + date1.getDate()).slice(-2);
+        var startDate_1 = [sDD1,sMM1,sYY1].join(".");
+        var endDate_1 = [eDD1,eMM1,eYY1].join(".");
+        /*Tage End*/
+        /*Jahr Start*/
+        var date4 = new Date();
+        var endDate_4  =date4.getFullYear();
+        var sDate4_set = date4.setFullYear(date4.getFullYear() - 3);
+        var sDate4 = new Date(sDate4_set);
+        var startDate_4 = date4.getFullYear();
+        /*Jahr End*/
+        /*Wochen Start*/
+        var date2 = new Date();
+        //var startYear_2  =date2.getFullYear();
+        var endYear_2  =date2.getFullYear();
+        var oneJan =  new Date(date2.getFullYear(), 0, 1);
+        var numberOfDays =  Math.floor((date2 - oneJan) / (24 * 60 * 60 * 1000));
+        //var startWk_2 = Math.ceil(( date2.getDay() + 1 +numberOfDays - 28) / 7);
+        var endWk_2 = Math.ceil(( date2.getDay() + 1 + numberOfDays) / 7);
+        //var endWk_2 = 5;
+        var weekDiff = endWk_2-6;
+        if (weekDiff > 0) {
+            var startWk_2 = weekDiff;
+            var startYear_2 = date2.getFullYear();
+        }else{
+            var startWk_2 = 53+weekDiff;
+            var sDate2_set = date2.setFullYear(date2.getFullYear() - 1);
+            var sDate2 = new Date(sDate2_set);
+            var startYear_2 = date2.getFullYear();
+        }
+        /*Wochen End*/
+
+           if(val == 1){
+                $("." + sId + " .zeitintervallAnlPrdkt_1").show();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+                $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
+                $("." + sId + " #tageMassEingDataAnlPrdktStart"+id).val(startDate_1);
+                $("." + sId + " #tageMassEingDataAnlPrdktEnde"+id).val(endDate_1);
+                //alert(startDate_1);
+           }else if(val == 2){
+                $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").show();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+                $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
+                setTimeout(function(){
+
+                $("." + sId + " #wochenYMassEingDataAnlPrdktStart"+id).val(startYear_2);
+                $("." + sId + " #wochenYMassEingDataAnlPrdktEnde"+id).val(endYear_2);
+                $("." + sId + " #wochenWMassEingDataAnlPrdktStart"+id).val(startWk_2);
+                $("." + sId + " #wochenWMassEingDataAnlPrdktEnde"+id).val(endWk_2);
+                }, 300);
+           }else if(val == 3){
+                $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").show();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+                $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
+                $("." + sId + " #monateMassEingDataAnlPrdktStart"+id).val(startDate_3);
+                $("." + sId + " #monateMassEingDataAnlPrdktEnde"+id).val(endDate_3);
+           }else if(val == 4){
+                $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").show();
+                $("." + sId + " .btnMasseneingabeIMwSearchDiv").show();
+                $("." + sId + " #jahrMassEingDataAnlPrdktStart"+id).val(startDate_4);
+                $("." + sId + " #jahrMassEingDataAnlPrdktEnde"+id).val(endDate_4);
+           }else{
+                $("." + sId + " .zeitintervallAnlPrdkt_1").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_2").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_3").hide();
+                $("." + sId + " .zeitintervallAnlPrdkt_4").hide();
+                $("." + sId + " .btnMasseneingabeIMwSearchDiv").hide();
+           }
+    }
+/*new-mm-end 31-03-2021*/
 
   /*Interne Messwerte Start 20-10-2020*/
 function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
+        //alert("1");
         $.ajax({
             type: "POST",
             async: !0,
@@ -16360,67 +19239,67 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
             //console.log(a);
                 var b = a.query1.length;
                 if(b>0){
-                if(zeitintervallAnl == 1){                    
+                if(zeitintervallAnl == 1){
                     var from = startDate.split(".");
                     var to = endDate.split(".");
 
                     var newStartDate = [from[2],from[1],from[0]].join('-');
                     var newEndDate = [to[2], to[1], to[0]].join('-');
- 
+
                     var From_date = new Date(newStartDate);
                     var To_date = new Date(newEndDate);
                     var diff_date =  To_date - From_date;
-                    
+
                     var dateArr = getDatesInToArray(From_date, To_date);
                     //console.log('dateArr='+dateArr);
                     //findArrValueByDate('2020-11-15',23,a.query2);
-                    
+
                     var day = 1000 * 60 * 60 * 24;
                     var days = Math.floor(diff_date/day);
                    $("#tblMasseneingabeDataIMw").remove();
                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
-                   for (var e = 0; e < b; e++){    
-                        if(e==0) {    
+                   for (var e = 0; e < b; e++){
+                        if(e==0) {
                             $row += '<tr><td>Anlage</td>';
-                            for (var r = 0; r <= days; r++){ 
+                            for (var r = 0; r <= days; r++){
 
                                   $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
-                                         
-                                          
+
+
                             }
                             $row += '</tr>';
                         }
                     }
-                    
+
                     for (var e = 0; e < b; e++){
                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                            //console.log(anlageObj[a.query1[e].mst_ID]);
                            //console.log(anlageObj);
                            var datesOfArr = [];
                            var p=0;var z;
-                           for (var r = 0; r <= days; r++){ 
-                                var n=''; 
+                           for (var r = 0; r <= days; r++){
+                                var n='';
                                 //console.log(a[e].ending);
                                 if(a.query1[e].ending ==0){
                                   if(a.query1[e].startDate > dateArr[r]){
                                         n='disabled';
                                     }else if(a.query1[e].endDate < dateArr[r]){
                                          n='disabled';
-                                    }  
+                                    }
                                 }
                                 if(a.query1[e].ending ==1){
                                   if(a.query1[e].startDate > dateArr[r]){
                                      n='disabled';
                                     }
                                 }
-                                
-                                if(n !='disabled'){ 
+
+                                if(n !='disabled'){
                                     if(p < 5){
                                       z="checkAlertRange";
                                     }else{
                                       z='';
-                                    } 
-                                    p++;                 
+                                    }
+                                    p++;
                                 }
                                 var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
                                 $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup '+z+'" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
@@ -16430,12 +19309,12 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                 }else{
                                     anlageObj[a.query1[e].mst_ID]=datesOfArr;
                                 }
-                            }     
-                                    
+                            }
+
                         $row += '</tr>';
                         /*Second row for calculation*/
                          $row += '<tr class="calcZeit1RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
-                           for (var r = 0; r <= days; r++){ 
+                           for (var r = 0; r <= days; r++){
                                 var n='';
                                 //console.log(a[e].ending);
                                 if(a.query1[e].ending ==0){
@@ -16443,7 +19322,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                         n='disabled';
                                     }else if(a.query1[e].endDate < dateArr[r]){
                                          n='disabled';
-                                    }  
+                                    }
                                 }
                                 if(a.query1[e].ending ==1){
                                   if(a.query1[e].startDate > dateArr[r]){
@@ -16457,7 +19336,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                 }
                                var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
                                 $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
-                            }             
+                            }
                         $row += '</tr>';
                     }
                     $row +='</table></div>';
@@ -16471,50 +19350,50 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     var to = endDate.split("-");
                     var s =  to[0]; //second week selected value
                     var t =  to[1]; //second year input text value
-                    
+
                     var years =  t - f;
 
                     $("#tblMasseneingabeDataIMw").remove();
-                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';                    
-                    for (var e = 0; e < b; e++){    
-                        if(e==0) {                   
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
                             $row += '<tr><td>Anlage</td>';
                              for (var r = 0; r <= years; r++){
-                                var yr = eval(f) + eval(r); 
+                                var yr = eval(f) + eval(r);
                                 var weekNum =53;
                                 if(t==yr){
                                     weekNum =s;
                                 }
-                                for (var i = g; i <= weekNum; i++){    
+                                for (var i = g; i <= weekNum; i++){
                                         if(a.query1[e].startDate <= yr ){
                                             if(a.query1[e].startDate == yr && a.query1[e].startWeek <= i){
                                                 m='';
-                                            } 
+                                            }
                                             if(a.query1[e].startDate < yr ){
                                                 m='';
-                                            } 
+                                            }
                                         }
                                         if(yr >= a.query1[e].endDate){
                                              if(yr > a.query1[e].endDate){
                                                 m='disabled';
 
-                                             } 
+                                             }
                                              if(yr == a.query1[e].endDate && a.query1[e].endWeek < i){
                                                 m='disabled';
                                              }
-                                        }               
-                                    $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + i + ' KW ' + yr + '</th>';            
+                                        }
+                                    $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + i + ' KW ' + yr + '</th>';
                                     if(i>=53){
                                         var g=1;
-                                    } 
-                                }                                    
-                            } 
-                                             
+                                    }
+                                }
+                            }
+
                             $row += '</tr>';
                         }
                     }
                     var weekOfArr=[];
-                    for (var e = 0; e < b; e++){ 
+                    for (var e = 0; e < b; e++){
                         var from1 = startDate.split("-");
                         var g1 = g2=from1[0]; //first week selected value
                         var f1 = f2=from1[1]; //first year input text value
@@ -16522,36 +19401,36 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                         var to1 = endDate.split("-");
                         var s1 =s2=  to1[0]; //second week selected value
                         var t1 =t2=  to1[1]; //second year input text value
-                                          
+
                              $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                              var count1 = 0;
                              for (var r1 = 0; r1 <= years; r1++){
                                 var m='disabled';
-                                var yr1 = eval(f1) + eval(r1); 
+                                var yr1 = eval(f1) + eval(r1);
                                 var weekNum =53;
                                 if(t1==yr1){
                                     weekNum =s1;
                                 }
-                                for (var i1 = g1; i1 <= weekNum; i1++){    
+                                for (var i1 = g1; i1 <= weekNum; i1++){
                                         if(a.query1[e].startDate <= yr1 ){
                                             if(a.query1[e].startDate == yr1 && a.query1[e].startWeek <= i1){
                                                 m='';
-                                            } 
+                                            }
                                             if(a.query1[e].startDate < yr1 ){
                                                 m='';
-                                            } 
+                                            }
                                         }
                                         if(a.query1[e].ending ==0){
                                             if(yr1 >= a.query1[e].endDate){
                                                  if(yr1 > a.query1[e].endDate){
                                                     m='disabled';
 
-                                                 } 
+                                                 }
                                                  if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
                                                     m='disabled';
                                                  }
                                             }
-                                        } 
+                                        }
                                         if(a.query1[e].ending ==1){
                                             if(yr1 >= a.query1[e].endDate){
                                                  /*if(yr1 > a.query1[e].endDate){
@@ -16563,12 +19442,12 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                                  }
                                             }
                                         }
-                                        var inputVal =  findArrValueByDateWeek(yr1,i1,a.query1[e].mst_ID,a.query2);                               
+                                        var inputVal =  findArrValueByDateWeek(yr1,i1,a.query1[e].mst_ID,a.query2);
                                         $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + i1 + '-' + yr1 + '"><input type="text" id="anlageMainRow_'+count1+'" name="masseneingabeInput'+i1+'[]" '+m+' class="txtBoxSrch isShowPopup" value="'+inputVal+'"/></td>';
                                         if(i1>=53){
-                                            var g1=1;   
-                                           // console.log('i1='+i1); 
-                                        } 
+                                            var g1=1;
+                                           // console.log('i1='+i1);
+                                        }
                                         if(inputVal !=''){
                                                 weekOfArr.push(String(i1 + '-' + yr1));
                                                 anlageObj[a.query1[e].mst_ID]=weekOfArr;
@@ -16576,40 +19455,40 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                             anlageObj[a.query1[e].mst_ID]=weekOfArr;
                                         }*/
                                        // console.log(anlageObj);
-                                    count1 ++; 
-                                }                                    
-                            } 
-                                            
+                                    count1 ++;
+                                }
+                            }
+
                             $row += '</tr>';
                             $row += '<tr class="calcZeit2RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
                              var count2 = 0;
                              for (var r2 = 0; r2 <= years; r2++){
                                 var m='disabled';
-                                var yr2 = eval(f2) + eval(r2); 
+                                var yr2 = eval(f2) + eval(r2);
                                 var weekNum =53;
                                 if(t2==yr2){
                                     weekNum =s2;
                                 }
-                                for (var i2 = g2; i2 <= weekNum; i2++){    
+                                for (var i2 = g2; i2 <= weekNum; i2++){
                                         if(a.query1[e].startDate <= yr2 ){
                                             if(a.query1[e].startDate == yr2 && a.query1[e].startWeek <= i2){
                                                 m='';
-                                            } 
+                                            }
                                             if(a.query1[e].startDate < yr2 ){
                                                 m='';
-                                            } 
+                                            }
                                         }
                                         if(a.query1[e].ending ==0){
                                             if(yr2 >= a.query1[e].endDate){
                                                  if(yr2 > a.query1[e].endDate){
                                                     m='disabled';
 
-                                                 } 
+                                                 }
                                                  if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
                                                     m='disabled';
                                                  }
                                             }
-                                        } 
+                                        }
                                         if(a.query1[e].ending ==1){
                                             if(yr2 >= a.query1[e].endDate){
                                                  /*if(yr2 > a.query1[e].endDate){
@@ -16624,17 +19503,17 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                         var rdOnly = '';
                                         if(m !== 'disabled'){
                                             rdOnly = 'readonly';
-                                        }    
-                                         var inputVal =  findArrValueByDateWeek(yr2,i2,a.query1[e].mst_ID,a.query3);                           
+                                        }
+                                         var inputVal =  findArrValueByDateWeek(yr2,i2,a.query1[e].mst_ID,a.query3);
                                         $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
                                         if(i2>=53){
-                                            var g2=1;   
-                                           // console.log('i2='+i2); 
-                                        } 
-                                    count2 ++; 
-                                }                                    
-                            } 
-                                            
+                                            var g2=1;
+                                           // console.log('i2='+i2);
+                                        }
+                                    count2 ++;
+                                }
+                            }
+
                             $row += '</tr>';
                     }
                     $row +='</table></div>';
@@ -16666,33 +19545,33 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
 
                     $("#tblMasseneingabeDataIMw").remove();
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
-                    for (var e = 0; e < b; e++){    
-                        if(e==0) {                   
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
                             $row += '<tr><td>Anlage</td>';
-                            for (var r = 0; r <= months; r++){              
+                            for (var r = 0; r <= months; r++){
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
-                            }                        
+                            }
                             $row += '</tr>';
                       }
                     }
                     var monthOfArr=[];
-                    for (var e = 0; e < b; e++){                        
+                    for (var e = 0; e < b; e++){
                        $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
-                        for (var r = 0; r <= months; r++){   
-                            var n=''; 
+                        for (var r = 0; r <= months; r++){
+                            var n='';
                             if(a.query1[e].ending ==0){
                                 if(a.query1[e].startDate > dateArr[r]){
                                      n='disabled';
                                 }else if(a.query1[e].endDate < dateArr[r]){
                                      n='disabled';
-                                }  
-                            } 
+                                }
+                            }
                              if(a.query1[e].ending ==1){
                                 if(a.query1[e].startDate > dateArr[r]){
                                      n='disabled';
-                                } 
-                            }   
-                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);                 
+                                }
+                            }
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
                             $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
                             if(inputVal !=''){
                                 monthOfArr.push(dateArr[r]);
@@ -16700,70 +19579,70 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                             }else{
                                 anlageObj[a.query1[e].mst_ID]=monthOfArr;
                             }
-                        }                        
+                        }
                         $row += '</tr>';
                         $row += '<tr class="calcZeit3RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
-                        for (var r = 0; r <= months; r++){   
-                            var n=''; 
+                        for (var r = 0; r <= months; r++){
+                            var n='';
                             if(a.query1[e].ending ==0){
                                 if(a.query1[e].startDate > dateArr[r]){
                                      n='disabled';
                                 }else if(a.query1[e].endDate < dateArr[r]){
                                      n='disabled';
-                                }  
-                            } 
+                                }
+                            }
                              if(a.query1[e].ending ==1){
                                 if(a.query1[e].startDate > dateArr[r]){
                                      n='disabled';
-                                } 
-                            } 
+                                }
+                            }
                             var rdOnly = '';
                             if(n !== 'disabled'){
                                 rdOnly = 'readonly';
-                            }    
+                            }
                             var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
                             $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
-                        }                        
+                        }
                         $row += '</tr>';
                     }
                     $row +='</table></div>';
                     $('#timeIntervalWerteEnergiedatenIMw').html( $row );
-                }else if(zeitintervallAnl == 4){         
+                }else if(zeitintervallAnl == 4){
                     var years =  endDate - startDate;
                     const getYearsInToArray = (start, end) => Array(end - start + 1)
                             .fill(start)
                             .map((year, index) => year + index);
                     $("#tblMasseneingabeDataIMw").remove();
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
-                    for (var e = 0; e < b; e++){    
-                        if(e==0) {                   
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
                             $row += '<tr><td>Anlage</td>';
-                            for (var r = 0; r <= years; r++){  
+                            for (var r = 0; r <= years; r++){
                                 var yr = eval(startDate) + eval(r);
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
-                            }                        
+                            }
                             $row += '</tr>';
                         }
                     }
                     var yearOfArr = [];
-                    for (var e = 0; e < b; e++){                        
+                    for (var e = 0; e < b; e++){
                         $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
-                        
+
                         for (var r = 0; r <= years; r++){
-                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear()); 
-                            var t='';  
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
                             var yr1 = eval(startDate) + eval(r);
                             if(a.query1[e].ending ==0){
                                 if(a.query1[e].startDate > yearsBw[r]){
                                      t='disabled';
                                 }else if(a.query1[e].endDate < yearsBw[r]){
                                      t='disabled';
-                                }   
+                                }
                              }
                              if(a.query1[e].ending ==1){
                                 if(a.query1[e].startDate > yearsBw[r]){
                                      t='disabled';
-                                }  
+                                }
                              }
                             var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query2);
                             $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
@@ -16774,54 +19653,1013 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                 anlageObj[a.query1[e].mst_ID]=yearOfArr;
                             }
                             //console.log(anlageObj);
-                        }                        
+                        }
                         $row += '</tr>';
 
                         $row += '<tr class="calcZeit4RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
                         for (var r = 0; r <= years; r++){
-                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear()); 
-                            var t='';   
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
                             var yr1 = eval(startDate) + eval(r);
                             if(a.query1[e].ending ==0){
                                 if(a.query1[e].startDate > yearsBw[r]){
                                      t='disabled';
                                 }else if(a.query1[e].endDate < yearsBw[r]){
                                      t='disabled';
-                                }   
+                                }
                              }
                              if(a.query1[e].ending ==1){
                                 if(a.query1[e].startDate > yearsBw[r]){
                                      t='disabled';
-                                }  
+                                }
                              }
                             var rdOnly = '';
                             if(t !== 'disabled'){
                                 rdOnly = 'readonly';
-                            } 
+                            }
                             var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query3);
                             $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
-                        }                        
+                        }
                         $row += '</tr>';
                     }
                     $row +='</table></div>';
                     $('#timeIntervalWerteEnergiedatenIMw').html( $row );
-                } 
+                }
               }else{
                     $("#tblMasseneingabeDataIMw").remove();
                     $noRow ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl" style="border:1px solid #f3f3f3;background:#ccc;"';
-                            $noRow += '<tr><td style="text-align:center;">No Record Found ! Please enter valid dates into input.</td>';  $noRow += '</tr>';                      
+                            $noRow += '<tr><td style="text-align:center;">No Record Found ! Please enter valid dates into input.</td>';  $noRow += '</tr>';
                     $noRow +='</table></div>';
                     $('#timeIntervalWerteEnergiedatenIMw').html( $noRow );
               }
             }
         });
 }
+/*new-mm-start 31-03-2021,05-04-2021*/
+function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
+        //alert("2");
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabePrdktSearch",
+                nameDB: $("#nameDB").val(),
+                startDate: startDate,
+                endDate:endDate,
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+            //console.log(a);
+                var b = a.query1.length;
+                if(b>0){
+                if(zeitintervallAnl == 1){
+                    var from = startDate.split(".");
+                    var to = endDate.split(".");
+
+                    var newStartDate = [from[2],from[1],from[0]].join('-');
+                    var newEndDate = [to[2], to[1], to[0]].join('-');
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getDatesInToArray(From_date, To_date);
+                    //console.log('dateArr='+dateArr);
+                    //findArrValueByDate('2020-11-15',23,a.query2);
+
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.floor(diff_date/day);
+                   $("#tblMasseneingabeDataIMw").remove();
+                   $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                   for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= days; r++){
+
+                                  $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
+
+
+                            }
+                            $row += '</tr>';
+                        }
+                    }
+
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
+                           //console.log(anlageObj[a.query1[e].mst_ID]);
+                           //console.log(anlageObj);
+                           var datesOfArr = [];
+                           var p=0;var z;
+                           for (var r = 0; r <= days; r++){
+                                var n='';
+                                //console.log(a[e].ending);
+                                if(a.query1[e].ending ==0){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                        n='disabled';
+                                    }else if(a.query1[e].endDate < dateArr[r]){
+                                         n='disabled';
+                                    }
+                                }
+                                if(a.query1[e].ending ==1){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                    }
+                                }
+
+                                if(n !='disabled'){
+                                    if(p < 5){
+                                      z="checkAlertRange";
+                                    }else{
+                                      z='';
+                                    }
+                                    p++;
+                                }
+
+                                var inputVal = findArrValueByDatePrdkt(dateArr[r],a.query1[e].id,a.query2);
+                                $row += '<td data-id="'+a.query1[e].id+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup '+z+'" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
+                                if(inputVal !=''){
+                                     datesOfArr.push(dateArr[r]);
+                                    anlageObj[a.query1[e].id]=datesOfArr;
+                                }else{
+                                    anlageObj[a.query1[e].id]=datesOfArr;
+                                }
+                            }
+
+                        $row += '</tr>';
+                        /*Second row for calculation*/
+                         $row += '<tr class="calcZeit1RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                           for (var r = 0; r <= days; r++){
+                                var n='';
+                                //console.log(a[e].ending);
+                                if(a.query1[e].ending ==0){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                        n='disabled';
+                                    }else if(a.query1[e].endDate < dateArr[r]){
+                                         n='disabled';
+                                    }
+                                }
+                                if(a.query1[e].ending ==1){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                    }
+                                }
+                               // console.log('n='+n);
+                                var rdOnly = '';
+                                if(n !== 'disabled'){
+                                    rdOnly = 'readonly';
+                                }
+                               var inputVal = findArrValueByDatePrdkt(dateArr[r],a.query1[e].id,a.query3);
+                                $row += '<td data-id="'+a.query1[e].id+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                            }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $row );
+
+                }else if(zeitintervallAnl == 2){
+                    var from = startDate.split("-");
+                    var g = from[0]; //first week selected value
+                    var f = from[1]; //first year input text value
+
+                    var to = endDate.split("-");
+                    var s =  to[0]; //second week selected value
+                    var t =  to[1]; //second year input text value
+
+                    var years =  t - f;
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                             for (var r = 0; r <= years; r++){
+                                var yr = eval(f) + eval(r);
+                                var weekNum =53;
+                                if(t==yr){
+                                    weekNum =s;
+                                }
+                                for (var i = g; i <= weekNum; i++){
+                                        if(a.query1[e].startDate <= yr ){
+                                            if(a.query1[e].startDate == yr && a.query1[e].startWeek <= i){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr ){
+                                                m='';
+                                            }
+                                        }
+                                        if(yr >= a.query1[e].endDate){
+                                             if(yr > a.query1[e].endDate){
+                                                m='disabled';
+
+                                             }
+                                             if(yr == a.query1[e].endDate && a.query1[e].endWeek < i){
+                                                m='disabled';
+                                             }
+                                        }
+                                    $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">' + i + ' KW ' + yr + '</th>';
+                                    if(i>=53){
+                                        var g=1;
+                                    }
+                                }
+                            }
+
+                            $row += '</tr>';
+                        }
+                    }
+                    var weekOfArr=[];
+                    for (var e = 0; e < b; e++){
+                        var from1 = startDate.split("-");
+                        var g1 = g2=from1[0]; //first week selected value
+                        var f1 = f2=from1[1]; //first year input text value
+
+                        var to1 = endDate.split("-");
+                        var s1 =s2=  to1[0]; //second week selected value
+                        var t1 =t2=  to1[1]; //second year input text value
+
+                             $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
+                             var count1 = 0;
+                             for (var r1 = 0; r1 <= years; r1++){
+                                var m='disabled';
+                                var yr1 = eval(f1) + eval(r1);
+                                var weekNum =53;
+                                if(t1==yr1){
+                                    weekNum =s1;
+                                }
+                                for (var i1 = g1; i1 <= weekNum; i1++){
+                                        if(a.query1[e].startDate <= yr1 ){
+                                            if(a.query1[e].startDate == yr1 && a.query1[e].startWeek <= i1){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr1 ){
+                                                m='';
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==0){
+                                            if(yr1 >= a.query1[e].endDate){
+                                                 if(yr1 > a.query1[e].endDate){
+                                                    m='disabled';
+
+                                                 }
+                                                 if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
+                                                    m='disabled';
+                                                 }
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==1){
+                                            if(yr1 >= a.query1[e].endDate){
+                                                 /*if(yr1 > a.query1[e].endDate){
+                                                    m='';
+
+                                                 } */
+                                                 if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
+                                                    m='';
+                                                 }
+                                            }
+                                        }
+                                        var inputVal =  findArrValueByDateWeekPrdkt(yr1,i1,a.query1[e].id,a.query2);
+                                        $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + i1 + '-' + yr1 + '"><input type="text" id="anlageMainRow_'+count1+'" name="masseneingabeInput'+i1+'[]" '+m+' class="txtBoxSrch isShowPopup" value="'+inputVal+'"/></td>';
+                                        if(i1>=53){
+                                            var g1=1;
+                                           // console.log('i1='+i1);
+                                        }
+                                        if(inputVal !=''){
+                                                weekOfArr.push(String(i1 + '-' + yr1));
+                                                anlageObj[a.query1[e].id]=weekOfArr;
+                                        }/*else{
+                                            anlageObj[a.query1[e].mst_ID]=weekOfArr;
+                                        }*/
+                                       // console.log(anlageObj);
+                                    count1 ++;
+                                }
+                            }
+
+                            $row += '</tr>';
+                            $row += '<tr class="calcZeit2RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                             var count2 = 0;
+                             for (var r2 = 0; r2 <= years; r2++){
+                                var m='disabled';
+                                var yr2 = eval(f2) + eval(r2);
+                                var weekNum =53;
+                                if(t2==yr2){
+                                    weekNum =s2;
+                                }
+                                for (var i2 = g2; i2 <= weekNum; i2++){
+                                        if(a.query1[e].startDate <= yr2 ){
+                                            if(a.query1[e].startDate == yr2 && a.query1[e].startWeek <= i2){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr2 ){
+                                                m='';
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==0){
+                                            if(yr2 >= a.query1[e].endDate){
+                                                 if(yr2 > a.query1[e].endDate){
+                                                    m='disabled';
+
+                                                 }
+                                                 if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
+                                                    m='disabled';
+                                                 }
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==1){
+                                            if(yr2 >= a.query1[e].endDate){
+                                                 /*if(yr2 > a.query1[e].endDate){
+                                                    m='';
+
+                                                 } */
+                                                 if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
+                                                    m='';
+                                                 }
+                                            }
+                                        }
+                                        var rdOnly = '';
+                                        if(m !== 'disabled'){
+                                            rdOnly = 'readonly';
+                                        }
+                                         var inputVal =  findArrValueByDateWeekPrdkt(yr2,i2,a.query1[e].id,a.query3);
+                                        $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                                        if(i2>=53){
+                                            var g2=1;
+                                           // console.log('i2='+i2);
+                                        }
+                                    count2 ++;
+                                }
+                            }
+
+                            $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $row );
+
+                }else if(zeitintervallAnl == 3){
+                    //alert(3);
+                    var from_3 = startDate.split(".");
+                    var startMn_3 = from_3[0]; //first week selected value
+                    var startYr_3 = from_3[1]; //first year input text value
+
+                    var to_3 = endDate.split(".");
+                    var endMn_3 =  to_3[0]; //second week selected value
+                    var endYr_3 = to_3[1]; //second year input text value
+
+                    var newStartDate = [startYr_3,startMn_3].join('-');
+                    var newEndDate = [endYr_3,endMn_3].join('-');
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getMonthsInToArray(From_date, To_date);
+                    //console.log(dateArr);
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.ceil(diff_date/day);
+                    var months = Math.ceil(days/31);
+                    //var years = Math.ceil(months/12);
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= months; r++){
+                                $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
+                            }
+                            $row += '</tr>';
+                      }
+                    }
+                    var monthOfArr=[];
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
+                        for (var r = 0; r <= months; r++){
+                            var n='';
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a.query1[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                            var inputVal = findArrValueByDatePrdkt(dateArr[r],a.query1[e].id,a.query2);
+                            $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            if(inputVal !=''){
+                                monthOfArr.push(dateArr[r]);
+                                anlageObj[a.query1[e].id]=monthOfArr;
+                            }else{
+                                anlageObj[a.query1[e].id]=monthOfArr;
+                            }
+                        }
+                        $row += '</tr>';
+                        $row += '<tr class="calcZeit3RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                        for (var r = 0; r <= months; r++){
+                            var n='';
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a.query1[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                            var rdOnly = '';
+                            if(n !== 'disabled'){
+                                rdOnly = 'readonly';
+                            }
+                            var inputVal = findArrValueByDatePrdkt(dateArr[r],a.query1[e].id,a.query3);
+                            $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                        }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $row );
+                }else if(zeitintervallAnl == 4){
+                    var years =  endDate - startDate;
+                    const getYearsInToArray = (start, end) => Array(end - start + 1)
+                            .fill(start)
+                            .map((year, index) => year + index);
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= years; r++){
+                                var yr = eval(startDate) + eval(r);
+                                $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">' + yr + '</th>';
+                            }
+                            $row += '</tr>';
+                        }
+                    }
+                    var yearOfArr = [];
+                    for (var e = 0; e < b; e++){
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
+
+                        for (var r = 0; r <= years; r++){
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
+                            var yr1 = eval(startDate) + eval(r);
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a.query1[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                            var inputVal = findArrValueByDatePrdkt(yearsBw[r],a.query1[e].id,a.query2);
+                            $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            if(inputVal !=''){
+                                yearOfArr.push(String(yearsBw[r]));
+                                anlageObj[a.query1[e].id]=yearOfArr;
+                            }else{
+                                anlageObj[a.query1[e].id]=yearOfArr;
+                            }
+                            //console.log(anlageObj);
+                        }
+                        $row += '</tr>';
+
+                        $row += '<tr class="calcZeit4RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                        for (var r = 0; r <= years; r++){
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
+                            var yr1 = eval(startDate) + eval(r);
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a.query1[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                            var rdOnly = '';
+                            if(t !== 'disabled'){
+                                rdOnly = 'readonly';
+                            }
+                            var inputVal = findArrValueByDatePrdkt(yearsBw[r],a.query1[e].id,a.query3);
+                            $row += '<td data-id="'+a.query1[e].id+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                        }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $row );
+                }
+              }else{
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $noRow ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl" style="border:1px solid #f3f3f3;background:#ccc;"';
+                            $noRow += '<tr><td style="text-align:center;">No Record Found ! Please enter valid dates into input.</td>';  $noRow += '</tr>';
+                    $noRow +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwPrdkt').html( $noRow );
+              }
+            }
+        });
+}
+/*new-mm-end 31-03-2021,05-04-2021*/
+/*new-mm-start 31-03-2021*/
+function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,endDate){
+        //alert("3");
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeMesssetelleSearch",
+                nameDB: $("#nameDB").val(),
+                startDate: startDate,
+                endDate:endDate,
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+            //console.log(a);
+                var b = a.query1.length;
+                if(b>0){
+                if(zeitintervallAnl == 1){
+                    var from = startDate.split(".");
+                    var to = endDate.split(".");
+
+                    var newStartDate = [from[2],from[1],from[0]].join('-');
+                    var newEndDate = [to[2], to[1], to[0]].join('-');
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getDatesInToArray(From_date, To_date);
+                    //console.log('dateArr='+dateArr);
+                    //findArrValueByDate('2020-11-15',23,a.query2);
+
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.floor(diff_date/day);
+                   $("#tblMasseneingabeDataIMw").remove();
+                   $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                   for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= days; r++){
+
+                                  $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
+
+
+                            }
+                            $row += '</tr>';
+                        }
+                    }
+
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                           //console.log(anlageObj[a.query1[e].mst_ID]);
+                           //console.log(anlageObj);
+                           var datesOfArr = [];
+                           var p=0;var z;
+                           for (var r = 0; r <= days; r++){
+                                var n='';
+                                //console.log(a[e].ending);
+                                if(a.query1[e].ending ==0){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                        n='disabled';
+                                    }else if(a.query1[e].endDate < dateArr[r]){
+                                         n='disabled';
+                                    }
+                                }
+                                if(a.query1[e].ending ==1){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                    }
+                                }
+
+                                if(n !='disabled'){
+                                    if(p < 5){
+                                      z="checkAlertRange";
+                                    }else{
+                                      z='';
+                                    }
+                                    p++;
+                                }
+                                var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" class="txtBoxSrch isShowPopup '+z+'" id="anlageMainRow_'+r+'"  name="masseneingabeInput'+r+'[]" '+n+' value="'+inputVal+'"/></td>';
+                                if(inputVal !=''){
+                                     datesOfArr.push(dateArr[r]);
+                                    anlageObj[a.query1[e].mst_ID]=datesOfArr;
+                                }else{
+                                    anlageObj[a.query1[e].mst_ID]=datesOfArr;
+                                }
+                            }
+
+                        $row += '</tr>';
+                        /*Second row for calculation*/
+                         $row += '<tr class="calcZeit1RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                           for (var r = 0; r <= days; r++){
+                                var n='';
+                                //console.log(a[e].ending);
+                                if(a.query1[e].ending ==0){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                        n='disabled';
+                                    }else if(a.query1[e].endDate < dateArr[r]){
+                                         n='disabled';
+                                    }
+                                }
+                                if(a.query1[e].ending ==1){
+                                  if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                    }
+                                }
+                               // console.log('n='+n);
+                                var rdOnly = '';
+                                if(n !== 'disabled'){
+                                    rdOnly = 'readonly';
+                                }
+                               var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                            }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $row );
+
+                }else if(zeitintervallAnl == 2){
+                    var from = startDate.split("-");
+                    var g = from[0]; //first week selected value
+                    var f = from[1]; //first year input text value
+
+                    var to = endDate.split("-");
+                    var s =  to[0]; //second week selected value
+                    var t =  to[1]; //second year input text value
+
+                    var years =  t - f;
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                             for (var r = 0; r <= years; r++){
+                                var yr = eval(f) + eval(r);
+                                var weekNum =53;
+                                if(t==yr){
+                                    weekNum =s;
+                                }
+                                for (var i = g; i <= weekNum; i++){
+                                        if(a.query1[e].startDate <= yr ){
+                                            if(a.query1[e].startDate == yr && a.query1[e].startWeek <= i){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr ){
+                                                m='';
+                                            }
+                                        }
+                                        if(yr >= a.query1[e].endDate){
+                                             if(yr > a.query1[e].endDate){
+                                                m='disabled';
+
+                                             }
+                                             if(yr == a.query1[e].endDate && a.query1[e].endWeek < i){
+                                                m='disabled';
+                                             }
+                                        }
+                                    $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + i + ' KW ' + yr + '</th>';
+                                    if(i>=53){
+                                        var g=1;
+                                    }
+                                }
+                            }
+
+                            $row += '</tr>';
+                        }
+                    }
+                    var weekOfArr=[];
+                    for (var e = 0; e < b; e++){
+                        var from1 = startDate.split("-");
+                        var g1 = g2=from1[0]; //first week selected value
+                        var f1 = f2=from1[1]; //first year input text value
+
+                        var to1 = endDate.split("-");
+                        var s1 =s2=  to1[0]; //second week selected value
+                        var t1 =t2=  to1[1]; //second year input text value
+
+                             $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                             var count1 = 0;
+                             for (var r1 = 0; r1 <= years; r1++){
+                                var m='disabled';
+                                var yr1 = eval(f1) + eval(r1);
+                                var weekNum =53;
+                                if(t1==yr1){
+                                    weekNum =s1;
+                                }
+                                for (var i1 = g1; i1 <= weekNum; i1++){
+                                        if(a.query1[e].startDate <= yr1 ){
+                                            if(a.query1[e].startDate == yr1 && a.query1[e].startWeek <= i1){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr1 ){
+                                                m='';
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==0){
+                                            if(yr1 >= a.query1[e].endDate){
+                                                 if(yr1 > a.query1[e].endDate){
+                                                    m='disabled';
+
+                                                 }
+                                                 if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
+                                                    m='disabled';
+                                                 }
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==1){
+                                            if(yr1 >= a.query1[e].endDate){
+                                                 /*if(yr1 > a.query1[e].endDate){
+                                                    m='';
+
+                                                 } */
+                                                 if(yr1 == a.query1[e].endDate && a.query1[e].endWeek < i1){
+                                                    m='';
+                                                 }
+                                            }
+                                        }
+                                        var inputVal =  findArrValueByDateWeek(yr1,i1,a.query1[e].mst_ID,a.query2);
+                                        $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + i1 + '-' + yr1 + '"><input type="text" id="anlageMainRow_'+count1+'" name="masseneingabeInput'+i1+'[]" '+m+' class="txtBoxSrch isShowPopup" value="'+inputVal+'"/></td>';
+                                        if(i1>=53){
+                                            var g1=1;
+                                           // console.log('i1='+i1);
+                                        }
+                                        if(inputVal !=''){
+                                                weekOfArr.push(String(i1 + '-' + yr1));
+                                                anlageObj[a.query1[e].mst_ID]=weekOfArr;
+                                        }/*else{
+                                            anlageObj[a.query1[e].mst_ID]=weekOfArr;
+                                        }*/
+                                       // console.log(anlageObj);
+                                    count1 ++;
+                                }
+                            }
+
+                            $row += '</tr>';
+                            $row += '<tr class="calcZeit2RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                             var count2 = 0;
+                             for (var r2 = 0; r2 <= years; r2++){
+                                var m='disabled';
+                                var yr2 = eval(f2) + eval(r2);
+                                var weekNum =53;
+                                if(t2==yr2){
+                                    weekNum =s2;
+                                }
+                                for (var i2 = g2; i2 <= weekNum; i2++){
+                                        if(a.query1[e].startDate <= yr2 ){
+                                            if(a.query1[e].startDate == yr2 && a.query1[e].startWeek <= i2){
+                                                m='';
+                                            }
+                                            if(a.query1[e].startDate < yr2 ){
+                                                m='';
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==0){
+                                            if(yr2 >= a.query1[e].endDate){
+                                                 if(yr2 > a.query1[e].endDate){
+                                                    m='disabled';
+
+                                                 }
+                                                 if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
+                                                    m='disabled';
+                                                 }
+                                            }
+                                        }
+                                        if(a.query1[e].ending ==1){
+                                            if(yr2 >= a.query1[e].endDate){
+                                                 /*if(yr2 > a.query1[e].endDate){
+                                                    m='';
+
+                                                 } */
+                                                 if(yr2 == a.query1[e].endDate && a.query1[e].endWeek < i2){
+                                                    m='';
+                                                 }
+                                            }
+                                        }
+                                        var rdOnly = '';
+                                        if(m !== 'disabled'){
+                                            rdOnly = 'readonly';
+                                        }
+                                         var inputVal =  findArrValueByDateWeek(yr2,i2,a.query1[e].mst_ID,a.query3);
+                                        $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                                        if(i2>=53){
+                                            var g2=1;
+                                           // console.log('i2='+i2);
+                                        }
+                                    count2 ++;
+                                }
+                            }
+
+                            $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $row );
+
+                }else if(zeitintervallAnl == 3){
+                    //alert(3);
+                    var from_3 = startDate.split(".");
+                    var startMn_3 = from_3[0]; //first week selected value
+                    var startYr_3 = from_3[1]; //first year input text value
+
+                    var to_3 = endDate.split(".");
+                    var endMn_3 =  to_3[0]; //second week selected value
+                    var endYr_3 = to_3[1]; //second year input text value
+
+                    var newStartDate = [startYr_3,startMn_3].join('-');
+                    var newEndDate = [endYr_3,endMn_3].join('-');
+
+                    var From_date = new Date(newStartDate);
+                    var To_date = new Date(newEndDate);
+                    var diff_date =  To_date - From_date;
+
+                    var dateArr = getMonthsInToArray(From_date, To_date);
+                    //console.log(dateArr);
+                    var day = 1000 * 60 * 60 * 24;
+                    var days = Math.ceil(diff_date/day);
+                    var months = Math.ceil(days/31);
+                    //var years = Math.ceil(months/12);
+
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= months; r++){
+                                $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
+                            }
+                            $row += '</tr>';
+                      }
+                    }
+                    var monthOfArr=[];
+                    for (var e = 0; e < b; e++){
+                       $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        for (var r = 0; r <= months; r++){
+                            var n='';
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a.query1[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query2);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            if(inputVal !=''){
+                                monthOfArr.push(dateArr[r]);
+                                anlageObj[a.query1[e].mst_ID]=monthOfArr;
+                            }else{
+                                anlageObj[a.query1[e].mst_ID]=monthOfArr;
+                            }
+                        }
+                        $row += '</tr>';
+                        $row += '<tr class="calcZeit3RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                        for (var r = 0; r <= months; r++){
+                            var n='';
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }else if(a.query1[e].endDate < dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > dateArr[r]){
+                                     n='disabled';
+                                }
+                            }
+                            var rdOnly = '';
+                            if(n !== 'disabled'){
+                                rdOnly = 'readonly';
+                            }
+                            var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                        }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $row );
+                }else if(zeitintervallAnl == 4){
+                    var years =  endDate - startDate;
+                    const getYearsInToArray = (start, end) => Array(end - start + 1)
+                            .fill(start)
+                            .map((year, index) => year + index);
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
+                    for (var e = 0; e < b; e++){
+                        if(e==0) {
+                            $row += '<tr><td>Anlage</td>';
+                            for (var r = 0; r <= years; r++){
+                                var yr = eval(startDate) + eval(r);
+                                $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
+                            }
+                            $row += '</tr>';
+                        }
+                    }
+                    var yearOfArr = [];
+                    for (var e = 0; e < b; e++){
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+
+                        for (var r = 0; r <= years; r++){
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
+                            var yr1 = eval(startDate) + eval(r);
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a.query1[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query2);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' class="txtBoxSrch isShowPopup" id="anlageMainRow_'+r+'" value="'+inputVal+'" /></td>';
+                            if(inputVal !=''){
+                                yearOfArr.push(String(yearsBw[r]));
+                                anlageObj[a.query1[e].mst_ID]=yearOfArr;
+                            }else{
+                                anlageObj[a.query1[e].mst_ID]=yearOfArr;
+                            }
+                            //console.log(anlageObj);
+                        }
+                        $row += '</tr>';
+
+                        $row += '<tr class="calcZeit4RowInputs hide disabledRow" id="dataDisabledRow-'+e+'"><td></td>';
+                        for (var r = 0; r <= years; r++){
+                            let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
+                            var t='';
+                            var yr1 = eval(startDate) + eval(r);
+                            if(a.query1[e].ending ==0){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }else if(a.query1[e].endDate < yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                             if(a.query1[e].ending ==1){
+                                if(a.query1[e].startDate > yearsBw[r]){
+                                     t='disabled';
+                                }
+                             }
+                            var rdOnly = '';
+                            if(t !== 'disabled'){
+                                rdOnly = 'readonly';
+                            }
+                            var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query3);
+                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                        }
+                        $row += '</tr>';
+                    }
+                    $row +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $row );
+                }
+              }else{
+                    $("#tblMasseneingabeDataIMw").remove();
+                    $noRow ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl" style="border:1px solid #f3f3f3;background:#ccc;"';
+                            $noRow += '<tr><td style="text-align:center;">No Record Found ! Please enter valid dates into input.</td>';  $noRow += '</tr>';
+                    $noRow +='</table></div>';
+                    $('#timeIntervalWerteEnergiedatenIMwMesssetelle').html( $noRow );
+              }
+            }
+        });
+}
+/*new-mm-end 31-03-2021*/
 
 function getDatesInToArray(start, end) {
     var arr = new Array();
     var dt = new Date(start);
     while (dt <= end) {
-        var date = new Date(dt);        
+        var date = new Date(dt);
         var year=date.getFullYear();
         var month=("0" + (date.getMonth() + 1)).slice(-2);
         var day=("0" + date.getDate()).slice(-2);
@@ -16829,7 +20667,7 @@ function getDatesInToArray(start, end) {
         //console.log(formatted);
         arr.push(formattedDates);
         dt.setDate(dt.getDate() + 1);
-    }    
+    }
     return arr;
 }
 
@@ -16838,9 +20676,9 @@ function getMonthsInToArray(start, end) {
     var dt = new Date(start);
     while (dt <= end) {
         //arr.push(new Date(dt));
-        var date = new Date(dt);        
+        var date = new Date(dt);
         var year=date.getFullYear();
-        var month=("0" + (date.getMonth() + 1)).slice(-2); 
+        var month=("0" + (date.getMonth() + 1)).slice(-2);
        // var day=("0" + date.getDate()).slice(-2);
         var formattedDates=year+"-"+month;
         //console.log(formatted);
@@ -16891,29 +20729,29 @@ function saveToDBMasseneingabeEingaben(key){
         var postDataEnabled =new Array();
         var enabledRow = [];
             $('#tblMasseneingabeDataIMwTbl tbody tr.enabledRow').each(function (index) {
-                enabledRow[index] = {};  
+                enabledRow[index] = {};
                 $('td', this).each(function() {
                     textValEnabled = $(this).find('input').val();
                     mstIDEnabled = $(this).attr("data-id");
-                    dateEnabled = $(this).attr("date"); 
+                    dateEnabled = $(this).attr("date");
                     enabledRow.push({
                         'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
                      });
-                }); 
+                });
             });
             var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
             var postDataDisabled =new Array();
             var disabledRow = [];
              $('#tblMasseneingabeDataIMwTbl tbody tr.disabledRow').each(function (index) {
-                 disabledRow[index] = {};   
+                 disabledRow[index] = {};
                 $('td', this).each(function() {
                     textValDisabled = $(this).find('input').val();
                     mstIDDisabled = $(this).attr("data-id");
-                    dateDisabled = $(this).attr("date"); 
+                    dateDisabled = $(this).attr("date");
                     disabledRow.push({
                         'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
                      });
-                }); 
+                });
             });
 
              var postDataEnabled = JSON.stringify(enabledRow);
@@ -16929,20 +20767,86 @@ function saveToDBMasseneingabeEingaben(key){
                       nameDB: $("#nameDB").val(),
                       postDataEnabled: postDataEnabled,
                       postDataDisabled:postDataDisabled,
-                      key:key 
-                    },                     
+                      key:key
+                    },
                     fail: function() {
                         alert("failed!!")
                     },
                     success: function(a) {
-                       alert(a);
-                       $("#masseneingabeSpeichernSrch").prop('disabled',false);
-                       $("#masseneingabeSrchImg").hide(); 
-                      /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
+                       /*new-mm-start 22-03-2021*/
+                        $("#masseneingabeSpeichernSrch").prop('disabled',false);
+                        if(a.length >0){
+                            $(".save-msg-box").append(a);
+                            $(".save-msg-box").fadeOut(3000, function() { $(this).text(""); });
+                        }
+                        $("#masseneingabeSrchImg").hide();
+                        /*new-mm-end 22-03-2021*/
                     }
                 });
     }
+/*new-mm-start 05-04-2021*/
+function saveToDBMasseneingabePrdkt(key){
 
+        var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
+        var postDataEnabled =new Array();
+        var enabledRow = [];
+            $('#tblMasseneingabeDataIMwTbl tbody tr.enabledRow').each(function (index) {
+                enabledRow[index] = {};
+                $('td', this).each(function() {
+                    textValEnabled = $(this).find('input').val();
+                    mstIDEnabled = $(this).attr("data-id");
+                    dateEnabled = $(this).attr("date");
+                    enabledRow.push({
+                        'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
+                     });
+                });
+            });
+            var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
+            var postDataDisabled =new Array();
+            var disabledRow = [];
+             $('#tblMasseneingabeDataIMwTbl tbody tr.disabledRow').each(function (index) {
+                 disabledRow[index] = {};
+                $('td', this).each(function() {
+                    textValDisabled = $(this).find('input').val();
+                    mstIDDisabled = $(this).attr("data-id");
+                    dateDisabled = $(this).attr("date");
+                    disabledRow.push({
+                        'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
+                     });
+                });
+            });
+
+             var postDataEnabled = JSON.stringify(enabledRow);
+             var postDataDisabled = JSON.stringify(disabledRow);
+             $("#masseneingabeSpeichernSrch").prop('disabled',true);
+               $.ajax({
+                    type: "POST",
+                    url: "php/saveMasseneingabeEingaben.php",
+                    async: false,
+                    dataType: 'json',
+                    data:{
+                      modus: "savePrdkt",
+                      nameDB: $("#nameDB").val(),
+                      postDataEnabled: postDataEnabled,
+                      postDataDisabled:postDataDisabled,
+                      key:key
+                    },
+                    fail: function() {
+                        alert("failed!!")
+                    },
+                    success: function(a) {
+                       /*new-mm-start 22-03-2021*/
+                        $("#masseneingabeSpeichernSrch").prop('disabled',false);
+                        if(a.length >0){
+                            $(".save-msg-box").append(a);
+                            $(".save-msg-box").fadeOut(3000, function() { $(this).text(""); });
+                        }
+                        $("#masseneingabeSrchImg").hide();
+                        /*new-mm-end 22-03-2021*/
+                    }
+                });
+    }
+/*new-mm-end 05-04-2021*/
 
 function resetSearchFormMasseneingabe(sId){
     $("." + sId + " .zeitintervallAnl_1").val("");
@@ -16951,6 +20855,26 @@ function resetSearchFormMasseneingabe(sId){
     $("." + sId + " .zeitintervallAnl_3").val("");
     $("." + sId + " .zeitintervallAnl_4").val("");
 }
+
+/*new-mm-start 31-03-2021*/
+function resetSearchFormMasseneingabePrdkt(sId){
+    $("." + sId + " .zeitintervallAnl_1").val("");
+    $("." + sId + " .zeitintervallAnl_2").val("");
+    $("." + sId + " .zeitintervallAnl_2 select").val("");
+    $("." + sId + " .zeitintervallAnl_3").val("");
+    $("." + sId + " .zeitintervallAnl_4").val("");
+}
+/*new-mm-end 31-03-2021*/
+
+/*new-mm-start 31-03-2021*/
+function resetSearchFormMasseneingabeMesssetelle(sId){
+    $("." + sId + " .zeitintervallAnl_1").val("");
+    $("." + sId + " .zeitintervallAnl_2").val("");
+    $("." + sId + " .zeitintervallAnl_2 select").val("");
+    $("." + sId + " .zeitintervallAnl_3").val("");
+    $("." + sId + " .zeitintervallAnl_4").val("");
+}
+/*new-mm-end 31-03-2021*/
 const capitalizeLetter = (s) => {
   if (typeof s !== 'string') return ''
   return s.charAt(0).toUpperCase() + s.slice(1)
@@ -16974,15 +20898,15 @@ function validateIntBdeFrm(noEnding,Zeitintervall,sId,id){
                 return false;
             }else{
                 return true;
-            }            
+            }
         }else if(noEnding==false) {
             if($("." + sId + " #tageMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #tageMassEingDataAnlEnde" + id + "").val()==''){
                 alert('start tage or end tage should not be empty');
                 return false;
             }else{
                 return true;
-            } 
-        }               
+            }
+        }
        }else if(Zeitintervall == 2){
         if(noEnding==true){
             if($("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val()==''  ){
@@ -16990,14 +20914,14 @@ function validateIntBdeFrm(noEnding,Zeitintervall,sId,id){
                 return false;
             }else{
                 return true;
-            }            
+            }
         }else if(noEnding==false) {
            if($("." + sId + " #wochenWMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #wochenWMassEingDataAnlEnde" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlEnde" + id + "").val()==''){
                 alert('start week or end week should not be empty');
                 return false;
             }else{
                 return true;
-            } 
+            }
         }
         }else if(Zeitintervall == 3){
             if(noEnding==true){
@@ -17006,15 +20930,15 @@ function validateIntBdeFrm(noEnding,Zeitintervall,sId,id){
                     return false;
                 }else{
                     return true;
-                }            
+                }
             }else if(noEnding==false) {
                 if($("." + sId + " #monateMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #monateMassEingDataAnlEnde" + id + "").val()==''){
                     alert('start Monate or end Monate should not be empty');
                     return false;
                 }else{
                     return true;
-                } 
-            }        
+                }
+            }
        }else if(Zeitintervall == 4){
             if(noEnding==true){
                 if($("." + sId + " #jahrMassEingDataAnlStart" + id + "").val()==''){
@@ -17022,22 +20946,106 @@ function validateIntBdeFrm(noEnding,Zeitintervall,sId,id){
                         return false;
                     }else{
                         return true;
-                }            
+                }
             }else if(noEnding==false) {
                     if($("." + sId + " #jahrMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #jahrMassEingDataAnlEnde" + id + "").val()==''){
                         alert('start Jahr or end Jahr should not be empty');
                         return false;
                     }else{
                         return true;
-                } 
-            }  
+                }
+            }
        }
     }
   }
 
+/* Validate Before Save
+*  Interne Betriebsdaten Module
+*  Podukte and Messsetelle Speichern
+*  03-03-2021
+*/
+/*new-mm-start 23-03-2021*/
+function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
+    var mstIMw =$("#mstIMw").val();
+    var zeitintervallAnlPrdkt =$("#zeitintervallAnlPrdkt").val();
+    var notizBdeIMwAnlPrdkt =$("#notizBdeIMwAnlPrdkt").val();
+    var einheitAnlPrdkt =$("#einheitAnlPrdkt").val();
 
+    if(mstIMw =='' || zeitintervallAnlPrdkt == 0 || notizBdeIMwAnlPrdkt=='' || einheitAnlPrdkt==''){
+        alert("Bitte füllen Sie die Felder aus");
+        return false;
+    }else{
+     if(Zeitintervall == 1){
+        if(noEnding==true){
+            if($("." + sId + " #tageMassEingDataAnlPrdktStart" + id + "").val()==''){
+                alert('Please enter start tage');
+                return false;
+            }else{
+                return true;
+            }
+        }else if(noEnding==false) {
+            if($("." + sId + " #tageMassEingDataAnlStart" + id + "").val()=='' || $("." + sId + " #tageMassEingDataAnlPrdktEnde" + id + "").val()==''){
+                alert('start tage or end tage should not be empty');
+                return false;
+            }else{
+                return true;
+            }
+        }
+       }else if(Zeitintervall == 2){
+        if(noEnding==true){
+            if($("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val()==''  ){
+                alert('Please enter start week');
+                return false;
+            }else{
+                return true;
+            }
+        }else if(noEnding==false) {
+           if($("." + sId + " #wochenWMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #wochenWMassEingDataAnlPrdktEnde" + id + "").val()=='' || $("." + sId + " #wochenYMassEingDataAnlPrdktEnde" + id + "").val()==''){
+                alert('start week or end week should not be empty');
+                return false;
+            }else{
+                return true;
+            }
+        }
+        }else if(Zeitintervall == 3){
+            if(noEnding==true){
+                if($("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val()==''){
+                    alert('Please enter start Monate');
+                    return false;
+                }else{
+                    return true;
+                }
+            }else if(noEnding==false) {
+                if($("." + sId + " #monateMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #monateMassEingDataAnlPrdktEnde" + id + "").val()==''){
+                    alert('start Monate or end Monate should not be empty');
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+       }else if(Zeitintervall == 4){
+            if(noEnding==true){
+                if($("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val()==''){
+                        alert('Please enter start Jahr');
+                        return false;
+                    }else{
+                        return true;
+                }
+            }else if(noEnding==false) {
+                    if($("." + sId + " #jahrMassEingDataAnlPrdktStart" + id + "").val()=='' || $("." + sId + " #jahrMassEingDataAnlPrdktEnde" + id + "").val()==''){
+                        alert('start Jahr or end Jahr should not be empty');
+                        return false;
+                    }else{
+                        return true;
+                }
+            }
+       }
+    }
+}
+/*new-mm-end 23-03-2021*/
 /*Concern Delete popup for the search functionality 05-10-2020*/
-function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) { 
+/*new-mm-start 01-04-2021*/
+function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
    $("#intBdeConcernOrDeletePopUp").remove();   
    $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none;'> <p>Warnung: Sie haben einen Wert besetzt, <br>der nicht mit der bereits gesetzten Datenlagen<br>in der Abfolge übereinstimmen kann.</p><div id='intBdeConcernOrDeletePopUpDiv'><button id='intBdeConcern' >Concern</button><button id='intBdeDelete'>Delete</button></div></div>").dialog({
             height: 250,
@@ -17083,9 +21091,14 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                     }
                 }                
                 $($("#inputFocusedId").val()).focus();
-
+                $("#masseneingabeSpeichernSrch").prop("disabled", false);
+                /*new-mm-start 01-04-2021*/
+                $("#masseneingabeSpeichernSrchPrdkt").prop("disabled", false);
+                $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled", false);
+                /*new-mm-end 01-04-2021*/
                 //$($("#inputFocusedId").val()).change();
             });
+
             $("#intBdeDelete").on("click", function() {
                 var inputCurrId = $("#inputCurrId").val();
                 //var rowMainIDEn = $("#rowMainIDEn").val();   //new
@@ -17100,18 +21113,100 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
                 $("#intBdeConcernOrDeletePopUp").remove(); 
                 var currInputID = $("#currInputID").val();
                 var rowMainIDDs = $("#rowMainIDDs").val();
-                if (typeof anlageObj[rowMstID] != "undefined" && anlageObj[rowMstID] != null && anlageObj[rowMstID].length != null && anlageObj[rowMstID].length > 0) {
+                $("#masseneingabeSpeichernSrch").prop("disabled", false);
+                /*new-mm-start 01-04-2021*/
+                $("#masseneingabeSpeichernSrchPrdkt").prop("disabled", false);
+                $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled", false);
+                /*new-mm-end 01-04-2021*/
+            });
+         }
+    });
+    $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+}
+/*new-mm-end 01-04-2021*/
+
+
+
+/*new-mm-start 05-04-2021*/
+function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMstID) {
+   $("#intBdeConcernOrDeletePopUp").remove();
+   $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none;'> <p>Warnung: Sie haben einen Wert besetzt, <br>der nicht mit der bereits gesetzten Datenlagen<br>in der Abfolge übereinstimmen kann.</p><div id='intBdeConcernOrDeletePopUpDiv'><button id='intBdeConcern' >Concern</button><button id='intBdeDelete'>Delete</button></div></div>").dialog({
+            height: 250,
+            width: 450,
+            resize: "auto",
+            show: {
+            effect: "fade",
+            duration: 500,
+            closeOnEscape: false,
+            dialogClass: "no-close",
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        open: function(event, ui) {
+            $("#intBdeConcern").on("click", function() {
+
+                var inputCurrId = $("#inputCurrId").val();
+                var inputCurPrevId = $("#inputCurPrevId").val();
+                var inputBottomCurrId = $("#inputBottomCurrId").val();
+                var currInputID = $("#currInputID").val();
+                var rowMainIDEn = $("#rowMainIDEn").val();
+                var rowMainIDDs = $("#rowMainIDDs").val();
+                $("" + prevID + "").removeClass("isShowPopup");
+                $("#inputValBottomCurr").val("");    //new
+                $("#inputCurrId").val("");           //new
+
+                $("" + inputCurrId + "").removeClass("isShowPopup");
+                $("#intBdeConcernOrDeletePopUp").remove();
+                if(currInputID==0){
+                   $("#inputPrevValDB").val("");
+                }
+                var inputDeleteBotmId = $("#inputDeleteBotmId").val();
+                var zeitIntervallAnl = $(".infosMasseneingabeInside button.active").attr('data-id');
+                var date =$(""+inputDeleteBotmId+"").closest('td').attr("date");
+
+                saveToDBMasseneingabeEingabenSingleRowPrdkt(zeitIntervallAnl,rowMainIDEn,rowMainIDDs);
+                if(anlageObj[rowMstID]){
                     var inputCountLength = anlageObj[rowMstID].length;
-                    /*if(inputCountLength>5){
-                        //getLastInputValuesByCurrent(rowMainIDDs,rowMstID);
-                    }*/
-                 }
+                    if(inputCountLength>4){
+                        checkAlertRangeMinMaxServerSidePrdkt(zeitIntervallAnl,rowMstID,date,rowMainIDDs);
+                    }
+                }
+                $($("#inputFocusedId").val()).focus();
+                $("#masseneingabeSpeichernSrch").prop("disabled", false);
+                /*new-mm-start 01-04-2021*/
+                $("#masseneingabeSpeichernSrchPrdkt").prop("disabled", false);
+                $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled", false);
+                /*new-mm-end 01-04-2021*/
+                //$($("#inputFocusedId").val()).change();
+            });
+
+            $("#intBdeDelete").on("click", function() {
+                var inputCurrId = $("#inputCurrId").val();
+                //var rowMainIDEn = $("#rowMainIDEn").val();   //new
+                var inputDeleteBotmId = $("#inputDeleteBotmId").val();
+                $("" + inputCurrId + "").val("");
+                $("#inputValBottomCurr").val("");  //new
+                $("#inputCurrId").val("");         //new
+                $(inputDeleteBotmId).val("");
+                $("" + inputCurrId + "").focus();
+                $("" + prevID + "").removeClass("isShowPopup");
+                $("" + inputCurrId + "").removeClass("isShowPopup");
+                $("#intBdeConcernOrDeletePopUp").remove();
+                var currInputID = $("#currInputID").val();
+                var rowMainIDDs = $("#rowMainIDDs").val();
+                $("#masseneingabeSpeichernSrch").prop("disabled", false);
+                /*new-mm-start 01-04-2021*/
+                $("#masseneingabeSpeichernSrchPrdkt").prop("disabled", false);
+                $("#masseneingabeSpeichernSrchMesssetelle").prop("disabled", false);
+                /*new-mm-end 01-04-2021*/
             });
          }
     }); 
     $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
 }
-
+/*new-mm-end 05-04-2021*/
 
 function checkPositiveValue(val){
     if (val>0) {
@@ -17120,19 +21215,19 @@ function checkPositiveValue(val){
        return false;
     }
 }
-function convertToPositive(a) { 
-        if (a < 0) { 
-            a = a * -1; 
-        }  
-        return a; 
-} 
+function convertToPositive(a) {
+        if (a < 0) {
+            a = a * -1;
+        }
+        return a;
+}
 
 function findArrValueByDate(date,mst_ID,arrName){
     let inpVal='';
     const index = arrName.findIndex((element, index) => {
       if (element.on_date == date && element.mst_ID == mst_ID) {
          inpVal += element.val;
-      }     
+      }
     });
     return inpVal;
 }
@@ -17141,10 +21236,34 @@ function findArrValueByDateWeek(date,week,mst_ID,arrName){
     const index = arrName.findIndex((element, index) => {
       if (element.on_date == date && element.mst_ID == mst_ID && element.on_week == week) {
          inpVal += element.val;
-      }     
+      }
     });
     return inpVal;
 }
+
+/*new-mm-start 05-04-2021*/
+function findArrValueByDatePrdkt(date,ID,arrName){
+    let inpVal='';
+    const index = arrName.findIndex((element, index) => {
+      if (element.on_date == date && element.prd_anl_ID == ID) {
+         inpVal += element.val;
+      }
+    });
+    return inpVal;
+}
+/*new-mm-end 05-04-2021*/
+
+/*new-mm-start 05-04-2021*/
+function findArrValueByDateWeekPrdkt(date,week,ID,arrName){
+    let inpVal='';
+    const index = arrName.findIndex((element, index) => {
+      if (element.on_date == date && element.prd_anl_ID == ID && element.on_week == week) {
+         inpVal += element.val;
+      }
+    });
+    return inpVal;
+}
+/*new-mm-end 05-04-2021*/
 
 function resetInputsSearchMasseneingabe(){
     $("#inputCurPrevId").val("");
@@ -17169,7 +21288,7 @@ function resetInputsSearchMasseneingabe(){
     $('#inputIdNextlast').val("");
     $('#inputNextLastBottomId').val("");
     $('#inputNextBottomId').val("");
-    
+
     $("#inputDefaultShowPopup").val(false);
 }
 
@@ -17200,7 +21319,129 @@ function einheitAnlOnChangeChildSelectOpt(einheitAnlVal){
         $(".infosIntBetriebsdaten .control_system_div").hide();
     }
 }
+/*For Interne Energiedaten Module 12-03-2021*/
+/*On change Einheit History Tab PopUp History Update From
+Create Control System Select option inner function */
+/*new-mm-start*/
+function einheitAnlHistOnChangeChildSelectOpt(einheitAnlVal){
+       $('.intBdeIMwHistorieContainer #control_system > option').each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $(".intBdeIMwHistorieContainer .control_system_div").show();
+                $(".intBdeIMwHistorieContainer #control_system option[value='1']").addClass('visible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='2']").addClass('visible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='1']").removeClass('invisible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $(".intBdeIMwHistorieContainer .control_system_div").show();
+                $(".intBdeIMwHistorieContainer #control_system option[value='2']").addClass('visible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='4']").addClass('visible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='2']").removeClass('invisible');
+                $(".intBdeIMwHistorieContainer #control_system option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $(".intBdeIMwHistorieContainer .control_system_div").hide();
+    }
+}
+/*new-mm-end*/
 
+/*For Produkte Module 08-03-2021*/
+/*On change Einheit Prdkt create Control System Prdkt select option inner function */
+/*new-mm-start*/
+/*function einheitAnlPrdktMstHistOnChangeChildSelectOpt(einheitAnlVal){
+       $('.infosIntEnergiedaten #control_system_AnlPrdkt > option').each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").show();
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='1']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='1']").removeClass('invisible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").show();
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='4']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").hide();
+    }
+}*/
+function einheitAnlPrdktMstHistOnChangeChildSelectOpt(einheitAnlVal,sId){
+       $("." + sId + " #control_system_AnlPrdkt > option").each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $("." + sId + " .control_system_div_AnlPrdkt").show();
+                $("." + sId + " #control_system_AnlPrdkt option[value='1']").addClass('visible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='1']").removeClass('invisible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $("." + sId + " .control_system_div_AnlPrdkt").show();
+                $("." + sId + " #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='4']").addClass('visible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+                $("." + sId + " #control_system_AnlPrdkt option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $("." + sId + " .control_system_div_AnlPrdkt").hide();
+    }
+}
+/*new-mm-end*/
+
+/*For IntBde Produkte Module 12-03-2021*/
+/*On change Einheit Prdkt History Tab PopUp History Update From create Control System Prdkt select option inner function */
+/*new-mm-start*/
+function einheitAnlPrdktHistOnChangeChildSelectOpt(einheitAnlVal){
+       $('.infosIntEnergiedaten #control_system_AnlPrdkt > option').each(function(){
+            if(this.value != ''){
+                $(this).addClass('invisible');
+                $(this).removeClass('visible');
+            }
+        });
+        if(einheitAnlVal != ''){
+            if(einheitAnlVal ==1 ){
+                //console.log('1/2');
+                $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").show();
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='1']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='1']").removeClass('invisible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+            }else{
+                //console.log('2/4');
+                $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").show();
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='4']").addClass('visible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='2']").removeClass('invisible');
+                $(".infosIntEnergiedaten #control_system_AnlPrdkt option[value='4']").removeClass('invisible');
+        }
+    }else{
+        $(".infosIntEnergiedaten .control_system_div_AnlPrdkt").hide();
+    }
+}
+/*new-mm-end*/
 
 function typeValueEinheitControlSys($val){
     var opt;
@@ -17234,7 +21475,7 @@ function checkAlertRangeMinMaxServerSide(zeitintervallAnl,mstID,date,rowMainIDDs
                 alert("failed!!")
             },
             success: function(a) {
-                a = JSON.parse(a); 
+                a = JSON.parse(a);
                 //console.log(a);
                 var arr=[];
                if(a.lastDBDates[0]){
@@ -17242,19 +21483,19 @@ function checkAlertRangeMinMaxServerSide(zeitintervallAnl,mstID,date,rowMainIDDs
                     if($.inArray(a.lastDBDates[i].on_date, anlageObj[mstID]) === -1){
                         anlageObj[mstID].push(a.lastDBDates[i].on_date);
                     }
-                 } 
+                 }
                 }
                 if($.inArray(date, anlageObj[mstID]) === -1){
                         anlageObj[mstID].push(date);
                 }
                 if(a.values){
-                     for (i = 0; i <= a.values.length; i++) {  
-                         if(a.values[i] !='' && typeof(a.values[i]) !='undefined'){                   
-                            arr.push(a.values[i].val); 
+                     for (i = 0; i <= a.values.length; i++) {
+                         if(a.values[i] !='' && typeof(a.values[i]) !='undefined'){
+                            arr.push(a.values[i].val);
                             }
-                         }  
-                     arr.sort(function(a, b) { return a - b }); 
-                    
+                         }
+                     arr.sort(function(a, b) { return a - b });
+
                     var minVal = arr[0]; // min
                     var maxVal = arr[arr.length - 1]; // max
                     $("#inputBotmMin").val(minVal);
@@ -17262,11 +21503,61 @@ function checkAlertRangeMinMaxServerSide(zeitintervallAnl,mstID,date,rowMainIDDs
 
                 }
                 //console.log(anlageObj);
-               
+
         }
     });
 }
+/*new-mm-start 07-04-2021*/
+function checkAlertRangeMinMaxServerSidePrdkt(zeitintervallAnl,prdAnlID,date,rowMainIDDs){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeAlertRangeMinMaxPrdkt",
+                nameDB: $("#nameDB").val(),
+                prdAnlID: prdAnlID,
+                date:date,
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                //console.log(a);
+                // alert("test:checkAlertRangeMinMaxServerSidePrdkt");
+                var arr=[];
+                if(a.lastDBDates[0]){
+                 for (var i=0; i<a.lastDBDates.length; i++){
+                    if($.inArray(a.lastDBDates[i].on_date, anlageObj[prdAnlID]) === -1){
+                        anlageObj[prdAnlID].push(a.lastDBDates[i].on_date);
+                    }
+                 }
+                }
+                if($.inArray(date, anlageObj[prdAnlID]) === -1){
+                        anlageObj[prdAnlID].push(date);
+                }
+                if(a.values){
+                     for (i = 0; i <= a.values.length; i++) {
+                         if(a.values[i] !='' && typeof(a.values[i]) !='undefined'){
+                            arr.push(a.values[i].val);
+                            }
+                         }
+                     arr.sort(function(a, b) { return a - b });
 
+                    var minVal = arr[0]; // min
+                    var maxVal = arr[arr.length - 1]; // max
+                    $("#inputBotmMin").val(minVal);
+                    $("#inputBotmMax").val(maxVal);
+
+                }
+                //console.log(anlageObj);
+
+        }
+    });
+}
+/*new-mm-end 07-04-2021*/
 function checkAlertRangeLastInputValueExist(zeitintervallAnl,mstID,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId){
        $.ajax({
             type: "POST",
@@ -17284,23 +21575,23 @@ function checkAlertRangeLastInputValueExist(zeitintervallAnl,mstID,date,inputCur
                 alert("failed!!")
             },
             success: function(a) {
-                a = JSON.parse(a); 
+                a = JSON.parse(a);
 
                 //console.log(a);
-                if(a.bottom[0]){               
+                if(a.bottom[0]){
                 var b = a.bottom[0].val.length;
                 if(b>0){
                         var currTopVal = $(inputCurrTopId).val();
                         if((currTopVal !='' && a.top[0].val !='') && (typeof(currTopVal) !='undefined' && typeof(a.top[0].val) !='undefined')){
                             var calculate = currTopVal-a.top[0].val;
-                            $(inputCurrBottomId).val(calculate); 
+                            $(inputCurrBottomId).val(calculate);
                         }else{
-                            $(inputCurrBottomId).val(""); 
+                            $(inputCurrBottomId).val("");
                         }
-                        $("#inputPrevValDB").val(a.top[0].val);                        
-                        $("#inputPrevBtmValDB").val(a.bottom[0].val);                        
+                        $("#inputPrevValDB").val(a.top[0].val);
+                        $("#inputPrevBtmValDB").val(a.bottom[0].val);
                         $("#inputValBottomCurr").val($(inputCurrBottomId).val());
-                        
+
                         /*add last prev value*/
                         //$("#inputLastValDB").val(a.top[0].val);
                         //$("#inputValBottomPrevLastDB").val(a.bottom[0].val);
@@ -17310,18 +21601,62 @@ function checkAlertRangeLastInputValueExist(zeitintervallAnl,mstID,date,inputCur
         }
     });
 }
+/*new-mm-start 07-04-2021*/
+function checkAlertRangeLastInputValueExistPrdkt(zeitintervallAnl,prdAnlID,date,inputCurrTopId,inputCurrBottomId,rowMainIDDs,prevId){
+       $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "masseneingabeAlertRangeLastInptValuePrdkt",
+                nameDB: $("#nameDB").val(),
+                prdAnlID: prdAnlID,
+                date:date,
+               /* checkDay:checkDay,*/
+                zeitintervallAnl:zeitintervallAnl
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                //console.log(a);
+                //alert("test:checkAlertRangeLastInputValueExistPrdkt");
+                if(a.bottom[0]){
+                var b = a.bottom[0].val.length;
+                if(b>0){
+                        var currTopVal = $(inputCurrTopId).val();
+                        if((currTopVal !='' && a.top[0].val !='') && (typeof(currTopVal) !='undefined' && typeof(a.top[0].val) !='undefined')){
+                            var calculate = currTopVal-a.top[0].val;
+                            $(inputCurrBottomId).val(calculate);
+                        }else{
+                            $(inputCurrBottomId).val("");
+                        }
+                        $("#inputPrevValDB").val(a.top[0].val);
+                        $("#inputPrevBtmValDB").val(a.bottom[0].val);
+                        $("#inputValBottomCurr").val($(inputCurrBottomId).val());
 
+                        /*add last prev value*/
+                        //$("#inputLastValDB").val(a.top[0].val);
+                        //$("#inputValBottomPrevLastDB").val(a.bottom[0].val);
+                        //checkAlertRangeMinMaxServerSide(zeitintervallAnl,mstID,date,rowMainIDDs,prevId);
+                }
+            }
+        }
+    });
+}
+/*new-mm-end 07-04-2021*/
 
 function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBottomId){
         //console.log('save running');
         var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
         var postDataEnabled =new Array();
         var enabledRow = [];
-        //enabledRow[index] = {};  
+        //enabledRow[index] = {};
         //console.log(key);console.log(inputCurrTopId);console.log(inputCurrBottomId);
         textValEnabled = $(""+inputCurrTopId+"").val();
         mstIDEnabled = $(""+inputCurrTopId+"").closest('td').attr("data-id");
-        dateEnabled = $(""+inputCurrTopId+"").closest('td').attr("date"); 
+        dateEnabled = $(""+inputCurrTopId+"").closest('td').attr("date");
         enabledRow.push({
             'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
         });
@@ -17331,12 +21666,12 @@ function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBo
 
         textValDisabled = $(""+inputCurrBottomId+"").val();
         mstIDDisabled = $(""+inputCurrBottomId+"").closest('td').attr("data-id");
-        dateDisabled = $(""+inputCurrBottomId+"").closest('td').attr("date"); 
+        dateDisabled = $(""+inputCurrBottomId+"").closest('td').attr("date");
         disabledRow.push({
             'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
          });
-        var postDataEnabled = JSON.stringify(enabledRow);console.log(postDataEnabled);
-        var postDataDisabled = JSON.stringify(disabledRow);console.log(postDataDisabled);
+        var postDataEnabled = JSON.stringify(enabledRow);//console.log(postDataEnabled);
+        var postDataDisabled = JSON.stringify(disabledRow);//console.log(postDataDisabled);
          //$("#masseneingabeSpeichernSrch").prop('disabled',true);
            $.ajax({
                 type: "POST",
@@ -17348,8 +21683,8 @@ function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBo
                   nameDB: $("#nameDB").val(),
                   postDataEnabled: postDataEnabled,
                   postDataDisabled:postDataDisabled,
-                  key:key 
-                },                     
+                  key:key
+                },
                 fail: function() {
                     alert("failed!!")
                 },
@@ -17361,63 +21696,123 @@ function saveToDBMasseneingabeEingabenSingleInput(key,inputCurrTopId,inputCurrBo
             });
     }
 
-    function saveToDBMasseneingabeEingabenSingleRow(key,rowMainIDEn,rowMainIDDs){
-        var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
-        var postDataEnabled =new Array();
-        var enabledRow = [];
-            $("#"+rowMainIDEn).each(function (index) {
-                enabledRow[index] = {};  
-                $('td', this).each(function() {
-                    textValEnabled = $(this).find('input').val();
-                    mstIDEnabled = $(this).attr("data-id");
-                    dateEnabled = $(this).attr("date"); 
-                    enabledRow.push({
-                        'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
-                     });
-                }); 
+function saveToDBMasseneingabeEingabenSingleRow(key,rowMainIDEn,rowMainIDDs){
+    var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
+    var postDataEnabled =new Array();
+    var enabledRow = [];
+        $("#"+rowMainIDEn).each(function (index) {
+            enabledRow[index] = {};
+            $('td', this).each(function() {
+                textValEnabled = $(this).find('input').val();
+                mstIDEnabled = $(this).attr("data-id");
+                dateEnabled = $(this).attr("date");
+                enabledRow.push({
+                    'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
+                 });
             });
-            var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
-            var postDataDisabled =new Array();
-            var disabledRow = [];
-             $("#"+rowMainIDDs).each(function (index) {
-                 disabledRow[index] = {};   
-                $('td', this).each(function() {
-                    textValDisabled = $(this).find('input').val();
-                    mstIDDisabled = $(this).attr("data-id");
-                    dateDisabled = $(this).attr("date"); 
-                    disabledRow.push({
-                        'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
-                     });
-                }); 
+        });
+        var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
+        var postDataDisabled =new Array();
+        var disabledRow = [];
+         $("#"+rowMainIDDs).each(function (index) {
+             disabledRow[index] = {};
+            $('td', this).each(function() {
+                textValDisabled = $(this).find('input').val();
+                mstIDDisabled = $(this).attr("data-id");
+                dateDisabled = $(this).attr("date");
+                disabledRow.push({
+                    'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
+                 });
             });
+        });
 
-             var postDataEnabled = JSON.stringify(enabledRow);
-             var postDataDisabled = JSON.stringify(disabledRow);
-             //$("#masseneingabeSpeichernSrch").prop('disabled',true);
-               $.ajax({
-                    type: "POST",
-                    url: "php/saveMasseneingabeEingaben.php",
-                    async: false,
-                    dataType: 'json',
-                    data:{
-                      modus: "saveCurrentRow",
-                      nameDB: $("#nameDB").val(),
-                      postDataEnabled: postDataEnabled,
-                      postDataDisabled:postDataDisabled,
-                      key:key 
-                    },                     
-                    fail: function() {
-                        alert("failed!!")
-                    },
-                    success: function(a) {
+         var postDataEnabled = JSON.stringify(enabledRow);
+         var postDataDisabled = JSON.stringify(disabledRow);
+         //$("#masseneingabeSpeichernSrch").prop('disabled',true);
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "saveCurrentRow",
+                  nameDB: $("#nameDB").val(),
+                  postDataEnabled: postDataEnabled,
+                  postDataDisabled:postDataDisabled,
+                  key:key
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
 
-                       //alert(a);
-                       //$("#masseneingabeSpeichernSrch").prop('disabled',false);
-                       //$("#masseneingabeSrchImg").hide(); 
-                      /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
-                    }
-                });
-    }
+                   //alert(a);
+                   //$("#masseneingabeSpeichernSrch").prop('disabled',false);
+                   //$("#masseneingabeSrchImg").hide();
+                  /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
+                }
+            });
+}
+
+/*new-mm-start 05-04-2021*/
+function saveToDBMasseneingabeEingabenSingleRowPrdkt(key,rowMainIDEn,rowMainIDDs){
+    var mstIDEnabled,dateEnabled,myObjEnabled,textValEnabled;
+    var postDataEnabled =new Array();
+    var enabledRow = [];
+        $("#"+rowMainIDEn).each(function (index) {
+            enabledRow[index] = {};
+            $('td', this).each(function() {
+                textValEnabled = $(this).find('input').val();
+                mstIDEnabled = $(this).attr("data-id");
+                dateEnabled = $(this).attr("date");
+                enabledRow.push({
+                    'textValEnabled': textValEnabled, 'mstIDEnabled': mstIDEnabled, 'dateEnabled': dateEnabled
+                 });
+            });
+        });
+        var mstIDDisabled,dateDisabled,myObjDisabled,textValDisabled;
+        var postDataDisabled =new Array();
+        var disabledRow = [];
+         $("#"+rowMainIDDs).each(function (index) {
+             disabledRow[index] = {};
+            $('td', this).each(function() {
+                textValDisabled = $(this).find('input').val();
+                mstIDDisabled = $(this).attr("data-id");
+                dateDisabled = $(this).attr("date");
+                disabledRow.push({
+                    'textValDisabled': textValDisabled, 'mstIDDisabled': mstIDDisabled, 'dateDisabled': dateDisabled
+                 });
+            });
+        });
+
+         var postDataEnabled = JSON.stringify(enabledRow);
+         var postDataDisabled = JSON.stringify(disabledRow);
+         //$("#masseneingabeSpeichernSrch").prop('disabled',true);
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "saveCurrentRowPrdkt",
+                  nameDB: $("#nameDB").val(),
+                  postDataEnabled: postDataEnabled,
+                  postDataDisabled:postDataDisabled,
+                  key:key
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+
+                   //alert(a);
+                   //$("#masseneingabeSpeichernSrch").prop('disabled',false);
+                   //$("#masseneingabeSrchImg").hide();
+                  /* $('#tblMasseneingabeDataIMwTbl tbody td input').val("");*/
+                }
+            });
+}
+/*new-mm-end 05-04-2021*/
 
 /*Check alert validation for the start Date and end Date*/
 function alertValidationforStartEndeDate(mstID,date,type){
@@ -17429,24 +21824,85 @@ function alertValidationforStartEndeDate(mstID,date,type){
                 id: "startDateRangeCheckValidation",
                 nameDB: $("#nameDB").val(),
                 mstID: mstID,
-                date: date,            
+                date: date,
                 type:type
                 },
             fail: function() {
                 alert("failed!!")
             },
             success: function(a) {
-                a = JSON.parse(a); 
+                a = JSON.parse(a);
                 var b=a.length;
-                console.log(a);
+                //console.log(a);
                 if(b>0){
-                   alert('Selected date value already filled up in record list. Please select other date.'); 
-                   keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
+                    alert('Selected date value already filled up in record list. Please select other date.');
+                    keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
                 }
-            }            
-        });   
+            }
+        });
 }
-
+/*new-mm-start 06-04-2021*/
+function alertValidationforStartEndeDateMesssetelle(mstID,date,type){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startDateRangeCheckValidation",
+                nameDB: $("#nameDB").val(),
+                mstID: mstID,
+                date: date,
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                var b=a.length;
+                //console.log(a);
+                if(b>0){
+                    alert('Selected date value already filled up in record list. Please select other date.');
+                    /*new-mm-start 06-04-2021*/
+                    if ($("input[name='BetriebsdatenFilter']:checked").val() == '2') {
+                        MesssetelleListingDblClickRow(mstID,'infosIntEnergiedaten');
+                    }
+                    /*new-mm-end 06-04-2021*/
+                }
+            }
+        });
+}
+/*new-mm-end 06-04-2021*/
+/*Prodkte mm 01-03-2021*/
+/*new-mm-start 22-03-2021*/
+function alertValidationforPrdktStartEndeDate(prd_anl_ID,date,type){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startDateRangeCheckValidationPrdkt",
+                nameDB: $("#nameDB").val(),
+                prd_anl_ID: prd_anl_ID,
+                date: date,
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                a = JSON.parse(a);
+                var b=a.length;
+                //console.log(a);
+                if(b>0){
+                   alert('Selected date value already filled up in record list. Please select other date.');
+                   //keinZeitIntervallZugewiesenDblClickRow(mstID,'infosIntBetriebsdaten');
+                   produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+                }
+            }
+        });
+}
+/*new-mm-end 22-03-2021*/
 function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate,type){
     if(inputId =='einheitAnl'){
         $.ajax({
@@ -17458,8 +21914,8 @@ function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate
                 nameDB: $("#nameDB").val(),
                 mstID: $("#mstID").val(),
                 einheitVal:selVal,
-                startDate: startDate, 
-                endDate:endDate,           
+                startDate: startDate,
+                endDate:endDate,
                 type:type
                 },
             fail: function() {
@@ -17467,12 +21923,12 @@ function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate
             },
             success: function(a){
                 a = JSON.parse(a);
-                var b = a.length; 
+                var b = a.length;
                 if(b>0){
                     alert('You could not set einheit. Please select different dates.');
                     keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
                 }
-            }            
+            }
         });
     }
     if(inputId =='control_system'){
@@ -17485,21 +21941,21 @@ function alertValidationforEinheitControlSystem(inputId,selVal,startDate,endDate
                 nameDB: $("#nameDB").val(),
                 mstID: $("#mstID").val(),
                 controlSystem:selVal,
-                startDate: startDate, 
-                endDate:endDate,           
+                startDate: startDate,
+                endDate:endDate,
                 type:type
                 },
             fail: function() {
                 alert("failed!!")
             },
             success: function(a){
-                a = JSON.parse(a); console.log(a);
+                a = JSON.parse(a); //console.log(a);
                 var b=a.length;
                 if(b>0){
                     alert('You could not set control system. Please select different dates.');
                     keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntBetriebsdaten');
                 }
-            }            
+            }
         });
     }
  }
@@ -17948,7 +22404,7 @@ function gipscommRollenUndBerechtigungen() {            // Save Gipscomm Admin R
         var $span = $(this).attr('check-value');
         if($span == 1) {
             var spanTxt = $(this).attr('data-tab_id');
-            gipsArr.push(spanTxt); 
+            gipsArr.push(spanTxt);
         }
     });
     $.ajax({
@@ -17978,7 +22434,7 @@ function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and
         var $span = $(this).attr('check-value');
         if($span == 1) {
             var spanTxt = $(this).attr('data-tab_id');
-            sAdmArr.push(spanTxt); 
+            sAdmArr.push(spanTxt);
         }
     });
     $.ajax({
@@ -18005,7 +22461,7 @@ function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Pe
         var $span = $(this).attr('check-value');
         if($span == 1) {
             var spanTxt = $(this).attr('data-tab_id');
-            adminArr.push(spanTxt); 
+            adminArr.push(spanTxt);
         }
     });
     $.ajax({
@@ -18031,7 +22487,7 @@ function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and P
         var $span = $(this).attr('check-value');
         if($span == 1) {
             var spanTxt = $(this).attr('data-tab_id');
-            benArr.push(spanTxt); 
+            benArr.push(spanTxt);
         }
     });
     $.ajax({
@@ -18211,3 +22667,145 @@ function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) 
         }
     });
 }
+
+/*new-mm-start 22-03-2021*/
+function alertValidationforEinheitControlSystemPrdkt(inputId,selVal,startDate,endDate,type){
+    if(inputId =='einheitAnlPrdkt'){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startEndDateEinheitTypeCheckValidation_prdkt_mm",
+                nameDB: $("#nameDB").val(),
+                mstID: $("#mstID").val(),
+                einheitVal:selVal,
+                startDate: startDate,
+                endDate:endDate,
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a){
+                a = JSON.parse(a);
+                var b = a.length;
+                if(b>0){
+                    alert('You could not set einheit. Please select different dates.');
+                    //keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntEnergiedaten');
+                    produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+
+                }
+            }
+        });
+    }
+    if(inputId =='control_system_AnlPrdkt'){
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/getManuellInterneData.php",
+            data: {
+                id: "startEndDatecontrolSysTypeCheckValidation_prdkt_mm",
+                nameDB: $("#nameDB").val(),
+                mstID: $("#mstID").val(),
+                controlSystem:selVal,
+                startDate: startDate,
+                endDate:endDate,
+                type:type
+                },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a){
+                a = JSON.parse(a);
+                //console.log(a);
+                var b=a.length;
+                if(b>0){
+                    alert('You could not set control system. Please select different dates.');
+                    //keinZeitIntervallZugewiesenDblClickRow($("#mstID").val(),'infosIntEnergiedaten');
+                    produkteAnlageListingDblClickRow($("#prd_ID").val(),$("#anl_Col").val(),$("#anl_ID").val(),'infosIntEnergiedaten');
+
+                }
+            }
+        });
+    }
+}
+/*new-mm-end 22-03-2021*/
+
+/*new-mm-start 22-03-2021*/
+function deleteFromDBMasseneingabeEingabenSingleInput(key,currentDate,mstID){
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "deleteCurrentInput",
+                  nameDB: $("#nameDB").val(),
+                  currentDate: currentDate,
+                  mstID:mstID,
+                  key:key
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+                    if(a==1){
+                        setTimeout(function(){
+                            $("#masseneingabeSpeichernSrch").prop("disabled",false);
+                        }, 300);
+                    }
+                }
+            });
+}
+/*new-mm-end 22-03-2021*/
+
+/*new-mm-start 06-04-2021*/
+function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID){
+           $.ajax({
+                type: "POST",
+                url: "php/saveMasseneingabeEingaben.php",
+                async: false,
+                dataType: 'json',
+                data:{
+                  modus: "deleteCurrentInputPrdkt",
+                  nameDB: $("#nameDB").val(),
+                  currentDate: currentDate,
+                  mstID:mstID,
+                  key:key
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+                    if(a==1){
+                        setTimeout(function(){
+                            $("#masseneingabeSpeichernSrchprdkt").prop("disabled",false);
+                        }, 300);
+                    }
+                }
+            });
+}
+/*new-mm-end 06-04-2021*/
+
+    /*19-02-2021 interne Energiedaten Betriebsdaten table show hide*/
+    /* function interneEBTblShowHide(id){
+        $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().hide();
+        $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
+        if(id==1){
+            $("#tblMstOhneZeitintervallIMwIE").hide();
+            $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().hide();
+            $("#searchBtnShowRecordsAnlBtnDiv").show();
+            $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().show();
+            $('#searchBtnShowRecordsAnlBtn').val(1);
+            searchKeinZeitIntervallZugewiesen(1);
+            $("#interneEnergiedatenTbl").prop("checked",true);
+        }
+        if(id==2){
+            $("#searchBtnShowRecordsAnlBtnDiv").hide();
+            $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().hide();
+            $("#tblMstOhneZeitintervallIMwIE").show();
+            $('#tblMstOhneZeitintervallIMwIE').parents('div.dataTables_wrapper').first().show();
+            $("#interneBetriebsdatenTbl").prop("checked",true);
+        }
+    }*/

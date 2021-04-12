@@ -231,7 +231,7 @@ nav {
   -o-transition:opacity linear 0.15s;
   transition:opacity linear 0.15s;
   -webkit-box-shadow:0px 2px 3px rgba(0,0,0,0.2);
-          box-shadow:0px 2px 3px rgba(0,0,0,0.2);
+  box-shadow:0px 2px 3px rgba(0,0,0,0.2);
   background:#2e2728;
 }
 .sub-menu li {
@@ -250,11 +250,11 @@ nav {
   float:right;
 }
 .kurve {
-    display: inline-block;
-    width: 25px;
-    height: 5px;
-    background-color: orange;
-    margin-top: 250px;
+  display: inline-block;
+  width: 25px;
+  height: 5px;
+  background-color: orange;
+  margin-top: 250px;
 }
 
 #tblMessstellenBerechnungseditor_filter,
@@ -313,9 +313,10 @@ nav {
   float: left;
 }
 /*24-02-2020 tab html designed calculator*/
-#tabGipscAdm, #tabBetrGrp, #tabSAdm, #tabManGrp, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl ,#tabStdDr, #tabBer, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm,
+/*new-mm-start 23-03-2021*/
+#tabGipscAdm, #tabBetrGrp, #tabSAdm, #tabManGrp, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl ,#tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm,
 #tabMsg, #tabKnz, #tabAlm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabEng, #tabZp, #tabBerechnungsformeln,
-#tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
+#tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist,#tabIntBetriebsdatenIMwHistPrdkt,#tabIntBetriebsdatenIMwHistMesssetelle, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
 #tabEPrd, #tabPrd, #tabPrd_historie, #tabVorlagenformeln, #tabAnl_weitereKonfig, #tabPrd_konfig, #tabDiagKnz,
 #tabGrpDiag, #tabHzk,#tabTaschenrechner,#tabDynamicKorrekturFktr {
   display: inline;
@@ -327,6 +328,7 @@ nav {
   border-top-left-radius: 8px;
   float: left;
 }
+/*new-mm-end 23-03-2021*/
 .infoBody{
   background-color:#CED6DE;
   border:1px solid #A1A7AD;
@@ -345,6 +347,9 @@ nav {
   padding:10px;
 }
 /*24-02-2020 tab detail html designed calculator*/
+/*new-mm-start 23-03-2021,
+* Added #infosMasseneingabePrdkt,#infosMasseneingabeMesssetelle 30-03-2021
+*/
 #infosGipscommAdmins,
 #infosBetreuerGruppen,
 #infosSuperAdmins,
@@ -357,6 +362,8 @@ nav {
 #infosExtDurchleitungen,
 #infosStandorteDritte,
 #infosBereiche,
+#infosMessstellenEng,
+#infosMessstellenBetr,
 #infosStandorte,
 #infosAnlagen,
 #infosAnlagenHistorie,
@@ -378,7 +385,11 @@ nav {
 #infosIntEnergiedaten,
 #infosIntBetriebsdaten,
 #infosIntBetriebsdatenHist,
+#infosIntBetriebsdatenHistPrdkt,
+#infosIntBetriebsdatenHistMesssetelle,
 #infosMasseneingabe,
+#infosMasseneingabePrdkt,
+#infosMasseneingabeMesssetelle,
 #infosAuswertungManuell,
 #infosSpaEfVTabelle1,
 #infosSpaEfVTabelle2,
@@ -400,7 +411,10 @@ nav {
 #infosGruppierungDiagramme,
 #infosKorrekturFaktor,
 #infosDynamicKorrekturFaktor,
-#intBdeIMwHistorieDiv {
+#intBdeIMwHistorieDiv,
+#intBdePrdktIMwHistorieDiv,
+#intBdeMesssetelleIMwHistorieDiv
+{
   background-color: #B9C0C7;
   margin: 10px;
   width: 21.85cm;
@@ -411,6 +425,7 @@ nav {
   clear: both;
   padding: 2px;
 }
+/*new-mm-end 23-03-2021*/
 .navDropBox img{
   float:right;
   cursor:pointer;
@@ -473,14 +488,28 @@ nav {
 #verschAbbrechen,
 #mapDrucken,
 #btnTageMasseneingabeIMwNw,
+#btnTageMasseneingabeIMwNwPrdkt,
+#btnTageMasseneingabeIMwNwMesssetelle,
 #btnWochenMasseneingabeIMwNw,
+#btnWochenMasseneingabeIMwNwPrdkt,
+#btnWochenMasseneingabeIMwNwMesssetelle,
 #btnMonateMasseneingabeIMwNw,
+#btnMonateMasseneingabeIMwNwPrdkt,
+#btnMonateMasseneingabeIMwNwMesssetelle,
 #btnJahreMasseneingabeIMwNw,
+#btnJahreMasseneingabeIMwNwPrdkt,
+#btnJahreMasseneingabeIMwNwMesssetelle,
 #masseneingabeSpeichernSrch,
+#masseneingabeSpeichernSrchPrdkt,
+#masseneingabeSpeichernSrchMesssetelle,
 #masseneingabeLaden,
 #btnMassEingMst,
 #btnMassEingAnl,
+#btnMassEingPrdkt,
+#btnMassEingMesssetelle,
 #btnKonfigMstAnl,
+#btnKonfigPrdkt,
+#btnKonfigMesssetelle,
 #btnAnlagenNrOderName,
 #formelSpeichern,
 #btnVerbrauchsdatenExport,
@@ -515,8 +544,9 @@ nav {
 #histDataJa,
 #histDataNein,
 #saveMstFormulaAbbrechen,
-#anlPrdLink
-#btnShowRecordsAnlBtn{
+#anlPrdLink,
+#btnShowRecordsAnlBtn,
+#btnShowRecordsAnlBtnPrdkt{
   border: 0px solid black;
   border-radius: 5px;
   background-color: transparent;
@@ -538,9 +568,14 @@ nav {
 #berResetAnl:hover,
 #feldHinzufuegenStd:hover,
 #linkBerechnungslogikOderEingabemaske:hover,
-#mstSuchenVMessstelle:hover,
-#msmSuchenMst:hover,
-#ortSuchenMst:hover,
+#mstSuchenVMessstelleE:hover,
+#mstSuchenVMessstelleB:hover,
+#msmSuchenMstE:hover,
+#msmSuchenMstB:hover,
+#ortSuchenMstE:hover,
+#ortSuchenMstB:hover,
+#extDlSuchenMstE:hover,
+#extDlSuchenMstB:hover,
 .btn:hover,
 #anlAuswahlBer:hover,
 #anlAuswahlStd:hover,
@@ -559,7 +594,8 @@ nav {
 #btnHtNt:hover,
 #eRngSuchenMst:hover,
 #weitereEntsLieg:hover,
-#mstSuchenAnlage:hover,
+#mstESuchenAnlage:hover,
+#mstBSuchenAnlage:hover,
 #anlEnt1SuchenMst:hover,
 #anlEnt2SuchenMst:hover,
 #anlEnt3SuchenMst:hover,
@@ -608,14 +644,28 @@ nav {
 #mapDrucken:hover,
 #mstSuchenIMw:hover,
 #btnTageMasseneingabeIMwNw:hover,
+#btnTageMasseneingabeIMwNwPrdkt:hover,
+#btnTageMasseneingabeIMwNwMesssetelle:hover,
 #btnWochenMasseneingabeIMwNw:hover,
+#btnWochenMasseneingabeIMwNwPrdkt:hover,
+#btnWochenMasseneingabeIMwNwMesssetelle:hover,
 #btnMonateMasseneingabeIMwNw:hover,
+#btnMonateMasseneingabeIMwNwPrdkt:hover,
+#btnMonateMasseneingabeIMwNwMesssetelle:hover,
 #btnJahreMasseneingabeIMwNw:hover,
+#btnJahreMasseneingabeIMwNwPrdkt:hover,
+#btnJahreMasseneingabeIMwNwMesssetelle:hover,
 #masseneingabeSpeichernSrch:hover,
+#masseneingabeSpeichernSrchPrdkt:hover,
+#masseneingabeSpeichernSrchMesssetelle:hover,
 #masseneingabeLaden:hover,
 #btnMassEingMst:hover,
 #btnMassEingAnl:hover,
+#btnMassEingPrdkt:hover,
+#btnMassEingMesssetelle:hover,
 #btnKonfigMstAnl:hover,
+#btnKonfigPrdkt:hover,
+#btnKonfigMesssetelle:hover,
 #btnAnlagenNrOderName:hover,
 #formelSpeichern:hover,
 #btnVerbrauchsdatenExport:hover,
@@ -673,7 +723,7 @@ nav {
 #histDataJa:hover,
 #histDataNein:hover,
 #saveMstFormulaAbbrechen:hover,
-#anlPrdLink:hover 
+#anlPrdLink:hover
 #btnShowRecordsAnlBtn:hover {
   background-color: white;
   cursor: pointer;
@@ -683,6 +733,18 @@ nav {
   white-space: nowrap;
   font-size: 12px;
 }
+/*new-mm-start 31-03-2021*/
+#timeIntervalWerteEnergiedatenIMwPrdkt{
+  height: 600px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+#timeIntervalWerteEnergiedatenIMwMesssetelle{
+  height: 600px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+/*new-mm-end 31-03-2021*/
 #aktuellesDokNameERng{
   font-size: 12px;
   padding: 5px 5px;
@@ -1010,60 +1072,60 @@ textarea {
 
 /*messe column manage 06/02/2020*/
 #tabs-1_berEdit table#tblMessstellenBerechnungseditor tbody>tr>:nth-child(5) {
-    /* color: red; */
-    max-width: 180px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    /*padding-bottom: 10px;*/
+  /* color: red; */
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /*padding-bottom: 10px;*/
 }
 
 
 /*tooltip messstellen records css 03-03-2020*/
-  a.tooltip_formula_show {
-    position: absolute;
-  }
-  a.tooltip_formula_show:after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 130%;
-    background: #6B6F73;
-    padding: 9px 20px;
-    color: #ffff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius   : 3px;
-    border-radius        : 3px;
-    white-space: nowrap;
-    opacity: 0;
-    -webkit-transition: all 0.4s ease;
-    -moz-transition   : all 0.4s ease;
-  }
-  a.tooltip_formula_show:hover:after {
-    bottom: 100%;
-  }
-  a.tooltip_formula_show:hover:before {
-    bottom: 70%;
-  }
-  a.tooltip_formula_show:hover:after {
-    opacity: 1;
-  }
+a.tooltip_formula_show {
+  position: absolute;
+}
+a.tooltip_formula_show:after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 130%;
+  background: #6B6F73;
+  padding: 9px 20px;
+  color: #ffff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius   : 3px;
+  border-radius        : 3px;
+  white-space: nowrap;
+  opacity: 0;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition   : all 0.4s ease;
+}
+a.tooltip_formula_show:hover:after {
+  bottom: 100%;
+}
+a.tooltip_formula_show:hover:before {
+  bottom: 70%;
+}
+a.tooltip_formula_show:hover:after {
+  opacity: 1;
+}
 
-  /*05-03-2020 Formel Editiern button design */
-  #tabsTblsBerEdit .FormelEditiernBtnDiv {
-    width: 165px;
-    float: right;
-    padding-bottom: 6px;
+/*05-03-2020 Formel Editiern button design */
+#tabsTblsBerEdit .FormelEditiernBtnDiv {
+  width: 165px;
+  float: right;
+  padding-bottom: 6px;
   /*  margin-right: 5px;*/
-  }
-  .FormelEditiernBtnDiv button#FormelEditiernBtn {
-    padding: 5px;
-    width: 100%;
-    border: 3px solid #4a5f79;
-    background: #3f78bd;
-    color: #fff;
-    font-size: 12px;
-    font-weight: normal;
-    cursor: pointer;
+}
+.FormelEditiernBtnDiv button#FormelEditiernBtn {
+  padding: 5px;
+  width: 100%;
+  border: 3px solid #4a5f79;
+  background: #3f78bd;
+  color: #fff;
+  font-size: 12px;
+  font-weight: normal;
+  cursor: pointer;
 }
 button#FormelEditiernBtn:disabled,
 button#FormelEditiernBtn[disabled]{
@@ -1075,10 +1137,10 @@ button#FormelEditiernBtn[disabled]{
 /*02-04-2020 select box type (time, temprature etc)*/
 .typeDynamicCF,.subtypeTimeDynamicCF,.subtypeTxtDynamicCF{
   width: 90% !important;
-    margin: 4px;
+  margin: 4px;
 }
 .sectionDynamicCF{
- /* height: 100px;*/
+  /* height: 100px;*/
   width: 69%;
   /*background-color: #79ace978;
   border: 1px solid #596675;*/
@@ -1096,7 +1158,7 @@ button#FormelEditiernBtn[disabled]{
   margin: 4px;
 }
 .sectionDynamicCF{
- /* height: 100px;*/
+  /* height: 100px;*/
   width: 69%;
   /*background-color: #79ace978;
   border: 1px solid #596675;*/
@@ -1122,39 +1184,39 @@ button#FormelEditiernBtn[disabled]{
 #basicFaktorRow2 .controlDiv,
 #basicFaktorRow3 .controlDiv,
 #basicFaktorRow4 .controlDiv {
-    width: 125px;
-    padding: 0px 12px 8px 8px;
+  width: 125px;
+  padding: 0px 12px 8px 8px;
 }
 
 #basicFaktorRow1 .controlDiv input,
 #basicFaktorRow2 .controlDiv input,
 #basicFaktorRow3 .controlDiv input,
 #basicFaktorRow4 .controlDiv input {
-    width: 114px;
+  width: 114px;
 }
 #basicFaktorRow1 .controlDiv.formatDynamicBezugRow1,
 #basicFaktorRow2 .controlDiv.formatDynamicBezugRow2 {
-    width: 181px !important;
+  width: 181px !important;
 }
 #basicFaktorRow1 .controlDiv.formatDynamicBezugRow1 select,
 #basicFaktorRow2 .controlDiv.formatDynamicBezugRow2 select{
-    width: 184px !important;
+  width: 184px !important;
 }
 
 /*14-07-2020*/
 .tempMonthCaseWidth input {
-    width: 84px!important;
+  width: 84px!important;
 }
 
 .tempMonthCaseWidth div {
-    width: 91px !important;
+  width: 91px !important;
 }
 .tempMonthCaseWidth .controlDiv label {
-    width: 92px;
+  width: 92px;
 }
 
 div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 /*18-08-2020*/
@@ -1193,32 +1255,43 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 
 #DkFeSpeichern{
   float: right;
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 18px;
-    height: 18px;
-    margin-left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  margin-left: 10px;
 }
 
 
 /*21-09-2020*/
-.btnShowRecordsAnl{
+/*new-mm-start 23-03-2021*/
+.btnShowRecordsAnl,
+.btnShowRecordsAnlPrdkt{
   float: right;
   padding-bottom: 27px;
   padding-right: 3px;
 }
-
+/*new-mm-end 23-03-2021*/
 /*22-09-2020*/
-#btnMassEingAnl,#btnShowRecordsAnlBtn{
+/*new-mm-start 23-03-2021,
+* Added #btnMassEingPrdkt,#btnMassEingMesssetelle 30-03-2021*/
+#btnMassEingAnl,#btnShowRecordsAnlBtn,#btnMassEingMst,
+#btnMassEingPrdkt,
+#btnMassEingMesssetelle,
+#btnShowRecordsAnlBtnPrdkt{
   background-color: white !important;
   cursor: pointer !important;
 }
+/*new-mm-end 23-03-2021*/
 
-#intBdeIMwHistorieDiv input, #intBdeIMwHistorieDiv select{
+/*new-mm-start 23-03-2021*/
+#intBdeIMwHistorieDiv input, #intBdeIMwHistorieDiv select,
+#intBdePrdktIMwHistorieDiv input, #intBdePrdktIMwHistorieDiv select,
+#intBdeMesssetelleIMwHistorieDiv input, #intBdeMesssetelleIMwHistorieDiv select{
   font-size:13px;
 }
-
+/*new-mm-end 23-03-2021*/
 #intBdeIMwHistSpeichernDblClick img{
   width: 20px;
   margin-left: 0px;
@@ -1227,105 +1300,259 @@ div#tblGetDyanamicheKorrekturfaktoren_wrapper,div#tblOptionenEPrdDKff_wrapper {
 .monthInputZeitintervallAnl{
   width: 1.5cm !important;
 }
-
-.wochenInputZeitintervallAnl{
+/*new-mm-start 23-03-2021*/
+.wochenInputZeitintervallAnl,
+.wochenInputZeitintervallAnlPrdkt{
   width: 1.2cm !important;
 }
-
-#infosIntBetriebsdaten input[readonly], 
+/*new-mm-end 23-03-2021*/
+#infosIntBetriebsdaten input[readonly],
 #infosIntBdeIMwHistoriePopUpDiv input[readonly],
 #infosIntBdeIMwHistoriePopUpDiv select[readonly],
 #intBdeIMwHistorieContainer input[readonly]
 {
-    background: #dadcde;
+  background: #dadcde;
 }
 
 div#infosIntBdeIMwHistoriePopUpDiv input {
-    margin: 16px 0px 9px 8px;
+  margin: 16px 0px 9px 8px;
 }
-
-div#intBdeIMwHistorieDiv .controlDiv{
+/*new-mm-start 23-03-2021*/
+div#intBdeIMwHistorieDiv .controlDiv,
+div#intBdePrdktIMwHistorieDiv .controlDiv,
+div#intBdeMesssetelleIMwHistorieDiv .controlDiv{
   display: inline-block;
   background-color: #A1A7AD;
   margin-bottom: 0.1cm;
   width: 7.0cm;
 }
-div#intBdeIMwHistorieDiv .controlDiv label{
-    display: inline-block;
-    width: 2.9cm;
-    height: 0.5cm;
-    background-color: #A1A7AD;
-    font-size: 12px;
-    padding-left: 0.1cm;
-    border: none;
-} 
+/*new-mm-end 23-03-2021*/
+
+/*new-mm-start 23-03-2021*/
+div#intBdeIMwHistorieDiv .controlDiv label,
+div#intBdePrdktIMwHistorieDiv .controlDiv label,
+div#intBdeMesssetelleIMwHistorieDiv .controlDiv label{
+  display: inline-block;
+  width: 2.9cm;
+  height: 0.5cm;
+  background-color: #A1A7AD;
+  font-size: 12px;
+  padding-left: 0.1cm;
+  border: none;
+}
+/*new-mm-end 23-03-2021*/
 div#intBdeIMwHistorieDiv .controlDiv input{
-    margin-left: 0.1cm;
-    margin-top: 0.1cm;
-    display: inline;
-    font-size: 11px;
-    height: 0.4cm;
-    left: 100px;
-    clear: both;
-    width: 3.3cm;
-    padding: 0px;
+  margin-left: 0.1cm;
+  margin-top: 0.1cm;
+  display: inline;
+  font-size: 11px;
+  height: 0.4cm;
+  left: 100px;
+  clear: both;
+  width: 3.3cm;
+  padding: 0px;
 }
 
 
 /*02-11-2020 create html for second page Masseneingabe Button */
-.infosMasseneingabeDateRangeDiv .zeitintervallAnl_1, 
+
+
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_1,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2,
-.infosMasseneingabeDateRangeDiv .zeitintervallAnl_3, 
+.infosMasseneingabeDateRangeDiv .zeitintervallAnl_3,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_4 ,
 .infosMasseneingabeDateRangeDiv .btnMasseneingabeIMwSearchDiv{
-    width: 22%;
-    display: inline;
+  width: 22%;
+  display: inline;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_1,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_2,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_3,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_4 ,
+.infosMasseneingabeDateRangeDivPrdkt .btnMasseneingabeIMwSearchDiv{
+  width: 22%;
+  display: inline;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_2,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_3,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_4 ,
+.infosMasseneingabeDateRangeDivMesssetelle .btnMasseneingabeIMwSearchDiv{
+  width: 22%;
+  display: inline;
+}
+/*new-mm-end 31-03-2021*/
 
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_1 input,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_3 input,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_4 input {
-    width: 20%;
-    height: 24px;
-    border-radius: 3px;
-    border-color: none;
+  width: 20%;
+  height: 24px;
+  border-radius: 3px;
+  border-color: none;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_1 input,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_3 input,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_4 input {
+  width: 20%;
+  height: 24px;
+  border-radius: 3px;
+  border-color: none;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1 input,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_3 input,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_4 input {
+  width: 20%;
+  height: 24px;
+  border-radius: 3px;
+  border-color: none;
+}
+/*new-mm-end 31-03-2021*/
+
 .infosMasseneingabeDateRangeDiv input#btnMasseneingabeIMwSearch {
-    width: 5cm;
-    height: 30px;
+  width: 5cm;
+  height: 30px;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt input#btnMasseneingabeIMwSearchPrdkt {
+  width: 5cm;
+  height: 30px;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle input#btnMasseneingabeIMwSearchMesssetelle {
+  width: 5cm;
+  height: 30px;
+}
+/*new-mm-end 31-03-2021*/
+
+
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2 input {
-    width: 9% !important;
-    height: 24px;
-    border-radius: 3px;
-    border-color: none;
+  width: 9% !important;
+  height: 24px;
+  border-radius: 3px;
+  border-color: none;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_2 input {
+  width: 9% !important;
+  height: 24px;
+  border-radius: 3px;
+  border-color: none;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_2 input {
+  width: 9% !important;
+  height: 24px;
+  border-radius: 3px;
+  border-color: none;
+}
+/*new-mm-end 31-03-2021*/
+
+
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2 select {
-    width: 8% !important;
-    height: 30px;
-    border-radius: 3px;
+  width: 8% !important;
+  height: 30px;
+  border-radius: 3px;
 }
+
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_2 select {
+  width: 8% !important;
+  height: 30px;
+  border-radius: 3px;
+}
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_2 select {
+  width: 8% !important;
+  height: 30px;
+  border-radius: 3px;
+}
+/*new-mm-end 31-03-2021*/
+
+
 .infosMasseneingabeDateRangeDiv {
-    background: #ccc;
-    padding: 12px 0px 12px 0px;
-    text-align: center;
+  background: #ccc;
+  padding: 12px 0px 12px 0px;
+  text-align: center;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt  {
+  background: #ccc;
+  padding: 12px 0px 12px 0px;
+  text-align: center;
+}
+
+
+/*new-mm-end 31-03-2021*/
+/*new-mm-start 31-03-2021*/
+
+.infosMasseneingabeDateRangeDivMesssetelle  {
+  background: #ccc;
+  padding: 12px 0px 12px 0px;
+  text-align: center;
+}
+/*new-mm-end 31-03-2021*/
+
+
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_2{
   padding: 0px 35px 0 0;
   font-size: 18px;
 }
+
+/*new-mm-start 31-03-2021*/
+
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_2{
+  padding: 0px 35px 0 0;
+  font-size: 18px;
+}
+
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_2{
+  padding: 0px 35px 0 0;
+  font-size: 18px;
+}
+/*new-mm-end 31-03-2021*/
+
 
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_1,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_3,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_4{
   padding: 0px 30px 0 0;
 }
+/*new-mm-start 31-03-2021*/
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_1,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_3,
+.infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_4{
+  padding: 0px 30px 0 0;
+}
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_3,
+.infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_4{
+  padding: 0px 30px 0 0;
+}
+/*new-mm-end 31-03-2021*/
 
 button#btnTageMasseneingabeIMwNw.active,
+button#btnTageMasseneingabeIMwNwPrdkt.active,
+button#btnTageMasseneingabeIMwNwMesssetelle.active,
 button#btnWochenMasseneingabeIMwNw.active,
+button#btnWochenMasseneingabeIMwNwPrdkt.active,
+button#btnWochenMasseneingabeIMwNwMesssetelle.active,
 button#btnMonateMasseneingabeIMwNw.active,
-button#btnJahreMasseneingabeIMwNw.active {
-    background: #f3f3f3;
+button#btnMonateMasseneingabeIMwNwPrdkt.active,
+button#btnMonateMasseneingabeIMwNwMesssetelle.active,
+button#btnJahreMasseneingabeIMwNw.active,
+button#btnJahreMasseneingabeIMwNwPrdkt.active,
+button#btnJahreMasseneingabeIMwNwMesssetelle.active {
+  background: #f3f3f3;
 }
 
 
@@ -1333,7 +1560,7 @@ table#tblMasseneingabeDataIMwTbl {
   width: 100%;
 }
 
-table#tblMasseneingabeDataIMwTbl td, 
+table#tblMasseneingabeDataIMwTbl td,
 table#tblMasseneingabeDataIMwTbl th {
   border: 1px solid #dddddd;
   text-align: left;
@@ -1358,23 +1585,38 @@ table#tblMasseneingabeDataIMwTbl td input {
 }
 
 #timeIntervalWerteEnergiedatenIMw{
-    width: 1100px;
-    overflow-x: auto;
-    height: 150px;
+  width: 1100px;
+  overflow-x: auto;
+  height: 150px;
 }
-
-.fullWidthMasseneingabe #infosMasseneingabe{
+/*new-mm-start 31-03-2021*/
+#timeIntervalWerteEnergiedatenIMwPrdkt{
+  width: 1100px;
+  overflow-x: auto;
+  height: 150px;
+}
+#timeIntervalWerteEnergiedatenIMwMesssetelle{
+  width: 1100px;
+  overflow-x: auto;
+  height: 150px;
+}
+/*new-mm-start 31-03-2021*/
+/*new-mm-start 30-03-2021*/
+.fullWidthMasseneingabe #infosMasseneingabe,
+.fullWidthMasseneingabe #infosMasseneingabePrdkt,
+.fullWidthMasseneingabe #infosMasseneingabeMesssetelle{
   width:1100px;
 }
+/*new-mm-end 30-03-2021*/
 .fullWidthMasseneingabe #interneMesswerte{
   width:1125px;
 }
 .fullWidthMasseneingabe #manuell{
-   width:1100px;
-   margin-left: -141px;
+  width:1100px;
+  margin-left: -141px;
 }
 .fullWidthMasseneingabe #tabsManuell{
-   margin-left: -141px;
+  margin-left: -141px;
 }
 
 /*07-12-2020*/
@@ -1392,21 +1634,46 @@ table#tblMasseneingabeDataIMwTbl td input {
 }
 
 div#intBdeConcernOrDeletePopUpDiv button {
-    padding: 10px;
+  padding: 10px;
 }
 div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
-    margin-left: 10px;
+  margin-left: 10px;
 }
-
-.control_system_div #control_system .invisible{
+/*new-mm-start 23-03-2021*/
+.control_system_div #control_system .invisible,
+.control_system_div_AnlPrdkt #control_system_AnlPrdkt .invisible
+{
   display: none;
 }
-.control_system_div #control_system .visible{
+.infosBlock.produktionsAnlagenSec .controlDiv input[readonly], .infosBlock.produktionsAnlagenSec .controlDiv label, .infosBlock.produktionsAnlagenSec .controlDiv select {
+  width: 2cm;
+}
+.control_system_div #control_system .visible,
+.control_system_div_AnlPrdkt #control_system_AnlPrdkt .visible{
   display: block;
 }
 #masseneingabeSrchImg{
   height: 20px;
   width: 20px;
-  display: none;
+  /*display: none;*/
   margin: 0px 10px 0px 5px;
 }
+
+/*19-02-2021*/
+/*#interneEBTblDiv{
+    padding: 10px 0px 17px 6px;
+    font-size: 14px;
+    background: #a1a7ad;
+    margin: 56px 0px 22px 0px
+}*/
+#searchBtnShowRecordsAnlBtnDiv{
+  margin-left: 8px;
+}
+.infosBlock.produktionsAnlagenSec .controlDiv input[readonly],
+.infosBlock.produktionsAnlagenSec .controlDiv label,
+.infosBlock.produktionsAnlagenSec .controlDiv select
+{
+  width: 2cm;
+}
+
+/*new-mm-end 23-03-2021*/

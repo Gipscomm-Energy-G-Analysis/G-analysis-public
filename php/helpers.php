@@ -36,6 +36,15 @@ function last($arr) {
     return $arr[count($arr) - 1] ;
 }
 
+// Adds an index field to an associative array
+function indexAssocArray($arr) {
+    for ($i=0; $i < count($arr); $i++) {
+        $arr[$i]["index"] = $i + 1 ;
+    }
+
+    return $arr ;
+}
+
 // Pipes the return values from function to function
 function pipe($fns) {
     $results = [head($fns)] ;

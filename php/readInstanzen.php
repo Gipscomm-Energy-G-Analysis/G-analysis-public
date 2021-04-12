@@ -40,7 +40,7 @@ elseif($id == "alleNutzerGetRolePermission"){
   $userId = $_POST['userId'];
   $tableName = $_POST['tableName'];
   $userName = $_POST['userName'];
-  
+
 
   if(!empty($userId)) {
     $query1 = "SELECT * FROM $tableName WHERE username = '$userName' ";
@@ -82,7 +82,7 @@ elseif($id == "adm"){
     $ins = $_POST['ins'];
     $idIns = $_POST['insID'];
     $recordSet = $_POST['recordSet'];
-    
+
     if(!empty($idIns)) {
       $query = "SELECT * FROM admins WHERE $ins = '$idIns' AND deleted_at IS NULL";
     }
@@ -98,39 +98,29 @@ elseif($id == "ben"){
     $ins = $_POST['ins'];
     $idIns = $_POST['insID'];
     $recordSet = $_POST['recordSet'];
-    
+
     if(!empty($idIns)) {
       $query = "SELECT * FROM benutzer WHERE $ins = '$idIns' AND deleted_at IS NULL";
     }
   }
 }
-
 elseif($id == "man"){
- $manID = $_POST['manID'];
-$query = "SELECT * FROM mandanten ";
- $query .= "WHERE man_ID = '$manID' ";
+    $manID = $_POST['manID'] ;
+
+    $query = "SELECT * FROM mandanten " ;
+    $query .= "WHERE man_ID = '$manID' " ;
 
 }
-
-
 elseif($id == "org"){
-$query = "SELECT
- * FROM organisationen ";
-$query .= "WHERE deleted <> 'true' ";
-
+    $query = "SELECT * FROM organisationen " ;
+    $query .= "WHERE deleted <> 'true' " ;
 }
-
-
 elseif($id == "lieg"){
+    $orgID = $_POST['orgID'] ;
 
-$orgID = $_POST['orgID'];
-
-$query = "SELECT * FROM liegenschaften ";
-
-  $query .= "WHERE org_ID = ".$orgID." ";
-
-$query .= "AND deleted <> 'true' ";
-
+    $query = "SELECT * FROM liegenschaften " ;
+    $query .= "WHERE org_ID = ".$orgID." " ;
+    $query .= "AND deleted <> 'true' " ;
 }
 
 
@@ -326,6 +316,10 @@ elseif($id == "intBdeIMw"){
   $query .= "WHERE deleted <> 'true' ";
 
   $query .= "AND archiviertAnl <> 'true' ";
+  /*17-03-2021*/
+  /*new-mm-start*/
+  // $query .= "AND tpy <> 'energiedaten' ";
+  /*new-mm end*/
 
 }
 
@@ -345,27 +339,27 @@ elseif($id == "betrPar"){
   $query = "SELECT * FROM config.betriebsparameter ";
 
 } elseif($id == 'admSuchen') {
-    
+
     $man_ID = $_POST['manID'];
 
     $query = "SELECT * FROM admins WHERE deleted_at IS NULL AND man_ID = '$man_ID' OR manGrp_ID = '$man_ID'";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 } elseif($id == 'benSuchen') {
-  
+
   $man_ID = $_POST['manID'];
 
   $query = "SELECT * FROM benutzer WHERE deleted_at IS NULL AND man_ID = '$man_ID' OR manGrp_ID = '$man_ID' ";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 } elseif($id == 'rollenUndBerechtigungenSuperadmin') {
 
-    $query = "SELECT id, tab_name as text, tab_id, display_superadmin, display_admin, display_benutzer, parent_id FROM accessibleTab WHERE accessibleTab.parent_id IS NOT NULL"; 
+    $query = "SELECT id, tab_name as text, tab_id, display_superadmin, display_admin, display_benutzer, parent_id FROM accessibleTab WHERE accessibleTab.parent_id IS NOT NULL";
     $data = queryDB($conn, $query, "read");
     $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
-      
+
     function getSubMenu($userId) {
 
         $checkedData = '';
-        
+
         if(!empty($userId)) {
           $roleQuery = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
           $roleData = queryDB(connectToDB($_POST['nameDB']), $roleQuery, "read");
@@ -374,17 +368,17 @@ elseif($id == "betrPar"){
           foreach($roleData as $role) {
             $roleExp = explode(',',$role['tab_id']);
             $roleimp[] = implode(',', $roleExp);
-            
+
           }
           $rolePermission = "'" . implode ( "', '", $roleimp ) . "'";
-             
-          $checkedQuery = "SELECT id, tab_name as text, tab_id, display_superadmin, display_admin, display_benutzer, parent_id FROM accessibleTab WHERE tab_id IN (".$rolePermission.")"; 
+
+          $checkedQuery = "SELECT id, tab_name as text, tab_id, display_superadmin, display_admin, display_benutzer, parent_id FROM accessibleTab WHERE tab_id IN (".$rolePermission.")";
           $checkedData = queryDB(connectToDB($_POST['nameDB']), $checkedQuery, "read") ;
 
         }
         return $checkedData;
     }
-      
+
       function buildTree(array $data, $parentId = 0) {
         $branch = array();
         $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
@@ -407,7 +401,7 @@ elseif($id == "betrPar"){
         }
         return $branch;
     }
-    
+
     $tree = buildTree($data);
 
     // echo '<pre>';

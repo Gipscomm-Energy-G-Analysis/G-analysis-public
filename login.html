@@ -34,7 +34,7 @@
         const user =
             $("#user").val();
 
-        ajaxPost('php/login.php')({user: user})
+        ajaxPost('php/login.php')({user})
         .then(
             record => {
                 const dbHash =

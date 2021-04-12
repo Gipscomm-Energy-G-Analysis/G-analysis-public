@@ -10,63 +10,47 @@ $conn = connectToDB( $nameDB ) ;
 
 $liegID = $_POST[ 'liegID' ] ;
 
-$query1  = "SELECT * FROM anlagen " ;
-$query1 .= "WHERE lieg_ID = $liegID " ;
-$query1 .= "AND deleted <> 'true' " ;
-$query1 .= "AND archiviertAnl <> 'true' ";
+$query = "SELECT (SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle1IDAnl]) AS messstelle1Anl " ;
+$query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle2IDAnl]) AS messstelle2Anl " ;
+$query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle3IDAnl]) AS messstelle3Anl " ;
+$query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle4IDAnl]) AS messstelle4Anl " ;
+$query .= ",* " ;
+$query .= "FROM [dbo].[anlagen] " ;
+$query .= "WHERE lieg_ID = $liegID " ;
+$query .= "AND deleted <> 'true' " ;
+$query .= "AND archiviertAnl <> 'true' " ;
 
-$records1 = queryDB( $conn, $query1, "read" ) ;
-//
+$records = queryDB( $conn, $query, "read" ) ;
+
 $counts = "" ;
-//
+
 $nMst = 4 ;
 $nZugVerbr = 6 ;
 
-for ( $i = 0; $i < count( $records1 ); $i++ ) {
-  for ( $j = 1; $j < $nMst + 1; $j++ ) {
+for ( $i = 0; $i < count( $records ); $i++ ) {
+  for ($j=1; $j < $nZugVerbr + 1; $j++) {
 
-    $mstID = "messstelle".$j."IDAnl" ;
-    $mstName = "messstelle".$j."Anl" ;
+      $zugVerbrID = "zugeordneterVerbraucherID".$j ;
+      $zugVerbrName = "zugeordneterVerbraucher".$j ;
 
-    if ( $records1[ $i ][ $mstID ] != 0 || $records1[ $i ][ $mstID ] != null) {
+      if ( $records[ $i ][ $zugVerbrID ] != 0 && $records[ $i ][ $zugVerbrID ] != null) {
 
-      $query2  = "SELECT nameMSt " ;
-      $query2 .= "FROM messstellen " ;
-      $query2 .= "WHERE mst_ID = ".$records1[ $i ][ $mstID ] ;
+          foreach ($records as $anl) {
 
-      $record = queryDB( $conn, $query2, "read" ) ;
+                  if ($records[ $i ][ $zugVerbrID ] === $anl["anl_ID"]) {
 
-      $records1[ $i ][ $mstName ] = $record[ 0 ][ "nameMSt" ] ;
-
-    }
-    else {
-      $records1[ $i ][ $mstName ] = "" ;
-    }
-}
-  for ($k=1; $k < $nZugVerbr + 1; $k++) {
-
-      $zugVerbrID = "zugeordneterVerbraucherID".$k ;
-      $zugVerbrName = "zugeordneterVerbraucher".$k ;
-
-      if ( $records1[ $i ][ $zugVerbrID ] != 0 || $records1[ $i ][ $zugVerbrID ] != null) {
-
-        $query3  = "SELECT nummerAnl + '_' + bezeichnungAnl AS nameAnl " ;
-        $query3 .= "FROM anlagen " ;
-        $query3 .= "WHERE anl_ID = ".$records1[ $i ][ $zugVerbrID ] ;
-
-        $record2 = queryDB( $conn, $query3, "read" ) ;
-
-        $records1[ $i ][ $zugVerbrName ] = $record2[ 0 ][ "nameAnl" ] ;
-
+                      $records[ $i ][ $zugVerbrName ] = $anl[ "nummerAnl" ]." ".$anl[ "bezeichnungAnl" ] ;
+                  }
+          }
       }
       else {
-        $records1[ $i ][ $zugVerbrName ] = "" ;
+        $records[ $i ][ $zugVerbrName ] = "" ;
       }
   }
 }
 
 closeDbConn ( $conn ) ;
 
-echo json_encode($records1, JSON_INVALID_UTF8_IGNORE);
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 include('bottom-cache.php');
 ?>
