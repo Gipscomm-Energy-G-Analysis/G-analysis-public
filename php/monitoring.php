@@ -31,7 +31,9 @@ function mstsInvalidDate($db) {
     $query .= "WHERE Name IS NULL " ;
     $query .= "ORDER BY div1.nameMSt " ;
 
-    return indexAssocArray(queryDB(connectToDB($db) , $query, "read")) ;
+    $records = queryDB(connectToDB($db) , $query, "read") ;
+
+    return indexAssocArray(gettype($records) === "string" ? [] : $records) ;
 }
 
 function mstsDbsWithInvalidDate($dbs) {
