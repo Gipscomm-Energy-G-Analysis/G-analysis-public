@@ -14,13 +14,8 @@
     <link type="text/css" rel="stylesheet" href="dist/css/colReorder.dataTables.min.css">
     <link href="dist/css/pace-theme.min.css" rel="stylesheet"/>
     <!-- Tree View Script -->
-
     <link href="src/css/jquery.treeview.css" rel="stylesheet">
-    <script type="text/javascript" src="src/js/jquery.treeview.js"></script>
-    <link href="dist/css/pace-theme.min.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <style>
         .ui-dialog .ui-dialog-content {
             position: relative;
@@ -1749,15 +1744,7 @@
                               <div id="admincommTreeview">
 
                               </div>
-                              <script type="text/javascript">
-
-                                 var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-                                 var tw = new TreeView(
-                                    treeObject,
-                                    {showAlwaysCheckBox:true,fold:false});
-                                 document.getElementById("admincommTreeview").appendChild( tw.root	 )
-
-                              </script>
+                              
                         </div>
                     </div>
                 </div>
@@ -1832,15 +1819,7 @@
                            <div id="benutzerTreeview">
 
                            </div>
-                           <script type="text/javascript">
-
-                               var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-                               var tw = new TreeView(
-                                   treeObject,
-                                   {showAlwaysCheckBox:true,fold:false});
-                               document.getElementById("benutzerTreeview").appendChild( tw.root	 )
-
-                           </script>
+                           
                         </div>
                      </div>
                   </div>
@@ -10761,6 +10740,25 @@
                      }
                    });
                 </script>
+                <script type="text/javascript" src="src/js/jquery.treeview.js"></script>
+                <script type="text/javascript">
+
+                  var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+                  var tw = new TreeView(
+                     treeObject,
+                     {showAlwaysCheckBox:true,fold:false});
+                  document.getElementById("admincommTreeview").appendChild( tw.root	 )
+
+               </script>
+               <script type="text/javascript">
+
+                  var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+                  var tw = new TreeView(
+                      treeObject,
+                      {showAlwaysCheckBox:true,fold:false});
+                  document.getElementById("benutzerTreeview").appendChild( tw.root	 )
+
+              </script>
                 <script type="text/javascript" src="dist/js/jqueryui/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="dist/js/mathquill/mathquill.min.js"></script>
                 <script type="text/javascript" src="dist/js/table2csv.min.js"></script>
