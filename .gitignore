@@ -65,7 +65,6 @@ Last active last month • Report abuse
 
 # ignore dist/ folder
 dist/
-php/cache/
 
 # ignore historic folder
 # oldFiles/
