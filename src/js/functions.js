@@ -11296,6 +11296,26 @@ const setCostRng =
         }
     }
 
+const getKnzTab =
+    (_, i) =>
+    $("#btnTabKnzCont li").eq(i)
+
+const hiddenKnzTab =
+    a =>
+    a.css("display") === "none"
+
+// Adds a new Kennzahl to a Kennzahleninstanz
+const addKennzahl =
+    () =>
+    head(
+        array($("#btnTabKnzCont li").length)()()
+        .map(getKnzTab)
+        .filter(hiddenKnzTab)
+    )
+    .css("display", "inline")
+
+
+
 /*24-02-2020 Correction factor add record row wise not quoma saperated,
 21-03-2020 send the optionDesc variable into ajax response*/
 function KorrekturFaktorEinfügen() {

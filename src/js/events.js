@@ -714,11 +714,7 @@ $(document).ready(function() {
         spezielleKennzahlenlisteErstellen()
     });
     $("#btnWeitereKnzHinz").click(function() {
-        for (var a = $("#btnTabKnzCont li").length, b = 0; b < a; b++)
-            if ("none" === $("#btnTabKnzCont li").eq(b).css("display")) {
-                "" !== $("formel" + b + "Knz").val() ? $("#btnTabKnzCont li").eq(b).css("display", "inline") : alert("Die Zuweisung einer Formel ist notwendig bevor eine neue Kennzahl hinzuf\u00fcgt werden kann!");
-                break
-            }
+        addKennzahl()
     });
     $("#insSuchenKnz").click(function() {
         instanzAuswahllisteErstellen($("#bezugAllgemeinKnz").val())
