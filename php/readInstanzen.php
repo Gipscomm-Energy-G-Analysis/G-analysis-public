@@ -19,19 +19,38 @@ $query = "SELECT * FROM gipscommAdmins";
 
 elseif($id == "betrGrp"){
 
-$query = "SELECT * FROM betreuerGruppen";
+  $query = "SELECT * FROM betreuerGruppen WHERE deleted_at IS NULL";
 
 }
 
 elseif($id == "sAdm"){
 
-$betrGrpID = $_POST['betrGrpID'];
-$query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID'";
-}
+  $betrGrpID = $_POST['betrGrpID'];
+  $query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID' AND deleted_at IS NULL";
 
-elseif($id == "manGrp"){
-$betrGrpID = $_POST['betrGrpID'];
-$query = "SELECT * FROM mandantenGruppen WHERE betrGrp_ID = '$betrGrpID'";
+} elseif($id == "sAdmGetRolePermission"){
+  $userId = $_POST['userId'];
+  if(!empty($userId)) {
+    $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+  }
+
+} elseif($id == "alleNutzerGetRolePermission"){
+  $roleId = $_POST['role_id'];
+  $userId = $_POST['userId'];
+  $tableName = $_POST['tableName'];
+  $userName = $_POST['userName'];
+
+
+  if(!empty($userId)) {
+    $query1 = "SELECT * FROM $tableName WHERE username = '$userName' ";
+    $records = queryDB($conn, $query1, "read") ;
+  }
+  $ID = $records[0][$userId.'_ID'];
+
+  $query = "SELECT rolePermission.role_id, accessibleTab.tab_id, accessibleTab.tab_name, rolePermission.user_id FROM rolePermission RIGHT JOIN accessibleTab ON accessibleTab.tab_id = rolePermission.tab_id AND rolePermission.user_id = '$ID' ";
+} elseif($id == "manGrp"){
+  $betrGrpID = $_POST['betrGrpID'];
+  $query = "SELECT * FROM mandantenGruppen WHERE betrGrp_ID = '$betrGrpID'";
 }
 
 elseif($id == "tblMan"){
@@ -49,17 +68,37 @@ for($n = 1; $n < count($mandantenIDs);$n++){
 }
 
 elseif($id == "adm"){
-    $ins = $_POST['ins'] ;
+  $query = '';
+  if(!empty($_POST['admID'])) {
+    $admID = $_POST['admID'];
+    $query = "SELECT * FROM admins WHERE adm_ID = '$admID' AND deleted_at IS NULL";
 
-    $idIns = $_POST['insID'] ;
-    $query = "SELECT * FROM admins WHERE $ins = '$idIns'" ;
+  } else {
+
+    $ins = $_POST['ins'];
+    $idIns = $_POST['insID'];
+    $recordSet = $_POST['recordSet'];
+
+    if(!empty($idIns)) {
+      $query = "SELECT * FROM admins WHERE $ins = '$idIns' AND deleted_at IS NULL";
+    }
+  }
 
 }
 elseif($id == "ben"){
-    $ins = $_POST['ins'] ;
-    $idIns = $_POST['insID'] ;
+  $query = '';
+  if(!empty($_POST['benID'])) {
+    $benID = $_POST['benID'];
+    $query = "SELECT * FROM benutzer WHERE ben_ID = '$benID' AND deleted_at IS NULL";
+  } else {
+    $ins = $_POST['ins'];
+    $idIns = $_POST['insID'];
+    $recordSet = $_POST['recordSet'];
 
-    $query = "SELECT * FROM benutzer WHERE $ins = '$idIns'" ;
+    if(!empty($idIns)) {
+      $query = "SELECT * FROM benutzer WHERE $ins = '$idIns' AND deleted_at IS NULL";
+    }
+  }
 }
 elseif($id == "man"){
     $manID = $_POST['manID'] ;
@@ -295,10 +334,85 @@ elseif($id == "betrPar"){
 
   $query = "SELECT * FROM config.betriebsparameter ";
 
+} elseif($id == 'admSuchen') {
+
+  $man_ID = $_POST['manID'];
+
+  $query = "SELECT * FROM admins WHERE deleted_at IS NULL AND man_ID = '$man_ID' OR manGrp_ID = '$man_ID'";
+  //$query .= "WHERE deleted <> 'true' ";   //<> not equal
+} elseif($id == 'benSuchen') {
+
+  $man_ID = $_POST['manID'];
+
+  $query = "SELECT * FROM benutzer WHERE deleted_at IS NULL AND man_ID = '$man_ID' OR manGrp_ID = '$man_ID' ";
+    //$query .= "WHERE deleted <> 'true' ";   //<> not equal
+
+} elseif($id == 'rollenUndBerechtigungenSuperadmin') {
+
+  $query = "SELECT id, tab_name as text, tab_id, display_superadmin, display_admin, display_benutzer, parent_id FROM accessibleTab WHERE accessibleTab.parent_id IS NOT NULL";
+  $data = queryDB($conn, $query, "read");
+  $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
+
+  function getSubMenu($userId) {
+
+      $checkedData = '';
+
+      if(!empty($userId)) {
+        $roleQuery = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+        $roleData = queryDB(connectToDB($_POST['nameDB']), $roleQuery, "read");
+      }
+      if(!empty($roleData)) {
+        foreach($roleData as $role) {
+          $roleExp = explode(',',$role['tab_id']);
+          $roleimp[] = implode(',', $roleExp);
+
+        }
+        $rolePermission = "'" . implode ( "', '", $roleimp ) . "'";
+
+        $checkedQuery = "SELECT id, tab_name as text, tab_id, display_superadmin, display_admin, display_benutzer, parent_id FROM accessibleTab WHERE tab_id IN (".$rolePermission.")";
+        $checkedData = queryDB(connectToDB($_POST['nameDB']), $checkedQuery, "read") ;
+
+      }
+      return $checkedData;
+  }
+
+    function buildTree(array $data, $parentId = 0) {
+      $branch = array();
+      $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
+      foreach ($data as $element) {
+          if ($element['parent_id'] == $parentId) {
+            $checkedRole = getSubMenu($userId);
+            if(!empty($checkedRole)) {
+              foreach($checkedRole as $check) {
+                if($check['tab_id'] == $element['tab_id']) {
+                  $element['checked'] = 'true';
+                }
+              }
+            }
+            $children = buildTree($data, $element['id']);
+            if ($children) {
+                $element['children'] = $children;
+            }
+              $branch[] = $element;
+          }
+      }
+      return $branch;
+  }
+
+  $tree = buildTree($data);
+
+  // echo '<pre>';
+  // echo json_encode($tree);
+  // print_r($tree);
+  // die;
+
+  echo json_encode($tree);
 }
 
-$records = queryDB($conn, $query, "read") ;
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
+if($id != 'rollenUndBerechtigungenSuperadmin') {
+  $records = queryDB($conn, $query, "read") ;
+  echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
+}
 
 include('bottom-cache.php');
 ?>

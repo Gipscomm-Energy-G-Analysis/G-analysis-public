@@ -11,80 +11,197 @@ $id = $_POST['id'];
 
 if($id == "gipscAdm") {
 
-    $modus = $_POST['modus'];
+  $modus = $_POST['modus'];
+    
+
+  if($modus == "new"){
+
     $username = $_POST['benutzername'];
     $passwort = $_POST['passwort'];
 
-  	if($modus == "new"){
+    $gipscommsql = "INSERT INTO gipscommAdmins(username, passHash, position, man_ID) ";
+    $gipscommsql .= "VALUES ('$username','$passwort', 'gipsAdm', 1) ";
 
-  		$tsql = "INSERT INTO gipscommAdmins(username, passHash, position, man_ID) ";
-  		$tsql .= "VALUES ('$username','$passwort', 'gipsAdm', 1) ";
+    queryDB( $conn, $gipscommsql, "write" );
+    echo "Daten erfolgreich gespeichert";
+  } elseif($modus == 'saveRolePermission') {
+
+    $userId = $_POST['userId'];
+    if(!empty($userId)) {
+      $role_id = $_POST['role_id'];
+      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+    
+      if(!empty($role_id)) {
+        $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+        $record = queryDB($conn, $query, "read") ;
+
+        if(count($record)>0) {
+          $query = "DELETE rolePermission WHERE userr_id = '$userId'";
+          queryDB( $conn, $query, "write" );
+        }
+      }
+    
+      if(!empty($tab_ids)) {
+        foreach($tab_ids as $tabId) {
+          $gipscommsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
+          $gipscommsql .= "VALUES ('$role_id','$tabId','$userId') ";
+          queryDB( $conn, $gipscommsql, "write" );
+        }
+        echo "Daten erfolgreich gespeichert";
+      }
+    } else {
+      echo "Benutzer ID nicht gefunden";
     }
-  	else{
-  		$gipscAdmID = $_POST['gipscAdmID'];
 
-  		$tsql =  "UPDATE gipscommAdmins SET username = '$username', passHash = '$passwort' ";
-  		$tsql .= "WHERE gipsAdm_ID = '$gipscAdmID' ";
-  	}
+  } else {
+    $gipscAdmID = $_POST['gipscAdmID'];
+
+    $username = $_POST['benutzername'];
+    $passwort = $_POST['passwort'];
+
+    $gipscommsql =  "UPDATE gipscommAdmins SET username = '$username', passHash = '$passwort' ";
+    $gipscommsql .= "WHERE gipsAdm_ID = '$gipscAdmID' ";
+
+    queryDB( $conn, $gipscommsql, "write" );
+    echo "Daten erfolgreich gespeichert";
+  }
 }
 elseif($id == "betrGrp") {
 
-    $modus = $_POST['modus'] ;
-    $firma = $_POST['firma'] ;
-    $anzahlMitarbeiter = $_POST['anzahlMitarbeiter'] ;
-    $anschrift = $_POST['anschrift'] ;
-    $plz = $_POST['plz'] ;
-    $ort = $_POST['ort'] ;
-    $geschaeftsfuehrer = $_POST['geschaeftsfuehrer'] ;
-    $telefon = $_POST['telefon'] ;
-    $eMail = $_POST['eMail'] ;
-    $notiz = $_POST['notiz'] ;
-
+  $modus = $_POST['modus'] ;
+    
 	if($modus == "new") {
 
-		$tsql = "INSERT INTO betreuerGruppen(firma,anzahlMitarbeiter, anschrift, plz, ort, ";
-		$tsql .= "geschaeftsfuehrer, telefon, eMail, notiz) ";
-		$tsql .= "VALUES ('$firma','$anzahlMitarbeiter','$anschrift', '$plz','$ort','$geschaeftsfuehrer', ";
-		$tsql .= "'$telefon','$eMail','$notiz') ";
-}
-	else {
-		$betrGrpID = $_POST['betrGrpID'];
+      $firma = $_POST['firma'] ;
+      $anzahlMitarbeiter = $_POST['anzahlMitarbeiter'] ;
+      $anschrift = $_POST['anschrift'] ;
+      $plz = $_POST['plz'] ;
+      $ort = $_POST['ort'] ;
+      $geschaeftsfuehrer = $_POST['geschaeftsfuehrer'] ;
+      $telefon = $_POST['telefon'] ;
+      $eMail = $_POST['eMail'] ;
+      $notiz = $_POST['notiz'] ;
 
-		$tsql =  "UPDATE betreuerGruppen SET firma = '$firma',anzahlMitarbeiter = '$anzahlMitarbeiter', ";
-		$tsql .= "anschrift = '$anschrift',plz = '$plz',ort = '$ort',geschaeftsfuehrer = '$geschaeftsfuehrer', ";
-		$tsql .= "telefon = '$telefon',eMail = '$eMail',notiz = '$notiz' ";
-		$tsql .= "WHERE betrGrp_ID = '$betrGrpID' ";
-	}
-}
-elseif($id == "sAdm") {
+      $tsql = "INSERT INTO betreuerGruppen(firma,anzahlMitarbeiter, anschrift, plz, ort, ";
+      $tsql .= "geschaeftsfuehrer, telefon, eMail, notiz) ";
+      $tsql .= "VALUES ('$firma','$anzahlMitarbeiter','$anschrift', '$plz','$ort','$geschaeftsfuehrer', ";
+      $tsql .= "'$telefon','$eMail','$notiz') ";
+
+    } elseif($modus == "delete") {
+        
+      $betrGrpID = $_POST['betrGrpID'];
+      $dateTime = date("Y-m-d H:i:s");
+      if(!empty($betrGrpID)) {
+        $tsql =  "UPDATE betreuerGruppen SET deleted_at = '$dateTime' WHERE betrGrp_ID = '$betrGrpID'";
+        
+        $tsql .= "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE betrGrp_ID = '$betrGrpID'";
+      }
+
+    } else {
+
+      $betrGrpID = $_POST['betrGrpID'];
+      $firma = $_POST['firma'] ;
+      $anzahlMitarbeiter = $_POST['anzahlMitarbeiter'] ;
+      $anschrift = $_POST['anschrift'] ;
+      $plz = $_POST['plz'] ;
+      $ort = $_POST['ort'] ;
+      $geschaeftsfuehrer = $_POST['geschaeftsfuehrer'] ;
+      $telefon = $_POST['telefon'] ;
+      $eMail = $_POST['eMail'] ;
+      $notiz = $_POST['notiz'] ;
+
+      $tsql =  "UPDATE betreuerGruppen SET firma = '$firma',anzahlMitarbeiter = '$anzahlMitarbeiter', ";
+      $tsql .= "anschrift = '$anschrift',plz = '$plz',ort = '$ort',geschaeftsfuehrer = '$geschaeftsfuehrer', ";
+      $tsql .= "telefon = '$telefon',eMail = '$eMail',notiz = '$notiz' ";
+      $tsql .= "WHERE betrGrp_ID = '$betrGrpID' ";
+    }
+} elseif($id == "sAdm") {
 
     $modus = $_POST['modus'] ;
-    $titel = $_POST['titel'] ;
-    $name = $_POST['name'] ;
-    $vorname = $_POST['vorname'] ;
-    $eMail = $_POST['eMail'] ;
-    $telefon = $_POST['telefon'] ;
-    $fax = $_POST['fax'] ;
-    $mobiltelefon = $_POST['mobiltelefon'] ;
-    $benutzername = $_POST['benutzername'] ;
-    $passwort = $_POST['passwort'] ;
 
     if($modus == "new") {
         $betrGrpID = $_POST['betrGrpID'] ;
 
-        $tsql = "INSERT INTO superAdmins(man_ID,betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, " ;
-        $tsql .= "faxSAdm, mobiltelefonSAdm, username, passHash, position) " ;
-        $tsql .= "VALUES (1,'$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
-        $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
-    }
-    else {
+        $titel = $_POST['titel'] ;
+        $name = $_POST['name'] ;
+        $vorname = $_POST['vorname'] ;
+        $eMail = $_POST['eMail'] ;
+        $telefon = $_POST['telefon'] ;
+        $fax = $_POST['fax'] ;
+        $mobiltelefon = $_POST['mobiltelefon'] ;
+        $benutzername = $_POST['benutzername'] ;
+        $passwort = $_POST['passwort'] ;
+
+        $sAdmsql = "INSERT INTO superAdmins(man_ID,betrGrp_ID,titelSAdm,nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, " ;
+        $sAdmsql .= "faxSAdm, mobiltelefonSAdm, username, passHash, position) " ;
+        $sAdmsql .= "VALUES (1,'$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
+        $sAdmsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
+
+        queryDB( $conn, $sAdmsql, "write" );
+        echo "Daten erfolgreich gespeichert";
+
+
+    } elseif($modus == "delete") {
+        
+      $sAdmID = $_POST['sAdmID'] ;
+      $dateTime = date("Y-m-d H:i:s");
+      if(!empty($sAdmID)) {
+        $sAdmsql .= "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE sAdm_ID = '$sAdmID'";
+        queryDB( $conn, $sAdmsql, "write" );
+        echo "Daten erfolgreich gespeichert";
+      }
+
+    } elseif($modus == 'saveRolePermission') {
+
+      $userId = $_POST['userId'];
+      if(!empty($userId)) {
+
+        $role_id = $_POST['role_id'];
+        $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+        
+        if(!empty($role_id)) {
+          $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+          $record = queryDB($conn, $query, "read") ;
+
+          if(count($record)>0) {
+            $query = "DELETE rolePermission WHERE user_id = '$userId'";
+            queryDB( $conn, $query, "write" );
+          }
+        }
+        
+        if(!empty($tab_ids)) {
+          foreach($tab_ids as $tabId) {
+            $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
+            $sAdmsql .= "VALUES ('$role_id','$tabId','$userId') ";
+            queryDB( $conn, $sAdmsql, "write" );
+          }
+          echo "Daten erfolgreich gespeichert";
+        }
+      } else {
+        echo "Benutzer ID nicht gefunden";
+      }
+
+    } else {
         $sAdmID = $_POST['sAdmID'] ;
 
-        $tsql =  "UPDATE superAdmins SET titelSAdm = '$titel',nameSAdm = '$name', " ;
-        $tsql .= "vornameSAdm = '$vorname',emailSAdm = '$eMail',telefonSAdm = '$telefon', " ;
-        $tsql .= "faxSAdm = '$fax',mobiltelefonSAdm = '$mobiltelefon',username = '$benutzername', " ;
-        $tsql .= "passHash = '$passwort' " ;
-        $tsql .= "WHERE sAdm_ID = '$sAdmID' " ;
+        $titel = $_POST['titel'] ;
+        $name = $_POST['name'] ;
+        $vorname = $_POST['vorname'] ;
+        $eMail = $_POST['eMail'] ;
+        $telefon = $_POST['telefon'] ;
+        $fax = $_POST['fax'] ;
+        $mobiltelefon = $_POST['mobiltelefon'] ;
+        $benutzername = $_POST['benutzername'] ;
+        $passwort = $_POST['passwort'] ;
+
+        $sAdmsql =  "UPDATE superAdmins SET titelSAdm = '$titel',nameSAdm = '$name', " ;
+        $sAdmsql .= "vornameSAdm = '$vorname',emailSAdm = '$eMail',telefonSAdm = '$telefon', " ;
+        $sAdmsql .= "faxSAdm = '$fax',mobiltelefonSAdm = '$mobiltelefon',username = '$benutzername', " ;
+        $sAdmsql .= "passHash = '$passwort' " ;
+        $sAdmsql .= "WHERE sAdm_ID = '$sAdmID' " ;
+
+        queryDB( $conn, $sAdmsql, "write" );
+        echo "Daten erfolgreich gespeichert";
     }
 }
 elseif($id == "manGrp") {
@@ -109,68 +226,191 @@ elseif($id == "manGrp") {
     }
 }
 elseif($id == "adm") {
-    $modus = $_POST['modus'];
-    $instanz = $_POST['ins'];
-    $insID = $_POST['insID'];
+  $modus = $_POST['modus'];
 
-    $titel = $_POST['titel'];
-    $name = $_POST['name'];
-    $vorname = $_POST['vorname'];
-    $eMail = $_POST['eMail'];
-    $telefon = $_POST['telefon'];
-    $fax = $_POST['fax'];
-    $mobiltelefon = $_POST['mobiltelefon'];
-    $benutzername = $_POST['benutzername'];
-    $passwort = $_POST['passwort'];
+  $instanz = '';
+  if(isset($_POST['ins']))
+      $instanz = $_POST['ins'];
+  
+  $insID = '';
+  if(isset($_POST['insID']))
+      $insID = $_POST['insID'];
 
     if($modus == "new"){
 
-        $tsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
-        $tsql .= "fax, mobiltelefon, benutzername, passHash) ";
-        $tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
-        $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
-    }
-    else{
-        $admID = $_POST['admID'];
+        $titel = $_POST['titel'];
+        $name = $_POST['name'];
+        $vorname = $_POST['vorname'];
+        $eMail = $_POST['eMail'];
+        $telefon = $_POST['telefon'];
+        $fax = $_POST['fax'];
+        $mobiltelefon = $_POST['mobiltelefon'];
+        $benutzername = $_POST['benutzername'];
+        $passwort = $_POST['passwort'];
+    
+        $admtsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
+        $admtsql .= "fax, mobiltelefon, username, passHash) ";
+        $admtsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
+        $admtsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+    
+        queryDB( $conn, $admtsql, "write" );
+        echo "Daten erfolgreich gespeichert";
 
-        $tsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
-        $tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
-        $tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',benutzername = '$benutzername', ";
-        $tsql .= "passHash = '$passwort' ";
-        $tsql .= "WHERE adm_ID = '$admID' ";
+    } elseif($modus == "delete") {
+        
+      $admID = $_POST['admID'];
+      $dateTime = date("Y-m-d H:i:s");
+      if(!empty($admID)) {
+        $admtsql =  "UPDATE admins SET deleted_at = '$dateTime'";
+        $admtsql .= "WHERE adm_ID = '$admID'";
+        queryDB( $conn, $admtsql, "write" );
+        echo "Daten erfolgreich gespeichert";
+      }
+  
+    } elseif($modus == 'saveRolePermission') {
+
+      $userId = $_POST['userId'];
+      if(!empty($userId)) {
+  
+        $role_id = $_POST['role_id'];
+        $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+        
+        if(!empty($role_id)) {
+          $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+          $record = queryDB($conn, $query, "read") ;
+  
+          if(count($record)>0) {
+            $query = "DELETE rolePermission WHERE user_id = '$userId'";
+            queryDB( $conn, $query, "write" );
+          }
+        }
+        
+        if(!empty($tab_ids)) {
+          foreach($tab_ids as $tabId) {
+            $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
+            $sAdmsql .= "VALUES ('$role_id','$tabId','$userId') ";
+            queryDB( $conn, $sAdmsql, "write" );
+          }
+          echo "Daten erfolgreich gespeichert";
+        }
+      } else {
+        echo "Benutzer ID nicht gefunden";
+      }
+  
+    } else{
+
+      $admID = $_POST['admID'];
+      $titel = $_POST['titel'];
+      $name = $_POST['name'];
+      $vorname = $_POST['vorname'];
+      $eMail = $_POST['eMail'];
+      $telefon = $_POST['telefon'];
+      $fax = $_POST['fax'];
+      $mobiltelefon = $_POST['mobiltelefon'];
+      $benutzername = $_POST['benutzername'];
+      $passwort = $_POST['passwort'];
+  
+      $admtsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
+      $admtsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
+      $admtsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
+      $admtsql .= "passHash = '$passwort' ";
+      $admtsql .= "WHERE adm_ID = '$admID' ";
+  
+      queryDB( $conn, $admtsql, "write" );
+      echo "Daten erfolgreich gespeichert";
     }
 }
 elseif($id == "ben") {
     $modus = $_POST['modus'];
-    $instanz = $_POST['ins'];
-    $insID = $_POST['insID'];
 
-    $titel = $_POST['titel'];
-    $name = $_POST['name'];
-    $vorname = $_POST['vorname'];
-    $eMail = $_POST['eMail'];
-    $telefon = $_POST['telefon'];
-    $fax = $_POST['fax'];
-    $mobiltelefon = $_POST['mobiltelefon'];
-    $benutzername = $_POST['benutzername'];
-    $passwort = $_POST['passwort'];
+    $instanz = '';
+    if(isset($_POST['ins']))
+        $instanz = $_POST['ins'];
+
+    $insID = '';
+    if(isset($_POST['insID']))
+        $insID = $_POST['insID'];
+
 
     if($modus == "new"){
         $manID = $_POST['manID'];
+        $titel = $_POST['titel'];
+        $name = $_POST['name'];
+        $vorname = $_POST['vorname'];
+        $eMail = $_POST['eMail'];
+        $telefon = $_POST['telefon'];
+        $fax = $_POST['fax'];
+        $mobiltelefon = $_POST['mobiltelefon'];
+        $benutzername = $_POST['benutzername'];
+        $passwort = $_POST['passwort'];
 
-        $tsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
-        $tsql .= "fax, mobiltelefon, benutzername, passHash) ";
-        $tsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
-        $tsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+        $bentsql = "INSERT INTO benutzer($instanz,titel,name, vorname, email, telefon, ";
+        $bentsql .= "fax, mobiltelefon, username, passHash) ";
+        $bentsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
+        $bentsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
+
+        queryDB( $conn, $bentsql, "write" );
+        echo "Daten erfolgreich gespeichert";
+
+    } elseif($modus == "delete") {
+      
+      $benID = $_POST['benID'];
+      $dateTime = date("Y-m-d H:i:s");
+      if(!empty($benID)) {
+        $bentsql =  "UPDATE benutzer SET deleted_at = '$dateTime'";
+        $bentsql .= "WHERE ben_ID = '$benID' ";
+        queryDB( $conn, $bentsql, "write" );
+        echo "Daten erfolgreich gespeichert";
+      }
+  } elseif($modus == 'saveRolePermission') {
+
+    $userId = $_POST['userId'];
+    if(!empty($userId)) {
+
+      $role_id = $_POST['role_id'];
+      $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
+      
+      if(!empty($role_id)) {
+        $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
+        $record = queryDB($conn, $query, "read") ;
+
+        if(count($record)>0) {
+          $query = "DELETE rolePermission WHERE user_id = '$userId'";
+          queryDB( $conn, $query, "write" );
+        }
+      }
+      
+      if(!empty($tab_ids)) {
+        foreach($tab_ids as $tabId) {
+          $bentsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
+          $bentsql .= "VALUES ('$role_id','$tabId','$userId') ";
+          queryDB( $conn, $bentsql, "write" );
+        }
+        echo "Daten erfolgreich gespeichert";
+      }
+    } else {
+      echo "Benutzer ID nicht gefunden";
     }
-    else{
-        $benID = $_POST['benID'];
 
-        $tsql =  "UPDATE benutzer SET titel = '$titel',name = '$name', ";
-        $tsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
-        $tsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',benutzername = '$benutzername', ";
-        $tsql .= "passHash = '$passwort' ";
-        $tsql .= "WHERE ben_ID = '$benID' ";
+  } else {
+      $benID = $_POST['benID'];
+      $titel = $_POST['titel'];
+      $name = $_POST['name'];
+      $vorname = $_POST['vorname'];
+      $eMail = $_POST['eMail'];
+      $telefon = $_POST['telefon'];
+      $fax = $_POST['fax'];
+      $mobiltelefon = $_POST['mobiltelefon'];
+      $benutzername = $_POST['benutzername'];
+      $passwort = $_POST['passwort'];
+
+      $bentsql =  "UPDATE benutzer SET titel = '$titel',name = '$name', ";
+      $bentsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
+      $bentsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
+      $bentsql .= "passHash = '$passwort' ";
+      $bentsql .= "WHERE ben_ID = '$benID' ";
+      queryDB( $conn, $bentsql, "write" );
+      echo "Daten erfolgreich gespeichert";
     }
 }
 elseif($id == "org") {
@@ -3681,9 +3921,9 @@ elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update inter
 }
 /*new-mm-end 23-03-2021*/
 /*new-mm-start 23-03-2021*/
-if($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult" && $id != "prdktAnl" && $id != "prd"   ) {
-    $retState = queryDB( $conn, $tsql, "write" );
-    echo json_encode(["query" => $tsql]);
+if ($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult" && $id != "prdktAnl" && $id != "prd" && $id != "sAdm" && $id != "adm" && $id != "ben" && $id != "gipscAdm") {
+  $retState = queryDB($conn, $tsql, "write");
+  echo json_encode(["query" => $tsql]);
 }
 // else if ($id == "intBdePrdktMstIMwHistEditor") {
 

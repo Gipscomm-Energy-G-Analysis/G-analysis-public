@@ -4938,6 +4938,9 @@ try {
                         },
                         success: function(a) {
                             a = $.parseJSON(a);
+                            if(b == -1) {
+                                b = a.length - 1;
+                            }
                             0 < a.length ? ($("#gipscAdmCount").val(a.length), $("#gipscAdmID").val(a[b].gipsAdm_ID), $("#benutzernameGipscAdm").val(a[b].username)) : clearFields("gipscAdm")
                         }
                     });
@@ -4956,7 +4959,9 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
-
+                            if(b == -1) {
+                                b = c.length - 1;
+                            }
                             0 < c.length ? ($("#betrGrpCount").val(c.length),
                             [
                               ["#betrGrpID", "betrGrp_ID"]
@@ -4992,6 +4997,9 @@ try {
                         },
                         success: function(a) {
                             a = $.parseJSON(a);
+                            if(b == -1) {
+                                b = a.length - 1;
+                            }
                             0 < a.length ? ($("#sAdmCount").val(a.length), $("#sAdmID").val(a[b].sAdm_ID), $("#titelSAdm").val(a[b].titelSAdm), $("#nameSAdm").val(a[b].nameSAdm), $("#vornameSAdm").val(a[b].vornameSAdm), $("#emailSAdm").val(a[b].emailSAdm), $("#telefonSAdm").val(a[b].telefonSAdm), $("#faxSAdm").val(a[b].faxSAdm), $("#mobiltelefonSAdm").val(a[b].mobiltelefonSAdm),
                                 $("#benutzernameSAdm").val(a[b].benutzernameSAdm)) : clearFields("sAdmHinz")
                         }
@@ -5026,6 +5034,7 @@ try {
                     });
                     break;
                 case "adm":
+                    var record_set = $('#' + a).data("record");
                     "optMan" == $("#manOderManGrp").val() ? (a = "man_ID", e = $("#manRechteID").val()) : (a = "manGrp_ID", e = $("#manGrpID").val());
                     $.ajax({
                         type: "POST",
@@ -5035,14 +5044,14 @@ try {
                             id: "adm",
                             nameDB: "gipscomm",
                             ins: a,
-                            insID: e
+                            insID: e,
+                            recordSet:record_set
                         },
                         fail: function() {
                             alert("failed!!")
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
-
                             0 < c.length ? ($("#admCount").val(c.length),
                             [
                               ["#admID", "adm_ID"]
@@ -5053,7 +5062,7 @@ try {
                             , ["#telefonAdm", "telefon"]
                             , ["#faxAdm", "fax"]
                             , ["#mobiltelefonAdm", "mobiltelefon"]
-                            , ["#benutzernameAdm", "benutzername"]
+                            , ["#benutzernameAdm", "username"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             })) : clearFields("admHinz")
@@ -5061,8 +5070,8 @@ try {
                     });
                     break;
                 case "ben":
+                    var record_set = $('#' + a).data("record");
                     "optMan" == $("#manOderManGrp").val() ? (a = "man_ID", e = $("#manRechteID").val()) : (a = "manGrp_ID", e = $("#manGrpID").val());
-
                     $.ajax({
                         type: "POST",
                         async: !0,
@@ -5071,7 +5080,8 @@ try {
                             id: "ben",
                             nameDB: "gipscomm",
                             ins: a,
-                            insID: e
+                            insID: e,
+                            recordSet:record_set
                         },
                         fail: function() {
                             alert("failed!!")
@@ -5088,7 +5098,7 @@ try {
                                 , ["#telefonBen", "telefon"]
                                 , ["#faxBen", "fax"]
                                 , ["#mobiltelefonBen", "mobiltelefon"]
-                                , ["#benutzernameBen", "benutzername"]
+                                , ["#benutzernameBen", "username"]
                                 ].forEach(function(a) {
                                     $(a[0]).val(c[b][a[1]])
                                 })) : clearFields("benHinz")
@@ -10303,6 +10313,131 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         colReorder: !0
     });
     tblAnlagen = $("#anlagenListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblAdminlisteErstellen = $("#tblAdminlisteErstellen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+     tblBenutzerlisteErstellen = $("#tblBenutzerlisteErstellen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblBetrGrplisteErstellen = $("#tblBetrGrplisteErstellen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblsAdmSuchenlisteErstellen = $("#tblsAdmSuchenlisteErstellen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblGipscAdmSuchenlisteErstellen = $("#tblGipscAdmSuchenlisteErstellen").DataTable({
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -22033,3 +22168,710 @@ function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID
             $("#interneBetriebsdatenTbl").prop("checked",true);
         }
     }*/
+ /*Ajax Call for the admin 22-02-2021*/
+ function adminlisteErstellen() {
+    var a = itemSessionGet("nameDB");
+    //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "admSuchen",
+            nameDB: "gipscomm",
+            manID: $(".manGrpPfad").val()
+        },
+        success: function(e) {
+            console.log('Working fine');
+            e = json(e);
+            //console.log(e);
+
+            tblAdminlisteErstellen.colReorder.reset();
+            tblAdminlisteErstellen.clear().draw();
+            for (var c = 0; c < e.length; c++) {
+                //console.log(e[c].email);
+                tblAdminlisteErstellen.row.add([
+                    e[c].adm_ID,
+                    e[c].titel,
+                    e[c].name,
+                    e[c].vorname,
+                    e[c].username,
+                    e[c].email,
+                    e[c].telefon,
+                    e[c].mobiltelefon
+                ]).draw();
+            }
+            $("#admListeContainer").css("display", "block");
+            $("#admListeContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    console.log('open popup');
+                    $("#tblAdminlisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblAdminlisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblAdminlisteErstellen.row(this).data();
+                        $("#admListeContainer").dialog("close");
+                        //readInstanzen("admFirst", a[0])
+                        $.ajax({
+                            type: "POST",
+                            async: !0,
+                            url: "php/readInstanzen.php",
+                            data: {
+                                id: "adm",
+                                nameDB: "gipscomm",
+                                admID: a[0]
+                            },
+                            fail: function() {
+                                alert("failed!!")
+                            },
+                            success: function(a) {
+                                var c = $.parseJSON(a);
+                                $('#admID').val(c[0].adm_ID);
+                                $('#titelAdm').val(c[0].titel);
+                                $('#nameAdm').val(c[0].name);
+                                $('#vornameAdm').val(c[0].vorname);
+                                $('#emailAdm').val(c[0].email);
+                                $('#telefonAdm').val(c[0].telefon);
+                                $('#faxAdm').val(c[0].fax);
+                                $('#mobiltelefonAdm').val(c[0].mobiltelefon);
+                                $('#benutzernameAdm').val(c[0].username);
+                            }
+                        });
+                    })
+                }
+            })
+        }
+    })
+}
+
+function benutzerlisteErstellen() {
+    var a = itemSessionGet("nameDB");
+    //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "benSuchen",
+            nameDB: "gipscomm",
+            manID: $(".manGrpPfad").val()
+        },
+        success: function(e) {
+            console.log('Working fine');
+            e = json(e);
+            //console.log(e);
+
+            tblBenutzerlisteErstellen.colReorder.reset();
+            tblBenutzerlisteErstellen.clear().draw();
+            for (var c = 0; c < e.length; c++) {
+                //console.log(e[c].email);
+                tblBenutzerlisteErstellen.row.add([
+                    e[c].ben_ID,
+                    e[c].titel,
+                    e[c].name,
+                    e[c].vorname,
+                    e[c].username,
+                    e[c].eMail,
+                    e[c].telefon,
+                    e[c].mobiltelefon
+                ]).draw();
+            }
+            $("#benutzerListeContainer").css("display", "block");
+            $("#benutzerListeContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    console.log('open popup');
+                    $("#tblBenutzerlisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblBenutzerlisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblBenutzerlisteErstellen.row(this).data();
+                        $("#benutzerListeContainer").dialog("close");
+                        //readInstanzen("benFirst", a[0])
+                        $.ajax({
+                            type: "POST",
+                            async: !0,
+                            url: "php/readInstanzen.php",
+                            data: {
+                                id: "ben",
+                                nameDB: "gipscomm",
+                                benID: a[0]
+                            },
+                            fail: function() {
+                                alert("failed!!")
+                            },
+                            success: function(a) {
+                                var c = $.parseJSON(a);
+                                $('#benID').val(c[0].ben_ID);
+                                $('#titelBen').val(c[0].titel);
+                                $('#nameBen').val(c[0].name);
+                                $('#vornameBen').val(c[0].vorname);
+                                $('#emailBen').val(c[0].eMail);
+                                $('#telefonBen').val(c[0].telefon);
+                                $('#faxBen').val(c[0].fax);
+                                $('#mobiltelefonBen').val(c[0].mobiltelefon);
+                                $('#benutzernameBen').val(c[0].username);
+                            }
+                        });
+                    })
+                }
+            })
+        }
+    })
+}
+
+function betrGrplisteErstellen() {
+    var a = itemSessionGet("nameDB");
+    //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "betrGrp",
+            nameDB: "gipscomm"
+        },
+        success: function(e) {
+            console.log('Working fine');
+            e = json(e);
+            //console.log(e);
+
+            tblBetrGrplisteErstellen.colReorder.reset();
+            tblBetrGrplisteErstellen.clear().draw();
+            for (var c = 0; c < e.length; c++) {
+                //console.log(e[c].email);
+                tblBetrGrplisteErstellen.row.add([
+                    c,
+                    e[c].firma,
+                    e[c].anzahlMitarbeiter,
+                    e[c].anschrift,
+                    e[c].plz,
+                    e[c].ort,
+                    e[c].geschaeftsfuehrer,
+                    e[c].telefon,
+                    e[c].eMail,
+                    e[c].notiz,
+                ]).draw();
+            }
+            $("#betrGrpListeContainer").css("display", "block");
+            $("#betrGrpListeContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    console.log('open popup');
+                    $("#tblBetrGrplisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblBetrGrplisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblBetrGrplisteErstellen.row(this).data();
+                        $("#betrGrpListeContainer").dialog("close");
+                        readInstanzen("betrGrpFirst", a[0])
+                    })
+                }
+            })
+        }
+    })
+}
+
+function sAdmSuchenlisteErstellen() {
+    var a = itemSessionGet("nameDB");
+    //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "sAdm",
+            nameDB: "gipscomm",
+            betrGrpID: $('#betrGrpID').val()
+        },
+        success: function(e) {
+            console.log('Working fine');
+            e = json(e);
+            //console.log(e);
+
+            tblsAdmSuchenlisteErstellen.colReorder.reset();
+            tblsAdmSuchenlisteErstellen.clear().draw();
+            for (var c = 0; c < e.length; c++) {
+                //console.log(e[c].email);
+                tblsAdmSuchenlisteErstellen.row.add([
+                    c,
+                    e[c].titelSAdm,
+                    e[c].nameSAdm,
+                    e[c].vornameSAdm,
+                    e[c].emailSAdm,
+                    e[c].telefonSAdm,
+                    e[c].faxSAdm,
+                    e[c].mobiltelefonSAdm,
+                    e[c].username,
+                ]).draw();
+            }
+            $("#sAdmSuchenListeContainer").css("display", "block");
+            $("#sAdmSuchenListeContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    console.log('open popup');
+                    $("#tblsAdmSuchenlisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblsAdmSuchenlisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblsAdmSuchenlisteErstellen.row(this).data();
+                        $("#sAdmSuchenListeContainer").dialog("close");
+                        readInstanzen("sAdmFirst", a[0])
+                    })
+                }
+            })
+        }
+    })
+}
+
+function gipscAdmSuchenlisteErstellen() {
+    var a = itemSessionGet("nameDB");
+    //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "gipscAdm",
+            nameDB: "gipscomm"
+        },
+        success: function(e) {
+            console.log('Working fine');
+            e = json(e);
+            //console.log(e);
+
+            tblGipscAdmSuchenlisteErstellen.colReorder.reset();
+            tblGipscAdmSuchenlisteErstellen.clear().draw();
+            for (var c = 0; c < e.length; c++) {
+                //console.log(e[c].email);
+                tblGipscAdmSuchenlisteErstellen.row.add([
+                    e[c].username,
+                ]).draw();
+            }
+            $("#gipscAdmSuchenListeContainer").css("display", "block");
+            $("#gipscAdmSuchenListeContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    console.log('open popup');
+                }
+            })
+        }
+    })
+}
+
+/** Benutzer Delete Functionality */
+
+function benLoeschen() {
+    if (confirm("Benutzer löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'ben',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                benID: $("#benID").val()
+            },
+            success: function(a) {
+                clearFields("benHinz");
+            }
+        });
+    }
+    return false;
+}
+
+function admLoeschen() {
+    if (confirm("Admins löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'adm',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                admID: $("#admID").val()
+            },
+            success: function(a) {
+                clearFields("admHinz");
+            }
+        });
+    }
+    return false;
+}
+
+function betrGrpLoeschen() {
+    if (confirm("Betreuergruppen/Superadmins löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'betrGrp',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                betrGrpID: $("#betrGrpID").val()
+            },
+            success: function(a) {
+                clearFields("betrGrpHinz");
+                clearFields("sAdmHinz");
+            }
+        });
+    }
+    return false;
+}
+
+function sAdmLoeschen() {
+    if (confirm("Superadmins löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'sAdm',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                sAdmID: $("#sAdmID").val()
+            },
+            success: function(a) {
+                clearFields("sAdmHinz");
+            }
+        });
+    }
+    return false;
+}
+// Roles and Permissions Data get from the database
+$(document).ready(function() {
+    //$('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
+    $('div#superadminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('sAdm'));
+    $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
+    $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
+});
+
+
+// Roles and Permission Ids According to Users.
+
+/*
+    1 - Gipscomm Admin
+    2 - SuperAdmin
+    3 - Mandantengruppen
+    4 - Admins
+    5 - Benutzer
+*/
+
+function gipscommRollenUndBerechtigungen() {            // Save Gipscomm Admin Roles and Permission
+    var gipsArr = new Array();
+    // $('input[name="gipsAdmRolesPermission[]"]:checked').each(function() {
+    //     gipsArr.push(this.value);
+    // });
+    $('span.item').each(function(){
+        var $span = $(this).attr('check-value');
+        if($span == 1) {
+            var spanTxt = $(this).attr('data-tab_id');
+            gipsArr.push(spanTxt);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "gipscAdm",
+            nameDB: "gipscomm",
+            modus: "saveRolePermission",
+            role_id: 1,
+            tab_id: gipsArr,
+            userId: $('#gipscAdmID').val()
+        },
+        success: function(a) {
+            alert(a)
+        }
+    });
+}
+
+function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and Permission
+    var sAdmArr = new Array();
+    // $('input[name="sAdmRolesPermission[]"]:checked').each(function() {
+    //     sAdmArr.push(this.value);
+    // });
+    $('span.item').each(function(){
+        var $span = $(this).attr('check-value');
+        if($span == 1) {
+            var spanTxt = $(this).attr('data-tab_id');
+            sAdmArr.push(spanTxt);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "sAdm",
+            nameDB: "gipscomm",
+            modus: "saveRolePermission",
+            role_id: 2,
+            tab_id: sAdmArr,
+            userId: $('#sAdmID').val()
+        },
+        success: function(a) {
+            alert(a)
+        }
+    });
+}
+
+function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Permission
+    var adminArr = new Array();
+    $('span.item').each(function(){
+        var $span = $(this).attr('check-value');
+        if($span == 1) {
+            var spanTxt = $(this).attr('data-tab_id');
+            adminArr.push(spanTxt);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "adm",
+            nameDB: "gipscomm",
+            modus: "saveRolePermission",
+            role_id: 4,
+            tab_id: adminArr,
+            userId: $('#admID').val()
+        },
+        success: function(a) {
+            alert(a)
+        }
+    });
+}
+function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and Permission
+    var benArr = new Array();
+    $('span.item').each(function(){
+        var $span = $(this).attr('check-value');
+        if($span == 1) {
+            var spanTxt = $(this).attr('data-tab_id');
+            benArr.push(spanTxt);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/instanzIntoDb.php",
+        data: {
+            id: "ben",
+            nameDB: "gipscomm",
+            modus: "saveRolePermission",
+            role_id: 5,
+            tab_id: benArr,
+            userId: $('#benID').val()
+        },
+        success: function(a) {
+            alert(a)
+        }
+    });
+}
+
+function gipscommGetRollenUndBerechtigungen() {     // Gipscomm Admin selected checkbox from database
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "sAdmGetRolePermission",
+            nameDB: "gipscomm",
+            role_id: 1,
+            userId: $('#gipscAdmID').val()
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            console.log(c);
+            var gipsArr = new Array();
+            if(c.length != 0) {
+                $.each(c, function(i, item){
+                    $('span.item').each(function(){
+                        var spanTxt = $(this).attr('data-tab_id');
+                        if(spanTxt == item.tab_id) {
+                            gipsArr.push(spanTxt);
+                        }
+                    });
+                });
+            } else {
+                //$('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
+            }
+        }
+    });
+}
+
+function sAdmGetRollenUndBerechtigungen() {     // Superadmin selected checkbox from database
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "rollenUndBerechtigungenSuperadmin",
+            nameDB: "gipscomm",
+            role_id: 2,
+            userId: $('#sAdmID').val()
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                console.log(c);
+                $( "div#superadmincommTreeview" ).empty();
+                var treeObject = JSON.parse(a);
+                var tw = new TreeView(
+                    treeObject,
+                    {showAlwaysCheckBox:true,fold:false});
+                document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
+
+                // var superAdminArr = new Array();
+                // $.each(c, function(i, item){
+                //     $('span.item').each(function(){
+                //         var spanTxt = $(this).attr('data-tab_id');
+                //         if(spanTxt == item.tab_id) {
+                //             console.log(item.tab_id);
+                //             superAdminArr.push(spanTxt);
+                //             $('span[data-tab_id=berichteMenu]').attr('check-value', 1);
+                //             $('').addClass('fa fa-check-circle-o');
+                //         }
+                //     });
+                // });
+            }
+        }
+    });
+}
+
+function adminsGetRollenUndBerechtigungen() {       // Admin selected checkbox from database
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "rollenUndBerechtigungenSuperadmin",
+            nameDB: "gipscomm",
+            role_id: 4,
+            userId:$('#admID').val()
+        },
+        success: function(a) {
+            c = JSON.parse(a);
+            console.log(c);
+            if(c.length != 0) {
+                $( "div#admincommTreeview" ).empty();
+                var treeObject = JSON.parse(a);
+                var tw = new TreeView(
+                    treeObject,
+                    {showAlwaysCheckBox:true,fold:false});
+                document.getElementById("admincommTreeview").appendChild( tw.root	 )
+            }
+        }
+    });
+}
+
+function benutzerGetRollenUndBerechtigungen() {       // Admin selected checkbox from database
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "rollenUndBerechtigungenSuperadmin",
+            nameDB: "gipscomm",
+            role_id: 5,
+            userId: $('#benID').val()
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            console.log(c);
+            if(c.length != 0) {
+                $( "div#benutzerTreeview" ).empty();
+                var treeObject = JSON.parse(a);
+                var tw = new TreeView(
+                    treeObject,
+                    {showAlwaysCheckBox:true,fold:false});
+                document.getElementById("benutzerTreeview").appendChild( tw.root	 )
+            }
+        }
+    });
+}
+
+function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "alleNutzerGetRolePermission",
+            nameDB: "gipscomm",
+            role_id: roleId,
+            userId: userId,
+            tableName: tableName,
+            userName: userName
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                $.each(c, function(i, item) {
+                    if(roleId != 1) {
+                        if(item.tab_id != '') {
+                            if(item.user_id == null){
+                                $("#"+item.tab_id).css("display", "none");
+                                // var res = id.split(",");
+                                // if(res.length > 1) {
+                                //     for (i=0;i<res.length;i++){
+                                //         $("#"+res[i]).css("display", "none");
+                                //     }
+                                // }
+                            } else {
+                                $("#"+item.tab_id).css("display", "block");
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
+}

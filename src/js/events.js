@@ -6,11 +6,55 @@ var anlageObj={};
 var allPrevVal = [];
 $(document).ready(function() {
     var c = this;
-    "gipsAdm" == sessionStorage.getItem("position") ?
-     mandantenEinlesen("alle", null, null) : "sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : "adm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi, #manGrpMenuLi, #admMenuLi").css("display",
-        "none"), $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabAdm").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0)) : "ben" == sessionStorage.getItem("position") && ($("#rechtMenuLi").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ?
-        mandantenEinlesen(null, "man_ID",
-        sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0));
+    if(sessionStorage.getItem("position") == 'gipsAdm') {
+        var roleId = 1;
+        //alleNutzerRollenUndBerechtigungen(roleId);
+        mandantenEinlesen("alle", null, null);
+    } else if(sessionStorage.getItem("position") == 'sAdm') {
+        var roleId = 2;
+        var tableName = 'superAdmins';
+        var userName = sessionStorage.getItem("username");
+        var userId = sessionStorage.getItem("position");
+        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
+        $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID"));
+        $("#sdmRoles").css("display", "none");
+        $("#sAdmRollenUndBerechtigungen").css("display", "none");
+        $("#adminsRollenUndBerechtigungen").css("display", "none");
+        $("#superadmincommTreeview").css("display", "none");
+        $("#adminRoles").css("display", "none");
+        $("#admincommTreeview").css("display", "none");
+        mandantenEinlesen($("#betrGrpID").val(), null, null);
+    } else if(sessionStorage.getItem("position") == 'adm') {
+        var roleId = 4;
+        var tableName = 'admins';
+        var userName = sessionStorage.getItem("username");
+        var userId = sessionStorage.getItem("position");
+        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
+        mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
+        $("#sAdmRollenUndBerechtigungen").css("display", "none");
+        $("#adminsRollenUndBerechtigungen").css("display", "none");
+        $("#superadmincommTreeview").css("display", "none");
+        $("#adminRoles").css("display", "none");
+        $("#admincommTreeview").css("display", "none");
+    } else if(sessionStorage.getItem("position") == 'ben') {
+        var roleId = 5;
+        var tableName = 'benutzer';
+        var userName = sessionStorage.getItem("username");
+        var userId = sessionStorage.getItem("position");
+        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
+        $("#benutzerRoles ").css("display", "none");
+        //mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
+        $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")): $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID"));
+    } else {
+        var roleId = 3;
+        //alleNutzerRollenUndBerechtigungen(roleId);
+        mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0);
+    }
+    // "gipsAdm" == sessionStorage.getItem("position") ?
+    //  mandantenEinlesen("alle", null, null) : "sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : "adm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi, #manGrpMenuLi, #admMenuLi").css("display",
+    //     "none"), $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabAdm").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0)) : "ben" == sessionStorage.getItem("position") && ($("#rechtMenuLi").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ?
+    //     mandantenEinlesen(null, "man_ID",
+    //     sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0));
     betrGrpEinlesen();
     manGrpEinlesen();
     anlagenGruppenEinlesen();
@@ -21,6 +65,7 @@ $(document).ready(function() {
     $("#liegRngVergleich").trigger("change");
     $("#logout").click(function() {
         sessionStorage.clear();
+        localStorage.removeItem('gipsAdm');
         $.ajax({
             type: "POST",
             async: !0,
@@ -1433,6 +1478,52 @@ $(document).ready(function() {
     $("#knzSuchen").click(function() {
         kennzahlInstanzenlisteErstellen()
     });
+    $("#admSuchen").click(function() {
+        adminlisteErstellen()
+    });
+    $("#benSuchen").click(function() {
+        benutzerlisteErstellen()
+    });
+    $("#betrGrpSuchen").click(function() {
+        betrGrplisteErstellen()
+    });
+    $("#sAdmSuchen").click(function() {
+        sAdmSuchenlisteErstellen()
+    });
+    $("#gipscAdmSuchen").click(function() {
+        gipscAdmSuchenlisteErstellen()
+    });
+
+    // Save Roles and Permissions
+    $("#gipscommRollenUndBerechtigungen").click(function() {
+        gipscommRollenUndBerechtigungen()
+    });
+    $("#sAdmRollenUndBerechtigungen").click(function() {
+        sAdmRollenUndBerechtigungen()
+    });
+    $("#adminsRollenUndBerechtigungen").click(function() {
+        adminsRollenUndBerechtigungen()
+    });
+    $("#benutzerRollenUndBerechtigungen").click(function() {
+        benutzerRollenUndBerechtigungen()
+    });
+
+    // Get Checked data from database
+    $("#gipscAdmLast, #gipscAdmNext, #gipscAdmPrevious, #gipscAdmFirst").click(function() {
+        gipscommGetRollenUndBerechtigungen()
+    });
+    $("#sAdmLast, #sAdmFirst, #sAdmPrevious, #sAdmNext").click(function() {
+        sAdmGetRollenUndBerechtigungen()
+    });
+    $("#admLast, #admNext, #admPrevious, #admFirst").click(function() {
+        //$('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
+        adminsGetRollenUndBerechtigungen()
+    });
+    $("#benFirst, #benLast, #benNext, #benPrevious").click(function() {
+        //$('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
+        benutzerGetRollenUndBerechtigungen()
+    });
+
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
         switch ($("#bermstmod").val()) {
@@ -1708,6 +1799,9 @@ $(document).ready(function() {
     });
     $("#tblOptionenEPrd tbody").on("dblclick", "tr", function() {
         tblOptionenEPrd.row(this).remove().draw()
+    });
+    $("#tabAdm, #admMenu").click(function() {
+        manGrpEinlesen();
     });
     $(".betrPfad").change(function() {
 
@@ -7862,3 +7956,24 @@ $("#intBdePrdktIMwHinz").click(function() {
 
 });
 /*new-mm-end 25-03-2021*/
+
+/** Benutzer Delete Functionality */
+
+$("#benLoeschen").on('click', function() {
+    benLoeschen();
+});
+
+/** Admin Delete Functionality */
+$("#admLoeschen").on('click', function() {
+    admLoeschen();
+});
+
+/** BetreGroup/Superadmin Delete Functionality */
+$("#betrGrpLoeschen").on('click', function() {
+    betrGrpLoeschen();
+});
+
+/** Superadmin Delete Functionality */
+$("#sAdmLoeschen").on('click', function() {
+    sAdmLoeschen();
+});

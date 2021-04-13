@@ -13,6 +13,16 @@
     <link type="text/css" rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
     <link type="text/css" rel="stylesheet" href="dist/css/colReorder.dataTables.min.css">
     <link href="dist/css/pace-theme.min.css" rel="stylesheet"/>
+    <!-- Tree View Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link href="dist/css/jquery.treeview.css" rel="stylesheet">
+    <script type="text/javascript" src="dist/js/jquery.treeview.js"></script>
+    <link href="dist/css/pace-theme.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
     <style>
         .ui-dialog .ui-dialog-content {
             position: relative;
@@ -51,14 +61,14 @@
                         <a style="border-top-left-radius:8px; border-bottom-left-radius:8px; border-right-width:0px; left:0px;" href="#">Startseite</a>
                     </li>-->
                     <li>
-                        <a href="#" class="optionen_tabs_open_state">Auswertungen</a>
+                        <a href="#" id="auswertungenMenu" class="optionen_tabs_open_state">Auswertungen</a>
                         <div>
                             <ul class="sub-menu">
                                <!-- <li>
                                     <a id="dashboards" href="#">Dashboards</a>
                                 </li>-->
                                 <li>
-                                    <a href="#">Berichte</a>
+                                    <a href="#" id="berichteMenu">Berichte</a>
                                     <ul>
                                         <li>
                                             <a id="isoBerichteMenu" href="#">ISO-Berichte</a>
@@ -1488,20 +1498,21 @@
             <div class="infoBody">
                <div id="rechteverwaltung" style="display:none;">
                   <div class="dispNone">
-                     <input id="gipscAdmID" />
-                     <input id="betrGrpID" />
-                     <input id="sAdmID" />
-                     <input id="manGrpID" />
-                     <input id="admID" />
-                     <input id="benID" />
-                     <input id="knzInsCount" />
-                     <input id="betrGrpCount" />
-                     <input id="manRechteID" />
-                     <input id="sAdmCount" />
-                     <input id="manGrpCount" />
-                     <input id="admCount" />
-                     <input id="benCount" />
-                     <input id="manOderManGrp" />
+                     <input id="gipscAdmID"/>
+                        <input id="gipscAdmCount"/>
+                        <input id="betrGrpID"/>
+                        <input id="sAdmID"/>
+                        <input id="manGrpID"/>
+                        <input id="admID"/>
+                        <input id="benID"/>
+                        <input id="knzInsCount"/>
+                        <input id="betrGrpCount" />
+                        <input id="manRechteID"/>
+                        <input id="sAdmCount" />
+                        <input id="manGrpCount" />
+                        <input id="admCount" />
+                        <input id="benCount" />
+                        <input id="manOderManGrp"/>
                   </div>
                   <div id="infosGipscommAdmins" style="display:none;">
                      <div class="infosBlock">
@@ -1514,10 +1525,32 @@
                            <label>Passwort</label>
                            <input id="passwortGipscAdm" />
                         </div>
+                        <!--
+                            <div class="navDropBox" style="height:20px;padding:3px;">
+                                <img id="gipscommRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            </div>
+                            <div class="infosBlock">
+                                <div class="sectionHeader">
+                                    <label>Rollen und Berechtigungen</label>
+                                </div>
+                                <div id="gipscommTreeview">
+                                </div>
+                                <script type="text/javascript">
+                                    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+                                    var tw = new TreeView(
+                                        treeObject,
+                                        {showAlwaysCheckBox:true,fold:false});
+                                    document.getElementById("gipscommTreeview").appendChild( tw.root	 )
+                                </script>
+                            </div>
+                            -->
                      </div>
                   </div>
                   <div id="infosBetreuerGruppen">
-                     <div class="navDropBox" style="height:20px;padding:3px;"> <img id="betrGrpLoeschen" title="Betreuergruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="betrGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpHinz" title="Neue Betreuergruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="betrGrpSuchen" title="Betreuergruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="betrGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Betreuergruppe" src="images/last.png" alt="letzte" /> <img id="betrGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Betreuergruppe" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="betrGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Betreuergruppe" src="images/previous.png" alt="vorherige" /> <img id="betrGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Betreuergruppe" src="images/first.png" alt="erste" /> </div>
+                     <div class="navDropBox" style="height:20px;padding:3px;"> <img id="betrGrpLoeschen" title="Betreuergruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="betrGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpHinz" title="Neue Betreuergruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="betrGrpSuchen" title="Betreuergruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="betrGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Betreuergruppe" src="images/last.png" alt="letzte" /> <img id="betrGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Betreuergruppe" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="betrGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Betreuergruppe" src="images/previous.png" alt="vorherige" /> <img id="betrGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Betreuergruppe" src="images/first.png" alt="erste" /> 
+                        <label>Betr. Gruppe:</label>
+                        <select class="betrPfad"></select>
+                     </div>
                      <div class="betreuerGruppe">
                         <form action="" method="post">
                            <div class="infosBlock">
@@ -1601,6 +1634,25 @@
                                  <label>Passwort</label>
                                  <input id="passwortSAdm" />
                               </div>
+                              <!--
+                                    <div class="navDropBox" style="height:20px;padding:3px;">
+                                        <img id="sAdmRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                                    </div>
+                                    <div class="infosBlock" id="sdmRoles">
+                                        <div class="sectionHeader">
+                                            <label>Rollen und Berechtigungen</label>
+                                        </div>
+                                        <div id="superadmincommTreeview">
+                                        </div>
+                                        <script type="text/javascript">
+                                            var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+                                            var tw = new TreeView(
+                                                treeObject,
+                                                {showAlwaysCheckBox:true,fold:false});
+                                            document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
+                                        </script>
+                                    </div>
+                                    -->
                            </div>
                         </form>
                      </div>
@@ -1642,7 +1694,7 @@
                   </div>
                   <div id="infosAdmins">
                      <div class="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="admLoeschen" title="Admin löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="admSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="admHinz" title="Neuen Admin erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="admSuchen" title="Admin suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="admMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="admLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Admin" src="images/last.png" alt="letzte" /> <img id="admNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Admin" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="admPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" /> <img id="admFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" />
+                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="admLoeschen" title="Admin löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="admSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="admHinz" title="Neuen Admin erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="admSuchen" title="Admin suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="admMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="admLast" data-record="last" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Admin" src="images/last.png" alt="letzte" /> <img id="admNext" data-record="next" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Admin" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="admPrevious" data-record="previous" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" /> <img id="admFirst" data-record="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" />
                            <label>Betr. Gruppe:</label>
                            <select class="betrPfad"></select>
                            <label>Mandant/Gruppe:</label>
@@ -1650,16 +1702,70 @@
                         </div>
                         <div class="sectionHeader">
                            <label>Allgemein</label>
-                        </div>
-                        <div class="controlDiv">
+                       </div>
+                       <div class="controlDiv">
                            <label>Titel</label>
                            <input id="titelAdm" />
+                       </div>
+                       <div class="controlDiv">
+                           <label>Name</label>
+                           <input id="nameAdm" />
+                       </div>
+                       <div class="controlDiv">
+                           <label>Vorname</label>
+                           <input id="vornameAdm" />
+                       </div>
+                       <div class="controlDiv">
+                           <label>E-Mail</label>
+                           <input id="emailAdm" />
+                       </div>
+                       <div class="controlDiv">
+                           <label>Telefon</label>
+                           <input id="telefonAdm" />
+                       </div>
+                       <div class="controlDiv">
+                           <label>Fax</label>
+                           <input id="faxAdm" />
+                       </div>
+                       <div class="controlDiv">
+                           <label>Mobiltelefon</label>
+                           <input id="mobiltelefonAdm" />
+                       </div>
+                       <div class="controlDiv">
+                           <label>Benutzername</label>
+                           <input id="benutzernameAdm" />
+                       </div>
+                       <div class="controlDiv">
+                           <label>Passwort</label>
+                           <input type="password" id="passwortAdm" />
+                       </div>
+                       <div class="navDropBox" style="height:20px;padding:3px;">
+                        <img id="adminsRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                    </div>
+                        <div class="infosBlock" id="adminRoles">
+                              <div class="sectionHeader">
+                                 <label>Rollen und Berechtigungen</label>
+                              </div>
+                              <!-- <div id="adminRollenUndBerechtigungenSuperadmin">
+                              </div> -->
+                              <div id="admincommTreeview">
+
+                              </div>
+                              <script type="text/javascript">
+
+                                 var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+                                 var tw = new TreeView(
+                                    treeObject,
+                                    {showAlwaysCheckBox:true,fold:false});
+                                 document.getElementById("admincommTreeview").appendChild( tw.root	 )
+
+                              </script>
                         </div>
                     </div>
                 </div>
                 <!--Ende rechteverwaltung-->
                   <div id="infosBenutzer">
-                     <div class="navDropBox" style="height:20px;padding:3px;"> <img id="benLoeschen" title="Benutzer löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="benSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="benHinz" title="Neuen Benutzer erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="benSuchen" title="Benutzer suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="benMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="benLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Benutzer" src="images/last.png" alt="letzte" /> <img id="benNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Benutzer" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="benPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Benutzer" src="images/previous.png" alt="vorherige" /> <img id="benFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Benutzer" src="images/first.png" alt="erste" />
+                     <div class="navDropBox" style="height:20px;padding:3px;"> <img id="benLoeschen" title="Benutzer löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="benSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="benHinz" title="Neuen Benutzer erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="benSuchen" title="Benutzer suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="benMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="benLast" data-record="last" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Benutzer" src="images/last.png" alt="letzte" /> <img id="benNext" data-record="next" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Benutzer" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="benPrevious" data-record="previous" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Benutzer" src="images/previous.png" alt="vorherige" /> <img id="benFirst" data-record="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Benutzer" src="images/first.png" alt="erste" />
                         <label>Betr. Gruppe:</label>
                         <select class="betrPfad"></select>
                         <label>Mandant/Gruppe:</label>
@@ -1715,6 +1821,28 @@
                         <div class="controlDiv">
                            <label></label>
                            <input id="222" />
+                        </div>
+                        <div class="navDropBox" style="height:20px;padding:3px;">
+                           <img id="benutzerRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                       </div>
+                        <div class="infosBlock" id="benutzerRoles">
+                           <div class="sectionHeader">
+                               <label>Rollen und Berechtigungen</label>
+                           </div>
+                           <!-- <div id="benutzerRollenUndBerechtigungenSuperadmin">
+                           </div> -->
+                           <div id="benutzerTreeview">
+
+                           </div>
+                           <script type="text/javascript">
+
+                               var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+                               var tw = new TreeView(
+                                   treeObject,
+                                   {showAlwaysCheckBox:true,fold:false});
+                               document.getElementById("benutzerTreeview").appendChild( tw.root	 )
+
+                           </script>
                         </div>
                      </div>
                   </div>
@@ -10518,6 +10646,104 @@
             <tbody></tbody>
         </table>
     </div>
+    <div id="admListeContainer" style="display:none;font-size:12px;">
+      <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
+
+</div> -->
+      <div id="buttonsUndTabelle" style="margin-left:0px;">
+          <table id="tblAdminlisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+              <thead>
+              <tr>
+                  <th>Titel</th>
+                  <th>Name</th>
+                  <th>Vorname</th>
+                  <th>Benutzername</th>
+                  <th>E-Mail</th>
+                  <th>Telefon</th>
+                  <th>Mobiltelefon</th>
+              </tr>
+              </thead>
+              <tbody></tbody>
+          </table>
+      </div>
+  </div>
+    <div id="benutzerListeContainer" style="display:none;font-size:12px;">
+      <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
+      </div> -->
+      <div id="buttonsUndTabelle" style="margin-left:0px;">
+          <table id="tblBenutzerlisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+              <thead>
+              <tr>
+                  <th>Titel</th>
+                  <th>Name</th>
+                  <th>Vorname</th>
+                  <th>Benutzername</th>
+                  <th>E-Mail</th>
+                  <th>Telefon</th>
+                  <th>Mobiltelefon</th>
+              </tr>
+              </thead>
+              <tbody></tbody>
+          </table>
+      </div>
+  </div>
+    <div id="betrGrpListeContainer" style="display:none;font-size:12px;">
+      <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
+      </div> -->
+      <div id="buttonsUndTabelle" style="margin-left:0px;">
+          <table id="tblBetrGrplisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+              <thead>
+              <tr>
+                  <th>Firma</th>
+                  <th>Anzahl Mitarbeiter</th>
+                  <th>Anschrift</th>
+                  <th>PLZ Ort</th>
+                  <th>Geschäftsführer</th>
+                  <th>Telefon</th>
+                  <th>E-Mail</th>
+                  <th>Notiz</th>
+              </tr>
+              </thead>
+              <tbody></tbody>
+          </table>
+      </div>
+  </div>
+    <div id="sAdmSuchenListeContainer" style="display:none;font-size:12px;">
+         <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
+         </div> -->
+         <div id="buttonsUndTabelle" style="margin-left:0px;">
+            <table id="tblsAdmSuchenlisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+               <thead>
+               <tr>
+                     <th>Titel</th>
+                     <th>Name</th>
+                     <th>Vorname</th>
+                     <th>E-Mail</th>
+                     <th>Telefon</th>
+                     <th>Fax</th>
+                     <th>Mobiltelefon</th>
+                     <th>Benutzername</th>
+               </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
+         </div>
+      </div>
+      <div id="gipscAdmSuchenListeContainer" style="display:none;font-size:12px;">
+         <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
+
+         </div> -->
+         <div id="buttonsUndTabelle" style="margin-left:0px;">
+            <table id="tblGipscAdmSuchenlisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+               <thead>
+               <tr>
+                     <th>Benutzername</th>
+               </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
+         </div>
+      </div>
             <div id="externeJsDateien">
                 <script type="text/javascript" src="dist/js/jquery.min.js" crossorigin="anonymous"></script>
                 <script type="text/javascript">
