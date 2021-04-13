@@ -11314,8 +11314,6 @@ const addKennzahl =
     )
     .css("display", "inline")
 
-
-
 /*24-02-2020 Correction factor add record row wise not quoma saperated,
 21-03-2020 send the optionDesc variable into ajax response*/
 function KorrekturFaktorEinfügen() {
