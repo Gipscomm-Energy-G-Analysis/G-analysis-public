@@ -715,6 +715,7 @@ $(document).ready(function() {
     });
     $("#btnWeitereKnzHinz").click(function() {
         addKennzahl()
+        activateNewKnzTab()
     });
     $("#insSuchenKnz").click(function() {
         instanzAuswahllisteErstellen($("#bezugAllgemeinKnz").val())
@@ -2016,7 +2017,7 @@ $(document).ready(function() {
                 title: "Meldung!"
             })))
     });
-    $("#orgLoeschen, #liegLoeschen, #extDlLoeschen, #berLoeschen,#mstLoeschen, #stdLoeschen, #stdDrLoeschen, #anlLoeschen,#msmLoeschen, #eRngLoeschen, #zpLoeschen, #eAnlLoeschen, #prdLoeschen, #entLoeschen").click(function() {
+    $("#orgLoeschen, #liegLoeschen, #extDlLoeschen, #berLoeschen,#mstELoeschen, #mstBLoeschen,#stdLoeschen, #stdDrLoeschen, #anlLoeschen,#msmLoeschen, #eRngLoeschen, #zpLoeschen, #eAnlLoeschen, #prdLoeschen, #entLoeschen").click(function() {
         fensterLoeschenmeldung(this.id)
     })
 });

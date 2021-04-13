@@ -23,7 +23,8 @@ switch ($ins) {
     $tbl = "bereiche";
     $idName = "ber_ID";
     break;
-  case "mst":
+  case "mstE":
+  case "mstB":
     $tbl = "messstellen";
     $idName = "mst_ID";
     break;

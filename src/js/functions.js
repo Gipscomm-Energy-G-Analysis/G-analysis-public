@@ -4730,9 +4730,13 @@ try {
                     e = $("#berID").val();
                     berNavID = 0;
                     break;
-                case "mstLoeschen":
-                    b =
-                        "mst";
+                case "mstELoeschen":
+                    b = "mstE";
+                    e = $("#mstID").val();
+                    mstNavID = 0;
+                    break;
+                case "mstBLoeschen":
+                    b = "mstB";
                     e = $("#mstID").val();
                     mstNavID = 0;
                     break;
@@ -11313,6 +11317,19 @@ const addKennzahl =
         .filter(hiddenKnzTab)
     )
     .css("display", "inline")
+
+const activateNewKnzTab =
+    () => {
+        const index =
+            head(
+                array($("#btnTabKnzCont li").length)()()
+                .map(getKnzTab)
+                .map((a, i) => hiddenKnzTab(a) ? i : 0)
+                .filter(a => a !== 0)
+            )
+
+        $("#btnTabKnzCont").tabs({active: index})
+    }
 
 /*24-02-2020 Correction factor add record row wise not quoma saperated,
 21-03-2020 send the optionDesc variable into ajax response*/
