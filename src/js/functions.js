@@ -1747,10 +1747,6 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
-
-                    console.log("versorgerUndEinheitBefuellen")
-                    console.log(a)
-
                     $("#versorgerERng, #versorgerIMw, #einERng").empty();
                     0 < a.length && ("" != a[0].versorgerEvu && $("#versorgerERng, #versorgerIMw").append("<option selected>" + a[0].versorgerEvu + "</option>"), "" != a[0].versorgerUenb && $("#versorgerERng, #versorgerIMw").append("<option>" + a[0].versorgerUenb +
                         "</option>"), "" != a[0].versorgerMsb && $("#versorgerERng, #versorgerIMw").append("<option>" + a[0].versorgerMsb + "</option>"), "" != a[0].einheit1Ent && $("#einERng").append("<option selected>" + a[0].einheit1Ent + "</option>"), "" != a[0].einheit2Ent && $("#einERng").append("<option>" + a[0].einheit2Ent + "</option>"), "" != a[0].einheit3Ent && $("#einERng").append("<option>" + a[0].einheit3Ent + "</option>"))
@@ -7761,6 +7757,7 @@ try {
                     id: "zp",
                     modus: "save",
                     nameDB: $("#nameDB").val(),
+                    liegID: $("#liegID").val(),
                     zpID: $("#zpID").val(),
                     energietraeger: $("#energietraegerZp").val(),
                     messstelle: $("#mstZp").val(),
