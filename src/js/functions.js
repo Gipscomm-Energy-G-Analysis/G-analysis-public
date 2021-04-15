@@ -1747,6 +1747,10 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
+
+                    console.log("versorgerUndEinheitBefuellen")
+                    console.log(a)
+
                     $("#versorgerERng, #versorgerIMw, #einERng").empty();
                     0 < a.length && ("" != a[0].versorgerEvu && $("#versorgerERng, #versorgerIMw").append("<option selected>" + a[0].versorgerEvu + "</option>"), "" != a[0].versorgerUenb && $("#versorgerERng, #versorgerIMw").append("<option>" + a[0].versorgerUenb +
                         "</option>"), "" != a[0].versorgerMsb && $("#versorgerERng, #versorgerIMw").append("<option>" + a[0].versorgerMsb + "</option>"), "" != a[0].einheit1Ent && $("#einERng").append("<option selected>" + a[0].einheit1Ent + "</option>"), "" != a[0].einheit2Ent && $("#einERng").append("<option>" + a[0].einheit2Ent + "</option>"), "" != a[0].einheit3Ent && $("#einERng").append("<option>" + a[0].einheit3Ent + "</option>"))
@@ -5957,7 +5961,6 @@ try {
                         , ["#kostenstelleERng", "kostenstelleERng"]
                         , ["#versorgerERng", "versorgerERng"]
                         ].forEach(a => $(a[0]).val(result[b][a[1]])),
-                        versorgerUndEinheitBefuellen(),
 
                         [ ["#mengeERng", "mengeERng"]
                         , ["#verbrauchERng", "verbrauchERng"]
@@ -6001,7 +6004,10 @@ try {
                         ].forEach(a => $(a[0]).text(result[b][a[1]]))) :
                         clearFields("eRngHinz")
 
+                        versorgerUndEinheitBefuellen()
+
                         $("#modusERng").trigger("change")
+                        $("#mengeERng").trigger("change")
                         $("#mstERng").trigger("change")
                         $("#kostenERng").trigger("change")
                         $("#eegUntERng").trigger("change")

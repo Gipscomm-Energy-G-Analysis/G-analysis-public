@@ -1117,7 +1117,7 @@ $(document).ready(function() {
         this.id ? $("#imgUploadAnl").trigger("click") : $("#imgUploadMsm").trigger("click")
     });
     $("#mengeERng, #einERng").change(function() {
-        var a = $("#entERng").val(),
+        var a = $("#inputEntERng").val(),
             b = $("#einERng").val(),
             c = $("#mengeERng").val();
         verbrauchBerechnen(this.id, a, b, c)
@@ -1128,7 +1128,7 @@ $(document).ready(function() {
             c = $(this).val();
         verbrauchBerechnen(this.id, a, b, c)
     });
-    $("#entERng").change(function() {
+    $("#inputEntERng").change(function() {
         versorgerUndEinheitBefuellen()
     });
     $("#btnHtNt").click(function() {
