@@ -10921,7 +10921,7 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 c = a.secondPart,
                 g = b.von,
                 f = b.bis;
-            $("" + e + f + c).text("Knz_" + (f + 1 - g));
+            $("" + e + f + c).text("Knz " + (f + 1 - g));
             f > g ? setText_Ctrl({
                 firstPart: e,
                 secondPart: c
@@ -11307,31 +11307,41 @@ const getKnzTab =
     (_, i) =>
     $("#btnTabKnzCont li").eq(i)
 
+const getAllKnzTabs =
+    () =>
+    array($("#btnTabKnzCont li").length)()()
+    .map(getKnzTab)
+
 const hiddenKnzTab =
     a =>
     a.css("display") === "none"
+
+const visibleKnzTab =
+    a =>
+    a.css("display") !== "none"
 
 // Adds a new Kennzahl to a Kennzahleninstanz
 const addKennzahl =
     () =>
     head(
-        array($("#btnTabKnzCont li").length)()()
-        .map(getKnzTab)
+        getAllKnzTabs()
         .filter(hiddenKnzTab)
     )
     .css("display", "inline")
 
 const activateNewKnzTab =
     () => {
-        const index =
-            head(
-                array($("#btnTabKnzCont li").length)()()
-                .map(getKnzTab)
-                .map((a, i) => hiddenKnzTab(a) ? i : 0)
-                .filter(a => a !== 0)
-            )
+        const tabText =
+            last(
+                getAllKnzTabs()
+                .filter(visibleKnzTab)
+            ).text()
 
-        $("#btnTabKnzCont").tabs({active: index})
+        const hrefSelector =
+            $(`[href="#tabs-${tabText.split(" ")[1]}_knzForms"]`)
+
+
+        hrefSelector.trigger("click")
     }
 
 /*24-02-2020 Correction factor add record row wise not quoma saperated,
