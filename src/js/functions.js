@@ -1198,7 +1198,11 @@ try {
                 },
                 success: function(a) {
                     a = $.parseJSON(a);
-
+                    // Checked Value
+                    // $.each(a, function(i, item){
+                    //     id = 'manCheckbox'+item.man_ID;
+                    //     $('#'+id).prop("checked", !0);
+                    // });
                     if (0 < a.length)
                         for (n = 0; n < a.length; n++) tblMandantengruppe.row.add([a[n].man_ID, a[n].nameMan, a[n].dbName], n).draw(), tblMandantengruppe.column(0).visible(!1).draw();
                     else tblMandantengruppe.clear().draw()
@@ -1747,10 +1751,6 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
-
-                    console.log("versorgerUndEinheitBefuellen")
-                    console.log(a)
-
                     $("#versorgerERng, #versorgerIMw, #einERng").empty();
                     0 < a.length && ("" != a[0].versorgerEvu && $("#versorgerERng, #versorgerIMw").append("<option selected>" + a[0].versorgerEvu + "</option>"), "" != a[0].versorgerUenb && $("#versorgerERng, #versorgerIMw").append("<option>" + a[0].versorgerUenb +
                         "</option>"), "" != a[0].versorgerMsb && $("#versorgerERng, #versorgerIMw").append("<option>" + a[0].versorgerMsb + "</option>"), "" != a[0].einheit1Ent && $("#einERng").append("<option selected>" + a[0].einheit1Ent + "</option>"), "" != a[0].einheit2Ent && $("#einERng").append("<option>" + a[0].einheit2Ent + "</option>"), "" != a[0].einheit3Ent && $("#einERng").append("<option>" + a[0].einheit3Ent + "</option>"))
@@ -5028,6 +5028,9 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
+                            var betrGrpId = $("#betrGrpID").val();
+                            var mandantenIds = c[b].mandantenIDs;
+                            mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds);
                             0 < c.length ? (mandantenInMandantenGruppenTabelleEinlesen(c[b].mandantenIDs), $("#manGrpCount").val(c.length),
                             [
                               ["#manGrpID", "manGrp_ID"]
@@ -5961,6 +5964,7 @@ try {
                         , ["#kostenstelleERng", "kostenstelleERng"]
                         , ["#versorgerERng", "versorgerERng"]
                         ].forEach(a => $(a[0]).val(result[b][a[1]])),
+                        versorgerUndEinheitBefuellen(),
 
                         [ ["#mengeERng", "mengeERng"]
                         , ["#verbrauchERng", "verbrauchERng"]
@@ -6004,10 +6008,7 @@ try {
                         ].forEach(a => $(a[0]).text(result[b][a[1]]))) :
                         clearFields("eRngHinz")
 
-                        versorgerUndEinheitBefuellen()
-
                         $("#modusERng").trigger("change")
-                        $("#mengeERng").trigger("change")
                         $("#mstERng").trigger("change")
                         $("#kostenERng").trigger("change")
                         $("#eegUntERng").trigger("change")
@@ -6353,6 +6354,14 @@ try {
                 }
             });
             else if ("manGrpSpeichern" == a) {
+                var adminArr = new Array();
+                $('span.item').each(function(){
+                    var $span = $(this).attr('check-value');
+                    if($span == 1) {
+                        var spanTxt = $(this).attr('data-id');
+                        adminArr.push(spanTxt);
+                    }
+                });
                 const getManIDs =
                     () =>
                     array($("#tblMandantengruppe tbody tr").length)()()
@@ -6368,7 +6377,7 @@ try {
                         nameDB: "gipscomm",
                         modus: "save",
                         manGrpID: $("#manGrpID").val(),
-                        mandatenIDs: getManIDs(),
+                        mandatenIDs: adminArr.toString(),//getManIDs(),
                         name: $("#nameManGrp").val(),
                         kurz: $("#kurzManGrp").val(),
                         notiz: $("#notizManGrp").val()
@@ -7836,6 +7845,14 @@ try {
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
                 } }), sAdmNavID = $("#sAdmCount").val();
             else if ("manGrpSpeichern" == a) {
+                var adminArr = new Array();
+                $('span.item').each(function(){
+                    var $span = $(this).attr('check-value');
+                    if($span == 1) {
+                        var spanTxt = $(this).attr('data-id');
+                        adminArr.push(spanTxt);
+                    }
+                });
                 var e = [];
                 for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++) e[i] = tblMandantengruppe.cell(i, 0).data();
                 e = e.join(",");
@@ -7851,7 +7868,7 @@ try {
                         name: $("#nameManGrp").val(),
                         kurz: $("#kurzManGrp").val(),
                         notiz: $("#notizManGrp").val(),
-                        mandatenIDs: e
+                        mandatenIDs: adminArr.toString()//e
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a));
@@ -22809,6 +22826,19 @@ function sAdmGetRollenUndBerechtigungen() {     // Superadmin selected checkbox 
                     treeObject,
                     {showAlwaysCheckBox:true,fold:false});
                 document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
+
+                // var superAdminArr = new Array();
+                // $.each(c, function(i, item){
+                //     $('span.item').each(function(){
+                //         var spanTxt = $(this).attr('data-tab_id');
+                //         if(spanTxt == item.tab_id) {
+                //             console.log(item.tab_id);
+                //             superAdminArr.push(spanTxt);
+                //             $('span[data-tab_id=berichteMenu]').attr('check-value', 1);
+                //             $('').addClass('fa fa-check-circle-o');
+                //         }
+                //     });
+                // });
             }
         }
     });
@@ -22902,4 +22932,58 @@ function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) 
             }
         }
     });
+}
+
+function mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getMandanten.php",
+        data: {
+            betrGrpID: betrGrpId,
+            nameDB: "gipscomm",
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var mandanteCheckboxData = [];
+            var newArray = [];
+            $("#mandanteTreeView").empty();
+            var res1 = mandantenIds.split(",");
+            if(a.length != 0) {
+                $.each(a, function(i, item){
+                    // mandanteCheckbox = '<label>'+item.nameMan+'</label><input type="checkbox" id="manCheckbox'+item.man_ID+'" name="'+item.nameMan+'" value="'+item.man_ID+'">';
+                    // mandanteCheckboxData.push(mandanteCheckbox);
+                    
+                            var checked = false;
+                            // console.log(res1);
+                            // if($.inArray(item.man_ID, res1)) {
+                            //     checked = true;
+                            // }
+                            for(var i=0; i<res1.length; i++){
+                                var id = res1[i];
+                                if(id == item.man_ID){
+                                  checked = true;
+                                  break;
+                                }
+                              }
+                        newArray.push({
+                                "text" : item.nameMan,
+                                "id" : item.man_ID,
+                                "checked" : checked
+                                });
+
+                    // newArray.push({
+                    //     "text" : item.nameMan,
+                    //     "id" : item.man_ID,
+                    //     });
+                });
+                var treeObject = newArray;//JSON.parse(newArray);
+                var tw = new TreeView(
+                    treeObject,
+                    {showAlwaysCheckBox:true,fold:false});
+                document.getElementById("mandanteTreeView").appendChild( tw.root	 )
+            }
+            //$("div#mandanteTreeView").html(mandanteCheckboxData);
+        }
+    })
 }
