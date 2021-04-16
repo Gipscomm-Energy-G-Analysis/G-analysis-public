@@ -22809,19 +22809,6 @@ function sAdmGetRollenUndBerechtigungen() {     // Superadmin selected checkbox 
                     treeObject,
                     {showAlwaysCheckBox:true,fold:false});
                 document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
-
-                // var superAdminArr = new Array();
-                // $.each(c, function(i, item){
-                //     $('span.item').each(function(){
-                //         var spanTxt = $(this).attr('data-tab_id');
-                //         if(spanTxt == item.tab_id) {
-                //             console.log(item.tab_id);
-                //             superAdminArr.push(spanTxt);
-                //             $('span[data-tab_id=berichteMenu]').attr('check-value', 1);
-                //             $('').addClass('fa fa-check-circle-o');
-                //         }
-                //     });
-                // });
             }
         }
     });
