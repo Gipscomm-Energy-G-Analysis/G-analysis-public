@@ -11329,6 +11329,7 @@ const addKennzahl =
     )
     .css("display", "inline")
 
+
 const activateNewKnzTab =
     () => {
         const tabText =
