@@ -23,7 +23,8 @@ function queryProdData($artikelnummer) {
     $query = "SELECT * FROM ProdData_ " ;
     $query .= "WHERE artikelnummer = '".$artikelnummer."' " ;
     $query .= "AND auftrag <> '' " ;
-    $query .= "AND (auftrag = '000979810020' OR auftrag = '000979820020') " ;
+    $query .= "AND (gutmenge + ausschuss) > 0 " ;
+    $query .= "AND (auftrag = '000995340020' OR auftrag = '000995350020' OR auftrag = '000995370020' OR auftrag = '000995380020') " ;
     $query .= "ORDER BY auftrag, zeitstempel " ;
 
     return queryDB(connect, $query, "read") ;
@@ -327,7 +328,7 @@ $end = hrtime(true) ;
 
 echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
-// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100912002
+// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100899404
 
 
 
