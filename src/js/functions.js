@@ -11341,7 +11341,6 @@ const activateNewKnzTab =
         const hrefSelector =
             $(`[href="#tabs-${tabText.split(" ")[1]}_knzForms"]`)
 
-
         hrefSelector.trigger("click")
     }
 
