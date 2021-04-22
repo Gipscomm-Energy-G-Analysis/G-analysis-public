@@ -393,6 +393,7 @@
                   <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
                   <button id="tabDynamicKorrekturFktr" style="">dynamische Korrekturfaktoren</button>
                   <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
+                  <button id="tabSchtDat" class="no_korrector_tabs">Schichtdaten</button>
                </div>
                <div id="tabsBenutzerrechte" style="display:none;"> </div>
                <div id="tabsAnsicht" style="display:none;"> </div>
@@ -5965,6 +5966,38 @@
                   <div id="infosGesellschaftsformen"> </div>
                   <div id="infosManagementsysteme"> </div>
                   <div id="infosZaehlpunkte">
+                     <div id="infosBlock">
+                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="zpLoeschen" title="Zählpunkt löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="zpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="zpHinz" title="Neuen Zählpunkt erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="zpSuchen" title="Zählpunkt suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="zpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Zählpunkt" src="images/last.png" alt="letzte" /> <img id="zpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Zählpunkt" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="zpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Zählpunkt" src="images/previous.png" alt="vorherige" /> <img id="zpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Zählpunkt" src="images/first.png" alt="erste" />
+                           <label>Liegenschaft: </label>
+                           <select class="liegPfad"></select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="energietraegerZp">Energieträger</label>
+                           <select id="energietraegerZp" class="energietraegerLieg"></select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="mstZp">Messstelle<img id="zpSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="mstZp" readonly/>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="messsystemZp">Messsystem</label>
+                           <select id="messsystemZp">
+                              <option>Messverordnung geeicht</option>
+                              <option>M-EVU geeicht</option>
+                              <option>Kalibriert</option>
+                           </select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="messgenauZp">Messgenauigkeit[%]</label>
+                           <input id="messgenauZp" />
+                        </div>
+                        <div class="controlDiv">
+                           <label for="zaehlpunktNrZp">Zählpunktnummer</label>
+                           <input id="zaehlpunktNrZp" />
+                        </div>
+                    </div>
+                </div>
+                  <div id="infosSchichtdaten">
                      <div id="infosBlock">
                         <div class="navDropBox" style="height:20px;padding:3px;"> <img id="zpLoeschen" title="Zählpunkt löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="zpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="zpHinz" title="Neuen Zählpunkt erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="zpSuchen" title="Zählpunkt suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="zpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Zählpunkt" src="images/last.png" alt="letzte" /> <img id="zpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Zählpunkt" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="zpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Zählpunkt" src="images/previous.png" alt="vorherige" /> <img id="zpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Zählpunkt" src="images/first.png" alt="erste" />
                            <label>Liegenschaft: </label>
