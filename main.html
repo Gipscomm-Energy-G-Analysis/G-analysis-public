@@ -12,9 +12,6 @@
     <link type="text/css" rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
     <link type="text/css" rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
     <link type="text/css" rel="stylesheet" href="dist/css/colReorder.dataTables.min.css">
-    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
-    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css">
-    <link type="text/css" rel="stylesheet" href="src/css/editor.dataTables.css">
     <link href="dist/css/pace-theme.min.css" rel="stylesheet"/>
     <!-- Tree View Script -->
     <link href="src/css/jquery.treeview.css" rel="stylesheet">
@@ -6000,43 +5997,35 @@
                         </div>
                     </div>
                 </div>
-                  <!-- JS see schichtdaten.js -->
                   <div id="infosSchichtdaten">
                      <div id="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;">
-                            <img id="zpLoeschen" title="Zählpunkt löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
-                            <img id="zpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                            <img id="zpHinz" title="Neuen Zählpunkt erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
-                            <img id="zpSuchen" title="Zählpunkt suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
-                            <img id="zpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Zählpunkt" src="images/last.png" alt="letzte" />
-                            <img id="zpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Zählpunkt" src="images/next.png" alt="nächste" />
-                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
-                            <img id="zpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Zählpunkt" src="images/previous.png" alt="vorherige" />
-                            <img id="zpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Zählpunkt" src="images/first.png" alt="erste" />
-                            <label>Liegenschaft: </label>
-                            <select class="liegPfad"></select>
+                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="zpLoeschen" title="Zählpunkt löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="zpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="zpHinz" title="Neuen Zählpunkt erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="zpSuchen" title="Zählpunkt suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="zpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Zählpunkt" src="images/last.png" alt="letzte" /> <img id="zpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Zählpunkt" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="zpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Zählpunkt" src="images/previous.png" alt="vorherige" /> <img id="zpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Zählpunkt" src="images/first.png" alt="erste" />
+                           <label>Liegenschaft: </label>
+                           <select class="liegPfad"></select>
                         </div>
-                        <h3 id="tagSchtDat">Montag</h3>
                         <div class="controlDiv">
-                            <label for="anzahlSchtDat">Anzahl</label>
-                            <input id="anzahlSchtDat" />
+                           <label for="energietraegerZp">Energieträger</label>
+                           <select id="energietraegerZp" class="energietraegerLieg"></select>
                         </div>
-                        <br>
-                        <br>
-                        <div id="schtDatContainer">
-                            <table id="tblSchtDat" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Von</th>
-                                        <th>Bis</th>
-                                        <th>Korrektur</th>
-                                        <th>Zuletzt geändert</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                        <div class="controlDiv">
+                           <label for="mstZp">Messstelle<img id="zpSuchenMst" title="Bereich suchen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" /></label>
+                           <input id="mstZp" readonly/>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="messsystemZp">Messsystem</label>
+                           <select id="messsystemZp">
+                              <option>Messverordnung geeicht</option>
+                              <option>M-EVU geeicht</option>
+                              <option>Kalibriert</option>
+                           </select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="messgenauZp">Messgenauigkeit[%]</label>
+                           <input id="messgenauZp" />
+                        </div>
+                        <div class="controlDiv">
+                           <label for="zaehlpunktNrZp">Zählpunktnummer</label>
+                           <input id="zaehlpunktNrZp" />
                         </div>
                     </div>
                 </div>
@@ -10796,8 +10785,8 @@
                      {showAlwaysCheckBox:true,fold:false});
                   document.getElementById("admincommTreeview").appendChild( tw.root	 )
 
-                </script>
-                <script type="text/javascript">
+               </script>
+               <script type="text/javascript">
 
                   var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
                   var tw = new TreeView(
@@ -10805,7 +10794,7 @@
                       {showAlwaysCheckBox:true,fold:false});
                   document.getElementById("benutzerTreeview").appendChild( tw.root	 )
 
-                </script>
+              </script>
                 <script type="text/javascript" src="dist/js/jqueryui/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="dist/js/mathquill/mathquill.min.js"></script>
                 <script type="text/javascript" src="dist/js/table2csv.min.js"></script>
@@ -10813,11 +10802,8 @@
                 <script type="text/javascript" src="dist/js/tableExport.min.js"></script>
                 <script type="text/javascript" src="dist/js/date_fns.min.js"></script>
                 <script type="text/javascript" src="dist/js/d3.v3.min.js"></script>
-                <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-                <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
-                <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.0.3/js/dataTables.dateTime.min.js"></script>
-                <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
-                <script type="text/javascript" src="src/js/dataTables.editor.js" crossorigin="anonymous"></script>
+                <script type="text/javascript" src="dist/js/jquery.dataTables.min.js"></script>
+                <script type="text/javascript" src="dist/js/dataTables.buttons.min.js"></script>
                 <script type="text/javascript" src="dist/js/dataTables.colReorder.min.js"></script>
                 <script type="text/javascript" src="dist/js/buttons.flash.min.js"></script>
                 <script type="text/javascript" src="dist/js/jszip.min.js"></script>
@@ -10833,8 +10819,7 @@
                 <script type="text/javascript" src="dist/js/objects.min.js"></script>
                 <script type="text/javascript" src="src/js/functions.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
-                <script src="dist/js/pace.min.js" type="text/javascript"></script>
-                <script src="src/js/schichtdaten.js" type="text/javascript"></script>
+            <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>
          </div>
 </div>
