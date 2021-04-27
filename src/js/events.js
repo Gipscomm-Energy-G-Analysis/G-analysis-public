@@ -1566,8 +1566,16 @@ $(document).ready(function() {
         )(
             this.value
         )
-    }
-    )
+    })
+    // initializes first shift-blocks
+    // See schichtdaten.js
+    $("#anzahlSchtDat").trigger("change")
+    // if the shift definition is without an end date then Gültig Bis should be disabled
+    $(document).on("click", ".openEnd", function() {
+        console.log("data-idx")
+        console.log(Number($(this).attr("data-idx")))
+        scpSchichtdaten.endeOffenOrBis(Number($(this).attr("data-idx")))
+    })
     $("#letztePruefungPruefinformationenMsm, #pruefzyklusPruefinformationenMsm").change(function() {
         var a =
             $("#letztePruefungPruefinformationenMsm").val(),
