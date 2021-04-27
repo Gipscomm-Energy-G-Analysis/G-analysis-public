@@ -1555,6 +1555,19 @@ $(document).ready(function() {
     $("#btnGruppeHinzDiag").click(function() {
         diagrammGruppeHinzuf\u00fcgen()
     });
+    // if the number of shifts is changed the number of blocks should be adjusted7
+    // See schichtdaten.js
+    $("#anzahlSchtDat").change(function() {
+
+        $("#schichtdatenContainer").empty()
+
+        scpSchichtdaten.generateSchichtBlocks(
+            $("#schichtdatenContainer")
+        )(
+            this.value
+        )
+    }
+    )
     $("#letztePruefungPruefinformationenMsm, #pruefzyklusPruefinformationenMsm").change(function() {
         var a =
             $("#letztePruefungPruefinformationenMsm").val(),

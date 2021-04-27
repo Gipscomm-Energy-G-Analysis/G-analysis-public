@@ -49,5 +49,14 @@ const scpSchichtdaten =
                 </div>
                 <br>
                 <br>`
+            this.addSchicht =
+                elem =>
+                n =>
+                elem.append(this.schichtHtml(n))
+            this.generateSchichtBlocks =
+                elem =>
+                m =>
+                array(m)()()
+                .forEach((_, i) => this.addSchicht(elem)(incr(i)))
         }
     )
