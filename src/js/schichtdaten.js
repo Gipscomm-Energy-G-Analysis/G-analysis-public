@@ -16,17 +16,18 @@ const scpSchichtdaten =
                    <input id="bezeichnungScht${n}Dat" type="text">
                 </div>
                 <br>\n`
-            this.zeitVon =
+            // TODO check if uhrzeitBis bis is bigger than uhrzeitVon
+            this.uhrzeitVon =
                 n =>
                 `<div class="controlDiv">
-                   <label for="zeitVonScht${n}Dat">Uhrzeit Von</label>
-                   <input id="zeitVonScht${n}Dat" type="time">
+                   <label for="uhrzeitVonScht${n}Dat">Uhrzeit Von</label>
+                   <input id="uhrzeitVonScht${n}Dat" class="timeFrom" data-idx="${n}" type="time">
                 </div>\n`
-            this.zeitBis =
+            this.uhrzeitBis =
                 n =>
                 `<div class="controlDiv">
-                   <label for="zeitBisScht${n}Dat">Uhrzeit Bis</label>
-                   <input id="zeitBisScht${n}Dat" type="time">
+                   <label for="uhrzeitBisScht${n}Dat">Uhrzeit Bis</label>
+                   <input id="uhrzeitBisScht${n}Dat" type="time">
                 </div>
                 <br>\n`
             this.tagVon =
@@ -58,37 +59,14 @@ const scpSchichtdaten =
                    </select>
                 </div>
                 <br>\n`
-            this.gueltigVon =
-                n =>
-                `<div class="controlDiv">
-                   <label for="gueltigVonScht${n}Dat">Gültig Von</label>
-                   <input id="gueltigVonScht${n}Dat" type="date">
-                </div>\n`
-            this.gueltigBis =
-                n =>
-                `<div class="controlDiv">
-                   <label for="gueltigBisScht${n}Dat">Gültig Bis</label>
-                   <input id="gueltigBisScht${n}Dat" type="date" disabled>
-                </div>\n`
-            this.endeOffen =
-                n =>
-                `<div class="controlDiv">
-                   <label for="bisEndeOffenScht${n}Dat">Ende offen</label>
-                   <input id="bisEndeOffenScht${n}Dat" class="openEnd" data-idx="${n}" type="checkbox" checked>
-                </div>
-                <br>
-                <br>\n`
             this.schichtHtml =
                 n =>
                 [ this.nr
                 , this.bezeichnung
-                , this.zeitVon
-                , this.zeitBis
+                , this.uhrzeitVon
+                , this.uhrzeitBis
                 , this.tagVon
                 , this.tagBis
-                , this.gueltigVon
-                , this.gueltigBis
-                , this.endeOffen
                 ]
                 .map(a => a(n))
                 .join("")
@@ -102,18 +80,28 @@ const scpSchichtdaten =
                 array(m)()()
                 .forEach((_, i) => this.addSchicht(elem)(incr(i)))
             this.isEndeOffen =
-                n =>
-                $(`#bisEndeOffenScht${n}Dat`).prop("checked")
+                () =>
+                $(`#bisEndeOffenSchtDat`).prop("checked")
             this.enableGueltigBis =
-                n =>
-                $(`#gueltigBisScht${n}Dat`).prop("disabled", false)
+                () =>
+                $(`#gueltigBisSchtDat`).prop("disabled", false)
+            this.resetGueltigBis =
+                () =>
+                $("#gueltigBisSchtDat").val("")
             this.disableGueltigBis =
-                n =>
-                $(`#gueltigBisScht${n}Dat`).prop("disabled", true)
+                () =>
+                ( $(`#gueltigBisSchtDat`).prop("disabled", true)
+                , this.resetGueltigBis()
+                )
             this.endeOffenOrBis =
-                n =>
-                this.isEndeOffen(n) ?
-                this.disableGueltigBis(n) :
-                this.enableGueltigBis(n)
+                () =>
+                this.isEndeOffen() ?
+                this.disableGueltigBis() :
+                this.enableGueltigBis()
+            this.setMinGueltigBis =
+                date =>
+                $("#gueltigBisSchtDat")
+                .prop("min", date)
+                .val("")
         }
     )

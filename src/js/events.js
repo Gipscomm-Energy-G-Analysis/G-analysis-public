@@ -1571,10 +1571,14 @@ $(document).ready(function() {
     // See schichtdaten.js
     $("#anzahlSchtDat").trigger("change")
     // if the shift definition is without an end date then Gültig Bis should be disabled
-    $(document).on("click", ".openEnd", function() {
-        console.log("data-idx")
-        console.log(Number($(this).attr("data-idx")))
-        scpSchichtdaten.endeOffenOrBis(Number($(this).attr("data-idx")))
+    // See schichtdaten.js
+    $("#bisEndeOffenSchtDat").click(function() {
+        scpSchichtdaten.endeOffenOrBis()
+    })
+    // if the Gültig Von is changed the min date for Gültig Bis = Gültig Von
+    // See schichtdaten.js
+    $("#gueltigVonSchtDat").change(function() {
+        scpSchichtdaten.setMinGueltigBis(this.value)
     })
     $("#letztePruefungPruefinformationenMsm, #pruefzyklusPruefinformationenMsm").change(function() {
         var a =
