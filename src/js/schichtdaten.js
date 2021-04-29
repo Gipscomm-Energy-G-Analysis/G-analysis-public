@@ -9,6 +9,7 @@ const scpSchichtdaten =
                 `<div class="sectionHeader">
                     <label>Schicht ${n}</label>
                 </div>`
+
             this.bezeichnung =
                 n =>
                 `<div class="controlDiv">
@@ -16,13 +17,14 @@ const scpSchichtdaten =
                    <input id="bezeichnungScht${n}Dat" type="text">
                 </div>
                 <br>\n`
-            // TODO check if uhrzeitBis bis is bigger than uhrzeitVon
+
             this.uhrzeitVon =
                 n =>
                 `<div class="controlDiv">
                    <label for="uhrzeitVonScht${n}Dat">Uhrzeit Von</label>
                    <input id="uhrzeitVonScht${n}Dat" class="timeFrom" data-idx="${n}" type="time">
                 </div>\n`
+
             this.uhrzeitBis =
                 n =>
                 `<div class="controlDiv">
@@ -30,6 +32,7 @@ const scpSchichtdaten =
                    <input id="uhrzeitBisScht${n}Dat" type="time">
                 </div>
                 <br>\n`
+
             this.tagVon =
                 n =>
                 `<div class="controlDiv">
@@ -44,6 +47,7 @@ const scpSchichtdaten =
                        <option value="sunday">Sonntag</option>
                    </select>
                 </div>\n`
+
             this.tagBis =
                 n =>
                 `<div class="controlDiv">
@@ -59,6 +63,7 @@ const scpSchichtdaten =
                    </select>
                 </div>
                 <br>\n`
+
             this.schichtHtml =
                 n =>
                 [ this.nr
@@ -70,38 +75,78 @@ const scpSchichtdaten =
                 ]
                 .map(a => a(n))
                 .join("")
+
             this.addSchicht =
                 elem =>
                 n =>
                 elem.append(this.schichtHtml(n))
+
             this.generateSchichtBlocks =
                 elem =>
                 m =>
                 array(m)()()
                 .forEach((_, i) => this.addSchicht(elem)(incr(i)))
+
             this.isEndeOffen =
                 () =>
                 $(`#bisEndeOffenSchtDat`).prop("checked")
+
             this.enableGueltigBis =
                 () =>
                 $(`#gueltigBisSchtDat`).prop("disabled", false)
+
             this.resetGueltigBis =
                 () =>
                 $("#gueltigBisSchtDat").val("")
+
             this.disableGueltigBis =
                 () =>
                 ( $(`#gueltigBisSchtDat`).prop("disabled", true)
                 , this.resetGueltigBis()
                 )
+
             this.endeOffenOrBis =
                 () =>
                 this.isEndeOffen() ?
                 this.disableGueltigBis() :
                 this.enableGueltigBis()
+
             this.setMinGueltigBis =
                 date =>
                 $("#gueltigBisSchtDat")
                 .prop("min", date)
                 .val("")
+
+            this.tupleSchichtValue =
+                a =>
+                [a, $(`#${a}`).val()]
+
+            this.getSchicht =
+                (_, i) =>
+                [ `bezeichnungScht${incr(i)}Dat`
+                , `uhrzeitVonScht${incr(i)}Dat`
+                , `uhrzeitBisScht${incr(i)}Dat`
+                , `tagVonScht${incr(i)}Dat`
+                , `tagBisScht${incr(i)}Dat`
+                ].map(this.tupleSchichtValue)
+
+            this.getSchichten =
+                anzahl =>
+                array(anzahl)()()
+                .map(this.getSchicht)
+
+            this.getFormData =
+                () => {
+                    const anzahl = $("#anzahlSchtDat").val()
+                    const data =
+                        { modellBezSchtDat : $("#modellBezSchtDat").val()
+                        , anzahlSchtDat : anzahl
+                        , gueltigVonSchtDat : $("#gueltigVonSchtDat").val()
+                        , gueltigBisSchtDat : $("#gueltigBisSchtDat").val()
+                        , bisEndeOffenSchtDat : $("#bisEndeOffenSchtDat").prop("checked")
+                        , schichten : this.getSchichten(anzahl)
+                        }
+                    return data
+                }
         }
     )
