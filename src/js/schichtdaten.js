@@ -4,13 +4,13 @@
 const scpSchichtdaten =
     freeze (
         new function () {
-            this.nr =
+            const nr =
                 n =>
                 `<div class="sectionHeader">
                     <label>Schicht ${n}</label>
                 </div>`
 
-            this.bezeichnung =
+            const bezeichnung =
                 n =>
                 `<div class="controlDiv">
                    <label for="bezeichnungScht${n}Dat">Bezeichnung</label>
@@ -18,14 +18,14 @@ const scpSchichtdaten =
                 </div>
                 <br>\n`
 
-            this.uhrzeitVon =
+            const uhrzeitVon =
                 n =>
                 `<div class="controlDiv">
                    <label for="uhrzeitVonScht${n}Dat">Uhrzeit Von</label>
                    <input id="uhrzeitVonScht${n}Dat" class="timeFrom" data-idx="${n}" type="time">
                 </div>\n`
 
-            this.uhrzeitBis =
+            const uhrzeitBis =
                 n =>
                 `<div class="controlDiv">
                    <label for="uhrzeitBisScht${n}Dat">Uhrzeit Bis</label>
@@ -33,7 +33,7 @@ const scpSchichtdaten =
                 </div>
                 <br>\n`
 
-            this.tagVon =
+            const tagVon =
                 n =>
                 `<div class="controlDiv">
                    <label for="tagVonScht${n}Dat">Tag Von</label>
@@ -48,7 +48,7 @@ const scpSchichtdaten =
                    </select>
                 </div>\n`
 
-            this.tagBis =
+            const tagBis =
                 n =>
                 `<div class="controlDiv">
                    <label for="tagBisScht${n}Dat">Tag Bis</label>
@@ -64,52 +64,52 @@ const scpSchichtdaten =
                 </div>
                 <br>\n`
 
-            this.schichtHtml =
+            const schichtHtml =
                 n =>
-                [ this.nr
-                , this.bezeichnung
-                , this.uhrzeitVon
-                , this.uhrzeitBis
-                , this.tagVon
-                , this.tagBis
+                [ nr
+                , bezeichnung
+                , uhrzeitVon
+                , uhrzeitBis
+                , tagVon
+                , tagBis
                 ]
-                .map(a => a(n))
+                .map(applyRv(n))
                 .join("")
 
-            this.addSchicht =
+            const addSchicht =
                 elem =>
-                n =>
-                elem.append(this.schichtHtml(n))
+                (_, i) =>
+                elem.append(schichtHtml(incr(i)))
 
             this.generateSchichtBlocks =
                 elem =>
                 m =>
                 array(m)()()
-                .forEach((_, i) => this.addSchicht(elem)(incr(i)))
+                .forEach(addSchicht(elem))
 
-            this.isEndeOffen =
+            const isEndeOffen =
                 () =>
                 $(`#bisEndeOffenSchtDat`).prop("checked")
 
-            this.enableGueltigBis =
+            const enableGueltigBis =
                 () =>
                 $(`#gueltigBisSchtDat`).prop("disabled", false)
 
-            this.resetGueltigBis =
+            const resetGueltigBis =
                 () =>
                 $("#gueltigBisSchtDat").val("")
 
-            this.disableGueltigBis =
+            const disableGueltigBis =
                 () =>
                 ( $(`#gueltigBisSchtDat`).prop("disabled", true)
-                , this.resetGueltigBis()
+                , resetGueltigBis()
                 )
 
             this.endeOffenOrBis =
                 () =>
-                this.isEndeOffen() ?
-                this.disableGueltigBis() :
-                this.enableGueltigBis()
+                isEndeOffen() ?
+                disableGueltigBis() :
+                enableGueltigBis()
 
             this.setMinGueltigBis =
                 date =>
@@ -117,36 +117,33 @@ const scpSchichtdaten =
                 .prop("min", date)
                 .val("")
 
-            this.tupleSchichtValue =
+            const tupleSchichtValue =
                 a =>
                 [a, $(`#${a}`).val()]
 
-            this.getSchicht =
+            const getSchicht =
                 (_, i) =>
                 [ `bezeichnungScht${incr(i)}Dat`
                 , `uhrzeitVonScht${incr(i)}Dat`
                 , `uhrzeitBisScht${incr(i)}Dat`
                 , `tagVonScht${incr(i)}Dat`
                 , `tagBisScht${incr(i)}Dat`
-                ].map(this.tupleSchichtValue)
+                ].map(tupleSchichtValue)
 
-            this.getSchichten =
+            const getSchichten =
                 anzahl =>
                 array(anzahl)()()
-                .map(this.getSchicht)
+                .map(getSchicht)
 
             this.getFormData =
-                () => {
-                    const anzahl = $("#anzahlSchtDat").val()
-                    const data =
-                        { modellBezSchtDat : $("#modellBezSchtDat").val()
-                        , anzahlSchtDat : anzahl
-                        , gueltigVonSchtDat : $("#gueltigVonSchtDat").val()
-                        , gueltigBisSchtDat : $("#gueltigBisSchtDat").val()
-                        , bisEndeOffenSchtDat : $("#bisEndeOffenSchtDat").prop("checked")
-                        , schichten : this.getSchichten(anzahl)
-                        }
-                    return data
-                }
+                anzahl => (
+                    { modellBezSchtDat : $("#modellBezSchtDat").val()
+                    , anzahlSchtDat : anzahl
+                    , gueltigVonSchtDat : $("#gueltigVonSchtDat").val()
+                    , gueltigBisSchtDat : $("#gueltigBisSchtDat").val()
+                    , bisEndeOffenSchtDat : $("#bisEndeOffenSchtDat").prop("checked")
+                    , schichten : getSchichten(anzahl)
+                    }
+                )
         }
     )

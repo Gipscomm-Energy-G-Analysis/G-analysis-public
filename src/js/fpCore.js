@@ -121,9 +121,9 @@ const { split_
       , length_
       , len
       , trim_
-      ,  trm
-      ,  id
-      ,  first
+      , trm
+      , id
+      , first
       , second
       , apply
       , not
