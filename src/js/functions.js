@@ -22913,7 +22913,7 @@ function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) 
             c = JSON.parse(a)
             if(c.length != 0) {
                 $.each(c, function(i, item) {
-                    if(roleId != 1) {
+                    if(roleId != 1 && roleId != 2) {
                         if(item.tab_id != '') {
                             if(item.user_id == null){
                                 $("#"+item.tab_id).css("display", "none");
