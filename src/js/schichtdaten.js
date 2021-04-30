@@ -117,9 +117,13 @@ const scpSchichtdaten =
                 .prop("min", date)
                 .val("")
 
+            const getFieldValue =
+                a =>
+                $(`#${a}`).val()
+
             const tupleSchichtValue =
                 a =>
-                [a, $(`#${a}`).val()]
+                [a, getFieldValue(a)]
 
             const getSchicht =
                 (_, i) =>
@@ -135,7 +139,7 @@ const scpSchichtdaten =
                 array(anzahl)()()
                 .map(getSchicht)
 
-            this.getFormData =
+            const getFormData =
                 anzahl => (
                     { modellBezSchtDat : $("#modellBezSchtDat").val()
                     , anzahlSchtDat : anzahl
@@ -145,5 +149,42 @@ const scpSchichtdaten =
                     , schichten : getSchichten(anzahl)
                     }
                 )
+
+            const getBisFormData =
+                () =>
+                $("#bisEndeOffenSchtDat").prop("checked") ?
+                [] : singleton("gueltigBisSchtDat")
+
+            const getGeneralFormData =
+                formData =>
+                flatten(
+                    [ [ "modellBezSchtDat"
+                      , "gueltigVonSchtDat"
+                      ], getBisFormData()
+                    ]
+
+                )
+                .map(field(formData))
+
+            const getShiftsFormData =
+                formData =>
+                formData.schichten
+                .map(a => a.map(last))
+
+            this.validFormData =
+                () => {
+                    const formData =
+                        getFormData(getFieldValue("anzahlSchtDat"))
+
+                    const retVal =
+                        flatten(
+                            [ ...getGeneralFormData(formData)
+                            , ...getShiftsFormData(formData)
+                            ]
+                        )
+                        .some(emptyString)
+
+                    return !retVal
+                }
         }
     )

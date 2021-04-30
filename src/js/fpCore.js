@@ -20,7 +20,7 @@ Object
         this.first = a => b => a;
         this.second = a => b => b;
         this.apply = fn => a => fn(a);
-        this.not = this.first ? this.second : this.first;
+        this.not = a => !a
         this.equal = a => b => a === b;
         this.equalsZero = a => a === 0;
         this.unequal = a => b => this.not(this.equal(a)(b));
