@@ -5009,7 +5009,7 @@ try {
                                 b = a.length - 1;
                             }
                             0 < a.length ? ($("#sAdmCount").val(a.length), $("#sAdmID").val(a[b].sAdm_ID), $("#titelSAdm").val(a[b].titelSAdm), $("#nameSAdm").val(a[b].nameSAdm), $("#vornameSAdm").val(a[b].vornameSAdm), $("#emailSAdm").val(a[b].emailSAdm), $("#telefonSAdm").val(a[b].telefonSAdm), $("#faxSAdm").val(a[b].faxSAdm), $("#mobiltelefonSAdm").val(a[b].mobiltelefonSAdm),
-                                $("#benutzernameSAdm").val(a[b].benutzernameSAdm)) : clearFields("sAdmHinz")
+                                $("#benutzernameSAdm").val(a[b].username)) : clearFields("sAdmHinz")
                         }
                     });
                     break;
@@ -22249,7 +22249,7 @@ function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblAdminlisteErstellen.row.add([
-                    e[c].adm_ID,
+                    //e[c].adm_ID,
                     e[c].titel,
                     e[c].name,
                     e[c].vorname,
@@ -22333,7 +22333,7 @@ function benutzerlisteErstellen() {
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblBenutzerlisteErstellen.row.add([
-                    e[c].ben_ID,
+                    //e[c].ben_ID,
                     e[c].titel,
                     e[c].name,
                     e[c].vorname,
@@ -22416,12 +22416,11 @@ function betrGrplisteErstellen() {
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblBetrGrplisteErstellen.row.add([
-                    c,
+                    //c,
                     e[c].firma,
                     e[c].anzahlMitarbeiter,
                     e[c].anschrift,
-                    e[c].plz,
-                    e[c].ort,
+                    e[c].plz+' '+e[c].ort,
                     e[c].geschaeftsfuehrer,
                     e[c].telefon,
                     e[c].eMail,
@@ -22480,11 +22479,11 @@ function sAdmSuchenlisteErstellen() {
                     c,
                     e[c].titelSAdm,
                     e[c].nameSAdm,
-                    e[c].vornameSAdm,
                     e[c].emailSAdm,
                     e[c].telefonSAdm,
                     e[c].faxSAdm,
                     e[c].mobiltelefonSAdm,
+                    e[c].username,
                     e[c].username,
                 ]).draw();
             }
