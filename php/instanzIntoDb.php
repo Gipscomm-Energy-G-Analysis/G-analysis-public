@@ -710,7 +710,23 @@ elseif($id == "schtDat") {
 
         $lastID = queryDB($conn, $tsqlSelectLastID, "read")[0]["last_ID"] ;
 
-        $tsqlInsertSchichten = ""
+        function valueString($last, $record) {
+            return $last.
+                  "(".$lastID.", "
+                     .$record[0].", "
+                     .$record[1].", "
+                     .$record[2].", "
+                     .$record[3].", "
+                     .$record[4].", " 
+                     .$record[5].")," ;
+        }
+
+        function buildValuesString($records) {
+            return substr(array_reduce($records, 'valueString'), 0, -1) ;
+        }
+
+        $tsql =  "INSERT INTO schichten(schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
+        $tsql .= "VALUES ".buildValuesString($schichten) ;
 
     }
     else{
