@@ -22249,7 +22249,7 @@ function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblAdminlisteErstellen.row.add([
-                    //e[c].adm_ID,
+                    e[c].adm_ID,
                     e[c].titel,
                     e[c].name,
                     e[c].vorname,
@@ -22302,6 +22302,7 @@ function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID
                                 $('#faxAdm').val(c[0].fax);
                                 $('#mobiltelefonAdm').val(c[0].mobiltelefon);
                                 $('#benutzernameAdm').val(c[0].username);
+                                adminsGetRollenUndBerechtigungen();
                             }
                         });
                     })
@@ -22333,7 +22334,7 @@ function benutzerlisteErstellen() {
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblBenutzerlisteErstellen.row.add([
-                    //e[c].ben_ID,
+                    e[c].ben_ID,
                     e[c].titel,
                     e[c].name,
                     e[c].vorname,
@@ -22386,6 +22387,7 @@ function benutzerlisteErstellen() {
                                 $('#faxBen').val(c[0].fax);
                                 $('#mobiltelefonBen').val(c[0].mobiltelefon);
                                 $('#benutzernameBen').val(c[0].username);
+                                benutzerGetRollenUndBerechtigungen();
                             }
                         });
                     })
@@ -22416,7 +22418,7 @@ function betrGrplisteErstellen() {
             for (var c = 0; c < e.length; c++) {
                 //console.log(e[c].email);
                 tblBetrGrplisteErstellen.row.add([
-                    //c,
+                    c,
                     e[c].firma,
                     e[c].anzahlMitarbeiter,
                     e[c].anschrift,

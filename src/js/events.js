@@ -1513,12 +1513,10 @@ $(document).ready(function() {
         sAdmGetRollenUndBerechtigungen()
     });
     $("#admLast, #admNext, #admPrevious, #admFirst").click(function() {
-        //$('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
-        adminsGetRollenUndBerechtigungen()
+        //adminsGetRollenUndBerechtigungen()
     });
     $("#benFirst, #benLast, #benNext, #benPrevious").click(function() {
-        //$('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
-        benutzerGetRollenUndBerechtigungen()
+        //benutzerGetRollenUndBerechtigungen()
     });
 
     $("#frmSuchenBerEdi").click(function() {
