@@ -12,7 +12,7 @@ $id = $_POST['id'];
 if($id == "gipscAdm") {
 
   $modus = $_POST['modus'];
-    
+
 
   if($modus == "new"){
 
@@ -30,7 +30,7 @@ if($id == "gipscAdm") {
     if(!empty($userId)) {
       $role_id = $_POST['role_id'];
       $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
-    
+
       if(!empty($role_id)) {
         $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
         $record = queryDB($conn, $query, "read") ;
@@ -40,7 +40,7 @@ if($id == "gipscAdm") {
           queryDB( $conn, $query, "write" );
         }
       }
-    
+
       if(!empty($tab_ids)) {
         foreach($tab_ids as $tabId) {
           $gipscommsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
@@ -69,7 +69,7 @@ if($id == "gipscAdm") {
 elseif($id == "betrGrp") {
 
   $modus = $_POST['modus'] ;
-    
+
 	if($modus == "new") {
 
       $firma = $_POST['firma'] ;
@@ -88,12 +88,12 @@ elseif($id == "betrGrp") {
       $tsql .= "'$telefon','$eMail','$notiz') ";
 
     } elseif($modus == "delete") {
-        
+
       $betrGrpID = $_POST['betrGrpID'];
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($betrGrpID)) {
         $tsql =  "UPDATE betreuerGruppen SET deleted_at = '$dateTime' WHERE betrGrp_ID = '$betrGrpID'";
-        
+
         $tsql .= "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE betrGrp_ID = '$betrGrpID'";
       }
 
@@ -142,7 +142,7 @@ elseif($id == "betrGrp") {
 
 
     } elseif($modus == "delete") {
-        
+
       $sAdmID = $_POST['sAdmID'] ;
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($sAdmID)) {
@@ -158,7 +158,7 @@ elseif($id == "betrGrp") {
 
         $role_id = $_POST['role_id'];
         $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
-        
+
         if(!empty($role_id)) {
           $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
           $record = queryDB($conn, $query, "read") ;
@@ -168,7 +168,7 @@ elseif($id == "betrGrp") {
             queryDB( $conn, $query, "write" );
           }
         }
-        
+
         if(!empty($tab_ids)) {
           foreach($tab_ids as $tabId) {
             $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
@@ -231,7 +231,7 @@ elseif($id == "adm") {
   $instanz = '';
   if(isset($_POST['ins']))
       $instanz = $_POST['ins'];
-  
+
   $insID = '';
   if(isset($_POST['insID']))
       $insID = $_POST['insID'];
@@ -247,17 +247,17 @@ elseif($id == "adm") {
         $mobiltelefon = $_POST['mobiltelefon'];
         $benutzername = $_POST['benutzername'];
         $passwort = $_POST['passwort'];
-    
+
         $admtsql = "INSERT INTO admins($instanz,titel,name, vorname, email, telefon, ";
         $admtsql .= "fax, mobiltelefon, username, passHash) ";
         $admtsql .= "VALUES ('$insID','$titel', '$name','$vorname','$eMail', ";
         $admtsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort') ";
-    
+
         queryDB( $conn, $admtsql, "write" );
         echo "Daten erfolgreich gespeichert";
 
     } elseif($modus == "delete") {
-        
+
       $admID = $_POST['admID'];
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($admID)) {
@@ -266,25 +266,25 @@ elseif($id == "adm") {
         queryDB( $conn, $admtsql, "write" );
         echo "Daten erfolgreich gespeichert";
       }
-  
+
     } elseif($modus == 'saveRolePermission') {
 
       $userId = $_POST['userId'];
       if(!empty($userId)) {
-  
+
         $role_id = $_POST['role_id'];
         $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
-        
+
         if(!empty($role_id)) {
           $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
           $record = queryDB($conn, $query, "read") ;
-  
+
           if(count($record)>0) {
             $query = "DELETE rolePermission WHERE user_id = '$userId'";
             queryDB( $conn, $query, "write" );
           }
         }
-        
+
         if(!empty($tab_ids)) {
           foreach($tab_ids as $tabId) {
             $sAdmsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
@@ -296,7 +296,7 @@ elseif($id == "adm") {
       } else {
         echo "Benutzer ID nicht gefunden";
       }
-  
+
     } else{
 
       $admID = $_POST['admID'];
@@ -309,13 +309,13 @@ elseif($id == "adm") {
       $mobiltelefon = $_POST['mobiltelefon'];
       $benutzername = $_POST['benutzername'];
       $passwort = $_POST['passwort'];
-  
+
       $admtsql =  "UPDATE admins SET titel = '$titel',name = '$name', ";
       $admtsql .= "vorname = '$vorname',email = '$eMail',telefon = '$telefon', ";
       $admtsql .= "fax = '$fax',mobiltelefon = '$mobiltelefon',username = '$benutzername', ";
       $admtsql .= "passHash = '$passwort' ";
       $admtsql .= "WHERE adm_ID = '$admID' ";
-  
+
       queryDB( $conn, $admtsql, "write" );
       echo "Daten erfolgreich gespeichert";
     }
@@ -353,7 +353,7 @@ elseif($id == "ben") {
         echo "Daten erfolgreich gespeichert";
 
     } elseif($modus == "delete") {
-      
+
       $benID = $_POST['benID'];
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($benID)) {
@@ -369,7 +369,7 @@ elseif($id == "ben") {
 
       $role_id = $_POST['role_id'];
       $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
-      
+
       if(!empty($role_id)) {
         $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
         $record = queryDB($conn, $query, "read") ;
@@ -379,7 +379,7 @@ elseif($id == "ben") {
           queryDB( $conn, $query, "write" );
         }
       }
-      
+
       if(!empty($tab_ids)) {
         foreach($tab_ids as $tabId) {
           $bentsql = "INSERT INTO rolePermission(role_id,tab_id,user_id) ";
@@ -677,6 +677,41 @@ elseif($id == "ber") {
 
     if($modus == "new"){
     	$tsql = "INSERT INTO bereiche(lieg_ID,datumBer,nameBer,kurzbezeichnungBer,kostenstelleBer,ortBer,ausgewaehltesLevelBer,vorgelagerterBereich1Ber, vorgelagerterBereich2Ber,notizBer) VALUES ('$liegID',getdate(),'$nameAllgemein',' $kurzbezeichnung','$kostenstelle','$ort','$ausgewaehltesLevel','$vorgelagerterBereich1','$vorgelagerterBereich2','$notiz')";
+    }
+    else{
+    	$berID = $_POST['berID'];
+
+    	$tsql = "UPDATE bereiche SET datumBer = getdate(), nameBer = '$nameAllgemein', kurzbezeichnungBer = '$kurzbezeichnung',";
+    	$tsql .= "kostenstelleBer = '$kostenstelle',ortBer = '$ort',ausgewaehltesLevelBer = '$ausgewaehltesLevel',";
+    	$tsql .= "vorgelagerterBereich1Ber = '$vorgelagerterBereich1', vorgelagerterBereich2Ber = '$vorgelagerterBereich2',";
+    	$tsql .= "notizBer = '$notiz' ";
+        $tsql .= "WHERE ber_ID = '$berID'";
+    }
+}
+elseif($id == "schtDat") {
+    $modus = $_POST['modus'];
+    $liegID = $_POST['liegID'];
+
+    $modellBezSchtDat = $_POST["modellBezSchtDat"] ;
+    $anzahlSchtDat = $_POST["anzahlSchtDat"] ;
+    $gueltigVonSchtDat = $_POST["gueltigVonSchtDat"] ;
+    $gueltigBisSchtDat = $_POST["gueltigBisSchtDat"] ;
+    $bisEndeOffenSchtDat = $_POST["bisEndeOffenSchtDat"] ;
+    $notizSchtDat = $_POST["notizSchtDat"] ;
+    $schichten = $_POST["schichten"] ;
+
+    if($modus == "new"){
+    	$tsqlInsertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
+        $tsqlInsertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat',$bisEndeOffenSchtDat, '$notizSchtDat')";
+
+        queryDB($conn, $tsqlInsertSchichtmodell, "write") ;
+
+        $tsqlSelectLastID =  "SELECT IDENT_CURRENT('schichtModelle') AS last_ID " ;
+
+        $lastID = queryDB($conn, $tsqlSelectLastID, "read")[0]["last_ID"] ;
+
+        $tsqlInsertSchichten = ""
+
     }
     else{
     	$berID = $_POST['berID'];

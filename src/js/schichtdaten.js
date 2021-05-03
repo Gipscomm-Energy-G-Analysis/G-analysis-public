@@ -141,11 +141,15 @@ const scpSchichtdaten =
 
             const getFormData =
                 anzahl => (
-                    { modellBezSchtDat : $("#modellBezSchtDat").val()
+                    { id:"schtDat"
+                    , nameDB: getFieldValue("nameDB")
+                    , liegID: getFieldValue("liegID")
+                    , modellBezSchtDat : getFieldValue("modellBezSchtDat")
                     , anzahlSchtDat : anzahl
-                    , gueltigVonSchtDat : $("#gueltigVonSchtDat").val()
-                    , gueltigBisSchtDat : $("#gueltigBisSchtDat").val()
+                    , gueltigVonSchtDat : getFieldValue("gueltigVonSchtDat")
+                    , gueltigBisSchtDat : getFieldValue("gueltigBisSchtDat")
                     , bisEndeOffenSchtDat : $("#bisEndeOffenSchtDat").prop("checked")
+                    , notizSchtDat : getFieldValue("notizSchtDat")
                     , schichten : getSchichten(anzahl)
                     }
                 )
@@ -171,10 +175,8 @@ const scpSchichtdaten =
                 formData.schichten
                 .map(a => a.map(last))
 
-            this.validFormData =
-                () => {
-                    const formData =
-                        getFormData(getFieldValue("anzahlSchtDat"))
+            const completeFormData =
+                formData => {
 
                     const retVal =
                         flatten(
@@ -186,5 +188,44 @@ const scpSchichtdaten =
 
                     return !retVal
                 }
+
+            const saveFormData =
+                formData =>
+                ajaxPost("php/instanzIntoDB.php")(formData)
+                .then(result => alert(datensatzGespeichert(result)))
+
+            const nonCompleteDataDialog =
+                formData =>
+                $("#saveSchichtDialog").dialog({
+                    height: 203,
+                    width: 329,
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    modal: true,
+                    open: () => {
+                        $("#saveSchichtOk").off("click")
+                        $("#saveSchichtOk").on("click",
+                            saveFormData(formData)
+                        )
+
+                        $("#saveSchichtCancel").off("click")
+                        $("#saveSchichtCancel").on("click",
+                            $("#saveSchichtDialog").dialog("close")
+                        )
+                    }
+                })
+
+            const validateFormData =
+                formData =>
+                !completeFormData(formData) ?
+                nonCompleteDataDialog(formData) :
+                saveFormData(formData)
         }
     )

@@ -6033,6 +6033,10 @@
                            <label for="bisEndeOffenSchtDat">Ende offen</label>
                            <input id="bisEndeOffenSchtDat" type="checkbox" checked>
                         </div>
+                        <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
+                            <label>Notiz</label>
+                            <textarea rows="3" id="notizSchtDat" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                        </div>
                         <br>
                         <br>
                         <div id="schichtdatenContainer">
@@ -8107,6 +8111,18 @@
         <button id="histSpeichern">Ja</button>
         <button id="histNichtSpeichern" style="margin-left:50px;">Nein</button>
         <button id="histAbbrechen" style="margin-left:50px;">Abbrechen</button>
+    </div>
+    <!--Save new Schicht if not all inputs are filled-->
+    <!--Meldung-->
+    <!--  -->
+    <div id="saveSchichtDialog" style="display:none;">
+        <p>
+            Nicht alle Felder sind ausgefüllt.<br>
+            Soll trotzdem gespeichert werden ? <br>
+        </p>
+        <br>
+        <button id="saveSchichtOk">Ok</button>
+        <button id="saveSchichtCancel" style="margin-left:50px;">Abbrechen</button>
     </div>
     <!--Ändern Fenster(incl. typischem Formular) für die Historie(Anlagen, Produkte)-->
 
