@@ -139,10 +139,11 @@ const scpSchichtdaten =
                 array(anzahl)()()
                 .map(getSchicht)
 
-            const getFormData =
+            this.getFormData =
                 anzahl => (
                     { id:"schtDat"
                     , nameDB: getFieldValue("nameDB")
+                    , modus: "new"
                     , liegID: getFieldValue("liegID")
                     , modellBezSchtDat : getFieldValue("modellBezSchtDat")
                     , anzahlSchtDat : anzahl
@@ -150,7 +151,10 @@ const scpSchichtdaten =
                     , gueltigBisSchtDat : getFieldValue("gueltigBisSchtDat")
                     , bisEndeOffenSchtDat : $("#bisEndeOffenSchtDat").prop("checked")
                     , notizSchtDat : getFieldValue("notizSchtDat")
-                    , schichten : getSchichten(anzahl)
+                    , schichten :
+                        getSchichten(anzahl)
+                        .map(a => a.map(last))
+                        .map((a, i) => flatten([[incr(i)], a]))
                     }
                 )
 
@@ -173,7 +177,6 @@ const scpSchichtdaten =
             const getShiftsFormData =
                 formData =>
                 formData.schichten
-                .map(a => a.map(last))
 
             const completeFormData =
                 formData => {
@@ -192,7 +195,8 @@ const scpSchichtdaten =
             const saveFormData =
                 formData =>
                 ajaxPost("php/instanzIntoDB.php")(formData)
-                .then(result => alert(datensatzGespeichert(result)))
+                .then(console.log)
+                // .then(result => alert(datensatzGespeichert(result)))
 
             const nonCompleteDataDialog =
                 formData =>
@@ -212,17 +216,21 @@ const scpSchichtdaten =
                     open: () => {
                         $("#saveSchichtOk").off("click")
                         $("#saveSchichtOk").on("click",
-                            saveFormData(formData)
+                            () =>
+                            ( saveFormData(formData)
+                            , $("#saveSchichtDialog").dialog("close")
+                            )
                         )
 
                         $("#saveSchichtCancel").off("click")
                         $("#saveSchichtCancel").on("click",
+                            () =>
                             $("#saveSchichtDialog").dialog("close")
                         )
                     }
                 })
 
-            const validateFormData =
+            this.validateFormData =
                 formData =>
                 !completeFormData(formData) ?
                 nonCompleteDataDialog(formData) :
