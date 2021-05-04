@@ -5005,9 +5005,15 @@ try {
                         },
                         success: function(a) {
                             a = $.parseJSON(a);
+                            // var betrGrpId = $("#betrGrpID").val();
+                            // var mandantenIds = '22,25,26';//c[b].mandantenIDs;
+                            // mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds);
+                            
                             if(b == -1) {
                                 b = a.length - 1;
                             }
+                            sAdmID = a[b].sAdm_ID;
+                            mandantenSuperadminCheckedCheckbox(sAdmID);
                             0 < a.length ? ($("#sAdmCount").val(a.length), $("#sAdmID").val(a[b].sAdm_ID), $("#titelSAdm").val(a[b].titelSAdm), $("#nameSAdm").val(a[b].nameSAdm), $("#vornameSAdm").val(a[b].vornameSAdm), $("#emailSAdm").val(a[b].emailSAdm), $("#telefonSAdm").val(a[b].telefonSAdm), $("#faxSAdm").val(a[b].faxSAdm), $("#mobiltelefonSAdm").val(a[b].mobiltelefonSAdm),
                                 $("#benutzernameSAdm").val(a[b].username)) : clearFields("sAdmHinz")
                         }
@@ -5029,7 +5035,7 @@ try {
                         success: function(a) {
                             var c = $.parseJSON(a);
                             var betrGrpId = $("#betrGrpID").val();
-                            var mandantenIds = c[b].mandantenIDs;
+                            var mandantenIds = '';//c[b].mandantenIDs;
                             mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds);
                             0 < c.length ? (mandantenInMandantenGruppenTabelleEinlesen(c[b].mandantenIDs), $("#manGrpCount").val(c.length),
                             [
@@ -6330,7 +6336,16 @@ try {
                     betrGrpEinlesen()
                 }
             });
-            else if ("sAdmSpeichern" == a) $.ajax({
+            else if ("sAdmSpeichern" == a) {
+            var adminArr = new Array();
+                $('span.item').each(function(){
+                    var $span = $(this).attr('check-value');
+                    if($span == 1) {
+                        var spanTxt = $(this).attr('data-id');
+                        adminArr.push(spanTxt);
+                    }
+                });
+            $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6347,12 +6362,15 @@ try {
                     fax: $("#faxSAdm").val(),
                     mobiltelefon: $("#mobiltelefonSAdm").val(),
                     benutzername: $("#benutzernameSAdm").val(),
-                    passwort: getHash($("#passwortSAdm").val())
+                    passwort: getHash($("#passwortSAdm").val()),
+                    mandantenIDs: adminArr.toString(),
+                    betrGrpID: $("#betrGrpID").val()
                 },
                 success: function(a) {
                     alert(datensatzGespeichert(a))
                 }
             });
+            }
             else if ("manGrpSpeichern" == a) {
                 var adminArr = new Array();
                 $('span.item').each(function(){
@@ -7821,7 +7839,16 @@ try {
                     readInstanzen("betrGrpLast", $("#betrGrpCount").val())
                     betrGrpEinlesen()
                 } }), betrGrpNavID = $("#betrGrpCount").val();
-            else if ("sAdmSpeichern" == a) $.ajax({
+            else if ("sAdmSpeichern" == a) {
+            var adminArr = new Array();
+                $('span.item').each(function(){
+                    var $span = $(this).attr('check-value');
+                    if($span == 1) {
+                        var spanTxt = $(this).attr('data-id');
+                        adminArr.push(spanTxt);
+                    }
+                });
+            $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -7838,12 +7865,14 @@ try {
                     fax: $("#faxSAdm").val(),
                     mobiltelefon: $("#mobiltelefonSAdm").val(),
                     benutzername: $("#benutzernameSAdm").val(),
-                    passwort: getHash($("#passwortSAdm").val())
+                    passwort: getHash($("#passwortSAdm").val()),
+                    mandantenIDs: adminArr.toString(),
                 },
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
                 } }), sAdmNavID = $("#sAdmCount").val();
+            }
             else if ("manGrpSpeichern" == a) {
                 var adminArr = new Array();
                 $('span.item').each(function(){
@@ -22914,7 +22943,7 @@ function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) 
             c = JSON.parse(a)
             if(c.length != 0) {
                 $.each(c, function(i, item) {
-                    if(roleId != 1 && roleId != 2) {
+                    if(roleId != 1) {
                         if(item.tab_id != '') {
                             if(item.user_id == null){
                                 $("#"+item.tab_id).css("display", "none");
@@ -22935,12 +22964,36 @@ function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) 
     });
 }
 
+function mandantenSuperadminCheckedCheckbox(sAdmID) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "manSuperadmin",
+            nameDB: "gipscomm",
+            betrGrpID:  $("#betrGrpID").val(),
+            sAdmID:  sAdmID
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                betrGrpId = $("#betrGrpID").val();
+                mandantenIds = c[0].mandantenIDs;
+                mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
+            }
+            
+        }
+    });
+}
+
 function mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds) {
     $.ajax({
         type: "POST",
         async: !0,
         url: "php/getMandanten.php",
         data: {
+            id: "manSuper",
             betrGrpID: betrGrpId,
             nameDB: "gipscomm",
         },
@@ -22952,14 +23005,8 @@ function mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds) {
             var res1 = mandantenIds.split(",");
             if(a.length != 0) {
                 $.each(a, function(i, item){
-                    // mandanteCheckbox = '<label>'+item.nameMan+'</label><input type="checkbox" id="manCheckbox'+item.man_ID+'" name="'+item.nameMan+'" value="'+item.man_ID+'">';
-                    // mandanteCheckboxData.push(mandanteCheckbox);
-                    
                             var checked = false;
-                            // console.log(res1);
-                            // if($.inArray(item.man_ID, res1)) {
-                            //     checked = true;
-                            // }
+                            
                             for(var i=0; i<res1.length; i++){
                                 var id = res1[i];
                                 if(id == item.man_ID){
@@ -22984,7 +23031,6 @@ function mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds) {
                     {showAlwaysCheckBox:true,fold:false});
                 document.getElementById("mandanteTreeView").appendChild( tw.root	 )
             }
-            //$("div#mandanteTreeView").html(mandanteCheckboxData);
         }
     })
 }

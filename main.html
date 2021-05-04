@@ -1541,8 +1541,8 @@
                   </div>
                   <div id="infosBetreuerGruppen">
                      <div class="navDropBox" style="height:20px;padding:3px;"> <img id="betrGrpLoeschen" title="Betreuergruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="betrGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpHinz" title="Neue Betreuergruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="betrGrpSuchen" title="Betreuergruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="betrGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Betreuergruppe" src="images/last.png" alt="letzte" /> <img id="betrGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Betreuergruppe" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="betrGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Betreuergruppe" src="images/previous.png" alt="vorherige" /> <img id="betrGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Betreuergruppe" src="images/first.png" alt="erste" />
-                        <label>Betr. Gruppe:</label>
-                        <select class="betrPfad"></select>
+                        <!-- <label>Betr. Gruppe:</label>
+                        <select class="betrPfad"></select> -->
                      </div>
                      <div class="betreuerGruppe">
                         <form action="" method="post">
@@ -1583,6 +1583,20 @@
                                  <div class="controlDiv" style="width:21.80cm;">
                                     <label>Notiz</label>
                                     <textarea rows="3" id="notizBetrGrp" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                                 </div>
+                              </div>
+                           </div>
+                           <!-- <div id="navDropBoxManGrp" class="navDropBox" style="height:20px;padding:3px;"> 
+                              <img id="manGrpSuperadmin" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                           </div> -->
+                           <div id="infosBlock">
+                              <div class="sectionHeader">
+                                 <label>DBs</label>
+                              </div>
+                              <br>
+                              <div class="infosBlock">
+                                 <div id="mandanteTreeView">
+         
                                  </div>
                               </div>
                            </div>
@@ -1627,7 +1641,7 @@
                                  <label>Passwort</label>
                                  <input id="passwortSAdm" />
                               </div>
-                              <!--
+                              
                                     <div class="navDropBox" style="height:20px;padding:3px;">
                                         <img id="sAdmRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                                     </div>
@@ -1637,44 +1651,7 @@
                                         </div>
                                         <div id="superadmincommTreeview">
                                         </div>
-                                        <script type="text/javascript">
-                                            var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-                                            var tw = new TreeView(
-                                                treeObject,
-                                                {showAlwaysCheckBox:true,fold:false});
-                                            document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
-                                        </script>
                                     </div>
-                                    -->
-                           </div>
-                              <div id="navDropBoxManGrp" class="navDropBox" style="height:20px;padding:3px;"> <img id="manGrpLoeschen" title="Mandantengruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="manGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="manGrpHinz" title="Neue Mandantengruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="manGrpSuchen" title="Mandantengruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="manGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="manGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Mandantengruppe" src="images/last.png" alt="letzte" /> <img id="manGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Mandantengruppe" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="manGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Mandantengruppe" src="images/previous.png" alt="vorherige" /> <img id="manGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Mandantengruppe" src="images/first.png" alt="erste" />
-                              </div>
-                           <div id="infosBlock">
-                              <div class="sectionHeader">
-                                 <label>Allgemein</label>
-                              </div>
-                              <div>
-                                 <div class="controlDiv">
-                                    <label>Name</label>
-                                    <input id="nameManGrp" />
-                                 </div>
-                                 <div class="controlDiv">
-                                    <label>Kurzbezeichnung</label>
-                                    <input id="kurzManGrp" />
-                                 </div>
-                              </div>
-                              <div>
-                                 <div class="controlDiv" style="width:21.80cm;">
-                                    <label>Notiz</label>
-                                    <textarea rows="3" id="notizManGrp" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
-                                 </div>
-                              </div>
-                              <br>
-                              <div class="infosBlock">
-                                 <div id="mandanteTreeView">
-         
-                                 </div>
-                              </div>
                            </div>
                         </form>
                      </div>
@@ -1714,11 +1691,11 @@
                         </div>
                      </div>
                      <br>
-                     <div class="infosBlock">
+                     <!-- <div class="infosBlock">
                         <div id="mandanteTreeView">
 
                         </div>
-                     </div>
+                     </div> -->
                   </div>
                   <div id="infosAdmins">
                      <div class="infosBlock">
@@ -10780,6 +10757,13 @@
                    });
                 </script>
                 <script type="text/javascript" src="src/js/jquery.treeview.js"></script>
+               <script type="text/javascript">
+                  var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+                  var tw = new TreeView(
+                      treeObject,
+                      {showAlwaysCheckBox:true,fold:false});
+                  document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
+               </script>
                 <script type="text/javascript">
 
                   var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));

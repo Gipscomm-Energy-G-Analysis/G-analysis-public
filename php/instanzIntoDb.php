@@ -121,6 +121,7 @@ elseif($id == "betrGrp") {
 
     if($modus == "new") {
         $betrGrpID = $_POST['betrGrpID'] ;
+        $mandantenIDs = $_POST['mandantenIDs'];
 
         $titel = $_POST['titel'] ;
         $name = $_POST['name'] ;
@@ -137,7 +138,17 @@ elseif($id == "betrGrp") {
         $sAdmsql .= "VALUES (1,'$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
         $sAdmsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
 
+        if(!empty($mandantenIDs)) {
+            $getLastId = "SELECT sAdm_ID AS last_inserted_id FROM superAdmins WHERE sAdm_ID = @@Identity";
+            $lastID = queryDB( $conn, $getLastId, "read" );
+            $optionId = $lastID[0]['last_inserted_id'];
+
+            $sAdmsql = "INSERT INTO mandantenSuperadmin(sAdm_ID,betrGrp_ID, mandantenIDs) " ;
+            $sAdmsql .= "VALUES ('$optionId','$betrGrpID','$mandantenIDs') " ;
+        }
+
         queryDB( $conn, $sAdmsql, "write" );
+
         echo "Daten erfolgreich gespeichert";
 
 
@@ -183,7 +194,9 @@ elseif($id == "betrGrp") {
 
     } else {
         $sAdmID = $_POST['sAdmID'] ;
-
+        $betrGrpID = $_POST['betrGrpID'] ;
+        $mandantenIDs = $_POST['mandantenIDs'];
+        
         $titel = $_POST['titel'] ;
         $name = $_POST['name'] ;
         $vorname = $_POST['vorname'] ;
@@ -200,6 +213,18 @@ elseif($id == "betrGrp") {
         $sAdmsql .= "passHash = '$passwort' " ;
         $sAdmsql .= "WHERE sAdm_ID = '$sAdmID' " ;
 
+        if(!empty($mandantenIDs)) {
+          $sAdmsql = "SELECT * FROM mandantenSuperadmin WHERE sAdm_ID = '$sAdmID'";
+          $data = queryDB($conn, $sAdmsql, "read");
+          
+          if(!empty($data)) {
+            $sAdmsql = "UPDATE mandantenSuperadmin SET sAdm_ID = '$sAdmID',betrGrp_ID = '$betrGrpID',mandantenIDs = '$mandantenIDs' " ;
+            $sAdmsql .= "WHERE sAdm_ID = '$sAdmID' " ;
+          } else {
+            $sAdmsql = "INSERT INTO mandantenSuperadmin(sAdm_ID,betrGrp_ID, mandantenIDs) " ;
+            $sAdmsql .= "VALUES ('$sAdmID','$betrGrpID','$mandantenIDs') " ;
+          }
+        }
         queryDB( $conn, $sAdmsql, "write" );
         echo "Daten erfolgreich gespeichert";
     }

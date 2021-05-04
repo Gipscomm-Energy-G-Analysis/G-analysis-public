@@ -28,7 +28,14 @@ elseif($id == "sAdm"){
   $betrGrpID = $_POST['betrGrpID'];
   $query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID' AND deleted_at IS NULL";
 
-} elseif($id == "sAdmGetRolePermission"){
+}elseif($id == "manSuperadmin"){
+
+  $sAdmID = $_POST['sAdmID'];
+  $betrGrpID = $_POST['betrGrpID'];
+  $query = "SELECT * FROM mandantenSuperadmin WHERE betrGrp_ID = '$betrGrpID' AND sAdm_ID = '$sAdmID'";
+  
+}
+ elseif($id == "sAdmGetRolePermission"){
   $userId = $_POST['userId'];
   if(!empty($userId)) {
     $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
