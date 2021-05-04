@@ -741,7 +741,7 @@ elseif($id == "schtDat") {
     }
 
     if($modus == "new") {
-        
+
     	$tsqlInsertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
         $tsqlInsertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat')";
 
@@ -760,7 +760,7 @@ elseif($id == "schtDat") {
         define("schtMdlID", $_POST['schtMdlID']) ;
 
     	$tsqlUpdateSchichtmodell = "UPDATE schichtModelle SET datum = getdate(), modellBez = '$modellBezSchtDat', anzahl = $anzahlSchtDat, " ;
-    	$tsqlUpdateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', gueltigBis = '$gueltigBisSchtDat', bisEndeOffen = $bisEndeOffenSchtDat, " ;
+    	$tsqlUpdateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', gueltigBis = '$gueltigBisSchtDat', bisEndeOffen = '$bisEndeOffenSchtDat', " ;
     	$tsqlUpdateSchichtmodell .= "notiz = '$notizSchtDat' " ;
         $tsqlUpdateSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
 
@@ -775,7 +775,7 @@ elseif($id == "schtDat") {
         $tsql .= "FROM schichten AS schicht " ;
         $tsql .= "JOIN( " ;
         $tsql .= "  VALUES ".buildValuesString($schichten) ;
-        $tsql .= ") AS val (nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
+        $tsql .= ") AS val (schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
         $tsql .= "ON val.schtMdl_ID = schicht.schtMdl_ID AND val.nr = schicht.nr " ;
     }
 }

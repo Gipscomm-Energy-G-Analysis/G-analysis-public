@@ -141,10 +141,11 @@ const scpSchichtdaten =
 
             this.getFormData =
                 anzahl => (
-                    { id:"schtDat"
-                    , nameDB: getFieldValue("nameDB")
-                    , modus: "new"
-                    , liegID: getFieldValue("liegID")
+                    { id :"schtDat"
+                    , nameDB : getFieldValue("nameDB")
+                    , modus : "save"
+                    , schtMdlID : 2
+                    , liegID : getFieldValue("liegID")
                     , modellBezSchtDat : getFieldValue("modellBezSchtDat")
                     , anzahlSchtDat : anzahl
                     , gueltigVonSchtDat : getFieldValue("gueltigVonSchtDat")
