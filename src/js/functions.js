@@ -1629,6 +1629,7 @@ try {
             }
         },
         manGrpInDropbox = function(a) {
+            
             $(".manGrpPfad").empty();
             $(".manGrpPfad").append("<optgroup label='Mandantengruppen'>");
             $(".manGrpPfad").append("</optgroup>");
@@ -1636,8 +1637,17 @@ try {
             $(".manGrpPfad").append("<optgroup label='Mandanten'>");
             $(".manGrpPfad").append("</optgroup>");
             a = $(".manPfad option").length / $(".manPfad").length;
-            for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
-                $(".manPfad option").eq(m).text() + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text() + "</option>")
+
+            mandantenSelectDBs(function(output){
+                $.each( output, function( m, value ) {
+                    var dbname = value.nameMan;
+                    $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
+                    $(".manPfad option").eq(m).text(), dbname + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text(), dbname + "</option>")
+                }); 
+            });
+
+            // for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
+            //     $(".manPfad option").eq(m).text() + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text() + "</option>")
         },
         manGrpEinlesen = function() {
             $.ajax({
@@ -22981,6 +22991,31 @@ function mandantenSuperadminCheckedCheckbox(sAdmID) {
                 betrGrpId = $("#betrGrpID").val();
                 mandantenIds = c[0].mandantenIDs;
                 mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
+            }
+            
+        }
+    });
+}
+
+function mandantenSelectDBs(handleData) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "manDBs",
+            nameDB: "gipscomm",
+            betrGrpID:  $("#betrGrpID").val(),
+            defaultGrpID: 1
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            handleData(c);
+            //console.log(c);
+            if(c.length != 0) {
+                // betrGrpId = $("#betrGrpID").val();
+                // mandantenIds = c[0].mandantenIDs;
+                // mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
             }
             
         }

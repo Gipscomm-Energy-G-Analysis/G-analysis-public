@@ -1805,7 +1805,7 @@ $(document).ready(function() {
         $("#betrGrpID").val(betrGrpListe[$(".betrPfad").prop("selectedIndex")].betrGrpID);
         readInstanzen("betrGrpFirst", $(".betrPfad").prop("selectedIndex"));
         readInstanzen("sAdmFirst", 0);
-        manGrpEinlesen();
+        //manGrpEinlesen();
     });
     $(".manGrpPfad").change(function() {
         $(".manGrpPfad").val($(this).val());

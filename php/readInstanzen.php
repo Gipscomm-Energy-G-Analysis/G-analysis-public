@@ -34,6 +34,17 @@ elseif($id == "sAdm"){
   $betrGrpID = $_POST['betrGrpID'];
   $query = "SELECT * FROM mandantenSuperadmin WHERE betrGrp_ID = '$betrGrpID' AND sAdm_ID = '$sAdmID'";
   
+}elseif($id == "manDBs"){
+
+  $betrGrpID = $_POST['betrGrpID'];
+  if(!empty($betrGrpID)) {
+    $query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$betrGrpID'";
+  } else {
+    $defaultGrpID = $_POST['defaultGrpID'];
+    $query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$defaultGrpID'";
+  }
+  
+  
 }
  elseif($id == "sAdmGetRolePermission"){
   $userId = $_POST['userId'];
