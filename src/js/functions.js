@@ -1198,7 +1198,11 @@ try {
                 },
                 success: function(a) {
                     a = $.parseJSON(a);
-
+                    // Checked Value
+                    // $.each(a, function(i, item){
+                    //     id = 'manCheckbox'+item.man_ID;
+                    //     $('#'+id).prop("checked", !0);
+                    // });
                     if (0 < a.length)
                         for (n = 0; n < a.length; n++) tblMandantengruppe.row.add([a[n].man_ID, a[n].nameMan, a[n].dbName], n).draw(), tblMandantengruppe.column(0).visible(!1).draw();
                     else tblMandantengruppe.clear().draw()
@@ -1625,6 +1629,7 @@ try {
             }
         },
         manGrpInDropbox = function(a) {
+            
             $(".manGrpPfad").empty();
             $(".manGrpPfad").append("<optgroup label='Mandantengruppen'>");
             $(".manGrpPfad").append("</optgroup>");
@@ -1632,8 +1637,17 @@ try {
             $(".manGrpPfad").append("<optgroup label='Mandanten'>");
             $(".manGrpPfad").append("</optgroup>");
             a = $(".manPfad option").length / $(".manPfad").length;
-            for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
-                $(".manPfad option").eq(m).text() + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text() + "</option>")
+
+            mandantenSelectDBs(function(output){
+                $.each( output, function( m, value ) {
+                    var dbname = value.nameMan;
+                    $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
+                    $(".manPfad option").eq(m).text(), dbname + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text(), dbname + "</option>")
+                }); 
+            });
+
+            // for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
+            //     $(".manPfad option").eq(m).text() + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text() + "</option>")
         },
         manGrpEinlesen = function() {
             $.ajax({
@@ -5001,11 +5015,17 @@ try {
                         },
                         success: function(a) {
                             a = $.parseJSON(a);
+                            // var betrGrpId = $("#betrGrpID").val();
+                            // var mandantenIds = '22,25,26';//c[b].mandantenIDs;
+                            // mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds);
+                            
                             if(b == -1) {
                                 b = a.length - 1;
                             }
+                            sAdmID = a[b].sAdm_ID;
+                            mandantenSuperadminCheckedCheckbox(sAdmID);
                             0 < a.length ? ($("#sAdmCount").val(a.length), $("#sAdmID").val(a[b].sAdm_ID), $("#titelSAdm").val(a[b].titelSAdm), $("#nameSAdm").val(a[b].nameSAdm), $("#vornameSAdm").val(a[b].vornameSAdm), $("#emailSAdm").val(a[b].emailSAdm), $("#telefonSAdm").val(a[b].telefonSAdm), $("#faxSAdm").val(a[b].faxSAdm), $("#mobiltelefonSAdm").val(a[b].mobiltelefonSAdm),
-                                $("#benutzernameSAdm").val(a[b].benutzernameSAdm)) : clearFields("sAdmHinz")
+                                $("#benutzernameSAdm").val(a[b].username)) : clearFields("sAdmHinz")
                         }
                     });
                     break;
@@ -5024,6 +5044,9 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
+                            var betrGrpId = $("#betrGrpID").val();
+                            var mandantenIds = '';//c[b].mandantenIDs;
+                            mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds);
                             0 < c.length ? (mandantenInMandantenGruppenTabelleEinlesen(c[b].mandantenIDs), $("#manGrpCount").val(c.length),
                             [
                               ["#manGrpID", "manGrp_ID"]
@@ -5957,6 +5980,7 @@ try {
                         , ["#kostenstelleERng", "kostenstelleERng"]
                         , ["#versorgerERng", "versorgerERng"]
                         ].forEach(a => $(a[0]).val(result[b][a[1]])),
+                        versorgerUndEinheitBefuellen(),
 
                         [ ["#mengeERng", "mengeERng"]
                         , ["#verbrauchERng", "verbrauchERng"]
@@ -6000,10 +6024,7 @@ try {
                         ].forEach(a => $(a[0]).text(result[b][a[1]]))) :
                         clearFields("eRngHinz")
 
-                        versorgerUndEinheitBefuellen()
-
                         $("#modusERng").trigger("change")
-                        $("#mengeERng").trigger("change")
                         $("#mstERng").trigger("change")
                         $("#kostenERng").trigger("change")
                         $("#eegUntERng").trigger("change")
@@ -6325,7 +6346,16 @@ try {
                     betrGrpEinlesen()
                 }
             });
-            else if ("sAdmSpeichern" == a) $.ajax({
+            else if ("sAdmSpeichern" == a) {
+            var adminArr = new Array();
+                $('span.item').each(function(){
+                    var $span = $(this).attr('check-value');
+                    if($span == 1) {
+                        var spanTxt = $(this).attr('data-id');
+                        adminArr.push(spanTxt);
+                    }
+                });
+            $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -6342,13 +6372,24 @@ try {
                     fax: $("#faxSAdm").val(),
                     mobiltelefon: $("#mobiltelefonSAdm").val(),
                     benutzername: $("#benutzernameSAdm").val(),
-                    passwort: getHash($("#passwortSAdm").val())
+                    passwort: getHash($("#passwortSAdm").val()),
+                    mandantenIDs: adminArr.toString(),
+                    betrGrpID: $("#betrGrpID").val()
                 },
                 success: function(a) {
                     alert(datensatzGespeichert(a))
                 }
             });
+            }
             else if ("manGrpSpeichern" == a) {
+                var adminArr = new Array();
+                $('span.item').each(function(){
+                    var $span = $(this).attr('check-value');
+                    if($span == 1) {
+                        var spanTxt = $(this).attr('data-id');
+                        adminArr.push(spanTxt);
+                    }
+                });
                 const getManIDs =
                     () =>
                     array($("#tblMandantengruppe tbody tr").length)()()
@@ -6364,7 +6405,7 @@ try {
                         nameDB: "gipscomm",
                         modus: "save",
                         manGrpID: $("#manGrpID").val(),
-                        mandatenIDs: getManIDs(),
+                        mandatenIDs: adminArr.toString(),//getManIDs(),
                         name: $("#nameManGrp").val(),
                         kurz: $("#kurzManGrp").val(),
                         notiz: $("#notizManGrp").val()
@@ -7809,7 +7850,16 @@ try {
                     readInstanzen("betrGrpLast", $("#betrGrpCount").val())
                     betrGrpEinlesen()
                 } }), betrGrpNavID = $("#betrGrpCount").val();
-            else if ("sAdmSpeichern" == a) $.ajax({
+            else if ("sAdmSpeichern" == a) {
+            var adminArr = new Array();
+                $('span.item').each(function(){
+                    var $span = $(this).attr('check-value');
+                    if($span == 1) {
+                        var spanTxt = $(this).attr('data-id');
+                        adminArr.push(spanTxt);
+                    }
+                });
+            $.ajax({
                 type: "POST",
                 async: !0,
                 url: "php/instanzIntoDb.php",
@@ -7826,13 +7876,23 @@ try {
                     fax: $("#faxSAdm").val(),
                     mobiltelefon: $("#mobiltelefonSAdm").val(),
                     benutzername: $("#benutzernameSAdm").val(),
-                    passwort: getHash($("#passwortSAdm").val())
+                    passwort: getHash($("#passwortSAdm").val()),
+                    mandantenIDs: adminArr.toString(),
                 },
                 success: function(a) {
                     alert(datensatzGespeichert(a));
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
                 } }), sAdmNavID = $("#sAdmCount").val();
+            }
             else if ("manGrpSpeichern" == a) {
+                var adminArr = new Array();
+                $('span.item').each(function(){
+                    var $span = $(this).attr('check-value');
+                    if($span == 1) {
+                        var spanTxt = $(this).attr('data-id');
+                        adminArr.push(spanTxt);
+                    }
+                });
                 var e = [];
                 for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++) e[i] = tblMandantengruppe.cell(i, 0).data();
                 e = e.join(",");
@@ -7848,7 +7908,7 @@ try {
                         name: $("#nameManGrp").val(),
                         kurz: $("#kurzManGrp").val(),
                         notiz: $("#notizManGrp").val(),
-                        mandatenIDs: e
+                        mandatenIDs: adminArr.toString()//e
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a));
@@ -22298,6 +22358,7 @@ function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID
                                 $('#faxAdm').val(c[0].fax);
                                 $('#mobiltelefonAdm').val(c[0].mobiltelefon);
                                 $('#benutzernameAdm').val(c[0].username);
+                                adminsGetRollenUndBerechtigungen();
                             }
                         });
                     })
@@ -22382,6 +22443,7 @@ function benutzerlisteErstellen() {
                                 $('#faxBen').val(c[0].fax);
                                 $('#mobiltelefonBen').val(c[0].mobiltelefon);
                                 $('#benutzernameBen').val(c[0].username);
+                                benutzerGetRollenUndBerechtigungen();
                             }
                         });
                     })
@@ -22416,8 +22478,7 @@ function betrGrplisteErstellen() {
                     e[c].firma,
                     e[c].anzahlMitarbeiter,
                     e[c].anschrift,
-                    e[c].plz,
-                    e[c].ort,
+                    e[c].plz+' '+e[c].ort,
                     e[c].geschaeftsfuehrer,
                     e[c].telefon,
                     e[c].eMail,
@@ -22476,11 +22537,11 @@ function sAdmSuchenlisteErstellen() {
                     c,
                     e[c].titelSAdm,
                     e[c].nameSAdm,
-                    e[c].vornameSAdm,
                     e[c].emailSAdm,
                     e[c].telefonSAdm,
                     e[c].faxSAdm,
                     e[c].mobiltelefonSAdm,
+                    e[c].username,
                     e[c].username,
                 ]).draw();
             }
@@ -22928,4 +22989,100 @@ function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) 
             }
         }
     });
+}
+
+function mandantenSuperadminCheckedCheckbox(sAdmID) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "manSuperadmin",
+            nameDB: "gipscomm",
+            betrGrpID:  $("#betrGrpID").val(),
+            sAdmID:  sAdmID
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            if(c.length != 0) {
+                betrGrpId = $("#betrGrpID").val();
+                mandantenIds = c[0].mandantenIDs;
+                mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
+            }
+            
+        }
+    });
+}
+
+function mandantenSelectDBs(handleData) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "manDBs",
+            nameDB: "gipscomm",
+            betrGrpID:  $("#betrGrpID").val(),
+            defaultGrpID: 1
+        },
+        success: function(a) {
+            c = JSON.parse(a)
+            handleData(c);
+            //console.log(c);
+            if(c.length != 0) {
+                // betrGrpId = $("#betrGrpID").val();
+                // mandantenIds = c[0].mandantenIDs;
+                // mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
+            }
+            
+        }
+    });
+}
+
+function mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getMandanten.php",
+        data: {
+            id: "manSuper",
+            betrGrpID: betrGrpId,
+            nameDB: "gipscomm",
+        },
+        success: function(a) {
+            a = JSON.parse(a);
+            var mandanteCheckboxData = [];
+            var newArray = [];
+            $("#mandanteTreeView").empty();
+            var res1 = mandantenIds.split(",");
+            if(a.length != 0) {
+                $.each(a, function(i, item){
+                            var checked = false;
+                            
+                            for(var i=0; i<res1.length; i++){
+                                var id = res1[i];
+                                if(id == item.man_ID){
+                                  checked = true;
+                                  break;
+                                }
+                              }
+                        newArray.push({
+                                "text" : item.nameMan,
+                                "id" : item.man_ID,
+                                "checked" : checked
+                                });
+
+                    // newArray.push({
+                    //     "text" : item.nameMan,
+                    //     "id" : item.man_ID,
+                    //     });
+                });
+                var treeObject = newArray;//JSON.parse(newArray);
+                var tw = new TreeView(
+                    treeObject,
+                    {showAlwaysCheckBox:true,fold:false});
+                document.getElementById("mandanteTreeView").appendChild( tw.root	 )
+            }
+        }
+    })
 }

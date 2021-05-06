@@ -9,8 +9,15 @@ $nameDB = $_POST['nameDB'];
 $conn = connectToDB($nameDB);
 
 $betrGrpID = $_POST['betrGrpID'];
+$manSuper = '';
 
 $query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$betrGrpID'";
+
+if(!empty($_POST['id'])){
+    if($_POST['id'] == "manSuper") {
+        $query = "SELECT * FROM mandanten";
+    }
+} 
 
 $records = queryDB($conn, $query, "read");
 

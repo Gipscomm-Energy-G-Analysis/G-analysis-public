@@ -28,7 +28,25 @@ elseif($id == "sAdm"){
   $betrGrpID = $_POST['betrGrpID'];
   $query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID' AND deleted_at IS NULL";
 
-} elseif($id == "sAdmGetRolePermission"){
+}elseif($id == "manSuperadmin"){
+
+  $sAdmID = $_POST['sAdmID'];
+  $betrGrpID = $_POST['betrGrpID'];
+  $query = "SELECT * FROM mandantenSuperadmin WHERE betrGrp_ID = '$betrGrpID' AND sAdm_ID = '$sAdmID'";
+  
+}elseif($id == "manDBs"){
+
+  $betrGrpID = $_POST['betrGrpID'];
+  if(!empty($betrGrpID)) {
+    $query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$betrGrpID'";
+  } else {
+    $defaultGrpID = $_POST['defaultGrpID'];
+    $query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$defaultGrpID'";
+  }
+  
+  
+}
+ elseif($id == "sAdmGetRolePermission"){
   $userId = $_POST['userId'];
   if(!empty($userId)) {
     $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
@@ -338,13 +356,22 @@ elseif($id == "betrPar"){
 
   $man_ID = $_POST['manID'];
 
-  $query = "SELECT * FROM admins WHERE deleted_at IS NULL AND man_ID = '$man_ID' OR manGrp_ID = '$man_ID'";
+  $manData = "SELECT * FROM mandanten WHERE nameMan LIKE '%$man_ID%' ";
+  $data = queryDB($conn, $manData, "read");
+
+  $manId = $data[0]['man_ID'];
+  $query = "SELECT * FROM admins WHERE deleted_at IS NULL AND man_ID = '$manId' OR manGrp_ID = '$manId'";
   //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 } elseif($id == 'benSuchen') {
 
   $man_ID = $_POST['manID'];
 
-  $query = "SELECT * FROM benutzer WHERE deleted_at IS NULL AND man_ID = '$man_ID' OR manGrp_ID = '$man_ID' ";
+  $manData = "SELECT * FROM mandanten WHERE nameMan LIKE '%$man_ID%' ";
+  $data = queryDB($conn, $manData, "read");
+
+  $manId = $data[0]['man_ID'];
+
+  $query = "SELECT * FROM benutzer WHERE deleted_at IS NULL AND man_ID = '$manId' OR manGrp_ID = '$manId' ";
     //$query .= "WHERE deleted <> 'true' ";   //<> not equal
 
 } elseif($id == 'rollenUndBerechtigungenSuperadmin') {
