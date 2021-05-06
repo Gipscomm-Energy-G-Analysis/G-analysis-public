@@ -1642,7 +1642,7 @@ try {
                 $.each( output, function( m, value ) {
                     var dbname = value.nameMan;
                     $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
-                    $(".manPfad option").eq(m).text(), dbname + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text(), dbname + "</option>")
+                    $(".manPfad option").eq(m).text(), dbname + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text(),dbname + "</option>")
                 }); 
             });
 
@@ -4873,8 +4873,8 @@ try {
                         firstPart: "#ui-id-",
                         secondPart: ""
                     }, {
-                        von: 8,
-                        bis: 17 })) :
+                        von: 7,
+                        bis: 16 })) :
             "knzOhneInstanz" == a && (b = "#bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
                     $("#status1Knz").prop("checked", !1), $("#status2Knz").prop("checked", !1), $("#status3Knz").prop("checked", !1), $("#status4Knz").prop("checked", !1), $("#status5Knz").prop("checked", !1), $("#status6Knz").prop("checked", !1), $("#status7Knz").prop("checked", !1), $("#status8Knz").prop("checked", !1), $("#status9Knz").prop("checked", !1), $("#status10Knz").prop("checked", !1), $(".knzForms").eq(0).prop("aria-selected", true));
             b.forEach(function(a) {
@@ -7798,7 +7798,6 @@ try {
                     id: "zp",
                     modus: "save",
                     nameDB: $("#nameDB").val(),
-                    liegID: $("#liegID").val(),
                     zpID: $("#zpID").val(),
                     energietraeger: $("#energietraegerZp").val(),
                     messstelle: $("#mstZp").val(),
@@ -9079,8 +9078,8 @@ try {
             } else $("#tabsProdukteverwaltung, #produkteverwaltung").css("display",
                 "none");
             "knz_almMenu" == a || "knzMenu" == a || "almMenu" == a ? ($("#tabsEditor").css("display", "none"), $("#tabsKennzahlenAlarme, #kennzahlenAlarme, #stammdaten").css("display", "block"), "knz_almMenu" == a || "knzMenu" == a ? (erweiterungenProdukteEinlesen(), tabControlNav("tabKnz")) : "almMenu" == a && tabControlNav("tabAlm")) : $("#tabsKennzahlenAlarme, #kennzahlenAlarme").css("display", "none");
-            "erwPrdMenu" == a || "erwAnlMenu" == a || "entMenu" == a || "enfMenu" == a || "gsfMenu" == a || "mgsMenu" == a || "zpMenu" == a || "grpDiagMenu" == a || "schtDatMenu" === a || "korrekturFaktorMenu" == a || "korrekturFaktorMenuDynamischer" == a ? ($("#tabsOptionen, #optionen").css("display",
-                "block"), $('.navigation_controls').hide(), $("#tabsUnternehmensstruktur, #tabsEditor").css("display", "none"), $("#tabsBasisdaten").css("display", "block"), "entMenu" == a || "enfMenu" == a ? (tabControlNav("tabEng"), $('.no_korrector_tabs').show()) : "gsfMenu" == a ? tabControlNav("tabGsf") : "mgsMenu" == a ? tabControlNav("tabMgs") : "zpMenu" == a ? (tabControlNav("tabZp"), $('.no_korrector_tabs').show()) : "erwAnlMenu" == a ? (tabControlNav("tabEAnl"), $('.no_korrector_tabs').show()) : "grpDiagMenu" == a ? (tabControlNav("tabGrpDiag"), $('.no_korrector_tabs').show()) : "schtDatMenu" === a ? (tabControlNav("tabSchtDat"), $('.no_korrector_tabs').show()) : "korrekturFaktorMenu" == a ? (tabControlNav("tabTaschenrechner"), $('.no_korrector_tabs').hide(), $('#tabTaschenrechner').show(), $('#tabDynamicKorrekturFktr').hide(), getStatischeKorrekturfaktoren()) : "korrekturFaktorMenuDynamischer" == a ? (tabControlNav("tabDynamicKorrekturFktr"), $('.no_korrector_tabs').hide(), $('#tabTaschenrechner').hide(), $('#tabDynamicKorrekturFktr').show()) : "erwPrdMenu" == a && (tabControlNav("tabEPrd"), $('.no_korrector_tabs').show())) : $("#tabsOptionen, #optionen").css("display", "none");
+            "erwPrdMenu" == a || "erwAnlMenu" == a || "entMenu" == a || "enfMenu" == a || "gsfMenu" == a || "mgsMenu" == a || "zpMenu" == a || "grpDiagMenu" == a || "korrekturFaktorMenu" == a || "korrekturFaktorMenuDynamischer" == a ? ($("#tabsOptionen, #optionen").css("display",
+                "block"), $('.navigation_controls').hide(), $("#tabsUnternehmensstruktur, #tabsEditor").css("display", "none"), $("#tabsBasisdaten").css("display", "block"), "entMenu" == a || "enfMenu" == a ? (tabControlNav("tabEng"), $('.no_korrector_tabs').show()) : "gsfMenu" == a ? tabControlNav("tabGsf") : "mgsMenu" == a ? tabControlNav("tabMgs") : "zpMenu" == a ? (tabControlNav("tabZp"), $('.no_korrector_tabs').show()) : "erwAnlMenu" == a ? (tabControlNav("tabEAnl"), $('.no_korrector_tabs').show()) : "grpDiagMenu" == a ? (tabControlNav("tabGrpDiag"), $('.no_korrector_tabs').show()) : "korrekturFaktorMenu" == a ? (tabControlNav("tabTaschenrechner"), $('.no_korrector_tabs').hide(), $('#tabTaschenrechner').show(), $('#tabDynamicKorrekturFktr').hide(), getStatischeKorrekturfaktoren()) : "korrekturFaktorMenuDynamischer" == a ? (tabControlNav("tabDynamicKorrekturFktr"), $('.no_korrector_tabs').hide(), $('#tabTaschenrechner').hide(), $('#tabDynamicKorrekturFktr').show()) : "erwPrdMenu" == a && (tabControlNav("tabEPrd"), $('.no_korrector_tabs').show())) : $("#tabsOptionen, #optionen").css("display", "none");
             "intEngIMwMenu" == a || "intBdeIMwMenu" == a || "extRngMenu" ==
                 a || "eRngVergleichMenu" == a ? ($("#tabsEditor").css("display", "none"), $("#tabsManuell").css("display", "block"), "intEngIMwMenu" == a || "intBdeIMwMenu" == a ? ($("#tabsIntMesswerte").css("display", "block"), "intEngIMwMenu" == a ? (tabControlNav("tabIntEnergiedatenIMw"),$("#tabIntBetriebsdatenIMw").css("display", "none"),$("#tabIntBetriebsdatenIMwHist").css("display", "none"),$("#tabIntEnergiedatenIMw").css("display", "block"),$("#verwaltung").val("intEngIMw")) : "intBdeIMwMenu" == a && (tabControlNav("tabIntBetriebsdatenIMw"),$("#tabIntBetriebsdatenIMw").css("display", "block"),$("#tabIntBetriebsdatenIMwHist").css("display", "block"),$("#tabIntEnergiedatenIMw").css("display", "none"), $("#verwaltung").val("intBdeIMw"))) : $("#tabsIntMesswerte").css("display", "none"), "extRngMenu" == a || "eRngVergleichMenu" == a ? ($("#tabsEditor").css("display",
                     "none"), $("#tabsExterneRechnungen").css("display", "block"), "extRngMenu" == a ? (tabControlNav("tabExtRechnungen"), $("#verwaltung").val("ERng")) : "eRngVergleichMenu" == a && (tabControlNav("tabAusw_eRng_iMw"), $("#verwaltung").val("AusERng"))) : $("#tabsExterneRechnungen").css("display", "none")) : $("#tabsManuell").css("display", "none")
@@ -10563,12 +10562,6 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         }),
         tabsData = [{
                 lengthPath: 1,
-                tab: "tabSchtDat",
-                idElement: "",
-                infos: "infosSchichtdaten",
-                aktivInstance: "schtDat"
-            }, {
-                lengthPath: 1,
                 tab: "tabEPrd",
                 idElement: "",
                 infos: "infosErweiterungenProdukte",
@@ -10987,7 +10980,7 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 c = a.secondPart,
                 g = b.von,
                 f = b.bis;
-            $("" + e + f + c).text("Knz " + (f + 1 - g));
+            $("" + e + f + c).text("Knz_" + (f + 1 - g));
             f > g ? setText_Ctrl({
                 firstPart: e,
                 secondPart: c
@@ -11373,41 +11366,31 @@ const getKnzTab =
     (_, i) =>
     $("#btnTabKnzCont li").eq(i)
 
-const getAllKnzTabs =
-    () =>
-    array($("#btnTabKnzCont li").length)()()
-    .map(getKnzTab)
-
 const hiddenKnzTab =
     a =>
     a.css("display") === "none"
-
-const visibleKnzTab =
-    a =>
-    a.css("display") !== "none"
 
 // Adds a new Kennzahl to a Kennzahleninstanz
 const addKennzahl =
     () =>
     head(
-        getAllKnzTabs()
+        array($("#btnTabKnzCont li").length)()()
+        .map(getKnzTab)
         .filter(hiddenKnzTab)
     )
     .css("display", "inline")
 
-
 const activateNewKnzTab =
     () => {
-        const tabText =
-            last(
-                getAllKnzTabs()
-                .filter(visibleKnzTab)
-            ).text()
+        const index =
+            head(
+                array($("#btnTabKnzCont li").length)()()
+                .map(getKnzTab)
+                .map((a, i) => hiddenKnzTab(a) ? i : 0)
+                .filter(a => a !== 0)
+            )
 
-        const hrefSelector =
-            $(`[href="#tabs-${tabText.split(" ")[1]}_knzForms"]`)
-
-        hrefSelector.trigger("click")
+        $("#btnTabKnzCont").tabs({active: index})
     }
 
 /*24-02-2020 Correction factor add record row wise not quoma saperated,
