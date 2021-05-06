@@ -10987,7 +10987,7 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 c = a.secondPart,
                 g = b.von,
                 f = b.bis;
-            $("" + e + f + c).text("Knz" + (f + 1 - g));
+            $("" + e + f + c).text("Knz " + (f + 1 - g));
             f > g ? setText_Ctrl({
                 firstPart: e,
                 secondPart: c
@@ -11407,7 +11407,6 @@ const activateNewKnzTab =
                 $(`[href="#tabs-${tabText.split(" ")[1]}_knzForms"]`)
 
         hrefSelector.trigger("click")
-        $("#btnTabKnzCont").tabs({active: index})
     }
 
 /*24-02-2020 Correction factor add record row wise not quoma saperated,
