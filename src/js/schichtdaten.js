@@ -139,12 +139,13 @@ const scpSchichtdaten =
                 array(anzahl)()()
                 .map(getSchicht)
 
+            // Returns an object that contains the form data
             this.getFormData =
                 anzahl => (
                     { id :"schtDat"
                     , nameDB : getFieldValue("nameDB")
-                    , modus : "save"
-                    , schtMdlID : 2
+                    , modus : savedNew ? "new" : "save"
+                    , schtMdlID : getFieldValue("schtMdlID")
                     , liegID : getFieldValue("liegID")
                     , modellBezSchtDat : getFieldValue("modellBezSchtDat")
                     , anzahlSchtDat : anzahl
@@ -236,5 +237,30 @@ const scpSchichtdaten =
                 !completeFormData(formData) ?
                 nonCompleteDataDialog(formData) :
                 saveFormData(formData)
+
+            const clearField =
+                field =>
+                $(`#${field}`).val("")
+
+            const clearGeneralFields =
+                () =>
+                [ "modellBezSchtDat"
+                , "gueltigVonSchtDat"
+                , "notizSchtDat"
+                ].forEach(clearField)
+
+            // anzahlSchtDat change resets Schichten
+            const resetAnzahlAndEndeOffen =
+                () =>
+                ( $("#anzahlSchtDat").val(3)
+                , $("#anzahlSchtDat").trigger("change")
+                , $("#bisEndeOffenSchtDat").trigger("click")
+                )
+
+            this.clearFields =
+                () =>
+                ( clearGeneralFields()
+                , resetAnzahlAndEndeOffen()
+                )
         }
     )

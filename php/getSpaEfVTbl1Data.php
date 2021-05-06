@@ -35,8 +35,9 @@ elseif($version == "benutzerdefiniert"){
   $query .= $jahreSqlString;
 }
 $query .= "ORDER BY Energietraeger, Jahr ";
-$records = queryDB($conn, $query, "read");
+// $records = queryDB($conn, $query, "read");
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+echo json_encode(["query" => $query], JSON_INVALID_UTF8_IGNORE);
+// echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 include('bottom-cache.php');
 ?>
