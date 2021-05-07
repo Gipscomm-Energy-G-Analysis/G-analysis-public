@@ -81,11 +81,21 @@ elseif($id == "betrGrp") {
       $telefon = $_POST['telefon'] ;
       $eMail = $_POST['eMail'] ;
       $notiz = $_POST['notiz'] ;
+      $mandantenIDs = $_POST['mandantenIDs'];
 
       $tsql = "INSERT INTO betreuerGruppen(firma,anzahlMitarbeiter, anschrift, plz, ort, ";
       $tsql .= "geschaeftsfuehrer, telefon, eMail, notiz) ";
       $tsql .= "VALUES ('$firma','$anzahlMitarbeiter','$anschrift', '$plz','$ort','$geschaeftsfuehrer', ";
       $tsql .= "'$telefon','$eMail','$notiz') ";
+
+      if(!empty($mandantenIDs)) {
+        $getLastId = "SELECT betrGrp_ID AS last_inserted_id FROM betreuerGruppen WHERE betrGrp_ID = @@Identity";
+        $lastID = queryDB( $conn, $getLastId, "read" );
+        $optionId = $lastID[0]['last_inserted_id'];
+
+        $tsql = "INSERT INTO mandantenBetrGruppen(betrGrp_ID, mandantenIDs) " ;
+        $tsql .= "VALUES ('$optionId', '$mandantenIDs') " ;
+    }
 
     } elseif($modus == "delete") {
 
@@ -109,11 +119,26 @@ elseif($id == "betrGrp") {
       $telefon = $_POST['telefon'] ;
       $eMail = $_POST['eMail'] ;
       $notiz = $_POST['notiz'] ;
+      $mandantenIDs = $_POST['mandantenIDs'];
 
       $tsql =  "UPDATE betreuerGruppen SET firma = '$firma',anzahlMitarbeiter = '$anzahlMitarbeiter', ";
       $tsql .= "anschrift = '$anschrift',plz = '$plz',ort = '$ort',geschaeftsfuehrer = '$geschaeftsfuehrer', ";
       $tsql .= "telefon = '$telefon',eMail = '$eMail',notiz = '$notiz' ";
       $tsql .= "WHERE betrGrp_ID = '$betrGrpID' ";
+
+      if(!empty($mandantenIDs)) {
+        $betrGrpsql = "SELECT * FROM mandantenBetrGruppen WHERE betrGrp_ID = '$betrGrpID'";
+        $data = queryDB($conn, $betrGrpsql, "read");
+        
+        if(!empty($data)) {
+          $tsql = "UPDATE mandantenBetrGruppen SET mandantenIDs = '$mandantenIDs' " ;
+          $tsql .= "WHERE betrGrp_ID = '$betrGrpID' " ;
+        } else {
+          $tsql = "INSERT INTO mandantenBetrGruppen(betrGrp_ID, mandantenIDs) " ;
+          $tsql .= "VALUES ('$betrGrpID', '$mandantenIDs') " ;
+        }
+      }
+
     }
 } elseif($id == "sAdm") {
 
@@ -121,7 +146,6 @@ elseif($id == "betrGrp") {
 
     if($modus == "new") {
         $betrGrpID = $_POST['betrGrpID'] ;
-        $mandantenIDs = $_POST['mandantenIDs'];
 
         $titel = $_POST['titel'] ;
         $name = $_POST['name'] ;
@@ -137,15 +161,6 @@ elseif($id == "betrGrp") {
         $sAdmsql .= "faxSAdm, mobiltelefonSAdm, username, passHash, position) " ;
         $sAdmsql .= "VALUES (1,'$betrGrpID','$titel', '$name','$vorname','$eMail', " ;
         $sAdmsql .= "'$telefon','$fax','$mobiltelefon','$benutzername','$passwort', 'sAdm') " ;
-
-        if(!empty($mandantenIDs)) {
-            $getLastId = "SELECT sAdm_ID AS last_inserted_id FROM superAdmins WHERE sAdm_ID = @@Identity";
-            $lastID = queryDB( $conn, $getLastId, "read" );
-            $optionId = $lastID[0]['last_inserted_id'];
-
-            $sAdmsql = "INSERT INTO mandantenSuperadmin(sAdm_ID,betrGrp_ID, mandantenIDs) " ;
-            $sAdmsql .= "VALUES ('$optionId','$betrGrpID','$mandantenIDs') " ;
-        }
 
         queryDB( $conn, $sAdmsql, "write" );
 
@@ -194,8 +209,6 @@ elseif($id == "betrGrp") {
 
     } else {
         $sAdmID = $_POST['sAdmID'] ;
-        $betrGrpID = $_POST['betrGrpID'] ;
-        $mandantenIDs = $_POST['mandantenIDs'];
         
         $titel = $_POST['titel'] ;
         $name = $_POST['name'] ;
@@ -213,18 +226,6 @@ elseif($id == "betrGrp") {
         $sAdmsql .= "passHash = '$passwort' " ;
         $sAdmsql .= "WHERE sAdm_ID = '$sAdmID' " ;
 
-        if(!empty($mandantenIDs)) {
-          $sAdmsql = "SELECT * FROM mandantenSuperadmin WHERE sAdm_ID = '$sAdmID'";
-          $data = queryDB($conn, $sAdmsql, "read");
-          
-          if(!empty($data)) {
-            $sAdmsql = "UPDATE mandantenSuperadmin SET sAdm_ID = '$sAdmID',betrGrp_ID = '$betrGrpID',mandantenIDs = '$mandantenIDs' " ;
-            $sAdmsql .= "WHERE sAdm_ID = '$sAdmID' " ;
-          } else {
-            $sAdmsql = "INSERT INTO mandantenSuperadmin(sAdm_ID,betrGrp_ID, mandantenIDs) " ;
-            $sAdmsql .= "VALUES ('$sAdmID','$betrGrpID','$mandantenIDs') " ;
-          }
-        }
         queryDB( $conn, $sAdmsql, "write" );
         echo "Daten erfolgreich gespeichert";
     }
