@@ -263,8 +263,21 @@ const scpSchichtdaten =
                 , resetAnzahlAndEndeOffen()
                 )
 
-            const queryFormData =
-                ajaxPost("php/readSchichtdaten.php")
+            const queryData =
+                () =>
+                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
+
+            this.populateIndexedDB =
+                version =>
+                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
+                .then(
+                    scpIndexedDB
+                    .populateIndexedDB(version)(
+                        { schichtModell : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, bisEndeOffen, notiz"
+                        , schichten : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
+                        }
+                    )("schichtModell")
+                )
 
             this.readIntoFormFields =
                 data =>

@@ -5,6 +5,7 @@ var arrStoreDates = [];
 var anlageObj={};
 var allPrevVal = [];
 $(document).ready(function() {
+    idxDB = new Dexie($("#nameDB").val())
     var c = this;
     if(sessionStorage.getItem("position") == 'gipsAdm') {
         var roleId = 1;

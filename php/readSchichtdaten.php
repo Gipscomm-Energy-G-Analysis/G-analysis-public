@@ -8,12 +8,8 @@ require 'DbOperations.php' ;
 $nameDB = $_POST[ 'nameDB' ] ;
 $conn = connectToDB( $nameDB ) ;
 
-$liegID = $_POST[ 'liegID' ] ;
-
-$query = "SELECT (SELECT nameMSt FROM messstellen WHERE mst_ID = [externeRechnungen].[mst_ID]) AS mst, * " ;
-$query .= "FROM [dbo].[externeRechnungen] " ;
-$query .= "WHERE lieg_ID = $liegID " ;
-$query .= "AND deleted <> 'true' " ;
+$query = "SELECT * FROM schichtModelle " ;
+// $query .= "WHERE deleted <> 'true' " ;
 
 $records = queryDB( $conn, $query, "read" ) ;
 
