@@ -809,8 +809,11 @@ $(document).ready(function() {
             case "formelKnz":
                 $("#formelIDKnz").val("");
                 break;
-            case "messmittelBerechnungslogikMst":
-                $("#messmittelIDMst, #berechnungslogikMst").val("");
+            case "messmittelBerechnungslogikMstE":
+                $("#messmittelIDMstE, #berechnungslogikMstE").val("");
+                break;
+            case "messmittelBerechnungslogikMstB":
+                $("#messmittelIDMstB, #berechnungslogikMstB").val("");
                 break;
             case "mst1Anl":
             case "mst2Anl":

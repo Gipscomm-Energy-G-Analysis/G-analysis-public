@@ -262,5 +262,18 @@ const scpSchichtdaten =
                 ( clearGeneralFields()
                 , resetAnzahlAndEndeOffen()
                 )
+
+            const queryFormData =
+                ajaxPost("php/readSchichtdaten.php")
+
+            this.readIntoFormFields =
+                data =>
+                [ "modellBez"
+                , "anzahl"
+                , "gueltigVon"
+                , "gueltigBis"
+                , "notiz"
+                ]
+                // SchtDat
         }
     )
