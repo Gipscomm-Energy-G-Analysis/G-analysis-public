@@ -1836,7 +1836,7 @@ $(document).ready(function() {
         $(".manGrpPfad").val($(this).val());
 
         var a = $(".manGrpPfad  option").eq($(".manGrpPfad").prop("selectedIndex")).prop("id").split("_");
-
+        
         $("#manOderManGrp").val(a[0]);
 
         if (head(a) === "optManGrp") {
@@ -1844,6 +1844,7 @@ $(document).ready(function() {
             readInstanzen("manGrpFirst", $(".manGrpPfad").prop("selectedIndex"))
         }
         else {
+            $("#manBID").val($(this).find('option:selected').data('id'));
             $("#manRechteID").val(mandantenliste[last(a)].manID)
         }
         readInstanzen("admFirst", 0)

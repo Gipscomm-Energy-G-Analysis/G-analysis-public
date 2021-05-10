@@ -32,10 +32,32 @@ elseif($id == "sAdm"){
 
   $betrGrpID = $_POST['betrGrpID'];
   if(!empty($betrGrpID)) {
-    $query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$betrGrpID'";
+    //$query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$betrGrpID'";
+    $mandantenBetr = "SELECT * FROM mandantenBetrGruppen WHERE betrGrp_ID = '$betrGrpID'";
+    $data = queryDB($conn, $mandantenBetr, "read");
+    $query = '';
+    
+    if(!empty($data)) {
+      $IDs = explode(',', $data[0]['mandantenIDs']);
+  
+      $manIDs = "'" . implode ( "', '", $IDs ) . "'";
+    
+      $query = "SELECT * FROM mandanten WHERE man_ID IN  (".$manIDs.")";
+    }
   } else {
     $defaultGrpID = $_POST['defaultGrpID'];
-    $query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$defaultGrpID'";
+    //$query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$defaultGrpID'";
+    $mandantenBetr = "SELECT * FROM mandantenBetrGruppen WHERE betrGrp_ID = '$defaultGrpID'";
+    $data = queryDB($conn, $mandantenBetr, "read");
+    $query = '';
+    
+    if(!empty($data)) {
+      $IDs = explode(',', $data[0]['mandantenIDs']);
+  
+      $manIDs = "'" . implode ( "', '", $IDs ) . "'";
+    
+      $query = "SELECT * FROM mandanten WHERE man_ID IN  (".$manIDs.")";
+    }
   }
   
   
@@ -435,7 +457,7 @@ elseif($id == "betrPar"){
   echo json_encode($tree);
 }
 
-if($id != 'rollenUndBerechtigungenSuperadmin') {
+if($id != 'rollenUndBerechtigungenSuperadmin' && $id != 'mandantenBetrGruppen') {
   $records = queryDB($conn, $query, "read") ;
   echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
 }

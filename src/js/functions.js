@@ -1641,8 +1641,8 @@ try {
             mandantenSelectDBs(function(output){
                 $.each( output, function( m, value ) {
                     var dbname = value.nameMan;
-                    $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
-                    $(".manPfad option").eq(m).text(), dbname + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option id='optMan_" + m + "'>" + $(".manPfad option").eq(m).text(),dbname + "</option>")
+                    $(".manGrpPfad optgroup").eq(1).append("<option data-id='"+value.man_ID+"' id='optMan_" + m + "'>" +
+                    dbname + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option data-id='"+value.man_ID+"' id='optMan_" + m + "'>" + dbname + "</option>")
                 }); 
             });
 
@@ -3409,6 +3409,7 @@ try {
                 async: !0,
                 url: "php/getMandanten.php",
                 data: {
+                    id: "mandantenBetrGruppen",
                     betrGrpID: $("#betrGrpID").val(),
                     nameDB: "gipscomm"
                 },
@@ -5061,6 +5062,7 @@ try {
                     break;
                 case "adm":
                     var record_set = $('#' + a).data("record");
+                    //alert($("#manBID").val());
                     "optMan" == $("#manOderManGrp").val() ? (a = "man_ID", e = $("#manRechteID").val()) : (a = "manGrp_ID", e = $("#manGrpID").val());
                     $.ajax({
                         type: "POST",
@@ -5070,7 +5072,7 @@ try {
                             id: "adm",
                             nameDB: "gipscomm",
                             ins: a,
-                            insID: e,
+                            insID: $("#manBID").val(),
                             recordSet:record_set
                         },
                         fail: function() {
@@ -6383,14 +6385,6 @@ try {
             });
             }
             else if ("manGrpSpeichern" == a) {
-                var adminArr = new Array();
-                $('span.item').each(function(){
-                    var $span = $(this).attr('check-value');
-                    if($span == 1) {
-                        var spanTxt = $(this).attr('data-id');
-                        adminArr.push(spanTxt);
-                    }
-                });
                 const getManIDs =
                     () =>
                     array($("#tblMandantengruppe tbody tr").length)()()
@@ -6405,8 +6399,9 @@ try {
                         id: "manGrp",
                         nameDB: "gipscomm",
                         modus: "save",
+                        betrGrpID: $("#betrGrpID").val(),
                         manGrpID: $("#manGrpID").val(),
-                        mandatenIDs: adminArr.toString(),//getManIDs(),
+                        mandatenIDs: getManIDs(),
                         name: $("#nameManGrp").val(),
                         kurz: $("#kurzManGrp").val(),
                         notiz: $("#notizManGrp").val()
@@ -7886,14 +7881,6 @@ try {
                 } }), sAdmNavID = $("#sAdmCount").val();
             }
             else if ("manGrpSpeichern" == a) {
-                var adminArr = new Array();
-                $('span.item').each(function(){
-                    var $span = $(this).attr('check-value');
-                    if($span == 1) {
-                        var spanTxt = $(this).attr('data-id');
-                        adminArr.push(spanTxt);
-                    }
-                });
                 var e = [];
                 for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++) e[i] = tblMandantengruppe.cell(i, 0).data();
                 e = e.join(",");
@@ -7909,7 +7896,7 @@ try {
                         name: $("#nameManGrp").val(),
                         kurz: $("#kurzManGrp").val(),
                         notiz: $("#notizManGrp").val(),
-                        mandatenIDs: adminArr.toString()//e
+                        mandatenIDs: e
                     },
                     success: function(a) {
                         alert(datensatzGespeichert(a));

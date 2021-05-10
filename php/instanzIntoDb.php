@@ -237,16 +237,15 @@ elseif($id == "manGrp") {
     $kurz = $_POST['kurz'] ;
     $notiz = $_POST['notiz'] ;
     $mandantenIDs = $_POST['mandatenIDs'] ;
+    $manGrpID = $_POST['manGrpID'] ;
 
-    if($modus == "new") {
+    if(empty($manGrpID)) {
         $betrGrpID = $_POST['betrGrpID'] ;
 
         $tsql = "INSERT INTO mandantenGruppen(betrGrp_ID,name,kurz, notiz, mandantenIDs) " ;
         $tsql .= "VALUES ('$betrGrpID','$name', '$kurz','$notiz','$mandantenIDs') " ;
     }
     else {
-        $manGrpID = $_POST['manGrpID'] ;
-
         $tsql =  "UPDATE mandantenGruppen SET name = '$name',kurz = '$kurz',notiz = '$notiz', mandantenIDs = '$mandantenIDs' " ;
         $tsql .= "WHERE manGrp_ID = '$manGrpID' " ;
     }
