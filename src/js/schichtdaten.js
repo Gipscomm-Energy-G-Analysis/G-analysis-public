@@ -1,4 +1,6 @@
 // Depends on fpCore.js
+// Depends on https://unpkg.com/dexie@latest/dist/dexie.js
+
 "use strict"
 
 const scpSchichtdaten =
@@ -263,6 +265,11 @@ const scpSchichtdaten =
                 , resetAnzahlAndEndeOffen()
                 )
 
+            const dataIntoIDB =
+                store =>
+                data =>
+                dxDB[store].bulkPut(data[store])
+
             const queryData =
                 () =>
                 ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
@@ -271,12 +278,10 @@ const scpSchichtdaten =
                 () =>
                 ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
                 .then(
-                    scpIndexedDB
-                    .populateIndexedDB(
-                        { schichtModell : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, bisEndeOffen, notiz"
-                        , schichten : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
-                        }
-                    )("schichtModell")
+                    result => {
+                        dataIntoIDB("schichtModelle")(result)
+                        dataIntoIDB("schichten")(result)
+                    }
                 )
 
             this.readIntoFormFields =
