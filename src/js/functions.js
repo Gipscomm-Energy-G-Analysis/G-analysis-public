@@ -4996,7 +4996,7 @@ try {
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             }),
-                          readInstanzen("manGrpFirst", 0), mandantenSuperadminCheckedCheckbox()
+                            mandantenSuperadminCheckedCheckbox(), readInstanzen("manGrpFirst", 0)
                         , manGrpEinlesen()) : clearFields("betrGrp")
                         }
                     });
@@ -5016,9 +5016,6 @@ try {
                         },
                         success: function(a) {
                             a = $.parseJSON(a);
-                            // var betrGrpId = $("#betrGrpID").val();
-                            // var mandantenIds = '22,25,26';//c[b].mandantenIDs;
-                            // mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds);
                             
                             if(b == -1) {
                                 b = a.length - 1;
@@ -5044,9 +5041,6 @@ try {
                         },
                         success: function(a) {
                             var c = $.parseJSON(a);
-                            var betrGrpId = $("#betrGrpID").val();
-                            var mandantenIds = '';//c[b].mandantenIDs;
-                            mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds);
                             0 < c.length ? (mandantenInMandantenGruppenTabelleEinlesen(c[b].mandantenIDs), $("#manGrpCount").val(c.length),
                             [
                               ["#manGrpID", "manGrp_ID"]
@@ -22992,6 +22986,10 @@ function mandantenSuperadminCheckedCheckbox() {
                 betrGrpId = $("#betrGrpID").val();
                 mandantenIds = c[0].mandantenIDs;
                 mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
+            } else {
+                betrGrpId = $("#betrGrpID").val();
+                mandantenIds = '';
+                mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
             }
             
         }
@@ -23012,11 +23010,7 @@ function mandantenSelectDBs(handleData) {
         success: function(a) {
             c = JSON.parse(a)
             handleData(c);
-            //console.log(c);
             if(c.length != 0) {
-                // betrGrpId = $("#betrGrpID").val();
-                // mandantenIds = c[0].mandantenIDs;
-                // mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
             }
             
         }
@@ -23055,11 +23049,6 @@ function mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds) {
                                 "id" : item.man_ID,
                                 "checked" : checked
                                 });
-
-                    // newArray.push({
-                    //     "text" : item.nameMan,
-                    //     "id" : item.man_ID,
-                    //     });
                 });
                 var treeObject = newArray;//JSON.parse(newArray);
                 var tw = new TreeView(
