@@ -9,10 +9,17 @@ $nameDB = $_POST[ 'nameDB' ] ;
 $conn = connectToDB( $nameDB ) ;
 
 $query = "SELECT * FROM schichtModelle " ;
-// $query .= "WHERE deleted <> 'true' " ;
 
-$records = queryDB( $conn, $query, "read" ) ;
+$schichtModelle = queryDB( $conn, $query, "read" ) ;
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
+$query2 = "SELECT * FROM schichten " ;
+
+$schichten = queryDB( $conn, $query2, "read" ) ;
+
+
+echo json_encode(
+    [ "schichtModelle" => $schichtModelle
+    , "schichten" => $schichten
+    ] , JSON_INVALID_UTF8_IGNORE) ;
 include('bottom-cache.php') ;
 ?>
