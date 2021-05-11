@@ -268,7 +268,7 @@ const scpSchichtdaten =
             const dataIntoIDB =
                 store =>
                 data =>
-                dxDB[store].bulkPut(data[store])
+                idxDB[store].bulkPut(data[store])
 
             const queryData =
                 () =>
