@@ -1492,18 +1492,18 @@ $(document).ready(function() {
     });
 
     // Save Roles and Permissions
-    $("#gipscommRollenUndBerechtigungen").click(function() {
-        gipscommRollenUndBerechtigungen()
-    });
-    $("#sAdmRollenUndBerechtigungen").click(function() {
-        sAdmRollenUndBerechtigungen()
-    });
-    $("#adminsRollenUndBerechtigungen").click(function() {
-        adminsRollenUndBerechtigungen()
-    });
-    $("#benutzerRollenUndBerechtigungen").click(function() {
-        benutzerRollenUndBerechtigungen()
-    });
+    // $("#gipscommRollenUndBerechtigungen").click(function() {
+    //     gipscommRollenUndBerechtigungen()
+    // });
+    // $("#sAdmRollenUndBerechtigungen").click(function() {
+    //     sAdmRollenUndBerechtigungen()
+    // });
+    // $("#adminsRollenUndBerechtigungen").click(function() {
+    //     adminsRollenUndBerechtigungen()
+    // });
+    // $("#benutzerRollenUndBerechtigungen").click(function() {
+    //     benutzerRollenUndBerechtigungen()
+    // });
 
     // Get Checked data from database
     $("#gipscAdmLast, #gipscAdmNext, #gipscAdmPrevious, #gipscAdmFirst").click(function() {

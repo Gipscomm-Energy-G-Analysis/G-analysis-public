@@ -6380,6 +6380,7 @@ try {
                     betrGrpID: $("#betrGrpID").val()
                 },
                 success: function(a) {
+                    sAdmRollenUndBerechtigungen();
                     alert(datensatzGespeichert(a))
                 }
             });
@@ -6431,6 +6432,7 @@ try {
                     passwort: getHash($("#passwortAdm").val())
                 },
                 success: function(a) {
+                    adminsRollenUndBerechtigungen();
                     alert(datensatzGespeichert(a))
                 }
             });
@@ -6454,6 +6456,7 @@ try {
                     passwort: getHash($("#passwortBen").val())
                 },
                 success: function(a) {
+                    benutzerRollenUndBerechtigungen();
                     alert(datensatzGespeichert(a))
                 }
             });
@@ -7847,14 +7850,14 @@ try {
                     betrGrpEinlesen()
                 } }), betrGrpNavID = $("#betrGrpCount").val();
             else if ("sAdmSpeichern" == a) {
-            var adminArr = new Array();
-                $('span.item').each(function(){
-                    var $span = $(this).attr('check-value');
-                    if($span == 1) {
-                        var spanTxt = $(this).attr('data-id');
-                        adminArr.push(spanTxt);
-                    }
-                });
+            // var adminArr = new Array();
+            //     $('span.item').each(function(){
+            //         var $span = $(this).attr('check-value');
+            //         if($span == 1) {
+            //             var spanTxt = $(this).attr('data-id');
+            //             adminArr.push(spanTxt);
+            //         }
+            //     });
             $.ajax({
                 type: "POST",
                 async: !0,
@@ -7873,9 +7876,10 @@ try {
                     mobiltelefon: $("#mobiltelefonSAdm").val(),
                     benutzername: $("#benutzernameSAdm").val(),
                     passwort: getHash($("#passwortSAdm").val()),
-                    mandantenIDs: adminArr.toString(),
+                    //mandantenIDs: adminArr.toString(),
                 },
                 success: function(a) {
+                    sAdmRollenUndBerechtigungen();
                     alert(datensatzGespeichert(a));
                     readInstanzen("sAdmLast", $("#sAdmCount").val())
                 } }), sAdmNavID = $("#sAdmCount").val();
@@ -7929,6 +7933,7 @@ try {
                         passwort: getHash($("#passwortAdm").val())
                     },
                     success: function(a) {
+                        adminsRollenUndBerechtigungen()
                         alert(datensatzGespeichert(a));
                         readInstanzen("admLast", $("#admCount").val())
                     }
@@ -7955,6 +7960,7 @@ try {
                     passwort: getHash($("#passwortBen").val())
                 },
                 success: function(a) {
+                    benutzerRollenUndBerechtigungen();
                     alert(datensatzGespeichert(a));
                     readInstanzen("benLast", $("#benCount").val())
                 } }), benNavID = $("#benCount").val();
@@ -22737,14 +22743,13 @@ function gipscommRollenUndBerechtigungen() {            // Save Gipscomm Admin R
 
 function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and Permission
     var sAdmArr = new Array();
-    // $('input[name="sAdmRolesPermission[]"]:checked').each(function() {
-    //     sAdmArr.push(this.value);
-    // });
     $('span.item').each(function(){
         var $span = $(this).attr('check-value');
         if($span == 1) {
             var spanTxt = $(this).attr('data-tab_id');
-            sAdmArr.push(spanTxt);
+            if(spanTxt != undefined) {
+                sAdmArr.push(spanTxt);
+            }
         }
     });
     $.ajax({
@@ -22760,7 +22765,7 @@ function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and
             userId: $('#sAdmID').val()
         },
         success: function(a) {
-            alert(a)
+            //alert(a)
         }
     });
 }
@@ -22771,7 +22776,9 @@ function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Pe
         var $span = $(this).attr('check-value');
         if($span == 1) {
             var spanTxt = $(this).attr('data-tab_id');
-            adminArr.push(spanTxt);
+            if(spanTxt != undefined) {
+                adminArr.push(spanTxt);
+            }
         }
     });
     $.ajax({
@@ -22787,7 +22794,7 @@ function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Pe
             userId: $('#admID').val()
         },
         success: function(a) {
-            alert(a)
+            //alert(a)
         }
     });
 }
@@ -22797,7 +22804,9 @@ function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and P
         var $span = $(this).attr('check-value');
         if($span == 1) {
             var spanTxt = $(this).attr('data-tab_id');
-            benArr.push(spanTxt);
+            if(spanTxt != undefined) {
+                benArr.push(spanTxt);
+            }
         }
     });
     $.ajax({
@@ -22813,7 +22822,7 @@ function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and P
             userId: $('#benID').val()
         },
         success: function(a) {
-            alert(a)
+            //alert(a)
         }
     });
 }
