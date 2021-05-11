@@ -70,7 +70,8 @@
             data: {
                 id: "rollenUndBerechtigungenSuperadmin",
                 nameDB: "gipscomm",
-                userId:''
+                userId:'',
+                auth: sessionStorage.getItem("position")
                 },
             fail: function() {
                 alert("failed!!")

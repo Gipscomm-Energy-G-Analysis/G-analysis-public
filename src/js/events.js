@@ -21,8 +21,7 @@ $(document).ready(function() {
         $("#sAdmRollenUndBerechtigungen").css("display", "none");
         $("#adminsRollenUndBerechtigungen").css("display", "none");
         $("#superadmincommTreeview").css("display", "none");
-        $("#adminRoles").css("display", "none");
-        $("#admincommTreeview").css("display", "none");
+        $("#tabGipscAdm").css("display", "none");
         mandantenEinlesen($("#betrGrpID").val(), null, null);
     } else if(sessionStorage.getItem("position") == 'adm') {
         var roleId = 4;
@@ -1845,7 +1844,7 @@ $(document).ready(function() {
         }
         else {
             $("#manBID").val($(this).find('option:selected').data('id'));
-            $("#manRechteID").val(mandantenliste[last(a)].manID)
+            //$("#manRechteID").val(mandantenliste[last(a)].manID)
         }
         readInstanzen("admFirst", 0)
         readInstanzen("benFirst", 0)
