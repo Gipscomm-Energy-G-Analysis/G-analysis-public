@@ -5,15 +5,34 @@ const scpIndexedDB =
     freeze (
         new function () {
 
+            const storesExist =
+                storesDef =>
+                Object.keys(storesDef)
+                .every((a, i) => a === idxDB.tables.map(b => b.name)[i])
+
+            const getVersion =
+                () =>
+                idxDB._versions.length
+
             this.populateIndexedDB =
-                version =>
                 storesDef =>
                 store =>
                 data => {
 
-                    idxDB.version(version).stores(storesDef)
+                    if (storesExist(storesDef)) {
 
-                    idxDB[store].bulkAdd(data)
+                        // Iterate db version
+                        idxDB.close()
+                        idxDB.version(incr(getVersion()))
+                        idxDB.open()
+
+                        idxDB[store].bulkPut(data)
+                    }
+                    else {
+
+                        idxDB.version(1).stores(storesDef)
+                        idxDB[store].bulkPut(data)
+                    }
                 }
         }
     )
