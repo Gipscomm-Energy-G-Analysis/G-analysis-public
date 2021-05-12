@@ -11,6 +11,8 @@ $conn = connectToDB($nameDB);
 
 $id = $_POST['id'];
 
+$authSAdm = !empty($_POST['auth']) ? $_POST['auth'] : '';
+
 if($id == "gipscAdm"){
 
 $query = "SELECT * FROM gipscommAdmins";
@@ -397,7 +399,14 @@ elseif($id == "betrPar"){
 
 } elseif($id == 'rollenUndBerechtigungenSuperadmin') {
 
-  if($_POST['auth'] == 'sAdm') {
+  $sAdmAuth = '';
+  $query = "SELECT * FROM superAdmins WHERE username LIKE'%$authSAdm%'";
+  $sAdmData = queryDB($conn, $query, "read");
+  if(!empty($sAdmData)) {
+    $sAdmAuth = 'sAdm';
+  }
+  
+  if($sAdmAuth == 'sAdm') {
 
     $query = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE display_superadmin = 1 AND accessibleTab.parent_id IS NOT NULL";
     $data = queryDB($conn, $query, "read");
@@ -448,9 +457,14 @@ elseif($id == "betrPar"){
         }
       return $branch;
     }
+
+    $tree = buildTree($data);
+
+    echo json_encode($tree);
+
   } else {
 
-    $query = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE display_superadmin = 1 AND accessibleTab.parent_id IS NOT NULL";
+    $query = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE accessibleTab.parent_id IS NOT NULL";
     $data = queryDB($conn, $query, "read");
     $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
 
@@ -499,16 +513,12 @@ elseif($id == "betrPar"){
         }
         return $branch;
     }
+
+    $tree = buildTree($data);
+    
+    echo json_encode($tree);
+   
   }
-
-  $tree = buildTree($data);
-
-  // echo '<pre>';
-  // echo json_encode($tree);
-  // print_r($tree);
-  // die;
-
-  echo json_encode($tree);
 }
 
 if($id != 'rollenUndBerechtigungenSuperadmin' && $id != 'mandantenBetrGruppen') {

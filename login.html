@@ -19,15 +19,15 @@
     <script type="text/javascript">
     //Wenn Login Button von form geklickt dann per ajax überprüfen ob gültig wenn ja auf mainP leiten
     $("#btnLogin").click(function () {
-        rollenUndBerechtigungenSuperadmin();
         userLogin();
+        
         //Gipscomm Logo ausblenden
         $("#Glogo, #logo").css("display", "none");
     });
 
     function userLogin() {
-        const user =
-            $("#user").val();
+        var getId;
+        const user = $("#user").val();
 
         ajaxPost('php/login.php')({user})
         .then(
@@ -45,8 +45,7 @@
                     ];
 
                 const valueField =
-                    name =>
-                    head(record)[name] ;
+                    name =>head(record)[name] ;
 
                 if ( equal( getHash( $("#pw").val() ) ) ( dbHash ) ) {
                     fieldnames
@@ -60,9 +59,10 @@
                 }
             }
         )
+        rollenUndBerechtigungenSuperadmin(user);
     }
 
-    function rollenUndBerechtigungenSuperadmin(){
+    function rollenUndBerechtigungenSuperadmin(user){
         $.ajax({
             type: "POST",
             async: !0,
@@ -71,18 +71,19 @@
                 id: "rollenUndBerechtigungenSuperadmin",
                 nameDB: "gipscomm",
                 userId:'',
-                auth: sessionStorage.getItem("position")
+                auth: user//sessionStorage.getItem("position")
                 },
             fail: function() {
                 alert("failed!!")
             },
             success: function(a) {
-                a = JSON.parse(a);
+                a = JSON.parse(a); 
                 localStorage.setItem('gipsAdm', JSON.stringify(a));
-                console.log(a);
+                console.log(a); 
             }            
         });   
     }
+
     /**
     *
     *  Secure Hash Algorithm (SHA256)
