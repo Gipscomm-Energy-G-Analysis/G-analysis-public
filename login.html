@@ -19,14 +19,13 @@
     <script type="text/javascript">
     //Wenn Login Button von form geklickt dann per ajax überprüfen ob gültig wenn ja auf mainP leiten
     $("#btnLogin").click(function () {
+        rollenUndBerechtigungenSuperadmin();
         userLogin();
-        
         //Gipscomm Logo ausblenden
         $("#Glogo, #logo").css("display", "none");
     });
 
     function userLogin() {
-        var getId;
         const user = $("#user").val();
 
         ajaxPost('php/login.php')({user})
@@ -59,10 +58,10 @@
                 }
             }
         )
-        rollenUndBerechtigungenSuperadmin(user);
     }
 
-    function rollenUndBerechtigungenSuperadmin(user){
+    function rollenUndBerechtigungenSuperadmin(){
+        var userNameData = $("#user").val();
         $.ajax({
             type: "POST",
             async: !0,
@@ -71,7 +70,7 @@
                 id: "rollenUndBerechtigungenSuperadmin",
                 nameDB: "gipscomm",
                 userId:'',
-                auth: user//sessionStorage.getItem("position")
+                auth: userNameData,
                 },
             fail: function() {
                 alert("failed!!")

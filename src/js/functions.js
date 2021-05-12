@@ -22946,7 +22946,6 @@ function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) 
         },
         success: function(a) {
             c = JSON.parse(a)
-            console.log(c);
             if(c.length != 0) {
                 $.each(c, function(i, item) {
                     if(roleId != 1) {

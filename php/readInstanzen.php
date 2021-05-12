@@ -11,8 +11,6 @@ $conn = connectToDB($nameDB);
 
 $id = $_POST['id'];
 
-$authSAdm = !empty($_POST['auth']) ? $_POST['auth'] : '';
-
 if($id == "gipscAdm"){
 
 $query = "SELECT * FROM gipscommAdmins";
@@ -399,18 +397,23 @@ elseif($id == "betrPar"){
 
 } elseif($id == 'rollenUndBerechtigungenSuperadmin') {
 
+  $authSAdm = $_POST['auth'];
+  
   $sAdmAuth = '';
-  $query = "SELECT * FROM superAdmins WHERE username LIKE'%$authSAdm%'";
-  $sAdmData = queryDB($conn, $query, "read");
+  $getsAdm = "SELECT * FROM superAdmins WHERE username LIKE '%$authSAdm%'";
+  $sAdmData = queryDB($conn, $getsAdm, "read");
   if(!empty($sAdmData)) {
     $sAdmAuth = 'sAdm';
   }
-  
-  if($sAdmAuth == 'sAdm') {
 
+  if(!empty($sAdmAuth)) {
     $query = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE display_superadmin = 1 AND accessibleTab.parent_id IS NOT NULL";
-    $data = queryDB($conn, $query, "read");
-    $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
+  } else {
+    $query = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE accessibleTab.parent_id IS NOT NULL";
+  }
+  $data = queryDB($conn, $query, "read");
+  $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
+
 
     function getSubMenu($userId) {
 
@@ -428,9 +431,12 @@ elseif($id == "betrPar"){
           }
           $rolePermission = "'" . implode ( "', '", $roleimp ) . "'";
 
-          $checkedQuery = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE display_superadmin = 1 AND tab_id IN (".$rolePermission.")";
+          if(!empty($sAdmAuth)) { 
+            $checkedQuery = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE display_superadmin = 1 AND tab_id IN (".$rolePermission.")";
+          } else {
+            $checkedQuery = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE tab_id IN (".$rolePermission.")";
+          }
           $checkedData = queryDB(connectToDB($_POST['nameDB']), $checkedQuery, "read") ;
-
         }
         return $checkedData;
     }
@@ -461,64 +467,6 @@ elseif($id == "betrPar"){
     $tree = buildTree($data);
 
     echo json_encode($tree);
-
-  } else {
-
-    $query = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE accessibleTab.parent_id IS NOT NULL";
-    $data = queryDB($conn, $query, "read");
-    $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
-
-    function getSubMenu($userId) {
-
-        $checkedData = '';
-
-        if(!empty($userId)) {
-          $roleQuery = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
-          $roleData = queryDB(connectToDB($_POST['nameDB']), $roleQuery, "read");
-        }
-        if(!empty($roleData)) {
-          foreach($roleData as $role) {
-            $roleExp = explode(',',$role['tab_id']);
-            $roleimp[] = implode(',', $roleExp);
-
-          }
-          $rolePermission = "'" . implode ( "', '", $roleimp ) . "'";
-
-          $checkedQuery = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE tab_id IN (".$rolePermission.")";
-          $checkedData = queryDB(connectToDB($_POST['nameDB']), $checkedQuery, "read") ;
-
-        }
-        return $checkedData;
-    }
-
-    function buildTree(array $data, $parentId = 0) {
-        $branch = array();
-        $userId = !empty($_POST['userId']) ? $_POST['userId'] : '';
-        foreach ($data as $element) {
-            if ($element['parent_id'] == $parentId) {
-              $checkedRole = getSubMenu($userId);
-              if(!empty($checkedRole)) {
-                foreach($checkedRole as $check) {
-                  if($check['tab_id'] == $element['tab_id']) {
-                    $element['checked'] = 'true';
-                  }
-                }
-              }
-              $children = buildTree($data, $element['id']);
-              if ($children) {
-                  $element['children'] = $children;
-              }
-                $branch[] = $element;
-            }
-        }
-        return $branch;
-    }
-
-    $tree = buildTree($data);
-    
-    echo json_encode($tree);
-   
-  }
 }
 
 if($id != 'rollenUndBerechtigungenSuperadmin' && $id != 'mandantenBetrGruppen') {
