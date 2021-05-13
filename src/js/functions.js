@@ -1203,6 +1203,7 @@ try {
                     //     id = 'manCheckbox'+item.man_ID;
                     //     $('#'+id).prop("checked", !0);
                     // });
+                    tblMandantengruppe.clear().draw();
                     if (0 < a.length)
                         for (n = 0; n < a.length; n++) tblMandantengruppe.row.add([a[n].man_ID, a[n].nameMan, a[n].dbName], n).draw(), tblMandantengruppe.column(0).visible(!1).draw();
                     else tblMandantengruppe.clear().draw()
@@ -2099,6 +2100,9 @@ try {
                             $("#tabGipscAdm").css("background-color", "#B9C0C7"), $("#infosGipscommAdmins").css("display", "none"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close"), $("#tabBetrGrp").trigger("click"))
                     }
                 })
+            })
+            $("#zugangAbbrechen").on("click", function() {
+                $("#gipscAdmZugang").dialog("close")
             })
         },
         letzteRechnungenInTbl = function(a) {
@@ -5050,7 +5054,7 @@ try {
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
                             })) :
-                            clearFields("manGrpHinz")
+                            clearFields("manGrpHinz");
                         }
                     });
                     break;
@@ -5102,7 +5106,7 @@ try {
                             id: "ben",
                             nameDB: "gipscomm",
                             ins: a,
-                            insID: e,
+                            insID: $("#manBID").val(),//e,
                             recordSet:record_set
                         },
                         fail: function() {
@@ -6318,7 +6322,7 @@ try {
                 }
             });
             else if ("betrGrpSpeichern" == a) {
-            var adminArr = new Array();
+                var adminArr = new Array();
                 $('span.item').each(function(){
                     var $span = $(this).attr('check-value');
                     if($span == 1) {
@@ -10493,6 +10497,31 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         colReorder: !0
     });
     tblGipscAdmSuchenlisteErstellen = $("#tblGipscAdmSuchenlisteErstellen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+    tblManGrpSuchenlisteErstellen = $("#tblManGrpSuchenlisteErstellen").DataTable({
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -22604,6 +22633,63 @@ function gipscAdmSuchenlisteErstellen() {
     })
 }
 
+function manGrpSuchenlisteErstellen() {
+    var a = itemSessionGet("nameDB");
+    //console.log(a);
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/readInstanzen.php",
+        data: {
+            id: "manGrp",
+            nameDB: "gipscomm",
+            betrGrpID: $('#betrGrpID').val()
+        },
+        success: function(e) {
+            console.log('Working fine');
+            e = json(e);
+            //console.log(e);
+
+            tblManGrpSuchenlisteErstellen.colReorder.reset();
+            tblManGrpSuchenlisteErstellen.clear().draw();
+            for (var c = 0; c < e.length; c++) {
+                //console.log(e[c].email);
+                tblManGrpSuchenlisteErstellen.row.add([
+                    c,
+                    e[c].name,
+                    e[c].kurz,
+                    e[c].mandantenIDs,
+                ]).draw();
+            }
+            $("#manGrpSuchenListeContainer").css("display", "block");
+            $("#manGrpSuchenListeContainer").dialog({
+                height: $(window).height() - .125 * $(window).height(),
+                width: $(window).width() - .125 * $(window).width(),
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function() {
+                    console.log('open popup');
+                    $("#tblManGrpSuchenlisteErstellen tbody tr").css("cursor", "pointer");
+                    $("#tblManGrpSuchenlisteErstellen tbody").on("dblclick", "tr", function() {
+                        var a = tblManGrpSuchenlisteErstellen.row(this).data();
+                        $("#manGrpSuchenListeContainer").dialog("close");
+                        readInstanzen("manGrpFirst", a[0])
+                        clearFields("manGrpHinz");
+                        tblMandantengruppe.clear().draw()
+                    })
+                }
+            })
+        }
+    })
+}
+
 /** Benutzer Delete Functionality */
 
 function benLoeschen() {
@@ -22661,6 +22747,8 @@ function betrGrpLoeschen() {
             success: function(a) {
                 clearFields("betrGrpHinz");
                 clearFields("sAdmHinz");
+                betrGrpEinlesen();
+                mandantenAuswahllisteErstellenCheckbox('', '');
             }
         });
     }
@@ -22686,13 +22774,26 @@ function sAdmLoeschen() {
     }
     return false;
 }
-// Roles and Permissions Data get from the database
-$(document).ready(function() {
-    //$('div#gipscommRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('gipsAdm'));
-    $('div#superadminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('sAdm'));
-    $('div#adminRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('adm'));
-    $('div#benutzerRollenUndBerechtigungenSuperadmin').html(localStorage.getItem('ben'));
-});
+
+function manGrpLoeschen() {
+    if (confirm("MandantenGruppen löschen?")) {
+        $.ajax({
+            type: "POST",
+            async: !0,
+            url: "php/instanzintoDb.php",
+            data: {
+                id: 'manGrp',
+                modus: "delete",
+                nameDB: 'gipscomm',
+                manGrpID: $("#manGrpID").val()
+            },
+            success: function(a) {
+                clearFields("manGrpHinz");
+            }
+        });
+    }
+    return false;
+}
 
 
 // Roles and Permission Ids According to Users.

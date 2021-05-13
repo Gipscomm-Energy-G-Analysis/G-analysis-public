@@ -1489,6 +1489,10 @@ $(document).ready(function() {
     $("#gipscAdmSuchen").click(function() {
         gipscAdmSuchenlisteErstellen()
     });
+    $("#manGrpSuchen").click(function() {
+        manGrpSuchenlisteErstellen()
+    });
+    
 
     // Save Roles and Permissions
     // $("#gipscommRollenUndBerechtigungen").click(function() {
@@ -7996,4 +8000,39 @@ $("#betrGrpLoeschen").on('click', function() {
 /** Superadmin Delete Functionality */
 $("#sAdmLoeschen").on('click', function() {
     sAdmLoeschen();
+});
+
+/** MandantenGruppen Delete Functionality */
+$("#manGrpLoeschen").on('click', function() {
+    manGrpLoeschen();
+});
+
+$("#betrGrpHinz").on('click', function() {
+    mandantenAuswahllisteErstellenCheckbox('', '')
+});
+
+$("#sAdmHinz").on('click', function(){
+    $( "div#superadmincommTreeview" ).empty();
+    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+    var tw = new TreeView(
+        treeObject,
+        {showAlwaysCheckBox:true,fold:false});
+    document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
+});
+
+$("#admHinz").on('click', function(){
+    $( "div#admincommTreeview" ).empty();
+    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+    var tw = new TreeView(
+        treeObject,
+        {showAlwaysCheckBox:true,fold:false});
+    document.getElementById("admincommTreeview").appendChild( tw.root	 )
+});
+$("#benHinz").on('click', function(){
+    $( "div#benutzerTreeview" ).empty();
+    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+    var tw = new TreeView(
+        treeObject,
+        {showAlwaysCheckBox:true,fold:false});
+    document.getElementById("benutzerTreeview").appendChild( tw.root	 )
 });
