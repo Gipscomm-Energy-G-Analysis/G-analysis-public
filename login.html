@@ -51,7 +51,10 @@
                     .map(
                         name => itemSessionSet(name)( valueField(name) )
                     )
-                    window.open("main.html","_self");
+                    setTimeout(function(){ 
+                        window.open("main.html","_self");
+                     }, 1000);
+                    
                 }
                 else {
                     alert("Ihr Benutzername oder Passwort ist falsch!");
