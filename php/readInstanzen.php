@@ -397,11 +397,13 @@ elseif($id == "betrPar"){
 
 } elseif($id == 'rollenUndBerechtigungenSuperadmin') {
 
-  $authSAdm = $_POST['auth'];
+  $authSAdm = !empty($_POST['auth']) ? $_POST['auth'] : '';
   
   $sAdmAuth = '';
-  $getsAdm = "SELECT * FROM superAdmins WHERE username LIKE '%$authSAdm%'";
-  $sAdmData = queryDB($conn, $getsAdm, "read");
+  if(!empty($authSAdm)) {
+    $getsAdm = "SELECT * FROM superAdmins WHERE username LIKE '%$authSAdm%'";
+    $sAdmData = queryDB($conn, $getsAdm, "read");
+  }
   if(!empty($sAdmData)) {
     $sAdmAuth = 'sAdm';
   }
