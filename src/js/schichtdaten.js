@@ -1,5 +1,6 @@
 // Depends on fpCore.js
 // Depends on https://unpkg.com/dexie@latest/dist/dexie.js
+// idxDB is initialized in main.html
 
 "use strict"
 
@@ -268,7 +269,9 @@ const scpSchichtdaten =
             const dataIntoIDB =
                 store =>
                 data =>
-                idxDB[store].bulkPut(data[store])
+                ( idxDB[store].clear()
+                , idxDB[store].bulkPut(data[store])
+                )
 
             this.populateIndexedDB =
                 () =>
@@ -310,6 +313,7 @@ const scpSchichtdaten =
                     .then(
                         schichtModell => {
 
+                            $("#schtMdlID").val(schichtModell.schtMdl_ID)
                             $("#modellBezSchtDat").val(schichtModell.modellBez)
                             $("#anzahlSchtDat").val(schichtModell.anzahl)
                             $("#anzahlSchtDat").trigger("change")
@@ -323,6 +327,20 @@ const scpSchichtdaten =
                             querySchichtenDataIDB(idx)
                             .then(setSchichten)
                         }
+                    )
+                }
+
+            this.deleteSchichtModell =
+                () => {
+                    const nameDB = $("#nameDB").val()
+                    const schtMdlID = $("#schtMdlID").val()
+
+                    ajaxPost("php/deleteSchichtdaten.php")({nameDB, schtMdlID})
+                    .then(
+                        () =>
+                        ( alert("erfolgreich gelöscht!")
+                        , this.populateIndexedDB()
+                        )
                     )
                 }
         }
