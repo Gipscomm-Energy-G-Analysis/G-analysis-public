@@ -5,14 +5,6 @@ var arrStoreDates = [];
 var anlageObj={};
 var allPrevVal = [];
 $(document).ready(function() {
-    idxDB = new Dexie($("#nameDB").val())
-    idxDB
-    .version(idxDB._versions.length === 0 ? 1 : idxDB._versions.length)
-    .stores(
-        { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, bisEndeOffen, notiz"
-        , schichten : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
-        }
-    )
     var c = this;
     if(sessionStorage.getItem("position") == 'gipsAdm') {
         var roleId = 1;

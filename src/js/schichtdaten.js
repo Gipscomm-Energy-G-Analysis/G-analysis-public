@@ -270,10 +270,6 @@ const scpSchichtdaten =
                 data =>
                 idxDB[store].bulkPut(data[store])
 
-            const queryData =
-                () =>
-                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
-
             this.populateIndexedDB =
                 () =>
                 ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
@@ -284,14 +280,16 @@ const scpSchichtdaten =
                     }
                 )
 
+            this.querySchichtModellDataIDB =
+                idx =>
+                idxDB.schichtModelle.get(idx)
+
+            this.querySchichtenDataIDB =
+                () =>
+                idxDB.schichten
+
             this.readIntoFormFields =
-                data =>
-                [ "modellBez"
-                , "anzahl"
-                , "gueltigVon"
-                , "gueltigBis"
-                , "notiz"
-                ]
-                // SchtDat
+                idx => {
+                }
         }
     )
