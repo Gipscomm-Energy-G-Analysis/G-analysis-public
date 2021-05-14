@@ -343,5 +343,57 @@ const scpSchichtdaten =
                         )
                     )
                 }
+
+            const querySchichtModelleDataIDB =
+                () =>
+                idxDB.schichtModelle.toArray()
+
+            this.searchSchichtModell =
+                () => {
+                    const prepareTableData =
+                        records =>
+                        records.map(
+                            a =>
+                            [ a.schtMdl_ID
+                            , a.modellBez
+                            , a.anzahl
+                            , a.gueltigVon
+                            , a.gueltigBis
+                            , a.bisEndeOffen
+                            ]
+                        )
+
+                    const fillSchichtmodelleTbl =
+                        data => {
+                            clearTable(tblSchichtmodellSuchen)
+                            intoTable(tblSchichtmodellSuchen)(prepareTableData(data))
+                        }
+
+                    idxDB.schichtModelle.toArray()
+                    .then(fillSchichtmodelleTbl)
+
+                    $("#schichtmodellSuchenContainer").dialog({
+                        height: 203,
+                        width: 329,
+                        resize: "auto",
+                        show: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        hide: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        modal: true,
+                        open: function() {
+                            $("#tblSchichtmodellSuchen tbody tr").css("cursor", "pointer");
+                            $("#tblSchichtmodellSuchen tbody").off("dblclick", "tr");
+                            $("#tblSchichtmodellSuchen tbody").on("dblclick", "tr",
+                            function() {
+                                $("#schichtmodellSuchenContainer").dialog("close")
+                            })
+                        }
+                    })
+                }
         }
     )
