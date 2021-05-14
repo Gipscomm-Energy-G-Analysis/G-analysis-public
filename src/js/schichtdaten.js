@@ -280,19 +280,50 @@ const scpSchichtdaten =
                     }
                 )
 
-            this.querySchichtModellDataIDB =
+            const querySchichtModellDataIDB =
                 idx =>
                 idxDB.schichtModelle.get(idx)
 
-            this.querySchichtenDataIDB =
+            const querySchichtenDataIDB =
                 idx =>
                 idxDB.schichten
                 .where("schtMdl_ID")
                 .equals(idx)
                 .toArray()
 
+            const setSchicht =
+                (schicht, i) =>
+                [ [`bezeichnungScht${incr(i)}Dat`, "bezeichnung"]
+                , [`uhrzeitVonScht${incr(i)}Dat`, "uhrzeitVon"]
+                , [`uhrzeitBisScht${incr(i)}Dat`, "uhrzeitBis"]
+                , [`tagVonScht${incr(i)}Dat`, "tagVon"]
+                , [`tagBisScht${incr(i)}Dat`, "tagBis"]
+                ].forEach(a => $(`#${a[0]}`).val(schicht[a[1]]))
+
+            const setSchichten =
+                schichten =>
+                schichten.forEach(setSchicht)
+
             this.readIntoFormFields =
                 idx => {
+                    querySchichtModellDataIDB(idx)
+                    .then(
+                        schichtModell => {
+
+                            $("#modellBezSchtDat").val(schichtModell.modellBez)
+                            $("#anzahlSchtDat").val(schichtModell.anzahl)
+                            $("#anzahlSchtDat").trigger("change")
+                            $("#gueltigVonSchtDat").val(schichtModell.gueltigVon)
+                            $("#gueltigBisSchtDat").val(schichtModell.gueltigBis)
+                            $("#bisEndeOffenSchtDat").prop("checked", schichtModell.bisEndeOffen)
+                            $("#notizSchtDat").val(schichtModell.notiz)
+
+                            this.endeOffenOrBis()
+
+                            querySchichtenDataIDB(idx)
+                            .then(setSchichten)
+                        }
+                    )
                 }
         }
     )
