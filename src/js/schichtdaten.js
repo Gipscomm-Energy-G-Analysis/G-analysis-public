@@ -285,8 +285,11 @@ const scpSchichtdaten =
                 idxDB.schichtModelle.get(idx)
 
             this.querySchichtenDataIDB =
-                () =>
+                idx =>
                 idxDB.schichten
+                .where("schtMdl_ID")
+                .equals(idx)
+                .toArray()
 
             this.readIntoFormFields =
                 idx => {
