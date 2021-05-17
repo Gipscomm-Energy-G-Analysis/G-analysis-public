@@ -89,7 +89,7 @@ elseif($id == "sAdm"){
 
 }elseif($id == "manGrp"){
   $betrGrpID = $_POST['betrGrpID'];
-  $query = "SELECT * FROM mandantenGruppen WHERE betrGrp_ID = '$betrGrpID'";
+  $query = "SELECT * FROM mandantenGruppen WHERE betrGrp_ID = '$betrGrpID' AND deleted_at IS NULL";
 }
 
 elseif($id == "tblMan"){

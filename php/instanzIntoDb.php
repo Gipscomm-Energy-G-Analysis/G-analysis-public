@@ -232,22 +232,35 @@ elseif($id == "betrGrp") {
 }
 elseif($id == "manGrp") {
     $modus = $_POST['modus'] ;
-
-    $name = $_POST['name'] ;
-    $kurz = $_POST['kurz'] ;
-    $notiz = $_POST['notiz'] ;
-    $mandantenIDs = $_POST['mandatenIDs'] ;
     $manGrpID = $_POST['manGrpID'] ;
 
-    if(empty($manGrpID)) {
-        $betrGrpID = $_POST['betrGrpID'] ;
+    if($modus != "delete") {
+      if(empty($manGrpID)) {
+          $betrGrpID = $_POST['betrGrpID'] ;
+          $name = $_POST['name'] ;
+          $kurz = $_POST['kurz'] ;
+          $notiz = $_POST['notiz'] ;
+          $mandantenIDs = $_POST['mandatenIDs'] ;
 
-        $tsql = "INSERT INTO mandantenGruppen(betrGrp_ID,name,kurz, notiz, mandantenIDs) " ;
-        $tsql .= "VALUES ('$betrGrpID','$name', '$kurz','$notiz','$mandantenIDs') " ;
-    }
-    else {
-        $tsql =  "UPDATE mandantenGruppen SET name = '$name',kurz = '$kurz',notiz = '$notiz', mandantenIDs = '$mandantenIDs' " ;
-        $tsql .= "WHERE manGrp_ID = '$manGrpID' " ;
+          $tsql = "INSERT INTO mandantenGruppen(betrGrp_ID,name,kurz, notiz, mandantenIDs) " ;
+          $tsql .= "VALUES ('$betrGrpID','$name', '$kurz','$notiz','$mandantenIDs') " ;
+      } else {
+          $name = $_POST['name'] ;
+          $kurz = $_POST['kurz'] ;
+          $notiz = $_POST['notiz'] ;
+          $mandantenIDs = $_POST['mandatenIDs'] ;
+
+          $tsql =  "UPDATE mandantenGruppen SET name = '$name',kurz = '$kurz',notiz = '$notiz', mandantenIDs = '$mandantenIDs' " ;
+          $tsql .= "WHERE manGrp_ID = '$manGrpID' " ;
+      }
+    } else {
+      $dateTime = date("Y-m-d H:i:s");
+      if(!empty($manGrpID)) {
+        $tsql = "UPDATE mandantenGruppen SET deleted_at = '$dateTime' ";
+        $tsql .= "WHERE manGrp_ID = '$manGrpID'";
+        //queryDB( $conn, $dtsql, "write" );
+        echo "Daten erfolgreich gespeichert";
+      }
     }
 }
 elseif($id == "adm") {
