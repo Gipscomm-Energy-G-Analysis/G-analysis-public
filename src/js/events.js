@@ -1645,12 +1645,19 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    // Arrow Navigation Schichtdaten
+    // Schichtdaten
     // See schichtdaten.js
+    //
+    // Arrow Navigation
+    //
     $("#schtDatFirst").click(scpSchichtdaten.readFirst)
     $("#schtDatPrevious").click(scpSchichtdaten.readPrevious)
     $("#schtDatNext").click(scpSchichtdaten.readNext)
     $("#schtDatLast").click(scpSchichtdaten.readLast)
+    //
+    // Search Navigation
+    //
+    $("#schtDatSuchen").click(scpSchichtdaten.searchSchichtModell)
     //
     $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "gipscAdmPrevious" == this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) :

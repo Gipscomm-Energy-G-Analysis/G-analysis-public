@@ -1725,6 +1725,8 @@ try {
             eRngNavID =
             iMwNavID =
             zpNavID = 0
+
+            scpSchichtdaten.populateIndexedDB()
         },
         mandantenEinlesen = function(a, b, e) {
             $.ajax({
