@@ -40,7 +40,7 @@ Object
         this.last = arr => arr[arr.length - 1];
         this.flatten = arr => arr.reduce((acc, val) => acc.concat(val), []);
         this.altFuse = arr1 => arr2 => this.flatten(arr1.map((x, i) => (i <= arr2.length - 1) ? [x, arr2[i]] : x));
-        this.incr = a => a + 1,
+        this.incr = a => Number(a) + 1,
         this.decr = a => a - 1,
         this.sum = (a, b, castNum = false) => castNum ? Number(a) + Number(b) : a + b;
         this.subtract = (a, b, castNum = false) => castNum ? Number(a) - Number(b) : a - b;

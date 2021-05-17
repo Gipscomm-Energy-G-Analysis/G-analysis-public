@@ -200,8 +200,7 @@ const scpSchichtdaten =
             const saveFormData =
                 formData =>
                 ajaxPost("php/instanzIntoDB.php")(formData)
-                .then(console.log)
-                // .then(result => alert(datensatzGespeichert(result)))
+                .then(result => alert(datensatzGespeichert(result)))
 
             const nonCompleteDataDialog =
                 formData =>
@@ -247,7 +246,8 @@ const scpSchichtdaten =
 
             const clearGeneralFields =
                 () =>
-                [ "modellBezSchtDat"
+                [ "schtMdlID"
+                , "modellBezSchtDat"
                 , "gueltigVonSchtDat"
                 , "notizSchtDat"
                 ].forEach(clearField)
@@ -283,9 +283,14 @@ const scpSchichtdaten =
                     }
                 )
 
+            const querySchichtModelleDataIDB =
+                () =>
+                idxDB.schichtModelle.toArray()
+
             const querySchichtModellDataIDB =
                 idx =>
-                idxDB.schichtModelle.get(idx)
+                querySchichtModelleDataIDB()
+                .then(schichtModelle => schichtModelle[idx])
 
             const querySchichtenDataIDB =
                 idx =>
@@ -307,12 +312,13 @@ const scpSchichtdaten =
                 schichten =>
                 schichten.forEach(setSchicht)
 
-            this.readIntoFormFields =
+            const readIntoFormFields =
                 idx => {
                     querySchichtModellDataIDB(idx)
                     .then(
                         schichtModell => {
 
+                            $("#schtMdlIdx").val(idx)
                             $("#schtMdlID").val(schichtModell.schtMdl_ID)
                             $("#modellBezSchtDat").val(schichtModell.modellBez)
                             $("#anzahlSchtDat").val(schichtModell.anzahl)
@@ -324,11 +330,41 @@ const scpSchichtdaten =
 
                             this.endeOffenOrBis()
 
-                            querySchichtenDataIDB(idx)
+                            querySchichtenDataIDB(schichtModell.schtMdl_ID)
                             .then(setSchichten)
                         }
                     )
                 }
+
+            this.readFirst =
+                () =>
+                readIntoFormFields(0)
+
+            this.readPrevious =
+                () => {
+                    if ($("#schtMdlIdx").val() > 0) {
+                        readIntoFormFields(decr($("#schtMdlIdx").val()))
+                    }
+                }
+
+            this.readNext =
+                () =>
+                idxDB.schichtModelle.count()
+                .then(
+                    count => {
+                        if ($("#schtMdlIdx").val() < decr(count)) {
+                            readIntoFormFields(incr($("#schtMdlIdx").val()))
+                        }
+                    }
+                )
+
+            this.readLast =
+                () =>
+                idxDB.schichtModelle.count()
+                .then(
+                    count =>
+                    readIntoFormFields(decr(count))
+                )
 
             this.deleteSchichtModell =
                 () => {
@@ -340,19 +376,16 @@ const scpSchichtdaten =
                         () =>
                         ( alert("erfolgreich gelöscht!")
                         , this.populateIndexedDB()
+                        , this.readFirst()
                         )
                     )
                 }
 
-            const querySchichtModelleDataIDB =
-                () =>
-                idxDB.schichtModelle.toArray()
-
             const prepareTableData =
                 records =>
                 records.map(
-                    a =>
-                    [ a.schtMdl_ID
+                    (a, i) =>
+                    [ i
                     , a.modellBez
                     , a.anzahl
                     , a.gueltigVon
@@ -370,7 +403,7 @@ const scpSchichtdaten =
             this.searchSchichtModell =
                 () => {
 
-                    idxDB.schichtModelle.toArray()
+                    querySchichtModelleDataIDB()
                     .then(fillSchichtmodelleTbl)
 
                     $("#schichtmodellSuchenContainer").dialog({
@@ -395,7 +428,7 @@ const scpSchichtdaten =
                                 const selectedRecord =
                                     tblSchichtmodellSuchen.row(this).data()
 
-                                scpSchichtdaten.readIntoFormFields(head(selectedRecord))
+                                readIntoFormFields(head(selectedRecord))
 
                                 $("#schichtmodellSuchenContainer").dialog("close")
                             })

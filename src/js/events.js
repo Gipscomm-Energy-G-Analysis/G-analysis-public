@@ -1645,6 +1645,13 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
+    // Arrow Navigation Schichtdaten
+    // See schichtdaten.js
+    $("#schtDatFirst").click(scpSchichtdaten.readFirst)
+    $("#schtDatPrevious").click(scpSchichtdaten.readPrevious)
+    $("#schtDatNext").click(scpSchichtdaten.readNext)
+    $("#schtDatLast").click(scpSchichtdaten.readLast)
+    //
     $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "gipscAdmPrevious" == this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) :
         "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
@@ -1845,7 +1852,7 @@ $(document).ready(function() {
         $(".manGrpPfad").val($(this).val());
 
         var a = $(".manGrpPfad  option").eq($(".manGrpPfad").prop("selectedIndex")).prop("id").split("_");
-        
+
         $("#manOderManGrp").val(a[0]);
 
         if (head(a) === "optManGrp") {
