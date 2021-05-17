@@ -348,26 +348,27 @@ const scpSchichtdaten =
                 () =>
                 idxDB.schichtModelle.toArray()
 
+            const prepareTableData =
+                records =>
+                records.map(
+                    a =>
+                    [ a.schtMdl_ID
+                    , a.modellBez
+                    , a.anzahl
+                    , a.gueltigVon
+                    , a.gueltigBis
+                    , a.bisEndeOffen
+                    ]
+                )
+
+            const fillSchichtmodelleTbl =
+                data => {
+                    clearTable(tblSchichtmodellSuchen)
+                    intoTable(tblSchichtmodellSuchen)(prepareTableData(data))
+                }
+
             this.searchSchichtModell =
                 () => {
-                    const prepareTableData =
-                        records =>
-                        records.map(
-                            a =>
-                            [ a.schtMdl_ID
-                            , a.modellBez
-                            , a.anzahl
-                            , a.gueltigVon
-                            , a.gueltigBis
-                            , a.bisEndeOffen
-                            ]
-                        )
-
-                    const fillSchichtmodelleTbl =
-                        data => {
-                            clearTable(tblSchichtmodellSuchen)
-                            intoTable(tblSchichtmodellSuchen)(prepareTableData(data))
-                        }
 
                     idxDB.schichtModelle.toArray()
                     .then(fillSchichtmodelleTbl)
