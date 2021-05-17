@@ -374,8 +374,8 @@ const scpSchichtdaten =
                     .then(fillSchichtmodelleTbl)
 
                     $("#schichtmodellSuchenContainer").dialog({
-                        height: 203,
-                        width: 329,
+                        height: 450,
+                        width: 875,
                         resize: "auto",
                         show: {
                             effect: "fade",
@@ -391,6 +391,12 @@ const scpSchichtdaten =
                             $("#tblSchichtmodellSuchen tbody").off("dblclick", "tr");
                             $("#tblSchichtmodellSuchen tbody").on("dblclick", "tr",
                             function() {
+
+                                const selectedRecord =
+                                    tblSchichtmodellSuchen.row(this).data()
+
+                                scpSchichtdaten.readIntoFormFields(head(selectedRecord))
+
                                 $("#schichtmodellSuchenContainer").dialog("close")
                             })
                         }
