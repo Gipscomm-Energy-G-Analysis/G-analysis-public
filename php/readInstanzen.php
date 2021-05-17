@@ -89,7 +89,7 @@ elseif($id == "sAdm"){
 
 }elseif($id == "manGrp"){
   $betrGrpID = $_POST['betrGrpID'];
-  $query = "SELECT * FROM mandantenGruppen WHERE betrGrp_ID = '$betrGrpID' AND deleted_at IS NULL";
+  $query = "SELECT * FROM mandantenGruppen WHERE deleted_at IS NULL AND betrGrp_ID = '$betrGrpID'";
 }
 
 elseif($id == "tblMan"){
@@ -377,7 +377,7 @@ elseif($id == "betrPar"){
 
   $man_ID = $_POST['manID'];
 
-  $manData = "SELECT * FROM mandanten WHERE nameMan LIKE '%$man_ID%' ";
+  $manData = "SELECT * FROM mandanten WHERE nameMan = '$man_ID' ";
   $data = queryDB($conn, $manData, "read");
 
   $manId = $data[0]['man_ID'];
@@ -401,12 +401,18 @@ elseif($id == "betrPar"){
   
   $sAdmAuth = '';
   if(!empty($authSAdm)) {
-    $getsAdm = "SELECT * FROM superAdmins WHERE username LIKE '%$authSAdm%'";
+    $getsAdm = "SELECT * FROM superAdmins WHERE username = '$authSAdm'";
     $sAdmData = queryDB($conn, $getsAdm, "read");
+    $userID = $sAdmData[0]['sAdm_ID'];
   }
   if(!empty($sAdmData)) {
     $sAdmAuth = 'sAdm';
   }
+
+  // if(!empty($sAdmAuth)) {
+  //   $rQuery = "SELECT * FROM rolePermission WHERE user_id = '$userID' AND tab_id IS NOT NULL";
+  //   $rData = queryDB(connectToDB($_POST['nameDB']), $roleQuery, "read");
+  // }
 
   if(!empty($sAdmAuth)) {
     $query = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE display_superadmin = 1 AND accessibleTab.parent_id IS NOT NULL";

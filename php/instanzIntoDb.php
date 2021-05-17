@@ -172,7 +172,7 @@ elseif($id == "betrGrp") {
       $sAdmID = $_POST['sAdmID'] ;
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($sAdmID)) {
-        $sAdmsql .= "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE sAdm_ID = '$sAdmID'";
+        $sAdmsql = "UPDATE superAdmins SET deleted_at = '$dateTime' WHERE sAdm_ID = '$sAdmID'";
         queryDB( $conn, $sAdmsql, "write" );
         echo "Daten erfolgreich gespeichert";
       }
@@ -256,9 +256,8 @@ elseif($id == "manGrp") {
     } else {
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($manGrpID)) {
-        $tsql = "UPDATE mandantenGruppen SET deleted_at = '$dateTime' ";
-        $tsql .= "WHERE manGrp_ID = '$manGrpID'";
-        //queryDB( $conn, $dtsql, "write" );
+        $tsql = "UPDATE mandantenGruppen SET deleted_at = '$dateTime' WHERE manGrp_ID = '$manGrpID' ";
+    
         echo "Daten erfolgreich gespeichert";
       }
     }
@@ -299,8 +298,8 @@ elseif($id == "adm") {
       $admID = $_POST['admID'];
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($admID)) {
-        $admtsql =  "UPDATE admins SET deleted_at = '$dateTime'";
-        $admtsql .= "WHERE adm_ID = '$admID'";
+        $admtsql = "UPDATE admins SET deleted_at = '$dateTime' WHERE adm_ID = '$admID'";
+
         queryDB( $conn, $admtsql, "write" );
         echo "Daten erfolgreich gespeichert";
       }
@@ -395,8 +394,7 @@ elseif($id == "ben") {
       $benID = $_POST['benID'];
       $dateTime = date("Y-m-d H:i:s");
       if(!empty($benID)) {
-        $bentsql =  "UPDATE benutzer SET deleted_at = '$dateTime'";
-        $bentsql .= "WHERE ben_ID = '$benID' ";
+        $bentsql =  "UPDATE benutzer SET deleted_at = '$dateTime' WHERE ben_ID = '$benID'";
         queryDB( $conn, $bentsql, "write" );
         echo "Daten erfolgreich gespeichert";
       }
