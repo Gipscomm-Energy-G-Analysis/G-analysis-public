@@ -343,5 +343,64 @@ const scpSchichtdaten =
                         )
                     )
                 }
+
+            const querySchichtModelleDataIDB =
+                () =>
+                idxDB.schichtModelle.toArray()
+
+            const prepareTableData =
+                records =>
+                records.map(
+                    a =>
+                    [ a.schtMdl_ID
+                    , a.modellBez
+                    , a.anzahl
+                    , a.gueltigVon
+                    , a.gueltigBis
+                    , a.bisEndeOffen
+                    ]
+                )
+
+            const fillSchichtmodelleTbl =
+                data => {
+                    clearTable(tblSchichtmodellSuchen)
+                    intoTable(tblSchichtmodellSuchen)(prepareTableData(data))
+                }
+
+            this.searchSchichtModell =
+                () => {
+
+                    idxDB.schichtModelle.toArray()
+                    .then(fillSchichtmodelleTbl)
+
+                    $("#schichtmodellSuchenContainer").dialog({
+                        height: 450,
+                        width: 875,
+                        resize: "auto",
+                        show: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        hide: {
+                            effect: "fade",
+                            duration: 500
+                        },
+                        modal: true,
+                        open: function() {
+                            $("#tblSchichtmodellSuchen tbody tr").css("cursor", "pointer");
+                            $("#tblSchichtmodellSuchen tbody").off("dblclick", "tr");
+                            $("#tblSchichtmodellSuchen tbody").on("dblclick", "tr",
+                            function() {
+
+                                const selectedRecord =
+                                    tblSchichtmodellSuchen.row(this).data()
+
+                                scpSchichtdaten.readIntoFormFields(head(selectedRecord))
+
+                                $("#schichtmodellSuchenContainer").dialog("close")
+                            })
+                        }
+                    })
+                }
         }
     )

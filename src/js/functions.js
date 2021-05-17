@@ -1630,7 +1630,7 @@ try {
             }
         },
         manGrpInDropbox = function(a) {
-            
+
             $(".manGrpPfad").empty();
             $(".manGrpPfad").append("<optgroup label='Mandantengruppen'>");
             $(".manGrpPfad").append("</optgroup>");
@@ -1644,7 +1644,7 @@ try {
                     var dbname = value.nameMan;
                     $(".manGrpPfad optgroup").eq(1).append("<option data-id='"+value.man_ID+"' id='optMan_" + m + "'>" +
                     dbname + "</option>"), $(".manGrpPfad optgroup").eq(3).append("<option data-id='"+value.man_ID+"' id='optMan_" + m + "'>" + dbname + "</option>")
-                }); 
+                });
             });
 
             // for (m = 0; m < a; m++) $(".manGrpPfad optgroup").eq(1).append("<option id='optMan_" + m + "'>" +
@@ -5020,11 +5020,11 @@ try {
                         },
                         success: function(a) {
                             a = $.parseJSON(a);
-                            
+
                             if(b == -1) {
                                 b = a.length - 1;
                             }
-                           
+
                             0 < a.length ? ($("#sAdmCount").val(a.length), $("#sAdmID").val(a[b].sAdm_ID), $("#titelSAdm").val(a[b].titelSAdm), $("#nameSAdm").val(a[b].nameSAdm), $("#vornameSAdm").val(a[b].vornameSAdm), $("#emailSAdm").val(a[b].emailSAdm), $("#telefonSAdm").val(a[b].telefonSAdm), $("#faxSAdm").val(a[b].faxSAdm), $("#mobiltelefonSAdm").val(a[b].mobiltelefonSAdm),
                                 $("#benutzernameSAdm").val(a[b].username), sAdmGetRollenUndBerechtigungen()) : clearFields("sAdmHinz")
                         }
@@ -10371,6 +10371,33 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         bAutoWidth: !1,
         colReorder: !0
     });
+    tblSchichtmodellSuchen = $("#tblSchichtmodellSuchen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+                extend: "copy",
+                text: "Kopieren",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            },
+            {
+                extend: "csv",
+                text: "CSV-Export",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            }, {
+                extend: "print",
+                text: "Drucken",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            }
+        ],
+        pageLength: 20,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
     tblAnlagen = $("#anlagenListe").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -11390,10 +11417,10 @@ const getKnzTab =
     (_, i) =>
     $("#btnTabKnzCont li").eq(i)
 
-const getAllKnzTabs = 
+const getAllKnzTabs =
     () =>
     array($("#btnTabKnzCont li").length)()()
-    .map(getKnzTab) 
+    .map(getKnzTab)
 
 const hiddenKnzTab =
     a =>
@@ -11414,13 +11441,13 @@ const addKennzahl =
 
 const activateNewKnzTab =
     () => {
-        const tabText = 
+        const tabText =
             last(
                 getAllKnzTabs()
                 .filter(visibleKnzTab)
             ).text()
-        
-        const hrefSelector = 
+
+        const hrefSelector =
                 $(`[href="#tabs-${tabText.split(" ")[1]}_knzForms"]`)
 
         hrefSelector.trigger("click")
@@ -23091,7 +23118,7 @@ function mandantenSuperadminCheckedCheckbox() {
                 mandantenIds = '';
                 mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds)
             }
-            
+
         }
     });
 }
@@ -23112,7 +23139,7 @@ function mandantenSelectDBs(handleData) {
             handleData(c);
             if(c.length != 0) {
             }
-            
+
         }
     });
 }
@@ -23136,7 +23163,7 @@ function mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds) {
             if(a.length != 0) {
                 $.each(a, function(i, item){
                             var checked = false;
-                            
+
                             for(var i=0; i<res1.length; i++){
                                 var id = res1[i];
                                 if(id == item.man_ID){
