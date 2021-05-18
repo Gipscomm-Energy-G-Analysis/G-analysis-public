@@ -147,7 +147,7 @@ const scpSchichtdaten =
                 anzahl => (
                     { id :"schtDat"
                     , nameDB : getFieldValue("nameDB")
-                    , modus : savedNew ? "new" : "save"
+                    , modus : getFieldValue("schtMdlState")
                     , schtMdlID : getFieldValue("schtMdlID")
                     , liegID : getFieldValue("liegID")
                     , modellBezSchtDat : getFieldValue("modellBezSchtDat")
@@ -260,10 +260,15 @@ const scpSchichtdaten =
                 , $("#bisEndeOffenSchtDat").trigger("click")
                 )
 
+            const setState =
+                state =>
+                $("#schtMdlState").val(state)
+
             this.clearFields =
                 () =>
                 ( clearGeneralFields()
                 , resetAnzahlAndEndeOffen()
+                , setState("new")
                 )
 
             const dataIntoIDB =
@@ -332,6 +337,8 @@ const scpSchichtdaten =
 
                             querySchichtenDataIDB(schichtModell.schtMdl_ID)
                             .then(setSchichten)
+
+                            setState("save")
                         }
                     )
                 }
