@@ -143,7 +143,7 @@ const scpSchichtdaten =
                 .map(getSchicht)
 
             // Returns an object that contains the form data
-            this.getFormData =
+            const getFormData =
                 anzahl => (
                     { id :"schtDat"
                     , nameDB : getFieldValue("nameDB")
@@ -197,10 +197,28 @@ const scpSchichtdaten =
                     return !retVal
                 }
 
+            const dataIntoIDB =
+                store =>
+                data =>
+                ( idxDB[store].clear()
+                , idxDB[store].bulkPut(data[store])
+                )
+
+            this.populateIndexedDB =
+                () =>
+                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
+                .then(
+                    result => {
+                        dataIntoIDB("schichtModelle")(result)
+                        dataIntoIDB("schichten")(result)
+                    }
+                )
+
             const saveFormData =
                 formData =>
                 ajaxPost("php/instanzIntoDB.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
+                .then(this.populateIndexedDB)
 
             const nonCompleteDataDialog =
                 formData =>
@@ -234,11 +252,15 @@ const scpSchichtdaten =
                     }
                 })
 
-            this.validateFormData =
-                formData =>
-                !completeFormData(formData) ?
-                nonCompleteDataDialog(formData) :
-                saveFormData(formData)
+            this.validateAndSaveFormData =
+                () => {
+                    const formData =
+                        getFormData($("#anzahlSchtDat").val())
+
+                    !completeFormData(formData) ?
+                    nonCompleteDataDialog(formData) :
+                    saveFormData(formData)
+                }
 
             const clearField =
                 field =>
@@ -269,23 +291,6 @@ const scpSchichtdaten =
                 ( clearGeneralFields()
                 , resetAnzahlAndEndeOffen()
                 , setState("new")
-                )
-
-            const dataIntoIDB =
-                store =>
-                data =>
-                ( idxDB[store].clear()
-                , idxDB[store].bulkPut(data[store])
-                )
-
-            this.populateIndexedDB =
-                () =>
-                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
-                .then(
-                    result => {
-                        dataIntoIDB("schichtModelle")(result)
-                        dataIntoIDB("schichten")(result)
-                    }
                 )
 
             const querySchichtModelleDataIDB =
