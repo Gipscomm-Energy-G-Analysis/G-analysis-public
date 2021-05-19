@@ -23,6 +23,8 @@ $(document).ready(function() {
         $("#superadmincommTreeview").css("display", "none");
         $("#tabGipscAdm").css("display", "none");
         $("#tabBetrGrp").css("display", "none");
+        $("#betrGrpMenu").css("display", "none");
+        $("li#sAdmMenuLi").css("display", "none");
         mandantenEinlesen($("#betrGrpID").val(), null, null);
     } else if(sessionStorage.getItem("position") == 'adm') {
         var roleId = 4;
