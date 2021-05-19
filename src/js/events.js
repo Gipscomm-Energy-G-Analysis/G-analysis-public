@@ -22,6 +22,7 @@ $(document).ready(function() {
         $("#adminsRollenUndBerechtigungen").css("display", "none");
         $("#superadmincommTreeview").css("display", "none");
         $("#tabGipscAdm").css("display", "none");
+        $("#tabBetrGrp").css("display", "none");
         mandantenEinlesen($("#betrGrpID").val(), null, null);
     } else if(sessionStorage.getItem("position") == 'adm') {
         var roleId = 4;
