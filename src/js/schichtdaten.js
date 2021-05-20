@@ -115,6 +115,21 @@ const scpSchichtdaten =
                 , resetGueltigBis()
                 )
 
+            // Checks if Gueltig Bis is set(not empty string)
+            const isSetGueltigBis =
+                () =>
+                !emptyString($("#gueltigBisSchtDat").val())
+
+            // Enables Anzahl input
+            const enableAnzahl =
+                () =>
+                $("#anzahlSchtDat").prop("disabled", false)
+
+            // Disables the Anzahl input
+            const disableAnzahl =
+                () =>
+                $("#anzahlSchtDat").prop("disabled", true)
+
             // Enables/Disables the Gueltig Bis input depending
             // on the selection state of Ende offen
             this.endeOffenOrBis =
@@ -160,8 +175,7 @@ const scpSchichtdaten =
             // Returns an object that contains the form data
             const getFormData =
                 anzahl => (
-                    { id :"schtDat"
-                    , nameDB : getFieldValue("nameDB")
+                    { nameDB : getFieldValue("nameDB")
                     , modus : getFieldValue("schtMdlState")
                     , schtMdlID : getFieldValue("schtMdlID")
                     , liegID : getFieldValue("liegID")
@@ -239,7 +253,7 @@ const scpSchichtdaten =
             // and then updates the indexedDB
             const saveFormData =
                 formData =>
-                ajaxPost("php/instanzIntoDB.php")(formData)
+                ajaxPost("php/saveSchichtdaten.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.populateIndexedDB)
 
@@ -317,7 +331,22 @@ const scpSchichtdaten =
             // Sets the create new or update state for saving
             const setState =
                 state =>
-                $("#schtMdlState").val(state)
+                state === "new" ?
+                ( $("#schtMdlState").val(state)
+                , enableAnzahl()
+                , $(".schtDatForm")
+                    .css("background", "antiquewhite")
+                    .css("border", "1px solid black")
+                    .css("padding", "1px")
+                ) :
+                ( $("#schtMdlState").val(state)
+                , disableAnzahl()
+                , $(".schtDatForm")
+                    .css("background", "white")
+                    .css("border", "1px solid black")
+                    .css("padding", "1px")
+                )
+
 
             // Resets all input elements to their initial empty state
             // and sets the save state to create new
@@ -435,8 +464,7 @@ const scpSchichtdaten =
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
-                        , this.populateIndexedDB()
-                        , this.readFirst()
+                        , this.populateIndexedDB().then(this.readFirst)
                         )
                     )
                 }
