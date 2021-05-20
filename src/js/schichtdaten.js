@@ -7,6 +7,7 @@
 const scpSchichtdaten =
     freeze (
         new function () {
+            // Schicht Html
             const nr =
                 n =>
                 `<div class="sectionHeader">
@@ -79,55 +80,83 @@ const scpSchichtdaten =
                 .map(applyRv(n))
                 .join("")
 
+            // Append Schicht Html to div
             const addSchicht =
                 elem =>
                 (_, i) =>
                 elem.append(schichtHtml(incr(i)))
 
+            // Append n Schichten to Html
             this.generateSchichtBlocks =
                 elem =>
                 m =>
                 array(m)()()
                 .forEach(addSchicht(elem))
 
+            // Checks if Ende offen is selected
             const isEndeOffen =
                 () =>
                 $(`#bisEndeOffenSchtDat`).prop("checked")
 
+            // Enables the Gueltig Bis input
             const enableGueltigBis =
                 () =>
                 $(`#gueltigBisSchtDat`).prop("disabled", false)
 
+            // Resets the Gueltig Bis input
             const resetGueltigBis =
                 () =>
                 $("#gueltigBisSchtDat").val("")
 
+            // Disables the Gueltig Bis input
             const disableGueltigBis =
                 () =>
                 ( $(`#gueltigBisSchtDat`).prop("disabled", true)
                 , resetGueltigBis()
                 )
 
+            // Checks if Gueltig Bis is set(not empty string)
+            const isSetGueltigBis =
+                () =>
+                !emptyString($("#gueltigBisSchtDat").val())
+
+            // Enables Anzahl input
+            const enableAnzahl =
+                () =>
+                $("#anzahlSchtDat").prop("disabled", false)
+
+            // Disables the Anzahl input
+            const disableAnzahl =
+                () =>
+                $("#anzahlSchtDat").prop("disabled", true)
+
+            // Enables/Disables the Gueltig Bis input depending
+            // on the selection state of Ende offen
             this.endeOffenOrBis =
                 () =>
                 isEndeOffen() ?
                 disableGueltigBis() :
                 enableGueltigBis()
 
+            // Sets the lower limit of the Gueltig bis date
+            // as the Gueltig von date
             this.setMinGueltigBis =
                 date =>
                 $("#gueltigBisSchtDat")
                 .prop("min", date)
                 .val("")
 
+            // Returns an input value depending on the elements id
             const getFieldValue =
                 a =>
                 $(`#${a}`).val()
 
+            // Returns a tuple of an elements id and its input value
             const tupleSchichtValue =
                 a =>
                 [a, getFieldValue(a)]
 
+            // Returns an array of (id, value) pairs of a Schicht
             const getSchicht =
                 (_, i) =>
                 [ `bezeichnungScht${incr(i)}Dat`
@@ -137,24 +166,24 @@ const scpSchichtdaten =
                 , `tagBisScht${incr(i)}Dat`
                 ].map(tupleSchichtValue)
 
+            // Returns an array of arrays of (id, value) pairs
             const getSchichten =
                 anzahl =>
                 array(anzahl)()()
                 .map(getSchicht)
 
             // Returns an object that contains the form data
-            this.getFormData =
+            const getFormData =
                 anzahl => (
-                    { id :"schtDat"
-                    , nameDB : getFieldValue("nameDB")
-                    , modus : savedNew ? "new" : "save"
+                    { nameDB : getFieldValue("nameDB")
+                    , modus : getFieldValue("schtMdlState")
                     , schtMdlID : getFieldValue("schtMdlID")
                     , liegID : getFieldValue("liegID")
                     , modellBezSchtDat : getFieldValue("modellBezSchtDat")
                     , anzahlSchtDat : anzahl
                     , gueltigVonSchtDat : getFieldValue("gueltigVonSchtDat")
                     , gueltigBisSchtDat : getFieldValue("gueltigBisSchtDat")
-                    , bisEndeOffenSchtDat : $("#bisEndeOffenSchtDat").prop("checked")
+                    , bisEndeOffenSchtDat : isEndeOffen()
                     , notizSchtDat : getFieldValue("notizSchtDat")
                     , schichten :
                         getSchichten(anzahl)
@@ -163,11 +192,13 @@ const scpSchichtdaten =
                     }
                 )
 
+            // Returns an array depending on the Ende offen state
             const getBisFormData =
                 () =>
-                $("#bisEndeOffenSchtDat").prop("checked") ?
+                isEndeOffen() ?
                 [] : singleton("gueltigBisSchtDat")
 
+            // Returns form data of Schicht Modell (first section)
             const getGeneralFormData =
                 formData =>
                 flatten(
@@ -179,10 +210,12 @@ const scpSchichtdaten =
                 )
                 .map(field(formData))
 
+            // Returns form data of Schichten
             const getShiftsFormData =
                 formData =>
                 formData.schichten
 
+            // Checks if there are empty input values
             const completeFormData =
                 formData => {
 
@@ -197,12 +230,70 @@ const scpSchichtdaten =
                     return !retVal
                 }
 
+            // Inserts data into a provided indexedDB store(table)
+            const dataIntoIDB =
+                store =>
+                data =>
+                ( idxDB[store].clear()
+                , idxDB[store].bulkPut(data[store])
+                )
+
+            // Syncs the indexedDB with the sql srv DB
+            this.populateIndexedDB =
+                () =>
+                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
+                .then(
+                    result => {
+                        dataIntoIDB("schichtModelle")(result)
+                        dataIntoIDB("schichten")(result)
+                    }
+                )
+
+            // Dialog which asks the user if the Schichtmodell should
+            // be closed and archived.
+            const closeSchichtmodellDialog =
+                formData =>
+                $("#saveClosedSchichtDialog").dialog({
+                    height: 223,
+                    width: 568,
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    modal: true,
+                    open: () => {
+                        $("#saveClosedSchichtOk").off("click")
+                        $("#saveClosedSchichtOk").on("click",
+                            () =>
+                            ( saveFormData(formData)
+                            , $("#saveClosedSchichtDialog").dialog("close")
+                            )
+                        )
+
+                        $("#saveClosedSchichtCancel").off("click")
+                        $("#saveClosedSchichtCancel").on("click",
+                            () =>
+                            $("#saveClosedSchichtDialog").dialog("close")
+                        )
+                    }
+                })
+
+            // Inserts or updates the given record into the sql srv DB
+            // and then updates the indexedDB
             const saveFormData =
                 formData =>
-                ajaxPost("php/instanzIntoDB.php")(formData)
-                .then(console.log)
-                // .then(result => alert(datensatzGespeichert(result)))
+                ajaxPost("php/saveSchichtdaten.php")(formData)
+                .then(result => alert(datensatzGespeichert(result)))
+                .then(this.populateIndexedDB)
 
+            // If the form data contains empty input elements a
+            // dialog is shown which asks if the record should be
+            // saved anyways
             const nonCompleteDataDialog =
                 formData =>
                 $("#saveSchichtDialog").dialog({
@@ -222,7 +313,9 @@ const scpSchichtdaten =
                         $("#saveSchichtOk").off("click")
                         $("#saveSchichtOk").on("click",
                             () =>
-                            ( saveFormData(formData)
+                            ( isSetGueltigBis() ?
+                              closeSchichtmodellDialog(formData) :
+                              saveFormData(formData)
                             , $("#saveSchichtDialog").dialog("close")
                             )
                         )
@@ -235,19 +328,32 @@ const scpSchichtdaten =
                     }
                 })
 
-            this.validateFormData =
-                formData =>
-                !completeFormData(formData) ?
-                nonCompleteDataDialog(formData) :
-                saveFormData(formData)
+            // Checks if all input elements are set and either shows the
+            // dialog which asks if the record should be saved anyways
+            // or if complete directly saves the record
+            this.validateAndSaveFormData =
+                () => {
+                    const formData =
+                        getFormData($("#anzahlSchtDat").val())
 
+                    !completeFormData(formData) ?
+                    nonCompleteDataDialog(formData) :
+                    isSetGueltigBis() ?
+                    closeSchichtmodellDialog(formData) :
+                    saveFormData(formData)
+                }
+
+            // Resets the value of a given input to an empty string
             const clearField =
                 field =>
                 $(`#${field}`).val("")
 
+            // Resets all of the first section input elements to an
+            // empty string
             const clearGeneralFields =
                 () =>
-                [ "modellBezSchtDat"
+                [ "schtMdlID"
+                , "modellBezSchtDat"
                 , "gueltigVonSchtDat"
                 , "notizSchtDat"
                 ].forEach(clearField)
@@ -260,33 +366,47 @@ const scpSchichtdaten =
                 , $("#bisEndeOffenSchtDat").trigger("click")
                 )
 
+            // Sets the create new or update state for saving
+            const setState =
+                state =>
+                state === "new" ?
+                ( $("#schtMdlState").val(state)
+                , enableAnzahl()
+                , $(".schtDatForm")
+                    .css("background", "antiquewhite")
+                    .css("border", "1px solid black")
+                    .css("padding", "1px")
+                ) :
+                ( $("#schtMdlState").val(state)
+                , disableAnzahl()
+                , $(".schtDatForm")
+                    .css("background", "white")
+                    .css("border", "1px solid black")
+                    .css("padding", "1px")
+                )
+
+
+            // Resets all input elements to their initial empty state
+            // and sets the save state to create new
             this.clearFields =
                 () =>
                 ( clearGeneralFields()
                 , resetAnzahlAndEndeOffen()
+                , setState("new")
                 )
 
-            const dataIntoIDB =
-                store =>
-                data =>
-                ( idxDB[store].clear()
-                , idxDB[store].bulkPut(data[store])
-                )
-
-            this.populateIndexedDB =
+            // Returns an array of the Schicht Modelle from indexedDB
+            const querySchichtModelleDataIDB =
                 () =>
-                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
-                .then(
-                    result => {
-                        dataIntoIDB("schichtModelle")(result)
-                        dataIntoIDB("schichten")(result)
-                    }
-                )
+                idxDB.schichtModelle.toArray()
 
+            // Returns a certain Schicht Modell depending on an index
             const querySchichtModellDataIDB =
                 idx =>
-                idxDB.schichtModelle.get(idx)
+                querySchichtModelleDataIDB()
+                .then(schichtModelle => schichtModelle[idx])
 
+            // Returns the Schichten of a given Schicht Modell
             const querySchichtenDataIDB =
                 idx =>
                 idxDB.schichten
@@ -294,6 +414,7 @@ const scpSchichtdaten =
                 .equals(idx)
                 .toArray()
 
+            // Sets the input values of a given Schicht
             const setSchicht =
                 (schicht, i) =>
                 [ [`bezeichnungScht${incr(i)}Dat`, "bezeichnung"]
@@ -303,16 +424,19 @@ const scpSchichtdaten =
                 , [`tagBisScht${incr(i)}Dat`, "tagBis"]
                 ].forEach(a => $(`#${a[0]}`).val(schicht[a[1]]))
 
+            // Sets the input values of all Schichten
             const setSchichten =
                 schichten =>
                 schichten.forEach(setSchicht)
 
-            this.readIntoFormFields =
+            // Sets the form data retrieved from indexedDB
+            const readIntoFormFields =
                 idx => {
                     querySchichtModellDataIDB(idx)
                     .then(
                         schichtModell => {
 
+                            $("#schtMdlIdx").val(idx)
                             $("#schtMdlID").val(schichtModell.schtMdl_ID)
                             $("#modellBezSchtDat").val(schichtModell.modellBez)
                             $("#anzahlSchtDat").val(schichtModell.anzahl)
@@ -324,12 +448,51 @@ const scpSchichtdaten =
 
                             this.endeOffenOrBis()
 
-                            querySchichtenDataIDB(idx)
+                            querySchichtenDataIDB(schichtModell.schtMdl_ID)
                             .then(setSchichten)
+
+                            setState("save")
                         }
                     )
                 }
 
+            // Sets the form data input values of the first Schicht Modell
+            this.readFirst =
+                () =>
+                readIntoFormFields(0)
+
+            // Sets the form data input values of the previous Schicht Modell
+            // depending on the current records index
+            this.readPrevious =
+                () => {
+                    if ($("#schtMdlIdx").val() > 0) {
+                        readIntoFormFields(decr($("#schtMdlIdx").val()))
+                    }
+                }
+
+            // Sets the form data input values of the next Schicht Modell
+            // depending on the current records index
+            this.readNext =
+                () =>
+                idxDB.schichtModelle.count()
+                .then(
+                    count => {
+                        if ($("#schtMdlIdx").val() < decr(count)) {
+                            readIntoFormFields(incr($("#schtMdlIdx").val()))
+                        }
+                    }
+                )
+
+            // Sets the form data input values of the last Schicht Modell
+            this.readLast =
+                () =>
+                idxDB.schichtModelle.count()
+                .then(
+                    count =>
+                    readIntoFormFields(decr(count))
+                )
+
+            // Deletes the current Schicht Modell(sets col deleted = true)
             this.deleteSchichtModell =
                 () => {
                     const nameDB = $("#nameDB").val()
@@ -339,20 +502,17 @@ const scpSchichtdaten =
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
-                        , this.populateIndexedDB()
+                        , this.populateIndexedDB().then(this.readFirst)
                         )
                     )
                 }
 
-            const querySchichtModelleDataIDB =
-                () =>
-                idxDB.schichtModelle.toArray()
-
+            // Prepares the table data for the search dialog
             const prepareTableData =
                 records =>
                 records.map(
-                    a =>
-                    [ a.schtMdl_ID
+                    (a, i) =>
+                    [ i
                     , a.modellBez
                     , a.anzahl
                     , a.gueltigVon
@@ -361,16 +521,18 @@ const scpSchichtdaten =
                     ]
                 )
 
+            // Fills the search dialog table with data
             const fillSchichtmodelleTbl =
                 data => {
                     clearTable(tblSchichtmodellSuchen)
                     intoTable(tblSchichtmodellSuchen)(prepareTableData(data))
                 }
 
+            // Triggers opening the search dialog
             this.searchSchichtModell =
                 () => {
 
-                    idxDB.schichtModelle.toArray()
+                    querySchichtModelleDataIDB()
                     .then(fillSchichtmodelleTbl)
 
                     $("#schichtmodellSuchenContainer").dialog({
@@ -395,7 +557,7 @@ const scpSchichtdaten =
                                 const selectedRecord =
                                     tblSchichtmodellSuchen.row(this).data()
 
-                                scpSchichtdaten.readIntoFormFields(head(selectedRecord))
+                                readIntoFormFields(head(selectedRecord))
 
                                 $("#schichtmodellSuchenContainer").dialog("close")
                             })

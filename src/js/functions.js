@@ -1725,6 +1725,8 @@ try {
             eRngNavID =
             iMwNavID =
             zpNavID = 0
+
+            scpSchichtdaten.populateIndexedDB()
         },
         mandantenEinlesen = function(a, b, e) {
             $.ajax({
@@ -5161,6 +5163,10 @@ try {
                             $("#nameAllgemeinMan").val(a[0].nameMan);
                             $("#holdingstrukturAllgemeinMan").prop("checked", a[0].holdingstruktur);
                             $("#liegenschaftenAllgemeinMan").prop("checked", a[0].liegenschaften)
+
+                            scpSchichtdaten
+                            .populateIndexedDB()
+                            .then(scpSchichtdaten.readFirst)
                         }
                     });
                     break;
