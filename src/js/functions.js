@@ -5157,6 +5157,10 @@ try {
                             $("#nameAllgemeinMan").val(a[0].nameMan);
                             $("#holdingstrukturAllgemeinMan").prop("checked", a[0].holdingstruktur);
                             $("#liegenschaftenAllgemeinMan").prop("checked", a[0].liegenschaften)
+
+                            scpSchichtdaten
+                            .populateIndexedDB()
+                            .then(scpSchichtdaten.readFirst)
                         }
                     });
                     break;
