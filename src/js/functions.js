@@ -2082,28 +2082,32 @@ try {
                 hide: {
                     effect: "fade",
                     duration: 500
+                },
+                modal: true,
+                open : () => {
+                    $("#zugangOk").off("click");
+                    $("#zugangOk").on("click", function() {
+                        $.ajax({
+                            type: "POST",
+                            async: !0,
+                            url: "php/evalGipscAdmPw.php",
+                            data: {},
+                            success: function(a) {
+                                a = JSON.parse(a)[0].pw;
+                                a.trim();
+                                var b = getHash($("#pwGipscAdm").val());
+                                b.trim();
+                                b == a ? ($("#tabGipscAdm").css("background-color", "#CED6DE"), $("#infosGipscommAdmins").css("display", "block"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close")) : (alert("Das Passwort ist falsch!"),
+                                    $("#tabGipscAdm").css("background-color", "#B9C0C7"), $("#infosGipscommAdmins").css("display", "none"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close"), $("#tabBetrGrp").trigger("click"))
+                            }
+                        })
+                    })
+                    $("#zugangAbbrechen").on("click", function() {
+                        $("#gipscAdmZugang").dialog("close")
+                    })
                 }
             });
-            $("#zugangOk").off("click");
-            $("#zugangOk").on("click", function() {
-                $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/evalGipscAdmPw.php",
-                    data: {},
-                    success: function(a) {
-                        a = JSON.parse(a)[0].pw;
-                        a.trim();
-                        var b = getHash($("#pwGipscAdm").val());
-                        b.trim();
-                        b == a ? ($("#tabGipscAdm").css("background-color", "#CED6DE"), $("#infosGipscommAdmins").css("display", "block"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close")) : (alert("Das Passwort ist falsch!"),
-                            $("#tabGipscAdm").css("background-color", "#B9C0C7"), $("#infosGipscommAdmins").css("display", "none"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close"), $("#tabBetrGrp").trigger("click"))
-                    }
-                })
-            })
-            $("#zugangAbbrechen").on("click", function() {
-                $("#gipscAdmZugang").dialog("close")
-            })
+            
         },
         letzteRechnungenInTbl = function(a) {
             $.ajax({
