@@ -2075,6 +2075,7 @@ try {
                 height: 180,
                 width: 250,
                 resize: "auto",
+                classes: {"ui-dialog-titlebar-close" : "closeButton"},
                 show: {
                     effect: "fade",
                     duration: 500
@@ -2104,6 +2105,11 @@ try {
                     })
                     $("#zugangAbbrechen").on("click", function() {
                         $("#gipscAdmZugang").dialog("close")
+                        $("#tabBetrGrp").trigger("click")
+                    })
+                    $(".closeButton").on("click", function() {
+                        $("#closeButton").dialog("close")
+                        $("#tabBetrGrp").trigger("click")
                     })
                 }
             });
