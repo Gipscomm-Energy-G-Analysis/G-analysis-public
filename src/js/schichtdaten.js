@@ -249,6 +249,40 @@ const scpSchichtdaten =
                     }
                 )
 
+            // Dialog which asks the user if the Schichtmodell should
+            // be closed and archived.
+            const closeSchichtmodellDialog =
+                formData =>
+                $("#saveClosedSchichtDialog").dialog({
+                    height: 223,
+                    width: 568,
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    modal: true,
+                    open: () => {
+                        $("#saveClosedSchichtOk").off("click")
+                        $("#saveClosedSchichtOk").on("click",
+                            () =>
+                            ( saveFormData(formData)
+                            , $("#saveClosedSchichtDialog").dialog("close")
+                            )
+                        )
+
+                        $("#saveClosedSchichtCancel").off("click")
+                        $("#saveClosedSchichtCancel").on("click",
+                            () =>
+                            $("#saveClosedSchichtDialog").dialog("close")
+                        )
+                    }
+                })
+
             // Inserts or updates the given record into the sql srv DB
             // and then updates the indexedDB
             const saveFormData =
@@ -279,7 +313,9 @@ const scpSchichtdaten =
                         $("#saveSchichtOk").off("click")
                         $("#saveSchichtOk").on("click",
                             () =>
-                            ( saveFormData(formData)
+                            ( isSetGueltigBis() ?
+                              closeSchichtmodellDialog(formData) :
+                              saveFormData(formData)
                             , $("#saveSchichtDialog").dialog("close")
                             )
                         )
@@ -302,6 +338,8 @@ const scpSchichtdaten =
 
                     !completeFormData(formData) ?
                     nonCompleteDataDialog(formData) :
+                    isSetGueltigBis() ?
+                    closeSchichtmodellDialog(formData) :
                     saveFormData(formData)
                 }
 

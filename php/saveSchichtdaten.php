@@ -5,6 +5,8 @@ ini_set ( 'display_errors', 'On' ) ;
 
 require 'DbOperations.php' ;
 
+$conn = connectToDB($_POST['nameDB']) ;
+
 $modus = $_POST['modus'];
 $liegID = $_POST['liegID'];
 
@@ -31,7 +33,7 @@ function buildValuesString($records) {
     return substr(array_reduce($records, 'valueString'), 0, -1) ;
 }
 
-if($modus == "new") {
+if($modus === "new") {
 
     $tsqlInsertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
     $tsqlInsertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat')";
@@ -70,9 +72,9 @@ else {
     $tsql .= "ON val.schtMdl_ID = schicht.schtMdl_ID AND val.nr = schicht.nr " ;
 }
 
-queryDB($conn, $tsql, "write")
+queryDB($conn, $tsql, "write") ;
 
-echo json_encode(["query" => $tsql])
+echo json_encode(["query" => $tsql]) ;
 
 include('bottom-cache.php') ;
 ?>
