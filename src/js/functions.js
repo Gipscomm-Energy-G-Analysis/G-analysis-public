@@ -22379,6 +22379,7 @@ function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID
                 height: $(window).height() - .125 * $(window).height(),
                 width: $(window).width() - .125 * $(window).width(),
                 resize: "auto",
+                modal: true,
                 show: {
                     effect: "fade",
                     duration: 500
@@ -22464,6 +22465,7 @@ function benutzerlisteErstellen() {
                 height: $(window).height() - .125 * $(window).height(),
                 width: $(window).width() - .125 * $(window).width(),
                 resize: "auto",
+                modal: true,
                 show: {
                     effect: "fade",
                     duration: 500
@@ -22549,6 +22551,7 @@ function betrGrplisteErstellen() {
                 height: $(window).height() - .125 * $(window).height(),
                 width: $(window).width() - .125 * $(window).width(),
                 resize: "auto",
+                modal: true,
                 show: {
                     effect: "fade",
                     duration: 500
@@ -22609,6 +22612,7 @@ function sAdmSuchenlisteErstellen() {
                 height: $(window).height() - .125 * $(window).height(),
                 width: $(window).width() - .125 * $(window).width(),
                 resize: "auto",
+                modal: true,
                 show: {
                     effect: "fade",
                     duration: 500
@@ -22660,6 +22664,7 @@ function gipscAdmSuchenlisteErstellen() {
                 height: $(window).height() - .125 * $(window).height(),
                 width: $(window).width() - .125 * $(window).width(),
                 resize: "auto",
+                modal: true,
                 show: {
                     effect: "fade",
                     duration: 500
@@ -22709,6 +22714,7 @@ function manGrpSuchenlisteErstellen() {
                 height: $(window).height() - .125 * $(window).height(),
                 width: $(window).width() - .125 * $(window).width(),
                 resize: "auto",
+                modal: true,
                 show: {
                     effect: "fade",
                     duration: 500
