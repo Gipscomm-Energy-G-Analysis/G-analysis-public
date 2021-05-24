@@ -387,7 +387,7 @@ elseif($id == "betrPar"){
 
   $man_ID = $_POST['manID'];
 
-  $manData = "SELECT * FROM mandanten WHERE nameMan LIKE '%$man_ID%' ";
+  $manData = "SELECT * FROM mandanten WHERE nameMan = '$man_ID' ";
   $data = queryDB($conn, $manData, "read");
 
   $manId = $data[0]['man_ID'];
