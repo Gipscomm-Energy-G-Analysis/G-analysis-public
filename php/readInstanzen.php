@@ -135,7 +135,7 @@ elseif($id == "ben"){
     $recordSet = $_POST['recordSet'];
 
     if(!empty($idIns)) {
-      $query = "SELECT * FROM benutzer WHERE $ins = '$idIns' AND deleted_at IS NULL";
+      $query = "SELECT * FROM benutzer WHERE $ins = '$idIns' OR manGrp_ID = '$idIns' AND deleted_at IS NULL";
     }
   }
 }
