@@ -407,9 +407,9 @@ elseif($id == "betrPar"){
       $sAdmUserId = $sAdmData[0]['sAdm_ID'];
     }
   }
+  // $sAdmUserId = !empty($_POST['userId']) ? $_POST['userId'] : '';
   
   if(!empty($sAdmUserId)) {
-      //$sAdmRoleQuery = "SELECT rolePermission.role_id, accessibleTab.id, accessibleTab.tab_id, accessibleTab.tab_name as text, accessibleTab.parent_id, rolePermission.user_id FROM rolePermission INNER JOIN accessibleTab ON accessibleTab.tab_id = rolePermission.tab_id WHERE rolePermission.user_id = '$sAdmUserId' AND accessibleTab.parent_id IS NOT NULL ";
       $sAdmRoleQuery = "SELECT rolePermission.role_id, accessibleTab.id, accessibleTab.tab_id, accessibleTab.tab_name as text, accessibleTab.parent_id, rolePermission.user_id FROM rolePermission, accessibleTab WHERE accessibleTab.tab_id = rolePermission.tab_id AND rolePermission.user_id = '$sAdmUserId' AND accessibleTab.parent_id IS NOT NULL ";
       $sAdmRoleData = queryDB(connectToDB($_POST['nameDB']), $sAdmRoleQuery, "read");
      
@@ -440,16 +440,45 @@ elseif($id == "betrPar"){
       function buildTree(array $sAdmRoleData, $parentId = 0) {
         $branch = array();
         foreach ($sAdmRoleData as $element) {
-          $userID = $element['user_id'];
+            $userID = $element['user_id'];
             if ($element['parent_id'] == $parentId) {
-              $checkedRole = getSubMenu($userID);
-              if(!empty($checkedRole)) {
-                foreach($checkedRole as $check) {
-                  if($check['tab_id'] == $element['tab_id']) {
-                    $element['checked'] = 'true';
+              $userNewID = !empty($_POST['userId']) ? $_POST['userId'] : '';
+              if(empty($userNewID)) {
+                $checkedRole = getSubMenu($userID);
+                if(!empty($checkedRole)) {
+                  foreach($checkedRole as $check) {
+                    if($check['tab_id'] == $element['tab_id']) {
+                      $element['checked'] = 'true';
+                    }
+                  }
+                }
+              } else {
+                if(!empty($userNewID)) {
+                  $roleQuery = "SELECT * FROM rolePermission WHERE user_id = '$userNewID' ";
+                  $roleData = queryDB(connectToDB($_POST['nameDB']), $roleQuery, "read");
+                }
+                if(!empty($roleData)) {
+                  foreach($roleData as $role) {
+                    $roleExp = explode(',',$role['tab_id']);
+                    $roleimp[] = implode(',', $roleExp);
+                  }
+                  $rolePermission = "'" . implode ( "', '", $roleimp ) . "'";
+        
+                  $checkedQuery = "SELECT id, tab_name as text, tab_id, parent_id, display_superadmin FROM accessibleTab WHERE tab_id IN (".$rolePermission.")";
+                  
+                  $checkedData = queryDB(connectToDB($_POST['nameDB']), $checkedQuery, "read") ;
+
+                  if(!empty($checkedData)) {
+                    foreach($checkedData as $check) {
+                      if($check['tab_id'] == $element['tab_id']) {
+                        $element['checked'] = 'true';
+                      }
+                    }
                   }
                 }
               }
+              
+
               $children = buildTree($sAdmRoleData, $element['id']);
               if ($children) {
                   $element['children'] = $children;
