@@ -35,8 +35,8 @@ function buildValuesString($records) {
 
 if($modus === "new") {
 
-    $tsqlInsertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
-    $tsqlInsertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat')";
+    $tsqlInsertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz, archived) " ;
+    $tsqlInsertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat', '$archived') ";
 
     queryDB($conn, $tsqlInsertSchichtmodell, "write") ;
 
