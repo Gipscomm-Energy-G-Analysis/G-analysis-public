@@ -405,8 +405,7 @@ elseif($id == "ben") {
 
       $role_id = $_POST['role_id'];
       $tab_ids = !empty($_POST['tab_id']) ? $_POST['tab_id'] : '';
-      print_r($tab_ids);
-      die;
+      
       if(!empty($role_id)) {
         $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
         $record = queryDB($conn, $query, "read") ;
