@@ -177,6 +177,7 @@ const scpSchichtdaten =
                 anzahl => (
                     { nameDB : getFieldValue("nameDB")
                     , modus : getFieldValue("schtMdlState")
+                    , archived : isSetGueltigBis()
                     , schtMdlID : getFieldValue("schtMdlID")
                     , liegID : getFieldValue("liegID")
                     , modellBezSchtDat : getFieldValue("modellBezSchtDat")
@@ -384,7 +385,6 @@ const scpSchichtdaten =
                     .css("border", "1px solid black")
                     .css("padding", "1px")
                 )
-
 
             // Resets all input elements to their initial empty state
             // and sets the save state to create new
