@@ -410,8 +410,8 @@ elseif($id == "betrPar"){
   
   
   if(!empty($sAdmUserId)) {
-      $sAdmRoleQuery = "SELECT rolePermission.role_id, accessibleTab.id, accessibleTab.tab_id, accessibleTab.tab_name as text, accessibleTab.parent_id, rolePermission.user_id FROM rolePermission, accessibleTab WHERE accessibleTab.tab_id = rolePermission.tab_id AND rolePermission.user_id = '$sAdmUserId' AND rolePermission.role_id = '$userRoleId' accessibleTab.parent_id IS NOT NULL ";
-      $sAdmRoleData = queryDB(connectToDB($_POST['nameDB']), $sAdmRoleQuery, "read");
+    $sAdmRoleQuery = "SELECT rolePermission.role_id, accessibleTab.id, accessibleTab.tab_id, accessibleTab.tab_name as text, accessibleTab.parent_id, rolePermission.user_id FROM rolePermission, accessibleTab WHERE accessibleTab.tab_id = rolePermission.tab_id AND rolePermission.user_id = '$sAdmUserId' AND accessibleTab.parent_id IS NOT NULL ";
+    $sAdmRoleData = queryDB(connectToDB($_POST['nameDB']), $sAdmRoleQuery, "read");
      
       function getSubMenu($userID) {
 
@@ -455,6 +455,7 @@ elseif($id == "betrPar"){
                   }
                 }
               } else {
+                $userRoleId = !empty($_POST['role_id']) ? $_POST['role_id'] : '';
                 if(!empty($userNewID)) {
                   $roleQuery = "SELECT * FROM rolePermission WHERE user_id = '$userNewID' AND role_id = '$userRoleId' ";
                   $roleData = queryDB(connectToDB($_POST['nameDB']), $roleQuery, "read");
