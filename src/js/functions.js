@@ -5103,7 +5103,7 @@ try {
                             , ["#benutzernameAdm", "username"]
                             ].forEach(function(a) {
                                 $(a[0]).val(c[b][a[1]])
-                            })) : clearFields("admHinz")
+                            }), adminsGetRollenUndBerechtigungen()) : clearFields("admHinz")
                         }
                     });
                     break;
@@ -5139,7 +5139,7 @@ try {
                                 , ["#benutzernameBen", "username"]
                                 ].forEach(function(a) {
                                     $(a[0]).val(c[b][a[1]])
-                                })) : clearFields("benHinz")
+                                }), benutzerGetRollenUndBerechtigungen()) : clearFields("benHinz")
                         }
                     });
                     break;
@@ -16565,6 +16565,9 @@ function sAdmRollenUndBerechtigungen() {            // Save Superadmin Roles and
 
 function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Permission
     var adminArr = new Array();
+    if(sessionStorage.getItem("position") == 'sAdm') {
+        $( "div#superadmincommTreeview" ).empty();
+    }
     $('span.item').each(function(){
         var $span = $(this).attr('check-value');
         if($span == 1) {
@@ -16593,6 +16596,12 @@ function adminsRollenUndBerechtigungen() {            // Save Admin Roles and Pe
 }
 function benutzerRollenUndBerechtigungen() {        // Save Benutzer Roles and Permission
     var benArr = new Array();
+    if(sessionStorage.getItem("position") == 'sAdm') {
+        $( "div#superadmincommTreeview" ).empty();
+    } else {
+        $( "div#superadmincommTreeview" ).empty();
+        $( "div#admincommTreeview" ).empty();
+    }
     $('span.item').each(function(){
         var $span = $(this).attr('check-value');
         if($span == 1) {
@@ -16679,6 +16688,10 @@ function sAdmGetRollenUndBerechtigungen() {     // Superadmin selected checkbox 
 }
 
 function adminsGetRollenUndBerechtigungen() {       // Admin selected checkbox from database
+    var auth = '';
+    if(sessionStorage.getItem("position") == 'sAdm') {
+        auth = sessionStorage.getItem("username");
+    }
     $.ajax({
         type: "POST",
         async: !0,
@@ -16687,7 +16700,8 @@ function adminsGetRollenUndBerechtigungen() {       // Admin selected checkbox f
             id: "rollenUndBerechtigungenSuperadmin",
             nameDB: "gipscomm",
             role_id: 4,
-            userId:$('#admID').val()
+            userId:$('#admID').val(),
+            auth: auth,
         },
         success: function(a) {
             c = JSON.parse(a);
@@ -16705,6 +16719,10 @@ function adminsGetRollenUndBerechtigungen() {       // Admin selected checkbox f
 }
 
 function benutzerGetRollenUndBerechtigungen() {       // Admin selected checkbox from database
+    var auth = '';
+    if(sessionStorage.getItem("position") == 'sAdm') {
+        auth = sessionStorage.getItem("username");
+    }
     $.ajax({
         type: "POST",
         async: !0,
@@ -16713,7 +16731,8 @@ function benutzerGetRollenUndBerechtigungen() {       // Admin selected checkbox
             id: "rollenUndBerechtigungenSuperadmin",
             nameDB: "gipscomm",
             role_id: 5,
-            userId: $('#benID').val()
+            userId: $('#benID').val(),
+            auth: auth,
         },
         success: function(a) {
             c = JSON.parse(a)
@@ -16731,6 +16750,10 @@ function benutzerGetRollenUndBerechtigungen() {       // Admin selected checkbox
 }
 
 function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) {
+    var auth = '';
+    if(sessionStorage.getItem("position") == 'sAdm') {
+        auth = sessionStorage.getItem("username");
+    }
     $.ajax({
         type: "POST",
         async: !0,
@@ -16741,7 +16764,8 @@ function alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId) 
             role_id: roleId,
             userId: userId,
             tableName: tableName,
-            userName: userName
+            userName: userName,
+            auth: auth
         },
         success: function(a) {
             c = JSON.parse(a)

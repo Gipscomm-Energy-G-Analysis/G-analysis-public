@@ -1522,10 +1522,34 @@ $(document).ready(function() {
         sAdmGetRollenUndBerechtigungen()
     });
     $("#admLast, #admNext, #admPrevious, #admFirst").click(function() {
-        //adminsGetRollenUndBerechtigungen()
+        adminsGetRollenUndBerechtigungen()
     });
     $("#benFirst, #benLast, #benNext, #benPrevious").click(function() {
-        //benutzerGetRollenUndBerechtigungen()
+        benutzerGetRollenUndBerechtigungen()
+    });
+    $("#tabBetrGrp").on("click", function() {
+        $( "div#superadmincommTreeview" ).empty();
+        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+        var tw = new TreeView(
+           treeObject,
+           {showAlwaysCheckBox:true,fold:false});
+        document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
+    });
+    $("#tabAdm").on("click", function() {
+        $( "div#admincommTreeview" ).empty();
+        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+        var tw = new TreeView(
+           treeObject,
+           {showAlwaysCheckBox:true,fold:false});
+        document.getElementById("admincommTreeview").appendChild( tw.root	 )
+    });
+    $("#tabBen").on("click", function() {
+        $( "div#benutzerTreeview" ).empty();
+        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+        var tw = new TreeView(
+           treeObject,
+           {showAlwaysCheckBox:true,fold:false});
+        document.getElementById("benutzerTreeview").appendChild( tw.root	 )
     });
 
     $("#frmSuchenBerEdi").click(function() {
