@@ -242,7 +242,7 @@ const scpSchichtdaten =
             // Syncs the indexedDB with the sql srv DB
             this.populateIndexedDB =
                 () =>
-                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
+                ajaxPost("php/Schichtdaten/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
                 .then(
                     result => {
                         dataIntoIDB("schichtModelle")(result)
@@ -288,7 +288,7 @@ const scpSchichtdaten =
             // and then updates the indexedDB
             const saveFormData =
                 formData =>
-                ajaxPost("php/saveSchichtdaten.php")(formData)
+                ajaxPost("php/Schichtdaten/saveSchichtdaten.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.populateIndexedDB)
 
@@ -498,7 +498,7 @@ const scpSchichtdaten =
                     const nameDB = $("#nameDB").val()
                     const schtMdlID = $("#schtMdlID").val()
 
-                    ajaxPost("php/deleteSchichtdaten.php")({nameDB, schtMdlID})
+                    ajaxPost("php/Schichtdaten/deleteSchichtdaten.php")({nameDB, schtMdlID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
