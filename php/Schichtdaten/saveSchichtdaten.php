@@ -8,6 +8,7 @@ require 'DbOperations.php' ;
 $conn = connectToDB($_POST['nameDB']) ;
 
 $modus = $_POST['modus'];
+$archived = $_POST['archived'];
 $liegID = $_POST['liegID'];
 
 $modellBezSchtDat = $_POST["modellBezSchtDat"] ;
@@ -35,46 +36,111 @@ function buildValuesString($records) {
 
 if($modus === "new") {
 
-    $tsqlInsertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz, archived) " ;
-    $tsqlInsertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat', '$archived') ";
+    if ($archived) {
+        $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
+        $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
 
-    queryDB($conn, $tsqlInsertSchichtmodell, "write") ;
+        queryDB($conn, $insertSchichtmodellHist, "write") ;
 
-    $tsqlSelectLastID = "SELECT IDENT_CURRENT('schichtModelle') AS last_ID " ;
+        $selectLastID = "SELECT IDENT_CURRENT('schichtModelleHist') AS last_ID " ;
 
-    define("schtMdlID", queryDB($conn, $tsqlSelectLastID, "read")[0]["last_ID"]) ;
+        define("schtMdlID", queryDB($conn, $selectLastID, "read")[0]["last_ID"]) ;
 
-    $tsql =  "INSERT INTO schichten(schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
-    $tsql .= "VALUES ".buildValuesString($schichten) ;
+        $schichtenHist  =  "INSERT INTO schichtenHist(schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
+        $schichtenHist .= "VALUES ".buildValuesString($schichten) ;
 
+        $deleteSchichten  = "DELETE FROM schichten " ;
+        $deleteSchichten .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+
+        $deleteSchichtmodell  = "DELETE FROM schichtModelle " ;
+        $deleteSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+
+        $joinedQueries =
+            $schichtenHist." "
+            $deleteSchichten." "
+            $deleteSchichtmodell." " ;
+
+        queryDB($conn, $joinedQueries, "write") ;
+
+        echo json_encode(["query" => $insertSchichtmodellHist." ".$joinedQueries]) ;
+    }
+    else {
+        $insertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
+        $insertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
+
+        queryDB($conn, $insertSchichtmodell, "write") ;
+
+        $tsqlSelectLastID = "SELECT IDENT_CURRENT('schichtModelle') AS last_ID " ;
+
+        define("schtMdlID", queryDB($conn, $tsqlSelectLastID, "read")[0]["last_ID"]) ;
+
+        $schichten =  "INSERT INTO schichten(schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
+        $schichten .= "VALUES ".buildValuesString($schichten) ;
+
+        queryDB($conn, $schichten, "write") ;
+
+        echo json_encode(["query" => $insertSchichtmodell." ".$schichten]) ;
+    }
 }
 else {
 
     define("schtMdlID", $_POST['schtMdlID']) ;
 
-    $tsqlUpdateSchichtmodell = "UPDATE schichtModelle SET datum = getdate(), modellBez = '$modellBezSchtDat', anzahl = $anzahlSchtDat, " ;
-    $tsqlUpdateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', gueltigBis = '$gueltigBisSchtDat', bisEndeOffen = '$bisEndeOffenSchtDat', " ;
-    $tsqlUpdateSchichtmodell .= "notiz = '$notizSchtDat' " ;
-    $tsqlUpdateSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+    if ($archived) {
+        $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
+        $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
 
-    queryDB($conn, $tsqlUpdateSchichtmodell, "write") ;
+        queryDB($conn, $insertSchichtmodellHist, "write") ;
 
-    $tsql =  "UPDATE schicht " ;
-    $tsql .= "SET bezeichnung = val.bezeichnung " ;
-    $tsql .= ", uhrzeitVon = val.uhrzeitVon " ;
-    $tsql .= ", uhrzeitBis = val.uhrzeitBis " ;
-    $tsql .= ", tagVon = val.tagVon " ;
-    $tsql .= ", tagBis = val.tagBis " ;
-    $tsql .= "FROM schichten AS schicht " ;
-    $tsql .= "JOIN( " ;
-    $tsql .= "  VALUES ".buildValuesString($schichten) ;
-    $tsql .= ") AS val (schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
-    $tsql .= "ON val.schtMdl_ID = schicht.schtMdl_ID AND val.nr = schicht.nr " ;
+        $selectLastID = "SELECT IDENT_CURRENT('schichtModelleHist') AS last_ID " ;
+
+        define("schtMdlID", queryDB($conn, $selectLastID, "read")[0]["last_ID"]) ;
+
+        $schichtenHist  =  "INSERT INTO schichtenHist(schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
+        $schichtenHist .= "VALUES ".buildValuesString($schichten) ;
+
+        $deleteSchichten  = "DELETE FROM schichten " ;
+        $deleteSchichten .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+
+        $deleteSchichtmodell  = "DELETE FROM schichtModelle " ;
+        $deleteSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+
+        $joinedQueries =
+            $schichtenHist." "
+            $deleteSchichten." "
+            $deleteSchichtmodell." " ;
+
+        queryDB($conn, $joinedQueries, "write") ;
+
+        echo json_encode(["query" => $joinedQueries]) ;
+    }
+    else {
+        $updateSchichtmodell = "UPDATE schichtModelle SET datum = getdate(), modellBez = '$modellBezSchtDat', anzahl = $anzahlSchtDat, " ;
+        $updateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', gueltigBis = '$gueltigBisSchtDat', bisEndeOffen = '$bisEndeOffenSchtDat', " ;
+        $updateSchichtmodell .= "notiz = '$notizSchtDat' " ;
+        $updateSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+
+        $updateSchichten =  "UPDATE schicht " ;
+        $updateSchichten .= "SET bezeichnung = val.bezeichnung " ;
+        $updateSchichten .= ", uhrzeitVon = val.uhrzeitVon " ;
+        $updateSchichten .= ", uhrzeitBis = val.uhrzeitBis " ;
+        $updateSchichten .= ", tagVon = val.tagVon " ;
+        $updateSchichten .= ", tagBis = val.tagBis " ;
+        $updateSchichten .= "FROM schichten AS schicht " ;
+        $updateSchichten .= "JOIN( " ;
+        $updateSchichten .= "  VALUES ".buildValuesString($schichten) ;
+        $updateSchichten .= ") AS val (schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
+        $updateSchichten .= "ON val.schtMdl_ID = schicht.schtMdl_ID AND val.nr = schicht.nr " ;
+
+        $joinedQueries =
+            $updateSchichtmodell." "
+            $updateSchichten." " ;
+
+        queryDB($conn, $joinedQueries, "write") ;
+
+        echo json_encode(["query" => $joinedQueries]) ;
+    }
 }
-
-queryDB($conn, $tsql, "write") ;
-
-echo json_encode(["query" => $tsql]) ;
 
 include('bottom-cache.php') ;
 ?>
