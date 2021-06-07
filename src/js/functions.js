@@ -10629,6 +10629,12 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
                 aktivInstance: "schtDat"
             },{
                 lengthPath: 1,
+                tab: "tabSchtDatHist",
+                idElement: "",
+                infos: "infosSchichtdatenHist",
+                aktivInstance: "schtDatHist"
+            },{
+                lengthPath: 1,
                 tab: "tabEPrd",
                 idElement: "",
                 infos: "infosErweiterungenProdukte",

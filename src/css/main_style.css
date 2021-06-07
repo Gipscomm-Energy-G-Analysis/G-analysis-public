@@ -318,7 +318,7 @@ nav {
 #tabMsg, #tabKnz, #tabAlm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabEng, #tabZp, #tabBerechnungsformeln,
 #tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist,#tabIntBetriebsdatenIMwHistPrdkt,#tabIntBetriebsdatenIMwHistMesssetelle, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
 #tabEPrd, #tabPrd, #tabPrd_historie, #tabVorlagenformeln, #tabAnl_weitereKonfig, #tabPrd_konfig, #tabDiagKnz,
-#tabGrpDiag, #tabSchtDat, #tabHzk,#tabTaschenrechner,#tabDynamicKorrekturFktr {
+#tabGrpDiag, #tabSchtDat, #tabSchtDatHist, #tabHzk,#tabTaschenrechner,#tabDynamicKorrekturFktr {
   display: inline;
   margin: 0px;
   background-color: #B9C0C7;
@@ -410,6 +410,7 @@ nav {
 #infosWeiterePrdKonfig,
 #infosGruppierungDiagramme,
 #infosSchichtdaten,
+#infosSchichtdatenHist,
 #infosKorrekturFaktor,
 #infosDynamicKorrekturFaktor,
 #intBdeIMwHistorieDiv,

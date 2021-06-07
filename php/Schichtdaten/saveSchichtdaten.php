@@ -35,7 +35,7 @@ function buildValuesString($records) {
 
 if($modus === "new") {
 
-    if ($archived) {
+    if ($archived === "true") {
         $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
         $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
 
@@ -56,8 +56,8 @@ if($modus === "new") {
 
         $joinedQueries =
             $schichtenHist." "
-            $deleteSchichten." "
-            $deleteSchichtmodell." " ;
+            .$deleteSchichten." "
+            .$deleteSchichtmodell." " ;
 
         queryDB($conn, $joinedQueries, "write") ;
 
@@ -73,19 +73,19 @@ if($modus === "new") {
 
         define("schtMdlID", queryDB($conn, $tsqlSelectLastID, "read")[0]["last_ID"]) ;
 
-        $schichten =  "INSERT INTO schichten(schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
-        $schichten .= "VALUES ".buildValuesString($schichten) ;
+        $schichten_ =  "INSERT INTO schichten(schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
+        $schichten_ .= "VALUES ".buildValuesString($schichten) ;
 
-        queryDB($conn, $schichten, "write") ;
+        queryDB($conn, $schichten_, "write") ;
 
-        echo json_encode(["query" => $insertSchichtmodell." ".$schichten]) ;
+        echo json_encode(["query" => $insertSchichtmodell." ".$schichten_]) ;
     }
 }
 else {
 
     define("schtMdlID", $_POST['schtMdlID']) ;
 
-    if ($archived) {
+    if ($archived === "true") {
         $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
         $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
 
@@ -106,8 +106,8 @@ else {
 
         $joinedQueries =
             $schichtenHist." "
-            $deleteSchichten." "
-            $deleteSchichtmodell." " ;
+            .$deleteSchichten." "
+            .$deleteSchichtmodell." " ;
 
         queryDB($conn, $joinedQueries, "write") ;
 
@@ -133,7 +133,7 @@ else {
 
         $joinedQueries =
             $updateSchichtmodell." "
-            $updateSchichten." " ;
+            .$updateSchichten." " ;
 
         queryDB($conn, $joinedQueries, "write") ;
 
