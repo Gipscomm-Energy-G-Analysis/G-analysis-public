@@ -1,9 +1,8 @@
 <?php
-include('top-cache.php');
 error_reporting ( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
 
-require 'DbOperations.php' ;
+require '../DbOperations.php' ;
 
 $nameDB = $_POST[ 'nameDB' ] ;
 $conn = connectToDB( $nameDB ) ;
@@ -34,5 +33,4 @@ echo json_encode(
     , "schichtModelleHist" => $schichtModelleHist
     , "schichtenHist" => $schichtenHist
     ] , JSON_INVALID_UTF8_IGNORE) ;
-include('bottom-cache.php') ;
 ?>

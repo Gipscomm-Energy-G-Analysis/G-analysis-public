@@ -394,6 +394,7 @@
                   <button id="tabDynamicKorrekturFktr" style="">dynamische Korrekturfaktoren</button>
                   <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
                   <button id="tabSchtDat" class="no_korrector_tabs">Schichtdaten</button>
+                  <button id="tabSchtDatHist" class="no_korrector_tabs">Historie</button>
                </div>
                <div id="tabsBenutzerrechte" style="display:none;"> </div>
                <div id="tabsAnsicht" style="display:none;"> </div>
@@ -6050,6 +6051,50 @@
                         </div>
                     </div>
                 </div>
+                  <div id="infosSchichtdatenHist">
+                     <div id="infosBlock">
+                        <div class="navDropBox" style="height:20px;padding:3px;">
+                            <img id="schtDatSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
+                            <img id="schtDatLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
+                            <img id="schtDatNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
+                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
+                            <img id="schtDatPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
+                            <img id="schtDatFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
+                           <label>Liegenschaft: </label>
+                           <select class="liegPfad"></select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="modellBezSchtDatHist">Modellbezeichnung</label>
+                           <input id="modellBezSchtDatHist" class="schtDatForm" type="text" disabled> 
+                        </div>
+                        <div class="controlDiv">
+                           <label for="anzahlSchtDatHist">Anzahl (1 - 6)</label>
+                           <input id="anzahlSchtDatHist" class="schtDatForm" type="number" disabled onkeydown="return false" min="1" max="6" value="3">
+                        </div>
+                        <br>
+                        <div class="controlDiv">
+                           <label for="gueltigVonSchtDatHist">Gültig Von</label>
+                           <input id="gueltigVonSchtDatHist" class="schtDatForm" type="date" disabled>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="gueltigBisSchtDatHist">Gültig Bis</label>
+                           <input id="gueltigBisSchtDatHist" class="schtDatForm" type="date" disabled>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="bisEndeOffenSchtDatHist">Ende offen</label>
+                           <input id="bisEndeOffenSchtDatHist" class="schtDatForm" type="checkbox" disabled checked>
+                        </div>
+                        <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
+                            <label>Notiz</label>
+                            <textarea rows="3" id="notizSchtDatHist" class="schtDatForm" disabled style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                        </div>
+                        <br>
+                        <br>
+                        <div id="schichtdatenHistContainer">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 </div>
@@ -10925,7 +10970,8 @@
                 </script>
                 <script type="text/javascript" src="src/js/functions.js"></script>
                 <script type="text/javascript" src="src/js/manualFunction.js"></script>
-                <script type="text/javascript" src="src/js/schichtdaten.js"></script>
+                <script type="text/javascript" src="src/Schichtdante/js/schichtdaten.js"></script>
+                <script type="text/javascript" src="src/Schichtdante/js/historie.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
                 <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>

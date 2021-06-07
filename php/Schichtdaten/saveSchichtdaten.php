@@ -1,9 +1,8 @@
 <?php
-include('top-cache.php');
 error_reporting ( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
 
-require 'DbOperations.php' ;
+require '../DbOperations.php' ;
 
 $conn = connectToDB($_POST['nameDB']) ;
 
@@ -141,6 +140,4 @@ else {
         echo json_encode(["query" => $joinedQueries]) ;
     }
 }
-
-include('bottom-cache.php') ;
 ?>

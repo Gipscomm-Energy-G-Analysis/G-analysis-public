@@ -245,6 +245,10 @@ const scpSchichtdaten =
                 ajaxPost("php/Schichtdaten/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
                 .then(
                     result => {
+
+                        console.log("schichtdaten")
+                        console.log(result)
+                        
                         dataIntoIDB("schichtModelle")(result)
                         dataIntoIDB("schichten")(result)
                     }
