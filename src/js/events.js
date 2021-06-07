@@ -3938,6 +3938,7 @@ $("#DkFeSpeichern").click(function() {
         $('#tblMstOhneZeitintervallIMwMessstelle').parents('div.dataTables_wrapper').first().hide();
 
         $("#btnShowRecordsAnlBtnPrdkt").click(function(){
+            // alert('here');
             $(this).prop("disabled", true);
             $('#searchBtnShowRecordsPrdktAnlMstBtnDiv').show();
             $('#searchBtnShowRecordsPrdktAnlMstBtn').val('1');

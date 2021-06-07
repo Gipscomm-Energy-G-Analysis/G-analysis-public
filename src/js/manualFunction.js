@@ -1929,7 +1929,7 @@ function produkteAnlargeDataTable(){
         async: !0,
         url: "php/getManuellInterneData.php",
         data: {
-            id: "ProdukteAnlDataTbl",
+            id: "ProdukteAnlDataTblFacityData",
             nameDB: $("#nameDB").val()
         },
         success: function(a) {
@@ -2054,7 +2054,7 @@ function keinZeitIntervallZugewiesen(){
         async: !0,
         url: "php/getManuellInterneData.php",
         data: {
-            id: "KeinZeitintervallTbl",
+            id: "KeinZeitintervallTblFacilityData",
             /*new-mm-start 23-03-2021*/
             typ: "energiedaten",
             /*new-mm-end 23-03-2021*/
@@ -2391,7 +2391,7 @@ function searchProdukteAnlageIntBDE(checkboxSearch){
         async: !0,
         url: "php/getManuellInterneData.php",
         data: {
-            id: "MesssetelleTbl",
+            id: "MesssetelleTblFacilityData",
             typ: "betriebsdaten",
             nameDB: $("#nameDB").val()
         },

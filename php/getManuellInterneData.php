@@ -9,7 +9,7 @@ $nameDB = $_POST['nameDB'];
 $conn = connectToDB($nameDB);
 
 $id = $_POST['id'];
-
+//print_r($id);die;
 if($id == 'DblClick'){
 	$anl_ID = $_POST['anl_ID'];
 	$query = "SELECT * FROM anlagen ";
@@ -222,6 +222,29 @@ elseif($id == 'intBdeMesssetelleIMw'){
 }
 /*new-mm-end 24-03-2021*/
 
+elseif($id == 'KeinZeitintervallTblFacilityData'){
+
+	   $typ = $_POST['typ'];
+	   /*new-mm-start 26-03-2021*/
+	   $query = "SELECT T1.mst_ID AS T1_mst_ID, * FROM MessstellenAnlagen AS T1 ";
+	   /*new-mm-end 26-03-2021*/
+	   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+	   $query .= "ON T1.mst_ID = T2.mst_ID ";
+	   $query .= "LEFT JOIN iMwUnits AS T3 ";
+	   $query .= "ON T3.unt_ID = T2.unt_ID ";
+	   $query .= "LEFT JOIN intervalType AS T4 ";
+	   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
+	   $query .= "WHERE T1.deleted <> 'true' ";
+	   $query .= "AND T1.messartMst = 'manuell' ";
+	   $query .= "AND T1.typ = '$typ' ";
+	   $query .= "AND T2.mst_ID IS NULL ";
+	   /*new-mm-start 26-03-2021*/
+	   $query .= " ORDER BY T1.mst_ID ASC";
+	   /*new-mm-end 26-03-2021*/
+
+	     /*last-mm*/
+
+}
 elseif($id == 'KeinZeitintervallTbl'){
 
 	   $typ = $_POST['typ'];
@@ -237,10 +260,11 @@ elseif($id == 'KeinZeitintervallTbl'){
 	   $query .= "WHERE T1.deleted <> 'true' ";
 	   $query .= "AND T1.messartMst = 'manuell' ";
 	   $query .= "AND T1.typ = '$typ' ";
+
 	   /*new-mm-start 26-03-2021*/
 	   $query .= " ORDER BY T1.mst_ID ASC";
 	   /*new-mm-end 26-03-2021*/
-       
+
 	     /*last-mm*/
 
 }
@@ -262,7 +286,29 @@ elseif($id == 'MesssetelleTbl'){
 	   $query .= "AND T1.typ = '$typ' ";
 	   //echo $query;die();
 
-}elseif($id == 'SearchKeinZeitintervallTbl'){
+}
+elseif($id == 'MesssetelleTblFacilityData'){
+
+	$typ = $_POST['typ'];
+
+	$query = "SELECT T1.mst_ID AS T1_mst_ID, T1.nameMSt AS T1_nameMSt,T1.anlageMst AS T1_anlageMst, * FROM MessstellenAnlagen AS T1 ";
+	//$query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+	$query .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
+	$query .= "ON T1.mst_ID = T2.mst_ID ";
+	//$query .= "ON T1.mst_ID AS T1_mst_ID = T2.mst_ID AS T2_mst_ID ";
+	$query .= "LEFT JOIN iMwUnits AS T3 ";
+	$query .= "ON T2.unt_ID = T3.unt_ID ";
+	$query .= "LEFT JOIN intervalType AS T4 ";
+	$query .= "ON T2.intTp_ID = T4.intTp_ID ";
+	$query .= "LEFT JOIN interneMesswerteConfig AS T5 ON T1.mst_ID = T5.mst_ID ";
+	$query .= "WHERE T1.deleted <> 'true' ";
+	$query .= "AND T1.messartMst = 'manuell' ";
+	$query .= "AND T1.typ = '$typ' ";
+	$query .= "AND T5.mst_ID IS NULL";
+	//echo $query;die();
+
+}
+elseif($id == 'SearchKeinZeitintervallTbl'){
 	   /*new-mm-start*/
 	   $checkboxSearch = $_POST['checkboxSearch'];
 	   $typ = $_POST['typ'];
@@ -1007,6 +1053,15 @@ elseif($id == 'ProdukteAnlDataTbl'){
     $query .= " WHERE T1.type = 2";
     //echo $query;die();
 }
+elseif($id == 'ProdukteAnlDataTblFacityData'){
+
+	$query = "SELECT DISTINCT T1.prd_id,T1.anl_col,T1.anl_id,T1.type ,T2.namePrd,T2.artikelNrPrd,T3.bezeichnungAnl,T1.id FROM produktionsAnlagenMoreOpt As T1";
+	$query .= " LEFT JOIN produkte AS T2 ON T1.prd_id = T2.prd_ID";
+    $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
+    $query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ON T1.prd_id = T4.prd_id";
+    $query .= " WHERE T1.type = 2 AND t4.prd_id IS NULL";
+    //echo $query;die();
+}
 /*new-mm-start 25-03-2021*/
 elseif($id == 'displayDataPrdkt'){
 
@@ -1141,6 +1196,7 @@ else if($id == 'startEndDateEinheitTypeCheckValidation'){
   echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }else{
 	$records= queryDB($conn, $query, "read");
+//	print_r($records);die;
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }
 ?>
