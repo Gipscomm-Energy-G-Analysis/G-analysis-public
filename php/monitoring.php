@@ -74,6 +74,7 @@ function sendAlertEmails($mstsWithoutData) {
                       , "tmm@energie-gipscomm.de"
                       , "cmu@energie-gipscomm.de"
                       , "alfred.tekniepe@managee.de"
+                      , "rpi@energie-gipscomm.de"
                       ] ;
 
         $betreff = "Daten kommen nicht mehr an (G-Analysis)" ;
@@ -113,6 +114,7 @@ function sendAlertEmails($mstsWithoutData) {
         eMail($empfaenger[2], $betreff, $emailText) ;
         eMail($empfaenger[3], $betreff, $emailText) ;
         eMail($empfaenger[4], $betreff, $emailText) ;
+        eMail($empfaenger[5], $betreff, $emailText) ;
     }
 
     $rowsString = buildStringMstsDBs($mstsWithoutData) ;

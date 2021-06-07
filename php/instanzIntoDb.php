@@ -254,9 +254,8 @@ elseif($id == "manGrp") {
           $tsql .= "WHERE manGrp_ID = '$manGrpID' " ;
       }
     } else {
-      $dateTime = date("Y-m-d H:i:s");
       if(!empty($manGrpID)) {
-        $tsql = "UPDATE mandantenGruppen SET deleted_at = '$dateTime' WHERE manGrp_ID = '$manGrpID' ";
+        $tsql = "UPDATE mandantenGruppen SET deleted = 'True' WHERE manGrp_ID = '$manGrpID' ";
     
         echo "Daten erfolgreich gespeichert";
       }
