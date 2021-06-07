@@ -233,13 +233,8 @@ const scpSchichtdaten =
 
             // Inserts data into a provided indexedDB store(table)
             const dataIntoIDB =
-<<<<<<< Updated upstream
-                store =>
-                data =>
-=======
                 data =>
                 store =>
->>>>>>> Stashed changes
                 ( idxDB[store].clear()
                 , idxDB[store].bulkPut(data[store])
                 )
@@ -249,19 +244,12 @@ const scpSchichtdaten =
                 () =>
                 ajaxPost("php/Schichtdaten/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
                 .then(
-<<<<<<< Updated upstream
-                    result => {
-                        dataIntoIDB("schichtModelle")(result)
-                        dataIntoIDB("schichten")(result)
-                    }
-=======
                     result => 
                     [ "schichtModelle"
                     , "schichten"
                     , "schichtModelleHist"
                     , "schichtenHist"
                     ].forEach(dataIntoIDB(result))   
->>>>>>> Stashed changes
                 )
 
             // Dialog which asks the user if the Schichtmodell should
