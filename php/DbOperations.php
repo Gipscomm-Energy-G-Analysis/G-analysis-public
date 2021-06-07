@@ -11,7 +11,7 @@ function connectToDB( $nameDB ) {
  $executionStartTime = microtime(true);
   if($GLOBALS['QueryStatsIntoFile'] == true) {
       $GLOBALS['StartTimeConn'] = $executionStartTime;
-  } 
+  }
 
 
   $conn = sqlsrv_connect( $serverName, $connectionInfo ) ;
