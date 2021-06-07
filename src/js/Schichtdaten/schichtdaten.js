@@ -464,23 +464,21 @@ const scpSchichtdaten =
             // Sets the form data input values of the previous Schicht Modell
             // depending on the current records index
             this.readPrevious =
-                () => {
-                    if ($("#schtMdlIdx").val() > 0) {
-                        readIntoFormFields(decr($("#schtMdlIdx").val()))
-                    }
-                }
+                () =>
+                greaterZero(getFieldValue("schtMdlIdx")) ?
+                readIntoFormFields(decr(getFieldValue("schtMdlIdx"))) :
+                false
 
             // Sets the form data input values of the next Schicht Modell
             // depending on the current records index
             this.readNext =
                 () =>
                 idxDB.schichtModelle.count()
-                .then(
-                    count => {
-                        if ($("#schtMdlIdx").val() < decr(count)) {
-                            readIntoFormFields(incr($("#schtMdlIdx").val()))
-                        }
-                    }
+                .then( 
+                    count => 
+                    greater(decr(count))(getFieldValue("schtMdlIdx")) ?
+                    readIntoFormFields(incr(getFieldValue("schtMdlIdx"))) :
+                    false
                 )
 
             // Sets the form data input values of the last Schicht Modell
