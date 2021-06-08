@@ -1864,6 +1864,9 @@
                     <input id="schtMdlID" />
                     <input id="schtMdlIdx" />
                     <input id="schtMdlState" />
+
+                    <input id="schtMdlHistID" />
+                    <input id="schtMdlHistIdx" />
                   </div>
                   <div id="infosMandanten">
                      <div class="navDropBox" style="height:20px;padding:3px;"> <img id="manLoeschen" title="Mandant löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="manSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="manHinz" title="Neuen Mandanten erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="manSuchen" title="Mandanten suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="manMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> </div>
@@ -6054,13 +6057,13 @@
                   <div id="infosSchichtdatenHist">
                      <div id="infosBlock">
                         <div class="navDropBox" style="height:20px;padding:3px;">
-                            <img id="schtDatSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img id="schtDatHistSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                             <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
-                            <img id="schtDatLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
-                            <img id="schtDatNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
+                            <img id="schtDatHistLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
+                            <img id="schtDatHistNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
                             <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
-                            <img id="schtDatPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
-                            <img id="schtDatFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
+                            <img id="schtDatHistPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
+                            <img id="schtDatHistFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
                            <label>Liegenschaft: </label>
                            <select class="liegPfad"></select>
                         </div>
@@ -10525,6 +10528,25 @@
     <div id="schichtmodellSuchenContainer" style="display:none;">
         <div style="margin-bottom:20px;">
             <table id="tblSchichtmodellSuchen" class="stripe hover row-border compact dt-left custom">
+                <thead>
+                    <tr>
+                        <th>idx</th>
+                        <th>Bezeichnung</th>
+                        <th>Anzahl Schichten</th>
+                        <th>gueltigVon</th>
+                        <th>gueltigBis</th>
+                        <th>bisEndeOffen</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <!--SchichtmodellHist suchen-->
+    <!--  -->
+    <div id="schichtmodellHistSuchenContainer" style="display:none;">
+        <div style="margin-bottom:20px;">
+            <table id="tblSchichtmodellHistSuchen" class="stripe hover row-border compact dt-left custom">
                 <thead>
                     <tr>
                         <th>idx</th>

@@ -10414,6 +10414,33 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         bAutoWidth: !1,
         colReorder: !0
     });
+    tblSchichtmodellHistSuchen = $("#tblSchichtmodellHistSuchen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+                extend: "copy",
+                text: "Kopieren",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            },
+            {
+                extend: "csv",
+                text: "CSV-Export",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            }, {
+                extend: "print",
+                text: "Drucken",
+                exportOptions: {
+                    columns: ":visible"
+                }
+            }
+        ],
+        pageLength: 20,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
     tblAnlagen = $("#anlagenListe").DataTable({
         dom: "Bfrtip",
         buttons: [{

@@ -1598,6 +1598,18 @@ $(document).ready(function() {
             this.value
         )
     })
+    // if the number of shifts is changed the number of blocks should be adjusted7
+    // See schichtdaten.js
+    $("#anzahlSchtDatHist").change(function() {
+
+        $("#schichtdatenHistContainer").empty()
+
+        scpSchichtdaten_historie.generateSchichtHistBlocks(
+            $("#schichtdatenHistContainer")
+        )(
+            this.value
+        )
+    })
     // initializes first shift-blocks
     // See schichtdaten.js
     $("#anzahlSchtDat").trigger("change")
@@ -1670,7 +1682,7 @@ $(document).ready(function() {
         $(".lblAendern").css("display", "inline")
     });
     // Schichtdaten
-    // See schichtdaten.js
+    // See Schichtdaten/schichtdaten.js
     //
     // Arrow Navigation
     //
@@ -1694,6 +1706,20 @@ $(document).ready(function() {
     // Create New Or Update Form Data After Form Validation
     //
     $("#schtDatSpeichern").click(scpSchichtdaten.validateAndSaveFormData)
+    //
+    // Schichtdaten Historie
+    // See Schichtdaten/historie.js
+    //
+    // Arrow Navigation
+    //
+    $("#schtDatHistFirst").click(scpSchichtdaten_historie.readFirst)
+    $("#schtDatHistPrevious").click(scpSchichtdaten_historie.readPrevious)
+    $("#schtDatHistNext").click(scpSchichtdaten_historie.readNext)
+    $("#schtDatHistLast").click(scpSchichtdaten_historie.readLast)
+    //
+    // Search Navigation
+    //
+    $("#schtDatHistSuchen").click(scpSchichtdaten_historie.searchSchichtModellHist)
     //
 
     $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
