@@ -118,7 +118,6 @@ const scpSchichtdaten_historie =
                 () =>
                 ( $("#anzahlSchtDatHist").val(3)
                 , $("#anzahlSchtDatHist").trigger("change")
-                , $("#bisEndeOffenSchtDat").trigger("click")
                 )
 
             // Resets all input elements to their initial empty state
@@ -127,7 +126,6 @@ const scpSchichtdaten_historie =
                 () =>
                 ( clearGeneralFields()
                 , resetAnzahl()
-                , setState("new")
                 )
 
             // Returns an array of the Schicht Modelle from indexedDB
@@ -151,13 +149,13 @@ const scpSchichtdaten_historie =
 
             // Sets the input values of a given Schicht
             const setSchichtHist =
-                (schicht, i) =>
-                [ [`bezeichnungScht${incr(i)}Dat`, "bezeichnung"]
-                , [`uhrzeitVonScht${incr(i)}Dat`, "uhrzeitVon"]
-                , [`uhrzeitBisScht${incr(i)}Dat`, "uhrzeitBis"]
-                , [`tagVonScht${incr(i)}Dat`, "tagVon"]
-                , [`tagBisScht${incr(i)}Dat`, "tagBis"]
-                ].forEach(a => $(`#${a[0]}`).val(schicht[a[1]]))
+                (schichtHist, i) =>
+                [ [`bezeichnungScht${incr(i)}DatHist`, "bezeichnung"]
+                , [`uhrzeitVonScht${incr(i)}DatHist`, "uhrzeitVon"]
+                , [`uhrzeitBisScht${incr(i)}DatHist`, "uhrzeitBis"]
+                , [`tagVonScht${incr(i)}DatHist`, "tagVon"]
+                , [`tagBisScht${incr(i)}DatHist`, "tagBis"]
+                ].forEach(a => $(`#${a[0]}`).val(schichtHist[a[1]]))
 
             // Sets the input values of all Schichten
             const setSchichtenHist =
@@ -181,9 +179,7 @@ const scpSchichtdaten_historie =
                             $("#bisEndeOffenSchtDatHist").prop("checked", schichtModellHist.bisEndeOffen)
                             $("#notizSchtDatHist").val(schichtModellHist.notiz)
 
-                            this.endeOffenOrBis()
-
-                            querySchichtenDataIDB(schichtModellHist.schtMdl_ID)
+                            querySchichtenHistDataIDB(schichtModellHist.schtMdl_ID)
                             .then(setSchichtenHist)
                         }
                     )

@@ -1587,7 +1587,7 @@ $(document).ready(function() {
         diagrammGruppeHinzuf\u00fcgen()
     });
     // if the number of shifts is changed the number of blocks should be adjusted7
-    // See schichtdaten.js
+    // See Schichtdaten/schichtdaten.js
     $("#anzahlSchtDat").change(function() {
 
         $("#schichtdatenContainer").empty()
@@ -1599,7 +1599,7 @@ $(document).ready(function() {
         )
     })
     // if the number of shifts is changed the number of blocks should be adjusted7
-    // See schichtdaten.js
+    // See Schichtdaten/historie.js
     $("#anzahlSchtDatHist").change(function() {
 
         $("#schichtdatenHistContainer").empty()
@@ -1611,15 +1611,15 @@ $(document).ready(function() {
         )
     })
     // initializes first shift-blocks
-    // See schichtdaten.js
+    // See Schichtdaten/schichtdaten.js
     $("#anzahlSchtDat").trigger("change")
     // if the shift definition is without an end date then Gültig Bis should be disabled
-    // See schichtdaten.js
+    // See Schichtdaten/schichtdaten.js
     $("#bisEndeOffenSchtDat").click(function() {
         scpSchichtdaten.endeOffenOrBis()
     })
     // if the Gültig Von is changed the min date for Gültig Bis = Gültig Von
-    // See schichtdaten.js
+    // See Schichtdaten/schichtdaten.js
     $("#gueltigVonSchtDat").change(function() {
         scpSchichtdaten.setMinGueltigBis(this.value)
     })

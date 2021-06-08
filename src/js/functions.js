@@ -5167,6 +5167,8 @@ try {
                             scpSchichtdaten
                             .populateIndexedDB()
                             .then(scpSchichtdaten.readFirst)
+                            .then(scpSchichtdaten_historie.readFirst)
+
                         }
                     });
                     break;
