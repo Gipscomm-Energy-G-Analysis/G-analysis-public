@@ -83,8 +83,6 @@ if($modus === "new") {
 }
 else {
 
-    define("schtMdlID", $_POST['schtMdlID']) ;
-
     if ($archived === "true") {
         $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
         $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
@@ -114,6 +112,8 @@ else {
         echo json_encode(["query" => $joinedQueries]) ;
     }
     else {
+        define("schtMdlID", $_POST['schtMdlID']) ;
+
         $updateSchichtmodell = "UPDATE schichtModelle SET datum = getdate(), modellBez = '$modellBezSchtDat', anzahl = $anzahlSchtDat, " ;
         $updateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', gueltigBis = '$gueltigBisSchtDat', bisEndeOffen = '$bisEndeOffenSchtDat', " ;
         $updateSchichtmodell .= "notiz = '$notizSchtDat' " ;

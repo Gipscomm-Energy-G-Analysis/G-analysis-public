@@ -202,7 +202,7 @@ const scpSchichtdaten_historie =
             // depending on the current records index
             this.readNext =
                 () =>
-                idxDB.schichtModelle.count()
+                idxDB.schichtModelleHist.count()
                 .then( 
                     count => 
                     greater(decr(count))(getFieldValue("schtMdlHistIdx")) ?
@@ -213,7 +213,7 @@ const scpSchichtdaten_historie =
             // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
-                idxDB.schichtModelle.count()
+                idxDB.schichtModelleHist.count()
                 .then(
                     count =>
                     readIntoFormFields(decr(count))
