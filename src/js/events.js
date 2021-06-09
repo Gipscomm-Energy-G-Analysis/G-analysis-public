@@ -4598,6 +4598,7 @@ $("#DkFeSpeichern").click(function() {
                     var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                     //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                     if($('#inputPrevValDB').val()){
+                        console.log.log('ghghg');
                         $(inputNextBottomId).val(secBottomValDB);
                     }
                     else{
@@ -8093,4 +8094,11 @@ $("#benHinz").on('click', function(){
         treeObject,
         {showAlwaysCheckBox:true,fold:false});
     document.getElementById("benutzerTreeview").appendChild( tw.root	 )
+});
+
+// ***7-6-2021---
+$("#infosIntEnergiedaten_measuring_point").click(function() {
+    var a,b;
+    "infosIntEnergiedaten_measuring_point" == this.id ? a = "mstIMw" : '';
+    infosIntEnergiedaten_measuring_point_function(a,b);
 });
