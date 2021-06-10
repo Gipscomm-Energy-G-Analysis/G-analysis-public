@@ -4135,7 +4135,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                                         m='';
                                     }
                                     if(a.query1[e].startDate < yr1 ){
-                                        m='';
+                                        m='';   
                                     }
                                 }
                                 if(a.query1[e].ending ==0){
