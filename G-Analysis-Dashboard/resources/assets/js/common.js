@@ -25,9 +25,9 @@ if (localStorage.getItem('active')){
 const databaseHandler = document.getElementById('database-handler');
 const databaseHandlerFunction = () => {
     const changeDataBaseHook = new Promise(function(resolve, reject) {
-        const database = databaseHandler.options[databaseHandler.selectedIndex].value;
-        console.log(database);
-        $.ajax({
+    const database = databaseHandler.options[databaseHandler.selectedIndex].value;
+    console.log(database);
+    $.ajax({
             url:'/switch-database',
             type: 'POST',
             data: {

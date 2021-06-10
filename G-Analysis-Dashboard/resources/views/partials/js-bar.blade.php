@@ -22,4 +22,7 @@
 <script src="{{asset('template/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('template/js/adminlte.js')}}"></script>
+
+<script src="{{asset('template/plugins/spin-js/spin-js.js')}}"></script>
+<script src="{{asset('template/plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('js/common.js')}}"></script>

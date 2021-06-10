@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductData;
 use App\Models\Organisation;
+use App\Models\ProductOverview;
+use App\Models\Anlagen;
+use Illuminate\Support\Str;
 use View;
 use Config;
 use DB;
@@ -20,26 +23,71 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
-//        $totalMachines = ProductData::all()->groupBy('maschinenID')->count();
-//        dd($totalMachines);
-        $totalMachines = DB::table('ProdData')->distinct('maschinenID')->count();
-        $totalOrder = ProductData::all()->groupBy('auftrag')->count();
-        $totalOrganisation = Organisation::all()->count();
-        $databases = UsersDatabases::select('dbName')->get();
-        $selectedDatabase = Config::get("database.connections.sqlsrv.database");
-        $cardData = [
-            'productCount' => count(Product::all()),
-            'machineTotal' => $totalMachines,
-            'orderTotal' => $totalOrder,
-            'organisationTotal' => $totalOrganisation,
-            'databases' => $databases,
-            'selectedDatabase' => $selectedDatabase
-        ];
-        return View::make("dashboard", ['data' => $cardData]);
+        $machines = Anlagen::whereNotNull('datumAnl')
+            ->where('deleted',0)->first();
+        $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current']);
+        $data = $this->getMachineDetail($request);
+        return View::make("product", ["data"=>$data['data']]);
     }
 
 
+    public function getMachineDetail(Request $request)
+    {
+        $id = $request['id'];
+        $type = $request['type'];
+        $machineData = null;
+        $prodData = [];
+        switch ($type) {
+            case 'first':
+                $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->first();
+                break;
+            case 'next':
+                $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->where('anl_ID', '>', $id)->orderBy('anl_ID')->first();
+                break;
+            case 'prev':
+                $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->where('anl_ID', '<', $id)->orderBy('anl_ID','desc')->first();
+                break;
+            case 'last':
+                $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->orderBy('anl_ID','desc')->first();
+                break;
+            case 'current':
+                $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->where('anl_ID', $id)->first();
+                break;
+            default:
+                break;
+        }
+        if(!empty($machineData)) {
+            $machineName = explode (   '-' ,$machineData['nummerAnl'] );
+            $machineName = $machineName[0];
+            $prodData = ProductOverview::where('MANAME',$machineName)->orderBy('id', 'desc')->first();
+            if(!empty($prodData)){
+                $prodData =[
+                    'anlage' => Str::of($prodData['MANAME'])->trim(),
+                    'programm' => Str::of($prodData['STATETEXT'])->trim(),
+                    'artikel' => Str::of($prodData['MAORDER'])->trim(),
+                    'bisher_produziert' => Str::of($prodData['AMOUNT_GOOD'])->trim(),
+                    'zeit_zyklus' => Str::of($prodData['CYCLETIME'])->trim(),
+                    'letzte_störung' => Str::of($prodData['LASTUPDATE'])->trim(),
+                    'anl_ID' => $machineData['anl_ID'],
+                ];
 
+                return ['code'=>200, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'Data Retrived Successfully.'];
+            } else{
+                return ['code'=>401, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'No Record Found!'];
+            }
+        } else {
+            return ['code'=>401, 'data' =>$prodData, 'message'=>'No Record Found!'];
+        }
+    }
 
+    public function getMachineTableData(Request $request) {
+        $pageIndex = $request['pageIndex'];
+        $limit = $request['pageSize'];
+        $totalRecords = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->count();
+        $totalPages = ceil($totalRecords / $limit);
+        $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
+        if($start < 0) $start = 0;
+        $data = Anlagen::select('anl_ID', 'datumAnl', 'nummerAnl', 'bezeichnungAnl')->whereNotNull('datumAnl')->where('deleted',0)->limit($limit)->offset($start)->get();
+        return [ 'data'=> $data, 'itemsCount'=> $totalRecords];
+    }
 }
