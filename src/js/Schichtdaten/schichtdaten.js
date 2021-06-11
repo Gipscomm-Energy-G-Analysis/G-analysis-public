@@ -461,8 +461,10 @@ const scpSchichtdaten =
             // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
-                readIntoFormFields(0)
-
+                ( this.clearFields
+                , readIntoFormFields(0)
+                )
+                
             // Sets the form data input values of the previous Schicht Modell
             // depending on the current records index
             this.readPrevious =

@@ -48,20 +48,9 @@ if($modus === "new") {
         $schichtenHist  =  "INSERT INTO schichtenHist(schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis) " ;
         $schichtenHist .= "VALUES ".buildValuesString($schichten) ;
 
-        $deleteSchichten  = "DELETE FROM schichten " ;
-        $deleteSchichten .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+        queryDB($conn, $schichtenHist, "write") ;
 
-        $deleteSchichtmodell  = "DELETE FROM schichtModelle " ;
-        $deleteSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
-
-        $joinedQueries =
-            $schichtenHist." "
-            .$deleteSchichten." "
-            .$deleteSchichtmodell." " ;
-
-        queryDB($conn, $joinedQueries, "write") ;
-
-        echo json_encode(["query" => $insertSchichtmodellHist." ".$joinedQueries]) ;
+        echo json_encode(["query" => $insertSchichtmodellHist." ".$schichtenHist]) ;
     }
     else {
         $insertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
@@ -84,6 +73,8 @@ if($modus === "new") {
 else {
 
     if ($archived === "true") {
+        define("schtMdlID_", $_POST['schtMdlID']) ;
+
         $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
         $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
 
@@ -97,10 +88,10 @@ else {
         $schichtenHist .= "VALUES ".buildValuesString($schichten) ;
 
         $deleteSchichten  = "DELETE FROM schichten " ;
-        $deleteSchichten .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+        $deleteSchichten .= "WHERE schtMdl_ID = ".schtMdlID_." " ;
 
         $deleteSchichtmodell  = "DELETE FROM schichtModelle " ;
-        $deleteSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
+        $deleteSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID_." " ;
 
         $joinedQueries =
             $schichtenHist." "
