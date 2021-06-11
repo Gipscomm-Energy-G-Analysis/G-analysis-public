@@ -1,4 +1,6 @@
 const navigationHook = document.querySelectorAll('.navigation button');
+const replaceImageButton = document.getElementById('replace-image-button');
+const imageInputField = document.getElementById('machineImage');
 // const getMachineHook = () => {
 //     console.log(this);
 //     let type = this.attr('event-type');
@@ -38,14 +40,30 @@ const getMachineData = (machine_id, type) => {
             $('#zeit_zyklus').val("");
             $('#letzte_störung').val("");
         }
+        $('#machine-image').attr('src','images/Blasanlage.jpg');
     });
 }
 
 //adding event listener to navigation buttons
-navigationHook.forEach((node, key, value)=>{
+navigationHook.forEach((node)=>{
     node.addEventListener('click', function(){
         let type = this.getAttribute('event-type');
         let machine_id = $('.navigation').attr('data-value');
         getMachineData(machine_id, type);
     });
 });
+
+const loadFile = (event) => {
+    let output = document.getElementById('machine-image');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+    }
+};
+
+//Firing click event on button click
+replaceImageButton.addEventListener('click', () => {
+    imageInputField.click();
+});
+
+imageInputField.addEventListener('change', loadFile);
