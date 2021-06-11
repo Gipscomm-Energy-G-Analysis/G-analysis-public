@@ -188,7 +188,15 @@ const scpSchichtdaten_historie =
             // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
-                readIntoFormFields(0)
+                idxDB.schichten.count()
+                .then(
+                    count =>
+                    greaterZero(count) ?
+                    readIntoFormFields(0) :
+                    this.clearFields()
+                )
+           
+                
 
             // Sets the form data input values of the previous Schicht Modell
             // depending on the current records index

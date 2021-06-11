@@ -399,7 +399,7 @@ const scpSchichtdaten =
 
             // Returns an array of the Schicht Modelle from indexedDB
             const querySchichtModelleDataIDB =
-                () =>
+                () => 
                 idxDB.schichtModelle.toArray()
 
             // Returns a certain Schicht Modell depending on an index
@@ -461,8 +461,14 @@ const scpSchichtdaten =
             // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
-                ( this.clearFields
-                , readIntoFormFields(0)
+                idxDB.schichtModelle.count()
+                .then(
+                    count =>
+                    greaterZero(count) ?
+                    readIntoFormFields(0) :
+                    ( this.clearFields()
+                    , setState("new")
+                    )
                 )
                 
             // Sets the form data input values of the previous Schicht Modell
