@@ -293,6 +293,14 @@ const scpSchichtdaten =
                 ajaxPost("php/Schichtdaten/saveSchichtdaten.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.populateIndexedDB)
+                .then(
+                    () =>
+                    equal($("#schtMdlState").val())("new") ?
+                    ( this.readLast()
+                    , setState("edit")
+                    ) :
+                    false
+                )
 
             // If the form data contains empty input elements a
             // dialog is shown which asks if the record should be
@@ -453,7 +461,7 @@ const scpSchichtdaten =
                             querySchichtenDataIDB(schichtModell.schtMdl_ID)
                             .then(setSchichten)
 
-                            setState("save")
+                            setState("edit")
                         }
                     )
                 }
