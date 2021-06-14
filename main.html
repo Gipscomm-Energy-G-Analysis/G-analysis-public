@@ -6020,8 +6020,12 @@
                             <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
                             <img id="schtDatPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
                             <img id="schtDatFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
-                           <label>Liegenschaft: </label>
-                           <select class="liegPfad"></select>
+                           <label class="schtDatLieg" style="display: none;">Liegenschaft: </label>
+                           <select  class="liegPfad schtDatLieg" style="display: none;"></select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="liegSchtDat">Mit Liegenschaftsbezug</label>
+                           <input id="liegSchtDat" class="schtDatForm" type="checkbox">
                         </div>
                         <div class="controlDiv">
                            <label for="modellBezSchtDat">Modellbezeichnung</label>
