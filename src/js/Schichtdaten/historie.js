@@ -120,6 +120,14 @@ const scpSchichtdaten_historie =
                 , $("#anzahlSchtDatHist").trigger("change")
                 )
 
+            // Sets that the record should have a lieg reference 
+            this.enableLiegRef =
+                $(".schtDatLieg").css("display", "inline")
+
+            // Sets that the record should have no lieg reference
+            this.disableLiegRef =
+                $(".schtDatLieg").css("display", "none")
+
             // Resets all input elements to their initial empty state
             // and sets the save state to create new
             this.clearFields =
