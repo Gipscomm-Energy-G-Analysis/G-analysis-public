@@ -10976,9 +10976,9 @@
                     idxDB
                     .version(idxDB._versions.length === 0 ? 1 : idxDB._versions.length)
                     .stores(
-                        { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, bisEndeOffen, notiz"
+                        { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz"
                         , schichten : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
-                        , schichtModelleHist : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, bisEndeOffen, notiz"
+                        , schichtModelleHist : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz"
                         , schichtenHist : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
                         }
                     )
