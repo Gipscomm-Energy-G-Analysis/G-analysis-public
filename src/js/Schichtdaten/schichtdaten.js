@@ -135,6 +135,28 @@ const scpSchichtdaten =
                 () =>
                 $("#liegSchtDat").prop("checked")
 
+            // Sets that the record should have a lieg reference 
+            const enableLiegRef =
+                () =>
+                $(".schtDatLieg").css("display", "inline")
+
+            // Sets that the record should have no lieg reference
+            const disableLiegRef =
+                () =>
+                $(".schtDatLieg").css("display", "none")
+            
+            // Gets the state of the "Mit Liegenschaftsbezug" checkbox
+            const hasLiegRef =
+                () =>
+                $("#liegSchtDat").prop("checked")
+
+            // Enables / Disables lieg reference
+            this.setLiegRefState =
+                () =>
+                hasLiegRef() ?
+                enableLiegRef() :
+                disableLiegRef()
+
             // Enables/Disables the Gueltig Bis input depending
             // on the selection state of Ende offen
             this.endeOffenOrBis =
