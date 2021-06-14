@@ -1686,7 +1686,7 @@ $(document).ready(function() {
     //
     // Select / De-select Liegenschaft Reference
     //
-    $("#liegSchtDat").click()
+    $("#liegSchtDat").click(scpSchichtdaten.setLiegRefState)
     //
     // Arrow Navigation
     //
