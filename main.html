@@ -241,9 +241,9 @@
                                  <a id="erwPrdMenu" href="#">Heizkurve</a>
                                  </li>-->
                               <li> <a id="grpDiagMenu" href="#">Gruppierung Diagramme</a> </li>
+                              <li> <a id="schtDatMenu" href="#">Schichtdaten</a> </li>
                            </ul>
                         </li>
-                        <li> <a id="schtDatMenu" href="#">Schichtdaten</a> </li>
                      </ul>
                   </div>
                </li>
@@ -393,8 +393,6 @@
                   <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
                   <button id="tabDynamicKorrekturFktr" style="">dynamische Korrekturfaktoren</button>
                   <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
-               </div>
-               <div id="tabsSchichtdaten" style="display:none;">
                   <button id="tabSchtDat" class="no_korrector_tabs">Schichtdaten</button>
                   <button id="tabSchtDatHist" class="no_korrector_tabs">Historie</button>
                </div>
@@ -1499,8 +1497,6 @@
                      <input id="gipscAdmID"/>
                         <input id="gipscAdmCount"/>
                         <input id="betrGrpID"/>
-                        <input id="betrGrpState"/>
-                        <input id="betrGrpIdx"/>
                         <input id="sAdmID"/>
                         <input id="manGrpID"/>
                         <input id="admID"/>
@@ -1516,18 +1512,7 @@
                   </div>
                   <div id="infosGipscommAdmins" style="display:none;">
                      <div class="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;"> 
-                           <img id="gipscAdmLoeschen" title="Admin löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
-                           <img id="gipscAdmSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
-                           <img id="gipscAdmHinz" title="Neuen Admin erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
-                           <img id="gipscAdmSuchen" title="Admin suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
-                           <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
-                           <img id="gipscAdmLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Admin" src="images/last.png" alt="letzte" /> 
-                           <img id="gipscAdmNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Admin" src="images/next.png" alt="nächste" /> 
-                           <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
-                           <img id="gipscAdmPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" /> 
-                           <img id="gipscAdmFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" /> 
-                        </div>
+                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="gipscAdmLoeschen" title="Admin löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="gipscAdmSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="gipscAdmHinz" title="Neuen Admin erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="gipscAdmSuchen" title="Admin suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="gipscAdmMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="gipscAdmLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Admin" src="images/last.png" alt="letzte" /> <img id="gipscAdmNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Admin" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="gipscAdmPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" /> <img id="gipscAdmFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" /> </div>
                         <div class="controlDiv">
                            <label>Benutzername</label>
                            <input id="benutzernameGipscAdm" />
@@ -1536,21 +1521,31 @@
                            <label>Passwort</label>
                            <input id="passwortGipscAdm" />
                         </div>
+                        <!--
+                            <div class="navDropBox" style="height:20px;padding:3px;">
+                                <img id="gipscommRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            </div>
+                            <div class="infosBlock">
+                                <div class="sectionHeader">
+                                    <label>Rollen und Berechtigungen</label>
+                                </div>
+                                <div id="gipscommTreeview">
+                                </div>
+                                <script type="text/javascript">
+                                    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
+                                    var tw = new TreeView(
+                                        treeObject,
+                                        {showAlwaysCheckBox:true,fold:false});
+                                    document.getElementById("gipscommTreeview").appendChild( tw.root	 )
+                                </script>
+                            </div>
+                            -->
                      </div>
                   </div>
                   <div id="infosBetreuerGruppen">
-                     <div class="navDropBox" style="height:20px;padding:3px;"> 
-                        <img id="betrGrpLoeschen" title="Betreuergruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
-                        <img id="betrGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
-                        <img id="betrGrpHinz" title="Neue Betreuergruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
-                        <img id="betrGrpSuchen" title="Betreuergruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
-                        <img id="betrGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> 
-                        <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
-                        <img id="betrGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Betreuergruppe" src="images/last.png" alt="letzte" /> 
-                        <img id="betrGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Betreuergruppe" src="images/next.png" alt="nächste" /> 
-                        <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
-                        <img id="betrGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Betreuergruppe" src="images/previous.png" alt="vorherige" /> 
-                        <img id="betrGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Betreuergruppe" src="images/first.png" alt="erste" />
+                     <div class="navDropBox" style="height:20px;padding:3px;"> <img id="betrGrpLoeschen" title="Betreuergruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="betrGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpHinz" title="Neue Betreuergruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="betrGrpSuchen" title="Betreuergruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="betrGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Betreuergruppe" src="images/last.png" alt="letzte" /> <img id="betrGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Betreuergruppe" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="betrGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Betreuergruppe" src="images/previous.png" alt="vorherige" /> <img id="betrGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Betreuergruppe" src="images/first.png" alt="erste" />
+                        <!-- <label>Betr. Gruppe:</label>
+                        <select class="betrPfad"></select> -->
                      </div>
                      <div class="betreuerGruppe">
                         <form action="" method="post">
@@ -6012,103 +6007,97 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="schichtdaten">
-               <div id="infosSchichtdaten">
-                  <div id="infosBlock">
-                     <div class="navDropBox" style="height:20px;padding:3px;">
-                         <img id="schtDatLoeschen" title="Schichtmodell löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
-                         <img id="schtDatSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                         <img id="schtDatHinz" title="Neues Schichtmodell erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
-                         <img id="schtDatSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                         <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
-                         <img id="schtDatLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
-                         <img id="schtDatNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
-                         <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
-                         <img id="schtDatPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
-                         <img id="schtDatFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
-                        <label>Liegenschaft: </label>
-                        <select  class="liegPfad" ></select>
-                     </div>
-                     <div class="controlDiv">
-                        <label for="liegSchtDat">Mit Liegenschaftsbezug</label>
-                        <input id="liegSchtDat" class="schtDatForm" type="checkbox">
-                     </div>
-                     <div class="controlDiv">
-                        <label for="modellBezSchtDat">Modellbezeichnung</label>
-                        <input id="modellBezSchtDat" class="schtDatForm" type="text">
-                     </div>
-                     <div class="controlDiv">
-                        <label for="anzahlSchtDat">Anzahl (1 - 6)</label>
-                        <input id="anzahlSchtDat" class="schtDatForm" type="number" onkeydown="return false" min="1" max="6" value="3">
-                     </div>
-                     <br>
-                     <div class="controlDiv">
-                        <label for="gueltigVonSchtDat">Gültig Von</label>
-                        <input id="gueltigVonSchtDat" class="schtDatForm" type="date">
-                     </div>
-                     <div class="controlDiv">
-                        <label for="gueltigBisSchtDat">Gültig Bis</label>
-                        <input id="gueltigBisSchtDat" class="schtDatForm" type="date" disabled>
-                     </div>
-                     <div class="controlDiv">
-                        <label for="bisEndeOffenSchtDat">Ende offen</label>
-                        <input id="bisEndeOffenSchtDat" class="schtDatForm" type="checkbox" checked>
-                     </div>
-                     <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
-                         <label>Notiz</label>
-                         <textarea rows="3" id="notizSchtDat" class="schtDatForm" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
-                     </div>
-                     <br>
-                     <br>
-                     <div id="schichtdatenContainer">
-                     </div>
-                 </div>
-             </div>
-               <div id="infosSchichtdatenHist">
-                  <div id="infosBlock">
-                     <div class="navDropBox" style="height:20px;padding:3px;">
-                         <img id="schtDatHistSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                         <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
-                         <img id="schtDatHistLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
-                         <img id="schtDatHistNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
-                         <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
-                         <img id="schtDatHistPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
-                         <img id="schtDatHistFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
-                        <label>Liegenschaft: </label>
-                        <select class="liegPfad"></select>
-                     </div>
-                     <div class="controlDiv">
-                        <label for="liegSchtDatHist">Mit Liegenschaftsbezug</label>
-                        <input id="liegSchtDatHist" type="checkbox" onclick="return false">
-                     </div>
-                     <div class="controlDiv">
-                        <label for="modellBezSchtDatHist">Modellbezeichnung</label>
-                        <input id="modellBezSchtDatHist" type="text" disabled> 
-                     </div>
-                     <div class="controlDiv">
-                        <label for="anzahlSchtDatHist">Anzahl (1 - 6)</label>
-                        <input id="anzahlSchtDatHist" type="number" disabled onkeydown="return false" min="1" max="6" value="3">
-                     </div>
-                     <br>
-                     <div class="controlDiv">
-                        <label for="gueltigVonSchtDatHist">Gültig Von</label>
-                        <input id="gueltigVonSchtDatHist" type="date" disabled>
-                     </div>
-                     <div class="controlDiv">
-                        <label for="gueltigBisSchtDatHist">Gültig Bis</label>
-                        <input id="gueltigBisSchtDatHist" type="date" disabled>
-                     </div>
-                     <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
-                         <label>Notiz</label>
-                         <textarea rows="3" id="notizSchtDatHist" disabled style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
-                     </div>
-                     <br>
-                     <br>
-                     <div id="schichtdatenHistContainer">
-                     </div>
-                 </div>
-             </div>
+                  <div id="infosSchichtdaten">
+                     <div id="infosBlock">
+                        <div class="navDropBox" style="height:20px;padding:3px;">
+                            <img id="schtDatLoeschen" title="Schichtmodell löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
+                            <img id="schtDatSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img id="schtDatHinz" title="Neues Schichtmodell erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
+                            <img id="schtDatSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
+                            <img id="schtDatLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
+                            <img id="schtDatNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
+                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
+                            <img id="schtDatPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
+                            <img id="schtDatFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
+                           <label class="schtDatLieg" style="display: none;">Liegenschaft: </label>
+                           <select  class="liegPfad schtDatLieg" style="display: none;"></select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="liegSchtDat">Mit Liegenschaftsbezug</label>
+                           <input id="liegSchtDat" class="schtDatForm" type="checkbox">
+                        </div>
+                        <div class="controlDiv">
+                           <label for="modellBezSchtDat">Modellbezeichnung</label>
+                           <input id="modellBezSchtDat" class="schtDatForm" type="text">
+                        </div>
+                        <div class="controlDiv">
+                           <label for="anzahlSchtDat">Anzahl (1 - 6)</label>
+                           <input id="anzahlSchtDat" class="schtDatForm" type="number" onkeydown="return false" min="1" max="6" value="3">
+                        </div>
+                        <br>
+                        <div class="controlDiv">
+                           <label for="gueltigVonSchtDat">Gültig Von</label>
+                           <input id="gueltigVonSchtDat" class="schtDatForm" type="date">
+                        </div>
+                        <div class="controlDiv">
+                           <label for="gueltigBisSchtDat">Gültig Bis</label>
+                           <input id="gueltigBisSchtDat" class="schtDatForm" type="date" disabled>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="bisEndeOffenSchtDat">Ende offen</label>
+                           <input id="bisEndeOffenSchtDat" class="schtDatForm" type="checkbox" checked>
+                        </div>
+                        <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
+                            <label>Notiz</label>
+                            <textarea rows="3" id="notizSchtDat" class="schtDatForm" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                        </div>
+                        <br>
+                        <br>
+                        <div id="schichtdatenContainer">
+                        </div>
+                    </div>
+                </div>
+                  <div id="infosSchichtdatenHist">
+                     <div id="infosBlock">
+                        <div class="navDropBox" style="height:20px;padding:3px;">
+                            <img id="schtDatHistSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
+                            <img id="schtDatHistLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
+                            <img id="schtDatHistNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
+                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
+                            <img id="schtDatHistPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
+                            <img id="schtDatHistFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
+                           <label>Liegenschaft: </label>
+                           <select class="liegPfad"></select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="modellBezSchtDatHist">Modellbezeichnung</label>
+                           <input id="modellBezSchtDatHist" type="text" readonly> 
+                        </div>
+                        <div class="controlDiv">
+                           <label for="anzahlSchtDatHist">Anzahl (1 - 6)</label>
+                           <input id="anzahlSchtDatHist" type="number" readonly onkeydown="return false" min="1" max="6" value="3">
+                        </div>
+                        <br>
+                        <div class="controlDiv">
+                           <label for="gueltigVonSchtDatHist">Gültig Von</label>
+                           <input id="gueltigVonSchtDatHist" type="date" readonly>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="gueltigBisSchtDatHist">Gültig Bis</label>
+                           <input id="gueltigBisSchtDatHist" type="date" readonly>
+                        </div>
+                        <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
+                            <label>Notiz</label>
+                            <textarea rows="3" id="notizSchtDatHist" readonly style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                        </div>
+                        <br>
+                        <br>
+                        <div id="schichtdatenHistContainer">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 </div>
@@ -7187,9 +7176,12 @@
                 </div>
             </div>
             <div id="infosMasseneingabe" style="display:none;">
-                <div class="infosBlock" style="margin-bottom: 0.9cm">
+                <div class="infosBlock">
                     <div id="intMasseneingabe">
-                       
+                        <button id="btnKonfigMstAnl">Konfiguration</button>
+                        <br>
+                        <br>
+                        <button id="masseneingabeSpeichernSrch">Eingaben speichern</button>
                         <img id="masseneingabeSrchImg" src="images/waiting.gif" style='display: none;' />
                         <span class='save-msg-box' style='width: 200px;display: none;'></span>
                         <div class="infosMasseneingabeInside">
@@ -7383,26 +7375,16 @@
                         </div>
                     </div>
                     <input id="masseneingabeTimeInterval" style="display:none;"/>
-
-                    <div style="float: right; margin-top: 10px">
-                        <div style="display: flex">
-                           <img id="config_mannual_default_energy" title="Konfiguration" src="images/config.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 15px" />
-                           <img id="save_mannual_default_energy" title="Eingaben speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 10px" />
-                        </div>
-                        <div style="display: none">
-                              <button id="btnKonfigMstAnl">Konfiguration</button>
-                              <br>
-                              <br>
-                              <button id="masseneingabeSpeichernSrch">Eingaben speichern</button>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!-- new-mm-start 30-03-2021 -->
             <div id="infosMasseneingabePrdkt" style="display:none;">
-                <div class="infosBlock" style="margin-bottom : 0.9cm">
+                <div class="infosBlock">
                     <div id="intMasseneingabe">
-
+                        <button id="btnKonfigPrdkt">Konfiguration</button>
+                        <br>
+                        <br>
+                        <button id="masseneingabeSpeichernSrchPrdkt">Eingaben speichern</button>
                         <img id="masseneingabeSrchImg" src="images/waiting.gif" style='display: none;' />
                         <span class='save-msg-box' style='width: 200px;display: none;'></span>
                         <div class="infosMasseneingabeInside">
@@ -7594,18 +7576,6 @@
 
                             <input type="hidden" id="inputDefaultShowPopup" value="false" />
                         </div> -->
-                       <!-- 16-6-2021-- -->
-                        <div class='btn-save-config' style="float: right; margin-top: 10px;">
-                           <div style="display: flex">
-                              <img id="config_mannual" title="Konfiguration" src="images/config.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 15px" />
-                              <img id="save_mannual" title="Eingaben speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 10px" />
-                           </div>
-                           <div style="display: none">
-                              <button id="btnKonfigPrdkt">Konfiguration</button>
-                              <button id="masseneingabeSpeichernSrchPrdkt">Eingaben speichern</button>
-                           </div>  
-                        </div>
-                        <!-- --end-- -->
                     </div>
                     <input id="masseneingabeTimeInterval" style="display:none;"/>
                 </div>
@@ -7613,9 +7583,12 @@
             <!-- new-mm-end 30-03-2021 -->
             <!-- new-mm-start 30-03-2021 -->
             <div id="infosMasseneingabeMesssetelle" style="display:none;">
-                <div class="infosBlock" style="margin-bottom: 0.9cm;">
+                <div class="infosBlock">
                     <div id="intMasseneingabe">
-                      
+                        <button id="btnKonfigMesssetelle">Konfiguration</button>
+                        <br>
+                        <br>
+                        <button id="masseneingabeSpeichernSrchMesssetelle">Eingaben speichern</button>
                         <img id="masseneingabeSrchImg" src="images/waiting.gif" style='display: none;' />
                         <span class='save-msg-box' style='width: 200px;display: none;'></span>
                         <div class="infosMasseneingabeInside">
@@ -7806,20 +7779,6 @@
 
                             <input type="hidden" id="inputDefaultShowPopup" value="false" />
                         </div> -->
-                        <!-- 16-6-2021 -->
-                        <div style="float: right; margin-top: 10px;">
-                           <div style="display: flex">
-                              <img id="config_mannual_mesurement_operating" title="Konfiguration" src="images/config.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 15px" />
-                              <img id="save_mannual_mesurement_operating" title="Eingaben speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 10px" />
-                           </div>
-                           <div style="display: none;">
-                              <button id="btnKonfigMesssetelle">Konfiguration</button>
-                              <br>
-                              <br>
-                              <button id="masseneingabeSpeichernSrchMesssetelle">Eingaben speichern</button>
-                           </div>
-                       </div>
-                        <!-- end -->
                     </div>
                     <input id="masseneingabeTimeInterval" style="display:none;"/>
                 </div>
@@ -11021,9 +10980,9 @@
                     idxDB
                     .version(idxDB._versions.length === 0 ? 1 : idxDB._versions.length)
                     .stores(
-                        { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz, liegRef"
+                        { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz"
                         , schichten : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
-                        , schichtModelleHist : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz, liegRef"
+                        , schichtModelleHist : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz"
                         , schichtenHist : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
                         }
                     )
@@ -11032,7 +10991,6 @@
                 <script type="text/javascript" src="src/js/manualFunction.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/schichtdaten.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/historie.js"></script>
-                <script type="text/javascript" src="src/js/Administration/gipscommAdmins.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
                 <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>
