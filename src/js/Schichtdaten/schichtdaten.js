@@ -296,6 +296,8 @@ const scpSchichtdaten =
                     () =>
                     equal($("#schtMdlState").val())("new") ?
                     this.readLast() :
+                    !isEndeOffen() ?
+                    this.readLast() :
                     false
                 )
                 .then(scpSchichtdaten_historie.readLast)

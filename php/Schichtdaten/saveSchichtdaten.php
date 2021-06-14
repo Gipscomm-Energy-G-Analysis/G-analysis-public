@@ -52,8 +52,8 @@ if($modus === "new") {
         echo json_encode(["query" => $insertSchichtmodellHist." ".$schichtenHist]) ;
     }
     else {
-        $insertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis, notiz) " ;
-        $insertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat', '$notizSchtDat') ";
+        $insertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon, notiz) " ;
+        $insertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat', '$notizSchtDat') ";
 
         queryDB($conn, $insertSchichtmodell, "write") ;
 
@@ -105,7 +105,7 @@ else {
         define("schtMdlID", $_POST['schtMdlID']) ;
 
         $updateSchichtmodell = "UPDATE schichtModelle SET datum = getdate(), modellBez = '$modellBezSchtDat', anzahl = $anzahlSchtDat, " ;
-        $updateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', gueltigBis = '$gueltigBisSchtDat', " ;
+        $updateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', " ;
         $updateSchichtmodell .= "notiz = '$notizSchtDat' " ;
         $updateSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
 
