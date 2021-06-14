@@ -298,6 +298,7 @@ const scpSchichtdaten =
                     this.readLast() :
                     false
                 )
+                .then(scpSchichtdaten_historie.readLast)
 
             // If the form data contains empty input elements a
             // dialog is shown which asks if the record should be
