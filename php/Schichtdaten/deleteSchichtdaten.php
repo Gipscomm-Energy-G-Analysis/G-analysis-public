@@ -1,9 +1,8 @@
 <?php
-include('top-cache.php');
 error_reporting ( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
 
-require 'DbOperations.php' ;
+require '../DbOperations.php' ;
 
 $nameDB = $_POST[ 'nameDB' ] ;
 $conn = connectToDB( $nameDB ) ;
@@ -20,5 +19,4 @@ $query2 .= "WHERE schtMdl_ID = ".$schtMdlID." ";
 queryDB( $conn, $query2, "write" ) ;
 
 echo $query." ".$query2 ;
-include('bottom-cache.php') ;
 ?>
