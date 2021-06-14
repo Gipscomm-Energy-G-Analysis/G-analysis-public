@@ -296,9 +296,7 @@ const scpSchichtdaten =
                 .then(
                     () =>
                     equal($("#schtMdlState").val())("new") ?
-                    ( this.readLast()
-                    , setState("edit")
-                    ) :
+                    this.readLast() :
                     false
                 )
 
