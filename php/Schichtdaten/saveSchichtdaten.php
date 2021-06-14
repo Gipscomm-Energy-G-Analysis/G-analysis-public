@@ -14,7 +14,6 @@ $modellBezSchtDat = $_POST["modellBezSchtDat"] ;
 $anzahlSchtDat = $_POST["anzahlSchtDat"] ;
 $gueltigVonSchtDat = $_POST["gueltigVonSchtDat"] ;
 $gueltigBisSchtDat = $_POST["gueltigBisSchtDat"] ;
-$bisEndeOffenSchtDat = $_POST["bisEndeOffenSchtDat"] ;
 $notizSchtDat = $_POST["notizSchtDat"] ;
 $schichten = $_POST["schichten"] ;
 
@@ -36,8 +35,8 @@ function buildValuesString($records) {
 if($modus === "new") {
 
     if ($archived === "true") {
-        $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
-        $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
+        $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis, notiz) " ;
+        $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat', '$notizSchtDat') ";
 
         queryDB($conn, $insertSchichtmodellHist, "write") ;
 
@@ -53,8 +52,8 @@ if($modus === "new") {
         echo json_encode(["query" => $insertSchichtmodellHist." ".$schichtenHist]) ;
     }
     else {
-        $insertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
-        $insertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
+        $insertSchichtmodell =  "INSERT INTO schichtModelle(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis, notiz) " ;
+        $insertSchichtmodell .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat', '$notizSchtDat') ";
 
         queryDB($conn, $insertSchichtmodell, "write") ;
 
@@ -75,8 +74,8 @@ else {
     if ($archived === "true") {
         define("schtMdlID_", $_POST['schtMdlID']) ;
 
-        $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,bisEndeOffen, notiz) " ;
-        $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$bisEndeOffenSchtDat', '$notizSchtDat') ";
+        $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis, notiz) " ;
+        $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat', '$notizSchtDat') ";
 
         queryDB($conn, $insertSchichtmodellHist, "write") ;
 
@@ -106,7 +105,7 @@ else {
         define("schtMdlID", $_POST['schtMdlID']) ;
 
         $updateSchichtmodell = "UPDATE schichtModelle SET datum = getdate(), modellBez = '$modellBezSchtDat', anzahl = $anzahlSchtDat, " ;
-        $updateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', gueltigBis = '$gueltigBisSchtDat', bisEndeOffen = '$bisEndeOffenSchtDat', " ;
+        $updateSchichtmodell .= "gueltigVon = '$gueltigVonSchtDat', gueltigBis = '$gueltigBisSchtDat', " ;
         $updateSchichtmodell .= "notiz = '$notizSchtDat' " ;
         $updateSchichtmodell .= "WHERE schtMdl_ID = ".schtMdlID." " ;
 

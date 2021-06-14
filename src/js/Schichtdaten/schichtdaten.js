@@ -184,7 +184,6 @@ const scpSchichtdaten =
                     , anzahlSchtDat : anzahl
                     , gueltigVonSchtDat : getFieldValue("gueltigVonSchtDat")
                     , gueltigBisSchtDat : getFieldValue("gueltigBisSchtDat")
-                    , bisEndeOffenSchtDat : isEndeOffen()
                     , notizSchtDat : getFieldValue("notizSchtDat")
                     , schichten :
                         getSchichten(anzahl)
@@ -450,9 +449,8 @@ const scpSchichtdaten =
                             $("#anzahlSchtDat").val(schichtModell.anzahl)
                             $("#anzahlSchtDat").trigger("change")
                             $("#gueltigVonSchtDat").val(schichtModell.gueltigVon)
-                            $("#gueltigBisSchtDat").val(schichtModell.gueltigBis)
-                            $("#bisEndeOffenSchtDat").prop("checked", schichtModell.bisEndeOffen)
                             $("#notizSchtDat").val(schichtModell.notiz)
+                            $("#bisEndeOffenSchtDat").prop("checked", true)
 
                             this.endeOffenOrBis()
 
@@ -467,15 +465,7 @@ const scpSchichtdaten =
             // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
-                idxDB.schichtModelle.count()
-                .then(
-                    count =>
-                    greaterZero(count) ?
-                    readIntoFormFields(0) :
-                    ( this.clearFields()
-                    , setState("new")
-                    )
-                )
+                readIntoFormFields(0)
                 
             // Sets the form data input values of the previous Schicht Modell
             // depending on the current records index
@@ -503,7 +493,11 @@ const scpSchichtdaten =
                 idxDB.schichtModelle.count()
                 .then(
                     count =>
-                    readIntoFormFields(decr(count))
+                    greaterZero(count) ?
+                    readIntoFormFields(decr(count)) :
+                    ( this.clearFields()
+                    , setState("new")
+                    )
                 )
 
             // Deletes the current Schicht Modell(sets col deleted = true)
@@ -516,7 +510,7 @@ const scpSchichtdaten =
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
-                        , this.populateIndexedDB().then(this.readFirst)
+                        , this.populateIndexedDB().then(this.readLast)
                         )
                     )
                 }
@@ -530,8 +524,6 @@ const scpSchichtdaten =
                     , a.modellBez
                     , a.anzahl
                     , a.gueltigVon
-                    , a.gueltigBis
-                    , a.bisEndeOffen
                     ]
                 )
 

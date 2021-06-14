@@ -176,7 +176,6 @@ const scpSchichtdaten_historie =
                             $("#anzahlSchtDatHist").trigger("change")
                             $("#gueltigVonSchtDatHist").val(schichtModellHist.gueltigVon)
                             $("#gueltigBisSchtDatHist").val(schichtModellHist.gueltigBis)
-                            $("#bisEndeOffenSchtDatHist").prop("checked", schichtModellHist.bisEndeOffen)
                             $("#notizSchtDatHist").val(schichtModellHist.notiz)
 
                             querySchichtenHistDataIDB(schichtModellHist.schtMdl_ID)
@@ -188,16 +187,8 @@ const scpSchichtdaten_historie =
             // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
-                idxDB.schichten.count()
-                .then(
-                    count =>
-                    greaterZero(count) ?
-                    readIntoFormFields(0) :
-                    this.clearFields()
-                )
-           
+                readIntoFormFields(0)          
                 
-
             // Sets the form data input values of the previous Schicht Modell
             // depending on the current records index
             this.readPrevious =
@@ -224,7 +215,9 @@ const scpSchichtdaten_historie =
                 idxDB.schichtModelleHist.count()
                 .then(
                     count =>
-                    readIntoFormFields(decr(count))
+                    greaterZero(count) ?
+                    readIntoFormFields(decr(count)) :
+                    this.clearFields()
                 )
 
             // Prepares the table data for the search dialog
@@ -237,7 +230,6 @@ const scpSchichtdaten_historie =
                     , a.anzahl
                     , a.gueltigVon
                     , a.gueltigBis
-                    , a.bisEndeOffen
                     ]
                 )
 

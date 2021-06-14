@@ -7,7 +7,7 @@ require '../DbOperations.php' ;
 $nameDB = $_POST[ 'nameDB' ] ;
 $conn = connectToDB( $nameDB ) ;
 
-$query  = "SELECT schtMdl_ID, lieg_ID, modellBez, anzahl, LEFT(gueltigVon, 10) AS gueltigVon, LEFT(gueltigBis, 10) AS gueltigBis, bisEndeOffen, notiz FROM schichtModelle " ;
+$query  = "SELECT schtMdl_ID, lieg_ID, modellBez, anzahl, LEFT(gueltigVon, 10) AS gueltigVon, notiz FROM schichtModelle " ;
 $query .= "WHERE deleted = 0 " ;
 
 $schichtModelle = queryDB( $conn, $query, "read" ) ;
@@ -17,7 +17,7 @@ $query2 .= "WHERE deleted = 0 " ;
 
 $schichten = queryDB( $conn, $query2, "read" ) ;
 
-$query3  = "SELECT schtMdl_ID, lieg_ID, modellBez, anzahl, LEFT(gueltigVon, 10) AS gueltigVon, LEFT(gueltigBis, 10) AS gueltigBis, bisEndeOffen, notiz FROM schichtModelleHist " ;
+$query3  = "SELECT schtMdl_ID, lieg_ID, modellBez, anzahl, LEFT(gueltigVon, 10) AS gueltigVon, LEFT(gueltigBis, 10) AS gueltigBis, notiz FROM schichtModelleHist " ;
 $query3 .= "WHERE deleted = 0 " ;
 
 $schichtModelleHist = queryDB( $conn, $query3, "read" ) ;
