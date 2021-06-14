@@ -396,6 +396,7 @@ const scpSchichtdaten =
                 () =>
                 ( $("#anzahlSchtDat").val(3)
                 , $("#anzahlSchtDat").trigger("change")
+                , $("#bisEndeOffenSchtDat").prop("checked", false)
                 , $("#bisEndeOffenSchtDat").trigger("click")
                 )
 
