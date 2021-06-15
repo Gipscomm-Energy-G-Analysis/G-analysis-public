@@ -2726,6 +2726,8 @@ try {
             readInstanzen("iMwFirst", 0)
             readInstanzen("zpFirst", 0)
             bereicheEinlesen()
+
+            scpSchichtdaten.readLast()
         }, orgPfadChange = function(a) {
             $(".orgPfad").val($(a).val());
             $("#orgID").val(organisationenliste[$(".orgPfad").prop("selectedIndex")].OrgID);
@@ -5168,7 +5170,6 @@ try {
                             .populateIndexedDB()
                             .then(scpSchichtdaten.readLast)
                             .then(scpSchichtdaten_historie.readLast)
-
                         }
                     });
                     break;

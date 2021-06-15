@@ -1684,10 +1684,6 @@ $(document).ready(function() {
     // Schichtdaten
     // See Schichtdaten/schichtdaten.js
     //
-    // Select / De-select Liegenschaft Reference
-    //
-    $("#liegSchtDat").click(scpSchichtdaten.setLiegRefState)
-    //
     // Arrow Navigation
     //
     $("#schtDatFirst").click(scpSchichtdaten.readFirst)
