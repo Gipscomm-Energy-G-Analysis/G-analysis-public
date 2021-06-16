@@ -7734,7 +7734,12 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
                 $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").hide();
 
                 //$("#mstIMw").prop("disabled",false);
-                $("#mstIMw").val("").prop("readonly",false);
+               
+                //<***14-6-2021---
+                //$("#mstIMw").val("").prop("readonly",false); //Old code comment
+                $("#mstIMw").val("").prop("readonly",true);
+                //end--->
+
                 $("#mstIMw").prop("disabled",false);
 
                 $(".artikelnummerIntBdeDiv").show();
@@ -7789,7 +7794,10 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
                 $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").show();
 
                 if($("#mstIMw").val() == ""){
-                    $("#mstIMw").val("").prop("readonly",false);
+                    //<--14-6-2021--
+                    // $("#mstIMw").val("").prop("readonly",false); //Old code comment
+                    $("#mstIMw").val("").prop("readonly",true);
+                    //end-->
                 }
                 else{
                     $("#mstIMw").val("").prop("readonly",true);
