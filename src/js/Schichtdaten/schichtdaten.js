@@ -129,6 +129,11 @@ const scpSchichtdaten =
             const disableAnzahl =
                 () =>
                 $("#anzahlSchtDat").prop("disabled", true)
+            
+            // Gets the state of the "Mit Liegenschaftsbezug" checkbox
+            const hasLiegRef =
+                () =>
+                $("#liegSchtDat").prop("checked")
 
             // Enables/Disables the Gueltig Bis input depending
             // on the selection state of Ende offen
@@ -185,6 +190,7 @@ const scpSchichtdaten =
                     , gueltigVonSchtDat : getFieldValue("gueltigVonSchtDat")
                     , gueltigBisSchtDat : getFieldValue("gueltigBisSchtDat")
                     , notizSchtDat : getFieldValue("notizSchtDat")
+                    , liegRef : hasLiegRef()
                     , schichten :
                         getSchichten(anzahl)
                         .map(a => a.map(last))
@@ -374,6 +380,7 @@ const scpSchichtdaten =
                 () =>
                 ( $("#anzahlSchtDat").val(3)
                 , $("#anzahlSchtDat").trigger("change")
+                , $("#bisEndeOffenSchtDat").prop("checked", false)
                 , $("#bisEndeOffenSchtDat").trigger("click")
                 )
 
@@ -404,16 +411,35 @@ const scpSchichtdaten =
                 , resetAnzahlAndEndeOffen()
                 , setState("new")
                 )
+            
+            // Filters by Liegenschaften refs
+            const getLiegRefRecords =
+                () =>
+                idxDB.schichtModelle
+                .where("lieg_ID")
+                .equals(Number(getFieldValue("liegID")))
+                .or("liegRef")
+                .equals(0)
+
+            // Sorts records by primary key
+            const sortByPrimKey =
+                lst =>
+                lst.sort(
+                    (a, b) =>
+                    a.schtMdl_ID - b.schtMdl_ID
+                )
 
             // Returns an array of the Schicht Modelle from indexedDB
             const querySchichtModelleDataIDB =
                 () => 
-                idxDB.schichtModelle.toArray()
+                getLiegRefRecords()
+                .toArray()
 
             // Returns a certain Schicht Modell depending on an index
             const querySchichtModellDataIDB =
                 idx =>
                 querySchichtModelleDataIDB()
+                .then(sortByPrimKey)
                 .then(schichtModelle => schichtModelle[idx])
 
             // Returns the Schichten of a given Schicht Modell
@@ -453,9 +479,12 @@ const scpSchichtdaten =
                             $("#anzahlSchtDat").trigger("change")
                             $("#gueltigVonSchtDat").val(schichtModell.gueltigVon)
                             $("#notizSchtDat").val(schichtModell.notiz)
+                            $("#liegSchtDat").prop("checked", schichtModell.liegRef)
                             $("#bisEndeOffenSchtDat").prop("checked", true)
 
-                            this.endeOffenOrBis()
+                            this.setMinGueltigBis($("#gueltigVonSchtDat").val())
+
+                            disableGueltigBis()
 
                             querySchichtenDataIDB(schichtModell.schtMdl_ID)
                             .then(setSchichten)
@@ -482,7 +511,8 @@ const scpSchichtdaten =
             // depending on the current records index
             this.readNext =
                 () =>
-                idxDB.schichtModelle.count()
+                getLiegRefRecords()
+                .count()
                 .then( 
                     count => 
                     greater(decr(count))(getFieldValue("schtMdlIdx")) ?
@@ -493,7 +523,8 @@ const scpSchichtdaten =
             // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
-                idxDB.schichtModelle.count()
+                getLiegRefRecords()
+                .count()
                 .then(
                     count =>
                     greaterZero(count) ?
@@ -542,6 +573,7 @@ const scpSchichtdaten =
                 () => {
 
                     querySchichtModelleDataIDB()
+                    .then(sortByPrimKey)
                     .then(fillSchichtmodelleTbl)
 
                     $("#schichtmodellSuchenContainer").dialog({

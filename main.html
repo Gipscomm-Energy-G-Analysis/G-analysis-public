@@ -6021,7 +6021,11 @@
                             <img id="schtDatPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
                             <img id="schtDatFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
                            <label>Liegenschaft: </label>
-                           <select class="liegPfad"></select>
+                           <select  class="liegPfad" ></select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="liegSchtDat">Mit Liegenschaftsbezug</label>
+                           <input id="liegSchtDat" class="schtDatForm" type="checkbox">
                         </div>
                         <div class="controlDiv">
                            <label for="modellBezSchtDat">Modellbezeichnung</label>
@@ -6066,6 +6070,10 @@
                             <img id="schtDatHistFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
                            <label>Liegenschaft: </label>
                            <select class="liegPfad"></select>
+                        </div>
+                        <div class="controlDiv">
+                           <label for="liegSchtDatHist">Mit Liegenschaftsbezug</label>
+                           <input id="liegSchtDatHist" type="checkbox" onclick="return false">
                         </div>
                         <div class="controlDiv">
                            <label for="modellBezSchtDatHist">Modellbezeichnung</label>
@@ -11024,9 +11032,9 @@
                     idxDB
                     .version(idxDB._versions.length === 0 ? 1 : idxDB._versions.length)
                     .stores(
-                        { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz"
+                        { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz, liegRef"
                         , schichten : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
-                        , schichtModelleHist : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz"
+                        , schichtModelleHist : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz, liegRef"
                         , schichtenHist : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
                         }
                     )
