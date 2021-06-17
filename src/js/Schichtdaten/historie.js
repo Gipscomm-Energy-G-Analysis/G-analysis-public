@@ -18,7 +18,7 @@ const scpSchichtdaten_historie =
                 n =>
                 `<div class="controlDiv">
                    <label for="bezeichnungScht${n}DatHist">Bezeichnung</label>
-                   <input id="bezeichnungScht${n}DatHist" type="text">
+                   <input id="bezeichnungScht${n}DatHist" disabled type="text">
                 </div>
                 <br>\n`
 
@@ -26,14 +26,14 @@ const scpSchichtdaten_historie =
                 n =>
                 `<div class="controlDiv">
                    <label for="uhrzeitVonScht${n}DatHist">Uhrzeit Von</label>
-                   <input id="uhrzeitVonScht${n}DatHist" class="timeFrom" data-idx="${n}" type="time">
+                   <input id="uhrzeitVonScht${n}DatHist" class="timeFrom" data-idx="${n}" disabled type="time">
                 </div>\n`
 
             const uhrzeitBis =
                 n =>
                 `<div class="controlDiv">
                    <label for="uhrzeitBisScht${n}DatHist">Uhrzeit Bis</label>
-                   <input id="uhrzeitBisScht${n}DatHist" type="time">
+                   <input id="uhrzeitBisScht${n}DatHist" disabled type="time">
                 </div>
                 <br>\n`
 
@@ -41,7 +41,7 @@ const scpSchichtdaten_historie =
                 n =>
                 `<div class="controlDiv">
                    <label for="tagVonScht${n}DatHist">Tag Von</label>
-                   <select id="tagVonScht${n}DatHist">
+                   <select id="tagVonScht${n}DatHist" disabled>
                        <option value="monday">Montag</option>
                        <option value="tuesday">Dienstag</option>
                        <option value="wednesday">Mittwoch</option>
@@ -56,7 +56,7 @@ const scpSchichtdaten_historie =
                 n =>
                 `<div class="controlDiv">
                    <label for="tagBisScht${n}DatHist">Tag Bis</label>
-                   <select id="tagBisScht${n}DatHist">
+                   <select id="tagBisScht${n}DatHist" disabled>
                        <option value="monday">Montag</option>
                        <option value="tuesday">Dienstag</option>
                        <option value="wednesday">Mittwoch</option>
