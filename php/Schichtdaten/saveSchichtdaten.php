@@ -37,7 +37,7 @@ if($modus === "new") {
 
     if ($archived === "true") {
         $insertSchichtmodellHist =  "INSERT INTO schichtModelleHist(lieg_ID,modellBez,anzahl,gueltigVon,gueltigBis,notiz,liegRef) " ;
-        $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$notizSchtDat','$liegRef) ";
+        $insertSchichtmodellHist .= "VALUES ('$liegID','$modellBezSchtDat', $anzahlSchtDat,'$gueltigVonSchtDat','$gueltigBisSchtDat','$notizSchtDat','$liegRef') ";
 
         queryDB($conn, $insertSchichtmodellHist, "write") ;
 

@@ -2728,6 +2728,8 @@ try {
             bereicheEinlesen()
 
             scpSchichtdaten.readLast()
+            scpSchichtdaten_historie.readLast()
+            
         }, orgPfadChange = function(a) {
             $(".orgPfad").val($(a).val());
             $("#orgID").val(organisationenliste[$(".orgPfad").prop("selectedIndex")].OrgID);

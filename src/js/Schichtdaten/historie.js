@@ -95,8 +95,8 @@ const scpSchichtdaten_historie =
 
              // Returns an input value depending on the elements id
              const getFieldValue =
-             a =>
-             $(`#${a}`).val()
+                a =>
+                $(`#${a}`).val()
 
             // Resets the value of a given input to an empty string
             const clearField =
@@ -128,15 +128,35 @@ const scpSchichtdaten_historie =
                 , resetAnzahl()
                 )
 
+            // Filters by Liegenschaften refs
+            const getLiegRefRecords =
+                () =>
+                idxDB.schichtModelleHist
+                .where("lieg_ID")
+                .equals(Number(getFieldValue("liegID")))
+                .or("liegRef")
+                .equals(0)
+
+            // Sorts records by primary key
+            const sortByPrimKey =
+                lst =>
+                lst.sort(
+                    (a, b) =>
+                    a.schtMdl_ID - b.schtMdl_ID
+                )
+
+
             // Returns an array of the Schicht Modelle from indexedDB
             const querySchichtModelleHistDataIDB =
                 () =>
-                idxDB.schichtModelleHist.toArray()
+                getLiegRefRecords()
+                .toArray()
 
             // Returns a certain Schicht Modell depending on an index
             const querySchichtModellHistDataIDB =
                 idx =>
                 querySchichtModelleHistDataIDB()
+                .then(sortByPrimKey)
                 .then(schichtModelleHist => schichtModelleHist[idx])
 
             // Returns the Schichten of a given Schicht Modell
@@ -177,6 +197,7 @@ const scpSchichtdaten_historie =
                             $("#gueltigVonSchtDatHist").val(schichtModellHist.gueltigVon)
                             $("#gueltigBisSchtDatHist").val(schichtModellHist.gueltigBis)
                             $("#notizSchtDatHist").val(schichtModellHist.notiz)
+                            $("#liegSchtDatHist").prop("checked", schichtModellHist.liegRef)
 
                             querySchichtenHistDataIDB(schichtModellHist.schtMdl_ID)
                             .then(setSchichtenHist)
@@ -201,7 +222,8 @@ const scpSchichtdaten_historie =
             // depending on the current records index
             this.readNext =
                 () =>
-                idxDB.schichtModelleHist.count()
+                getLiegRefRecords()
+                .count()
                 .then( 
                     count => 
                     greater(decr(count))(getFieldValue("schtMdlHistIdx")) ?
@@ -212,7 +234,8 @@ const scpSchichtdaten_historie =
             // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
-                idxDB.schichtModelleHist.count()
+                getLiegRefRecords()
+                .count()
                 .then(
                     count =>
                     greaterZero(count) ?
@@ -245,6 +268,7 @@ const scpSchichtdaten_historie =
                 () => {
 
                     querySchichtModelleHistDataIDB()
+                    .then(sortByPrimKey)
                     .then(fillSchichtmodelleHistTbl)
 
                     $("#schichtmodellHistSuchenContainer").dialog({

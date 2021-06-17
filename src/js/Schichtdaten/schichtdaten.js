@@ -296,12 +296,7 @@ const scpSchichtdaten =
             const saveFormData =
                 formData =>
                 ajaxPost("php/Schichtdaten/saveSchichtdaten.php")(formData)
-                .then(
-                    result => {
-                    alert(datensatzGespeichert(result))
-                    console.log(result)
-                    }
-                )
+                .then(result => alert(datensatzGespeichert(result)))
                 .then(this.populateIndexedDB)
                 .then(
                     () =>
@@ -426,25 +421,25 @@ const scpSchichtdaten =
                 .or("liegRef")
                 .equals(0)
 
+            // Sorts records by primary key
+            const sortByPrimKey =
+                lst =>
+                lst.sort(
+                    (a, b) =>
+                    a.schtMdl_ID - b.schtMdl_ID
+                )
+
             // Returns an array of the Schicht Modelle from indexedDB
             const querySchichtModelleDataIDB =
                 () => 
                 getLiegRefRecords()
                 .toArray()
 
-            // Sorts "SchichtModelle" by "liefRef" value
-            const sortSchichtModelle =
-                schichtModelle => 
-                schichtModelle.sort(
-                    (a, b) => 
-                    a.liegRef - b.liegRef
-                )
-
             // Returns a certain Schicht Modell depending on an index
             const querySchichtModellDataIDB =
                 idx =>
                 querySchichtModelleDataIDB()
-                .then(sortSchichtModelle)
+                .then(sortByPrimKey)
                 .then(schichtModelle => schichtModelle[idx])
 
             // Returns the Schichten of a given Schicht Modell
@@ -487,7 +482,9 @@ const scpSchichtdaten =
                             $("#liegSchtDat").prop("checked", schichtModell.liegRef)
                             $("#bisEndeOffenSchtDat").prop("checked", true)
 
-                            this.endeOffenOrBis()
+                            this.setMinGueltigBis($("#gueltigVonSchtDat").val())
+
+                            disableGueltigBis()
 
                             querySchichtenDataIDB(schichtModell.schtMdl_ID)
                             .then(setSchichten)
@@ -576,7 +573,7 @@ const scpSchichtdaten =
                 () => {
 
                     querySchichtModelleDataIDB()
-                    .then(sortSchichtModelle)
+                    .then(sortByPrimKey)
                     .then(fillSchichtmodelleTbl)
 
                     $("#schichtmodellSuchenContainer").dialog({
