@@ -3391,6 +3391,69 @@ elseif($id == "intBdeIMwHistOk") { /*20-10-2020 History save intern Betriebsdate
 
     $tsql = "INSERT INTO interneBetriebsdatenHistorie (anl_ID, mstID, archiviert,bemerkung,gueltigVon,gueltigBis,anlIMw,anlNrIMw,zeitintervallAnl,einheitAnl,notizBdeIMw,startDate,endDate,startWeek,endWeek,ending,deleted,einheitControlSys) ";
     $tsql .= "VALUES ('$anlID', '$mstID', '$archiviert', '$bemerkung', '$gueltigVon', '$gueltigBis', '$anlIMw', '$anlNrIMw', '$zeitintervallAnl', '$einheitAnl', '$notizBdeIMw', '$startDate', '$endDate','$startWeek','$endWeek','$ending','false','$einheitControlSys') ";
+
+    //<---17-6-2021---
+    $min = $_POST['min'];
+    $med = $_POST['med'];
+    $max = $_POST['max'];
+    $type = 2;
+    $val = '';
+    $val_diff = '';
+    for($i = 0; $i <= 2; $i++){
+      if($i == 0){
+         $val = $min;
+      }
+      else if($i == 1){
+        $val = $med;
+        $val_diff = $med - $min;
+      }
+      else if($i == 2){
+        $val = $max;
+        $val_diff = $max - $med;
+      }
+    
+      $year = 2021;
+      $week = 19 + $i;
+
+      $queryCheckEnabled="SELECT * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstID' AND on_date = '$year' AND type = '$type' AND on_week = '$week'";
+      $recordsCheckEnabled = queryDB($conn, $queryCheckEnabled, "read");
+      if(count($recordsCheckEnabled) > 0){
+          $queryEnabledUpdate = "UPDATE masseneingabeSucheIMw SET
+          on_date = '$year',on_week = '$week',val = '$val' ";
+          $queryEnabledUpdate .= "WHERE mst_ID = '$mstID' ";
+          $queryEnabledUpdate .= "AND on_date = '$year' ";
+          $queryEnabledUpdate .= "AND on_week = '$week' ";
+          $queryEnabledUpdate .= "AND type = '$type'";
+          queryDB($conn, $queryEnabledUpdate, "write");
+      }
+      else{
+        $data_ins = "INSERT INTO masseneingabeSucheIMw( mst_ID,on_date,on_week,val,type,deleted) ";
+        $data_ins .= "VALUES ('$mstID','$year','$week','$val',$type,'false') ";
+        $exe_data = queryDB($conn, $data_ins, "write");
+        //echo json_encode(["ins_data" => $exe_data]);
+      }
+
+      //Disabled Fields Entry
+      if($i != 0){
+        $queryCheckDisabled="SELECT * FROM masseneingabeSucheErgebnisIMw WHERE mst_ID = '$mstID' AND on_date = '$year' AND type = '$type' AND on_week = '$week'";
+          $recordsCheckDisabled = queryDB($conn, $queryCheckDisabled, "read");
+          if(count($recordsCheckDisabled) > 0){
+            $queryDisabledUpdate = "UPDATE masseneingabeSucheErgebnisIMw SET
+              on_date = '$year',on_week = '$week',val = '$val_diff' ";
+              $queryDisabledUpdate .= "WHERE mst_ID = '$mstID' ";
+              $queryDisabledUpdate .= "AND on_date = '$year' ";
+              $queryDisabledUpdate .= "AND on_week = '$week' ";
+              $queryDisabledUpdate .= "AND type = '$type'";
+              queryDB($conn, $queryDisabledUpdate, "write");
+          }else{
+            $queryDisabled = "INSERT INTO masseneingabeSucheErgebnisIMw( mst_ID,on_date,on_week,val,type,deleted) ";
+            $queryDisabled .= "VALUES ('$mstID','$year','$week','$val_diff','$type','false') ";
+            queryDB($conn, $queryDisabled, "write");
+          }
+      }
+
+    }
+    //--end--->
   }
 }
 /*new-mm-end 24-03-2021*/

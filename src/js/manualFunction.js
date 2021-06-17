@@ -639,6 +639,11 @@ function intBdeIMwHistOkSpeichernMethod(){
             endDate:endDate,
             ending:$("#anlIMwNoEnding").val(),
             einheitControlSys:$("#control_system").val(),
+            //<--17-6-2021---
+            min : $('#min_investment_energy').val(),
+            med : $('#mid_investment_energy').val(),
+            max : $('#max_investment_energy').val(),
+            //--end-->
         },
         success: function(a) {
             alert(datensatzGespeichert(a));
@@ -6350,3 +6355,66 @@ function deleteFromDBMasseneingabeEingabenSingleInputPrdkt(key,currentDate,mstID
             $("#interneBetriebsdatenTbl").prop("checked",true);
         }
     }*/
+
+
+//<----17-6-2021----
+function energy_fields_check(id_val){
+    var a = $('#min_investment_energy').val();
+    var b = $('#mid_investment_energy').val();
+    var c = $('#max_investment_energy').val();
+    // a = parseInt(a);
+    // b = parseInt(b);
+    // c = parseInt(c);
+
+    if(id_val == "min_investment_energy"){
+        if(a != ''){
+            if(isNaN(parseInt(a))){
+                alert('Please Enter Valid Number');
+                $('#min_investment_energy').val('');
+            }
+            else if( c != '' || b != ''){
+                if( parseInt(a) >= parseInt(c) || parseInt(a) >= parseInt(b)){
+                    alert('Value always be Less than Investment Medium Value and Less than Investment Maximum Value');
+                    $('#min_investment_energy').val('');
+                }                
+            }
+        }
+    }
+    
+    else if(id_val == "mid_investment_energy"){
+        if(b != ''){
+            if(isNaN(parseInt(b))){
+                alert('Please Enter Valid Number');
+                $('#mid_investment_energy').val('');
+            }
+            else if( a != '' || c != ''){
+                if(parseInt(b) >= parseInt(c) || parseInt(b) <= parseInt(a)){
+                    alert('Value always be Greater than Investment Minimum Value and Less than Investment Maximum Value ');  
+                    $('#mid_investment_energy').val('');
+                }
+                // else if(parseInt(b) == parseInt(a)){
+                //     alert("Value must be greater then from Investment Minimum");
+                //     $('#mid_investment_energy').val('');
+                // }
+            }
+          
+        }
+    }
+
+    else if(id_val == "max_investment_energy"){
+        if(c != ''){
+            if(isNaN(parseInt(c))){
+                alert('Please Enter Valid Number');
+                $('#max_investment_energy').val('');
+            }
+            else if(b != '' || a != ''){
+                if(parseInt(c) <= parseInt(b) || parseInt(c) <= parseInt(a)){
+                    alert('Value Always be greater than Investment Medium Value and Investment Minimum Value');
+                    $('#max_investment_energy').val('');  
+                } 
+            }
+        }
+    }
+
+}
+//end-->

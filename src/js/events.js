@@ -8160,3 +8160,9 @@ $('#save_mannual_default_energy').on('click', function(){
 
 //--end-->
 
+// <---17-6-2021--
+$(document).on('blur','.enrery_fields_val', function(){
+    var id_val = $(this).attr('id');
+    energy_fields_check(id_val);
+});
+//--end-->
