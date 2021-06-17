@@ -1,6 +1,7 @@
 const navigationHook = document.querySelectorAll('.navigation button');
 const replaceImageButton = document.getElementById('replace-image-button');
 const imageInputField = document.getElementById('machineImage');
+const anl_ID = document.getElementById('anl_ID').value;
 // const getMachineHook = () => {
 //     console.log(this);
 //     let type = this.attr('event-type');
@@ -24,23 +25,47 @@ const getMachineData = (machine_id, type) => {
         spinner.stop();
         if(response.code == 200 ){
             $('.navigation').attr('data-value', data.anl_ID);
+            $('#anl_ID').val(data.anl_ID);
             $('#anlage').val(data.anlage);
             $('#programm').val(data.programm);
             $('#artikel').val(data.artikel);
-            $('#bisher_produziert').val(data.bisher_produziert);
+            $('#bestellung').val(data.bestellung);
+            // $('#bisher_produziert').val(data.bisher_produziert);
+            $('#auftragsmenge').val(data.auftragsmenge);
+            $('#gutmenge').val(data.gutmenge);
+            $('#ausschuss').val(data.ausschuss);
             $('#zeit_zyklus').val(data.zeit_zyklus);
+            if(data.programm == 'Automatik'){
+                data.letzte_störung = " ";
+            }
             $('#letzte_störung').val(data.letzte_störung);
+            $('#werkzeug').val(data.werkzeug);
+            $('#kavitäten').val(data.kavitäten);
+            $('#machine-image').attr('src',data.bildAnl);
+            if(data.bildAnl === 'uploadsDownloads/images/002_badberundefined' || data.bildAnl == null){
+                $('#machine-image').attr('src','images/Blasanlage.jpg');
+            }
+           
+
         } else if(response.anl_ID !== undefined) {
             toastr.error(response.message);
             $('.navigation').attr('data-value', response.anl_ID);
             $('#anlage').val("");
             $('#programm').val("");
             $('#artikel').val("");
-            $('#bisher_produziert').val("");
+            $('#bestellung').val("");
+            // $('#bisher_produziert').val("");
+            $('#auftragsmenge').val("");
+            $('#gutmenge').val("");
+            $('#ausschuss').val("");
             $('#zeit_zyklus').val("");
             $('#letzte_störung').val("");
+            $('#werkzeug').val("");
+            $('#kavitäten').val("");
+            $('#machine-image').attr('src','images/Blasanlage.jpg');
+
         }
-        $('#machine-image').attr('src','images/Blasanlage.jpg');
+     
     });
 }
 
@@ -65,5 +90,35 @@ const loadFile = (event) => {
 replaceImageButton.addEventListener('click', () => {
     imageInputField.click();
 });
-
 imageInputField.addEventListener('change', loadFile);
+imageInputField.addEventListener('change', () => {
+    const machineImage = document.getElementById('machineImage');
+    var myFormData = new FormData();
+    var files = machineImage.files;
+    var file = files[0]; 
+    const anl_ID = $('#anl_ID').val();
+    myFormData.append('file',file);
+    myFormData.append('anl_ID',anl_ID);
+    
+    $.ajax({
+        headers:{'X-CSRF-Token':$('meta[name=csrf_token]').attr('content')},
+        type:"post",
+        async: true,
+        contentType: false,
+        cache: false,
+        processData:false,
+        url:`/uploadImage`,
+        data:myFormData,
+        success:function(){
+            console.log("success");
+        }
+    });
+
+});
+
+var intervalId = window.setInterval(function(){
+    let type = "current";
+    let machine_id = $('.navigation').attr('data-value');
+   // console.log(machine_id);
+    getMachineData(machine_id, type);
+}, 10000);

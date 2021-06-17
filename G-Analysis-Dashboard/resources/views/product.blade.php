@@ -49,57 +49,99 @@
                         <div class="col-12 col-sm-6">
                             <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
                             <div class="col-12">
-                                <img src="images/Blasanlage.jpg" class="product-image" alt="Product Image" id="machine-image">
+                                <img src="{{$data['bildAnl']}}" class="product-image" alt="Product Image" id="machine-image">
                             </div>
                         </div>
                         <div class="col-12 col-sm-6">
                             <form class="form-horizontal">
                                 <div class="card-body">
+                                    <input type="hidden" class="form-control" id="anl_ID"  value="{{$data['anl_ID']}}" >
                                     <div class="form-group row">
                                         <label for="anlage" class="col-sm-2 col-form-label">Anlage</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="anlage" placeholder="Anlage" value="{{$data['anlage']}}">
+                                            <input type="text" class="form-control" id="anlage" placeholder="Anlage" value="{{$data['anlage']}}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="programm" class="col-sm-2 col-form-label">Programm</label>
+                                        <label for="programm" class="col-sm-2 col-form-label">Status</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="programm" placeholder="Programm" value="{{$data['programm']}}">
+                                            <input type="text" class="form-control" id="programm" placeholder="Programm" value="{{$data['programm']}}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="bestellung" class="col-sm-2 col-form-label">Bestellung</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="bestellung" placeholder="bestellung" value="{{$data['bestellung']}}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="artikel" class="col-sm-2 col-form-label">Artikel</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="artikel" placeholder="Artikel" value="{{$data['artikel']}}">
+                                            <input type="text" class="form-control" id="artikel" placeholder="Artikel" value="{{$data['artikel']}}" readonly>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group row">
+                                        <label for="bisher_produziert" class="col-sm-2 col-form-label">Bisher produziert</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="bisher_produziert" placeholder="Bisher produziert" value="{{$data['bisher_produziert']}}" readonly>
+                                        </div>
+                                    </div> -->
+                                    <div class="form-group row">
+                                        <label for="auftragsmenge" class="col-sm-2 col-form-label">Auftragsmenge</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="auftragsmenge" placeholder="Auftragsmenge" value="{{$data['auftragsmenge']}}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="bisher_produziert" class="col-sm-2 col-form-label">Bisher produziert</label>
+                                        <label for="gutmenge" class="col-sm-2 col-form-label">Gutmenge</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="bisher_produziert" placeholder="Bisher produziert" value="{{$data['bisher_produziert']}}">
+                                            <input type="text" class="form-control" id="gutmenge" placeholder="Gutmenge"  value="{{$data['gutmenge']}}" readonly>
+                                        </div>
+                                    </div> 
+                                    <div class="form-group row">
+                                        <label for="ausschuss" class="col-sm-2 col-form-label">Ausschuss</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="ausschuss" placeholder="Ausschuss" value="{{$data['ausschuss']}}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="zeit_zyklus" class="col-sm-2 col-form-label">Zeit/Zyklus</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="zeit_zyklus" placeholder="Zeit/Zyklus" value="{{$data['zeit_zyklus']}}">
+                                            <input type="text" class="form-control" id="zeit_zyklus" placeholder="Zeit/Zyklus" value="{{$data['zeit_zyklus']}}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label for="werkzeug" class="col-sm-2 col-form-label">Werkzeug</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="werkzeug" placeholder="Werkzeug" value="{{$data['werkzeug']}}" readonly>
+                                        </div>
+                                    </div> 
+                                    <!-- <div class="form-group row">
                                         <label for="artikel_stunde" class="col-sm-2 col-form-label">Artikel/Stunde</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="artikel_stunde" placeholder="Artikel/Stunde">
+                                            <input type="text" class="form-control" id="artikel_stunde" placeholder="Artikel/Stunde" readonly>
+                                        </div>
+                                    </div> -->
+                                    <div class="form-group row">
+                                        <label for="kavitäten" class="col-sm-2 col-form-label">Kavitäten</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="kavitäten" placeholder="Kavitäten" value="{{$data['kavitäten']}}" readonly>
                                         </div>
                                     </div>
+                                    @php $letzte_störung = " "; @endphp
+                                    @if($data['programm'] != 'Automatik')
+                                        $letzte_störung = $data['letzte_störung'];
+                                    @endif
                                     <div class="form-group row">
                                         <label for="letzte_störung" class="col-sm-2 col-form-label">Letzte Störung</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="letzte_störung" placeholder="Letzte Störung" value="{{$data['letzte_störung']}}">
+                                            <input type="text" class="form-control" id="letzte_störung" placeholder="Letzte Störung" value="{{$letzte_störung}}" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="btn-group w-10" style="position : absolute;bottom:0">
-                                            <input type="file" hidden class="custom-file-input" id="machineImage">
+                                            <input type="file" hidden  name="image" class="custom-file-input" id="machineImage">
+                                            <!-- <span id="mgs_ta"></span> -->
                                             <span for="exampleInputFile" class="btn btn-success col fileinput-button dz-clickable" id="replace-image-button">
                                                 <i class="fas fa-plus"></i>
                                             </span>

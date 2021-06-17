@@ -65,12 +65,18 @@ class DashboardController extends Controller
                     'anlage' => Str::of($prodData['MANAME'])->trim(),
                     'programm' => Str::of($prodData['STATETEXT'])->trim(),
                     'artikel' => Str::of($prodData['MAORDER'])->trim(),
-                    'bisher_produziert' => Str::of($prodData['AMOUNT_GOOD'])->trim(),
+                    'bestellung' =>  Str::of($prodData['MPSNAME'])->trim(),
+                    'bisher_produziert' => (int)($prodData['AMOUNT_GOOD']),
+                    'auftragsmenge' => (int)($prodData['AMOUNT_REQUEST']),
+                    'gutmenge' => (int)($prodData['AMOUNT_GOOD']),
+                    'ausschuss' => (int)($prodData['AMOUNT_BAD']),                    
                     'zeit_zyklus' => Str::of($prodData['CYCLETIME'])->trim(),
                     'letzte_störung' => Str::of($prodData['LASTUPDATE'])->trim(),
+                    'werkzeug' => Str::of($prodData['TOOLNAME'])->trim(),
+                    'kavitäten' =>(int)$prodData['CAVITY'],
                     'anl_ID' => $machineData['anl_ID'],
+                    'bildAnl' => $machineData['bildAnl'],
                 ];
-
                 return ['code'=>200, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'Data Retrived Successfully.'];
             } else{
                 return ['code'=>401, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'No Record Found!'];
