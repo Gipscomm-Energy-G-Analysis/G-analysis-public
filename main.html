@@ -394,7 +394,7 @@
                   <button id="tabDynamicKorrekturFktr" style="">dynamische Korrekturfaktoren</button>
                   <!--01-04-2020 create Dynamische Korrektur Faktur tab button html -->
                </div>
-               <div id="tabsSchichtdaten">
+               <div id="tabsSchichtdaten" style="display:none;">
                   <button id="tabSchtDat" class="no_korrector_tabs">Schichtdaten</button>
                   <button id="tabSchtDatHist" class="no_korrector_tabs">Historie</button>
                </div>
@@ -6009,101 +6009,103 @@
                         </div>
                     </div>
                 </div>
-                  <div id="infosSchichtdaten">
-                     <div id="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;">
-                            <img id="schtDatLoeschen" title="Schichtmodell löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
-                            <img id="schtDatSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                            <img id="schtDatHinz" title="Neues Schichtmodell erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
-                            <img id="schtDatSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
-                            <img id="schtDatLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
-                            <img id="schtDatNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
-                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
-                            <img id="schtDatPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
-                            <img id="schtDatFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
-                           <label>Liegenschaft: </label>
-                           <select  class="liegPfad" ></select>
-                        </div>
-                        <div class="controlDiv">
-                           <label for="liegSchtDat">Mit Liegenschaftsbezug</label>
-                           <input id="liegSchtDat" class="schtDatForm" type="checkbox">
-                        </div>
-                        <div class="controlDiv">
-                           <label for="modellBezSchtDat">Modellbezeichnung</label>
-                           <input id="modellBezSchtDat" class="schtDatForm" type="text">
-                        </div>
-                        <div class="controlDiv">
-                           <label for="anzahlSchtDat">Anzahl (1 - 6)</label>
-                           <input id="anzahlSchtDat" class="schtDatForm" type="number" onkeydown="return false" min="1" max="6" value="3">
-                        </div>
-                        <br>
-                        <div class="controlDiv">
-                           <label for="gueltigVonSchtDat">Gültig Von</label>
-                           <input id="gueltigVonSchtDat" class="schtDatForm" type="date">
-                        </div>
-                        <div class="controlDiv">
-                           <label for="gueltigBisSchtDat">Gültig Bis</label>
-                           <input id="gueltigBisSchtDat" class="schtDatForm" type="date" disabled>
-                        </div>
-                        <div class="controlDiv">
-                           <label for="bisEndeOffenSchtDat">Ende offen</label>
-                           <input id="bisEndeOffenSchtDat" class="schtDatForm" type="checkbox" checked>
-                        </div>
-                        <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
-                            <label>Notiz</label>
-                            <textarea rows="3" id="notizSchtDat" class="schtDatForm" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
-                        </div>
-                        <br>
-                        <br>
-                        <div id="schichtdatenContainer">
-                        </div>
-                    </div>
-                </div>
-                  <div id="infosSchichtdatenHist">
-                     <div id="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;">
-                            <img id="schtDatHistSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
-                            <img id="schtDatHistLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
-                            <img id="schtDatHistNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
-                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
-                            <img id="schtDatHistPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
-                            <img id="schtDatHistFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
-                           <label>Liegenschaft: </label>
-                           <select class="liegPfad"></select>
-                        </div>
-                        <div class="controlDiv">
-                           <label for="liegSchtDatHist">Mit Liegenschaftsbezug</label>
-                           <input id="liegSchtDatHist" type="checkbox" onclick="return false">
-                        </div>
-                        <div class="controlDiv">
-                           <label for="modellBezSchtDatHist">Modellbezeichnung</label>
-                           <input id="modellBezSchtDatHist" type="text" readonly> 
-                        </div>
-                        <div class="controlDiv">
-                           <label for="anzahlSchtDatHist">Anzahl (1 - 6)</label>
-                           <input id="anzahlSchtDatHist" type="number" readonly onkeydown="return false" min="1" max="6" value="3">
-                        </div>
-                        <br>
-                        <div class="controlDiv">
-                           <label for="gueltigVonSchtDatHist">Gültig Von</label>
-                           <input id="gueltigVonSchtDatHist" type="date" readonly>
-                        </div>
-                        <div class="controlDiv">
-                           <label for="gueltigBisSchtDatHist">Gültig Bis</label>
-                           <input id="gueltigBisSchtDatHist" type="date" readonly>
-                        </div>
-                        <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
-                            <label>Notiz</label>
-                            <textarea rows="3" id="notizSchtDatHist" readonly style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
-                        </div>
-                        <br>
-                        <br>
-                        <div id="schichtdatenHistContainer">
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div id="schichtdaten">
+               <div id="infosSchichtdaten">
+                  <div id="infosBlock">
+                     <div class="navDropBox" style="height:20px;padding:3px;">
+                         <img id="schtDatLoeschen" title="Schichtmodell löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
+                         <img id="schtDatSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                         <img id="schtDatHinz" title="Neues Schichtmodell erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
+                         <img id="schtDatSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                         <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
+                         <img id="schtDatLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
+                         <img id="schtDatNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
+                         <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
+                         <img id="schtDatPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
+                         <img id="schtDatFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
+                        <label>Liegenschaft: </label>
+                        <select  class="liegPfad" ></select>
+                     </div>
+                     <div class="controlDiv">
+                        <label for="liegSchtDat">Mit Liegenschaftsbezug</label>
+                        <input id="liegSchtDat" class="schtDatForm" type="checkbox">
+                     </div>
+                     <div class="controlDiv">
+                        <label for="modellBezSchtDat">Modellbezeichnung</label>
+                        <input id="modellBezSchtDat" class="schtDatForm" type="text">
+                     </div>
+                     <div class="controlDiv">
+                        <label for="anzahlSchtDat">Anzahl (1 - 6)</label>
+                        <input id="anzahlSchtDat" class="schtDatForm" type="number" onkeydown="return false" min="1" max="6" value="3">
+                     </div>
+                     <br>
+                     <div class="controlDiv">
+                        <label for="gueltigVonSchtDat">Gültig Von</label>
+                        <input id="gueltigVonSchtDat" class="schtDatForm" type="date">
+                     </div>
+                     <div class="controlDiv">
+                        <label for="gueltigBisSchtDat">Gültig Bis</label>
+                        <input id="gueltigBisSchtDat" class="schtDatForm" type="date" disabled>
+                     </div>
+                     <div class="controlDiv">
+                        <label for="bisEndeOffenSchtDat">Ende offen</label>
+                        <input id="bisEndeOffenSchtDat" class="schtDatForm" type="checkbox" checked>
+                     </div>
+                     <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
+                         <label>Notiz</label>
+                         <textarea rows="3" id="notizSchtDat" class="schtDatForm" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                     </div>
+                     <br>
+                     <br>
+                     <div id="schichtdatenContainer">
+                     </div>
+                 </div>
+             </div>
+               <div id="infosSchichtdatenHist">
+                  <div id="infosBlock">
+                     <div class="navDropBox" style="height:20px;padding:3px;">
+                         <img id="schtDatHistSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                         <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
+                         <img id="schtDatHistLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
+                         <img id="schtDatHistNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächstes Schichtmodell" src="images/next.png" alt="nächste" />
+                         <img style="float:right;width:5px;" src="images/space1.png" alt="__" />
+                         <img id="schtDatHistPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriges Schichtmodell" src="images/previous.png" alt="vorherige" />
+                         <img id="schtDatHistFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erstes Schichtmodell" src="images/first.png" alt="erste" />
+                        <label>Liegenschaft: </label>
+                        <select class="liegPfad"></select>
+                     </div>
+                     <div class="controlDiv">
+                        <label for="liegSchtDatHist">Mit Liegenschaftsbezug</label>
+                        <input id="liegSchtDatHist" type="checkbox" onclick="return false">
+                     </div>
+                     <div class="controlDiv">
+                        <label for="modellBezSchtDatHist">Modellbezeichnung</label>
+                        <input id="modellBezSchtDatHist" type="text" readonly> 
+                     </div>
+                     <div class="controlDiv">
+                        <label for="anzahlSchtDatHist">Anzahl (1 - 6)</label>
+                        <input id="anzahlSchtDatHist" type="number" readonly onkeydown="return false" min="1" max="6" value="3">
+                     </div>
+                     <br>
+                     <div class="controlDiv">
+                        <label for="gueltigVonSchtDatHist">Gültig Von</label>
+                        <input id="gueltigVonSchtDatHist" type="date" readonly>
+                     </div>
+                     <div class="controlDiv">
+                        <label for="gueltigBisSchtDatHist">Gültig Bis</label>
+                        <input id="gueltigBisSchtDatHist" type="date" readonly>
+                     </div>
+                     <div class="controlDiv" style="width:21.80cm;margin-top:10px;">
+                         <label>Notiz</label>
+                         <textarea rows="3" id="notizSchtDatHist" readonly style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                     </div>
+                     <br>
+                     <br>
+                     <div id="schichtdatenHistContainer">
+                     </div>
+                 </div>
+             </div>
             </div>
         </div>
 </div>

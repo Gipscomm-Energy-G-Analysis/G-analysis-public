@@ -1378,7 +1378,7 @@ $(document).ready(function() {
         addExtraWidthToDynamischeFaktor();
         $("body").removeClass('fullWidthMasseneingabe');
     });
-    $("#schtDatMenu, #erwAnlMenu, #entMenu, #enfMenu, #gsfMenu, #mgsMenu, #zpMenu, #erwPrdMenu, #grpDiagMenu,#korrekturFaktorMenu,#korrekturFaktorMenuDynamischer").click(function() {
+    $("#schtDatMenu, #erwAnlMenu, #entMenu, #enfMenu, #gsfMenu, #mgsMenu, #zpMenu, #erwPrdMenu, #grpDiagMenu,#korrekturFaktorMenu,#korrekturFaktorMenuDynamischer").click(function() {       
         $("#auswertungen").css("display", "none");
         $("#optionen").css("display", "block");
         $("#manuell").css("display", "none");
@@ -1389,8 +1389,7 @@ $(document).ready(function() {
     });
     /*new-mm-start 24-03-2021*/
     $("#extRngMenu, #intEngIMwMenu, #intBdeIMwMenu, #eRngVergleichMenu, #spaEfVTab1Menu, #spaEfVTab2Menu").click(function() {
-        $("#auswertungen").css("display",
-            "none");
+        $("#auswertungen").css("display", "none");
         $("#manuell").css("display", "block");
         $("#optionen").css("display", "none");
         $("#stammdaten").css("display", "none");
