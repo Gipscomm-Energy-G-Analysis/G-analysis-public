@@ -8135,3 +8135,35 @@ $("#infosIntEnergiedaten_measuring_point").click(function() {
     "infosIntEnergiedaten_measuring_point" == this.id ? a = "mstIMw" : '';
     infosIntEnergiedaten_measuring_point_function(a,b);
 });
+
+//<--16-6-2021---
+$('#config_mannual').on('click', function(){
+    $('#btnKonfigPrdkt').trigger('click');
+});
+
+$('#save_mannual').on('click', function(){
+    $('#masseneingabeSpeichernSrchPrdkt').trigger('click');
+});
+
+// Oprating Mesuarement
+$('#config_mannual_mesurement_operating').on('click', function(){
+    $('#btnKonfigMesssetelle').trigger('click');
+});
+
+$('#save_mannual_mesurement_operating').on('click', function(){
+    $('#masseneingabeSpeichernSrchPrdkt').trigger('click');
+});
+
+
+
+// Energy Default Button
+$('#config_mannual_default_energy').on('click', function(){
+    $('#btnKonfigMstAnl').trigger('click');
+});
+
+$('#save_mannual_default_energy').on('click', function(){
+    $('#masseneingabeSpeichernSrch').trigger('click');
+});
+
+//--end-->
+
