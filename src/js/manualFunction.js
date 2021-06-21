@@ -5130,8 +5130,11 @@ function validateIntBdeFrm(noEnding,Zeitintervall,sId,id){
     var zeitintervallAnl =$("#zeitintervallAnl").val();
     var notizBdeIMw =$("#notizBdeIMw").val();
     var einheitAnl =$("#einheitAnl").val();
+    var min_investment_energy = $('#min_investment_energy').val();
+    var mid_investment_energy = $('#mid_investment_energy').val();
+    var max_investment_energy = $('#max_investment_energy').val();
 
-    if(anlIMw =='' || zeitintervallAnl ==0 || notizBdeIMw=='' || einheitAnl==''){
+    if(anlIMw =='' || zeitintervallAnl ==0 || einheitAnl=='' || min_investment_energy == '' || mid_investment_energy == '' || max_investment_energy == ''){
         alert("Bitte füllen Sie die Felder aus");
         return false;
     }else{
