@@ -2310,7 +2310,10 @@ function MesssetelleListingDblClickRow(mst_Id,sId){
 
                 if( $("." + sId + " #mstIMw").val() == ""){
 
-                    $("." + sId + " #mstIMw").prop("readonly",false);
+                    // <---14-6-2021----
+                    //$("." + sId + " #mstIMw").prop("readonly",false); //Old code comment
+                    $("." + sId + " #mstIMw").prop("readonly",true);
+                    //---end-->
                     $("." + sId + " #mstIMw").prop("disabled",false);
                 }
                 else{
@@ -5210,7 +5213,7 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
     var notizBdeIMwAnlPrdkt =$("#notizBdeIMwAnlPrdkt").val();
     var einheitAnlPrdkt =$("#einheitAnlPrdkt").val();
 
-    if(mstIMw =='' || zeitintervallAnlPrdkt == 0 || notizBdeIMwAnlPrdkt=='' || einheitAnlPrdkt==''){
+    if(mstIMw =='' || zeitintervallAnlPrdkt == 0 || einheitAnlPrdkt==''){
         alert("Bitte füllen Sie die Felder aus");
         return false;
     }else{
