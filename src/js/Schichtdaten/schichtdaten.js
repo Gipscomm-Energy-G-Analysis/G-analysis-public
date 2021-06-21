@@ -129,6 +129,11 @@ const scpSchichtdaten =
             const disableAnzahl =
                 () =>
                 $("#anzahlSchtDat").prop("disabled", true)
+            
+            // Gets the state of the "Mit Liegenschaftsbezug" checkbox
+            const hasLiegRef =
+                () =>
+                $("#liegSchtDat").prop("checked")
 
             // Enables/Disables the Gueltig Bis input depending
             // on the selection state of Ende offen
@@ -184,8 +189,8 @@ const scpSchichtdaten =
                     , anzahlSchtDat : anzahl
                     , gueltigVonSchtDat : getFieldValue("gueltigVonSchtDat")
                     , gueltigBisSchtDat : getFieldValue("gueltigBisSchtDat")
-                    , bisEndeOffenSchtDat : isEndeOffen()
                     , notizSchtDat : getFieldValue("notizSchtDat")
+                    , liegRef : hasLiegRef()
                     , schichten :
                         getSchichten(anzahl)
                         .map(a => a.map(last))
@@ -233,8 +238,8 @@ const scpSchichtdaten =
 
             // Inserts data into a provided indexedDB store(table)
             const dataIntoIDB =
-                store =>
                 data =>
+                store =>
                 ( idxDB[store].clear()
                 , idxDB[store].bulkPut(data[store])
                 )
@@ -242,12 +247,14 @@ const scpSchichtdaten =
             // Syncs the indexedDB with the sql srv DB
             this.populateIndexedDB =
                 () =>
-                ajaxPost("php/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
+                ajaxPost("php/Schichtdaten/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
                 .then(
-                    result => {
-                        dataIntoIDB("schichtModelle")(result)
-                        dataIntoIDB("schichten")(result)
-                    }
+                    result => 
+                    [ "schichtModelle"
+                    , "schichten"
+                    , "schichtModelleHist"
+                    , "schichtenHist"
+                    ].forEach(dataIntoIDB(result))   
                 )
 
             // Dialog which asks the user if the Schichtmodell should
@@ -288,9 +295,18 @@ const scpSchichtdaten =
             // and then updates the indexedDB
             const saveFormData =
                 formData =>
-                ajaxPost("php/saveSchichtdaten.php")(formData)
+                ajaxPost("php/Schichtdaten/saveSchichtdaten.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.populateIndexedDB)
+                .then(
+                    () =>
+                    equal($("#schtMdlState").val())("new") ?
+                    this.readLast() :
+                    !isEndeOffen() ?
+                    this.readLast() :
+                    false
+                )
+                .then(scpSchichtdaten_historie.readLast)
 
             // If the form data contains empty input elements a
             // dialog is shown which asks if the record should be
@@ -364,6 +380,7 @@ const scpSchichtdaten =
                 () =>
                 ( $("#anzahlSchtDat").val(3)
                 , $("#anzahlSchtDat").trigger("change")
+                , $("#bisEndeOffenSchtDat").prop("checked", false)
                 , $("#bisEndeOffenSchtDat").trigger("click")
                 )
 
@@ -394,16 +411,35 @@ const scpSchichtdaten =
                 , resetAnzahlAndEndeOffen()
                 , setState("new")
                 )
+            
+            // Filters by Liegenschaften refs
+            const getLiegRefRecords =
+                () =>
+                idxDB.schichtModelle
+                .where("lieg_ID")
+                .equals(Number(getFieldValue("liegID")))
+                .or("liegRef")
+                .equals(0)
+
+            // Sorts records by primary key
+            const sortByPrimKey =
+                lst =>
+                lst.sort(
+                    (a, b) =>
+                    a.schtMdl_ID - b.schtMdl_ID
+                )
 
             // Returns an array of the Schicht Modelle from indexedDB
             const querySchichtModelleDataIDB =
-                () =>
-                idxDB.schichtModelle.toArray()
+                () => 
+                getLiegRefRecords()
+                .toArray()
 
             // Returns a certain Schicht Modell depending on an index
             const querySchichtModellDataIDB =
                 idx =>
                 querySchichtModelleDataIDB()
+                .then(sortByPrimKey)
                 .then(schichtModelle => schichtModelle[idx])
 
             // Returns the Schichten of a given Schicht Modell
@@ -442,16 +478,18 @@ const scpSchichtdaten =
                             $("#anzahlSchtDat").val(schichtModell.anzahl)
                             $("#anzahlSchtDat").trigger("change")
                             $("#gueltigVonSchtDat").val(schichtModell.gueltigVon)
-                            $("#gueltigBisSchtDat").val(schichtModell.gueltigBis)
-                            $("#bisEndeOffenSchtDat").prop("checked", schichtModell.bisEndeOffen)
                             $("#notizSchtDat").val(schichtModell.notiz)
+                            $("#liegSchtDat").prop("checked", schichtModell.liegRef)
+                            $("#bisEndeOffenSchtDat").prop("checked", true)
 
-                            this.endeOffenOrBis()
+                            this.setMinGueltigBis($("#gueltigVonSchtDat").val())
+
+                            disableGueltigBis()
 
                             querySchichtenDataIDB(schichtModell.schtMdl_ID)
                             .then(setSchichten)
 
-                            setState("save")
+                            setState("edit")
                         }
                     )
                 }
@@ -460,36 +498,40 @@ const scpSchichtdaten =
             this.readFirst =
                 () =>
                 readIntoFormFields(0)
-
+                
             // Sets the form data input values of the previous Schicht Modell
             // depending on the current records index
             this.readPrevious =
-                () => {
-                    if ($("#schtMdlIdx").val() > 0) {
-                        readIntoFormFields(decr($("#schtMdlIdx").val()))
-                    }
-                }
+                () =>
+                greaterZero(getFieldValue("schtMdlIdx")) ?
+                readIntoFormFields(decr(getFieldValue("schtMdlIdx"))) :
+                false
 
             // Sets the form data input values of the next Schicht Modell
             // depending on the current records index
             this.readNext =
                 () =>
-                idxDB.schichtModelle.count()
-                .then(
-                    count => {
-                        if ($("#schtMdlIdx").val() < decr(count)) {
-                            readIntoFormFields(incr($("#schtMdlIdx").val()))
-                        }
-                    }
+                getLiegRefRecords()
+                .count()
+                .then( 
+                    count => 
+                    greater(decr(count))(getFieldValue("schtMdlIdx")) ?
+                    readIntoFormFields(incr(getFieldValue("schtMdlIdx"))) :
+                    false
                 )
 
             // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
-                idxDB.schichtModelle.count()
+                getLiegRefRecords()
+                .count()
                 .then(
                     count =>
-                    readIntoFormFields(decr(count))
+                    greaterZero(count) ?
+                    readIntoFormFields(decr(count)) :
+                    ( this.clearFields()
+                    , setState("new")
+                    )
                 )
 
             // Deletes the current Schicht Modell(sets col deleted = true)
@@ -498,11 +540,11 @@ const scpSchichtdaten =
                     const nameDB = $("#nameDB").val()
                     const schtMdlID = $("#schtMdlID").val()
 
-                    ajaxPost("php/deleteSchichtdaten.php")({nameDB, schtMdlID})
+                    ajaxPost("php/Schichtdaten/deleteSchichtdaten.php")({nameDB, schtMdlID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
-                        , this.populateIndexedDB().then(this.readFirst)
+                        , this.populateIndexedDB().then(this.readLast)
                         )
                     )
                 }
@@ -516,8 +558,6 @@ const scpSchichtdaten =
                     , a.modellBez
                     , a.anzahl
                     , a.gueltigVon
-                    , a.gueltigBis
-                    , a.bisEndeOffen
                     ]
                 )
 
@@ -533,6 +573,7 @@ const scpSchichtdaten =
                 () => {
 
                     querySchichtModelleDataIDB()
+                    .then(sortByPrimKey)
                     .then(fillSchichtmodelleTbl)
 
                     $("#schichtmodellSuchenContainer").dialog({
