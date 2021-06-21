@@ -84,72 +84,72 @@ elseif($id == 'intBdeIMw'){
 elseif($id == 'intBdePrdktIMw'){
 	if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwNextMst'){
 
-	    $query  = " SELECT TOP 1 * ";
-	    $query .= " FROM produktionsAnlagenMoreOpt AS T1 ";
-	    $query .= " LEFT JOIN produkte AS T2 ";
+		$query  = " SELECT TOP 1 * ";
+		$query .= " FROM produktionsAnlagenMoreOpt AS T1 ";
+		$query .= " LEFT JOIN produkte AS T2 ";
 		$query .= " ON T1.prd_ID = T2.prd_ID ";
 		$query .= " LEFT JOIN anlagen AS T3 ";
-	    $query .= " ON T1.anl_id =  T3.anl_ID";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
+		$query .= " ON T1.anl_id =  T3.anl_ID";
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
 		$query .= " ON T1.prd_ID = T4.prd_ID ";
 		$query .= " AND T1.anl_id = T4.anl_id";
 		$query .= " AND T1.anl_col = T4.anl_col";
 		$query .= " WHERE T1.Type = '2' ";
 		$query .= " AND T1.id > ".$_POST['iBdePrdktConf_ID']." ";
-        $query .= "ORDER BY T1.id ASC";
-	    //echo $query;die();
+		$query .= "ORDER BY T1.id ASC";
+		//echo $query;die();
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwPreviousMst'){
 
-	    $query  = " SELECT TOP 1 * ";
-	    $query .= " FROM produktionsAnlagenMoreOpt AS T1 ";
-	    $query .= " LEFT JOIN produkte AS T2 ";
+		$query  = " SELECT TOP 1 * ";
+		$query .= " FROM produktionsAnlagenMoreOpt AS T1 ";
+		$query .= " LEFT JOIN produkte AS T2 ";
 		$query .= " ON T1.prd_ID = T2.prd_ID ";
 		$query .= " LEFT JOIN anlagen AS T3 ";
-	    $query .= " ON T1.anl_id =  T3.anl_ID";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
+		$query .= " ON T1.anl_id =  T3.anl_ID";
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
 		$query .= " ON T1.prd_ID = T4.prd_ID ";
 		$query .= " AND T1.anl_id = T4.anl_id";
 		$query .= " AND T1.anl_col = T4.anl_col";
 		$query .= " WHERE T1.Type = '2' ";
 		$query .= " AND T1.id < ".$_POST['iBdePrdktConf_ID']." ";
-        $query .= "ORDER BY T1.id DESC";
-	   // echo $query;die();
+		$query .= "ORDER BY T1.id DESC";
+		// echo $query;die();
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwLastMst'){
 
 		$query  = " SELECT TOP 1 * ";
-	    $query .= " FROM produktionsAnlagenMoreOpt AS T1 ";
-	    $query .= " LEFT JOIN produkte AS T2 ";
+		$query .= " FROM produktionsAnlagenMoreOpt AS T1 ";
+		$query .= " LEFT JOIN produkte AS T2 ";
 		$query .= " ON T1.prd_ID = T2.prd_ID ";
 		$query .= " LEFT JOIN anlagen AS T3 ";
-	    $query .= " ON T1.anl_id =  T3.anl_ID";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
+		$query .= " ON T1.anl_id =  T3.anl_ID";
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
 		$query .= " ON T1.prd_ID = T4.prd_ID ";
 		$query .= " AND T1.anl_id = T4.anl_id";
 		$query .= " AND T1.anl_col = T4.anl_col";
 		$query .= " WHERE T1.Type = '2' ";
-        $query .= " ORDER BY T1.id DESC";
-	    //echo $query;die();
+		$query .= " ORDER BY T1.id DESC";
+		//echo $query;die();
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwFirstMst'){
 
-	    $query  = " SELECT TOP 1 * ";
-	    $query .= " FROM produktionsAnlagenMoreOpt AS T1 ";
-	    $query .= " LEFT JOIN produkte AS T2 ";
+		$query  = " SELECT TOP 1 * ";
+		$query .= " FROM produktionsAnlagenMoreOpt AS T1 ";
+		$query .= " LEFT JOIN produkte AS T2 ";
 		$query .= " ON T1.prd_ID = T2.prd_ID ";
 		$query .= " LEFT JOIN anlagen AS T3 ";
-	    $query .= " ON T1.anl_id =  T3.anl_ID";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
+		$query .= " ON T1.anl_id =  T3.anl_ID";
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ";
 		$query .= " ON T1.prd_ID = T4.prd_ID ";
 		$query .= " AND T1.anl_id = T4.anl_id ";
 		$query .= " AND T1.anl_col = T4.anl_col ";
 		$query .= " WHERE T1.Type = '2' ";
-        $query .= " ORDER BY T1.id ASC";
+		$query .= " ORDER BY T1.id ASC";
 
-       
 
-        //echo $query;die();
+
+		//echo $query;die();
 
 
 	}
@@ -157,66 +157,66 @@ elseif($id == 'intBdePrdktIMw'){
 elseif($id == 'intBdeMesssetelleIMw'){
 	if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwNextMst'){
 
-        $query  = " SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* ";
-	    $query .= " FROM MessstellenAnlagen AS T1 ";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
+		$query  = " SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* ";
+		$query .= " FROM MessstellenAnlagen AS T1 ";
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
 		$query .= " ON T1.mst_ID = T2.mst_ID ";
 		$query .= " LEFT JOIN intervalType AS T3 ";
 		$query .= " ON T2.intTp_ID = T3.intTp_ID ";
 		$query .= " WHERE T1.typ = 'betriebsdaten' ";
-	    $query .= " AND T1.deleted <> 'true' ";
+		$query .= " AND T1.deleted <> 'true' ";
 		$query .= " AND T1.messartMst = 'manuell' ";
 		$query .= " AND T1.mst_ID >".$_POST['iBdePrdktConf_ID']." ";
-        $query .= " ORDER BY T1.mst_ID ASC";
+		$query .= " ORDER BY T1.mst_ID ASC";
 
-	    //echo $query;die();
+		//echo $query;die();
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwPreviousMst'){
 
 
-        $query  = " SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* ";
-	    $query .= " FROM MessstellenAnlagen AS T1 ";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
+		$query  = " SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* ";
+		$query .= " FROM MessstellenAnlagen AS T1 ";
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
 		$query .= " ON T1.mst_ID = T2.mst_ID ";
 		$query .= " LEFT JOIN intervalType AS T3 ";
 		$query .= " ON T2.intTp_ID = T3.intTp_ID ";
 		$query .= " WHERE T1.typ = 'betriebsdaten' ";
-	    $query .= " AND T1.deleted <> 'true' ";
+		$query .= " AND T1.deleted <> 'true' ";
 		$query .= " AND T1.messartMst = 'manuell' ";
 		$query .= " AND T1.mst_ID <".$_POST['iBdePrdktConf_ID']." ";
-        $query .= " ORDER BY T1.mst_ID DESC";
-	    //echo $query;die();
+		$query .= " ORDER BY T1.mst_ID DESC";
+		//echo $query;die();
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwLastMst'){
 
-	    $query  = " SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* ";
-	    $query .= " FROM MessstellenAnlagen AS T1 ";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
+		$query  = " SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* ";
+		$query .= " FROM MessstellenAnlagen AS T1 ";
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
 		$query .= " ON T1.mst_ID = T2.mst_ID ";
 		$query .= " LEFT JOIN intervalType AS T3 ";
 		$query .= " ON T2.intTp_ID = T3.intTp_ID ";
 		$query .= " WHERE T1.typ = 'betriebsdaten' ";
-	    $query .= " AND T1.deleted <> 'true' ";
+		$query .= " AND T1.deleted <> 'true' ";
 		$query .= " AND T1.messartMst = 'manuell' ";
-        $query .= " ORDER BY T1.mst_ID DESC";
-	    //echo $query;die();
+		$query .= " ORDER BY T1.mst_ID DESC";
+		//echo $query;die();
 
 	}else if(isset($_POST['key']) && !empty($_POST['key']) && $_POST['key'] == 'intBdePrdktIMwFirstMst'){
 
 
-	    $query  = " SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* ";
-	    $query .= " FROM MessstellenAnlagen AS T1 ";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
+		$query  = " SELECT TOP 1 T1.mst_ID AS T1_mst_ID,* ";
+		$query .= " FROM MessstellenAnlagen AS T1 ";
+		$query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
 		$query .= " ON T1.mst_ID = T2.mst_ID ";
 		$query .= " LEFT JOIN intervalType AS T3 ";
 		$query .= " ON T2.intTp_ID = T3.intTp_ID ";
 		$query .= " WHERE T1.typ = 'betriebsdaten' ";
-	    $query .= " AND T1.deleted <> 'true' ";
+		$query .= " AND T1.deleted <> 'true' ";
 		$query .= " AND T1.messartMst = 'manuell' ";
-        $query .= " ORDER BY T1.mst_ID ASC";
+		$query .= " ORDER BY T1.mst_ID ASC";
 
 
-        //echo $query;die();
+		//echo $query;die();
 
 	}
 }
@@ -224,67 +224,67 @@ elseif($id == 'intBdeMesssetelleIMw'){
 
 elseif($id == 'KeinZeitintervallTblFacilityData'){
 
-	   $typ = $_POST['typ'];
-	   /*new-mm-start 26-03-2021*/
-	   $query = "SELECT T1.mst_ID AS T1_mst_ID, * FROM MessstellenAnlagen AS T1 ";
-	   /*new-mm-end 26-03-2021*/
-	   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-	   $query .= "ON T1.mst_ID = T2.mst_ID ";
-	   $query .= "LEFT JOIN iMwUnits AS T3 ";
-	   $query .= "ON T3.unt_ID = T2.unt_ID ";
-	   $query .= "LEFT JOIN intervalType AS T4 ";
-	   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
-	   $query .= "WHERE T1.deleted <> 'true' ";
-	   $query .= "AND T1.messartMst = 'manuell' ";
-	   $query .= "AND T1.typ = '$typ' ";
-	   $query .= "AND T2.mst_ID IS NULL ";
-	   /*new-mm-start 26-03-2021*/
-	   $query .= " ORDER BY T1.mst_ID ASC";
-	   /*new-mm-end 26-03-2021*/
+	$typ = $_POST['typ'];
+	/*new-mm-start 26-03-2021*/
+	$query = "SELECT T1.mst_ID AS T1_mst_ID, * FROM MessstellenAnlagen AS T1 ";
+	/*new-mm-end 26-03-2021*/
+	$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+	$query .= "ON T1.mst_ID = T2.mst_ID ";
+	$query .= "LEFT JOIN iMwUnits AS T3 ";
+	$query .= "ON T3.unt_ID = T2.unt_ID ";
+	$query .= "LEFT JOIN intervalType AS T4 ";
+	$query .= "ON T4.intTp_ID = T2.intTp_ID ";
+	$query .= "WHERE T1.deleted <> 'true' ";
+	$query .= "AND T1.messartMst = 'manuell' ";
+	$query .= "AND T1.typ = '$typ' ";
+	$query .= "AND T2.mst_ID IS NULL ";
+	/*new-mm-start 26-03-2021*/
+	$query .= " ORDER BY T1.mst_ID ASC";
+	/*new-mm-end 26-03-2021*/
 
-	     /*last-mm*/
+	/*last-mm*/
 
 }
 elseif($id == 'KeinZeitintervallTbl'){
 
-	   $typ = $_POST['typ'];
-	   /*new-mm-start 26-03-2021*/
-	   $query = "SELECT T1.mst_ID AS T1_mst_ID, * FROM MessstellenAnlagen AS T1 ";
-	   /*new-mm-end 26-03-2021*/
-	   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-	   $query .= "ON T1.mst_ID = T2.mst_ID ";
-	   $query .= "LEFT JOIN iMwUnits AS T3 ";
-	   $query .= "ON T3.unt_ID = T2.unt_ID ";
-	   $query .= "LEFT JOIN intervalType AS T4 ";
-	   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
-	   $query .= "WHERE T1.deleted <> 'true' ";
-	   $query .= "AND T1.messartMst = 'manuell' ";
-	   $query .= "AND T1.typ = '$typ' ";
+	$typ = $_POST['typ'];
+	/*new-mm-start 26-03-2021*/
+	$query = "SELECT T1.mst_ID AS T1_mst_ID, * FROM MessstellenAnlagen AS T1 ";
+	/*new-mm-end 26-03-2021*/
+	$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+	$query .= "ON T1.mst_ID = T2.mst_ID ";
+	$query .= "LEFT JOIN iMwUnits AS T3 ";
+	$query .= "ON T3.unt_ID = T2.unt_ID ";
+	$query .= "LEFT JOIN intervalType AS T4 ";
+	$query .= "ON T4.intTp_ID = T2.intTp_ID ";
+	$query .= "WHERE T1.deleted <> 'true' ";
+	$query .= "AND T1.messartMst = 'manuell' ";
+	$query .= "AND T1.typ = '$typ' ";
 
-	   /*new-mm-start 26-03-2021*/
-	   $query .= " ORDER BY T1.mst_ID ASC";
-	   /*new-mm-end 26-03-2021*/
+	/*new-mm-start 26-03-2021*/
+	$query .= " ORDER BY T1.mst_ID ASC";
+	/*new-mm-end 26-03-2021*/
 
-	     /*last-mm*/
+	/*last-mm*/
 
 }
 elseif($id == 'MesssetelleTbl'){
 
-	   $typ = $_POST['typ'];
+	$typ = $_POST['typ'];
 
-	   $query = "SELECT T1.mst_ID AS T1_mst_ID, T1.nameMSt AS T1_nameMSt,T1.anlageMst AS T1_anlageMst, * FROM MessstellenAnlagen AS T1 ";
-	   //$query = "SELECT * FROM MessstellenAnlagen AS T1 ";
-	   $query .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
-	   $query .= "ON T1.mst_ID = T2.mst_ID ";
-	   //$query .= "ON T1.mst_ID AS T1_mst_ID = T2.mst_ID AS T2_mst_ID ";
-	   $query .= "LEFT JOIN iMwUnits AS T3 ";
-	   $query .= "ON T2.unt_ID = T3.unt_ID ";
-	   $query .= "LEFT JOIN intervalType AS T4 ";
-	   $query .= "ON T2.intTp_ID = T4.intTp_ID ";
-	   $query .= "WHERE T1.deleted <> 'true' ";
-	   $query .= "AND T1.messartMst = 'manuell' ";
-	   $query .= "AND T1.typ = '$typ' ";
-	   //echo $query;die();
+	$query = "SELECT T1.mst_ID AS T1_mst_ID, T1.nameMSt AS T1_nameMSt,T1.anlageMst AS T1_anlageMst, * FROM MessstellenAnlagen AS T1 ";
+	//$query = "SELECT * FROM MessstellenAnlagen AS T1 ";
+	$query .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
+	$query .= "ON T1.mst_ID = T2.mst_ID ";
+	//$query .= "ON T1.mst_ID AS T1_mst_ID = T2.mst_ID AS T2_mst_ID ";
+	$query .= "LEFT JOIN iMwUnits AS T3 ";
+	$query .= "ON T2.unt_ID = T3.unt_ID ";
+	$query .= "LEFT JOIN intervalType AS T4 ";
+	$query .= "ON T2.intTp_ID = T4.intTp_ID ";
+	$query .= "WHERE T1.deleted <> 'true' ";
+	$query .= "AND T1.messartMst = 'manuell' ";
+	$query .= "AND T1.typ = '$typ' ";
+	//echo $query;die();
 
 }
 elseif($id == 'MesssetelleTblFacilityData'){
@@ -309,324 +309,324 @@ elseif($id == 'MesssetelleTblFacilityData'){
 
 }
 elseif($id == 'SearchKeinZeitintervallTbl'){
-	   /*new-mm-start*/
-	   $checkboxSearch = $_POST['checkboxSearch'];
-	   $typ = $_POST['typ'];
-	   if($checkboxSearch == 1){
-	   	   /*new-mm-start 26-03-2021*/
-		   $query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
-		   /*new-mm-end 26-03-2021*/
-		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-		   $query .= "ON T1.mst_ID = T2.mst_ID ";
-		   $query .= "LEFT JOIN iMwUnits AS T3 ";
-		   $query .= "ON T3.unt_ID = T2.unt_ID ";
-		   $query .= "LEFT JOIN intervalType AS T4 ";
-		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
-		   $query .= "WHERE T1.deleted <> 'true' ";
-		   $query .= "AND T1.messartMst = 'manuell' ";
-		   $query .= "AND T1.typ = '$typ' ";
-		   /*new-mm-start 26-03-2021*/
-	       $query .= " ORDER BY T1.mst_ID ASC";
-	       /*new-mm-end 26-03-2021*/
-		   //echo $query;die();
-		}
-		elseif($checkboxSearch == 2){
-		   /*new-mm-start 26-03-2021*/
-		   $query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
-		   /*new-mm-end 26-03-2021*/
-		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-		   $query .= "ON T1.mst_ID = T2.mst_ID ";
-		   $query .= "LEFT JOIN iMwUnits AS T3 ";
-		   $query .= "ON T3.unt_ID = T2.unt_ID ";
-		   $query .= "LEFT JOIN intervalType AS T4 ";
-		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
-		   $query .= "WHERE T1.deleted <> 'true' ";
-		   $query .= "AND T1.messartMst = 'manuell' ";
-		   $query .= "AND T1.typ = '$typ' ";
-		   $query .= "AND NULLIF(T2.startDate,'') IS NOT NULL ";
-		   /*new-mm-start 26-03-2021*/
-	       $query .= " ORDER BY T1.mst_ID ASC";
-	       /*new-mm-end 26-03-2021*/
-		   /*WHERE NULLIF(x,'') IS NOT NULL
-			AND NULLIF(y,'') IS NOT NULL
-			AND NULLIF(z,'') IS NOT NULL*/
-		}
-		elseif($checkboxSearch == 3){
-		   /*new-mm-start 26-03-2021*/
-		   $query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
-		   /*new-mm-end 26-03-2021*/
-		   $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-		   $query .= "ON T1.mst_ID = T2.mst_ID ";
-		   $query .= "LEFT JOIN iMwUnits AS T3 ";
-		   $query .= "ON T3.unt_ID = T2.unt_ID ";
-		   $query .= "LEFT JOIN intervalType AS T4 ";
-		   $query .= "ON T4.intTp_ID = T2.intTp_ID ";
-		   $query .= "WHERE T1.deleted <> 'true' ";
-		   $query .= "AND T1.messartMst = 'manuell' ";
-		   $query .= "AND T1.typ = '$typ' ";
-		   $query .= "AND NULLIF(T2.startDate,'') IS NULL ";
-		   /*new-mm-start 26-03-2021*/
-	       $query .= " ORDER BY T1.mst_ID ASC";
-	       /*new-mm-end 26-03-2021*/
-		   /*WHERE NULLIF(x,'') IS NULL
-			Or NULLIF(y,'') IS NULL
-			Or NULLIF(z,'') IS NULL*/
-		}
+	/*new-mm-start*/
+	$checkboxSearch = $_POST['checkboxSearch'];
+	$typ = $_POST['typ'];
+	if($checkboxSearch == 1){
+		/*new-mm-start 26-03-2021*/
+		$query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		$query .= "ON T1.mst_ID = T2.mst_ID ";
+		$query .= "LEFT JOIN iMwUnits AS T3 ";
+		$query .= "ON T3.unt_ID = T2.unt_ID ";
+		$query .= "LEFT JOIN intervalType AS T4 ";
+		$query .= "ON T4.intTp_ID = T2.intTp_ID ";
+		$query .= "WHERE T1.deleted <> 'true' ";
+		$query .= "AND T1.messartMst = 'manuell' ";
+		$query .= "AND T1.typ = '$typ' ";
+		/*new-mm-start 26-03-2021*/
+		$query .= " ORDER BY T1.mst_ID ASC";
+		/*new-mm-end 26-03-2021*/
+		//echo $query;die();
+	}
+	elseif($checkboxSearch == 2){
+		/*new-mm-start 26-03-2021*/
+		$query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		$query .= "ON T1.mst_ID = T2.mst_ID ";
+		$query .= "LEFT JOIN iMwUnits AS T3 ";
+		$query .= "ON T3.unt_ID = T2.unt_ID ";
+		$query .= "LEFT JOIN intervalType AS T4 ";
+		$query .= "ON T4.intTp_ID = T2.intTp_ID ";
+		$query .= "WHERE T1.deleted <> 'true' ";
+		$query .= "AND T1.messartMst = 'manuell' ";
+		$query .= "AND T1.typ = '$typ' ";
+		$query .= "AND NULLIF(T2.startDate,'') IS NOT NULL ";
+		/*new-mm-start 26-03-2021*/
+		$query .= " ORDER BY T1.mst_ID ASC";
+		/*new-mm-end 26-03-2021*/
+		/*WHERE NULLIF(x,'') IS NOT NULL
+         AND NULLIF(y,'') IS NOT NULL
+         AND NULLIF(z,'') IS NOT NULL*/
+	}
+	elseif($checkboxSearch == 3){
+		/*new-mm-start 26-03-2021*/
+		$query = "SELECT T1.mst_ID AS T1_mst_ID,* FROM MessstellenAnlagen AS T1 ";
+		/*new-mm-end 26-03-2021*/
+		$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+		$query .= "ON T1.mst_ID = T2.mst_ID ";
+		$query .= "LEFT JOIN iMwUnits AS T3 ";
+		$query .= "ON T3.unt_ID = T2.unt_ID ";
+		$query .= "LEFT JOIN intervalType AS T4 ";
+		$query .= "ON T4.intTp_ID = T2.intTp_ID ";
+		$query .= "WHERE T1.deleted <> 'true' ";
+		$query .= "AND T1.messartMst = 'manuell' ";
+		$query .= "AND T1.typ = '$typ' ";
+		$query .= "AND NULLIF(T2.startDate,'') IS NULL ";
+		/*new-mm-start 26-03-2021*/
+		$query .= " ORDER BY T1.mst_ID ASC";
+		/*new-mm-end 26-03-2021*/
+		/*WHERE NULLIF(x,'') IS NULL
+         Or NULLIF(y,'') IS NULL
+         Or NULLIF(z,'') IS NULL*/
+	}
 }elseif($id == 'masseneingabeSearch'){
-	   $zeitintervallAnl = $_POST['zeitintervallAnl'];
-		if($zeitintervallAnl==1){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
+	$zeitintervallAnl = $_POST['zeitintervallAnl'];
+	if($zeitintervallAnl==1){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
 
-		      $fromDate =explode(".", $sDate);
-		      $arrStart[] = $fromDate[2];
-		      $arrStart[] = $fromDate[1];
-		      $arrStart[] = $fromDate[0];
+		$fromDate =explode(".", $sDate);
+		$arrStart[] = $fromDate[2];
+		$arrStart[] = $fromDate[1];
+		$arrStart[] = $fromDate[0];
 
-		      $toDate = explode(".", $eDate);
-		      $arrEnd[] =  $toDate[2];
-		      $arrEnd[] =  $toDate[1];
-		      $arrEnd[] =  $toDate[0];
+		$toDate = explode(".", $eDate);
+		$arrEnd[] =  $toDate[2];
+		$arrEnd[] =  $toDate[1];
+		$arrEnd[] =  $toDate[0];
 
-		      $startDate = implode("-",$arrStart);
-		      $endDate = implode("-",$arrEnd);
-		      $startWeek ='';
-		      $endWeek ='';
+		$startDate = implode("-",$arrStart);
+		$endDate = implode("-",$arrEnd);
+		$startWeek ='';
+		$endWeek ='';
 
-	    }else if($zeitintervallAnl==2){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
-		      $fromDate =explode("-", $sDate);
-		      $startWeek = $fromDate[0]; //first week selected value
-		      $startDate = $fromDate[1]; //first year input text value
+	}else if($zeitintervallAnl==2){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
+		$fromDate =explode("-", $sDate);
+		$startWeek = $fromDate[0]; //first week selected value
+		$startDate = $fromDate[1]; //first year input text value
 
-		      $toDate = explode("-", $eDate);
-		      $endWeek =  $toDate[0]; //second week selected value
-		      $endDate =  $toDate[1]; //second year input text value
+		$toDate = explode("-", $eDate);
+		$endWeek =  $toDate[0]; //second week selected value
+		$endDate =  $toDate[1]; //second year input text value
 
-	    }else if($zeitintervallAnl==3){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
+	}else if($zeitintervallAnl==3){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
 
-		      $fromDate =explode(".", $sDate);
-		      $arrStart[] = $fromDate[1]; //first year input text value
-		      $arrStart[] = $fromDate[0]; //first week selected value
+		$fromDate =explode(".", $sDate);
+		$arrStart[] = $fromDate[1]; //first year input text value
+		$arrStart[] = $fromDate[0]; //first week selected value
 
 
-		      $toDate = explode(".", $eDate);
-		      $arrEnd[] =  $toDate[1]; //second year input text value
-		      $arrEnd[] =  $toDate[0]; //second week selected value
+		$toDate = explode(".", $eDate);
+		$arrEnd[] =  $toDate[1]; //second year input text value
+		$arrEnd[] =  $toDate[0]; //second week selected value
 
-		      $startDate = implode("-",$arrStart);
-		      $endDate = implode("-",$arrEnd);
-		      $startWeek ='';
-		      $endWeek ='';
+		$startDate = implode("-",$arrStart);
+		$endDate = implode("-",$arrEnd);
+		$startWeek ='';
+		$endWeek ='';
 
-	    }else{
-		      $startDate =$_POST['startDate'];
-		      $endDate =$_POST['endDate'];
-		      $startWeek ='';
-		      $endWeek ='';
-	    }
-			$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
-			$query1 .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-			$query1 .= "ON T1.mst_ID = T2.mst_ID ";
-			$query1 .= "WHERE T1.messartMst = 'manuell' ";
-			$query1 .= "AND T1.deleted <> 'true' ";
+	}else{
+		$startDate =$_POST['startDate'];
+		$endDate =$_POST['endDate'];
+		$startWeek ='';
+		$endWeek ='';
+	}
+	$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
+	$query1 .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+	$query1 .= "ON T1.mst_ID = T2.mst_ID ";
+	$query1 .= "WHERE T1.messartMst = 'manuell' ";
+	$query1 .= "AND T1.deleted <> 'true' ";
 
-			/*new-mm-start 25-03-2021*/ 
-			/*use for show only energiedaten type*/
-			$query1 .= "AND T1.typ = 'energiedaten' ";
-			/*new-mm-end 25-03-2021*/
+	/*new-mm-start 25-03-2021*/
+	/*use for show only energiedaten type*/
+	$query1 .= "AND T1.typ = 'energiedaten' ";
+	/*new-mm-end 25-03-2021*/
 
-			$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') 
+	$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') 
 			            OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') 
 			            OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') 
 			            OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
 
-			$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
-			$query1 .= "ORDER BY T1.mst_ID ASC";
+	$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+	$query1 .= "ORDER BY T1.mst_ID ASC";
 
-			$query2 = "SELECT * FROM masseneingabeSucheIMw ";
-			$query2 .= "WHERE type = '$zeitintervallAnl' ";
+	$query2 = "SELECT * FROM masseneingabeSucheIMw ";
+	$query2 .= "WHERE type = '$zeitintervallAnl' ";
 
-			$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
-			$query3 .= "WHERE type = '$zeitintervallAnl' ";
+	$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
+	$query3 .= "WHERE type = '$zeitintervallAnl' ";
 
-			//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
-			//$query4 .= "WHERE type = '$zeitintervallAnl' ";
+	//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
+	//$query4 .= "WHERE type = '$zeitintervallAnl' ";
 
 }
 /*new-mm-start 01-04-2021*/
 elseif($id == 'masseneingabePrdktSearch'){
-	   $zeitintervallAnl = $_POST['zeitintervallAnl'];
-		if($zeitintervallAnl==1){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
+	$zeitintervallAnl = $_POST['zeitintervallAnl'];
+	if($zeitintervallAnl==1){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
 
-		      $fromDate =explode(".", $sDate);
-		      $arrStart[] = $fromDate[2];
-		      $arrStart[] = $fromDate[1];
-		      $arrStart[] = $fromDate[0];
+		$fromDate =explode(".", $sDate);
+		$arrStart[] = $fromDate[2];
+		$arrStart[] = $fromDate[1];
+		$arrStart[] = $fromDate[0];
 
-		      $toDate = explode(".", $eDate);
-		      $arrEnd[] =  $toDate[2];
-		      $arrEnd[] =  $toDate[1];
-		      $arrEnd[] =  $toDate[0];
+		$toDate = explode(".", $eDate);
+		$arrEnd[] =  $toDate[2];
+		$arrEnd[] =  $toDate[1];
+		$arrEnd[] =  $toDate[0];
 
-		      $startDate = implode("-",$arrStart);
-		      $endDate = implode("-",$arrEnd);
-		      $startWeek ='';
-		      $endWeek ='';
+		$startDate = implode("-",$arrStart);
+		$endDate = implode("-",$arrEnd);
+		$startWeek ='';
+		$endWeek ='';
 
-	    }else if($zeitintervallAnl==2){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
-		      $fromDate =explode("-", $sDate);
-		      $startWeek = $fromDate[0]; //first week selected value
-		      $startDate = $fromDate[1]; //first year input text value
+	}else if($zeitintervallAnl==2){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
+		$fromDate =explode("-", $sDate);
+		$startWeek = $fromDate[0]; //first week selected value
+		$startDate = $fromDate[1]; //first year input text value
 
-		      $toDate = explode("-", $eDate);
-		      $endWeek =  $toDate[0]; //second week selected value
-		      $endDate =  $toDate[1]; //second year input text value
+		$toDate = explode("-", $eDate);
+		$endWeek =  $toDate[0]; //second week selected value
+		$endDate =  $toDate[1]; //second year input text value
 
-	    }else if($zeitintervallAnl==3){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
+	}else if($zeitintervallAnl==3){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
 
-		      $fromDate =explode(".", $sDate);
-		      $arrStart[] = $fromDate[1]; //first year input text value
-		      $arrStart[] = $fromDate[0]; //first week selected value
-
-
-		      $toDate = explode(".", $eDate);
-		      $arrEnd[] =  $toDate[1]; //second year input text value
-		      $arrEnd[] =  $toDate[0]; //second week selected value
-
-		      $startDate = implode("-",$arrStart);
-		      $endDate = implode("-",$arrEnd);
-		      $startWeek ='';
-		      $endWeek ='';
-
-	    }else{
-		      $startDate =$_POST['startDate'];
-		      $endDate =$_POST['endDate'];
-		      $startWeek ='';
-		      $endWeek ='';
-	    }
-			//$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
-	        $query1 = "SELECT * FROM produktionsAnlagenMoreOpt As T1 ";
-			$query1 .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
-			$query1 .= "ON T1.prd_id = T2.prd_id ";
-			$query1 .= "AND T1.anl_id = T2.anl_id ";
-			//$query1 .= " LEFT JOIN produkte AS T3 ON T1.prd_id = T3.prd_ID";
-    		$query1 .= " LEFT JOIN anlagen AS T4 ON T1.anl_id = T4.anl_ID";
-   			$query1 .= " WHERE T1.type = 2";
-			//$query1 .= "WHERE T1.messartMst = 'manuell' ";
-			//$query1 .= "AND T1.deleted <> 'true' ";
-			
-
-			//$query1 .= "WHERE T1.deleted <> 'true' ";
-
-			/*use for show only betriebsdaten type*/
-			//$query1 .= "AND T1.typ = 'betriebsdaten' ";
+		$fromDate =explode(".", $sDate);
+		$arrStart[] = $fromDate[1]; //first year input text value
+		$arrStart[] = $fromDate[0]; //first week selected value
 
 
-			$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
-			$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
-			$query1 .= "ORDER BY T1.prd_id ASC";
+		$toDate = explode(".", $eDate);
+		$arrEnd[] =  $toDate[1]; //second year input text value
+		$arrEnd[] =  $toDate[0]; //second week selected value
 
-			$query2 = "SELECT * FROM masseneingabeSuchePrdIMw ";
-			$query2 .= "WHERE type = '$zeitintervallAnl' ";
+		$startDate = implode("-",$arrStart);
+		$endDate = implode("-",$arrEnd);
+		$startWeek ='';
+		$endWeek ='';
 
-			$query3 = "SELECT * FROM masseneingabeSucheBetriebsPrdIMw ";
-			$query3 .= "WHERE type = '$zeitintervallAnl' ";
+	}else{
+		$startDate =$_POST['startDate'];
+		$endDate =$_POST['endDate'];
+		$startWeek ='';
+		$endWeek ='';
+	}
+	//$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
+	$query1 = "SELECT * FROM produktionsAnlagenMoreOpt As T1 ";
+	$query1 .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
+	$query1 .= "ON T1.prd_id = T2.prd_id ";
+	$query1 .= "AND T1.anl_id = T2.anl_id ";
+	//$query1 .= " LEFT JOIN produkte AS T3 ON T1.prd_id = T3.prd_ID";
+	$query1 .= " LEFT JOIN anlagen AS T4 ON T1.anl_id = T4.anl_ID";
+	$query1 .= " WHERE T1.type = 2";
+	//$query1 .= "WHERE T1.messartMst = 'manuell' ";
+	//$query1 .= "AND T1.deleted <> 'true' ";
 
-			//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
-			//$query4 .= "WHERE type = '$zeitintervallAnl' ";
+
+	//$query1 .= "WHERE T1.deleted <> 'true' ";
+
+	/*use for show only betriebsdaten type*/
+	//$query1 .= "AND T1.typ = 'betriebsdaten' ";
+
+
+	$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+	$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+	$query1 .= "ORDER BY T1.prd_id ASC";
+
+	$query2 = "SELECT * FROM masseneingabeSuchePrdIMw ";
+	$query2 .= "WHERE type = '$zeitintervallAnl' ";
+
+	$query3 = "SELECT * FROM masseneingabeSucheBetriebsPrdIMw ";
+	$query3 .= "WHERE type = '$zeitintervallAnl' ";
+
+	//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
+	//$query4 .= "WHERE type = '$zeitintervallAnl' ";
 
 }
 /*new-mm-end 01-04-2021*/
 /* masseneingabe Page  Messsetelle Inputs Search */
 /*new-mm-start 31-03-2021*/
 elseif($id == 'masseneingabeMesssetelleSearch'){
-	   $zeitintervallAnl = $_POST['zeitintervallAnl'];
-		if($zeitintervallAnl==1){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
+	$zeitintervallAnl = $_POST['zeitintervallAnl'];
+	if($zeitintervallAnl==1){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
 
-		      $fromDate =explode(".", $sDate);
-		      $arrStart[] = $fromDate[2];
-		      $arrStart[] = $fromDate[1];
-		      $arrStart[] = $fromDate[0];
+		$fromDate =explode(".", $sDate);
+		$arrStart[] = $fromDate[2];
+		$arrStart[] = $fromDate[1];
+		$arrStart[] = $fromDate[0];
 
-		      $toDate = explode(".", $eDate);
-		      $arrEnd[] =  $toDate[2];
-		      $arrEnd[] =  $toDate[1];
-		      $arrEnd[] =  $toDate[0];
+		$toDate = explode(".", $eDate);
+		$arrEnd[] =  $toDate[2];
+		$arrEnd[] =  $toDate[1];
+		$arrEnd[] =  $toDate[0];
 
-		      $startDate = implode("-",$arrStart);
-		      $endDate = implode("-",$arrEnd);
-		      $startWeek ='';
-		      $endWeek ='';
+		$startDate = implode("-",$arrStart);
+		$endDate = implode("-",$arrEnd);
+		$startWeek ='';
+		$endWeek ='';
 
-	    }else if($zeitintervallAnl==2){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
-		      $fromDate =explode("-", $sDate);
-		      $startWeek = $fromDate[0]; //first week selected value
-		      $startDate = $fromDate[1]; //first year input text value
+	}else if($zeitintervallAnl==2){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
+		$fromDate =explode("-", $sDate);
+		$startWeek = $fromDate[0]; //first week selected value
+		$startDate = $fromDate[1]; //first year input text value
 
-		      $toDate = explode("-", $eDate);
-		      $endWeek =  $toDate[0]; //second week selected value
-		      $endDate =  $toDate[1]; //second year input text value
+		$toDate = explode("-", $eDate);
+		$endWeek =  $toDate[0]; //second week selected value
+		$endDate =  $toDate[1]; //second year input text value
 
-	    }else if($zeitintervallAnl==3){
-		      $sDate = $_POST['startDate'];
-		      $eDate = $_POST['endDate'];
+	}else if($zeitintervallAnl==3){
+		$sDate = $_POST['startDate'];
+		$eDate = $_POST['endDate'];
 
-		      $fromDate =explode(".", $sDate);
-		      $arrStart[] = $fromDate[1]; //first year input text value
-		      $arrStart[] = $fromDate[0]; //first week selected value
-
-
-		      $toDate = explode(".", $eDate);
-		      $arrEnd[] =  $toDate[1]; //second year input text value
-		      $arrEnd[] =  $toDate[0]; //second week selected value
-
-		      $startDate = implode("-",$arrStart);
-		      $endDate = implode("-",$arrEnd);
-		      $startWeek ='';
-		      $endWeek ='';
-
-	    }else{
-		      $startDate =$_POST['startDate'];
-		      $endDate =$_POST['endDate'];
-		      $startWeek ='';
-		      $endWeek ='';
-	    }
-			$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
-			$query1 .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
-			$query1 .= "ON T1.mst_ID = T2.mst_ID ";
-			$query1 .= "WHERE T1.messartMst = 'manuell' ";
-			$query1 .= "AND T1.deleted <> 'true' ";
-
-			/*use for show only betriebsdaten type*/
-			$query1 .= "AND T1.typ = 'betriebsdaten' ";
+		$fromDate =explode(".", $sDate);
+		$arrStart[] = $fromDate[1]; //first year input text value
+		$arrStart[] = $fromDate[0]; //first week selected value
 
 
-			$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
-			$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
-			$query1 .= "ORDER BY T1.mst_ID ASC";
+		$toDate = explode(".", $eDate);
+		$arrEnd[] =  $toDate[1]; //second year input text value
+		$arrEnd[] =  $toDate[0]; //second week selected value
 
-			$query2 = "SELECT * FROM masseneingabeSucheIMw ";
-			$query2 .= "WHERE type = '$zeitintervallAnl' ";
+		$startDate = implode("-",$arrStart);
+		$endDate = implode("-",$arrEnd);
+		$startWeek ='';
+		$endWeek ='';
 
-			$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
-			$query3 .= "WHERE type = '$zeitintervallAnl' ";
+	}else{
+		$startDate =$_POST['startDate'];
+		$endDate =$_POST['endDate'];
+		$startWeek ='';
+		$endWeek ='';
+	}
+	$query1 = "SELECT * FROM MessstellenAnlagen As T1 ";
+	$query1 .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
+	$query1 .= "ON T1.mst_ID = T2.mst_ID ";
+	$query1 .= "WHERE T1.messartMst = 'manuell' ";
+	$query1 .= "AND T1.deleted <> 'true' ";
 
-			//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
-			//$query4 .= "WHERE type = '$zeitintervallAnl' ";
+	/*use for show only betriebsdaten type*/
+	$query1 .= "AND T1.typ = 'betriebsdaten' ";
+
+
+	$query1 .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+	$query1 .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+	$query1 .= "ORDER BY T1.mst_ID ASC";
+
+	$query2 = "SELECT * FROM masseneingabeSucheIMw ";
+	$query2 .= "WHERE type = '$zeitintervallAnl' ";
+
+	$query3 = "SELECT * FROM masseneingabeSucheErgebnisIMw ";
+	$query3 .= "WHERE type = '$zeitintervallAnl' ";
+
+	//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
+	//$query4 .= "WHERE type = '$zeitintervallAnl' ";
 
 }
 /*new-mm-end 31-03-2021*/
@@ -637,11 +637,11 @@ elseif($id == 'masseneingabeAlertRangeMinMax'){
 	$date = $_POST['date'];
 
 	if($type==2){
-	    $expDate =explode("-", $date);
-	    $on_week = $expDate[0]; //week val
-	    $on_date = $expDate[1]; //year val
+		$expDate =explode("-", $date);
+		$on_week = $expDate[0]; //week val
+		$on_date = $expDate[1]; //year val
 
-	    $query1 = "SELECT TOP 5 val From masseneingabeSucheErgebnisIMw ";
+		$query1 = "SELECT TOP 5 val From masseneingabeSucheErgebnisIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND mst_ID = '$mstID' ";
 		$query1 .= "AND on_date <= '$on_date' ";
@@ -654,7 +654,7 @@ elseif($id == 'masseneingabeAlertRangeMinMax'){
 		$query2 .= "AND on_date <= '$on_date' ";
 		$query2 .= "AND on_week <= '$on_week' ";
 		$query2 .= "Order by on_date,on_week DESC";
-    }else{
+	}else{
 		$query1 = "SELECT TOP 5 val From masseneingabeSucheErgebnisIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND mst_ID = '$mstID' ";
@@ -666,7 +666,7 @@ elseif($id == 'masseneingabeAlertRangeMinMax'){
 		$query2 .= "AND mst_ID = '$mstID' ";
 		$query2 .= "AND on_date <= '$date' ";
 		$query2 .= "Order by on_date DESC";
-    }
+	}
 
 }
 /*new-mm-start 07-04-2021*/
@@ -676,11 +676,11 @@ elseif($id == 'masseneingabeAlertRangeMinMaxPrdkt'){
 	$date = $_POST['date'];
 
 	if($type==2){
-	    $expDate =explode("-", $date);
-	    $on_week = $expDate[0]; //week val
-	    $on_date = $expDate[1]; //year val
+		$expDate =explode("-", $date);
+		$on_week = $expDate[0]; //week val
+		$on_date = $expDate[1]; //year val
 
-	    $query1 = "SELECT TOP 5 val From masseneingabeSucheBetriebsPrdIMw ";
+		$query1 = "SELECT TOP 5 val From masseneingabeSucheBetriebsPrdIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND prd_anl_ID = '$prdAnlID' ";
 		$query1 .= "AND on_date <= '$on_date' ";
@@ -693,7 +693,7 @@ elseif($id == 'masseneingabeAlertRangeMinMaxPrdkt'){
 		$query2 .= "AND on_date <= '$on_date' ";
 		$query2 .= "AND on_week <= '$on_week' ";
 		$query2 .= "Order by on_date,on_week DESC";
-    }else{
+	}else{
 		$query1 = "SELECT TOP 5 val From masseneingabeSucheBetriebsPrdIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND prd_anl_ID = '$prdAnlID' ";
@@ -705,7 +705,7 @@ elseif($id == 'masseneingabeAlertRangeMinMaxPrdkt'){
 		$query2 .= "AND prd_anl_ID = '$prdAnlID' ";
 		$query2 .= "AND on_date <= '$date' ";
 		$query2 .= "Order by on_date DESC";
-    }
+	}
 
 }
 /*new-mm-end 07-04-2021*/
@@ -715,10 +715,10 @@ elseif($id == 'masseneingabeAlertRangeLastInptValue'){
 	$mstID = $_POST['mstID'];
 	$date = $_POST['date'];
 	if($type==2){
-	    $expDate =explode("-", $date);
-	    $on_week = $expDate[0]; //week val
-	    $on_date = $expDate[1]; //year val
-	    $query1 = "SELECT Top 1 val FROM masseneingabeSucheIMw ";
+		$expDate =explode("-", $date);
+		$on_week = $expDate[0]; //week val
+		$on_date = $expDate[1]; //year val
+		$query1 = "SELECT Top 1 val FROM masseneingabeSucheIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND mst_ID = '$mstID' ";
 		$query1 .= "AND on_date <= '$on_date' ";
@@ -731,8 +731,8 @@ elseif($id == 'masseneingabeAlertRangeLastInptValue'){
 		$query2 .= "AND on_date <= '$on_date' ";
 		$query2 .= "AND on_week <= '$on_week' ";
 		$query2 .= "Order by on_date,on_week DESC";
-    }else{
-	    $query1 = "SELECT Top 1 val FROM masseneingabeSucheIMw ";
+	}else{
+		$query1 = "SELECT Top 1 val FROM masseneingabeSucheIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND mst_ID = '$mstID' ";
 		$query1 .= "AND on_date < '$date' ";
@@ -743,7 +743,7 @@ elseif($id == 'masseneingabeAlertRangeLastInptValue'){
 		$query2 .= "AND mst_ID = '$mstID' ";
 		$query2 .= "AND on_date < '$date' ";
 		$query2 .= "Order by on_date DESC";
-    }
+	}
 
 }
 /*new-mm-start 07-04-2021*/
@@ -752,10 +752,10 @@ elseif($id == 'masseneingabeAlertRangeLastInptValuePrdkt'){
 	$prdAnlID = $_POST['prdAnlID'];
 	$date = $_POST['date'];
 	if($type==2){
-	    $expDate =explode("-", $date);
-	    $on_week = $expDate[0]; //week val
-	    $on_date = $expDate[1]; //year val
-	    $query1 = "SELECT Top 1 val FROM masseneingabeSuchePrdIMw ";
+		$expDate =explode("-", $date);
+		$on_week = $expDate[0]; //week val
+		$on_date = $expDate[1]; //year val
+		$query1 = "SELECT Top 1 val FROM masseneingabeSuchePrdIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND prd_anl_ID = '$prdAnlID' ";
 		$query1 .= "AND on_date <= '$on_date' ";
@@ -768,8 +768,8 @@ elseif($id == 'masseneingabeAlertRangeLastInptValuePrdkt'){
 		$query2 .= "AND on_date <= '$on_date' ";
 		$query2 .= "AND on_week <= '$on_week' ";
 		$query2 .= "Order by on_date,on_week DESC";
-    }else{
-	    $query1 = "SELECT Top 1 val FROM masseneingabeSuchePrdIMw ";
+	}else{
+		$query1 = "SELECT Top 1 val FROM masseneingabeSuchePrdIMw ";
 		$query1 .= "WHERE type = '$type' ";
 		$query1 .= "AND prd_anl_ID = '$prdAnlID' ";
 		$query1 .= "AND on_date < '$date' ";
@@ -780,38 +780,38 @@ elseif($id == 'masseneingabeAlertRangeLastInptValuePrdkt'){
 		$query2 .= "AND prd_anl_ID = '$prdAnlID' ";
 		$query2 .= "AND on_date < '$date' ";
 		$query2 .= "Order by on_date DESC";
-    }
+	}
 
 }
 /*new-mm-end 07-04-2021*/
 else if($id == 'startDateRangeCheckValidation'){
-  $type = $_POST['type'];
-  $mstID = $_POST['mstID'];
+	$type = $_POST['type'];
+	$mstID = $_POST['mstID'];
 
-  if($type==1){
-  	  $postDate = $_POST['date'];
-	  $dateExplode =explode(".", $postDate);
-	  $arrStart[] = $dateExplode[2];
-	  $arrStart[] = $dateExplode[1];
-	  $arrStart[] = $dateExplode[0];
-	  $date = implode("-",$arrStart);
-	  $week ='';
-    }else if($type==2){
-	      $postDate = $_POST['date'];
-	      $dateExplode =explode("-", $postDate);
-	      $week = $dateExplode[0];
-	      $date = $dateExplode[1];
-    }else if($type==3){
-	      $postDate = $_POST['date'];
-	      $dateExplode =explode(".", $postDate);
-	      $arrStart[] = $dateExplode[1];
-	      $arrStart[] = $dateExplode[0];
-	      $date = implode("-",$arrStart);
-	      $week ='';
-    }else{
-	      $date =$_POST['date'];
-	      $week ='';
-    }
+	if($type==1){
+		$postDate = $_POST['date'];
+		$dateExplode =explode(".", $postDate);
+		$arrStart[] = $dateExplode[2];
+		$arrStart[] = $dateExplode[1];
+		$arrStart[] = $dateExplode[0];
+		$date = implode("-",$arrStart);
+		$week ='';
+	}else if($type==2){
+		$postDate = $_POST['date'];
+		$dateExplode =explode("-", $postDate);
+		$week = $dateExplode[0];
+		$date = $dateExplode[1];
+	}else if($type==3){
+		$postDate = $_POST['date'];
+		$dateExplode =explode(".", $postDate);
+		$arrStart[] = $dateExplode[1];
+		$arrStart[] = $dateExplode[0];
+		$date = implode("-",$arrStart);
+		$week ='';
+	}else{
+		$date =$_POST['date'];
+		$week ='';
+	}
 	$query = "SELECT * FROM masseneingabeSucheIMw ";
 	$query .= "WHERE type = '$type' ";
 	$query .= "AND mst_ID = '$mstID' ";
@@ -821,33 +821,33 @@ else if($id == 'startDateRangeCheckValidation'){
 }
 /*new-mm-start 06-04-2021*/
 else if($id == 'startDateRangeCheckValidationPrdkt'){
-  $type = $_POST['type'];
-  $prd_anl_ID = $_POST['prd_anl_ID'];
+	$type = $_POST['type'];
+	$prd_anl_ID = $_POST['prd_anl_ID'];
 
-  if($type==1){
-  	  $postDate = $_POST['date'];
-	  $dateExplode =explode(".", $postDate);
-	  $arrStart[] = $dateExplode[2];
-	  $arrStart[] = $dateExplode[1];
-	  $arrStart[] = $dateExplode[0];
-	  $date = implode("-",$arrStart);
-	  $week ='';
-    }else if($type==2){
-	      $postDate = $_POST['date'];
-	      $dateExplode =explode("-", $postDate);
-	      $week = $dateExplode[0];
-	      $date = $dateExplode[1];
-    }else if($type==3){
-	      $postDate = $_POST['date'];
-	      $dateExplode =explode(".", $postDate);
-	      $arrStart[] = $dateExplode[1];
-	      $arrStart[] = $dateExplode[0];
-	      $date = implode("-",$arrStart);
-	      $week ='';
-    }else{
-	      $date =$_POST['date'];
-	      $week ='';
-    }
+	if($type==1){
+		$postDate = $_POST['date'];
+		$dateExplode =explode(".", $postDate);
+		$arrStart[] = $dateExplode[2];
+		$arrStart[] = $dateExplode[1];
+		$arrStart[] = $dateExplode[0];
+		$date = implode("-",$arrStart);
+		$week ='';
+	}else if($type==2){
+		$postDate = $_POST['date'];
+		$dateExplode =explode("-", $postDate);
+		$week = $dateExplode[0];
+		$date = $dateExplode[1];
+	}else if($type==3){
+		$postDate = $_POST['date'];
+		$dateExplode =explode(".", $postDate);
+		$arrStart[] = $dateExplode[1];
+		$arrStart[] = $dateExplode[0];
+		$date = implode("-",$arrStart);
+		$week ='';
+	}else{
+		$date =$_POST['date'];
+		$week ='';
+	}
 	$query = "SELECT * FROM masseneingabeSuchePrdIMw ";
 	$query .= "WHERE type = '$type' ";
 	$query .= "AND prd_anl_ID = '$prd_anl_ID' ";
@@ -861,89 +861,89 @@ else if($id == 'startEndDateEinheitTypeCheckValidation'){
 	//print_r($_POST);die;
 	$type = $_POST['type'];
 	if($type==1){
-	  if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
-	  	  $sDate = $_POST['startDate'];
-		  $fromDate =explode(".", $sDate);
-		  $arrStart[] = $fromDate[2];
-		  $arrStart[] = $fromDate[1];
-		  $arrStart[] = $fromDate[0];
-	  }else{
-	  	$startDate = '';
-	  }
-	  if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
-		  $eDate = $_POST['endDate'];
-		  $toDate = explode(".", $eDate);
-		  $arrEnd[] =  $toDate[2];
-		  $arrEnd[] =  $toDate[1];
-		  $arrEnd[] =  $toDate[0];
-		  $endDate = implode("-",$arrEnd);
-	   }else{
-	   	$endDate ='';
-	   }
-	  $startDate = implode("-",$arrStart);
+		if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+			$sDate = $_POST['startDate'];
+			$fromDate =explode(".", $sDate);
+			$arrStart[] = $fromDate[2];
+			$arrStart[] = $fromDate[1];
+			$arrStart[] = $fromDate[0];
+		}else{
+			$startDate = '';
+		}
+		if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			$eDate = $_POST['endDate'];
+			$toDate = explode(".", $eDate);
+			$arrEnd[] =  $toDate[2];
+			$arrEnd[] =  $toDate[1];
+			$arrEnd[] =  $toDate[0];
+			$endDate = implode("-",$arrEnd);
+		}else{
+			$endDate ='';
+		}
+		$startDate = implode("-",$arrStart);
 		$startWeek ='';
 		$endWeek ='';
 	}else if($type==2){
-		 if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
-		      $sDate = $_POST['startDate'];
-		      $fromDate =explode("-", $sDate);
-		      $startWeek = $fromDate[0];
-		      $startDate = $fromDate[1];
-		  }
-		  if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
-		      $eDate = $_POST['endDate'];
-		      $toDate = explode("-", $eDate);
-		      $endWeek =  $toDate[0];
-		      $endDate =  $toDate[1];
-		  }
-	    }else if($type==3){
-	    	 if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
-		      $sDate = $_POST['startDate'];
-		      $fromDate =explode(".", $sDate);
-		      $arrStart[] = $fromDate[1];
-		      $arrStart[] = $fromDate[0];
-		      $startDate = implode("-",$arrStart);
-		  	 }else{
-		  	 	$startDate = '';
-		  	 }
-		  	 if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
-			      $eDate = $_POST['endDate'];
-			      $toDate = explode(".", $eDate);
-			      $arrEnd[] =  $toDate[1]; //second year input text value
-			      $arrEnd[] =  $toDate[0]; //second week selected value
-			      $endDate = implode("-",$arrEnd);
-		  	  }
-		      $startWeek ='';
-		      $endWeek ='';
-	    }else{
-	    	if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
-		      $startDate =$_POST['startDate'];
-		    }else{
-		      $startDate ='';
-		    }
-		    if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
-		      $endDate =$_POST['endDate'];
-		    }else{
-		      $endDate ='';
-		    }
-		    $startWeek ='';
-		    $endWeek ='';
-	    }
-	  //$startDate = implode("-",$arrStart);
-	  $mstID = $_POST['mstID'];
-	  $einheitVal = $_POST['einheitVal'];
-      $query = "SELECT * FROM masseneingabeSucheIMw AS T1 ";
-	  $query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
-	  $query .= "ON T1.mst_ID = T2.mst_ID ";
-	  $query .= "WHERE T1.type = '$type' ";
-	  $query .= "AND T2.unt_ID != '$einheitVal' ";
-	  $query .= "AND T1.mst_ID = '$mstID' ";
-	  $query .= "AND T1.on_date >= '$startDate' ";
-	  $query .= "AND T1.on_week >= '$startWeek' ";
-	  if(!empty($endDate)){
-      $query .= "AND T1.on_week <= '$endWeek' ";
-	  $query .= "AND T1.on_date <= '$endDate' ";
-	  }
+		if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+			$sDate = $_POST['startDate'];
+			$fromDate =explode("-", $sDate);
+			$startWeek = $fromDate[0];
+			$startDate = $fromDate[1];
+		}
+		if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			$eDate = $_POST['endDate'];
+			$toDate = explode("-", $eDate);
+			$endWeek =  $toDate[0];
+			$endDate =  $toDate[1];
+		}
+	}else if($type==3){
+		if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+			$sDate = $_POST['startDate'];
+			$fromDate =explode(".", $sDate);
+			$arrStart[] = $fromDate[1];
+			$arrStart[] = $fromDate[0];
+			$startDate = implode("-",$arrStart);
+		}else{
+			$startDate = '';
+		}
+		if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			$eDate = $_POST['endDate'];
+			$toDate = explode(".", $eDate);
+			$arrEnd[] =  $toDate[1]; //second year input text value
+			$arrEnd[] =  $toDate[0]; //second week selected value
+			$endDate = implode("-",$arrEnd);
+		}
+		$startWeek ='';
+		$endWeek ='';
+	}else{
+		if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+			$startDate =$_POST['startDate'];
+		}else{
+			$startDate ='';
+		}
+		if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			$endDate =$_POST['endDate'];
+		}else{
+			$endDate ='';
+		}
+		$startWeek ='';
+		$endWeek ='';
+	}
+	//$startDate = implode("-",$arrStart);
+	$mstID = $_POST['mstID'];
+	$einheitVal = $_POST['einheitVal'];
+	$query = "SELECT * FROM masseneingabeSucheIMw AS T1 ";
+	$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+	$query .= "ON T1.mst_ID = T2.mst_ID ";
+	$query .= "WHERE T1.type = '$type' ";
+	$query .= "AND T2.unt_ID != '$einheitVal' ";
+	$query .= "AND T1.mst_ID = '$mstID' ";
+	$query .= "AND T1.on_date >= '$startDate' ";
+	$query .= "AND T1.on_week >= '$startWeek' ";
+	if(!empty($endDate)){
+		$query .= "AND T1.on_week <= '$endWeek' ";
+		$query .= "AND T1.on_date <= '$endDate' ";
+	}
 
 }else if($id == 'startEndDatecontrolSysTypeCheckValidation'){
 	//print_r($_POST);die;
@@ -952,74 +952,74 @@ else if($id == 'startEndDateEinheitTypeCheckValidation'){
 	$controlSystem = $_POST['controlSystem'];
 	$type = $_POST['type'];
 	if($type==1){
-	  if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
-	  	  $sDate = $_POST['startDate'];
-		  $fromDate =explode(".", $sDate);
-		  $arrStart[] = $fromDate[2];
-		  $arrStart[] = $fromDate[1];
-		  $arrStart[] = $fromDate[0];
-	  }else{
-	  	$startDate = '';
-	  }
-	  if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
-		  $eDate = $_POST['endDate'];
-		  $toDate = explode(".", $eDate);
-		  $arrEnd[] =  $toDate[2];
-		  $arrEnd[] =  $toDate[1];
-		  $arrEnd[] =  $toDate[0];
-		  $endDate = implode("-",$arrEnd);
-	   }else{
-	   	$endDate ='';
-	   }
-	  $startDate = implode("-",$arrStart);
+		if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+			$sDate = $_POST['startDate'];
+			$fromDate =explode(".", $sDate);
+			$arrStart[] = $fromDate[2];
+			$arrStart[] = $fromDate[1];
+			$arrStart[] = $fromDate[0];
+		}else{
+			$startDate = '';
+		}
+		if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			$eDate = $_POST['endDate'];
+			$toDate = explode(".", $eDate);
+			$arrEnd[] =  $toDate[2];
+			$arrEnd[] =  $toDate[1];
+			$arrEnd[] =  $toDate[0];
+			$endDate = implode("-",$arrEnd);
+		}else{
+			$endDate ='';
+		}
+		$startDate = implode("-",$arrStart);
 		$startWeek ='';
 		$endWeek ='';
 	}else if($type==2){
-		 if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
-		      $sDate = $_POST['startDate'];
-		      $fromDate =explode("-", $sDate);
-		      $startWeek = $fromDate[0];
-		      $startDate = $fromDate[1];
-		  }
-		  if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
-		      $eDate = $_POST['endDate'];
-		      $toDate = explode("-", $eDate);
-		      $endWeek =  $toDate[0];
-		      $endDate =  $toDate[1];
-		  }
-	    }else if($type==3){
-	    	 if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
-		      $sDate = $_POST['startDate'];
-		      $fromDate =explode(".", $sDate);
-		      $arrStart[] = $fromDate[1];
-		      $arrStart[] = $fromDate[0];
-		      $startDate = implode("-",$arrStart);
-		  	 }else{
-		  	 	$startDate = '';
-		  	 }
-		  	 if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
-			      $eDate = $_POST['endDate'];
-			      $toDate = explode(".", $eDate);
-			      $arrEnd[] =  $toDate[1]; //second year input text value
-			      $arrEnd[] =  $toDate[0]; //second week selected value
-			      $endDate = implode("-",$arrEnd);
-		  	  }
-		      $startWeek ='';
-		      $endWeek ='';
-	    }else{
-	    	if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
-		      $startDate =$_POST['startDate'];
-		    }else{
-		      $startDate ='';
-		    }
-		    if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
-		      $endDate =$_POST['endDate'];
-		    }else{
-		      $endDate ='';
-		    }
-		    $startWeek ='';
-		    $endWeek ='';
-	    }
+		if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+			$sDate = $_POST['startDate'];
+			$fromDate =explode("-", $sDate);
+			$startWeek = $fromDate[0];
+			$startDate = $fromDate[1];
+		}
+		if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			$eDate = $_POST['endDate'];
+			$toDate = explode("-", $eDate);
+			$endWeek =  $toDate[0];
+			$endDate =  $toDate[1];
+		}
+	}else if($type==3){
+		if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+			$sDate = $_POST['startDate'];
+			$fromDate =explode(".", $sDate);
+			$arrStart[] = $fromDate[1];
+			$arrStart[] = $fromDate[0];
+			$startDate = implode("-",$arrStart);
+		}else{
+			$startDate = '';
+		}
+		if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			$eDate = $_POST['endDate'];
+			$toDate = explode(".", $eDate);
+			$arrEnd[] =  $toDate[1]; //second year input text value
+			$arrEnd[] =  $toDate[0]; //second week selected value
+			$endDate = implode("-",$arrEnd);
+		}
+		$startWeek ='';
+		$endWeek ='';
+	}else{
+		if(isset($_POST['startDate']) && !empty($_POST['startDate'])){
+			$startDate =$_POST['startDate'];
+		}else{
+			$startDate ='';
+		}
+		if(isset($_POST['endDate']) && !empty($_POST['endDate'])){
+			$endDate =$_POST['endDate'];
+		}else{
+			$endDate ='';
+		}
+		$startWeek ='';
+		$endWeek ='';
+	}
 	$query = "SELECT * FROM masseneingabeSucheIMw AS T1 ";
 	$query .= "LEFT JOIN interneMesswerteConfig AS T2 ";
 	$query .= "ON T1.mst_ID = T2.mst_ID ";
@@ -1029,19 +1029,19 @@ else if($id == 'startEndDateEinheitTypeCheckValidation'){
 	$query .= "AND T1.on_date >= '$startDate' ";
 	$query .= "AND T1.on_week >= '$startWeek' ";
 	if(!empty($endDate)){
-    $query .= "AND T1.on_week <= '$endWeek' ";
-	$query .= "AND T1.on_date <= '$endDate' ";
+		$query .= "AND T1.on_week <= '$endWeek' ";
+		$query .= "AND T1.on_date <= '$endDate' ";
 	}
 }elseif($id == 'ProdukteTbl'){
-	    $query  = "SELECT DISTINCT prd_ID,ca.[col] as anl_Col, ca.[id] as anl_ID, namePrd,artikelNrPrd,anlagen.[bezeichnungAnl]";
-	    $query .= " FROM produkte";
-	    $query .= " CROSS APPLY (";
-        $query .= " Values  ('anl01_ID' , anl01_ID),('anl02_ID' , anl02_ID),('anl03_ID' , anl03_ID),";
-        $query .= "         ('anl04_ID' , anl04_ID),('anl05_ID' , anl05_ID),('anl06_ID' , anl06_ID),";
-		$query .= "         ('anl07_ID' , anl07_ID),('anl08_ID' , anl08_ID),('anl09_ID' , anl09_ID)";
-        $query .= " )AS CA (col, id)";
-        $query .= " LEFT JOIN anlagen ON ca.[id] =  anlagen.anl_ID";
-        $query .= " Where anl_ID != 0";
+	$query  = "SELECT DISTINCT prd_ID,ca.[col] as anl_Col, ca.[id] as anl_ID, namePrd,artikelNrPrd,anlagen.[bezeichnungAnl]";
+	$query .= " FROM produkte";
+	$query .= " CROSS APPLY (";
+	$query .= " Values  ('anl01_ID' , anl01_ID),('anl02_ID' , anl02_ID),('anl03_ID' , anl03_ID),";
+	$query .= "         ('anl04_ID' , anl04_ID),('anl05_ID' , anl05_ID),('anl06_ID' , anl06_ID),";
+	$query .= "         ('anl07_ID' , anl07_ID),('anl08_ID' , anl08_ID),('anl09_ID' , anl09_ID)";
+	$query .= " )AS CA (col, id)";
+	$query .= " LEFT JOIN anlagen ON ca.[id] =  anlagen.anl_ID";
+	$query .= " Where anl_ID != 0";
 
 }
 /*new-mm-start 25-03-2021*/
@@ -1049,78 +1049,78 @@ elseif($id == 'ProdukteAnlDataTbl'){
 
 	$query = "SELECT DISTINCT T1.prd_id,T1.anl_col,T1.anl_id,T1.type ,T2.namePrd,T2.artikelNrPrd,T3.bezeichnungAnl,T1.id FROM produktionsAnlagenMoreOpt As T1";
 	$query .= " LEFT JOIN produkte AS T2 ON T1.prd_id = T2.prd_ID";
-    $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
-    $query .= " WHERE T1.type = 2";
-    //echo $query;die();
+	$query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
+	$query .= " WHERE T1.type = 2";
+	//echo $query;die();
 }
 elseif($id == 'ProdukteAnlDataTblFacityData'){
 
 	$query = "SELECT DISTINCT T1.prd_id,T1.anl_col,T1.anl_id,T1.type ,T2.namePrd,T2.artikelNrPrd,T3.bezeichnungAnl,T1.id FROM produktionsAnlagenMoreOpt As T1";
 	$query .= " LEFT JOIN produkte AS T2 ON T1.prd_id = T2.prd_ID";
-    $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
-    $query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ON T1.prd_id = T4.prd_id";
-    $query .= " WHERE T1.type = 2";
-    //echo $query;die();
+	$query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
+	$query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ON T1.prd_id = T4.prd_id";
+	$query .= " WHERE T1.type = 2";
+	//echo $query;die();
 }
 /*new-mm-start 25-03-2021*/
 elseif($id == 'displayDataPrdkt'){
 
-	    $Prd_Id = $_POST['Prd_Id'];
-	    $Anl_Col = $_POST['Anl_Col'];
-	    $Anl_Id = $_POST['Anl_Id'];
+	$Prd_Id = $_POST['Prd_Id'];
+	$Anl_Col = $_POST['Anl_Col'];
+	$Anl_Id = $_POST['Anl_Id'];
 
-	    $query  = " SELECT namePrd, artikelNrPrd , anlagen.[bezeichnungAnl] ";
-	    $query .= " FROM produkte";
-	    $query .= " LEFT JOIN anlagen ON $Anl_Id =  anlagen.anl_ID";
-	    $query .= " WHERE prd_ID = $Prd_Id ";
-        $query .= " AND $Anl_Col = $Anl_Id ";
+	$query  = " SELECT namePrd, artikelNrPrd , anlagen.[bezeichnungAnl] ";
+	$query .= " FROM produkte";
+	$query .= " LEFT JOIN anlagen ON $Anl_Id =  anlagen.anl_ID";
+	$query .= " WHERE prd_ID = $Prd_Id ";
+	$query .= " AND $Anl_Col = $Anl_Id ";
 }
 elseif($id == 'displayDataPrdktAnlage'){
 
-	    $Prd_Id = $_POST['Prd_Id'];
-	    $Anl_Col = $_POST['Anl_Col'];
-	    $Anl_Id = $_POST['Anl_Id'];
+	$Prd_Id = $_POST['Prd_Id'];
+	$Anl_Col = $_POST['Anl_Col'];
+	$Anl_Id = $_POST['Anl_Id'];
 
-	    //$query  = " SELECT namePrd , artikelNrPrd , T3.[bezeichnungAnl] , T2.[mstIMw] ";
-        $query  = " SELECT * ";
-	    $query .= " FROM produkte AS T1 ";
-	    $query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
-		$query .= " ON T1.prd_ID = T2.prd_ID ";
-		$query .= " AND T1.$Anl_Col = T2.anl_id";
-		//$query .= " AND $Anl_Col = T2.anl_Col ";
-	    $query .= " LEFT JOIN anlagen AS T3 ";
-	    $query .= " ON T3.anl_ID =  $Anl_Id";
+	//$query  = " SELECT namePrd , artikelNrPrd , T3.[bezeichnungAnl] , T2.[mstIMw] ";
+	$query  = " SELECT * ";
+	$query .= " FROM produkte AS T1 ";
+	$query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
+	$query .= " ON T1.prd_ID = T2.prd_ID ";
+	$query .= " AND T1.$Anl_Col = T2.anl_id";
+	//$query .= " AND $Anl_Col = T2.anl_Col ";
+	$query .= " LEFT JOIN anlagen AS T3 ";
+	$query .= " ON T3.anl_ID =  $Anl_Id";
 
-	    $query .= " WHERE T1.prd_ID = $Prd_Id ";
-        $query .= "ORDER BY T2.iBdePrdktConf_ID ASC";
-	    // $query .= " AND T2.prd_id = $Prd_Id ";
-        // $query .= " AND T2.anl_col = '$Anl_Col' ";
-        // $query .= " AND T2.anl_id = $Anl_Id ";
-        //echo $query;die();
+	$query .= " WHERE T1.prd_ID = $Prd_Id ";
+	$query .= "ORDER BY T2.iBdePrdktConf_ID ASC";
+	// $query .= " AND T2.prd_id = $Prd_Id ";
+	// $query .= " AND T2.anl_col = '$Anl_Col' ";
+	// $query .= " AND T2.anl_id = $Anl_Id ";
+	//echo $query;die();
 }
 elseif($id == 'displayDataMesssetelle'){
 
-		$iBdeType = $_POST['iBdeType'];
-		$mst_ID = $_POST['mst_ID'];
-		$typ = $_POST['typ'];
-		// $query = "SELECT * FROM produktionsAnlagenConfig ";
-		// $query .= "WHERE mst_ID  = '$mst_ID' AND iBdeType = '$iBdeType' ";
+	$iBdeType = $_POST['iBdeType'];
+	$mst_ID = $_POST['mst_ID'];
+	$typ = $_POST['typ'];
+	// $query = "SELECT * FROM produktionsAnlagenConfig ";
+	// $query .= "WHERE mst_ID  = '$mst_ID' AND iBdeType = '$iBdeType' ";
 
-	   	$query  = " SELECT * FROM MessstellenAnlagen AS T1 ";
-		$query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
-		$query .= " ON T1.mst_ID = T2.mst_ID ";
-		// $query .= "LEFT JOIN iMwUnits AS T3 ";
-		// $query .= "ON T2.unt_ID = T3.unt_ID ";
-		$query .= " LEFT JOIN intervalType AS T4 ";
-		$query .= " ON T2.intTp_ID = T4.intTp_ID ";
-		//$query .= "WHERE T1.deleted <> 'true' ";
-		//$query .= "AND T1.messartMst = 'manuell' ";
-		//$query .= "AND T1.typ = '$typ' ";
-		$query .= " WHERE T1.typ = '$typ' ";
-	    $query .= " AND T1.mst_ID = '$mst_ID' ";
-        $query .= " AND T2.iBdeType = '$iBdeType' ";
-        $query .= "ORDER BY T2.iBdePrdktConf_ID DESC";
-	    //echo $query ;die();
+	$query  = " SELECT * FROM MessstellenAnlagen AS T1 ";
+	$query .= " LEFT JOIN produktionsAnlagenConfig AS T2 ";
+	$query .= " ON T1.mst_ID = T2.mst_ID ";
+	// $query .= "LEFT JOIN iMwUnits AS T3 ";
+	// $query .= "ON T2.unt_ID = T3.unt_ID ";
+	$query .= " LEFT JOIN intervalType AS T4 ";
+	$query .= " ON T2.intTp_ID = T4.intTp_ID ";
+	//$query .= "WHERE T1.deleted <> 'true' ";
+	//$query .= "AND T1.messartMst = 'manuell' ";
+	//$query .= "AND T1.typ = '$typ' ";
+	$query .= " WHERE T1.typ = '$typ' ";
+	$query .= " AND T1.mst_ID = '$mst_ID' ";
+	$query .= " AND T2.iBdeType = '$iBdeType' ";
+	$query .= "ORDER BY T2.iBdePrdktConf_ID DESC";
+	//echo $query ;die();
 }
 if($id == 'masseneingabeSearch'){
 	$records['query1'] = queryDB($conn, $query1, "read");
@@ -1148,7 +1148,7 @@ else if($id == 'masseneingabeMesssetelleSearch'){
 }
 /*new-mm-end 31-03-2021*/
 else if($id == 'masseneingabeAlertRangeMinMax'){
-    //echo $query1;echo $query2;die;
+	//echo $query1;echo $query2;die;
 	$records['values'] = queryDB($conn, $query1, "read");
 	//$records['max'] = queryDB($conn, $query2, "read");
 	$records['lastDBDates'] = queryDB($conn, $query2, "read");
@@ -1156,7 +1156,7 @@ else if($id == 'masseneingabeAlertRangeMinMax'){
 }
 /*new-mm-start 07-04-2021*/
 else if($id == 'masseneingabeAlertRangeMinMaxPrdkt'){
-    //echo $query1;echo $query2;die;
+	//echo $query1;echo $query2;die;
 	$records['values'] = queryDB($conn, $query1, "read");
 	//$records['max'] = queryDB($conn, $query2, "read");
 	$records['lastDBDates'] = queryDB($conn, $query2, "read");
@@ -1178,51 +1178,43 @@ else if($id == 'masseneingabeAlertRangeLastInptValuePrdkt'){
 }
 /*new-mm-end 07-04-2021*/
 else if($id == 'startDateRangeCheckValidation'){
-  $records = queryDB($conn, $query, "read");
-  echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+	$records = queryDB($conn, $query, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }
 /*new-mm-start 06-04-2021*/
 else if($id == 'startDateRangeCheckValidationPrdkt'){
-  $records = queryDB($conn, $query, "read");
-  echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+	$records = queryDB($conn, $query, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }
 /*new-mm-start 06-04-2021*/
 else if($id == 'startEndDateEinheitTypeCheckValidation'){
-  $records = queryDB($conn, $query, "read");
-  echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+	$records = queryDB($conn, $query, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }else if($id == 'startEndDatecontrolSysTypeCheckValidation'){
 	//echo $query;die;
-  $records = queryDB($conn, $query, "read");
-  echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+	$records = queryDB($conn, $query, "read");
+	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }else{
-
 	if($id == 'ProdukteAnlDataTblFacityData'){
 		$records = queryDB($conn, $query, "read");
 		$queryResult = "SELECT * from produktionsAnlagenConfig";
 		$resultConfig = queryDB($conn, $queryResult, "read");
-		$ar = [];
 		foreach($records as $key=> $value){
 			foreach($resultConfig as $val){
-				// if($value['prd_id'] == $val['prd_id'] &&  $value['anl_id'] == $val['anl_id'] && $value['anl_col'] == $val['anl_col'])
-				// {
-				// 	unset($records[$key]);
-				// }
-
-
-				if($value['prd_id'] != $val['prd_id'] &&  $value['anl_id'] != $val['anl_id'] && $value['anl_col'] != $val['anl_col'])
+				if($value['prd_id'] == $val['prd_id'] &&  $value['anl_id'] == $val['anl_id'] && $value['anl_col'] == $val['anl_col'])
 				{
-					array_push($ar,$records[$key]);
-					break;
-				}	
+					unset($records[$key]);
+				}
 			}
 		}
-		echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+		//echo  json_encode(array_values($records));die;
+
+		echo json_encode(array_values($records), JSON_INVALID_UTF8_IGNORE);
 	}
 	else{
-
-	$records= queryDB($conn, $query, "read");
+		$records= queryDB($conn, $query, "read");
 //	print_r($records);die;
-	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+		echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 	}
 }
 ?>

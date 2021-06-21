@@ -16920,68 +16920,6 @@ function mandantenAuswahllisteErstellenCheckbox(betrGrpId, mandantenIds) {
     })
 }
 
-// ****8-6-2021--
-function infosIntEnergiedaten_measuring_point_function(a,b){
-    const ins = a
-    const nameDB = $("#nameDB").val()
-    const orgID = $("#orgID").val()
-    const liegID = $("#liegID").val()
-    const berID = $("#berID").val()
-    const nameEnt = b
-    ajaxPost("php/getMeasurement_InfosIntEnergiedaten.php")({ins, nameDB, orgID, liegID, berID, nameEnt})
-    .then(result => {
-        const prepareTableData =
-            records =>
-            records.map(
-                a =>
-                [ a.nameMSt
-                , a.kurzbezeichnungMst
-                , a.kostenstelleMst
-                , a.messmittelBerechnungslogikMst
-                , a.mst_ID
-                , a.messartMst
-                ]
-            )
 
-        const fillMessstellenTbl =
-            data => {
-                clearTable(tblMessstelleAuswahl)
-                intoTable(tblMessstelleAuswahl)(prepareTableData(data))
-            }
 
-        const selectionIntoField =
-            this_ => {
-                const selectedData = tblMessstelleAuswahl.row(this_).data()
-
-                if ("mstIMw" === a) $("#mstIMw").val(selectedData[0]), $("#vorgelagerteMstIDE").val(selectedData[4]);
-
-            }
-
-            fillMessstellenTbl(result)
-
-            $("#messstellenAuswahlContainer").css("display", "block")
-            $("#messstellenAuswahlContainer").dialog({
-            height: $(window).height() - .25 * $(window).height(),
-            width: $(window).width() - .25 * $(window).width(),
-            resize: "auto",
-            show: {
-                effect: "fade",
-                duration: 500
-            },
-            hide: {
-                effect: "fade",
-                duration: 500
-            },
-            open: function() {
-                $("#tblMessstellenlisteMst tbody tr").css("cursor", "pointer")
-                $("#tblMessstellenlisteMst tbody").off("dblclick", "tr")
-                $("#tblMessstellenlisteMst tbody").on("dblclick", "tr",
-                function() {
-                    selectionIntoField(this)
-                    $("#messstellenAuswahlContainer").dialog("close")
-                })
-            }
-        })
-    })
-}
 
