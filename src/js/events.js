@@ -7733,7 +7733,12 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
                 $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").hide();
 
                 //$("#mstIMw").prop("disabled",false);
-                $("#mstIMw").val("").prop("readonly",false);
+               
+                //<***14-6-2021---
+                //$("#mstIMw").val("").prop("readonly",false); //Old code comment
+                $("#mstIMw").val("").prop("readonly",true);
+                //end--->
+
                 $("#mstIMw").prop("disabled",false);
 
                 $(".artikelnummerIntBdeDiv").show();
@@ -7788,7 +7793,10 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
                 $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").show();
 
                 if($("#mstIMw").val() == ""){
-                    $("#mstIMw").val("").prop("readonly",false);
+                    //<--14-6-2021--
+                    // $("#mstIMw").val("").prop("readonly",false); //Old code comment
+                    $("#mstIMw").val("").prop("readonly",true);
+                    //end-->
                 }
                 else{
                     $("#mstIMw").val("").prop("readonly",true);
@@ -8127,3 +8135,35 @@ $("#infosIntEnergiedaten_measuring_point").click(function() {
     "infosIntEnergiedaten_measuring_point" == this.id ? a = "mstIMw" : '';
     infosIntEnergiedaten_measuring_point_function(a,b);
 });
+
+//<--16-6-2021---
+$('#config_mannual').on('click', function(){
+    $('#btnKonfigPrdkt').trigger('click');
+});
+
+$('#save_mannual').on('click', function(){
+    $('#masseneingabeSpeichernSrchPrdkt').trigger('click');
+});
+
+// Oprating Mesuarement
+$('#config_mannual_mesurement_operating').on('click', function(){
+    $('#btnKonfigMesssetelle').trigger('click');
+});
+
+$('#save_mannual_mesurement_operating').on('click', function(){
+    $('#masseneingabeSpeichernSrchPrdkt').trigger('click');
+});
+
+
+
+// Energy Default Button
+$('#config_mannual_default_energy').on('click', function(){
+    $('#btnKonfigMstAnl').trigger('click');
+});
+
+$('#save_mannual_default_energy').on('click', function(){
+    $('#masseneingabeSpeichernSrch').trigger('click');
+});
+
+//--end-->
+

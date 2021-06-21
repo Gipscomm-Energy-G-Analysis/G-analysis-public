@@ -1059,7 +1059,7 @@ elseif($id == 'ProdukteAnlDataTblFacityData'){
 	$query .= " LEFT JOIN produkte AS T2 ON T1.prd_id = T2.prd_ID";
     $query .= " LEFT JOIN anlagen AS T3 ON T1.anl_id = T3.anl_ID";
     $query .= " LEFT JOIN produktionsAnlagenConfig AS T4 ON T1.prd_id = T4.prd_id";
-    $query .= " WHERE T1.type = 2 AND t4.prd_id IS NULL";
+    $query .= " WHERE T1.type = 2";
     //echo $query;die();
 }
 /*new-mm-start 25-03-2021*/
@@ -1195,8 +1195,26 @@ else if($id == 'startEndDateEinheitTypeCheckValidation'){
   $records = queryDB($conn, $query, "read");
   echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }else{
+	if($id == 'ProdukteAnlDataTblFacityData'){
+		$records = queryDB($conn, $query, "read");
+		$queryResult = "SELECT * from produktionsAnlagenConfig";
+		$resultConfig = queryDB($conn, $queryResult, "read");
+		foreach($records as $key=> $value){
+			foreach($resultConfig as $val){
+				if($value['prd_id'] == $val['prd_id'] &&  $value['anl_id'] == $val['anl_id'] && $value['anl_col'] == $val['anl_col'])
+				{
+					unset($records[$key]);
+				}
+			}
+		}
+		//echo  json_encode(array_values($records));die;
+	
+		echo json_encode(array_values($records), JSON_INVALID_UTF8_IGNORE);
+	}
+	else{
 	$records= queryDB($conn, $query, "read");
 //	print_r($records);die;
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+	}
 }
 ?>
