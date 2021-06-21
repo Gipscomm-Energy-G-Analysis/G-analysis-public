@@ -2070,52 +2070,7 @@ try {
                     a = JSON.parse(a);
                     0 < a.length && $("#zpNrERng").val(a[0].zaehlpunktNr)
                 }
-            })
-        },
-        passwortAuswertenGipscAdm = function() {
-            $("#gipscAdmZugang").dialog({
-                height: 180,
-                width: 250,
-                resize: "auto",
-                classes: {"ui-dialog-titlebar-close" : "closeButton"},
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                modal: true,
-                open : () => {
-                    $("#zugangOk").off("click");
-                    $("#zugangOk").on("click", function() {
-                        $.ajax({
-                            type: "POST",
-                            async: !0,
-                            url: "php/evalGipscAdmPw.php",
-                            data: {},
-                            success: function(a) {
-                                a = JSON.parse(a)[0].pw;
-                                a.trim();
-                                var b = getHash($("#pwGipscAdm").val());
-                                b.trim();
-                                b == a ? ($("#tabGipscAdm").css("background-color", "#CED6DE"), $("#infosGipscommAdmins").css("display", "block"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close")) : (alert("Das Passwort ist falsch!"),
-                                    $("#tabGipscAdm").css("background-color", "#B9C0C7"), $("#infosGipscommAdmins").css("display", "none"), $("#activeInstance").val("gipscAdm"), $("#gipscAdmZugang").dialog("close"), $("#tabBetrGrp").trigger("click"))
-                            }
-                        })
-                    })
-                    $("#zugangAbbrechen").on("click", function() {
-                        $("#gipscAdmZugang").dialog("close")
-                        $("#tabBetrGrp").trigger("click")
-                    })
-                    $(".closeButton").on("click", function() {
-                        $("#closeButton").dialog("close")
-                        $("#tabBetrGrp").trigger("click")
-                    })
-                }
-            });
-            
+            })            
         },
         letzteRechnungenInTbl = function(a) {
             $.ajax({
@@ -8991,7 +8946,7 @@ try {
                     $("#" + tabsData[e].tab).css("background-color", "#CED6DE");
                     $("#" + tabsData[e].infos).css("display", "block");
                     $("#activeInstance").val(tabsData[e].aktivInstance);
-                    if ("tabGipscAdm" == a) passwortAuswertenGipscAdm();
+                    if ("tabGipscAdm" == a) scpAdministration_gipscommAdmins.confirmPassword();
                     else if ("tabOrg" == a) b = [$("#nameDB").val()], $("#manPfadOrg").text($("#nameAllgemeinMan").val());
                     else if ("tabLieg" == a) b = [$("#nameDB").val(), $(".orgPfad").val(), "", ""], readInstanzen("liegFirst", $(".liegPfad").prop("selectedIndex")),
                         $("#manPfadLieg").css("display", "none"), $("#orgPfadLieg").text($("#nameAllgemeinOrg").val()), energietrInDBoxLieg(), energiefrmInDBoxLieg();
