@@ -1726,7 +1726,7 @@ try {
             iMwNavID =
             zpNavID = 0
 
-            scpSchichtdaten.populateIndexedDB()
+            scpIndexedDB.populateIndexedDB()
         },
         mandantenEinlesen = function(a, b, e) {
             $.ajax({
@@ -5123,7 +5123,7 @@ try {
                             $("#holdingstrukturAllgemeinMan").prop("checked", a[0].holdingstruktur);
                             $("#liegenschaftenAllgemeinMan").prop("checked", a[0].liegenschaften)
 
-                            scpSchichtdaten
+                            scpIndexedDB
                             .populateIndexedDB()
                             .then(scpSchichtdaten.readLast)
                             .then(scpSchichtdaten_historie.readLast)

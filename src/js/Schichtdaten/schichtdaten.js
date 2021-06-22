@@ -236,16 +236,8 @@ const scpSchichtdaten =
                     return !retVal
                 }
 
-            // Inserts data into a provided indexedDB store(table)
-            const dataIntoIDB =
-                data =>
-                store =>
-                ( idxDB[store].clear()
-                , idxDB[store].bulkPut(data[store])
-                )
-
             // Syncs the indexedDB with the sql srv DB
-            this.populateIndexedDB =
+            this.updateIndexedDB =
                 () =>
                 ajaxPost("php/Schichtdaten/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
                 .then(
@@ -254,7 +246,7 @@ const scpSchichtdaten =
                     , "schichten"
                     , "schichtModelleHist"
                     , "schichtenHist"
-                    ].forEach(dataIntoIDB(result))   
+                    ].forEach(scpIndexedDB.dataIntoIDB(result))   
                 )
 
             // Dialog which asks the user if the Schichtmodell should
@@ -297,7 +289,7 @@ const scpSchichtdaten =
                 formData =>
                 ajaxPost("php/Schichtdaten/saveSchichtdaten.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
-                .then(this.populateIndexedDB)
+                .then(this.updateIndexedDB)
                 .then(
                     () =>
                     equal($("#schtMdlState").val())("new") ?
@@ -544,7 +536,7 @@ const scpSchichtdaten =
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
-                        , this.populateIndexedDB().then(this.readLast)
+                        , this.updateIndexedDB().then(this.readLast)
                         )
                     )
                 }
