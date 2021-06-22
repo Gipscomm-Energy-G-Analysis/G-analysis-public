@@ -6,57 +6,10 @@ var anlageObj={};
 var allPrevVal = [];
 $(document).ready(function() {
     var c = this;
-    if(sessionStorage.getItem("position") == 'gipsAdm') {
-        var roleId = 1;
-        //alleNutzerRollenUndBerechtigungen(roleId);
-        mandantenEinlesen("alle", null, null);
-    } else if(sessionStorage.getItem("position") == 'sAdm') {
-        var roleId = 2;
-        var tableName = 'superAdmins';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID"));
-        $("#sdmRoles").css("display", "none");
-        $("#sAdmRollenUndBerechtigungen").css("display", "none");
-        $("#adminsRollenUndBerechtigungen").css("display", "none");
-        $("#superadmincommTreeview").css("display", "none");
-        $("#tabGipscAdm").css("display", "none");
-        $("#tabBetrGrp").css("display", "none");
-        $("#betrGrpMenu").css("display", "none");
-        $(".sAdmLiMenu").css("display", "none");
-        mandantenEinlesen($("#betrGrpID").val(), null, null);
-    } else if(sessionStorage.getItem("position") == 'adm') {
-        var roleId = 4;
-        var tableName = 'admins';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
-        $("#sAdmRollenUndBerechtigungen").css("display", "none");
-        $("#adminsRollenUndBerechtigungen").css("display", "none");
-        $("#superadmincommTreeview").css("display", "none");
-        $("#adminRoles").css("display", "none");
-        $("#admincommTreeview").css("display", "none");
-    } else if(sessionStorage.getItem("position") == 'ben') {
-        var roleId = 5;
-        var tableName = 'benutzer';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        $("#benutzerRoles ").css("display", "none");
-        //mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
-        $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")): $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID"));
-    } else {
-        var roleId = 3;
-        //alleNutzerRollenUndBerechtigungen(roleId);
-        mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0);
-    }
-    // "gipsAdm" == sessionStorage.getItem("position") ?
-    //  mandantenEinlesen("alle", null, null) : "sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : "adm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi, #manGrpMenuLi, #admMenuLi").css("display",
-    //     "none"), $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabAdm").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0)) : "ben" == sessionStorage.getItem("position") && ($("#rechtMenuLi").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ?
-    //     mandantenEinlesen(null, "man_ID",
-    //     sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0));
+
+    scpRechteverwaltung
+    .actionUserPosition(sessionStorage.getItem("position"))
+
     betrGrpEinlesen();
     manGrpEinlesen();
     anlagenGruppenEinlesen();

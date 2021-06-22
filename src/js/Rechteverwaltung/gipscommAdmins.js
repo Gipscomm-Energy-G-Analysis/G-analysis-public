@@ -4,7 +4,7 @@
 
 "use strict"
 
-const scpAdministration_gipscommAdmins =
+const scpRechteverwaltung_gipscommAdmins =
     freeze (
         new function () {
 
@@ -41,7 +41,7 @@ const scpAdministration_gipscommAdmins =
 
             const validatePassword =
                 () =>
-                ajaxPost("php/Administration/confirmPassword.php")()
+                ajaxPost("php/Rechteverwaltung/confirmPassword.php")()
                 .then(validatePasswordAndAct)
                 .then(() => $("#gipscAdmZugang").dialog("close"))
 
