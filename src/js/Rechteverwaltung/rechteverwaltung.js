@@ -8,6 +8,20 @@ const scpRechteverwaltung =
     freeze (
         new function () {
 
+            this.populateIndexedDB =
+                () =>
+                ajaxPost("php/Rechteverwaltung/readRechteverwaltung.php")({})
+                .then(
+                    result => 
+                    [ "gipscommAdmins"
+                    , "betreuerGruppen"
+                    , "superAdmins"
+                    , "mandantenGruppen"
+                    , "admins"
+                    , "benutzer"
+                    ].forEach(scpIndexedDB.dataIntoIDB(result))   
+                )
+
             const hideElement =
                 element =>
                 $(element).css("display", "none")

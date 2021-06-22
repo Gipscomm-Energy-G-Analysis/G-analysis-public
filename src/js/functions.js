@@ -4907,27 +4907,6 @@ try {
             $(".lblNeu").css("display", "none")
             $(".lblAendern").css("display", "inline")
             switch (isInstance(a)) {
-                case "gipscAdm":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readInstanzen.php",
-                        data: {
-                            id: "gipscAdm",
-                            nameDB: "gipscomm"
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            a = $.parseJSON(a);
-                            if(b == -1) {
-                                b = a.length - 1;
-                            }
-                            0 < a.length ? ($("#gipscAdmCount").val(a.length), $("#gipscAdmID").val(a[b].gipsAdm_ID), $("#benutzernameGipscAdm").val(a[b].username)) : clearFields("gipscAdm")
-                        }
-                    });
-                    break;
                 case "betrGrp":
                     $.ajax({
                         type: "POST",
@@ -5111,6 +5090,9 @@ try {
                             $("#nameAllgemeinMan").val(a[0].nameMan);
                             $("#holdingstrukturAllgemeinMan").prop("checked", a[0].holdingstruktur);
                             $("#liegenschaftenAllgemeinMan").prop("checked", a[0].liegenschaften)
+
+                            scpRechteverwaltung
+                            .populateIndexedDB()
 
                             scpIndexedDB
                             .populateIndexedDB()

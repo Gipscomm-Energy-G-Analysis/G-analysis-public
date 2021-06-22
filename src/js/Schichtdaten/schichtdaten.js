@@ -521,9 +521,7 @@ const scpSchichtdaten =
                     count =>
                     greaterZero(count) ?
                     readIntoFormFields(decr(count)) :
-                    ( this.clearFields()
-                    , setState("new")
-                    )
+                    this.clearFields()
                 )
 
             // Deletes the current Schicht Modell(sets col deleted = true)

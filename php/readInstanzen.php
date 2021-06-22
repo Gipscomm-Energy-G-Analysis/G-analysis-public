@@ -11,13 +11,7 @@ $conn = connectToDB($nameDB);
 
 $id = $_POST['id'];
 
-if($id == "gipscAdm"){
-
-$query = "SELECT * FROM gipscommAdmins";
-
-}
-
-elseif($id == "betrGrp"){
+if($id == "betrGrp"){
 
   $query = "SELECT * FROM betreuerGruppen WHERE deleted_at IS NULL";
 

@@ -1450,59 +1450,6 @@ $(document).ready(function() {
     $("#manGrpSuchen").click(function() {
         manGrpSuchenlisteErstellen()
     });
-    
-
-    // Save Roles and Permissions
-    // $("#gipscommRollenUndBerechtigungen").click(function() {
-    //     gipscommRollenUndBerechtigungen()
-    // });
-    // $("#sAdmRollenUndBerechtigungen").click(function() {
-    //     sAdmRollenUndBerechtigungen()
-    // });
-    // $("#adminsRollenUndBerechtigungen").click(function() {
-    //     adminsRollenUndBerechtigungen()
-    // });
-    // $("#benutzerRollenUndBerechtigungen").click(function() {
-    //     benutzerRollenUndBerechtigungen()
-    // });
-
-    // Get Checked data from database
-    $("#gipscAdmLast, #gipscAdmNext, #gipscAdmPrevious, #gipscAdmFirst").click(function() {
-        gipscommGetRollenUndBerechtigungen()
-    });
-    $("#sAdmLast, #sAdmFirst, #sAdmPrevious, #sAdmNext").click(function() {
-        sAdmGetRollenUndBerechtigungen()
-    });
-    $("#admLast, #admNext, #admPrevious, #admFirst").click(function() {
-        adminsGetRollenUndBerechtigungen()
-    });
-    $("#benFirst, #benLast, #benNext, #benPrevious").click(function() {
-        benutzerGetRollenUndBerechtigungen()
-    });
-    $("#tabBetrGrp").on("click", function() {
-        $( "div#superadmincommTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-           treeObject,
-           {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
-    });
-    $("#tabAdm").on("click", function() {
-        $( "div#admincommTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-           treeObject,
-           {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("admincommTreeview").appendChild( tw.root	 )
-    });
-    $("#tabBen").on("click", function() {
-        $( "div#benutzerTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-           treeObject,
-           {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("benutzerTreeview").appendChild( tw.root	 )
-    });
 
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
@@ -1600,8 +1547,7 @@ $(document).ready(function() {
         }
         /*new-mm-end 23-03-2021*/
     });
-    $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
-        "gipscAdmFirst" == this.id ? (gipscAdmNavID = 0, readInstanzen(this.id, gipscAdmNavID)) :
+    $("#betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "betrGrpFirst" == this.id ? (betrGrpNavID = 0, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmFirst" == this.id ? (sAdmNavID = 0, readInstanzen(this.id, sAdmNavID)) :
         "manGrpFirst" == this.id ? (manGrpNavID = 0, readInstanzen(this.id, manGrpNavID)) :
@@ -1633,6 +1579,33 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
+
+    // Rechteverwaltung
+    //
+    // GipscommAdmins
+    //
+    // See Rechteverwaltung/gipscommAdmins.js
+    //
+    // Arrow Navigation
+    //
+    $("#gipscAdmFirst").click(scpRechteverwaltung_gipscommAdmins.readFirst)
+    $("#gipscAdmPrevious").click(scpRechteverwaltung_gipscommAdmins.readPrevious)
+    $("#gipscAdmNext").click(scpRechteverwaltung_gipscommAdmins.readNext)
+    $("#gipscAdmLast").click(scpRechteverwaltung_gipscommAdmins.readLast)
+    //
+    // Search Navigation
+    //
+    // $("#schtDatSuchen").click(scpSchichtdaten.searchSchichtModell)
+    //
+    // Delete Record
+    //
+    // $("#schtDatLoeschen").click(scpSchichtdaten.deleteSchichtModell)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#gipscAdmHinz").click(scpRechteverwaltung_gipscommAdmins.clearFields)
+
+
     // Schichtdaten
     // See Schichtdaten/schichtdaten.js
     //
@@ -1674,8 +1647,7 @@ $(document).ready(function() {
     $("#schtDatHistSuchen").click(scpSchichtdaten_historie.searchSchichtModellHist)
     //
 
-    $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
-        "gipscAdmPrevious" == this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) :
+    $("#betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) :
         "manGrpPrevious" == this.id ? 0 < manGrpNavID && (manGrpNavID--, readInstanzen(this.id, manGrpNavID)) :
@@ -1707,8 +1679,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmNext, #betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
-        "gipscAdmNext" == this.id ? gipscAdmNavID < $("#gipscAdmCount").val() - 1 && (gipscAdmNavID++, readInstanzen(this.id, gipscAdmNavID)) :
+    $("#betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
         "betrGrpNext" == this.id ? betrGrpNavID < $("#betrGrpCount").val() - 1 && (betrGrpNavID++, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmNext" == this.id ? sAdmNavID < $("#sAdmCount").val() - 1 && (sAdmNavID++, readInstanzen(this.id, sAdmNavID)) :
         "manGrpNext" == this.id ? manGrpNavID < $("#manGrpCount").val() - 1 && (manGrpNavID++, readInstanzen(this.id, manGrpNavID)) :
@@ -1740,8 +1711,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmLast, #betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
-        "gipscAdmLast" == this.id ? (gipscAdmNavID = $("#gipscAdmCount").val() - 1, readInstanzen(this.id, gipscAdmNavID)) :
+    $("#betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
         "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) :
         "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) :
@@ -1926,7 +1896,7 @@ $(document).ready(function() {
     $(".berPfad").change(function() {
         berPfadChange(this)
     });
-    $("#gipscAdmHinz, #betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
+    $("#betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
         clearFields(this.id);
         b = !0
     });
