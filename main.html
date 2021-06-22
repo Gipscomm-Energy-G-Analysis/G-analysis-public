@@ -11006,22 +11006,30 @@
                 <script type="text/javascript" src="dist/js/objects.min.js"></script>
                 <script type="text/javascript" src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
                 <script>
-                    idxDB = new Dexie($("#nameDB").val())
+                    idxDB = new Dexie("G-Analysis")
                     idxDB
-                    .version(idxDB._versions.length === 0 ? 1 : idxDB._versions.length)
+                    .version(1)
                     .stores(
                         { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz, liegRef"
                         , schichten : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
                         , schichtModelleHist : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz, liegRef"
                         , schichtenHist : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
+                        
+                        , gipscommAdmins : "gipsAdm_ID, username, betrGrp_ID, position, manGrp_ID, man_ID" 
+                        , betreuerGruppen : "betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz"
+                        , superAdmins : "sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username"
+                        , mandantenGruppen : "manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs"
+                        , admins : "adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position"
+                        , benutzer : "ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position"
                         }
                     )
                 </script>
                 <script type="text/javascript" src="src/js/functions.js"></script>
                 <script type="text/javascript" src="src/js/manualFunction.js"></script>
+                <script type="text/javascript" src="src/js/indexedDB.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/schichtdaten.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/historie.js"></script>
-                <script type="text/javascript" src="src/js/Administration/gipscommAdmins.js"></script>
+                <!-- <script type="text/javascript" src="src/js/Rechteverwaltung/gipscommAdmins.js"></script> -->
                 <script type="text/javascript" src="src/js/events.js"></script>
                 <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>
