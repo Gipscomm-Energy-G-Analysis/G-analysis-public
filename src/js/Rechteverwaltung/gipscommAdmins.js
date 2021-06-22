@@ -82,7 +82,12 @@ const scpRechteverwaltung_gipscommAdmins =
                 }
 
             this.updateIndexedDB =
-                {}
+                () =>
+                ajaxPost("php/Rechteverwaltung/readGipscommAdmins.php")({})
+                .then(
+                    result => 
+                    scpIndexedDB.dataIntoIDB(result)("gipscommAdmins")   
+                )
 
             // Returns an input value depending on the elements id
             const getFieldValue =
@@ -192,6 +197,20 @@ const scpRechteverwaltung_gipscommAdmins =
                     readIntoFormFields(decr(count)) :
                     false
                 )
+
+            // Deletes the current Schicht Modell(sets col deleted = true)
+            this.deleteGipscommAdmin =
+                () => {
+                    const gipscAdmID = $("#gipscAdmID").val()
+
+                    ajaxPost("php/Rechteverwaltung/deleteGipscommAdmin.php")({gipscAdmID})
+                    .then(
+                        () =>
+                        ( alert("erfolgreich gelöscht!")
+                        , this.updateIndexedDB().then(this.readFirst)
+                        )
+                    )
+                }
 
             // Prepares the table data for the search dialog
             const prepareTableData =

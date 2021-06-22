@@ -4,31 +4,12 @@ ini_set ( 'display_errors', 'On' ) ;
 
 require '../DbOperations.php' ;
 
-$nameDB = $_POST[ 'nameDB' ] ;
-$conn = connectToDB( $nameDB ) ;
+$conn = connectToDB( "gipscomm" ) ;
 
-$query  = "SELECT schtMdl_ID, lieg_ID, modellBez, anzahl, LEFT(gueltigVon, 10) AS gueltigVon, notiz, liegRef FROM schichtModelle " ;
+$query  = "SELECT gipsAdm_ID, username, betrGrp_ID, position, manGrp_ID, man_ID FROM gipscommAdmins " ;
 $query .= "WHERE deleted = 0 " ;
 
-$schichtModelle = queryDB( $conn, $query, "read" ) ;
+$result = queryDB( $conn, $query, "read" ) ;
 
-$query2  = "SELECT schtDat_ID, schtMdl_ID, datum, nr, bezeichnung, LEFT(uhrzeitVon, 5) AS uhrzeitVon, LEFT(uhrzeitBis, 5) AS uhrzeitBis, tagVon, tagBis FROM schichten " ;
-$query2 .= "WHERE deleted = 0 " ;
-
-$schichten = queryDB( $conn, $query2, "read" ) ;
-
-$query3  = "SELECT schtMdl_ID, lieg_ID, modellBez, anzahl, LEFT(gueltigVon, 10) AS gueltigVon, LEFT(gueltigBis, 10) AS gueltigBis, notiz, liegRef FROM schichtModelleHist " ;
-
-$schichtModelleHist = queryDB( $conn, $query3, "read" ) ;
-
-$query4  = "SELECT schtDat_ID, schtMdl_ID, datum, nr, bezeichnung, LEFT(uhrzeitVon, 5) AS uhrzeitVon, LEFT(uhrzeitBis, 5) AS uhrzeitBis, tagVon, tagBis FROM schichtenHist " ;
-
-$schichtenHist = queryDB( $conn, $query4, "read" ) ;
-
-echo json_encode(
-    [ "schichtModelle" => $schichtModelle
-    , "schichten" => $schichten
-    , "schichtModelleHist" => $schichtModelleHist
-    , "schichtenHist" => $schichtenHist
-    ] , JSON_INVALID_UTF8_IGNORE) ;
+echo json_encode(["gipscommAdmins" => $result] , JSON_INVALID_UTF8_IGNORE) ;
 ?>

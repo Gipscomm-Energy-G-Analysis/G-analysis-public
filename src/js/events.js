@@ -1596,7 +1596,7 @@ $(document).ready(function() {
     //
     // Delete Record
     //
-    // $("#schtDatLoeschen").click(scpSchichtdaten.deleteSchichtModell)
+    $("#gipscAdmLoeschen").click(scpRechteverwaltung_gipscommAdmins.deleteGipscommAdmin)
     //
     // Clear Fields For Creation Of New Record
     //

@@ -18,6 +18,7 @@ $userLogin = $_POST['user'];
 
 $query = "SELECT * FROM Users ";
 $query .= "WHERE username = '$userLogin' ";
+$query .= "AND deleted = 0 ";
 
 $records = queryDB($conn, $query, "read");
 
