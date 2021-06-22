@@ -1444,9 +1444,6 @@ $(document).ready(function() {
     $("#sAdmSuchen").click(function() {
         sAdmSuchenlisteErstellen()
     });
-    $("#gipscAdmSuchen").click(function() {
-        gipscAdmSuchenlisteErstellen()
-    });
     $("#manGrpSuchen").click(function() {
         manGrpSuchenlisteErstellen()
     });
@@ -1595,7 +1592,7 @@ $(document).ready(function() {
     //
     // Search Navigation
     //
-    // $("#schtDatSuchen").click(scpSchichtdaten.searchSchichtModell)
+    $("#gipscAdmSuchen").click(scpRechteverwaltung_gipscommAdmins.searchGipscommAdmin)
     //
     // Delete Record
     //

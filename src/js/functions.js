@@ -10496,7 +10496,7 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         bAutoWidth: !1,
         colReorder: !0
     });
-    tblGipscAdmSuchenlisteErstellen = $("#tblGipscAdmSuchenlisteErstellen").DataTable({
+    tblGipscAdmSuchen = $("#tblGipscAdmSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -16241,52 +16241,6 @@ function sAdmSuchenlisteErstellen() {
                         $("#sAdmSuchenListeContainer").dialog("close");
                         readInstanzen("sAdmFirst", a[0])
                     })
-                }
-            })
-        }
-    })
-}
-
-function gipscAdmSuchenlisteErstellen() {
-    var a = itemSessionGet("nameDB");
-    //console.log(a);
-    $.ajax({
-        type: "POST",
-        async: !0,
-        url: "php/readInstanzen.php",
-        data: {
-            id: "gipscAdm",
-            nameDB: "gipscomm"
-        },
-        success: function(e) {
-            console.log('Working fine');
-            e = json(e);
-            //console.log(e);
-
-            tblGipscAdmSuchenlisteErstellen.colReorder.reset();
-            tblGipscAdmSuchenlisteErstellen.clear().draw();
-            for (var c = 0; c < e.length; c++) {
-                //console.log(e[c].email);
-                tblGipscAdmSuchenlisteErstellen.row.add([
-                    e[c].username,
-                ]).draw();
-            }
-            $("#gipscAdmSuchenListeContainer").css("display", "block");
-            $("#gipscAdmSuchenListeContainer").dialog({
-                height: $(window).height() - .125 * $(window).height(),
-                width: $(window).width() - .125 * $(window).width(),
-                resize: "auto",
-                modal: true,
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    console.log('open popup');
                 }
             })
         }

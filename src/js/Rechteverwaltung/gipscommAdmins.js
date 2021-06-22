@@ -199,28 +199,25 @@ const scpRechteverwaltung_gipscommAdmins =
                 records.map(
                     (a, i) =>
                     [ i
-                    , a.modellBez
-                    , a.anzahl
-                    , a.gueltigVon
+                    , a.username
                     ]
                 )
 
             // Fills the search dialog table with data
-            const fillSchichtmodelleTbl =
+            const fillGipscommAdminsTbl =
                 data => {
-                    clearTable(tblSchichtmodellSuchen)
-                    intoTable(tblSchichtmodellSuchen)(prepareTableData(data))
+                    clearTable(tblGipscAdmSuchen)
+                    intoTable(tblGipscAdmSuchen)(prepareTableData(data))
                 }
 
             // Triggers opening the search dialog
-            this.searchSchichtModell =
+            this.searchGipscommAdmin =
                 () => {
 
-                    querySchichtModelleDataIDB()
-                    .then(sortByPrimKey)
-                    .then(fillSchichtmodelleTbl)
+                    queryGipscommAdminsDataIDB()
+                    .then(fillGipscommAdminsTbl)
 
-                    $("#schichtmodellSuchenContainer").dialog({
+                    $("#gipscAdmSuchenContainer").dialog({
                         height: 450,
                         width: 875,
                         resize: "auto",
@@ -234,17 +231,17 @@ const scpRechteverwaltung_gipscommAdmins =
                         },
                         modal: true,
                         open: function() {
-                            $("#tblSchichtmodellSuchen tbody tr").css("cursor", "pointer");
-                            $("#tblSchichtmodellSuchen tbody").off("dblclick", "tr");
-                            $("#tblSchichtmodellSuchen tbody").on("dblclick", "tr",
+                            $("#tblGipscAdmSuchen tbody tr").css("cursor", "pointer");
+                            $("#tblGipscAdmSuchen tbody").off("dblclick", "tr");
+                            $("#tblGipscAdmSuchen tbody").on("dblclick", "tr",
                             function() {
 
                                 const selectedRecord =
-                                    tblSchichtmodellSuchen.row(this).data()
+                                    tblGipscAdmSuchen.row(this).data()
 
                                 readIntoFormFields(head(selectedRecord))
 
-                                $("#schichtmodellSuchenContainer").dialog("close")
+                                $("#gipscAdmSuchenContainer").dialog("close")
                             })
                         }
                     })
