@@ -456,6 +456,30 @@ elseif($id == 'SearchKeinZeitintervallTbl'){
 	//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
 	//$query4 .= "WHERE type = '$zeitintervallAnl' ";
 
+
+	// <----21-6-2021---
+	$queryInvest = "SELECT * FROM MessstellenAnlagen As T1 ";
+	$queryInvest .= "LEFT JOIN interneBetriebsdatenHistorie AS ED ";
+	$queryInvest .= "ON T1.mst_ID = ED.mstID ";
+	$queryInvest .= "LEFT JOIN interneMesswerteConfig AS T2 ";
+	$queryInvest .= "ON T1.mst_ID = T2.mst_ID ";
+	$queryInvest .= "WHERE T1.messartMst = 'manuell' ";
+	$queryInvest .= "AND T1.deleted <> 'true' ";
+
+	/*new-mm-start 25-03-2021*/
+	/*use for show only energiedaten type*/
+	$queryInvest .= "AND T1.typ = 'energiedaten' ";
+	/*new-mm-end 25-03-2021*/
+
+	$queryInvest .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') 
+			            OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') 
+			            OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') 
+			            OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+
+	$queryInvest .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+	$queryInvest .= "ORDER BY T1.mst_ID ASC";
+// print_r($queryInvest);die;
+	// --end-->
 }
 /*new-mm-start 01-04-2021*/
 elseif($id == 'masseneingabePrdktSearch'){
@@ -1127,6 +1151,28 @@ if($id == 'masseneingabeSearch'){
 	$records['query2'] = queryDB($conn, $query2, "read");
 	$records['query3'] = queryDB($conn, $query3, "read");
 	//$records['query4'] = queryDB($conn, $query4, "read");
+	//<----22-6-2021---
+	if(isset($queryInvest)){
+		$records['queryInvest'] = queryDB($conn, $queryInvest, "read");
+		$arr=[];
+			foreach($records['queryInvest'] as $key=>$val){
+				array_push($arr,$val['mstID']);
+			}
+
+		$removed_keys=array_keys(array_unique($arr));
+		// echo "<pre>";	print_r($removed_keys);die;
+		$array=[];
+		for($i=0;$i<count($records['queryInvest']);$i++){
+			if(in_array($i,$removed_keys)){
+				continue;
+			}else{
+				unset($records['queryInvest'][$i]);
+			}
+		}
+			//echo "<pre>";	print_r(array_values($records['queryInvest']));die;
+		$records['queryInvest']= array_values($records['queryInvest']);
+		//echo "<pre>";print_r($records['queryInvest']);die;
+	}
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }
 /*new-mm-start 01-04-2021*/

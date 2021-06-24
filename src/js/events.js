@@ -1427,6 +1427,9 @@ $(document).ready(function() {
             resetFormAllgemein('infosIntBetriebsdaten',1);
             /*new-mm-end 24-03-2021*/
             datePickerForInterneBetriebsdaten('infosIntBetriebsdaten',1);
+            //<---23-6-2021--
+            removeAttributeInvestFields();
+            //---end-->
         }
         /*new-mm-end*/
     });
@@ -7079,13 +7082,22 @@ $("#DkFeSpeichern").click(function() {
    /*save icon click event for the Interne Betriebsdaten Speichern 05-10-2020*/
     $("#intBdeIMwSpeichern").click(function(){
         //var anlIMw =$("#anlIMw").val();
-        var zeitintervallAnl =$("#zeitintervallAnl").val();
-        var noEnding =$("#anlIMwNoEnding").is(":checked");
-        var validate = validateIntBdeFrm(noEnding,zeitintervallAnl,'infosIntBetriebsdaten',1);
-        if(validate==false){
-            return false;
-        }else{
-            intBdeIMwHistorieSpeichernPopUp();
+        //<--23-6-2021--- IF Else add
+        var mstIdInvest = $('#mst_id_energy_investment').val();
+        if(mstIdInvest != '')
+        {
+            saveInvestValues();
+        }
+        else{ //Default this calling all content
+            var zeitintervallAnl =$("#zeitintervallAnl").val();
+            var noEnding =$("#anlIMwNoEnding").is(":checked");
+            var validate = validateIntBdeFrm(noEnding,zeitintervallAnl,'infosIntBetriebsdaten',1);
+            if(validate==false){
+                return false;
+            }
+            else{
+                intBdeIMwHistorieSpeichernPopUp();
+            }
         }
     });
     /* Save icon click event for the
@@ -8165,4 +8177,34 @@ $(document).on('blur','.enrery_fields_val', function(){
     var id_val = $(this).attr('id');
     energy_fields_check(id_val);
 });
+//--end-->
+
+// $(document).not( "#modalDataClass" ).on('change','.calander',function () {
+//     var dateVal=$(this).val();
+//     dateVal=new Date(dateVal);
+//     dateVal= dateVal.setDate(dateVal.getDate() + 1);
+//     var checkDate=new Date();
+//     if(dateVal<checkDate){
+//         toastr.warning("You are selecting past date");
+//     }
+// });
+
+// <-----23-6-2021---
+$(document).on('blur','#tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td input', function (){
+    var min_val = $(this).closest('tr').attr('min_val');
+    var max_val = $(this).closest('tr').attr('max_val');
+    var current_val = $(this).val();
+    var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
+    var checkNextVal = $(this).closest('td').next('td').find('input').val();
+    var current_row_id = $(this).closest('tr').attr('id');
+    var current_td_input_id = $(this).attr('id');
+    var mstID = $(this).closest('td').attr('data-id');
+    // var = $(this).attr('class');
+    var startdateinvest = $(this).closest('tr').attr('startdateinvest');
+    var startweekinvest = $(this).closest('tr').attr('startweekinvest');
+    var enddateinvest = $(this).closest('tr').attr('enddateinvest');
+    var endweekinvest = $(this).closest('tr').attr('endweekinvest');
+    var ar = [startdateinvest,startweekinvest,enddateinvest,endweekinvest]
+    investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar);
+})
 //--end-->
