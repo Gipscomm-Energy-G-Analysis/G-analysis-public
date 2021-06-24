@@ -42,6 +42,10 @@
         <!-- /.content-header -->
 
         <!-- Main content -->
+        @php $image = 'images/Blasanlage.jpg'; @endphp
+        @if(file_exists($data['bildAnl']))                            
+        @php  $image = $data['bildAnl']; @endphp
+        @endif
         <section class="content">
             <div class="card card-solid">
                 <div class="card-body">
@@ -49,7 +53,7 @@
                         <div class="col-12 col-sm-6">
                             <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
                             <div class="col-12">
-                                <img src="{{$data['bildAnl']}}" class="product-image" alt="Product Image" id="machine-image">
+                                <img src="{{$image}}" class="product-image" alt="Product Image" id="machine-image">
                             </div>
                         </div>
                         <div class="col-12 col-sm-6">
@@ -153,6 +157,21 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
+                <div class="card-body"  id="shards" >
+                @if($data['shards'] >= 1)  
+                   @for($i = 1; $i <= $data['shards']; $i++)
+                    <div class="form-group row" id="shard">
+                        <label for="messstelle{{$i}}IDAnl" class="col-sm-2 col-form-label">Messstelle{{$i}}IDAnl</label>
+                        <div class="col-sm-4">
+                        @php $messmessstelle = 'messstelle'.$i.'IDAnl'; 
+                        @endphp                         
+                             <input class="form-control" type="text" placeholder="Messstelle{{$i}}IDAnl" value="{{$data[$messmessstelle]}}" readonly>
+                        </div>
+                    </div>
+                    @endfor
+                @endif
+                    
+               </div>
             </div>
 
             <!-- Modal Start -->

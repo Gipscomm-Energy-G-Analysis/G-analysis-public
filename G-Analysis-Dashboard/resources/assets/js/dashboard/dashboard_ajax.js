@@ -22,6 +22,7 @@ const getMachineData = (machine_id, type) => {
         },
     }).done( function(response) {
         const data = response.data;
+       // console.log(data);
         spinner.stop();
         if(response.code == 200 ){
             $('.navigation').attr('data-value', data.anl_ID);
@@ -42,11 +43,24 @@ const getMachineData = (machine_id, type) => {
             $('#werkzeug').val(data.werkzeug);
             $('#kavitäten').val(data.kavitäten);
             $('#machine-image').attr('src',data.bildAnl);
-            if(data.bildAnl === 'uploadsDownloads/images/002_badberundefined' || data.bildAnl == null){
-                $('#machine-image').attr('src','images/Blasanlage.jpg');
-            }
-           
-
+            $("#machine-image").on("error", function () {
+                $(this).attr("src", "images/Blasanlage.jpg");
+            });  
+            var inputContainer = document.getElementById("shard");
+            if(data.shards >= 1){
+                for (let i = 0; i < data.shards; i++) {
+                    let html ='';
+                    let messmessstelle = 'messstelle'+i+'IDAnl'; 
+                    html =+  ('<div class="form-group row"><label for="messstelle+'+i+'IDAnl" class="col-sm-2 col-form-label">Messstelle'+i+'IDAnl</label><div class="col-sm-4"> <input class="form-control" type="text" placeholder="Messstelle <input class="form-control" type="text" placeholder="Messstelle'+i+'IDAnl" value="data.messmessstelle" readonly>IDAnl" value="data.messmessstelle" readonly> </div></div>');
+                }
+                inputContainer.after(html); 
+            }  
+            else{
+                document.getElementById("shard").style.display = "none";
+            }       
+            // if(data.bildAnl === 'uploadsDownloads/images/002_badberundefined' || data.bildAnl == null){
+            //     $('#machine-image').attr('src','images/Blasanlage.jpg');
+            // }
         } else if(response.anl_ID !== undefined) {
             toastr.error(response.message);
             $('.navigation').attr('data-value', response.anl_ID);
