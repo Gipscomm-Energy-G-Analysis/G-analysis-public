@@ -1438,9 +1438,6 @@ $(document).ready(function() {
     $("#benSuchen").click(function() {
         benutzerlisteErstellen()
     });
-    $("#betrGrpSuchen").click(function() {
-        betrGrplisteErstellen()
-    });
     $("#sAdmSuchen").click(function() {
         sAdmSuchenlisteErstellen()
     });
@@ -1544,8 +1541,7 @@ $(document).ready(function() {
         }
         /*new-mm-end 23-03-2021*/
     });
-    $("#betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
-        "betrGrpFirst" == this.id ? (betrGrpNavID = 0, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
+    $("#sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "sAdmFirst" == this.id ? (sAdmNavID = 0, readInstanzen(this.id, sAdmNavID)) :
         "manGrpFirst" == this.id ? (manGrpNavID = 0, readInstanzen(this.id, manGrpNavID)) :
         "admFirst" == this.id ? (admNavID = 0, readInstanzen(this.id, admNavID)) :
@@ -1605,6 +1601,33 @@ $(document).ready(function() {
     // Create New Or Update Form Data After Form Validation
     //
     $("#gipscAdmSpeichern").click(scpRechteverwaltung_gipscommAdmins.validateAndSaveFormData)
+    //
+    // Betreuergruppen
+    //
+    // See Rechteverwaltung/betreuergruppen.js
+    //
+    // Arrow Navigation
+    //
+    $("#betrGrpFirst").click(scpRechteverwaltung_betreuergruppen.readFirst)
+    $("#betrGrpPrevious").click(scpRechteverwaltung_betreuergruppen.readPrevious)
+    $("#betrGrpNext").click(scpRechteverwaltung_betreuergruppen.readNext)
+    $("#betrGrpLast").click(scpRechteverwaltung_betreuergruppen.readLast)
+    //
+    // Search Navigation
+    //
+    $("#betrGrpSuchen").click(scpRechteverwaltung_betreuergruppen.searchBetreuerGruppen)
+    //
+    // Delete Record
+    //
+    $("#betrGrpLoeschen").click(scpRechteverwaltung_betreuergruppen.deleteBetreuerGruppe)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#betrGrpHinz").click(scpRechteverwaltung_betreuergruppen.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#betrGrpSpeichern").click(scpRechteverwaltung_betreuergruppen.validateAndSaveFormData)
 
 
     // Schichtdaten
@@ -1648,8 +1671,7 @@ $(document).ready(function() {
     $("#schtDatHistSuchen").click(scpSchichtdaten_historie.searchSchichtModellHist)
     //
 
-    $("#betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
-        "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
+    $("#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) :
         "manGrpPrevious" == this.id ? 0 < manGrpNavID && (manGrpNavID--, readInstanzen(this.id, manGrpNavID)) :
         "admPrevious" == this.id ? 0 < admNavID && (admNavID--, readInstanzen(this.id, admNavID)) :
@@ -1680,8 +1702,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
-        "betrGrpNext" == this.id ? betrGrpNavID < $("#betrGrpCount").val() - 1 && (betrGrpNavID++, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
+    $("#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
         "sAdmNext" == this.id ? sAdmNavID < $("#sAdmCount").val() - 1 && (sAdmNavID++, readInstanzen(this.id, sAdmNavID)) :
         "manGrpNext" == this.id ? manGrpNavID < $("#manGrpCount").val() - 1 && (manGrpNavID++, readInstanzen(this.id, manGrpNavID)) :
         "admNext" == this.id ? admNavID < $("#admCount").val() - 1 && (admNavID++, readInstanzen(this.id, admNavID)) :
@@ -1712,8 +1733,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
-        "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
+    $("#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
         "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) :
         "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) :
         "admLast" == this.id ? (admNavID = $("#admCount").val() - 1, readInstanzen(this.id, admNavID)) :
@@ -1897,13 +1917,11 @@ $(document).ready(function() {
     $(".berPfad").change(function() {
         berPfadChange(this)
     });
-    $("#betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
+    $("#sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
         clearFields(this.id);
         b = !0
     });
-    $("#betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
-        "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-            title: "Meldung!" })) :
+    $("#sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
         "sAdmSpeichern" == this.id ? "" != $("#nameSAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameSAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "manGrpSpeichern" == this.id ? "" != $("#nameManGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameManGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
@@ -8007,11 +8025,6 @@ $("#admLoeschen").on('click', function() {
     admLoeschen();
 });
 
-/** BetreGroup/Superadmin Delete Functionality */
-$("#betrGrpLoeschen").on('click', function() {
-    betrGrpLoeschen();
-});
-
 /** Superadmin Delete Functionality */
 $("#sAdmLoeschen").on('click', function() {
     sAdmLoeschen();
@@ -8020,10 +8033,6 @@ $("#sAdmLoeschen").on('click', function() {
 /** MandantenGruppen Delete Functionality */
 $("#manGrpLoeschen").on('click', function() {
     manGrpLoeschen();
-});
-
-$("#betrGrpHinz").on('click', function() {
-    mandantenAuswahllisteErstellenCheckbox('', '')
 });
 
 $("#sAdmHinz").on('click', function(){

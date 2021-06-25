@@ -10446,7 +10446,7 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         bAutoWidth: !1,
         colReorder: !0
     });
-    tblBetrGrplisteErstellen = $("#tblBetrGrplisteErstellen").DataTable({
+    tblBetrGrpSuchen = $("#tblBetrGrpSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -16119,66 +16119,6 @@ function benutzerlisteErstellen() {
                                 benutzerGetRollenUndBerechtigungen();
                             }
                         });
-                    })
-                }
-            })
-        }
-    })
-}
-
-function betrGrplisteErstellen() {
-    var a = itemSessionGet("nameDB");
-    //console.log(a);
-    $.ajax({
-        type: "POST",
-        async: !0,
-        url: "php/readInstanzen.php",
-        data: {
-            id: "betrGrp",
-            nameDB: "gipscomm"
-        },
-        success: function(e) {
-            console.log('Working fine');
-            e = json(e);
-            //console.log(e);
-
-            tblBetrGrplisteErstellen.colReorder.reset();
-            tblBetrGrplisteErstellen.clear().draw();
-            for (var c = 0; c < e.length; c++) {
-                //console.log(e[c].email);
-                tblBetrGrplisteErstellen.row.add([
-                    c,
-                    e[c].firma,
-                    e[c].anzahlMitarbeiter,
-                    e[c].anschrift,
-                    e[c].plz+' '+e[c].ort,
-                    e[c].geschaeftsfuehrer,
-                    e[c].telefon,
-                    e[c].eMail,
-                    e[c].notiz,
-                ]).draw();
-            }
-            $("#betrGrpListeContainer").css("display", "block");
-            $("#betrGrpListeContainer").dialog({
-                height: $(window).height() - .125 * $(window).height(),
-                width: $(window).width() - .125 * $(window).width(),
-                resize: "auto",
-                modal: true,
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    console.log('open popup');
-                    $("#tblBetrGrplisteErstellen tbody tr").css("cursor", "pointer");
-                    $("#tblBetrGrplisteErstellen tbody").on("dblclick", "tr", function() {
-                        var a = tblBetrGrplisteErstellen.row(this).data();
-                        $("#betrGrpListeContainer").dialog("close");
-                        readInstanzen("betrGrpFirst", a[0])
                     })
                 }
             })

@@ -10,7 +10,7 @@ const scpRechteverwaltung_betreuergruppen =
 
             this.updateIndexedDB =
                 () =>
-                ajaxPost("php/Rechteverwaltung/readBetreuergruppen.php")({})
+                ajaxPost("php/Rechteverwaltung/Betreuergruppen/readBetreuergruppen.php")({})
                 .then(
                     result => 
                     scpIndexedDB.dataIntoIDB(result)("betreuerGruppen")   
@@ -58,37 +58,76 @@ const scpRechteverwaltung_betreuergruppen =
             // and then updates the indexedDB
             const saveFormData =
                 formData =>
-                ajaxPost("php/Rechteverwaltung/saveBetreuergruppe.php")(formData)
+                ajaxPost("php/Rechteverwaltung/Betreuergruppen/saveBetreuergruppe.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
                 .then(
                     () =>
-                    equal($("#gipscAdmState").val())("new") ?
+                    equal($("#betrGrpState").val())("new") ?
                     this.readLast() :
                     false
                 )
+
+            // If the form data contains empty input elements a
+            // dialog is shown which asks if the record should be
+            // saved anyways
+            const nonCompleteDataDialog =
+                formData =>
+                $("#saveBetrGrpDialog").dialog({
+                    height: 203,
+                    width: 329,
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    modal: true,
+                    open: () => {
+                        $("#saveBetrGrpOk").off("click")
+                        $("#saveBetrGrpOk").on("click",
+                            () =>
+                            ( saveFormData(formData)
+                            , $("#saveBetrGrpDialog").dialog("close")
+                            )
+                        )
+
+                        $("#saveSchichtCancel").off("click")
+                        $("#saveSchichtCancel").on("click",
+                            () =>
+                            $("#saveBetrGrpDialog").dialog("close")
+                        )
+                    }
+                })
 
             // Checks if all input elements are set and either shows the
             // dialog which asks if the record should be saved anyways
             // or if complete directly saves the record
             this.validateAndSaveFormData =
-                    () => 
-                    completeFormData() ?
-                    saveFormData(getFormData()) :
-                    alert("Benutzername oder Passwort wurden nicht definiert !")
+                    () => {
+                        const formData =
+                            getFormData()
+
+                        !completeFormData(formData) ?
+                        nonCompleteDataDialog(formData) :
+                        saveFormData(formData) 
+                    }
 
             // Sets the create new or update state for saving
             const setState =
                 state =>
                 state === "new" ?
-                ( $("#gipscAdmState").val(state)
-                , $(".gipscAdmForm")
+                ( $("#betrGrpState").val(state)
+                , $(".betrGrpForm")
                     .css("background", "antiquewhite")
                     .css("border", "1px solid black")
                     .css("padding", "1px")
                 ) :
-                ( $("#schtMdlState").val(state)
-                , $(".gipscAdmForm")
+                ( $("#betrGrpState").val(state)
+                , $(".betrGrpForm")
                     .css("background", "white")
                     .css("border", "1px solid black")
                     .css("padding", "1px")
@@ -101,35 +140,51 @@ const scpRechteverwaltung_betreuergruppen =
 
             this.clearFields =
                 () =>
-                ( [ "benutzernameGipscAdm"
-                  , "passwortGipscAdm"
-                  ].forEach(clearField)
+                ( [ "betrGrpID"
+                  , "firmaBetrGrp"
+                  , "anzahlMitarbeiterBetrGrp"
+                  , "anschriftBetrGrp"
+                  , "plzBetrGrp"
+                  , "ortBetrGrp"
+                  , "geschaeftsfuehrerBetrGrp"
+                  , "telefonBetrGrp"
+                  , "emailBetrGrp"
+                  , "notizBetrGrp"
+                  ]    
+                  .forEach(clearField)
                 , setState("new")
                 )
 
             // Returns an array of the Schicht Modelle from indexedDB
-            const queryGipscommAdminsDataIDB =
+            const queryBetreuerGruppenDataIDB =
                 () => 
-                idxDB.gipscommAdmins
+                idxDB.betreuerGruppen
                 .toArray()
 
             // Returns a certain Schicht Modell depending on an index
-            const queryGipscommAdminDataIDB =
+            const queryBetreuerGruppeDataIDB =
                 idx =>
-                queryGipscommAdminsDataIDB()
-                .then(gipscommAdmins => gipscommAdmins[idx])
+                queryBetreuerGruppenDataIDB()
+                .then(betreuerGruppen => betreuerGruppen[idx])
 
             // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
                 idx => {
-                    queryGipscommAdminDataIDB(idx)
+                    queryBetreuerGruppeDataIDB(idx)
                     .then(
-                        gipscommAdmin => {
+                        betreuerGruppe => {
 
-                            $("#gipscAdmIdx").val(idx)
-                            $("#gipscAdmID").val(gipscommAdmin.gipsAdm_ID)
-                            $("#benutzernameGipscAdm").val(gipscommAdmin.username)
-                            clearField("passwortGipscAdm")
+                            $("#betrGrpIdx").val(idx)
+                            $("#betrGrpID").val(betreuerGruppe.betrGrp_ID)
+                            $("#firmaBetrGrp").val(betreuerGruppe.firma)
+                            $("#anzahlMitarbeiterBetrGrp").val(betreuerGruppe.anzahlMitarbeiter)
+                            $("#anschriftBetrGrp").val(betreuerGruppe.anschrift)
+                            $("#plzBetrGrp").val(betreuerGruppe.plz)
+                            $("#ortBetrGrp").val(betreuerGruppe.ort)
+                            $("#geschaeftsfuehrerBetrGrp").val(betreuerGruppe.geschaeftsfuehrer)
+                            $("#telefonBetrGrp").val(betreuerGruppe.telefon)
+                            $("#emailBetrGrp").val(betreuerGruppe.eMail)
+                            $("#notizBetrGrp").val(betreuerGruppe.notiz)
 
                             setState("edit")
                         }
@@ -139,7 +194,7 @@ const scpRechteverwaltung_betreuergruppen =
             // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
-                idxDB.gipscommAdmins
+                idxDB.betreuerGruppen
                 .count()
                 .then(
                     count =>
@@ -152,27 +207,27 @@ const scpRechteverwaltung_betreuergruppen =
             // depending on the current records index
             this.readPrevious =
                 () =>
-                greaterZero(getFieldValue("gipscAdmIdx")) ?
-                readIntoFormFields(decr(getFieldValue("gipscAdmIdx"))) :
+                greaterZero(getFieldValue("betrGrpIdx")) ?
+                readIntoFormFields(decr(getFieldValue("betrGrpIdx"))) :
                 false
 
             // Sets the form data input values of the next Schicht Modell
             // depending on the current records index
             this.readNext =
                 () =>
-                idxDB.gipscommAdmins
+                idxDB.betreuerGruppen
                 .count()
                 .then( 
                     count => 
-                    greater(decr(count))(getFieldValue("gipscAdmIdx")) ?
-                    readIntoFormFields(incr(getFieldValue("gipscAdmIdx"))) :
+                    greater(decr(count))(getFieldValue("betrGrpIdx")) ?
+                    readIntoFormFields(incr(getFieldValue("betrGrpIdx"))) :
                     false
                 )
 
             // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
-                idxDB.gipscommAdmins
+                idxDB.betreuerGruppen
                 .count()
                 .then(
                     count =>
@@ -182,11 +237,11 @@ const scpRechteverwaltung_betreuergruppen =
                 )
 
             // Deletes the current Schicht Modell(sets col deleted = true)
-            this.deleteGipscommAdmin =
+            this.deleteBetreuerGruppe =
                 () => {
-                    const gipscAdmID = $("#gipscAdmID").val()
+                    const betrGrpID = $("#betrGrpID").val()
 
-                    ajaxPost("php/Rechteverwaltung/deleteGipscommAdmin.php")({gipscAdmID})
+                    ajaxPost("php/Rechteverwaltung/Betreuergruppen/deleteBetreuergruppe.php")({betrGrpID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
@@ -201,25 +256,27 @@ const scpRechteverwaltung_betreuergruppen =
                 records.map(
                     (a, i) =>
                     [ i
-                    , a.username
+                    , a.firma
+                    , a.anschrift
+                    , a.plz + " " + a.ort
                     ]
                 )
 
             // Fills the search dialog table with data
-            const fillGipscommAdminsTbl =
+            const fillBetreuerGruppenTbl =
                 data => {
-                    clearTable(tblGipscAdmSuchen)
-                    intoTable(tblGipscAdmSuchen)(prepareTableData(data))
+                    clearTable(tblBetrGrpSuchen)
+                    intoTable(tblBetrGrpSuchen)(prepareTableData(data))
                 }
 
             // Triggers opening the search dialog
-            this.searchGipscommAdmin =
+            this.searchBetreuerGruppen =
                 () => {
 
-                    queryGipscommAdminsDataIDB()
-                    .then(fillGipscommAdminsTbl)
+                    queryBetreuerGruppenDataIDB()
+                    .then(fillBetreuerGruppenTbl)
 
-                    $("#gipscAdmSuchenContainer").dialog({
+                    $("#betrGrpSuchenContainer").dialog({
                         height: 450,
                         width: 875,
                         resize: "auto",
@@ -233,20 +290,97 @@ const scpRechteverwaltung_betreuergruppen =
                         },
                         modal: true,
                         open: function() {
-                            $("#tblGipscAdmSuchen tbody tr").css("cursor", "pointer");
-                            $("#tblGipscAdmSuchen tbody").off("dblclick", "tr");
-                            $("#tblGipscAdmSuchen tbody").on("dblclick", "tr",
+                            $("#tblBetrGrpSuchen tbody tr").css("cursor", "pointer");
+                            $("#tblBetrGrpSuchen tbody").off("dblclick", "tr");
+                            $("#tblBetrGrpSuchen tbody").on("dblclick", "tr",
                             function() {
 
                                 const selectedRecord =
-                                    tblGipscAdmSuchen.row(this).data()
+                                    tblBetrGrpSuchen.row(this).data()
 
                                 readIntoFormFields(head(selectedRecord))
 
-                                $("#gipscAdmSuchenContainer").dialog("close")
+                                $("#betrGrpSuchenContainer").dialog("close")
                             })
                         }
                     })
                 }
+
+            this.showMandantenTablePopUp =
+                () =>
+
+                ajaxPost()
+
+                $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/getMandanten.php",
+                    data: {
+                        id: "mandantenBetrGruppen",
+                        betrGrpID: $("#betrGrpID").val(),
+                        nameDB: "gipscomm"
+                    },
+                    success: function(a) {
+                        a = JSON.parse(a);
+                        tblMandantenAuswahl.clear().draw();
+                        for (var b = 0; b < a.length; b++) tblMandantenAuswahl.row.add([a[b].man_ID, a[b].nameMan, a[b].dbName, a[b].holdingstruktur]).draw();
+                        tblMandantenAuswahl.column(0).visible(!1).draw();
+                        $("#mandantenlisteAuswahlContainer").css("display",
+                            "block");
+                        $("#mandantenlisteAuswahlContainer").dialog({
+                            height: 400,
+                            width: 600,
+                            resize: "auto",
+                            show: {
+                                effect: "fade",
+                                duration: 500
+                            },
+                            hide: {
+                                effect: "fade",
+                                duration: 500
+                            },
+                            open: function() {
+                                $("#tblMandantenAuswahl tbody tr").css("cursor", "pointer");
+                                $("#tblMandantenAuswahl tbody").off("dblclick", "tr");
+                                $("#tblMandantenAuswahl tbody").on("dblclick", "tr", function() {
+                                    var a = tblMandantenAuswahl.row(this).data();
+                                    tblMandantengruppe.row.add([a[0], a[1], a[2], a[3]]).draw();
+                                    tblMandantengruppe.column(0).visible(!1).draw();
+                                    $("#mandantenlisteAuswahlContainer").dialog("close")
+                                })
+                            }
+                        })
+                    }
+                })
+
+
+                $("#betrGrpSuchenContainer").dialog({
+                    height: 450,
+                    width: 875,
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    modal: true,
+                    open: function() {
+                        $("#tblBetrGrpSuchen tbody tr").css("cursor", "pointer");
+                        $("#tblBetrGrpSuchen tbody").off("dblclick", "tr");
+                        $("#tblBetrGrpSuchen tbody").on("dblclick", "tr",
+                        function() {
+
+                            const selectedRecord =
+                                tblBetrGrpSuchen.row(this).data()
+
+                            readIntoFormFields(head(selectedRecord))
+
+                            $("#betrGrpSuchenContainer").dialog("close")
+                        })
+                    }
+                })
         }
     )

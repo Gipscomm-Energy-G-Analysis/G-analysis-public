@@ -8,10 +8,12 @@ const scpRechteverwaltung_gipscommAdmins =
     freeze (
         new function () {
 
+            // compares the input hash with the hashes stored in the DB
             const validateHash =
                 input =>
                 equal(getHash(input))
-
+            
+            // If an invalid pw is inserted or the pop up is canceled, the Betreuergruppen/Superadmins tab is selected
             const backToBetreuergruppenTab =
                 () =>
                 ( $("#tabGipscAdm").css("background-color", "#B9C0C7")
@@ -20,6 +22,7 @@ const scpRechteverwaltung_gipscommAdmins =
                 , $("#tabBetrGrp").trigger("click")
                 )
 
+            // If a correct password is inserted, the GipscommAdmins tab gets selected
             const enterGipscommAdminsTab =
                 () => 
                 ( $("#tabGipscAdm").css("background-color", "#CED6DE")
@@ -28,30 +31,35 @@ const scpRechteverwaltung_gipscommAdmins =
                 , this.readFirst()
                 )
 
+            // If an invalid pw is inserted an alert fires and the Betreuergruppen/Superadmins tab is selected
             const actionWrongPassword =
                 () =>
                 ( alert("Das Passwort ist falsch!")
                 , backToBetreuergruppenTab()
                 )
 
+            // Decides the action after password input
             const validatePasswordAndAct =
                 result => 
                 validateHash($("#pwGipscAdm").val())(head(result).pw) ?
                 enterGipscommAdminsTab() :
                 actionWrongPassword()
 
+            // Queries the DB for comparision of input and users saved
             const validatePassword =
                 () =>
-                ajaxPost("php/Rechteverwaltung/confirmPassword.php")()
+                ajaxPost("php/Rechteverwaltung/GipscommAdmins/confirmPassword.php")()
                 .then(validatePasswordAndAct)
                 .then(() => $("#gipscAdmZugang").dialog("close"))
 
+            // Cancels the attempt to enter the GipscommAdmins tab
             const cancelAccess =
                 () =>
                 ( backToBetreuergruppenTab()
                 , $("#gipscAdmZugang").dialog("close")
                 )
-                              
+            
+            // Handles the dialog
             this.confirmPassword =
                 () => {
                         $("#gipscAdmZugang").dialog({
@@ -80,10 +88,11 @@ const scpRechteverwaltung_gipscommAdmins =
                             }
                         })
                 }
-
+            
+            // Updates the indexedDB in case of save or delete of record
             this.updateIndexedDB =
                 () =>
-                ajaxPost("php/Rechteverwaltung/readGipscommAdmins.php")({})
+                ajaxPost("php/Rechteverwaltung/GipscommAdmins/readGipscommAdmins.php")({})
                 .then(
                     result => 
                     scpIndexedDB.dataIntoIDB(result)("gipscommAdmins")   
@@ -114,7 +123,7 @@ const scpRechteverwaltung_gipscommAdmins =
             // and then updates the indexedDB
             const saveFormData =
                 formData =>
-                ajaxPost("php/Rechteverwaltung/saveGipscommAdmin.php")(formData)
+                ajaxPost("php/Rechteverwaltung/GipscommAdmins/saveGipscommAdmin.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
                 .then(
@@ -143,7 +152,7 @@ const scpRechteverwaltung_gipscommAdmins =
                     .css("border", "1px solid black")
                     .css("padding", "1px")
                 ) :
-                ( $("#schtMdlState").val(state)
+                ( $("#gipscAdmState").val(state)
                 , $(".gipscAdmForm")
                     .css("background", "white")
                     .css("border", "1px solid black")
@@ -242,7 +251,7 @@ const scpRechteverwaltung_gipscommAdmins =
                 () => {
                     const gipscAdmID = $("#gipscAdmID").val()
 
-                    ajaxPost("php/Rechteverwaltung/deleteGipscommAdmin.php")({gipscAdmID})
+                    ajaxPost("php/Rechteverwaltung/GipscommAdmins/deleteGipscommAdmin.php")({gipscAdmID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")

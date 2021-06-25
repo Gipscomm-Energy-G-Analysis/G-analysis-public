@@ -1501,12 +1501,13 @@
                         <input id="gipscAdmState"/>
                         <input id="gipscAdmIdx"/>
                         <input id="betrGrpID"/>
+                        <input id="betrGrpState"/>
+                        <input id="betrGrpIdx"/>
                         <input id="sAdmID"/>
                         <input id="manGrpID"/>
                         <input id="admID"/>
                         <input id="benID"/>
                         <input id="knzInsCount"/>
-                        <input id="betrGrpCount" />
                         <input id="manRechteID"/>
                         <input id="sAdmCount" />
                         <input id="manGrpCount" />
@@ -1539,9 +1540,18 @@
                      </div>
                   </div>
                   <div id="infosBetreuerGruppen">
-                     <div class="navDropBox" style="height:20px;padding:3px;"> <img id="betrGrpLoeschen" title="Betreuergruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="betrGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpHinz" title="Neue Betreuergruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="betrGrpSuchen" title="Betreuergruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="betrGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="betrGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Betreuergruppe" src="images/last.png" alt="letzte" /> <img id="betrGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Betreuergruppe" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="betrGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Betreuergruppe" src="images/previous.png" alt="vorherige" /> <img id="betrGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Betreuergruppe" src="images/first.png" alt="erste" />
-                        <!-- <label>Betr. Gruppe:</label>
-                        <select class="betrPfad"></select> -->
+                     <div class="navDropBox" style="height:20px;padding:3px;"> 
+                        <img id="betrGrpLoeschen" title="Betreuergruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                        <img id="betrGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                        <img id="betrGrpHinz" title="Neue Betreuergruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                        <img id="betrGrpSuchen" title="Betreuergruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                        <img id="betrGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> 
+                        <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                        <img id="betrGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Betreuergruppe" src="images/last.png" alt="letzte" /> 
+                        <img id="betrGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Betreuergruppe" src="images/next.png" alt="nächste" /> 
+                        <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                        <img id="betrGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Betreuergruppe" src="images/previous.png" alt="vorherige" /> 
+                        <img id="betrGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Betreuergruppe" src="images/first.png" alt="erste" />
                      </div>
                      <div class="betreuerGruppe">
                         <form action="" method="post">
@@ -1551,37 +1561,37 @@
                               </div>
                               <div class="controlDiv">
                                  <label>Firma</label>
-                                 <input id="firmaBetrGrp" />
+                                 <input id="firmaBetrGrp" class="betrGrpForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Anzahl Mitarbeiter</label>
-                                 <input id="anzahlMitarbeiterBetrGrp" />
+                                 <input id="anzahlMitarbeiterBetrGrp" class="betrGrpForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Anschrift</label>
-                                 <input id="anschriftBetrGrp" />
+                                 <input id="anschriftBetrGrp" class="betrGrpForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>PLZ Ort</label>
-                                 <input id="plzBetrGrp" style="width:1cm; margin-right:0px;" />
-                                 <input id="ortBetrGrp" style="width:2.1cm; margin-left:0px;" />
+                                 <input id="plzBetrGrp" style="width:1cm; margin-right:0px;" class="betrGrpForm"/>
+                                 <input id="ortBetrGrp" style="width:2.1cm; margin-left:0px;" class="betrGrpForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Geschäftsführer</label>
-                                 <input id="geschaeftsfuehrerBetrGrp" />
+                                 <input id="geschaeftsfuehrerBetrGrp" class="betrGrpForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Telefon</label>
-                                 <input id="telefonBetrGrp" />
+                                 <input id="telefonBetrGrp" class="betrGrpForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>E-Mail</label>
-                                 <input id="emailBetrGrp" />
+                                 <input id="emailBetrGrp" class="betrGrpForm"/>
                               </div>
                               <div>
                                  <div class="controlDiv" style="width:21.80cm;">
                                     <label>Notiz</label>
-                                    <textarea rows="3" id="notizBetrGrp" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;"></textarea>
+                                    <textarea rows="3" id="notizBetrGrp" style="font-size: 12px;font-family:Roboto, helvetica, arial, sans-serif;width:17.95cm;" class="betrGrpForm"></textarea>
                                  </div>
                               </div>
                            </div>
@@ -1591,11 +1601,16 @@
                                  <label>DBs</label>
                               </div>
                               <br>
-                              <div class="infosBlock">
-                                 <div id="mandanteTreeView">
-
-                                 </div>
-                              </div>
+                              <button id="manZuBetrGrpHinz">Mandant hinzufügen</button>
+                              <table id="tblMandantenBetrGrp" class="stripe hover row-border compact dt-left custom" style="font-size:12px;width:100%;">
+                                 <thead>
+                                    <tr>
+                                       <th style="display:none;">id</th>
+                                       <th>Mandant</th>
+                                       <th>Datenbank</th>
+                                 </thead>
+                                 <tbody></tbody>
+                              </table>
                            </div>
                            <div class="navDropBox" style="height:20px;padding:3px;"> <img id="sAdmLoeschen" title="Mandant löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="sAdmSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="sAdmHinz" title="Neuen Mandanten erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="sAdmSuchen" title="Mandanten suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="sAdmMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="sAdmLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="sAdmNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="sAdmPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="sAdmFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" /> </div>
                            <div class="infosBlock">
@@ -8204,6 +8219,18 @@
     <!--Save new Schicht if not all inputs are filled-->
     <!--Meldung-->
     <!--  -->
+    <div id="saveBetrGrpDialog" style="display:none;">
+        <p>
+            Nicht alle Felder sind ausgefüllt.<br>
+            Soll trotzdem gespeichert werden ? <br>
+        </p>
+        <br>
+        <button id="saveBetrGrpOk">Ok</button>
+        <button id="saveBetrGrpCancel" style="margin-left:50px;">Abbrechen</button>
+    </div>
+    <!--Save new Schicht if not all inputs are filled-->
+    <!--Meldung-->
+    <!--  -->
     <div id="saveSchichtDialog" style="display:none;">
         <p>
             Nicht alle Felder sind ausgefüllt.<br>
@@ -10865,27 +10892,6 @@
           </table>
       </div>
   </div>
-    <div id="betrGrpListeContainer" style="display:none;font-size:12px;">
-      <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
-      </div> -->
-      <div id="buttonsUndTabelle" style="margin-left:0px;">
-          <table id="tblBetrGrplisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
-              <thead>
-              <tr>
-                  <th>Firma</th>
-                  <th>Anzahl Mitarbeiter</th>
-                  <th>Anschrift</th>
-                  <th>PLZ Ort</th>
-                  <th>Geschäftsführer</th>
-                  <th>Telefon</th>
-                  <th>E-Mail</th>
-                  <th>Notiz</th>
-              </tr>
-              </thead>
-              <tbody></tbody>
-          </table>
-      </div>
-  </div>
     <div id="sAdmSuchenListeContainer" style="display:none;font-size:12px;">
          <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
          </div> -->
@@ -10906,6 +10912,19 @@
                <tbody></tbody>
             </table>
          </div>
+      </div>
+      <div id="betrGrpSuchenContainer" style="display:none;font-size:12px;">
+            <table id="tblBetrGrpSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+               <thead>
+               <tr>
+                     <th>idx</th>
+                     <th>Firma</th>
+                     <th>Anschrift</th>
+                     <th>Ort</th>
+               </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
       </div>
       <div id="gipscAdmSuchenContainer" style="display:none;font-size:12px;">
             <table id="tblGipscAdmSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
@@ -11008,7 +11027,9 @@
                     idxDB
                     .version(1)
                     .stores(
-                        { schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz, liegRef"
+                        { mandanten : "man_ID, betrGrp_ID, nameMan, dbName"
+
+                        , schichtModelle : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz, liegRef"
                         , schichten : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
                         , schichtModelleHist : "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz, liegRef"
                         , schichtenHist : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
@@ -11029,6 +11050,7 @@
                 <script type="text/javascript" src="src/js/Schichtdaten/historie.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/rechteverwaltung.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/gipscommAdmins.js"></script>
+                <script type="text/javascript" src="src/js/Rechteverwaltung/betreuergruppen.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
                 <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>

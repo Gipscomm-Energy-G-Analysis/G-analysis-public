@@ -144,11 +144,6 @@ const scpSchichtdaten =
             const disableLiegRef =
                 () =>
                 $(".schtDatLieg").css("display", "none")
-            
-            // Gets the state of the "Mit Liegenschaftsbezug" checkbox
-            const hasLiegRef =
-                () =>
-                $("#liegSchtDat").prop("checked")
 
             // Enables / Disables lieg reference
             this.setLiegRefState =
