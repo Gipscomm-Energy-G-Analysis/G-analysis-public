@@ -6,57 +6,10 @@ var anlageObj={};
 var allPrevVal = [];
 $(document).ready(function() {
     var c = this;
-    if(sessionStorage.getItem("position") == 'gipsAdm') {
-        var roleId = 1;
-        //alleNutzerRollenUndBerechtigungen(roleId);
-        mandantenEinlesen("alle", null, null);
-    } else if(sessionStorage.getItem("position") == 'sAdm') {
-        var roleId = 2;
-        var tableName = 'superAdmins';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID"));
-        $("#sdmRoles").css("display", "none");
-        $("#sAdmRollenUndBerechtigungen").css("display", "none");
-        $("#adminsRollenUndBerechtigungen").css("display", "none");
-        $("#superadmincommTreeview").css("display", "none");
-        $("#tabGipscAdm").css("display", "none");
-        $("#tabBetrGrp").css("display", "none");
-        $("#betrGrpMenu").css("display", "none");
-        $(".sAdmLiMenu").css("display", "none");
-        mandantenEinlesen($("#betrGrpID").val(), null, null);
-    } else if(sessionStorage.getItem("position") == 'adm') {
-        var roleId = 4;
-        var tableName = 'admins';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
-        $("#sAdmRollenUndBerechtigungen").css("display", "none");
-        $("#adminsRollenUndBerechtigungen").css("display", "none");
-        $("#superadmincommTreeview").css("display", "none");
-        $("#adminRoles").css("display", "none");
-        $("#admincommTreeview").css("display", "none");
-    } else if(sessionStorage.getItem("position") == 'ben') {
-        var roleId = 5;
-        var tableName = 'benutzer';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        $("#benutzerRoles ").css("display", "none");
-        //mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
-        $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")): $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID"));
-    } else {
-        var roleId = 3;
-        //alleNutzerRollenUndBerechtigungen(roleId);
-        mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0);
-    }
-    // "gipsAdm" == sessionStorage.getItem("position") ?
-    //  mandantenEinlesen("alle", null, null) : "sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : "adm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi, #manGrpMenuLi, #admMenuLi").css("display",
-    //     "none"), $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabAdm").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0)) : "ben" == sessionStorage.getItem("position") && ($("#rechtMenuLi").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ?
-    //     mandantenEinlesen(null, "man_ID",
-    //     sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0));
+
+    scpRechteverwaltung
+    .actionUserPosition(sessionStorage.getItem("position"))
+
     betrGrpEinlesen();
     manGrpEinlesen();
     anlagenGruppenEinlesen();
@@ -1491,64 +1444,8 @@ $(document).ready(function() {
     $("#sAdmSuchen").click(function() {
         sAdmSuchenlisteErstellen()
     });
-    $("#gipscAdmSuchen").click(function() {
-        gipscAdmSuchenlisteErstellen()
-    });
     $("#manGrpSuchen").click(function() {
         manGrpSuchenlisteErstellen()
-    });
-    
-
-    // Save Roles and Permissions
-    // $("#gipscommRollenUndBerechtigungen").click(function() {
-    //     gipscommRollenUndBerechtigungen()
-    // });
-    // $("#sAdmRollenUndBerechtigungen").click(function() {
-    //     sAdmRollenUndBerechtigungen()
-    // });
-    // $("#adminsRollenUndBerechtigungen").click(function() {
-    //     adminsRollenUndBerechtigungen()
-    // });
-    // $("#benutzerRollenUndBerechtigungen").click(function() {
-    //     benutzerRollenUndBerechtigungen()
-    // });
-
-    // Get Checked data from database
-    $("#gipscAdmLast, #gipscAdmNext, #gipscAdmPrevious, #gipscAdmFirst").click(function() {
-        gipscommGetRollenUndBerechtigungen()
-    });
-    $("#sAdmLast, #sAdmFirst, #sAdmPrevious, #sAdmNext").click(function() {
-        sAdmGetRollenUndBerechtigungen()
-    });
-    $("#admLast, #admNext, #admPrevious, #admFirst").click(function() {
-        adminsGetRollenUndBerechtigungen()
-    });
-    $("#benFirst, #benLast, #benNext, #benPrevious").click(function() {
-        benutzerGetRollenUndBerechtigungen()
-    });
-    $("#tabBetrGrp").on("click", function() {
-        $( "div#superadmincommTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-           treeObject,
-           {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
-    });
-    $("#tabAdm").on("click", function() {
-        $( "div#admincommTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-           treeObject,
-           {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("admincommTreeview").appendChild( tw.root	 )
-    });
-    $("#tabBen").on("click", function() {
-        $( "div#benutzerTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-           treeObject,
-           {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("benutzerTreeview").appendChild( tw.root	 )
     });
 
     $("#frmSuchenBerEdi").click(function() {
@@ -1647,8 +1544,7 @@ $(document).ready(function() {
         }
         /*new-mm-end 23-03-2021*/
     });
-    $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
-        "gipscAdmFirst" == this.id ? (gipscAdmNavID = 0, readInstanzen(this.id, gipscAdmNavID)) :
+    $("#betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "betrGrpFirst" == this.id ? (betrGrpNavID = 0, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmFirst" == this.id ? (sAdmNavID = 0, readInstanzen(this.id, sAdmNavID)) :
         "manGrpFirst" == this.id ? (manGrpNavID = 0, readInstanzen(this.id, manGrpNavID)) :
@@ -1680,6 +1576,37 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
+
+    // Rechteverwaltung
+    //
+    // GipscommAdmins
+    //
+    // See Rechteverwaltung/gipscommAdmins.js
+    //
+    // Arrow Navigation
+    //
+    $("#gipscAdmFirst").click(scpRechteverwaltung_gipscommAdmins.readFirst)
+    $("#gipscAdmPrevious").click(scpRechteverwaltung_gipscommAdmins.readPrevious)
+    $("#gipscAdmNext").click(scpRechteverwaltung_gipscommAdmins.readNext)
+    $("#gipscAdmLast").click(scpRechteverwaltung_gipscommAdmins.readLast)
+    //
+    // Search Navigation
+    //
+    $("#gipscAdmSuchen").click(scpRechteverwaltung_gipscommAdmins.searchGipscommAdmin)
+    //
+    // Delete Record
+    //
+    $("#gipscAdmLoeschen").click(scpRechteverwaltung_gipscommAdmins.deleteGipscommAdmin)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#gipscAdmHinz").click(scpRechteverwaltung_gipscommAdmins.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#gipscAdmSpeichern").click(scpRechteverwaltung_gipscommAdmins.validateAndSaveFormData)
+
+
     // Schichtdaten
     // See Schichtdaten/schichtdaten.js
     //
@@ -1721,8 +1648,7 @@ $(document).ready(function() {
     $("#schtDatHistSuchen").click(scpSchichtdaten_historie.searchSchichtModellHist)
     //
 
-    $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
-        "gipscAdmPrevious" == this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) :
+    $("#betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) :
         "manGrpPrevious" == this.id ? 0 < manGrpNavID && (manGrpNavID--, readInstanzen(this.id, manGrpNavID)) :
@@ -1754,8 +1680,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmNext, #betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
-        "gipscAdmNext" == this.id ? gipscAdmNavID < $("#gipscAdmCount").val() - 1 && (gipscAdmNavID++, readInstanzen(this.id, gipscAdmNavID)) :
+    $("#betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
         "betrGrpNext" == this.id ? betrGrpNavID < $("#betrGrpCount").val() - 1 && (betrGrpNavID++, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmNext" == this.id ? sAdmNavID < $("#sAdmCount").val() - 1 && (sAdmNavID++, readInstanzen(this.id, sAdmNavID)) :
         "manGrpNext" == this.id ? manGrpNavID < $("#manGrpCount").val() - 1 && (manGrpNavID++, readInstanzen(this.id, manGrpNavID)) :
@@ -1787,8 +1712,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmLast, #betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
-        "gipscAdmLast" == this.id ? (gipscAdmNavID = $("#gipscAdmCount").val() - 1, readInstanzen(this.id, gipscAdmNavID)) :
+    $("#betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
         "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
         "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) :
         "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) :
@@ -1973,12 +1897,11 @@ $(document).ready(function() {
     $(".berPfad").change(function() {
         berPfadChange(this)
     });
-    $("#gipscAdmHinz, #betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
+    $("#betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
         clearFields(this.id);
         b = !0
     });
-    $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
-        "gipscAdmSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+    $("#betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
         "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "sAdmSpeichern" == this.id ? "" != $("#nameSAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameSAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
