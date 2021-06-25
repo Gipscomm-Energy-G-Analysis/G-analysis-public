@@ -218,7 +218,7 @@ class DashboardController extends Controller
                     'auftragsmenge' => (int)($prodData['AMOUNT_REQUEST']),
                     'gutmenge' => (int)($prodData['AMOUNT_GOOD']),
                     'ausschuss' => (int)($prodData['AMOUNT_BAD']),
-                    'zeit_zyklus' => Str::of($prodData['CYCLETIME'])->trim(),
+                    'zeit_zyklus' => number_format($prodData['CYCLETIME'], 2),
                     'letzte_störung' => Str::of($prodData['LASTUPDATE'])->trim(),
                     'werkzeug' => Str::of($prodData['TOOLNAME'])->trim(),
                     'kavitäten' =>(int)$prodData['CAVITY'],
@@ -226,10 +226,10 @@ class DashboardController extends Controller
                     'bildAnl' => $machineData['bildAnl'],
                     'shards' => $shards,
                     'shardsData' => [
-                        'messstelle1IDAnl' => $messstelle1IDAnl,
-                        'messstelle2IDAnl' => $messstelle2IDAnl,
-                        'messstelle3IDAnl' => $messstelle3IDAnl,
-                        'messstelle4IDAnl' => $messstelle4IDAnl
+                        'messstelle1IDAnl' => number_format($messstelle1IDAnl,2),
+                        'messstelle2IDAnl' => number_format($messstelle2IDAnl,2),
+                        'messstelle3IDAnl' => number_format($messstelle3IDAnl,2),
+                        'messstelle4IDAnl' => number_format($messstelle4IDAnl,2)
                     ]
                 ];
 

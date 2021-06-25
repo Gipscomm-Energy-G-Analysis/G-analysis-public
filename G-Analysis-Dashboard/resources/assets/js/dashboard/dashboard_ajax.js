@@ -52,12 +52,14 @@ const getMachineData = (machine_id, type) => {
             if(data.shards >= 1) {
                 let html = '';
                 for (const shard in shardsData) {
-                    html += `<div class="form-group row">
+                    if(shardsData[shard] != 0) {
+                        html += `<div class="form-group row">
                                 <label for="${shard}" class="col-sm-2 col-form-label">${shard}</label>
                                 <div class="col-sm-4">
                                     <input class="form-control" type="text" placeholder="${shard}" value="${shardsData[shard]}" readonly>
                                 </div>
                             </div>`;
+                    }
                 };
                 inputContainer.innerHTML = html;
             } else {

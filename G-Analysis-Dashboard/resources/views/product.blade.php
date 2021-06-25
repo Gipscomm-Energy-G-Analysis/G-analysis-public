@@ -165,12 +165,14 @@
                             <div class="card-body"  id="shards" >
                                 @if($data['shards'] >= 1)
                                     @foreach($data['shardsData'] as $key=>$value)
-                                        <div class="form-group row" id="shard">
-                                            <label for="{{$key}}" class="col-sm-2 col-form-label">{{$key}}</label>
-                                            <div class="col-sm-4">
-                                                <input class="form-control" type="text" placeholder="{{$key}}" value="{{$value}}" readonly>
+                                        @if($value != 0)
+                                            <div class="form-group row" id="shard">
+                                                <label for="{{$key}}" class="col-sm-2 col-form-label">{{$key}}</label>
+                                                <div class="col-sm-4">
+                                                    <input class="form-control" type="text" placeholder="{{$key}}" value="{{$value}}" readonly>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     @endforeach
                                 @endif
                             </div>
