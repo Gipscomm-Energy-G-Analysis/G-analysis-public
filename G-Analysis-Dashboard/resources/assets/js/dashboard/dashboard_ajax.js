@@ -22,6 +22,7 @@ const getMachineData = (machine_id, type) => {
         },
     }).done( function(response) {
         const data = response.data;
+        console.log('data',data);
        // console.log(data);
         spinner.stop();
         if(response.code == 200 ){
@@ -45,22 +46,23 @@ const getMachineData = (machine_id, type) => {
             $('#machine-image').attr('src',data.bildAnl);
             $("#machine-image").on("error", function () {
                 $(this).attr("src", "images/Blasanlage.jpg");
-            });  
-            var inputContainer = document.getElementById("shard");
-            if(data.shards >= 1){
-                for (let i = 0; i < data.shards; i++) {
-                    let html ='';
-                    let messmessstelle = 'messstelle'+i+'IDAnl'; 
-                    html =+  ('<div class="form-group row"><label for="messstelle+'+i+'IDAnl" class="col-sm-2 col-form-label">Messstelle'+i+'IDAnl</label><div class="col-sm-4"> <input class="form-control" type="text" placeholder="Messstelle <input class="form-control" type="text" placeholder="Messstelle'+i+'IDAnl" value="data.messmessstelle" readonly>IDAnl" value="data.messmessstelle" readonly> </div></div>');
-                }
-                inputContainer.after(html); 
-            }  
-            else{
+            });
+            let inputContainer = document.getElementById("shards");
+            let shardsData = data.shardsData;
+            if(data.shards >= 1) {
+                let html = '';
+                for (const shard in shardsData) {
+                    html += `<div class="form-group row">
+                                <label for="${shard}" class="col-sm-2 col-form-label">${shard}</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" type="text" placeholder="${shard}" value="${shardsData[shard]}" readonly>
+                                </div>
+                            </div>`;
+                };
+                inputContainer.innerHTML = html;
+            } else {
                 document.getElementById("shard").style.display = "none";
-            }       
-            // if(data.bildAnl === 'uploadsDownloads/images/002_badberundefined' || data.bildAnl == null){
-            //     $('#machine-image').attr('src','images/Blasanlage.jpg');
-            // }
+            }
         } else if(response.anl_ID !== undefined) {
             toastr.error(response.message);
             $('.navigation').attr('data-value', response.anl_ID);
@@ -79,7 +81,7 @@ const getMachineData = (machine_id, type) => {
             $('#machine-image').attr('src','images/Blasanlage.jpg');
 
         }
-     
+
     });
 }
 
@@ -109,11 +111,11 @@ imageInputField.addEventListener('change', () => {
     const machineImage = document.getElementById('machineImage');
     var myFormData = new FormData();
     var files = machineImage.files;
-    var file = files[0]; 
+    var file = files[0];
     const anl_ID = $('#anl_ID').val();
     myFormData.append('file',file);
     myFormData.append('anl_ID',anl_ID);
-    
+
     $.ajax({
         headers:{'X-CSRF-Token':$('meta[name=csrf_token]').attr('content')},
         type:"post",

@@ -68,19 +68,19 @@ class DashboardController extends Controller
                 for ($i=1;$i <= 4;$i++){
                     if(!empty($machineData['messstelle'.$i.'IDAnl'])) $shards++;
                 }
-               
+
             //dd($machineData);
                 $messstelle1IDAnl = 0;
                 $messstelle2IDAnl = 0;
                 $messstelle3IDAnl = 0;
                 $messstelle4IDAnl = 0;
-                if($machineData['messstelle1IDAnl'] != '' && $machineData['messstelle1IDAnl'] != 0)  
+                if($machineData['messstelle1IDAnl'] != '' && $machineData['messstelle1IDAnl'] != 0)
                 {
                     if(!empty($machineData['messstelle1IDAnl'])){
                         $messstellentData = Messstellen::where('mst_ID',$machineData['messstelle1IDAnl'])->orderBy('mst_ID', 'desc')->first();
                         if($messstellentData['msm_ID'] != ''){
                             $messmittelData = Messmittel::where('msm_ID',$messstellentData['msm_ID'])->orderBy('msm_ID', 'desc')->first();
-                            
+
                             if(!empty($messmittelData['kanal1Msm'])){
                                 $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->first();
                                 if(!empty($kanal1Msm)){
@@ -106,15 +106,15 @@ class DashboardController extends Controller
                                 }
                             }
                         }
-                    } 
+                    }
                 }
-                if($machineData['messstelle2IDAnl'] != '' && $machineData['messstelle2IDAnl'] != 0)  
+                if($machineData['messstelle2IDAnl'] != '' && $machineData['messstelle2IDAnl'] != 0)
                 {
                    if(!empty($machineData['messstelle2IDAnl'])){
                         $messstellentData = Messstellen::where('mst_ID',$machineData['messstelle2IDAnl'])->orderBy('mst_ID', 'desc')->first();
                         if($messstellentData['msm_ID'] != ''){
                             $messmittelData = Messmittel::where('msm_ID',$messstellentData['msm_ID'])->orderBy('msm_ID', 'desc')->first();
-                            
+
                             if(!empty($messmittelData['kanal1Msm'])){
                                 $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->first();
                                 if(!empty($kanal1Msm)){
@@ -142,13 +142,13 @@ class DashboardController extends Controller
                         }
                     }
                 }
-                if($machineData['messstelle3IDAnl'] != '' && $machineData['messstelle3IDAnl'] != 0)  
-                {               
+                if($machineData['messstelle3IDAnl'] != '' && $machineData['messstelle3IDAnl'] != 0)
+                {
                     if(!empty($machineData['messstelle3IDAnl'])){
                         $messstellentData = Messstellen::where('mst_ID',$machineData['messstelle3IDAnl'])->orderBy('mst_ID', 'desc')->first();
                         if(!empty($messstellentData['msm_ID'])){
                             $messmittelData = Messmittel::where('msm_ID',$messstellentData['msm_ID'])->orderBy('msm_ID', 'desc')->first();
-                            
+
                             if(!empty($messmittelData['kanal1Msm'])){
                                 $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->first();
                                 if(!empty($kanal1Msm)){
@@ -176,7 +176,7 @@ class DashboardController extends Controller
                         }
                     }
                 }
-                if($machineData['messstelle4IDAnl'] != '' && $machineData['messstelle4IDAnl'] != 0)  
+                if($machineData['messstelle4IDAnl'] != '' && $machineData['messstelle4IDAnl'] != 0)
                 {
                     if(!empty($machineData['messstelle4IDAnl'])){
                         $messstellentData = Messstellen::where('mst_ID',$machineData['messstelle3IDAnl'])->orderBy('mst_ID', 'desc')->first();
@@ -217,7 +217,7 @@ class DashboardController extends Controller
                     'bisher_produziert' => (int)($prodData['AMOUNT_GOOD']),
                     'auftragsmenge' => (int)($prodData['AMOUNT_REQUEST']),
                     'gutmenge' => (int)($prodData['AMOUNT_GOOD']),
-                    'ausschuss' => (int)($prodData['AMOUNT_BAD']),                    
+                    'ausschuss' => (int)($prodData['AMOUNT_BAD']),
                     'zeit_zyklus' => Str::of($prodData['CYCLETIME'])->trim(),
                     'letzte_störung' => Str::of($prodData['LASTUPDATE'])->trim(),
                     'werkzeug' => Str::of($prodData['TOOLNAME'])->trim(),
@@ -225,10 +225,12 @@ class DashboardController extends Controller
                     'anl_ID' => $machineData['anl_ID'],
                     'bildAnl' => $machineData['bildAnl'],
                     'shards' => $shards,
-                    'messstelle1IDAnl' => $messstelle1IDAnl,
-                    'messstelle2IDAnl' => $messstelle2IDAnl,
-                    'messstelle3IDAnl' => $messstelle3IDAnl,
-                    'messstelle4IDAnl' => $messstelle4IDAnl
+                    'shardsData' => [
+                        'messstelle1IDAnl' => $messstelle1IDAnl,
+                        'messstelle2IDAnl' => $messstelle2IDAnl,
+                        'messstelle3IDAnl' => $messstelle3IDAnl,
+                        'messstelle4IDAnl' => $messstelle4IDAnl
+                    ]
                 ];
 
                 return ['code'=>200, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'Data Retrived Successfully.'];

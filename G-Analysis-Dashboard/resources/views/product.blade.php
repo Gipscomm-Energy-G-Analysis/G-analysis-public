@@ -43,7 +43,7 @@
 
         <!-- Main content -->
         @php $image = 'images/Blasanlage.jpg'; @endphp
-        @if(file_exists($data['bildAnl']))                            
+        @if(file_exists($data['bildAnl']))
         @php  $image = $data['bildAnl']; @endphp
         @endif
         <section class="content">
@@ -101,7 +101,7 @@
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="gutmenge" placeholder="Gutmenge"  value="{{$data['gutmenge']}}" readonly>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="form-group row">
                                         <label for="ausschuss" class="col-sm-2 col-form-label">Ausschuss</label>
                                         <div class="col-sm-10">
@@ -119,7 +119,7 @@
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="werkzeug" placeholder="Werkzeug" value="{{$data['werkzeug']}}" readonly>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <!-- <div class="form-group row">
                                         <label for="artikel_stunde" class="col-sm-2 col-form-label">Artikel/Stunde</label>
                                         <div class="col-sm-10">
@@ -155,23 +155,32 @@
                             </form>
                         </div>
                     </div>
+                    <div class="card card-info mt-4">
+                        <div class="card-header">
+                            <h3 class="card-title">Shards</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form class="form-horizontal">
+                            <div class="card-body"  id="shards" >
+                                @if($data['shards'] >= 1)
+                                    @foreach($data['shardsData'] as $key=>$value)
+                                        <div class="form-group row" id="shard">
+                                            <label for="{{$key}}" class="col-sm-2 col-form-label">{{$key}}</label>
+                                            <div class="col-sm-4">
+                                                <input class="form-control" type="text" placeholder="{{$key}}" value="{{$value}}" readonly>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <!-- /.card-body -->
-                <div class="card-body"  id="shards" >
-                @if($data['shards'] >= 1)  
-                   @for($i = 1; $i <= $data['shards']; $i++)
-                    <div class="form-group row" id="shard">
-                        <label for="messstelle{{$i}}IDAnl" class="col-sm-2 col-form-label">Messstelle{{$i}}IDAnl</label>
-                        <div class="col-sm-4">
-                        @php $messmessstelle = 'messstelle'.$i.'IDAnl'; 
-                        @endphp                         
-                             <input class="form-control" type="text" placeholder="Messstelle{{$i}}IDAnl" value="{{$data[$messmessstelle]}}" readonly>
-                        </div>
-                    </div>
-                    @endfor
-                @endif
-                    
-               </div>
+
+
+
             </div>
 
             <!-- Modal Start -->
