@@ -94,6 +94,45 @@ const scpRechteverwaltung_gipscommAdmins =
                 a =>
                 $(`#${a}`).val()
 
+            // Returns an object that contains the form data
+            const getFormData =
+                () => (
+                    { username : getFieldValue("benutzernameGipscAdm")
+                    , modus : getFieldValue("gipscAdmState")
+                    , gipscAdmID : getFieldValue("gipscAdmID")
+                    , pwHash : getHash(getFieldValue("passwortGipscAdm"))
+                    }
+                )
+
+            // Checks if there are empty input values
+            const completeFormData =
+                () => 
+                !(emptyString(getFieldValue("benutzernameGipscAdm")) || 
+                emptyString(getFieldValue("passwortGipscAdm"))) 
+            
+            // Inserts or updates the given record into the sql srv DB
+            // and then updates the indexedDB
+            const saveFormData =
+                formData =>
+                ajaxPost("php/Rechteverwaltung/saveGipscommAdmin.php")(formData)
+                .then(result => alert(datensatzGespeichert(result)))
+                .then(this.updateIndexedDB)
+                .then(
+                    () =>
+                    equal($("#gipscAdmState").val())("new") ?
+                    this.readLast() :
+                    false
+                )
+
+            // Checks if all input elements are set and either shows the
+            // dialog which asks if the record should be saved anyways
+            // or if complete directly saves the record
+            this.validateAndSaveFormData =
+                    () => 
+                    completeFormData() ?
+                    saveFormData(getFormData()) :
+                    alert("Benutzername oder Passwort wurden nicht definiert !")
+
             // Sets the create new or update state for saving
             const setState =
                 state =>
@@ -146,6 +185,7 @@ const scpRechteverwaltung_gipscommAdmins =
                             $("#gipscAdmIdx").val(idx)
                             $("#gipscAdmID").val(gipscommAdmin.gipsAdm_ID)
                             $("#benutzernameGipscAdm").val(gipscommAdmin.username)
+                            clearField("passwortGipscAdm")
 
                             setState("edit")
                         }
@@ -163,7 +203,6 @@ const scpRechteverwaltung_gipscommAdmins =
                     readIntoFormFields(0) :
                     this.clearFields()
                 )
-                
                 
             // Sets the form data input values of the previous Schicht Modell
             // depending on the current records index

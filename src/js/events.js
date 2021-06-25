@@ -1601,6 +1601,10 @@ $(document).ready(function() {
     // Clear Fields For Creation Of New Record
     //
     $("#gipscAdmHinz").click(scpRechteverwaltung_gipscommAdmins.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#gipscAdmSpeichern").click(scpRechteverwaltung_gipscommAdmins.validateAndSaveFormData)
 
 
     // Schichtdaten
@@ -1897,8 +1901,7 @@ $(document).ready(function() {
         clearFields(this.id);
         b = !0
     });
-    $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
-        "gipscAdmSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+    $("#betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
         "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "sAdmSpeichern" == this.id ? "" != $("#nameSAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameSAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
