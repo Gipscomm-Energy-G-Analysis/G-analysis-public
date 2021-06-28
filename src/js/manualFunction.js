@@ -3,9 +3,6 @@
 //Ajax Call for the Manuel module serach 16-03-2020
 /*mm-new-start*/
 /*new-mm-start 26-03-2021*/
-//<---24-6-2021---
-var flagInvest = 0; //Global Variable
-//---end--->
 function tblAnlPrdktOhneZeitintervallIMwSuchenMethod() {
     $("#tblAnlPrdktMStOhneZeitintervallIMwSearchContainer").css("display", "block");
     /*new-mm-start*/
@@ -590,6 +587,10 @@ function intBdePrdktIMwHistorieSpeichernPopUp() {
                 $("#infosIntBdePrdktIMwHistoriePopUpDiv input").val("");
                 $("#intBdePrdktIMwHistSpeichern, #intBdePrdktIMwHistNichtSpeichern").css("display", "inline");
                 $("#intBdePrdktIMwHistoriePopUp").dialog("close");
+                //<---25-6-2021---
+                $('#min_investment_energy').val('');
+                $('#max_investment_energy').val('');
+                // --end--->
             });
             $("#intBdePrdktIMwHistAbbrechen").on("click", function() {
                 $("#infosIntBdePrdktIMwHistoriePopUpDiv, #intBdePrdktIMwHistOk").css("display", "none");
@@ -3519,7 +3520,17 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     }
 
                     for (var e = 0; e < b; e++){
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        //<----25-6-2021---
+                        var min_val = a.queryInvest[e].invest_min != null ? a.queryInvest[e].invest_min : '';
+                        var max_val = a.queryInvest[e].invest_max != null  ? a.queryInvest[e].invest_max : '';
+                        var startDateInvest = a.queryInvest[e].startDate != null ? a.queryInvest[e].startDate : '';
+                        var startWeekInvest = a.queryInvest[e].startWeek != '' ? a.queryInvest[e].startWeek : '';
+                        var endDateInvest = a.queryInvest[e].endDate != '' ? a.queryInvest[e].endDate : '';
+                        var endWeekInvest = a.queryInvest[e].endWeek != "0"  ? a.queryInvest[e].endWeek : '';
+                        var timeIntervalInvest = a.queryInvest[e].zeitintervallAnl != "0" ? a.queryInvest[e].zeitintervallAnl : '';
+                        var countInvest = 0;
+                        //end-->
+                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                         //console.log(anlageObj[a.query1[e].mst_ID]);
                         //console.log(anlageObj);
                         var datesOfArr = [];
@@ -3582,7 +3593,15 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                 rdOnly = 'readonly';
                             }
                             var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                            //<--26-6-2021-- if else add by default else working
+                            if(rdOnly == 'readonly' && countInvest == 0){
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' placeholder="'+min_val+' '+max_val+'" value="'+inputVal+'"/></td>';
+                                countInvest = 1;
+                            }
+                            else{
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                            }
+                            //--end-->
                         }
                         $row += '</tr>';
                     }
@@ -3655,10 +3674,11 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                          var startDateInvest = a.queryInvest[e].startDate != null ? a.queryInvest[e].startDate : '';
                          var startWeekInvest = a.queryInvest[e].startWeek != '' ? a.queryInvest[e].startWeek : '';
                          var endDateInvest = a.queryInvest[e].endDate != '' ? a.queryInvest[e].endDate : '';
-                         var endWeekInvest = a.queryInvest[e].endWeek != 0  ? a.queryInvest[e].endWeek : '';
+                         var endWeekInvest = a.queryInvest[e].endWeek != "0"  ? a.queryInvest[e].endWeek : '';
+                         var timeIntervalInvest = a.queryInvest[e].zeitintervallAnl != "0" ? a.queryInvest[e].zeitintervallAnl : '';
                          // --end-->
 
-                        $row += '<tr id="dataEnabledRow-'+e+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                         var count1 = 0;
                         for (var r1 = 0; r1 <= years; r1++){
                             var m='disabled';
@@ -3819,7 +3839,17 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     }
                     var monthOfArr=[];
                     for (var e = 0; e < b; e++){
-                        $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                         //<----25-6-2021---
+                         var min_val = a.queryInvest[e].invest_min != null ? a.queryInvest[e].invest_min : '';
+                         var max_val = a.queryInvest[e].invest_max != null  ? a.queryInvest[e].invest_max : '';
+                         var startDateInvest = a.queryInvest[e].startDate != null ? a.queryInvest[e].startDate : '';
+                         var startWeekInvest = a.queryInvest[e].startWeek != '' ? a.queryInvest[e].startWeek : '';
+                         var endDateInvest = a.queryInvest[e].endDate != '' ? a.queryInvest[e].endDate : '';
+                         var endWeekInvest = a.queryInvest[e].endWeek != "0"  ? a.queryInvest[e].endWeek : '';
+                         var timeIntervalInvest = a.queryInvest[e].zeitintervallAnl != "0" ? a.queryInvest[e].zeitintervallAnl : '';
+                         var countInvest = 0;
+                         //end-->
+                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                         for (var r = 0; r <= months; r++){
                             var n='';
                             if(a.query1[e].ending ==0){
@@ -3864,7 +3894,13 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                 rdOnly = 'readonly';
                             }
                             var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                            //<--26-6-2021-- if else add by default else working
+                            if(rdOnly == 'readonly' && countInvest == 0){
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" placeholder="'+min_val+' '+max_val+'" value="'+inputVal+'"/></td>';
+                                countInvest = 1;
+                            }else{
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                            }
                         }
                         $row += '</tr>';
                     }
@@ -3889,7 +3925,17 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     }
                     var yearOfArr = [];
                     for (var e = 0; e < b; e++){
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                         //<----25-6-2021---
+                         var min_val = a.queryInvest[e].invest_min != null ? a.queryInvest[e].invest_min : '';
+                         var max_val = a.queryInvest[e].invest_max != null  ? a.queryInvest[e].invest_max : '';
+                         var startDateInvest = a.queryInvest[e].startDate != null ? a.queryInvest[e].startDate : '';
+                         var startWeekInvest = a.queryInvest[e].startWeek != '' ? a.queryInvest[e].startWeek : '';
+                         var endDateInvest = a.queryInvest[e].endDate != '' ? a.queryInvest[e].endDate : '';
+                         var endWeekInvest = a.queryInvest[e].endWeek != "0"  ? a.queryInvest[e].endWeek : '';
+                         var timeIntervalInvest = a.queryInvest[e].zeitintervallAnl != "0" ? a.queryInvest[e].zeitintervallAnl : '';
+                         var countInvest = 0;
+                         //end-->
+                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
 
                         for (var r = 0; r <= years; r++){
                             let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
@@ -3941,7 +3987,14 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                                 rdOnly = 'readonly';
                             }
                             var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query3);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                             //<--26-6-2021-- if else add by default else working
+                            if(rdOnly == 'readonly' && countInvest == 0){
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" placeholder="'+min_val+' '+max_val+'" value="'+inputVal+'"/></td>';
+                                countInvest = 1;
+                            }
+                            else{
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                            }
                         }
                         $row += '</tr>';
                     }
@@ -5237,7 +5290,7 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
     var notizBdeIMwAnlPrdkt =$("#notizBdeIMwAnlPrdkt").val();
     var einheitAnlPrdkt =$("#einheitAnlPrdkt").val();
 
-    if(mstIMw =='' || zeitintervallAnlPrdkt == 0 || notizBdeIMwAnlPrdkt=='' || einheitAnlPrdkt==''){
+    if(mstIMw =='' || zeitintervallAnlPrdkt == 0 ||  einheitAnlPrdkt==''){
         alert("Bitte füllen Sie die Felder aus");
         return false;
     }else{
@@ -5312,7 +5365,9 @@ function validateIntBdePrdktFrm(noEnding,Zeitintervall,sId,id){
 /*Concern Delete popup for the search functionality 05-10-2020*/
 /*new-mm-start 01-04-2021*/
 function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
-    // <----24-6-2021--- //if else condition added
+    // <----24-6-2021--- //if  condition added
+    var a = 1;
+    if(a != 1){
     //--end--->
     $("#intBdeConcernOrDeletePopUp").remove();
     $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none;'> <p>Warnung: Sie haben einen Wert besetzt, <br>der nicht mit der bereits gesetzten Datenlagen<br>in der Abfolge übereinstimmen kann.</p><div id='intBdeConcernOrDeletePopUpDiv'><button id='intBdeConcern' >Concern</button><button id='intBdeDelete'>Delete</button></div></div>").dialog({
@@ -5390,6 +5445,7 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
         }
     });
     $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+}
 }
 /*new-mm-end 01-04-2021*/
 
@@ -5558,6 +5614,12 @@ function resetInputsSearchMasseneingabe(){
     $('#inputNextBottomId').val("");
 
     $("#inputDefaultShowPopup").val(false);
+
+    //<---25-5-2021---
+    $('#min_investment_energy').val("");
+    $('#max_investment_energy').val("");
+    $('#mst_id_energy_investment').val("")
+    //--end-->
 }
 
 function einheitAnlOnChangeChildSelectOpt(einheitAnlVal){
@@ -6542,10 +6604,10 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
     if(min_val != '' && max_val != '' && current_val != ''){
         //<--Filter check --
         if(startweekinvest != filterStartWeek || startdateinvest != filterStartDate){
-            alert('Please Redirect to Interval time');
+            // alert('Please Redirect to Interval time');
             //<--Redirect Modal---
             $("#intBdeConcernOrDeletePopUp").remove();
-            $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value do not Enter in between Fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+            $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Please do not enter values in between fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
                 height: 250,
                 width: 450,
                 resize: "auto",
@@ -6574,6 +6636,7 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
                     $("#cancel_btn_invest").on("click", function() {
                         $("#intBdeConcernOrDeletePopUp").remove();
                         $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');     
                     
                     });
 
@@ -6587,10 +6650,10 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
         }
         else if(endweekinvest != "" && enddateinvest != ""){
             if(startweekinvest != filterStartWeek || startdateinvest != filterStartDate || endweekinvest != filterEndWeek || enddateinvest != filterEndDate){
-                alert('Please Select Redirect to Correct Time Interval');
+                // alert('Please Select Redirect to Correct Time Interval');
                 //<--Redirect Modal---
                 $("#intBdeConcernOrDeletePopUp").remove();
-                $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value do not Enter in between Fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Please do not enter values in between fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
                     height: 250,
                     width: 450,
                     resize: "auto",
@@ -6618,7 +6681,8 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
 
                         $("#cancel_btn_invest").on("click", function() {
                             $("#intBdeConcernOrDeletePopUp").remove();
-                            $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                            $('#'+current_row_id+' #'+current_td_input_id).val('');
+                            $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');       
                         
                         });
                         // flag = 1;
@@ -6633,7 +6697,7 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
         //--end-->
         else if(checkPrevVal == undefined){
             if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
-                alert('Value always be greater than minimum value and less than Max Value');
+                // alert('Value always be greater than minimum value and less than Max Value');
                 //$('#'+current_row_id+' #'+current_td_input_id).val('');
                 //<---Edit Modal---
                 $("#intBdeConcernOrDeletePopUp").remove();
@@ -6656,13 +6720,17 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
                             $("#intBdeConcernOrDeletePopUp").remove();
                             $('#config_mannual_default_energy').trigger('click');
                             getInvestValues(mstID);
+                            // setTimeout(function(){ 
+                            //     getInvestValues(mstID);
+                            //  }, 1000);
                         
                         });
 
                         $("#done_btn_invest").on("click", function() {
                         
                             $("#intBdeConcernOrDeletePopUp").remove();
-                            $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                            $('#'+current_row_id+' #'+current_td_input_id).val('');
+                            $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');    
                         
                         });
                         // flag = 1;
@@ -6682,9 +6750,10 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
             }
             if(checkNextVal != ''){
                 if(parseInt(current_val) > parseInt(max_val)){
-                    alert('Value always be Less than Maximum value');
+                    //alert('Value always be Less than Maximum value');
                     $('#'+current_row_id+' #'+current_td_input_id).val('');
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');     
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(''); 
+                    commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID);
                     return false;
                 }
                 else if(parseInt(current_val) >= parseInt(checkNextVal)){
@@ -6696,15 +6765,16 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
             }
 
             else if(parseInt(current_val) > parseInt(max_val)){
-                alert('Value always be Less than Maximum value');
+                // alert('Value always be Less than Maximum value');
                 $('#'+current_row_id+' #'+current_td_input_id).val(''); 
-                $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');      
+                $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID);      
                 return false;
             }
            
         }
         else if(checkPrevVal == '' && checkNextVal == ''){
-            alert('Can not fill value in between fields');
+            //alert('Can not fill value in between fields');
             //$('#'+current_row_id+' #'+current_td_input_id).val('');
             //redirectInvestValue(mstID);  
             //<--Redirect Modal---
@@ -6767,52 +6837,201 @@ function getInvestValues(mstID){
         fail: function() {
             alert("failed!!")
         },
-        success: function(a) {
-           // console.log(a);
-            a.forEach(element => {
-                $('#anlIMw').val(element.anlIMw);
-                $('#mst_id_energy_investment').val(element.mstID);
-                $('#anlNrIMw').val(element.anlNrIMw);
-                if(element.zeitintervallAnl == 2){
-                    $('.zeitintervallAnl_2').show();
-                    $('.zeitintervallAnl_NoEnding').show();
-                    $('#zeitintervallAnl option[value=' + element.zeitintervallAnl + ']').attr('selected', 'selected');
-                    $('#wochenWMassEingDataAnlStart1 option[value=' + element.startWeek + ']').attr('selected', 'selected');
-                    $('#wochenYMassEingDataAnlStart1').val(element.startDate);
-                    $('#wochenWMassEingDataAnlEnde1 option[value=' + element.endWeek + ']').attr('selected', 'selected');
-                    $('#wochenYMassEingDataAnlEnde1').val(element.endDate);
+        success: function(element) {
+            //<---By Default Remove Disabled Attribute;
+            removeAllInvestAttribute();
+            //--end-->
+            
+            for(i = 0; i < element.length; i++) {
+                // console.log('First Code',element[i]['zeitintervallAnl']);
+                // console.log('Second code',element[i]['zeitintervallAnl']);
+                // console.log('Element',element[i]);
+                // console.log('MST ID',element[i].mstID);
+                if(element[i]['zeitintervallAnl'] == 2){
+                    $('#anlIMw').val(element[i].anlIMw);
+                    $('#mst_id_energy_investment').val(element[i].mstID);
+                    $('#anlNrIMw').val(element[i].anlNrIMw);
+                    if(element[i].zeitintervallAnl == 2){
+                        $('.zeitintervallAnl_2').show();
+                        $('.zeitintervallAnl_NoEnding').show();
+                        $('#zeitintervallAnl option[value=' + element[i].zeitintervallAnl + ']').prop('selected', 'selected');
+                        $('#wochenWMassEingDataAnlStart1 option[value=' + element[i].startWeek + ']').prop('selected', 'selected');
+                        $('#wochenYMassEingDataAnlStart1').val(element[i].startDate);
+                        $('#wochenWMassEingDataAnlEnde1 option[value=' + element[i].endWeek + ']').prop('selected', 'selected');
+                        $('#wochenYMassEingDataAnlEnde1').val(element[i].endDate);
 
-                }
-                if(element.ending == 1){
-                    $('#anlIMwNoEnding').val(element.ending);
-                    $('#anlIMwNoEnding').prop('checked',true);
+                    }
+                    if(element[i].ending == 1){
+                        $('#anlIMwNoEnding').val(element[i].ending);
+                        $('#anlIMwNoEnding').prop('checked',true);
 
-                    $('#wochenWMassEingDataAnlEnde1').attr('disabled',true);
+                        $('#wochenWMassEingDataAnlEnde1').attr('disabled',true);
+                        $('#wochenYMassEingDataAnlEnde1').attr('disabled',true);
+
+                    }
+                    $('.control_system_div').show();
+                    $('#einheitAnl option[value=' + element[i].einheitAnl + ']').prop('selected', 'selected');
+                    $('#control_system option[value=' + element[i].einheitControlSys + ']').prop('selected', 'selected');
+                    $('#notizBdeIMw').val(element[i].notizBdeIMw);
+                    $('#min_investment_energy').val(element[i].invest_min);
+                    $('#max_investment_energy').val(element[i].invest_max);
+
+
+                    //Disabled Field
+                    $('#anlIMw').attr('disabled', true);
+                    $('#anlNrIMw').attr('disabled', true);
+                    $('#zeitintervallAnl').attr('disabled', true);
+                    $('#wochenWMassEingDataAnlStart1').attr('disabled', true);
+                    $('#wochenYMassEingDataAnlStart1').attr('disabled', true);
+                    $('#wochenYMassEingDataAnlEnde1').attr('disabled', true);
                     $('#wochenYMassEingDataAnlEnde1').attr('disabled',true);
-
+                    $('#anlIMwNoEnding').attr('disabled',true);
+                    $('#einheitAnl').attr('disabled', true);
+                    $('#control_system').attr('disabled',true);
+                    $('#notizBdeIMw').attr('disabled', true);
                 }
-                $('.control_system_div').show();
-                $('#einheitAnl option[value=' + element.einheitAnl + ']').attr('selected', 'selected');
-                $('#control_system option[value=' + element.einheitControlSys + ']').attr('selected', 'selected');
-                $('#notizBdeIMw').text(element.notizBdeIMw);
-                $('#min_investment_energy').val(element.invest_min);
-                $('#max_investment_energy').val(element.invest_max);
+                else if(element[i]['zeitintervallAnl'] == "1"){ //Date Tiome Giving Validation;
+                    //console.log('Constition working');
+                    $('#anlIMw').val(element[i].anlIMw);
+                    $('#mst_id_energy_investment').val(element[i].mstID);
+                    $('#anlNrIMw').val(element[i].anlNrIMw);
+                    if(element[i].zeitintervallAnl == "1"){
+                        $('.zeitintervallAnl_1').show();
+                        $('.zeitintervallAnl_NoEnding').show();
+                        $('#zeitintervallAnl option[value=' + element[i].zeitintervallAnl + ']').prop('selected', 'selected');
+                        
+                        
+                        var filterStartDate = element[i].startDate;
+                        var datearray = filterStartDate.split("-");
+                        filterStartDate = datearray[2] + '.' + datearray[1] + '.' + datearray[0];
+                        $('#tageMassEingDataAnlStart1').val(filterStartDate);
+
+                        if(element[i].startDate != '' && element[i].endDate != ""){
+                            var filterEndDate = element[i].endDate;
+                            var date_end_array = filterEndDate.split("-");
+                            filterEndDate = date_end_array[2] + '.' + date_end_array[1] + '.' + date_end_array[0];
+                            $('#tageMassEingDataAnlEnde1').val(element[i].filterEndDate);
+                        }
 
 
-                //Disabled Field
-                $('#anlIMw').attr('disabled', true);
-                $('#anlNrIMw').attr('disabled', true);
-                $('#zeitintervallAnl').attr('disabled', true);
-                $('#wochenWMassEingDataAnlStart1').attr('disabled', true);
-                $('#wochenYMassEingDataAnlStart1').attr('disabled', true);
-                $('#wochenYMassEingDataAnlEnde1').attr('disabled', true);
-                $('#wochenYMassEingDataAnlEnde1').attr('disabled',true);
-                $('#anlIMwNoEnding').attr('disabled',true);
-                $('#einheitAnl').attr('disabled', true);
-                $('#control_system').attr('disabled',true);
-                $('#notizBdeIMw').attr('disabled', true);
+                    }
+                    if(element[i].ending == 1){
+                        $('#anlIMwNoEnding').val(element[i].ending);
+                        $('#anlIMwNoEnding').prop('checked',true);
 
-            });
+                    }
+                    $('.control_system_div').show();
+                    $('#einheitAnl option[value=' + element[i].einheitAnl + ']').prop('selected', 'selected');
+                    $('#control_system option[value=' + element[i].einheitControlSys + ']').prop('selected', 'selected');
+                    $('#notizBdeIMw').val(element[i].notizBdeIMw);
+                    $('#min_investment_energy').val(element[i].invest_min);
+                    $('#max_investment_energy').val(element[i].invest_max);
+
+
+                    //Disabled Field
+                    $('#anlIMw').attr('disabled', true);
+                    $('#anlNrIMw').attr('disabled', true);
+                    $('#zeitintervallAnl').attr('disabled', true);
+                    $('#tageMassEingDataAnlStart1').attr('disabled', true);
+                    $('#tageMassEingDataAnlEnde1').attr('disabled', true);
+                    $('#anlIMwNoEnding').attr('disabled',true);
+                    $('#einheitAnl').attr('disabled', true);
+                    $('#control_system').attr('disabled',true);
+                    $('#notizBdeIMw').attr('disabled', true);
+                }
+                else if(element[i]['zeitintervallAnl'] == "3"){  //Month Validations
+                    $('#anlIMw').val(element[i].anlIMw);
+                    $('#mst_id_energy_investment').val(element[i].mstID);
+                    $('#anlNrIMw').val(element[i].anlNrIMw);
+                    if(element[i].zeitintervallAnl == "3"){
+                        $('.zeitintervallAnl_3').show();
+                        $('.zeitintervallAnl_NoEnding').show();
+                        $('#zeitintervallAnl option[value=' + element[i].zeitintervallAnl + ']').prop('selected', 'selected');
+                        
+                        
+                        var filterStartDate = element[i].startDate;
+                        var datearray = filterStartDate.split("-");
+                        filterStartDate = datearray[1] + '.' + datearray[0];
+                        $('#monateMassEingDataAnlStart1').val(filterStartDate);
+
+                        if(element[i].startDate != '' && element[i].endDate != ""){
+                            var filterEndDate = element[i].endDate;
+                            var date_end_array = filterEndDate.split("-");
+                            filterEndDate = date_end_array[1] + '.' + date_end_array[0];
+                            $('#monateMassEingDataAnlEnde1').val(element[i].filterEndDate);
+                        }
+
+
+                    }
+                    if(element[i].ending == 1){
+                        $('#anlIMwNoEnding').val(element[i].ending);
+                        $('#anlIMwNoEnding').prop('checked',true);
+
+                    }
+                    $('.control_system_div').show();
+                    $('#einheitAnl option[value=' + element[i].einheitAnl + ']').prop('selected', 'selected');
+                    $('#control_system option[value=' + element[i].einheitControlSys + ']').prop('selected', 'selected');
+                    $('#notizBdeIMw').val(element[i].notizBdeIMw);
+                    $('#min_investment_energy').val(element[i].invest_min);
+                    $('#max_investment_energy').val(element[i].invest_max);
+
+
+                    //Disabled Field
+                    $('#anlIMw').attr('disabled', true);
+                    $('#anlNrIMw').attr('disabled', true);
+                    $('#zeitintervallAnl').attr('disabled', true);
+                    $('#monateMassEingDataAnlStart1').attr('disabled', true);
+                    $('#monateMassEingDataAnlEnde1').attr('disabled', true);
+                    $('#anlIMwNoEnding').attr('disabled',true);
+                    $('#einheitAnl').attr('disabled', true);
+                    $('#control_system').attr('disabled',true);
+                    $('#notizBdeIMw').attr('disabled', true);
+                }
+                else if(element[i]['zeitintervallAnl'] == "4"){  //Year Validations
+                    $('#anlIMw').val(element[i].anlIMw);
+                    $('#mst_id_energy_investment').val(element[i].mstID);
+                    $('#anlNrIMw').val(element[i].anlNrIMw);
+                    if(element[i].zeitintervallAnl == "4"){
+                        $('.zeitintervallAnl_4').show();
+                        $('.zeitintervallAnl_NoEnding').show();
+                        $('#zeitintervallAnl option[value=' + element[i].zeitintervallAnl + ']').prop('selected', 'selected');
+                        
+                        
+                        var filterStartDate = element[i].startDate;
+                        $('#jahrMassEingDataAnlStart1').val(filterStartDate);
+
+                        if(element[i].startDate != '' && element[i].endDate != ""){
+                            var filterEndDate = element[i].endDate;
+                            $('#jahrMassEingDataAnlEnde1').val(element[i].endDate);
+                        }
+
+
+                    }
+                    if(element[i].ending == 1){
+                        $('#anlIMwNoEnding').val(element[i].ending);
+                        $('#anlIMwNoEnding').prop('checked',true);
+
+                    }
+                    $('.control_system_div').show();
+                    $('#einheitAnl option[value=' + element[i].einheitAnl + ']').prop('selected', 'selected');
+                    $('#control_system option[value=' + element[i].einheitControlSys + ']').prop('selected', 'selected');
+                    $('#notizBdeIMw').val(element[i].notizBdeIMw);
+                    $('#min_investment_energy').val(element[i].invest_min);
+                    $('#max_investment_energy').val(element[i].invest_max);
+
+
+                    //Disabled Field
+                    $('#anlIMw').attr('disabled', true);
+                    $('#anlNrIMw').attr('disabled', true);
+                    $('#zeitintervallAnl').attr('disabled', true);
+                    $('#jahrMassEingDataAnlStart1').attr('disabled', true);
+                    $('#jahrMassEingDataAnlEnde1').attr('disabled', true);
+                    $('#anlIMwNoEnding').attr('disabled',true);
+                    $('#einheitAnl').attr('disabled', true);
+                    $('#control_system').attr('disabled',true);
+                    $('#notizBdeIMw').attr('disabled', true);
+                }
+            };
             // ar[0]= a[0].invest_min;
             // ar[1] = a[0].invest_max;
             //return result;
@@ -6882,11 +7101,61 @@ function removeAttributeInvestFields(){
     $('#mst_id_energy_investment').val('');
     $('#min_investment_energy').val('');
     $('#max_investment_energy').val('');
+
+    ///Date Field Atrribute removed
+    $('#tageMassEingDataAnlStart1').removeAttr('disabled',true);
+    $('#tageMassEingDataAnlEnde1').removeAttr('disabled',true);
     // flag = 0;
+
+    //Month Fileds Removed
+    $('#monateMassEingDataAnlStart1').removeAttr('disabled',true);
+    $('#monateMassEingDataAnlEnde1').removeAttr('disabled',true);
+
+    //Year Fileds Removed
+    $('#jahrMassEingDataAnlStart1').removeAttr('disabled',true);
+    $('#jahrMassEingDataAnlEnde1').removeAttr('disabled',true);
 
     $('#config_mannual_default_energy').trigger('click');
 }
 
+function removeAllInvestAttribute(){
+    //Remove Disabled
+    $('#anlIMw').removeAttr('disabled', true);
+    $('#anlNrIMw').removeAttr('disabled', true);
+    $('#zeitintervallAnl').removeAttr('disabled', true);
+    $('#wochenWMassEingDataAnlStart1').removeAttr('disabled', true);
+    $('#wochenYMassEingDataAnlStart1').removeAttr('disabled', true);
+    $('#wochenWMassEingDataAnlEnde1').removeAttr('disabled', true);
+    $('#wochenYMassEingDataAnlEnde1').removeAttr('disabled',true);
+    $('#anlIMwNoEnding').removeAttr('disabled',true);
+    $('#einheitAnl').removeAttr('disabled', true);
+    $('#control_system').removeAttr('disabled',true);
+    $('#notizBdeIMw').removeAttr('disabled', true);
+    $('#mst_id_energy_investment').val('');
+    $('#min_investment_energy').val('');
+    $('#max_investment_energy').val('');
+
+
+
+    ///Date Field Atrribute removed
+    $('#tageMassEingDataAnlStart1').removeAttr('disabled',true);
+    $('#tageMassEingDataAnlEnde1').removeAttr('disabled',true);
+
+    //Month Filter
+    $('#monateMassEingDataAnlStart1').removeAttr('disabled',true);
+    $('#monateMassEingDataAnlEnde1').removeAttr('disabled',true);
+
+    //Year Fileds Removed
+    $('#jahrMassEingDataAnlStart1').removeAttr('disabled',true);
+    $('#jahrMassEingDataAnlEnde1').removeAttr('disabled',true);
+
+    //By default Attribute Remove selected
+    $("#zeitintervallAnl").find('option').removeAttr("selected");
+    $("#wochenWMassEingDataAnlStart1").find('option').removeAttr("selected");
+    $("#wochenWMassEingDataAnlEnde1").find('option').removeAttr("selected");
+    $("#einheitAnl").find('option').removeAttr("selected");
+    $("#control_system").find('option').removeAttr("selected");
+}
 
 function saveInvestValues(){
     var investMSTID = $('#mst_id_energy_investment').val();
@@ -6947,7 +7216,7 @@ function redirectInvestValue(mstId){
             success: function(a) {
               //console.log(a);
                 a.forEach((element) =>{
-                    if(element.zeitintervallAnl == 2){
+                    if(element.zeitintervallAnl == "2"){
                         $('#wochenWMassEingDataAnlStart4 option[value=' + element.startWeek + ']').attr('selected', 'selected');
                         $('#wochenYMassEingDataAnlStart4').val(element.startDate);
 
@@ -6957,6 +7226,46 @@ function redirectInvestValue(mstId){
                         }
                         $('#btnMasseneingabeIMwSearch').trigger('click');
                     }
+                    else if(element.zeitintervallAnl == "1"){
+                        var filterStartDate = element.startDate;
+                        var datearray = filterStartDate.split("-");
+                        filterStartDate = datearray[2] + '.' + datearray[1] + '.' + datearray[0];
+                        $('#tageMassEingDataAnlStart4').val(filterStartDate);
+
+                        if(element.startDate != '' && element.endDate != ""){
+                            var filterEndDate = element.endDate;
+                            var date_end_array = filterEndDate.split("-");
+                            filterEndDate = date_end_array[2] + '-' + date_end_array[1] + '-' + date_end_array[0];
+                            $('#tageMassEingDataAnlEnde4').val(filterEndDate);
+                        }
+                        $('#btnMasseneingabeIMwSearch').trigger('click');
+                    }
+                    else if(element.zeitintervallAnl == "3"){
+                        var filterStartDate = element.startDate;
+                        var datearray = filterStartDate.split("-");
+                        filterStartDate = datearray[1] + '.' + datearray[0];
+                        $('#monateMassEingDataAnlStart4').val(filterStartDate);
+
+                        if(element.startDate != '' && element.endDate != ""){
+                            var filterEndDate = element.endDate;
+                            var date_end_array = filterEndDate.split("-");
+                            filterEndDate = date_end_array[1] + '-' + date_end_array[0];
+                            $('#monateMassEingDataAnlEnde4').val(filterEndDate);
+                        }
+                        $('#btnMasseneingabeIMwSearch').trigger('click');
+                    }
+
+                    else if(element.zeitintervallAnl == "4"){
+                        var filterStartDate = element.startDate;
+                        $('#jahrMassEingDataAnlStart4').val(filterStartDate);
+
+                        if(element.startDate != '' && element.endDate != ""){
+                            var filterEndDate = element.endDate;
+                            $('#id="jahrMassEingDataAnlEnde4"').val(filterEndDate);
+                        }
+                        $('#btnMasseneingabeIMwSearch').trigger('click');
+                    }
+                    
                 });
                 
                 
@@ -6965,3 +7274,800 @@ function redirectInvestValue(mstId){
     }
 }
 // -----end-->
+
+// <----25-6-2021---
+function resetSelectedAttribute(id_val){
+    if(id_val == 'wochenWMassEingDataAnlStart4'){
+        $("#wochenWMassEingDataAnlStart4").find('option').removeAttr("selected");
+    }
+    else if(id_val == 'wochenWMassEingDataAnlEnde4'){
+        $("#wochenWMassEingDataAnlEnde4").find('option').removeAttr("selected");
+    }
+}
+///-end-->
+
+///<----27-6-2021
+function commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID){
+    //<---Edit Modal---
+    $("#intBdeConcernOrDeletePopUp").remove();
+    $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value always be greater than minimum value and less than Max Value</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='edit_btn_invest' >Edit</button><button style='padding: 5px;' id='done_btn_invest'>Done</button></div></div>").dialog({
+        height: 250,
+        width: 450,
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500,
+            closeOnEscape: false,
+            dialogClass: "no-close",
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        open: function(event, ui) {
+            $("#edit_btn_invest").on("click", function() {
+                $("#intBdeConcernOrDeletePopUp").remove();
+                $('#config_mannual_default_energy').trigger('click');
+                getInvestValues(mstID);
+                // setTimeout(function(){ 
+                //     getInvestValues(mstID);
+                //  }, 1000);
+            });
+
+            $("#done_btn_invest").on("click", function() {
+            
+                $("#intBdeConcernOrDeletePopUp").remove();
+                $('#'+current_row_id+' #'+current_td_input_id).val('');  
+            
+            });
+            // flag = 1;
+        }
+    });
+    $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+    //---end-->  
+    return false;
+}
+
+//--end--->
+
+//<--25-6-2021---
+function investValueCheckDate(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar){
+  //<----24-6-2021---
+  var min_val = min_val;
+  var max_val = max_val;
+  var current_val = current_val;
+  var checkPrevVal = checkPrevVal;
+  var current_row_id = current_row_id;
+  var current_td_input_id = current_td_input_id;
+  var checkNextVal = checkNextVal;
+  var mstID = mstID;
+
+  var startdateinvest = (ar[0] != "" ) ? new Date(ar[0]) : '';
+  var enddateinvest = (ar[2] != "" ) ? new Date(ar[2]) : '';
+
+  var filterStartDate = $('#tageMassEingDataAnlStart4').val();
+  var datearray = filterStartDate.split(".");
+  filterStartDate = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
+  filterStartDate = new Date(filterStartDate); 
+
+  var filterEndDate = $('#tageMassEingDataAnlEnde4').val();
+  var date_end_array = filterEndDate.split(".");
+  filterEndDate = date_end_array[2] + '-' + date_end_array[1] + '-' + date_end_array[0];
+  filterEndDate = new Date(filterEndDate); 
+
+  //Disabled Field Remove
+  var str = current_row_id;
+  var res = str.split('-');
+  var disabled_row_id = 'dataDisabledRow-'+res[1];
+
+  var inputStr = current_td_input_id;
+  var input_res = inputStr.split('_');
+  var disabled_td_input_id = 'anlageCalculationRow_'+input_res[1];
+
+//   console.log('Filter Start Date',filterStartDate);
+//   console.log('EndDate',filterEndDate)
+
+  if(min_val != '' && max_val != '' && current_val != ''){
+        if(startdateinvest != '' && startdateinvest.getTime() != filterStartDate.getTime()){
+            //<--Redirect Modal---
+            $("#intBdeConcernOrDeletePopUp").remove();
+            $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Please do not enter values in between fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                height: 250,
+                width: 450,
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500,
+                    closeOnEscape: false,
+                    dialogClass: "no-close",
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function(event, ui) {
+                    $("#redirect_btn_invest").on("click", function() {
+                        $("#intBdeConcernOrDeletePopUp").remove();
+                        //$('#config_mannual_default_energy').trigger('click');
+                        redirectInvestValue(mstID); 
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                        setTimeout(() => {
+                            $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                            $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                        }, 1500); 
+                        
+                    });
+
+                    $("#cancel_btn_invest").on("click", function() {
+                        $("#intBdeConcernOrDeletePopUp").remove();
+                        $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');      
+                    });
+
+                    // flag = 1;
+                }
+            });
+            $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+            // --end-->
+            return false;
+
+        }
+        else if(enddateinvest != '' && startdateinvest != ''){
+            if(startdateinvest.getTime() != filterStartDate.getTime() || enddateinvest.getTime() != filterEndDate.getTime()){
+                //<--Redirect Modal---
+                $("#intBdeConcernOrDeletePopUp").remove();
+                $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Please do not enter values in between fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                    height: 250,
+                    width: 450,
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500,
+                        closeOnEscape: false,
+                        dialogClass: "no-close",
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function(event, ui) {
+                        $("#redirect_btn_invest").on("click", function() {
+                            $("#intBdeConcernOrDeletePopUp").remove();
+                            //$('#config_mannual_default_energy').trigger('click');
+                            redirectInvestValue(mstID); 
+                            $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                            setTimeout(() => {
+                                $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                                $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                            }, 1500); 
+                        });
+
+                        $("#cancel_btn_invest").on("click", function() {
+                            $("#intBdeConcernOrDeletePopUp").remove();
+                            $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                            $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');      
+                        });
+
+                        // flag = 1;
+                    }
+                });
+                $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+                // --end-->
+                return false;
+            } 
+        }
+      else if(checkPrevVal == undefined){
+          if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+              // alert('Value always be greater than minimum value and less than Max Value');
+              //$('#'+current_row_id+' #'+current_td_input_id).val('');
+              //<---Edit Modal---
+              $("#intBdeConcernOrDeletePopUp").remove();
+              $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value always be greater than minimum value and less than Max Value</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='edit_btn_invest' >Edit</button><button style='padding: 5px;' id='done_btn_invest'>Done</button></div></div>").dialog({
+                  height: 250,
+                  width: 450,
+                  resize: "auto",
+                  show: {
+                      effect: "fade",
+                      duration: 500,
+                      closeOnEscape: false,
+                      dialogClass: "no-close",
+                  },
+                  hide: {
+                      effect: "fade",
+                      duration: 500
+                  },
+                  open: function(event, ui) {
+                      $("#edit_btn_invest").on("click", function() {
+                          $("#intBdeConcernOrDeletePopUp").remove();
+                          $('#config_mannual_default_energy').trigger('click');
+                          getInvestValues(mstID);
+                      
+                      });
+
+                      $("#done_btn_invest").on("click", function() {
+                      
+                          $("#intBdeConcernOrDeletePopUp").remove();
+                          $('#'+current_row_id+' #'+current_td_input_id).val('');
+                          $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');    
+                      
+                      });
+                      // flag = 1;
+                  }
+              });
+              $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+              //---end-->  
+              return false;
+          }
+      }
+      else if(checkPrevVal != undefined && checkPrevVal != ''){
+          if(parseInt(current_val) <= parseInt(checkPrevVal)){
+              alert('Value always be Greater than Previous value');
+              $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+              $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');   
+              return false;
+          }
+          if(checkNextVal != ''){
+              if(parseInt(current_val) > parseInt(max_val)){
+                  //alert('Value always be Less than Maximum value');
+                  $('#'+current_row_id+' #'+current_td_input_id).val('');
+                  $('#'+disabled_row_id+' #'+disabled_td_input_id).val(''); 
+                  commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID);
+                  return false;
+              }
+              else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                  alert('Value always be Less than Next value');
+                  $('#'+current_row_id+' #'+current_td_input_id).val('');
+                  $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');       
+                  return false;
+              }
+          }
+
+          else if(parseInt(current_val) > parseInt(max_val)){
+              // alert('Value always be Less than Maximum value');
+              $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+              $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+              commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID);      
+              return false;
+          }
+         
+      }
+      else if(checkPrevVal == '' && checkNextVal == ''){
+          //alert('Can not fill value in between fields');
+          //$('#'+current_row_id+' #'+current_td_input_id).val('');
+          //redirectInvestValue(mstID);  
+          //<--Redirect Modal---
+          $("#intBdeConcernOrDeletePopUp").remove();
+          $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value do not Enter in between Fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+              height: 250,
+              width: 450,
+              resize: "auto",
+              show: {
+                  effect: "fade",
+                  duration: 500,
+                  closeOnEscape: false,
+                  dialogClass: "no-close",
+              },
+              hide: {
+                  effect: "fade",
+                  duration: 500
+              },
+              open: function(event, ui) {
+                  $("#redirect_btn_invest").on("click", function() {
+                      $("#intBdeConcernOrDeletePopUp").remove();
+                      //$('#config_mannual_default_energy').trigger('click');
+                      redirectInvestValue(mstID); 
+                      $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                      setTimeout(() => {
+                          $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                          $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                      }, 1500); 
+                  });
+
+                  $("#cancel_btn_invest").on("click", function() {
+                      $("#intBdeConcernOrDeletePopUp").remove();
+                      $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                      $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');     
+                  
+                  });
+                  // flag = 1;
+              }
+          });
+          $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+          // --end-->
+          return false;
+      }
+  }
+  //--end-->  
+}
+
+//--end-->
+
+
+// <--25-6-2021---// Month Value Check 3
+function investValueCheckMonth(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar){
+    var min_val = min_val;
+    var max_val = max_val;
+    var current_val = current_val;
+    var checkPrevVal = checkPrevVal;
+    var current_row_id = current_row_id;
+    var current_td_input_id = current_td_input_id;
+    var checkNextVal = checkNextVal;
+    var mstID = mstID;
+  
+    var startdateinvest = (ar[0] != "" ) ? ar[0] : '';
+    var enddateinvest = (ar[2] != "" ) ? ar[2] : '';
+  
+    var filterStartDate = $('#monateMassEingDataAnlStart4').val();
+    var datearray = filterStartDate.split(".");
+    filterStartDate = datearray[1] + '-' + datearray[0];
+  
+    var filterEndDate = $('#monateMassEingDataAnlStart4').val();
+    var date_end_array = filterEndDate.split(".");
+    filterEndDate = date_end_array[1] + '-' + date_end_array[0];
+  
+    //Disabled Field Remove
+    var str = current_row_id;
+    var res = str.split('-');
+    var disabled_row_id = 'dataDisabledRow-'+res[1];
+  
+    var inputStr = current_td_input_id;
+    var input_res = inputStr.split('_');
+    var disabled_td_input_id = 'anlageCalculationRow_'+input_res[1];
+  
+    // console.log('Filter Start Date',filterStartDate);
+    // console.log('startdateinvest',startdateinvest);
+  
+    if(min_val != '' && max_val != '' && current_val != ''){
+          if(startdateinvest != '' && startdateinvest != filterStartDate){
+              //<--Redirect Modal---
+              $("#intBdeConcernOrDeletePopUp").remove();
+              $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Please do not enter values in between fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                  height: 250,
+                  width: 450,
+                  resize: "auto",
+                  show: {
+                      effect: "fade",
+                      duration: 500,
+                      closeOnEscape: false,
+                      dialogClass: "no-close",
+                  },
+                  hide: {
+                      effect: "fade",
+                      duration: 500
+                  },
+                  open: function(event, ui) {
+                      $("#redirect_btn_invest").on("click", function() {
+                          $("#intBdeConcernOrDeletePopUp").remove();
+                          //$('#config_mannual_default_energy').trigger('click');
+                          redirectInvestValue(mstID); 
+                          $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                          setTimeout(() => {
+                              $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                              $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                          }, 1500); 
+                      });
+  
+                      $("#cancel_btn_invest").on("click", function() {
+                          $("#intBdeConcernOrDeletePopUp").remove();
+                          $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                          $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');      
+                      });
+  
+                      // flag = 1;
+                  }
+              });
+              $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+              // --end-->
+              return false;
+  
+          }
+          else if(enddateinvest != '' && startdateinvest != ''){
+              if(startdateinvest.getTime() != filterStartDate.getTime() || enddateinvest.getTime() != filterEndDate.getTime()){
+                  //<--Redirect Modal---
+                  $("#intBdeConcernOrDeletePopUp").remove();
+                  $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Please do not enter values in between fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                      height: 250,
+                      width: 450,
+                      resize: "auto",
+                      show: {
+                          effect: "fade",
+                          duration: 500,
+                          closeOnEscape: false,
+                          dialogClass: "no-close",
+                      },
+                      hide: {
+                          effect: "fade",
+                          duration: 500
+                      },
+                      open: function(event, ui) {
+                          $("#redirect_btn_invest").on("click", function() {
+                              $("#intBdeConcernOrDeletePopUp").remove();
+                              //$('#config_mannual_default_energy').trigger('click');
+                              redirectInvestValue(mstID); 
+                              $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                              setTimeout(() => {
+                                  $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                                  $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                              }, 1500); 
+                          });
+  
+                          $("#cancel_btn_invest").on("click", function() {
+                              $("#intBdeConcernOrDeletePopUp").remove();
+                              $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                              $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');      
+                          });
+  
+                          // flag = 1;
+                      }
+                  });
+                  $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+                  // --end-->
+                  return false;
+              } 
+          }
+        else if(checkPrevVal == undefined){
+            if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                // alert('Value always be greater than minimum value and less than Max Value');
+                //$('#'+current_row_id+' #'+current_td_input_id).val('');
+                //<---Edit Modal---
+                $("#intBdeConcernOrDeletePopUp").remove();
+                $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value always be greater than minimum value and less than Max Value</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='edit_btn_invest' >Edit</button><button style='padding: 5px;' id='done_btn_invest'>Done</button></div></div>").dialog({
+                    height: 250,
+                    width: 450,
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500,
+                        closeOnEscape: false,
+                        dialogClass: "no-close",
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function(event, ui) {
+                        $("#edit_btn_invest").on("click", function() {
+                            $("#intBdeConcernOrDeletePopUp").remove();
+                            $('#config_mannual_default_energy').trigger('click');
+                            getInvestValues(mstID);
+                        
+                        });
+  
+                        $("#done_btn_invest").on("click", function() {
+                        
+                            $("#intBdeConcernOrDeletePopUp").remove();
+                            $('#'+current_row_id+' #'+current_td_input_id).val('');
+                            $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');    
+                        
+                        });
+                        // flag = 1;
+                    }
+                });
+                $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+                //---end-->  
+                return false;
+            }
+        }
+        else if(checkPrevVal != undefined && checkPrevVal != ''){
+            if(parseInt(current_val) <= parseInt(checkPrevVal)){
+                alert('Value always be Greater than Previous value');
+                $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');   
+                return false;
+            }
+            if(checkNextVal != ''){
+                if(parseInt(current_val) > parseInt(max_val)){
+                    //alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(''); 
+                    commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID);
+                    return false;
+                }
+                else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                    alert('Value always be Less than Next value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');       
+                    return false;
+                }
+            }
+  
+            else if(parseInt(current_val) > parseInt(max_val)){
+                // alert('Value always be Less than Maximum value');
+                $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID);      
+                return false;
+            }
+           
+        }
+        else if(checkPrevVal == '' && checkNextVal == ''){
+            //alert('Can not fill value in between fields');
+            //$('#'+current_row_id+' #'+current_td_input_id).val('');
+            //redirectInvestValue(mstID);  
+            //<--Redirect Modal---
+            $("#intBdeConcernOrDeletePopUp").remove();
+            $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value do not Enter in between Fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                height: 250,
+                width: 450,
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500,
+                    closeOnEscape: false,
+                    dialogClass: "no-close",
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function(event, ui) {
+                    $("#redirect_btn_invest").on("click", function() {
+                        $("#intBdeConcernOrDeletePopUp").remove();
+                        //$('#config_mannual_default_energy').trigger('click');
+                        redirectInvestValue(mstID); 
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                        setTimeout(() => {
+                            $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                            $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                        }, 1500); 
+                    });
+  
+                    $("#cancel_btn_invest").on("click", function() {
+                        $("#intBdeConcernOrDeletePopUp").remove();
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');     
+                    
+                    });
+                    // flag = 1;
+                }
+            });
+            $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+            // --end-->
+            return false;
+        }
+    }   
+}
+//--end--->
+
+// <----25-6-2021----
+function investValueCheckYear(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar){
+    var min_val = min_val;
+    var max_val = max_val;
+    var current_val = current_val;
+    var checkPrevVal = checkPrevVal;
+    var current_row_id = current_row_id;
+    var current_td_input_id = current_td_input_id;
+    var checkNextVal = checkNextVal;
+    var mstID = mstID;
+  
+    var startdateinvest = (ar[0] != "" ) ? ar[0] : '';
+    var enddateinvest = (ar[2] != "" ) ? ar[2] : '';
+  
+    var filterStartDate = $('#jahrMassEingDataAnlStart4').val();
+    
+    var filterEndDate = $('#jahrMassEingDataAnlEnde4').val();
+    
+  
+    //Disabled Field Remove
+    var str = current_row_id;
+    var res = str.split('-');
+    var disabled_row_id = 'dataDisabledRow-'+res[1];
+  
+    var inputStr = current_td_input_id;
+    var input_res = inputStr.split('_');
+    var disabled_td_input_id = 'anlageCalculationRow_'+input_res[1];
+  
+    // console.log('Filter Start Date',filterStartDate);
+    // console.log('startdateinvest',startdateinvest);
+  
+    if(min_val != '' && max_val != '' && current_val != ''){
+          if(startdateinvest != '' && startdateinvest != filterStartDate){
+              //<--Redirect Modal---
+              $("#intBdeConcernOrDeletePopUp").remove();
+              $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Please do not enter values in between fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                  height: 250,
+                  width: 450,
+                  resize: "auto",
+                  show: {
+                      effect: "fade",
+                      duration: 500,
+                      closeOnEscape: false,
+                      dialogClass: "no-close",
+                  },
+                  hide: {
+                      effect: "fade",
+                      duration: 500
+                  },
+                  open: function(event, ui) {
+                      $("#redirect_btn_invest").on("click", function() {
+                          $("#intBdeConcernOrDeletePopUp").remove();
+                          //$('#config_mannual_default_energy').trigger('click');
+                          redirectInvestValue(mstID); 
+                          $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                          setTimeout(() => {
+                              $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                              $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                          }, 1500); 
+                      });
+  
+                      $("#cancel_btn_invest").on("click", function() {
+                          $("#intBdeConcernOrDeletePopUp").remove();
+                          $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                          $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');      
+                      });
+  
+                      // flag = 1;
+                  }
+              });
+              $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+              // --end-->
+              return false;
+  
+          }
+          else if(enddateinvest != '' && startdateinvest != ''){
+              if(startdateinvest.getTime() != filterStartDate.getTime() || enddateinvest.getTime() != filterEndDate.getTime()){
+                  //<--Redirect Modal---
+                  $("#intBdeConcernOrDeletePopUp").remove();
+                  $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Please do not enter values in between fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                      height: 250,
+                      width: 450,
+                      resize: "auto",
+                      show: {
+                          effect: "fade",
+                          duration: 500,
+                          closeOnEscape: false,
+                          dialogClass: "no-close",
+                      },
+                      hide: {
+                          effect: "fade",
+                          duration: 500
+                      },
+                      open: function(event, ui) {
+                          $("#redirect_btn_invest").on("click", function() {
+                              $("#intBdeConcernOrDeletePopUp").remove();
+                              //$('#config_mannual_default_energy').trigger('click');
+                              redirectInvestValue(mstID); 
+                              $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                              setTimeout(() => {
+                                  $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                                  $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                              }, 1500); 
+                          });
+  
+                          $("#cancel_btn_invest").on("click", function() {
+                              $("#intBdeConcernOrDeletePopUp").remove();
+                              $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                              $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');      
+                          });
+  
+                          // flag = 1;
+                      }
+                  });
+                  $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+                  // --end-->
+                  return false;
+              } 
+          }
+        else if(checkPrevVal == undefined){
+            if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                // alert('Value always be greater than minimum value and less than Max Value');
+                //$('#'+current_row_id+' #'+current_td_input_id).val('');
+                //<---Edit Modal---
+                $("#intBdeConcernOrDeletePopUp").remove();
+                $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value always be greater than minimum value and less than Max Value</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='edit_btn_invest' >Edit</button><button style='padding: 5px;' id='done_btn_invest'>Done</button></div></div>").dialog({
+                    height: 250,
+                    width: 450,
+                    resize: "auto",
+                    show: {
+                        effect: "fade",
+                        duration: 500,
+                        closeOnEscape: false,
+                        dialogClass: "no-close",
+                    },
+                    hide: {
+                        effect: "fade",
+                        duration: 500
+                    },
+                    open: function(event, ui) {
+                        $("#edit_btn_invest").on("click", function() {
+                            $("#intBdeConcernOrDeletePopUp").remove();
+                            $('#config_mannual_default_energy').trigger('click');
+                            getInvestValues(mstID);
+                        
+                        });
+  
+                        $("#done_btn_invest").on("click", function() {
+                        
+                            $("#intBdeConcernOrDeletePopUp").remove();
+                            $('#'+current_row_id+' #'+current_td_input_id).val('');
+                            $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');    
+                        
+                        });
+                        // flag = 1;
+                    }
+                });
+                $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+                //---end-->  
+                return false;
+            }
+        }
+        else if(checkPrevVal != undefined && checkPrevVal != ''){
+            if(parseInt(current_val) <= parseInt(checkPrevVal)){
+                alert('Value always be Greater than Previous value');
+                $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');   
+                return false;
+            }
+            if(checkNextVal != ''){
+                if(parseInt(current_val) > parseInt(max_val)){
+                    //alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(''); 
+                    commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID);
+                    return false;
+                }
+                else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                    alert('Value always be Less than Next value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');       
+                    return false;
+                }
+            }
+  
+            else if(parseInt(current_val) > parseInt(max_val)){
+                // alert('Value always be Less than Maximum value');
+                $('#'+current_row_id+' #'+current_td_input_id).val(''); 
+                $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                commomEditModal(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID);      
+                return false;
+            }
+           
+        }
+        else if(checkPrevVal == '' && checkNextVal == ''){
+            //alert('Can not fill value in between fields');
+            //$('#'+current_row_id+' #'+current_td_input_id).val('');
+            //redirectInvestValue(mstID);  
+            //<--Redirect Modal---
+            $("#intBdeConcernOrDeletePopUp").remove();
+            $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value do not Enter in between Fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+                height: 250,
+                width: 450,
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500,
+                    closeOnEscape: false,
+                    dialogClass: "no-close",
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function(event, ui) {
+                    $("#redirect_btn_invest").on("click", function() {
+                        $("#intBdeConcernOrDeletePopUp").remove();
+                        //$('#config_mannual_default_energy').trigger('click');
+                        redirectInvestValue(mstID); 
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                        setTimeout(() => {
+                            $('#'+current_row_id+' #anlageMainRow_0').focus(); 
+                            $('#'+current_row_id+' #anlageMainRow_0').click(); 
+                        }, 1500); 
+                    });
+  
+                    $("#cancel_btn_invest").on("click", function() {
+                        $("#intBdeConcernOrDeletePopUp").remove();
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');  
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');     
+                    
+                    });
+                    // flag = 1;
+                }
+            });
+            $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+            // --end-->
+            return false;
+        }
+    }
+}
+//--end--->

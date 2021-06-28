@@ -8199,12 +8199,40 @@ $(document).on('blur','#tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr t
     var current_row_id = $(this).closest('tr').attr('id');
     var current_td_input_id = $(this).attr('id');
     var mstID = $(this).closest('td').attr('data-id');
-    // var = $(this).attr('class');
     var startdateinvest = $(this).closest('tr').attr('startdateinvest');
     var startweekinvest = $(this).closest('tr').attr('startweekinvest');
     var enddateinvest = $(this).closest('tr').attr('enddateinvest');
     var endweekinvest = $(this).closest('tr').attr('endweekinvest');
     var ar = [startdateinvest,startweekinvest,enddateinvest,endweekinvest]
-    investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar);
+    var classVal = $(this).closest('tr').hasClass('enabledRow');
+    var timeIntervalInvest = $(this).closest('tr').attr('timeIntervalInvest');
+    
+    
+    if(classVal == true){
+        //Function calling if time interval is 2
+        if(timeIntervalInvest != 0 &&  timeIntervalInvest == 2){
+            investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar);
+        }
+        else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 1){ //Function calling if time interval is 1
+            //console.log('#'+current_row_id+' #anlageMainRow_0');
+            investValueCheckDate(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar);
+        }
+        else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 3){
+            investValueCheckMonth(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar);
+        }
+        else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 4){
+            investValueCheckYear(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar);
+        }   
+    }
+    // console.log('checkprev_value',checkPrevVal);
+    // console.log('current_val',current_val);
+    // console.log('checkNextVal',checkNextVal);
 })
 //--end-->
+
+// <--25-6-2021--
+$(document).on('change', '#wochenWMassEingDataAnlStart4 ,#wochenWMassEingDataAnlEnde4',function(){
+    var id_val = $(this).attr('id');
+    resetSelectedAttribute(id_val);
+})
+ //---end-->
