@@ -155,35 +155,53 @@
                             </form>
                         </div>
                     </div>
-                    <div class="card card-info mt-4">
-                        <div class="card-header">
-                            <h3 class="card-title">Shards</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form class="form-horizontal">
-                            <div class="card-body"  id="shards" >
-                                @if($data['shards'] >= 1)
-                                    @foreach($data['shardsData'] as $key=>$value)
-                                        @if($value != 0)
-                                            <div class="form-group row" id="shard">
-                                                <label for="{{$key}}" class="col-sm-2 col-form-label">{{$key}}</label>
-                                                <div class="col-sm-4">
-                                                    <input class="form-control" type="text" placeholder="{{$key}}" value="{{$value}}" readonly>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </div>
-                        </form>
+                </div>
+            </div>  
+              <!-- Bar Chart -->
+            <div class="card card-success" id="bar_chart" style="display:block;">
+                <div class="card-header">
+                    <h3 class="card-title">Charts</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
+                @if($data['shards'] >= 1)
+                    @foreach($data['machineshards'] as $key=>$value)
+                    @php $i=1; @endphp
+                        @if($value != 0)
+                            @foreach($data['shardsData'] as $key1=>$value1)
+                                @if($key1 == $key) 
+                                <div class="card-body">
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                        <label>Custom Select</label>
+                                            <select class="custom-select" id="{{$key}}">
+                                                <option value="">Select</option>
+                                                <option value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="15">15</option>
+                                                <option value="20">20</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="chart">
+                                            <canvas id="barChart{{$i}}" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; background:#fff;" ></canvas>
+                                    </div>
+                                </div>
+                                @endif
+                                @php $i++; @endphp
+                            @endforeach
+                        @endif
+                    @endforeach
+                @endif
                 <!-- /.card-body -->
-
-
-
             </div>
+                
 
             <!-- Modal Start -->
             <div class="modal fade" id="modal-Machine-list">
@@ -225,4 +243,66 @@
     <script src="{{asset('template/plugins/jsgrid/jsgrid.min.js')}}"></script>
     <script src="{{asset('js/dashboard/dashboard_ajax.js')}}"></script>
     <script src="{{asset('js/dashboard/jsGridMachines.js')}}"></script>
+    <script type="text/javascript">
+    
+
+        let shardsCount = '<?php echo $data['shards'];  ?>';
+        if(shardsCount >= 1) {
+          let shardsData  = ""; 
+          shardsData  += '@foreach($data['machineshards'] as $key=>$value)';
+          shardsData  += '@php $i=1; @endphp';
+          shardsData  += '@if($value != 0)';
+          shardsData  += '@foreach($data['shardsData'] as $key1=>$value1)';
+          shardsData  += '@if($key1 == $key) ';
+          
+            var areaChartData = {
+                    labels  : ['Time Server'],
+                    datasets: [
+                    {
+                        label               : '{{$key}} Chart',
+                        backgroundColor     : dynamicColors(),
+                        borderColor         : dynamicColors(),
+                        pointRadius          : false,
+                        pointColor          : '#fff',
+                        pointStrokeColor    : '#fff',
+                        pointHighlightFill  : '#fff',
+                        pointHighlightStroke: dynamicColors(),
+                        data                : [{{$value1}}]
+                    },
+                    ]
+            }
+            
+            
+            //-------------
+                //- BAR CHART -
+                //-------------
+                var barChartCanvas = $('#barChart{{$i}}').get(0).getContext('2d')
+                var barChartData = $.extend(true, {}, areaChartData)
+                var temp0 = areaChartData.datasets[0]
+                //var temp1 = areaChartData.datasets[1]
+                //barChartData.datasets[0] = temp1
+                barChartData.datasets[0] = temp0
+                
+                var barChartOptions = {
+                    responsive              : true,
+                    maintainAspectRatio     : false,
+                    datasetFill             : false
+                }
+                
+                new Chart(barChartCanvas, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: barChartOptions
+                })
+            shardsData  +=  '@endif';
+            shardsData  +=  '@php $i++; @endphp';
+            shardsData  +=  '@endforeach';
+            shardsData  +=  ' @endif';
+            shardsData  +=  '@endforeach';
+
+
+        } 
+
+        </script>
+    
 @stop

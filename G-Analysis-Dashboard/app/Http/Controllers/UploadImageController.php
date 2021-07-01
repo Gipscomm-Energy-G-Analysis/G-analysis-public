@@ -19,6 +19,7 @@ class UploadImageController extends Controller
             $query = DB::table('Anlagen')
               ->where('anl_ID', $anl_ID)
               ->update(['bildAnl' => $request->file('file')->move('images',$imageName)]);
+              echo "success";
         } catch (Illuminate\Database\QueryException $e) {
             dd($e);
           
