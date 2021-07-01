@@ -83,8 +83,8 @@ class DashboardController extends Controller
 
                             if(!empty($messmittelData['kanal1Msm'])){
                                 if ($request->has('selected_value')) {
-                                    $kanal1Msm = DataValue15m::select('*', DB::raw('SUM(value) as value'))->where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->limit($request['selected_value'])->get(); 
-                                    print_r($kanal1Msm);
+                                    $kanal1Msm = DataValue15m::select(DB::raw('SUM(value) as value'))->where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->groupBy('channel_id')->limit($request['selected_value'])->get(); 
+                                   // print_r($kanal1Msm);
                                 }else{
                                     $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->first();
                                 }

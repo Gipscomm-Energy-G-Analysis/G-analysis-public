@@ -57,10 +57,14 @@
                 let machineshards = data.machineshards;
                 let shardsData = data.shardsData;
                 let html = '';
+                let myCharts;
+
                 $.each(machineshards, function( key, value ) { 
-                    let i=1;
+                    let i=0;
+                    
                     if(value != 0){  
                         console.log(value);
+
                         $("#bar_chart").css('display','block');
                         $.each( shardsData, function( key1, value1 ) {
                             if(key1 == key) {
@@ -72,7 +76,7 @@
                                     labels  : ['Time Server'],
                                     datasets: [
                                     {
-                                        label               : key+ 'Chart',
+                                        label               : key + ' Chart',
                                         backgroundColor     : dynamicColors(),
                                         borderColor         : dynamicColors(),
                                         pointRadius          : false,
@@ -84,25 +88,29 @@
                                     },
                                     ]
                                 }
+                             
                                 var barChartCanvas = $('#barChart'+i).get(0).getContext('2d')
                                 var barChartData = $.extend(true, {}, areaChartData)
-                                var temp0 = areaChartData.datasets[0]
-                                barChartData.datasets[0] = temp0
+                                var temp0 = areaChartData.datasets['{{i}}']
+                                barChartData.datasets['{{i}}'] = temp0
                                 var barChartOptions = {
                                     responsive              : true,
                                     maintainAspectRatio     : false,
                                     datasetFill             : false
                                 }
-                                new Chart(barChartCanvas, {
+                               
+                                myCharts= new Chart(barChartCanvas, {
                                     type: 'bar',
                                     data: barChartData,
                                     options: barChartOptions
                                 })
+                                
                             }
                             i++;
                         });   
                     }
-                   
+                  
+
                 }); 
             } else if(response.anl_ID !== undefined) {
                 toastr.error(response.message);
@@ -135,10 +143,46 @@
     });
 
     const loadFile = (event) => {
-        let output = document.getElementById('machine-image');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function() {
-            URL.revokeObjectURL(output.src) // free memory
+        let file1, img;
+        if(event.target.files[0].size > 200000) {
+            alert('File size should be less than 2mb.');
+            return false;
+        }
+        if(file1 = event.target.files[0]){     
+            let output = document.getElementById('machine-image');
+            img = new Image();
+            img.onload = function(){
+                console.log(this.width + "x" + this.height);
+                if(this.width + "x" + this.height == '870x621'){
+                    output.src = URL.createObjectURL(event.target.files[0]);
+                    let myFormData = new FormData();
+                    let file = event.target.files[0];
+                    const anl_ID = $('#anl_ID').val();
+                    myFormData.append('file',file);
+                    myFormData.append('anl_ID',anl_ID);
+                    $.ajax({
+                        headers:{'X-CSRF-Token':$('meta[name=csrf_token]').attr('content')},
+                        type:"post",
+                        async: true,
+                        contentType: false,
+                        cache: false,
+                        processData:false,
+                        url:`/uploadImage`,
+                        data:myFormData,
+                        success:function(data){
+                            console.log("success");
+                        }
+                    });
+                }else{
+                    alert('Image dimensions should be  870 x 621.');
+                    return false;
+                }
+               // URL.revokeObjectURL(output.src)
+            };
+            img.onerror = function() {
+                alert( "not a valid file: " + file1.type);
+            };
+            img.src = URL.createObjectURL(file1); 
         }
     };
 
@@ -146,44 +190,8 @@
     replaceImageButton.addEventListener('click', () => {
         imageInputField.click();
     });
-    //imageInputField.addEventListener('change', loadFile);
-    //imageInputField.addEventListener('change', () => {
-    $('#machineImage').bind('change', function() {
-        let file=(this.files[0].size);
-      //  console.log(file);
-        if(file > 200000) {
-            alert('File size shoold be less than 2mb.');
-            return false;
-        }
-        else{
-            let myFormData = new FormData();
-            let file = this.files[0];
-            const anl_ID = $('#anl_ID').val();
-            myFormData.append('file',file);
-            myFormData.append('anl_ID',anl_ID);
-
-            $.ajax({
-                headers:{'X-CSRF-Token':$('meta[name=csrf_token]').attr('content')},
-                type:"post",
-                async: true,
-                contentType: false,
-                cache: false,
-                processData:false,
-                url:`/uploadImage`,
-                data:myFormData,
-                success:function(data){
-                    console.log("success");
-                }
-            });
-        }
-    });
-
-    // var intervalId = window.setInterval(function(){
-    //     let type = "current";
-    //     let machine_id = $('.navigation').attr('data-value');
-    //     getMachineData(machine_id, type);
-    // }, 10000);
-
+    imageInputField.addEventListener('change', loadFile);
+    
     $(function () {
         $(".custom-select").on('change',function () {
             let id=(this.id);        

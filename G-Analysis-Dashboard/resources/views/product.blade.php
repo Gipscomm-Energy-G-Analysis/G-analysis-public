@@ -1,3 +1,6 @@
+
+<style> .u-under{ height:auto !important;}
+    </style>
 @extends('layout.app')
 @section('headContent')
     <link rel="stylesheet" href="{{asset('template/plugins/jsgrid/jsgrid.min.css')}}">
@@ -157,7 +160,9 @@
                     </div>
                 </div>
             </div>  
-              <!-- Bar Chart -->
+     
+        <!-- /.card -->
+            <!-- Bar Chart -->
             <div class="card card-success" id="bar_chart" style="display:block;">
                 <div class="card-header">
                     <h3 class="card-title">Charts</h3>
@@ -172,7 +177,7 @@
                 </div>
                 @if($data['shards'] >= 1)
                     @foreach($data['machineshards'] as $key=>$value)
-                    @php $i=1; @endphp
+                    @php $i=0; @endphp
                         @if($value != 0)
                             @foreach($data['shardsData'] as $key1=>$value1)
                                 @if($key1 == $key) 
@@ -189,8 +194,10 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="chart">
-                                            <canvas id="barChart{{$i}}" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; background:#fff;" ></canvas>
+                                    <div class="col-sm-6">
+                                        <div class="chart">
+                                                <canvas id="barChart{{$i}}" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; background:#fff;" ></canvas>
+                                        </div>
                                     </div>
                                 </div>
                                 @endif
@@ -200,6 +207,30 @@
                     @endforeach
                 @endif
                 <!-- /.card-body -->
+
+              <!-- LINE CHART -->
+        <!-- <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Line Chart</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <div id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></div>
+            </div>
+          </div> -->
+          <!-- /.card-body -->
+        </div>
+
+        
             </div>
                 
 
@@ -243,45 +274,39 @@
     <script src="{{asset('template/plugins/jsgrid/jsgrid.min.js')}}"></script>
     <script src="{{asset('js/dashboard/dashboard_ajax.js')}}"></script>
     <script src="{{asset('js/dashboard/jsGridMachines.js')}}"></script>
+    <script src="{{asset('plugins/uplot/uPlot.iife.min.js')}}"></script>
     <script type="text/javascript">
-    
-
         let shardsCount = '<?php echo $data['shards'];  ?>';
-        if(shardsCount >= 1) {
-          let shardsData  = ""; 
-          shardsData  += '@foreach($data['machineshards'] as $key=>$value)';
-          shardsData  += '@php $i=1; @endphp';
-          shardsData  += '@if($value != 0)';
-          shardsData  += '@foreach($data['shardsData'] as $key1=>$value1)';
-          shardsData  += '@if($key1 == $key) ';
-          
-            var areaChartData = {
-                    labels  : ['Time Server'],
-                    datasets: [
-                    {
-                        label               : '{{$key}} Chart',
-                        backgroundColor     : dynamicColors(),
-                        borderColor         : dynamicColors(),
-                        pointRadius          : false,
-                        pointColor          : '#fff',
-                        pointStrokeColor    : '#fff',
-                        pointHighlightFill  : '#fff',
-                        pointHighlightStroke: dynamicColors(),
-                        data                : [{{$value1}}]
-                    },
-                    ]
-            }
-            
-            
-            //-------------
+            if(shardsCount >= 1) {
+                let shardsData  = ""; 
+                shardsData  += '@foreach($data['machineshards'] as $key=>$value)';
+                shardsData  += '@php $i=0; @endphp';
+                shardsData  += '@if($value != 0)';
+                shardsData  += '@foreach($data['shardsData'] as $key1=>$value1)';
+                shardsData  += '@if($key1 == $key) ';
+                var areaChartData = {
+                        labels  : ['Time Server'],
+                        datasets: [
+                        {
+                            label               : '{{$key}} Chart',
+                            backgroundColor     : dynamicColors(),
+                            borderColor         : dynamicColors(),
+                            pointRadius          : false,
+                            pointColor          : '#fff',
+                            pointStrokeColor    : '#fff',
+                            pointHighlightFill  : '#fff',
+                            pointHighlightStroke: dynamicColors(),
+                            data                : [{{$value1}}]
+                        },
+                        ]
+                }
+                //-------------
                 //- BAR CHART -
                 //-------------
                 var barChartCanvas = $('#barChart{{$i}}').get(0).getContext('2d')
                 var barChartData = $.extend(true, {}, areaChartData)
-                var temp0 = areaChartData.datasets[0]
-                //var temp1 = areaChartData.datasets[1]
-                //barChartData.datasets[0] = temp1
-                barChartData.datasets[0] = temp0
+                var temp0 = areaChartData.datasets['{{$i}}']
+                barChartData.datasets['{{$i}}'] = temp0
                 
                 var barChartOptions = {
                     responsive              : true,
@@ -294,15 +319,62 @@
                     data: barChartData,
                     options: barChartOptions
                 })
-            shardsData  +=  '@endif';
-            shardsData  +=  '@php $i++; @endphp';
-            shardsData  +=  '@endforeach';
-            shardsData  +=  ' @endif';
-            shardsData  +=  '@endforeach';
+                shardsData  +=  '@endif';
+                shardsData  +=  '@php $i++; @endphp';
+                shardsData  +=  '@endforeach';
+                shardsData  +=  ' @endif';
+                shardsData  +=  '@endforeach';
+            }    
+        
+        //     $(function () {
+        //     /* uPlot
+        //     * -------
+        //     * Here we will create a few charts using uPlot
+        //     */
 
+        //     function getSize(elementId) {
+        //     return {
+        //         width: document.getElementById(elementId).offsetWidth,
+        //         height: document.getElementById(elementId).offsetHeight,
+        //     }
+        //     }
+        //     let data = [
+        //     [0, 1, 2, 3, 4, 5, 6],
+        //     [28, 48, 40, 19, 86, 27, 90],
+        //     [65, 59, 80, 81, 56, 55, 40]
+        //     ];
+        //     const optsLineChart = {
+        //     ... getSize('lineChart'),
+        //     scales: {
+        //         x: {
+        //         time: false,
+        //         },
+        //         y: {
+        //         range: [0, 100],
+        //         },
+        //     },
+        //     series: [
+        //         {},
+        //         {
+        //         fill: 'transparent',
+        //         width: 5,
+        //         stroke: 'rgba(60,141,188,1)',
+        //         },
+        //         {
+        //         stroke: '#c1c7d1',
+        //         width: 5,
+        //         fill: 'transparent',
+        //         },
+        //     ],
+        //     };
 
-        } 
+        //     let lineChart = new uPlot(optsLineChart, data, document.getElementById('lineChart'));
 
-        </script>
+        //     window.addEventListener("resize", e => {
+        //     lineChart.setSize(getSize('lineChart'));
+        //     });
+        // })
+
+    </script>
     
 @stop
