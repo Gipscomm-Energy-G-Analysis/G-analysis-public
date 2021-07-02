@@ -10,6 +10,9 @@ $(document).ready(function() {
     scpRechteverwaltung
     .actionUserPosition(sessionStorage.getItem("position"))
 
+    scpUnternehmensstruktur_mandanten
+    .populateIndexedDB()
+
     betrGrpEinlesen();
     manGrpEinlesen();
     anlagenGruppenEinlesen();
@@ -1628,6 +1631,16 @@ $(document).ready(function() {
     // Create New Or Update Form Data After Form Validation
     //
     $("#betrGrpSpeichern").click(scpRechteverwaltung_betreuergruppen.validateAndSaveFormData)
+    //
+    // Show Mandanten Selection Table
+    //
+    $("#manZuBetrGrpHinz").click(scpRechteverwaltung_betreuergruppen.showMandantenTablePopUp)
+    //
+    // Remove Mandant From DB Table
+    //
+    $("#tblMandantenBetrGrp tbody").on("dblclick", "tr", function() {
+        scpRechteverwaltung_betreuergruppen.removeFromMandantenTbl(this)
+    });
 
 
     // Schichtdaten

@@ -11,7 +11,7 @@ $query .= "WHERE deleted = 0 " ;
 
 $gipscommAdmins = queryDB( $conn, $query, "read" ) ;
 
-$query2  = "SELECT betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz FROM betreuerGruppen " ;
+$query2  = "SELECT betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs FROM betreuerGruppen " ;
 $query2 .= "WHERE deleted = 0 " ;
 
 $betreuerGruppen = queryDB( $conn, $query2, "read" ) ;

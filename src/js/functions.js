@@ -5093,6 +5093,7 @@ try {
 
                             scpRechteverwaltung
                             .populateIndexedDB()
+                            .then(scpRechteverwaltung_betreuergruppen.readFirst)
 
                             scpIndexedDB
                             .populateIndexedDB()
@@ -9687,7 +9688,7 @@ try {
         colReorder: !0
     });
     /*14-04-2020 Create Dynamic Correction factor search icon display dataTable (Datatable settings)*/
-tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
+    tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
         dom: "Bfrtip",
         buttons: [],
         pageLength: 15,
@@ -9879,7 +9880,7 @@ tblOptionenEAnl = $("#tblOptionenEAnl").DataTable({
             sInfoEmpty: ""
         }
     });
-    tblMandantengruppe = $("#tblMandantengruppe").DataTable({
+    tblMandantenBetrGrp = $("#tblMandantenBetrGrp").DataTable({
         dom: "Bfrtip",
         buttons: [],
         pageLength: 15,

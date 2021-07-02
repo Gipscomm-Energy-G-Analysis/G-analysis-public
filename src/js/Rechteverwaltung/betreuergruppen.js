@@ -21,6 +21,18 @@ const scpRechteverwaltung_betreuergruppen =
                 a =>
                 $(`#${a}`).val()
 
+            // Extracts the mandanten ID's from the table
+            const getManIDs =
+                () =>
+                array($("#tblMandantenBetrGrp tbody tr").length)()()
+                .map((_, i) => tblMandantenBetrGrp.cell(i, 0).data())
+                .join(",")
+
+            const arrayManIDs = 
+                () =>
+                array($("#tblMandantenBetrGrp tbody tr").length)()()
+                .map((_, i) => tblMandantenBetrGrp.cell(i, 0).data())
+
             // Returns an object that contains the form data
             const getFormData =
                 () => (
@@ -35,6 +47,7 @@ const scpRechteverwaltung_betreuergruppen =
                     , telefon : getFieldValue("telefonBetrGrp")
                     , eMail : getFieldValue("emailBetrGrp")
                     , notiz : getFieldValue("notizBetrGrp")
+                    , mandantenIDs : getManIDs()
                     }
                 )
 
@@ -152,6 +165,7 @@ const scpRechteverwaltung_betreuergruppen =
                   , "notizBetrGrp"
                   ]    
                   .forEach(clearField)
+                , clearTable(tblMandantenBetrGrp)
                 , setState("new")
                 )
 
@@ -166,6 +180,35 @@ const scpRechteverwaltung_betreuergruppen =
                 idx =>
                 queryBetreuerGruppenDataIDB()
                 .then(betreuerGruppen => betreuerGruppen[idx])
+
+            // Prepares the table data for the search dialog
+            const prepareTableDataMan =
+                records =>
+                records.map(
+                    (a, i) =>
+                    [ a.man_ID
+                    , a.nameMan
+                    , a.dbName
+                    ]
+                )
+
+            // Fills the search dialog table with data
+            const fillMandantenTbl =
+                tbl =>
+                data => {
+                    clearTable(tbl)
+                    intoTable(tbl)(prepareTableDataMan(data))
+                }
+
+            const readIntoMandantenTable =
+                betreuerGruppe =>
+                scpUnternehmensstruktur_mandanten
+                .queryMandantenWithIDs(betreuerGruppe.mandantenIDs.split(","))
+                .then(fillMandantenTbl(tblMandantenBetrGrp))
+
+            this.removeFromMandantenTbl =
+                that =>
+                tblMandantenBetrGrp.row(that).remove().draw()
 
             // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
@@ -185,6 +228,8 @@ const scpRechteverwaltung_betreuergruppen =
                             $("#telefonBetrGrp").val(betreuerGruppe.telefon)
                             $("#emailBetrGrp").val(betreuerGruppe.eMail)
                             $("#notizBetrGrp").val(betreuerGruppe.notiz)
+
+                            readIntoMandantenTable(betreuerGruppe)
 
                             setState("edit")
                         }
@@ -251,7 +296,7 @@ const scpRechteverwaltung_betreuergruppen =
                 }
 
             // Prepares the table data for the search dialog
-            const prepareTableData =
+            const prepareTableDataBetrGrp =
                 records =>
                 records.map(
                     (a, i) =>
@@ -266,7 +311,7 @@ const scpRechteverwaltung_betreuergruppen =
             const fillBetreuerGruppenTbl =
                 data => {
                     clearTable(tblBetrGrpSuchen)
-                    intoTable(tblBetrGrpSuchen)(prepareTableData(data))
+                    intoTable(tblBetrGrpSuchen)(prepareTableDataBetrGrp(data))
                 }
 
             // Triggers opening the search dialog
@@ -307,56 +352,15 @@ const scpRechteverwaltung_betreuergruppen =
                 }
 
             this.showMandantenTablePopUp =
-                () =>
+                () => {
 
-                ajaxPost()
+                    scpUnternehmensstruktur_mandanten
+                    .queryMandantenWithoutIDs(arrayManIDs())
+                    .then(fillMandantenTbl(tblMandantenAuswahl))
 
-                $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/getMandanten.php",
-                    data: {
-                        id: "mandantenBetrGruppen",
-                        betrGrpID: $("#betrGrpID").val(),
-                        nameDB: "gipscomm"
-                    },
-                    success: function(a) {
-                        a = JSON.parse(a);
-                        tblMandantenAuswahl.clear().draw();
-                        for (var b = 0; b < a.length; b++) tblMandantenAuswahl.row.add([a[b].man_ID, a[b].nameMan, a[b].dbName, a[b].holdingstruktur]).draw();
-                        tblMandantenAuswahl.column(0).visible(!1).draw();
-                        $("#mandantenlisteAuswahlContainer").css("display",
-                            "block");
-                        $("#mandantenlisteAuswahlContainer").dialog({
-                            height: 400,
-                            width: 600,
-                            resize: "auto",
-                            show: {
-                                effect: "fade",
-                                duration: 500
-                            },
-                            hide: {
-                                effect: "fade",
-                                duration: 500
-                            },
-                            open: function() {
-                                $("#tblMandantenAuswahl tbody tr").css("cursor", "pointer");
-                                $("#tblMandantenAuswahl tbody").off("dblclick", "tr");
-                                $("#tblMandantenAuswahl tbody").on("dblclick", "tr", function() {
-                                    var a = tblMandantenAuswahl.row(this).data();
-                                    tblMandantengruppe.row.add([a[0], a[1], a[2], a[3]]).draw();
-                                    tblMandantengruppe.column(0).visible(!1).draw();
-                                    $("#mandantenlisteAuswahlContainer").dialog("close")
-                                })
-                            }
-                        })
-                    }
-                })
-
-
-                $("#betrGrpSuchenContainer").dialog({
-                    height: 450,
-                    width: 875,
+                    $("#mandantenlisteAuswahlContainer").dialog({
+                    height: 400,
+                    width: 600,
                     resize: "auto",
                     show: {
                         effect: "fade",
@@ -366,21 +370,17 @@ const scpRechteverwaltung_betreuergruppen =
                         effect: "fade",
                         duration: 500
                     },
-                    modal: true,
                     open: function() {
-                        $("#tblBetrGrpSuchen tbody tr").css("cursor", "pointer");
-                        $("#tblBetrGrpSuchen tbody").off("dblclick", "tr");
-                        $("#tblBetrGrpSuchen tbody").on("dblclick", "tr",
-                        function() {
-
-                            const selectedRecord =
-                                tblBetrGrpSuchen.row(this).data()
-
-                            readIntoFormFields(head(selectedRecord))
-
-                            $("#betrGrpSuchenContainer").dialog("close")
+                        $("#tblMandantenAuswahl tbody tr").css("cursor", "pointer");
+                        $("#tblMandantenAuswahl tbody").off("dblclick", "tr");
+                        $("#tblMandantenAuswahl tbody").on("dblclick", "tr", function() {
+                            var a = tblMandantenAuswahl.row(this).data();
+                            tblMandantenBetrGrp.row.add([a[0], a[1], a[2]]).draw();
+                            tblMandantenBetrGrp.column(0).visible(!1).draw();
+                            $("#mandantenlisteAuswahlContainer").dialog("close")
                         })
                     }
                 })
+            }     
         }
     )

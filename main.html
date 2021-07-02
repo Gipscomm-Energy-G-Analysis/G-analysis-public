@@ -1554,7 +1554,6 @@
                         <img id="betrGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Betreuergruppe" src="images/first.png" alt="erste" />
                      </div>
                      <div class="betreuerGruppe">
-                        <form action="" method="post">
                            <div class="infosBlock">
                               <div class="sectionHeader">
                                  <label>Definition der betreuer Gruppen</label>
@@ -1602,10 +1601,11 @@
                               </div>
                               <br>
                               <button id="manZuBetrGrpHinz">Mandant hinzufügen</button>
-                              <table id="tblMandantenBetrGrp" class="stripe hover row-border compact dt-left custom" style="font-size:12px;width:100%;">
+                              <br>
+                              <table id="tblMandantenBetrGrp" class="stripe hover row-border compact dt-left custom" style="font-size:12px;width:100%;" title="Zum Entfernen von DBs Doppelklick auf den Eintrag in der Tabelle.">
                                  <thead>
                                     <tr>
-                                       <th style="display:none;">id</th>
+                                       <th>id</th>
                                        <th>Mandant</th>
                                        <th>Datenbank</th>
                                  </thead>
@@ -1665,7 +1665,6 @@
                                         </div>
                                     </div>
                            </div>
-                        </form>
                      </div>
                   </div>
                   <div id="infosMandantenGruppen">
@@ -9980,7 +9979,6 @@
                     <th>id</th>
                     <th>Name</th>
                     <th>Datenbank</th>
-                    <th>Holdingstruktur</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -11035,7 +11033,7 @@
                         , schichtenHist : "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
                         
                         , gipscommAdmins : "gipsAdm_ID, username, betrGrp_ID, position, manGrp_ID, man_ID" 
-                        , betreuerGruppen : "betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz"
+                        , betreuerGruppen : "betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs"
                         , superAdmins : "sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username"
                         , mandantenGruppen : "manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs"
                         , admins : "adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position"
@@ -11046,6 +11044,7 @@
                 <script type="text/javascript" src="src/js/functions.js"></script>
                 <script type="text/javascript" src="src/js/manualFunction.js"></script>
                 <script type="text/javascript" src="src/js/indexedDB.js"></script>
+                <script type="text/javascript" src="src/js/Unternehmensstruktur/mandanten.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/schichtdaten.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/historie.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/rechteverwaltung.js"></script>

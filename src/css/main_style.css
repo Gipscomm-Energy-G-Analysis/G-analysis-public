@@ -548,7 +548,8 @@ nav {
 #saveMstFormulaAbbrechen,
 #anlPrdLink,
 #btnShowRecordsAnlBtn,
-#btnShowRecordsAnlBtnPrdkt{
+#btnShowRecordsAnlBtnPrdkt,
+#manZuBetrGrpHinz {
   border: 0px solid black;
   border-radius: 5px;
   background-color: transparent;
@@ -726,7 +727,8 @@ nav {
 #histDataNein:hover,
 #saveMstFormulaAbbrechen:hover,
 #anlPrdLink:hover
-#btnShowRecordsAnlBtn:hover {
+#btnShowRecordsAnlBtn:hover,
+#manZuBetrGrpHinz:hover {
   background-color: white;
   cursor: pointer;
 }
