@@ -464,6 +464,7 @@ elseif($id == 'SearchKeinZeitintervallTbl'){
 	$queryInvest .= "LEFT JOIN interneMesswerteConfig AS T2 ";
 	$queryInvest .= "ON T1.mst_ID = T2.mst_ID ";
 	$queryInvest .= "WHERE T1.messartMst = 'manuell' ";
+	$queryInvest .= "AND ED.archiviert = 'true' "; 	//Archivert Condition
 	$queryInvest .= "AND T1.deleted <> 'true' ";
 
 	/*new-mm-start 25-03-2021*/
@@ -1155,9 +1156,9 @@ if($id == 'masseneingabeSearch'){
 	if(isset($queryInvest)){
 		$records['queryInvest'] = queryDB($conn, $queryInvest, "read");
 		$arr=[];
-			foreach($records['queryInvest'] as $key=>$val){
-				array_push($arr,$val['mstID']);
-			}
+		foreach($records['queryInvest'] as $key=>$val){
+			array_push($arr,$val['mstID']);
+		}
 
 		$removed_keys=array_keys(array_unique($arr));
 		// echo "<pre>";	print_r($removed_keys);die;
@@ -1169,7 +1170,7 @@ if($id == 'masseneingabeSearch'){
 				unset($records['queryInvest'][$i]);
 			}
 		}
-			//echo "<pre>";	print_r(array_values($records['queryInvest']));die;
+		//echo "<pre>";	print_r(array_values($records['queryInvest']));die;
 		$records['queryInvest']= array_values($records['queryInvest']);
 		//echo "<pre>";print_r($records['queryInvest']);die;
 	}
