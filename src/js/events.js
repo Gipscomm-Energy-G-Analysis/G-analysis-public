@@ -3955,7 +3955,7 @@ $(document).ready(function(){
         $('#tblAnlOhneZeitintervallIMw').parents('div.dataTables_wrapper').first().toggle();
         keinZeitIntervallZugewiesen(InstanceMode.BDE);
         /*new-mm-start 22-03-2021*/
-        $('#searchBtnShowRecordsAnlBtnDiv').show();
+        $('#searchBtnShowRecordsAnlBtnDiv').hide();
         $('#interneEBTblDiv').show();
         $('#searchBtnShowRecordsAnlBtn').val('1');
         /*new-mm-end 22-03-2021*/
@@ -4721,7 +4721,6 @@ $(document).ready(function(){
                 var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
                 //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
                 if($('#inputPrevValDB').val()){
-                    console.log.log('ghghg');
                     $(inputNextBottomId).val(secBottomValDB);
                 }
                 else{
@@ -4850,6 +4849,17 @@ $(document).ready(function(){
         var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
         var inputPrevLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+prevId;
 
+         //<---2-7-2021---
+         var min_val = $(this).closest('tr').attr('min_val');
+         var max_val = $(this).closest('tr').attr('max_val');
+         var controlsystem = $(this).closest('tr').attr('controlsystem');
+         var current_val_control = $(this).val();
+ 
+         //Disabled Field Value
+         var current_td_input_id = $(this).attr('id');
+ 
+         //--end--->
+
         if(anlageObj[rowMstID]){
             var inputCountLength = anlageObj[rowMstID].length;
             if(inputCountLength>4){
@@ -4904,7 +4914,17 @@ $(document).ready(function(){
 
             if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                 if(Number($(inptCurrId).val()) <= Number($(inptCurPrevId).val())){
-                    alert('Current value should be greater then previous value!');
+                    if(min_val != '' && max_val != ''){ //By Default Else Case Working
+                        if(controlsystem == "1" || controlsystem == "2"){
+                            if(Number($(inptCurrId).val()) < Number($(inptCurPrevId).val())){
+                                alert('Current value should be greater then previous value!');
+                                return false;
+                            }
+                        }
+                    }
+                    else{
+                        alert('Current value should be greater then previous value!');
+                    }
 
                     if($(inputCurNextId).val()!="" && $(inputTopPrevNextId).val() !=""){
                         var prevDiff = $(inputCurNextId).val() - $(inputTopPrevNextId).val();
@@ -4917,12 +4937,21 @@ $(document).ready(function(){
                     /*if($('#currInputID').val() == 0){
                             console.log(prevDBDiff);
                         }*/
-                    $(inptCurrId).val('');
-                    $(inputDeleteBotmId).val('');
-                    $(inputNextLastBottomId).val(lastNextDiff);
-                    $(inptCurrId).focus();
-                    resetInputsSearchMasseneingabe();
-                    return false;
+                    // <---1-7-2021---
+                    if(min_val != '' && max_val != ''){ //By Default Else Case Working
+                        if(controlsystem == "1" || controlsystem == "2"){
+                        }
+                    }
+                    else{ //By Default Is Working this
+                        $(inptCurrId).val('');
+                        $(inputDeleteBotmId).val('');
+                        $(inputNextLastBottomId).val(lastNextDiff);
+                        $(inptCurrId).focus();
+                        resetInputsSearchMasseneingabe();
+                        return false;
+                    }
+                    //--end--->
+                   
                 }
             }else if(($("#inputPrevValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                 if(Number($(inptCurrId).val()) <= Number($("#inputPrevValDB").val())){
@@ -4941,7 +4970,6 @@ $(document).ready(function(){
                     alert('Current value should not be greater then next value! ');
                     $(inptCurrId).val('');
                     $(inputDeleteBotmId).val('');
-                    console.log(1);
                     if(nextDiff){  /*Nzp 03-02-2021*/
                         $(inputNextBottomId).val(nextDiff);
                     }else{
@@ -8284,7 +8312,7 @@ $(document).on('blur','.enrery_fields_val', function(){
 // });
 
 // <-----23-6-2021---
-$(document).on('blur','#tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td input', function (){
+$(document).on('blur','#timeIntervalWerteEnergiedatenIMw #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td input', function (){
     var current_val = $(this).val();
     if(current_val != ''){
         var min_val = $(this).closest('tr').attr('min_val');

@@ -29,4 +29,10 @@ else if($id == 'redirectInvestValues'){
     $result = queryDB($conn, $queryDB, "read");
     echo json_encode($result);
 }
+else if($id == 'preFillIMinMaxField'){
+    $mstID = $_POST['mstID'];
+    $queryDB = "select distinct top 1 * from interneBetriebsdatenHistorie where mstID = '$mstID' AND archiviert = 'true'";
+    $result = queryDB($conn, $queryDB, "read");
+    echo json_encode($result);
+}
 ?>
