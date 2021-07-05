@@ -4907,68 +4907,6 @@ try {
             $(".lblNeu").css("display", "none")
             $(".lblAendern").css("display", "inline")
             switch (isInstance(a)) {
-                case "betrGrp":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readInstanzen.php",
-                        data: {
-                            id: "betrGrp",
-                            nameDB: "gipscomm"
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            var c = $.parseJSON(a);
-                            if(b == -1) {
-                                b = c.length - 1;
-                            }
-                            0 < c.length ? ($("#betrGrpCount").val(c.length),
-                            [
-                              ["#betrGrpID", "betrGrp_ID"]
-                            , ["#firmaBetrGrp", "firma"]
-                            , ["#anzahlMitarbeiterBetrGrp", "anzahlMitarbeiter"]
-                            , ["#anschriftBetrGrp", "anschrift"]
-                            , ["#plzBetrGrp", "plz"]
-                            , ["#ortBetrGrp", "ort"]
-                            , ["#geschaeftsfuehrerBetrGrp", "geschaeftsfuehrer"]
-                            , ["#telefonBetrGrp", "telefon"]
-                            , ["#emailBetrGrp", "eMail"]
-                            , ["#notizBetrGrp", "notiz"]
-                            ].forEach(function(a) {
-                                $(a[0]).val(c[b][a[1]])
-                            }),
-                            mandantenSuperadminCheckedCheckbox(), readInstanzen("manGrpFirst", 0)
-                        , manGrpEinlesen()) : clearFields("betrGrp")
-                        }
-                    });
-                    break;
-                case "sAdm":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readInstanzen.php",
-                        data: {
-                            id: "sAdm",
-                            nameDB: "gipscomm",
-                            betrGrpID: $("#betrGrpID").val()
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            a = $.parseJSON(a);
-
-                            if(b == -1) {
-                                b = a.length - 1;
-                            }
-
-                            0 < a.length ? ($("#sAdmCount").val(a.length), $("#sAdmID").val(a[b].sAdm_ID), $("#titelSAdm").val(a[b].titelSAdm), $("#nameSAdm").val(a[b].nameSAdm), $("#vornameSAdm").val(a[b].vornameSAdm), $("#emailSAdm").val(a[b].emailSAdm), $("#telefonSAdm").val(a[b].telefonSAdm), $("#faxSAdm").val(a[b].faxSAdm), $("#mobiltelefonSAdm").val(a[b].mobiltelefonSAdm),
-                                $("#benutzernameSAdm").val(a[b].username), sAdmGetRollenUndBerechtigungen()) : clearFields("sAdmHinz")
-                        }
-                    });
-                    break;
                 case "manGrp":
                     $.ajax({
                         type: "POST",
@@ -6253,85 +6191,7 @@ try {
             $(`#messmittelBerechnungslogikMst${type}`).val()
 
         instanzSpeichern = function(a) {
-            if ("gipscAdmSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "gipscAdm",
-                    nameDB: "gipscomm",
-                    gipscAdmID: $("gipscAdmID").val(),
-                    modus: "save",
-                    benutzername: $("#benutzernameGipscAdm").val(),
-                    passwort: getHash($("#passwortGipscAdm").val())
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a))
-                }
-            });
-            else if ("betrGrpSpeichern" == a) {
-                var adminArr = new Array();
-                $('span.item').each(function(){
-                    var $span = $(this).attr('check-value');
-                    if($span == 1) {
-                        var spanTxt = $(this).attr('data-id');
-                        adminArr.push(spanTxt);
-                    }
-                });
-                $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "php/instanzIntoDb.php",
-                    data: {
-                        id: "betrGrp",
-                        nameDB: "gipscomm",
-                        betrGrpID: $("#betrGrpID").val(),
-                        modus: "save",
-                        firma: $("#firmaBetrGrp").val(),
-                        anzahlMitarbeiter: $("#anzahlMitarbeiterBetrGrp").val(),
-                        anschrift: $("#anschriftBetrGrp").val(),
-                        plz: $("#plzBetrGrp").val(),
-                        ort: $("#ortBetrGrp").val(),
-                        geschaeftsfuehrer: $("#geschaeftsfuehrerBetrGrp").val(),
-                        telefon: $("#telefonBetrGrp").val(),
-                        eMail: $("#emailBetrGrp").val(),
-                        notiz: $("#notizBetrGrp").val(),
-                        mandantenIDs: adminArr.toString(),
-                    },
-                    success: function(a) {
-                        alert(datensatzGespeichert(a))
-                        betrGrpEinlesen()
-                    }
-                });
-            }
-            else if ("sAdmSpeichern" == a) {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "sAdm",
-                    nameDB: "gipscomm",
-                    modus: "save",
-                    sAdmID: $("#sAdmID").val(),
-                    titel: $("#titelSAdm").val(),
-                    name: $("#nameSAdm").val(),
-                    vorname: $("#vornameSAdm").val(),
-                    eMail: $("#emailSAdm").val(),
-                    telefon: $("#telefonSAdm").val(),
-                    fax: $("#faxSAdm").val(),
-                    mobiltelefon: $("#mobiltelefonSAdm").val(),
-                    benutzername: $("#benutzernameSAdm").val(),
-                    passwort: getHash($("#passwortSAdm").val()),
-                    betrGrpID: $("#betrGrpID").val()
-                },
-                success: function(a) {
-                    sAdmRollenUndBerechtigungen();
-                    alert(datensatzGespeichert(a))
-                }
-            });
-            }
-            else if ("manGrpSpeichern" == a) {
+            if ("manGrpSpeichern" == a) {
                 const getManIDs =
                     () =>
                     array($("#tblMandantengruppe tbody tr").length)()()
@@ -7756,81 +7616,7 @@ try {
                 }
             })
         }, instanzErstellen = function(a, b) {
-            if ("gipscAdmSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    modus: "new",
-                    id: "gipscAdm",
-                    nameDB: "gipscomm",
-                    benutzername: $("#benutzernameGipscAdm").val(),
-                    passwort: getHash($("#passwortGipscAdm").val())
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a));
-                    readInstanzen("gipscAdmLast",
-                        $("#gipscAdmCount").val())
-                } }), betrGrpNavID = $("#betrGrpCount").val(), betrGrpEinlesen();
-            else if ("betrGrpSpeichern" == a) $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    modus: "new",
-                    id: "betrGrp",
-                    nameDB: "gipscomm",
-                    firma: $("#firmaBetrGrp").val(),
-                    anzahlMitarbeiter: $("#anzahlMitarbeiterBetrGrp").val(),
-                    anschrift: $("#anschriftBetrGrp").val(),
-                    plz: $("#plzBetrGrp").val(),
-                    ort: $("#ortBetrGrp").val(),
-                    geschaeftsfuehrer: $("#geschaeftsfuehrerBetrGrp").val(),
-                    telefon: $("#telefonBetrGrp").val(),
-                    eMail: $("#emailBetrGrp").val(),
-                    notiz: $("#notizBetrGrp").val()
-                },
-                success: function(a) {
-                    alert(datensatzGespeichert(a));
-                    readInstanzen("betrGrpLast", $("#betrGrpCount").val())
-                    betrGrpEinlesen()
-                } }), betrGrpNavID = $("#betrGrpCount").val();
-            else if ("sAdmSpeichern" == a) {
-            // var adminArr = new Array();
-            //     $('span.item').each(function(){
-            //         var $span = $(this).attr('check-value');
-            //         if($span == 1) {
-            //             var spanTxt = $(this).attr('data-id');
-            //             adminArr.push(spanTxt);
-            //         }
-            //     });
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/instanzIntoDb.php",
-                data: {
-                    id: "sAdm",
-                    nameDB: "gipscomm",
-                    modus: "new",
-                    betrGrpID: $("#betrGrpID").val(),
-                    titel: $("#titelSAdm").val(),
-                    name: $("#nameSAdm").val(),
-                    vorname: $("#vornameSAdm").val(),
-                    eMail: $("#emailSAdm").val(),
-                    telefon: $("#telefonSAdm").val(),
-                    fax: $("#faxSAdm").val(),
-                    mobiltelefon: $("#mobiltelefonSAdm").val(),
-                    benutzername: $("#benutzernameSAdm").val(),
-                    passwort: getHash($("#passwortSAdm").val()),
-                    //mandantenIDs: adminArr.toString(),
-                },
-                success: function(a) {
-                    sAdmRollenUndBerechtigungen();
-                    alert(datensatzGespeichert(a));
-                    readInstanzen("sAdmLast", $("#sAdmCount").val())
-                } }), sAdmNavID = $("#sAdmCount").val();
-            }
-            else if ("manGrpSpeichern" == a) {
+            if ("manGrpSpeichern" == a) {
                 var e = [];
                 for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++) e[i] = tblMandantengruppe.cell(i, 0).data();
                 e = e.join(",");
@@ -10472,7 +10258,7 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
-    tblsAdmSuchenlisteErstellen = $("#tblsAdmSuchenlisteErstellen").DataTable({
+    tblSAdmSuchen = $("#tblSAdmSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -16120,67 +15906,6 @@ function benutzerlisteErstellen() {
                                 benutzerGetRollenUndBerechtigungen();
                             }
                         });
-                    })
-                }
-            })
-        }
-    })
-}
-
-function sAdmSuchenlisteErstellen() {
-    var a = itemSessionGet("nameDB");
-    //console.log(a);
-    $.ajax({
-        type: "POST",
-        async: !0,
-        url: "php/readInstanzen.php",
-        data: {
-            id: "sAdm",
-            nameDB: "gipscomm",
-            betrGrpID: $('#betrGrpID').val()
-        },
-        success: function(e) {
-            console.log('Working fine');
-            e = json(e);
-            //console.log(e);
-
-            tblsAdmSuchenlisteErstellen.colReorder.reset();
-            tblsAdmSuchenlisteErstellen.clear().draw();
-            for (var c = 0; c < e.length; c++) {
-                //console.log(e[c].email);
-                tblsAdmSuchenlisteErstellen.row.add([
-                    c,
-                    e[c].titelSAdm,
-                    e[c].nameSAdm,
-                    e[c].emailSAdm,
-                    e[c].telefonSAdm,
-                    e[c].faxSAdm,
-                    e[c].mobiltelefonSAdm,
-                    e[c].username,
-                    e[c].username,
-                ]).draw();
-            }
-            $("#sAdmSuchenListeContainer").css("display", "block");
-            $("#sAdmSuchenListeContainer").dialog({
-                height: $(window).height() - .125 * $(window).height(),
-                width: $(window).width() - .125 * $(window).width(),
-                resize: "auto",
-                modal: true,
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    console.log('open popup');
-                    $("#tblsAdmSuchenlisteErstellen tbody tr").css("cursor", "pointer");
-                    $("#tblsAdmSuchenlisteErstellen tbody").on("dblclick", "tr", function() {
-                        var a = tblsAdmSuchenlisteErstellen.row(this).data();
-                        $("#sAdmSuchenListeContainer").dialog("close");
-                        readInstanzen("sAdmFirst", a[0])
                     })
                 }
             })

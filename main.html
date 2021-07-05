@@ -1504,6 +1504,8 @@
                         <input id="betrGrpState"/>
                         <input id="betrGrpIdx"/>
                         <input id="sAdmID"/>
+                        <input id="sAdmState"/>
+                        <input id="sAdmIdx"/>
                         <input id="manGrpID"/>
                         <input id="admID"/>
                         <input id="benID"/>
@@ -1545,7 +1547,6 @@
                         <img id="betrGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
                         <img id="betrGrpHinz" title="Neue Betreuergruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
                         <img id="betrGrpSuchen" title="Betreuergruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
-                        <img id="betrGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> 
                         <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
                         <img id="betrGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Betreuergruppe" src="images/last.png" alt="letzte" /> 
                         <img id="betrGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Betreuergruppe" src="images/next.png" alt="nächste" /> 
@@ -1612,46 +1613,57 @@
                                  <tbody></tbody>
                               </table>
                            </div>
-                           <div class="navDropBox" style="height:20px;padding:3px;"> <img id="sAdmLoeschen" title="Mandant löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="sAdmSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="sAdmHinz" title="Neuen Mandanten erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="sAdmSuchen" title="Mandanten suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="sAdmMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="sAdmLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="sAdmNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="sAdmPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="sAdmFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" /> </div>
+                           <div class="navDropBox" style="height:20px;padding:3px;"> 
+                              <img id="sAdmLoeschen" title="SuperAdmin löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                              <img id="sAdmSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                              <img id="sAdmHinz" title="Neuen SuperAdmin erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                              <img id="sAdmSuchen" title="SuperAdmins suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                              <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                              <img id="sAdmLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter SuperAdmin" src="images/last.png" alt="letzte" /> 
+                              <img id="sAdmNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster SuperAdmin" src="images/next.png" alt="nächste" /> 
+                              <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                              <img id="sAdmPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger SuperAdmin" src="images/previous.png" alt="vorherige" /> 
+                              <img id="sAdmFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster SuperAdmin" src="images/first.png" alt="erste" /> 
+                           </div>
                            <div class="infosBlock">
                               <div class="sectionHeader">
                                  <label>Definition der Superadmins</label>
                               </div>
                               <div class="controlDiv">
                                  <label>Titel</label>
-                                 <input id="titelSAdm" />
+                                 <input id="titelSAdm" class="sAdmForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Name</label>
-                                 <input id="nameSAdm" />
+                                 <input id="nameSAdm" class="sAdmForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Vorname</label>
-                                 <input id="vornameSAdm" />
+                                 <input id="vornameSAdm" class="sAdmForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>e-Mail</label>
-                                 <input id="emailSAdm" />
+                                 <input id="emailSAdm" class="sAdmForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Telefon</label>
-                                 <input id="telefonSAdm" />
+                                 <input id="telefonSAdm" class="sAdmForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Fax</label>
-                                 <input id="faxSAdm" />
+                                 <input id="faxSAdm" class="sAdmForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Mobiltelefon</label>
-                                 <input id="mobiltelefonSAdm" />
+                                 <input id="mobiltelefonSAdm" class="sAdmForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Benutzername</label>
-                                 <input id="benutzernameSAdm" />
+                                 <input id="benutzernameSAdm" class="sAdmForm"/>
                               </div>
                               <div class="controlDiv">
                                  <label>Passwort</label>
-                                 <input id="passwortSAdm" />
+                                 <input id="passwortSAdm" type="password" class="sAdmForm"/>
                               </div>
 
                                     <!-- <div class="navDropBox" style="height:20px;padding:3px;">
@@ -6300,7 +6312,7 @@
                     </div>
                     <div class="controlDiv">
                         <label for="eegERng">EEG-Umlage<br> (Gesamt)</label>
-                        <input id="eegERng" class="evuRng">
+                        <input id="eegERng" class="evuRng" value="0.0">
                     </div>
                     <div class="controlDiv">
                         <label for="eegUntERng">EEG-Umlage<br> (unter 10^6 kWh)</label>
@@ -8226,6 +8238,18 @@
         <br>
         <button id="saveBetrGrpOk">Ok</button>
         <button id="saveBetrGrpCancel" style="margin-left:50px;">Abbrechen</button>
+    </div>
+    <!--Save new SuperAdmin if not all inputs are filled-->
+    <!--Meldung-->
+    <!--  -->
+    <div id="saveSAdmDialog" style="display:none;">
+        <p>
+            Nicht alle Felder sind ausgefüllt.<br>
+            Soll trotzdem gespeichert werden ? <br>
+        </p>
+        <br>
+        <button id="saveSAdmOk">Ok</button>
+        <button id="saveSAdmCancel" style="margin-left:50px;">Abbrechen</button>
     </div>
     <!--Save new Schicht if not all inputs are filled-->
     <!--Meldung-->
@@ -10890,27 +10914,6 @@
           </table>
       </div>
   </div>
-    <div id="sAdmSuchenListeContainer" style="display:none;font-size:12px;">
-         <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
-         </div> -->
-         <div id="buttonsUndTabelle" style="margin-left:0px;">
-            <table id="tblsAdmSuchenlisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
-               <thead>
-               <tr>
-                     <th>Titel</th>
-                     <th>Name</th>
-                     <th>Vorname</th>
-                     <th>E-Mail</th>
-                     <th>Telefon</th>
-                     <th>Fax</th>
-                     <th>Mobiltelefon</th>
-                     <th>Benutzername</th>
-               </tr>
-               </thead>
-               <tbody></tbody>
-            </table>
-         </div>
-      </div>
       <div id="betrGrpSuchenContainer" style="display:none;font-size:12px;">
             <table id="tblBetrGrpSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
                <thead>
@@ -10919,6 +10922,19 @@
                      <th>Firma</th>
                      <th>Anschrift</th>
                      <th>Ort</th>
+               </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
+      </div>
+      <div id="sAdmSuchenContainer" style="display:none;font-size:12px;">
+            <table id="tblSAdmSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+               <thead>
+               <tr>
+                     <th>idx</th>
+                     <th>Titel</th>
+                     <th>Name</th>
+                     <th>Benutzername</th>
                </tr>
                </thead>
                <tbody></tbody>
@@ -11050,6 +11066,7 @@
                 <script type="text/javascript" src="src/js/Rechteverwaltung/rechteverwaltung.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/gipscommAdmins.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/betreuergruppen.js"></script>
+                <script type="text/javascript" src="src/js/Rechteverwaltung/superAdmins.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
                 <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>

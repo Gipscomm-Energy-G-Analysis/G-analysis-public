@@ -63,6 +63,7 @@ const scpRechteverwaltung_betreuergruppen =
                 , "telefon"
                 , "eMail"
                 , "notiz"
+                , "mandantenIDs"
                 ]
                 .map(field(formData))
                 .every(a => !emptyString(a))
@@ -234,6 +235,7 @@ const scpRechteverwaltung_betreuergruppen =
                             setState("edit")
                         }
                     )
+                    .then(scpRechteverwaltung_superAdmins.readFirst)
                 }
 
             // Sets the form data input values of the first Schicht Modell

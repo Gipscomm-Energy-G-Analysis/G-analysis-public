@@ -11,67 +11,7 @@ $conn = connectToDB($nameDB);
 
 $id = $_POST['id'];
 
-if($id == "sAdm"){
-
-  $betrGrpID = $_POST['betrGrpID'];
-  $query = "SELECT * FROM superAdmins WHERE betrGrp_ID = '$betrGrpID' AND deleted_at IS NULL";
-
-}elseif($id == "manDBs"){
-
-  $betrGrpID = $_POST['betrGrpID'];
-  if(!empty($betrGrpID)) {
-    //$query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$betrGrpID'";
-    $mandantenBetr = "SELECT * FROM mandantenBetrGruppen WHERE betrGrp_ID = '$betrGrpID'";
-    $data = queryDB($conn, $mandantenBetr, "read");
-    $query = '';
-    
-    if(!empty($data)) {
-      $IDs = explode(',', $data[0]['mandantenIDs']);
-  
-      $manIDs = "'" . implode ( "', '", $IDs ) . "'";
-    
-      $query = "SELECT * FROM mandanten WHERE man_ID IN  (".$manIDs.")";
-    }
-  } else {
-    $defaultGrpID = $_POST['defaultGrpID'];
-    //$query = "SELECT * FROM mandanten WHERE betrGrp_ID = '$defaultGrpID'";
-    $mandantenBetr = "SELECT * FROM mandantenBetrGruppen WHERE betrGrp_ID = '$defaultGrpID'";
-    $data = queryDB($conn, $mandantenBetr, "read");
-    $query = '';
-    
-    if(!empty($data)) {
-      $IDs = explode(',', $data[0]['mandantenIDs']);
-  
-      $manIDs = "'" . implode ( "', '", $IDs ) . "'";
-    
-      $query = "SELECT * FROM mandanten WHERE man_ID IN  (".$manIDs.")";
-    }
-  }
-  
-  
-}
- elseif($id == "sAdmGetRolePermission"){
-  $userId = $_POST['userId'];
-  if(!empty($userId)) {
-    $query = "SELECT * FROM rolePermission WHERE user_id = '$userId' ";
-  }
-
-} elseif($id == "alleNutzerGetRolePermission"){
-  $roleId = $_POST['role_id'];
-  $userId = $_POST['userId'];
-  $tableName = $_POST['tableName'];
-  $userName = $_POST['userName'];
-
-
-  if(!empty($userId)) {
-    $query1 = "SELECT * FROM $tableName WHERE username = '$userName' ";
-    $records = queryDB($conn, $query1, "read") ;
-  }
-  $ID = $records[0][$userId.'_ID'];
-
-  $query = "SELECT rolePermission.role_id, accessibleTab.tab_id, accessibleTab.tab_name, accessibleTab.display_superadmin, rolePermission.user_id FROM rolePermission RIGHT JOIN accessibleTab ON accessibleTab.tab_id = rolePermission.tab_id AND rolePermission.user_id = '$ID' ";
-
-}elseif($id == "manBetrGrp"){
+if($id == "manBetrGrp"){
   $betrGrpID = $_POST['betrGrpID'];
   $query = "SELECT * FROM mandantenBetrGruppen WHERE betrGrp_ID = '$betrGrpID'";
 
