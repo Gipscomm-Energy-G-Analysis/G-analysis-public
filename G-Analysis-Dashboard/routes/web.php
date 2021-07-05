@@ -26,4 +26,5 @@ Route::get('/charts-bar-ajax', [\App\Http\Controllers\ChartController::class, 'g
     ->name('getGoodsBarCharts');
 Route::post('/switch-database', [\App\Http\Controllers\ManageDatabaseController::class, 'switchDatabase'])
     ->name('switchDatabase');
-Route::post('/uploadImage', [\App\Http\Controllers\UploadImageController::class, 'imageUpload'])->name('imageUpload');;
+Route::post('/uploadImage', [\App\Http\Controllers\UploadImageController::class, 'imageUpload'])->name('imageUpload');
+Route::post('/graph/filter', [\App\Http\Controllers\DashboardController::class, 'getChartsData'])->name('getChartsData');

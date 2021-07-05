@@ -65,203 +65,14 @@ class DashboardController extends Controller
             $prodData = ProductOverview::where('MANAME',$machineName)->orderBy('id', 'desc')->first();
             if(!empty($prodData)){
                 $shards = 0;
+                $chartsData = collect();
+                $measuringPoint = [];
                 for ($i=1;$i <= 4;$i++){
-                    if(!empty($machineData['messstelle'.$i.'IDAnl'])) $shards++;
-                }
-                $shards = 4;
-            //dd($machineData);
-                $messstelle1IDAnl = 0;
-                $messstelle2IDAnl = 0;
-                $messstelle3IDAnl = 0;
-                $messstelle4IDAnl = 0;
-                if($machineData['messstelle1IDAnl'] != '' && $machineData['messstelle1IDAnl'] != 0)
-                {
-                    if(!empty($machineData['messstelle1IDAnl'])){
-                        $messstellentData = Messstellen::where('mst_ID',$machineData['messstelle1IDAnl'])->orderBy('mst_ID', 'desc')->first();
-                        if($messstellentData['msm_ID'] != ''){
-                            $messmittelData = Messmittel::where('msm_ID',$messstellentData['msm_ID'])->orderBy('msm_ID', 'desc')->first();
-
-                            if(!empty($messmittelData['kanal1Msm'])){
-                                if ($request->has('selected_value')) {
-                                    $kanal1Msm = DataValue15m::select(DB::raw('SUM(value) as value'))->where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->groupBy('channel_id')->limit($request['selected_value'])->get(); 
-                                   // print_r($kanal1Msm);
-                                }else{
-                                    $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal1Msm)){
-                                    if(!empty($kanal1Msm['value'])){
-                                        $messstelle1IDAnl += $kanal1Msm['value'];
-                                    }
-                                }
-                            }
-                            if(!empty($messmittelData['kanal2Msm'])){
-                                if ($request->has('selected_value')) {
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                  
-                                }else{
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal2Msm)){
-                                    if(!empty($kanal2Msm['value'])){
-                                        $messstelle1IDAnl += $kanal2Msm['value'];
-                                    }
-                                }
-                            }
-                            if(!empty($messmittelData['kanal3Msm'])){
-                                $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal3Msm'])->orderBy('channel_id', 'desc')->first();
-                                if ($request->has('selected_value')) {
-                                    $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal3Msm'])->orderBy('channel_id', 'desc')->limit($request['selected_value'])->get(); 
-                                   
-                                }else{
-                                    $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal3Msm)){
-                                    if(!empty($kanal3Msm['value'])){
-                                        $messstelle1IDAnl += $kanal3Msm['value'];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if($machineData['messstelle2IDAnl'] != '' && $machineData['messstelle2IDAnl'] != 0)
-                {
-                   if(!empty($machineData['messstelle2IDAnl'])){
-                        $messstellentData = Messstellen::where('mst_ID',$machineData['messstelle2IDAnl'])->orderBy('mst_ID', 'desc')->first();
-                        if($messstellentData['msm_ID'] != ''){
-                            $messmittelData = Messmittel::where('msm_ID',$messstellentData['msm_ID'])->orderBy('msm_ID', 'desc')->first();
-
-                            if(!empty($messmittelData['kanal1Msm'])){
-                                if($request->has('selected_value')) {
-                                    $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal1Msm)){
-                                    if(!empty($kanal1Msm['value'])){
-                                        $messstelle2IDAnl += $kanal1Msm['value'];
-                                    }
-                                }
-                            }
-                            if(!empty($messmittelData['kanal2Msm'])){
-                                if($request->has('selected_value')) {
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal2Msm)){
-                                    if(!empty($kanal2Msm['value'])){
-                                        $messstelle2IDAnl += $kanal2Msm['value'];
-                                    }
-                                }
-                            }
-                            if(!empty($messmittelData['kanal3Msm'])){
-                                $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal3Msm'])->orderBy('channel_id', 'desc')->first();
-                                if($request->has('selected_value')) {
-                                    $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal3Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal3Msm)){
-                                    if(!empty($kanal3Msm['value'])){
-                                        $messstelle2IDAnl += $kanal3Msm['value'];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if($machineData['messstelle3IDAnl'] != '' && $machineData['messstelle3IDAnl'] != 0)
-                {
-                    if(!empty($machineData['messstelle3IDAnl'])){
-                        $messstellentData = Messstellen::where('mst_ID',$machineData['messstelle3IDAnl'])->orderBy('mst_ID', 'desc')->first();
-                        if(!empty($messstellentData['msm_ID'])){
-                            $messmittelData = Messmittel::where('msm_ID',$messstellentData['msm_ID'])->orderBy('msm_ID', 'desc')->first();
-
-                            if(!empty($messmittelData['kanal1Msm'])){
-                                if($request->has('selected_value')) {
-                                    $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal1Msm)){
-                                    if(!empty($kanal1Msm['value'])){
-                                        $messstelle3IDAnl += $kanal1Msm['value'];
-                                    }
-                                }
-                            }
-                            if(!empty($messmittelData['kanal2Msm'])){
-                                if($request->has('selected_value')) {
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal2Msm)){
-                                    if(!empty($kanal2Msm['value'])){
-                                        $messstelle3IDAnl += $kanal2Msm['value'];
-                                    }
-                                }
-                            }
-                            if(!empty($messmittelData['kanal3Msm'])){
-                                $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal3Msm'])->orderBy('channel_id', 'desc')->first();
-                                if($request->has('selected_value')) {
-                                    $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal3Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal3Msm)){
-                                    if(!empty($kanal3Msm['value'])){
-                                        $messstelle3IDAnl += $kanal3Msm['value'];
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if($machineData['messstelle4IDAnl'] != '' && $machineData['messstelle4IDAnl'] != 0)
-                {
-                    if(!empty($machineData['messstelle4IDAnl'])){
-                        $messstellentData = Messstellen::where('mst_ID',$machineData['messstelle4IDAnl'])->orderBy('mst_ID', 'desc')->first();
-                        if(!empty($messstellentData['msm_ID'])){
-                            $messmittelData = Messmittel::where('msm_ID',$messstellentData['msm_ID'])->orderBy('msm_ID', 'desc')->first();
-                            if(!empty($messmittelData['kanal1Msm'])){
-                                if($request->has('selected_value')) {
-                                    $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal1Msm = DataValue15m::where('channel_id',$messmittelData['kanal1Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal1Msm)){
-                                    if(!empty($kanal1Msm['value'])){
-                                        $messstelle4IDAnl += $kanal1Msm['value'];
-                                    }
-                                }
-                            }
-                            if(!empty($messmittelData['kanal2Msm'])){
-                                if($request->has('selected_value')) {
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal2Msm)){
-                                    if(!empty($kanal2Msm['value'])){
-                                        $messstelle4IDAnl += $kanal2Msm['value'];
-                                    }
-                                }
-                            }
-                            if(!empty($messmittelData['kanal3Msm'])){
-                                $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal3Msm'])->orderBy('channel_id', 'desc')->first();
-                                if($request->has('selected_value')) {
-                                    $kanal3Msm = DataValue15m::where('channel_id',$messmittelData['kanal3Msm'])->orderBy('channel_id', 'desc')->offset(0)->limit($request['selected_value'])->get(); 
-                                }else{
-                                    $kanal2Msm = DataValue15m::where('channel_id',$messmittelData['kanal2Msm'])->orderBy('channel_id', 'desc')->first();
-                                }
-                                if(!empty($kanal3Msm)){
-                                    if(!empty($kanal3Msm['value'])){
-                                        $messstelle4IDAnl += $kanal3Msm['value'];
-                                    }
-                                }
-                            }
-                        }
+                    if(!empty($machineData['messstelle'.$i.'IDAnl'])) {
+                        $shards++;
+                        $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData['messstelle'.$i.'IDAnl'];
+                        $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$machineData['messstelle'.$i.'IDAnl'], 'limit' => 5]);
+                        $chartsData->put('messstelle'.$i.'IDAnl',$this->getChartsData( $request));
                     }
                 }
                 $prodData =[
@@ -280,22 +91,10 @@ class DashboardController extends Controller
                     'anl_ID' => $machineData['anl_ID'],
                     'bildAnl' => $machineData['bildAnl'],
                     'shards' => $shards,
-                    'machineshards' => [
-                        'messstelle1IDAnl' => $machineData['messstelle1IDAnl'],
-                        'messstelle2IDAnl' => $machineData['messstelle2IDAnl'],
-                        'messstelle3IDAnl' => $machineData['messstelle3IDAnl'],
-                        'messstelle4IDAnl' => $machineData['messstelle4IDAnl'],
-
-                       
-                    ],
-                    'shardsData' => [
-                        'messstelle1IDAnl' => number_format($messstelle1IDAnl,2),
-                        'messstelle2IDAnl' => number_format($messstelle2IDAnl,2),
-                        'messstelle3IDAnl' => number_format($messstelle3IDAnl,2),
-                        'messstelle4IDAnl' => number_format($messstelle4IDAnl,2)
-                    ]
+                    'machineshards' => $measuringPoint,
+                    'shardsData' => $measuringPoint,
+                    'chartsData' => $chartsData
                 ];
-               // dd($prodData);
 
                 return ['code'=>200, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'Data Retrived Successfully.'];
             } else{
@@ -316,5 +115,29 @@ class DashboardController extends Controller
         if($start < 0) $start = 0;
         $data = Anlagen::select('anl_ID', 'datumAnl', 'nummerAnl', 'bezeichnungAnl')->whereNotNull('datumAnl')->where('deleted',0)->limit($limit)->offset($start)->get();
         return [ 'data'=> $data, 'itemsCount'=> $totalRecords];
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Support\Collection
+     */
+    public function getChartsData(Request $request) {
+        $measuringPoint = $request['measuringPoint'];
+        $limit = $request['limit'];
+        $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID', 290)
+            ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
+            ->orderby('MessstellenEnergiedaten.Time','desc')->limit($limit)->get();
+        return $this->getlineChartData($data, $measuringPoint);
+    }
+
+    /**
+     * @param $data
+     * @param $id
+     * @return array
+     */
+    public function getlineChartData($data, $id) {
+        $lable = $data->reverse()->pluck('Time')->toArray();
+        $data = $data->reverse()->pluck('Value')->toArray();
+        return ['lable'=>$lable, 'data'=>$data, 'id'=>$id];
     }
 }

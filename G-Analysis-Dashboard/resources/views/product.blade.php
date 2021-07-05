@@ -1,6 +1,6 @@
 
 <style> .u-under{ height:auto !important;}
-    </style>
+</style>
 @extends('layout.app')
 @section('headContent')
     <link rel="stylesheet" href="{{asset('template/plugins/jsgrid/jsgrid.min.css')}}">
@@ -47,7 +47,7 @@
         <!-- Main content -->
         @php $image = 'images/Blasanlage.jpg'; @endphp
         @if(file_exists($data['bildAnl']))
-        @php  $image = $data['bildAnl']; @endphp
+            @php  $image = $data['bildAnl']; @endphp
         @endif
         <section class="content">
             <div class="card card-solid">
@@ -87,7 +87,7 @@
                                             <input type="text" class="form-control" id="artikel" placeholder="Artikel" value="{{$data['artikel']}}" readonly>
                                         </div>
                                     </div>
-                                    <!-- <div class="form-group row">
+                                <!-- <div class="form-group row">
                                         <label for="bisher_produziert" class="col-sm-2 col-form-label">Bisher produziert</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="bisher_produziert" placeholder="Bisher produziert" value="{{$data['bisher_produziert']}}" readonly>
@@ -159,9 +159,9 @@
                         </div>
                     </div>
                 </div>
-            </div>  
-     
-        <!-- /.card -->
+            </div>
+
+            <!-- /.card -->
             <!-- Bar Chart -->
             <div class="card card-success" id="bar_chart" style="display:block;">
                 <div class="card-header">
@@ -170,69 +170,30 @@
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
                     </div>
                 </div>
-                @if($data['shards'] >= 1)
-                    @foreach($data['machineshards'] as $key=>$value)
-                    @php $i=0; @endphp
-                        @if($value != 0)
-                            @foreach($data['shardsData'] as $key1=>$value1)
-                                @if($key1 == $key) 
-                                <div class="card-body">
-                                    <div class="col-sm-2">
-                                        <div class="form-group">
-                                        <label>Custom Select</label>
-                                            <select class="custom-select" id="{{$key}}">
-                                                <option value="">Select</option>
-                                                <option value="5">5</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="chart">
-                                                <canvas id="barChart{{$i}}" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; background:#fff;" ></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                                @php $i++; @endphp
-                            @endforeach
-                        @endif
-                    @endforeach
-                @endif
-                <!-- /.card-body -->
-
-              <!-- LINE CHART -->
-        <!-- <div class="card card-info">
-          <div class="card-header">
-            <h3 class="card-title">Line Chart</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
+                <!-- LINE CHART -->
+                @foreach($data['chartsData'] as $key=>$value)
+                    <div class="card-body">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label>Server Time Filter</label>
+                                <select class="custom-select time_filter" id="filter_{{$key}}" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="chart">
+                                <canvas id="lineChart_{{$key}}" style="background:#fff;" ></canvas>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-          </div>
-          <div class="card-body">
-            <div class="chart">
-              <div id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></div>
-            </div>
-          </div> -->
-          <!-- /.card-body -->
-        </div>
-
-        
-            </div>
-                
 
             <!-- Modal Start -->
             <div class="modal fade" id="modal-Machine-list">
@@ -274,107 +235,74 @@
     <script src="{{asset('template/plugins/jsgrid/jsgrid.min.js')}}"></script>
     <script src="{{asset('js/dashboard/dashboard_ajax.js')}}"></script>
     <script src="{{asset('js/dashboard/jsGridMachines.js')}}"></script>
-    <script src="{{asset('plugins/uplot/uPlot.iife.min.js')}}"></script>
     <script type="text/javascript">
-        let shardsCount = '<?php echo $data['shards'];  ?>';
-            if(shardsCount >= 1) {
-                let shardsData  = ""; 
-                shardsData  += '@foreach($data['machineshards'] as $key=>$value)';
-                shardsData  += '@php $i=0; @endphp';
-                shardsData  += '@if($value != 0)';
-                shardsData  += '@foreach($data['shardsData'] as $key1=>$value1)';
-                shardsData  += '@if($key1 == $key) ';
-                var areaChartData = {
-                        labels  : ['Time Server'],
-                        datasets: [
-                        {
-                            label               : '{{$key}} Chart',
-                            backgroundColor     : dynamicColors(),
-                            borderColor         : dynamicColors(),
-                            pointRadius          : false,
-                            pointColor          : '#fff',
-                            pointStrokeColor    : '#fff',
-                            pointHighlightFill  : '#fff',
-                            pointHighlightStroke: dynamicColors(),
-                            data                : [{{$value1}}]
+        const timeFilterHook = document.querySelectorAll('.time_filter');
+        let myChart;
+        const lineChartHook = (id, lable, data , name) => {
+            let ctx = document.getElementById(id).getContext('2d');
+            if(myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: lable,
+                    datasets: [{
+                        label: `Energy consumption for ${name}`,
+                        data: data,
+                        backgroundColor: '#00bc8c',
+                        borderColor: 'rgb(54, 162, 235)',
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                color: 'red',
+                                display: true,
+                                text: 'Server Time'
+                            }
                         },
-                        ]
+                        y: {
+                            title: {
+                                color: 'red',
+                                display: true,
+                                text: 'Power'
+                            }
+                        }
+                    }
                 }
-                //-------------
-                //- BAR CHART -
-                //-------------
-                var barChartCanvas = $('#barChart{{$i}}').get(0).getContext('2d')
-                var barChartData = $.extend(true, {}, areaChartData)
-                var temp0 = areaChartData.datasets['{{$i}}']
-                barChartData.datasets['{{$i}}'] = temp0
-                
-                var barChartOptions = {
-                    responsive              : true,
-                    maintainAspectRatio     : false,
-                    datasetFill             : false
-                }
-                
-                new Chart(barChartCanvas, {
-                    type: 'bar',
-                    data: barChartData,
-                    options: barChartOptions
-                })
-                shardsData  +=  '@endif';
-                shardsData  +=  '@php $i++; @endphp';
-                shardsData  +=  '@endforeach';
-                shardsData  +=  ' @endif';
-                shardsData  +=  '@endforeach';
-            }    
-        
-        //     $(function () {
-        //     /* uPlot
-        //     * -------
-        //     * Here we will create a few charts using uPlot
-        //     */
+            })
+        }
 
-        //     function getSize(elementId) {
-        //     return {
-        //         width: document.getElementById(elementId).offsetWidth,
-        //         height: document.getElementById(elementId).offsetHeight,
-        //     }
-        //     }
-        //     let data = [
-        //     [0, 1, 2, 3, 4, 5, 6],
-        //     [28, 48, 40, 19, 86, 27, 90],
-        //     [65, 59, 80, 81, 56, 55, 40]
-        //     ];
-        //     const optsLineChart = {
-        //     ... getSize('lineChart'),
-        //     scales: {
-        //         x: {
-        //         time: false,
-        //         },
-        //         y: {
-        //         range: [0, 100],
-        //         },
-        //     },
-        //     series: [
-        //         {},
-        //         {
-        //         fill: 'transparent',
-        //         width: 5,
-        //         stroke: 'rgba(60,141,188,1)',
-        //         },
-        //         {
-        //         stroke: '#c1c7d1',
-        //         width: 5,
-        //         fill: 'transparent',
-        //         },
-        //     ],
-        //     };
+        const getGraphData = (id, limit, event_id) => {
+            $.ajax({
+                url:'/graph/filter',
+                type: 'POST',
+                data: {
+                    measuringPoint:id,
+                    limit:limit
+                },
+            }).done( function(response) {
+                lineChartHook(event_id, response.lable, response.data, response.id);
+            });
+        }
 
-        //     let lineChart = new uPlot(optsLineChart, data, document.getElementById('lineChart'));
+        @foreach($data['chartsData'] as $key=>$value)
+            lineChartHook('lineChart_{{$key}}', @json($value['lable']), @json($value['data']), '{{$key}}');
+        @endforeach
 
-        //     window.addEventListener("resize", e => {
-        //     lineChart.setSize(getSize('lineChart'));
-        //     });
-        // })
+        //adding event listener to time filter hook
+        timeFilterHook.forEach((node)=>{
+            node.addEventListener('change', function(){
+                let id = this.getAttribute('data_value');
+                let data_event = this.getAttribute('data_event');
+                let limit = this.value;
+                getGraphData(id, limit, data_event);
+            });
+        });
+
+        /* END LINE CHART */
 
     </script>
-    
+
 @stop
