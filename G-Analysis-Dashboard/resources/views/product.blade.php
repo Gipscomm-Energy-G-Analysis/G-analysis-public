@@ -1,5 +1,6 @@
 
-<style> .u-under{ height:auto !important;}
+<style> .u-under{ height:auto !important; }
+    .spinner { position:fixed !important; }
 </style>
 @extends('layout.app')
 @section('headContent')
@@ -175,7 +176,7 @@
                 <!-- LINE CHART -->
                 @foreach($data['chartsData'] as $key=>$value)
                     <div class="card-body">
-                        <div class="col-sm-2">
+                        <div class="col-sm-2  main_chart">
                             <div class="form-group">
                                 <label>Server Time Filter</label>
                                 <select class="custom-select time_filter" id="filter_{{$key}}" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
@@ -186,12 +187,17 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 main_chart">
                             <div class="chart">
                                 <canvas id="lineChart_{{$key}}" style="background:#fff;" ></canvas>
                             </div>
                         </div>
+                        <div id="not_found_msg" style="display:none;">
+                            <span>Record Not Found</span>
+                        </div>
                     </div>
+                   
+                  
                 @endforeach
             </div>
 
@@ -239,42 +245,54 @@
         const timeFilterHook = document.querySelectorAll('.time_filter');
         let myChart;
         const lineChartHook = (id, lable, data , name) => {
-            let ctx = document.getElementById(id).getContext('2d');
-            if(myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: lable,
-                    datasets: [{
-                        label: `Energy consumption for ${name}`,
-                        data: data,
-                        backgroundColor: '#00bc8c',
-                        borderColor: 'rgb(54, 162, 235)',
-                        borderWidth: 1,
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: {
-                                color: 'red',
-                                display: true,
-                                text: 'Server Time'
-                            }
-                        },
-                        y: {
-                            title: {
-                                color: 'red',
-                                display: true,
-                                text: 'Power'
+            if(data.length > 0){
+                $(".main_chart").css("display","block");
+                $("#not_found_msg").css("display","none");
+                let ctx = document.getElementById(id).getContext('2d');
+                if(myChart) myChart.destroy();
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: lable,
+                        datasets: [{
+                            label: `Energy consumption for ${name}`,
+                            data: data,
+                            backgroundColor: '#00bc8c',
+                            borderColor: 'rgb(54, 162, 235)',
+                            borderWidth: 1,
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    color: 'red',
+                                    display: true,
+                                    text: 'Server Time'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    color: 'red',
+                                    display: true,
+                                    text: 'Power'
+                                }
                             }
                         }
                     }
-                }
-            })
+                })
+            }
+            else{
+                $(".main_chart").css("display","none");
+                $("#not_found_msg").css("display","block");
+                
+            }
         }
-
+        
         const getGraphData = (id, limit, event_id) => {
+            let container = document.getElementById('data-card');
+            let spinner = new Spinner();
+            spinner.spin(container);
             $.ajax({
                 url:'/graph/filter',
                 type: 'POST',
@@ -283,6 +301,7 @@
                     limit:limit
                 },
             }).done( function(response) {
+                spinner.stop();
                 lineChartHook(event_id, response.lable, response.data, response.id);
             });
         }

@@ -8,13 +8,7 @@
     //     let machine_id = $('.navigation').attr('data-value');
     //     getMachineData(machine_id, type);
     // }
-    let dynamicColors = function() {
-        let r = Math.floor(Math.random() * 255);
-        let g = Math.floor(Math.random() * 255);
-        let b = Math.floor(Math.random() * 255);
-        return "rgb(" + r + "," + g + "," + b + ")";
-    }
-
+ 
     const getMachineData = (machine_id, type) => {
         let container = document.getElementById('data-card');
         let spinner = new Spinner();
@@ -30,7 +24,7 @@
             const data = response.data;
             console.log('data',data);
             spinner.stop();
-            $("#bar_chart").css('display','none');
+           
             if(response.code == 200 ){
                 $('.navigation').attr('data-value', data.anl_ID);
                 $('#anl_ID').val(data.anl_ID);
@@ -53,65 +47,18 @@
                 $("#machine-image").on("error", function () {
                     $(this).attr("src", "images/Blasanlage.jpg");
                 });
-            
-                let machineshards = data.machineshards;
-                let shardsData = data.shardsData;
-                let html = '';
-                let myCharts;
-
-                $.each(machineshards, function( key, value ) { 
-                    let i=0;
+                $.each( data.chartsData, function( key, value) {
+                    let id =value.id;
+                    let limit = 5;
+                    let data_event ='lineChart_'+value.id;
+                    getGraphData(id, limit, data_event);
+                    lineChartHook('lineChart_'+key, value.lable, value.data, key);
+                    $('.time_filter').attr('id','filter_'+key);
+                    $('.time_filter').attr('data_value',value.id);
+                    $('.time_filter').attr('data_event','lineChart_'+key);
                     
-                    if(value != 0){  
-                        console.log(value);
+                });
 
-                        $("#bar_chart").css('display','block');
-                        $.each( shardsData, function( key1, value1 ) {
-                            if(key1 == key) {
-                                 console.log(value1);
-                                html += `<div class="chart">
-                                                <canvas id="barChart{{i}}" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; background:#fff;" ></canvas>
-                                        </div>`;
-                                var areaChartData = {
-                                    labels  : ['Time Server'],
-                                    datasets: [
-                                    {
-                                        label               : key + ' Chart',
-                                        backgroundColor     : dynamicColors(),
-                                        borderColor         : dynamicColors(),
-                                        pointRadius          : false,
-                                        pointColor          : '#fff',
-                                        pointStrokeColor    : '#fff',
-                                        pointHighlightFill  : '#fff',
-                                        pointHighlightStroke: dynamicColors(),
-                                        data                : [value1]
-                                    },
-                                    ]
-                                }
-                             
-                                var barChartCanvas = $('#barChart'+i).get(0).getContext('2d')
-                                var barChartData = $.extend(true, {}, areaChartData)
-                                var temp0 = areaChartData.datasets['{{i}}']
-                                barChartData.datasets['{{i}}'] = temp0
-                                var barChartOptions = {
-                                    responsive              : true,
-                                    maintainAspectRatio     : false,
-                                    datasetFill             : false
-                                }
-                               
-                                myCharts= new Chart(barChartCanvas, {
-                                    type: 'bar',
-                                    data: barChartData,
-                                    options: barChartOptions
-                                })
-                                
-                            }
-                            i++;
-                        });   
-                    }
-                  
-
-                }); 
             } else if(response.anl_ID !== undefined) {
                 toastr.error(response.message);
                 $('.navigation').attr('data-value', response.anl_ID);
@@ -139,6 +86,7 @@
             let machine_id = $('.navigation').attr('data-value');
             $(".custom-select").val('');
             getMachineData(machine_id, type);
+            
         });
     });
 
@@ -152,7 +100,7 @@
             let output = document.getElementById('machine-image');
             img = new Image();
             img.onload = function(){
-                console.log(this.width + "x" + this.height);
+                //console.log(this.width + "x" + this.height);
                 if(this.width + "x" + this.height == '870x621'){
                     output.src = URL.createObjectURL(event.target.files[0]);
                     let myFormData = new FormData();
@@ -190,24 +138,12 @@
     replaceImageButton.addEventListener('click', () => {
         imageInputField.click();
     });
-    imageInputField.addEventListener('change', loadFile);
+    imageInputField.addEventListener('change', loadFile);  
+
+   
     
-    $(function () {
-        $(".custom-select").on('change',function () {
-            let id=(this.id);        
-            let value = (this.value);
-            let type = "current";
-            let machine_id = $('.navigation').attr('data-value');
-            $.ajax({
-                url:'/dashboard/machine',
-                type: 'POST',
-                data: {
-                    selected_id:id,
-                    selected_value:value,
-                    id : machine_id,
-                    type : type                },
-            }).done( function(response) {
-                console.log('success');
-            });
-        });
-    });
+    // var intervalId = window.setInterval(function(){
+    //     let type = "current";
+    //     let machine_id = $('.navigation').attr('data-value');
+    //     getMachineData(machine_id, type);
+    //   }, 10000);
