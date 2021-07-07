@@ -1,19 +1,47 @@
     const navigationHook = document.querySelectorAll('.navigation button');
     const replaceImageButton = document.getElementById('replace-image-button');
     const imageInputField = document.getElementById('machineImage');
+    const graphDiv = document.getElementById('graph_div');
     const anl_ID = document.getElementById('anl_ID').value;
-    // const getMachineHook = () => {
-    //     console.log(this);
-    //     let type = this.attr('event-type');
-    //     let machine_id = $('.navigation').attr('data-value');
-    //     getMachineData(machine_id, type);
-    // }
- 
+    let machineDataAjax;
+    let spinner = new Spinner();
+    const graphDivHook = (key, value) => {
+        //creating parent div
+        let parentDiv = document.createElement('div');
+        let parentClass = document.createAttribute('class');
+        parentClass.value = 'col-sm-6 main_chart';
+        parentDiv.setAttributeNode(parentClass);
+        let parentDataValue = document.createAttribute('data_value');
+        parentDataValue.value = value.id;
+        parentDiv.setAttributeNode(parentDataValue);
+        let parentDataEvent = document.createAttribute('data_event');
+        parentDataEvent.value = `lineChart_${key}`;
+        parentDiv.setAttributeNode(parentDataEvent);
+        //creating child div
+        let childDiv = document.createElement('div');
+        let childClass = document.createAttribute('class');
+        childClass.value = 'chart';
+        childDiv.setAttributeNode(childClass);
+        parentDiv.appendChild(childDiv);
+        //creating dynamic canvas
+        let canvasDiv = document.createElement('canvas');
+        let canvasID = document.createAttribute('id');
+        canvasID.value = `lineChart_${key}`;
+        canvasDiv.setAttributeNode(canvasID);
+        let canvasStyle = document.createAttribute('style');
+        canvasStyle.value = 'background:#fff';
+        canvasDiv.setAttributeNode(canvasStyle);
+        childDiv.appendChild(canvasDiv);
+        //appending data to graphDiv
+        graphDiv.appendChild(parentDiv);
+        lineChartHook('lineChart_'+key, value.label, value.data, key);
+    }
+
+
     const getMachineData = (machine_id, type) => {
         let container = document.getElementById('data-card');
-        let spinner = new Spinner();
         spinner.spin(container);
-        $.ajax({
+        machineDataAjax = $.ajax({
             url:'/dashboard/machine',
             type: 'POST',
             data: {
@@ -22,10 +50,10 @@
             },
         }).done( function(response) {
             const data = response.data;
-            console.log('data',data);
             spinner.stop();
-           
+
             if(response.code == 200 ){
+                graphDiv.innerHTML = '';
                 $('.navigation').attr('data-value', data.anl_ID);
                 $('#anl_ID').val(data.anl_ID);
                 $('#anlage').val(data.anlage);
@@ -44,19 +72,12 @@
                 $('#werkzeug').val(data.werkzeug);
                 $('#kavitäten').val(data.kavitäten);
                 $('#machine-image').attr('src',data.bildAnl);
+                $('#timeFilter').val('5');
                 $("#machine-image").on("error", function () {
                     $(this).attr("src", "images/Blasanlage.jpg");
                 });
                 $.each( data.chartsData, function( key, value) {
-                    let id =value.id;
-                    let limit = 5;
-                    let data_event ='lineChart_'+value.id;
-                    getGraphData(id, limit, data_event);
-                    lineChartHook('lineChart_'+key, value.lable, value.data, key);
-                    $('.time_filter').attr('id','filter_'+key);
-                    $('.time_filter').attr('data_value',value.id);
-                    $('.time_filter').attr('data_event','lineChart_'+key);
-                    
+                    graphDivHook(key, value);
                 });
 
             } else if(response.anl_ID !== undefined) {
@@ -82,26 +103,27 @@
     //adding event listener to navigation buttons
     navigationHook.forEach((node)=>{
         node.addEventListener('click', function(){
+            spinner.stop();
+            machineDataAjax.abort();
             let type = this.getAttribute('event-type');
             let machine_id = $('.navigation').attr('data-value');
             $(".custom-select").val('');
             getMachineData(machine_id, type);
-            
         });
     });
 
     const loadFile = (event) => {
         let file1, img;
-        if(event.target.files[0].size > 200000) {
+        if(event.target.files[0].size > 2000000) {
             alert('File size should be less than 2mb.');
             return false;
         }
-        if(file1 = event.target.files[0]){     
+        if(file1 = event.target.files[0]){
             let output = document.getElementById('machine-image');
             img = new Image();
             img.onload = function(){
                 //console.log(this.width + "x" + this.height);
-                if(this.width + "x" + this.height == '870x621'){
+                if(this.width <= 870 && this.height <= 621){
                     output.src = URL.createObjectURL(event.target.files[0]);
                     let myFormData = new FormData();
                     let file = event.target.files[0];
@@ -122,7 +144,7 @@
                         }
                     });
                 }else{
-                    alert('Image dimensions should be  870 x 621.');
+                    alert('Image dimensions should be smaller than or equal to  870 x 621.');
                     return false;
                 }
                // URL.revokeObjectURL(output.src)
@@ -130,7 +152,7 @@
             img.onerror = function() {
                 alert( "not a valid file: " + file1.type);
             };
-            img.src = URL.createObjectURL(file1); 
+            img.src = URL.createObjectURL(file1);
         }
     };
 
@@ -138,12 +160,13 @@
     replaceImageButton.addEventListener('click', () => {
         imageInputField.click();
     });
-    imageInputField.addEventListener('change', loadFile);  
+    imageInputField.addEventListener('change', loadFile);
 
-   
-    
-    // var intervalId = window.setInterval(function(){
-    //     let type = "current";
-    //     let machine_id = $('.navigation').attr('data-value');
-    //     getMachineData(machine_id, type);
-    //   }, 10000);
+
+    var intervalId = window.setInterval(function(){
+        let type = "current";
+        let machine_id = $('.navigation').attr('data-value');
+        getMachineData(machine_id, type);
+      }, 10000);
+
+

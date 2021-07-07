@@ -124,7 +124,7 @@ class DashboardController extends Controller
     public function getChartsData(Request $request) {
         $measuringPoint = $request['measuringPoint'];
         $limit = $request['limit'];
-        $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID', $measuringPoint)
+        $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID', 290)
             ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
             ->orderby('MessstellenEnergiedaten.Time','desc')->limit($limit)->get();
         return $this->getlineChartData($data, $measuringPoint);
@@ -136,8 +136,9 @@ class DashboardController extends Controller
      * @return array
      */
     public function getlineChartData($data, $id) {
-        $lable = $data->reverse()->pluck('Time')->toArray();
+        $recordData = $data->IsNotEmpty() ? true: false;
+        $label = $data->reverse()->pluck('Time')->toArray();
         $data = $data->reverse()->pluck('Value')->toArray();
-        return ['lable'=>$lable, 'data'=>$data, 'id'=>$id];
+        return ['label'=>$label, 'data'=>$data, 'id'=>$id , 'record'=>$recordData];
     }
 }

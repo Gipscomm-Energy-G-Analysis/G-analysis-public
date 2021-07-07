@@ -174,31 +174,33 @@
                     </div>
                 </div>
                 <!-- LINE CHART -->
-                @foreach($data['chartsData'] as $key=>$value)
-                    <div class="card-body">
-                        <div class="col-sm-2  main_chart">
-                            <div class="form-group">
-                                <label>Server Time Filter</label>
-                                <select class="custom-select time_filter" id="filter_{{$key}}" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                </select>
-                            </div>
+                <div class="card-body">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label>Server Time Filter</label>
+                            <select class="custom-select time_filter" id="timeFilter" >
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
                         </div>
-                        <div class="col-sm-6 main_chart">
-                            <div class="chart">
-                                <canvas id="lineChart_{{$key}}" style="background:#fff;" ></canvas>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="row" id="graph_div">
+                        @foreach($data['chartsData'] as $key=>$value)
+                            @if($value['record'])
+                                <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
+                                    <div class="chart">
+                                        <canvas id="lineChart_{{$key}}" style="background:#fff;" ></canvas>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
                         <div id="not_found_msg" style="display:none;">
                             <span>Record Not Found</span>
                         </div>
                     </div>
-                   
-                  
-                @endforeach
+                </div>
             </div>
 
             <!-- Modal Start -->
@@ -242,9 +244,10 @@
     <script src="{{asset('js/dashboard/dashboard_ajax.js')}}"></script>
     <script src="{{asset('js/dashboard/jsGridMachines.js')}}"></script>
     <script type="text/javascript">
-        const timeFilterHook = document.querySelectorAll('.time_filter');
+        const getChartsDiv = document.querySelectorAll('.main_chart');
+        const timeFilterHook = document.getElementById('timeFilter');
         let myChart;
-        const lineChartHook = (id, lable, data , name) => {
+        const lineChartHook = (id, label, data , name) => {
             if(data.length > 0){
                 $(".main_chart").css("display","block");
                 $("#not_found_msg").css("display","none");
@@ -253,7 +256,7 @@
                 myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: lable,
+                        labels: label,
                         datasets: [{
                             label: `Energy consumption for ${name}`,
                             data: data,
@@ -285,11 +288,11 @@
             else{
                 $(".main_chart").css("display","none");
                 $("#not_found_msg").css("display","block");
-                
+
             }
         }
-        
-        const getGraphData = (id, limit, event_id) => {
+
+        const getGraphData = (id, limit, event_id, name) => {
             let container = document.getElementById('data-card');
             let spinner = new Spinner();
             spinner.spin(container);
@@ -302,24 +305,26 @@
                 },
             }).done( function(response) {
                 spinner.stop();
-                lineChartHook(event_id, response.lable, response.data, response.id);
+                lineChartHook(event_id, response.label, response.data, name);
             });
         }
 
         @foreach($data['chartsData'] as $key=>$value)
-            lineChartHook('lineChart_{{$key}}', @json($value['lable']), @json($value['data']), '{{$key}}');
+            lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         //adding event listener to time filter hook
-        timeFilterHook.forEach((node)=>{
-            node.addEventListener('change', function(){
-                let id = this.getAttribute('data_value');
-                let data_event = this.getAttribute('data_event');
-                let limit = this.value;
-                getGraphData(id, limit, data_event);
-            });
+        timeFilterHook.addEventListener('change', function(){
+            let limit = this.value;
+            if(getChartsDiv.length > 0) {
+                getChartsDiv.forEach((node)=>{
+                    let id = node.getAttribute('data_value');
+                    let data_event = node.getAttribute('data_event');
+                    let name = data_event.split("_").pop();
+                    getGraphData(id, limit, data_event, name);
+                });
+            }
         });
-
         /* END LINE CHART */
 
     </script>
