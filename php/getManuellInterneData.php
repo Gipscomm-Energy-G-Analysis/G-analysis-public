@@ -570,6 +570,20 @@ elseif($id == 'masseneingabePrdktSearch'){
 	//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
 	//$query4 .= "WHERE type = '$zeitintervallAnl' ";
 
+	//<---5-7-2021---
+	$queryInvest = "SELECT * FROM produktionsAnlagenMoreOpt As T1 ";
+	$queryInvest .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
+	$queryInvest .= "ON T1.prd_id = T2.prd_id ";
+	$queryInvest .= "AND T1.anl_id = T2.anl_id ";
+	//$query1 .= " LEFT JOIN produkte AS T3 ON T1.prd_id = T3.prd_ID";
+	$queryInvest .= " LEFT JOIN anlagen AS T4 ON T1.anl_id = T4.anl_ID";
+	$queryInvest .= " WHERE T1.type = 2";
+	$queryInvest .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+	$queryInvest .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+	$queryInvest .= "ORDER BY T1.prd_id ASC";
+
+	//--end--->
+
 }
 /*new-mm-end 01-04-2021*/
 /* masseneingabe Page  Messsetelle Inputs Search */
@@ -1182,6 +1196,11 @@ elseif($id == 'masseneingabePrdktSearch'){
 	$records['query2'] = queryDB($conn, $query2, "read");
 	$records['query3'] = queryDB($conn, $query3, "read");
 	//$records['query4'] = queryDB($conn, $query4, "read");
+	// <----5-7-2021--
+	if(isset($queryInvest)){
+		$records['queryInvest'] = queryDB($conn, $queryInvest, "read");
+	}
+	// --end-->
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }
 /*new-mm-end 01-04-2021*/

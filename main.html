@@ -6609,6 +6609,37 @@
                            <option value="5">Energie kg </option>
                         </select>
                      </div>
+                     
+                     <!-- 05-7-2021-- -->
+                     <div class="controlDiv">
+                        <label for="min_investment_product">Minimum</label>
+                        <input id="min_investment_product" class="product_fields_val" type="number">
+                     </div>
+
+                     <div class="controlDiv">
+                        <label for="max_investment_product">Maximum</label>
+                        <input id="max_investment_product" class="product_fields_val" type="number">
+                     </div>
+
+                     <!-- Hidden Field for Save Min Max -->
+                     <input type="hidden" id="mst_id_energy_investment_prompt_product">
+
+                     <!-- Edit Modal -->
+                     <div id="editModalInvestProduct" class="editModalInvestProduct" style="display:none;">
+                        <p>
+                           Update The Value of Invest Field
+                        </p>
+                        <div style='margin-bottom: 10px'>
+                           <label>Min Value</label>
+                           <input style='width: 111px' type='number' id='min_prompt_invest_value_product'>
+                           <label>Max Value</label>
+                           <input style='width: 111px' type='number' id='max_prompt_invest_value_product'>
+                        </div>
+                        <br>
+                        <button id="save_btn_invest_product">Save</button>
+                        <button id="cancel_btn_invest_prompt_product">Cancel</button>
+                     </div>
+                     <!-- end -->
                      <div class="controlDiv control_system_div_AnlPrdkt" style="display: none;">
                         <label for="control_system_AnlPrdkt">Control System</label>
                         <select id="control_system_AnlPrdkt">

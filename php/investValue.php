@@ -35,4 +35,18 @@ else if($id == 'preFillIMinMaxField'){
     $result = queryDB($conn, $queryDB, "read");
     echo json_encode($result);
 }
+else if($id == 'redirectInvestValuesProduct'){ //Product Checks
+    $table_config_id = $_POST['table_config_id'];
+    $queryDB = "select distinct top 1 * from produktionsAnlagenConfig where iBdePrdktConf_ID = '$table_config_id'";
+    $result = queryDB($conn, $queryDB, "read");
+    echo json_encode($result);
+}
+else if($id == 'saveInvestValuesProduct'){ //Product Checks
+    $table_config_id = $_POST['table_config_id'];
+    $min = $_POST['min'];
+    $max = $_POST['max'];
+    $queryDB = "update produktionsAnlagenConfig set max_val = '$max' , min_val = '$min' where iBdePrdktConf_ID = '$table_config_id'";
+    $result = queryDB($conn, $queryDB, "write");
+    echo json_encode($result);
+}
 ?>

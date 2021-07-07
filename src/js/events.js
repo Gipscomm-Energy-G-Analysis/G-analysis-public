@@ -4603,10 +4603,68 @@ $(document).ready(function(){
         var inputCurrTopId = "#"+rowMainIDEn+" #anlageMainRow_"+currID;
         var inputCurrBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+currID;
         var einheitVal = $(this).closest('tr').attr('data-einheit');
+        //<---30-6-2021---
+        var min_val = $(this).closest('tr').attr('min_val');
+        var max_val = $(this).closest('tr').attr('max_val');
+        var controlsystem = $(this).closest('tr').attr('controlsystem');
+        var current_val_control = $(this).val();
+
+        //Disabled Field Value
+        var current_td_input_id = $(this).attr('id');
+        // console.log('Current Diffrenec',currCalcVal);
+        // console.log('calcVal',calcVal);
         if((inputValFirst !='' && inputValCurrent !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValCurrent) !='undefined')){
-            $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
-            if($.inArray(inptDate, anlageObj[mst_id]) === -1){
-                anlageObj[mst_id].push(inptDate);
+               // <---06-7-2021-- //If Else Add by default else case was working;
+               if(min_val != '' && max_val != ''){
+                if(controlsystem == "1" || controlsystem == "2"){ //Count up Case
+                    var inputStr = current_td_input_id;
+                    var input_res = inputStr.split('_');
+
+                    var input_res_last = input_res[1];
+                    var minValIDIndex = parseInt(input_res_last) - 1;
+
+                    //var disbledMinVal = $('.disabledRow  td[data-id="'+mst_id+'"]  #anlageCalculationRow_'+minValIDIndex).val();
+                    var disbledMinVal = $('.enabledRow   td[data-id="'+mst_id+'"]  #anlageMainRow_'+minValIDIndex).val();
+                    // console.log('Disabled min val',disbledMinVal);
+                    if(disbledMinVal == '' && currCalcVal > 0){ //For First time case the orginal min value add
+                        $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val((currCalcVal+parseInt(min_val))+'-'+max_val);
+                        if($.inArray(inptDate, anlageObj[mst_id]) === -1){
+                            anlageObj[mst_id].push(inptDate);
+                        }
+                    }
+                    else{ //Prev min value added
+                        if(disbledMinVal != '' && currCalcVal > 0){
+                            var convertMinVal = disbledMinVal;
+                            var min_input_res = convertMinVal.split('-');
+                            var min_input_first = min_input_res[0];
+                            $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val((parseInt(disbledMinVal) + 1)+'-'+max_val);
+                            if($.inArray(inptDate, anlageObj[mst_id]) === -1){
+                                anlageObj[mst_id].push(inptDate);
+                            }
+                        }
+                        else{   //Display not a number;
+                            $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
+                        }
+                    }
+                }
+                else if(controlsystem == "3" || controlsystem == "4"){ //Zeerod Case
+                    // console.log('controlsystem', controlsystem);
+                    // if(currCalcVal > 0){
+                    $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(min_val+'-'+max_val);
+                    if($.inArray(inptDate, anlageObj[mst_id]) === -1){
+                        anlageObj[mst_id].push(inptDate);
+                    }
+                    // }
+                    // else{
+                    // $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
+                    // }
+                }
+              }
+            else{
+                $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val(currCalcVal);
+                if($.inArray(inptDate, anlageObj[mst_id]) === -1){
+                    anlageObj[mst_id].push(inptDate);
+                }
             }
         }else{
             $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val('');
@@ -4615,7 +4673,35 @@ $(document).ready(function(){
             }
         }
         if((inputValFirst !='' && inputValNext !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValNext) !='undefined')){
-            $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(calcVal);
+            // console.log(calcVal) ; //After Delete Value Code 
+            // <----1-7-2021----
+            if(min_val != '' && max_val != ''){ //By Default Else Case Was Working
+                if(controlsystem == "1" || controlsystem == "2"){ //Count Up Case
+                    var inputStr = current_td_input_id;
+                    var input_res = inputStr.split('_');
+
+                    var input_res_last = input_res[1];
+                    // var minValIDIndex = parseInt(input_res_last) - 1;
+                    var minValIDIndex = input_res_last;
+
+                    //var disbledMinVal = $('.disabledRow  td[data-id="'+mst_id+'"]  #anlageCalculationRow_'+minValIDIndex).val();
+                    var disbledMinVal = $('.enabledRow   td[data-id="'+mst_id+'"]  #anlageMainRow_'+minValIDIndex).val();
+                    // console.log(disbledMinVal);
+                    if(disbledMinVal != '' && currCalcVal > 0){
+                        var convertMinVal = disbledMinVal;
+                        var min_input_res = convertMinVal.split('-');
+                        var min_input_first = min_input_res[0];
+                        $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val((parseInt(disbledMinVal)+1)+'-'+max_val);
+                    }
+                }
+                else if(controlsystem == "3" || controlsystem == "4"){
+                    $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(min_val+'-'+max_val);
+                }
+            }
+            else{
+                $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val(calcVal);
+            }
+            //--end-->
         }else{
             $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val('');
         }
@@ -5250,6 +5336,16 @@ $(document).ready(function(){
         var inputNextLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+nextId;
         var inputPrevLastBottomId = "#"+rowMainIDDs+" #anlageCalculationRow_"+prevId;
 
+        //<---2-7-2021---
+        var min_val = $(this).closest('tr').attr('min_val');
+        var max_val = $(this).closest('tr').attr('max_val');
+        var controlsystem = $(this).closest('tr').attr('controlsystem');
+        var current_val_control = $(this).val();
+
+        //Disabled Field Value
+        var current_td_input_id = $(this).attr('id');
+
+
         if(anlageObj[rowMstID]){
             var inputCountLength = anlageObj[rowMstID].length;
             if(inputCountLength>4){
@@ -5304,7 +5400,17 @@ $(document).ready(function(){
 
             if(($(inptCurPrevId).val() !='' && $(inptCurrId).val() !='') && (typeof($(inptCurPrevId).val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                 if(Number($(inptCurrId).val()) <= Number($(inptCurPrevId).val())){
-                    alert('Current value should be greater then previous value!');
+                    if(min_val != '' && max_val != ''){ //By Default Else Case Working
+                        if(controlsystem == "1" || controlsystem == "2"){
+                            if(Number($(inptCurrId).val()) < Number($(inptCurPrevId).val())){
+                                alert('Current value should be greater then previous value!');
+                                return false;
+                            }
+                        }
+                    }
+                    else{
+                        alert('Current value should be greater then previous value!');
+                    }
 
                     if($(inputCurNextId).val()!="" && $(inputTopPrevNextId).val() !=""){
                         var prevDiff = $(inputCurNextId).val() - $(inputTopPrevNextId).val();
@@ -5317,12 +5423,19 @@ $(document).ready(function(){
                     /*if($('#currInputID').val() == 0){
                             console.log(prevDBDiff);
                         }*/
-                    $(inptCurrId).val('');
-                    $(inputDeleteBotmId).val('');
-                    $(inputNextLastBottomId).val(lastNextDiff);
-                    $(inptCurrId).focus();
-                    resetInputsSearchMasseneingabe();
-                    return false;
+                         // <---6-7-2021---
+                    if(min_val != '' && max_val != ''){ //By Default Else Case Working
+                        if(controlsystem == "1" || controlsystem == "2"){
+                        }
+                    }
+                    else{
+                        $(inptCurrId).val('');
+                        $(inputDeleteBotmId).val('');
+                        $(inputNextLastBottomId).val(lastNextDiff);
+                        $(inptCurrId).focus();
+                        resetInputsSearchMasseneingabe();
+                        return false;
+                    }
                 }
             }else if(($("#inputPrevValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                 if(Number($(inptCurrId).val()) <= Number($("#inputPrevValDB").val())){
@@ -8369,3 +8482,69 @@ $(document).on('blur', '#min_prompt_invest_value ,#max_prompt_invest_value',func
     editPromptInvest(id_val);
 })
 //---end-->
+
+//<----5-7-2021--- Product Invest Checks
+$(document).on('blur','.product_fields_val', function(){
+    var id_val = $(this).attr('id');
+    product_fields_check(id_val);
+});
+
+$(document).on('blur','#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td input', function (){
+    var current_val = $(this).val();
+    if(current_val != ''){
+        var min_val = $(this).closest('tr').attr('min_val');
+        var max_val = $(this).closest('tr').attr('max_val');
+        var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
+        var checkNextVal = $(this).closest('td').next('td').find('input').val();
+        var current_row_id = $(this).closest('tr').attr('id');
+        var current_td_input_id = $(this).attr('id');
+        var mstID = $(this).closest('td').attr('data-id');
+        var startdateinvest = $(this).closest('tr').attr('startdateinvest');
+        var startweekinvest = $(this).closest('tr').attr('startweekinvest');
+        var enddateinvest = $(this).closest('tr').attr('enddateinvest');
+        var endweekinvest = $(this).closest('tr').attr('endweekinvest');
+        var ar = [startdateinvest,startweekinvest,enddateinvest,endweekinvest]
+        var classVal = $(this).closest('tr').hasClass('enabledRow');
+        var timeIntervalInvest = $(this).closest('tr').attr('timeIntervalInvest');
+        var controlsystem = $(this).closest('tr').attr('controlsystem');
+        var table_config_id = $(this).closest('tr').attr('table_config_id');
+
+        var indexId = $(this).closest('td').index();
+        var thDateVal = $(this).closest('table').children('tbody').children('tr:first').children('th:eq('+parseInt(indexId-1)+')').text();
+        var InputDisabledVal = $(this).closest('td').prev('td').find('input').is(':disabled');
+
+
+        if(classVal == true){
+            //Function calling if time interval is 2
+            if(timeIntervalInvest != 0 &&  timeIntervalInvest == 2){
+                investValueCheckProduct(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem,table_config_id);
+            }
+            else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 1){ //Function calling if time interval is 1
+                //console.log('#'+current_row_id+' #anlageMainRow_0');
+                investValueCheckDateProduct(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem,table_config_id);
+            }
+            else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 3){
+                investValueCheckMonthProduct(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem);
+            }
+            else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 4){
+                investValueCheckYearProduct(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem);
+            }
+        }
+    }
+    // console.log('checkprev_value',checkPrevVal);
+    // console.log('current_val',current_val);
+    // console.log('checkNextVal',checkNextVal);
+});
+
+$(document).on('change', '#wochenWMassEingDataAnlPrdktStart6 ,#wochenWMassEingDataAnlPrdktEnde6',function(){
+    var id_val = $(this).attr('id');
+    resetSelectedAttributeProduct(id_val);
+})
+
+
+$(document).on('blur', '#min_prompt_invest_value_product ,#max_prompt_invest_value_product',function(){
+    var id_val = $(this).attr('id');
+    editPromptInvestProduct(id_val);
+})
+
+//--end-->

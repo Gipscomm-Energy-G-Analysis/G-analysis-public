@@ -3729,6 +3729,10 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
         $einheitControlSys = $_POST['einheitControlSys'];
         $mstIMw =$_POST['mstIMw'];
 
+        //<---05-7-2021--
+        $min_val =$_POST['min_val'];
+        $max_val =$_POST['max_val'];
+        //--end--->
         /*$startDate = $_POST['startDate'];
         $endDate = $_POST['endDate'];  */
         $ending = $_POST['ending'];
@@ -3807,12 +3811,12 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
 
             if(count($records) > 0){
                 $tsql = "UPDATE produktionsAnlagenConfig SET intTp_ID = '$intTp_ID',
-          unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note',einheitControlSys = '$einheitControlSys',iBdeType = '$iBdeType',mstIMw = '$mstIMw'";
+          unt_ID = '$unt_ID',mst_ID = '$mstID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note',einheitControlSys = '$einheitControlSys',iBdeType = '$iBdeType',mstIMw = '$mstIMw',min_val = '$min_val',max_val = '$max_val'";
                 $tsql .= " WHERE prd_id = '$prd_ID' AND anl_id = '$anl_ID' AND anl_col = '$anl_Col' ";
             }
             else {
-                $tsql = "INSERT INTO produktionsAnlagenConfig (intTp_ID,unt_ID, mst_ID,prd_id,anl_id,anl_col,startDate,endDate,startWeek,endWeek,ending,note,einheitControlSys,iBdeType,mstIMw) ";
-                $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$prd_ID' , '$anl_ID' , '$anl_Col' , '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note','$einheitControlSys' , '$iBdeType','$mstIMw') ";
+                $tsql = "INSERT INTO produktionsAnlagenConfig (intTp_ID,unt_ID, mst_ID,prd_id,anl_id,anl_col,startDate,endDate,startWeek,endWeek,ending,note,einheitControlSys,iBdeType,mstIMw,min_val,max_val) ";
+                $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$prd_ID' , '$anl_ID' , '$anl_Col' , '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note','$einheitControlSys' , '$iBdeType','$mstIMw','$min_val','$max_val') ";
             }
         }
         else if ($iBdeType == 2){
