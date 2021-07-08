@@ -5707,6 +5707,16 @@ $(document).ready(function(){
 
         var nextPrevDiff = inputNextLastValDB - inputIdPrevlast;
 
+        //<---8-7-2021---
+        var min_val = $(this).closest('tr').attr('min_val');
+        var max_val = $(this).closest('tr').attr('max_val');
+        var controlsystem = $(this).closest('tr').attr('controlsystem');
+        var current_val_control = $(this).val();
+
+        //Disabled Field Value
+        var current_td_input_id = $(this).attr('id');
+        // --ennd->
+
         if($("#inputPrevValDB").val() == "" && inputIdPrevlast !=""){
             var nextDiff = $(inputCurNextId).val() -  inputIdPrevlast;
         }
@@ -5724,6 +5734,37 @@ $(document).ready(function(){
         if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
             if(($(inputCurPrevId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurPrevId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                 if(Number($(inputCurrId).val()) <= Number($(inputCurPrevId).val())){
+                    // <---8-7-2021--- By Default else case as working
+                    if(min_val != '' && max_val != ''){
+                        if(controlsystem == "1" || controlsystem == "2"){
+                            if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
+                                alert('Current value should be greater then previous value!');
+                                $(inputCurrId).val('');
+                                $(inputDeleteBotmId).val('');
+                                $(inputNextLastBottomId).val(lastNextDiff);
+                                if($(inputCurNextId).val()!="" && $(inputCurPrevId).val() !=""){
+                                    $(inputNextBottomId).val(prevDiff);
+                                }
+                                if($('#currInputID').val() == 0){
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
+                                        var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
+                                        //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                                        $(inputNextBottomId).val(secBottomValDB);
+                                    }
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && (inputNextLastValDB != "" && typeof(inputNextLastValDB) != 'undefined')){
+                                        var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
+                                        //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
+                                        $(inputNextLastBottomId).val(lastBottomValDB);
+                                        //$(inputNextLastBottomId).val("");
+                                    }
+                                }
+                                $(inputCurrId).focus();
+                                resetInputsSearchMasseneingabe();
+                                return false;
+                            }
+                        }
+                    }
+                    else{
                     alert('Current value should be greater then previous value!');
                     $(inputCurrId).val('');
                     $(inputDeleteBotmId).val('');
@@ -5747,6 +5788,7 @@ $(document).ready(function(){
                     $(inputCurrId).focus();
                     resetInputsSearchMasseneingabe();
                     return false;
+                    }
                 }
             }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                 if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
@@ -6018,6 +6060,14 @@ $(document).ready(function(){
         var inputNextBottomId = $("#inputNextBottomId").val();
 
         var nextPrevDiff = inputNextLastValDB - inputIdPrevlast;
+         //<---8-7-2021---
+         var min_val = $(this).closest('tr').attr('min_val');
+         var max_val = $(this).closest('tr').attr('max_val');
+         var controlsystem = $(this).closest('tr').attr('controlsystem');
+         var current_val_control = $(this).val();
+
+         //Disabled Field Value
+         var current_td_input_id = $(this).attr('id')
 
         if($("#inputPrevValDB").val() == "" && inputIdPrevlast !=""){
             var nextDiff = $(inputCurNextId).val() -  inputIdPrevlast;
@@ -6036,6 +6086,37 @@ $(document).ready(function(){
         if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
             if(($(inputCurPrevId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurPrevId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                 if(Number($(inputCurrId).val()) <= Number($(inputCurPrevId).val())){
+                    // <--8-7-2021--- // Else Case Working by default
+                    if(min_val != '' && max_val != ''){
+                        if(controlsystem == "1" || controlsystem == "2"){
+                            if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
+                                alert('Current value should be greater then previous value!');
+                                $(inputCurrId).val('');
+                                $(inputDeleteBotmId).val('');
+                                $(inputNextLastBottomId).val(lastNextDiff);
+                                if($(inputCurNextId).val()!="" && $(inputCurPrevId).val() !=""){
+                                    $(inputNextBottomId).val(prevDiff);
+                                }
+                                if($('#currInputID').val() == 0){
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
+                                        var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
+                                        //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                                        $(inputNextBottomId).val(secBottomValDB);
+                                    }
+                                    if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && (inputNextLastValDB != "" && typeof(inputNextLastValDB) != 'undefined')){
+                                        var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
+                                        //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
+                                        $(inputNextLastBottomId).val(lastBottomValDB);
+                                        //$(inputNextLastBottomId).val("");
+                                    }
+                                }
+                                $(inputCurrId).focus();
+                                resetInputsSearchMasseneingabe();
+                                return false;
+                            }
+                        }
+                    }
+                    else{
                     alert('Current value should be greater then previous value!');
                     $(inputCurrId).val('');
                     $(inputDeleteBotmId).val('');
@@ -6059,6 +6140,7 @@ $(document).ready(function(){
                     $(inputCurrId).focus();
                     resetInputsSearchMasseneingabe();
                     return false;
+                    }
                 }
             }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                 if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
@@ -6333,6 +6415,15 @@ $(document).ready(function(){
                 var inputPrevLastBottomId = $("#inputIdPrevBottomlast").val();
 
                 var inputNextBottomId = $("#inputNextBottomId").val();
+                 //<---8-7-2021---
+                 var min_val = $(this).closest('tr').attr('min_val');
+                 var max_val = $(this).closest('tr').attr('max_val');
+                 var controlsystem = $(this).closest('tr').attr('controlsystem');
+                 var current_val_control = $(this).val();
+ 
+                 //Disabled Field Value
+                 var current_td_input_id = $(this).attr('id');
+                 // --ennd->
 
                 /* if($("#inputCurrId").val() !='' && typeof($("#inputCurrId")) != 'undefined') {
                         //Continue...
@@ -6358,6 +6449,37 @@ $(document).ready(function(){
                 if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
                     if(($(inputCurPrevId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurPrevId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                         if(Number($(inputCurrId).val()) <= Number($(inputCurPrevId).val())){
+                            // <--8-7-2021---By default else case ws working
+                            if(min_val != '' && max_val != ''){
+                                if(controlsystem == "1" || controlsystem == "2"){
+                                    if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
+                                        alert('Current value should be greater then previous value!');
+                                        $(inputCurrId).val('');
+                                        $(inputDeleteBotmId).val('');
+                                        $(inputNextLastBottomId).val(lastNextDiff);
+                                        if($(inputCurNextId).val()!="" && $(inputCurPrevId).val() !=""){
+                                            $(inputNextBottomId).val(prevDiff);
+                                        }
+                                        if($('#currInputID').val() == 0){
+                                            if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
+                                                var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
+                                                //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                                                $(inputNextBottomId).val(secBottomValDB);
+                                            }
+                                            if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && (inputNextLastValDB != "" && typeof(inputNextLastValDB) != 'undefined')){
+                                                var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
+                                                //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
+                                                $(inputNextLastBottomId).val(lastBottomValDB);
+                                                //$(inputNextLastBottomId).val("");
+                                            }
+                                        }
+                                        $(inputCurrId).focus();
+                                        resetInputsSearchMasseneingabe();
+                                        return false;
+                                    }
+                                }
+                            }
+                            else{
                             alert('Current value should be greater then previous value!');
                             $(inputCurrId).val('');
                             $(inputDeleteBotmId).val('');
@@ -6381,6 +6503,7 @@ $(document).ready(function(){
                             $(inputCurrId).focus();
                             resetInputsSearchMasseneingabe();
                             return false;
+                            }
                         }
                     }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                         if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
@@ -6670,6 +6793,17 @@ $(document).ready(function(){
 
                 var inputNextBottomId = $("#inputNextBottomId").val();
 
+                 //<---8-7-2021---
+                var min_val = $(this).closest('tr').attr('min_val');
+                var max_val = $(this).closest('tr').attr('max_val');
+                var controlsystem = $(this).closest('tr').attr('controlsystem');
+                var current_val_control = $(this).val();
+
+                //Disabled Field Value
+                var current_td_input_id = $(this).attr('id');
+                // --ennd->
+
+
                 /* if($("#inputCurrId").val() !='' && typeof($("#inputCurrId")) != 'undefined') {
                         //Continue...
                     }else{
@@ -6694,6 +6828,37 @@ $(document).ready(function(){
                 if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
                     if(($(inputCurPrevId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurPrevId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                         if(Number($(inputCurrId).val()) <= Number($(inputCurPrevId).val())){
+                            // <---8-7-2021-- by default else case working
+                            if(min_val != '' && max_val != ''){
+                                if(controlsystem == "1" || controlsystem == "2"){
+                                    if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
+                                        alert('Current value should be greater then previous value!');
+                                        $(inputCurrId).val('');
+                                        $(inputDeleteBotmId).val('');
+                                        $(inputNextLastBottomId).val(lastNextDiff);
+                                        if($(inputCurNextId).val()!="" && $(inputCurPrevId).val() !=""){
+                                            $(inputNextBottomId).val(prevDiff);
+                                        }
+                                        if($('#currInputID').val() == 0){
+                                            if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
+                                                var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
+                                                //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                                                $(inputNextBottomId).val(secBottomValDB);
+                                            }
+                                            if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && (inputNextLastValDB != "" && typeof(inputNextLastValDB) != 'undefined')){
+                                                var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
+                                                //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
+                                                $(inputNextLastBottomId).val(lastBottomValDB);
+                                                //$(inputNextLastBottomId).val("");
+                                            }
+                                        }
+                                        $(inputCurrId).focus();
+                                        resetInputsSearchMasseneingabe();
+                                        return false;
+                                    }   
+                                }
+                            }
+                            else{
                             alert('Current value should be greater then previous value!');
                             $(inputCurrId).val('');
                             $(inputDeleteBotmId).val('');
@@ -6717,6 +6882,7 @@ $(document).ready(function(){
                             $(inputCurrId).focus();
                             resetInputsSearchMasseneingabe();
                             return false;
+                        }
                         }
                     }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                         if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){
@@ -7007,6 +7173,16 @@ $(document).ready(function(){
 
                 var inputNextBottomId = $("#inputNextBottomId").val();
 
+                 //<---8-7-2021---
+                 var min_val = $(this).closest('tr').attr('min_val');
+                 var max_val = $(this).closest('tr').attr('max_val');
+                 var controlsystem = $(this).closest('tr').attr('controlsystem');
+                 var current_val_control = $(this).val();
+ 
+                 //Disabled Field Value
+                 var current_td_input_id = $(this).attr('id');
+                 // --ennd->
+
                 /* if($("#inputCurrId").val() !='' && typeof($("#inputCurrId")) != 'undefined') {
                         //Continue...
                     }else{
@@ -7031,6 +7207,36 @@ $(document).ready(function(){
                 if((einheitVal==1 || einheitVal==2) && (einheitVal !='' && typeof(einheitVal) !='undefined')){
                     if(($(inputCurPrevId).val() !='' && $(inputCurrId).val() !='') && (typeof($(inputCurPrevId).val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                         if(Number($(inputCurrId).val()) <= Number($(inputCurPrevId).val())){
+                            // <---8-7-2021-- By Default Else Case was working
+                            if(min_val != '' && max_val != ''){
+                                if(controlsystem == "1" && controlsystem == "2"){
+                                    if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
+                                        alert('Current value should be greater then previous value!');
+                                        $(inputCurrId).val('');
+                                        $(inputDeleteBotmId).val('');
+                                        $(inputNextLastBottomId).val(lastNextDiff);
+                                        if($(inputCurNextId).val()!="" && $(inputCurPrevId).val() !=""){
+                                            $(inputNextBottomId).val(prevDiff);
+                                        }
+                                        if($('#currInputID').val() == 0){
+                                            if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && ($(inputCurNextId).val() != "" && typeof($(inputCurNextId).val()) != 'undefined') ){
+                                                var secBottomValDB = $($('#inputNextId').val()).val() - $('#inputPrevValDB').val();
+                                                //console.log("currinput0 : secondBottom"+secBottomValDB+"->"+$('#inputPrevValDB').val()+"-"+$($('#inputNextId').val()).val());
+                                                $(inputNextBottomId).val(secBottomValDB);
+                                            }
+                                            if(($(inputCurrId).val() == "" && typeof($(inputCurrId).val()) != 'undefined') && (inputNextLastValDB != "" && typeof(inputNextLastValDB) != 'undefined')){
+                                                var lastBottomValDB = $("#inputNextLastValDB").val() - $('#inputPrevValDB').val();
+                                                //console.log("currinput0 : lastBottomValDB"+lastBottomValDB+"->"+$("#inputNextLastValDB").val()+"-"+$('#inputPrevValDB').val());
+                                                $(inputNextLastBottomId).val(lastBottomValDB);
+                                                //$(inputNextLastBottomId).val("");
+                                            }
+                                        }
+                                        $(inputCurrId).focus();
+                                        resetInputsSearchMasseneingabe();
+                                        return false;
+                                    }
+                                }
+                            }else{
                             alert('Current value should be greater then previous value!');
                             $(inputCurrId).val('');
                             $(inputDeleteBotmId).val('');
@@ -7054,6 +7260,7 @@ $(document).ready(function(){
                             $(inputCurrId).focus();
                             resetInputsSearchMasseneingabe();
                             return false;
+                            }
                         }
                     }else if(($("#inputPrevValDB").val() !='' && $(inputCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inputCurrId).val()) !='undefined')){
                         if(Number($(inputCurrId).val()) <= Number($("#inputPrevValDB").val())){

@@ -6838,7 +6838,7 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -7521,7 +7521,7 @@ function investValueCheckDate(min_val,max_val,current_val,checkPrevVal,checkNext
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -7698,7 +7698,7 @@ function investValueCheckMonth(min_val,max_val,current_val,checkPrevVal,checkNex
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -7872,7 +7872,7 @@ function investValueCheckYear(min_val,max_val,current_val,checkPrevVal,checkNext
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -8124,7 +8124,7 @@ function getPromptInvestValue(mstID,current_row_id,current_td_input_id,disabled_
                 }
 
             });
-            $("#cancel_btn_invest_prompt").on("click", function() {
+            $("#cancel_btn_invest_prompt").unbind().on("click", function() {
                 $("#editModalInvest").dialog("close");
                 $("#editModalInvest").css("display", "none");
                 $('#editModalInvest input').val('');
@@ -8474,7 +8474,7 @@ function getPromptInvestValueProduct(mstID,current_row_id,current_td_input_id,di
                 }
 
             });
-            $("#cancel_btn_invest_prompt_product").on("click", function() {
+            $("#cancel_btn_invest_prompt_product").unbind().on("click", function() {
                 $("#editModalInvestProduct").dialog("close");
                 $("#editModalInvestProduct").css("display", "none");
                 $('#editModalInvestProduct input').val('');
@@ -8728,7 +8728,7 @@ function investValueCheckDateProduct(min_val,max_val,current_val,checkPrevVal,ch
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -8911,7 +8911,7 @@ function investValueCheckProduct(min_val,max_val,current_val,checkPrevVal,checkN
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -9090,7 +9090,7 @@ function investValueCheckMonthProduct(min_val,max_val,current_val,checkPrevVal,c
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -9264,7 +9264,7 @@ function investValueCheckYearProduct(min_val,max_val,current_val,checkPrevVal,ch
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -9552,7 +9552,7 @@ function getPromptInvestValueMeasuring(mstID,current_row_id,current_td_input_id,
                 }
 
             });
-            $("#cancel_btn_invest_prompt_measuring").on("click", function() {
+            $("#cancel_btn_invest_prompt_measuring").unbind().on("click", function() {
                 $("#editModalInvestMeasuring").dialog("close");
                 $("#editModalInvestMeasuring").css("display", "none");
                 $('#editModalInvestMeasuring input').val('');
@@ -9806,7 +9806,7 @@ function investValueCheckDateMeasuring(min_val,max_val,current_val,checkPrevVal,
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -9990,7 +9990,7 @@ function investValueCheckMeasuring(min_val,max_val,current_val,checkPrevVal,chec
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -10169,7 +10169,7 @@ function investValueCheckMonthMeasuring(min_val,max_val,current_val,checkPrevVal
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
@@ -10343,7 +10343,7 @@ function investValueCheckYearMeasuring(min_val,max_val,current_val,checkPrevVal,
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
                     var str = disbaledPrevVal.split('-');
                     var max_val_diabled = str[1];
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val);
                     // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }

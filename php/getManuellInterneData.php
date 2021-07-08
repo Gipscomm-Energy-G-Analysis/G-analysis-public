@@ -9,7 +9,7 @@ $nameDB = $_POST['nameDB'];
 $conn = connectToDB($nameDB);
 
 $id = $_POST['id'];
-//print_r($id);die;
+// print_r($id);die;
 if($id == 'DblClick'){
 	$anl_ID = $_POST['anl_ID'];
 	$query = "SELECT * FROM anlagen ";
@@ -300,12 +300,13 @@ elseif($id == 'MesssetelleTblFacilityData'){
 	$query .= "ON T2.unt_ID = T3.unt_ID ";
 	$query .= "LEFT JOIN intervalType AS T4 ";
 	$query .= "ON T2.intTp_ID = T4.intTp_ID ";
-	$query .= "LEFT JOIN interneMesswerteConfig AS T5 ON T1.mst_ID = T5.mst_ID ";
+	//$query .= "LEFT JOIN interneMesswerteConfig AS T5 ON T1.mst_ID = T5.mst_ID "; //Old Code
+	$query .= "LEFT JOIN produktionsAnlagenConfig AS T5 ON T1.mst_ID = T5.mst_ID ";
 	$query .= "WHERE T1.deleted <> 'true' ";
 	$query .= "AND T1.messartMst = 'manuell' ";
 	$query .= "AND T1.typ = '$typ' ";
 	$query .= "AND T5.mst_ID IS NULL";
-	//echo $query;die();
+	// echo $query;die();
 
 }
 elseif($id == 'SearchKeinZeitintervallTbl'){
@@ -544,6 +545,7 @@ elseif($id == 'masseneingabePrdktSearch'){
 	$query1 .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
 	$query1 .= "ON T1.prd_id = T2.prd_id ";
 	$query1 .= "AND T1.anl_id = T2.anl_id ";
+	$query1 .= "AND T1.anl_col = T2.anl_col "; //8-7-2021
 	//$query1 .= " LEFT JOIN produkte AS T3 ON T1.prd_id = T3.prd_ID";
 	$query1 .= " LEFT JOIN anlagen AS T4 ON T1.anl_id = T4.anl_ID";
 	$query1 .= " WHERE T1.type = 2";
@@ -575,7 +577,7 @@ elseif($id == 'masseneingabePrdktSearch'){
 	$queryInvest .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
 	$queryInvest .= "ON T1.prd_id = T2.prd_id ";
 	$queryInvest .= "AND T1.anl_id = T2.anl_id ";
-	// $queryInvest .= "AND T1.anl_col = T2.anl_col ";
+	$queryInvest .= "AND T1.anl_col = T2.anl_col "; //8-7-2021---
 	//$query1 .= " LEFT JOIN produkte AS T3 ON T1.prd_id = T3.prd_ID";
 	$queryInvest .= " LEFT JOIN anlagen AS T4 ON T1.anl_id = T4.anl_ID";
 	$queryInvest .= " WHERE T1.type = 2";
