@@ -4327,7 +4327,7 @@ $(document).ready(function(){
                             var convertMinVal = disbledMinVal;
                             var min_input_res = convertMinVal.split('-');
                             var min_input_first = min_input_res[0];
-                            $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val((parseInt(disbledMinVal) + 1)+'-'+max_val);
+                            $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val((parseInt(disbledMinVal) + 0)+'-'+max_val);
                             if($.inArray(inptDate, anlageObj[mst_id]) === -1){
                                 anlageObj[mst_id].push(inptDate);
                             }
@@ -4381,7 +4381,7 @@ $(document).ready(function(){
                         var convertMinVal = disbledMinVal;
                         var min_input_res = convertMinVal.split('-');
                         var min_input_first = min_input_res[0];
-                        $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val((parseInt(disbledMinVal)+1)+'-'+max_val);
+                        $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val((parseInt(disbledMinVal)+0)+'-'+max_val);
                     }
                 }
                 else if(controlsystem == "3" || controlsystem == "4"){
@@ -4637,7 +4637,7 @@ $(document).ready(function(){
                             var convertMinVal = disbledMinVal;
                             var min_input_res = convertMinVal.split('-');
                             var min_input_first = min_input_res[0];
-                            $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val((parseInt(disbledMinVal) + 1)+'-'+max_val);
+                            $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+currID).val((parseInt(disbledMinVal) + 0)+'-'+max_val);
                             if($.inArray(inptDate, anlageObj[mst_id]) === -1){
                                 anlageObj[mst_id].push(inptDate);
                             }
@@ -4691,7 +4691,7 @@ $(document).ready(function(){
                         var convertMinVal = disbledMinVal;
                         var min_input_res = convertMinVal.split('-');
                         var min_input_first = min_input_res[0];
-                        $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val((parseInt(disbledMinVal)+1)+'-'+max_val);
+                        $(this).closest('tr').next('tr').find("#anlageCalculationRow_"+nextId).val((parseInt(disbledMinVal)+0)+'-'+max_val);
                     }
                 }
                 else if(controlsystem == "3" || controlsystem == "4"){
@@ -8391,7 +8391,7 @@ $('#config_mannual_mesurement_operating').on('click', function(){
 });
 
 $('#save_mannual_mesurement_operating').on('click', function(){
-    $('#masseneingabeSpeichernSrchPrdkt').trigger('click');
+    $('#masseneingabeSpeichernSrchMesssetelle').trigger('click');
 });
 
 
@@ -8548,3 +8548,65 @@ $(document).on('blur', '#min_prompt_invest_value_product ,#max_prompt_invest_val
 })
 
 //--end-->
+
+// <---7-7-2021---
+//<----7-7-2021--- Product Invest Checks
+
+$(document).on('blur','#timeIntervalWerteEnergiedatenIMwMesssetelle #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td input', function (){
+    var current_val = $(this).val();
+    if(current_val != ''){
+        var min_val = $(this).closest('tr').attr('min_val');
+        var max_val = $(this).closest('tr').attr('max_val');
+        var checkPrevVal = $(this).closest('td').prev('td').find('input').val();
+        var checkNextVal = $(this).closest('td').next('td').find('input').val();
+        var current_row_id = $(this).closest('tr').attr('id');
+        var current_td_input_id = $(this).attr('id');
+        var mstID = $(this).closest('td').attr('data-id');
+        var startdateinvest = $(this).closest('tr').attr('startdateinvest');
+        var startweekinvest = $(this).closest('tr').attr('startweekinvest');
+        var enddateinvest = $(this).closest('tr').attr('enddateinvest');
+        var endweekinvest = $(this).closest('tr').attr('endweekinvest');
+        var ar = [startdateinvest,startweekinvest,enddateinvest,endweekinvest]
+        var classVal = $(this).closest('tr').hasClass('enabledRow');
+        var timeIntervalInvest = $(this).closest('tr').attr('timeIntervalInvest');
+        var controlsystem = $(this).closest('tr').attr('controlsystem');
+        var table_config_id = $(this).closest('tr').attr('table_config_id');
+
+        var indexId = $(this).closest('td').index();
+        var thDateVal = $(this).closest('table').children('tbody').children('tr:first').children('th:eq('+parseInt(indexId-1)+')').text();
+        var InputDisabledVal = $(this).closest('td').prev('td').find('input').is(':disabled');
+
+
+        if(classVal == true){
+            //Function calling if time interval is 2
+            if(timeIntervalInvest != 0 &&  timeIntervalInvest == 2){
+                investValueCheckMeasuring(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem,table_config_id);
+            }
+            else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 1){ //Function calling if time interval is 1
+                //console.log('#'+current_row_id+' #anlageMainRow_0');
+                investValueCheckDateMeasuring(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem,table_config_id);
+            }
+            else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 3){
+                investValueCheckMonthMeasuring(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem);
+            }
+            else if(timeIntervalInvest != 0 &&  timeIntervalInvest == 4){
+                investValueCheckYearMeasuring(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem);
+            }
+        }
+    }
+    // console.log('checkprev_value',checkPrevVal);
+    // console.log('current_val',current_val);
+    // console.log('checkNextVal',checkNextVal);
+});
+
+$(document).on('change', '#wochenWMassEingDataAnlStart5 ,#wochenWMassEingDataAnlEnde5',function(){
+    var id_val = $(this).attr('id');
+    resetSelectedAttributeMeasuring(id_val);
+})
+
+
+$(document).on('blur', '#min_prompt_invest_value_measuring ,#max_prompt_invest_value_measuring',function(){
+    var id_val = $(this).attr('id');
+    editPromptInvestMeasuring(id_val);
+})
+// --end--->

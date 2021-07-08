@@ -575,6 +575,7 @@ elseif($id == 'masseneingabePrdktSearch'){
 	$queryInvest .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
 	$queryInvest .= "ON T1.prd_id = T2.prd_id ";
 	$queryInvest .= "AND T1.anl_id = T2.anl_id ";
+	// $queryInvest .= "AND T1.anl_col = T2.anl_col ";
 	//$query1 .= " LEFT JOIN produkte AS T3 ON T1.prd_id = T3.prd_ID";
 	$queryInvest .= " LEFT JOIN anlagen AS T4 ON T1.anl_id = T4.anl_ID";
 	$queryInvest .= " WHERE T1.type = 2";
@@ -666,6 +667,21 @@ elseif($id == 'masseneingabeMesssetelleSearch'){
 
 	//$query4 = "SELECT COUNT(id) AS inputCountVal FROM masseneingabeSucheErgebnisIMw ";
 	//$query4 .= "WHERE type = '$zeitintervallAnl' ";
+	// <---7-7-2021---
+	$queryInvest = "SELECT * FROM MessstellenAnlagen As T1 ";
+	$queryInvest .= "LEFT JOIN produktionsAnlagenConfig AS T2 ";
+	$queryInvest .= "ON T1.mst_ID = T2.mst_ID ";
+	$queryInvest .= "WHERE T1.messartMst = 'manuell' ";
+	$queryInvest .= "AND T1.deleted <> 'true' ";
+
+	/*use for show only betriebsdaten type*/
+	$queryInvest .= "AND T1.typ = 'betriebsdaten' ";
+
+
+	$queryInvest .= "AND ((T2.startDate >= '$startDate' AND T2.startDate <= '$endDate') OR (T2.endDate >= '$startDate' AND T2.endDate <= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate >= '$endDate') OR (T2.startDate <= '$startDate' AND T2.endDate =''))";
+	$queryInvest .= "AND T2.intTp_ID = '$zeitintervallAnl' ";
+	$queryInvest .= "ORDER BY T1.mst_ID ASC";
+	//--end-->
 
 }
 /*new-mm-end 31-03-2021*/
@@ -1210,6 +1226,11 @@ else if($id == 'masseneingabeMesssetelleSearch'){
 	$records['query2'] = queryDB($conn, $query2, "read");
 	$records['query3'] = queryDB($conn, $query3, "read");
 	//$records['query4'] = queryDB($conn, $query4, "read");
+	// <----5-7-2021--
+	if(isset($queryInvest)){
+		$records['queryInvest'] = queryDB($conn, $queryInvest, "read");
+	}
+	// --end-->
 	echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 }
 /*new-mm-end 31-03-2021*/

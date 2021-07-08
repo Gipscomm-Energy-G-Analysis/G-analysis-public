@@ -3825,12 +3825,12 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
 
             if(count($records) > 0){
                 $tsql = "UPDATE produktionsAnlagenConfig SET intTp_ID = '$intTp_ID',
-          unt_ID = '$unt_ID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note',einheitControlSys = '$einheitControlSys',iBdeType = '$iBdeType',mstIMw = '$mstIMw'";
+          unt_ID = '$unt_ID',startDate = '$startDate',endDate = '$endDate',startWeek = '$startWeek',endWeek = '$endWeek',ending = '$ending',note = '$note',einheitControlSys = '$einheitControlSys',iBdeType = '$iBdeType',mstIMw = '$mstIMw','$min_val','$max_val'";
                 $tsql .= "WHERE mst_ID = '$mstID' ";
             }
             else {
-                $tsql = "INSERT INTO produktionsAnlagenConfig (intTp_ID,unt_ID, mst_ID,prd_id,anl_id,anl_col,startDate,endDate,startWeek,endWeek,ending,note,einheitControlSys,iBdeType,mstIMw) ";
-                $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$prd_ID' , '$anl_ID' , '$anl_Col' , '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note','$einheitControlSys' , '$iBdeType','$mstIMw') ";
+                $tsql = "INSERT INTO produktionsAnlagenConfig (intTp_ID,unt_ID, mst_ID,prd_id,anl_id,anl_col,startDate,endDate,startWeek,endWeek,ending,note,einheitControlSys,iBdeType,mstIMw,min_val,max_val) ";
+                $tsql .= "VALUES ('$intTp_ID', '$unt_ID', '$mstID', '$prd_ID' , '$anl_ID' , '$anl_Col' , '$startDate', '$endDate', '$startWeek','$endWeek', '$ending', '$note','$einheitControlSys' , '$iBdeType','$mstIMw','$min_val','$max_val') ";
             }
         }
     }

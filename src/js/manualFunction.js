@@ -4634,7 +4634,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td>Anlage</td>';
+                            $row += '<tr style="position: sticky;top: 0;background-color: #dddddd;"><td>Anlage</td>';
                             for (var r = 0; r <= days; r++){
 
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
@@ -4646,7 +4646,19 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     }
 
                     for (var e = 0; e < b; e++){
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        //<----5-7-2021---
+                        var min_val = a.queryInvest[e].min_val != null ? a.queryInvest[e].min_val : '';
+                        var max_val = a.queryInvest[e].max_val != null  ? a.queryInvest[e].max_val : '';
+                        var startDateInvest = a.queryInvest[e].startDate != null ? a.queryInvest[e].startDate : '';
+                        var startWeekInvest = a.queryInvest[e].startWeek != '' ? a.queryInvest[e].startWeek : '';
+                        var endDateInvest = a.queryInvest[e].endDate != '' ? a.queryInvest[e].endDate : '';
+                        var endWeekInvest = a.queryInvest[e].endWeek != "0"  ? a.queryInvest[e].endWeek : '';
+                        var timeIntervalInvest = a.queryInvest[e].intTp_ID != "0" ? a.queryInvest[e].intTp_ID : '';
+                        var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
+                        var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
+                        var countInvest = 0;
+                        //end-->
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                         //console.log(anlageObj[a.query1[e].mst_ID]);
                         //console.log(anlageObj);
                         var datesOfArr = [];
@@ -4709,7 +4721,15 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                                 rdOnly = 'readonly';
                             }
                             var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                            // <----7-5-2021-- //By Default Else Case Was Working
+                            if(rdOnly == 'readonly' && countInvest == 0){
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' placeholder="'+min_val+'-'+max_val+'" value="'+inputVal+'"/></td>';
+                                countInvest = 1;
+                            }
+                            else{
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'"  date="'+dateArr[r]+'" class="masseneingabeInputTD"><input type="text" id="anlageCalculationRow_'+r+'" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                            }
+                            
                         }
                         $row += '</tr>';
                     }
@@ -4731,7 +4751,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td>Anlage</td>';
+                            $row += '<tr style="position: sticky;top: 0;background-color: #dddddd;"><td>Anlage</td>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(f) + eval(r);
                                 var weekNum =53;
@@ -4768,6 +4788,18 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     }
                     var weekOfArr=[];
                     for (var e = 0; e < b; e++){
+                         //<----7-7-2021---
+                         var min_val = a.queryInvest[e].min_val != null ? a.queryInvest[e].min_val : '';
+                         var max_val = a.queryInvest[e].max_val != null  ? a.queryInvest[e].max_val : '';
+                         var startDateInvest = a.queryInvest[e].startDate != null ? a.queryInvest[e].startDate : '';
+                         var startWeekInvest = a.queryInvest[e].startWeek != '' ? a.queryInvest[e].startWeek : '';
+                         var endDateInvest = a.queryInvest[e].endDate != '' ? a.queryInvest[e].endDate : '';
+                         var endWeekInvest = a.queryInvest[e].endWeek != "0"  ? a.queryInvest[e].endWeek : '';
+                         var timeIntervalInvest = a.queryInvest[e].intTp_ID != "0" ? a.queryInvest[e].intTp_ID : '';
+                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
+                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
+                         var countInvest = 0;
+                         //end-->
                         var from1 = startDate.split("-");
                         var g1 = g2=from1[0]; //first week selected value
                         var f1 = f2=from1[1]; //first year input text value
@@ -4776,7 +4808,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                         var s1 =s2=  to1[0]; //second week selected value
                         var t1 =t2=  to1[1]; //second year input text value
 
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                         var count1 = 0;
                         for (var r1 = 0; r1 <= years; r1++){
                             var m='disabled';
@@ -4879,7 +4911,15 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                                     rdOnly = 'readonly';
                                 }
                                 var inputVal =  findArrValueByDateWeek(yr2,i2,a.query1[e].mst_ID,a.query3);
-                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                                 // <----7-5-2021-- //By Default Else Case Was Working
+                                if(rdOnly == 'readonly' && countInvest == 0){
+                                    $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' placeholder="'+min_val+'-'+max_val+'" value="'+inputVal+'"/></td>';
+                                    countInvest = 1;
+                                }
+                                else{
+                                    $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD"  date="' + i2 + '-' + yr2 + '"><input type="text" id="anlageCalculationRow_'+count2+'" name="masseneingabeInput'+i2+'[]" '+m+' '+rdOnly+' value="'+inputVal+'"/></td>';
+                                }
+                                
                                 if(i2>=53){
                                     var g2=1;
                                     // console.log('i2='+i2);
@@ -4921,7 +4961,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td>Anlage</td>';
+                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
                             for (var r = 0; r <= months; r++){
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
                             }
@@ -4930,7 +4970,19 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     }
                     var monthOfArr=[];
                     for (var e = 0; e < b; e++){
-                        $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                         //<----7-7-2021---
+                         var min_val = a.queryInvest[e].min_val != null ? a.queryInvest[e].min_val : '';
+                         var max_val = a.queryInvest[e].max_val != null  ? a.queryInvest[e].max_val : '';
+                         var startDateInvest = a.queryInvest[e].startDate != null ? a.queryInvest[e].startDate : '';
+                         var startWeekInvest = a.queryInvest[e].startWeek != '' ? a.queryInvest[e].startWeek : '';
+                         var endDateInvest = a.queryInvest[e].endDate != '' ? a.queryInvest[e].endDate : '';
+                         var endWeekInvest = a.queryInvest[e].endWeek != "0"  ? a.queryInvest[e].endWeek : '';
+                         var timeIntervalInvest = a.queryInvest[e].intTp_ID != "0" ? a.queryInvest[e].intTp_ID : '';
+                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
+                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
+                         var countInvest = 0;
+                         //end-->
+                        $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
                         for (var r = 0; r <= months; r++){
                             var n='';
                             if(a.query1[e].ending ==0){
@@ -4975,7 +5027,15 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                                 rdOnly = 'readonly';
                             }
                             var inputVal = findArrValueByDate(dateArr[r],a.query1[e].mst_ID,a.query3);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                             // <----7-5-2021-- //By Default Else Case Was Working
+                            if(rdOnly == 'readonly' && countInvest == 0){
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" placeholder="'+min_val+'-'+max_val+'" value="'+inputVal+'"/></td>';
+                                countInvest = 1;
+                            }
+                            else{
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + dateArr[r] + '"><input type="text" name="masseneingabeInput'+r+'[]" '+n+' '+rdOnly+' id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                            }
+                            
                         }
                         $row += '</tr>';
                     }
@@ -4990,7 +5050,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td>Anlage</td>';
+                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(startDate) + eval(r);
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
@@ -5000,7 +5060,20 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     }
                     var yearOfArr = [];
                     for (var e = 0; e < b; e++){
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        //<----7-7-2021---
+                        var min_val = a.queryInvest[e].min_val != null ? a.queryInvest[e].min_val : '';
+                        var max_val = a.queryInvest[e].max_val != null  ? a.queryInvest[e].max_val : '';
+                        var startDateInvest = a.queryInvest[e].startDate != null ? a.queryInvest[e].startDate : '';
+                        var startWeekInvest = a.queryInvest[e].startWeek != '' ? a.queryInvest[e].startWeek : '';
+                        var endDateInvest = a.queryInvest[e].endDate != '' ? a.queryInvest[e].endDate : '';
+                        var endWeekInvest = a.queryInvest[e].endWeek != "0"  ? a.queryInvest[e].endWeek : '';
+                        var timeIntervalInvest = a.queryInvest[e].intTp_ID != "0" ? a.queryInvest[e].intTp_ID : '';
+                        var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
+                        var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
+                        var countInvest = 0;
+                        //end-->
+
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
 
                         for (var r = 0; r <= years; r++){
                             let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
@@ -5052,7 +5125,12 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                                 rdOnly = 'readonly';
                             }
                             var inputVal = findArrValueByDate(yearsBw[r],a.query1[e].mst_ID,a.query3);
-                            $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                            if(rdOnly == 'readonly' && countInvest == 0){
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" placeholder="'+min_val+'-'+max_val+'" value="'+inputVal+'"/></td>';
+                                countInvest = 1;
+                            }else{
+                                $row += '<td data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputTD" date="' + yr1 + '"><input type="text" name="masseneingabeInput'+r+'[]" '+t+' '+rdOnly+'  id="anlageCalculationRow_'+r+'" value="'+inputVal+'"/></td>';
+                            }
                         }
                         $row += '</tr>';
                     }
@@ -5555,6 +5633,9 @@ function intBdeSearchConcernOrDeletePopUp(prevID,nextID,prevBottomID,rowMstID) {
 
 /*new-mm-start 05-04-2021*/
 function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMstID) {
+    // 8-7-2021---- If Condition Add By Default Prompt Was working
+    var a = 1;
+    if(a != 1){
     $("#intBdeConcernOrDeletePopUp").remove();
     $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none;'> <p>Warnung: Sie haben einen Wert besetzt, <br>der nicht mit der bereits gesetzten Datenlagen<br>in der Abfolge übereinstimmen kann.</p><div id='intBdeConcernOrDeletePopUpDiv'><button id='intBdeConcern' >Concern</button><button id='intBdeDelete'>Delete</button></div></div>").dialog({
         height: 250,
@@ -5631,6 +5712,7 @@ function intBdeSearchConcernOrDeletePopUpPrdkt(prevID,nextID,prevBottomID,rowMst
         }
     });
     $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+    }
 }
 /*new-mm-end 05-04-2021*/
 
@@ -6754,7 +6836,10 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
                 }
                 if(parseInt(current_val) == parseInt(checkPrevVal)){
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
                 else if(checkNextVal != ''){
@@ -7434,7 +7519,10 @@ function investValueCheckDate(min_val,max_val,current_val,checkPrevVal,checkNext
                 }
                 if(parseInt(current_val) == parseInt(checkPrevVal)){
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
                 if(checkNextVal != ''){
@@ -7608,7 +7696,10 @@ function investValueCheckMonth(min_val,max_val,current_val,checkPrevVal,checkNex
                 }
                 if(parseInt(current_val) == parseInt(checkPrevVal)){
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
                 if(checkNextVal != ''){
@@ -7779,7 +7870,10 @@ function investValueCheckYear(min_val,max_val,current_val,checkPrevVal,checkNext
                 }
                 if(parseInt(current_val) == parseInt(checkPrevVal)){
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
                 if(checkNextVal != ''){
@@ -7949,24 +8043,31 @@ function getPromptInvestValue(mstID,current_row_id,current_td_input_id,disabled_
             $('#min_prompt_invest_value').val(min_val); 
             $('#max_prompt_invest_value').val(max_val); 
             
-            $('#min_prompt_invest_value').removeAttr('readonly'); 
+            $('#min_prompt_invest_value').removeAttr('readonly');
+            $('#min_prompt_invest_value').css("background-color",""); 
             //$('#min_prompt_invest_value').removeAttr("style");
 
-            $('#max_prompt_invest_value').removeAttr('readonly'); 
+            $('#max_prompt_invest_value').removeAttr('readonly');
+            $('#max_prompt_invest_value').css("background-color",""); 
             //$('#max_prompt_invest_value').removeProperty('backgroud');
 
             if(typeof(controlsystem) != undefined){
                 if(controlsystem == "1" || controlsystem == "2"){
                     $('#min_prompt_invest_value').attr('readonly',true); 
-                    //$('#min_prompt_invest_value').css("backgroud","#dadcde");
+                    $('#min_prompt_invest_value').css("background-color","#dadcde");
+                    $('#max_prompt_invest_value').focus();
                 }
                 else if(controlsystem == "3" || controlsystem == "4"){
                     if(current_val != ''){
                         if(parseInt(current_val) < parseInt(min_val)){
                             $('#max_prompt_invest_value').attr('readonly',true); 
+                            $('#max_prompt_invest_value').css("background-color","#dadcde");
+                            $('#min_prompt_invest_value').focus();
                         }
                         else if(parseInt(current_val) > parseInt(max_val)){
                             $('#min_prompt_invest_value').attr('readonly',true);
+                            $('#min_prompt_invest_value').css("background-color","#dadcde");
+                            $('#max_prompt_invest_value').focus();
                         }
                     }
                 }
@@ -7980,10 +8081,14 @@ function getPromptInvestValue(mstID,current_row_id,current_td_input_id,disabled_
                 if(min_val == '')
                 {
                     alert("Bitte füllen Sie die Felder aus");
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
                     return false;
                 }
                 else if(max_val == ''){
                     alert("Bitte füllen Sie die Felder aus");
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
                     return false;
                 }
                     // if(min_val != '' && max_val != '' && parseInt(min_val) >= parseInt(max_val)){
@@ -8294,24 +8399,32 @@ function getPromptInvestValueProduct(mstID,current_row_id,current_td_input_id,di
             $('#min_prompt_invest_value_product').val(min_val); 
             $('#max_prompt_invest_value_product').val(max_val);
             
-            $('#min_prompt_invest_value_product').removeAttr('readonly'); 
+            $('#min_prompt_invest_value_product').removeAttr('readonly');
+            $('#min_prompt_invest_value_product').css("background",""); 
             //$('#min_prompt_invest_value').removeAttr("style");
 
-            $('#max_prompt_invest_value_product').removeAttr('readonly'); 
+            $('#max_prompt_invest_value_product').removeAttr('readonly');
+            $('#max_prompt_invest_value_product').css("background","");  
             //$('#max_prompt_invest_value').removeProperty('backgroud');
 
             if(typeof(controlsystem) != undefined){
                 if(controlsystem == "1" || controlsystem == "2"){
                     $('#min_prompt_invest_value_product').attr('readonly',true); 
+                    $('#min_prompt_invest_value_product').css("background","#dadcde"); 
+                    $('#max_prompt_invest_value_product').focus();  
                     //$('#min_prompt_invest_value').css("backgroud","#dadcde");
                 }
                 else if(controlsystem == "3" || controlsystem == "4"){
                     if(current_val != ''){
                         if(parseInt(current_val) < parseInt(min_val)){
-                            $('#max_prompt_invest_value_product').attr('readonly',true); 
+                            $('#max_prompt_invest_value_product').attr('readonly',true);
+                            $('#max_prompt_invest_value_product').css("background","#dadcde"); 
+                            $('#min_prompt_invest_value_product').focus();   
                         }
                         else if(parseInt(current_val) > parseInt(max_val)){
                             $('#min_prompt_invest_value_product').attr('readonly',true);
+                            $('#min_prompt_invest_value_product').css("background","#dadcde"); 
+                            $('#max_prompt_invest_value_product').focus();  
                         }
                     }
                 }
@@ -8326,10 +8439,14 @@ function getPromptInvestValueProduct(mstID,current_row_id,current_td_input_id,di
                 if(min_val_input == '')
                 {
                     alert("Bitte füllen Sie die Felder aus");
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
                     return false;
                 }
                 else if(max_val_input == ''){
                     alert("Bitte füllen Sie die Felder aus");
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
                     return false;
                 }
 
@@ -8609,7 +8726,10 @@ function investValueCheckDateProduct(min_val,max_val,current_val,checkPrevVal,ch
                 }
                 if(parseInt(current_val) == parseInt(checkPrevVal)){
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
                 if(checkNextVal != ''){
@@ -8789,7 +8909,10 @@ function investValueCheckProduct(min_val,max_val,current_val,checkPrevVal,checkN
                 }
                 if(parseInt(current_val) == parseInt(checkPrevVal)){
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
                 else if(checkNextVal != ''){
@@ -8965,7 +9088,10 @@ function investValueCheckMonthProduct(min_val,max_val,current_val,checkPrevVal,c
                 }
                 if(parseInt(current_val) == parseInt(checkPrevVal)){
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
                 if(checkNextVal != ''){
@@ -9136,7 +9262,10 @@ function investValueCheckYearProduct(min_val,max_val,current_val,checkPrevVal,ch
                 }
                 if(parseInt(current_val) == parseInt(checkPrevVal)){
                     var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
-                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
                     return false;
                 }
                 if(checkNextVal != ''){
@@ -9236,3 +9365,1082 @@ function investValueCheckYearProduct(min_val,max_val,current_val,checkPrevVal,ch
     }
 }
 //--end--->
+
+// <---7-7-2021---
+//Modal
+//<<------29-6-2021----
+function commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id){
+    var table_config_id = $('#'+current_row_id).attr('table_config_id');
+    $("#intBdeConcernOrDeletePopUp").remove();
+    $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value do not Enter in between Fields</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='redirect_btn_invest' >Redirect</button><button style='padding: 5px;' id='cancel_btn_invest'>Cancel</button></div></div>").dialog({
+        height: 250,
+        width: 450,
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500,
+            closeOnEscape: false,
+            dialogClass: "no-close",
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        open: function(event, ui) {
+            $("#redirect_btn_invest").on("click", function() {
+                $("#intBdeConcernOrDeletePopUp").remove();
+                //$('#config_mannual_default_energy').trigger('click');
+                redirectInvestValueMeasuring(table_config_id);
+                $('#'+current_row_id+' #'+current_td_input_id).val('');
+                setTimeout(() => {
+                    $('.enabledRow td[data-id="'+mstID+'"]  #anlageMainRow_0').focus();
+                    $('.enabledRow td[data-id="'+mstID+'"]  #anlageMainRow_0').click();
+                }, 1500);
+            });
+
+            $("#cancel_btn_invest").on("click", function() {
+                $("#intBdeConcernOrDeletePopUp").remove();
+                $('#'+current_row_id+' #'+current_td_input_id).val('');
+                $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+
+            });
+            // flag = 1;
+        }
+    });
+    $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+    // --end-->
+    return false;
+}
+
+///<----27-6-2021
+function commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem){
+    //<---Edit Modal---
+    $("#intBdeConcernOrDeletePopUp").remove();
+    $("<div id='intBdeConcernOrDeletePopUp' class='intBdeConcernOrDeletePopUp' style='display:none; height: 150.804px;'> <p>Value always be greater than minimum value and less than Max Value</p><div id='intBdeConcernOrDeletePopUp'><button style='padding: 5px;  margin-right: 17px;' id='edit_btn_invest' >Edit</button><button style='padding: 5px;' id='done_btn_invest'>Done</button></div></div>").dialog({
+        height: 250,
+        width: 450,
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500,
+            closeOnEscape: false,
+            dialogClass: "no-close",
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        open: function(event, ui) {
+            $("#edit_btn_invest").on("click", function() {
+                $("#intBdeConcernOrDeletePopUp").remove();
+
+                // $("#editModalInvest").dialog("open");
+                //$('#config_mannual_default_energy').trigger('click');
+                //getInvestValues(mstID);
+                getPromptInvestValueMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,current_val,controlsystem);
+            });
+
+            $("#done_btn_invest").on("click", function() {
+
+                $("#intBdeConcernOrDeletePopUp").remove();
+                $('#'+current_row_id+' #'+current_td_input_id).val('');
+
+            });
+            // flag = 1;
+        }
+    });
+    $("#intBdeConcernOrDeletePopUp").parent('div').find(".ui-dialog-titlebar-close").hide();
+    //---end-->
+    return false;
+}
+
+function getPromptInvestValueMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,current_val,controlsystem){
+    $("#editModalInvestMeasuring").css("display", "block");
+
+    $("#editModalInvestMeasuring").dialog({
+        height: 250,
+        width: 450,
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500,
+            closeOnEscape: false,
+            dialogClass: "no-close",
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        open: function() {
+            //<--5-7-2021---
+            var min_val = $('#'+current_row_id).attr('min_val');
+            var max_val = $('#'+current_row_id).attr('max_val');
+            $('#min_prompt_invest_value_measuring').val(min_val); 
+            $('#max_prompt_invest_value_measuring').val(max_val);
+            
+            $('#min_prompt_invest_value_measuring').removeAttr('readonly'); 
+            $('#min_prompt_invest_value_measuring').css("background-color","");
+            //$('#min_prompt_invest_value').removeAttr("style");
+
+            $('#max_prompt_invest_value_measuring').removeAttr('readonly');
+            $('#max_prompt_invest_value_measuring').css("background-color",""); 
+            //$('#max_prompt_invest_value').removeProperty('backgroud');
+
+            if(typeof(controlsystem) != undefined){
+                if(controlsystem == "1" || controlsystem == "2"){
+                    $('#min_prompt_invest_value_measuring').attr('readonly',true); 
+                    $('#min_prompt_invest_value_measuring').css("background-color","#dadcde");
+                    $('#max_prompt_invest_value_measuring').focus();
+                }
+                else if(controlsystem == "3" || controlsystem == "4"){
+                    if(current_val != ''){
+                        if(parseInt(current_val) < parseInt(min_val)){
+                            $('#max_prompt_invest_value_measuring').attr('readonly',true);
+                            $('#max_prompt_invest_value_measuring').css("background-color","#dadcde");
+                            $('#min_prompt_invest_value_measuring').focus(); 
+                        }
+                        else if(parseInt(current_val) > parseInt(max_val)){
+                            $('#min_prompt_invest_value_measuring').attr('readonly',true);
+                            $('#min_prompt_invest_value_measuring').css("background-color","#dadcde");
+                            $('#max_prompt_invest_value_measuring').focus();
+                        }
+                    }
+                }
+            }
+            //--end--->
+            $("#save_btn_invest_measuring").unbind().on("click", function() {
+                $("#editModalInvestMeasuring").dialog("close");
+                $("#editModalInvestMeasuring").css("display", "none");
+                var table_config_id = $('#'+current_row_id).attr('table_config_id');
+                var min_val_input =   $('#min_prompt_invest_value_measuring').val(); 
+                var max_val_input =   $('#max_prompt_invest_value_measuring').val();
+                if(min_val_input == '')
+                {
+                    alert("Bitte füllen Sie die Felder aus");
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    return false;
+                }
+                else if(max_val_input == ''){
+                    alert("Bitte füllen Sie die Felder aus");
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    return false;
+                }
+
+                else {
+                    $('#mst_id_energy_investment_prompt_measuring').val(table_config_id);
+                    //var max_val = $('#max_investment_energy').val();
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+
+                    if(table_config_id != '' && min_val_input != '' && max_val_input != ''){
+                        
+                        saveInvestValuesMeasuring(table_config_id,min_val_input,max_val_input);
+
+                        setTimeout(()=>{
+                            redirectInvestValueMeasuring(table_config_id);
+                        },1000);
+                        setTimeout(() => {
+                            //redirectInvestValue(mstID); //To Show Latest Value  in MIn
+                            $('.enabledRow td[data-id="'+mstID+'"]  #anlageMainRow_0').focus();
+                            $('.enabledRow td[data-id="'+mstID+'"]  #anlageMainRow_0').click();
+                            $('#editModalInvestMeasuring input').val('');
+                        }, 3000);
+                    }
+                    return false;
+                }
+
+            });
+            $("#cancel_btn_invest_prompt_measuring").on("click", function() {
+                $("#editModalInvestMeasuring").dialog("close");
+                $("#editModalInvestMeasuring").css("display", "none");
+                $('#editModalInvestMeasuring input').val('');
+                $('#'+current_row_id+' #'+current_td_input_id).val('');
+                $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+
+            });
+        },
+        close: function() {
+            $("#editModalInvestMeasuring").val("");
+            $("#editModalInvestMeasuring").css("display", "none");
+            $('#editModalInvestMeasuring input').val('');
+            // $("#intBdeIMwHistSpeichern, #intBdeIMwHistNichtSpeichern").css("display", "inline");
+        }
+    });
+    $("#editModalInvestMeasuring").parent('div').find(".ui-dialog-titlebar-close").hide();
+    $("#editModalInvestMeasuring").dialog("open");
+    return false;
+}
+//--end-->
+//<---1-7-2021---
+function editPromptInvestMeasuring(id_val){
+    var min_val = $('#min_prompt_invest_value_measuring').val();
+    var max_val = $('#max_prompt_invest_value_measuring').val();
+    if(id_val == 'min_prompt_invest_value_measuring'){
+        if(min_val == ''){
+            alert("Min Bitte füllen Sie die Felder aus");
+            return false;
+        }
+        else if(min_val != '' && max_val != '' && parseInt(min_val) >= parseInt(max_val)){
+            alert('Minimum Value Can not be greater than or Equal to Maximum Value');
+            $('#min_prompt_invest_value_measuring').val('');
+            //$('#editModalInvest input').val('');
+            return false;
+        }
+    }
+    else if(id_val == 'max_prompt_invest_value_measuring'){
+        if (max_val == ''){
+            alert("Max Bitte füllen Sie die Felder aus");
+            return false;
+        }
+        else if(min_val != '' && max_val != '' && parseInt(max_val) <= parseInt(min_val)){
+            alert('Maximum Value Can not be less than or Equal to Minimum Value');
+            $('#max_prompt_invest_value_measuring').val('');
+            //$('#editModalInvest input').val('');
+            return false;
+        }
+
+    }
+}
+// ---end-->
+
+function saveInvestValuesMeasuring(table_config_id,min_val,max_val){
+    // var table_config_id = $('#mst_id_energy_investment_prompt_product').val();
+    // var min_val = $('#min_prompt_invest_value_product').val();
+    // var max_val = $('#max_prompt_invest_value_product').val();
+    // console.log('Save Invest Min Val', min_val);
+    // console.log('Save Invest Max Val', max_val);
+    // console.log('table_config_id', table_config_id);
+    if(table_config_id != '' && min_val != '' && max_val != ''){
+        $.ajax({
+            type: "POST",
+            url: "php/investValue.php",
+            async: false,
+            dataType: 'json',
+            data:{
+                id: "saveInvestValuesMeasuring",
+                nameDB: $("#nameDB").val(),
+                table_config_id:table_config_id,
+                min : min_val,
+                max : max_val
+            },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                //console.log(a);
+                //removeAttributeInvestFields();
+                $('#mst_id_energy_investment_prompt_measuring').val('');
+               
+                //redirectInvestValueProduct(table_config_id);
+
+                
+            }
+        });
+    }
+}
+//--end-->
+
+
+// <-----24-6-2021---
+function redirectInvestValueMeasuring(table_config_id){
+    var table_config_id = table_config_id;
+    if(table_config_id != null){
+        $.ajax({
+            type: "POST",
+            url: "php/investValue.php",
+            async: false,
+            dataType: 'json',
+            data:{
+                id: "redirectInvestValuesMeasuring",
+                nameDB: $("#nameDB").val(),
+                table_config_id:table_config_id,
+            },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+                //console.log(a);
+                a.forEach((element) =>{
+                    if(element.intTp_ID == "2"){
+                        $("#wochenWMassEingDataAnlStart5").find('option').removeAttr("selected");
+                        $('#wochenWMassEingDataAnlStart5 option[value=' + element.startWeek + ']').prop('selected', 'selected');
+                        $('#wochenYMassEingDataAnlStart5').val(element.startDate);
+
+                        if(element.endWeek != 0 && element.endDate != ""){
+                            $("#wochenYMassEingDataAnlEnde5").find('option').removeAttr("selected");
+                            $('#wochenYMassEingDataAnlEnde5 option[value=' + element.endWeek + ']').prop('selected', 'selected');
+                            $('#wochenYMassEingDataAnlEnde5').val(element.endDate);
+                        }
+                        $('#btnMasseneingabeIMwSearchMesssetelle').trigger('click');
+                    }
+                    else if(element.intTp_ID == "1"){
+                        var filterStartDate = element.startDate;
+                        var datearray = filterStartDate.split("-");
+                        filterStartDate = datearray[2] + '.' + datearray[1] + '.' + datearray[0];
+                        $('#tageMassEingDataAnlStart5').val(filterStartDate);
+
+                        if(element.startDate != '' && element.endDate != ""){
+                            var filterEndDate = element.endDate;
+                            var date_end_array = filterEndDate.split("-");
+                            filterEndDate = date_end_array[2] + '.' + date_end_array[1] + '.' + date_end_array[0];
+                            $('#tageMassEingDataAnlEnde5').val(filterEndDate);
+                        }
+                        $('#btnMasseneingabeIMwSearchMesssetelle').trigger('click');
+                    }
+                    else if(element.intTp_ID == "3"){
+                        var filterStartDate = element.startDate;
+                        var datearray = filterStartDate.split("-");
+                        filterStartDate = datearray[1] + '.' + datearray[0];
+                        $('#monateMassEingDataAnlStart5').val(filterStartDate);
+
+                        if(element.startDate != '' && element.endDate != ""){
+                            var filterEndDate = element.endDate;
+                            var date_end_array = filterEndDate.split("-");
+                            filterEndDate = date_end_array[1] + '.' + date_end_array[0];
+                            $('#monateMassEingDataAnlEnde5').val(filterEndDate);
+                        }
+                        $('#btnMasseneingabeIMwSearchMesssetelle').trigger('click');
+                    }
+
+                    else if(element.intTp_ID == "4"){
+                        var filterStartDate = element.startDate;
+                        $('#jahrMassEingDataAnlStart5').val(filterStartDate);
+
+                        if(element.startDate != '' && element.endDate != ""){
+                            var filterEndDate = element.endDate;
+                            $('#jahrMassEingDataAnlEnde5').val(filterEndDate);
+                        }
+                        $('#btnMasseneingabeIMwSearchMesssetelle').trigger('click');
+                    }
+
+                });
+
+
+            }
+        });
+    }
+}
+// -----end-->
+
+// <----6-7-2021---
+function resetSelectedAttributeMeasuring(id_val){
+    if(id_val == 'wochenWMassEingDataAnlStart5'){
+        $("#wochenWMassEingDataAnlStart5").find('option').removeAttr("selected");
+    }
+    else if(id_val == 'wochenWMassEingDataAnlEnde5'){
+        $("#wochenWMassEingDataAnlEnde5").find('option').removeAttr("selected");
+    }
+}
+///-end-->
+
+function investValueCheckDateMeasuring(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem,table_config_id){
+    //<----24-6-2021---
+    var min_val = min_val;
+    var max_val = max_val;
+    var current_val = current_val;
+    var checkPrevVal = checkPrevVal;
+    var current_row_id = current_row_id;
+    var current_td_input_id = current_td_input_id;
+    var checkNextVal = checkNextVal;
+    var mstID = mstID;
+    var thDateVal = thDateVal;
+    var controlsystem = controlsystem;
+
+    //var startdateinvest = (ar[0] != "" ) ? new Date(ar[0]) : '';    //Old code
+    var startdateinvest = (ar[0] != "" ) ? ar[0] : '';
+    var enddateinvest = (ar[2] != "" ) ? new Date(ar[2]) : '';
+
+    //var filterStartDate = $('#tageMassEingDataAnlStart4').val();
+    var filterStartDate = thDateVal;  //New Cod
+    var datearray = filterStartDate.split(".");
+    filterStartDate = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
+    //filterStartDate = new Date(filterStartDate);  //Old Code
+    filterStartDate = filterStartDate;
+
+    var filterEndDate = $('#tageMassEingDataAnlEnde4').val();
+    var date_end_array = filterEndDate.split(".");
+    filterEndDate = date_end_array[2] + '-' + date_end_array[1] + '-' + date_end_array[0];
+    filterEndDate = new Date(filterEndDate);
+
+    //Disabled Field Remove
+    var str = current_row_id;
+    var res = str.split('-');
+    var disabled_row_id = 'dataDisabledRow-'+res[1];
+
+    var inputStr = current_td_input_id;
+    var input_res = inputStr.split('_');
+    var disabled_td_input_id = 'anlageCalculationRow_'+input_res[1];
+
+    var disabledOneprevVal  = 'anlageCalculationRow_'+(parseInt(input_res[1]) - 1) ;
+
+
+    if(min_val != '' && max_val != '' && current_val != ''){
+        if(controlsystem == "1" || controlsystem == "2"){
+            if(startdateinvest != '' && startdateinvest != filterStartDate && checkPrevVal == undefined){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+            }
+            else if(checkPrevVal == undefined || checkPrevVal == ''){
+                if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal != undefined && checkPrevVal != ''){
+                if(parseInt(current_val) < parseInt(checkPrevVal)){
+                    alert('Value always be Greater than Previous value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    return false;
+                }
+                if(parseInt(current_val) == parseInt(checkPrevVal)){
+                    var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    return false;
+                }
+                if(checkNextVal != ''){
+                    if(parseInt(current_val) > parseInt(max_val)){
+                        //alert('Value always be Less than Maximum value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                        return false;
+                    }
+                    else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                        alert('Value always be Less than Next value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        return false;
+                    }
+                }
+
+                else if(parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                // --end-->
+                return false;
+            }
+        }
+        //<-1-7-2021--
+        else if(controlsystem == "3" || controlsystem == "4"){
+            if(startdateinvest != '' && startdateinvest != filterStartDate && checkPrevVal == undefined){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+            }
+            else if(checkPrevVal == undefined || checkPrevVal == ''){
+                if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal != undefined && checkPrevVal != ''){
+                //   console.log('Pre Vaue',checkPrevVal);
+                //   console.log('Current Vaue',current_val);
+                //   console.log('min_val',min_val);
+                if(parseInt(current_val) < parseInt(min_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+                if(checkNextVal != ''){
+                    if(parseInt(current_val) > parseInt(max_val)){
+                        //alert('Value always be Less than Maximum value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                        return false;
+                    }
+                    //   else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                    //       alert('Value always be Less than Next value');
+                    //       $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    //       $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    //       return false;
+                    //   }
+                }
+
+                else if(parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+
+            }
+            else if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                // --end-->
+                return false;
+            }
+        }
+    }
+    //--end-->
+}
+
+// <----6-7-2021---
+function investValueCheckMeasuring(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem,table_config_id){
+
+    //<----6-7-2021---
+    var min_val = min_val;
+    var max_val = max_val;
+    var current_val = current_val;
+    var checkPrevVal = checkPrevVal;
+    var current_row_id = current_row_id;
+    var current_td_input_id = current_td_input_id;
+    var checkNextVal = checkNextVal;
+    var mstID = mstID;
+    var thDateVal = thDateVal;
+
+    var startdateinvest = ar[0];
+    var startweekinvest = ar[1];
+    var enddateinvest = ar[2];
+    var endweekinvest = ar[3];
+    var controlsystem = controlsystem;
+
+    // var filterStartDate = $('#wochenYMassEingDataAnlStart4').val();
+    // var filterStartWeek = $('#wochenWMassEingDataAnlStart4').val();
+    // var filterEndDate = $('#wochenYMassEingDataAnlEnde4').val();
+    // var filterEndWeek = $('#wochenWMassEingDataAnlEnde4').val();
+
+    //<---29-6-2021---
+    var breakDateFormat = thDateVal.split(' ');
+    var filterStartDate = breakDateFormat[2];
+    var filterStartWeek = breakDateFormat[0];
+
+    //--end-->
+
+    //Disabled Field Remove
+    var str = current_row_id;
+    var res = str.split('-');
+    var disabled_row_id = 'dataDisabledRow-'+res[1];
+
+    var inputStr = current_td_input_id;
+    var input_res = inputStr.split('_');
+    var disabled_td_input_id = 'anlageCalculationRow_'+input_res[1];
+
+    var disabledOneprevVal  = 'anlageCalculationRow_'+(parseInt(input_res[1]) - 1) ;
+
+    if(min_val != '' && max_val != '' && current_val != ''){
+        if(controlsystem == "1" || controlsystem == "2"){
+            //<--Filter check --
+            if(checkPrevVal == undefined){
+                if(startweekinvest != filterStartWeek || startdateinvest != filterStartDate){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+            }
+            else if(checkPrevVal == undefined || checkPrevVal == ''){
+                if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be greater than minimum value and less than Max Value');
+                    //<---Edit Modal---
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+            }
+            else if(checkPrevVal != undefined && checkPrevVal != ''){
+                if(parseInt(current_val) < parseInt(checkPrevVal)){
+                    alert('Value always be Greater than Previous value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    return false;
+                }
+                if(parseInt(current_val) == parseInt(checkPrevVal)){
+                    var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    return false;
+                }
+                else if(checkNextVal != ''){
+                    if(parseInt(current_val) > parseInt(max_val)){
+                        //alert('Value always be Less than Maximum value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                        return false;
+                    }
+                    else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                        alert('Value always be Less than Next value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        return false;
+                    }
+                }
+
+                else if(parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                //alert('Can not fill value in between fields');
+                // console.log("Last Rediresct");
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+            }
+        }
+        else if(controlsystem == "3" || controlsystem == "4"){
+            if(checkPrevVal == undefined){
+                if(startweekinvest != filterStartWeek || startdateinvest != filterStartDate){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+            }
+            else if(checkPrevVal == undefined || checkPrevVal == ''){
+                if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be greater than minimum value and less than Max Value');
+                    //<---Edit Modal---
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+            }
+            else if(checkPrevVal != undefined && checkPrevVal != ''){
+                if(parseInt(current_val) < parseInt(min_val)){
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+                else if(checkNextVal != ''){
+                    if(parseInt(current_val) > parseInt(max_val)){
+                        //alert('Value always be Less than Maximum value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                        return false;
+                    }
+                    // else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                    //     alert('Value always be Less than Next value');
+                    //     $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    //     $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    //     return false;
+                    // }
+                }
+
+                else if(parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                //alert('Can not fill value in between fields');
+                // console.log("Last Rediresct");
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+            }
+        }
+    }
+    //--end-->
+
+}
+
+// <--6-7-2021---// Month Value Check 3
+function investValueCheckMonthMeasuring(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem){
+
+    var min_val = min_val;
+    var max_val = max_val;
+    var current_val = current_val;
+    var checkPrevVal = checkPrevVal;
+    var current_row_id = current_row_id;
+    var current_td_input_id = current_td_input_id;
+    var checkNextVal = checkNextVal;
+    var mstID = mstID;
+    var thDateVal = thDateVal;
+    var startdateinvest = (ar[0] != "" ) ? ar[0] : '';
+    var enddateinvest = (ar[2] != "" ) ? ar[2] : '';
+    var controlsystem = controlsystem;
+
+    //var filterStartDate = $('#monateMassEingDataAnlStart4').val(); //Old Date
+    var filterStartDate = thDateVal;
+    var datearray = filterStartDate.split(".");
+    filterStartDate = datearray[1] + '-' + datearray[0];
+
+    var filterEndDate = $('#monateMassEingDataAnlStart4').val();
+    var date_end_array = filterEndDate.split(".");
+    filterEndDate = date_end_array[1] + '-' + date_end_array[0];
+
+    //Disabled Field Remove
+    var str = current_row_id;
+    var res = str.split('-');
+    var disabled_row_id = 'dataDisabledRow-'+res[1];
+
+    var inputStr = current_td_input_id;
+    var input_res = inputStr.split('_');
+    var disabled_td_input_id = 'anlageCalculationRow_'+input_res[1];
+
+    var disabledOneprevVal  = 'anlageCalculationRow_'+(parseInt(input_res[1]) - 1) ;
+
+
+    // console.log('Filter Start Date',filterStartDate);
+    // console.log('startdateinvest',startdateinvest);
+
+    if(min_val != '' && max_val != '' && current_val != ''){
+        // <---2-7-2021-----
+        if(controlsystem == "1" || controlsystem == "2"){
+            if(startdateinvest != '' && startdateinvest != filterStartDate && checkPrevVal == undefined){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+
+            }
+            else if(checkPrevVal == undefined || checkPrevVal == ''){
+                if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal != undefined && checkPrevVal != ''){
+                if(parseInt(current_val) < parseInt(checkPrevVal)){
+                    alert('Value always be Greater than Previous value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    return false;
+                }
+                if(parseInt(current_val) == parseInt(checkPrevVal)){
+                    var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    return false;
+                }
+                if(checkNextVal != ''){
+                    if(parseInt(current_val) > parseInt(max_val)){
+                        //alert('Value always be Less than Maximum value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                        return false;
+                    }
+                    else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                        alert('Value always be Less than Next value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        return false;
+                    }
+                }
+
+                else if(parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                //alert('Can not fill value in between fields');
+                //$('#'+current_row_id+' #'+current_td_input_id).val('');
+                //redirectInvestValue(mstID);
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+            }
+        } //Another Case
+        else if(controlsystem == "3" || controlsystem == "4"){
+            if(startdateinvest != '' && startdateinvest != filterStartDate && checkPrevVal == undefined){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+            }
+            else if(checkPrevVal == undefined || checkPrevVal == ''){
+                if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal != undefined && checkPrevVal != ''){
+                //   console.log('Pre Vaue',checkPrevVal);
+                //   console.log('Current Vaue',current_val);
+                //   console.log('min_val',min_val);
+                if(parseInt(current_val) < parseInt(min_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+                if(checkNextVal != ''){
+                    if(parseInt(current_val) > parseInt(max_val)){
+                        //alert('Value always be Less than Maximum value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                        return false;
+                    }
+                    //   else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                    //       alert('Value always be Less than Next value');
+                    //       $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    //       $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    //       return false;
+                    //   }
+                }
+
+                else if(parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+
+            }
+            else if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                // --end-->
+                return false;
+            }
+        }
+    }
+}
+
+// <----25-6-2021----
+function investValueCheckYearMeasuring(min_val,max_val,current_val,checkPrevVal,checkNextVal,current_row_id,current_td_input_id,mstID,ar,thDateVal,InputDisabledVal,controlsystem){
+
+    var min_val = min_val;
+    var max_val = max_val;
+    var current_val = current_val;
+    var checkPrevVal = checkPrevVal;
+    var current_row_id = current_row_id;
+    var current_td_input_id = current_td_input_id;
+    var checkNextVal = checkNextVal;
+    var mstID = mstID;
+    var thDateVal = thDateVal;
+    var InputDisabledVal = InputDisabledVal;
+
+    var startdateinvest = (ar[0] != "" ) ? ar[0] : '';
+    var enddateinvest = (ar[2] != "" ) ? ar[2] : '';
+    var controlsystem = controlsystem;
+
+    //var filterStartDate = $('#jahrMassEingDataAnlStart4').val();
+
+    var filterStartDate = thDateVal;
+
+    var filterEndDate = $('#jahrMassEingDataAnlEnde4').val();
+
+
+    //Disabled Field Remove
+    var str = current_row_id;
+    var res = str.split('-');
+    var disabled_row_id = 'dataDisabledRow-'+res[1];
+
+    var inputStr = current_td_input_id;
+    var input_res = inputStr.split('_');
+    var disabled_td_input_id = 'anlageCalculationRow_'+input_res[1];
+
+
+    var disabledOneprevVal  = 'anlageCalculationRow_'+(parseInt(input_res[1]) - 1) ;
+
+    // console.log('Filter Start Date',filterStartDate);
+    // console.log('startdateinvest',startdateinvest);
+
+    if(min_val != '' && max_val != '' && current_val != ''){
+        if(controlsystem == "1" || controlsystem == "2"){
+            if(startdateinvest != '' && startdateinvest != filterStartDate && checkPrevVal == undefined){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+
+            }
+            else if(checkPrevVal == undefined || checkPrevVal == ''){
+                if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal != undefined && checkPrevVal != ''){
+                if(parseInt(current_val) < parseInt(checkPrevVal)){
+                    alert('Value always be Greater than Previous value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    return false;
+                }
+                if(parseInt(current_val) == parseInt(checkPrevVal)){
+                    var disbaledPrevVal = $('#'+disabled_row_id+' #'+disabledOneprevVal).val();
+                    var str = disbaledPrevVal.split('-');
+                    var max_val_diabled = str[1];
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val(checkPrevVal+'-'+max_val_diabled);
+                    // $('#'+disabled_row_id+' #'+disabled_td_input_id).val(disbaledPrevVal);
+                    return false;
+                }
+                if(checkNextVal != ''){
+                    if(parseInt(current_val) > parseInt(max_val)){
+                        //alert('Value always be Less than Maximum value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                        return false;
+                    }
+                    else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                        alert('Value always be Less than Next value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        return false;
+                    }
+                }
+
+                else if(parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                // --end-->
+                return false;
+            }
+        }
+        else if(controlsystem == "3" || controlsystem == "4"){
+            if(startdateinvest != '' && startdateinvest != filterStartDate && checkPrevVal == undefined){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                return false;
+            }
+            else if(checkPrevVal == undefined || checkPrevVal == ''){
+                if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                    //<--Redirect Modal---
+                    commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                    return false;
+                }
+                else if(parseInt(current_val) < parseInt(min_val) || parseInt(current_val) > parseInt(max_val)){
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+            }
+            else if(checkPrevVal != undefined && checkPrevVal != ''){
+                //   console.log('Pre Vaue',checkPrevVal);
+                //   console.log('Current Vaue',current_val);
+                //   console.log('min_val',min_val);
+                if(parseInt(current_val) < parseInt(min_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+                if(checkNextVal != ''){
+                    if(parseInt(current_val) > parseInt(max_val)){
+                        //alert('Value always be Less than Maximum value');
+                        $('#'+current_row_id+' #'+current_td_input_id).val('');
+                        $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                        commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                        return false;
+                    }
+                    //   else if(parseInt(current_val) >= parseInt(checkNextVal)){
+                    //       alert('Value always be Less than Next value');
+                    //       $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    //       $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    //       return false;
+                    //   }
+                }
+
+                else if(parseInt(current_val) > parseInt(max_val)){
+                    // alert('Value always be Less than Maximum value');
+                    $('#'+current_row_id+' #'+current_td_input_id).val('');
+                    $('#'+disabled_row_id+' #'+disabled_td_input_id).val('');
+                    commomEditModalMeasuring(current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id,mstID,current_val,controlsystem);
+                    return false;
+                }
+
+
+            }
+            else if(checkPrevVal == '' && checkNextVal == '' && InputDisabledVal == false){
+                //<--Redirect Modal---
+                commonRedirectModalMeasuring(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
+                // --end-->
+                return false;
+            }
+        }
+    }
+}
+// --end-->

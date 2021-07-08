@@ -1589,18 +1589,27 @@ table#tblMasseneingabeDataIMwTbl td input {
 #timeIntervalWerteEnergiedatenIMw{
     width: 1100px;
     overflow-x: auto;
-    height: 150px;
+    /* 7-7-2021 */
+    height: 185px;
+    /* end */
+    /* height: 150px;  */
 }
 /*new-mm-start 31-03-2021*/
 #timeIntervalWerteEnergiedatenIMwPrdkt{
     width: 1100px;
     overflow-x: auto;
-    height: 150px;
+    /* 7-7-2021 */
+    height: 185px;
+    /* end */
+    /* height: 150px; */
 }
 #timeIntervalWerteEnergiedatenIMwMesssetelle{
     width: 1100px;
     overflow-x: auto;
-    height: 150px;
+    /* 7-7-2021 */
+    height: 185px;
+    /* end */
+    /* height: 150px; */
 }
 /*new-mm-start 31-03-2021*/
 /*new-mm-start 30-03-2021*/
