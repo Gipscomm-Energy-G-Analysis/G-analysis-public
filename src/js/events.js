@@ -5003,8 +5003,9 @@ $(document).ready(function(){
                     if(min_val != '' && max_val != ''){ //By Default Else Case Working
                         if(controlsystem == "1" || controlsystem == "2"){
                             if(Number($(inptCurrId).val()) < Number($(inptCurPrevId).val())){
-                                alert('Current value should be greater then previous value!');
-                                return false;
+                                // alert('Current value should be greater then previous value!');
+                                // console.log('1');
+                                // return false;
                             }
                         }
                     }
@@ -5403,7 +5404,12 @@ $(document).ready(function(){
                     if(min_val != '' && max_val != ''){ //By Default Else Case Working
                         if(controlsystem == "1" || controlsystem == "2"){
                             if(Number($(inptCurrId).val()) < Number($(inptCurPrevId).val())){
-                                alert('Current value should be greater then previous value!');
+                                // console.log('4');
+                                // console.log("Currency val",Number($(inptCurrId).val()));
+                                // console.log('Prev Value',Number($(inptCurPrevId).val()));
+                                // console.log('Control System',controlsystem);
+                                // console.log('current_val_contreol',current_val_control);
+                                // alert('Current value should be greater then previous value!');
                                 return false;
                             }
                         }
@@ -5738,7 +5744,8 @@ $(document).ready(function(){
                     if(min_val != '' && max_val != ''){
                         if(controlsystem == "1" || controlsystem == "2"){
                             if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
-                                alert('Current value should be greater then previous value!');
+                                // alert('Current value should be greater then previous value!');
+                                // console.log('7');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
                                 $(inputNextLastBottomId).val(lastNextDiff);
@@ -6090,7 +6097,7 @@ $(document).ready(function(){
                     if(min_val != '' && max_val != ''){
                         if(controlsystem == "1" || controlsystem == "2"){
                             if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
-                                alert('Current value should be greater then previous value!');
+                                // alert('Current value should be greater then previous value!');
                                 $(inputCurrId).val('');
                                 $(inputDeleteBotmId).val('');
                                 $(inputNextLastBottomId).val(lastNextDiff);
@@ -6453,7 +6460,7 @@ $(document).ready(function(){
                             if(min_val != '' && max_val != ''){
                                 if(controlsystem == "1" || controlsystem == "2"){
                                     if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
-                                        alert('Current value should be greater then previous value!');
+                                        // alert('Current value should be greater then previous value!');
                                         $(inputCurrId).val('');
                                         $(inputDeleteBotmId).val('');
                                         $(inputNextLastBottomId).val(lastNextDiff);
@@ -6832,7 +6839,7 @@ $(document).ready(function(){
                             if(min_val != '' && max_val != ''){
                                 if(controlsystem == "1" || controlsystem == "2"){
                                     if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
-                                        alert('Current value should be greater then previous value!');
+                                        // alert('Current value should be greater then previous value!');
                                         $(inputCurrId).val('');
                                         $(inputDeleteBotmId).val('');
                                         $(inputNextLastBottomId).val(lastNextDiff);
@@ -7211,7 +7218,7 @@ $(document).ready(function(){
                             if(min_val != '' && max_val != ''){
                                 if(controlsystem == "1" && controlsystem == "2"){
                                     if(Number($(inputCurrId).val()) < Number($(inputCurPrevId).val())){
-                                        alert('Current value should be greater then previous value!');
+                                        // alert('Current value should be greater then previous value!');
                                         $(inputCurrId).val('');
                                         $(inputDeleteBotmId).val('');
                                         $(inputNextLastBottomId).val(lastNextDiff);
