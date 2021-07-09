@@ -8824,3 +8824,16 @@ $(document).on('blur', '#min_prompt_invest_value_measuring ,#max_prompt_invest_v
     editPromptInvestMeasuring(id_val);
 })
 // --end--->
+
+// <---9-7-2021---
+// $('#timeIntervalWerteEnergiedatenIMwPrdkt').scroll(function() {
+//    var documentScrollLeft = $('#timeIntervalWerteEnergiedatenIMwPrdkt').scrollLeft();
+//    if(documentScrollLeft != 0){
+//        $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('position','absolute');
+//     //    $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('background-color','rgb(221, 221, 221)');
+//    }else{
+//     $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('position',''); 
+//     // $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('background-color','');
+//    }
+// });
+// ---end--->
