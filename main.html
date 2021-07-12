@@ -6634,6 +6634,8 @@
                            <input style='width: 111px' type='number' id='min_prompt_invest_value_product'>
                            <label>Max Value</label>
                            <input style='width: 111px' type='number' id='max_prompt_invest_value_product'>
+                           <input type="hidden" id="act_min_value_product">
+                           <input type="hidden" id="act_max_value_product">
                         </div>
                         <br>
                         <button id="save_btn_invest_product">Save</button>
@@ -6655,6 +6657,9 @@
                            <input style='width: 111px' type='number' id='min_prompt_invest_value_measuring'>
                            <label>Max Value</label>
                            <input style='width: 111px' type='number' id='max_prompt_invest_value_measuring'>
+                           <input type="hidden" id="act_min_value_measuring">
+                           <input type="hidden" id="act_max_value_measuring">
+                           
                         </div>
                         <br>
                         <button id="save_btn_invest_measuring">Save</button>
@@ -6865,6 +6870,9 @@
                            <input style='width: 111px' type='number' id='min_prompt_invest_value'>
                            <label>Max Value</label>
                            <input style='width: 111px' type='number' id='max_prompt_invest_value'>
+                            <!-- Actual Values -->
+                            <input type="hidden" id="act_min_value_invest">
+                            <input type="hidden" id="act_max_value_invest">
                         </div>
                         <br>
                         <button id="save_btn_invest">Save</button>
@@ -7278,13 +7286,12 @@
                         <span class='save-msg-box' style='width: 200px;display: none;'></span>
                         <div class="infosMasseneingabeInside">
                            <br>
-                           <button id="btnTageMasseneingabeIMwNw" class="active" data-id="1">Tage</button>
-                           <button id="btnWochenMasseneingabeIMwNw" data-id="2">Wochen</button>
-                           <button id="btnMonateMasseneingabeIMwNw" data-id="3">Monate</button>
-                           <button id="btnJahreMasseneingabeIMwNw" data-id="4">Jahre</button>
-                           <br>
-                           <br>
                            <div class="infosMasseneingabeDateRangeDiv">
+                              <button id="btnTageMasseneingabeIMwNw" class="active" data-id="1">Tage</button>
+                              <button id="btnWochenMasseneingabeIMwNw" data-id="2">Wochen</button>
+                              <button id="btnMonateMasseneingabeIMwNw" data-id="3">Monate</button>
+                              <button id="btnJahreMasseneingabeIMwNw" data-id="4">Jahre</button>
+
                               <div class="zeitintervallAnl_1">
                                  <input type="text" id="tageMassEingDataAnlStart4" placeholder="Start Tag" class="">
                               </div>

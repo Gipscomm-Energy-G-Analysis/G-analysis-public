@@ -8042,6 +8042,11 @@ function getPromptInvestValue(mstID,current_row_id,current_td_input_id,disabled_
             var max_val = $('#'+current_row_id).attr('max_val');
             $('#min_prompt_invest_value').val(min_val); 
             $('#max_prompt_invest_value').val(max_val); 
+
+            //Actual Values
+            $('#act_min_value_invest').val(min_val); 
+            $('#act_max_value_invest').val(max_val); 
+
             
             $('#min_prompt_invest_value').removeAttr('readonly');
             $('#min_prompt_invest_value').css("background-color",""); 
@@ -8195,6 +8200,8 @@ function getPromptInvestValue(mstID,current_row_id,current_td_input_id,disabled_
 function editPromptInvest (id_val){
     var min_val = $('#min_prompt_invest_value').val();
     var max_val = $('#max_prompt_invest_value').val();
+    var act_min_val = $('#act_min_value_invest').val();
+    var act_max_val = $('#act_max_value_invest').val();
     if(id_val == 'min_prompt_invest_value'){
         if(min_val == ''){
             alert("Min Bitte füllen Sie die Felder aus");
@@ -8204,6 +8211,11 @@ function editPromptInvest (id_val){
             alert('Minimum Value Can not be greater than or Equal to Maximum Value');
             $('#min_prompt_invest_value').val('');
             //$('#editModalInvest input').val('');
+            return false;
+        }
+        else if(min_val != '' && max_val != '' && parseInt(min_val) < parseInt(act_min_val)){
+            alert('Minimum Value Can not be Less than Actual Minimum Value');
+            $('#min_prompt_invest_value_product').val(act_min_val);
             return false;
         }
     }
@@ -8216,6 +8228,11 @@ function editPromptInvest (id_val){
             alert('Maximum Value Can not be less than or Equal to Minimum Value');
             $('#max_prompt_invest_value').val('');
             //$('#editModalInvest input').val('');
+            return false;
+        }
+        else if(min_val != '' && max_val != '' && parseInt(max_val) < parseInt(act_max_val)){
+            alert('Maximum Value Can not be Less than Actual Maximum Value');
+            $('#max_prompt_invest_value_product').val(act_max_val);
             return false;
         }
 
@@ -8399,6 +8416,11 @@ function getPromptInvestValueProduct(mstID,current_row_id,current_td_input_id,di
             $('#min_prompt_invest_value_product').val(min_val); 
             $('#max_prompt_invest_value_product').val(max_val);
             
+            //Actual Values
+            $('#act_min_value_product').val(min_val);
+            $('#act_max_value_product').val(max_val);
+
+            
             $('#min_prompt_invest_value_product').removeAttr('readonly');
             $('#min_prompt_invest_value_product').css("background",""); 
             //$('#min_prompt_invest_value').removeAttr("style");
@@ -8499,6 +8521,8 @@ function getPromptInvestValueProduct(mstID,current_row_id,current_td_input_id,di
 function editPromptInvestProduct(id_val){
     var min_val = $('#min_prompt_invest_value_product').val();
     var max_val = $('#max_prompt_invest_value_product').val();
+    var act_min_val = $('#act_min_value_product').val();
+    var act_max_val = $('#act_max_value_product').val();
     if(id_val == 'min_prompt_invest_value_product'){
         if(min_val == ''){
             alert("Min Bitte füllen Sie die Felder aus");
@@ -8508,6 +8532,11 @@ function editPromptInvestProduct(id_val){
             alert('Minimum Value Can not be greater than or Equal to Maximum Value');
             $('#min_prompt_invest_value_product').val('');
             //$('#editModalInvest input').val('');
+            return false;
+        }
+        else if(min_val != '' && max_val != '' && parseInt(min_val) < parseInt(act_min_val)){
+            alert('Minimum Value Can not be Less than Actual Minimum Value');
+            $('#min_prompt_invest_value_product').val(act_min_val);
             return false;
         }
     }
@@ -8520,6 +8549,11 @@ function editPromptInvestProduct(id_val){
             alert('Maximum Value Can not be less than or Equal to Minimum Value');
             $('#max_prompt_invest_value_product').val('');
             //$('#editModalInvest input').val('');
+            return false;
+        }
+        else if(min_val != '' && max_val != '' && parseInt(max_val) < parseInt(act_max_val)){
+            alert('Maximum Value Can not be Less than Actual Maximum Value');
+            $('#max_prompt_invest_value_product').val(act_max_val);
             return false;
         }
 
@@ -9477,6 +9511,10 @@ function getPromptInvestValueMeasuring(mstID,current_row_id,current_td_input_id,
             var max_val = $('#'+current_row_id).attr('max_val');
             $('#min_prompt_invest_value_measuring').val(min_val); 
             $('#max_prompt_invest_value_measuring').val(max_val);
+
+            //Actual Values
+            $('#act_min_value_measuring').val(min_val);
+            $('#act_max_value_measuring').val(max_val);
             
             $('#min_prompt_invest_value_measuring').removeAttr('readonly'); 
             $('#min_prompt_invest_value_measuring').css("background-color","");
@@ -9577,6 +9615,8 @@ function getPromptInvestValueMeasuring(mstID,current_row_id,current_td_input_id,
 function editPromptInvestMeasuring(id_val){
     var min_val = $('#min_prompt_invest_value_measuring').val();
     var max_val = $('#max_prompt_invest_value_measuring').val();
+    var act_min_val = $('#act_min_value_measuring').val();
+    var act_max_val = $('#act_max_value_measuring').val();
     if(id_val == 'min_prompt_invest_value_measuring'){
         if(min_val == ''){
             alert("Min Bitte füllen Sie die Felder aus");
@@ -9586,6 +9626,11 @@ function editPromptInvestMeasuring(id_val){
             alert('Minimum Value Can not be greater than or Equal to Maximum Value');
             $('#min_prompt_invest_value_measuring').val('');
             //$('#editModalInvest input').val('');
+            return false;
+        }
+        else if(min_val != '' && max_val != '' && parseInt(min_val) < parseInt(act_min_val)){
+            alert('Minimum Value Can not be Less than Actual Minimum Value');
+            $('#min_prompt_invest_value_measuring').val(act_min_val);
             return false;
         }
     }
@@ -9598,6 +9643,11 @@ function editPromptInvestMeasuring(id_val){
             alert('Maximum Value Can not be less than or Equal to Minimum Value');
             $('#max_prompt_invest_value_measuring').val('');
             //$('#editModalInvest input').val('');
+            return false;
+        }
+        else if(min_val != '' && max_val != '' && parseInt(max_val) < parseInt(act_max_val)){
+            alert('Maximum Value Can not be Less than Actual Maximum Value');
+            $('#max_prompt_invest_value_measuring').val(act_max_val);
             return false;
         }
 
