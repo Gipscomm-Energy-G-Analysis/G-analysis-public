@@ -1391,7 +1391,8 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_1 input,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_3 input,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_4 input {
-    width: 20%;
+    /* width: 20%; */
+    width: 8%;
     height: 24px;
     border-radius: 3px;
     border-color: none;
@@ -1400,7 +1401,8 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 .infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_1 input,
 .infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_3 input,
 .infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_4 input {
-    width: 20%;
+    /* width: 20%;  */
+    width: 8%;
     height: 24px;
     border-radius: 3px;
     border-color: none;
@@ -1410,7 +1412,8 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 .infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1 input,
 .infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_3 input,
 .infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_4 input {
-    width: 20%;
+    /* width: 20%; */
+    width: 8%;
     height: 24px;
     border-radius: 3px;
     border-color: none;
@@ -1592,14 +1595,14 @@ table#tblMasseneingabeDataIMwTbl td input {
     /* 7-7-2021 */
     height: 324px;
     /* end */
-    /* height: 150px;  */
+    /* height: 258px;  */
 }
 /*new-mm-start 31-03-2021*/
 #timeIntervalWerteEnergiedatenIMwPrdkt{
     width: 1100px;
     overflow-x: auto;
     /* 7-7-2021 */
-    height: 258px;
+    height: 324px;
     /* end */
     /* height: 150px; */
 }
@@ -1607,7 +1610,7 @@ table#tblMasseneingabeDataIMwTbl td input {
     width: 1100px;
     overflow-x: auto;
     /* 7-7-2021 */
-    height: 258px;
+    height: 324px;
     /* end */
     /* height: 150px; */
 }
@@ -1700,3 +1703,21 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
   /* background-color: green; */
 }
 /* --end-- */
+/* 12-7-2021-- */
+#tageMassEingDataAnlPrdktStart6,#wochenWMassEingDataAnlPrdktStart6,
+#monateMassEingDataAnlPrdktStart6,#jahrMassEingDataAnlPrdktStart6{
+  margin-left: 80px;
+}
+
+/* Measurement */
+#tageMassEingDataAnlStart5,#wochenWMassEingDataAnlStart5,
+#monateMassEingDataAnlStart5,#jahrMassEingDataAnlStart5{
+  margin-left: 80px;
+}
+
+/* Energy */
+#tageMassEingDataAnlStart4,#wochenWMassEingDataAnlStart4,
+#monateMassEingDataAnlStart4,#jahrMassEingDataAnlStart4{
+  margin-left: 80px;
+}
+/* ---end */

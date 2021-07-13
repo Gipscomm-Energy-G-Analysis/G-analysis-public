@@ -8215,7 +8215,7 @@ function editPromptInvest (id_val){
         }
         else if(min_val != '' && max_val != '' && parseInt(min_val) < parseInt(act_min_val)){
             alert('Minimum Value Can not be Less than Actual Minimum Value');
-            $('#min_prompt_invest_value_product').val(act_min_val);
+            $('#min_prompt_invest_value').val(act_min_val);
             return false;
         }
     }
@@ -8232,7 +8232,7 @@ function editPromptInvest (id_val){
         }
         else if(min_val != '' && max_val != '' && parseInt(max_val) < parseInt(act_max_val)){
             alert('Maximum Value Can not be Less than Actual Maximum Value');
-            $('#max_prompt_invest_value_product').val(act_max_val);
+            $('#max_prompt_invest_value').val(act_max_val);
             return false;
         }
 
