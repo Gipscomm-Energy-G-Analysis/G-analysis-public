@@ -24,7 +24,8 @@ Route::get('/charts-donut-ajax', [\App\Http\Controllers\ChartController::class, 
     ->name('getEnergyConsumptionPerMachine');
 Route::get('/charts-bar-ajax', [\App\Http\Controllers\ChartController::class, 'getGoodsBarCharts'])
     ->name('getGoodsBarCharts');
-Route::post('/switch-database', [\App\Http\Controllers\ManageDatabaseController::class, 'switchDatabase'])
+Route::get('/switch-database', [\App\Http\Controllers\ManageDatabaseController::class, 'switchDatabase'])
     ->name('switchDatabase');
 Route::post('/uploadImage', [\App\Http\Controllers\UploadImageController::class, 'imageUpload'])->name('imageUpload');
 Route::post('/graph/filter', [\App\Http\Controllers\DashboardController::class, 'getChartsData'])->name('getChartsData');
+Route::post('/dashboard/propertyData', [\App\Http\Controllers\DashboardController::class, 'getPropertyData'])->name('getPropertyData');

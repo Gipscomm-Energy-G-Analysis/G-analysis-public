@@ -3,6 +3,7 @@
     const imageInputField = document.getElementById('machineImage');
     const graphDiv = document.getElementById('graph_div');
     const anl_ID = document.getElementById('anl_ID').value;
+   
     let machineDataAjax;
     let spinner = new Spinner();
     const graphDivHook = (key, value) => {
@@ -38,22 +39,28 @@
     }
 
 
-    const getMachineData = (machine_id, type) => {
+    const getMachineData = (machine_id, type, propId='') => {
+        var formData = new FormData();
+        let prop_id = document.getElementById("select_prop").value;
         let container = document.getElementById('data-card');
+        formData.append("id", machine_id);
+        formData.append("type", type);
+        formData.append("prop_id", prop_id);
         spinner.spin(container);
         machineDataAjax = $.ajax({
             url:'/dashboard/machine',
             type: 'POST',
-            data: {
-                id:machine_id,
-                type:type
-            },
+            data: formData,
+            processData: false,
+            contentType: false,
         }).done( function(response) {
             const data = response.data;
             spinner.stop();
-
             if(response.code == 200 ){
                 graphDiv.innerHTML = '';
+                $(".dashboard").show();
+                $(".content").show();
+                $("#not_found_msg").hide();
                 $('.navigation').attr('data-value', data.anl_ID);
                 $('#anl_ID').val(data.anl_ID);
                 $('#anlage').val(data.anlage);
@@ -82,6 +89,9 @@
 
             } else if(response.anl_ID !== undefined) {
                 toastr.error(response.message);
+                $(".dashboard").show();
+                $(".content").show();
+                $("#not_found_msg").hide();
                 $('.navigation').attr('data-value', response.anl_ID);
                 $('#anlage').val("");
                 $('#programm').val("");
@@ -97,6 +107,11 @@
                 $('#kavitäten').val("");
                 $('#machine-image').attr('src','images/Blasanlage.jpg');
             }
+            else{
+               $(".dashboard").hide();
+               $(".content").hide();
+               $("#not_found_msg").show();
+            }
         });
     }
 
@@ -108,7 +123,7 @@
             let type = this.getAttribute('event-type');
             let machine_id = $('.navigation').attr('data-value');
             $(".custom-select").val('');
-            getMachineData(machine_id, type);
+            getMachineData(machine_id, type, propId='');
         });
     });
 
@@ -162,11 +177,33 @@
     });
     imageInputField.addEventListener('change', loadFile);
 
-
     var intervalId = window.setInterval(function(){
         let type = "current";
         let machine_id = $('.navigation').attr('data-value');
-        getMachineData(machine_id, type);
+        getMachineData(machine_id, type, propId='');
       }, 10000);
+    
+
+    function select_org() {
+        let orgId  = document.getElementById("select_org").value;
+        let dbName = document.getElementById("nameDB").value;
+        $('.liegenschaft').html("");
+        $.ajax({
+            url:'/dashboard/propertyData',
+            type: 'POST',
+                data: {
+                    orgId:orgId,
+                    dbName:dbName
+                },
+            }).done( function(response) {
+                $('.liegenschaft').append('<option value="">Please Select--</option>');
+                $.each(response, function(key, value) {
+                   $('.liegenschaft').append('<option value="'+ value.lieg_ID +'">'+ value.nameLieg +'</option>');
+                });
+        });
+       
+    }
+  
+    
 
 

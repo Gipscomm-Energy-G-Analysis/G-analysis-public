@@ -17,9 +17,10 @@ class ManageDatabaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function switchDatabase(Request $request)
+   
+    public function switchDatabase($database)
     {
-        $database = $request->input('database');
+       // $database = $request->input('database');
         if(!empty($database)){
             DB::disconnect('sqlsrv');
             Config::set("database.connections.sqlsrv.database", $database);
