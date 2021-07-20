@@ -2349,6 +2349,10 @@ function MesssetelleListingDblClickRow(mst_Id,sId){
                 $("." + sId + " #control_system_AnlPrdkt").val(a[0]['einheitControlSys']);
                 einheitAnlPrdktMstHistOnChangeChildSelectOpt(a[0]['unt_ID'],sId);
                 // $("#nextPrevMstIDPrdktID").val(a[0]['iBdePrdktConf_ID']);
+                // <----14-7-2021--
+                $('#min_investment_product').val(a[0]['min_val']);
+                $('#max_investment_product').val(a[0]['max_val']);
+                // --end-->
 
             }
         }
@@ -3550,8 +3554,27 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                         var timeIntervalInvest = a.queryInvest[e].zeitintervallAnl != "0" ? a.queryInvest[e].zeitintervallAnl : '';
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var countInvest = 0;
+
+                        //Add Count up and Zeerod Case Text
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].nameMSt+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].nameMSt+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].nameMSt
+                        }
+                        // ---end-->
+                         
+
+
                         //end-->
-                        $row += '<tr id="dataEnabledRow-'+e+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         //console.log(anlageObj[a.query1[e].mst_ID]);
                         //console.log(anlageObj);
                         var datesOfArr = [];
@@ -3699,9 +3722,26 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                         var timeIntervalInvest = a.queryInvest[e].zeitintervallAnl != "0" ? a.queryInvest[e].zeitintervallAnl : '';
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var countInvest = 0;
+
+                        //Add Count up and Zeerod Case Text
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].nameMSt+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].nameMSt+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].nameMSt
+                        }
+                        // ---end-->
+
                         // --end-->
 
-                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" controlSystem="'+controlSystem+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" controlSystem="'+controlSystem+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         var count1 = 0;
                         for (var r1 = 0; r1 <= years; r1++){
                             var m='disabled';
@@ -3872,8 +3912,23 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                         var timeIntervalInvest = a.queryInvest[e].zeitintervallAnl != "0" ? a.queryInvest[e].zeitintervallAnl : '';
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var countInvest = 0;
+                        //Add Count up and Zeerod Case Text
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].nameMSt+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].nameMSt+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].nameMSt
+                        }
+                        // ---end-->
                         //end-->
-                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" controlSystem="'+controlSystem+'" countInvest="'+countInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" controlSystem="'+controlSystem+'" countInvest="'+countInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         for (var r = 0; r <= months; r++){
                             var n='';
                             if(a.query1[e].ending ==0){
@@ -3959,8 +4014,23 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                         var timeIntervalInvest = a.queryInvest[e].zeitintervallAnl != "0" ? a.queryInvest[e].zeitintervallAnl : '';
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var countInvest = 0;
+                        //Add Count up and Zeerod Case Text
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].nameMSt+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].nameMSt+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].nameMSt
+                        }
+                        // ---end-->
                         //end-->
-                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" controlSystem="'+controlSystem+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" timeIntervalInvest="'+timeIntervalInvest+'" controlSystem="'+controlSystem+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" class="enabledRow" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
 
                         for (var r = 0; r <= years; r++){
                             let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
@@ -4102,8 +4172,22 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                         var countInvest = 0;
+
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].bezeichnungAnl+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].bezeichnungAnl+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].bezeichnungAnl
+                        }
                         //end-->
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         //console.log(anlageObj[a.query1[e].mst_ID]);
                         //console.log(anlageObj);
                         var datesOfArr = [];
@@ -4243,6 +4327,21 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                         var countInvest = 0;
+
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].bezeichnungAnl+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].bezeichnungAnl+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].bezeichnungAnl
+                        }
+
                         // --end-->
                         var from1 = startDate.split("-");
                         var g1 = g2=from1[0]; //first week selected value
@@ -4252,7 +4351,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                         var s1 =s2=  to1[0]; //second week selected value
                         var t1 =t2=  to1[1]; //second year input text value
 
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'"  data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         var count1 = 0;
                         for (var r1 = 0; r1 <= years; r1++){
                             var m='disabled';
@@ -4424,8 +4523,22 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                         var countInvest = 0;
+
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].bezeichnungAnl+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].bezeichnungAnl+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].bezeichnungAnl
+                        }
                         // --end-->
-                        $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         for (var r = 0; r <= months; r++){
                             var n='';
                             if(a.query1[e].ending ==0){
@@ -4513,8 +4626,21 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                         var countInvest = 0;
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].bezeichnungAnl+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].bezeichnungAnl+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].bezeichnungAnl
+                        }
                         // --end-->
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].bezeichnungAnl+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
 
                         for (var r = 0; r <= years; r++){
                             let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
@@ -4657,8 +4783,22 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                         var countInvest = 0;
+
+                        //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].nameMSt+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].nameMSt+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].nameMSt
+                        }
                         //end-->
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         //console.log(anlageObj[a.query1[e].mst_ID]);
                         //console.log(anlageObj);
                         var datesOfArr = [];
@@ -4799,6 +4939,19 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                          var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                          var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                          var countInvest = 0;
+                         //<---19-7-2021---
+                         var headingText = "";
+                         if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                             if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                 headingText= a.query1[e].nameMSt+' (aufsteigend)';
+                             }
+                             else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                 headingText= a.query1[e].nameMSt+' (absolut)';
+                             }
+                         }
+                         else{
+                             headingText = a.query1[e].nameMSt
+                         }  
                          //end-->
                         var from1 = startDate.split("-");
                         var g1 = g2=from1[0]; //first week selected value
@@ -4808,7 +4961,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                         var s1 =s2=  to1[0]; //second week selected value
                         var t1 =t2=  to1[1]; //second year input text value
 
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         var count1 = 0;
                         for (var r1 = 0; r1 <= years; r1++){
                             var m='disabled';
@@ -4981,8 +5134,21 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                          var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                          var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                          var countInvest = 0;
+                         //<---19-7-2021---
+                         var headingText = "";
+                         if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                             if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                 headingText= a.query1[e].nameMSt+' (aufsteigend)';
+                             }
+                             else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                 headingText= a.query1[e].nameMSt+' (absolut)';
+                             }
+                         }
+                         else{
+                             headingText = a.query1[e].nameMSt
+                         } 
                          //end-->
-                        $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'"  class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
                         for (var r = 0; r <= months; r++){
                             var n='';
                             if(a.query1[e].ending ==0){
@@ -5071,9 +5237,22 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                         var countInvest = 0;
+                         //<---19-7-2021---
+                        var headingText = "";
+                        if(a.query1[e].einheitControlSys != "0" && a.query1[e].einheitControlSys != null){
+                            if(a.query1[e].einheitControlSys == "1" || a.query1[e].einheitControlSys == "2"){ //Count Up case
+                                headingText= a.query1[e].nameMSt+' (aufsteigend)';
+                            }
+                            else if(a.query1[e].einheitControlSys == "3" || a.query1[e].einheitControlSys == "4"){ //Zeerod Case
+                                headingText= a.query1[e].nameMSt+' (absolut)';
+                            }
+                        }
+                        else{
+                            headingText = a.query1[e].nameMSt
+                        }
                         //end-->
 
-                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+a.query1[e].nameMSt+'</td>';
+                        $row += '<tr id="dataEnabledRow-'+e+'" class="enabledRow" table_config_id="'+table_config_id+'" controlSystem="'+controlSystem+'" timeIntervalInvest="'+timeIntervalInvest+'" startDateInvest="'+startDateInvest+'" startWeekInvest="'+startWeekInvest+'" endDateInvest="'+endDateInvest+'" endWeekInvest="'+endWeekInvest+'" min_val="'+min_val+'" max_val="'+max_val+'" data-einheit="'+a.query1[e].einheitControlSys+'"><td>'+headingText+'</td>';
 
                         for (var r = 0; r <= years; r++){
                             let yearsBw= getYearsInToArray(new Date(startDate).getFullYear(), new Date(endDate).getFullYear());
@@ -10492,5 +10671,16 @@ function investValueCheckYearMeasuring(min_val,max_val,current_val,checkPrevVal,
             }
         }
     }
+}
+// --end-->
+
+
+// <<---16-7-2021--
+function dashboardLocalStorage(){
+    var dashboardDB = $("#nameDB").val();
+    var dashboardDBName = $('.manPfad').val();
+    localStorage.setItem('dashboardDB', dashboardDB);
+    localStorage.setItem('dashboardDBName', dashboardDBName);
+
 }
 // --end-->

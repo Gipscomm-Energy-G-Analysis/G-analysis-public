@@ -1721,3 +1721,15 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
   margin-left: 80px;
 }
 /* ---end */
+
+
+/* <--19-7-2021--- */
+#chartSrchImg{
+  width: 10%;
+  height: 5%;
+  
+}
+.chartImageDiv{
+  text-align: center;
+}
+/* end --->*/

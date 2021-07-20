@@ -1967,6 +1967,10 @@ $(document).ready(function() {
         readInstanzen("zpFirst", 0);
         zpNavID = 0;
         externeRechnungenListeErstellen("vergleich")
+
+        // <----16-7-2021---
+        dashboardLocalStorage();
+        // ---end-->
     });
     $(".orgPfad").change(function() {
         orgPfadChange(this)
@@ -8837,3 +8841,23 @@ $(document).on('blur', '#min_prompt_invest_value_measuring ,#max_prompt_invest_v
 //    }
 // });
 // ---end--->
+
+// <<---16-7-2021---
+$(document).ready( function (){
+    var chartStorageDb = localStorage.getItem('dashboardDBChart');
+    if(chartStorageDb != null && chartStorageDb != undefined){
+        $(".chartImageDiv").show();
+        setTimeout( function(){
+            
+            $(".manPfad ").val(chartStorageDb).trigger('change');
+            $('#mstVerglMenu').trigger('click');
+            localStorage.removeItem('dashboardDBChart');
+            $(".chartImageDiv").hide();
+            // console.log('After',$('.manPfad').val());
+        },1500) 
+    }
+    setTimeout(function(){ 
+        dashboardLocalStorage();
+    },1500);
+})
+//--end-->

@@ -3593,6 +3593,30 @@ elseif($id == "intBdePrdktIMwHistOkConfig") { /*10-03-2021 History save intern B
             $endWeek ='';
         }
 
+        // <---14-7-2021--- Archieve check
+        if($prd_ID == '' && $mst_ID !='') //Mesaurement Case
+        {
+            $updateArchiviert = "SELECT * FROM produktionsAnlagenHistorie WHERE mst_ID = '$mst_ID' AND iBdeType = '$iBdeType'";
+            $recordsCheckArchiviert = queryDB($conn, $updateArchiviert, "read");
+            if(count($recordsCheckArchiviert) > 0){
+                $queryArchieveUpdate = "UPDATE produktionsAnlagenHistorie SET archiviert = 'false' where mst_ID = '$mst_ID' AND iBdeType = '$iBdeType'";
+                //$tsql .= " WHERE mstID = '$mstID'";
+                queryDB($conn, $queryArchieveUpdate, "write");
+            }
+
+        }
+        else if($prd_ID != '' && $mst_ID ==''){
+            $updateArchiviert = "SELECT * FROM produktionsAnlagenHistorie WHERE prd_id = '$prd_ID' AND anl_ID = '$anl_ID' AND anl_col ='$anl_Col'";
+            $recordsCheckArchiviert = queryDB($conn, $updateArchiviert, "read");
+            if(count($recordsCheckArchiviert) > 0){
+                $queryArchieveUpdate = "UPDATE produktionsAnlagenHistorie SET archiviert = 'false' where prd_id = '$prd_ID' AND anl_ID = '$anl_ID' AND anl_col ='$anl_Col'";
+                //$tsql .= " WHERE mstID = '$mstID'";
+                queryDB($conn, $queryArchieveUpdate, "write");
+            }
+        }
+        //--end--->
+
+
         $tsql = "INSERT INTO produktionsAnlagenHistorie ( mst_ID, prd_id, anl_ID, anl_col,
     archiviert, bemerkung,
     gueltigVon, gueltigBis,

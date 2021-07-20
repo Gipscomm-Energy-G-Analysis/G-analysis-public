@@ -1,0 +1,19 @@
+.act_background{
+    background-color: #b5b8c1 !important;
+}
+
+.logo-g-analysis{
+    height: 41.67px !important;
+    width: 125px  !important;
+}
+.table-not-consumed{
+    height: 500px;
+    overflow-y: hidden;
+    overflow-y: scroll
+}
+
+.measurement-select{
+    padding: .4375rem .75rem !important; 
+    border: 0 !important;
+    outline: 1px solid #c9ccd7 !important;
+}
