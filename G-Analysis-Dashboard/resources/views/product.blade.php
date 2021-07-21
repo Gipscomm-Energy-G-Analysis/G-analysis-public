@@ -1,6 +1,10 @@
 
 <style> .u-under{ height:auto !important; }
-    .spinner { position:fixed !important; }
+      .spinner { position:fixed !important; } 
+      .product-image { border-radius: 5px; margin-top: 12px; }
+      .form-horizontal .card-body { padding-top: 0; }
+      .form-group { margin-bottom: 0.3rem !important; }
+      .col-form-label { line-height: 1 !important;}
 </style>
 @extends('layout.app')
 @section('headContent')
@@ -48,7 +52,6 @@
                                     <span class="fa fa-search"></span>
                                 </button>
                             </div>
-                           
                             <div class="btn-group float-right mr-3 navigation" data-value="{{$data['anl_ID']}}">
                                 <button class="fc-step-backward btn btn-primary" type="button" event-type="first" aria-label="prev">
                                     <span class="fa fa-step-backward"></span>
@@ -83,114 +86,124 @@
                 <div class="card card-solid">
                     <div class="card-body">
                         <div class="row" id="data-card">
-                            <div class="col-12 col-sm-6">
+                            <div class="col-12 col-sm-5">
                                 <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
                                 <div class="col-12">
                                     <img src="{{$image}}" class="product-image" alt="Product Image" id="machine-image">
                                 </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <form class="form-horizontal">
-                                    <div class="card-body">
-                                        <input type="hidden" class="form-control" id="anl_ID"  value="{{$data['anl_ID']}}" >
-                                        <div class="form-group row">
-                                            <label for="anlage" class="col-sm-2 col-form-label">Anlage</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="anlage" placeholder="Anlage" value="{{$data['anlage']}}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="programm" class="col-sm-2 col-form-label">Status</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="programm" placeholder="Programm" value="{{$data['programm']}}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="bestellung" class="col-sm-2 col-form-label">Bestellung</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="bestellung" placeholder="bestellung" value="{{$data['bestellung']}}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="artikel" class="col-sm-2 col-form-label">Artikel</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="artikel" placeholder="Artikel" value="{{$data['artikel']}}" readonly>
-                                            </div>
-                                        </div>
-                                    <!-- <div class="form-group row">
-                                            <label for="bisher_produziert" class="col-sm-2 col-form-label">Bisher produziert</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="bisher_produziert" placeholder="Bisher produziert" value="{{$data['bisher_produziert']}}" readonly>
-                                            </div>
-                                        </div> -->
-                                        <div class="form-group row">
-                                            <label for="auftragsmenge" class="col-sm-2 col-form-label">Auftragsmenge</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="auftragsmenge" placeholder="Auftragsmenge" value="{{$data['auftragsmenge']}}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="gutmenge" class="col-sm-2 col-form-label">Gutmenge</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="gutmenge" placeholder="Gutmenge"  value="{{$data['gutmenge']}}" readonly>
-                                            </div>
-                                        </div>
-                                    
-                                        <div class="form-group row">
-                                            <label for="ausschuss" class="col-sm-2 col-form-label">Ausschuss</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="ausschuss" placeholder="Ausschuss" value="{{$data['ausschuss']}}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="zeit_zyklus" class="col-sm-2 col-form-label">Zeit/Zyklus</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="zeit_zyklus" placeholder="Zeit/Zyklus" value="{{$data['zeit_zyklus']}}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="werkzeug" class="col-sm-2 col-form-label">Werkzeug</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="werkzeug" placeholder="Werkzeug" value="{{$data['werkzeug']}}" readonly>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="form-group row">
-                                            <label for="artikel_stunde" class="col-sm-2 col-form-label">Artikel/Stunde</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="artikel_stunde" placeholder="Artikel/Stunde" readonly>
-                                            </div>
-                                        </div> -->
-                                        <div class="form-group row">
-                                            <label for="kavitäten" class="col-sm-2 col-form-label">Kavitäten</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="kavitäten" placeholder="Kavitäten" value="{{$data['kavitäten']}}" readonly>
-                                            </div>
-                                        </div>
-                                        @php $letzte_störung = " "; @endphp
-                                        @if($data['programm'] != 'Automatik')
-                                            $letzte_störung = $data['letzte_störung'];
-                                        @endif
-                                        <div class="form-group row">
-                                            <label for="letzte_störung" class="col-sm-2 col-form-label">Letzte Störung</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="letzte_störung" placeholder="Letzte Störung" value="{{$letzte_störung}}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="btn-group w-10" style="position : absolute;bottom:0">
-                                                <input type="file" hidden  name="image" class="custom-file-input" id="machineImage">
-                                                <!-- <span id="mgs_ta"></span> -->
-                                                <span for="exampleInputFile" class="btn btn-success col fileinput-button dz-clickable" id="replace-image-button">
-                                                    <i class="fas fa-plus"></i>
-                                                </span>
-                                            </div>
-                                        </div>
+                                <div class="form-group row">
+                                    <div class="btn-group w-10" style="position : absolute;bottom:0">
+                                        <input type="file" hidden  name="image" class="custom-file-input" id="machineImage">
+                                        <!-- <span id="mgs_ta"></span> -->
+                                        <span for="exampleInputFile" class="btn btn-success col fileinput-button dz-clickable" id="replace-image-button">
+                                            <i class="fas fa-plus"></i>
+                                        </span>
                                     </div>
-                                </form>
+                                </div>
+                                </div>
+                                <div class="col-12 col-sm-7">
+                                    <form class="form-horizontal">
+                                        <div class="card-body">
+                                            <input type="hidden" class="form-control" id="anl_ID"  value="{{$data['anl_ID']}}" >
+                                            <div class="row">
+                                                <div class="col-md-6 left_section">
+                                                    <div class="form-group row">
+                                                    <!-- <label for="anlage" class="col-sm-2 col-form-label">Anlage</label> -->
+                                                        <div class="col-sm-12">
+                                                            <label for="anlage" class="col-form-label">Anlage</label>
+                                                            <input type="text" class="form-control" id="anlage" placeholder="Anlage" value="{{$data['anlage']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <!-- <label for="programm" class="col-sm-2 col-form-label">Status</label> -->
+                                                        <div class="col-sm-12">
+                                                            <label for="programm" class="col-form-label">Status</label>
+                                                            <input type="text" class="form-control" id="programm" placeholder="Programm" value="{{$data['programm']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <!-- <label for="bestellung" class="col-sm-2 col-form-label">Bestellung</label> -->
+                                                        <div class="col-sm-12">
+                                                            <label for="bestellung" class="col-form-label">Bestellung</label>
+                                                            <input type="text" class="form-control" id="bestellung" placeholder="bestellung" value="{{$data['bestellung']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <!-- <label for="artikel" class="col-sm-2 col-form-label">Artikel</label> -->
+                                                        <div class="col-sm-12">
+                                                            <label for="artikel" class="col-form-label">Artikel</label>
+                                                            <input type="text" class="form-control" id="artikel" placeholder="Artikel" value="{{$data['artikel']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="form-group row">
+                                                        <label for="bisher_produziert" class="col-sm-2 col-form-label">Bisher produziert</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="bisher_produziert" placeholder="Bisher produziert" value="{{$data['bisher_produziert']}}" readonly>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="gutmenge" class="col-form-label">Gutmenge</label>
+                                                            <input type="text" class="form-control" id="gutmenge" placeholder="Gutmenge"  value="{{$data['gutmenge']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                            
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="ausschuss" class="col-form-label">Ausschuss</label>
+                                                            <input type="text" class="form-control" id="ausschuss" placeholder="Ausschuss" value="{{$data['ausschuss']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 right_section">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="auftragsmenge" class="col-form-label">Auftragsmenge</label>
+                                                            <input type="text" class="form-control" id="auftragsmenge" placeholder="Auftragsmenge" value="{{$data['auftragsmenge']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="zeit_zyklus" class="col-form-label">Zeit/Zyklus</label>
+                                                            <input type="text" class="form-control" id="zeit_zyklus" placeholder="Zeit/Zyklus" value="{{$data['zeit_zyklus']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="werkzeug" class="col-form-label">Werkzeug</label>
+                                                            <input type="text" class="form-control" id="werkzeug" placeholder="Werkzeug" value="{{$data['werkzeug']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="form-group row">
+                                                        <label for="artikel_stunde" class="col-sm-2 col-form-label">Artikel/Stunde</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="artikel_stunde" placeholder="Artikel/Stunde" readonly>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="kavitäten" class="col-form-label">Kavitäten</label>
+                                                            <input type="text" class="form-control" id="kavitäten" placeholder="Kavitäten" value="{{$data['kavitäten']}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                    @php $letzte_störung = " "; @endphp
+                                                    @if($data['programm'] != 'Automatik')
+                                                        $letzte_störung = $data['letzte_störung'];
+                                                    @endif
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label for="letzte_störung" class="col-form-label">Letzte Störung</label>
+                                                            <input type="text" class="form-control" id="letzte_störung" placeholder="Letzte Störung" value="{{$letzte_störung}}" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <!-- /.card -->
                 <!-- Bar Chart -->

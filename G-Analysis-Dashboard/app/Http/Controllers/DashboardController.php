@@ -34,8 +34,16 @@ class DashboardController extends Controller
         // $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current']);
         // $data = $this->getMachineDetail($request);
         // return View::make("product", ["data"=>$data['data']]);
-   
+  
         $database = $_SESSION['nameDB'];
+        $username = $_SESSION['username'];
+        if($_SESSION['nameDB'] == 'gipscomm'){
+            $result = (new ManageDatabaseController)->switchDatabase($database);
+            $dBname = DB::table("Users")->select('nameDB')
+                     ->where('username',$username)->first();
+            $dBname   = (array)$dBname;
+            $database = $dBname['nameDB'];
+        }
         $result = (new ManageDatabaseController)->switchDatabase($database);
         if(!empty($result['database'])){
             $org= $this->getOrganisations($database);
