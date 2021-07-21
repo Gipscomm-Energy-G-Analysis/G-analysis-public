@@ -32,6 +32,8 @@ $(document).ready( function(){
                 $('#wert_main_div').hide();
                 $('#alerts_table_main_div').hide();
                 $('#help_table_main_div').hide();
+                countDashboard();
+                dashboardChart();
                 break;
             
             case "charts_sidebar":
@@ -39,10 +41,16 @@ $(document).ready( function(){
                 localStorage.setItem('dashboardDBChart',dashboardDBChart);
                 localStorage.removeItem('dashboardDBName');
                 var pathname = window.location.pathname;
-                var arPathname = pathname.split('/'); 
-                var mainDirectory = arPathname[1];
-                // window.open('/'+mainDirectory+'/main.html','_blank');
-                window.open('/'+mainDirectory+'/main.html','_self')
+                var arPathname = pathname.split('/');
+                var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
+                // window.open('/'+mainDirectory+'/main.html','_self');
+                if(arPathname > 2){
+                    window.open('/'+arPathname[1]+'/main.html','_self');
+                }
+                else{
+                    window.open('/main.html','_self');
+                }
+                window.open(mainDirectory+'/main.html','_self')
                 $('#charts_main_div').show();
                 $('#dashboard_main_div').hide();
                 $('#energy_table_main_div').hide();
@@ -149,6 +157,7 @@ $(document).ready( function(){
 
     // <---Count Dashboard Entries--
     countDashboard();
+    dashboardChart();
 
 
     //Mesurement

@@ -12,87 +12,93 @@
                         <p class="card-description">
                                 Messstellen 
                         </p>
-                    <table class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>
-                            Name
-                          </th>
-                          <th>
-                            Time Interval
-                          </th>
-                          <th>
-                            Start
-                          </th>
-                          <th>
-                            Status
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody id="alerts_min_max_null_mesurement_tables">
-                      
-                      </tbody>
-                    </table>
+                    <div class="tables-alert-width">    
+                        <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Time Interval
+                            </th>
+                            <th>
+                                Start
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            </tr>
+                        </thead>
+                        <tbody id="alerts_min_max_null_mesurement_tables">
+                        
+                        </tbody>
+                        </table>
+                    </div>
                   </div>
 
-                  <div class="table-responsive mt-5 table-not-consumed" id="alerts_table_product">
+                  <div class="table-responsive mt-5" id="alerts_table_product">
                         <p class="card-description">
                             Produkte 
                         </p>
-                    <table class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>
-                            Product Name
-                          </th>
+                    <div class="tables-alert-width">    
+                        <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                            <th>
+                                Product Name
+                            </th>
 
-                          <th>
-                            Item Name
-                          </th>
+                            <th>
+                                Item Name
+                            </th>
 
-                          <th>
-                            Time Interval
-                          </th>
-                          <th>
-                            Start
-                          </th>
-                          <th>
-                            Status
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody id="alerts_min_max_null_product_tables">
-                      
-                      </tbody>
-                    </table>
+                            <th>
+                                Time Interval
+                            </th>
+                            <th>
+                                Start
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            </tr>
+                        </thead>
+                        <tbody id="alerts_min_max_null_product_tables">
+                        
+                        </tbody>
+                        </table>
+                    </div>
                   </div>
 
-                  <!-- <div class="table-responsive" id="alerts_table_energy">
+                  <div class="table-responsive mt-5" id="alerts_table_energy">
                         <p class="card-description">
                             Energiedaten 
                         </p>
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>
-                            Name
-                          </th>
-                          <th>
-                            Time Interval
-                          </th>
-                          <th>
-                            Start
-                          </th>
-                          <th>
-                            Status
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody id="alerts_min_max_null_energy_tables">
-                      
-                      </tbody>
-                    </table>
-                  </div> -->
+                    <div class="tables-alert-width">
+                        <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Time Interval
+                            </th>
+                            <th>
+                                Start
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            </tr>
+                        </thead>
+                        <tbody id="alerts_min_max_null_energy_tables">
+                        
+                        </tbody>
+                        </table>
+                    </div>
+                  </div>
 
                 </div>
               </div>

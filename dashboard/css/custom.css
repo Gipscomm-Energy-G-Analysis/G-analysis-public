@@ -17,3 +17,7 @@
     border: 0 !important;
     outline: 1px solid #c9ccd7 !important;
 }
+
+.tables-alert-width{
+    height: 250px;
+}

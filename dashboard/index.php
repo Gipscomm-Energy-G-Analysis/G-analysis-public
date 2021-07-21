@@ -4,7 +4,12 @@ $session_val = $_SESSION["login_state"];
 if($session_val == 'false'){
   $url_path = $_SERVER['REQUEST_URI']; 
   $ar_url_path = explode('/',$url_path);
-  $redirect_path = "/$ar_url_path[1]/index.html";
+  if(count($ar_url_path) > 2){
+    $redirect_path = "/$ar_url_path[1]/index.html";
+  }
+  else{
+    $redirect_path = "/index.html";
+  }
   header('Location:'.$redirect_path);
   die;
 }

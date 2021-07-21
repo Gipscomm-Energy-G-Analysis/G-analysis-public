@@ -8846,6 +8846,7 @@ $(document).on('blur', '#min_prompt_invest_value_measuring ,#max_prompt_invest_v
 $(document).ready( function (){
     var chartStorageDb = localStorage.getItem('dashboardDBChart');
     if(chartStorageDb != null && chartStorageDb != undefined){
+        $('.menu-wrap nav').addClass('backgroundDisabled');
         $(".chartImageDiv").show();
         setTimeout( function(){
             
@@ -8853,6 +8854,7 @@ $(document).ready( function (){
             $('#mstVerglMenu').trigger('click');
             localStorage.removeItem('dashboardDBChart');
             $(".chartImageDiv").hide();
+            $('.menu-wrap nav').removeClass('backgroundDisabled');
             // console.log('After',$('.manPfad').val());
         },1500) 
     }

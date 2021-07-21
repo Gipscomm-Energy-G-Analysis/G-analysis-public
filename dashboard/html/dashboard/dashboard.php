@@ -24,7 +24,7 @@
                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count"></h3>
                     <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                   </div>  
-                  <p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p>
+                  <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
                 </div>
               </div>
             </div>
@@ -36,7 +36,7 @@
                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="product_count"></h3>
                     <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                   </div>  
-                  <p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ml-1"><small>(30 days)</small></span></p>
+                  <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
                 </div>
               </div>
             </div>
@@ -48,7 +48,7 @@
                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_count"></h3>
                     <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                   </div>  
-                  <p class="mb-0 mt-2 text-success">64.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>
+                  <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@
                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_consumed_count"></h3>
                     <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                   </div>  
-                  <p class="mb-0 mt-2 text-success">23.00%<span class="text-black ml-1"><small>(30 days)</small></span></p>
+                  <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"></span></p>
                 </div>
               </div>
             </div>
@@ -69,7 +69,7 @@
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title">Energiedaten details</p>
+                  <p class="card-title">Energiedaten One Month</p>
                   <p class="text-muted font-weight-light">Received overcame oh sensible so at an. Formed do change merely to county it. Am separate contempt domestic to to oh. On relation my so addition branched.</p>
                   <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
                   <canvas id="sales-chart"></canvas>
@@ -95,9 +95,9 @@
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card border-bottom-0">
                 <div class="card-body pb-0">
-                  <p class="card-title">Produktionsdaten</p>
+                  <p class="card-title">Energiedaten details</p>
                   <p class="text-muted font-weight-light">The argument in favor of using filler text goes something like this: If you use real content in the design process, anytime you reach a review</p>
-                  <div class="d-flex flex-wrap mb-5">
+                  <!-- <div class="d-flex flex-wrap mb-5">
                     <div class="mr-5 mt-3">
                       <p class="text-muted">Status</p>
                       <h3>362</h3>
@@ -114,9 +114,11 @@
                       <p class="text-muted">Feedbacks</p>
                       <h3>509</h3>
                     </div> 
-                  </div>
+                  </div> -->
                 </div>
-                <canvas id="order-chart" class="w-100"></canvas>
+                <!-- <canvas id="order-chart" class="w-100"></canvas> -->
+                  <canvas id="north-america-chart"></canvas>
+                  <div id="north-america-legend"></div>
               </div>
             </div>
           </div>

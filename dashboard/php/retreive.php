@@ -400,7 +400,8 @@ class dashboardController {
         try{
             global $conn;
             //$query1 = "SELECT Top($number_records) * FROM produktionsAnlagenConfig where iBdeType='2'  order by iBdePrdktConf_ID desc";
-            $query1 = "SELECT  * ";
+            //Measurement Table Entries
+            $query1 = "SELECT TOP(40) * ";
             $query1 .= "FROM produktionsAnlagenConfig as T1 ";
             $query1  .= "where T1.iBdeType='2' ";
             $query1  .= "AND (min_val IS NULL ";
@@ -436,8 +437,14 @@ class dashboardController {
                     else{
                         $tr.= "<td>".$value['startDate']."</td>";
                     }
-                    if($value['min_val'] == null  || $value['max_val'] == null ){
+                    if($value['min_val'] == null  && $value['max_val'] == null ){
                         $tr.= "<td><label class='text-danger'>Min and Max Value Empty</label></td>";
+                    }
+                    else if($value['min_val'] == null){
+                        $tr.= "<td><label class='text-danger'>Min Value Empty</label></td>";
+                    }
+                    else if($value['max_val'] == null){
+                        $tr.= "<td><label class='text-danger'>Max Value Empty</label></td>";
                     }
                     else{
                         $tr.= "<td><label class='badge badge-danger'>NA </label></td>";
@@ -447,11 +454,57 @@ class dashboardController {
             }else{
                  $tr = "<tr><td colspan='4' class='text-center'>No Data</td></tr>";
             }
+
+            //2nd Case  Min Value Greater
+            $query1 = "SELECT TOP(20) * ";
+            $query1 .= "FROM produktionsAnlagenConfig as T1 ";
+            $query1  .= "where T1.iBdeType='2' ";
+            $query1  .= "AND (cast(t1.min_val as int) >= cast(t1.max_val as int)) ";
+            $query1 .=  "order by T1.iBdePrdktConf_ID desc ";
+            // echo $query1; die;
+            $dataMesaurement = queryDB($conn, $query1, "read");
+            
+            if($dataMesaurement != '' && count($dataMesaurement) > 0){
+                foreach($dataMesaurement as $key => $value){
+                    $tr .= '<tr>';
+                    $tr.= "<td>".$value['mstIMw']."</td>";
+                    if($value['intTp_ID'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($value['intTp_ID'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($value['intTp_ID'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($value['intTp_ID'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                        $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['startDate']."</td>";
+                    }
+                    if($value['min_val'] != null  && $value['max_val'] != null ){
+                        $tr.= "<td><label class='text-danger'>Min Value Greater</label></td>";
+                    }
+                    else{
+                        $tr.= "<td><label class='badge badge-danger'>NA </label></td>";
+                    }
+                    $tr.="</tr>";
+                }
+            }
+
             $records['alerts_min_max_null_mesurement_tables'] = $tr;
 
 
             //Product Tale Entries
-            $query1 = "SELECT * FROM produktionsAnlagenConfig as t1 ";
+            $query1 = "SELECT TOP(40) * FROM produktionsAnlagenConfig as t1 ";
             $query1 .= "left join produkte as t2 on t1.prd_ID = t2.prd_ID ";
             $query1 .= "left join anlagen as t3 on t1.anl_id = t3.anl_ID ";
             $query1 .= "where t1.iBdeType='1' ";
@@ -487,8 +540,14 @@ class dashboardController {
                     else{
                         $tr.= "<td>".$value['startDate']."</td>";
                     }
-                    if($value['min_val'] == null  || $value['max_val'] == null ){
+                    if($value['min_val'] == null  && $value['max_val'] == null ){
                         $tr.= "<td><label class='text-danger'>Min and Max Value Empty</label></td>";
+                    }
+                    else if($value['min_val'] == null){
+                        $tr.= "<td><label class='text-danger'>Min Value Empty</label></td>";
+                    }
+                    else if($value['max_val'] == null){
+                        $tr.= "<td><label class='text-danger'>Max Value Empty</label></td>";
                     }
                     else{
                         $tr.= "<td><label class='badge badge-danger'>NA </label></td>";
@@ -500,7 +559,162 @@ class dashboardController {
                 $tr = "<tr><td colspan='5' class='text-center'>No Data</td></tr>";
             }
 
+            
+
+            //2nd Case Product Min Value Greater
+            $query1 = "SELECT TOP(20) * FROM produktionsAnlagenConfig as t1 ";
+            $query1 .= "left join produkte as t2 on t1.prd_ID = t2.prd_ID ";
+            $query1 .= "left join anlagen as t3 on t1.anl_id = t3.anl_ID ";
+            $query1 .= "where t1.iBdeType='1' ";
+            $query1 .= "AND (cast(t1.min_val as int ) >= cast(t1.max_val as int)) ";
+            $query1  .= "order by t1.iBdePrdktConf_ID desc ";
+            $dataProduct = queryDB($conn, $query1, "read");
+            // echo json_encode($dataProduct); die;
+            if($dataProduct != '' && count($dataProduct) > 0){
+                foreach($dataProduct as $key => $value){
+                    $tr .= '<tr>';
+                    $tr.= "<td>".$value['namePrd']."</td>";
+                    $tr.= "<td>".$value['bezeichnungAnl']."</td>";
+                    if($value['intTp_ID'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($value['intTp_ID'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($value['intTp_ID'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($value['intTp_ID'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                        $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['startDate']."</td>";
+                    }
+                    if($value['min_val'] != null  && $value['max_val'] != null ){
+                        $tr.= "<td><label class='text-danger'>Min Value Greater</label></td>";
+                    }
+                    else{
+                        $tr.= "<td><label class='badge badge-danger'>NA </label></td>";
+                    }
+
+                    $tr.="</tr>";
+                }
+            }
+
             $records['alerts_min_max_null_product_tables'] = $tr;
+
+
+
+            //<--Energy Table
+            $energyData = "SELECT TOP(40) * FROM interneBetriebsdatenHistorie As T1 ";
+            $energyData .= "WHERE (t1.invest_min is null or t1.invest_max is null) ";
+            $energyData .= "AND T1.deleted <> 'true' ";
+            $energyData.= "AND T1.archiviert ='true' ";
+            $energyData  .= "order by t1.histID desc ";
+            $dataEnergy = queryDB($conn, $energyData, "read");
+            // echo json_encode($dataEnergy); die;
+            $tr = '';
+            if($dataEnergy != '' && count($dataEnergy) > 0){
+                foreach($dataEnergy as $key => $value){
+                    $tr .= '<tr>';
+                    $tr.= "<td>".$value['anlIMw']."</td>";
+                    if($value['zeitintervallAnl'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($value['zeitintervallAnl'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($value['zeitintervallAnl'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($value['zeitintervallAnl'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($value['zeitintervallAnl'] == "2" && $value['zeitintervallAnl'] != ''){
+                        $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['startDate']."</td>";
+                    }
+                   
+                    if($value['invest_min'] == null && $value['invest_max'] == null ){
+                        $tr.= "<td><label class='text-danger'>Min and Max Value Empty</label></td>";
+                    }
+                    else if($value['invest_min'] == null){
+                        $tr.= "<td><label class='text-danger'>Min Value Empty</label></td>";
+                    }
+                    else if($value['invest_max'] == null ){
+                        $tr.= "<td><label class='text-danger'>Max Value Empty</label></td>";
+                    }
+                    else{
+                        $tr.= "<td><label class='badge badge-danger'>NA </label></td>";
+                    }
+
+                    $tr.="</tr>";
+                }
+            }else{
+                $tr = "<tr><td colspan='4' class='text-center'>No Data</td></tr>";
+            }
+
+
+            //2nd case Energy Data Min Value is Greater
+            $energyData = "SELECT TOP(20) * FROM interneBetriebsdatenHistorie As T1 ";
+            $energyData .= "WHERE (cast(t1.invest_min as int) >= cast(t1.invest_max as int)) ";
+            $energyData .= "AND T1.deleted <> 'true' ";
+            $energyData.= "AND T1.archiviert ='true' ";
+            $energyData  .= "order by t1.histID desc ";
+            $dataEnergy = queryDB($conn, $energyData, "read");
+            // echo json_encode($dataEnergy); die;
+            if($dataEnergy != '' && count($dataEnergy) > 0){
+                foreach($dataEnergy as $key => $value){
+                    $tr .= '<tr>';
+                    $tr.= "<td>".$value['anlIMw']."</td>";
+                    if($value['zeitintervallAnl'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($value['zeitintervallAnl'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($value['zeitintervallAnl'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($value['zeitintervallAnl'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($value['zeitintervallAnl'] == "2" && $value['zeitintervallAnl'] != ''){
+                        $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['startDate']."</td>";
+                    }
+                   
+                    if($value['invest_min'] != null && $value['invest_max'] != null ){
+                        $tr.= "<td><label class='text-danger'>Min Value Greater</label></td>";
+                    }
+                    else{
+                        $tr.= "<td><label class='badge badge-danger'>NA </label></td>";
+                    }
+
+                    $tr.="</tr>";
+                }
+            }
+
+            $records['alerts_min_max_null_energy_tables'] = $tr;
 
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
@@ -510,6 +724,98 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }   
 
+    }
+
+    public function getDashBoardChart(){
+        try{
+            global $conn;
+            //<---Chart Data ---
+            // $currentDayVal = date('d');
+            // $previousDayVal = date('d-m-y',strtotime("+1 month"));
+        
+            $ar = [];
+            for($i = 1; $i<=6; $i++){
+               $days_val = 5 * $i; 
+               $date_differnce = date('Y-m-d H:i:s', strtotime("-$days_val days"));
+               
+               $energyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+               $energyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
+               $energyConsumed .= "ON T1.mstID = T2.mst_ID ";
+               $energyConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_differnce',101) ";
+               $energyConsumed .= "AND T1.deleted <> 'true' ";
+               $energyConsumed.= "AND T1.archiviert ='true' ";
+              
+               $dataEnergy = queryDB($conn, $energyConsumed, "read");
+               array_push($ar,$dataEnergy);
+            }
+            
+            $energy_chart['energy_chart_ar'] = $ar;
+
+
+            //Reports Details Charts
+            $date_differnce_days = date('Y-m-d H:i:s', strtotime('-30 days'));
+            
+            //Total Energy
+            $TotalenergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+            $TotalenergyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
+            $TotalenergyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            $TotalenergyConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_differnce_days',101) ";
+            $TotalenergyConsumed .= "AND T1.deleted <> 'true' ";
+            $TotalenergyConsumed.= "AND T1.archiviert ='true' ";
+            $dataEnergy = queryDB($conn, $TotalenergyConsumed, "read");
+            $energy_chart['totalEnergyConsumed'] = $dataEnergy;
+
+            //Days Energy
+            $daysEnergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+            $daysEnergyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
+            $daysEnergyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            $daysEnergyConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_differnce_days',101) ";
+            $daysEnergyConsumed .= "AND T1.zeitintervallAnl = '1' ";
+            $daysEnergyConsumed .= "AND T1.deleted <> 'true' ";
+            $daysEnergyConsumed.= "AND T1.archiviert ='true' ";
+            $dataEnergy = queryDB($conn, $daysEnergyConsumed, "read");
+            $energy_chart['daysEnergyConsumed'] = $dataEnergy;
+
+            //Week Energy
+            $weekEnergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+            $weekEnergyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
+            $weekEnergyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            $weekEnergyConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_differnce_days',101) ";
+            $weekEnergyConsumed .= "AND T1.zeitintervallAnl = '2' ";
+            $weekEnergyConsumed .= "AND T1.deleted <> 'true' ";
+            $weekEnergyConsumed.= "AND T1.archiviert ='true' ";
+            $dataEnergy = queryDB($conn, $weekEnergyConsumed, "read");
+            $energy_chart['weekEnergyConsumed'] = $dataEnergy;
+
+            //Month Energy
+            $monthEnergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+            $monthEnergyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
+            $monthEnergyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            $monthEnergyConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_differnce_days',101) ";
+            $monthEnergyConsumed .= "AND T1.zeitintervallAnl = '3' ";
+            $monthEnergyConsumed .= "AND T1.deleted <> 'true' ";
+            $monthEnergyConsumed.= "AND T1.archiviert ='true' ";
+            $dataEnergy = queryDB($conn, $monthEnergyConsumed, "read");
+            $energy_chart['monthEnergyConsumed'] = $dataEnergy;
+
+            //Year Energy
+            $yearEnergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+            $yearEnergyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
+            $yearEnergyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            $yearEnergyConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_differnce_days',101) ";
+            $yearEnergyConsumed .= "AND T1.zeitintervallAnl = '4' ";
+            $yearEnergyConsumed .= "AND T1.deleted <> 'true' ";
+            $yearEnergyConsumed.= "AND T1.archiviert ='true' ";
+            $dataEnergy = queryDB($conn, $yearEnergyConsumed, "read");
+            $energy_chart['yearEnergyConsumed'] = $dataEnergy;
+
+            echo json_encode($energy_chart,JSON_INVALID_UTF8_IGNORE);
+            die;
+
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }  
     }
 }
 $obj = new dashboardController();
