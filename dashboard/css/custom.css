@@ -22,3 +22,11 @@
     height: 250px;
     overflow-y: auto;
 }
+
+/* Background Image */
+.background-image{
+    background: url(../../images/5653.jpg) no-repeat center center fixed !important;
+    background-size: cover !important;
+    margin: 0px !important;
+    padding: 0px !important;;
+}

@@ -1,7 +1,7 @@
 <!-- Nav Bar -->
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center act_background">
-        <a class="navbar-brand brand-logo mr-5" href="javascript:void(0);" onclick="history.go(-1)"><img src="images/G-Analysis/g_analysisNeu6.png" class="mr-2 logo-g-analysis" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5" href="javascript:void(0);"><img src="images/G-Analysis/g_analysisNeu6.png" class="mr-2 logo-g-analysis" alt="logo"/></a>
         <!-- <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a> -->
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end act_background">
@@ -12,18 +12,27 @@
         <ul class="navbar-nav navbar-nav-right">
          
           <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle nav_bar_redirect" id="notification_nav_bar" href="javascript:void(0);" data-toggle="dropdown">
-              <i class="ti-bell mx-0"></i>
+            <a class="nav-link count-indicator dropdown-toggle nav_bar_redirect" id="notification_nav_bar" href="javascript:void(0);" data-toggle="dropdown" title="Alerts">
+              <i class="ti-bell text-muted"></i>
               <span class="count"></span>
             </a>
            
           </li>
 
           <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle nav_bar_redirect" href="javascript:void(0);" data-toggle="dropdown" id="help_nav_bar">
+            <a class="nav-link dropdown-toggle nav_bar_redirect" href="javascript:void(0);" data-toggle="dropdown" id="help_nav_bar" title="Help">
               <!-- <img src="images/faces/face28.jpg" alt="profile"/> -->
-              <i class="ti-power-off menu-icon"></i>
+              <i class="ti-help text-muted"></i>
               <span class="menu-title"></span>
+            </a>
+            
+          </li>
+          
+
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle nav_bar_redirect" href="javascript:void(0);" data-toggle="dropdown" id="home_nav_bar" title="Home">
+              <!-- <img src="images/faces/face28.jpg" alt="profile"/> -->
+              <i class="ti-home text-muted"></i>
             </a>
             
           </li>

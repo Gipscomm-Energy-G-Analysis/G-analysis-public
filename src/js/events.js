@@ -8849,6 +8849,7 @@ $(document).on('blur', '#min_prompt_invest_value_measuring ,#max_prompt_invest_v
 // <<---16-7-2021---
 $(document).ready( function (){
     var chartStorageDb = localStorage.getItem('dashboardDBChart');
+    var  dashboardHomeRedirect = localStorage.getItem('dashboardDbRedirectHome');
     if(chartStorageDb != null && chartStorageDb != undefined){
         $('.menu-wrap nav').addClass('backgroundDisabled');
         $('body').addClass('backgroundDisabledColor');
@@ -8861,8 +8862,29 @@ $(document).ready( function (){
             $(".chartImageDiv").hide();
             $('body').removeClass('backgroundDisabledColor');
             $('.menu-wrap nav').removeClass('backgroundDisabled');
+            dashboardLocalStorage();
+            return false;
             // console.log('After',$('.manPfad').val());
         },1500) 
+    }
+    else if(dashboardHomeRedirect != null && dashboardHomeRedirect != undefined){
+        $('.menu-wrap nav').addClass('backgroundDisabled');
+        $('body').addClass('backgroundDisabledColor');
+        $(".chartImageDiv").show();
+        setTimeout( function(){
+            $('.menu-wrap nav').addClass('backgroundDisabled');
+            $('body').addClass('backgroundDisabledColor');
+            $(".chartImageDiv").show();
+
+            $(".manPfad ").val(dashboardHomeRedirect).trigger('change');
+            localStorage.removeItem('dashboardDbRedirectHome');
+            $(".chartImageDiv").hide();
+            $('body').removeClass('backgroundDisabledColor');
+            $('.menu-wrap nav').removeClass('backgroundDisabled');
+            dashboardLocalStorage();
+            return false;
+        },1500) 
+
     }
     setTimeout(function(){ 
         dashboardLocalStorage();

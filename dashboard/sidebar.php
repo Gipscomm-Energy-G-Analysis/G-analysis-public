@@ -5,7 +5,7 @@
           <li class="nav-item active">
             <a class="nav-link sidebar_redirect" id="dashboard_sidebar" href="javascript:void(0);">
               <i class="ti-shield menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
+              <span class="menu-title">Instrumententafel</span>
             </a>
           </li>
           

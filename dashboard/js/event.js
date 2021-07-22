@@ -44,13 +44,13 @@ $(document).ready( function(){
                 var arPathname = pathname.split('/');
                 var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
                 // window.open('/'+mainDirectory+'/main.html','_self');
-                if(arPathname > 2){
+                if(arPathname.length > 2){
                     window.open('/'+arPathname[1]+'/main.html','_self');
                 }
                 else{
                     window.open('/main.html','_self');
                 }
-                window.open(mainDirectory+'/main.html','_self');
+                // window.open(mainDirectory+'/main.html','_self');
                 $('#charts_main_div').show();
                 $('#dashboard_main_div').hide();
                 $('#energy_table_main_div').hide();
@@ -151,7 +151,22 @@ $(document).ready( function(){
                 $('#help_table_main_div').show();
                 $('#help_video').get(0).play();    
                 break;
-                
+
+            case "home_nav_bar":
+                var dashboardDBChart = localStorage.getItem('dashboardDBName');
+                localStorage.setItem('dashboardDbRedirectHome',dashboardDBChart);
+                localStorage.removeItem('dashboardDBName');
+                var pathname = window.location.pathname;
+                var arPathname = pathname.split('/');
+                // var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
+                // window.open('/'+mainDirectory+'/main.html','_self');
+                if(arPathname.length > 2){
+                    window.open('/'+arPathname[1]+'/main.html','_self');
+                }
+                else{
+                    window.open('/main.html','_self');
+                }
+                break;
         }
     });
 
@@ -179,5 +194,15 @@ $(document).ready( function(){
     $(document).on('change','#production_data_number_record',function(){
         getNumberRecordsProductionData();
     });
+
+
+    // <---22-7-2021--
+    $('div').removeClass('act_background');
+    $('nav div').addClass('background-image');
+    $('.container-fluid nav').addClass('background-image');
+    $('#dashboard_main_div .content-wrapper').addClass('background-image');
+    $('.footer').addClass('background-image');
+    $('.sidebar_redirect').addClass('text-dark');
+    // --end-->
 
 })
