@@ -68,6 +68,10 @@ $(document).ready(function() {
     $("#logout").click(function() {
         sessionStorage.clear();
         localStorage.removeItem('gipsAdm');
+        // <----22-7-2021--
+        localStorage.removeItem('dashboardDB');
+        localStorage.removeItem('dashboardDBName');
+        //--end-->
         $.ajax({
             type: "POST",
             async: !0,
@@ -8847,6 +8851,7 @@ $(document).ready( function (){
     var chartStorageDb = localStorage.getItem('dashboardDBChart');
     if(chartStorageDb != null && chartStorageDb != undefined){
         $('.menu-wrap nav').addClass('backgroundDisabled');
+        $('body').addClass('backgroundDisabledColor');
         $(".chartImageDiv").show();
         setTimeout( function(){
             
@@ -8854,6 +8859,7 @@ $(document).ready( function (){
             $('#mstVerglMenu').trigger('click');
             localStorage.removeItem('dashboardDBChart');
             $(".chartImageDiv").hide();
+            $('body').removeClass('backgroundDisabledColor');
             $('.menu-wrap nav').removeClass('backgroundDisabled');
             // console.log('After',$('.manPfad').val());
         },1500) 

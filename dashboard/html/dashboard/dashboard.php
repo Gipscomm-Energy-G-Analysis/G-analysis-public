@@ -125,9 +125,9 @@
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body table-not-consumed">
-                  <p class="card-title mb-0">Energiedaten Consumed</p>
-                  <div class="table-responsive">
+                <div class="card-body">
+                  <p class="card-title mb-2">Energiedaten Consumed</p>
+                  <div class="table-responsive table-not-consumed">
                     <table class="table table-hover table-striped table-bordered">
                       <thead>
                         <tr>

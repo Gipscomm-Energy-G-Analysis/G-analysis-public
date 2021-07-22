@@ -12,7 +12,7 @@
         <ul class="navbar-nav navbar-nav-right">
          
           <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle nav_bar_redirect" id="notification_nav_bar" href="#" data-toggle="dropdown">
+            <a class="nav-link count-indicator dropdown-toggle nav_bar_redirect" id="notification_nav_bar" href="javascript:void(0);" data-toggle="dropdown">
               <i class="ti-bell mx-0"></i>
               <span class="count"></span>
             </a>
@@ -20,7 +20,7 @@
           </li>
 
           <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle nav_bar_redirect" href="#" data-toggle="dropdown" id="help_nav_bar">
+            <a class="nav-link dropdown-toggle nav_bar_redirect" href="javascript:void(0);" data-toggle="dropdown" id="help_nav_bar">
               <!-- <img src="images/faces/face28.jpg" alt="profile"/> -->
               <i class="ti-power-off menu-icon"></i>
               <span class="menu-title"></span>
@@ -28,13 +28,13 @@
             
           </li>
 
-          <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <!-- <img src="images/faces/face28.jpg" alt="profile"/> -->
+          <!-- <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" id="profileDropdown">
+              <img src="images/faces/face28.jpg" alt="profile"/>
               <i class="ti-user icon-md mb-0 mb-md-3 mb-xl-0"></i>
             </a>
             
-          </li>
+          </li> -->
         
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">

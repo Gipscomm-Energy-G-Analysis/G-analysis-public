@@ -10,7 +10,7 @@
                   
                   <div class="form-group">
                     <label for="exampleFormControlSelect3">Select No. of Records</label>
-                    <select class="form-control form-control-sm " id="energy_number_record">
+                    <select class="form-control form-control-sm text-dark " id="energy_number_record">
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="30">30</option>

@@ -50,7 +50,7 @@ $(document).ready( function(){
                 else{
                     window.open('/main.html','_self');
                 }
-                window.open(mainDirectory+'/main.html','_self')
+                window.open(mainDirectory+'/main.html','_self');
                 $('#charts_main_div').show();
                 $('#dashboard_main_div').hide();
                 $('#energy_table_main_div').hide();

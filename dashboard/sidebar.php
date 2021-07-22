@@ -3,14 +3,14 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item active">
-            <a class="nav-link sidebar_redirect" id="dashboard_sidebar" href="#">
+            <a class="nav-link sidebar_redirect" id="dashboard_sidebar" href="javascript:void(0);">
               <i class="ti-shield menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           
           <li class="nav-item">
-            <a class="nav-link sidebar_redirect" id="charts_sidebar" href="#">
+            <a class="nav-link sidebar_redirect" id="charts_sidebar" href="javascript:void(0);">
               <i class="ti-pie-chart menu-icon"></i>
               <span class="menu-title">Chart</span>
             </a>
@@ -24,15 +24,15 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link sidebar_redirect" id="measurement_sidebar_option" href="#">Messstellen</a></li>
-                <li class="nav-item"> <a class="nav-link sidebar_redirect" href="#" id="product_sidebar_option">Produkte</a></li>
-                <li class="nav-item"> <a class="nav-link sidebar_redirect" href="#" id="energy_sidebar_option">Energiedaten</a></li>
-                <li class="nav-item"> <a class="nav-link sidebar_redirect" href="#" id="production_data_sidebar_option">Produktionsdaten</a></li>
+                <li class="nav-item"> <a class="nav-link sidebar_redirect" id="measurement_sidebar_option" href="javascript:void(0);">Messstellen</a></li>
+                <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="product_sidebar_option">Produkte</a></li>
+                <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="energy_sidebar_option">Energiedaten</a></li>
+                <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="production_data_sidebar_option">Produktionsdaten</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link sidebar_redirect" id="wert_sidebar" href="#">
+            <a class="nav-link sidebar_redirect" id="wert_sidebar" href="javascript:void(0);">
               <i class="ti-star menu-icon"></i>
               <span class="menu-title">Wert</span>
             </a>

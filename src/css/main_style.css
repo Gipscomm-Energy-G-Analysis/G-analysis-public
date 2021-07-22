@@ -1748,4 +1748,7 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
   /* color: #aaa; */
   opacity: 0.8;
 }
+.backgroundDisabledColor{
+  background: #a9a9a9; 
+}
 /* --end-- */
