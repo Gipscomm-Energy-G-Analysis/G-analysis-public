@@ -3532,7 +3532,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= days; r++){
 
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
@@ -3667,7 +3667,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(f) + eval(r);
                                 var weekNum =53;
@@ -3893,7 +3893,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= months; r++){
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
                             }
@@ -3994,7 +3994,7 @@ function getDataMasseneingabeIMwSearch(zeitintervallAnl,startDate,endDate){
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(startDate) + eval(r);
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
@@ -4149,7 +4149,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= days; r++){
 
                                 $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
@@ -4279,7 +4279,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(f) + eval(r);
                                 var weekNum =53;
@@ -4503,7 +4503,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= months; r++){
                                 $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
                             }
@@ -4605,7 +4605,7 @@ function getDataMasseneingabeIMwSearchPrdkt(zeitintervallAnl,startDate,endDate){
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(startDate) + eval(r);
                                 $row += '<th data-id="'+a.query1[e].id+'" class="masseneingabeInputLBL">' + yr + '</th>';
@@ -4760,7 +4760,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr style="position: sticky;top: 0;background-color: #dddddd;"><td>Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= days; r++){
 
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">'+convertToDateMonthAndYearformate(dateArr[r])+'</th>';
@@ -4891,7 +4891,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr style="position: sticky;top: 0;background-color: #dddddd;"><td>Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(f) + eval(r);
                                 var weekNum =53;
@@ -5114,7 +5114,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= months; r++){
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + convertToMonthAndYearformate(dateArr[r]) + '</th>';
                             }
@@ -5216,7 +5216,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                     $row ='<div id="tblMasseneingabeDataIMw"><table id="tblMasseneingabeDataIMwTbl">';
                     for (var e = 0; e < b; e++){
                         if(e==0) {
-                            $row += '<tr><td style="position: sticky;top: 0;background-color: #dddddd;">Anlage</td>';
+                            $row += '<tr><th style="position: sticky;top: 0;background-color: #dddddd;">Anlage</th>';
                             for (var r = 0; r <= years; r++){
                                 var yr = eval(startDate) + eval(r);
                                 $row += '<th data-id="'+a.query1[e].mst_ID+'" class="masseneingabeInputLBL">' + yr + '</th>';
