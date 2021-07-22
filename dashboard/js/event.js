@@ -44,7 +44,7 @@ $(document).ready( function(){
                 var arPathname = pathname.split('/');
                 var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
                 // window.open('/'+mainDirectory+'/main.html','_self');
-                if(arPathname.length > 2){
+                if(arPathname.length > 3){
                     window.open('/'+arPathname[1]+'/main.html','_self');
                 }
                 else{
@@ -158,9 +158,12 @@ $(document).ready( function(){
                 localStorage.removeItem('dashboardDBName');
                 var pathname = window.location.pathname;
                 var arPathname = pathname.split('/');
+                console.log('pathname',pathname);
+                console.log('ar pathname',arPathname);
+                //return false;
                 // var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
                 // window.open('/'+mainDirectory+'/main.html','_self');
-                if(arPathname.length > 2){
+                if(arPathname.length > 3){
                     window.open('/'+arPathname[1]+'/main.html','_self');
                 }
                 else{
@@ -197,8 +200,8 @@ $(document).ready( function(){
 
 
     // <---22-7-2021--
-    $('div').removeClass('act_background');
-    $('nav div').addClass('background-image');
+    // $('div').removeClass('act_background');
+    // $('nav div').addClass('background-image');
     $('.container-fluid nav').addClass('background-image');
     $('#dashboard_main_div .content-wrapper').addClass('background-image');
     $('.footer').addClass('background-image');

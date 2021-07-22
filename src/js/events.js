@@ -8872,9 +8872,6 @@ $(document).ready( function (){
         $('body').addClass('backgroundDisabledColor');
         $(".chartImageDiv").show();
         setTimeout( function(){
-            $('.menu-wrap nav').addClass('backgroundDisabled');
-            $('body').addClass('backgroundDisabledColor');
-            $(".chartImageDiv").show();
 
             $(".manPfad ").val(dashboardHomeRedirect).trigger('change');
             localStorage.removeItem('dashboardDbRedirectHome');

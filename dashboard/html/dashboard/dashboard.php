@@ -1,7 +1,7 @@
 <!-- partial -->
 <div class="main-panel" id="dashboard_main_div" style="display: none">
         <div class="content-wrapper">
-          <div class="row">
+          <div class="row heading-margin-top">
             <div class="col-md-12 grid-margin">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
