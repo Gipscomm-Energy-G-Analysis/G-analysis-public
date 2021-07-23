@@ -58,9 +58,10 @@
             spinner.stop();
             if(response.code == 200 ){
                 graphDiv.innerHTML = '';
-                $(".dashboard").show();
-                $(".content").show();
-                $("#not_found_msg").hide();
+               
+                $("#data-card").show();
+                $("#bar_chart").show();
+                $("#msg").hide();
                 $('.navigation').attr('data-value', data.anl_ID);
                 $('#anl_ID').val(data.anl_ID);
                 $('#anlage').val(data.anlage);
@@ -89,9 +90,9 @@
 
             } else if(response.anl_ID !== undefined) {
                 toastr.error(response.message);
-                $(".dashboard").show();
-                $(".content").show();
-                $("#not_found_msg").hide();
+               
+                $("#data-card").show();
+                // $("#not_found_msg").hide();
                 $('.navigation').attr('data-value', response.anl_ID);
                 $('#anlage').val("");
                 $('#programm').val("");
@@ -108,9 +109,11 @@
                 $('#machine-image').attr('src','images/Blasanlage.jpg');
             }
             else{
-               $(".dashboard").hide();
-               $(".content").hide();
-               $("#not_found_msg").show();
+              
+               
+               $("#data-card").hide();
+               $("#bar_chart").hide();
+               $("#msg").show();
             }
         });
     }

@@ -17,29 +17,6 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                @if(!empty($data)) 
-                <div class="row"> 
-                    <div class="col-sm-3">
-                        <input type="hidden" value= "{{$_SESSION['nameDB']}}"; id="nameDB" />
-                        <div class="form-group ">
-                            <label>Organisation</label>
-                            <select class="form-control organisation" onchange="select_org()" style="width: 100%;" id="select_org">
-                            <option value="">Please Select---</option>
-                                @foreach($org as $value)
-                                    <option value="{{$value['org_ID']}}">{{$value['nameOrg']}}</option> 
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group property">
-                            <label>Liegenschaft</label>
-                            <select class="form-control liegenschaft" onchange="getMachineData($('.navigation').attr('data-value'),'current',document.getElementById('select_org').value)" id="select_prop" style="width: 100%;">
-                            </select>
-                        </div>
-                    </div> 
-                </div>
-                @endif
                 @if(!empty($data))
                 <div class="row dashboard">
                     <div class="col-sm-6">
@@ -85,15 +62,36 @@
             <section class="content">
                 <div class="card card-solid">
                     <div class="card-body">
+                        <div class="row"> 
+                            <div class="col-sm-3">
+                                <input type="hidden" value= "{{$_SESSION['nameDB']}}"; id="nameDB" />
+                                <div class="form-group ">
+                                    <label>Organisation</label>
+                                    <select class="form-control organisation" onchange="select_org()" style="width: 100%;" id="select_org">
+                                    <option value="">Please Select---</option>
+                                        @foreach($org as $value)
+                                            <option value="{{$value['org_ID']}}">{{$value['nameOrg']}}</option> 
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group property">
+                                    <label>Liegenschaft</label>
+                                    <select class="form-control liegenschaft" onchange="getMachineData($('.navigation').attr('data-value'),'current',document.getElementById('select_org').value)" id="select_prop" style="width: 100%;">
+                                    </select>
+                                </div>
+                            </div> 
+                        </div>
                         <div class="row" id="data-card">
                             <div class="col-12 col-sm-5">
                                 <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
                                 <div class="col-12">
                                     <img src="{{$image}}" class="product-image" alt="Product Image" id="machine-image">
                                 </div>
-                                <div class="form-group row">
-                                    <div class="btn-group w-10" style="position : absolute;bottom:0">
-                                        <input type="file" hidden  name="image" class="custom-file-input" id="machineImage">
+                                <div class="form-group row" style= "    float: right; margin-right: 8px;margin-top: 18px">
+                                    <div class="btn-group w-10" >
+                                        <input type="file" hidden  name="image"  id="machineImage">
                                         <!-- <span id="mgs_ta"></span> -->
                                         <span for="exampleInputFile" class="btn btn-success col fileinput-button dz-clickable" id="replace-image-button">
                                             <i class="fas fa-plus"></i>
@@ -281,7 +279,7 @@
             </section>
             <!-- /.content -->
         @endif
-        <div id="not_found_msg" style="display:none; text-align: center; font-size: 25px; font-weight: 800;">
+        <div id="msg" style="display:none; text-align: center; font-size: 25px; font-weight: 800;">
             <span>Record Not Found!</span>
         </div>
     </div>
@@ -300,7 +298,7 @@
         const lineChartHook = (id, label, data , name) => {
             if(data.length > 0){
                 $(".main_chart").css("display","block");
-                $("#not_found_msg").css("display","none");
+               // $("#not_found_msg").css("display","none");
                 let ctx = document.getElementById(id).getContext('2d');
                 if(myChart) myChart.destroy();
                 myChart = new Chart(ctx, {
@@ -337,7 +335,7 @@
             }
             else{
                 $(".main_chart").css("display","none");
-                $("#not_found_msg").css("display","block");
+               // $("#not_found_msg").css("display","block");
 
             }
         }
