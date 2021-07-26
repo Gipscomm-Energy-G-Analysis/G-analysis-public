@@ -69,15 +69,9 @@ function sendAlertEmails($mstsWithoutData) {
 
     function sendMails($tblData) {
 
-        $empfaenger = [ "sdm@energie-gipscomm.de"
-                      , "info@energie-gipscomm.de"
-                      , "tmm@energie-gipscomm.de"
-                      , "cmu@energie-gipscomm.de"
-                      , "alfred.tekniepe@managee.de"
-                      , "rpi@energie-gipscomm.de"
-                      ] ;
+        $subject = "Daten kommen nicht mehr an (G-Analysis)" ;
 
-        $betreff = "Daten kommen nicht mehr an (G-Analysis)" ;
+        define("subject", $subject) ; 
 
         $emailText  = "<h3>Bei folgenden Messstellen kommen keine aktuellen Daten mehr an : </h3><br>" ;
         $emailText .= " <style>
@@ -107,14 +101,40 @@ function sendAlertEmails($mstsWithoutData) {
                             <tbody>".$tblData."</tbody>
                         </table><br><br>" ;
 
-        echo $emailText ;
+        define("emailText", $emailText) ;
 
-        eMail($empfaenger[0], $betreff, $emailText) ;
-        eMail($empfaenger[1], $betreff, $emailText) ;
-        eMail($empfaenger[2], $betreff, $emailText) ;
-        eMail($empfaenger[3], $betreff, $emailText) ;
-        eMail($empfaenger[4], $betreff, $emailText) ;
-        eMail($empfaenger[5], $betreff, $emailText) ;
+        echo emailText ;
+        
+        $gUsers = 
+            [ "sdm"
+            , "info"
+            , "tmm"
+            , "cmu"
+            , "rpi"
+            , "hts"
+            ] ;
+
+        define("gUsers", $gUsers) ;
+  
+        $extEMailAdresses = [ "alfred.tekniepe@managee.de" ] ;
+            
+        define("extEMailAdresses", $extEMailAdresses) ;
+
+        function gDomain ($username) {
+            return $username."@energie-gipscomm.de" ;
+        }
+
+        function recipients () {
+            $gEMailAdresses = array_map('gDomain', gUsers) ;
+            
+            return array_merge ($gEMailAdresses, extEMailAdresses) ;
+        }
+
+        function sendMail ($address) {
+            eMail($address, subject, emailText) ;
+        }
+
+        return array_map( 'sendMail', recipients() ) ;
     }
 
     $rowsString = buildStringMstsDBs($mstsWithoutData) ;
@@ -130,12 +150,17 @@ function sendAlertEmails($mstsWithoutData) {
 
 $start = hrtime(true) ;
 
+// Sends alert emails to listed addresses if data not up-to-date.
+// --------------------------------------------------------------
+//
 pipe(
     [ getActiveCustomerDBs()
     , 'mstsDbsWithInvalidDate'
     , 'sendAlertEmails'
     ]
 ) ;
+//
+// --------------------------------------------------------------
 
 $end = hrtime(true) ;
 

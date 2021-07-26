@@ -43,6 +43,8 @@
         <!--Header-->
         <img id="headerBalken" src="images/header2.png" alt="header" style="position:absolute;width:100%;height:55px;opacity:.7;top:0;" />
         <!--Horizontal Menu-->
+        <!-- If a menu item is added/changed/removed, the treeView JSON
+        in js/src/treeView.js has to be adjusted accordingly -->
         <div class="menu-wrap">
             <nav class="menu">
                 <img id="logo2" src="images/g_analysisNeu6.png" alt="G-Analysis Logo" style="float:right;height:41.67px;width:125px;margin-top:7px;margin-right:5px;top:0;">
@@ -50,73 +52,57 @@
                     <li>
                         <select class="manPfad" size="1" title="Mandant" style="margin-top:10px;"></select>
                     </li>
-                    <!--  <li>
-                        <a style="border-top-left-radius:8px; border-bottom-left-radius:8px; border-right-width:0px; left:0px;" href="#">Startseite</a>
-                    </li>-->
                     <li>
-                        <a href="#" id="auswertungenMenu" class="optionen_tabs_open_state">Auswertungen</a>
+                        <a href="#" id="auswertungenMenu" data-menus="1" >Auswertungen</a>
                         <div>
                             <ul class="sub-menu">
-                               <!-- <li>
-                                    <a id="dashboards" href="#">Dashboards</a>
-                                </li>-->
                                 <li>
-                                    <a href="#" id="berichteMenu">Berichte</a>
+                                    <a href="#" id="berichteMenu" data-menus="1-1" >Berichte</a>
                                     <ul>
                                         <li>
-                                            <a id="isoBerichteMenu" href="#">ISO-Berichte</a>
+                                            <a id="isoBerichteMenu" href="#" data-menus="1-1-1">ISO-Berichte</a>
                                             <ul id="standardBerichteContainer">
                                                 <li>
-                                                    <a id="spaEfVTab1Menu" href="#">SpaEfV_Tabelle_1</a>
+                                                    <a id="spaEfVTab1Menu" href="#" data-menus="1-1-1-1" >SpaEfV_Tabelle_1</a>
                                                 </li>
                                                 <li>
-                                                    <a id="spaEfVTab2Menu" href="#">SpaEfV_Tabelle_2</a>
+                                                    <a id="spaEfVTab2Menu" href="#" data-menus="1-1-1-2" >SpaEfV_Tabelle_2</a>
                                                 </li>
                                             </ul>
                                         </li>
-                                     <!--   <li>
-                                            <a href="#">Benutzerdefiniert</a>
-                                        </li>-->
                                     </ul>
                                 </li>
                                 <li>
-                                    <a id="diagMenu" href="#">Diagramme</a>
+                                    <a id="diagMenu" href="#" data-menus="1-2">Diagramme</a>
                                     <ul class="sub-menu">
-                                        <li><a id="mstVerglMenu" href="#">Neu erstellen</a>
+                                        <li><a id="mstVerglMenu" href="#" data-menus="1-2-1">Neu erstellen</a>
                                             <ul class="sub-menu">
-                                                <li><a id="mstVerglMenu" href="#">Messstellenvergleich</a></li>
-                                                <li><a id="zeitVerglMenu" href="#">Zeitvergleich</a></li>
-                                                <li><a id="knzDarst" href="#">Kennzahlendarstellung</a></li>
+                                                <li><a id="mstVerglMenu" href="#" data-menus="1-2-1-1">Messstellenvergleich</a></li>
+                                                <li><a id="zeitVerglMenu" href="#" data-menus="1-2-1-2">Zeitvergleich</a></li>
+                                                <li><a id="knzDarst" href="#" data-menus="1-2-1-3">Kennzahlendarstellung</a></li>
                                             </ul></li>
 
-                                        <li><a id="zeitVerglMenu" href="#">Gespeichertes laden</a>
+                                        <li><a id="zeitVerglMenu" href="#" data-menus="1-2-2">Gespeichertes laden</a>
                                             <ul id="gespDiagramme"></ul>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a id="verbExportMenu" href="#">Verbrauchsdatenexport</a>
+                                    <a id="verbExportMenu" href="#" data-menus="1-3">Verbrauchsdatenexport</a>
                                 </li>
-                              <!--  <li>
-                                    <a href="#">Benchmark</a>
-                                </li>-->
                                 <li>
-                                    <a id="menuProduktionAusw" href="#">Produktion</a>
+                                    <a id="menuProduktionAusw" href="#" data-menus="1-4">Produktion</a>
                                 </li>
-                            <!--22-02-2020 Remove editor menu from here-->
-                              <!--   <li>
-                                 <a href="#">Benutzerdefiniert</a>
-                                 </li>-->
-                        </li>
-                       </ul>
-                  </div>
+                              </li>
+                           </ul>
+                  
                </li>
                <li>
-                  <a class="optionen_tabs_open_state" id="stammdatenMenu" href="#">Stammdaten</a>
+                  <a  id="stammdatenMenu" href="#" data-menus="2">Stammdaten</a>
                   <div>
                      <ul class="sub-menu">
                         <li id="rechtMenuLi">
-                           <a href="#">Rechteverwaltung</a>
+                           <a href="#" data-menus="2-1">Rechteverwaltung</a>
                            <ul id="subRechtMenu">
                               <li id="betrGrpMenuLi"> <a id="betrGrpMenu" href="#">Betreuergruppen</a> </li>
                               <li id="manGrpMenuLi"> <a id="manGrpMenu" href="#">Mandantengruppen</a> </li>
@@ -126,7 +112,7 @@
                            </ul>
                         </li>
                         <li>
-                           <a id="untMenu" href="#">Unternehmensstruktur</a>
+                           <a id="untMenu" href="#" data-menus="2-2">Unternehmensstruktur</a>
                            <ul id="subUntMenu">
                               <li> <a id="manMenu" href="#">Mandanten</a> </li>
                               <li> <a id="orgMenu" href="#">Organisationen</a> </li>
@@ -139,7 +125,7 @@
                            </ul>
                         </li>
                         <li>
-                           <a id="anlMenu" href="#">Anlagenverwaltung</a>
+                           <a id="anlMenu" href="#" data-menus="2-3">Anlagenverwaltung</a>
                            <ul id="subAnlMenu">
                               <li> <a id="anl_Menu" href="#">Anlagen</a> </li>
                               <li> <a id="anl_Eng_Menu" href="#">Energieversorgung</a> </li>
@@ -149,15 +135,10 @@
                            </ul>
                         </li>
                         <li>
-                           <a id="msmMenu" href="#">Messmittelverwaltung</a>
-                           <!--    <ul id="subMsmMenu">
-                              <li>
-                                  <a id="msgMenu" href="#">Messmittel</a>
-                              </li>
-                              </ul>-->
+                           <a id="msmMenu" href="#" data-menus="2-4">Messmittelverwaltung</a>
                         </li>
                         <li>
-                           <a id="prdMenu" href="#">Produkteverwaltung</a>
+                           <a id="prdMenu" href="#" data-menus="2-5">Produkteverwaltung</a>
                            <ul id="subPrdMenu">
                               <li> <a id="prd_Menu" href="#">Produkte</a> </li>
                               <li> <a id="prd_Konfig_Menu" href="#">weitere Konfiguration</a> </li>
@@ -165,51 +146,45 @@
                            </ul>
                         </li>
                         <li>
-                           <a id="knz_almMenu" href="#">Kennzahlen/Alarme</a>
+                           <a id="knz_almMenu" href="#" data-menus="2-6">Kennzahlen/Alarme</a>
                            <ul id="subKnz_AlmMenu">
                               <li> <a id="knzMenu" href="#">Kennzahlen</a> </li>
                               <li> <a id="almMenu" href="#">Alarme</a> </li>
                            </ul>
                         </li>
-                        <!--22-02-2020 Add editor menu here-->
                         <li>
-                           <a id="auswEditor" href="#">Editor</a>
+                           <a id="auswEditor" href="#" data-menus="2-7">Editor</a>
                            <ul>
                               <li> <a id="menuBerechnungsformeln" href="#">Berechnungsformeln</a> </li>
                               <li> <a id="menuVorlagenformeln" href="#">Vorlagenformeln</a> </li>
                            </ul>
                         </li>
-                        <!--22-02-2020 Add editor menu here-->
                      </ul>
                   </div>
                </li>
                <li>
-                  <a href="#" class="optionen_tabs_open_state">Manuell</a>
+                  <a href="#" data-menus="3">Manuell</a>
                   <div>
                      <ul class="sub-menu">
                         <li>
-                           <a id="intMswMenu" href="#">In. Messwerte</a>
+                           <a id="intMswMenu" href="#" data-menus="3-1">In. Messwerte</a>
                            <ul class="sub-menu">
-                            <!-- new-mm-start 22-03-2021-->
-                                        <li><a id="intEngIMwMenu" href="#">Interne Betriebsdaten</a></li>
-                                        <li><a id="intBdeIMwMenu" href="#">Interne Energiedaten</a></li>
-                            <!-- new-mm-end 22-03-2021-->
-                            <!-- <li><a id="intEngIMwMenu" href="#">Interne Energiedaten</a></li>
-                            <li><a id="intBdeIMwMenu" href="#">Interne Betriebsdaten</a></li> -->
+                              <li><a id="intEngIMwMenu" href="#" data-menus="3-1-1">Interne Betriebsdaten</a></li>
+                              <li><a id="intBdeIMwMenu" href="#" data-menus="3-1-2">Interne Energiedaten</a></li>
                            </ul>
                         </li>
                         <li>
-                           <a id="extRngGesamtMenu" href="#">Ex. Rechnungen</a>
+                           <a id="extRngGesamtMenu" href="#" data-menus="3-2">Ex. Rechnungen</a>
                            <ul class="sub-menu">
-                              <li> <a id="extRngMenu" href="#">Rechnungen</a> </li>
-                              <li> <a id="eRngVergleichMenu" href="#">Rechnungsvergleich</a> </li>
+                              <li> <a id="extRngMenu" href="#" data-menus="3-2-1">Rechnungen</a> </li>
+                              <li> <a id="eRngVergleichMenu" href="#" data-menus="3-2-2">Rechnungsvergleich</a> </li>
                            </ul>
                         </li>
                      </ul>
                   </div>
                </li>
                <li>
-                  <a href="#" class="optionen_tabs_open_state">Optionen</a>
+                  <a href="#" >Optionen</a>
                   <div>
                      <ul class="sub-menu">
                         <li>
@@ -217,29 +192,16 @@
                            <ul>
                               <li> <a id="entMenu" href="#">Energieträger</a> </li>
                               <li> <a id="enfMenu" href="#">Energieformen</a> </li>
-                              <!-- <li>
-                                 <a id="gsfMenu" href="#">Gesellschaftsformen</a>
-                                 </li>
-                                 <li>
-                                 <a id="mgsMenu" href="#">Managementsysteme</a>
-                                 </li>-->
                               <li> <a id="zpMenu" href="#">Zählpunktnummern</a> </li>
                               <li>
                                  <a id="erwAnlMenu" href="#">Erweiterungen</a>
                                  <ul>
                                     <li> <a id="erwAnlMenu" href="#">Erweiterung Anlagen</a> </li>
                                     <li> <a id="erwPrdMenu" href="#">Erweiterung Produkte</a> </li>
-                                    <!--24-02-2020 korrektur Faktor top Menu defined,18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren" -->
                                     <li> <a id="korrekturFaktorMenu" href="#">statische Korrekturfaktoren</a> </li>
-                                    <!--24-02-2020 korrektur Faktor top Menu defined,18-03-2020 rename the menu  "Taschenrechner" to "statische Korrekturfaktoren"-->
-                                    <!--31-03-2020 dynamischer korrektur Faktor top Menu defined-->
                                     <li> <a id="korrekturFaktorMenuDynamischer" href="#">dynamischer Korrekturfaktoren</a> </li>
-                                    <!--31-03-2020 dynamischer korrektur Faktor top Menu defined-->
                                  </ul>
                               </li>
-                              <!-- <li>
-                                 <a id="erwPrdMenu" href="#">Heizkurve</a>
-                                 </li>-->
                               <li> <a id="grpDiagMenu" href="#">Gruppierung Diagramme</a> </li>
                            </ul>
                         </li>
@@ -253,6 +215,7 @@
                </li>
             </ul>
          </nav>
+      </div>
       </div>
       <!--SideBar Rechts-->
       <!--  -->
@@ -1666,16 +1629,12 @@
                                  <input id="passwortSAdm" type="password" class="sAdmForm"/>
                               </div>
 
-                                    <!-- <div class="navDropBox" style="height:20px;padding:3px;">
-                                        <img id="sAdmRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                                    </div> -->
-                                    <div class="infosBlock" id="sdmRoles">
-                                        <div class="sectionHeader">
-                                            <label>Rollen und Berechtigungen</label>
-                                        </div>
-                                        <div id="superadmincommTreeview">
-                                        </div>
+                              <div class="infosBlock" id="sdmRoles">
+                                    <div class="sectionHeader">
+                                       <label>Berechtigungen</label>
                                     </div>
+                                    <div id="sAdmTreeview"></div>
+                              </div>
                            </div>
                      </div>
                   </div>
@@ -10987,32 +10946,7 @@
                      }
                    });
                 </script>
-                <script type="text/javascript" src="src/js/jquery.treeview.js"></script>
-               <script type="text/javascript">
-                     var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-                     var tw = new TreeView(
-                        treeObject,
-                        {showAlwaysCheckBox:true,fold:false});
-                     document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
-               </script>
-                <script type="text/javascript">
-
-                  var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-                  var tw = new TreeView(
-                     treeObject,
-                     {showAlwaysCheckBox:true,fold:false});
-                  document.getElementById("admincommTreeview").appendChild( tw.root	 )
-
-               </script>
-               <script type="text/javascript">
-
-                  var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-                  var tw = new TreeView(
-                      treeObject,
-                      {showAlwaysCheckBox:true,fold:false});
-                  document.getElementById("benutzerTreeview").appendChild( tw.root	 )
-
-              </script>
+                <script type="text/javascript" src="src/js/tree.min.js"></script>
                 <script type="text/javascript" src="dist/js/jqueryui/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="dist/js/mathquill/mathquill.min.js"></script>
                 <script type="text/javascript" src="dist/js/table2csv.min.js"></script>
@@ -11031,7 +10965,7 @@
                 <script type="text/javascript" src="dist/js/buttons.print.min.js"></script>
                 <script type="text/javascript" src="dist/js/jspdf.debug.min.js"></script>
                 <script type="text/javascript" src="dist/js/printThis.min.js"></script>
-                <script type="text/javascript" src="dist/js/fpCore.min.js"></script>
+                <script type="text/javascript" src="src/js/fpCore.js"></script>
                 <script type="text/javascript" src="dist/js/Synchronizer.min.js"></script>
                 <script type="text/javascript" src="dist/js/DataMachine.min.js"></script>
                 <script type="text/javascript" src="dist/js/objects.min.js"></script>
@@ -11063,6 +10997,7 @@
                 <script type="text/javascript" src="src/js/Unternehmensstruktur/mandanten.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/schichtdaten.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/historie.js"></script>
+                <script type="text/javascript" src="src/js/treeView.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/rechteverwaltung.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/gipscommAdmins.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/betreuergruppen.js"></script>
