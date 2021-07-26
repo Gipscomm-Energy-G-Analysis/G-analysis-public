@@ -81,5 +81,23 @@ const scpRechteverwaltung =
 
                     mandantenEinlesen(betrGrpID, ins, manOderManGrpID)
                 }
+
+            const getMenuIDs =
+                () =>
+                array($("[data-menus]").length)()()
+                .map((_, i) => $("[data-menus]").eq(i).attr("data-menus"))
+
+            const menuItemText =
+                id => 
+                ( { id, text : $(`[data-menus=${id}]`).text() } )
+
+            this.getMainMenus =
+                menus =>
+                menus.filter(a => a.id.split("-").length === 1)
+                
+            this.menuHtml2Json =
+                () => 
+                getMenuIDs()
+                .map( menuItemText )
         }
     )

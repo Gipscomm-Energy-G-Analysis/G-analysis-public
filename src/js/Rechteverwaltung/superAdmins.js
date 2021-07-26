@@ -315,28 +315,10 @@ const scpRechteverwaltung_superAdmins =
                     })
                 }     
 
-            const getMenuIDs =
-                () =>
-                array($("[data-menus]").length)()()
-                .map((_, i) => $("[data-menus]").eq(i).attr("data-menus"))
-
-            const menuItemText =
-                id => 
-                ( { id, text : $(`[data-menus=${id}]`).text() } )
-
-            const getMainMenus =
-                menus =>
-                menus.filter(a => a.id.split("-").length === 1)
-                
-            const menuHtml2Json =
-                () => 
-                getMenuIDs()
-                .map( menuItemText )
-
             this.showTreeView = 
                 () => {
-                    const menus = menuHtml2Json()
-                    const mainMenus = getMainMenus(menus)
+                    const menus = scpRechteverwaltung.menuHtml2Json()
+                    const mainMenus = scpRechteverwaltung.getMainMenus(menus)
                     const treeJson = scpTreeView.buildTree(mainMenus)(menus)
 
                     scpTreeView.showTreeView("sAdmTreeview")(treeJson)

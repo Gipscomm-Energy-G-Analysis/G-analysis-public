@@ -23,7 +23,6 @@ const scpTreeView =
                 a =>
                 nextLevelNode(id)(a) && isChild(id)(a)
 
-            // TODO : use partition from fpCore to group the menus into children and remaining
             const getChildren = 
                 id =>
                 partition(nextLvlAndChild(id))({selected : [], unselected : []})
@@ -70,7 +69,5 @@ const scpTreeView =
                      } 
                 )
             }
-            
-
         }
     )
