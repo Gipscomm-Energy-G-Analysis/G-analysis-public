@@ -1,10 +1,10 @@
 
 <style> .u-under{ height:auto !important; }
-      .spinner { position:fixed !important; } 
-      .product-image { border-radius: 5px; margin-top: 12px; }
-      .form-horizontal .card-body { padding-top: 0; }
-      .form-group { margin-bottom: 0.3rem !important; }
-      .col-form-label { line-height: 1 !important;}
+    .spinner { position:fixed !important; }
+    .product-image { border-radius: 5px; margin-top: 12px; }
+    .form-horizontal .card-body { padding-top: 0; }
+    .form-group { margin-bottom: 0.3rem !important; }
+    .col-form-label { line-height: 1 !important;}
 </style>
 @extends('layout.app')
 @section('headContent')
@@ -18,10 +18,54 @@
         <div class="content-header">
             <div class="container-fluid">
                 @if(!empty($data))
-                <div class="row dashboard">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Dashboard</h1>
-                    </div><!-- /.container-fluid -->
+                    <div class="row dashboard">
+                        <div class="col-sm-6">
+                            <h1 class="m-0"></h1>
+                        </div><!-- /.container-fluid -->
+                        @else
+                            <h4 style="text-align:center;">{{$message}}</h4>
+                        @endif
+                    </div><!-- /.row -->
+            </div>
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        @if(!empty($data))
+            @php $image = 'images/Blasanlage.jpg'; @endphp
+            @if(file_exists($data['bildAnl']))
+                @php  $image = $data['bildAnl']; @endphp
+            @endif
+            <section class="content">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group row">
+                            <input type="hidden" value= "{{$_SESSION['nameDB']}}"; id="nameDB" />
+                            <label class="col-sm-3 col-form-label">Organisation</label>
+                            <div class="col-sm-9">
+                                <select class="form-control organisation" onchange="select_org()" style="width: 100%;" id="select_org">
+                                    <option value="">Select</option>
+                                    @foreach($org as $key=>$value)
+                                        @if($key==0)
+                                            <option value="{{$value['org_ID']}}" selected>{{$value['nameOrg']}}</option>
+                                        @else
+                                            <option value="{{$value['org_ID']}}">{{$value['nameOrg']}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group row property">
+                            <label class="col-sm-3 col-form-label">Liegenschaft</label>
+                            <div class="col-sm-9">
+                                <select class="form-control liegenschaft" onchange="getMachineData($('.navigation').attr('data-value'),'current',document.getElementById('select_org').value)" id="select_prop" style="width: 100%;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-sm-6">
                         <div class="fc-toolbar-chunk">
                             <div class="btn-group float-right">
@@ -45,47 +89,16 @@
                             </div>
                         </div>
                     </div><!-- /.col -->
-                    @else
-                    <h4 style="text-align:center;">{{$message}}</h4>
-                    @endif
-                </div><!-- /.row -->
-            </div>
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        @if(!empty($data))
-            @php $image = 'images/Blasanlage.jpg'; @endphp
-            @if(file_exists($data['bildAnl']))
-                @php  $image = $data['bildAnl']; @endphp
-            @endif
-            <section class="content">
-                <div class="card card-solid">
-                    <div class="card-body">
-                        <div class="row"> 
-                            <div class="col-sm-3">
-                                <input type="hidden" value= "{{$_SESSION['nameDB']}}"; id="nameDB" />
-                                <div class="form-group ">
-                                    <label>Organisation</label>
-                                    <select class="form-control organisation" onchange="select_org()" style="width: 100%;" id="select_org">
-                                    <option value="">Please Select---</option>
-                                        @foreach($org as $value)
-                                            <option value="{{$value['org_ID']}}">{{$value['nameOrg']}}</option> 
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group property">
-                                    <label>Liegenschaft</label>
-                                    <select class="form-control liegenschaft" onchange="getMachineData($('.navigation').attr('data-value'),'current',document.getElementById('select_org').value)" id="select_prop" style="width: 100%;">
-                                    </select>
-                                </div>
-                            </div> 
+                </div>
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Dashboard</h3>
+                        <div class="card-tools">
                         </div>
+                    </div>
+                    <div class="card-body">
                         <div class="row" id="data-card">
                             <div class="col-12 col-sm-5">
-                                <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
                                 <div class="col-12">
                                     <img src="{{$image}}" class="product-image" alt="Product Image" id="machine-image">
                                 </div>
@@ -98,110 +111,110 @@
                                         </span>
                                     </div>
                                 </div>
-                                </div>
-                                <div class="col-12 col-sm-7">
-                                    <form class="form-horizontal">
-                                        <div class="card-body">
-                                            <input type="hidden" class="form-control" id="anl_ID"  value="{{$data['anl_ID']}}" >
-                                            <div class="row">
-                                                <div class="col-md-6 left_section">
-                                                    <div class="form-group row">
+                            </div>
+                            <div class="col-12 col-sm-7">
+                                <form class="form-horizontal">
+                                    <div class="card-body">
+                                        <input type="hidden" class="form-control" id="anl_ID"  value="{{$data['anl_ID']}}" >
+                                        <div class="row">
+                                            <div class="col-md-6 left_section">
+                                                <div class="form-group row">
                                                     <!-- <label for="anlage" class="col-sm-2 col-form-label">Anlage</label> -->
-                                                        <div class="col-sm-12">
-                                                            <label for="anlage" class="col-form-label">Anlage</label>
-                                                            <input type="text" class="form-control" id="anlage" placeholder="Anlage" value="{{$data['anlage']}}" readonly>
-                                                        </div>
+                                                    <div class="col-sm-12">
+                                                        <label for="anlage" class="col-form-label">Anlage</label>
+                                                        <input type="text" class="form-control" id="anlage" placeholder="Anlage" value="{{$data['anlage']}}" readonly>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <!-- <label for="programm" class="col-sm-2 col-form-label">Status</label> -->
-                                                        <div class="col-sm-12">
-                                                            <label for="programm" class="col-form-label">Status</label>
-                                                            <input type="text" class="form-control" id="programm" placeholder="Programm" value="{{$data['programm']}}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <!-- <label for="programm" class="col-sm-2 col-form-label">Status</label> -->
+                                                    <div class="col-sm-12">
+                                                        <label for="programm" class="col-form-label">Status</label>
+                                                        <input type="text" class="form-control" id="programm" placeholder="Programm" value="{{$data['programm']}}" readonly>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <!-- <label for="bestellung" class="col-sm-2 col-form-label">Bestellung</label> -->
-                                                        <div class="col-sm-12">
-                                                            <label for="bestellung" class="col-form-label">Bestellung</label>
-                                                            <input type="text" class="form-control" id="bestellung" placeholder="bestellung" value="{{$data['bestellung']}}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <!-- <label for="bestellung" class="col-sm-2 col-form-label">Bestellung</label> -->
+                                                    <div class="col-sm-12">
+                                                        <label for="bestellung" class="col-form-label">Bestellung</label>
+                                                        <input type="text" class="form-control" id="bestellung" placeholder="bestellung" value="{{$data['bestellung']}}" readonly>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <!-- <label for="artikel" class="col-sm-2 col-form-label">Artikel</label> -->
-                                                        <div class="col-sm-12">
-                                                            <label for="artikel" class="col-form-label">Artikel</label>
-                                                            <input type="text" class="form-control" id="artikel" placeholder="Artikel" value="{{$data['artikel']}}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <!-- <label for="artikel" class="col-sm-2 col-form-label">Artikel</label> -->
+                                                    <div class="col-sm-12">
+                                                        <label for="artikel" class="col-form-label">Artikel</label>
+                                                        <input type="text" class="form-control" id="artikel" placeholder="Artikel" value="{{$data['artikel']}}" readonly>
                                                     </div>
-                                                    <!-- <div class="form-group row">
+                                                </div>
+                                            <!-- <div class="form-group row">
                                                         <label for="bisher_produziert" class="col-sm-2 col-form-label">Bisher produziert</label>
                                                         <div class="col-sm-10">
                                                             <input type="text" class="form-control" id="bisher_produziert" placeholder="Bisher produziert" value="{{$data['bisher_produziert']}}" readonly>
                                                         </div>
                                                     </div> -->
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <label for="gutmenge" class="col-form-label">Gutmenge</label>
-                                                            <input type="text" class="form-control" id="gutmenge" placeholder="Gutmenge"  value="{{$data['gutmenge']}}" readonly>
-                                                        </div>
-                                                    </div>
-                                            
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <label for="ausschuss" class="col-form-label">Ausschuss</label>
-                                                            <input type="text" class="form-control" id="ausschuss" placeholder="Ausschuss" value="{{$data['ausschuss']}}" readonly>
-                                                        </div>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label for="gutmenge" class="col-form-label">Gutmenge</label>
+                                                        <input type="text" class="form-control" id="gutmenge" placeholder="Gutmenge"  value="{{$data['gutmenge']}}" readonly>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 right_section">
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <label for="auftragsmenge" class="col-form-label">Auftragsmenge</label>
-                                                            <input type="text" class="form-control" id="auftragsmenge" placeholder="Auftragsmenge" value="{{$data['auftragsmenge']}}" readonly>
-                                                        </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label for="ausschuss" class="col-form-label">Ausschuss</label>
+                                                        <input type="text" class="form-control" id="ausschuss" placeholder="Ausschuss" value="{{$data['ausschuss']}}" readonly>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <label for="zeit_zyklus" class="col-form-label">Zeit/Zyklus</label>
-                                                            <input type="text" class="form-control" id="zeit_zyklus" placeholder="Zeit/Zyklus" value="{{$data['zeit_zyklus']}}" readonly>
-                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 right_section">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label for="auftragsmenge" class="col-form-label">Auftragsmenge</label>
+                                                        <input type="text" class="form-control" id="auftragsmenge" placeholder="Auftragsmenge" value="{{$data['auftragsmenge']}}" readonly>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <label for="werkzeug" class="col-form-label">Werkzeug</label>
-                                                            <input type="text" class="form-control" id="werkzeug" placeholder="Werkzeug" value="{{$data['werkzeug']}}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label for="zeit_zyklus" class="col-form-label">Zeit/Zyklus</label>
+                                                        <input type="text" class="form-control" id="zeit_zyklus" placeholder="Zeit/Zyklus" value="{{$data['zeit_zyklus']}}" readonly>
                                                     </div>
-                                                    <!-- <div class="form-group row">
-                                                        <label for="artikel_stunde" class="col-sm-2 col-form-label">Artikel/Stunde</label>
-                                                        <div class="col-sm-10">
-                                                            <input type="text" class="form-control" id="artikel_stunde" placeholder="Artikel/Stunde" readonly>
-                                                        </div>
-                                                    </div> -->
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <label for="kavitäten" class="col-form-label">Kavitäten</label>
-                                                            <input type="text" class="form-control" id="kavitäten" placeholder="Kavitäten" value="{{$data['kavitäten']}}" readonly>
-                                                        </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label for="werkzeug" class="col-form-label">Werkzeug</label>
+                                                        <input type="text" class="form-control" id="werkzeug" placeholder="Werkzeug" value="{{$data['werkzeug']}}" readonly>
                                                     </div>
-                                                    @php $letzte_störung = " "; @endphp
-                                                    @if($data['programm'] != 'Automatik')
-                                                        $letzte_störung = $data['letzte_störung'];
-                                                    @endif
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-12">
-                                                            <label for="letzte_störung" class="col-form-label">Letzte Störung</label>
-                                                            <input type="text" class="form-control" id="letzte_störung" placeholder="Letzte Störung" value="{{$letzte_störung}}" readonly>
-                                                        </div>
+                                                </div>
+                                                <!-- <div class="form-group row">
+                                                    <label for="artikel_stunde" class="col-sm-2 col-form-label">Artikel/Stunde</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" id="artikel_stunde" placeholder="Artikel/Stunde" readonly>
+                                                    </div>
+                                                </div> -->
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label for="kavitäten" class="col-form-label">Kavitäten</label>
+                                                        <input type="text" class="form-control" id="kavitäten" placeholder="Kavitäten" value="{{$data['kavitäten']}}" readonly>
+                                                    </div>
+                                                </div>
+                                                @php $letzte_störung = " "; @endphp
+                                                @if($data['programm'] != 'Automatik')
+                                                    $letzte_störung = $data['letzte_störung'];
+                                                @endif
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <label for="letzte_störung" class="col-form-label">Letzte Störung</label>
+                                                        <input type="text" class="form-control" id="letzte_störung" placeholder="Letzte Störung" value="{{$letzte_störung}}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
 
                 <!-- /.card -->
                 <!-- Bar Chart -->
@@ -209,30 +222,52 @@
                     <div class="card-header">
                         <h3 class="card-title">Charts</h3>
                         <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
+                            {{--                            <button type="button" class="btn btn-tool" data-card-widget="collapse">--}}
+                            {{--                                <i class="fas fa-minus"></i>--}}
+                            {{--                            </button>--}}
                         </div>
                     </div>
                     <!-- LINE CHART -->
                     <div class="card-body">
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label>Server Time Filter</label>
-                                <select class="custom-select time_filter" id="timeFilter" >
-                                    <option value="5" selected>5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                </select>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>No. of Records</label>
+                                    <select class="custom-select time_filter" id="timeFilter" >
+                                        <option value="5" selected>5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Time Interval</label>
+                                    <select class="custom-select" id="timeFilterInterval" >
+                                        <option value="1">1 Minutes</option>
+                                        <option value="5">5 Minutes</option>
+                                        <option value="10">10 Minutes</option>
+                                        <option value="15" selected>15 Minutes</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
+
                         <div class="row" id="graph_div">
                             @foreach($data['chartsData'] as $key=>$value)
                                 @if($value['record'])
                                     <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
-                                        <div class="chart">
-                                            <canvas id="lineChart_{{$key}}" style="background:#fff;" ></canvas>
+                                        <div class="card card-info">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Line Chart for {{$key}}</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="chart">
+                                                    <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;" ></canvas>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
                                         </div>
                                     </div>
                                 @endif
@@ -283,22 +318,22 @@
             <span>Record Not Found!</span>
         </div>
     </div>
-    
-    
+
+
 @stop
 @section('jsContent')
     <script src="{{asset('template/plugins/jsgrid/jsgrid.min.js')}}"></script>
     <script src="{{asset('js/dashboard/dashboard_ajax.js')}}"></script>
     <script src="{{asset('js/dashboard/jsGridMachines.js')}}"></script>
     <script type="text/javascript">
-    @if(!empty($data))
-        const getChartsDiv = document.querySelectorAll('.main_chart');
+        @if(!empty($data))
+        let getChartsDiv = document.querySelectorAll('.main_chart');
         const timeFilterHook = document.getElementById('timeFilter');
         let myChart;
         const lineChartHook = (id, label, data , name) => {
             if(data.length > 0){
                 $(".main_chart").css("display","block");
-               // $("#not_found_msg").css("display","none");
+                // $("#not_found_msg").css("display","none");
                 let ctx = document.getElementById(id).getContext('2d');
                 if(myChart) myChart.destroy();
                 myChart = new Chart(ctx, {
@@ -308,8 +343,8 @@
                         datasets: [{
                             label: `Energy consumption for ${name}`,
                             data: data,
-                            backgroundColor: '#00bc8c',
-                            borderColor: 'rgb(54, 162, 235)',
+                            backgroundColor: 'rgb(0, 188, 140, 0.2)',
+                            borderColor: 'rgb(0, 188, 140)',
                             borderWidth: 1,
                         }]
                     },
@@ -335,7 +370,7 @@
             }
             else{
                 $(".main_chart").css("display","none");
-               // $("#not_found_msg").css("display","block");
+                // $("#not_found_msg").css("display","block");
 
             }
         }
@@ -358,24 +393,26 @@
         }
 
         @foreach($data['chartsData'] as $key=>$value)
-            lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
+        lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         //adding event listener to time filter hook
         timeFilterHook.addEventListener('change', function(){
             let limit = this.value;
+            let getChartsDiv = document.querySelectorAll('.main_chart');
             if(getChartsDiv.length > 0) {
                 getChartsDiv.forEach((node)=>{
                     let id = node.getAttribute('data_value');
                     let data_event = node.getAttribute('data_event');
                     let name = data_event.split("_").pop();
+                    console.log('id',id,'limit',limit,'data_event',data_event,'name',name);
                     getGraphData(id, limit, data_event, name);
                 });
             }
         });
         /* END LINE CHART */
 
-     @endif
+        @endif
     </script>
 
 @stop

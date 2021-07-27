@@ -28,13 +28,13 @@ class DashboardController extends Controller
      */
     public function index()
     {
-       
+
         // $machines = Anlagen::whereNotNull('datumAnl')
         //     ->where('deleted',0)->first();
         // $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current']);
         // $data = $this->getMachineDetail($request);
         // return View::make("product", ["data"=>$data['data']]);
-  
+
         $database = $_SESSION['nameDB'];
         $username = $_SESSION['username'];
         if($_SESSION['nameDB'] == 'gipscomm'){
@@ -48,9 +48,12 @@ class DashboardController extends Controller
         if(!empty($result['database'])){
             $org= $this->getOrganisations($database);
             $org = (array)$org;
+            $request = Request::create( '/dashboard/machine', 'POST', ['orgId'=>$org['org'][0]['org_ID'], 'dbName'=>$database]);
+            $property = $this->getPropertyData($request);
             if(!empty($org)){
                 $machines = DB::table("Anlagen")
                     ->whereNotNull('datumAnl')
+                    ->where('lieg_ID',$property[0])
                     ->where('deleted',0)->first();
                 $machines=(array)$machines;
                 if(!empty($machines)){
@@ -59,11 +62,11 @@ class DashboardController extends Controller
                     return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message']]);
                 }
                 else{
-                    return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);    
-                } 
+                    return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);
+                }
             }
         }
-       
+
     }
     public function getMachineDetail(Request $request)
     {
@@ -114,13 +117,13 @@ class DashboardController extends Controller
                     break;
             }
         }
-       
+
         if(!empty($machineData)){
             $machineName = explode (   '-' ,$machineData['nummerAnl'] );
             $machineName = $machineName[0];
             $table_check= DB::getSchemaBuilder()->hasTable('TWP_PROD_OVERVIEW');
             if($table_check==1){
-                $prodData = ProductOverview::where('MANAME',$machineName)->orderBy('id', 'desc')->first();           
+                $prodData = ProductOverview::where('MANAME',$machineName)->orderBy('id', 'desc')->first();
                 if(!empty($prodData)){
                     $shards = 0;
                     $chartsData = collect();
@@ -203,20 +206,30 @@ class DashboardController extends Controller
         $data = $data->reverse()->pluck('Value')->toArray();
         return ['label'=>$label, 'data'=>$data, 'id'=>$id , 'record'=>$recordData];
     }
+
+    /**
+     * @param $database
+     * @return array
+     */
     public function getOrganisations($database) {
         $result = (new ManageDatabaseController)->switchDatabase($database);
-        if(!empty($result['database'])){          
+        if(!empty($result['database'])){
             $org  = Organisation::get()->toArray();
-            return ['org'=>$org];  
+            return ['org'=>$org];
         }
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function getPropertyData(Request $request) {
         $orgId = $request['orgId'];
         $dbName = $request['dbName'];
         $result = (new ManageDatabaseController)->switchDatabase($dbName);
-        if(!empty($result['database'])){          
+        if(!empty($result['database'])){
             $prop  = Liegenschaften::where('org_ID',$orgId)->get()->toArray();
-            return $prop;  
+            return $prop;
         }
     }
 }
