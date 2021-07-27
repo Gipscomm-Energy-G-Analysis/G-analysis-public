@@ -4907,34 +4907,6 @@ try {
             $(".lblNeu").css("display", "none")
             $(".lblAendern").css("display", "inline")
             switch (isInstance(a)) {
-                case "manGrp":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readInstanzen.php",
-                        data: {
-                            id: "manGrp",
-                            nameDB: "gipscomm",
-                            betrGrpID: $("#betrGrpID").val()
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            var c = $.parseJSON(a);
-                            0 < c.length ? (mandantenInMandantenGruppenTabelleEinlesen(c[b].mandantenIDs), $("#manGrpCount").val(c.length),
-                            [
-                              ["#manGrpID", "manGrp_ID"]
-                            , ["#nameManGrp", "name"]
-                            , ["#kurzManGrp", "kurz"]
-                            , ["#notizManGrp", "notiz"]
-                            ].forEach(function(a) {
-                                $(a[0]).val(c[b][a[1]])
-                            })) :
-                            clearFields("manGrpHinz");
-                        }
-                    });
-                    break;
                 case "adm":
                     var record_set = $('#' + a).data("record");
                     //alert($("#manBID").val());
