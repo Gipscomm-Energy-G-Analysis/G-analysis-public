@@ -15,6 +15,7 @@ use App\Models\DataValue15m;
 use App\Models\Liegenschaften;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ManageDatabaseController;
+
 use View;
 use Config;
 use DB;
@@ -28,13 +29,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
-        // $machines = Anlagen::whereNotNull('datumAnl')
-        //     ->where('deleted',0)->first();
-        // $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current']);
-        // $data = $this->getMachineDetail($request);
-        // return View::make("product", ["data"=>$data['data']]);
-
         $database = $_SESSION['nameDB'];
         $username = $_SESSION['username'];
         if($_SESSION['nameDB'] == 'gipscomm'){
@@ -59,7 +53,10 @@ class DashboardController extends Controller
                 if(!empty($machines)){
                     $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'']);
                     $data = $this->getMachineDetail($request);
-                    return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message']]);
+                    $tables = $this->getAllTables();
+                    $table= $tables['table'];
+                    $table = json_decode(json_encode($table), true);
+                    return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message'],"tables"=>$table]);
                 }
                 else{
                     return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);
@@ -230,6 +227,32 @@ class DashboardController extends Controller
         if(!empty($result['database'])){
             $prop  = Liegenschaften::where('org_ID',$orgId)->get()->toArray();
             return $prop;
+        }
+    }
+
+    /**
+     * @return mixed
+    */
+    public function getAllTables()
+    {
+        $database = $_SESSION["nameDB"];
+        $result = (new ManageDatabaseController)->switchDatabase($database);
+        if(!empty($result['database'])){
+            $tables = DB::select("SELECT TABLE_NAME FROM information_schema.tables where table_type='Base Table' order by table_name asc");
+            return ['table'=>$tables];
+        }
+    }
+    /**
+     * @param Request $request
+     * @return mixed
+    */
+    public function getTableColumns(Request $request)
+    { 
+        $table = $request['table'];
+        $dbName = $request['dbName'];
+        $result = (new ManageDatabaseController)->switchDatabase($dbName);
+        if(!empty($result['database'])){
+            return DB::getSchemaBuilder()->getColumnListing($table);
         }
     }
 }

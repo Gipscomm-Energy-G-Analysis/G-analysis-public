@@ -5,6 +5,7 @@
     .form-horizontal .card-body { padding-top: 0; }
     .form-group { margin-bottom: 0.3rem !important; }
     .col-form-label { line-height: 1 !important;}
+    .add_more_field { margin-top: 33px; float: left; width: 12%; margin-left: 3px;}
 </style>
 @extends('layout.app')
 @section('headContent')
@@ -41,7 +42,7 @@
                     <div class="col-sm-3">
                         <div class="form-group row">
                             <input type="hidden" value= "{{$_SESSION['nameDB']}}"; id="nameDB" />
-                            <label class="col-sm-3 col-form-label">Organisation</label>
+                            <label class="col-sm-4 col-form-label">Organisation</label>
                             <div class="col-sm-9">
                                 <select class="form-control organisation" onchange="select_org()" style="width: 100%;" id="select_org">
                                     <option value="">Select</option>
@@ -58,7 +59,7 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group row property">
-                            <label class="col-sm-3 col-form-label">Liegenschaft</label>
+                            <label class="col-sm-4 col-form-label">Liegenschaft</label>
                             <div class="col-sm-9">
                                 <select class="form-control liegenschaft" onchange="getMachineData($('.navigation').attr('data-value'),'current',document.getElementById('select_org').value)" id="select_prop" style="width: 100%;">
                                 </select>
@@ -207,6 +208,11 @@
                                                         <input type="text" class="form-control" id="letzte_störung" placeholder="Letzte Störung" value="{{$letzte_störung}}" readonly>
                                                     </div>
                                                 </div>
+                                                <div class="add_more_field" data-toggle="modal" data-target="#modal-default">
+                                                    <span for="exampleInputFile" class="btn btn-success col fileinput-button dz-clickable" id="replace-image-button">
+                                                        <i class="fas fa-plus"></i>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -278,6 +284,41 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="modal-default">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h4 class="modal-title">Add More Fields</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="add_label_field">Enter Label Name</label>
+                                <input type="text" class="form-control" id="add_label_field" >
+                            <label for="select_table">Select Table</label>
+                                <select class="form-control select_table" onchange="select_table()"  id="select_table">
+                                        <option value="">Select</option>
+                                        @foreach($tables as $key => $value)
+                                            <option value="{{$value['TABLE_NAME']}}">{{$value['TABLE_NAME']}}</option>
+                                        @endforeach
+                                </select>
+                            <label for="select_column">Select Column</label>
+                            <select class="form-control select_column" id="select_column">
+                                    <option value="">Select</option>       
+                            </select>
+
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
 
                 <!-- Modal Start -->
                 <div class="modal fade" id="modal-Machine-list">

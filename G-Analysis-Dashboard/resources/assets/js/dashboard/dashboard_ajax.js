@@ -3,24 +3,38 @@
     const imageInputField = document.getElementById('machineImage');
     const graphDiv = document.getElementById('graph_div');
     const anl_ID = document.getElementById('anl_ID').value;
-
+   
     let machineDataAjax;
     let spinner = new Spinner();
     const graphDivHook = (key, value) => {
-        let html = `<div class="col-sm-6 main_chart" data_value="${value.id}" data_event="lineChart_${key}">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h3 class="card-title">Line Chart for ${key}</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart">
-                                    <canvas id="lineChart_${key}" style="background:#F1F6FD;" ></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
+        //creating parent div
+        let parentDiv = document.createElement('div');
+        let parentClass = document.createAttribute('class');
+        parentClass.value = 'col-sm-6 main_chart';
+        parentDiv.setAttributeNode(parentClass);
+        let parentDataValue = document.createAttribute('data_value');
+        parentDataValue.value = value.id;
+        parentDiv.setAttributeNode(parentDataValue);
+        let parentDataEvent = document.createAttribute('data_event');
+        parentDataEvent.value = `lineChart_${key}`;
+        parentDiv.setAttributeNode(parentDataEvent);
+        //creating child div
+        let childDiv = document.createElement('div');
+        let childClass = document.createAttribute('class');
+        childClass.value = 'chart';
+        childDiv.setAttributeNode(childClass);
+        parentDiv.appendChild(childDiv);
+        //creating dynamic canvas
+        let canvasDiv = document.createElement('canvas');
+        let canvasID = document.createAttribute('id');
+        canvasID.value = `lineChart_${key}`;
+        canvasDiv.setAttributeNode(canvasID);
+        let canvasStyle = document.createAttribute('style');
+        canvasStyle.value = 'background:#fff';
+        canvasDiv.setAttributeNode(canvasStyle);
+        childDiv.appendChild(canvasDiv);
         //appending data to graphDiv
-        $('#graph_div').append(html);
+        graphDiv.appendChild(parentDiv);
         lineChartHook('lineChart_'+key, value.label, value.data, key);
     }
 
@@ -32,7 +46,7 @@
         formData.append("id", machine_id);
         formData.append("type", type);
         formData.append("prop_id", prop_id);
-      //  spinner.spin(container);
+        spinner.spin(container);
         machineDataAjax = $.ajax({
             url:'/dashboard/machine',
             type: 'POST',
@@ -44,7 +58,7 @@
             spinner.stop();
             if(response.code == 200 ){
                 graphDiv.innerHTML = '';
-
+               
                 $("#data-card").show();
                 $("#bar_chart").show();
                 $("#msg").hide();
@@ -76,7 +90,7 @@
 
             } else if(response.anl_ID !== undefined) {
                 toastr.error(response.message);
-
+               
                 $("#data-card").show();
                 // $("#not_found_msg").hide();
                 $('.navigation').attr('data-value', response.anl_ID);
@@ -95,8 +109,8 @@
                 $('#machine-image').attr('src','images/Blasanlage.jpg');
             }
             else{
-
-
+              
+               
                $("#data-card").hide();
                $("#bar_chart").hide();
                $("#msg").show();
@@ -108,7 +122,7 @@
     navigationHook.forEach((node)=>{
         node.addEventListener('click', function(){
             spinner.stop();
-           if (machineDataAjax) machineDataAjax.abort();
+            machineDataAjax.abort();
             let type = this.getAttribute('event-type');
             let machine_id = $('.navigation').attr('data-value');
             $(".custom-select").val('');
@@ -171,8 +185,8 @@
         let machine_id = $('.navigation').attr('data-value');
         getMachineData(machine_id, type, propId='');
       }, 10000);
+    
 
-    select_org();
     function select_org() {
         let orgId  = document.getElementById("select_org").value;
         let dbName = document.getElementById("nameDB").value;
@@ -187,17 +201,32 @@
             }).done( function(response) {
                 $('.liegenschaft').append('<option value="">Please Select--</option>');
                 $.each(response, function(key, value) {
-                    if(key == 0) {
-                        $('.liegenschaft').append('<option value="'+ value.lieg_ID +'" selected>'+ value.nameLieg +'</option>');
-                    } else {
-                        $('.liegenschaft').append('<option value="'+ value.lieg_ID +'">'+ value.nameLieg +'</option>');
-                    }
-
+                   $('.liegenschaft').append('<option value="'+ value.lieg_ID +'">'+ value.nameLieg +'</option>');
                 });
         });
-
+       
     }
-
-
+    function select_table() {
+        let table  = document.getElementById("select_table").value;
+        let dbName = document.getElementById("nameDB").value;
+        $('#select_column').html("");
+        $.ajax({
+            url:'/dashboard/tableColumn',
+            type: 'POST',
+                data: {
+                    table:table,
+                    dbName:dbName
+                },
+            }).done( function(response) {
+               console.log(response);
+                $.each(response, function(key, value) {
+                   $('#select_column').append('<option value="'+ value +'">'+ value +'</option>');
+                });
+        });
+       
+    }
+  
+  
+    
 
 
