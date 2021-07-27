@@ -30,43 +30,26 @@ const scpTreeView =
             this.buildTree = 
                 nodes => 
                 arr => 
-                nodes.length > 0 ?
+                greaterZero(nodes.length) ?
                 nodes.map(
-                    a => {
-                        const children =
-                            getChildren(a.id)(arr)
-
-                        const tree =
-                            { id : a.id
-                            , text : a.text
-                            , children : this.buildTree(children.selected)(children.unselected)
-                            }
-
-                        return tree
-                    }
+                    ({ id, text }) => 
+                    (({selected, unselected} = getChildren(id)(arr)) =>
+                    ({ id, text, children : this.buildTree(selected)(unselected)}))()
                 ) : nodes
 
             this.showTreeView =
                 divID => 
                 treeJson => {
                 const data =
-                    { data :
-                        [ { id : "0"
-                          , text : "Menüs"
-                          , children : [ treeJson ]
-                          }
-                     ]
-                    }
+                    [ { id : "0"
+                      , text : "Menüs"
+                      , children : treeJson 
+                      }
+                    ]
 
                 return new Tree( 
                     `#${divID}` 
-                    , { data : 
-                         [ { id : 0
-                           , text : "Menüs"
-                           , children : treeJson 
-                           }
-                         ] 
-                     } 
+                    , { data } 
                 )
             }
         }

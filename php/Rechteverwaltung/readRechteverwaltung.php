@@ -16,7 +16,7 @@ $query2 .= "WHERE deleted = 0 " ;
 
 $betreuerGruppen = queryDB( $conn, $query2, "read" ) ;
 
-$query3  = "SELECT sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username FROM superAdmins " ;
+$query3  = "SELECT sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechte FROM superAdmins " ;
 $query3 .= "WHERE deleted = 0 " ;
 
 $superAdmins = queryDB( $conn, $query3, "read" ) ;

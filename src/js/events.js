@@ -1663,9 +1663,7 @@ $(document).ready(function() {
     //
     $("#sAdmSpeichern").click(scpRechteverwaltung_superAdmins.validateAndSaveFormData)
     // 
-    // Initialize Permissions TreeView
-    //
-    scpRechteverwaltung_superAdmins.showTreeView()
+    
 
 
     // Schichtdaten

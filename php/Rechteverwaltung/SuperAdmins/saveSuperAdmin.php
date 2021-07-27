@@ -17,16 +17,17 @@ $faxSAdm = $_POST['faxSAdm'] ;
 $mobiltelefonSAdm = $_POST['mobiltelefonSAdm'] ;
 $username = $_POST['username'] ;
 $passHash = $_POST['passHash'] ;
+$rechte = $_POST['rechte'] ;
 
 if($modus === "new") {
-   $query =  "INSERT INTO superAdmins(betrGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, passHash, position, deleted) " ;
-   $query .= "VALUES($betrGrpID, 1, '$titelSAdm', '$nameSAdm', '$vornameSAdm', '$emailSAdm', '$telefonSAdm', '$faxSAdm', '$mobiltelefonSAdm', '$username', '$passHash','sAdm' 0) " ;
+   $query =  "INSERT INTO superAdmins(betrGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, passHash, position, rechte, deleted) " ;
+   $query .= "VALUES($betrGrpID, 1, '$titelSAdm', '$nameSAdm', '$vornameSAdm', '$emailSAdm', '$telefonSAdm', '$faxSAdm', '$mobiltelefonSAdm', '$username', '$passHash','sAdm', '$rechte', 0) " ;
 }
 else {
     $sAdmID = $_POST['sAdmID'] ;
 
     $query =  "UPDATE superAdmins " ;
-    $query .= "SET titelSAdm = '$titelSAdm', nameSAdm = '$nameSAdm', vornameSAdm = '$vornameSAdm', emailSAdm = '$emailSAdm', telefonSAdm = '$telefonSAdm', faxSAdm = '$faxSAdm', mobiltelefonSAdm = '$mobiltelefonSAdm', username = '$username', passHash = '$passHash' " ;
+    $query .= "SET titelSAdm = '$titelSAdm', nameSAdm = '$nameSAdm', vornameSAdm = '$vornameSAdm', emailSAdm = '$emailSAdm', telefonSAdm = '$telefonSAdm', faxSAdm = '$faxSAdm', mobiltelefonSAdm = '$mobiltelefonSAdm', username = '$username', passHash = '$passHash', rechte = '$rechte' " ;
     $query .= "WHERE sAdm_ID = ".$sAdmID." " ;
 }
 

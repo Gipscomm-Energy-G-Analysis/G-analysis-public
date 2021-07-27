@@ -23,7 +23,7 @@ const scpRechteverwaltung_superAdmins =
 
             // Returns an object that contains the form data
             const getFormData =
-                () => (
+                 () => (
                     { modus : getFieldValue("sAdmState")
                     , sAdmID : getFieldValue("sAdmID")
                     , betrGrpID : getFieldValue("betrGrpID")
@@ -36,6 +36,7 @@ const scpRechteverwaltung_superAdmins =
                     , mobiltelefonSAdm : getFieldValue("mobiltelefonSAdm")
                     , username : getFieldValue("benutzernameSAdm")
                     , passHash : getHash(getFieldValue("passwortSAdm"))
+                    , rechte : treeSAdm.getValues().join(",")
                     }
                 )
 
@@ -117,22 +118,21 @@ const scpRechteverwaltung_superAdmins =
                         saveFormData(formData) 
                     }
 
+            const colorState =
+                state =>
+                state === "new" ? 
+                "antiquewhite" :
+                "white"
+
             // Sets the create new or update state for saving
             const setState =
                 state =>
-                state === "new" ?
                 ( $("#sAdmState").val(state)
                 , $(".sAdmForm")
-                    .css("background", "antiquewhite")
+                    .css("background", colorState(state))
                     .css("border", "1px solid black")
                     .css("padding", "1px")
-                ) :
-                ( $("#sAdmState").val(state)
-                , $(".sAdmForm")
-                    .css("background", "white")
-                    .css("border", "1px solid black")
-                    .css("padding", "1px")
-                )
+                ) 
 
             // Resets the value of a given input to an empty string
             const clearField =
@@ -191,8 +191,10 @@ const scpRechteverwaltung_superAdmins =
                             $("#faxSAdm").val(superAdmin.faxSAdm)
                             $("#mobiltelefonSAdm").val(superAdmin.mobiltelefonSAdm)
                             $("#benutzernameSAdm").val(superAdmin.username)
-                            
+
                             setState("edit")
+
+                            treeSAdm.setValues(superAdmin.rechte.split(","))
                         }
                     )
                 }
@@ -313,7 +315,7 @@ const scpRechteverwaltung_superAdmins =
                             })
                         }
                     })
-                }     
+                }
 
             this.showTreeView = 
                 () => {
@@ -321,10 +323,11 @@ const scpRechteverwaltung_superAdmins =
                     const mainMenus = scpRechteverwaltung.getMainMenus(menus)
                     const treeJson = scpTreeView.buildTree(mainMenus)(menus)
 
-                    scpTreeView.showTreeView("sAdmTreeview")(treeJson)
-
-                    return treeJson
-                }
-                
+                    return scpTreeView.showTreeView("sAdmTreeview")(treeJson)
+                }   
         }
     )
+
+// Initialize Permissions TreeView
+//
+const treeSAdm = scpRechteverwaltung_superAdmins.showTreeView()
