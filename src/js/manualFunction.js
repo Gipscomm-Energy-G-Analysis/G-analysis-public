@@ -7057,6 +7057,10 @@ function investValueCheck(min_val,max_val,current_val,checkPrevVal,checkNextVal,
         else if(controlsystem == "3" || controlsystem == "4"){
             if(checkPrevVal == undefined){
                 if(startweekinvest != filterStartWeek || startdateinvest != filterStartDate){
+                    // console.log('startwek invest',startweekinvest);
+                    // console.log('Filter Start eek invest',filterStartWeek);
+                    // console.log('startdateinvest',startdateinvest);
+                    // console.log('filterStartDate',filterStartDate);
                     //<--Redirect Modal---
                     commonRedirectModal(mstID,current_row_id,current_td_input_id,disabled_row_id,disabled_td_input_id);
                     return false;

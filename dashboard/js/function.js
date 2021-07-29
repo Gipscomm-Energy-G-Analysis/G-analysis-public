@@ -324,3 +324,47 @@ function dashboardChart(){
     });
     
 }
+
+function energy_consumed_five_days(){
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getDataFiveDaysEnergyConsumeed",
+        nameDB: $("#nameDashboardDB").val(),
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+       $('#five_days_energy_consumed_table').html(a['five_days_energy_data']);
+       $('#five_days_energy_count').text(a['totalSumDataEnergyConsumed'][0]['val']);
+    }
+  });
+}
+
+
+// <----29-7-2021---
+function saveDashboardSelect(arData){
+  arData = JSON.stringify(arData);
+  $.ajax({
+    type : "POST",
+    url : 'php/operations.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "saveDashboardSelect",
+        nameDB: $("#nameDashboardDB").val(),
+        arData : arData
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      console.log(a);
+    }
+  });
+}
+// ---end-->

@@ -199,6 +199,47 @@ $(document).ready( function(){
     });
 
 
+    // <---27-7-2021----
+    $(document).on('change', '#dashboard_select_tag',function(){
+        $('.dashboard_count_div .stretch-card').hide();
+        $("#dashboard_select_tag :selected").each(function(index) {
+            var current_id_val = $(this).val();
+            if(current_id_val =='energy_count_div'){
+                $('#energy_graph_chart').show();
+                $('#energy_circle_chart').show();
+                $('#five_days_energy_consumed').show();
+                $('#energy_consumed_div').show();
+                $('#five_days_energy_consumed_table_div').show();
+                energy_consumed_five_days();
+            }
+            if(current_id_val =='five_days_energy_consumed'){
+                $('#five_days_energy_consumed').show();
+                $('#five_days_energy_consumed_table_div').show();
+                energy_consumed_five_days();  
+            }
+            $('#'+this.value).show(); 
+        });
+    })
+    //---end--->
+
+    // <<---29-7-2021--
+    $(document).on('click', '#save_select_changes' , function(){
+        var arData = [];
+        $('#dashboard_select_tag :selected').each(function(index){
+            var div_id = $(this).val();
+            var description = $(this).attr('description');
+            arData.push({
+                'div_id_val' : div_id, 'description' : description 
+            })
+        })
+        if(arData.length > 0){
+            saveDashboardSelect(arData);
+        }
+     
+    });
+    // --end-->
+
+
     // <---22-7-2021--
     // $('div').removeClass('act_background');
     // $('nav div').addClass('background-image');

@@ -19,6 +19,7 @@ class dashboardController {
         try {
             global $conn;
             $date_diff = date('Y-m-d H:i:s', strtotime('-30 days'));
+            $current_date = date('Y-m-d');
             //Energy
             $query1 = "SELECT * FROM interneBetriebsdatenHistorie where created_on >=  convert(datetime,'$date_diff',101) And archiviert='true'";
             $records['energy'] = queryDB($conn, $query1, "read");
@@ -37,15 +38,18 @@ class dashboardController {
 
 
             //Enregy Consumed
+            $date_diff_on_date = date('Y-m-d', strtotime('-30 days'));
             $eneryConsumed = "SELECT SUM(cast(T2.val as int)) FROM interneBetriebsdatenHistorie As T1 ";
-            $eneryConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
+            $eneryConsumed .= "Inner JOIN masseneingabeSucheIMw as T2 ";
             $eneryConsumed .= "ON T1.mstID = T2.mst_ID ";
-            $eneryConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_diff',101) ";
+            $eneryConsumed .= "WHERE T2.on_date >= '$date_diff_on_date' ";
+            $eneryConsumed .= "AND T2.on_date <= '$current_date' ";
+            $eneryConsumed .= "AND T2.type <= '1' ";
             $eneryConsumed .= "AND T1.deleted <> 'true' ";
             $eneryConsumed.= "AND T1.archiviert ='true' ";
             // echo  $eneryConsumed; die;
             $records['energy_consumed'] = queryDB($conn, $eneryConsumed, "read");
-            // echo json_encode($eneryConsumed); die;
+            // echo json_encode( $records['energy_consumed']); die;
 
             //Energy Not Consumed Table
             //<--Old Code--
@@ -734,14 +738,17 @@ class dashboardController {
             // $previousDayVal = date('d-m-y',strtotime("+1 month"));
         
             $ar = [];
+            $current_date = date('Y-m-d');
             for($i = 1; $i<=6; $i++){
                $days_val = 5 * $i; 
-               $date_differnce = date('Y-m-d H:i:s', strtotime("-$days_val days"));
+               $date_differnce = date('Y-m-d', strtotime("-$days_val days"));
                
                $energyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
                $energyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
                $energyConsumed .= "ON T1.mstID = T2.mst_ID ";
-               $energyConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_differnce',101) ";
+               $energyConsumed .= "WHERE T2.on_date >= '$date_differnce' ";
+               $energyConsumed .= "AND T2.on_date <= '$current_date' ";
+               $energyConsumed .= "AND T2.type = '1' ";
                $energyConsumed .= "AND T1.deleted <> 'true' ";
                $energyConsumed.= "AND T1.archiviert ='true' ";
               
@@ -750,6 +757,7 @@ class dashboardController {
             }
             
             $energy_chart['energy_chart_ar'] = $ar;
+            
 
 
             //Reports Details Charts
@@ -775,6 +783,7 @@ class dashboardController {
             $daysEnergyConsumed.= "AND T1.archiviert ='true' ";
             $dataEnergy = queryDB($conn, $daysEnergyConsumed, "read");
             $energy_chart['daysEnergyConsumed'] = $dataEnergy;
+            
 
             //Week Energy
             $weekEnergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
@@ -786,6 +795,7 @@ class dashboardController {
             $weekEnergyConsumed.= "AND T1.archiviert ='true' ";
             $dataEnergy = queryDB($conn, $weekEnergyConsumed, "read");
             $energy_chart['weekEnergyConsumed'] = $dataEnergy;
+            // echo $weekEnergyConsumed; die;
 
             //Month Energy
             $monthEnergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
@@ -797,6 +807,7 @@ class dashboardController {
             $monthEnergyConsumed.= "AND T1.archiviert ='true' ";
             $dataEnergy = queryDB($conn, $monthEnergyConsumed, "read");
             $energy_chart['monthEnergyConsumed'] = $dataEnergy;
+     
 
             //Year Energy
             $yearEnergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
@@ -808,6 +819,11 @@ class dashboardController {
             $yearEnergyConsumed.= "AND T1.archiviert ='true' ";
             $dataEnergy = queryDB($conn, $yearEnergyConsumed, "read");
             $energy_chart['yearEnergyConsumed'] = $dataEnergy;
+            
+            
+            // echo json_encode($energy_chart['monthEnergyConsumed']); die;
+
+           
 
             echo json_encode($energy_chart,JSON_INVALID_UTF8_IGNORE);
             die;
@@ -817,6 +833,108 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }  
     }
+
+    public function getDataFiveDaysEnergyConsumeed(){
+        try{
+            global $conn;
+            
+            // $date_differnce_days = date('Y-m-d H:i:s', strtotime('-5 days'));
+            $date_differnce_days = date('Y-m-d', strtotime('-5 days'));
+            $current_date = date('Y-m-d');
+
+            //Get Max Energy Consumed Five Days
+            $maxFiveDayEnergyConsumed = "SELECT max(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+            $maxFiveDayEnergyConsumed .= "INNER JOIN masseneingabeSucheIMw as T2 ";
+            $maxFiveDayEnergyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            $maxFiveDayEnergyConsumed .= "WHERE T2.on_date >= '$date_differnce_days' ";
+            $maxFiveDayEnergyConsumed.= "AND T2.on_date <= '$current_date' ";
+            $maxFiveDayEnergyConsumed.= "AND T2.type ='1' ";
+            $maxFiveDayEnergyConsumed .= "AND T1.deleted <> 'true' ";
+            $maxFiveDayEnergyConsumed.= "AND T1.archiviert ='true' ";
+            $maxdataEnergy = queryDB($conn, $maxFiveDayEnergyConsumed, "read");
+            $total_max_energy = count($maxdataEnergy) > 0 ? $maxdataEnergy[0]['val'] : ''; 
+
+            //Total Sum Energy Consumed 
+            $totalSumFiveDayEnergyConsumed = "SELECT sum(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+            $totalSumFiveDayEnergyConsumed .= "INNER JOIN masseneingabeSucheIMw as T2 ";
+            $totalSumFiveDayEnergyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            $totalSumFiveDayEnergyConsumed .= "WHERE T2.on_date >= '$date_differnce_days' ";
+            $totalSumFiveDayEnergyConsumed.= "AND T2.on_date <= '$current_date' ";
+            $totalSumFiveDayEnergyConsumed.= "AND T2.type ='1' ";
+            $totalSumFiveDayEnergyConsumed .= "AND T1.deleted <> 'true' ";
+            $totalSumFiveDayEnergyConsumed.= "AND T1.archiviert ='true' ";
+            $totalSumDataEnergyConsumed = queryDB($conn, $totalSumFiveDayEnergyConsumed, "read");
+            $energyData['totalSumDataEnergyConsumed'] = $totalSumDataEnergyConsumed;
+
+            //Data Five Days
+            $fiveDayEnergyConsumed = "SELECT * FROM interneBetriebsdatenHistorie As T1 ";
+            $fiveDayEnergyConsumed .= "INNER JOIN masseneingabeSucheIMw as T2 ";
+            $fiveDayEnergyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            $fiveDayEnergyConsumed .= "WHERE T2.on_date >= '$date_differnce_days' ";
+            $fiveDayEnergyConsumed.= "AND T2.on_date <= '$current_date' ";
+            $fiveDayEnergyConsumed .= "AND T2.type ='1' ";
+            $fiveDayEnergyConsumed .= "AND T1.deleted <> 'true' ";
+            $fiveDayEnergyConsumed.= "AND T1.archiviert ='true' ";
+            $fiveDayEnergyConsumed.= "order by T2.on_date desc ";
+            // echo $fiveDayEnergyConsumed; die;
+            $dataEnergy = queryDB($conn, $fiveDayEnergyConsumed, "read");
+            $tr = '';
+            
+            if(count($dataEnergy)>0){
+                for($i = 0; $i<count($dataEnergy); $i++){
+                    $dateFormat = $dataEnergy[$i]['on_date']; 
+                    $day = date('D', strtotime($dateFormat));
+
+                    $style='';
+                    if($total_max_energy != '' && $total_max_energy == $dataEnergy[$i]['val']){
+                        $style="style='background-color: #f77171'";
+                    }
+
+                    $tr .= "<tr $style>";
+                    $tr.= "<td>".$dataEnergy[$i]['anlIMw']."</td>";
+                    if($dataEnergy[$i]['zeitintervallAnl'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($dataEnergy[$i]['zeitintervallAnl'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($dataEnergy[$i]['zeitintervallAnl'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($dataEnergy[$i]['zeitintervallAnl'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+                    $tr.= "<td>".$day."</td>";
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($dataEnergy[$i]['zeitintervallAnl'] == "2" && $dataEnergy[$i]['zeitintervallAnl'] != ''){
+                        $tr.= "<td>".$dataEnergy[$i]['startWeek'].'-'.$dataEnergy[$i]['startDate']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$dataEnergy[$i]['on_date']."</td>";
+                    }
+                   
+                    $tr.="<td>".$dataEnergy[$i]['val']."<p class='energy_unit text-muted'>kWh</p></td>";
+                    $tr.="</tr>";
+                }
+            }
+            else{
+                $tr.="<tr><td colspan='5' class='text-center'>No Record Found</td></tr>";
+            }
+            $energyData['five_days_energy_data'] = $tr;
+            
+            
+            echo json_encode($energyData,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }  
+
+    }
+
 }
 $obj = new dashboardController();
 

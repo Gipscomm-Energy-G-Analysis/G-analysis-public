@@ -34,3 +34,14 @@
 .heading-margin-top{
     margin-top: 28px
 }
+.energy_unit{
+    /* margin-top: 21px; */
+    margin-right: auto;
+    display: inline;
+}
+
+.custom-btn{
+    margin-top: 46px;
+    border: 0px solid;
+    padding: 8px;
+}

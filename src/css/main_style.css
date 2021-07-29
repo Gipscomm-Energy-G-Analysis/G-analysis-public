@@ -1777,7 +1777,7 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
   border-left: 1px solid #000;
 }
 #tblMasseneingabeDataIMw table th, #tblMasseneingabeDataIMw table td {
-  padding: 15px;
+  /* padding: 15px; */
   font-size: 12px;
   text-align: center;
   vertical-align: middle;

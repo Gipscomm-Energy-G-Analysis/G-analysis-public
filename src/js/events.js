@@ -8667,8 +8667,13 @@ $(document).on('blur','#timeIntervalWerteEnergiedatenIMw #tblMasseneingabeDataIM
         var controlsystem = $(this).closest('tr').attr('controlsystem');
 
         var indexId = $(this).closest('td').index();
-        var thDateVal = $(this).closest('table').children('tbody').children('tr:first').children('th:eq('+parseInt(indexId-1)+')').text();
+        // if(indexId == "1"){
+        //     indexId = 2;
+        // }
+        var thDateVal = $(this).closest('table').children('tbody').children('tr:first').children('th:eq('+parseInt(indexId)+')').text();
         var InputDisabledVal = $(this).closest('td').prev('td').find('input').is(':disabled');
+        // console.log('thdateval',thDateVal);
+        // console.log('Index id',indexId);
 
         if(classVal == true){
             //Function calling if time interval is 2
@@ -8732,7 +8737,7 @@ $(document).on('blur','#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeD
         var table_config_id = $(this).closest('tr').attr('table_config_id');
 
         var indexId = $(this).closest('td').index();
-        var thDateVal = $(this).closest('table').children('tbody').children('tr:first').children('th:eq('+parseInt(indexId-1)+')').text();
+        var thDateVal = $(this).closest('table').children('tbody').children('tr:first').children('th:eq('+parseInt(indexId)+')').text();
         var InputDisabledVal = $(this).closest('td').prev('td').find('input').is(':disabled');
 
 
@@ -8795,7 +8800,7 @@ $(document).on('blur','#timeIntervalWerteEnergiedatenIMwMesssetelle #tblMassenei
         var table_config_id = $(this).closest('tr').attr('table_config_id');
 
         var indexId = $(this).closest('td').index();
-        var thDateVal = $(this).closest('table').children('tbody').children('tr:first').children('th:eq('+parseInt(indexId-1)+')').text();
+        var thDateVal = $(this).closest('table').children('tbody').children('tr:first').children('th:eq('+parseInt(indexId)+')').text();
         var InputDisabledVal = $(this).closest('td').prev('td').find('input').is(':disabled');
 
 

@@ -17,5 +17,7 @@
   <link rel="stylesheet" href="css/custom.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/G-Analysis/favicon.png" />
+
+  <link  rel="stylesheet" href="css/jquery.multiselect.css" />
 </head>
 <body>

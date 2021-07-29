@@ -17,7 +17,16 @@
   <!-- Common Js Files -->
   <script src="js/event.js"></script>
   <script src="js/function.js"></script>
+  <script src="js/jquery.multiselect.js"></script>
 
+  <script>
+    $('#dashboard_select_tag').multiselect({
+      // selectAll: true,
+      texts    : {
+          placeholder: 'Select Records',
+      }
+    });
+    </script>
 
   <!-- End custom js for this page-->
 </body>
