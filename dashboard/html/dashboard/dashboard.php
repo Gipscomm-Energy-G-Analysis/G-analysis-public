@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="row dashboard_count_div">
-            <div class="col-md-3 grid-margin stretch-card" id="mesurement_count_div">
+            <div class="col-md-3 grid-margin stretch-card tiles-click" id="mesurement_count_div">
               <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Messstellen</p>
@@ -49,7 +49,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card" id="product_count_div">
+            <div class="col-md-3 grid-margin stretch-card tiles-click" id="product_count_div">
               <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Produkte</p>
@@ -61,7 +61,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card" id="energy_count_div">
+            <div class="col-md-3 grid-margin stretch-card tiles-click" id="energy_count_div">
               <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Energiedaten Entry</p>
@@ -73,7 +73,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card" id="energy_consumed_div">
+            <div class="col-md-3 grid-margin stretch-card tiles-click" id="energy_consumed_div">
               <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
@@ -86,7 +86,7 @@
               </div>
             </div>
             <!-- 27-7-2021 -->
-            <div class="col-md-3 grid-margin stretch-card" id="five_days_energy_consumed">
+            <div class="col-md-3 grid-margin stretch-card tiles-click" id="five_days_energy_consumed">
               <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>

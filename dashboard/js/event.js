@@ -15,6 +15,13 @@ $(document).ready( function(){
 
     $('.footer').html('');
     $('#energy_not_consumed_table').html('');
+
+     // <---22-7-2021--
+     $('.container-fluid nav').addClass('background-image');
+     $('#dashboard_main_div .content-wrapper').addClass('background-image');
+     $('.footer').addClass('background-image');
+     $('.sidebar_redirect').addClass('text-dark');
+     // --end-->
     
 
     $('.nav-item .sidebar_redirect,.nav-item .nav_bar_redirect').on('click', function(){
@@ -33,7 +40,8 @@ $(document).ready( function(){
                 $('#alerts_table_main_div').hide();
                 $('#help_table_main_div').hide();
                 countDashboard();
-                dashboardChart();
+                energy_consumed_five_days();
+                // dashboardChart();
                 break;
             
             case "charts_sidebar":
@@ -175,13 +183,13 @@ $(document).ready( function(){
 
     // <---Count Dashboard Entries--
     countDashboard();
-    dashboardChart();
+    // dashboardChart();
     energy_consumed_five_days();
     // getDashboardSelectOption();
 
 
     //Mesurement
-    $(document).on('change','#measurement_number_record',function(){
+    $(document).on('change','#measurement_number_record,#measurement_time_interval',function(){
         getNumberRecordsMesurement();
     });
 
@@ -200,30 +208,6 @@ $(document).ready( function(){
         getNumberRecordsProductionData();
     });
 
-
-    // <---27-7-2021----
-    $(document).on('change', '#dashboard_select_tag',function(){
-        $('.dashboard_count_div .stretch-card').hide();
-        $("#dashboard_select_tag :selected").each(function(index) {
-            var current_id_val = $(this).val();
-            if(current_id_val =='energy_count_div'){
-                $('#energy_graph_chart').show();
-                $('#energy_circle_chart').show();
-                $('#five_days_energy_consumed').show();
-                $('#energy_consumed_div').show();
-                $('#five_days_energy_consumed_table_div').show();
-                energy_consumed_five_days();
-            }
-            if(current_id_val =='five_days_energy_consumed'){
-                $('#five_days_energy_consumed').show();
-                $('#five_days_energy_consumed_table_div').show();
-                energy_consumed_five_days();  
-            }
-            $('#'+this.value).show(); 
-        });
-    })
-    //---end--->
-
     // <<---29-7-2021--
     $(document).on('click', '#save_select_changes' , function(){
         var arData = [];
@@ -241,14 +225,28 @@ $(document).ready( function(){
     });
     // --end-->
 
+    $(document).on('click', '.tiles-click', function(){
+        var div_id = $(this).attr('id');
+        switch(div_id){
+            case'mesurement_count_div':
+                $('#tables_sidebar').click();
+                $('#measurement_sidebar_option').click();
+            break;
 
-    // <---22-7-2021--
-    // $('div').removeClass('act_background');
-    // $('nav div').addClass('background-image');
-    $('.container-fluid nav').addClass('background-image');
-    $('#dashboard_main_div .content-wrapper').addClass('background-image');
-    $('.footer').addClass('background-image');
-    $('.sidebar_redirect').addClass('text-dark');
-    // --end-->
+            case'product_count_div':
+                $('#tables_sidebar').click();
+                $('#product_sidebar_option').click();
+            break;
+
+            case'energy_count_div':
+                $('#tables_sidebar').click();
+                $('#energy_sidebar_option').click();
+            break;
+
+        }
+    }); 
+
+
+   
 
 })

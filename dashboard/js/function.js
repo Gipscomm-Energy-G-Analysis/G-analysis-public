@@ -27,6 +27,7 @@ function countDashboard(){
 //Selected Number of Records Mesurement
 function getNumberRecordsMesurement(){
     var number_records = $('#measurement_number_record').val();
+    var time_interval = $('#measurement_time_interval').val();
     $.ajax({
         type: "POST",
         url: "php/retreive.php",
@@ -35,7 +36,8 @@ function getNumberRecordsMesurement(){
         data: {
             action: "getNumberRecordsMesurement",
             nameDB: $("#nameDashboardDB").val(),
-            number_records : number_records
+            number_records : number_records,
+            time_interval : time_interval
         },
         fail: function() {
             alert("failed!!")
@@ -369,43 +371,4 @@ function saveDashboardSelect(arData){
 }
 
 
-function getDashboardSelectOption(){
-  $.ajax({
-    type : "POST",
-    url : 'php/retreive.php',
-    async: false,
-    dataType: 'json',
-    data: {
-        action: "getDashboardSelect",
-        nameDB: $("#nameDashboardDB").val(),
-    },
-    fail: function() {
-        alert("failed!!")
-    },
-    success: function(result) {
-      if(result.length > 0){
-        result.forEach(element => {
-            $('#dashboard_select_tag option[value=' + element.div_id + ']').attr('selected',true);
-        })
-        $('#dashboard_select_tag').multiselect({
-          texts    : {
-              placeholder: 'Select Records',
-          }
-        });
-       setTimeout( function(){
-        $('#dashboard_select_tag').trigger('change');
-       },1000);
-        
-      }
-      else{
-        $('#dashboard_select_tag').multiselect({
-          // selectAll: true,
-          texts  : {
-              placeholder: 'Select Records',
-          }
-        });
-      }
-    }
-  });
-}
 // ---end-->

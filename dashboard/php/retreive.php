@@ -135,16 +135,19 @@ class dashboardController {
         try{
             global $conn;
             $number_records = $_POST['number_records'];
+            $time_interval = $_POST['time_interval'];
             //$query1 = "SELECT Top($number_records) * FROM produktionsAnlagenConfig where iBdeType='2'  order by iBdePrdktConf_ID desc";
             $query1 = "SELECT Top($number_records) * ";
             $query1 .= "FROM produktionsAnlagenConfig as T1 ";
             $query1 .= "LEFT JOIN ";
-            $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, max(cast(val as int)) as val from ";
+            $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(cast(val as int)) as val from ";
             $query1 .= "masseneingabeSucheIMw as T2 ";
             $query1 .= "GROUP By T2.mst_id) ";
             $query1 .= "T2 ";
             $query1 .= "ON T1.mst_ID = T2.table_2_mst_id ";
-            $query1  .= "where T1.iBdeType='2'  order by T1.iBdePrdktConf_ID desc";
+            $query1  .= "where T1.iBdeType='2' ";
+            $query1 .= "AND T1.intTp_ID = '$time_interval' ";
+            $query1 .= "order by T1.iBdePrdktConf_ID desc";
             $dataMesaurement = queryDB($conn, $query1, "read");
             // echo json_encode($dataMesaurement); die;
             $tr = '';
@@ -174,10 +177,13 @@ class dashboardController {
                     else{
                         $tr.= "<td>".$value['startDate']."</td>";
                     }
+                    
                     if($value['val'] == null){
+                        $tr.= "<td> - </td>";
                         $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
                     }
                     else{
+                        $tr.= "<td>".$value['val']."</td>";
                         $tr.= "<td><label class='badge badge-success'>Active </label></td>";
                     }
                     $tr.="</tr>";
