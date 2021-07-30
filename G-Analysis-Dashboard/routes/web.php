@@ -31,3 +31,4 @@ Route::post('/graph/filter', [\App\Http\Controllers\DashboardController::class, 
 Route::post('/dashboard/propertyData', [\App\Http\Controllers\DashboardController::class, 'getPropertyData'])->name('getPropertyData');
 Route::get('/dashboard/tablename', [\App\Http\Controllers\DashboardController::class, 'getAllTables'])->name('getAllTables');
 Route::post('/dashboard/tableColumn', [\App\Http\Controllers\DashboardController::class, 'getTableColumns'])->name('getTableColumns');
+Route::post('/dashboard/saveFields', [\App\Http\Controllers\DashboardController::class, 'saveFields'])->name('saveFields');

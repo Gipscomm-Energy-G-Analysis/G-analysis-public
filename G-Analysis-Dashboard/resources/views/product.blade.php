@@ -33,6 +33,7 @@
 
         <!-- Main content -->
         @if(!empty($data))
+        
             @php $image = 'images/Blasanlage.jpg'; @endphp
             @if(file_exists($data['bildAnl']))
                 @php  $image = $data['bildAnl']; @endphp
@@ -42,6 +43,7 @@
                     <div class="col-sm-3">
                         <div class="form-group row">
                             <input type="hidden" value= "{{$_SESSION['nameDB']}}"; id="nameDB" />
+                            <input type="hidden" value= "{{$_SESSION['username']}}"; id="username" />
                             <label class="col-sm-4 col-form-label">Organisation</label>
                             <div class="col-sm-9">
                                 <select class="form-control organisation" onchange="select_org()" style="width: 100%;" id="select_org">
@@ -208,8 +210,33 @@
                                                         <input type="text" class="form-control" id="letzte_störung" placeholder="Letzte Störung" value="{{$letzte_störung}}" readonly>
                                                     </div>
                                                 </div>
+                                                
+                                                @if(!empty($dynamic_fields))
+                                                <div class="main_div">
+                                                    @foreach($dynamic_fields as $val)
+                                                       @if($val['tableName'] == "TWP_PROD_OVERVIEW")
+                                                       @php $i =0; @endphp
+                                                            @foreach($data[0] as $key=>$col)
+                                                                @if (array_key_exists($val['columnName'],$col))
+                                                                    @php  $columnName= $val['columnName']; 
+                                                                        $colm = $col[$columnName]; 
+                                                                    @endphp
+                                                                        <div class="form-group row column-name">
+                                                                            <div class="col-sm-12">
+                                                                                <input type ="hidden" value="{{$val['tableName']}}_{{$i}}" class="table_class" />
+                                                                                <label for="{{$val['columnName']}}" class="col-form-label">{{$val['label']}}</label>
+                                                                                <input type="text" class="form-control column-name_{{$i}}" id="{{$val['columnName']}}" placeholder="{{$val['label']}}" value="{{$colm}}"  readonly>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                    @php $i++; @endphp
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                </div>                                              
+                                                @endif
                                                 <div class="add_more_field" data-toggle="modal" data-target="#modal-default">
-                                                    <span for="exampleInputFile" class="btn btn-success col fileinput-button dz-clickable" id="replace-image-button">
+                                                    <span for="exampleInput" class="btn btn-success col fileinput-button dz-clickable" id="add_more_field">
                                                         <i class="fas fa-plus"></i>
                                                     </span>
                                                 </div>
@@ -295,7 +322,7 @@
                         </div>
                         <div class="modal-body">
                             <label for="add_label_field">Enter Label Name</label>
-                                <input type="text" class="form-control" id="add_label_field" >
+                                <input type="text" class="form-control" id="add_label_field">
                             <label for="select_table">Select Table</label>
                                 <select class="form-control select_table" onchange="select_table()"  id="select_table">
                                         <option value="">Select</option>
@@ -311,7 +338,7 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="save_field">Save changes</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->

@@ -13,9 +13,11 @@ use App\Models\Messstellen;
 use App\Models\Messmittel;
 use App\Models\DataValue15m;
 use App\Models\Liegenschaften;
-use Illuminate\Support\Str;
+use App\Models\DashboardProduktionConfig;
 use App\Http\Controllers\ManageDatabaseController;
-
+use Illuminate\Support\Str;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use View;
 use Config;
 use DB;
@@ -29,49 +31,68 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $database = $_SESSION['nameDB'];
         $username = $_SESSION['username'];
-        if($_SESSION['nameDB'] == 'gipscomm'){
-            $result = (new ManageDatabaseController)->switchDatabase($database);
-            $dBname = DB::table("Users")->select('nameDB')
-                     ->where('username',$username)->first();
-            $dBname   = (array)$dBname;
-            $database = $dBname['nameDB'];
-        }
+        $res =[];
+        $column = [];
+        $database = $this->checkDB($_SESSION['nameDB']);
         $result = (new ManageDatabaseController)->switchDatabase($database);
         if(!empty($result['database'])){
             $org= $this->getOrganisations($database);
-            $org = (array)$org;
-            $request = Request::create( '/dashboard/machine', 'POST', ['orgId'=>$org['org'][0]['org_ID'], 'dbName'=>$database]);
-            $property = $this->getPropertyData($request);
             if(!empty($org)){
-                $machines = DB::table("Anlagen")
-                    ->whereNotNull('datumAnl')
-                    ->where('lieg_ID',$property[0])
-                    ->where('deleted',0)->first();
-                $machines=(array)$machines;
-                if(!empty($machines)){
-                    $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'']);
-                    $data = $this->getMachineDetail($request);
-                    $tables = $this->getAllTables();
-                    $table= $tables['table'];
-                    $table = json_decode(json_encode($table), true);
-                    return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message'],"tables"=>$table]);
-                }
-                else{
-                    return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);
+                $org = (array)$org;
+                $request = Request::create( '/dashboard/machine', 'POST', ['orgId'=>$org['org'][0]['org_ID'], 'dbName'=>$database]);
+                $property = $this->getPropertyData($request);
+                if(!empty($org)){
+                    $machines = DB::table("Anlagen")
+                        ->whereNotNull('datumAnl')
+                        ->where('lieg_ID',$property[0])
+                        ->where('deleted',0)->first();
+                    $machines=(array)$machines;
+                    if(!empty($machines)){
+                        $tables = $this->getAllTables();
+                        $table= $tables['table'];
+                        $table = json_decode(json_encode($table), true);
+                        $table_exist= DB::getSchemaBuilder()->hasTable('dashboardProduktionConfig');
+                        if($table_exist == 1){
+                            $res = DashboardProduktionConfig::where('username',$username)->get(); 
+                            if(count($res) > 0){ 
+                                $res = $res->toArray();
+                                foreach($res as $val){
+                                    if($val['tableName'] == "TWP_PROD_OVERVIEW"){
+                                        $column[] = $val;
+                                    }
+                                }   
+                            }              
+                        }
+                        $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'', 'column'=>$column]);
+                        $data = $this->getMachineDetail($request);
+                        return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message'],"tables"=>$table,"dynamic_fields"=>$res]);
+                    }
+                    else{
+                        return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);
+                    }
                 }
             }
+            else{
+                return View::make("product", ["data"=>"",'message'=>'Data Not Found in Organisation Table!']);
+            }
         }
-
     }
     public function getMachineDetail(Request $request)
     {
         $id = $request['id'];
         $type = $request['type'];
         $lieg_ID = $request['prop_id'];
+        $column ="";
+        if($request['column']){
+            $column = $request['column'];
+        }
         $machineData = null;
         $prodData = [];
+        $colData =[];
+        $prod = [];
+        $database = $this->checkDB($_SESSION['nameDB']);
+        $result = (new ManageDatabaseController)->switchDatabase($database);
         if(($lieg_ID!='')){
             switch ($type) {
                 case 'first':
@@ -114,7 +135,6 @@ class DashboardController extends Controller
                     break;
             }
         }
-
         if(!empty($machineData)){
             $machineName = explode (   '-' ,$machineData['nummerAnl'] );
             $machineName = $machineName[0];
@@ -131,6 +151,22 @@ class DashboardController extends Controller
                             $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData['messstelle'.$i.'IDAnl'];
                             $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$machineData['messstelle'.$i.'IDAnl'], 'limit' => 5]);
                             $chartsData->put('messstelle'.$i.'IDAnl',$this->getChartsData( $request));
+                        }
+                    }                  
+                    if($column){
+                        if(is_array($column)){
+                            foreach($column as $col){
+                                $colData = [
+                                    $col['columnName'] => $prodData[$col['columnName']]
+                                ];
+                                array_push($prod, $colData);
+                            }
+                        }
+                        else{
+                            $column = explode(',',$column);
+                            foreach($column as $col){
+                                $prod[$col] =$prodData[$col]; 
+                            } 
                         }
                     }
                     $prodData =[
@@ -153,7 +189,7 @@ class DashboardController extends Controller
                         'shardsData' => $measuringPoint,
                         'chartsData' => $chartsData
                     ];
-
+                    array_push($prodData, $prod);
                     return ['code'=>200, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'Data Retrived Successfully.'];
                 } else{
                     return ['code'=>401, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'No Record Found in TWP_PROD_OVERVIEW Table!'];
@@ -172,7 +208,6 @@ class DashboardController extends Controller
         $limit = $request['pageSize'];
         $totalRecords = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->count();
         $totalPages = ceil($totalRecords / $limit);
-
         $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
         if($start < 0) $start = 0;
         $data = Anlagen::select('anl_ID', 'datumAnl', 'nummerAnl', 'bezeichnungAnl')->whereNotNull('datumAnl')->where('deleted',0)->limit($limit)->offset($start)->get();
@@ -212,7 +247,9 @@ class DashboardController extends Controller
         $result = (new ManageDatabaseController)->switchDatabase($database);
         if(!empty($result['database'])){
             $org  = Organisation::get()->toArray();
-            return ['org'=>$org];
+            if(count($org) > 0){
+                return ['org'=>$org];
+            }
         }
     }
 
@@ -233,8 +270,7 @@ class DashboardController extends Controller
     /**
      * @return mixed
     */
-    public function getAllTables()
-    {
+    public function getAllTables(){
         $database = $_SESSION["nameDB"];
         $result = (new ManageDatabaseController)->switchDatabase($database);
         if(!empty($result['database'])){
@@ -254,5 +290,65 @@ class DashboardController extends Controller
         if(!empty($result['database'])){
             return DB::getSchemaBuilder()->getColumnListing($table);
         }
+    }
+    /**
+     * @param Request $request
+     * @return mixed
+    */
+    public function saveFields(Request $request){ 
+        $anl_ID     = $request['anl_ID'];
+        $dbName     = $request['dbName'];
+        $username   = $request['username'];
+        $label      = $request['label'];
+        $tableName  = $request['tableName'];
+        $columnName = $request['columnName'];
+        $result = (new ManageDatabaseController)->switchDatabase($dbName);
+        if(!empty($result['database'])){
+            $table_check= DB::getSchemaBuilder()->hasTable('dashboardProduktionConfig');
+            if(!$table_check == 1){
+                Schema::create('dashboardProduktionConfig', function (Blueprint $table) {
+                    //$table->id();
+                    $table->integer('anl_ID');
+                    $table->foreign('anl_ID')->references('anl_ID')->on('Anlagen');
+                    $table->string('username');
+                    $table->string('dbName');
+                    $table->string('label');
+                    $table->string('tableName');
+                    $table->string('columnName');
+                    //$table->timestamps();
+                });
+                    $data=array('anl_ID'=>$anl_ID,'username'=>$username,"dbName"=>$dbName,'label'=>$label,"tableName"=>$tableName,"columnName"=>$columnName);
+                    DashboardProduktionConfig::insert($data);
+                    echo "Record inserted successfully.";
+            }
+            else{
+                $data = DashboardProduktionConfig::where('tableName',$tableName)
+                        ->where('columnName',$columnName)
+                        ->where('username',$username)
+                        ->where('anl_ID',$anl_ID)
+                        ->count();
+               if($data < 1){
+                    $data=array('anl_ID'=>$anl_ID,'username'=>$username,"dbName"=>$dbName,'label'=>$label,"tableName"=>$tableName,"columnName"=>$columnName);
+                    DashboardProduktionConfig::insert($data);
+                    echo "Record inserted successfully.";
+               }
+               else{
+                $data = DashboardProduktionConfig::where('tableName',$tableName)->where('anl_ID',$anl_ID)->where('columnName',$columnName)->where('username',$username)->update(['label' => $label]);
+                    echo "Record Updated Successfully";
+               }
+            }
+        }
+    }
+    public function checkDB($database){
+        $database = $_SESSION['nameDB'];
+        $username = $_SESSION['username'];
+        if($_SESSION['nameDB'] == 'gipscomm'){
+            $result = (new ManageDatabaseController)->switchDatabase($database);
+            $dBname = DB::table("Users")->select('nameDB')
+                     ->where('username',$username)->first();
+            $dBname   = (array)$dBname;
+            $database = $dBname['nameDB'];
+        }
+        return $database;
     }
 }
