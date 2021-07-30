@@ -176,6 +176,8 @@ $(document).ready( function(){
     // <---Count Dashboard Entries--
     countDashboard();
     dashboardChart();
+    energy_consumed_five_days();
+    // getDashboardSelectOption();
 
 
     //Mesurement
@@ -229,12 +231,12 @@ $(document).ready( function(){
             var div_id = $(this).val();
             var description = $(this).attr('description');
             arData.push({
-                'div_id_val' : div_id, 'description' : description 
+                'div_id_val' : div_id, 'description_val' : description 
             })
         })
-        if(arData.length > 0){
-            saveDashboardSelect(arData);
-        }
+        // if(arData.length > 0){
+        //     saveDashboardSelect(arData);
+        // }
      
     });
     // --end-->

@@ -367,4 +367,45 @@ function saveDashboardSelect(arData){
     }
   });
 }
+
+
+function getDashboardSelectOption(){
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getDashboardSelect",
+        nameDB: $("#nameDashboardDB").val(),
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(result) {
+      if(result.length > 0){
+        result.forEach(element => {
+            $('#dashboard_select_tag option[value=' + element.div_id + ']').attr('selected',true);
+        })
+        $('#dashboard_select_tag').multiselect({
+          texts    : {
+              placeholder: 'Select Records',
+          }
+        });
+       setTimeout( function(){
+        $('#dashboard_select_tag').trigger('change');
+       },1000);
+        
+      }
+      else{
+        $('#dashboard_select_tag').multiselect({
+          // selectAll: true,
+          texts  : {
+              placeholder: 'Select Records',
+          }
+        });
+      }
+    }
+  });
+}
 // ---end-->

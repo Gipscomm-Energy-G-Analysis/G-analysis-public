@@ -13,19 +13,26 @@ class dashboardControllerOperations {
         $action = $_REQUEST['action'];
         echo json_encode($this->$action());
     }
-// <---29-7-2021--
+
+
     function saveDashboardSelect(){
         try{
             global $conn;
-            $arData = $_POST['arData'];
-            $arData = json_decode($arData);
-            if(count($arData)>0){
-                // foreach($arData as $key => $val){
-                //     $insertQuery = "Insert into dashboardSelectOption value"
-                // }
-                echo "working";
+            $arDatas = $_POST['arData'];
+            $arData = json_decode($arDatas,JSON_INVALID_UTF8_IGNORE);
+            if(count($arData) > 0){
+                $deleteQuery = "truncate table dashboardSelectOption";
+                queryDB($conn, $deleteQuery, "write");
+                
+                foreach($arData as $key){
+                    $div_id_val =  $key['div_id_val'];
+                    $description_val = $key['description_val'];
+                    $tsql = "INSERT INTO dashboardSelectOption (div_id, description_val) ";
+                    $tsql .= "VALUES ('$div_id_val', '$description_val') ";
+                    queryDB($conn, $tsql, "write");
+                }
+                echo "Successfully Inserted";
             }
-            // echo count(json_decode($arData));
             die;
         }
         catch(Exception $e) {

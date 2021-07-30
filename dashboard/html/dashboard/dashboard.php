@@ -14,7 +14,7 @@
                 </div> -->
               </div>
                 <!-- 27-6-2021-- -->
-              <div class="row">  
+              <div class="row" style="display: none">  
                 <div class="form-group col-md-6">
                   <label class="text-dark mt-3" for="dashboard_select_tag">Select Records</label>
                   <select class="form-control form-control-sm text-muted" multiple name="dashboard_select_tag[]" id="dashboard_select_tag">
@@ -37,8 +37,8 @@
             </div>
           </div>
           <div class="row dashboard_count_div">
-            <div class="col-md-3 grid-margin stretch-card" id="mesurement_count_div" style="display: none">
-              <div class="card">
+            <div class="col-md-3 grid-margin stretch-card" id="mesurement_count_div">
+              <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Messstellen</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
@@ -49,8 +49,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card" id="product_count_div" style="display: none">
-              <div class="card">
+            <div class="col-md-3 grid-margin stretch-card" id="product_count_div">
+              <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Produkte</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
@@ -61,8 +61,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card" id="energy_count_div" style="display: none">
-              <div class="card">
+            <div class="col-md-3 grid-margin stretch-card" id="energy_count_div">
+              <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Energiedaten Entry</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
@@ -73,8 +73,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card" id="energy_consumed_div" style="display: none">
-              <div class="card">
+            <div class="col-md-3 grid-margin stretch-card" id="energy_consumed_div">
+              <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
@@ -86,8 +86,8 @@
               </div>
             </div>
             <!-- 27-7-2021 -->
-            <div class="col-md-3 grid-margin stretch-card" id="five_days_energy_consumed" style="display: none">
-              <div class="card">
+            <div class="col-md-3 grid-margin stretch-card" id="five_days_energy_consumed">
+              <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
@@ -151,8 +151,8 @@
           </div>
           <!-- 28-7-2021 -->
           <div class="row dashboard_count_div">
-            <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div" style="display: none">
-              <div class="card">
+            <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div">
+              <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title mb-2">Energiedaten Consumed Five days</p>
                   <div class="table-responsive table-not-consumed">
