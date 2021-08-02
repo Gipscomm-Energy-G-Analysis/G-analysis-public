@@ -9,18 +9,8 @@
                   <h4 class="card-title">Messstellen</h4>
                   
                   <div class="row">
-                    <div class="form-group col-md-6">
-                      <label for="measurement_number_record">Select No. of Records</label>
-                      <select class="form-control form-control-sm text-dark" id="measurement_number_record">
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                        <!-- <option value="40">40</option>
-                        <option value="50">50</option> -->
-                      </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
+                    
+                    <div class="form-group col-md-3">
                       <label for="measurement_time_interval">Select Time Interval</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_time_interval">
                         <option value="1">Days</option>
@@ -30,6 +20,31 @@
                         <!-- <option value="40">40</option>
                         <option value="50">50</option> -->
                       </select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                      <label for="measurement_records_order_by">Order By</label>
+                      <select class="form-control form-control-sm text-dark" id="measurement_records_order_by">
+                        <option value="order_by_desc">Order By Max Units</option>
+                        <option value="order_by_asc">Order By Min Units</option>
+                        <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                      <label for="measurement_number_record">Select No. of Records</label>
+                      <!-- <select class="form-control form-control-sm text-dark" id="measurement_number_record">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                      </select> -->
+                       <input type="number" class="form-control form-control-sm text-dark" id="measurement_number_record" minlength="5" maxlength="50" placeholder="Select No. of Records">
+                    </div>
+
+                    
+                    <div class="form-group col-md-2">
+                      <label for="measurement_search_record">Search Records</label>
+                       <input type="text" class="form-control form-control-sm text-dark" id="measurement_search_record" placeholder="Search Records">
                     </div>
                   </div>
                   
@@ -61,6 +76,10 @@
                       
                       </tbody>
                     </table>
+                  </div>
+
+                  <!-- 30-7-2021 -->
+                  <div class="pagination_html" id="pagination_html">
                   </div>
                 </div>
               </div>

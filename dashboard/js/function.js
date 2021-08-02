@@ -28,24 +28,68 @@ function countDashboard(){
 function getNumberRecordsMesurement(){
     var number_records = $('#measurement_number_record').val();
     var time_interval = $('#measurement_time_interval').val();
-    $.ajax({
-        type: "POST",
-        url: "php/retreive.php",
-        async: false,
-        dataType: 'json',
-        data: {
-            action: "getNumberRecordsMesurement",
-            nameDB: $("#nameDashboardDB").val(),
-            number_records : number_records,
-            time_interval : time_interval
-        },
-        fail: function() {
-            alert("failed!!")
-        },
-        success: function(a) {
-           $('#mesurement_select_table_entries').html(a['measurement_html']);
-        }
-    });
+    var records_order_by_val = $('#measurement_records_order_by').val();
+    if(number_records == ''){
+      var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+      $('#mesurement_select_table_entries').html(tr);
+    }
+    else{
+      $.ajax({
+          type: "POST",
+          url: "php/retreive.php",
+          async: false,
+          dataType: 'json',
+          data: {
+              action: "getNumberRecordsMesurement",
+              nameDB: $("#nameDashboardDB").val(),
+              number_records : number_records,
+              time_interval : time_interval,
+              measurement_order_by_val : records_order_by_val
+          },
+          fail: function() {
+              alert("failed!!")
+          },
+          success: function(a) {
+            $('#mesurement_select_table_entries').html(a['measurement_html']);
+            $('#pagination_html').html(a['pagination_html']);
+          }
+      });
+    }
+}
+
+//Get Number Records Mesurement Pagination
+function getNumberRecordsMesurementPagination(page_val){
+    var number_records = $('#measurement_number_record').val();
+    var time_interval = $('#measurement_time_interval').val();
+    var records_order_by_val = $('#measurement_records_order_by').val();
+    if(number_records == ''){
+      var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+      $('#mesurement_select_table_entries').html(tr);
+    }
+    else{
+      $.ajax({
+          type: "POST",
+          url: "php/retreive.php",
+          async: false,
+          dataType: 'json',
+          data: {
+              action: "getNumberRecordsMesurement",
+              nameDB: $("#nameDashboardDB").val(),
+              number_records : number_records,
+              time_interval : time_interval,
+              measurement_order_by_val : records_order_by_val,
+              page_val : page_val
+          },
+          fail: function() {
+              alert("failed!!")
+          },
+          success: function(a) {
+            $('#mesurement_select_table_entries').html(a['measurement_html']);
+            $('#pagination_html').html(a['pagination_html']);
+          }
+      });
+    }
+
 }
 
 //Selected Number of Records Energy

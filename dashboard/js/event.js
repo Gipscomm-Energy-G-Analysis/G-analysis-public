@@ -189,8 +189,35 @@ $(document).ready( function(){
 
 
     //Mesurement
-    $(document).on('change','#measurement_number_record,#measurement_time_interval',function(){
+    $(document).on('change','#measurement_time_interval,#measurement_records_order_by',function(){
         getNumberRecordsMesurement();
+    });
+    $(document).on('blur change', '#measurement_number_record', function(){
+        getNumberRecordsMesurement(); 
+    });
+
+    $(document).on('click', '.page_count_val', function(){
+        var page_value = $(this).text();
+        var id = $(this).attr('id');
+        if(id != undefined && id == 'previous_pagination_val'){
+            var find_prev_val = $('.page_count_val.active').prev('li').text();
+            var active_text = $('.page_count_val.active').text();
+            if(active_text == "1"){
+                page_value = active_text;    
+            }
+            else{
+                page_value = find_prev_val;
+            }
+            // console.log('Prev',find_prev_val);
+        }
+        else if(id != undefined && id == 'next_pagination_val'){
+            var find_next_val = $('.page_count_val.active').next('li').text();
+            page_value = find_next_val;
+
+        }
+        // console.log('Id', id);
+        getNumberRecordsMesurementPagination(page_value); 
+      
     });
 
     //Energy Select Table

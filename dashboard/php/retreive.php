@@ -136,8 +136,41 @@ class dashboardController {
             global $conn;
             $number_records = $_POST['number_records'];
             $time_interval = $_POST['time_interval'];
-            //$query1 = "SELECT Top($number_records) * FROM produktionsAnlagenConfig where iBdeType='2'  order by iBdePrdktConf_ID desc";
-            $query1 = "SELECT Top($number_records) * ";
+            $order_by_val = $_POST['measurement_order_by_val'];
+            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $dataMesaurement = '';
+            $queryMaxVal = '';
+
+            //Pagination Code
+            $queryTotalRecords = "SELECT * ";
+            $queryTotalRecords .= "FROM produktionsAnlagenConfig as T1 ";
+            $queryTotalRecords .= "LEFT JOIN ";
+            $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(cast(val as int)) as val from ";
+            $queryTotalRecords .= "masseneingabeSucheIMw as T2 ";
+            $queryTotalRecords .= "GROUP By T2.mst_id) ";
+            $queryTotalRecords .= "T2 ";
+            $queryTotalRecords .= "ON T1.mst_ID = T2.table_2_mst_id ";
+            $queryTotalRecords  .= "where T1.iBdeType='2' ";
+            $queryTotalRecords .= "AND T1.intTp_ID = '$time_interval' ";
+            $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            
+            $pagesCount = '';
+            $offSetVal = '';
+            if(count($totalRecordsValue) > 0){
+               $pagesCount = round(count($totalRecordsValue) / $number_records);
+               $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+               $offSetVal = ($page_val - 1) * $number_records;
+
+            }
+
+            if($order_by_val == 'order_by_desc'){
+                $order_by_val = "Order by cast(T2.val as int) desc ";
+            }
+            else if($order_by_val == 'order_by_asc'){
+                $order_by_val = "Order by cast(T2.val as int) asc ";
+            }
+
+            $query1 = "SELECT * ";
             $query1 .= "FROM produktionsAnlagenConfig as T1 ";
             $query1 .= "LEFT JOIN ";
             $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(cast(val as int)) as val from ";
@@ -147,13 +180,74 @@ class dashboardController {
             $query1 .= "ON T1.mst_ID = T2.table_2_mst_id ";
             $query1  .= "where T1.iBdeType='2' ";
             $query1 .= "AND T1.intTp_ID = '$time_interval' ";
-            $query1 .= "order by T1.iBdePrdktConf_ID desc";
+            $query1 .= $order_by_val;
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $dataMesaurement = queryDB($conn, $query1, "read");
             // echo json_encode($dataMesaurement); die;
+            
+            //$query1 = "SELECT Top($number_records) * FROM produktionsAnlagenConfig where iBdeType='2'  order by iBdePrdktConf_ID desc";
+            // if($order_by_val == 'five_days_measurement_records'){
+            //     $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
+            //     $current_date = date('Y-m-d');
+               
+            //     $queryMaxValue = "SELECT Top($number_records) max(cast(T2.val as int)) as val ";
+            //     $queryMaxValue .= "FROM produktionsAnlagenConfig as T1 ";
+            //     $queryMaxValue .= "INNER JOIN ";
+            //     $queryMaxValue .= "masseneingabeSucheIMw as T2 ";
+            //     $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
+            //     $queryMaxValue  .= "where T1.iBdeType='2' ";
+            //     $queryMaxValue  .= "AND T2.on_date >='$date_differnce_five_days' ";
+            //     $queryMaxValue  .= "AND T2.on_date <='$current_date' ";
+            //     $queryMaxValue .= "AND T1.intTp_ID = '1' ";
+            //     $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
+            //     $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+
+            //     $query1 = "SELECT Top($number_records) * ";
+            //     $query1 .= "FROM produktionsAnlagenConfig as T1 ";
+            //     $query1 .= "INNER JOIN ";
+            //     $query1 .= "masseneingabeSucheIMw as T2 ";
+            //     $query1 .= "ON T1.mst_ID = T2.mst_ID ";
+            //     $query1  .= "where T1.iBdeType='2' ";
+            //     $query1  .= "AND T2.on_date >='$date_differnce_five_days' ";
+            //     $query1  .= "AND T2.on_date <='$current_date' ";
+            //     $query1 .= "AND T1.intTp_ID = '1' ";
+            //     $query1 .= "order by cast(T2.val as int) desc ";
+            //     $dataMesaurement = queryDB($conn, $query1, "read");
+            //     // echo json_encode($dataMesaurement); die;
+
+            // }
+            // else{
+            //     $query1 = "SELECT Top($number_records) * ";
+            //     $query1 .= "FROM produktionsAnlagenConfig as T1 ";
+            //     $query1 .= "LEFT JOIN ";
+            //     $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(cast(val as int)) as val from ";
+            //     $query1 .= "masseneingabeSucheIMw as T2 ";
+            //     $query1 .= "GROUP By T2.mst_id) ";
+            //     $query1 .= "T2 ";
+            //     $query1 .= "ON T1.mst_ID = T2.table_2_mst_id ";
+            //     $query1  .= "where T1.iBdeType='2' ";
+            //     $query1 .= "AND T1.intTp_ID = '$time_interval' ";
+            //     $query1 .= $order_by_val;
+            //     $dataMesaurement = queryDB($conn, $query1, "read");
+            // }
+            // echo json_encode($query1); die;
             $tr = '';
             if($dataMesaurement != '' && count($dataMesaurement) > 0){
                 foreach($dataMesaurement as $key => $value){
-                    $tr .= '<tr>';
+                    // <---30-7-2021---
+                    $style='';
+                    if($order_by_val == 'five_days_measurement_records'){
+                        if($queryMaxVal != ''){
+                            if($queryMaxVal == $value['val']){
+                                $style="style='background-color: #f77171'";
+                            }
+                            else{
+                                $style = '';
+                            }
+                        }
+                    }
+                    // --end--.>
+                    $tr .= "<tr $style>";
                     $tr.= "<td>".$value['mstIMw']."</td>";
                     if($value['intTp_ID'] == "1"){
                         $tr.= "<td>Days</td>";
@@ -174,6 +268,9 @@ class dashboardController {
                     if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
                         $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
                     }
+                    else if($order_by_val == 'five_days_measurement_records'){
+                        $tr.= "<td>".$value['on_date']."</td>";
+                    }
                     else{
                         $tr.= "<td>".$value['startDate']."</td>";
                     }
@@ -189,9 +286,58 @@ class dashboardController {
                     $tr.="</tr>";
                 }
             }else{
-                 $tr = "<tr><td colspan='4' class='text-center'>No Data</td></tr>";
+                 $tr = "<tr><td colspan='5' class='text-center'>No Data</td></tr>";
             }
             $records['measurement_html'] = $tr;
+
+            //Pagination Code HTML
+            $style_background = '';
+            $class_page_count_val = 'page_count_val';
+            $style_background_end = '';
+            $class_page_count_val_end = 'page_count_val';
+            // echo $page_val ; die;
+            if($page_val == "1"){
+                $style_background = "style='background: #d6d6d6;'";
+                $class_page_count_val = '';
+                if($pagesCount == "1"){
+                    $style_background_end = "style='background: #d6d6d6;'";
+                    $class_page_count_val_end = '';  
+                }
+                
+            }
+            else if($page_val == $pagesCount){
+                $style_background_end = "style='background: #d6d6d6;'";
+                $class_page_count_val_end = '';
+            }
+            else{
+                $style_background = '';
+                $style_background_end = '';
+            }
+            $paginationHTMl="<nav aria-label='Page navigation example'>
+                <div class='pagination_items'>
+                        <ul class='pagination'>
+                            <li class='page-item $class_page_count_val' id='previous_pagination_val'>
+                                <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
+                                    <span aria-hidden='true'>&laquo;</span>
+                                    <span class='sr-only'>Previous</span>
+                                </a>
+                            </li>";
+                            
+            for($i = 1; $i <= $pagesCount; $i++){
+                $active = $i == $page_val ? 'active' : '';
+                $paginationHTMl.="<li class='page-item page_count_val $active'><a class='page-link' href='javascript:void(0);'>$i</a></li>";
+            }
+            $paginationHTMl.="<li class='page-item $class_page_count_val_end' id='next_pagination_val'>
+                                            <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
+                                                <span aria-hidden='true'>&raquo;</span>
+                                                <span class='sr-only'>Next</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                <div>
+                            </nav>";
+
+            $records['pagination_html'] = $paginationHTMl;
 
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
