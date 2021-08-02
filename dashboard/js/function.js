@@ -32,6 +32,7 @@ function getNumberRecordsMesurement(){
     if(number_records == ''){
       var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
       $('#mesurement_select_table_entries').html(tr);
+      $('#pagination_html').html('');
     }
     else{
       $.ajax({

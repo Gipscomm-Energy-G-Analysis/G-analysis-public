@@ -183,7 +183,7 @@ class dashboardController {
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $dataMesaurement = queryDB($conn, $query1, "read");
-            // echo json_encode($dataMesaurement); die;
+            // echo json_encode($offSetVal); die;
             
             //$query1 = "SELECT Top($number_records) * FROM produktionsAnlagenConfig where iBdeType='2'  order by iBdePrdktConf_ID desc";
             // if($order_by_val == 'five_days_measurement_records'){
@@ -231,23 +231,26 @@ class dashboardController {
             //     $dataMesaurement = queryDB($conn, $query1, "read");
             // }
             // echo json_encode($query1); die;
-            $tr = '';
+            
+            $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement);
+
+            $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount);
+
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    // <---2-8-2021--
+    public function generateHtmlTableMeasurementData($dataMesaurement){
+        $tr = '';
             if($dataMesaurement != '' && count($dataMesaurement) > 0){
                 foreach($dataMesaurement as $key => $value){
                     // <---30-7-2021---
-                    $style='';
-                    if($order_by_val == 'five_days_measurement_records'){
-                        if($queryMaxVal != ''){
-                            if($queryMaxVal == $value['val']){
-                                $style="style='background-color: #f77171'";
-                            }
-                            else{
-                                $style = '';
-                            }
-                        }
-                    }
-                    // --end--.>
-                    $tr .= "<tr $style>";
+                    $tr .= "<tr>";
                     $tr.= "<td>".$value['mstIMw']."</td>";
                     if($value['intTp_ID'] == "1"){
                         $tr.= "<td>Days</td>";
@@ -268,9 +271,6 @@ class dashboardController {
                     if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
                         $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
                     }
-                    else if($order_by_val == 'five_days_measurement_records'){
-                        $tr.= "<td>".$value['on_date']."</td>";
-                    }
                     else{
                         $tr.= "<td>".$value['startDate']."</td>";
                     }
@@ -288,8 +288,12 @@ class dashboardController {
             }else{
                  $tr = "<tr><td colspan='5' class='text-center'>No Data</td></tr>";
             }
-            $records['measurement_html'] = $tr;
+            return $tr;
+            // $records['measurement_html'] = $tr;
 
+    }
+    public function generatePaginationHtmlMeasurementData($page_val,$pagesCount){
+        try{
             //Pagination Code HTML
             $style_background = '';
             $class_page_count_val = 'page_count_val';
@@ -336,17 +340,15 @@ class dashboardController {
                                     </ul>
                                 <div>
                             </nav>";
+            return $paginationHTMl;
+            // $records['pagination_html'] = $paginationHTMl;
 
-            $records['pagination_html'] = $paginationHTMl;
-
-            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
-            die;
         }
-        catch (Exception $e) {
+        catch(Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    // --end-->
     //Get Records Energy
     public function getNumberRecordsEnergy()
     {
