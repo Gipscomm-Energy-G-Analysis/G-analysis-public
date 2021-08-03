@@ -10305,6 +10305,55 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+    tblMandantengruppe = $("#tblMandantengruppe").DataTable({
+    	        dom: "Bfrtip",
+
+        buttons: [{
+
+            extend: "copy",
+
+            text: "Kopieren",
+
+            exportOptions: {
+
+                columns: ":visible"
+
+            }
+
+        }, {
+
+            extend: "csv",
+
+            text: "CSV-Export",
+
+            exportOptions: {
+
+                columns: ":visible"
+
+            }
+
+        }, {
+
+            extend: "print",
+
+            text: "Drucken",
+
+            exportOptions: {
+
+                columns: ":visible"
+
+            }
+
+        }],
+
+        pageLength: 15,
+
+        bAutoWidth: !1,
+
+        colReorder: !0
+
+    });
+
     tblAnlagenII =
         setAnlagenTbl2();
     var tblDokumenteAnl = $("#tblDokumenteAnl").DataTable({

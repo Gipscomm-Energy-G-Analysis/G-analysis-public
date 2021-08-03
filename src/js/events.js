@@ -2103,7 +2103,6 @@ $(document).ready(function() {
     })
 });
 
-
 $(".berDialogSchlButton").click(function() {
     $("#messmittelSuchenContainer").dialog("close")
 });
