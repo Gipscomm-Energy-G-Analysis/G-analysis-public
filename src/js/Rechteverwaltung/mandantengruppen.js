@@ -24,29 +24,24 @@ const scpRechteverwaltung_mandantengruppen =
             // Extracts the mandanten ID's from the table
             const getManIDs =
                 () =>
-                array($("#tblMandantenBetrGrp tbody tr").length)()()
-                .map((_, i) => tblMandantenBetrGrp.cell(i, 0).data())
+                array($("#tblMandantengruppe tbody tr").length)()()
+                .map((_, i) => tblMandantengruppe.cell(i, 0).data())
                 .join(",")
 
             const arrayManIDs = 
                 () =>
-                array($("#tblMandantenBetrGrp tbody tr").length)()()
-                .map((_, i) => tblMandantenBetrGrp.cell(i, 0).data())
+                array($("#tblMandantengruppe tbody tr").length)()()
+                .map((_, i) => tblMandantengruppe.cell(i, 0).data())
 
             // Returns an object that contains the form data
             const getFormData =
                 () => (
-                    { modus : getFieldValue("betrGrpState")
-                    , betrGrpID : getFieldValue("betrGrpID")
-                    , firma : getFieldValue("firmaBetrGrp")
-                    , anzahlMitarbeiter : getFieldValue("anzahlMitarbeiterBetrGrp")
-                    , anschrift : getFieldValue("anschriftBetrGrp")
-                    , plz : getFieldValue("plzBetrGrp")
-                    , ort : getFieldValue("ortBetrGrp")
-                    , geschaeftsfuehrer : getFieldValue("geschaeftsfuehrerBetrGrp")
-                    , telefon : getFieldValue("telefonBetrGrp")
-                    , eMail : getFieldValue("emailBetrGrp")
-                    , notiz : getFieldValue("notizBetrGrp")
+                    { modus : getFieldValue("manGrpState")
+                    , manGrpIdx : getFieldValue("manGrpIdx")
+                    , manGrpID : getFieldValue("manGrpID")
+                    , name : getFieldValue("nameManGrp")
+                    , kurz : getFieldValue("kurz")
+                    , notiz : getFieldValue("notiz")
                     , mandantenIDs : getManIDs()
                     }
                 )
@@ -54,15 +49,8 @@ const scpRechteverwaltung_mandantengruppen =
             // Checks if there are empty input values
             const completeFormData =
                 formData => 
-                [ "firma"
-                , "anzahlMitarbeiter"
-                , "anschrift"
-                , "plz"
-                , "ort"
-                , "geschaeftsfuehrer"
-                , "telefon"
-                , "eMail"
-                , "notiz"
+                [ "name"
+                , "kurz"
                 , "mandantenIDs"
                 ]
                 .map(field(formData))
@@ -72,7 +60,7 @@ const scpRechteverwaltung_mandantengruppen =
             // and then updates the indexedDB
             const saveFormData =
                 formData =>
-                ajaxPost("php/Rechteverwaltung/Betreuergruppen/saveBetreuergruppe.php")(formData)
+                ajaxPost("php/Rechteverwaltung/Mandantengruppen/save.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
                 .then(
@@ -87,7 +75,7 @@ const scpRechteverwaltung_mandantengruppen =
             // saved anyways
             const nonCompleteDataDialog =
                 formData =>
-                $("#saveBetrGrpDialog").dialog({
+                $("#saveManGrpDialog").dialog({
                     height: 203,
                     width: 329,
                     resize: "auto",
@@ -101,18 +89,18 @@ const scpRechteverwaltung_mandantengruppen =
                     },
                     modal: true,
                     open: () => {
-                        $("#saveBetrGrpOk").off("click")
-                        $("#saveBetrGrpOk").on("click",
+                        $("#saveManGrpOk").off("click")
+                        $("#saveManGrpOk").on("click",
                             () =>
                             ( saveFormData(formData)
-                            , $("#saveBetrGrpDialog").dialog("close")
+                            , $("#saveManGrpDialog").dialog("close")
                             )
                         )
 
-                        $("#saveSchichtCancel").off("click")
-                        $("#saveSchichtCancel").on("click",
+                        $("#saveManGrpCancel").off("click")
+                        $("#saveManGrpCancel").on("click",
                             () =>
-                            $("#saveBetrGrpDialog").dialog("close")
+                            $("#saveManGrpDialog").dialog("close")
                         )
                     }
                 })
@@ -134,14 +122,14 @@ const scpRechteverwaltung_mandantengruppen =
             const setState =
                 state =>
                 state === "new" ?
-                ( $("#betrGrpState").val(state)
-                , $(".betrGrpForm")
+                ( $("#manGrpState").val(state)
+                , $(".manGrpForm")
                     .css("background", "antiquewhite")
                     .css("border", "1px solid black")
                     .css("padding", "1px")
                 ) :
-                ( $("#betrGrpState").val(state)
-                , $(".betrGrpForm")
+                ( $("#manGrpState").val(state)
+                , $(".manGrpForm")
                     .css("background", "white")
                     .css("border", "1px solid black")
                     .css("padding", "1px")
@@ -154,33 +142,25 @@ const scpRechteverwaltung_mandantengruppen =
 
             this.clearFields =
                 () =>
-                ( [ "betrGrpID"
-                  , "firmaBetrGrp"
-                  , "anzahlMitarbeiterBetrGrp"
-                  , "anschriftBetrGrp"
-                  , "plzBetrGrp"
-                  , "ortBetrGrp"
-                  , "geschaeftsfuehrerBetrGrp"
-                  , "telefonBetrGrp"
-                  , "emailBetrGrp"
-                  , "notizBetrGrp"
+                ( [ "nameManGrp"
+                  , "kurzManGrp"
                   ]    
                   .forEach(clearField)
-                , clearTable(tblMandantenBetrGrp)
+                , clearTable(tblMandantengruppe)
                 , setState("new")
                 )
 
             // Returns an array of the Schicht Modelle from indexedDB
-            const queryBetreuerGruppenDataIDB =
+            const queryMandantengruppenDataIDB =
                 () => 
-                idxDB.betreuerGruppen
+                idxDB.mandantenGruppen
                 .toArray()
 
             // Returns a certain Schicht Modell depending on an index
-            const queryBetreuerGruppeDataIDB =
+            const queryMandantenGruppenDataIDB =
                 idx =>
-                queryBetreuerGruppenDataIDB()
-                .then(betreuerGruppen => betreuerGruppen[idx])
+                queryMandantenGruppenIDB()
+                .then(mandantenGruppen => mandantenGruppen[idx])
 
             // Prepares the table data for the search dialog
             const prepareTableDataMan =
@@ -202,21 +182,21 @@ const scpRechteverwaltung_mandantengruppen =
                 }
 
             const readIntoMandantenTable =
-                betreuerGruppe =>
+                mandantenGruppe =>
                 scpUnternehmensstruktur_mandanten
-                .queryMandantenWithIDs(betreuerGruppe.mandantenIDs.split(","))
-                .then(fillMandantenTbl(tblMandantenBetrGrp))
+                .queryMandantenWithIDs(mandantenGruppe.mandantenIDs.split(","))
+                .then(fillMandantenTbl(tblMandantengruppe))
 
             this.removeFromMandantenTbl =
                 that =>
-                tblMandantenBetrGrp.row(that).remove().draw()
+                tblMandantengruppe.row(that).remove().draw()
 
             // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
                 idx => {
                     queryBetreuerGruppeDataIDB(idx)
                     .then(
-                        betreuerGruppe => {
+                        mandantenGruppe => {
 
                             $("#betrGrpIdx").val(idx)
                             $("#betrGrpID").val(betreuerGruppe.betrGrp_ID)
@@ -241,7 +221,7 @@ const scpRechteverwaltung_mandantengruppen =
             // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
-                idxDB.betreuerGruppen
+                idxDB.mandantenGruppen
                 .count()
                 .then(
                     count =>
@@ -262,7 +242,7 @@ const scpRechteverwaltung_mandantengruppen =
             // depending on the current records index
             this.readNext =
                 () =>
-                idxDB.betreuerGruppen
+                idxDB.mandantenGruppen
                 .count()
                 .then( 
                     count => 
@@ -274,7 +254,7 @@ const scpRechteverwaltung_mandantengruppen =
             // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
-                idxDB.betreuerGruppen
+                idxDB.mandantenGruppen
                 .count()
                 .then(
                     count =>
@@ -284,11 +264,11 @@ const scpRechteverwaltung_mandantengruppen =
                 )
 
             // Deletes the current Schicht Modell(sets col deleted = true)
-            this.deleteBetreuerGruppe =
+            this.deleteMandantenGruppe =
                 () => {
                     const betrGrpID = $("#betrGrpID").val()
 
-                    ajaxPost("php/Rechteverwaltung/Betreuergruppen/deleteBetreuergruppe.php")({betrGrpID})
+                    ajaxPost("php/Rechteverwaltung/Mandantengruppen/delete.php")({manGrpID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
@@ -298,30 +278,29 @@ const scpRechteverwaltung_mandantengruppen =
                 }
 
             // Prepares the table data for the search dialog
-            const prepareTableDataBetrGrp =
+            const prepareTableDataManGrp =
                 records =>
                 records.map(
                     (a, i) =>
                     [ i
-                    , a.firma
-                    , a.anschrift
-                    , a.plz + " " + a.ort
+                    , a.name
+                    , a.kurz
                     ]
                 )
 
             // Fills the search dialog table with data
-            const fillBetreuerGruppenTbl =
+            const fillMandantenGruppenTbl =
                 data => {
-                    clearTable(tblBetrGrpSuchen)
-                    intoTable(tblBetrGrpSuchen)(prepareTableDataBetrGrp(data))
+                    clearTable(tblManGrpSuchen)
+                    intoTable(tblManGrpSuchen)(prepareTableDataBetrGrp(data))
                 }
 
             // Triggers opening the search dialog
-            this.searchBetreuerGruppen =
+            this.searchMandantenGruppen =
                 () => {
 
                     queryBetreuerGruppenDataIDB()
-                    .then(fillBetreuerGruppenTbl)
+                    .then(fillMandantenGruppenTbl)
 
                     $("#betrGrpSuchenContainer").dialog({
                         height: 450,
@@ -377,8 +356,8 @@ const scpRechteverwaltung_mandantengruppen =
                         $("#tblMandantenAuswahl tbody").off("dblclick", "tr");
                         $("#tblMandantenAuswahl tbody").on("dblclick", "tr", function() {
                             var a = tblMandantenAuswahl.row(this).data();
-                            tblMandantenBetrGrp.row.add([a[0], a[1], a[2]]).draw();
-                            tblMandantenBetrGrp.column(0).visible(!1).draw();
+                            tblMandantengruppen.row.add([a[0], a[1], a[2]]).draw();
+                            tblMandantengruppen.column(0).visible(!1).draw();
                             $("#mandantenlisteAuswahlContainer").dialog("close")
                         })
                     }

@@ -8,27 +8,21 @@ $conn = connectToDB("gipscomm") ;
 
 $modus = $_POST['modus'] ;
 $betrGrpID = $_POST['betrGrpID'] ;
-$titelSAdm = $_POST['titelSAdm'] ;
-$nameSAdm = $_POST['nameSAdm'] ;
-$vornameSAdm = $_POST['vornameSAdm'] ;
-$emailSAdm = $_POST['emailSAdm'] ;
-$telefonSAdm = $_POST['telefonSAdm'] ;
-$faxSAdm = $_POST['faxSAdm'] ;
-$mobiltelefonSAdm = $_POST['mobiltelefonSAdm'] ;
-$username = $_POST['username'] ;
-$passHash = $_POST['passHash'] ;
-$rechte = $_POST['rechte'] ;
+$name = $_POST['name'] ;
+$kurz = $_POST['kurz'] ;
+$notiz = $_POST['notiz'] ;
+$mandantenIDs = $_POST['mandantenIDs'] ;
 
 if($modus === "new") {
-   $query =  "INSERT INTO superAdmins(betrGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, passHash, position, rechte, deleted) " ;
-   $query .= "VALUES($betrGrpID, 1, '$titelSAdm', '$nameSAdm', '$vornameSAdm', '$emailSAdm', '$telefonSAdm', '$faxSAdm', '$mobiltelefonSAdm', '$username', '$passHash','sAdm', '$rechte', 0) " ;
+   $query =  "INSERT INTO mandantenGruppen(betrGrp_ID, name, kurz, notiz, mandantenIDs, deleted) " ;
+   $query .= "VALUES($betrGrpID, '$name', '$kurz', '$notiz', '$mandantenIDs', 0) " ;
 }
 else {
-    $sAdmID = $_POST['sAdmID'] ;
+    $manGrpID = $_POST['manGrpID'] ;
 
-    $query =  "UPDATE superAdmins " ;
-    $query .= "SET titelSAdm = '$titelSAdm', nameSAdm = '$nameSAdm', vornameSAdm = '$vornameSAdm', emailSAdm = '$emailSAdm', telefonSAdm = '$telefonSAdm', faxSAdm = '$faxSAdm', mobiltelefonSAdm = '$mobiltelefonSAdm', username = '$username', passHash = '$passHash', rechte = '$rechte' " ;
-    $query .= "WHERE sAdm_ID = ".$sAdmID." " ;
+    $query =  "UPDATE mandantenGruppen " ;
+    $query .= "SET name = '$name', kurz = '$kurz', notiz = '$notiz' " ;
+    $query .= "WHERE manGrp_ID = ".$manGrpID." " ;
 }
 
 queryDB($conn, $query, "write") ;

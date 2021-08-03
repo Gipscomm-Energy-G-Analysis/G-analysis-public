@@ -6,10 +6,10 @@ require '../../DbOperations.php' ;
 
 $conn = connectToDB( "gipscomm" ) ;
 
-$query  = "SELECT sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechte FROM superAdmins " ;
+$query  = "SELECT manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs FROM mandantenGruppen " ;
 $query .= "WHERE deleted = 0 " ;
 
 $result = queryDB( $conn, $query, "read" ) ;
 
-echo json_encode(["superAdmins" => $result] , JSON_INVALID_UTF8_IGNORE) ;
+echo json_encode(["mandantenGruppen" => $result] , JSON_INVALID_UTF8_IGNORE) ;
 ?>
