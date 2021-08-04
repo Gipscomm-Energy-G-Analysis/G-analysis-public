@@ -29,6 +29,12 @@ function getNumberRecordsMesurement(){
     var number_records = $('#measurement_number_record').val();
     var time_interval = $('#measurement_time_interval').val();
     var records_order_by_val = $('#measurement_records_order_by').val();
+    var search_record = $('#measurement_search_record').val();
+
+    $('.measurement_table_header').removeClass('row_click_table');
+    // $('#measurement_record_table thead th').addClass('measurement_search_table_th');
+    // $('#measurement_record_table tbody td').addClass('measurement_search_table_td');
+
     if(number_records == ''){
       var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
       $('#mesurement_select_table_entries').html(tr);
@@ -45,7 +51,8 @@ function getNumberRecordsMesurement(){
               nameDB: $("#nameDashboardDB").val(),
               number_records : number_records,
               time_interval : time_interval,
-              measurement_order_by_val : records_order_by_val
+              measurement_order_by_val : records_order_by_val,
+              search_record : search_record
           },
           fail: function() {
               alert("failed!!")
@@ -63,9 +70,11 @@ function getNumberRecordsMesurementPagination(page_val){
     var number_records = $('#measurement_number_record').val();
     var time_interval = $('#measurement_time_interval').val();
     var records_order_by_val = $('#measurement_records_order_by').val();
+    var search_record = $('#measurement_search_record').val();
     if(number_records == ''){
       var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
       $('#mesurement_select_table_entries').html(tr);
+      $('#pagination_html').html('');
     }
     else{
       $.ajax({
@@ -79,7 +88,8 @@ function getNumberRecordsMesurementPagination(page_val){
               number_records : number_records,
               time_interval : time_interval,
               measurement_order_by_val : records_order_by_val,
-              page_val : page_val
+              page_val : page_val,
+              search_record : search_record
           },
           fail: function() {
               alert("failed!!")
@@ -90,6 +100,76 @@ function getNumberRecordsMesurementPagination(page_val){
           }
       });
     }
+
+}
+
+function rowClickMeasurementTableData(mst_id,data_type){
+  var number_records = $('#measurement_number_record').val();  
+
+  //Classes Add
+  $('.measurement_table_header').addClass('row_click_table');
+  // $('#measurement_record_table table thead th').removeClass('measurement_search_table_th');
+  // $('#measurement_record_table table tbody td').removeClass('measurement_search_table_td');
+
+  if(number_records == ''){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+    $('#mesurement_select_table_entries').html(tr);
+    $('#pagination_html').html('');
+  }
+  else{
+    $.ajax({
+      type : "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "rowClickMeasurementTableData",
+          nameDB: $("#nameDashboardDB").val(),
+          mst_id : mst_id,
+          data_type : data_type,
+          number_records : number_records
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#mesurement_select_table_entries').html(a['measurement_html']);
+        $('#pagination_html').html(a['pagination_html']);
+      }
+    });
+  }
+}
+
+function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value){
+  var number_records = $('#measurement_number_record').val();  
+  if(number_records == ''){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+    $('#mesurement_select_table_entries').html(tr);
+    $('#pagination_html').html('');
+  }
+  else{
+    $.ajax({
+      type : "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "rowClickMeasurementTableData",
+          nameDB: $("#nameDashboardDB").val(),
+          mst_id : mst_id,
+          data_type : data_type,
+          number_records : number_records,
+          page_val : page_value
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#mesurement_select_table_entries').html(a['measurement_html']);
+        $('#pagination_html').html(a['pagination_html']);
+      }
+    });
+  }
 
 }
 

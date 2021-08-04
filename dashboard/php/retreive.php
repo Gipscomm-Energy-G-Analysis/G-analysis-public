@@ -140,6 +140,15 @@ class dashboardController {
             $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $dataMesaurement = '';
             $queryMaxVal = '';
+            $pagesCount = '';
+
+            $search_record = isset($_POST['search_record']) ? $_POST['search_record'] : '';
+            $queryTotalRecordCondition = "";
+            $queryMainCondition = '';
+            if($search_record != ''){
+                $queryTotalRecordCondition = "AND T1.mstIMw LIKE '%$search_record%' ";
+                $queryMainCondition = "AND T1.mstIMw LIKE '%$search_record%' ";
+            }
 
             //Pagination Code
             $queryTotalRecords = "SELECT * ";
@@ -152,12 +161,14 @@ class dashboardController {
             $queryTotalRecords .= "ON T1.mst_ID = T2.table_2_mst_id ";
             $queryTotalRecords  .= "where T1.iBdeType='2' ";
             $queryTotalRecords .= "AND T1.intTp_ID = '$time_interval' ";
+            $queryTotalRecords .= $queryTotalRecordCondition;
             $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            // echo json_encode($totalRecordsValue); die;
             
             $pagesCount = '';
-            $offSetVal = '';
+            $offSetVal = 0;
             if(count($totalRecordsValue) > 0){
-               $pagesCount = round(count($totalRecordsValue) / $number_records);
+               $pagesCount = ceil(count($totalRecordsValue) / $number_records);
                $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
                $offSetVal = ($page_val - 1) * $number_records;
 
@@ -180,57 +191,11 @@ class dashboardController {
             $query1 .= "ON T1.mst_ID = T2.table_2_mst_id ";
             $query1  .= "where T1.iBdeType='2' ";
             $query1 .= "AND T1.intTp_ID = '$time_interval' ";
+            $query1 .= $queryMainCondition;
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            $dataMesaurement = queryDB($conn, $query1, "read");
-            // echo json_encode($offSetVal); die;
-            
-            //$query1 = "SELECT Top($number_records) * FROM produktionsAnlagenConfig where iBdeType='2'  order by iBdePrdktConf_ID desc";
-            // if($order_by_val == 'five_days_measurement_records'){
-            //     $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
-            //     $current_date = date('Y-m-d');
-               
-            //     $queryMaxValue = "SELECT Top($number_records) max(cast(T2.val as int)) as val ";
-            //     $queryMaxValue .= "FROM produktionsAnlagenConfig as T1 ";
-            //     $queryMaxValue .= "INNER JOIN ";
-            //     $queryMaxValue .= "masseneingabeSucheIMw as T2 ";
-            //     $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
-            //     $queryMaxValue  .= "where T1.iBdeType='2' ";
-            //     $queryMaxValue  .= "AND T2.on_date >='$date_differnce_five_days' ";
-            //     $queryMaxValue  .= "AND T2.on_date <='$current_date' ";
-            //     $queryMaxValue .= "AND T1.intTp_ID = '1' ";
-            //     $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
-            //     $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-
-            //     $query1 = "SELECT Top($number_records) * ";
-            //     $query1 .= "FROM produktionsAnlagenConfig as T1 ";
-            //     $query1 .= "INNER JOIN ";
-            //     $query1 .= "masseneingabeSucheIMw as T2 ";
-            //     $query1 .= "ON T1.mst_ID = T2.mst_ID ";
-            //     $query1  .= "where T1.iBdeType='2' ";
-            //     $query1  .= "AND T2.on_date >='$date_differnce_five_days' ";
-            //     $query1  .= "AND T2.on_date <='$current_date' ";
-            //     $query1 .= "AND T1.intTp_ID = '1' ";
-            //     $query1 .= "order by cast(T2.val as int) desc ";
-            //     $dataMesaurement = queryDB($conn, $query1, "read");
-            //     // echo json_encode($dataMesaurement); die;
-
-            // }
-            // else{
-            //     $query1 = "SELECT Top($number_records) * ";
-            //     $query1 .= "FROM produktionsAnlagenConfig as T1 ";
-            //     $query1 .= "LEFT JOIN ";
-            //     $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(cast(val as int)) as val from ";
-            //     $query1 .= "masseneingabeSucheIMw as T2 ";
-            //     $query1 .= "GROUP By T2.mst_id) ";
-            //     $query1 .= "T2 ";
-            //     $query1 .= "ON T1.mst_ID = T2.table_2_mst_id ";
-            //     $query1  .= "where T1.iBdeType='2' ";
-            //     $query1 .= "AND T1.intTp_ID = '$time_interval' ";
-            //     $query1 .= $order_by_val;
-            //     $dataMesaurement = queryDB($conn, $query1, "read");
-            // }
             // echo json_encode($query1); die;
+            $dataMesaurement = queryDB($conn, $query1, "read");
             
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement);
 
@@ -244,104 +209,199 @@ class dashboardController {
         }
     }
 
+    // <--3-8-2021
+    public function rowClickMeasurementTableData(){
+        try{
+            global $conn;
+            $mst_id = $_POST['mst_id'];
+            $type = $_POST['data_type'];
+            $number_records = $_POST['number_records'];
+            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+           
+            $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
+            $current_date = date('Y-m-d');
+
+            //Pagination Code 
+            $queryTotalPagination = "SELECT * ";
+            $queryTotalPagination .= "FROM produktionsAnlagenConfig as T1 ";
+            $queryTotalPagination .= "INNER JOIN ";
+            $queryTotalPagination .= "masseneingabeSucheIMw as T2 ";
+            $queryTotalPagination .= "ON T1.mst_ID = T2.mst_Id ";
+            $queryTotalPagination  .= "where T1.iBdeType='2' ";
+            // $queryMaxValue  .= "AND T2.on_date >='$date_differnce_five_days' ";
+            // $queryMaxValue  .= "AND T2.on_date <='$current_date' ";
+            $queryTotalPagination .= "AND T2.type = '$type' ";
+            $queryTotalPagination .= "AND T2.mst_ID = '$mst_id' ";
+            $totalRecordsValue = queryDB($conn, $queryTotalPagination, "read");
+            
+            $pagesCount = '';
+            $offSetVal = 0;
+            if(count($totalRecordsValue) > 0){
+               $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+               $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+               $offSetVal = ($page_val - 1) * $number_records;
+
+            }
+
+            //--end-->
+            
+            $queryMaxValue = "SELECT max(cast(T2.val as int)) as val ";
+            $queryMaxValue .= "FROM produktionsAnlagenConfig as T1 ";
+            $queryMaxValue .= "INNER JOIN ";
+            $queryMaxValue .= "masseneingabeSucheIMw as T2 ";
+            $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
+            $queryMaxValue  .= "where T1.iBdeType='2' ";
+            // $queryMaxValue  .= "AND T2.on_date >='$date_differnce_five_days' ";
+            // $queryMaxValue  .= "AND T2.on_date <='$current_date' ";
+            $queryMaxValue .= "AND T2.type = '$type' ";
+            $queryMaxValue .= "AND T2.mst_ID = '$mst_id' ";
+            $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
+            $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+
+            $query1 = "SELECT * ";
+            $query1 .= "FROM produktionsAnlagenConfig as T1 ";
+            $query1 .= "INNER JOIN ";
+            $query1 .= "masseneingabeSucheIMw as T2 ";
+            $query1 .= "ON T1.mst_ID = T2.mst_ID ";
+            $query1  .= "where T1.iBdeType='2' ";
+            // $query1  .= "AND T2.on_date >='$date_differnce_five_days' ";
+            // $query1  .= "AND T2.on_date <='$current_date' ";
+            $query1 .= "AND T2.type = '$type' ";
+            $query1 .= "AND T2.mst_ID = '$mst_id' ";
+            $query1 .= "order by T2.val desc ";
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+            $dataMesaurement = queryDB($conn, $query1, "read"); 
+            // echo json_encode($date_differnce_five_days); die;
+
+            $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement,$queryMaxVal);
+            $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount,$type,$mst_id);
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+
+           die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    // --end-->
+
     // <---2-8-2021--
-    public function generateHtmlTableMeasurementData($dataMesaurement){
+    public function generateHtmlTableMeasurementData($dataMesaurement,$queryMaxVal = false){
         $tr = '';
-            if($dataMesaurement != '' && count($dataMesaurement) > 0){
-                foreach($dataMesaurement as $key => $value){
-                    // <---30-7-2021---
-                    $tr .= "<tr>";
-                    $tr.= "<td>".$value['mstIMw']."</td>";
-                    if($value['intTp_ID'] == "1"){
-                        $tr.= "<td>Days</td>";
-                    }
-                    else if($value['intTp_ID'] == "2"){
-                        $tr.= "<td>Weeks</td>";
-                    }
-                    else if($value['intTp_ID'] == "3"){
-                        $tr.= "<td>Months</td>";
-                    }
-                    else if($value['intTp_ID'] == "4"){
-                        $tr.= "<td>Years</td>";
+        if($dataMesaurement != '' && count($dataMesaurement) > 0){
+            foreach($dataMesaurement as $key => $value){
+                $style='';
+                $class_val = '';
+                if($queryMaxVal == ""){
+                    $class_val = 'class="row_click"';
+                }
+                else if($queryMaxVal != '' && $queryMaxVal == $value['val']){
+                    $style="style='background-color: #f77171'";
+                }
+                $tr .= "<tr $style $class_val data-mst=".$value['mst_ID']." data-type=".$value['intTp_ID'].">";
+                
+                $tr.= "<td>".$value['mstIMw']."</td>";
+                if($value['intTp_ID'] == "1"){
+                    $tr.= "<td>Days</td>";
+                }
+                else if($value['intTp_ID'] == "2"){
+                    $tr.= "<td>Weeks</td>";
+                }
+                else if($value['intTp_ID'] == "3"){
+                    $tr.= "<td>Months</td>";
+                }
+                else if($value['intTp_ID'] == "4"){
+                    $tr.= "<td>Years</td>";
+                }
+                else{
+                    $tr.= "<td></td>";
+                }
+                // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                    if($queryMaxVal != ''){
+                        $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
                     }
                     else{
-                        $tr.= "<td></td>";
-                    }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
-                    if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
                         $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
                     }
-                    else{
-                        $tr.= "<td>".$value['startDate']."</td>";
-                    }
-                    
-                    if($value['val'] == null){
-                        $tr.= "<td> - </td>";
-                        $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
-                    }
-                    else{
-                        $tr.= "<td>".$value['val']."</td>";
-                        $tr.= "<td><label class='badge badge-success'>Active </label></td>";
-                    }
-                    $tr.="</tr>";
                 }
-            }else{
-                 $tr = "<tr><td colspan='5' class='text-center'>No Data</td></tr>";
-            }
-            return $tr;
-            // $records['measurement_html'] = $tr;
-
-    }
-    public function generatePaginationHtmlMeasurementData($page_val,$pagesCount){
-        try{
-            //Pagination Code HTML
-            $style_background = '';
-            $class_page_count_val = 'page_count_val';
-            $style_background_end = '';
-            $class_page_count_val_end = 'page_count_val';
-            // echo $page_val ; die;
-            if($page_val == "1"){
-                $style_background = "style='background: #d6d6d6;'";
-                $class_page_count_val = '';
-                if($pagesCount == "1"){
-                    $style_background_end = "style='background: #d6d6d6;'";
-                    $class_page_count_val_end = '';  
+                else if($queryMaxVal != ''){
+                    $tr.= "<td>".$value['on_date']."</td>";
+                }
+                else{
+                    $tr.= "<td>".$value['startDate']."</td>";
                 }
                 
+                if($value['val'] == null){
+                    $tr.= "<td> - </td>";
+                    $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                }
+                else{
+                    $tr.= "<td>".$value['val']."</td>";
+                    $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                }
+                $tr.="</tr>";
             }
-            else if($page_val == $pagesCount){
-                $style_background_end = "style='background: #d6d6d6;'";
-                $class_page_count_val_end = '';
-            }
-            else{
+        }else{
+                $tr = "<tr><td colspan='5' class='text-center'>No Data</td></tr>";
+        }
+        return $tr;
+        // $records['measurement_html'] = $tr;
+
+    }
+    public function generatePaginationHtmlMeasurementData($page_val,$pagesCount,$data_type = false ,$mst_id = false){
+        try{
+            //Pagination Code HTML
+            if($page_val > 0 && $pagesCount > 0){
                 $style_background = '';
+                $class_page_count_val = 'page_count_val';
                 $style_background_end = '';
+                $class_page_count_val_end = 'page_count_val';
+                // echo $page_val ; die;
+                if($page_val == "1"){
+                    $style_background = "style='background: #d6d6d6;'";
+                    $class_page_count_val = '';
+                    if($pagesCount == "1"){
+                        $style_background_end = "style='background: #d6d6d6;'";
+                        $class_page_count_val_end = '';  
+                    }
+                    
+                }
+                else if($page_val == $pagesCount){
+                    $style_background_end = "style='background: #d6d6d6;'";
+                    $class_page_count_val_end = '';
+                }
+                else{
+                    $style_background = '';
+                    $style_background_end = '';
+                }
+                $paginationHTMl="<nav aria-label='Page navigation example'>
+                    <div class='pagination_items'>
+                            <ul class='pagination'>
+                                <li class='page-item $class_page_count_val' data_type='$data_type' data_mst='$mst_id' id='previous_pagination_val'>
+                                    <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
+                                        <span aria-hidden='true'>&laquo;</span>
+                                        <span class='sr-only'>Previous</span>
+                                    </a>
+                                </li>";
+                                
+                for($i = 1; $i <= $pagesCount; $i++){
+                    $active = $i == $page_val ? 'active' : '';
+                    $paginationHTMl.="<li class='page-item page_count_val $active' data_type='$data_type' data_mst='$mst_id'><a class='page-link' href='javascript:void(0);'>$i</a></li>";
+                }
+                $paginationHTMl.="<li class='page-item $class_page_count_val_end' data_type='$data_type' data_mst='$mst_id' id='next_pagination_val'>
+                                                <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
+                                                    <span aria-hidden='true'>&raquo;</span>
+                                                    <span class='sr-only'>Next</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    <div>
+                                </nav>";
+                return $paginationHTMl;
+                // $records['pagination_html'] = $paginationHTMl;
             }
-            $paginationHTMl="<nav aria-label='Page navigation example'>
-                <div class='pagination_items'>
-                        <ul class='pagination'>
-                            <li class='page-item $class_page_count_val' id='previous_pagination_val'>
-                                <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
-                                    <span aria-hidden='true'>&laquo;</span>
-                                    <span class='sr-only'>Previous</span>
-                                </a>
-                            </li>";
-                            
-            for($i = 1; $i <= $pagesCount; $i++){
-                $active = $i == $page_val ? 'active' : '';
-                $paginationHTMl.="<li class='page-item page_count_val $active'><a class='page-link' href='javascript:void(0);'>$i</a></li>";
-            }
-            $paginationHTMl.="<li class='page-item $class_page_count_val_end' id='next_pagination_val'>
-                                            <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
-                                                <span aria-hidden='true'>&raquo;</span>
-                                                <span class='sr-only'>Next</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                <div>
-                            </nav>";
-            return $paginationHTMl;
-            // $records['pagination_html'] = $paginationHTMl;
 
         }
         catch(Exception $e) {
@@ -1018,6 +1078,8 @@ class dashboardController {
             $totalSumFiveDayEnergyConsumed .= "AND T1.deleted <> 'true' ";
             $totalSumFiveDayEnergyConsumed.= "AND T1.archiviert ='true' ";
             $totalSumDataEnergyConsumed = queryDB($conn, $totalSumFiveDayEnergyConsumed, "read");
+            // echo json_encode($totalSumDataEnergyConsumed); die;
+            // $energyData['totalSumDataEnergyConsumed'] = count($totalSumDataEnergyConsumed) > 0 && $totalSumDataEnergyConsumed[0]['val'] != null ? $totalSumDataEnergyConsumed[0]['val'] : 0;
             $energyData['totalSumDataEnergyConsumed'] = $totalSumDataEnergyConsumed;
 
             //Data Five Days

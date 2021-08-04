@@ -193,12 +193,44 @@ $(document).ready( function(){
         getNumberRecordsMesurement();
     });
     $(document).on('blur change', '#measurement_number_record', function(){
+        // getNumberRecordsMesurement(); 
+        var val = $(this).val();
+        if(val <=0){
+            $('.measurement_number_record_error').text('Value always be greater than 0');
+            $('#measurement_number_record').val('');
+           
+            var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+            $('#mesurement_select_table_entries').html(tr);
+            $('#pagination_html').html('');
+           
+            $('.measurement_number_record_error').fadeIn('slow');
+            setTimeout( function(){
+                $('.measurement_number_record_error').fadeOut('slow');
+            },3000);
+        }
+        else{
+            $('.measurement_number_record_error').text('');
+        }
+    });
+
+    $(document).on('keypress keyup blur', '#measurement_search_record', function(){
         getNumberRecordsMesurement(); 
     });
+
+    $(document).on('click','.row_click', function(){
+        var data_type = $(this).attr('data-type');
+        var mst_id = $(this).attr('data-mst');
+        var name_val = $(this).children('td:first').text();
+        $('#measurement_search_record').val(name_val);
+        rowClickMeasurementTableData(mst_id,data_type);
+    })
 
     $(document).on('click', '.page_count_val', function(){
         var page_value = $(this).text();
         var id = $(this).attr('id');
+        var data_type = $(this).attr('data_type');
+        var mst_id = $(this).attr('data_mst');
+        
         if(id != undefined && id == 'previous_pagination_val'){
             var find_prev_val = $('.page_count_val.active').prev('li').text();
             var active_text = $('.page_count_val.active').text();
@@ -216,7 +248,12 @@ $(document).ready( function(){
 
         }
         // console.log('Id', id);
-        getNumberRecordsMesurementPagination(page_value); 
+        if(data_type != '' && mst_id != ''){
+            rowClickMeasurementPaginationTableData(mst_id,data_type,page_value);
+        }
+        else{
+            getNumberRecordsMesurementPagination(page_value); 
+        }
       
     });
 

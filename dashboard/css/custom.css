@@ -54,3 +54,40 @@
     text-align: center;
     margin-left: 396px;
 }
+.pagination_html{
+    margin-top: 8px;
+}
+.row_click{
+    cursor: pointer;
+}
+.table-margin{
+    margin-top : -25px;
+}
+
+
+.table-margin .table td{
+    padding:  8px !important;
+}
+.table-margin .table th{
+    padding:  13px 8px 13px 8px !important;
+}
+
+#measurement_search_record{
+    padding: 20px 8px;
+}
+
+.row_click_table{
+    background-color: #c5c8d2;
+}
+
+
+.measurement_search_table_th{
+    padding:  10px 6px 10px 6px !important;
+}
+
+.measurement_search_table_td{
+    padding:  6px !important;
+    font-size: small !important;
+}
+
+

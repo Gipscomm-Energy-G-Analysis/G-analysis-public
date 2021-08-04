@@ -33,54 +33,53 @@
 
                     <div class="form-group col-md-2">
                       <label for="measurement_number_record">Select No. of Records</label>
-                      <!-- <select class="form-control form-control-sm text-dark" id="measurement_number_record">
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                      </select> -->
                        <input type="number" class="form-control form-control-sm text-dark" id="measurement_number_record" minlength="5" maxlength="50" placeholder="Select No. of Records">
+                       <span class='measurement_number_record_error text-danger'></span>
+                      </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="measurement_search_record">Search Records</label>
+                      <input type="text" class="form-control form-control-sm text-dark" id="measurement_search_record" placeholder="Search Records">
+                    </div>
+                    
+                    <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
+                      <table class="table table-striped table-bordered table-hover">
+                        <thead class="measurement_table_header">
+                          <tr>
+                            <th>
+                              Name
+                            </th>
+                            <th>
+                              Time Interval
+                            </th>
+                            <th>
+                              Date
+                            </th>
+                            <th>
+                              Units
+                            </th>
+                            <th>
+                              Status
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody id="mesurement_select_table_entries">
+                        
+                        </tbody>
+                      </table>
                     </div>
 
-                    
-                    <div class="form-group col-md-2">
-                      <label for="measurement_search_record">Search Records</label>
-                       <input type="text" class="form-control form-control-sm text-dark" id="measurement_search_record" placeholder="Search Records">
-                    </div>
                   </div>
-                  
                   <!-- <p class="card-description">
                     Add class <code>.table-striped</code>
                   </p> -->
-                  <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>
-                            Name
-                          </th>
-                          <th>
-                            Time Interval
-                          </th>
-                          <th>
-                            Date
-                          </th>
-                          <th>
-                            Units
-                          </th>
-                          <th>
-                            Status
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody id="mesurement_select_table_entries">
-                      
-                      </tbody>
-                    </table>
-                  </div>
-
+                 
                   <!-- 30-7-2021 -->
                   <div class="pagination_html" id="pagination_html">
                   </div>
+
                 </div>
               </div>
             </div>
