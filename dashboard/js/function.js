@@ -32,9 +32,7 @@ function getNumberRecordsMesurement(){
     var search_record = $('#measurement_search_record').val();
 
     $('.measurement_table_header').removeClass('row_click_table');
-    // $('#measurement_record_table thead th').addClass('measurement_search_table_th');
-    // $('#measurement_record_table tbody td').addClass('measurement_search_table_td');
-
+    $('.table-margin .table th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
     if(number_records == ''){
       var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
       $('#mesurement_select_table_entries').html(tr);
@@ -60,6 +58,7 @@ function getNumberRecordsMesurement(){
           success: function(a) {
             $('#mesurement_select_table_entries').html(a['measurement_html']);
             $('#pagination_html').html(a['pagination_html']);
+            $('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
           }
       });
     }
@@ -97,6 +96,7 @@ function getNumberRecordsMesurementPagination(page_val){
           success: function(a) {
             $('#mesurement_select_table_entries').html(a['measurement_html']);
             $('#pagination_html').html(a['pagination_html']);
+            $('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
           }
       });
     }
@@ -108,9 +108,7 @@ function rowClickMeasurementTableData(mst_id,data_type){
 
   //Classes Add
   $('.measurement_table_header').addClass('row_click_table');
-  // $('#measurement_record_table table thead th').removeClass('measurement_search_table_th');
-  // $('#measurement_record_table table tbody td').removeClass('measurement_search_table_td');
-
+  $('.table-margin .table th').removeAttr('style');
   if(number_records == ''){
     var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
     $('#mesurement_select_table_entries').html(tr);
@@ -135,6 +133,7 @@ function rowClickMeasurementTableData(mst_id,data_type){
       success: function(a) {
         $('#mesurement_select_table_entries').html(a['measurement_html']);
         $('#pagination_html').html(a['pagination_html']);
+        $('.table-margin .table td').removeAttr('style');
       }
     });
   }
@@ -167,6 +166,7 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value){
       success: function(a) {
         $('#mesurement_select_table_entries').html(a['measurement_html']);
         $('#pagination_html').html(a['pagination_html']);
+        $('.table-margin .table td').removeAttr('style');
       }
     });
   }
