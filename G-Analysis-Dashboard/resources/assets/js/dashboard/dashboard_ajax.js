@@ -1,208 +1,298 @@
-    const navigationHook = document.querySelectorAll('.navigation button');
-    const replaceImageButton = document.getElementById('replace-image-button');
-    const imageInputField = document.getElementById('machineImage');
-    const graphDiv = document.getElementById('graph_div');
-    const anl_ID = document.getElementById('anl_ID').value;
-   
-    let machineDataAjax;
-    let spinner = new Spinner();
-    const graphDivHook = (key, value) => {
-        //creating parent div
-        let parentDiv = document.createElement('div');
-        let parentClass = document.createAttribute('class');
-        parentClass.value = 'col-sm-6 main_chart';
-        parentDiv.setAttributeNode(parentClass);
-        let parentDataValue = document.createAttribute('data_value');
-        parentDataValue.value = value.id;
-        parentDiv.setAttributeNode(parentDataValue);
-        let parentDataEvent = document.createAttribute('data_event');
-        parentDataEvent.value = `lineChart_${key}`;
-        parentDiv.setAttributeNode(parentDataEvent);
-        //creating child div
-        let childDiv = document.createElement('div');
-        let childClass = document.createAttribute('class');
-        childClass.value = 'chart';
-        childDiv.setAttributeNode(childClass);
-        parentDiv.appendChild(childDiv);
-        //creating dynamic canvas
-        let canvasDiv = document.createElement('canvas');
-        let canvasID = document.createAttribute('id');
-        canvasID.value = `lineChart_${key}`;
-        canvasDiv.setAttributeNode(canvasID);
-        let canvasStyle = document.createAttribute('style');
-        canvasStyle.value = 'background:#fff';
-        canvasDiv.setAttributeNode(canvasStyle);
-        childDiv.appendChild(canvasDiv);
-        //appending data to graphDiv
-        graphDiv.appendChild(parentDiv);
-        lineChartHook('lineChart_'+key, value.label, value.data, key);
-    }
+const navigationHook = document.querySelectorAll('.navigation button');
+const replaceImageButton = document.getElementById('replace-image-button');
+const imageInputField = document.getElementById('machineImage');
+const graphDiv = document.getElementById('graph_div');
+const anl_ID = document.getElementById('anl_ID').value;
+const dbName = document.getElementById("nameDB").value;
+const username = document.getElementById("username").value; 
 
 
-    const getMachineData = (machine_id, type, propId='') => {
-        var formData = new FormData();
-        let prop_id = document.getElementById("select_prop").value;
-        let container = document.getElementById('data-card');
-        formData.append("id", machine_id);
-        formData.append("type", type);
-        formData.append("prop_id", prop_id);
-        spinner.spin(container);
-        machineDataAjax = $.ajax({
-            url:'/dashboard/machine',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-        }).done( function(response) {
-            const data = response.data;
-            spinner.stop();
-            if(response.code == 200 ){
-                graphDiv.innerHTML = '';
-                $(".dashboard").show();
-                $(".content").show();
-                $("#not_found_msg").hide();
-                $('.navigation').attr('data-value', data.anl_ID);
-                $('#anl_ID').val(data.anl_ID);
-                $('#anlage').val(data.anlage);
-                $('#programm').val(data.programm);
-                $('#artikel').val(data.artikel);
-                $('#bestellung').val(data.bestellung);
-                // $('#bisher_produziert').val(data.bisher_produziert);
-                $('#auftragsmenge').val(data.auftragsmenge);
-                $('#gutmenge').val(data.gutmenge);
-                $('#ausschuss').val(data.ausschuss);
-                $('#zeit_zyklus').val(data.zeit_zyklus);
-                if(data.programm == 'Automatik'){
-                    data.letzte_störung = " ";
-                }
-                $('#letzte_störung').val(data.letzte_störung);
-                $('#werkzeug').val(data.werkzeug);
-                $('#kavitäten').val(data.kavitäten);
-                $('#machine-image').attr('src',data.bildAnl);
-                $('#timeFilter').val('5');
-                $("#machine-image").on("error", function () {
-                    $(this).attr("src", "images/Blasanlage.jpg");
-                });
-                $.each( data.chartsData, function( key, value) {
-                    graphDivHook(key, value);
-                });
+let machineDataAjax;
+let spinner = new Spinner();
+const graphDivHook = (key, value) => {
+    let html = `<div class="col-sm-6 main_chart" data_value="${value.id}" data_event="lineChart_${key}">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Line Chart for ${key}</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <canvas id="lineChart_${key}" style="background:#F1F6FD;" ></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+    //appending data to graphDiv
+    $('#graph_div').append(html);
+    lineChartHook('lineChart_'+key, value.label, value.data, key);
+}
 
-            } else if(response.anl_ID !== undefined) {
-                toastr.error(response.message);
-                $(".dashboard").show();
-                $(".content").show();
-                $("#not_found_msg").hide();
-                $('.navigation').attr('data-value', response.anl_ID);
-                $('#anlage').val("");
-                $('#programm').val("");
-                $('#artikel').val("");
-                $('#bestellung').val("");
-                // $('#bisher_produziert').val("");
-                $('#auftragsmenge').val("");
-                $('#gutmenge').val("");
-                $('#ausschuss').val("");
-                $('#zeit_zyklus').val("");
-                $('#letzte_störung').val("");
-                $('#werkzeug').val("");
-                $('#kavitäten').val("");
-                $('#machine-image').attr('src','images/Blasanlage.jpg');
+
+const getMachineData = (machine_id, type, propId='',result) => {
+    var formData = new FormData();
+    let prop_id = document.getElementById("select_prop").value;
+    let container = document.getElementById('data-card');
+    formData.append("id", machine_id);
+    formData.append("type", type);
+    formData.append("prop_id", prop_id);
+    formData.append("column", result);
+  //  spinner.spin(container);
+    machineDataAjax = $.ajax({
+        url:'/dashboard/machine',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+    }).done( function(response) {
+        const data = response.data;
+        spinner.stop();
+        if(response.code == 200 ){
+            graphDiv.innerHTML = '';
+            $("#data-card").show();
+            $("#bar_chart").show();
+            $("#msg").hide();
+            $('.navigation').attr('data-value', data.anl_ID);
+            $('#anl_ID').val(data.anl_ID);
+            $('#anlage').val(data.anlage);
+            $('#programm').val(data.programm);
+            $('#artikel').val(data.artikel);
+            $('#bestellung').val(data.bestellung);
+            // $('#bisher_produziert').val(data.bisher_produziert);
+            $('#auftragsmenge').val(data.auftragsmenge);
+            $('#gutmenge').val(data.gutmenge);
+            $('#ausschuss').val(data.ausschuss);
+            $('#zeit_zyklus').val(data.zeit_zyklus);
+            if(data.programm == 'Automatik'){
+                data.letzte_störung = " ";
             }
-            else{
-               $(".dashboard").hide();
-               $(".content").hide();
-               $("#not_found_msg").show();
+            $('#letzte_störung').val(data.letzte_störung);
+            $('#werkzeug').val(data.werkzeug);
+            $('#kavitäten').val(data.kavitäten);
+            $('#machine-image').attr('src',data.bildAnl);
+            $('#timeFilter').val('5');
+            $("#machine-image").on("error", function () {
+                $(this).attr("src", "images/Blasanlage.jpg");
+            });
+            $.each( data.chartsData, function( key, value) {
+                graphDivHook(key, value);
+            });
+            if(response.data[0]){
+                let i = 0;
+                $.each(response.data[0], function( key, value) {
+                    $('.column-name_'+i).val(value);
+                    i++;
+                });
             }
-        });
-    }
+        } else if(response.anl_ID !== undefined) {
+            toastr.error(response.message);
 
-    //adding event listener to navigation buttons
-    navigationHook.forEach((node)=>{
-        node.addEventListener('click', function(){
-            spinner.stop();
-            machineDataAjax.abort();
-            let type = this.getAttribute('event-type');
-            let machine_id = $('.navigation').attr('data-value');
-            $(".custom-select").val('');
-            getMachineData(machine_id, type, propId='');
-        });
-    });
-
-    const loadFile = (event) => {
-        let file1, img;
-        if(event.target.files[0].size > 2000000) {
-            alert('File size should be less than 2mb.');
-            return false;
+            $("#data-card").show();
+            // $("#not_found_msg").hide();
+            $('.navigation').attr('data-value', response.anl_ID);
+            $('#anlage').val("");
+            $('#programm').val("");
+            $('#artikel').val("");
+            $('#bestellung').val("");
+            // $('#bisher_produziert').val("");
+            $('#auftragsmenge').val("");
+            $('#gutmenge').val("");
+            $('#ausschuss').val("");
+            $('#zeit_zyklus').val("");
+            $('#letzte_störung').val("");
+            $('#werkzeug').val("");
+            $('#kavitäten').val("");
+            $('#machine-image').attr('src','images/Blasanlage.jpg');
         }
-        if(file1 = event.target.files[0]){
-            let output = document.getElementById('machine-image');
-            img = new Image();
-            img.onload = function(){
-                //console.log(this.width + "x" + this.height);
-                if(this.width <= 870 && this.height <= 621){
-                    output.src = URL.createObjectURL(event.target.files[0]);
-                    let myFormData = new FormData();
-                    let file = event.target.files[0];
-                    const anl_ID = $('#anl_ID').val();
-                    myFormData.append('file',file);
-                    myFormData.append('anl_ID',anl_ID);
-                    $.ajax({
-                        headers:{'X-CSRF-Token':$('meta[name=csrf_token]').attr('content')},
-                        type:"post",
-                        async: true,
-                        contentType: false,
-                        cache: false,
-                        processData:false,
-                        url:`/uploadImage`,
-                        data:myFormData,
-                        success:function(data){
-                            console.log("success");
-                        }
-                    });
-                }else{
-                    alert('Image dimensions should be smaller than or equal to  870 x 621.');
-                    return false;
-                }
-               // URL.revokeObjectURL(output.src)
-            };
-            img.onerror = function() {
-                alert( "not a valid file: " + file1.type);
-            };
-            img.src = URL.createObjectURL(file1);
+        else{
+           $("#data-card").hide();
+           $("#bar_chart").hide();
+           $("#msg").show();
         }
-    };
-
-    //Firing click event on button click
-    replaceImageButton.addEventListener('click', () => {
-        imageInputField.click();
     });
-    imageInputField.addEventListener('change', loadFile);
+}
 
-    var intervalId = window.setInterval(function(){
-        let type = "current";
+//adding event listener to navigation buttons
+navigationHook.forEach((node)=>{
+    node.addEventListener('click', function(){
+        spinner.stop();
+       if (machineDataAjax) machineDataAjax.abort();
+        let type = this.getAttribute('event-type');
         let machine_id = $('.navigation').attr('data-value');
-        getMachineData(machine_id, type, propId='');
-      }, 10000);
-    
+        $(".custom-select").val('');
+        let numItems = $('.column-name').length;
+        let result=[];
+        let out = [];
+        for (let i = 0; i < numItems; i++) {
+            let col= document.querySelector('.column-name input.column-name_'+i).id;
+            result[i] = col;
+        }
+        getMachineData(machine_id, type, propId='',result);
+    });
+});
 
-    function select_org() {
-        let orgId  = document.getElementById("select_org").value;
-        let dbName = document.getElementById("nameDB").value;
-        $('.liegenschaft').html("");
-        $.ajax({
-            url:'/dashboard/propertyData',
-            type: 'POST',
-                data: {
-                    orgId:orgId,
-                    dbName:dbName
-                },
-            }).done( function(response) {
-                $('.liegenschaft').append('<option value="">Please Select--</option>');
-                $.each(response, function(key, value) {
-                   $('.liegenschaft').append('<option value="'+ value.lieg_ID +'">'+ value.nameLieg +'</option>');
-                });
-        });
-       
+const loadFile = (event) => {
+    let file1, img;
+    if(event.target.files[0].size > 2000000) {
+        alert('File size should be less than 2mb.');
+        return false;
     }
+    if(file1 = event.target.files[0]){
+        let output = document.getElementById('machine-image');
+        img = new Image();
+        img.onload = function(){
+            //console.log(this.width + "x" + this.height);
+            if(this.width <= 870 && this.height <= 621){
+                output.src = URL.createObjectURL(event.target.files[0]);
+                let myFormData = new FormData();
+                let file = event.target.files[0];
+                const anl_ID = $('#anl_ID').val();
+                myFormData.append('file',file);
+                myFormData.append('anl_ID',anl_ID);
+                $.ajax({
+                    headers:{'X-CSRF-Token':$('meta[name=csrf_token]').attr('content')},
+                    type:"post",
+                    async: true,
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                    url:`/uploadImage`,
+                    data:myFormData,
+                    success:function(data){
+                        console.log("success");
+                    }
+                });
+            }else{
+                alert('Image dimensions should be smaller than or equal to  870 x 621.');
+                return false;
+            }
+           // URL.revokeObjectURL(output.src)
+        };
+        img.onerror = function() {
+            alert( "not a valid file: " + file1.type);
+        };
+        img.src = URL.createObjectURL(file1);
+    }
+};
+
+//Firing click event on button click
+replaceImageButton.addEventListener('click', () => {
+    imageInputField.click();
+});
+imageInputField.addEventListener('change', loadFile);
+
+var intervalId = window.setInterval(function(){
+    let type = "current";
+    let machine_id = $('.navigation').attr('data-value');
+    let numItems = $('.column-name').length;
+    let result=[];
+    let out = [];
+   
+    for (let i = 0; i < numItems; i++) {
+        let col= document.querySelector('.column-name input.column-name_'+i).id;
+        result[i] = col;
+    }
+    getMachineData(machine_id, type, propId='',result);
+  }, 10000);
+
+select_org();
+function select_org() {
+    let orgId  = document.getElementById("select_org").value;
+    let dbName = document.getElementById("nameDB").value;
+    $('.liegenschaft').html("");
+    $.ajax({
+        url:'/dashboard/propertyData',
+        type: 'POST',
+            data: {
+                orgId:orgId,
+                dbName:dbName
+            },
+        }).done( function(response) {
+            $('.liegenschaft').append('<option value="">Please Select--</option>');
+            $.each(response, function(key, value) {
+                if(key == 0) {
+                    $('.liegenschaft').append('<option value="'+ value.lieg_ID +'" selected>'+ value.nameLieg +'</option>');
+                } else {
+                    $('.liegenschaft').append('<option value="'+ value.lieg_ID +'">'+ value.nameLieg +'</option>');
+                }
+
+            });
+    });
+}
+
+function select_table() {
+    let table  = document.getElementById("select_table").value;
+    let dbName = document.getElementById("nameDB").value;
+    $('#select_column').html("");
+    $.ajax({
+        url:'/dashboard/tableColumn',
+        type: 'POST',
+            data: {
+                table:table,
+                dbName:dbName
+            },
+        }).done( function(response) {
+            $('#select_column').append('<option value="">Please Select--</option>');   
+            $.each(response, function(key, value) {
+                $('#select_column').append('<option value="'+ value +'">'+ value +'</option>');
+            });
+    });
+}
+
+$("#save_field").on("click", function(e) {
+    let label  = document.getElementById("add_label_field").value;
+    let table  = document.getElementById("select_table").value;
+    let column = document.getElementById("select_column").value;
+    if(label == ''){
+        alert("Please Enter Label");
+        return false;
+    }
+    else if(table == ''){
+        alert("Please select any table");
+        return false;
+    }
+    else if(column == ''){
+        alert("Please select any column");
+        return false;
+    }
+    else{
+        $.ajax({type: "POST",
+            url: "/dashboard/saveFields",
+            data: { anl_ID: anl_ID, username: username, dbName: dbName,label: label, tableName: table,columnName: column},
+            success:function(result) {
+                alert(result);
+                location.reload();
+            },
+            error:function(result) {
+                alert('error');
+            }
+        });
+    }
+});
+
+$("#save_subgroup_options").on("click", function(e) {
+    
+    let group_id    = document.getElementById("group_id").value;
+    let sub_group_name  = $("input[name='sub_group[]']").map(function(){return $(this).val();}).get();
+    let sub_options = $(".name_list").val();
+    if(sub_options == ''){
+        alert("Please enter suboption name.");
+        return false;
+    }else{   
+        $.ajax({
+            type: "POST",
+            url: "/dashboard/saveGroupOptions",
+            data: { sub_group_name: sub_group_name, group_id: group_id},
+            success:function(result) {
+                alert(result);
+                location.reload();
+            },
+            error:function(result) {
+                alert('error');
+            }
+        });
+    }
+    
+});
   
     
 

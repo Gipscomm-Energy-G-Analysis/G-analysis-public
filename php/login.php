@@ -15,7 +15,7 @@ $conn = connectToDB ( $nameDB );
 // echo "\n\n";
 
 $userLogin = $_POST['user'];
-
+$_SESSION["username"] = $_POST['user'];
 $query = "SELECT * FROM Users ";
 $query .= "WHERE username = '$userLogin' ";
 

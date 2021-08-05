@@ -1,6 +1,6 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-dark">
-    <!-- <ul class="navbar-nav">
+<!--<nav class="main-header navbar navbar-expand navbar-dark">
+     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="javascript:void(0)" role="button"><i class="fas fa-bars"></i></a>
         </li>
@@ -20,5 +20,5 @@
             <a href="javascript:void(0)" class="nav-link">Hilfe</a>
         </li>
     </ul> -->
-</nav>
+<!-- </nav> -->
 <!-- /.navbar -->

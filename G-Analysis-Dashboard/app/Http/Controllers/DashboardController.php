@@ -13,8 +13,13 @@ use App\Models\Messstellen;
 use App\Models\Messmittel;
 use App\Models\DataValue15m;
 use App\Models\Liegenschaften;
-use Illuminate\Support\Str;
+use App\Models\DashboardProduktionConfig;
+use App\Models\ErweiterungenAnlagen;
+use App\Models\subGroupOptions;
 use App\Http\Controllers\ManageDatabaseController;
+use Illuminate\Support\Str;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use View;
 use Config;
 use DB;
@@ -28,42 +33,70 @@ class DashboardController extends Controller
      */
     public function index()
     {
-       
-        // $machines = Anlagen::whereNotNull('datumAnl')
-        //     ->where('deleted',0)->first();
-        // $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current']);
-        // $data = $this->getMachineDetail($request);
-        // return View::make("product", ["data"=>$data['data']]);
-   
-        $database = $_SESSION['nameDB'];
+        $username = $_SESSION['username'];
+        $res =[];
+        $column = [];
+        $groupData =[];
+        $database = $this->checkDB($_SESSION['nameDB']);
         $result = (new ManageDatabaseController)->switchDatabase($database);
         if(!empty($result['database'])){
             $org= $this->getOrganisations($database);
-            $org = (array)$org;
             if(!empty($org)){
-                $machines = DB::table("Anlagen")
-                    ->whereNotNull('datumAnl')
-                    ->where('deleted',0)->first();
-                $machines=(array)$machines;
-                if(!empty($machines)){
-                    $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'']);
-                    $data = $this->getMachineDetail($request);
-                    return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message']]);
+                $org = (array)$org;
+                $request = Request::create( '/dashboard/machine', 'POST', ['orgId'=>$org['org'][0]['org_ID'], 'dbName'=>$database]);
+                $property = $this->getPropertyData($request);
+                if(!empty($org)){
+                    $machines = DB::table("Anlagen")
+                        ->whereNotNull('datumAnl')
+                        ->where('lieg_ID',$property[0])
+                        ->where('deleted',0)->first();
+                    $machines=(array)$machines;
+                    if(!empty($machines)){
+                        $tables = $this->getAllTables();
+                        $table= $tables['table'];
+                        $table = json_decode(json_encode($table), true);
+                        $table_exist= DB::getSchemaBuilder()->hasTable('dashboardProduktionConfig');
+                        if($table_exist == 1){
+                            $res = DashboardProduktionConfig::where('username',$username)->get(); 
+                            if(count($res) > 0){ 
+                                $res = $res->toArray();
+                                foreach($res as $val){
+                                    if($val['tableName'] == "TWP_PROD_OVERVIEW"){
+                                        $column[] = $val;
+                                    }
+                                }   
+                            }              
+                        }
+                        $groupData = $this->getGroup();
+                        $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'', 'column'=>$column]);
+                        $data = $this->getMachineDetail($request);
+                        return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message'],"tables"=>$table,"dynamic_fields"=>$res, 'groupData'=>$groupData]);
+                    }
+                    else{
+                        return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);
+                    }
                 }
-                else{
-                    return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);    
-                } 
+            }
+            else{
+                return View::make("product", ["data"=>"",'message'=>'Data Not Found in Organisation Table!']);
             }
         }
-       
     }
     public function getMachineDetail(Request $request)
     {
         $id = $request['id'];
         $type = $request['type'];
         $lieg_ID = $request['prop_id'];
+        $column ="";
+        if($request['column']){
+            $column = $request['column'];
+        }
         $machineData = null;
         $prodData = [];
+        $colData =[];
+        $prod = [];
+        $database = $this->checkDB($_SESSION['nameDB']);
+        $result = (new ManageDatabaseController)->switchDatabase($database);
         if(($lieg_ID!='')){
             switch ($type) {
                 case 'first':
@@ -106,13 +139,12 @@ class DashboardController extends Controller
                     break;
             }
         }
-       
         if(!empty($machineData)){
             $machineName = explode (   '-' ,$machineData['nummerAnl'] );
             $machineName = $machineName[0];
             $table_check= DB::getSchemaBuilder()->hasTable('TWP_PROD_OVERVIEW');
             if($table_check==1){
-                $prodData = ProductOverview::where('MANAME',$machineName)->orderBy('id', 'desc')->first();           
+                $prodData = ProductOverview::where('MANAME',$machineName)->orderBy('id', 'desc')->first();
                 if(!empty($prodData)){
                     $shards = 0;
                     $chartsData = collect();
@@ -123,6 +155,22 @@ class DashboardController extends Controller
                             $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData['messstelle'.$i.'IDAnl'];
                             $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$machineData['messstelle'.$i.'IDAnl'], 'limit' => 5]);
                             $chartsData->put('messstelle'.$i.'IDAnl',$this->getChartsData( $request));
+                        }
+                    }                  
+                    if($column){
+                        if(is_array($column)){
+                            foreach($column as $col){
+                                $colData = [
+                                    $col['columnName'] => $prodData[$col['columnName']]
+                                ];
+                                array_push($prod, $colData);
+                            }
+                        }
+                        else{
+                            $column = explode(',',$column);
+                            foreach($column as $col){
+                                $prod[$col] =$prodData[$col]; 
+                            } 
                         }
                     }
                     $prodData =[
@@ -145,7 +193,7 @@ class DashboardController extends Controller
                         'shardsData' => $measuringPoint,
                         'chartsData' => $chartsData
                     ];
-
+                    array_push($prodData, $prod);
                     return ['code'=>200, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'Data Retrived Successfully.'];
                 } else{
                     return ['code'=>401, 'data' =>$prodData, 'anl_ID'=>$machineData['anl_ID'], 'message'=>'No Record Found in TWP_PROD_OVERVIEW Table!'];
@@ -164,7 +212,6 @@ class DashboardController extends Controller
         $limit = $request['pageSize'];
         $totalRecords = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->count();
         $totalPages = ceil($totalRecords / $limit);
-
         $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
         if($start < 0) $start = 0;
         $data = Anlagen::select('anl_ID', 'datumAnl', 'nummerAnl', 'bezeichnungAnl')->whereNotNull('datumAnl')->where('deleted',0)->limit($limit)->offset($start)->get();
@@ -195,20 +242,205 @@ class DashboardController extends Controller
         $data = $data->reverse()->pluck('Value')->toArray();
         return ['label'=>$label, 'data'=>$data, 'id'=>$id , 'record'=>$recordData];
     }
+
+    /**
+     * @param $database
+     * @return array
+     */
     public function getOrganisations($database) {
         $result = (new ManageDatabaseController)->switchDatabase($database);
-        if(!empty($result['database'])){          
+        if(!empty($result['database'])){
             $org  = Organisation::get()->toArray();
-            return ['org'=>$org];  
+            if(count($org) > 0){
+                return ['org'=>$org];
+            }
         }
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function getPropertyData(Request $request) {
         $orgId = $request['orgId'];
         $dbName = $request['dbName'];
         $result = (new ManageDatabaseController)->switchDatabase($dbName);
-        if(!empty($result['database'])){          
+        if(!empty($result['database'])){
             $prop  = Liegenschaften::where('org_ID',$orgId)->get()->toArray();
-            return $prop;  
+            return $prop;
         }
+    }
+
+    /**
+     * @return mixed
+    */
+    public function getAllTables(){
+        $database = $_SESSION["nameDB"];
+        $result = (new ManageDatabaseController)->switchDatabase($database);
+        if(!empty($result['database'])){
+            $tables = DB::select("SELECT TABLE_NAME FROM information_schema.tables where table_type='Base Table' order by table_name asc");
+            return ['table'=>$tables];
+        }
+    }
+    /**
+     * @param Request $request
+     * @return mixed
+    */
+    public function getTableColumns(Request $request)
+    { 
+        $table = $request['table'];
+        $dbName = $request['dbName'];
+        $result = (new ManageDatabaseController)->switchDatabase($dbName);
+        if(!empty($result['database'])){
+            return DB::getSchemaBuilder()->getColumnListing($table);
+        }
+    }
+    /**
+     * @param Request $request
+     * @return mixed
+    */
+    public function saveFields(Request $request){ 
+        $anl_ID     = $request['anl_ID'];
+        $dbName     = $request['dbName'];
+        $username   = $request['username'];
+        $label      = $request['label'];
+        $tableName  = $request['tableName'];
+        $columnName = $request['columnName'];
+        $result = (new ManageDatabaseController)->switchDatabase($dbName);
+        if(!empty($result['database'])){
+            $table_check= DB::getSchemaBuilder()->hasTable('dashboardProduktionConfig');
+            if(!$table_check == 1){
+                Schema::create('dashboardProduktionConfig', function (Blueprint $table) {
+                    //$table->id();
+                    $table->integer('anl_ID');
+                    $table->foreign('anl_ID')->references('anl_ID')->on('Anlagen');
+                    $table->string('username');
+                    $table->string('dbName');
+                    $table->string('label');
+                    $table->string('tableName');
+                    $table->string('columnName');
+                    //$table->timestamps();
+                });
+                    $data=array('anl_ID'=>$anl_ID,'username'=>$username,"dbName"=>$dbName,'label'=>$label,"tableName"=>$tableName,"columnName"=>$columnName);
+                    DashboardProduktionConfig::insert($data);
+                    echo "Record inserted successfully.";
+            }
+            else{
+                $data = DashboardProduktionConfig::where('tableName',$tableName)
+                        ->where('columnName',$columnName)
+                        ->where('username',$username)
+                        ->where('anl_ID',$anl_ID)
+                        ->count();
+               if($data < 1){
+                    $data=array('anl_ID'=>$anl_ID,'username'=>$username,"dbName"=>$dbName,'label'=>$label,"tableName"=>$tableName,"columnName"=>$columnName);
+                    DashboardProduktionConfig::insert($data);
+                    echo "Record inserted successfully.";
+               }
+               else{
+                $data = DashboardProduktionConfig::where('tableName',$tableName)->where('anl_ID',$anl_ID)->where('columnName',$columnName)->where('username',$username)->update(['label' => $label]);
+                    echo "Record Updated Successfully";
+               }
+            }
+        }
+    }
+    public function checkDB($database){
+        $database = $_SESSION['nameDB'];
+        $username = $_SESSION['username'];
+        if($_SESSION['nameDB'] == 'gipscomm'){
+            $result = (new ManageDatabaseController)->switchDatabase($database);
+            $dBname = DB::table("Users")->select('nameDB')
+                     ->where('username',$username)->first();
+            $dBname   = (array)$dBname;
+            $database = $dBname['nameDB'];
+        }
+        return $database;
+    }
+    public function getGroup(){
+        $groupData=[];
+        $database = $this->checkDB($_SESSION['nameDB']);
+        $result = (new ManageDatabaseController)->switchDatabase($database);
+        if(!empty($result['database'])){
+            $table_check= DB::getSchemaBuilder()->hasTable('ErweiterungenAnlagen');
+            if($table_check == 1){
+                $table_check2= DB::getSchemaBuilder()->hasTable('subGroupOptions');
+                if($table_check2 == 1){
+                    $result1 = subGroupOptions::get()->toArray();
+                    if(count($result1)>0){
+                        $result = DB::table('ErweiterungenAnlagen')
+                                ->join('subGroupOptions', 'ErweiterungenAnlagen.eAnl_ID', '=', 'subGroupOptions.group_id')
+                                ->get()
+                                ->toArray();
+                        if(count($result)>0){
+                            $groupData = $result;
+                        }  
+                    }
+                    else{
+                        $result = ErweiterungenAnlagen::get()->toArray();
+                        if(count($result)>0){
+                            $groupData = $result;
+                        }
+                    }  
+                }
+                else{
+                    $result = ErweiterungenAnlagen::get()->toArray();
+                    if(count($result)>0){
+                        $groupData = $result;
+                    }
+                }                
+            }else{
+                $groupData = "ErweiterungenAnlagen Table not found";
+            }
+            return ['groupData'=>$groupData];
+        }
+    }
+    public function saveGroupOptions(Request $request){ 
+      
+        $group_id     = $request['group_id'];
+        $option_name  = $request['sub_group_name'];
+      
+        $database = $this->checkDB($_SESSION['nameDB']);
+        $result = (new ManageDatabaseController)->switchDatabase($database);
+        if(!empty($result['database'])){
+            $table_check= DB::getSchemaBuilder()->hasTable('subGroupOptions');
+            if(!$table_check == 1){
+                Schema::create('subGroupOptions', function (Blueprint $table) {
+                    $table->id();
+                    $table->string('option_name');
+                    $table->string('group_id');
+                    //$table->timestamps();
+                });
+                    foreach($option_name as $option){
+                        $data=array('option_name'=>$option,"group_id"=>$group_id);
+                        subGroupOptions::insert($data);
+                    }
+                    
+                    echo "Record inserted successfully.";
+            }
+            else{
+                $data = subGroupOptions::where('group_id',$group_id)
+                        ->count();
+               if($data < 1){
+                    foreach($option_name as $option){
+                        $out=array('option_name'=>$option,"group_id"=>$group_id);
+                        subGroupOptions::insert($out);
+                    }
+                    echo "Record inserted successfully.";
+               }
+               else{
+                subGroupOptions::where('group_id', $group_id)->delete();
+                foreach($option_name as $option){
+                    $out=array('option_name'=>$option,"group_id"=>$group_id);
+                    subGroupOptions::insert($out);
+                }
+                echo "Record updated successfully.";
+
+               }
+            //    else{
+            //     $data = subGroupOptions::where('tableName',$tableName)->where('group_id',$group_id)->where('option_name',$option_name)->update(['label' => $label]);
+            //         echo "Record Updated Successfully";
+            //    }
+            }
+        }
+        
     }
 }
