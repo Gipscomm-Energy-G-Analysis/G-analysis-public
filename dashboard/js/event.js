@@ -80,7 +80,16 @@ $(document).ready( function(){
                 $('#wert_main_div').hide();
                 $('#alerts_table_main_div').hide();
                 $('#help_table_main_div').hide();
-                getNumberRecordsMesurement();
+                // getNumberRecordsMesurement();
+                // <---5-8--2021--
+                var number_record_local_val = localStorage.getItem('number_record_measurement');
+                if(number_record_local_val != undefined && number_record_local_val != null){
+                    $('#measurement_number_record').val(number_record_local_val);
+                }
+                else{
+                    $('#measurement_number_record').val('');
+                }
+                //-end-->
                 break;
 
             case "product_sidebar_option":
