@@ -39,9 +39,10 @@ const scpRechteverwaltung_mandantengruppen =
                     { modus : getFieldValue("manGrpState")
                     , manGrpIdx : getFieldValue("manGrpIdx")
                     , manGrpID : getFieldValue("manGrpID")
+                    , betrGrpID : getFieldValue("betrGrpID")
                     , name : getFieldValue("nameManGrp")
-                    , kurz : getFieldValue("kurz")
-                    , notiz : getFieldValue("notiz")
+                    , kurz : getFieldValue("kurzManGrp")
+                    , notiz : getFieldValue("notizManGrp")
                     , mandantenIDs : getManIDs()
                     }
                 )
@@ -150,16 +151,22 @@ const scpRechteverwaltung_mandantengruppen =
                 , setState("new")
                 )
 
+            const getBetrGrpRefRecords =
+                () =>   
+                idxDB.mandantenGruppen   
+                .where("betrGrp_ID")    
+                .equals(Number(getFieldValue("betrGrpID"))) 
+
             // Returns an array of the Schicht Modelle from indexedDB
             const queryMandantengruppenDataIDB =
                 () => 
-                idxDB.mandantenGruppen
+                getBetrGrpRefRecords()
                 .toArray()
 
             // Returns a certain Schicht Modell depending on an index
-            const queryMandantenGruppenDataIDB =
+            const queryMandantenGruppeDataIDB =
                 idx =>
-                queryMandantenGruppenIDB()
+                queryMandantengruppenDataIDB()
                 .then(mandantenGruppen => mandantenGruppen[idx])
 
             // Prepares the table data for the search dialog
@@ -194,34 +201,27 @@ const scpRechteverwaltung_mandantengruppen =
             // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
                 idx => {
-                    queryBetreuerGruppeDataIDB(idx)
+                    queryMandantenGruppeDataIDB(idx)
                     .then(
                         mandantenGruppe => {
 
-                            $("#betrGrpIdx").val(idx)
-                            $("#betrGrpID").val(betreuerGruppe.betrGrp_ID)
-                            $("#firmaBetrGrp").val(betreuerGruppe.firma)
-                            $("#anzahlMitarbeiterBetrGrp").val(betreuerGruppe.anzahlMitarbeiter)
-                            $("#anschriftBetrGrp").val(betreuerGruppe.anschrift)
-                            $("#plzBetrGrp").val(betreuerGruppe.plz)
-                            $("#ortBetrGrp").val(betreuerGruppe.ort)
-                            $("#geschaeftsfuehrerBetrGrp").val(betreuerGruppe.geschaeftsfuehrer)
-                            $("#telefonBetrGrp").val(betreuerGruppe.telefon)
-                            $("#emailBetrGrp").val(betreuerGruppe.eMail)
-                            $("#notizBetrGrp").val(betreuerGruppe.notiz)
+                            $("#manGrpIdx").val(idx)
+                            $("#manGrpID").val(mandantenGruppe.manGrp_ID)
+                            $("#nameManGrp").val(mandantenGruppe.name)
+                            $("#kurzManGrp").val(mandantenGruppe.kurz)
+                            $("#notizManGrp").val(mandantenGruppe.notiz)
 
-                            readIntoMandantenTable(betreuerGruppe)
+                            readIntoMandantenTable(mandantenGruppe)
 
                             setState("edit")
                         }
                     )
-                    .then(scpRechteverwaltung_superAdmins.readFirst)
                 }
 
             // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
-                idxDB.mandantenGruppen
+                getBetrGrpRefRecords()
                 .count()
                 .then(
                     count =>
@@ -234,27 +234,27 @@ const scpRechteverwaltung_mandantengruppen =
             // depending on the current records index
             this.readPrevious =
                 () =>
-                greaterZero(getFieldValue("betrGrpIdx")) ?
-                readIntoFormFields(decr(getFieldValue("betrGrpIdx"))) :
+                greaterZero(getFieldValue("manGrpIdx")) ?
+                readIntoFormFields(decr(getFieldValue("manGrpIdx"))) :
                 false
 
             // Sets the form data input values of the next Schicht Modell
             // depending on the current records index
             this.readNext =
                 () =>
-                idxDB.mandantenGruppen
+                getBetrGrpRefRecords()
                 .count()
                 .then( 
                     count => 
-                    greater(decr(count))(getFieldValue("betrGrpIdx")) ?
-                    readIntoFormFields(incr(getFieldValue("betrGrpIdx"))) :
+                    greater(decr(count))(getFieldValue("manGrpIdx")) ?
+                    readIntoFormFields(incr(getFieldValue("manGrpIdx"))) :
                     false
                 )
 
             // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
-                idxDB.mandantenGruppen
+                getBetrGrpRefRecords()
                 .count()
                 .then(
                     count =>
@@ -266,7 +266,7 @@ const scpRechteverwaltung_mandantengruppen =
             // Deletes the current Schicht Modell(sets col deleted = true)
             this.deleteMandantenGruppe =
                 () => {
-                    const betrGrpID = $("#betrGrpID").val()
+                    const manGrpID = $("#manGrpID").val()
 
                     ajaxPost("php/Rechteverwaltung/Mandantengruppen/delete.php")({manGrpID})
                     .then(
@@ -292,17 +292,17 @@ const scpRechteverwaltung_mandantengruppen =
             const fillMandantenGruppenTbl =
                 data => {
                     clearTable(tblManGrpSuchen)
-                    intoTable(tblManGrpSuchen)(prepareTableDataBetrGrp(data))
+                    intoTable(tblManGrpSuchen)(prepareTableDataManGrp(data))
                 }
 
             // Triggers opening the search dialog
             this.searchMandantenGruppen =
                 () => {
 
-                    queryBetreuerGruppenDataIDB()
+                    queryMandantengruppenDataIDB()
                     .then(fillMandantenGruppenTbl)
 
-                    $("#betrGrpSuchenContainer").dialog({
+                    $("#manGrpSuchenContainer").dialog({
                         height: 450,
                         width: 875,
                         resize: "auto",
@@ -316,17 +316,17 @@ const scpRechteverwaltung_mandantengruppen =
                         },
                         modal: true,
                         open: function() {
-                            $("#tblBetrGrpSuchen tbody tr").css("cursor", "pointer");
-                            $("#tblBetrGrpSuchen tbody").off("dblclick", "tr");
-                            $("#tblBetrGrpSuchen tbody").on("dblclick", "tr",
+                            $("#tblManGrpSuchen tbody tr").css("cursor", "pointer");
+                            $("#tblManGrpSuchen tbody").off("dblclick", "tr");
+                            $("#tblManGrpSuchen tbody").on("dblclick", "tr",
                             function() {
 
                                 const selectedRecord =
-                                    tblBetrGrpSuchen.row(this).data()
+                                    tblManGrpSuchen.row(this).data()
 
                                 readIntoFormFields(head(selectedRecord))
 
-                                $("#betrGrpSuchenContainer").dialog("close")
+                                $("#manGrpSuchenContainer").dialog("close")
                             })
                         }
                     })
@@ -356,8 +356,8 @@ const scpRechteverwaltung_mandantengruppen =
                         $("#tblMandantenAuswahl tbody").off("dblclick", "tr");
                         $("#tblMandantenAuswahl tbody").on("dblclick", "tr", function() {
                             var a = tblMandantenAuswahl.row(this).data();
-                            tblMandantengruppen.row.add([a[0], a[1], a[2]]).draw();
-                            tblMandantengruppen.column(0).visible(!1).draw();
+                            tblMandantengruppe.row.add([a[0], a[1], a[2]]).draw();
+                            tblMandantengruppe.column(0).visible(!1).draw();
                             $("#mandantenlisteAuswahlContainer").dialog("close")
                         })
                     }

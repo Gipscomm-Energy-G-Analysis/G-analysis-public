@@ -11,30 +11,7 @@ $conn = connectToDB($nameDB);
 
 $id = $_POST['id'];
 
-if($id == "manBetrGrp"){
-  $betrGrpID = $_POST['betrGrpID'];
-  $query = "SELECT * FROM mandantenBetrGruppen WHERE betrGrp_ID = '$betrGrpID'";
-
-}elseif($id == "manGrp"){
-  $betrGrpID = $_POST['betrGrpID'];
-  $query = "SELECT * FROM mandantenGruppen WHERE deleted = 'False' AND betrGrp_ID = '$betrGrpID'";
-}
-
-elseif($id == "tblMan"){
-$mandantenIDs = $_POST['mandantenIDs'];
-$mandantenIDs = explode(",",$mandantenIDs);
-$query = "SELECT * FROM mandanten ";
-$query .= "WHERE man_ID = $mandantenIDs[0] ";
-
-for($n = 1; $n < count($mandantenIDs);$n++){
-
-      $query .= "OR man_ID = $mandantenIDs[$n] ";
-
-  }
-
-}
-
-elseif($id == "adm"){
+if($id == "adm"){
   $query = '';
   if(!empty($_POST['admID'])) {
     $admID = $_POST['admID'];

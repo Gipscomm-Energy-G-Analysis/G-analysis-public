@@ -5,10 +5,11 @@ ini_set ( 'display_errors', 'On' ) ;
 require '../../DbOperations.php' ;
 
 $conn = connectToDB( "gipscomm" ) ;
-$sAdmID = $_POST['sAdmID'] ;
 
-$query  = "UPDATE superAdmins SET deleted = 1 ";
-$query .= "WHERE sAdm_ID = ".$sAdmID." ";
+$manGrpID = $_POST['manGrpID'] ;
+
+$query  = "UPDATE mandantenGruppen SET deleted = 1 ";
+$query .= "WHERE manGrp_ID = ".$manGrpID." ";
 
 queryDB( $conn, $query, "write" ) ;
 

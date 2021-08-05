@@ -801,9 +801,6 @@ $(document).ready(function() {
     $("#manOrManGrp").change(function() {
         toggleMandantOderMandantengruppe($(this).val())
     });
-    $("#manZuManGrpHinz").click(function() {
-        mandantenAuswahllisteErstellen()
-    });
     $("#tagstromERng, #nachtstromERng").change(function() {
         var a = $("#tagstromERng").val(),
             b = $("#nachtstromERng").val(),
@@ -1439,9 +1436,6 @@ $(document).ready(function() {
     $("#benSuchen").click(function() {
         benutzerlisteErstellen()
     });
-    $("#manGrpSuchen").click(function() {
-        manGrpSuchenlisteErstellen()
-    });
 
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
@@ -1539,8 +1533,7 @@ $(document).ready(function() {
         }
         /*new-mm-end 23-03-2021*/
     });
-    $("#manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
-        "manGrpFirst" == this.id ? (manGrpNavID = 0, readInstanzen(this.id, manGrpNavID)) :
+    $("#admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "admFirst" == this.id ? (admNavID = 0, readInstanzen(this.id, admNavID)) :
         "benFirst" == this.id ? (benNavID = 0, readInstanzen(this.id, benNavID)) :
         "manFirst" == this.id ? (manNavID = 0, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
@@ -1636,6 +1629,11 @@ $(document).ready(function() {
         scpRechteverwaltung_betreuergruppen.removeFromMandantenTbl(this)
     })
     //
+    // Change Per Dropbox
+    //
+    $(".betrPfad").change(() => scpRechteverwaltung_betreuergruppen.readIntoFormFields($(".betrPfad").prop("selectedIndex")))
+
+    //
     // SuperAdmins
     //
     // See Rechteverwaltung/superAdmins.js
@@ -1663,7 +1661,45 @@ $(document).ready(function() {
     //
     $("#sAdmSpeichern").click(scpRechteverwaltung_superAdmins.validateAndSaveFormData)
     // 
-    
+
+    //
+    // MandantenGruppen
+    //
+    // See Rechteverwaltung/mandantengruppen.js
+    //
+    // Arrow Navigation
+    //
+    $("#manGrpFirst").click(scpRechteverwaltung_mandantengruppen.readFirst)
+    $("#manGrpPrevious").click(scpRechteverwaltung_mandantengruppen.readPrevious)
+    $("#manGrpNext").click(scpRechteverwaltung_mandantengruppen.readNext)
+    $("#manGrpLast").click(scpRechteverwaltung_mandantengruppen.readLast)
+    //
+    // Search Navigation
+    //
+    $("#manGrpSuchen").click(scpRechteverwaltung_mandantengruppen.searchMandantenGruppen)
+    //
+    // Delete Record
+    //
+    $("#manGrpLoeschen").click(scpRechteverwaltung_mandantengruppen.deleteMandantenGruppe)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#manGrpHinz").click(scpRechteverwaltung_mandantengruppen.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#manGrpSpeichern").click(scpRechteverwaltung_mandantengruppen.validateAndSaveFormData)
+    // 
+    // Show Mandanten Selection Table
+    //
+    $("#manZuManGrpHinz").click(scpRechteverwaltung_mandantengruppen.showMandantenTablePopUp)
+    //
+    // Remove Mandant From DB Table
+    //
+    $("#tblMandantengruppe tbody").on("dblclick", "tr", function() {
+        scpRechteverwaltung_mandantengruppen.removeFromMandantenTbl(this)
+    })
+
 
 
     // Schichtdaten
@@ -1707,8 +1743,7 @@ $(document).ready(function() {
     $("#schtDatHistSuchen").click(scpSchichtdaten_historie.searchSchichtModellHist)
     //
 
-    $("#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
-        "manGrpPrevious" == this.id ? 0 < manGrpNavID && (manGrpNavID--, readInstanzen(this.id, manGrpNavID)) :
+    $("#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "admPrevious" == this.id ? 0 < admNavID && (admNavID--, readInstanzen(this.id, admNavID)) :
         "benPrevious" == this.id ? 0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) :
         "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() { organisationenEinlesen() }, 1500), readInstanzen("orgFirst", 0)) :
@@ -1737,8 +1772,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
-        "manGrpNext" == this.id ? manGrpNavID < $("#manGrpCount").val() - 1 && (manGrpNavID++, readInstanzen(this.id, manGrpNavID)) :
+    $("#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
         "admNext" == this.id ? admNavID < $("#admCount").val() - 1 && (admNavID++, readInstanzen(this.id, admNavID)) :
         "benNext" == this.id ? benNavID < $("#benCount").val() - 1 && (benNavID++, readInstanzen(this.id, benNavID)) :
         "manNext" == this.id ? manNavID < $("#manCount").val() - 1 && (manNavID++, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
@@ -1767,8 +1801,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
-        "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) :
+    $("#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
         "admLast" == this.id ? (admNavID = $("#admCount").val() - 1, readInstanzen(this.id, admNavID)) :
         "benLast" == this.id ? (benNavID = $("#benCount").val() - 1, readInstanzen(this.id, benNavID)) :
         "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
@@ -1885,15 +1918,6 @@ $(document).ready(function() {
     $("#tabAdm, #admMenu").click(function() {
         manGrpEinlesen();
     });
-    $(".betrPfad").change(function() {
-
-        $(".betrPfad").val($(this).val());
-
-        $("#betrGrpID").val(betrGrpListe[$(".betrPfad").prop("selectedIndex")].betrGrpID);
-        readInstanzen("betrGrpFirst", $(".betrPfad").prop("selectedIndex"));
-        readInstanzen("sAdmFirst", 0);
-        //manGrpEinlesen();
-    });
     $(".manGrpPfad").change(function() {
         $(".manGrpPfad").val($(this).val());
 
@@ -1950,18 +1974,11 @@ $(document).ready(function() {
     $(".berPfad").change(function() {
         berPfadChange(this)
     });
-    $("#manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
+    $("#manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
         clearFields(this.id);
         b = !0
     });
-    $("#manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
-        "manGrpSpeichern" == this.id ? "" != $("#nameManGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameManGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-            title: "Meldung!" })) :
-        "admSpeichern" == this.id ? "" != $("#nameAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display",
-            "block"), $("#meldung").dialog({
-            title: "Meldung!" })) :
-        "benSpeichern" == this.id ? "" != $("#nameBen").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameBen").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-            title: "Meldung!" })) :
+    $("#manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
         "manSpeichern" == this.id ? "" != $("#nameAllgemeinMan").val() && 1 == b ? (instanzErstellen(this.id), mandantenEinlesen($("#betrGrpID").val(), "man_ID", $("#manID").val()), $(".manPfad").prop("selectedIndex", mandantenliste.length - 1), b = !1) : "" != $("#nameAllgemeinMan").val() && 0 == b ? (instanzSpeichern(this.id), $(".manPfad").prop("selectedIndex", manNavID)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "orgSpeichern" == this.id ? "" != $("#nameAllgemeinOrg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinOrg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
@@ -8043,39 +8060,6 @@ $("#intBdePrdktIMwHinz").click(function() {
 
 });
 /*new-mm-end 25-03-2021*/
-
-/** Benutzer Delete Functionality */
-
-$("#benLoeschen").on('click', function() {
-    benLoeschen();
-});
-
-/** Admin Delete Functionality */
-$("#admLoeschen").on('click', function() {
-    admLoeschen();
-});
-
-/** MandantenGruppen Delete Functionality */
-$("#manGrpLoeschen").on('click', function() {
-    manGrpLoeschen();
-});
-
-$("#admHinz").on('click', function(){
-    $( "div#admincommTreeview" ).empty();
-    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-    var tw = new TreeView(
-        treeObject,
-        {showAlwaysCheckBox:true,fold:false});
-    document.getElementById("admincommTreeview").appendChild( tw.root	 )
-});
-$("#benHinz").on('click', function(){
-    $( "div#benutzerTreeview" ).empty();
-    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-    var tw = new TreeView(
-        treeObject,
-        {showAlwaysCheckBox:true,fold:false});
-    document.getElementById("benutzerTreeview").appendChild( tw.root	 )
-});
 
 // ***7-6-2021---
 $("#infosIntEnergiedaten_measuring_point").click(function() {

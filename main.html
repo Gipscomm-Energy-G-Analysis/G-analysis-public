@@ -1641,7 +1641,17 @@
                      </div>
                   </div>
                   <div id="infosMandantenGruppen">
-                     <div id="navDropBoxManGrp" class="navDropBox" style="height:20px;padding:3px;"> <img id="manGrpLoeschen" title="Mandantengruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="manGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="manGrpHinz" title="Neue Mandantengruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="manGrpSuchen" title="Mandantengruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="manGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="manGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Mandantengruppe" src="images/last.png" alt="letzte" /> <img id="manGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Mandantengruppe" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="manGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Mandantengruppe" src="images/previous.png" alt="vorherige" /> <img id="manGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Mandantengruppe" src="images/first.png" alt="erste" />
+                     <div id="navDropBoxManGrp" class="navDropBox" style="height:20px;padding:3px;"> <img id="manGrpLoeschen" title="Mandantengruppe löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                        <img id="manGrpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                        <img id="manGrpHinz" title="Neue Mandantengruppe erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                        <img id="manGrpSuchen" title="Mandantengruppe suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                        <img id="manGrpMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> 
+                        <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                        <img id="manGrpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Mandantengruppe" src="images/last.png" alt="letzte" /> 
+                        <img id="manGrpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Mandantengruppe" src="images/next.png" alt="nächste" /> 
+                        <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                        <img id="manGrpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Mandantengruppe" src="images/previous.png" alt="vorherige" /> 
+                        <img id="manGrpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Mandantengruppe" src="images/first.png" alt="erste" />
                         <label>Betr. Gruppe:</label>
                         <select class="betrPfad"></select>
                      </div>
@@ -1651,11 +1661,11 @@
                      <div>
                         <div class="controlDiv">
                            <label>Name</label>
-                           <input id="nameManGrp" />
+                           <input id="nameManGrp" class="manGrpForm" />
                         </div>
                         <div class="controlDiv">
                            <label>Kurzbezeichnung</label>
-                           <input id="kurzManGrp" />
+                           <input id="kurzManGrp" class="manGrpForm" />
                         </div>
                      </div>
                      <button id="manZuManGrpHinz">Mandant hinzufügen</button>
@@ -10888,6 +10898,19 @@
                <tbody></tbody>
             </table>
       </div>
+      <div id="manGrpSuchenContainer" style="display:none;font-size:12px;">
+            <table id="tblManGrpSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+               <thead>
+               <tr>
+                     <th>idx</th>
+                     <th>Name</th>
+                     <th>Kurz</th>
+               </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
+      </div>
+
       <div id="sAdmSuchenContainer" style="display:none;font-size:12px;">
             <table id="tblSAdmSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
                <thead>
@@ -10911,23 +10934,6 @@
                </thead>
                <tbody></tbody>
             </table>
-      </div>
-      <div id="manGrpSuchenListeContainer" style="display:none;font-size:12px;">
-         <!-- <div class="controlDiv" style="width:190px;border:1px solid white;position:absolute;">
-
-         </div> -->
-         <div id="buttonsUndTabelle" style="margin-left:0px;">
-            <table id="tblManGrpSuchenlisteErstellen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
-               <thead>
-               <tr>
-                     <th>S.No</th>
-                     <th>Name</th>
-                     <th>Kurz</th>
-               </tr>
-               </thead>
-               <tbody></tbody>
-            </table>
-         </div>
       </div>
             <div id="externeJsDateien">
                 <script type="text/javascript" src="dist/js/jquery.min.js" crossorigin="anonymous"></script>
@@ -11004,6 +11010,7 @@
                 <script type="text/javascript" src="src/js/Rechteverwaltung/gipscommAdmins.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/betreuergruppen.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/superAdmins.js"></script>
+                <script type="text/javascript" src="src/js/Rechteverwaltung/mandantengruppen.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
                 <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>

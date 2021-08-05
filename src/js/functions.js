@@ -10230,6 +10230,32 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+    tblManGrpSuchen = $("#tblManGrpSuchen").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    });
+
     tblSAdmSuchen = $("#tblSAdmSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -15903,64 +15929,6 @@ function benutzerlisteErstellen() {
                                 benutzerGetRollenUndBerechtigungen();
                             }
                         });
-                    })
-                }
-            })
-        }
-    })
-}
-
-function manGrpSuchenlisteErstellen() {
-    var a = itemSessionGet("nameDB");
-    //console.log(a);
-    $.ajax({
-        type: "POST",
-        async: !0,
-        url: "php/readInstanzen.php",
-        data: {
-            id: "manGrp",
-            nameDB: "gipscomm",
-            betrGrpID: $('#betrGrpID').val()
-        },
-        success: function(e) {
-            console.log('Working fine');
-            e = json(e);
-            //console.log(e);
-
-            tblManGrpSuchenlisteErstellen.colReorder.reset();
-            tblManGrpSuchenlisteErstellen.clear().draw();
-            for (var c = 0; c < e.length; c++) {
-                //console.log(e[c].email);
-                tblManGrpSuchenlisteErstellen.row.add([
-                    c,
-                    e[c].name,
-                    e[c].kurz,
-                    e[c].mandantenIDs,
-                ]).draw();
-            }
-            $("#manGrpSuchenListeContainer").css("display", "block");
-            $("#manGrpSuchenListeContainer").dialog({
-                height: $(window).height() - .125 * $(window).height(),
-                width: $(window).width() - .125 * $(window).width(),
-                resize: "auto",
-                modal: true,
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    console.log('open popup');
-                    $("#tblManGrpSuchenlisteErstellen tbody tr").css("cursor", "pointer");
-                    $("#tblManGrpSuchenlisteErstellen tbody").on("dblclick", "tr", function() {
-                        var a = tblManGrpSuchenlisteErstellen.row(this).data();
-                        $("#manGrpSuchenListeContainer").dialog("close");
-                        readInstanzen("manGrpFirst", a[0])
-                        clearFields("manGrpHinz");
-                        tblMandantengruppe.clear().draw()
                     })
                 }
             })

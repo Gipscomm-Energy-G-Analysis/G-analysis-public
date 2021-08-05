@@ -212,7 +212,7 @@ const scpRechteverwaltung_betreuergruppen =
                 tblMandantenBetrGrp.row(that).remove().draw()
 
             // Sets the form data retrieved from indexedDB
-            const readIntoFormFields =
+            this.readIntoFormFields =
                 idx => {
                     queryBetreuerGruppeDataIDB(idx)
                     .then(
@@ -229,13 +229,14 @@ const scpRechteverwaltung_betreuergruppen =
                             $("#telefonBetrGrp").val(betreuerGruppe.telefon)
                             $("#emailBetrGrp").val(betreuerGruppe.eMail)
                             $("#notizBetrGrp").val(betreuerGruppe.notiz)
-
+                            $(".betrPfad").prop("selectedIndex", idx)
                             readIntoMandantenTable(betreuerGruppe)
 
                             setState("edit")
                         }
                     )
                     .then(scpRechteverwaltung_superAdmins.readFirst)
+                    .then(scpRechteverwaltung_mandantengruppen.readFirst)
                 }
 
             // Sets the form data input values of the first Schicht Modell
@@ -246,7 +247,7 @@ const scpRechteverwaltung_betreuergruppen =
                 .then(
                     count =>
                     greaterZero(count) ?
-                    readIntoFormFields(0) :
+                    this.readIntoFormFields(0) :
                     this.clearFields()
                 )
                 
@@ -255,7 +256,7 @@ const scpRechteverwaltung_betreuergruppen =
             this.readPrevious =
                 () =>
                 greaterZero(getFieldValue("betrGrpIdx")) ?
-                readIntoFormFields(decr(getFieldValue("betrGrpIdx"))) :
+                this.readIntoFormFields(decr(getFieldValue("betrGrpIdx"))) :
                 false
 
             // Sets the form data input values of the next Schicht Modell
@@ -267,7 +268,7 @@ const scpRechteverwaltung_betreuergruppen =
                 .then( 
                     count => 
                     greater(decr(count))(getFieldValue("betrGrpIdx")) ?
-                    readIntoFormFields(incr(getFieldValue("betrGrpIdx"))) :
+                    this.readIntoFormFields(incr(getFieldValue("betrGrpIdx"))) :
                     false
                 )
 
@@ -279,7 +280,7 @@ const scpRechteverwaltung_betreuergruppen =
                 .then(
                     count =>
                     greaterZero(count) ?
-                    readIntoFormFields(decr(count)) :
+                    this.readIntoFormFields(decr(count)) :
                     false
                 )
 
@@ -345,7 +346,7 @@ const scpRechteverwaltung_betreuergruppen =
                                 const selectedRecord =
                                     tblBetrGrpSuchen.row(this).data()
 
-                                readIntoFormFields(head(selectedRecord))
+                                this.readIntoFormFields(head(selectedRecord))
 
                                 $("#betrGrpSuchenContainer").dialog("close")
                             })
