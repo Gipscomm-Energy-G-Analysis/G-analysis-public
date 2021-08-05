@@ -14,6 +14,8 @@ use App\Models\Messmittel;
 use App\Models\DataValue15m;
 use App\Models\Liegenschaften;
 use App\Models\DashboardProduktionConfig;
+use App\Models\ErweiterungenAnlagen;
+use App\Models\subGroupOptions;
 use App\Http\Controllers\ManageDatabaseController;
 use Illuminate\Support\Str;
 use Illuminate\Database\Schema\Blueprint;
@@ -34,6 +36,7 @@ class DashboardController extends Controller
         $username = $_SESSION['username'];
         $res =[];
         $column = [];
+        $groupData =[];
         $database = $this->checkDB($_SESSION['nameDB']);
         $result = (new ManageDatabaseController)->switchDatabase($database);
         if(!empty($result['database'])){
@@ -64,9 +67,10 @@ class DashboardController extends Controller
                                 }   
                             }              
                         }
+                        $groupData = $this->getGroup();
                         $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'', 'column'=>$column]);
                         $data = $this->getMachineDetail($request);
-                        return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message'],"tables"=>$table,"dynamic_fields"=>$res]);
+                        return View::make("product", ["data"=>$data['data'],"org"=>$org["org"],"message"=>$data['message'],"tables"=>$table,"dynamic_fields"=>$res, 'groupData'=>$groupData]);
                     }
                     else{
                         return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);
@@ -350,5 +354,93 @@ class DashboardController extends Controller
             $database = $dBname['nameDB'];
         }
         return $database;
+    }
+    public function getGroup(){
+        $groupData=[];
+        $database = $this->checkDB($_SESSION['nameDB']);
+        $result = (new ManageDatabaseController)->switchDatabase($database);
+        if(!empty($result['database'])){
+            $table_check= DB::getSchemaBuilder()->hasTable('ErweiterungenAnlagen');
+            if($table_check == 1){
+                $table_check2= DB::getSchemaBuilder()->hasTable('subGroupOptions');
+                if($table_check2 == 1){
+                    $result1 = subGroupOptions::get()->toArray();
+                    if(count($result1)>0){
+                        $result = DB::table('ErweiterungenAnlagen')
+                                ->join('subGroupOptions', 'ErweiterungenAnlagen.eAnl_ID', '=', 'subGroupOptions.group_id')
+                                ->get()
+                                ->toArray();
+                        if(count($result)>0){
+                            $groupData = $result;
+                        }  
+                    }
+                    else{
+                        $result = ErweiterungenAnlagen::get()->toArray();
+                        if(count($result)>0){
+                            $groupData = $result;
+                        }
+                    }  
+                }
+                else{
+                    $result = ErweiterungenAnlagen::get()->toArray();
+                    if(count($result)>0){
+                        $groupData = $result;
+                    }
+                }                
+            }else{
+                $groupData = "ErweiterungenAnlagen Table not found";
+            }
+            return ['groupData'=>$groupData];
+        }
+    }
+    public function saveGroupOptions(Request $request){ 
+      
+        $group_id     = $request['group_id'];
+        $option_name  = $request['sub_group_name'];
+      
+        $database = $this->checkDB($_SESSION['nameDB']);
+        $result = (new ManageDatabaseController)->switchDatabase($database);
+        if(!empty($result['database'])){
+            $table_check= DB::getSchemaBuilder()->hasTable('subGroupOptions');
+            if(!$table_check == 1){
+                Schema::create('subGroupOptions', function (Blueprint $table) {
+                    $table->id();
+                    $table->string('option_name');
+                    $table->string('group_id');
+                    //$table->timestamps();
+                });
+                    foreach($option_name as $option){
+                        $data=array('option_name'=>$option,"group_id"=>$group_id);
+                        subGroupOptions::insert($data);
+                    }
+                    
+                    echo "Record inserted successfully.";
+            }
+            else{
+                $data = subGroupOptions::where('group_id',$group_id)
+                        ->count();
+               if($data < 1){
+                    foreach($option_name as $option){
+                        $out=array('option_name'=>$option,"group_id"=>$group_id);
+                        subGroupOptions::insert($out);
+                    }
+                    echo "Record inserted successfully.";
+               }
+               else{
+                subGroupOptions::where('group_id', $group_id)->delete();
+                foreach($option_name as $option){
+                    $out=array('option_name'=>$option,"group_id"=>$group_id);
+                    subGroupOptions::insert($out);
+                }
+                echo "Record updated successfully.";
+
+               }
+            //    else{
+            //     $data = subGroupOptions::where('tableName',$tableName)->where('group_id',$group_id)->where('option_name',$option_name)->update(['label' => $label]);
+            //         echo "Record Updated Successfully";
+            //    }
+            }
+        }
+        
     }
 }

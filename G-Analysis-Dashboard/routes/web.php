@@ -32,3 +32,5 @@ Route::post('/dashboard/propertyData', [\App\Http\Controllers\DashboardControlle
 Route::get('/dashboard/tablename', [\App\Http\Controllers\DashboardController::class, 'getAllTables'])->name('getAllTables');
 Route::post('/dashboard/tableColumn', [\App\Http\Controllers\DashboardController::class, 'getTableColumns'])->name('getTableColumns');
 Route::post('/dashboard/saveFields', [\App\Http\Controllers\DashboardController::class, 'saveFields'])->name('saveFields');
+Route::get('/dashboard/group', [\App\Http\Controllers\DashboardController::class, 'getGroup'])->name('getGroup');
+Route::post('/dashboard/saveGroupOptions', [\App\Http\Controllers\DashboardController::class, 'saveGroupOptions'])->name('saveGroupOptions');

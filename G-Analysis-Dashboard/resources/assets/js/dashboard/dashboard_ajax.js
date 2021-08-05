@@ -122,13 +122,10 @@ navigationHook.forEach((node)=>{
         let numItems = $('.column-name').length;
         let result=[];
         let out = [];
-       
         for (let i = 0; i < numItems; i++) {
             let col= document.querySelector('.column-name input.column-name_'+i).id;
             result[i] = col;
-            //out['column'] = result;
         }
-       // console.log(out);
         getMachineData(machine_id, type, propId='',result);
     });
 });
@@ -193,9 +190,7 @@ var intervalId = window.setInterval(function(){
     for (let i = 0; i < numItems; i++) {
         let col= document.querySelector('.column-name input.column-name_'+i).id;
         result[i] = col;
-        // out['column'] = result;
     }
-    //console.log(out);
     getMachineData(machine_id, type, propId='',result);
   }, 10000);
 
@@ -222,7 +217,6 @@ function select_org() {
 
             });
     });
-
 }
 
 function select_table() {
@@ -237,21 +231,17 @@ function select_table() {
                 dbName:dbName
             },
         }).done( function(response) {
-            // console.log(response);
             $('#select_column').append('<option value="">Please Select--</option>');   
             $.each(response, function(key, value) {
                 $('#select_column').append('<option value="'+ value +'">'+ value +'</option>');
             });
     });
-    
 }
 
 $("#save_field").on("click", function(e) {
-    // e.preventDefault();
     let label  = document.getElementById("add_label_field").value;
     let table  = document.getElementById("select_table").value;
     let column = document.getElementById("select_column").value;
-   
     if(label == ''){
         alert("Please Enter Label");
         return false;
@@ -277,6 +267,31 @@ $("#save_field").on("click", function(e) {
             }
         });
     }
+});
+
+$("#save_subgroup_options").on("click", function(e) {
+    
+    let group_id    = document.getElementById("group_id").value;
+    let sub_group_name  = $("input[name='sub_group[]']").map(function(){return $(this).val();}).get();
+    let sub_options = $(".name_list").val();
+    if(sub_options == ''){
+        alert("Please enter suboption name.");
+        return false;
+    }else{   
+        $.ajax({
+            type: "POST",
+            url: "/dashboard/saveGroupOptions",
+            data: { sub_group_name: sub_group_name, group_id: group_id},
+            success:function(result) {
+                alert(result);
+                location.reload();
+            },
+            error:function(result) {
+                alert('error');
+            }
+        });
+    }
+    
 });
   
     
