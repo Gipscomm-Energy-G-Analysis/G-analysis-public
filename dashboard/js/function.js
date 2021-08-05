@@ -26,6 +26,15 @@ function countDashboard(){
 
 //Selected Number of Records Mesurement
 function getNumberRecordsMesurement(){
+    var number_record_local_val = localStorage.getItem('number_record_measurement');
+    if(number_record_local_val != undefined && number_record_local_val != null){
+        $('#measurement_number_record').val(number_record_local_val);
+        $('#measurement_number_record').attr('readonly',true);
+    }
+    else{
+        $('#measurement_number_record').val('');
+        $('#measurement_number_record').removeAttr('readonly');
+    }
     var number_records = $('#measurement_number_record').val();
     var time_interval = $('#measurement_time_interval').val();
     var records_order_by_val = $('#measurement_records_order_by').val();
@@ -467,7 +476,12 @@ function energy_consumed_five_days(){
     },
     success: function(a) {
        $('#five_days_energy_consumed_table').html(a['five_days_energy_data']);
-       $('#five_days_energy_count').text(a['totalSumDataEnergyConsumed'][0]['val']);
+       if(a['totalSumDataEnergyConsumed'][0]['val'] == null){
+          $('#five_days_energy_count').text(0);
+       }
+       else{
+          $('#five_days_energy_count').text(a['totalSumDataEnergyConsumed'][0]['val']);
+       }
     }
   });
 }

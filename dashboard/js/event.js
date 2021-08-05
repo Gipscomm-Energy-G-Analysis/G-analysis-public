@@ -190,6 +190,7 @@ $(document).ready( function(){
 
     //Mesurement
     $(document).on('change','#measurement_time_interval,#measurement_records_order_by',function(){
+        $('#measurement_search_record').val('');
         getNumberRecordsMesurement();
     });
     $(document).on('blur change', '#measurement_number_record', function(){
@@ -210,6 +211,7 @@ $(document).ready( function(){
         }
         else{
             $('.measurement_number_record_error').text('');
+            localStorage.setItem('number_record_measurement',val);
         }
     });
 
