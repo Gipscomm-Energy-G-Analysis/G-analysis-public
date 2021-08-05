@@ -63,6 +63,10 @@ function getNumberRecordsMesurement(){
               alert("failed!!")
           },
           success: function(a) {
+            var thVal =  $('#measurement_record_table table thead tr').children('th:eq(4)').text();
+            if(thVal == '' || thVal == undefined){
+              $('#measurement_record_table table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
+            }
             $('#mesurement_select_table_entries').html(a['measurement_html']);
             $('#pagination_html').html(a['pagination_html']);
             $('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
@@ -142,6 +146,8 @@ function rowClickMeasurementTableData(mst_id,data_type){
           alert("failed!!")
       },
       success: function(a) {
+        $('#measurement_record_table table thead tr').children('th:eq(4)').remove(); 
+
         $('#mesurement_select_table_entries').html(a['measurement_html']);
         $('#pagination_html').html(a['pagination_html']);
         $('.table-margin .table td').removeAttr('style');

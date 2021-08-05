@@ -289,6 +289,13 @@ class dashboardController {
     // <---2-8-2021--
     public function generateHtmlTableMeasurementData($dataMesaurement,$queryMaxVal = false){
         $tr = '';
+        $col_span = "";
+        if($queryMaxVal == ""){
+            $col_span = "colspan='5'";
+        }
+        else if($queryMaxVal != ''){
+            $col_span = "colspan='4'";
+        }
         if($dataMesaurement != '' && count($dataMesaurement) > 0){
             foreach($dataMesaurement as $key => $value){
                 $style='';
@@ -354,16 +361,20 @@ class dashboardController {
                 
                 if($value['val'] == null){
                     $tr.= "<td> - </td>";
-                    $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                    if($queryMaxVal == ""){
+                        $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                    }
                 }
                 else{
                     $tr.= "<td>".$value['val'].' '.$unit."</td>";
-                    $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                    if($queryMaxVal == ""){
+                        $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                    }
                 }
                 $tr.="</tr>";
             }
         }else{
-                $tr = "<tr><td colspan='5' class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
