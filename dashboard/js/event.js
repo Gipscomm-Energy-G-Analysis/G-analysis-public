@@ -89,6 +89,11 @@ $(document).ready( function(){
                 else{
                     $('#measurement_number_record').val('');
                 }
+                $('#mesurement_select_table_entries').html('');
+                $('#pagination_html').html('');
+                $('#measurement_search_record').val('');
+                $('.table-margin').removeClass('margin-remove-table');
+                $('.measurement_table_header').removeClass('row_click_table');
                 //-end-->
                 break;
 
@@ -212,6 +217,8 @@ $(document).ready( function(){
             var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
             $('#mesurement_select_table_entries').html(tr);
             $('#pagination_html').html('');
+            $('#measurement_search_record').val();
+            localStorage.removeItem('number_record_measurement');
            
             $('.measurement_number_record_error').fadeIn('slow');
             setTimeout( function(){
@@ -224,7 +231,7 @@ $(document).ready( function(){
         }
     });
 
-    $(document).on('keypress keyup blur', '#measurement_search_record', function(){
+    $(document).on('keypress keyup blur focusin', '#measurement_search_record', function(){
         getNumberRecordsMesurement(); 
     });
 

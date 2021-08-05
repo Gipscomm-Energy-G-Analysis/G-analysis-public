@@ -23,10 +23,10 @@
                     </div>
 
                     <div class="form-group col-md-3">
-                      <label for="measurement_records_order_by">Order By</label>
+                      <label for="measurement_records_order_by">Order By Units Consumed</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_records_order_by">
-                        <option value="order_by_desc">Order By Max Units</option>
-                        <option value="order_by_asc">Order By Min Units</option>
+                        <option value="order_by_desc">Order By Max Units Consumed</option>
+                        <option value="order_by_asc">Order By Min Units Consumed</option>
                         <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
                       </select>
                     </div>
