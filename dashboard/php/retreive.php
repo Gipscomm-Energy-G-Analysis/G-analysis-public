@@ -293,6 +293,7 @@ class dashboardController {
             foreach($dataMesaurement as $key => $value){
                 $style='';
                 $class_val = '';
+                $unit = '';
                 if($queryMaxVal == ""){
                     $class_val = 'class="row_click"';
                 }
@@ -317,6 +318,24 @@ class dashboardController {
                 else{
                     $tr.= "<td></td>";
                 }
+
+                //Units Checks
+                if($value['unt_ID'] == "1"){
+                    $unit = "Hrs.";
+                }
+                else if($value['unt_ID'] == "2"){
+                    $unit = "kWh";
+                }
+                else if($value['unt_ID'] == "3"){
+                    $unit = "m³";
+                }
+                else if($value['unt_ID'] == "4"){
+                    $unit = "l";
+                }
+                else if($value['unt_ID'] == "5"){
+                    $unit = "kg";
+                }
+
                 // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                 if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
                     if($queryMaxVal != ''){
@@ -338,7 +357,7 @@ class dashboardController {
                     $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
                 }
                 else{
-                    $tr.= "<td>".$value['val']."</td>";
+                    $tr.= "<td>".$value['val'].' '.$unit."</td>";
                     $tr.= "<td><label class='badge badge-success'>Active </label></td>";
                 }
                 $tr.="</tr>";

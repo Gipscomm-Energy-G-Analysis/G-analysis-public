@@ -55,10 +55,10 @@
                               Time Interval
                             </th>
                             <th>
-                              Date
+                              Created Date
                             </th>
                             <th>
-                              Units
+                              Total Units
                             </th>
                             <th>
                               Status

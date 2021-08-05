@@ -29,11 +29,9 @@ function getNumberRecordsMesurement(){
     var number_record_local_val = localStorage.getItem('number_record_measurement');
     if(number_record_local_val != undefined && number_record_local_val != null){
         $('#measurement_number_record').val(number_record_local_val);
-        $('#measurement_number_record').attr('readonly',true);
     }
     else{
         $('#measurement_number_record').val('');
-        $('#measurement_number_record').removeAttr('readonly');
     }
     var number_records = $('#measurement_number_record').val();
     var time_interval = $('#measurement_time_interval').val();
@@ -68,6 +66,10 @@ function getNumberRecordsMesurement(){
             $('#mesurement_select_table_entries').html(a['measurement_html']);
             $('#pagination_html').html(a['pagination_html']);
             $('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
+            
+            $('.table-margin').removeClass('margin-remove-table');
+            $('#measurement_record_table table thead tr').children('th:eq(2)').text('Created Date');
+            $('#measurement_record_table table thead tr').children('th:eq(3)').text('Total Units');
           }
       });
     }
@@ -143,6 +145,10 @@ function rowClickMeasurementTableData(mst_id,data_type){
         $('#mesurement_select_table_entries').html(a['measurement_html']);
         $('#pagination_html').html(a['pagination_html']);
         $('.table-margin .table td').removeAttr('style');
+        
+        $('.table-margin').addClass('margin-remove-table');
+        $('#measurement_record_table table thead tr').children('th:eq(2)').text('Date');
+        $('#measurement_record_table table thead tr').children('th:eq(3)').text('Units Consumed');
       }
     });
   }
