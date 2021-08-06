@@ -418,17 +418,38 @@ class dashboardController {
                                 
                 for($i = 1; $i <= $pagesCount; $i++){
                     $active = $i == $page_val ? 'active' : '';
-                    $paginationHTMl.="<li class='page-item page_count_val $active' data_type='$data_type' data_mst='$mst_id'><a class='page-link' href='javascript:void(0);'>$i</a></li>";
+                    $hide_style='display: none';
+                    if($i == $page_val){
+                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
+                        $hide_style = 'display: block';
+                    }
+                    $paginationHTMl.="<li style='$hide_style' class='page-item  $active '><input type='number' class='active_background pagination_input_val page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
+
+                    if($i == $pagesCount){
+                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
+                        $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val' href='javascript:void(0);'>$i</a></li>";
+                    }
                 }
                 $paginationHTMl.="<li class='page-item $class_page_count_val_end' data_type='$data_type' data_mst='$mst_id' id='next_pagination_val'>
-                                                <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
-                                                    <span aria-hidden='true'>&raquo;</span>
-                                                    <span class='sr-only'>Next</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    <div>
-                                </nav>";
+                                        <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
+                                            <span aria-hidden='true'>&raquo;</span>
+                                            <span class='sr-only'>Next</span>
+                                        </a>
+                                    </li>";
+
+                //Pagination Select Tag                                       
+                $paginationHTMl.="<li class ='page-item page_count_val'>
+                                        <select class='page-link'>
+                                            <option value='5'>5</option>
+                                            <option value='10'>10</option>
+                                            <option value='20'>20</option>
+                                            <option value='30'>30</option>
+                                            <option value='50'>50</option>
+                                        </select>
+                                    </li>
+                                    </ul>
+                                </div>
+                            </nav>";
                 return $paginationHTMl;
                 // $records['pagination_html'] = $paginationHTMl;
             }

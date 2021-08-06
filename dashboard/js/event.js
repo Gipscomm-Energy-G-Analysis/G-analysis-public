@@ -243,30 +243,22 @@ $(document).ready( function(){
         rowClickMeasurementTableData(mst_id,data_type);
     })
 
+
     $(document).on('click', '.page_count_val', function(){
-        var page_value = $(this).text();
         var id = $(this).attr('id');
         var data_type = $(this).attr('data_type');
         var mst_id = $(this).attr('data_mst');
-        
+        var page_value = $('div').find('li.active').find('input').val();
         if(id != undefined && id == 'previous_pagination_val'){
-            var find_prev_val = $('.page_count_val.active').prev('li').text();
-            var active_text = $('.page_count_val.active').text();
-            if(active_text == "1"){
-                page_value = active_text;    
-            }
-            else{
-                page_value = find_prev_val;
-            }
-            // console.log('Prev',find_prev_val);
+            var find_prev_val = $('div').find('li.active').prev('li').prev('li').find('input').val();
+            page_value = find_prev_val;
         }
         else if(id != undefined && id == 'next_pagination_val'){
-            var find_next_val = $('.page_count_val.active').next('li').text();
+            var find_next_val = $('div').find('li.active').next('li').find('input').val();
             page_value = find_next_val;
 
         }
-        // console.log('Id', id);
-        if(data_type != '' && mst_id != ''){
+        if(data_type != '' && mst_id != '' && data_type != undefined && mst_id != undefined){
             rowClickMeasurementPaginationTableData(mst_id,data_type,page_value);
         }
         else{
@@ -274,6 +266,35 @@ $(document).ready( function(){
         }
       
     });
+
+    //<--- 6-8-2021--
+    $(document).on('blur','.pagination_input_val', function(){
+        var page_value = $(this).val(); //$(this).val();
+        var id = $(this).attr('id');
+        var data_type = $(this).attr('data_type');
+        var mst_id = $(this).attr('data_mst');
+        var last_input_val = $('#last_input_val').text();
+        if(parseInt(page_value) <= 0){
+            alert('Value Always Be greater than 0');
+            page_value = 1;
+            $(this).val(page_value);
+
+        }
+        else if(parseInt(page_value) > parseInt(last_input_val)){
+            alert('Value Can not Be greater than end Page');
+            page_value = 1;
+            $(this).val(page_value);
+        }
+        
+        if(data_type != '' && mst_id != '' && data_type != undefined && mst_id != undefined){
+            rowClickMeasurementPaginationTableData(mst_id,data_type,page_value);
+        }
+        else{
+            getNumberRecordsMesurementPagination(page_value); 
+        }
+
+    })
+    // --end>
 
     //Energy Select Table
     $(document).on('change','#energy_number_record',function(){

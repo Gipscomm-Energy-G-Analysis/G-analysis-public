@@ -31,11 +31,18 @@
                       </select>
                     </div>
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-2" style="display: none">
                       <label for="measurement_number_record">Select No. of Records</label>
                        <input type="number" class="form-control form-control-sm text-dark" id="measurement_number_record" minlength="5" maxlength="50" placeholder="Select No. of Records">
                        <span class='measurement_number_record_error text-danger'></span>
                       </div>
+
+                      <div class="form-group col-md-2">
+                      <label for="measurement_number_record">Select Total of Records</label>
+                       <input type="number" class="form-control form-control-sm text-dark" id="measurement_number_record" minlength="5" maxlength="50" placeholder="Select No. of Records">
+                       <span class='measurement_number_record_error text-danger'></span>
+                      </div>
+
                   </div>
 
                   <div class="row">

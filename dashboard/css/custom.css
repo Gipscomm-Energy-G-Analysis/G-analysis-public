@@ -83,3 +83,14 @@
 .margin-remove-table{
     margin: 0px;
 }
+.page-link{
+    padding: 6px 9px !important;
+}
+.pagination_input_val{
+    width : 69px;
+}
+
+.active_background{
+    background: white !important;
+    color: #2b2727 !important;
+}
