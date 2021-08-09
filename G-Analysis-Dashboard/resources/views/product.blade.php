@@ -21,30 +21,19 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                @if(!empty($data))
-                    <div class="row dashboard">
-                        <div class="col-sm-6">
-                            <h1 class="m-0"></h1>
-                        </div><!-- /.container-fluid -->
-                        @else
-                            <h4 style="text-align:center;">{{$message}}</h4>
-                        @endif
-                    </div><!-- /.row -->
-            </div>
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-     
         @if(!empty($data))
-            @php $image = 'images/Blasanlage.jpg'; @endphp
-            @if(file_exists($data['bildAnl']))
-                @php  $image = $data['bildAnl']; @endphp
-            @endif
-            <section class="content">
-                <div class="row">
+            <!-- <div class="content-header">
+                <div class="container-fluid">
+                    
+                        <div class="row dashboard">
+                            <div class="col-sm-6">
+                                <h1 class="m-0">Product Detail</h1>
+                            </div>
+                        </div>
+                </div>
+            </div> -->
+
+            <div class="row navbar navbar-expand navbar-dark">
                     <div class="col-sm-3">
                         <div class="form-group row">
                             <input type="hidden" value= "{{$_SESSION['nameDB']}}"; id="nameDB" />
@@ -74,30 +63,65 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6">
-                        <div class="fc-toolbar-chunk">
-                            <div class="btn-group float-right">
-                                <button class="fc-search btn btn-primary" id="searchMachines" type="button" aria-label="search" >
-                                    <span class="fa fa-search"></span>
-                                </button>
-                            </div>
-                            <div class="btn-group float-right mr-3 navigation" data-value="{{$data['anl_ID']}}">
-                                <button class="fc-step-backward btn btn-primary" type="button" event-type="first" aria-label="prev">
-                                    <span class="fa fa-step-backward"></span>
-                                </button>
-                                <button class="fc-prev-button btn btn-primary" type="button" event-type="prev" aria-label="prev">
-                                    <span class="fa fa-chevron-left"></span>
-                                </button>
-                                <button class="fc-next-button btn btn-primary" type="button" event-type="next" aria-label="next">
-                                    <span class="fa fa-chevron-right"></span>
-                                </button>
-                                <button class="fc-step-forward btn btn-primary" type="button" event-type="last" aria-label="next">
-                                    <span class="fa fa-step-forward"></span>
-                                </button>
-                            </div>
+                    <div class=col-sm-6>
+                    <nav class="main-header navbar navbar-expand navbar-dark" style="border-bottom:unset;">
+                <!-- Left navbar links -->
+                
+
+                <!-- Right navbar links -->
+                <ul class="navbar-nav ml-auto">
+                    <div class="fc-toolbar-chunk" style=>
+                        <div class="btn-group float-right">
+                            <button class="fc-search btn btn-primary" id="searchMachines" type="button" aria-label="search" >
+                                <span class="fa fa-search"></span>
+                            </button>
                         </div>
-                    </div><!-- /.col -->
+                        <div class="btn-group float-right mr-3 navigation" data-value="{{$data['anl_ID']}}">
+                            <button class="fc-step-backward btn btn-primary" type="button" event-type="first" aria-label="prev">
+                                <span class="fa fa-step-backward"></span>
+                            </button>
+                            <button class="fc-prev-button btn btn-primary" type="button" event-type="prev" aria-label="prev">
+                                <span class="fa fa-chevron-left"></span>
+                            </button>
+                            <button class="fc-next-button btn btn-primary" type="button" event-type="next" aria-label="next">
+                                <span class="fa fa-chevron-right"></span>
+                            </button>
+                            <button class="fc-step-forward btn btn-primary" type="button" event-type="last" aria-label="next">
+                                <span class="fa fa-step-forward"></span>
+                            </button>
+                        </div>
+                    </div>
+                </ul>
+            </nav> 
+                    </div>
+            </div>
+
+
+            
+        @else
+            <div class="content-header">
+                <div class="container-fluid">
+                    
+                        <div class="row dashboard">
+                            <div class="col-sm-6">
+                                <h1 class="m-0"></h1>
+                            </div><!-- /.container-fluid -->
+                            <h4 style="text-align:center;">{{$message}}</h4>
+                        </div><!-- /.row -->
                 </div>
+            </div> 
+        @endif
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+     
+        @if(!empty($data))
+            @php $image = 'images/Blasanlage.jpg'; @endphp
+            @if(file_exists($data['bildAnl']))
+                @php  $image = $data['bildAnl']; @endphp
+            @endif
+            <section class="content">
+                
                 <div class="card card-success">
                     <div class="card-header">
                         <h3 class="card-title">Dashboard</h3>
@@ -240,15 +264,14 @@
                                                     @endforeach
                                                 </div>                                              
                                                 @endif
-                                                <div class="popup">
-                                                    <div class="add_more_field" data-toggle="modal" data-target="#modal-default">
-                                                        <span for="exampleInput" class="btn btn-success col fileinput-button dz-clickable" id="add_more_field">
-                                                            <i class="fas fa-plus"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div class="add_group" data-toggle="modal" data-target="#group-modal">
-                                                        <button type="button" class="btn btn-block btn-primary">Add Group Options</button>
-                                                    </div>
+                                                
+                                            </div>
+                                            <div class="popup">
+                                                <div class="add_group col-sm-3" data-toggle="modal" data-target="#modal-default">
+                                                    <button type="button" class="btn btn-block btn-primary" id="add_more_field">Add Custom Fields</button>
+                                                </div>
+                                                <div class="add_group col-sm-3" data-toggle="modal" data-target="#group-modal" style="margin-right:5px;">
+                                                    <button type="button" class="btn btn-block btn-primary">Add Group Options</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -325,7 +348,7 @@
                     <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h4 class="modal-title">Add More Fields</h4>
+                        <h4 class="modal-title">Add Custom Fields</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
