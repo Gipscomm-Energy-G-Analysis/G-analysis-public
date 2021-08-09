@@ -84,10 +84,10 @@ $(document).ready( function(){
                 // <---5-8--2021--
                 var number_record_local_val = localStorage.getItem('number_record_measurement');
                 if(number_record_local_val != undefined && number_record_local_val != null){
-                    $('#measurement_number_record').val(number_record_local_val);
+                    $('#measurement_total_number_record').val(number_record_local_val);
                 }
                 else{
-                    $('#measurement_number_record').val('');
+                    $('#measurement_total_number_record').val('');
                 }
                 $('#mesurement_select_table_entries').html('');
                 $('#pagination_html').html('');
@@ -204,17 +204,16 @@ $(document).ready( function(){
 
     //Mesurement
     $(document).on('change','#measurement_time_interval,#measurement_records_order_by',function(){
-        $('#measurement_search_record').val('');
         getNumberRecordsMesurement();
     });
-    $(document).on('blur change', '#measurement_number_record', function(){
+    $(document).on('blur change', '#measurement_total_number_record', function(){
         // getNumberRecordsMesurement(); 
         var val = $(this).val();
         if(val <=0){
             $('.measurement_number_record_error').text('Value always be greater than 0');
-            $('#measurement_number_record').val('');
+            $('#measurement_total_number_record').val('');
            
-            var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+            var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
             $('#mesurement_select_table_entries').html(tr);
             $('#pagination_html').html('');
             $('#measurement_search_record').val();
@@ -228,6 +227,8 @@ $(document).ready( function(){
         else{
             $('.measurement_number_record_error').text('');
             localStorage.setItem('number_record_measurement',val);
+            var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Click on Search Bar</td></tr>";
+            $('#mesurement_select_table_entries').html(tr);
         }
     });
 
@@ -291,6 +292,21 @@ $(document).ready( function(){
         }
         else{
             getNumberRecordsMesurementPagination(page_value); 
+        }
+
+    })
+
+    $(document).on('change','#measurement_number_record', function(){
+        var page_value = $('div').find('li.active').find('input').val();
+        var data_type = $(this).attr('data_type');
+        var mst_id = $(this).attr('data_mst');
+        var val = $(this).val();
+        localStorage.setItem('selected_number_record_measurement',val);
+        if(data_type != '' && mst_id != '' && data_type != undefined && mst_id != undefined){
+            rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,measurement_search_record = 'true');
+        }
+        else{
+            getNumberRecordsMesurementPagination(page_value,measurement_search_record = 'true'); 
         }
 
     })

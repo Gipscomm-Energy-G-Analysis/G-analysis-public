@@ -28,20 +28,27 @@ function countDashboard(){
 function getNumberRecordsMesurement(){
     var number_record_local_val = localStorage.getItem('number_record_measurement');
     if(number_record_local_val != undefined && number_record_local_val != null){
-        $('#measurement_number_record').val(number_record_local_val);
+        $('#measurement_total_number_record').val(number_record_local_val);
     }
     else{
-        $('#measurement_number_record').val('');
+        $('#measurement_total_number_record').val('');
     }
-    var number_records = $('#measurement_number_record').val();
+
+    //6-8-2021---
+    var selected_number_record = localStorage.getItem('selected_number_record_measurement');
+    if(selected_number_record == undefined || selected_number_record == ''){
+        selected_number_record = 5;
+    }
+    //----end-->
+    var total_number_records = $('#measurement_total_number_record').val();
     var time_interval = $('#measurement_time_interval').val();
     var records_order_by_val = $('#measurement_records_order_by').val();
     var search_record = $('#measurement_search_record').val();
 
     $('.measurement_table_header').removeClass('row_click_table');
     $('.table-margin .table th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
-    if(number_records == ''){
-      var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+    if(total_number_records == ''){
+      var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
       $('#mesurement_select_table_entries').html(tr);
       $('#pagination_html').html('');
     }
@@ -54,10 +61,11 @@ function getNumberRecordsMesurement(){
           data: {
               action: "getNumberRecordsMesurement",
               nameDB: $("#nameDashboardDB").val(),
-              number_records : number_records,
+              total_number_records : total_number_records,
               time_interval : time_interval,
               measurement_order_by_val : records_order_by_val,
-              search_record : search_record
+              search_record : search_record,
+              number_records : selected_number_record,
           },
           fail: function() {
               alert("failed!!")
@@ -74,19 +82,23 @@ function getNumberRecordsMesurement(){
             $('.table-margin').removeClass('margin-remove-table');
             $('#measurement_record_table table thead tr').children('th:eq(2)').text('Created Date');
             $('#measurement_record_table table thead tr').children('th:eq(3)').text('Total Units');
+
+            var val_selected = localStorage.getItem('selected_number_record_measurement');
+            $('#measurement_number_record option[value='+val_selected+']').prop('selected', 'selected');
           }
       });
     }
 }
 
 //Get Number Records Mesurement Pagination
-function getNumberRecordsMesurementPagination(page_val){
+function getNumberRecordsMesurementPagination(page_val,selected_number_record_measurement = 'false'){
     var number_records = $('#measurement_number_record').val();
     var time_interval = $('#measurement_time_interval').val();
     var records_order_by_val = $('#measurement_records_order_by').val();
     var search_record = $('#measurement_search_record').val();
-    if(number_records == ''){
-      var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+    var total_number_records = $('#measurement_total_number_record').val();
+    if(total_number_records == ''){
+      var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
       $('#mesurement_select_table_entries').html(tr);
       $('#pagination_html').html('');
     }
@@ -103,7 +115,9 @@ function getNumberRecordsMesurementPagination(page_val){
               time_interval : time_interval,
               measurement_order_by_val : records_order_by_val,
               page_val : page_val,
-              search_record : search_record
+              search_record : search_record,
+              total_number_records : total_number_records,
+              selected_number_record_measurement : selected_number_record_measurement
           },
           fail: function() {
               alert("failed!!")
@@ -112,6 +126,9 @@ function getNumberRecordsMesurementPagination(page_val){
             $('#mesurement_select_table_entries').html(a['measurement_html']);
             $('#pagination_html').html(a['pagination_html']);
             $('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
+            
+            var val_selected = localStorage.getItem('selected_number_record_measurement');
+            $('#measurement_number_record option[value='+val_selected+']').prop('selected', 'selected');
           }
       });
     }
@@ -120,50 +137,13 @@ function getNumberRecordsMesurementPagination(page_val){
 
 function rowClickMeasurementTableData(mst_id,data_type){
   var number_records = $('#measurement_number_record').val();  
+  var total_number_records = $('#measurement_total_number_record').val();
 
   //Classes Add
   $('.measurement_table_header').addClass('row_click_table');
   $('.table-margin .table th').removeAttr('style');
-  if(number_records == ''){
-    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
-    $('#mesurement_select_table_entries').html(tr);
-    $('#pagination_html').html('');
-  }
-  else{
-    $.ajax({
-      type : "POST",
-      url: "php/retreive.php",
-      async: false,
-      dataType: 'json',
-      data: {
-          action: "rowClickMeasurementTableData",
-          nameDB: $("#nameDashboardDB").val(),
-          mst_id : mst_id,
-          data_type : data_type,
-          number_records : number_records
-      },
-      fail: function() {
-          alert("failed!!")
-      },
-      success: function(a) {
-        $('#measurement_record_table table thead tr').children('th:eq(4)').remove(); 
-
-        $('#mesurement_select_table_entries').html(a['measurement_html']);
-        $('#pagination_html').html(a['pagination_html']);
-        $('.table-margin .table td').removeAttr('style');
-        
-        $('.table-margin').addClass('margin-remove-table');
-        $('#measurement_record_table table thead tr').children('th:eq(2)').text('Date');
-        $('#measurement_record_table table thead tr').children('th:eq(3)').text('Units Consumed');
-      }
-    });
-  }
-}
-
-function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value){
-  var number_records = $('#measurement_number_record').val();  
-  if(number_records == ''){
-    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select No. of Records</td></tr>";
+  if(total_number_records == ''){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
     $('#mesurement_select_table_entries').html(tr);
     $('#pagination_html').html('');
   }
@@ -179,7 +159,51 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value){
           mst_id : mst_id,
           data_type : data_type,
           number_records : number_records,
-          page_val : page_value
+          total_number_records : total_number_records
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#measurement_record_table table thead tr').children('th:eq(4)').remove(); 
+
+        $('#mesurement_select_table_entries').html(a['measurement_html']);
+        $('#pagination_html').html(a['pagination_html']);
+        $('.table-margin .table td').removeAttr('style');
+        
+        $('.table-margin').addClass('margin-remove-table');
+        $('#measurement_record_table table thead tr').children('th:eq(2)').text('Date');
+        $('#measurement_record_table table thead tr').children('th:eq(3)').text('Units Consumed');
+
+        $('#measurement_number_record option[value='+number_records+']').prop('selected', 'selected');
+      }
+    });
+  }
+}
+
+function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,selected_number_record_measurement = 'false'){
+  var number_records = $('#measurement_number_record').val();
+  var total_number_records = $('#measurement_total_number_record').val();  
+  if(total_number_records == ''){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
+    $('#mesurement_select_table_entries').html(tr);
+    $('#pagination_html').html('');
+  }
+  else{
+    $.ajax({
+      type : "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "rowClickMeasurementTableData",
+          nameDB: $("#nameDashboardDB").val(),
+          mst_id : mst_id,
+          data_type : data_type,
+          number_records : number_records,
+          page_val : page_value,
+          selected_number_record_measurement : selected_number_record_measurement,
+          total_number_records : total_number_records
       },
       fail: function() {
           alert("failed!!")
@@ -188,6 +212,8 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value){
         $('#mesurement_select_table_entries').html(a['measurement_html']);
         $('#pagination_html').html(a['pagination_html']);
         $('.table-margin .table td').removeAttr('style');
+
+        $('#measurement_number_record option[value='+number_records+']').prop('selected', 'selected');
       }
     });
   }

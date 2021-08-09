@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="form-group col-md-3">
-                      <label for="measurement_records_order_by">Order By Units Consumed</label>
+                      <label for="measurement_records_order_by">Filter Units Consumed</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_records_order_by">
                         <option value="order_by_desc">Order By Max Units Consumed</option>
                         <option value="order_by_asc">Order By Min Units Consumed</option>
@@ -31,15 +31,15 @@
                       </select>
                     </div>
 
-                    <div class="form-group col-md-2" style="display: none">
+                    <!-- <div class="form-group col-md-2" style="display: none">
                       <label for="measurement_number_record">Select No. of Records</label>
                        <input type="number" class="form-control form-control-sm text-dark" id="measurement_number_record" minlength="5" maxlength="50" placeholder="Select No. of Records">
                        <span class='measurement_number_record_error text-danger'></span>
-                      </div>
+                      </div> -->
 
-                      <div class="form-group col-md-2">
-                      <label for="measurement_number_record">Select Total of Records</label>
-                       <input type="number" class="form-control form-control-sm text-dark" id="measurement_number_record" minlength="5" maxlength="50" placeholder="Select No. of Records">
+                      <div class="form-group col-md-3">
+                      <label for="measurement_number_record">Select Total No. of Records</label>
+                       <input type="number" class="form-control form-control-sm text-dark" id="measurement_total_number_record" placeholder="Select Total No. of Records">
                        <span class='measurement_number_record_error text-danger'></span>
                       </div>
 
@@ -52,6 +52,7 @@
                     </div>
                     
                     <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
+                      <input type="hidden" id='row_click_table_input'>
                       <table class="table table-striped table-bordered table-hover">
                         <thead class="measurement_table_header">
                           <tr>

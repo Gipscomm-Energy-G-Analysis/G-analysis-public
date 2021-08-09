@@ -134,13 +134,22 @@ class dashboardController {
     {
         try{
             global $conn;
-            $number_records = $_POST['number_records'];
+            $total_number_records = $_POST['total_number_records'];
+            $number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $time_interval = $_POST['time_interval'];
             $order_by_val = $_POST['measurement_order_by_val'];
             $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
             $dataMesaurement = '';
             $queryMaxVal = '';
             $pagesCount = '';
+
+            if($order_by_val == 'order_by_desc'){
+                $order_by_val = "Order by cast(T2.val as int) desc ";
+            }
+            else if($order_by_val == 'order_by_asc'){
+                $order_by_val = "Order by cast(T2.val as int) asc ";
+            }
 
             $search_record = isset($_POST['search_record']) ? $_POST['search_record'] : '';
             $queryTotalRecordCondition = "";
@@ -151,7 +160,7 @@ class dashboardController {
             }
 
             //Pagination Code
-            $queryTotalRecords = "SELECT * ";
+            $queryTotalRecords = "SELECT TOP($total_number_records) * ";
             $queryTotalRecords .= "FROM produktionsAnlagenConfig as T1 ";
             $queryTotalRecords .= "LEFT JOIN ";
             $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(cast(val as int)) as val from ";
@@ -162,23 +171,39 @@ class dashboardController {
             $queryTotalRecords  .= "where T1.iBdeType='2' ";
             $queryTotalRecords .= "AND T1.intTp_ID = '$time_interval' ";
             $queryTotalRecords .= $queryTotalRecordCondition;
+            $queryTotalRecords .= $order_by_val;
             $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
-            // echo json_encode($totalRecordsValue); die;
+            // echo json_encode($totalRecordsValue); die;s
             
             $pagesCount = '';
             $offSetVal = 0;
             if(count($totalRecordsValue) > 0){
-               $pagesCount = ceil(count($totalRecordsValue) / $number_records);
-               $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
-               $offSetVal = ($page_val - 1) * $number_records;
+               if($total_number_records <= $number_records){
+                   $offSetVal = 0;
+                   $number_records = $total_number_records;
+                   $pagesCount = 1; 
+               }
+               else{
 
-            }
+                    if($selected_number_record_measurement == 'true'){
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $page_val = 1;
+                        $offSetVal = 0;
 
-            if($order_by_val == 'order_by_desc'){
-                $order_by_val = "Order by cast(T2.val as int) desc ";
-            }
-            else if($order_by_val == 'order_by_asc'){
-                $order_by_val = "Order by cast(T2.val as int) asc ";
+                    }
+                    else{
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+                        
+                        if($page_val == $pagesCount){
+                            $number_records = $total_number_records - $offSetVal;
+                        }
+                    }
+                //    echo $number_records;s
+               }
+
             }
 
             $query1 = "SELECT * ";
@@ -213,16 +238,18 @@ class dashboardController {
     public function rowClickMeasurementTableData(){
         try{
             global $conn;
+            $total_number_records = $_POST['total_number_records'];
             $mst_id = $_POST['mst_id'];
             $type = $_POST['data_type'];
             $number_records = $_POST['number_records'];
             $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
            
             $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
             $current_date = date('Y-m-d');
 
             //Pagination Code 
-            $queryTotalPagination = "SELECT * ";
+            $queryTotalPagination = "SELECT TOP($total_number_records) * ";
             $queryTotalPagination .= "FROM produktionsAnlagenConfig as T1 ";
             $queryTotalPagination .= "INNER JOIN ";
             $queryTotalPagination .= "masseneingabeSucheIMw as T2 ";
@@ -237,15 +264,35 @@ class dashboardController {
             $pagesCount = '';
             $offSetVal = 0;
             if(count($totalRecordsValue) > 0){
-               $pagesCount = ceil(count($totalRecordsValue) / $number_records);
-               $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
-               $offSetVal = ($page_val - 1) * $number_records;
+               if($total_number_records <= $number_records){
+                    $offSetVal = 0;
+                    $number_records = $total_number_records;
+                    $pagesCount = 1; 
+               }
+               else{
+                    if($selected_number_record_measurement == 'true'){
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $page_val = 1;
+                        $offSetVal = 0;
+
+                    }
+                    else{ 
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+                        
+                        if($page_val == $pagesCount){
+                            $number_records = $total_number_records - $offSetVal;
+                        }
+                    }
+               } 
 
             }
 
             //--end-->
             
-            $queryMaxValue = "SELECT max(cast(T2.val as int)) as val ";
+            $queryMaxValue = "SELECT TOP($total_number_records) max(cast(T2.val as int)) as val ";
             $queryMaxValue .= "FROM produktionsAnlagenConfig as T1 ";
             $queryMaxValue .= "INNER JOIN ";
             $queryMaxValue .= "masseneingabeSucheIMw as T2 ";
@@ -383,6 +430,7 @@ class dashboardController {
     public function generatePaginationHtmlMeasurementData($page_val,$pagesCount,$data_type = false ,$mst_id = false){
         try{
             //Pagination Code HTML
+            // echo $pagesCount; die;
             if($page_val > 0 && $pagesCount > 0){
                 $style_background = '';
                 $class_page_count_val = 'page_count_val';
@@ -437,9 +485,10 @@ class dashboardController {
                                         </a>
                                     </li>";
 
-                //Pagination Select Tag                                       
-                $paginationHTMl.="<li class ='page-item page_count_val'>
-                                        <select class='page-link'>
+                //Pagination Select Tag   
+                
+                $paginationHTMl.="<li class ='page-item'>
+                                        <select class='page-link select_pagination' id='measurement_number_record' data_type='$data_type' data_mst='$mst_id'>
                                             <option value='5'>5</option>
                                             <option value='10'>10</option>
                                             <option value='20'>20</option>

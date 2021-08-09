@@ -52,7 +52,7 @@
 
 .pagination_items{
     text-align: center;
-    margin-left: 396px;
+    margin-left: 357px;
 }
 .pagination_html{
     margin-top: 8px;
@@ -93,4 +93,10 @@
 .active_background{
     background: white !important;
     color: #2b2727 !important;
+}
+.select_pagination{
+    width : 65px;
+}
+.pagination_items ul {
+    font-size: 15px !important;
 }
