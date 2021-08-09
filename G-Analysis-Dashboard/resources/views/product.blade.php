@@ -4,8 +4,13 @@
     .product-image { border-radius: 5px; margin-top: 12px; }
     .form-horizontal .card-body { padding-top: 0; }
     .form-group { margin-bottom: 0.3rem !important; }
-    .col-form-label { line-height: 1 !important;}
-    .add_more_field { margin-top: 33px; float: left; width: 12%; margin-left: 3px;}
+    .col-form-label { line-height: 1 !important; }
+    .group-label {  font-weight: normal !important; width: 73% !important;} 
+    .add_more_field {  float: left; }
+    .popup { width: 100%; float: left; margin-top: 10%; }
+    .add_group { width: 50%; float: right;}
+    .table-bordered td, .table-bordered th { border: none !important;}
+    #add_sub { float: right;}
 </style>
 @extends('layout.app')
 @section('headContent')
@@ -32,8 +37,8 @@
         <!-- /.content-header -->
 
         <!-- Main content -->
+     
         @if(!empty($data))
-        
             @php $image = 'images/Blasanlage.jpg'; @endphp
             @if(file_exists($data['bildAnl']))
                 @php  $image = $data['bildAnl']; @endphp
@@ -235,10 +240,15 @@
                                                     @endforeach
                                                 </div>                                              
                                                 @endif
-                                                <div class="add_more_field" data-toggle="modal" data-target="#modal-default">
-                                                    <span for="exampleInput" class="btn btn-success col fileinput-button dz-clickable" id="add_more_field">
-                                                        <i class="fas fa-plus"></i>
-                                                    </span>
+                                                <div class="popup">
+                                                    <div class="add_more_field" data-toggle="modal" data-target="#modal-default">
+                                                        <span for="exampleInput" class="btn btn-success col fileinput-button dz-clickable" id="add_more_field">
+                                                            <i class="fas fa-plus"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="add_group" data-toggle="modal" data-target="#group-modal">
+                                                        <button type="button" class="btn btn-block btn-primary">Add Group Options</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,9 +265,9 @@
                     <div class="card-header">
                         <h3 class="card-title">Charts</h3>
                         <div class="card-tools">
-                            {{--                            <button type="button" class="btn btn-tool" data-card-widget="collapse">--}}
-                            {{--                                <i class="fas fa-minus"></i>--}}
-                            {{--                            </button>--}}
+                            {{--  <button type="button" class="btn btn-tool" data-card-widget="collapse">--}}
+                            {{--  <i class="fas fa-minus"></i>--}}
+                            {{--  </button>--}}
                         </div>
                     </div>
                     <!-- LINE CHART -->
@@ -326,9 +336,11 @@
                             <label for="select_table">Select Table</label>
                                 <select class="form-control select_table" onchange="select_table()"  id="select_table">
                                         <option value="">Select</option>
-                                        @foreach($tables as $key => $value)
-                                            <option value="{{$value['TABLE_NAME']}}">{{$value['TABLE_NAME']}}</option>
-                                        @endforeach
+                                        <option value="data_value_15m">data_value_15m</option>
+                                        <option value="data_value_1m">data_value_1m</option>
+                                        <option value="data_value_1s">data_value_1s</option>
+                                        <option value="spiesnet">spiesnet</option>
+                                        <option value="spiesnetFAs">spiesnetFAs</option>
                                 </select>
                             <label for="select_column">Select Column</label>
                             <select class="form-control select_column" id="select_column">
@@ -346,6 +358,68 @@
                     <!-- /.modal-dialog -->
                 </div>
                 <!-- /.modal -->
+                @php  $groupData = json_decode(json_encode($groupData), true);   @endphp
+                <div class="modal fade" id="group-modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h4 class="modal-title" >{{$groupData['groupData'][0]['name']}}</h4>
+                            <input type="hidden" value="{{$groupData['groupData'][0]['eAnl_ID']}}" id ="group_id" />
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style= "height: 400px; overflow-y: scroll;">
+                            <div class="form-group">
+                                <form name="add_name" id="add_name" method="post">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dynamic_subgroup_field">
+                                            <button type="button" name="add" id="add_sub" class="btn btn-success" id="add_subgroup">Add Subgroup</button>
+                                            @foreach($groupData['groupData'] as $options)
+                                               @if(isset($options['option_name']))
+                                               <tr id="subrow{{$i}}">
+                                                    <td>
+                                                    <div class="form-group ">
+                                                    
+                                                   
+                                                        <label for="{{$options['option_name']}}" class="col-form-label group-label">{{$options['option_name']}}</label>
+                                                        <input type="hidden"  name="sub_group[]"  class="form-control name_list" value="{{$options['option_name']}}"/>
+
+<button type="button" name="remove" id="{{$i}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
+</div>                                                 </td>
+                                                    
+                                                </tr>
+                                                @else
+                                                    @php   $options = explode(',',$options['optionen']);  @endphp
+                                                    @foreach($options as $opt)
+                                                        <tr id="subrow{{$i}}">
+                                                            <td>
+                                                                <input type="text"  name="sub_group[]" placeholder="Enter Subgroup Name" class="form-control name_list" value="{{$opt}}"/>
+                                                                <button type="button" name="remove" id="{{$i}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        @php $i++;  @endphp
+                                                    @endforeach
+                                           
+                                                @endif
+                                                @php $i++;  @endphp
+                                            @endforeach  
+                                        </table>
+                                        <!-- <input type="submit" name="submit" id="submit" class="btn btn-info" value="Submit" /> -->
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="save_subgroup_options">Save changes</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
 
                 <!-- Modal Start -->
                 <div class="modal fade" id="modal-Machine-list">
@@ -471,7 +545,6 @@
             if(getChartsDiv.length > 0) {
                 getChartsDiv.forEach((node)=>{
                     let id = node.getAttribute('data_value');
-                    let data_event = node.getAttribute('data_event');
                     let name = data_event.split("_").pop();
                     console.log('id',id,'limit',limit,'data_event',data_event,'name',name);
                     getGraphData(id, limit, data_event, name);
@@ -479,7 +552,16 @@
             }
         });
         /* END LINE CHART */
-
+        var i=111;
+        $('#add_sub').click(function(){
+            i++;
+            $('#dynamic_subgroup_field').prepend('<tr id="subrow'+i+'"><td><input type="text" name="sub_group[]" placeholder="Enter Subgroup Name" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button></td></tr>');
+        });
+        $(document).on('click', '.btn_delete', function(){
+            var button_id = $(this).attr("id"); 
+            $('#subrow'+button_id+'').remove();
+        });
+ 
         @endif
     </script>
 
