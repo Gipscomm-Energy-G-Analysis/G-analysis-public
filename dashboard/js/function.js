@@ -139,6 +139,8 @@ function rowClickMeasurementTableData(mst_id,data_type){
   var number_records = $('#measurement_number_record').val();  
   var total_number_records = $('#measurement_total_number_record').val();
 
+  var records_order_by_val = $('#measurement_records_order_by').val();
+
   //Classes Add
   $('.measurement_table_header').addClass('row_click_table');
   $('.table-margin .table th').removeAttr('style');
@@ -159,7 +161,8 @@ function rowClickMeasurementTableData(mst_id,data_type){
           mst_id : mst_id,
           data_type : data_type,
           number_records : number_records,
-          total_number_records : total_number_records
+          total_number_records : total_number_records,
+          measurement_order_by_val : records_order_by_val,
       },
       fail: function() {
           alert("failed!!")
@@ -183,7 +186,8 @@ function rowClickMeasurementTableData(mst_id,data_type){
 
 function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,selected_number_record_measurement = 'false'){
   var number_records = $('#measurement_number_record').val();
-  var total_number_records = $('#measurement_total_number_record').val();  
+  var total_number_records = $('#measurement_total_number_record').val(); 
+  var records_order_by_val = $('#measurement_records_order_by').val(); 
   if(total_number_records == ''){
     var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
     $('#mesurement_select_table_entries').html(tr);
@@ -203,7 +207,8 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,sele
           number_records : number_records,
           page_val : page_value,
           selected_number_record_measurement : selected_number_record_measurement,
-          total_number_records : total_number_records
+          total_number_records : total_number_records,
+          measurement_order_by_val : records_order_by_val,
       },
       fail: function() {
           alert("failed!!")

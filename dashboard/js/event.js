@@ -204,7 +204,20 @@ $(document).ready( function(){
 
     //Mesurement
     $(document).on('change','#measurement_time_interval,#measurement_records_order_by',function(){
-        getNumberRecordsMesurement();
+        var id_val = $(this).attr('id');
+        if(id_val == 'measurement_records_order_by'){
+            var data_type = $('#row_click_table').attr('data_type');
+            var data_mst = $('#row_click_table').attr('data_mst');
+            if(data_type != undefined && data_mst != undefined && data_type != '' && data_mst != ''){
+                rowClickMeasurementTableData(data_mst,data_type);
+            }
+            else{
+                getNumberRecordsMesurement();
+            }
+        }else{
+            getNumberRecordsMesurement();
+        }
+        
     });
     $(document).on('blur change', '#measurement_total_number_record', function(){
         // getNumberRecordsMesurement(); 

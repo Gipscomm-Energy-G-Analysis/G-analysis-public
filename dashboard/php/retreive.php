@@ -245,9 +245,17 @@ class dashboardController {
             $number_records = $_POST['number_records'];
             $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
-           
+            $order_by_val = $_POST['measurement_order_by_val'];
+
             $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
             $current_date = date('Y-m-d');
+
+            if($order_by_val == 'order_by_desc'){
+                $order_by_val = "Order by cast(T2.val as int) desc ";
+            }
+            else if($order_by_val == 'order_by_asc'){
+                $order_by_val = "Order by cast(T2.val as int) asc ";
+            }
 
             //Pagination Code 
             $queryTotalPagination = "SELECT TOP($total_number_records) * ";
@@ -317,7 +325,8 @@ class dashboardController {
             // $query1  .= "AND T2.on_date <='$current_date' ";
             $query1 .= "AND T2.type = '$type' ";
             $query1 .= "AND T2.mst_ID = '$mst_id' ";
-            $query1 .= "order by T2.val desc ";
+            //$query1 .= "order by T2.val desc ";
+            $query1 .= "$order_by_val ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $dataMesaurement = queryDB($conn, $query1, "read"); 
             // echo json_encode($date_differnce_five_days); die;
@@ -457,6 +466,7 @@ class dashboardController {
                     $style_background_end = '';
                 }
                 $paginationHTMl="<nav aria-label='Page navigation example'>
+                    <input type='hidden' id='row_click_table' data_type='$data_type' data_mst='$mst_id'>
                     <div class='pagination_items'>
                             <ul class='pagination'>
                                 <li class='page-item $class_page_count_val' data_type='$data_type' data_mst='$mst_id' id='previous_pagination_val'>
