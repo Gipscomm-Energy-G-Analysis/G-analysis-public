@@ -366,6 +366,32 @@ $(document).ready( function(){
     }); 
 
 
+    // <--Sorting -----
+    // $('#measurement_record_table table .measurement_table_header th').click(function(){
+    //     var table = $(this).parents('table').eq(0)
+    //     var tableHeaderValue = $(this).text();
+    //     if(tableHeaderValue == 'Time Interval' || tableHeaderValue == 'Status'){
+    //         return false;
+    //     }
+    //     var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index(),tableHeaderValue))
+    //     this.asc = !this.asc
+    //     // var asc = this.asc
+    //     // if(asc == true){
+    //     //     $(this).find('i').removeClass('ti-arrow-circle-down');
+    //     //     $(this).find('i').addClass('ti-arrow-circle-up');
+    //     // }
+    //     // else{
+    //     //     $(this).find('i').removeClass('ti-arrow-circle-up');
+    //     //     $(this).find('i').addClass('ti-arrow-circle-down');
+
+    //     // }
+    //     if (!this.asc){rows = rows.reverse()}
+    //     for (var i = 0; i < rows.length; i++){table.append(rows[i])}
+    // });
+    ///--end----->
+   
+
+
    
 
 })

@@ -548,4 +548,23 @@ function saveDashboardSelect(arData){
 }
 
 
+// <--09-8-2021-- Sort Code
+// function comparer(index,tableHeaderValue) {
+//   return function(a, b) {
+//       var valA = getCellValue(a, index), valB = getCellValue(b, index)
+//       if(tableHeaderValue == 'Total Units' || tableHeaderValue == 'Units Consumed'){
+//           var arA = valA.split(' ');
+//           valA = arA[0];
+//           var arB = valB.split(' ');
+//           valB = arB[0];
+//       }
+//       // console.log('First value',valA);
+//       // console.log('Second value',valB);
+//       return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+//   }
+// }
+// function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
+// --end->
+
+
 // ---end-->

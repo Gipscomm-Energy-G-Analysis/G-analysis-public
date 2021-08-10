@@ -100,3 +100,7 @@
 .pagination_items ul {
     font-size: 15px !important;
 }
+
+.dashboard_count_div .tiles-click{
+    cursor: pointer;
+}

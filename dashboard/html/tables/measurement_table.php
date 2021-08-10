@@ -52,25 +52,14 @@
                     </div>
                     
                     <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
-                      <input type="hidden" id='row_click_table_input'>
                       <table class="table table-striped table-bordered table-hover">
                         <thead class="measurement_table_header">
                           <tr>
-                            <th>
-                              Name
-                            </th>
-                            <th>
-                              Time Interval
-                            </th>
-                            <th>
-                              Created Date
-                            </th>
-                            <th>
-                              Total Units
-                            </th>
-                            <th>
-                              Status
-                            </th>
+                            <th>Name</th>
+                            <th>Time Interval</th>
+                            <th>Created Date</th>
+                            <th>Total Units</th>
+                            <th>Status</th>
                           </tr>
                         </thead>
                         <tbody id="mesurement_select_table_entries">

@@ -182,6 +182,7 @@ class dashboardController {
                    $offSetVal = 0;
                    $number_records = $total_number_records;
                    $pagesCount = 1; 
+                   $page_val = 1;
                }
                else{
 
@@ -268,6 +269,7 @@ class dashboardController {
                     $offSetVal = 0;
                     $number_records = $total_number_records;
                     $pagesCount = 1; 
+                    $page_val = 1;
                }
                else{
                     if($selected_number_record_measurement == 'true'){
