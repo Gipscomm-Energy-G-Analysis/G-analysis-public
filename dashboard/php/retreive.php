@@ -449,16 +449,16 @@ class dashboardController {
                 $class_page_count_val_end = 'page_count_val';
                 // echo $page_val ; die;
                 if($page_val == "1"){
-                    $style_background = "style='background: #d6d6d6;'";
+                    $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
                     if($pagesCount == "1"){
-                        $style_background_end = "style='background: #d6d6d6;'";
+                        $style_background_end = "style='background: #d6d6d6; color: black'";
                         $class_page_count_val_end = '';  
                     }
                     
                 }
                 else if($page_val == $pagesCount){
-                    $style_background_end = "style='background: #d6d6d6;'";
+                    $style_background_end = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val_end = '';
                 }
                 else{
