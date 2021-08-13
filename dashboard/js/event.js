@@ -85,15 +85,17 @@ $(document).ready( function(){
                 var number_record_local_val = localStorage.getItem('number_record_measurement');
                 if(number_record_local_val != undefined && number_record_local_val != null){
                     $('#measurement_total_number_record').val(number_record_local_val);
+                    getNumberRecordsMesurement();
+                    // return false;
                 }
                 else{
                     $('#measurement_total_number_record').val('');
                 }
-                $('#mesurement_select_table_entries').html('');
-                $('#pagination_html').html('');
-                $('#measurement_search_record').val('');
-                $('.table-margin').removeClass('margin-remove-table');
-                $('.measurement_table_header').removeClass('row_click_table');
+                // $('#mesurement_select_table_entries').html('');
+                // $('#pagination_html').html('');
+                // $('#measurement_search_record').val('');
+                // $('.table-margin').removeClass('margin-remove-table');
+                // $('.measurement_table_header').removeClass('row_click_table');
                 //-end-->
                 break;
 
@@ -240,8 +242,16 @@ $(document).ready( function(){
         else{
             $('.measurement_number_record_error').text('');
             localStorage.setItem('number_record_measurement',val);
-            var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Click on Search Bar</td></tr>";
-            $('#mesurement_select_table_entries').html(tr);
+            // var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Click on Search Bar</td></tr>";
+            // $('#mesurement_select_table_entries').html(tr);
+            var data_type = $('#row_click_table').attr('data_type');
+            var data_mst = $('#row_click_table').attr('data_mst');
+            if(data_type != undefined && data_mst != undefined && data_type != '' && data_mst != ''){
+                rowClickMeasurementTableData(data_mst,data_type);
+            }
+            else{
+                getNumberRecordsMesurement();
+            }
         }
     });
 
@@ -376,8 +386,124 @@ $(document).ready( function(){
             break;
 
         }
-    }); 
+    });
+    
+    // <---12-8-2021----
+    $('#mesurement_count_div').hover(
+        function(){
+            $(this).addClass('col-md-12');
+            $(this).css('height','244px');
+            $('#mesurement_count_content').addClass('col-md-3');
+            $('#mesurement_count_content').removeClass('col-md-12');
+            $('#measurement_table_show').show();
+        },
+        function(){
+            $(this).removeClass('col-md-12');
+            $(this).css('height','auto')
+            $('#mesurement_count_content').addClass('col-md-12');
+            $('#mesurement_count_content').removeClass('col-md-3');
+            $('#measurement_table_show').hide();
+        }
+    )
 
+    $('#product_count_div').hover(
+        function(){
+            $(this).addClass('col-md-12');
+            $(this).css('height','244px');
+            $('#mesurement_count_div').hide();    
+            $('#product_count_content').addClass('col-md-3');
+            $('#product_count_content').removeClass('col-md-12');
+            $('#product_table_div_show').show();
+
+        },
+        function(){
+            $(this).removeClass('col-md-12');
+            $(this).css('height','auto');
+            $('#mesurement_count_div').show();    
+            $('#product_count_content').addClass('col-md-12');
+            $('#product_count_content').removeClass('col-md-3');
+            $('#product_table_div_show').hide();
+        }
+    )
+
+
+    
+    $('#energy_count_div').hover(
+        function(){
+            $(this).addClass('col-md-12');
+            $(this).css('height','244px');
+            $('#mesurement_count_div').hide();
+            $('#product_count_div').hide();    
+            $('#energy_count_content').addClass('col-md-3');
+            $('#energy_count_content').removeClass('col-md-12');
+            $('#energy_table_show').show();
+            
+
+        },
+        function(){
+            $(this).removeClass('col-md-12');
+            $(this).css('height','auto');
+            $('#mesurement_count_div').show(); 
+            $('#product_count_div').show();   
+            $('#energy_count_content').addClass('col-md-12');
+            $('#energy_count_content').removeClass('col-md-3');
+            $('#energy_table_show').hide();
+        }
+    )
+
+
+    $('#energy_consumed_div').hover(
+        function(){
+            $(this).addClass('col-md-12');
+            $(this).css('height','244px');
+            $('#mesurement_count_div').hide();
+            $('#product_count_div').hide(); 
+            $('#energy_count_div').hide();   
+            $('#energy_consumed_content').addClass('col-md-3');
+            $('#energy_consumed_content').removeClass('col-md-12');
+            $('#energy_consumed_table_show').show();
+            
+
+        },
+        function(){
+            $(this).removeClass('col-md-12');
+            $(this).css('height','auto');
+            $('#mesurement_count_div').show(); 
+            $('#product_count_div').show(); 
+            $('#energy_count_div').show();  
+            $('#energy_consumed_content').addClass('col-md-12');
+            $('#energy_consumed_content').removeClass('col-md-3');
+            $('#energy_consumed_table_show').hide();
+        }
+    )
+
+
+    $('#five_days_energy_consumed').hover(
+        function(){
+            $(this).addClass('col-md-12');
+            $(this).css('height','244px');
+            $('#mesurement_count_div').hide();
+            $('#product_count_div').hide(); 
+            $('#energy_count_div').hide();  
+            $('#energy_consumed_div').hide();
+            $('#energy_consumed_five_day_content').addClass('col-md-3');
+            $('#energy_consumed_five_day_content').removeClass('col-md-12');
+            $('#energy_consumed_five_day_table_show').show();
+            
+
+        },
+        function(){
+            $(this).removeClass('col-md-12');
+            $(this).css('height','auto');
+            $('#mesurement_count_div').show(); 
+            $('#product_count_div').show(); 
+            $('#energy_count_div').show();  
+            $('#energy_consumed_div').show();
+            $('#energy_consumed_five_day_content').addClass('col-md-12');
+            $('#energy_consumed_five_day_content').removeClass('col-md-3');
+            $('#energy_consumed_five_day_table_show').hide();
+        }
+    )
 
     // <--Sorting -----
     // $('#measurement_record_table table .measurement_table_header th').click(function(){
@@ -403,6 +529,16 @@ $(document).ready( function(){
     // });
     ///--end----->
    
+
+
+    
+    //Screenshot Code 
+    // $(document).on('click','#screenshot_button', function(){
+    //     var val = alert("Screenshot Captured Successfully");
+    //     screenshot();
+    // });
+    // --end-->
+
 
 
    

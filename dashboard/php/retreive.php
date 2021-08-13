@@ -511,6 +511,11 @@ class dashboardController {
                                     </ul>
                                 </div>
                             </nav>";
+
+                //ScreenShot Code
+                $paginationHTMl.="<div id='save_table_div' class='text-center'>
+                                    <input type='button' class='btn btn-sm btn-success' id='save_table_btn' value='Save'>
+                                </div>";            
                 return $paginationHTMl;
                 // $records['pagination_html'] = $paginationHTMl;
             }
@@ -1263,6 +1268,33 @@ class dashboardController {
 
     }
 
+    //<---Screen Code 
+    // public function moveMeasurementTableScreenShot(){
+    //     try{
+    //         $image = $_POST['image'];
+
+    //         $id =    $_POST['id'];
+
+    //         $location = "..\upload/";
+
+    //         $image_parts = explode(";base64,", $image);
+
+    //         $image_base64 = base64_decode($image_parts[1]);
+
+    //         $filename = "screenshot_".$id.'.png';
+    //         // unlink($filename);
+    //         $file = $location . $filename;
+    //         file_put_contents($file, $image_base64);
+            
+    //         $ar = array('staus'=>'200', 'message'=> 'SuccessFully Uploaded');
+    //         echo json_encode($ar,JSON_INVALID_UTF8_IGNORE);
+    //         die;
+    //     }
+    //     catch (Exception $e) {
+    //         echo 'Caught exception: ',  $e->getMessage(), "\n";
+    //     } 
+    // }
+    // --end-->
 }
 $obj = new dashboardController();
 

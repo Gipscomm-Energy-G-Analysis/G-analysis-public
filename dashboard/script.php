@@ -1,5 +1,6 @@
 <!-- plugins:js -->
 <script src="vendors/base/vendor.bundle.base.js"></script>
+<script type="text/javascript" src="html2canvas-master/dist/html2canvas.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page-->
   <script src="vendors/chart.js/Chart.min.js"></script>

@@ -104,3 +104,11 @@
 .dashboard_count_div .tiles-click{
     cursor: pointer;
 }
+
+.measurement_count_hover_height{
+    height: 520px !important;
+}
+
+.overflow-hide{
+    overflow: hidden;
+}

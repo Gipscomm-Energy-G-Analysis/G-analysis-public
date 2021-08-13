@@ -52,7 +52,7 @@
                     </div>
                     
                     <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
-                      <table class="table table-striped table-bordered table-hover">
+                      <table class="table table-striped table-bordered table-hover" id="measurement_record_tb">
                         <thead class="measurement_table_header">
                           <tr>
                             <th>Name</th>

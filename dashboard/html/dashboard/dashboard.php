@@ -39,62 +39,144 @@
           <div class="row dashboard_count_div">
             <div class="col-md-3 grid-margin stretch-card tiles-click" id="mesurement_count_div">
               <div class="card card-border">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Messstellen</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count"></h3>
-                    <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                <div class="row card-body">
+                  <div id="mesurement_count_content" class="col-md-12">
+                      <p class="card-title text-md-center text-xl-left">Messstellen</p>
+                      <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count"></h3>
+                        <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                      </div>  
+                      <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                  </div>
+                  
+                  <div class="col-md-9 save_table_div_show overflow-hide" id="measurement_table_show" style="display: none">
+                      
+                  <table class="table table-striped table-bordered table-hover" style="display: none" id="measurement_record_tb">
+                        <thead class="measurement_table_header">
+                          <tr>
+                            <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Name</th>
+                            <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time Interval</th>
+                            <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Created Date</th>
+                            <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Total Units</th>
+                            <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Status</th>
+                          </tr>
+                        </thead>
+                        
+                  </table>
+                    <div class="pagination_save_table" style="display: none">
+                        <ul class="pagination">
+                          <li class="page-item ">
+                              <a class="page-link" href="javascript:void(0);" aria-label="Previous">
+                                  <span aria-hidden="true">«</span>
+                                  <span class="sr-only">Previous</span>
+                              </a>
+                          </li>
+                          <li class="page-item">
+                              <a class="page-link" href="javascript:void(0);">Page</a>
+                          </li>
+                          
+                          <li style="display: block" class="page-item"><input type="number" readonly class="save_pagination_input_val pagination_input_val page-link"></li>
+                          <li class="page-item"><a class="page-link" href="javascript:void(0);">of</a></li>
+                          <li class="page-item"><a class="page-link " href="javascript:void(0);">1</a></li>
+                          
+                          <li class="page-item " >
+                            <a class="page-link" style="background: #d6d6d6; color: black" href="javascript:void(0);" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                          </li>
+
+                          <li class="page-item">
+                              <select class="page-link" id="save_measurement_number_record">
+                                  <option value="5">5</option>
+                                  <option value="10">10</option>
+                                  <option value="20">20</option>
+                                  <option value="30">30</option>
+                                  <option value="50">50</option>
+                              </select>
+                          </li>
+                        </ul>
+                      </div>
+                  </div>
+                  <!-- <div class="col-md-9 image_div_show overflow-hide" style="display: none">
+                     <img src="upload/screenshot_table_body.png" id="screenshot_image" alt="Image Not Available" height="167px" width="593px">
+                  </div> -->
                 </div>
               </div>
             </div>
             <div class="col-md-3 grid-margin stretch-card tiles-click" id="product_count_div">
               <div class="card card-border">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Produkte</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="product_count"></h3>
-                    <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                <div class="row card-body">
+                  <div id="product_count_content" class="col-md-12">
+                      <p class="card-title text-md-center text-xl-left">Produkte</p>
+                      <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="product_count"></h3>
+                        <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                      </div>  
+                      <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                  </div>
+
+                  <div class="col-md-9 save_table_div_show overflow-hide" id="product_table_show" style="display: none">
+                     
+                  </div>
+
                 </div>
               </div>
             </div>
             <div class="col-md-3 grid-margin stretch-card tiles-click" id="energy_count_div">
               <div class="card card-border">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Energiedaten Entry</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_count"></h3>
-                    <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                <div class="row card-body">
+                  <div class="col-md-12" id="energy_count_content">
+                    <p class="card-title text-md-center text-xl-left">Energiedaten Entry</p>
+                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                      <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_count"></h3>
+                      <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    </div>  
+                    <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                    </div>
+                </div>
+
+                <div class="col-md-9 save_table_div_show overflow-hide" id="energy_table_show" style="display: none">
+                     
                 </div>
               </div>
             </div>
             <div class="col-md-3 grid-margin stretch-card tiles-click" id="energy_consumed_div">
               <div class="card card-border">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_consumed_count"></h3><p class="energy_unit text-muted">kWh</p>
-                    <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"></span></p>
+                <div class="row card-body">
+                  <div class="col-md-12" id="energy_consumed_content"> 
+                    <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
+                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                      <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_consumed_count"></h3><p class="energy_unit text-muted">kWh</p>
+                      <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    </div>  
+                    <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"></span></p>
+                  </div>
+
+                  <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_table_show" style="display: none">
+                     
+                  </div>
+
+
                 </div>
               </div>
             </div>
             <!-- 27-7-2021 -->
             <div class="col-md-3 grid-margin stretch-card tiles-click" id="five_days_energy_consumed">
               <div class="card card-border">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="five_days_energy_count"></h3><p class="energy_unit text-muted">kWh</p>
-                    <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-success">(05 days)<span class="text-black ml-1"><small></small></span></p>
+                <div class="row card-body">
+                  <div class="col-md-12" id="energy_consumed_five_day_content">
+                    <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
+                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                      <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="five_days_energy_count"></h3><p class="energy_unit text-muted">kWh</p>
+                      <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    </div>  
+                    <p class="mb-0 mt-2 text-success">(05 days)<span class="text-black ml-1"><small></small></span></p>
+                  </div>
+                  
+                  <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_five_day_table_show" style="display: none">
+                     
+                  </div>
                 </div>
               </div>
             </div>
@@ -151,7 +233,7 @@
           </div>
           <!-- 28-7-2021 -->
           <div class="row dashboard_count_div">
-            <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div">
+            <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div" style="display: none">
               <div class="card card-border">
                 <div class="card-body">
                   <p class="card-title mb-2">Energiedaten Consumed Five days</p>

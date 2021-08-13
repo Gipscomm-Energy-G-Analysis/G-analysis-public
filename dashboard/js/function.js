@@ -572,4 +572,52 @@ function saveDashboardSelect(arData){
 // --end->
 
 
+// <---12-8-2021---- Screen Shot Code
+// function screenshot(){
+//   var table_row_count = $('#mesurement_select_table_entries tr').length;
+//   if(table_row_count <= 5){
+//     $('#image_div canvas').remove();
+    
+//     html2canvas($('#measurement_record_tb'),{background: '#fff'}).then(function(canvas) {
+//       var table_body = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
+//       id = 'table_body';
+//       moveScreenshot(table_body, id);
+//     });
+
+//     // html2canvas($('#pagination_html'),{background: '#fff'}).then(function(canvas) {
+//     //   // $('#image_div').append(canvas);
+//     //   table_pagination = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
+//     //   id="table_pagination";
+//     //   moveScreenshot(table_pagination, id);
+//     // });
+    
+//   }
+// }
+
+// function moveScreenshot(table_image, id){
+//   $.ajax({
+//     type : "POST",
+//     url : 'php/retreive.php',
+//     async: false,
+//     dataType: 'json',
+//     cache : false,
+//     data: {
+//         action: "moveMeasurementTableScreenShot",
+//         nameDB: $("#nameDashboardDB").val(),
+//         image : table_image,
+//         id : id
+//         // table_pagination : table_pagination
+//     },
+//     fail: function() {
+//         alert("failed!!")
+//     },
+//     success: function(a) {
+//       // window.location.reload();
+//       // window.history.forward(1);s
+//     }
+//  });
+
+// }
+//-----end-->
+
 // ---end-->
