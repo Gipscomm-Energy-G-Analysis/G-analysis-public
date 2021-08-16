@@ -1,10 +1,15 @@
 <?php
 error_reporting( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
+set_error_handler("warning_handler", E_WARNING);
 
 require 'DbOperations.php';
 require 'EMail_swift.php';
 require 'helpers.php';
+
+function warning_handler($errno, $errstr) { 
+    throw new Exception("ErrorNr : ".$errno.", ErrorDescr : ".$errstr) ;
+}
 
 define("connGipscomm", connectToDB("gipscomm")) ;
 
@@ -104,7 +109,7 @@ function sendAlertEmails($mstsWithoutData) {
         define("emailText", $emailText) ;
 
         echo emailText ;
-        
+       
         $gUsers = 
             [ "sdm"
             , "info"
@@ -140,7 +145,7 @@ function sendAlertEmails($mstsWithoutData) {
     $rowsString = buildStringMstsDBs($mstsWithoutData) ;
 
     if ($rowsString === "") {
-        echo "All Data Up To Date !!" ;
+        echo "All data up to date !!" ;
     }
     else {
         sendMails($rowsString) ;
