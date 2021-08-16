@@ -71,6 +71,7 @@ function getNumberRecordsMesurement(){
               alert("failed!!")
           },
           success: function(a) {
+            // a = JSON.parse(a);
             var thVal =  $('#measurement_record_table table thead tr').children('th:eq(4)').text();
             if(thVal == '' || thVal == undefined){
               $('#measurement_record_table table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
@@ -85,6 +86,8 @@ function getNumberRecordsMesurement(){
 
             var val_selected = localStorage.getItem('selected_number_record_measurement');
             $('#measurement_number_record option[value='+val_selected+']').prop('selected', 'selected');
+
+            localStorage.setItem('query_data',JSON.stringify(a['query_data']));
           }
       });
     }
@@ -129,6 +132,8 @@ function getNumberRecordsMesurementPagination(page_val,selected_number_record_me
             
             var val_selected = localStorage.getItem('selected_number_record_measurement');
             $('#measurement_number_record option[value='+val_selected+']').prop('selected', 'selected');
+
+            localStorage.setItem('query_data',JSON.stringify(a['query_data']));
           }
       });
     }
@@ -179,6 +184,8 @@ function rowClickMeasurementTableData(mst_id,data_type){
         $('#measurement_record_table table thead tr').children('th:eq(3)').text('Units Consumed');
 
         $('#measurement_number_record option[value='+number_records+']').prop('selected', 'selected');
+
+        localStorage.setItem('query_data',JSON.stringify(a['query_data']));
       }
     });
   }
@@ -219,11 +226,66 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,sele
         $('.table-margin .table td').removeAttr('style');
 
         $('#measurement_number_record option[value='+number_records+']').prop('selected', 'selected');
+
+        //LocalStorage
+        localStorage.setItem('query_data',JSON.stringify(a['query_data']));
       }
     });
   }
 
 }
+
+
+function saveTableFormat(){
+  var row_enteries_length = $('#mesurement_select_table_entries tr').length;
+  var query_data = localStorage.getItem('query_data');
+  if(query_data != undefined && query_data != null && query_data != '')
+  {
+    if(row_enteries_length <= 5){
+      $.ajax({
+        type: "POST",
+        url: "php/operations.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            action: "saveTableFormat",
+            nameDB: $("#nameDashboardDB").val(),
+            query_data : JSON.parse(query_data)
+        },
+        fail: function() {
+            alert("failed!!")
+        },
+        success: function(a) {
+          $('#dashboard_sidebar').click();
+          //  $('#energy_select_table_entries').html(a['energy_html']);
+        }
+      });
+    }
+  }
+}
+
+// <---16-8-2021---
+function getTableFormatDashboard(){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getTableFormatDashboard",
+        nameDB: $("#nameDashboardDB").val(),
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
+    
+    }
+  });
+
+}
+// --end--->
 
 //Selected Number of Records Energy
 function getNumberRecordsEnergy(){

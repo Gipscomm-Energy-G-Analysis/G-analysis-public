@@ -40,6 +40,49 @@ class dashboardControllerOperations {
         }  
     }
 
+    // <---15-8-2021---
+    public function saveTableFormat(){
+        try{
+            global $conn;
+            $queryData = $_REQUEST['query_data'];
+            $number_records = $queryData['number_records']; 
+            $pages_count = $queryData['pages_count']; 
+            $page_value = $queryData['page_val']; 
+            $type = $queryData['type']; 
+            $row_click = $queryData['row_click']; 
+            $query_data_records = $queryData['query1']; 
+            $query_max_val = $queryData['queryMaxValue'];
+            
+            $query_data_records = str_replace("'",'',$query_data_records);
+            $query_max_val = str_replace("'",'',$query_max_val);
+
+            $getResult = "SELECT * FROM tableFormat where type='$type' ";
+            $gerRecords = queryDB($conn, $getResult, "read");
+            if($gerRecords != '' && count($gerRecords)  > 0){
+                $updateQuery = "UPDATE tableFormat set number_records = $number_records,pages_count = $pages_count,page_value = $page_value,row_click = '$row_click',query_data_records = '$query_data_records' ,query_max_val = '$query_max_val' WHERE type = '$type' ";
+                $updateRecord = queryDB($conn, $updateQuery, "write");
+                if($updateQuery){
+                    return array('Staus' => 200 , 'Message' => 'Successfully Updated');
+                }
+            }
+            else{
+                $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val ) ";
+                $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val') ";
+                $insertRecord = queryDB($conn, $insertQuery, "write");
+                if($insertQuery){
+                    return array('Staus' => 200 , 'Message' => 'Successfully Inserted');
+                }
+            }
+
+            // echo json_encode($_REQUEST['query_data']); die;
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
+
 }
 
 $obj = new dashboardControllerOperations();

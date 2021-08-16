@@ -198,6 +198,7 @@ class dashboardController {
                         $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
                         $offSetVal = ($page_val - 1) * $number_records;
                         
+                        //Only Valid when User Click on Last page
                         if($page_val == $pagesCount){
                             $number_records = $total_number_records - $offSetVal;
                         }
@@ -225,7 +226,15 @@ class dashboardController {
             
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement);
 
-            $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount);
+            $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount,$dataMesaurement);
+
+            // echo $pagination_html['paginationHTMl']; die;
+            //<---13-8-2021--
+            $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement');
+            $records['query_data'] = $ar;
+             // --end-->
 
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
@@ -312,6 +321,9 @@ class dashboardController {
             // $queryMaxValue  .= "AND T2.on_date <='$current_date' ";
             $queryMaxValue .= "AND T2.type = '$type' ";
             $queryMaxValue .= "AND T2.mst_ID = '$mst_id' ";
+            //<---15-8-2021
+            $queryMaximum = $queryMaxValue;
+            // --end-->
             $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
             $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
 
@@ -332,7 +344,15 @@ class dashboardController {
             // echo json_encode($date_differnce_five_days); die;
 
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement,$queryMaxVal);
-            $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount,$type,$mst_id);
+            $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount,$dataMesaurement,$type,$mst_id);
+            
+            // <--15-8-2021--
+            $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => $queryMaximum,'row_click' => 'true', 'type' => 'Measurement');
+            $records['query_data'] = $ar;
+            // --end-->
+           
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
 
            die;
@@ -438,11 +458,11 @@ class dashboardController {
         // $records['measurement_html'] = $tr;
 
     }
-    public function generatePaginationHtmlMeasurementData($page_val,$pagesCount,$data_type = false ,$mst_id = false){
+    public function generatePaginationHtmlMeasurementData($page_val,$pagesCount,$dataMesaurement,$data_type = false ,$mst_id = false){
         try{
             //Pagination Code HTML
             // echo $pagesCount; die;
-            if($page_val > 0 && $pagesCount > 0){
+            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != ''){
                 $style_background = '';
                 $class_page_count_val = 'page_count_val';
                 $style_background_end = '';
@@ -513,7 +533,7 @@ class dashboardController {
                             </nav>";
 
                 //ScreenShot Code
-                $paginationHTMl.="<div id='save_table_div' class='text-center'>
+                $paginationHTMl.="<div id='save_table_format' class='text-center'>
                                     <input type='button' class='btn btn-sm btn-success' id='save_table_btn' value='Save'>
                                 </div>";            
                 return $paginationHTMl;
@@ -526,6 +546,177 @@ class dashboardController {
         }
     }
     // --end-->
+
+    // <---16-8-2021--
+    function getTableFormatDashboard(){
+        try{
+            global $conn;
+            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            if($dataResult != '' && count($dataResult) > 0){
+                if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == ''){
+                    //Seacrh Record 
+                    
+                    $firstPostion =  strpos($dataResult[0]['query_data_records'],'%');
+                    $lastPostion = strripos($dataResult[0]['query_data_records'],'%');
+                    $subStr = "%";
+                    $attachment = "$";
+                    if($firstPostion != '' && $lastPostion != '')
+                    {
+                        // $firstPostionQuery = str_replace($subStr, $attachment.$subStr, $dataResult[0]['query_data_records']);
+                        //$firstPostionQuery = str_replace($dataResult[0]['query_data_records'],$attachment, $firstPostion,0);
+                        // $firstPostionQuery = substr_replace($dataResult[0]['query_data_records'],$attachment, $lastPostion,0);
+                        $firstPostionQuery= substr_replace($dataResult[0]['query_data_records'],$attachment,$firstPostion,1);
+                        // $firstPostionQuery = str_replace($subStr, $attachment, $dataResult[0]['query_data_records'],0);
+                        
+                        $firstPostionQuery=str_replace('%',"%'", $firstPostionQuery);
+                        $firstPostionQuery=str_replace('$',"'%", $firstPostionQuery);
+                        $dataMeasurement = queryDB($conn, $firstPostionQuery, "read");
+                    }
+                    else{
+                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                    }
+                    $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement);
+                    $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                }
+                else{
+                    $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                    $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
+                    $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+                    $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
+                    $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                }
+                die;
+            }else{
+
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    public function dashboardMeasurementHtml($dataMeasurement,$queryMaxVal = false)
+    {
+        try{
+            $col_span = "";
+            $tr = "";
+            if($queryMaxVal == ""){
+                $col_span = "colspan='5'";
+                $tr = "<thead>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Created Date</th>";
+                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Status</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+            }
+            else if($queryMaxVal != ''){
+                $col_span = "colspan='4'";
+                $tr = "<thead style='background-color: #c5c8d2'>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Date</th>";
+                $tr .= "<th>Units Consumed</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+            }
+            if($dataMeasurement != '' && count($dataMeasurement) > 0){
+                $tr .= "<tbody>";
+                foreach($dataMeasurement as $key => $value){
+                    $unit = '';
+                    $style='';
+                    if($queryMaxVal != '' && $queryMaxVal == $value['val']){
+                        $style="style='background-color: #f77171'";
+                    }
+                    
+                    $tr .= "<tr $style>";
+                    
+                    $tr.= "<td>".$value['mstIMw']."</td>";
+                    if($value['intTp_ID'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($value['intTp_ID'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($value['intTp_ID'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($value['intTp_ID'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+    
+                    //Units Checks
+                    if($value['unt_ID'] == "1"){
+                        $unit = "Hrs.";
+                    }
+                    else if($value['unt_ID'] == "2"){
+                        $unit = "kWh";
+                    }
+                    else if($value['unt_ID'] == "3"){
+                        $unit = "m³";
+                    }
+                    else if($value['unt_ID'] == "4"){
+                        $unit = "l";
+                    }
+                    else if($value['unt_ID'] == "5"){
+                        $unit = "kg";
+                    }
+    
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                        if($queryMaxVal != ''){
+                            $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
+                        }
+                        else{
+                            $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                        }
+                    }
+                    else if($queryMaxVal != ''){
+                        $tr.= "<td>".$value['on_date']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['startDate']."</td>";
+                    }
+                    
+                    if($value['val'] == null){
+                        $tr.= "<td> - </td>";
+                        if($queryMaxVal == ""){
+                            $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                        }
+                    }
+                    else{
+                        $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                        if($queryMaxVal == ""){
+                            $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                        }
+                    }
+                    $tr.="</tr>";
+                }
+                $tr.= "</tbody>";
+            }else{
+                    $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+            }
+            return $tr;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
+    
+
     //Get Records Energy
     public function getNumberRecordsEnergy()
     {

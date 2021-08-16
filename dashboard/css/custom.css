@@ -112,3 +112,20 @@
 .overflow-hide{
     overflow: hidden;
 }
+.save_table_height{
+    height: 224px;
+    /* overflow-y: scroll; */
+}
+
+.save_table_height table th{
+    padding:  10px 6px 10px 6px !important;
+}
+
+.save_table_height table td{
+    padding:  6px !important;
+}
+
+
+.pagination_save_table{
+    margin-left: 150px;
+}

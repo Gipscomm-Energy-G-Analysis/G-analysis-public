@@ -41,6 +41,7 @@ $(document).ready( function(){
                 $('#help_table_main_div').hide();
                 countDashboard();
                 energy_consumed_five_days();
+                getTableFormatDashboard();
                 // dashboardChart();
                 break;
             
@@ -201,6 +202,7 @@ $(document).ready( function(){
     countDashboard();
     // dashboardChart();
     energy_consumed_five_days();
+    getTableFormatDashboard();
     // getDashboardSelectOption();
 
 
@@ -392,7 +394,7 @@ $(document).ready( function(){
     $('#mesurement_count_div').hover(
         function(){
             $(this).addClass('col-md-12');
-            $(this).css('height','244px');
+            $(this).css('height','262px');
             $('#mesurement_count_content').addClass('col-md-3');
             $('#mesurement_count_content').removeClass('col-md-12');
             $('#measurement_table_show').show();
@@ -409,7 +411,7 @@ $(document).ready( function(){
     $('#product_count_div').hover(
         function(){
             $(this).addClass('col-md-12');
-            $(this).css('height','244px');
+            $(this).css('height','262px');
             $('#mesurement_count_div').hide();    
             $('#product_count_content').addClass('col-md-3');
             $('#product_count_content').removeClass('col-md-12');
@@ -431,7 +433,7 @@ $(document).ready( function(){
     $('#energy_count_div').hover(
         function(){
             $(this).addClass('col-md-12');
-            $(this).css('height','244px');
+            $(this).css('height','262px');
             $('#mesurement_count_div').hide();
             $('#product_count_div').hide();    
             $('#energy_count_content').addClass('col-md-3');
@@ -455,7 +457,7 @@ $(document).ready( function(){
     $('#energy_consumed_div').hover(
         function(){
             $(this).addClass('col-md-12');
-            $(this).css('height','244px');
+            $(this).css('height','262px');
             $('#mesurement_count_div').hide();
             $('#product_count_div').hide(); 
             $('#energy_count_div').hide();   
@@ -481,7 +483,7 @@ $(document).ready( function(){
     $('#five_days_energy_consumed').hover(
         function(){
             $(this).addClass('col-md-12');
-            $(this).css('height','244px');
+            $(this).css('height','262px');
             $('#mesurement_count_div').hide();
             $('#product_count_div').hide(); 
             $('#energy_count_div').hide();  
@@ -504,6 +506,13 @@ $(document).ready( function(){
             $('#energy_consumed_five_day_table_show').hide();
         }
     )
+
+
+    //<--15-8-2021--
+    $(document).on('click','#save_table_btn', function(){
+        saveTableFormat();
+    })
+    //-end-->
 
     // <--Sorting -----
     // $('#measurement_record_table table .measurement_table_header th').click(function(){
