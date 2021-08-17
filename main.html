@@ -1473,6 +1473,9 @@
                         <input id="manGrpIdx"/>
                         <input id="manGrpID"/>
                         <input id="admID"/>
+                        <input id="admState"/>
+                        <input id="admIdx"/>
+                        <input id="manGrpOrMan"/>
                         <input id="benID"/>
                         <input id="knzInsCount"/>
                         <input id="manRechteID"/>
@@ -1740,7 +1743,7 @@
                               <div class="sectionHeader">
                                  <label>Rollen und Berechtigungen</label>
                               </div>
-                              <div id="admincommTreeview">
+                              <div id="admTreeview">
 
                               </div>
                         </div>
@@ -8222,6 +8225,19 @@
         <button id="saveSAdmOk">Ok</button>
         <button id="saveSAdmCancel" style="margin-left:50px;">Abbrechen</button>
     </div>
+    <!--Save new Admin if not all inputs are filled-->
+    <!--Meldung-->
+    <!--  -->
+    <div id="saveAdmDialog" style="display:none;">
+        <p>
+            Nicht alle Felder sind ausgefüllt.<br>
+            Soll trotzdem gespeichert werden ? <br>
+        </p>
+        <br>
+        <button id="saveAdmOk">Ok</button>
+        <button id="saveAdmCancel" style="margin-left:50px;">Abbrechen</button>
+    </div>
+
     <!--Save new Schicht if not all inputs are filled-->
     <!--Meldung-->
     <!--  -->
@@ -10924,6 +10940,21 @@
                <tbody></tbody>
             </table>
       </div>
+
+      <div id="admSuchenContainer" style="display:none;font-size:12px;">
+            <table id="tblAdmSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+               <thead>
+               <tr>
+                     <th>idx</th>
+                     <th>Titel</th>
+                     <th>Name</th>
+                     <th>Benutzername</th>
+               </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
+      </div>
+
       <div id="gipscAdmSuchenContainer" style="display:none;font-size:12px;">
             <table id="tblGipscAdmSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
                <thead>
@@ -11011,6 +11042,7 @@
                 <script type="text/javascript" src="src/js/Rechteverwaltung/betreuergruppen.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/superAdmins.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/mandantengruppen.js"></script>
+                <script type="text/javascript" src="src/js/Rechteverwaltung/admins.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
                 <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>

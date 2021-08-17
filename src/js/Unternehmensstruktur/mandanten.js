@@ -14,7 +14,7 @@ const scpUnternehmensstruktur_mandanten =
                 ajaxPost("php/Unternehmensstruktur/readMandanten.php")({})
                 .then(result => scpIndexedDB.dataIntoIDB(result)("mandanten")) 
                 
-            // Returns an array of the Schicht Modelle from indexedDB
+            // Returns an array of Mandanten from indexedDB
             this.queryMandantenDataIDB =
                 () => 
                 idxDB.mandanten

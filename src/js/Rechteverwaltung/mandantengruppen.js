@@ -28,7 +28,7 @@ const scpRechteverwaltung_mandantengruppen =
                 .map((_, i) => tblMandantengruppe.cell(i, 0).data())
                 .join(",")
 
-            const arrayManIDs = 
+            this.arraySelectedManIDs = 
                 () =>
                 array($("#tblMandantengruppe tbody tr").length)()()
                 .map((_, i) => tblMandantengruppe.cell(i, 0).data())
@@ -332,11 +332,39 @@ const scpRechteverwaltung_mandantengruppen =
                     })
                 }
 
+            this.getBetrGrpRecord =
+                () =>
+                scpRechteverwaltung_betreuergruppen
+                .queryBetreuerGruppeDataIDB(
+                    Number(getFieldValue("betrGrpIdx"))
+                )
+
+            this.arrayBetrGrpManIDs =
+                () =>
+                this.getBetrGrpRecord()
+                .then(betreuerGruppe => betreuerGruppe.mandantenIDs)
+                .then(ids => ids.split(",").map(Number))
+
+            this.notSelected =
+                selectedManIDs =>
+                id =>
+                !selectedManIDs.some(equal(id))
+            
+            this.filterManIDs =
+                selectedManIDs =>
+                betrGrpManIDs =>
+                betrGrpManIDs
+                .filter(this.notSelected(selectedManIDs))
+                
             this.showMandantenTablePopUp =
-                () => {
+                async () => {
+
+                    const betrGrpManIDs = await this.arrayBetrGrpManIDs()
+                    const selectedManIDs = this.arraySelectedManIDs()
+                    const filteredManIDs = this.filterManIDs(selectedManIDs)(betrGrpManIDs)      
 
                     scpUnternehmensstruktur_mandanten
-                    .queryMandantenWithoutIDs(arrayManIDs())
+                    .queryMandantenWithIDs(filteredManIDs)
                     .then(fillMandantenTbl(tblMandantenAuswahl))
 
                     $("#mandantenlisteAuswahlContainer").dialog({
@@ -362,6 +390,13 @@ const scpRechteverwaltung_mandantengruppen =
                         })
                     }
                 })
-            }     
+            }
+
+            this.readinManManGrpDropBox =
+                () => {
+                    $(".manGrpPfad optgroup [label='Mandanten']").empty()
+
+
+                }     
         }
     )

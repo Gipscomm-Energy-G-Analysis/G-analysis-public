@@ -177,7 +177,7 @@ const scpRechteverwaltung_betreuergruppen =
                 .toArray()
 
             // Returns a certain Schicht Modell depending on an index
-            const queryBetreuerGruppeDataIDB =
+            this.queryBetreuerGruppeDataIDB =
                 idx =>
                 queryBetreuerGruppenDataIDB()
                 .then(betreuerGruppen => betreuerGruppen[idx])
@@ -214,7 +214,7 @@ const scpRechteverwaltung_betreuergruppen =
             // Sets the form data retrieved from indexedDB
             this.readIntoFormFields =
                 idx => {
-                    queryBetreuerGruppeDataIDB(idx)
+                    this.queryBetreuerGruppeDataIDB(idx)
                     .then(
                         betreuerGruppe => {
 
