@@ -37,7 +37,7 @@
             </div>
           </div>
           <div class="row dashboard_count_div">
-            <div class="col-md-3 grid-margin stretch-card tiles-click" id="mesurement_count_div">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div">
               <div class="card card-border">
                 <div class="row card-body">
                   <div id="mesurement_count_content" class="col-md-12">
@@ -52,17 +52,6 @@
                   <div class="col-md-9 save_table_div_show overflow-hide" id="measurement_table_show" style="display: none">
                     <div class="save_table_height">    
                         <table class="table table-striped table-bordered table-hover"  id="measurement_dashboard_table">
-                              <!-- <thead class="measurement_table_header">
-                                <tr>
-                                  <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Name</th>
-                                  <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time Interval</th>
-                                  <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Created Date</th>
-                                  <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Total Units</th>
-                                  <th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Status</th>
-                                </tr>
-                              </thead>
-                              <tbody id=""><tr class="row_click" data-mst="30" data-type="1"><td style="padding: 6px !important;font-size: small !important;">Diesel-Gesamt-V</td><td style="padding: 6px !important;font-size: small !important;">Days</td><td style="padding: 6px !important;font-size: small !important;">2021-05-01</td><td style="padding: 6px !important;font-size: small !important;">643 m³</td><td style="padding: 6px !important;font-size: small !important;"><label class="badge badge-success">Active </label></td></tr><tr class="row_click" data-mst="168" data-type="1"><td style="padding: 6px !important;font-size: small !important;">Test 307 1</td><td style="padding: 6px !important;font-size: small !important;">Days</td><td style="padding: 6px !important;font-size: small !important;">2021-07-25</td><td style="padding: 6px !important;font-size: small !important;">323 kWh</td><td style="padding: 6px !important;font-size: small !important;"><label class="badge badge-success">Active </label></td></tr><tr class="row_click" data-mst="176" data-type="1"><td style="padding: 6px !important;font-size: small !important;">Test 684</td><td style="padding: 6px !important;font-size: small !important;">Days</td><td style="padding: 6px !important;font-size: small !important;">2021-08-04</td><td style="padding: 6px !important;font-size: small !important;">310 kWh</td><td style="padding: 6px !important;font-size: small !important;"><label class="badge badge-success">Active </label></td></tr><tr class="row_click" data-mst="171" data-type="1"><td style="padding: 6px !important;font-size: small !important;">Test 38 1</td><td style="padding: 6px !important;font-size: small !important;">Days</td><td style="padding: 6px !important;font-size: small !important;">2021-07-29</td><td style="padding: 6px !important;font-size: small !important;">220 kWh</td><td style="padding: 6px !important;font-size: small !important;"><label class="badge badge-success">Active </label></td></tr><tr class="row_click" data-mst="175" data-type="1"><td style="padding: 6px !important;font-size: small !important;">Test 683</td><td style="padding: 6px !important;font-size: small !important;">Days</td><td style="padding: 6px !important;font-size: small !important;">2021-08-06</td><td style="padding: 6px !important;font-size: small !important;">80 kWh</td><td style="padding: 6px !important;font-size: small !important;"><label class="badge badge-success">Active </label></td></tr></tbody> -->
-                              
                         </table>
                     </div>
                     <div class="pagination_save_table" style="display: none">
@@ -98,7 +87,7 @@
                               </select>
                           </li>
                         </ul>
-                      </div>
+                    </div>
                   </div>
                   <!-- <div class="col-md-9 image_div_show overflow-hide" style="display: none">
                      <img src="upload/screenshot_table_body.png" id="screenshot_image" alt="Image Not Available" height="167px" width="593px">
@@ -106,7 +95,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card tiles-click" id="product_count_div">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="product_count_div">
               <div class="card card-border">
                 <div class="row card-body">
                   <div id="product_count_content" class="col-md-12">
@@ -125,7 +114,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card tiles-click" id="energy_count_div">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="energy_count_div">
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_count_content">
@@ -135,15 +124,15 @@
                       <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                     </div>  
                     <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
-                    </div>
-                </div>
+                  </div>
 
-                <div class="col-md-9 save_table_div_show overflow-hide" id="energy_table_show" style="display: none">
-                     
+                  <div class="col-md-9 save_table_div_show overflow-hide" id="energy_table_show" style="display: none">
+                      
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card tiles-click" id="energy_consumed_div">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="energy_consumed_div">
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_consumed_content"> 
@@ -164,7 +153,7 @@
               </div>
             </div>
             <!-- 27-7-2021 -->
-            <div class="col-md-3 grid-margin stretch-card tiles-click" id="five_days_energy_consumed">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width  tiles-click" id="five_days_energy_consumed">
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_consumed_five_day_content">

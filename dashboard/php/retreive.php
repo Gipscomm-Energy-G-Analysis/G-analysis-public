@@ -321,6 +321,7 @@ class dashboardController {
             // $queryMaxValue  .= "AND T2.on_date <='$current_date' ";
             $queryMaxValue .= "AND T2.type = '$type' ";
             $queryMaxValue .= "AND T2.mst_ID = '$mst_id' ";
+            // echo json_encode($queryMaxValue); die;
             //<---15-8-2021
             $queryMaximum = $queryMaxValue;
             // --end-->
@@ -534,7 +535,7 @@ class dashboardController {
 
                 //ScreenShot Code
                 $paginationHTMl.="<div id='save_table_format' class='text-center'>
-                                    <input type='button' class='btn btn-sm btn-success' id='save_table_btn' value='Save'>
+                                    <input type='button' id='modal_open_button' class='btn btn-sm btn-success' value='Preview'>
                                 </div>";            
                 return $paginationHTMl;
                 // $records['pagination_html'] = $paginationHTMl;
@@ -554,6 +555,7 @@ class dashboardController {
             $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' ";
             $dataResult = queryDB($conn, $getResult, "read");
             if($dataResult != '' && count($dataResult) > 0){
+                $dataMeasurement = '';
                 if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == ''){
                     //Seacrh Record 
                     
@@ -592,7 +594,18 @@ class dashboardController {
                 }
                 die;
             }else{
-
+                $tr = "<thead>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Created Date</th>";
+                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Status</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+                $tr .= "<tbody><tr><td colspan='5' class='text-center'>No Data</td></tr></tbody>";
+                $records['dashboardMeasurementHtml'] = $tr;
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
             }
             die;
         }
@@ -635,7 +648,7 @@ class dashboardController {
                     $unit = '';
                     $style='';
                     if($queryMaxVal != '' && $queryMaxVal == $value['val']){
-                        $style="style='background-color: #f77171'";
+                        $style="style='background-color: #f77171; padding: 8px !important; font-size: .875rem'";
                     }
                     
                     $tr .= "<tr $style>";
