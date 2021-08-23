@@ -53,7 +53,6 @@ const scpRechteverwaltung_benutzer =
             const save =
                 formData =>
                 ajaxPost("php/Rechteverwaltung/Benutzer/save.php")(formData)
-                .then(result => {console.log(result); return result})
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(updateIndexedDB)
                 .then(
@@ -125,6 +124,7 @@ const scpRechteverwaltung_benutzer =
                   , "passwortBen"
                   ]    
                   .forEach(helper.clearField)
+                , scpTreeView.clear(treeBen)
                 , helper.setState("ben")("new")
                 )
 
@@ -235,7 +235,7 @@ const scpRechteverwaltung_benutzer =
                 }
 
             // Prepares the table data for the search dialog
-            const prepareTableData =
+            const prepareData =
                 records =>
                 records.map(
                     (a, i) =>
@@ -250,7 +250,7 @@ const scpRechteverwaltung_benutzer =
             const fillTbl =
                 data => {
                     clearTable(tblBenSuchen)
-                    intoTable(tblBenSuchen)(prepareTableData(data))
+                    intoTable(tblBenSuchen)(prepareData(data))
                 }
 
             // Triggers opening the search dialog
@@ -294,4 +294,4 @@ const scpRechteverwaltung_benutzer =
 
 // Initialize Permissions TreeView
 //
-const treeBen = scpTreeView.showTreeView("benTreeview")
+const treeBen = scpTreeView.show("benTreeview")

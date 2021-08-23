@@ -6,7 +6,7 @@ require '../../DbOperations.php' ;
 
 $conn = connectToDB( "gipscomm" ) ;
 
-$query  = "SELECT adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position FROM admins " ;
+$query  = "SELECT adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechte FROM admins " ;
 $query .= "WHERE deleted = 0 " ;
 
 $result = queryDB( $conn, $query, "read" ) ;

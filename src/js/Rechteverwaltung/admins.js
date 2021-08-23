@@ -53,7 +53,6 @@ const scpRechteverwaltung_admins =
             const save =
                 formData =>
                 ajaxPost("php/Rechteverwaltung/Admins/save.php")(formData)
-                .then(result => {console.log(result); return result})
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(updateIndexedDB)
                 .then(
@@ -125,6 +124,7 @@ const scpRechteverwaltung_admins =
                   , "passwortAdm"
                   ]    
                   .forEach(helper.clearField)
+                , scpTreeView.clear(treeAdm)
                 , helper.setState("adm")("new")
                 )
 
@@ -235,7 +235,7 @@ const scpRechteverwaltung_admins =
                 }
 
             // Prepares the table data for the search dialog
-            const prepareTableData =
+            const prepareData =
                 records =>
                 records.map(
                     (a, i) =>
@@ -250,7 +250,7 @@ const scpRechteverwaltung_admins =
             const fillTbl =
                 data => {
                     clearTable(tblAdmSuchen)
-                    intoTable(tblAdmSuchen)(prepareTableData(data))
+                    intoTable(tblAdmSuchen)(prepareData(data))
                 }
 
             // Triggers opening the search dialog
@@ -294,4 +294,4 @@ const scpRechteverwaltung_admins =
 
 // Initialize Permissions TreeView
 //
-const treeAdm = scpTreeView.showTreeView("admTreeview")
+const treeAdm = scpTreeView.show("admTreeview")

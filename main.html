@@ -1692,7 +1692,18 @@
                   </div>
                   <div id="infosAdmins">
                      <div class="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="admLoeschen" title="Admin löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="admSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="admHinz" title="Neuen Admin erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="admSuchen" title="Admin suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="admMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="admLast" data-record="last" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Admin" src="images/last.png" alt="letzte" /> <img id="admNext" data-record="next" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Admin" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="admPrevious" data-record="previous" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" /> <img id="admFirst" data-record="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" />
+                        <div class="navDropBox" style="height:20px;padding:3px;"> 
+                           <img id="admLoeschen" title="Admin löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                           <img id="admSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                           <img id="admHinz" title="Neuen Admin erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                           <img id="admSuchen" title="Admin suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                           <img id="admMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> 
+                           <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                           <img id="admLast" data-record="last" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Admin" src="images/last.png" alt="letzte" /> 
+                           <img id="admNext" data-record="next" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Admin" src="images/next.png" alt="nächste" /> 
+                           <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                           <img id="admPrevious" data-record="previous" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" /> 
+                           <img id="admFirst" data-record="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" />
                            <label>Betr. Gruppe:</label>
                            <select class="betrPfad"></select>
                            <label>Mandant/Gruppe:</label>
@@ -11032,8 +11043,8 @@
                         , betreuerGruppen : "betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs"
                         , superAdmins : "sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechte"
                         , mandantenGruppen : "manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs"
-                        , admins : "adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position"
-                        , benutzer : "ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position"
+                        , admins : "adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechte"
+                        , benutzer : "ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechte"
                         }
                     )
                 </script>

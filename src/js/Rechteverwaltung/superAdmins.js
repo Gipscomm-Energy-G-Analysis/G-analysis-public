@@ -153,6 +153,7 @@ const scpRechteverwaltung_superAdmins =
                   , "passwortSAdm"
                   ]    
                   .forEach(clearField)
+                , scpTreeView.clear(treeSAdm)
                 , setState("new")
                 )
 
@@ -321,4 +322,4 @@ const scpRechteverwaltung_superAdmins =
 
 // Initialize Permissions TreeViewscpRechteverwaltung_superAdmins.showTreeView()
 //
-const treeSAdm = scpTreeView.showTreeView("sAdmTreeview")
+const treeSAdm = scpTreeView.show("sAdmTreeview")

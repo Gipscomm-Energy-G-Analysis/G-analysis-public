@@ -21,20 +21,20 @@ $passHash = $_POST['passHash'] ;
 $rechte = $_POST['rechte'] ;
 
 if($modus === "new") {
-   $query =  "INSERT INTO admins(manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, deleted) " ;
-   $query .= "VALUES($manGrpID, $manID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', 0) " ;
+   $query =  "INSERT INTO admins(manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechte, deleted) " ;
+   $query .= "VALUES($manGrpID, $manID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', '$rechte', 0) " ;
 }
 else {
     $admID = $_POST['admID'] ;
 
     if($passHash === "") {
         $query =  "UPDATE admins " ;
-        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username' " ;
+        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechte = '$rechte' " ;
         $query .= "WHERE adm_ID = ".$admID." " ;
     }
     else {
         $query =  "UPDATE admins " ;
-        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', passHash = '$passHash' " ;
+        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechte = '$rechte', passHash = '$passHash' " ;
         $query .= "WHERE adm_ID = ".$admID." " ;
     }
 }
