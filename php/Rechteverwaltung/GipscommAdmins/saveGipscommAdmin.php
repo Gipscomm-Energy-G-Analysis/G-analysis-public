@@ -17,9 +17,18 @@ if($modus === "new") {
 else {
     $gipscAdmID = $_POST['gipscAdmID'] ;
 
-    $query =  "UPDATE gipscommAdmins " ;
-    $query .= "SET username = '$username', passHash = '$pwHash' " ;
-    $query .= "WHERE gipsAdm_ID = ".$gipscAdmID." " ;
+    if($pwHash === "") {
+        $query =  "UPDATE gipscommAdmins " ;
+        $query .= "SET username = '$username' " ;
+        $query .= "WHERE gipsAdm_ID = ".$gipscAdmID." " ;
+    }
+    else {
+        $query =  "UPDATE gipscommAdmins " ;
+        $query .= "SET username = '$username', passHash = '$pwHash' " ;
+        $query .= "WHERE gipsAdm_ID = ".$gipscAdmID." " ;
+    }
+    
+    
 }
 
 queryDB($conn, $query, "write") ;

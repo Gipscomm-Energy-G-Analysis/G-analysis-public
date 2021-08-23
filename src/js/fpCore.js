@@ -103,7 +103,7 @@ Object
         this.ajaxPost = this.callAjax("POST");
         this.ajaxGet = this.callAjax("GET");
         this.pipe = (...fns) => {
-            results = [this.head(fns)]
+            let results = [this.head(fns)]
             for(k=1;this.smaller(k)(fns.length);k++) {
                 results = this.push(results)(fns[k](results[this.decr(k)]))
             }

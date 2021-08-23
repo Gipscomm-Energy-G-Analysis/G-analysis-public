@@ -28,5 +28,16 @@ const scpIndexedDB =
                     , "schichtenHist"
                     ].forEach(this.dataIntoIDB(result))   
                 )
+
+            this.updateIndexedDB =
+                url =>
+                tbl =>
+                () =>
+                ajaxPost(url)({})
+                .then(
+                    result => 
+                    this.dataIntoIDB(result)(tbl)   
+                )
+
         }
     )

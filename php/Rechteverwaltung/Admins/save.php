@@ -7,22 +7,36 @@ require '../../DbOperations.php' ;
 $conn = connectToDB("gipscomm") ;
 
 $modus = $_POST['modus'] ;
-$betrGrpID = $_POST['betrGrpID'] ;
+$manID = $_POST['manID'] ;
+$manGrpID = $_POST['manGrpID'] ;
+$titel = $_POST['titel'] ;
 $name = $_POST['name'] ;
-$kurz = $_POST['kurz'] ;
-$notiz = $_POST['notiz'] ;
-$mandantenIDs = $_POST['mandantenIDs'] ;
+$vorname = $_POST['vorname'] ;
+$email = $_POST['email'] ;
+$telefon = $_POST['telefon'] ;
+$fax = $_POST['fax'] ;
+$mobiltelefon = $_POST['mobiltelefon'] ;
+$username = $_POST['username'] ;
+$passHash = $_POST['passHash'] ;
+$rechte = $_POST['rechte'] ;
 
 if($modus === "new") {
-   $query =  "INSERT INTO admins(betrGrp_ID, name, kurz, notiz, mandantenIDs, deleted) " ;
-   $query .= "VALUES($betrGrpID, '$name', '$kurz', '$notiz', '$mandantenIDs', 0) " ;
+   $query =  "INSERT INTO admins(manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, deleted) " ;
+   $query .= "VALUES($manGrpID, $manID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', 0) " ;
 }
 else {
     $admID = $_POST['admID'] ;
 
-    $query =  "UPDATE admins " ;
-    $query .= "SET name = '$name', kurz = '$kurz', notiz = '$notiz' " ;
-    $query .= "WHERE adm_ID = ".$admID." " ;
+    if($passHash === "") {
+        $query =  "UPDATE admins " ;
+        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username' " ;
+        $query .= "WHERE adm_ID = ".$admID." " ;
+    }
+    else {
+        $query =  "UPDATE admins " ;
+        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', passHash = '$passHash' " ;
+        $query .= "WHERE adm_ID = ".$admID." " ;
+    }
 }
 
 queryDB($conn, $query, "write") ;

@@ -14,7 +14,6 @@ $(document).ready(function() {
     .populateIndexedDB()
 
     betrGrpEinlesen();
-    manGrpEinlesen();
     anlagenGruppenEinlesen();
     erweiterungenProdukteEinlesen();
     organisationenEinlesen();
@@ -33,13 +32,6 @@ $(document).ready(function() {
                 window.open("index.html", "_self")
             }
         })
-    });
-    $("input, select").focus(function() {
-        "" != this.id && null != this.id && "undefined" != this.id && (changeTracker.setChange(TrackValue.LABEL, $("label[for=" + this.id + "]").text()), changeTracker.setChange(TrackValue.FIELD_ID, this.id), changeTracker.setChange(TrackValue.OLD_VALUE, this.value))
-    });
-    $("input, select").change(function() {
-        changeTracker.setChange(TrackValue.NEW_VALUE, this.value);
-        changeTracker.setChanges()
     });
     $("#anlVersch").click(function() {
         $("#anlageVerschieben").dialog({
@@ -798,9 +790,6 @@ $(document).ready(function() {
             $(".manPfadEnt").css("display", "inline")
     });
     $(".manPfadEnt select").change(checkboxenDerEntEnfEinlesen($("#entManZuordnung")));
-    $("#manOrManGrp").change(function() {
-        toggleMandantOderMandantengruppe($(this).val())
-    });
     $("#tagstromERng, #nachtstromERng").change(function() {
         var a = $("#tagstromERng").val(),
             b = $("#nachtstromERng").val(),
@@ -1430,12 +1419,6 @@ $(document).ready(function() {
     $("#knzSuchen").click(function() {
         kennzahlInstanzenlisteErstellen()
     });
-    $("#admSuchen").click(function() {
-        adminlisteErstellen()
-    });
-    $("#benSuchen").click(function() {
-        benutzerlisteErstellen()
-    });
 
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
@@ -1515,7 +1498,7 @@ $(document).ready(function() {
             b = parseInt(b) + parseInt($("#pruefzyklusPruefinformationenMsm").val());
         $("#naechstePruefungPruefinformationenMsm").val(a.substring(0, 6) + b)
     });
-    $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag, #tabSchtDat, #tabSchtDatHist, #tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
+    $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag, #tabSchtDat, #tabSchtDatHist, #tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
         tabControlNav(this.id);
         addExtraWidthToDynamischeFaktor();
         if(this.id=='tabIntBetriebsdatenIMw'){
@@ -1533,9 +1516,7 @@ $(document).ready(function() {
         }
         /*new-mm-end 23-03-2021*/
     });
-    $("#admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
-        "admFirst" == this.id ? (admNavID = 0, readInstanzen(this.id, admNavID)) :
-        "benFirst" == this.id ? (benNavID = 0, readInstanzen(this.id, benNavID)) :
+    $("#manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
         "manFirst" == this.id ? (manNavID = 0, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgFirst" == this.id ? (orgNavID = 0, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
@@ -1632,7 +1613,7 @@ $(document).ready(function() {
     // Change Per Dropbox
     //
     $(".betrPfad").change(() => scpRechteverwaltung_betreuergruppen.readIntoFormFields($(".betrPfad").prop("selectedIndex")))
-
+    
     //
     // SuperAdmins
     //
@@ -1700,6 +1681,75 @@ $(document).ready(function() {
         scpRechteverwaltung_mandantengruppen.removeFromMandantenTbl(this)
     })
 
+    //
+    // Admins
+    //
+    // See Rechteverwaltung/admins.js
+    //
+    // Arrow Navigation
+    //
+    $("#admFirst").click(scpRechteverwaltung_admins.readFirst)
+    $("#admPrevious").click(scpRechteverwaltung_admins.readPrevious)
+    $("#admNext").click(scpRechteverwaltung_admins.readNext)
+    $("#admLast").click(scpRechteverwaltung_admins.readLast)
+    //
+    // Search Navigation
+    //
+    $("#admSuchen").click(scpRechteverwaltung_admins.search)
+    //
+    // Delete Record
+    //
+    $("#admLoeschen").click(scpRechteverwaltung_admins.delete)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#admHinz").click(scpRechteverwaltung_admins.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#admSpeichern").click(scpRechteverwaltung_admins.validateAndSave)
+    //
+    // If the Man or ManGrp is Changed, the first one is read in
+    //
+    $(".manGrpPfad").change(
+        function() {
+            $(".manGrpPfad").val(this.value)
+            scpRechteverwaltung_admins.readFirst()
+            scpRechteverwaltung_benutzer.readFirst()
+        }
+    )
+
+    //
+    // Benutzer
+    //
+    // See Rechteverwaltung/benutzer.js
+    //
+    // Arrow Navigation
+    //
+    $("#benFirst").click(scpRechteverwaltung_benutzer.readFirst)
+    $("#benPrevious").click(scpRechteverwaltung_benutzer.readPrevious)
+    $("#benNext").click(scpRechteverwaltung_benutzer.readNext)
+    $("#benLast").click(scpRechteverwaltung_benutzer.readLast)
+    //
+    // Search Navigation
+    //
+    $("#benSuchen").click(scpRechteverwaltung_benutzer.search)
+    //
+    // Delete Record
+    //
+    $("#benLoeschen").click(scpRechteverwaltung_benutzer.delete)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#benHinz").click(scpRechteverwaltung_benutzer.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#benSpeichern").click(scpRechteverwaltung_benutzer.validateAndSave)
+    //
+    // If the Man or ManGrp is Changed, the first one is read in
+    //
+    // See Admins
 
 
     // Schichtdaten
@@ -1743,9 +1793,7 @@ $(document).ready(function() {
     $("#schtDatHistSuchen").click(scpSchichtdaten_historie.searchSchichtModellHist)
     //
 
-    $("#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
-        "admPrevious" == this.id ? 0 < admNavID && (admNavID--, readInstanzen(this.id, admNavID)) :
-        "benPrevious" == this.id ? 0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) :
+    $("#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
         "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() { organisationenEinlesen() }, 1500), readInstanzen("orgFirst", 0)) :
         "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
@@ -1772,9 +1820,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
-        "admNext" == this.id ? admNavID < $("#admCount").val() - 1 && (admNavID++, readInstanzen(this.id, admNavID)) :
-        "benNext" == this.id ? benNavID < $("#benCount").val() - 1 && (benNavID++, readInstanzen(this.id, benNavID)) :
+    $("#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
         "manNext" == this.id ? manNavID < $("#manCount").val() - 1 && (manNavID++, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgNext" == this.id ? orgNavID < $("#orgCount").val() - 1 && (orgNavID++, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
@@ -1801,9 +1847,7 @@ $(document).ready(function() {
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
-        "admLast" == this.id ? (admNavID = $("#admCount").val() - 1, readInstanzen(this.id, admNavID)) :
-        "benLast" == this.id ? (benNavID = $("#benCount").val() - 1, readInstanzen(this.id, benNavID)) :
+    $("#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
         "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
         "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
         "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen()) :
@@ -1914,27 +1958,6 @@ $(document).ready(function() {
     });
     $("#tblOptionenEPrd tbody").on("dblclick", "tr", function() {
         tblOptionenEPrd.row(this).remove().draw()
-    });
-    $("#tabAdm, #admMenu").click(function() {
-        manGrpEinlesen();
-    });
-    $(".manGrpPfad").change(function() {
-        $(".manGrpPfad").val($(this).val());
-
-        var a = $(".manGrpPfad  option").eq($(".manGrpPfad").prop("selectedIndex")).prop("id").split("_");
-
-        $("#manOderManGrp").val(a[0]);
-
-        if (head(a) === "optManGrp") {
-            $("#manGrpID").val(manGrpListe[last(a)].manGrpID)
-            readInstanzen("manGrpFirst", $(".manGrpPfad").prop("selectedIndex"))
-        }
-        else {
-            $("#manBID").val($(this).find('option:selected').data('id'));
-            //$("#manRechteID").val(mandantenliste[last(a)].manID)
-        }
-        readInstanzen("admFirst", 0)
-        readInstanzen("benFirst", 0)
     });
     $(".manPfad").change(function() {
         $(".manPfad").val($(this).val());

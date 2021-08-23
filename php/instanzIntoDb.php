@@ -3735,7 +3735,7 @@ elseif($id == "intBdePrdktMstIMwHistEditor") { /*12-03-2021 History update inter
 }
 /*new-mm-end 23-03-2021*/
 /*new-mm-start 23-03-2021*/
-if ($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult" && $id != "prdktAnl" && $id != "prd" && $id != "sAdm" && $id != "adm" && $id != "ben" && $id != "gipscAdm") {
+if ($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult" && $id != "prdktAnl" && $id != "prd" ) {
   $retState = queryDB($conn, $tsql, "write");
   echo json_encode(["query" => $tsql]);
 }

@@ -4,31 +4,31 @@
 
 "use strict"
 
-const scpRechteverwaltung_admins =
+const scpRechteverwaltung_benutzer =
     freeze (
         new function () {
 
             const updateIndexedDB =
                 scpIndexedDB
-                .updateIndexedDB("php/Rechteverwaltung/Admins/read.php")("admins")
+                .updateIndexedDB("php/Rechteverwaltung/Benutzer/read.php")("benutzer")
 
             // Returns an object that contains the form data
             const getFormData =
                 () => (
-                    { modus        : helper.fieldValue("admState")
-                    , admID        : helper.fieldValue("admID")
+                    { modus        : helper.fieldValue("benState")
+                    , benID        : helper.fieldValue("benID")
                     , manID        : helper.fieldValue("manID")
                     , manGrpID     : helper.fieldValue("manGrpID")
-                    , titel        : helper.fieldValue("titelAdm")
-                    , name         : helper.fieldValue("nameAdm")
-                    , vorname      : helper.fieldValue("vornameAdm")
-                    , email        : helper.fieldValue("emailAdm")
-                    , telefon      : helper.fieldValue("telefonAdm")
-                    , fax          : helper.fieldValue("faxAdm")
-                    , mobiltelefon : helper.fieldValue("mobiltelefonAdm")
-                    , username     : helper.fieldValue("benutzernameAdm")
-                    , passHash     : getHash(helper.fieldValue("passwortAdm"))
-                    , rechte       : treeAdm.getValues().join(",")
+                    , titel        : helper.fieldValue("titelBen")
+                    , name         : helper.fieldValue("nameBen")
+                    , vorname      : helper.fieldValue("vornameBen")
+                    , email        : helper.fieldValue("emailBen")
+                    , telefon      : helper.fieldValue("telefonBen")
+                    , fax          : helper.fieldValue("faxBen")
+                    , mobiltelefon : helper.fieldValue("mobiltelefonBen")
+                    , username     : helper.fieldValue("benutzernameBen")
+                    , passHash     : getHash(helper.fieldValue("passwortBen"))
+                    , rechte       : treeBen.getValues().join(",")
                     }
                 )
 
@@ -46,19 +46,19 @@ const scpRechteverwaltung_admins =
                 ]
                 .map(field(formData))
                 .every(a => !emptyString(a)) &&
-                !emptyString(helper.fieldValue("passwortAdm"))
+                !emptyString(helper.fieldValue("passwortBen"))
             
             // Inserts or updates the given record into the sql srv DB
             // and then updates the indexedDB
             const save =
                 formData =>
-                ajaxPost("php/Rechteverwaltung/Admins/save.php")(formData)
+                ajaxPost("php/Rechteverwaltung/Benutzer/save.php")(formData)
                 .then(result => {console.log(result); return result})
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(updateIndexedDB)
                 .then(
                     () =>
-                    equal($("#admState").val())("new") ?
+                    equal($("#benState").val())("new") ?
                     this.readLast() :
                     false
                 )
@@ -68,7 +68,7 @@ const scpRechteverwaltung_admins =
             // saved anyways
             const nonCompleteDataDialog =
                 formData =>
-                $("#saveAdmDialog").dialog({
+                $("#saveBenDialog").dialog({
                     height: 203,
                     width: 329,
                     resize: "auto",
@@ -82,18 +82,18 @@ const scpRechteverwaltung_admins =
                     },
                     modal: true,
                     open: () => {
-                        $("#saveAdmOk").off("click")
-                        $("#saveAdmOk").on("click",
+                        $("#saveBenOk").off("click")
+                        $("#saveBenOk").on("click",
                             () =>
                             ( save(formData)
-                            , $("#saveAdmDialog").dialog("close")
+                            , $("#saveBenDialog").dialog("close")
                             )
                         )
 
-                        $("#saveAdmCancel").off("click")
-                        $("#saveAdmCancel").on("click",
+                        $("#saveBenCancel").off("click")
+                        $("#saveBenCancel").on("click",
                             () =>
-                            $("#saveAdmDialog").dialog("close")
+                            $("#saveBenDialog").dialog("close")
                         )
                     }
                 })                                      
@@ -113,24 +113,24 @@ const scpRechteverwaltung_admins =
 
             this.clearFields =
                 () =>
-                ( [ "admID"
-                  , "titelAdm"
-                  , "nameAdm"
-                  , "vornameAdm"
-                  , "emailAdm"
-                  , "telefonAdm"
-                  , "faxAdm"
-                  , "mobiltelefonAdm"
-                  , "benutzernameAdm"
-                  , "passwortAdm"
+                ( [ "benID"
+                  , "titelBen"
+                  , "nameBen"
+                  , "vornameBen"
+                  , "emailBen"
+                  , "telefonBen"
+                  , "faxBen"
+                  , "mobiltelefonBen"
+                  , "benutzernameBen"
+                  , "passwortBen"
                   ]    
                   .forEach(helper.clearField)
-                , helper.setState("adm")("new")
+                , helper.setState("ben")("new")
                 )
 
             const getRef =
                   () => 
-                  idxDB.admins
+                  idxDB.benutzer
                   .where($(".manGrpPfad").val().split("-")[0])
                   .equals(Number($(".manGrpPfad").val().split("-")[1]))
             
@@ -153,21 +153,21 @@ const scpRechteverwaltung_admins =
                     .then(
                         record => {
 
-                            $("#admIdx").val(idx)
-                            $("#admID").val(record.adm_ID)
-                            $("#titelAdm").val(record.titel)
-                            $("#nameAdm").val(record.name)
-                            $("#vornameAdm").val(record.vorname)
-                            $("#emailAdm").val(record.email)
-                            $("#telefonAdm").val(record.telefon)
-                            $("#faxAdm").val(record.fax)
-                            $("#mobiltelefonAdm").val(record.mobiltelefon)
-                            $("#benutzernameAdm").val(record.username)
-                            $("#passwortAdm").val("")
+                            $("#benIdx").val(idx)
+                            $("#benID").val(record.ben_ID)
+                            $("#titelBen").val(record.titel)
+                            $("#nameBen").val(record.name)
+                            $("#vornameBen").val(record.vorname)
+                            $("#emailBen").val(record.email)
+                            $("#telefonBen").val(record.telefon)
+                            $("#faxBen").val(record.fax)
+                            $("#mobiltelefonBen").val(record.mobiltelefon)
+                            $("#benutzernameBen").val(record.username)
+                            $("#passwortBen").val("")
 
-                            helper.setState("adm")("edit")
+                            helper.setState("ben")("edit")
 
-                            treeAdm.setValues(record.rechte.split(","))
+                            treeBen.setValues(record.rechte.split(","))
                         }
                     )
                 }
@@ -188,8 +188,8 @@ const scpRechteverwaltung_admins =
             // depending on the current records index
             this.readPrevious =
                 () =>
-                greaterZero(helper.fieldValue("admIdx")) ?
-                readIntoFormFields(decr(helper.fieldValue("admIdx"))) :
+                greaterZero(helper.fieldValue("benIdx")) ?
+                readIntoFormFields(decr(helper.fieldValue("benIdx"))) :
                 false
 
             // Sets the form data input values of the next Schicht Modell
@@ -200,8 +200,8 @@ const scpRechteverwaltung_admins =
                 .count()
                 .then( 
                     count => 
-                    greater(decr(count))(helper.fieldValue("admIdx")) ?
-                    readIntoFormFields(incr(helper.fieldValue("admIdx"))) :
+                    greater(decr(count))(helper.fieldValue("benIdx")) ?
+                    readIntoFormFields(incr(helper.fieldValue("benIdx"))) :
                     false
                 )
 
@@ -220,15 +220,15 @@ const scpRechteverwaltung_admins =
             // Deletes the current Schicht Modell(sets col deleted = true)
             this.delete =
                 () => {
-                    const admID = $("#admID").val()
+                    const benID = $("#benID").val()
 
-                    ajaxPost("php/Rechteverwaltung/Admins/delete.php")({admID})
+                    ajaxPost("php/Rechteverwaltung/Benutzer/delete.php")({benID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
                         , updateIndexedDB()
                           .then( 
-                              readIntoFormFields( helper.fieldValue( "admIdx" ) ) 
+                              readIntoFormFields( helper.fieldValue( "benIdx" ) ) 
                           )
                         )
                     )
@@ -249,8 +249,8 @@ const scpRechteverwaltung_admins =
             // Fills the search dialog table with data
             const fillTbl =
                 data => {
-                    clearTable(tblAdmSuchen)
-                    intoTable(tblAdmSuchen)(prepareTableData(data))
+                    clearTable(tblBenSuchen)
+                    intoTable(tblBenSuchen)(prepareTableData(data))
                 }
 
             // Triggers opening the search dialog
@@ -260,7 +260,7 @@ const scpRechteverwaltung_admins =
                     queryDatasIDB()
                     .then(fillTbl)
 
-                    $("#admSuchenContainer").dialog({
+                    $("#benSuchenContainer").dialog({
                         height: 450,
                         width: 875,
                         resize: "auto",
@@ -274,17 +274,17 @@ const scpRechteverwaltung_admins =
                         },
                         modal: true,
                         open: function() {
-                            $("#tblAdmSuchen tbody tr").css("cursor", "pointer");
-                            $("#tblAdmSuchen tbody").off("dblclick", "tr");
-                            $("#tblAdmSuchen tbody").on("dblclick", "tr",
+                            $("#tblBenSuchen tbody tr").css("cursor", "pointer");
+                            $("#tblBenSuchen tbody").off("dblclick", "tr");
+                            $("#tblBenSuchen tbody").on("dblclick", "tr",
                             function() {
 
                                 const selectedRecord =
-                                    tblAdmSuchen.row(this).data()
+                                    tblBenSuchen.row(this).data()
 
                                 readIntoFormFields(head(selectedRecord))
 
-                                $("#admSuchenContainer").dialog("close")
+                                $("#benSuchenContainer").dialog("close")
                             })
                         }
                     })
@@ -294,4 +294,4 @@ const scpRechteverwaltung_admins =
 
 // Initialize Permissions TreeView
 //
-const treeAdm = scpTreeView.showTreeView("admTreeview")
+const treeBen = scpTreeView.showTreeView("benTreeview")

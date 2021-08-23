@@ -26,9 +26,16 @@ if($modus === "new") {
 else {
     $sAdmID = $_POST['sAdmID'] ;
 
-    $query =  "UPDATE superAdmins " ;
-    $query .= "SET titelSAdm = '$titelSAdm', nameSAdm = '$nameSAdm', vornameSAdm = '$vornameSAdm', emailSAdm = '$emailSAdm', telefonSAdm = '$telefonSAdm', faxSAdm = '$faxSAdm', mobiltelefonSAdm = '$mobiltelefonSAdm', username = '$username', passHash = '$passHash', rechte = '$rechte' " ;
-    $query .= "WHERE sAdm_ID = ".$sAdmID." " ;
+    if($passHash === "") {
+        $query =  "UPDATE superAdmins " ;
+        $query .= "SET titelSAdm = '$titelSAdm', nameSAdm = '$nameSAdm', vornameSAdm = '$vornameSAdm', emailSAdm = '$emailSAdm', telefonSAdm = '$telefonSAdm', faxSAdm = '$faxSAdm', mobiltelefonSAdm = '$mobiltelefonSAdm', username = '$username', rechte = '$rechte' " ;
+        $query .= "WHERE sAdm_ID = ".$sAdmID." " ;
+    }
+    else {
+        $query =  "UPDATE superAdmins " ;
+        $query .= "SET titelSAdm = '$titelSAdm', nameSAdm = '$nameSAdm', vornameSAdm = '$vornameSAdm', emailSAdm = '$emailSAdm', telefonSAdm = '$telefonSAdm', faxSAdm = '$faxSAdm', mobiltelefonSAdm = '$mobiltelefonSAdm', username = '$username', passHash = '$passHash', rechte = '$rechte' " ;
+        $query .= "WHERE sAdm_ID = ".$sAdmID." " ;
+    }
 }
 
 queryDB($conn, $query, "write") ;

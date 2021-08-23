@@ -315,19 +315,10 @@ const scpRechteverwaltung_superAdmins =
                             })
                         }
                     })
-                }
-
-            this.showTreeView = 
-                () => {
-                    const menus = scpRechteverwaltung.menuHtml2Json()
-                    const mainMenus = scpRechteverwaltung.getMainMenus(menus)
-                    const treeJson = scpTreeView.buildTree(mainMenus)(menus)
-
-                    return scpTreeView.showTreeView("sAdmTreeview")(treeJson)
-                }   
+                }  
         }
     )
 
-// Initialize Permissions TreeView
+// Initialize Permissions TreeViewscpRechteverwaltung_superAdmins.showTreeView()
 //
-const treeSAdm = scpRechteverwaltung_superAdmins.showTreeView()
+const treeSAdm = scpTreeView.showTreeView("sAdmTreeview")

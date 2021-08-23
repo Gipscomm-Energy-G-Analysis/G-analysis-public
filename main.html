@@ -1475,8 +1475,9 @@
                         <input id="admID"/>
                         <input id="admState"/>
                         <input id="admIdx"/>
-                        <input id="manGrpOrMan"/>
                         <input id="benID"/>
+                        <input id="benIdx"/>
+                        <input id="benState"/>
                         <input id="knzInsCount"/>
                         <input id="manRechteID"/>
                         <input id="sAdmCount" />
@@ -1702,49 +1703,45 @@
                        </div>
                        <div class="controlDiv">
                            <label>Titel</label>
-                           <input id="titelAdm" />
+                           <input id="titelAdm" class="admForm"/>
                        </div>
                        <div class="controlDiv">
                            <label>Name</label>
-                           <input id="nameAdm" />
+                           <input id="nameAdm" class="admForm"/>
                        </div>
                        <div class="controlDiv">
                            <label>Vorname</label>
-                           <input id="vornameAdm" />
+                           <input id="vornameAdm" class="admForm"/>
                        </div>
                        <div class="controlDiv">
                            <label>E-Mail</label>
-                           <input id="emailAdm" />
+                           <input id="emailAdm" class="admForm"/>
                        </div>
                        <div class="controlDiv">
                            <label>Telefon</label>
-                           <input id="telefonAdm" />
+                           <input id="telefonAdm" class="admForm"/>
                        </div>
                        <div class="controlDiv">
                            <label>Fax</label>
-                           <input id="faxAdm" />
+                           <input id="faxAdm" class="admForm"/>
                        </div>
                        <div class="controlDiv">
                            <label>Mobiltelefon</label>
-                           <input id="mobiltelefonAdm" />
+                           <input id="mobiltelefonAdm" class="admForm"/>
                        </div>
                        <div class="controlDiv">
                            <label>Benutzername</label>
-                           <input id="benutzernameAdm" />
+                           <input id="benutzernameAdm" class="admForm"/>
                        </div>
                        <div class="controlDiv">
                            <label>Passwort</label>
-                           <input type="password" id="passwortAdm" />
+                           <input type="password" id="passwortAdm" class="admForm"/>
                        </div>
-                       <!-- <div class="navDropBox" style="height:20px;padding:3px;">
-                        <img id="adminsRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                        </div> -->
                         <div class="infosBlock" id="adminRoles">
                               <div class="sectionHeader">
                                  <label>Rollen und Berechtigungen</label>
                               </div>
                               <div id="admTreeview">
-
                               </div>
                         </div>
                     </div>
@@ -1763,61 +1760,45 @@
                         </div>
                         <div class="controlDiv">
                            <label>Titel</label>
-                           <input id="titelBen" />
+                           <input id="titelBen" class="benForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>Name</label>
-                           <input id="nameBen" />
+                           <input id="nameBen" class="benForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>Vorname</label>
-                           <input id="vornameBen" />
+                           <input id="vornameBen" class="benForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>e-Mail</label>
-                           <input id="emailBen" />
+                           <input id="emailBen" class="benForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>Telefon</label>
-                           <input id="telefonBen" />
+                           <input id="telefonBen" class="benForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>Fax</label>
-                           <input id="faxBen" />
+                           <input id="faxBen" class="benForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>Mobiltelefon</label>
-                           <input id="mobiltelefonBen" />
+                           <input id="mobiltelefonBen" class="benForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>Benutzername</label>
-                           <input id="benutzernameBen" />
+                           <input id="benutzernameBen" class="benForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>Passwort</label>
-                           <input id="passwortBen" />
+                           <input id="passwortBen" class="benForm"/>
                         </div>
-                        <!-- <div class="sectionHeader">
-                           <label>Rechte</label>
-                        </div>
-                        <div class="controlDiv">
-                           <label></label>
-                           <input id="test111" />
-                        </div>
-                        <div class="controlDiv">
-                           <label></label>
-                           <input id="222" />
-                        </div> -->
-                        <!-- <div class="navDropBox" style="height:20px;padding:3px;">
-                           <img id="benutzerRollenUndBerechtigungen" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                       </div> -->
                         <div class="infosBlock" id="benutzerRoles">
                            <div class="sectionHeader">
                                <label>Rollen und Berechtigungen</label>
                            </div>
-                           <!-- <div id="benutzerRollenUndBerechtigungenSuperadmin">
-                           </div> -->
-                           <div id="benutzerTreeview">
+                           <div id="benTreeview">
 
                            </div>
 
@@ -8237,6 +8218,18 @@
         <button id="saveAdmOk">Ok</button>
         <button id="saveAdmCancel" style="margin-left:50px;">Abbrechen</button>
     </div>
+    <!--Save new Benutzer if not all inputs are filled-->
+    <!--Meldung-->
+    <!--  -->
+    <div id="saveBenDialog" style="display:none;">
+        <p>
+            Nicht alle Felder sind ausgefüllt.<br>
+            Soll trotzdem gespeichert werden ? <br>
+        </p>
+        <br>
+        <button id="saveBenOk">Ok</button>
+        <button id="saveBenCancel" style="margin-left:50px;">Abbrechen</button>
+    </div>
 
     <!--Save new Schicht if not all inputs are filled-->
     <!--Meldung-->
@@ -10955,6 +10948,20 @@
             </table>
       </div>
 
+      <div id="benSuchenContainer" style="display:none;font-size:12px;">
+            <table id="tblBenSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+               <thead>
+               <tr>
+                     <th>idx</th>
+                     <th>Titel</th>
+                     <th>Name</th>
+                     <th>Benutzername</th>
+               </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
+      </div>
+
       <div id="gipscAdmSuchenContainer" style="display:none;font-size:12px;">
             <table id="tblGipscAdmSuchen" class="stripe hover row-border compact dt-left custom" style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
                <thead>
@@ -11034,6 +11041,7 @@
                 <script type="text/javascript" src="src/js/manualFunction.js"></script>
                 <script type="text/javascript" src="src/js/indexedDB.js"></script>
                 <script type="text/javascript" src="src/js/Unternehmensstruktur/mandanten.js"></script>
+                <script type="text/javascript" src="src/js/helper.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/schichtdaten.js"></script>
                 <script type="text/javascript" src="src/js/Schichtdaten/historie.js"></script>
                 <script type="text/javascript" src="src/js/treeView.js"></script>
@@ -11043,6 +11051,7 @@
                 <script type="text/javascript" src="src/js/Rechteverwaltung/superAdmins.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/mandantengruppen.js"></script>
                 <script type="text/javascript" src="src/js/Rechteverwaltung/admins.js"></script>
+                <script type="text/javascript" src="src/js/Rechteverwaltung/benutzer.js"></script>
                 <script type="text/javascript" src="src/js/events.js"></script>
                 <script src="dist/js/pace.min.js" type="text/javascript"></script>
             </div>

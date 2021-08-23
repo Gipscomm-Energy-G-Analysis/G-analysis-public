@@ -28,7 +28,7 @@ const scpRechteverwaltung_mandantengruppen =
                 .map((_, i) => tblMandantengruppe.cell(i, 0).data())
                 .join(",")
 
-            this.arraySelectedManIDs = 
+            const arraySelectedManIDs = 
                 () =>
                 array($("#tblMandantengruppe tbody tr").length)()()
                 .map((_, i) => tblMandantengruppe.cell(i, 0).data())
@@ -158,7 +158,7 @@ const scpRechteverwaltung_mandantengruppen =
                 .equals(Number(getFieldValue("betrGrpID"))) 
 
             // Returns an array of the Schicht Modelle from indexedDB
-            const queryMandantengruppenDataIDB =
+            this.queryMandantengruppenDataIDB =
                 () => 
                 getBetrGrpRefRecords()
                 .toArray()
@@ -166,7 +166,7 @@ const scpRechteverwaltung_mandantengruppen =
             // Returns a certain Schicht Modell depending on an index
             const queryMandantenGruppeDataIDB =
                 idx =>
-                queryMandantengruppenDataIDB()
+                this.queryMandantengruppenDataIDB()
                 .then(mandantenGruppen => mandantenGruppen[idx])
 
             // Prepares the table data for the search dialog
@@ -299,7 +299,7 @@ const scpRechteverwaltung_mandantengruppen =
             this.searchMandantenGruppen =
                 () => {
 
-                    queryMandantengruppenDataIDB()
+                    this.queryMandantengruppenDataIDB()
                     .then(fillMandantenGruppenTbl)
 
                     $("#manGrpSuchenContainer").dialog({
@@ -332,36 +332,23 @@ const scpRechteverwaltung_mandantengruppen =
                     })
                 }
 
-            this.getBetrGrpRecord =
-                () =>
-                scpRechteverwaltung_betreuergruppen
-                .queryBetreuerGruppeDataIDB(
-                    Number(getFieldValue("betrGrpIdx"))
-                )
-
-            this.arrayBetrGrpManIDs =
-                () =>
-                this.getBetrGrpRecord()
-                .then(betreuerGruppe => betreuerGruppe.mandantenIDs)
-                .then(ids => ids.split(",").map(Number))
-
-            this.notSelected =
+            const notSelected =
                 selectedManIDs =>
                 id =>
                 !selectedManIDs.some(equal(id))
             
-            this.filterManIDs =
+            const filterManIDs =
                 selectedManIDs =>
                 betrGrpManIDs =>
                 betrGrpManIDs
-                .filter(this.notSelected(selectedManIDs))
+                .filter(notSelected(selectedManIDs))
                 
             this.showMandantenTablePopUp =
                 async () => {
 
-                    const betrGrpManIDs = await this.arrayBetrGrpManIDs()
-                    const selectedManIDs = this.arraySelectedManIDs()
-                    const filteredManIDs = this.filterManIDs(selectedManIDs)(betrGrpManIDs)      
+                    const betrGrpManIDs = await scpRechteverwaltung_betreuergruppen.arrayBetrGrpManIDs()
+                    const selectedManIDs = arraySelectedManIDs()
+                    const filteredManIDs = filterManIDs(selectedManIDs)(betrGrpManIDs)      
 
                     scpUnternehmensstruktur_mandanten
                     .queryMandantenWithIDs(filteredManIDs)

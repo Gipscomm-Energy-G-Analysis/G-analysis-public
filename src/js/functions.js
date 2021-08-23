@@ -1629,32 +1629,6 @@ try {
                 })
             }
         },
-        manGrpInDropbox = function(a) {
-
-            $(".manGrpPfad").empty();
-            $(".manGrpPfad").append("<optgroup label='Mandantengruppen'>");
-            $(".manGrpPfad").append("</optgroup>");
-            for (n = 0; n < a.length; n++) manGrpListe[n] = new manGrp(a[n].name, a[n].manGrp_ID), $(".manGrpPfad optgroup").append("<option id='optManGrp_" + n + "'>" + manGrpListe[n].name + "</option>");
-            $(".manGrpPfad").append("<optgroup label='Mandanten'>");
-            $(".manGrpPfad").append("</optgroup>");
-            a = $(".manPfad option").length / $(".manPfad").length;
-        },
-        manGrpEinlesen = function() {
-            $.ajax({
-                type: "POST",
-                async: !0,
-                url: "php/manGrpEinlesen.php",
-                data: {
-                    nameDB: "gipscomm",
-                    betrGrpID: $("#betrGrpID").val(),
-                    manID: $("manID").val()
-                },
-                success: function(a) {
-                    a = JSON.parse(a);
-                    manGrpInDropbox(a)
-                }
-            })
-        },
         manGrp = function(a, b) {
             this.name = a;
             this.manGrpID = b
@@ -2579,10 +2553,7 @@ try {
             "Anl" ==
             $("#verwaltung").val() ? ladenSymbolID = "#ladenSymbolAnl, #ladenLblAnl" : "Msm" == $("#verwaltung").val() ? ladenSymbolID = "#ladenSymbolMsm, #ladenLblMsm" : "ERng" == $("#verwaltung").val() && (ladenSymbolID = "#ladenSymbolERng, #ladenLblERng");
             return ladenSymbolID
-        }, toggleMandantOderMandantengruppe = function(a) {
-            "Mandantengruppe" == a ? ($("#manGruppenForm").css("display", "block"), $("#navDropBoxManGrp img").css("display", "inline")) : ($("#manGruppenForm").css("display", "none"), $("#navDropBoxManGrp img").css("display", "none"))
-        },
-        toggleStandorteDritter = function(a) {
+        }, toggleStandorteDritter = function(a) {
             1 == $(a).prop("checked") ? $(".stdDrExtDl").css("display", "inline") : ($(".stdDrExtDl").css("display", "none"), $(".stdDrExtDl input").val(""))
         }, toggleExtDl = function(a) {
             1 == $(a).prop("checked") ? ($("#tabExtDl").css("display", "inline"), $("#tabStdDr").css("display", "inline")) : ($("#tabExtDl").css("display", "none"), $("#tabStdDr").css("display", "none"))
@@ -8684,7 +8655,7 @@ try {
                     else if ("tabStdDr" == a) readInstanzen("stdDrFirst", 0);
                     else if ("tabBer" == a) $("#manPfadBer").css("display", "none"), $("#orgPfadBer").css("display", "none"), $("#liegPfadBer").text($("#nameAllgemeinLieg").val()), energiefrmInDBoxLieg();
                     else if ("tabEPrd" == a) readBdeConfig($("#nameDB").val());
-                    else if ("tabBen" == a) b = ["", ""], readInstanzen("benFirst", 0);
+                    else if ("tabBen" == a) b = ["", ""] ;
                     else if ("tabAnl" == a) getAnlagenAuswahlTblHeader(), energiefrmInDBoxLieg();
                     else if ("tabMsm" == a) getAnlagenAuswahlTblHeader();
                     else if ("tabMstE" == a | "tabMstB" == a) bereicheVorhanden();
@@ -10180,7 +10151,7 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
-     tblBenutzerlisteErstellen = $("#tblBenutzerlisteErstellen").DataTable({
+     tblBenSuchen = $("#tblBenSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
             extend: "copy",
@@ -15788,180 +15759,6 @@ function tblAnlOhneZeitintervallIMwSuchenMethod() {
         });
 }
 
-
- /*Ajax Call for the admin 22-02-2021*/
- function adminlisteErstellen() {
-    var a = itemSessionGet("nameDB");
-    //console.log(a);
-    $.ajax({
-        type: "POST",
-        async: !0,
-        url: "php/readInstanzen.php",
-        data: {
-            id: "admSuchen",
-            nameDB: "gipscomm",
-            manID: $(".manGrpPfad").val()
-        },
-        success: function(e) {
-            console.log('Working fine');
-            e = json(e);
-            //console.log(e);
-
-            tblAdminlisteErstellen.colReorder.reset();
-            tblAdminlisteErstellen.clear().draw();
-            for (var c = 0; c < e.length; c++) {
-                //console.log(e[c].email);
-                tblAdminlisteErstellen.row.add([
-                    e[c].adm_ID,
-                    e[c].titel,
-                    e[c].name,
-                    e[c].vorname,
-                    e[c].username,
-                    e[c].email,
-                    e[c].telefon,
-                    e[c].mobiltelefon
-                ]).draw();
-            }
-            $("#admListeContainer").css("display", "block");
-            $("#admListeContainer").dialog({
-                height: $(window).height() - .125 * $(window).height(),
-                width: $(window).width() - .125 * $(window).width(),
-                resize: "auto",
-                modal: true,
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    console.log('open popup');
-                    $("#tblAdminlisteErstellen tbody tr").css("cursor", "pointer");
-                    $("#tblAdminlisteErstellen tbody").on("dblclick", "tr", function() {
-                        var a = tblAdminlisteErstellen.row(this).data();
-                        $("#admListeContainer").dialog("close");
-                        //readInstanzen("admFirst", a[0])
-                        $.ajax({
-                            type: "POST",
-                            async: !0,
-                            url: "php/readInstanzen.php",
-                            data: {
-                                id: "adm",
-                                nameDB: "gipscomm",
-                                admID: a[0]
-                            },
-                            fail: function() {
-                                alert("failed!!")
-                            },
-                            success: function(a) {
-                                var c = $.parseJSON(a);
-                                $('#admID').val(c[0].adm_ID);
-                                $('#titelAdm').val(c[0].titel);
-                                $('#nameAdm').val(c[0].name);
-                                $('#vornameAdm').val(c[0].vorname);
-                                $('#emailAdm').val(c[0].email);
-                                $('#telefonAdm').val(c[0].telefon);
-                                $('#faxAdm').val(c[0].fax);
-                                $('#mobiltelefonAdm').val(c[0].mobiltelefon);
-                                $('#benutzernameAdm').val(c[0].username);
-                                adminsGetRollenUndBerechtigungen();
-                            }
-                        });
-                    })
-                }
-            })
-        }
-    })
-}
-
-function benutzerlisteErstellen() {
-    var a = itemSessionGet("nameDB");
-    //console.log(a);
-    $.ajax({
-        type: "POST",
-        async: !0,
-        url: "php/readInstanzen.php",
-        data: {
-            id: "benSuchen",
-            nameDB: "gipscomm",
-            manID: $(".manGrpPfad").val()
-        },
-        success: function(e) {
-            console.log('Working fine');
-            e = json(e);
-            //console.log(e);
-
-            tblBenutzerlisteErstellen.colReorder.reset();
-            tblBenutzerlisteErstellen.clear().draw();
-            for (var c = 0; c < e.length; c++) {
-                //console.log(e[c].email);
-                tblBenutzerlisteErstellen.row.add([
-                    e[c].ben_ID,
-                    e[c].titel,
-                    e[c].name,
-                    e[c].vorname,
-                    e[c].username,
-                    e[c].eMail,
-                    e[c].telefon,
-                    e[c].mobiltelefon
-                ]).draw();
-            }
-            $("#benutzerListeContainer").css("display", "block");
-            $("#benutzerListeContainer").dialog({
-                height: $(window).height() - .125 * $(window).height(),
-                width: $(window).width() - .125 * $(window).width(),
-                resize: "auto",
-                modal: true,
-                show: {
-                    effect: "fade",
-                    duration: 500
-                },
-                hide: {
-                    effect: "fade",
-                    duration: 500
-                },
-                open: function() {
-                    console.log('open popup');
-                    $("#tblBenutzerlisteErstellen tbody tr").css("cursor", "pointer");
-                    $("#tblBenutzerlisteErstellen tbody").on("dblclick", "tr", function() {
-                        var a = tblBenutzerlisteErstellen.row(this).data();
-                        $("#benutzerListeContainer").dialog("close");
-                        //readInstanzen("benFirst", a[0])
-                        $.ajax({
-                            type: "POST",
-                            async: !0,
-                            url: "php/readInstanzen.php",
-                            data: {
-                                id: "ben",
-                                nameDB: "gipscomm",
-                                benID: a[0]
-                            },
-                            fail: function() {
-                                alert("failed!!")
-                            },
-                            success: function(a) {
-                                var c = $.parseJSON(a);
-                                $('#benID').val(c[0].ben_ID);
-                                $('#titelBen').val(c[0].titel);
-                                $('#nameBen').val(c[0].name);
-                                $('#vornameBen').val(c[0].vorname);
-                                $('#emailBen').val(c[0].eMail);
-                                $('#telefonBen').val(c[0].telefon);
-                                $('#faxBen').val(c[0].fax);
-                                $('#mobiltelefonBen').val(c[0].mobiltelefon);
-                                $('#benutzernameBen').val(c[0].username);
-                                benutzerGetRollenUndBerechtigungen();
-                            }
-                        });
-                    })
-                }
-            })
-        }
-    })
-}
-
 // ****8-6-2021--
 function infosIntEnergiedaten_measuring_point_function(a,b){
     const ins = a
@@ -16026,4 +15823,3 @@ function infosIntEnergiedaten_measuring_point_function(a,b){
         })
     })
 }
-

@@ -237,6 +237,9 @@ const scpRechteverwaltung_betreuergruppen =
                     )
                     .then(scpRechteverwaltung_superAdmins.readFirst)
                     .then(scpRechteverwaltung_mandantengruppen.readFirst)
+                    .then(scpRechteverwaltung.readIntoMandantGruppeDropbox)
+                    .then(scpRechteverwaltung_admins.readFirst)
+                    .then(scpRechteverwaltung_benutzer.readFirst)
                 }
 
             // Sets the form data input values of the first Schicht Modell
@@ -353,6 +356,20 @@ const scpRechteverwaltung_betreuergruppen =
                         }
                     })
                 }
+
+            const getBetrGrpRecord =
+                () =>
+                scpRechteverwaltung_betreuergruppen
+                .queryBetreuerGruppeDataIDB(
+                    Number(getFieldValue("betrGrpIdx"))
+                )
+
+            this.arrayBetrGrpManIDs =
+                () =>
+                getBetrGrpRecord()
+                .then(betreuerGruppe => betreuerGruppe.mandantenIDs)
+                .then(ids => ids.split(",").map(Number))
+
 
             this.showMandantenTablePopUp =
                 () => {
