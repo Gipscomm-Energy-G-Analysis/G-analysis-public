@@ -36,12 +36,67 @@
               <!-- -end -->
             </div>
           </div>
+
+          <!-- 20-8-2021-- -->
+          <button type="button" class="btn btn-success btn-sm mb-3" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
+
+          <div class="modal fade" id="dashboard_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="text-mute text-dark">Instrumententafel</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+
+                <div class="modal-body">
+                  <div class="row">
+                    <input type="hidden" id="modal-open" value="false">
+                    <div class="col-md-3 form-group">
+                      <label for="title_modal_tile">Title Name</label>
+                      <input type="text" placeholder="title" id="title_modal_tile" class="form-control form-control-sm">
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="record_type_of_tile">Type of Record</label>
+                      <select class="form-control form-control-sm text-dark" id="record_type_of_tile">
+                          <option value="measurement" description="Measurement Entries Count">Messstellen</option>
+                          <option value="product" description="Product Entries Count">Produkte</option>
+                          <option value="energy" description="Energy Entries Count">Energiedaten</option>
+                          <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
+                          <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                      <label for="type_data_tile">Type of Data</label>
+                      <select class="form-control form-control-sm text-dark" id="type_data_tile">
+                          <option value="table">Table</option>
+                          <option value="chart">Chart</option>
+                      </select>
+                    </div>
+
+                    <div id="save_btn_tile_div">
+                      <input type="button" id="save_and_proceed_btn_dashboard" class="btn btn-sm btn-success save_and_proceed_btn_dashboard" value="Save & Proceed">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end -->
+
+
           <div class="row dashboard_count_div">
-            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">
                   <div id="mesurement_count_content" class="col-md-12">
-                      <p class="card-title text-md-center text-xl-left">Messstellen</p>
+                      <p class="card-title text-md-center text-xl-left" id="measuremet_dashboard_tile_title">Messstellen</p>
                       <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                         <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count"></h3>
                         <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
@@ -95,7 +150,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="product_count_div">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="product_count_div" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">
                   <div id="product_count_content" class="col-md-12">
@@ -114,7 +169,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="energy_count_div">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="energy_count_div" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_count_content">
@@ -132,7 +187,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="energy_consumed_div">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="energy_consumed_div" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_consumed_content"> 
@@ -153,7 +208,7 @@
               </div>
             </div>
             <!-- 27-7-2021 -->
-            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width  tiles-click" id="five_days_energy_consumed">
+            <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width  tiles-click" id="five_days_energy_consumed" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_consumed_five_day_content">

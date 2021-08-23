@@ -492,6 +492,17 @@ $(document).ready( function(){
                 $('#measurement_count_tile_modal').css('height',height);
                 $('#modal-width-input-measurement').val(width_input);
                 $('#measurement_count_tile_modal').css('width',width);
+
+                // <----20-8--2021---
+                var title = $('#title_modal_tile').val();
+                if(title == ''){
+                    var dashboard_tile_text = $('#measuremet_dashboard_tile_title').text();
+                    $('#measurement_tile_heading_modal').text(dashboard_tile_text);
+                }
+                else{
+                    $('#measurement_tile_heading_modal').text(title);
+                }
+                // --end-->
                 //console.log(JSON.parse(measurement_preview_data['height']));
             }
             //--end-->
@@ -524,7 +535,37 @@ $(document).ready( function(){
             $('.save_table_div_show').hide();
         }
     });
+
+
     // ---end--->
+
+    // <----20-8-2021--
+    // $(document).on('click', '.save_and_proceed_btn_dashboard', function(){
+    //     var title_modal_tile = $('#title_modal_tile').val();
+    //     if(title_modal_tile == ''){
+    //         alert('Tiitle Can not be Empty');
+    //         return false;
+    //     }
+    //     var record_type_of_tile =  $('#record_type_of_tile').val();
+    //     var type_data_tile = $('#type_data_tile').val();
+    //     if(record_type_of_tile == "measurement" && type_data_tile == "table"){
+    //         $('#tables_sidebar').click();
+    //         $('#measurement_sidebar_option').click();
+    //         $('#dashboard_tile_modal').modal('hide');
+    //     }
+    //     else if(record_type_of_tile == "product" && type_data_tile == "table"){
+    //         $('#tables_sidebar').click();
+    //         $('#product_sidebar_option').click();
+    //         $('#dashboard_tile_modal').modal('hide');
+    //     }
+    //     else if(record_type_of_tile == "energy" && type_data_tile == "table"){
+    //         $('#tables_sidebar').click();
+    //         $('#energy_sidebar_option').click();
+    //         $('#dashboard_tile_modal').modal('hide');
+    //     }
+    //     // $('#title_modal_tile').val('');
+    // });
+    // --end-->
 
 
     // <---12-8-2021----

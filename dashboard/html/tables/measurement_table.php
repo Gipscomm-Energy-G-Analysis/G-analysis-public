@@ -113,7 +113,7 @@
                               <div class="card card-border">
                                 <div class="card-body overflow-hide display-flex">
                                   <div id="" class="">
-                                      <p class="card-title text-md-center text-xl-left">Messstellen</p>
+                                      <p class="card-title text-md-center text-xl-left" id="measurement_tile_heading_modal">Messstellen</p>
                                       <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal" ></h3>
                                         <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
@@ -130,7 +130,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="product_count_tile_modal">
+                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="product_count_tile_modal" style="display: none">
                               <div class="card card-border">
                                 <div class="card-body overflow-hide display-flex">
                                   <div id="" class="">
@@ -152,7 +152,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="energy_count_tile_modal">
+                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="energy_count_tile_modal" style="display: none">
                               <div class="card card-border">
                                 <div class="card-body overflow-hide display-flex">
                                   <div class="" id="">
@@ -174,7 +174,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="energy_consumed_tile_modal">
+                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="energy_consumed_tile_modal" style="display: none">
                               <div class="card card-border">
                                 <div class=" card-body overflow-hide display-flex">
                                   <div class="" id=""> 
@@ -197,7 +197,7 @@
                               </div>
                             </div>
                             <!-- 27-7-2021 -->
-                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card" id="five_days_energy_consumed_tile_modal">
+                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card" id="five_days_energy_consumed_tile_modal" style="display: none">
                               <div class="card card-border">
                                 <div class="card-body overflow-hide display-flex">
                                   <div class="" id="">

@@ -535,7 +535,7 @@ class dashboardController {
 
                 //ScreenShot Code
                 $paginationHTMl.="<div id='save_table_format' class='text-center'>
-                                    <input type='button' id='modal_open_button' class='btn btn-sm btn-success' value='Preview'>
+                                    <input type='button' id='modal_open_button' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";            
                 return $paginationHTMl;
                 // $records['pagination_html'] = $paginationHTMl;
@@ -555,6 +555,7 @@ class dashboardController {
             $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' ";
             $dataResult = queryDB($conn, $getResult, "read");
             if($dataResult != '' && count($dataResult) > 0){
+                $records['data'] = $dataResult;
                 $dataMeasurement = '';
                 if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == ''){
                     //Seacrh Record 
@@ -728,7 +729,6 @@ class dashboardController {
         }
     }
     // --end-->
-    
 
     //Get Records Energy
     public function getNumberRecordsEnergy()
