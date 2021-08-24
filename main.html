@@ -184,28 +184,28 @@
                   </div>
                </li>
                <li>
-                  <a href="#" >Optionen</a>
+                  <a href="#" data-menus="4">Optionen</a>
                   <div>
                      <ul class="sub-menu">
                         <li>
-                           <a id="basisdatenLI" href="#">Basisdaten</a>
+                           <a id="basisdatenLI" href="#" data-menus="4-1">Basisdaten</a>
                            <ul>
-                              <li> <a id="entMenu" href="#">Energieträger</a> </li>
-                              <li> <a id="enfMenu" href="#">Energieformen</a> </li>
-                              <li> <a id="zpMenu" href="#">Zählpunktnummern</a> </li>
+                              <li> <a id="entMenu" href="#" data-menus="4-1-1">Energieträger</a> </li>
+                              <li> <a id="enfMenu" href="#" data-menus="4-1-2">Energieformen</a> </li>
+                              <li> <a id="zpMenu" href="#" data-menus="4-1-3">Zählpunktnummern</a> </li>
                               <li>
-                                 <a id="erwAnlMenu" href="#">Erweiterungen</a>
+                                 <a id="erwAnlMenu" href="#" data-menus="4-1-4">Erweiterungen</a>
                                  <ul>
-                                    <li> <a id="erwAnlMenu" href="#">Erweiterung Anlagen</a> </li>
-                                    <li> <a id="erwPrdMenu" href="#">Erweiterung Produkte</a> </li>
-                                    <li> <a id="korrekturFaktorMenu" href="#">statische Korrekturfaktoren</a> </li>
-                                    <li> <a id="korrekturFaktorMenuDynamischer" href="#">dynamischer Korrekturfaktoren</a> </li>
+                                    <li> <a id="erwAnlMenu" href="#" data-menus="4-1-4-1">Erweiterung Anlagen</a> </li>
+                                    <li> <a id="erwPrdMenu" href="#" data-menus="4-1-4-2">Erweiterung Produkte</a> </li>
+                                    <li> <a id="korrekturFaktorMenu" href="#" data-menus="4-1-4-3">statische Korrekturfaktoren</a> </li>
+                                    <li> <a id="korrekturFaktorMenuDynamischer" href="#" data-menus="4-1-4-4">dynamischer Korrekturfaktoren</a> </li>
                                  </ul>
                               </li>
-                              <li> <a id="grpDiagMenu" href="#">Gruppierung Diagramme</a> </li>
+                              <li> <a id="grpDiagMenu" href="#" data-menus="4-1-5">Gruppierung Diagramme</a> </li>
                            </ul>
                         </li>
-                        <li> <a id="schtDatMenu" href="#">Schichtdaten</a> </li>
+                        <li> <a id="schtDatMenu" href="#" data-menus="4-2">Schichtdaten</a> </li>
                      </ul>
                   </div>
                </li>
@@ -1705,7 +1705,8 @@
                            <img id="admPrevious" data-record="previous" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Admin" src="images/previous.png" alt="vorherige" /> 
                            <img id="admFirst" data-record="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Admin" src="images/first.png" alt="erste" />
                            <label>Betr. Gruppe:</label>
-                           <select class="betrPfad"></select>
+                           <input type="text" list="dataBetrGrpAdm" class="betrPfad">
+                           <datalist id="dataBetrGrpAdm" class="betrPfad"></datalist>
                            <label>Mandant/Gruppe:</label>
                            <select class="manGrpPfad"></select>
                         </div>
