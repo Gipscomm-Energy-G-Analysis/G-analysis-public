@@ -230,8 +230,8 @@ const scpRechteverwaltung_betreuergruppen =
                             $("#emailBetrGrp").val(betreuerGruppe.eMail)
                             $("#notizBetrGrp").val(betreuerGruppe.notiz)
                             $(".betrPfad").prop("selectedIndex", idx)
-                            $("#dataBetrGrpAdm").prop("selectedIndex", idx)
-                            $("#dataBetrGrpBen").prop("selectedIndex", idx)
+                            $(".dataBetrGrpAdm").prop("selectedIndex", idx)
+                            $(".dataBetrGrpBen").prop("selectedIndex", idx)
                             readIntoMandantenTable(betreuerGruppe)
 
                             setState("edit")

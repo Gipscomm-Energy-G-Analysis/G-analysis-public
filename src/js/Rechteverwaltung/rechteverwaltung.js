@@ -37,6 +37,7 @@ const scpRechteverwaltung =
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
                             , "#sAdmMenuLi"
+                            , ".hideBetrGrp"
                             ].forEach(hideElement)
                             break;
 
@@ -49,6 +50,7 @@ const scpRechteverwaltung =
                             , "#tabManGrp"
                             , "#admMenu"
                             , "#tabAdm"
+                            , ".hideBetrGrp"
                             ].forEach(hideElement)
                             break;
                             
