@@ -1613,7 +1613,8 @@ $(document).ready(function() {
     // Change Per Dropbox
     //
     $(".betrPfad").change(() => scpRechteverwaltung_betreuergruppen.readIntoFormFields($(".betrPfad").prop("selectedIndex")))
-    
+    $("#dataBetrGrpAdm").change(() => scpRechteverwaltung_betreuergruppen.readIntoFormFields($("#dataBetrGrpAdm").prop("selectedIndex")))
+    $("#dataBetrGrpBen").change(() => scpRechteverwaltung_betreuergruppen.readIntoFormFields($("#dataBetrGrpBen").prop("selectedIndex")))
     //
     // SuperAdmins
     //
