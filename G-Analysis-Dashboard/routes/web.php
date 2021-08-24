@@ -34,3 +34,9 @@ Route::post('/dashboard/tableColumn', [\App\Http\Controllers\DashboardController
 Route::post('/dashboard/saveFields', [\App\Http\Controllers\DashboardController::class, 'saveFields'])->name('saveFields');
 Route::get('/dashboard/group', [\App\Http\Controllers\DashboardController::class, 'getGroup'])->name('getGroup');
 Route::post('/dashboard/saveGroupOptions', [\App\Http\Controllers\DashboardController::class, 'saveGroupOptions'])->name('saveGroupOptions');
+Route::post('get-selected-configuration-data', [\App\Http\Controllers\GroupConfigurationController::class, 'getSelectedConfigurationData'])->name('getSelectedConfigurationData');
+Route::post('get-configuration-data', [\App\Http\Controllers\GroupConfigurationController::class, 'getConfigurationData'])->name('getConfigurationData');
+Route::post('save-configuration-data', [\App\Http\Controllers\GroupConfigurationController::class, 'saveConfigurationData'])->name('saveConfigurationData');
+Route::post('get-same-type-column', [\App\Http\Controllers\GroupConfigurationController::class, 'getSameTypeColumn'])->name('getSameTypeColumn');
+
+Route::get('get-custom-machine-data', [\App\Http\Controllers\DashboardController::class, 'getCustomTable'])->name('getCustomTable');

@@ -30,4 +30,17 @@ class ManageDatabaseController extends Controller
         }
         return ['code'=>401];
     }
+
+    public function checkDB($database){
+        $database = $_SESSION['nameDB'];
+        $username = $_SESSION['username'];
+        if($_SESSION['nameDB'] == 'gipscomm'){
+            $result = $this->switchDatabase($database);
+            $dBname = DB::table("Users")->select('nameDB')
+                     ->where('username',$username)->first();
+            $dBname   = (array)$dBname;
+            $database = $dBname['nameDB'];
+        }
+        return $database;
+    }
 }

@@ -14,7 +14,8 @@
     @include('partials.js-bar')
 
     @yield('jsContent')
-    @include('partials.footer')
+    
 </div>
+<!-- @include('partials.footer') -->
 </body>
 </html>
