@@ -730,6 +730,87 @@ class dashboardController {
     }
     // --end-->
 
+    // <---23-4-2021--
+    public function generateHtmlMeasurementTiles(){
+        try{
+            global $conn;
+            $measurement_title =  $_POST['measurement_title'];
+            $type =  $_POST['type'];
+            $getResult =  "SELECT * from tableFormat ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            if($dataResult != null && count($dataResult)>0){
+                for($i= 0; $i<=$total_result; $i++){
+                    $measurement_title = $total_result[$i]['tile_title'];
+                    $style= '';
+                    if($i == $total_result){
+                        $measurement_title = $_POST['measurement_title'];;
+                        $tileHtml .= "<input type='hidden' id='total_records' value='$total_result'>";
+                        $tileHtml.="<div class='measurement_html_modal_$i'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$i' data-i='$i'>
+                                    <div class='card card-border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                            <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                                <h3 class='mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal' ></h3>
+                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0'></i>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3'>
+                                                <div class='save_table_div_show_table'> 
+                                                    <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
+                    } 
+                    
+                    if($i < $total_result){
+                       $tileHtml.= $dataResult[$i]['tile_html'];
+                    } 
+                }
+                
+            }
+            else{
+                $tileHtml.="<div class='measurement_html_modal_$total_result'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$total_result' data-i='$total_result'>
+                                <input type='hidden' id='total_records' value='$total_result'>                
+                                <div class='card card-border'>
+                                    <div class='card-body overflow-hide display-flex'>
+                                        <div id='' class=''>
+                                            <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
+                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                            <h3 class='mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal' ></h3>
+                                            <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0'></i>
+                                            </div>  
+                                            <p class='mb-0 mt-2 text-success'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                        </div>
+                                        
+                                        <div class='overflow-hide ml-3'>
+                                            <div class='save_table_div_show_table'> 
+                                                <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
+                                                </table>                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div></div>";    
+            }
+            $records['tile_html'] = $tileHtml;
+            $records['data'] = $dataResult;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
     //Get Records Energy
     public function getNumberRecordsEnergy()
     {

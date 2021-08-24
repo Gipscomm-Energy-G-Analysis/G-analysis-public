@@ -408,14 +408,15 @@ $(document).ready( function(){
     // <---17-8-2021---
     $(document).on('blur change','#modal-height-input-measurement,#modal-width-input-measurement', function(){
         var id_val = $(this).attr('id');
+        var total_records = $('#total_records').val();
         var ar = [];
         if(id_val == "modal-height-input-measurement"){
-            $('#measurement_count_tile_modal').removeClass('col-md-3');
-            $('#measurement_count_tile_modal').removeClass('actual_tile_height');
+            $('#measurement_count_tile_modal_'+total_records).removeClass('col-md-3');
+            $('#measurement_count_tile_modal_'+total_records).removeClass('actual_tile_height');
             var height_val = $('#modal-height-input-measurement').val();
             if(height_val <= 0){
                 height_value = 145;
-                $('#measurement_count_tile_modal').css('height',height_value);
+                $('#measurement_count_tile_modal_'+total_records).css('height',height_value);
                 $('#modal-height-input-measurement-hidden').val(height_value);
 
             }
@@ -426,18 +427,18 @@ $(document).ready( function(){
                     height_value = 450;
                 }
 
-                $('#measurement_count_tile_modal').css('height',height_value);
+                $('#measurement_count_tile_modal_'+total_records).css('height',height_value);
                 $('#modal-height-input-measurement-hidden').val(height_value);
             }
         }
         else if(id_val == "modal-width-input-measurement")
         {
-            $('#measurement_count_tile_modal').removeClass('col-md-3');
-            $('#measurement_count_tile_modal').removeClass('actual_tile_width');
+            $('#measurement_count_tile_modal_'+total_records).removeClass('col-md-3');
+            $('#measurement_count_tile_modal_'+total_records).removeClass('actual_tile_width');
             var width_val = $('#modal-width-input-measurement').val();
             if(width_val <=0 ){
                 width_value = 285;
-                $('#measurement_count_tile_modal').css('width',width_value);
+                $('#measurement_count_tile_modal_'+total_records).css('width',width_value);
                 $('#modal-width-input-measurement-hidden').val(width_value);
                 // alert('Width Always be equal to greater than to actual Width');
                 // $('#modal-width-input-measurement').val(width_val);
@@ -447,7 +448,7 @@ $(document).ready( function(){
                 if(width_value >=1130){
                     width_value = 1130;
                 }
-                $('#measurement_count_tile_modal').css('width',width_value);
+                $('#measurement_count_tile_modal_'+total_records).css('width',width_value);
                 $('#modal-width-input-measurement-hidden').val(width_value);
             }
             
@@ -460,52 +461,54 @@ $(document).ready( function(){
         var tableLength = $('#mesurement_select_table_entries tr').length;
         if(parseInt(tableLength) <= 5){
             $('.bd-example-modal-lg').modal('show');
+            // <----20-8--2021---
+            var type = "measurement";
+            generateHtmlMeasurementTiles(type);
+            // --end-->
+            var last_div_index = $('#total_records').val();
             var table_html = $('#measurement_record_tb').html();
-            $('#measurement_modal_table').html(table_html);
-            $('#measurement_modal_table thead ,#measurement_modal_table tbody tr').removeAttr('class');
-            $('#measurement_modal_table tbody').removeAttr('id');
+            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table').html(table_html);
+            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table thead ,.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody tr').removeAttr('class');
+            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody').removeAttr('id');
 
             //<--Height width Set --
             var measurement_preview_data =  localStorage.getItem('measurement_preview_data');
-            if(measurement_preview_data != null && measurement_preview_data != undefined)
-            {   
-                measurement_preview_data = JSON.parse(measurement_preview_data);
-                height =  measurement_preview_data[0]['height'];
-                width = measurement_preview_data[0]['width'];
-                if(height <=145){
-                    var  height_input = "";
-                }
-                else{
-                    var  height_input = parseInt(height) - 145;
+            // if(measurement_preview_data != null && measurement_preview_data != undefined)
+            // {   
+            //     measurement_preview_data = JSON.parse(measurement_preview_data);
+            //     height =  measurement_preview_data[0]['height'];
+            //     width = measurement_preview_data[0]['width'];
+            //     if(height <=145){
+            //         var  height_input = "";
+            //     }
+            //     else{
+            //         var  height_input = parseInt(height) - 145;
                    
-                }
+            //     }
 
-                if(width <= 285)
-                {
-                    var  width_input = "";
-                }
-                else{
-                    var  width_input =  parseInt(width) - 285;
-                }
+            //     if(width <= 285)
+            //     {
+            //         var  width_input = "";
+            //     }
+            //     else{
+            //         var  width_input =  parseInt(width) - 285;
+            //     }
                 
-                $('#modal-height-input-measurement').val(height_input);
-                $('#measurement_count_tile_modal').css('height',height);
-                $('#modal-width-input-measurement').val(width_input);
-                $('#measurement_count_tile_modal').css('width',width);
+            //     $('#modal-height-input-measurement').val(height_input);
+            //     $('#measurement_count_tile_modal').css('height',height);
+            //     $('#modal-width-input-measurement').val(width_input);
+            //     $('#measurement_count_tile_modal').css('width',width);
 
-                // <----20-8--2021---
-                var title = $('#title_modal_tile').val();
-                if(title == ''){
-                    var dashboard_tile_text = $('#measuremet_dashboard_tile_title').text();
-                    $('#measurement_tile_heading_modal').text(dashboard_tile_text);
-                }
-                else{
-                    $('#measurement_tile_heading_modal').text(title);
-                }
-                // --end-->
-                //console.log(JSON.parse(measurement_preview_data['height']));
-            }
+            //     //console.log(JSON.parse(measurement_preview_data['height']));
+            // }
             //--end-->
+
+            // <---23-8-2021---
+            $('#modal-height-input-measurement-hidden').val(145);
+            $('#modal-height-input-measurement').val('');
+            $('#modal-width-input-measurement-hidden').val(285);
+            $('#modal-width-input-measurement').val('');
+            // --end-->
 
         }
         else{
@@ -540,31 +543,34 @@ $(document).ready( function(){
     // ---end--->
 
     // <----20-8-2021--
-    // $(document).on('click', '.save_and_proceed_btn_dashboard', function(){
-    //     var title_modal_tile = $('#title_modal_tile').val();
-    //     if(title_modal_tile == ''){
-    //         alert('Tiitle Can not be Empty');
-    //         return false;
-    //     }
-    //     var record_type_of_tile =  $('#record_type_of_tile').val();
-    //     var type_data_tile = $('#type_data_tile').val();
-    //     if(record_type_of_tile == "measurement" && type_data_tile == "table"){
-    //         $('#tables_sidebar').click();
-    //         $('#measurement_sidebar_option').click();
-    //         $('#dashboard_tile_modal').modal('hide');
-    //     }
-    //     else if(record_type_of_tile == "product" && type_data_tile == "table"){
-    //         $('#tables_sidebar').click();
-    //         $('#product_sidebar_option').click();
-    //         $('#dashboard_tile_modal').modal('hide');
-    //     }
-    //     else if(record_type_of_tile == "energy" && type_data_tile == "table"){
-    //         $('#tables_sidebar').click();
-    //         $('#energy_sidebar_option').click();
-    //         $('#dashboard_tile_modal').modal('hide');
-    //     }
-    //     // $('#title_modal_tile').val('');
-    // });
+    $(document).on('click', '.save_and_proceed_btn_dashboard', function(e){
+        var title_modal_tile = $('#title_modal_tile').val();
+        if(title_modal_tile == ''){
+            alert('Tiitle Can not be Empty');
+            return false;
+        
+        }
+        e.preventDefault();
+        var record_type_of_tile =  $('#record_type_of_tile').val();
+        var type_data_tile = $('#type_data_tile').val();
+        if(record_type_of_tile == "measurement" && type_data_tile == "table"){
+            $('#tables_sidebar').click();
+            $('#measurement_sidebar_option').click();
+            $('#dashboard_tile_modal').modal('hide');
+            localStorage.setItem('measurement_title_modal_tile',title_modal_tile);
+        }
+        else if(record_type_of_tile == "product" && type_data_tile == "table"){
+            $('#tables_sidebar').click();
+            $('#product_sidebar_option').click();
+            $('#dashboard_tile_modal').modal('hide');
+        }
+        else if(record_type_of_tile == "energy" && type_data_tile == "table"){
+            $('#tables_sidebar').click();
+            $('#energy_sidebar_option').click();
+            $('#dashboard_tile_modal').modal('hide');
+        }
+        $('#title_modal_tile').val('');
+    });
     // --end-->
 
 

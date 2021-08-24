@@ -108,12 +108,16 @@
 
                           </div>
                           <!-- --end -->
+                          <!-- 23-8-21 -->
+                          <div class="row dashboard_modal_tile gernerated_measurement_modal_tiles">
+                          </div>
+                          <!-- --end-- -->
                           <div class="row dashboard_modal_tile">
-                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="measurement_count_tile_modal">
+                            <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="measurement_count_tile_modal" style="display: none">
                               <div class="card card-border">
                                 <div class="card-body overflow-hide display-flex">
                                   <div id="" class="">
-                                      <p class="card-title text-md-center text-xl-left" id="measurement_tile_heading_modal">Messstellen</p>
+                                      <p class="card-title text-md-center text-xl-left" id="measurement_tile_heading_modal"></p>
                                       <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                         <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal" ></h3>
                                         <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>

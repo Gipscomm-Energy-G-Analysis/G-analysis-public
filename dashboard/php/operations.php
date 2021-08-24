@@ -53,28 +53,33 @@ class dashboardControllerOperations {
             $query_data_records = $queryData['query1']; 
             $query_max_val = $queryData['queryMaxValue'];
             $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_POST['height'];
+            $width = $_POST['width'];
+
+            // echo str_replace("total_records","",$html); die;
+
             
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
 
-            $getResult = "SELECT * FROM tableFormat where type='$type' ";
-            $gerRecords = queryDB($conn, $getResult, "read");
-            if($gerRecords != '' && count($gerRecords)  > 0){
-                $updateQuery = "UPDATE tableFormat set number_records = $number_records,pages_count = $pages_count,page_value = $page_value,row_click = '$row_click',query_data_records = '$query_data_records' ,query_max_val = '$query_max_val', tile_title='$title'  WHERE type = '$type' ";
-                $updateRecord = queryDB($conn, $updateQuery, "write");
-                if($updateQuery){
-                    return array('Staus' => 200 , 'Message' => 'Successfully Updated');
-                }
-            }
-            else{
-                $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title ) ";
-                $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title') ";
+            // $getResult = "SELECT * FROM tableFormat where type='$type' ";
+            // $gerRecords = queryDB($conn, $getResult, "read");
+            // if($gerRecords != '' && count($gerRecords)  > 0){
+            //     $updateQuery = "UPDATE tableFormat set number_records = $number_records,pages_count = $pages_count,page_value = $page_value,row_click = '$row_click',query_data_records = '$query_data_records' ,query_max_val = '$query_max_val', tile_title='$title'  WHERE type = '$type' ";
+            //     $updateRecord = queryDB($conn, $updateQuery, "write");
+            //     if($updateQuery){
+            //         return array('Staus' => 200 , 'Message' => 'Successfully Updated');
+            //     }
+            // }
+            // else{
+                $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width ) ";
+                $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width') ";
                 $insertRecord = queryDB($conn, $insertQuery, "write");
-                // echo json_encode($insertQuery); die;
                 if($insertQuery){
                     return array('Staus' => 200 , 'Message' => 'Successfully Inserted');
                 }
-            }
+            // }
 
             // echo json_encode($_REQUEST['query_data']); die;
             die;

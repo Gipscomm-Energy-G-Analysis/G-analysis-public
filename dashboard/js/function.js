@@ -246,11 +246,20 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,sele
 function saveTableFormat(type){
   var row_enteries_length = $('#mesurement_select_table_entries tr').length;
   var query_data = localStorage.getItem('query_data');
-  var tile_title = $('#title_modal_tile').val();
+  var tile_title = $('.measurement_html_modal_'+last_index_tile+' #measurement_tile_heading_modal').text();
+
+  
   if(query_data != undefined && query_data != null && query_data != '')
   {
     var measuremnt_table_height = $('#modal-height-input-measurement-hidden').val();
     var measurement_table_width = $('#modal-width-input-measurement-hidden').val();
+    //<--23-8-2021---
+    var last_index_tile = $('#total_records').val();
+    var tile_html = $('.measurement_html_modal_'+last_index_tile).html();
+    var tableHtml = $('.measurement_html_modal_'+last_index_tile+' table').html();
+    $('#total_records').remove();
+    var tile_html = tile_html.replace('total_records','');
+  // --end-->
     if(measuremnt_table_height != '' && measurement_table_width != ''){
       var measurement_preview_data = [];
       measurement_preview_data.push({'height':measuremnt_table_height,'width':measurement_table_width});
@@ -266,7 +275,13 @@ function saveTableFormat(type){
             action: "saveTableFormat",
             nameDB: $("#nameDashboardDB").val(),
             query_data : JSON.parse(query_data),
-            title : tile_title
+            title : tile_title,
+            tile_html : tile_html,
+            height: measuremnt_table_height,
+            width : measurement_table_width,
+            tableHtml : tableHtml
+
+
         },
         fail: function() {
             alert("failed!!")
@@ -328,13 +343,36 @@ function getTableFormatDashboard(){
     },
     success: function(a) {
       if(a['data'] != '' && a['data'] != null){
+        $('.dashboard_count_div').html('');
+        var arHtml = '';
         a['data'].forEach(value => {
-            if(value['type'] == "Measurement"){
-              $('#measuremet_dashboard_tile_title').text(value['tile_title']);
-              $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
-              $('#mesurement_count_div').show();
-            }
+            // if(value['type'] == "Measurement"){
+              // $('#measuremet_dashboard_tile_title').text(value['tile_title']);
+              // $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
+              // $('#mesurement_count_div').show();
+              //
+            // }
+            // console.log(value['id']);
+          arHtml +=value['tile_html'];
+          
         });
+        // $('#dashboard_count_div_tile').html(arHtml);
+        // $('#dashboard_count_div_tile .stretch-card').css('height',145);
+        // $('#dashboard_count_div_tile .stretch-card').css('width',285);
+
+        // $('#dashboard_count_div_tile .stretch-card').addClass('col-md-3');
+        // $('#dashboard_count_div_tile .stretch-card .card-body').addClass('row');
+        // $('#dashboard_count_div_tile .stretch-card .card-body div:first-child').addClass('col-md-12');
+
+        // $('#dashboard_count_div_tile .stretch-card .card-body').removeClass('overflow-hide display-flex');
+        // $('#dashboard_count_div_tile .stretch-card .card-body').removeClass('ml-3');
+
+        
+        // $('#dashboard_count_div_tile .stretch-card').removeClass('tile-click-table');
+        // $('#dashboard_count_div_tile .stretch-card').addClass('tiles-click');
+
+        // $('.save_table_div_show_table').hide();    
+    
         
       }else{
         $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
@@ -345,6 +383,32 @@ function getTableFormatDashboard(){
 
 }
 // --end--->
+
+// <---23-8-21--
+function generateHtmlMeasurementTiles(type){
+  var measurement_title = localStorage.getItem('measurement_title_modal_tile');
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "generateHtmlMeasurementTiles",
+        nameDB: $("#nameDashboardDB").val(),
+        measurement_title : measurement_title,
+        type : type
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      // console.log(a);
+       $('.gernerated_measurement_modal_tiles').html(a['tile_html']);
+    }
+  });
+
+  // --end-->
+}
 
 //Selected Number of Records Energy
 function getNumberRecordsEnergy(){

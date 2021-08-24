@@ -55,7 +55,7 @@
                     <input type="hidden" id="modal-open" value="false">
                     <div class="col-md-3 form-group">
                       <label for="title_modal_tile">Title Name</label>
-                      <input type="text" placeholder="title" id="title_modal_tile" class="form-control form-control-sm">
+                      <input type="text" placeholder="Title" name="title_modal_tile" required id="title_modal_tile" class="form-control form-control-sm">
                     </div>
                     <div class="form-group col-md-3">
                       <label for="record_type_of_tile">Type of Record</label>
@@ -91,7 +91,7 @@
           <!-- end -->
 
 
-          <div class="row dashboard_count_div">
+          <div class="row dashboard_count_div" id="dashboard_count_div_tile">
             <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">
