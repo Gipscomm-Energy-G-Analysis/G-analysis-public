@@ -367,8 +367,24 @@ $("#save_subgroup_options").on("click", function(e) {
     }
 });
 
+// const createSubGroupSelect = () => {
+//     let html = 
+//     $.each(data, function(key, value) {
+//         html += `<tr id="subrow${key}">
+//             <td>${key}</td>
+//             <td>
+//                 <div class="form-group ">
+//                     <label for="${value.option_name}" class="col-form-label group-label">${value.option_name}</label>
+//                     <input type="hidden" name="sub_group[]" class="form-control name_list" value="${value.option_name}" />
+//                     <button style="float:right;" type="button" name="remove" id="${key}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
+//                 </div>
+//             </td>
+//         </tr>`;
+//     });
+// }
 
-let createGroupTable = (data) => {
+
+const createGroupTable = (data) => {
     let html = '';
     $.each(data, function(key, value) {
         html += `<tr id="subrow${key}">

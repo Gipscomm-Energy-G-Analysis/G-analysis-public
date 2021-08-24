@@ -181,7 +181,7 @@ class DashboardController extends Controller
                    // if(!empty($primary_key)) {
                       //  $primary_key = $machineData->$primary_key;
                      //   $subGroupConfig = $this->getSubgroupData($subGroupId , $primary_key);
-                        $subGroupConfig = $this->getSubgroupData('194', '2');
+                        $subGroupConfig = $this->getSubgroupData('202', '2');
                   //  }
                     
                     return ['code'=>200, 'data' =>$prodData, 'dynamicData' => $customColumns ,'anl_ID'=>$machineData->anl_ID, 'subGroupConfig' => $subGroupConfig, 'message'=>'Data Retrived Successfully.'];

@@ -16,9 +16,9 @@ class UtilityController extends Controller
         $i = 0;
         foreach($data as $value) {
             if(++$i === $numItems) {
-                $query .= $value->column_name.' AS '.$value->label_name;
+                $query .= $value->column_name.' AS "'.$value->label_name.'" ';
             } else {
-                $query .= $value->column_name.' AS '.$value->label_name.', ';
+                $query .= $value->column_name.' AS "'.$value->label_name.'", ';
             }
         }
 
@@ -33,15 +33,15 @@ class UtilityController extends Controller
         foreach($data as $value) {
             if(++$i === $numItems) {
                 if(isset($query[$value->foreign_key])){
-                    $query[$value->foreign_key]['query'] .= $value->column_name.' AS '.$value->label_name;
+                    $query[$value->foreign_key]['query'] .= $value->column_name.' AS "'.$value->label_name.'" ';
                 } else {
-                    $query[$value->foreign_key]['query'] = $value->column_name.' AS '.$value->label_name;
+                    $query[$value->foreign_key]['query'] = $value->column_name.' AS "'.$value->label_name.'" ';
                 }
             } else {
                 if(isset($query[$value->foreign_key])){
-                    $query[$value->foreign_key]['query'] .= $value->column_name.' AS '.$value->label_name.', ';
+                    $query[$value->foreign_key]['query'] .= $value->column_name.' AS :'.$value->label_name.'", ';
                 } else {
-                    $query[$value->foreign_key]['query'] = $value->column_name.' AS '.$value->label_name.', ';
+                    $query[$value->foreign_key]['query'] = $value->column_name.' AS "'.$value->label_name.'", ';
                 }
             }
             $query[$value->foreign_key]['foreign_key'] = $value->foreign_key;

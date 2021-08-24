@@ -56,7 +56,7 @@ let showConfigrationTable = (data , label_data=false) => {
 }
 
 let showPrimaryKey = (data, selected) => {
-    let html = '';
+    let html = '<option value="">Select</option>';
     $.each(data, function(key, value) {
         if(value == selected) {
             html += `<option selected value="${value}">${value}</option>`;
@@ -69,7 +69,7 @@ let showPrimaryKey = (data, selected) => {
 }
 
 let showForeignKey = (data, selected) => {
-    let html = '';
+    let html = '<option value="">Select</option>';
     $.each(data, function(key, value) {
         if(value == selected) {
             html += `<option selected value="${value}">${value}</option>`;
@@ -224,8 +224,15 @@ $(document).on('change', '#select_primary_column', function() {
 
 
 $(document).on('change', '#primary_key_subGroup', function() {
+    let container = document.getElementById('spin_container');
+    spinner.spin(container);
     if ($('#select_group_table').val() == '') {
+        spinner.stop();
         toastr.warning('Please select Group Table!');
+        return false;
+    } else if ($(this).val() == '') {
+        spinner.stop();
+        toastr.warning('Please select Primary key!');
         return false;
     }
     $.ajax({
@@ -236,6 +243,7 @@ $(document).on('change', '#primary_key_subGroup', function() {
             'foreign_key_table':$('#select_group_table').val()
         },
         success:function(result) {
+            spinner.stop();
             if(result.status == 200) {
                 let html = '<option value="">Select</option>';
                 $.each(result.data, function(key, value) {
