@@ -10,7 +10,7 @@ require 'DbOperations.php' ;
 $nameDB = $_POST[ 'nameDB' ] ;
 $conn = connectToDB( $nameDB ) ;
 
-$query  = "SELECT * FROM betreuerGruppen WHERE deleted_at IS NULL" ;
+$query  = "SELECT * FROM betreuerGruppen WHERE deleted = 0" ;
 
 $records = queryDB( $conn, $query, "read" ) ;
 

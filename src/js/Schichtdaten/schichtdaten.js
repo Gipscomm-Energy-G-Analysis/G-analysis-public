@@ -135,6 +135,23 @@ const scpSchichtdaten =
                 () =>
                 $("#liegSchtDat").prop("checked")
 
+            // Sets that the record should have a lieg reference 
+            const enableLiegRef =
+                () =>
+                $(".schtDatLieg").css("display", "inline")
+
+            // Sets that the record should have no lieg reference
+            const disableLiegRef =
+                () =>
+                $(".schtDatLieg").css("display", "none")
+
+            // Enables / Disables lieg reference
+            this.setLiegRefState =
+                () =>
+                hasLiegRef() ?
+                enableLiegRef() :
+                disableLiegRef()
+
             // Enables/Disables the Gueltig Bis input depending
             // on the selection state of Ende offen
             this.endeOffenOrBis =
@@ -236,16 +253,8 @@ const scpSchichtdaten =
                     return !retVal
                 }
 
-            // Inserts data into a provided indexedDB store(table)
-            const dataIntoIDB =
-                data =>
-                store =>
-                ( idxDB[store].clear()
-                , idxDB[store].bulkPut(data[store])
-                )
-
             // Syncs the indexedDB with the sql srv DB
-            this.populateIndexedDB =
+            this.updateIndexedDB =
                 () =>
                 ajaxPost("php/Schichtdaten/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
                 .then(
@@ -254,7 +263,7 @@ const scpSchichtdaten =
                     , "schichten"
                     , "schichtModelleHist"
                     , "schichtenHist"
-                    ].forEach(dataIntoIDB(result))   
+                    ].forEach(scpIndexedDB.dataIntoIDB(result))   
                 )
 
             // Dialog which asks the user if the Schichtmodell should
@@ -297,7 +306,7 @@ const scpSchichtdaten =
                 formData =>
                 ajaxPost("php/Schichtdaten/saveSchichtdaten.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
-                .then(this.populateIndexedDB)
+                .then(this.updateIndexedDB)
                 .then(
                     () =>
                     equal($("#schtMdlState").val())("new") ?
@@ -529,9 +538,7 @@ const scpSchichtdaten =
                     count =>
                     greaterZero(count) ?
                     readIntoFormFields(decr(count)) :
-                    ( this.clearFields()
-                    , setState("new")
-                    )
+                    this.clearFields()
                 )
 
             // Deletes the current Schicht Modell(sets col deleted = true)
@@ -544,7 +551,7 @@ const scpSchichtdaten =
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
-                        , this.populateIndexedDB().then(this.readLast)
+                        , this.updateIndexedDB().then(this.readLast)
                         )
                     )
                 }

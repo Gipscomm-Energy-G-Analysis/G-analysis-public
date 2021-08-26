@@ -6,59 +6,14 @@ var anlageObj={};
 var allPrevVal = [];
 $(document).ready(function() {
     var c = this;
-    if(sessionStorage.getItem("position") == 'gipsAdm') {
-        var roleId = 1;
-        //alleNutzerRollenUndBerechtigungen(roleId);
-        mandantenEinlesen("alle", null, null);
-    } else if(sessionStorage.getItem("position") == 'sAdm') {
-        var roleId = 2;
-        var tableName = 'superAdmins';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID"));
-        $("#sdmRoles").css("display", "none");
-        $("#sAdmRollenUndBerechtigungen").css("display", "none");
-        $("#adminsRollenUndBerechtigungen").css("display", "none");
-        $("#superadmincommTreeview").css("display", "none");
-        $("#tabGipscAdm").css("display", "none");
-        $("#tabBetrGrp").css("display", "none");
-        $("#betrGrpMenu").css("display", "none");
-        $(".sAdmLiMenu").css("display", "none");
-        mandantenEinlesen($("#betrGrpID").val(), null, null);
-    } else if(sessionStorage.getItem("position") == 'adm') {
-        var roleId = 4;
-        var tableName = 'admins';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
-        $("#sAdmRollenUndBerechtigungen").css("display", "none");
-        $("#adminsRollenUndBerechtigungen").css("display", "none");
-        $("#superadmincommTreeview").css("display", "none");
-        $("#adminRoles").css("display", "none");
-        $("#admincommTreeview").css("display", "none");
-    } else if(sessionStorage.getItem("position") == 'ben') {
-        var roleId = 5;
-        var tableName = 'benutzer';
-        var userName = sessionStorage.getItem("username");
-        var userId = sessionStorage.getItem("position");
-        alleNutzerRollenUndBerechtigungen(userName, tableName, roleId, userId);
-        $("#benutzerRoles ").css("display", "none");
-        //mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID"));
-        $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")): $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID"));
-    } else {
-        var roleId = 3;
-        //alleNutzerRollenUndBerechtigungen(roleId);
-        mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0);
-    }
-    // "gipsAdm" == sessionStorage.getItem("position") ?
-    //  mandantenEinlesen("alle", null, null) : "sAdm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi").css("display", "none"), $("#tabBetrGrp, #tabGipscAdm").css("display", "none"), $("#betrGrpID").val(sessionStorage.getItem("betrGrp_ID")), mandantenEinlesen($("#betrGrpID").val(), null, null)) : "adm" == sessionStorage.getItem("position") ? ($("#betrGrpMenuLi, #sAdmMenuLi, #manGrpMenuLi, #admMenuLi").css("display",
-    //     "none"), $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabAdm").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ? mandantenEinlesen(null, "man_ID", sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0)) : "ben" == sessionStorage.getItem("position") && ($("#rechtMenuLi").css("display", "none"), $.isNumeric(sessionStorage.getItem("man_ID")) ?
-    //     mandantenEinlesen(null, "man_ID",
-    //     sessionStorage.getItem("man_ID")) : $.isNumeric(sessionStorage.getItem("manGrp_ID")) && mandantenEinlesen(null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")), readInstanzen("manFirst", 0));
+
+    scpRechteverwaltung
+    .actionUserPosition(sessionStorage.getItem("position"))
+
+    scpUnternehmensstruktur_mandanten
+    .populateIndexedDB()
+
     betrGrpEinlesen();
-    manGrpEinlesen();
     anlagenGruppenEinlesen();
     erweiterungenProdukteEinlesen();
     organisationenEinlesen();
@@ -81,13 +36,6 @@ $(document).ready(function() {
                 window.open("index.html", "_self")
             }
         })
-    });
-    $("input, select").focus(function() {
-        "" != this.id && null != this.id && "undefined" != this.id && (changeTracker.setChange(TrackValue.LABEL, $("label[for=" + this.id + "]").text()), changeTracker.setChange(TrackValue.FIELD_ID, this.id), changeTracker.setChange(TrackValue.OLD_VALUE, this.value))
-    });
-    $("input, select").change(function() {
-        changeTracker.setChange(TrackValue.NEW_VALUE, this.value);
-        changeTracker.setChanges()
     });
     $("#anlVersch").click(function() {
         $("#anlageVerschieben").dialog({
@@ -494,9 +442,7 @@ $(document).ready(function() {
         changeYear: !0
     });
     var g, h, b = !1;
-    betrParNavID = knzInsNavID = knzNavID = prdNavID = ePrdNavID = eAnlNavID = zpNavID = iMwNavID = eRngNavID = enfNavID = entNavID = anlNavID = msmNavID = stdDrNavID = stdNavID = mstENavID = mstBNavID = berNavID = extDlNavID = liegNavID = orgNavID = manNavID = benNavID = admNavID = manGrpNavID = gipscAdmNavID = sAdmNavID = betrGrpNavID = 0;
-    $("#sAdmID_1").val("");
-    $("#sAdmID_2").val("");
+    betrParNavID = knzInsNavID = knzNavID = prdNavID = ePrdNavID = eAnlNavID = zpNavID = iMwNavID = eRngNavID = enfNavID = entNavID = anlNavID = msmNavID = stdDrNavID = stdNavID = mstENavID = mstBNavID = berNavID = extDlNavID = liegNavID = orgNavID = manNavID = benNavID = admNavID = manGrpNavID = 0;
     $("#nameDB").val("");
     $("#manCount").val("");
     $("#orgCount").val("");
@@ -848,12 +794,6 @@ $(document).ready(function() {
             $(".manPfadEnt").css("display", "inline")
     });
     $(".manPfadEnt select").change(checkboxenDerEntEnfEinlesen($("#entManZuordnung")));
-    $("#manOrManGrp").change(function() {
-        toggleMandantOderMandantengruppe($(this).val())
-    });
-    $("#manZuManGrpHinz").click(function() {
-        mandantenAuswahllisteErstellen()
-    });
     $("#tagstromERng, #nachtstromERng").change(function() {
         var a = $("#tagstromERng").val(),
             b = $("#nachtstromERng").val(),
@@ -1393,8 +1333,7 @@ $(document).ready(function() {
     });
     /*new-mm-start 24-03-2021*/
     $("#extRngMenu, #intEngIMwMenu, #intBdeIMwMenu, #eRngVergleichMenu, #spaEfVTab1Menu, #spaEfVTab2Menu").click(function() {
-        $("#auswertungen").css("display",
-            "none");
+        $("#auswertungen").css("display", "none");
         $("#manuell").css("display", "block");
         $("#optionen").css("display", "none");
         $("#stammdaten").css("display", "none");
@@ -1487,77 +1426,6 @@ $(document).ready(function() {
     $("#knzSuchen").click(function() {
         kennzahlInstanzenlisteErstellen()
     });
-    $("#admSuchen").click(function() {
-        adminlisteErstellen()
-    });
-    $("#benSuchen").click(function() {
-        benutzerlisteErstellen()
-    });
-    $("#betrGrpSuchen").click(function() {
-        betrGrplisteErstellen()
-    });
-    $("#sAdmSuchen").click(function() {
-        sAdmSuchenlisteErstellen()
-    });
-    $("#gipscAdmSuchen").click(function() {
-        gipscAdmSuchenlisteErstellen()
-    });
-    $("#manGrpSuchen").click(function() {
-        manGrpSuchenlisteErstellen()
-    });
-
-
-    // Save Roles and Permissions
-    // $("#gipscommRollenUndBerechtigungen").click(function() {
-    //     gipscommRollenUndBerechtigungen()
-    // });
-    // $("#sAdmRollenUndBerechtigungen").click(function() {
-    //     sAdmRollenUndBerechtigungen()
-    // });
-    // $("#adminsRollenUndBerechtigungen").click(function() {
-    //     adminsRollenUndBerechtigungen()
-    // });
-    // $("#benutzerRollenUndBerechtigungen").click(function() {
-    //     benutzerRollenUndBerechtigungen()
-    // });
-
-    // Get Checked data from database
-    $("#gipscAdmLast, #gipscAdmNext, #gipscAdmPrevious, #gipscAdmFirst").click(function() {
-        gipscommGetRollenUndBerechtigungen()
-    });
-    $("#sAdmLast, #sAdmFirst, #sAdmPrevious, #sAdmNext").click(function() {
-        sAdmGetRollenUndBerechtigungen()
-    });
-    $("#admLast, #admNext, #admPrevious, #admFirst").click(function() {
-        adminsGetRollenUndBerechtigungen()
-    });
-    $("#benFirst, #benLast, #benNext, #benPrevious").click(function() {
-        benutzerGetRollenUndBerechtigungen()
-    });
-    $("#tabBetrGrp").on("click", function() {
-        $( "div#superadmincommTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-            treeObject,
-            {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
-    });
-    $("#tabAdm").on("click", function() {
-        $( "div#admincommTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-            treeObject,
-            {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("admincommTreeview").appendChild( tw.root	 )
-    });
-    $("#tabBen").on("click", function() {
-        $( "div#benutzerTreeview" ).empty();
-        var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-        var tw = new TreeView(
-            treeObject,
-            {showAlwaysCheckBox:true,fold:false});
-        document.getElementById("benutzerTreeview").appendChild( tw.root	 )
-    });
 
     $("#frmSuchenBerEdi").click(function() {
         var a = "";
@@ -1637,7 +1505,7 @@ $(document).ready(function() {
             b = parseInt(b) + parseInt($("#pruefzyklusPruefinformationenMsm").val());
         $("#naechstePruefungPruefinformationenMsm").val(a.substring(0, 6) + b)
     });
-    $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabBen, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag, #tabSchtDat, #tabSchtDatHist, #tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
+    $("#tabGipscAdm, #tabBetrGrp, #tabManGrp, #tabSAdm, #tabAdm, #tabBen, #tabMan, #tabOrg, #tabLieg, #tabExtDl, #tabStdDr, #tabBer, #tabMstE, #tabMstB, #tabStd, #tabMsm, #tabConfig, #tabDok_Msm, #tabHis_Msm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabKnz, #tabAlm, #tabExtRechnungen, #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabZp, #tabMgs, #tabGsf, #tabEng, #tabEAnl, #tabEPrd, #tabPrd, #tabPrd_historie, #tabBerechnungsformeln, #tabVorlagenformeln, #tabSpaEfV_Tbl1,#tabSpaEfV_Tbl2, #tabVerbrauchsdatenExp, #tabLnDiag, #tabTimeCompDiag,#tabAnl_energie, #tabAnl_weitereKonfig, tabAnl_dokumente, tabAnl_historie,#tabPrd_konfig, #tabDiagKnz, #tabGrpDiag, #tabSchtDat, #tabSchtDatHist, #tabTaschenrechner,#tabDynamicKorrekturFktr").click(function() {
         tabControlNav(this.id);
         addExtraWidthToDynamischeFaktor();
         if(this.id=='tabIntBetriebsdatenIMw'){
@@ -1655,39 +1523,242 @@ $(document).ready(function() {
         }
         /*new-mm-end 23-03-2021*/
     });
-    $("#gipscAdmFirst, #betrGrpFirst, #sAdmFirst, #manGrpFirst, #admFirst, #benFirst, #manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
-        "gipscAdmFirst" == this.id ? (gipscAdmNavID = 0, readInstanzen(this.id, gipscAdmNavID)) :
-            "betrGrpFirst" == this.id ? (betrGrpNavID = 0, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
-                "sAdmFirst" == this.id ? (sAdmNavID = 0, readInstanzen(this.id, sAdmNavID)) :
-                    "manGrpFirst" == this.id ? (manGrpNavID = 0, readInstanzen(this.id, manGrpNavID)) :
-                        "admFirst" == this.id ? (admNavID = 0, readInstanzen(this.id, admNavID)) :
-                            "benFirst" == this.id ? (benNavID = 0, readInstanzen(this.id, benNavID)) :
-                                "manFirst" == this.id ? (manNavID = 0, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
-                                    "orgFirst" == this.id ? (orgNavID = 0, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-                                        "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
-                                            "extDlFirst" == this.id ? (extDlNavID = 0, readInstanzen(this.id, extDlNavID)) :
-                                                "berFirst" == this.id ? (mstENavID = mstBNavID = berNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID)) :
-                                                    "mstEFirst" == this.id ? (mstENavID = 0, readInstanzen(this.id, mstENavID)) :
-                                                        "mstBFirst" == this.id ? (mstBNavID = 0, readInstanzen(this.id, mstBNavID)) :
-                                                            "stdFirst" == this.id ? (stdNavID = 0, readInstanzen(this.id, stdNavID)) :
-                                                                "stdDrFirst" == this.id ? (stdDrNavID = 0, readInstanzen(this.id, stdDrNavID)) :
-                                                                    "anlFirst" == this.id ? (anlNavID = 0, readInstanzen(this.id, anlNavID)) :
-                                                                        "msmFirst" == this.id ? (msmNavID = 0, readInstanzen(this.id, msmNavID)) :
-                                                                            "prdFirst" == this.id ? (prdNavID = 0, readInstanzen(this.id, prdNavID)) :
-                                                                                "entFirst" == this.id ? (entNavID = 0, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
-                                                                                    "enfFirst" == this.id ? (enfNavID = 0, readInstanzen(this.id, enfNavID)) :
-                                                                                        "eRngFirst" == this.id ? (eRngNavID = 0, readInstanzen(this.id, eRngNavID)) :
-                                                                                            "intEngIMwFirst" == this.id ? (g = 0, readInstanzen(this.id, g)) :
-                                                                                                "intBdeIMwFirst" == this.id ? (h = 0, readInstanzen(this.id, h)) :
-                                                                                                    "eAnlFirst" == this.id ? (eAnlNavID = 0, readInstanzen(this.id, eAnlNavID)) :
-                                                                                                        "ePrdFirst" == this.id ? (ePrdNavID = 0, readInstanzen(this.id, ePrdNavID)) :
-                                                                                                            "zpFirst" == this.id ? (zpNavID = 0, readInstanzen(this.id, zpNavID)) :
-                                                                                                                "knzFirst" == this.id ? (knzNavID = 0, readInstanzen(this.id, knzNavID)) :
-                                                                                                                    "betrParFirst" == this.id && (betrParNavID = 0, readInstanzen(this.id, betrParNavID));
+    $("#manFirst, #orgFirst, #liegFirst, #extDlFirst, #berFirst, #mstEFirst, #mstBFirst, #stdFirst, #stdDrFirst, #anlFirst, #msmFirst, #entFirst, #enfFirst, #eRngFirst, #intEngIMwFirst, #intBdeIMwFirst, #eAnlFirst, #ePrdFirst, #zpFirst, #prdFirst, #knzFirst, #betrParFirst").click(function() {
+        "manFirst" == this.id ? (manNavID = 0, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
+        "orgFirst" == this.id ? (orgNavID = 0, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "liegFirst" == this.id ? (liegNavID = 0, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
+        "extDlFirst" == this.id ? (extDlNavID = 0, readInstanzen(this.id, extDlNavID)) :
+        "berFirst" == this.id ? (mstENavID = mstBNavID = berNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID)) :
+        "mstEFirst" == this.id ? (mstENavID = 0, readInstanzen(this.id, mstENavID)) :
+        "mstBFirst" == this.id ? (mstBNavID = 0, readInstanzen(this.id, mstBNavID)) :
+        "stdFirst" == this.id ? (stdNavID = 0, readInstanzen(this.id, stdNavID)) :
+        "stdDrFirst" == this.id ? (stdDrNavID = 0, readInstanzen(this.id, stdDrNavID)) :
+        "anlFirst" == this.id ? (anlNavID = 0, readInstanzen(this.id, anlNavID)) :
+        "msmFirst" == this.id ? (msmNavID = 0, readInstanzen(this.id, msmNavID)) :
+        "prdFirst" == this.id ? (prdNavID = 0, readInstanzen(this.id, prdNavID)) :
+        "entFirst" == this.id ? (entNavID = 0, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
+        "enfFirst" == this.id ? (enfNavID = 0, readInstanzen(this.id, enfNavID)) :
+        "eRngFirst" == this.id ? (eRngNavID = 0, readInstanzen(this.id, eRngNavID)) :
+        "intEngIMwFirst" == this.id ? (g = 0, readInstanzen(this.id, g)) :
+        "intBdeIMwFirst" == this.id ? (h = 0, readInstanzen(this.id, h)) :
+        "eAnlFirst" == this.id ? (eAnlNavID = 0, readInstanzen(this.id, eAnlNavID)) :
+        "ePrdFirst" == this.id ? (ePrdNavID = 0, readInstanzen(this.id, ePrdNavID)) :
+        "zpFirst" == this.id ? (zpNavID = 0, readInstanzen(this.id, zpNavID)) :
+        "knzFirst" == this.id ? (knzNavID = 0, readInstanzen(this.id, knzNavID)) :
+        "betrParFirst" == this.id && (betrParNavID = 0, readInstanzen(this.id, betrParNavID));
         b = !1;
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
+
+    // Rechteverwaltung
+    //
+    // GipscommAdmins
+    //
+    // See Rechteverwaltung/gipscommAdmins.js
+    //
+    // Arrow Navigation
+    //
+    $("#gipscAdmFirst").click(scpRechteverwaltung_gipscommAdmins.readFirst)
+    $("#gipscAdmPrevious").click(scpRechteverwaltung_gipscommAdmins.readPrevious)
+    $("#gipscAdmNext").click(scpRechteverwaltung_gipscommAdmins.readNext)
+    $("#gipscAdmLast").click(scpRechteverwaltung_gipscommAdmins.readLast)
+    //
+    // Search Navigation
+    //
+    $("#gipscAdmSuchen").click(scpRechteverwaltung_gipscommAdmins.searchGipscommAdmin)
+    //
+    // Delete Record
+    //
+    $("#gipscAdmLoeschen").click(scpRechteverwaltung_gipscommAdmins.deleteGipscommAdmin)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#gipscAdmHinz").click(scpRechteverwaltung_gipscommAdmins.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#gipscAdmSpeichern").click(scpRechteverwaltung_gipscommAdmins.validateAndSaveFormData)
+    //
+    // Betreuergruppen
+    //
+    // See Rechteverwaltung/betreuergruppen.js
+    //
+    // Arrow Navigation
+    //
+    $("#betrGrpFirst").click(scpRechteverwaltung_betreuergruppen.readFirst)
+    $("#betrGrpPrevious").click(scpRechteverwaltung_betreuergruppen.readPrevious)
+    $("#betrGrpNext").click(scpRechteverwaltung_betreuergruppen.readNext)
+    $("#betrGrpLast").click(scpRechteverwaltung_betreuergruppen.readLast)
+    //
+    // Search Navigation
+    //
+    $("#betrGrpSuchen").click(scpRechteverwaltung_betreuergruppen.searchBetreuerGruppen)
+    //
+    // Delete Record
+    //
+    $("#betrGrpLoeschen").click(scpRechteverwaltung_betreuergruppen.deleteBetreuerGruppe)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#betrGrpHinz").click(scpRechteverwaltung_betreuergruppen.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#betrGrpSpeichern").click(scpRechteverwaltung_betreuergruppen.validateAndSaveFormData)
+    //
+    // Show Mandanten Selection Table
+    //
+    $("#manZuBetrGrpHinz").click(scpRechteverwaltung_betreuergruppen.showMandantenTablePopUp)
+    //
+    // Remove Mandant From DB Table
+    //
+    $("#tblMandantenBetrGrp tbody").on("dblclick", "tr", function() {
+        scpRechteverwaltung_betreuergruppen.removeFromMandantenTbl(this)
+    })
+    //
+    // Change Per Dropbox
+    //
+    $(".betrPfad").change(() => scpRechteverwaltung_betreuergruppen.readIntoFormFields($(".betrPfad").prop("selectedIndex")))
+
+    //
+    // SuperAdmins
+    //
+    // See Rechteverwaltung/superAdmins.js
+    //
+    // Arrow Navigation
+    //
+    $("#sAdmFirst").click(scpRechteverwaltung_superAdmins.readFirst)
+    $("#sAdmPrevious").click(scpRechteverwaltung_superAdmins.readPrevious)
+    $("#sAdmNext").click(scpRechteverwaltung_superAdmins.readNext)
+    $("#sAdmLast").click(scpRechteverwaltung_superAdmins.readLast)
+    //
+    // Search Navigation
+    //
+    $("#sAdmSuchen").click(scpRechteverwaltung_superAdmins.searchSuperAdmins)
+    //
+    // Delete Record
+    //
+    $("#sAdmLoeschen").click(scpRechteverwaltung_superAdmins.deleteSuperAdmin)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#sAdmHinz").click(scpRechteverwaltung_superAdmins.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#sAdmSpeichern").click(scpRechteverwaltung_superAdmins.validateAndSaveFormData)
+    //
+
+    //
+    // MandantenGruppen
+    //
+    // See Rechteverwaltung/mandantengruppen.js
+    //
+    // Arrow Navigation
+    //
+    $("#manGrpFirst").click(scpRechteverwaltung_mandantengruppen.readFirst)
+    $("#manGrpPrevious").click(scpRechteverwaltung_mandantengruppen.readPrevious)
+    $("#manGrpNext").click(scpRechteverwaltung_mandantengruppen.readNext)
+    $("#manGrpLast").click(scpRechteverwaltung_mandantengruppen.readLast)
+    //
+    // Search Navigation
+    //
+    $("#manGrpSuchen").click(scpRechteverwaltung_mandantengruppen.searchMandantenGruppen)
+    //
+    // Delete Record
+    //
+    $("#manGrpLoeschen").click(scpRechteverwaltung_mandantengruppen.deleteMandantenGruppe)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#manGrpHinz").click(scpRechteverwaltung_mandantengruppen.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#manGrpSpeichern").click(scpRechteverwaltung_mandantengruppen.validateAndSaveFormData)
+    //
+    // Show Mandanten Selection Table
+    //
+    $("#manZuManGrpHinz").click(scpRechteverwaltung_mandantengruppen.showMandantenTablePopUp)
+    //
+    // Remove Mandant From DB Table
+    //
+    $("#tblMandantengruppe tbody").on("dblclick", "tr", function() {
+        scpRechteverwaltung_mandantengruppen.removeFromMandantenTbl(this)
+    })
+
+    //
+    // Admins
+    //
+    // See Rechteverwaltung/admins.js
+    //
+    // Arrow Navigation
+    //
+    $("#admFirst").click(scpRechteverwaltung_admins.readFirst)
+    $("#admPrevious").click(scpRechteverwaltung_admins.readPrevious)
+    $("#admNext").click(scpRechteverwaltung_admins.readNext)
+    $("#admLast").click(scpRechteverwaltung_admins.readLast)
+    //
+    // Search Navigation
+    //
+    $("#admSuchen").click(scpRechteverwaltung_admins.search)
+    //
+    // Delete Record
+    //
+    $("#admLoeschen").click(scpRechteverwaltung_admins.delete)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#admHinz").click(scpRechteverwaltung_admins.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#admSpeichern").click(scpRechteverwaltung_admins.validateAndSave)
+    //
+    // If the Man or ManGrp is Changed, the first one is read in
+    //
+    $(".manGrpPfad").change(
+        function() {
+            $(".manGrpPfad").val(this.value)
+            scpRechteverwaltung_admins.readFirst()
+            scpRechteverwaltung_benutzer.readFirst()
+        }
+    )
+
+    //
+    // Benutzer
+    //
+    // See Rechteverwaltung/benutzer.js
+    //
+    // Arrow Navigation
+    //
+    $("#benFirst").click(scpRechteverwaltung_benutzer.readFirst)
+    $("#benPrevious").click(scpRechteverwaltung_benutzer.readPrevious)
+    $("#benNext").click(scpRechteverwaltung_benutzer.readNext)
+    $("#benLast").click(scpRechteverwaltung_benutzer.readLast)
+    //
+    // Search Navigation
+    //
+    $("#benSuchen").click(scpRechteverwaltung_benutzer.search)
+    //
+    // Delete Record
+    //
+    $("#benLoeschen").click(scpRechteverwaltung_benutzer.delete)
+    //
+    // Clear Fields For Creation Of New Record
+    //
+    $("#benHinz").click(scpRechteverwaltung_benutzer.clearFields)
+    //
+    // Create New Or Update Form Data After Form Validation
+    //
+    $("#benSpeichern").click(scpRechteverwaltung_benutzer.validateAndSave)
+    //
+    // If the Man or ManGrp is Changed, the first one is read in
+    //
+    // See Admins
+
+
     // Schichtdaten
     // See Schichtdaten/schichtdaten.js
     //
@@ -1729,101 +1800,83 @@ $(document).ready(function() {
     $("#schtDatHistSuchen").click(scpSchichtdaten_historie.searchSchichtModellHist)
     //
 
-    $("#gipscAdmPrevious, #betrGrpPrevious,#sAdmPrevious,#manGrpPrevious,#admPrevious, #benPrevious,#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
-        "gipscAdmPrevious" == this.id ? 0 < gipscAdmNavID && (gipscAdmNavID--, readInstanzen(this.id, gipscAdmNavID)) :
-            "betrGrpPrevious" == this.id ? 0 < betrGrpNavID && (betrGrpNavID--, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
-                "sAdmPrevious" == this.id ? 0 < sAdmNavID && (sAdmNavID--, readInstanzen(this.id, sAdmNavID)) :
-                    "manGrpPrevious" == this.id ? 0 < manGrpNavID && (manGrpNavID--, readInstanzen(this.id, manGrpNavID)) :
-                        "admPrevious" == this.id ? 0 < admNavID && (admNavID--, readInstanzen(this.id, admNavID)) :
-                            "benPrevious" == this.id ? 0 < benNavID && (benNavID--, readInstanzen(this.id, benNavID)) :
-                                "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() { organisationenEinlesen() }, 1500), readInstanzen("orgFirst", 0)) :
-                                    "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-                                        "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
-                                            "extDlPrevious" == this.id ? 0 < extDlNavID && (extDlNavID--, readInstanzen(this.id, extDlNavID)) :
-                                                "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen(this.id, berNavID)) :
-                                                    "mstEPrevious" == this.id ? 0 < mstENavID && (mstENavID--, readInstanzen(this.id, mstENavID)) :
-                                                        "mstBPrevious" == this.id ? 0 < mstBNavID && (mstBNavID--, readInstanzen(this.id, mstBNavID)) :
-                                                            "stdPrevious" == this.id ? 0 < stdNavID && (stdNavID--, readInstanzen(this.id, stdNavID)) :
-                                                                "stdDrPrevious" == this.id ? 0 < stdDrNavID && (stdDrNavID--, readInstanzen(this.id, stdDrNavID)) :
-                                                                    "anlPrevious" == this.id ? 0 < anlNavID && (anlNavID--, readInstanzen(this.id, anlNavID)) :
-                                                                        "msmPrevious" == this.id ? 0 < msmNavID && (msmNavID--, readInstanzen(this.id, msmNavID)) :
-                                                                            "prdPrevious" == this.id ? 0 < prdNavID && (prdNavID--, readInstanzen(this.id, prdNavID)) :
-                                                                                "entPrevious" == this.id ? 0 < entNavID && (entNavID--, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
-                                                                                    "enfPrevious" == this.id ? 0 < enfNavID && (enfNavID--, readInstanzen(this.id, enfNavID)) :
-                                                                                        "eRngPrevious" == this.id ? 0 < eRngNavID && (eRngNavID--, readInstanzen(this.id, eRngNavID)) :
-                                                                                            "intEngIMwPrevious" == this.id ? 0 < g && (g--, readInstanzen(this.id, g)) :
-                                                                                                "intBdeIMwPrevious" == this.id ? 0 < h && (h--, readInstanzen(this.id, h)) :
-                                                                                                    "eAnlPrevious" == this.id ? 0 < eAnlNavID && (eAnlNavID--, readInstanzen(this.id, eAnlNavID)) :
-                                                                                                        "ePrdPrevious" == this.id ? 0 < ePrdNavID && (ePrdNavID--, readInstanzen(this.id, ePrdNavID)) :
-                                                                                                            "zpPrevious" == this.id ? 0 < zpNavID && (zpNavID--, readInstanzen(this.id, zpNavID)) :
-                                                                                                                "knzPrevious" == this.id ? 0 < knzNavID && (knzNavID--, readInstanzen(this.id, knzNavID)) :
-                                                                                                                    "betrParPrevious" == this.id && 0 < betrParNavID && (betrParNavID--, readInstanzen(this.id, betrParNavID));
+    $("#manPrevious, #orgPrevious, #liegPrevious, #extDlPrevious, #berPrevious, #mstEPrevious, #mstBPrevious, #stdPrevious, #stdDrPrevious, #anlPrevious, #msmPrevious, #entPrevious, #enfPrevious, #eRngPrevious, #intEngIMwPrevious, #intBdeIMwPrevious, #eAnlPrevious, #ePrdPrevious, #zpPrevious, #prdPrevious, #knzPrevious, #betrParPrevious").click(function() {
+        "manPrevious" == this.id ? 0 < manNavID && (manNavID--, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), setTimeout(function() { organisationenEinlesen() }, 1500), readInstanzen("orgFirst", 0)) :
+        "orgPrevious" == this.id ? 0 < orgNavID && (orgNavID--, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "liegPrevious" == this.id ? 0 < liegNavID && (liegNavID--, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
+        "extDlPrevious" == this.id ? 0 < extDlNavID && (extDlNavID--, readInstanzen(this.id, extDlNavID)) :
+        "berPrevious" == this.id ? 0 < berNavID && (berNavID--, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstHinz"), readInstanzen(this.id, berNavID)) :
+        "mstEPrevious" == this.id ? 0 < mstENavID && (mstENavID--, readInstanzen(this.id, mstENavID)) :
+        "mstBPrevious" == this.id ? 0 < mstBNavID && (mstBNavID--, readInstanzen(this.id, mstBNavID)) :
+        "stdPrevious" == this.id ? 0 < stdNavID && (stdNavID--, readInstanzen(this.id, stdNavID)) :
+        "stdDrPrevious" == this.id ? 0 < stdDrNavID && (stdDrNavID--, readInstanzen(this.id, stdDrNavID)) :
+        "anlPrevious" == this.id ? 0 < anlNavID && (anlNavID--, readInstanzen(this.id, anlNavID)) :
+        "msmPrevious" == this.id ? 0 < msmNavID && (msmNavID--, readInstanzen(this.id, msmNavID)) :
+        "prdPrevious" == this.id ? 0 < prdNavID && (prdNavID--, readInstanzen(this.id, prdNavID)) :
+        "entPrevious" == this.id ? 0 < entNavID && (entNavID--, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
+        "enfPrevious" == this.id ? 0 < enfNavID && (enfNavID--, readInstanzen(this.id, enfNavID)) :
+        "eRngPrevious" == this.id ? 0 < eRngNavID && (eRngNavID--, readInstanzen(this.id, eRngNavID)) :
+        "intEngIMwPrevious" == this.id ? 0 < g && (g--, readInstanzen(this.id, g)) :
+        "intBdeIMwPrevious" == this.id ? 0 < h && (h--, readInstanzen(this.id, h)) :
+        "eAnlPrevious" == this.id ? 0 < eAnlNavID && (eAnlNavID--, readInstanzen(this.id, eAnlNavID)) :
+        "ePrdPrevious" == this.id ? 0 < ePrdNavID && (ePrdNavID--, readInstanzen(this.id, ePrdNavID)) :
+        "zpPrevious" == this.id ? 0 < zpNavID && (zpNavID--, readInstanzen(this.id, zpNavID)) :
+        "knzPrevious" == this.id ? 0 < knzNavID && (knzNavID--, readInstanzen(this.id, knzNavID)) :
+        "betrParPrevious" == this.id && 0 < betrParNavID && (betrParNavID--, readInstanzen(this.id, betrParNavID));
         b = !1;
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmNext, #betrGrpNext,#sAdmNext,#manGrpNext,#admNext,#benNext,#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
-        "gipscAdmNext" == this.id ? gipscAdmNavID < $("#gipscAdmCount").val() - 1 && (gipscAdmNavID++, readInstanzen(this.id, gipscAdmNavID)) :
-            "betrGrpNext" == this.id ? betrGrpNavID < $("#betrGrpCount").val() - 1 && (betrGrpNavID++, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
-                "sAdmNext" == this.id ? sAdmNavID < $("#sAdmCount").val() - 1 && (sAdmNavID++, readInstanzen(this.id, sAdmNavID)) :
-                    "manGrpNext" == this.id ? manGrpNavID < $("#manGrpCount").val() - 1 && (manGrpNavID++, readInstanzen(this.id, manGrpNavID)) :
-                        "admNext" == this.id ? admNavID < $("#admCount").val() - 1 && (admNavID++, readInstanzen(this.id, admNavID)) :
-                            "benNext" == this.id ? benNavID < $("#benCount").val() - 1 && (benNavID++, readInstanzen(this.id, benNavID)) :
-                                "manNext" == this.id ? manNavID < $("#manCount").val() - 1 && (manNavID++, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
-                                    "orgNext" == this.id ? orgNavID < $("#orgCount").val() - 1 && (orgNavID++, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-                                        "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
-                                            "extDlNext" == this.id ? extDlNavID < $("#extDlCount").val() - 1 && (extDlNavID++, readInstanzen(this.id, extDlNavID)) :
-                                                "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstHinz")) :
-                                                    "mstENext" == this.id ? mstENavID < $("#mstECount").val() - 1 && (mstENavID++, readInstanzen(this.id, mstENavID)) :
-                                                        "mstBNext" == this.id ? mstBNavID < $("#mstBCount").val() - 1 && (mstBNavID++, readInstanzen(this.id, mstBNavID)) :
-                                                            "stdNext" == this.id ? stdNavID < $("#stdCount").val() - 1 && (stdNavID++, readInstanzen(this.id, stdNavID)) :
-                                                                "stdDrNext" == this.id ? stdDrNavID < $("#stdDrCount").val() - 1 && (stdDrNavID++, readInstanzen(this.id, stdDrNavID)) :
-                                                                    "anlNext" == this.id ? anlNavID < $("#anlCount").val() - 1 && (anlNavID++, readInstanzen(this.id, anlNavID)) :
-                                                                        "msmNext" == this.id ? msmNavID < $("#msmCount").val() - 1 && (msmNavID++, readInstanzen(this.id, msmNavID)) :
-                                                                            "prdNext" == this.id ? prdNavID < $("#prdCount").val() - 1 && (prdNavID++, readInstanzen(this.id, prdNavID)) :
-                                                                                "entNext" == this.id ? entNavID < $("#entCount").val() - 1 && (entNavID++, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
-                                                                                    "enfNext" == this.id ? enfNavID < $("#enfCount").val() - 1 && (enfNavID++, readInstanzen(this.id, enfNavID)) :
-                                                                                        "eRngNext" == this.id ? eRngNavID < $("#eRngCount").val() - 1 && (eRngNavID++, readInstanzen(this.id, eRngNavID)) :
-                                                                                            "intEngIMwNext" == this.id ? g < $("#intEngIMwCount").val() - 1 && (g++, readInstanzen(this.id, g)) :
-                                                                                                "intBdeIMwNext" == this.id ? h < $("#intBdeIMwCount").val() - 1 && (h++, readInstanzen(this.id, h)) :
-                                                                                                    "eAnlNext" == this.id ? eAnlNavID < $("#eAnlCount").val() - 1 && (eAnlNavID++, readInstanzen(this.id, eAnlNavID)) :
-                                                                                                        "ePrdNext" == this.id ? ePrdNavID < $("#ePrdCount").val() - 1 && (ePrdNavID++, readInstanzen(this.id, ePrdNavID)) :
-                                                                                                            "zpNext" == this.id ? zpNavID < $("#zpCount").val() - 1 && (zpNavID++, readInstanzen(this.id, zpNavID)) :
-                                                                                                                "knzNext" == this.id ? knzNavID < $("#knzInsCount").val() - 1 && (knzNavID++, readInstanzen(this.id, knzNavID)) :
-                                                                                                                    "betrParNext" == this.id && betrParNavID < $("#betrParCount").val() - 1 && (betrParNavID++, readInstanzen(this.id, betrParNavID));
+    $("#manNext, #orgNext, #liegNext, #extDlNext, #berNext, #mstENext, #mstBNext, #stdNext, #stdDrNext, #anlNext, #msmNext, #entNext, #enfNext, #eRngNext, #intEngIMwNext, #intBdeIMwNext, #eAnlNext, #ePrdNext, #zpNext, #prdNext, #knzNext, #betrParNext").click(function() {
+        "manNext" == this.id ? manNavID < $("#manCount").val() - 1 && (manNavID++, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
+        "orgNext" == this.id ? orgNavID < $("#orgCount").val() - 1 && (orgNavID++, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "liegNext" == this.id ? liegNavID < $("#liegCount").val() - 1 && (liegNavID++, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen(), readInstanzen("stdFirst", 0)) :
+        "extDlNext" == this.id ? extDlNavID < $("#extDlCount").val() - 1 && (extDlNavID++, readInstanzen(this.id, extDlNavID)) :
+        "berNext" == this.id ? berNavID < $("#berCount").val() - 1 && (berNavID++, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstHinz")) :
+        "mstENext" == this.id ? mstENavID < $("#mstECount").val() - 1 && (mstENavID++, readInstanzen(this.id, mstENavID)) :
+        "mstBNext" == this.id ? mstBNavID < $("#mstBCount").val() - 1 && (mstBNavID++, readInstanzen(this.id, mstBNavID)) :
+        "stdNext" == this.id ? stdNavID < $("#stdCount").val() - 1 && (stdNavID++, readInstanzen(this.id, stdNavID)) :
+        "stdDrNext" == this.id ? stdDrNavID < $("#stdDrCount").val() - 1 && (stdDrNavID++, readInstanzen(this.id, stdDrNavID)) :
+        "anlNext" == this.id ? anlNavID < $("#anlCount").val() - 1 && (anlNavID++, readInstanzen(this.id, anlNavID)) :
+        "msmNext" == this.id ? msmNavID < $("#msmCount").val() - 1 && (msmNavID++, readInstanzen(this.id, msmNavID)) :
+        "prdNext" == this.id ? prdNavID < $("#prdCount").val() - 1 && (prdNavID++, readInstanzen(this.id, prdNavID)) :
+        "entNext" == this.id ? entNavID < $("#entCount").val() - 1 && (entNavID++, readInstanzen(this.id, entNavID), $("#modusVers").val("alt")) :
+        "enfNext" == this.id ? enfNavID < $("#enfCount").val() - 1 && (enfNavID++, readInstanzen(this.id, enfNavID)) :
+        "eRngNext" == this.id ? eRngNavID < $("#eRngCount").val() - 1 && (eRngNavID++, readInstanzen(this.id, eRngNavID)) :
+        "intEngIMwNext" == this.id ? g < $("#intEngIMwCount").val() - 1 && (g++, readInstanzen(this.id, g)) :
+        "intBdeIMwNext" == this.id ? h < $("#intBdeIMwCount").val() - 1 && (h++, readInstanzen(this.id, h)) :
+        "eAnlNext" == this.id ? eAnlNavID < $("#eAnlCount").val() - 1 && (eAnlNavID++, readInstanzen(this.id, eAnlNavID)) :
+        "ePrdNext" == this.id ? ePrdNavID < $("#ePrdCount").val() - 1 && (ePrdNavID++, readInstanzen(this.id, ePrdNavID)) :
+        "zpNext" == this.id ? zpNavID < $("#zpCount").val() - 1 && (zpNavID++, readInstanzen(this.id, zpNavID)) :
+        "knzNext" == this.id ? knzNavID < $("#knzInsCount").val() - 1 && (knzNavID++, readInstanzen(this.id, knzNavID)) :
+        "betrParNext" == this.id && betrParNavID < $("#betrParCount").val() - 1 && (betrParNavID++, readInstanzen(this.id, betrParNavID));
         b = !1;
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
     });
-    $("#gipscAdmLast, #betrGrpLast,#sAdmLast,#manGrpLast,#admLast,#benLast,#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
-        "gipscAdmLast" == this.id ? (gipscAdmNavID = $("#gipscAdmCount").val() - 1, readInstanzen(this.id, gipscAdmNavID)) :
-            "betrGrpLast" == this.id ? (betrGrpNavID = $("#betrGrpCount").val() - 1, $(".betrPfad").prop("selectedIndex", betrGrpNavID), readInstanzen(this.id, betrGrpNavID)) :
-                "sAdmLast" == this.id ? (sAdmNavID = $("#sAdmCount").val() - 1, readInstanzen(this.id, sAdmNavID)) :
-                    "manGrpLast" == this.id ? (manGrpNavID = $("#manGrpCount").val() - 1, readInstanzen(this.id, manGrpNavID)) :
-                        "admLast" == this.id ? (admNavID = $("#admCount").val() - 1, readInstanzen(this.id, admNavID)) :
-                            "benLast" == this.id ? (benNavID = $("#benCount").val() - 1, readInstanzen(this.id, benNavID)) :
-                                "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
-                                    "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
-                                        "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen()) :
-                                            "extDlLast" == this.id ? (extDlNavID = $("#extDlCount").val() - 1, readInstanzen(this.id, extDlNavID)) :
-                                                "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstEHinz"), clearFields("mstBHinz")) :
-                                                    "mstELast" == this.id ? (mstENavID = $("#mstECount").val() - 1, readInstanzen(this.id, mstENavID)) :
-                                                        "mstBLast" == this.id ? (mstBNavID = $("#mstBCount").val() - 1, readInstanzen(this.id, mstBNavID)) :
-                                                            "stdLast" == this.id ? (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) :
-                                                                "stdDrLast" == this.id ? (stdDrNavID = $("#stdDrCount").val() - 1, readInstanzen(this.id, stdDrNavID)) :
-                                                                    "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID)) :
-                                                                        "msmLast" == this.id ? (msmNavID = $("#msmCount").val() - 1, readInstanzen(this.id, msmNavID)) :
-                                                                            "prdLast" == this.id ? (prdNavID = $("#prdCount").val() - 1, readInstanzen(this.id, prdNavID)) :
-                                                                                "entLast" == this.id ? (entNavID = $("#entCount").val() - 1, enfNavID = 0, readInstanzen(this.id, entNavID), clearFields("enfHinz"), readInstanzen("enfFirst", 0), $("#modusVers").val("alt")) :
-                                                                                    "enfLast" == this.id ? (enfNavID = $("#enfCount").val() - 1, readInstanzen(this.id, enfNavID)) :
-                                                                                        "eRngLast" == this.id ? (eRngNavID = $("#eRngCount").val() - 1, readInstanzen(this.id, eRngNavID)) :
-                                                                                            "intEngIMwLast" == this.id ? (g = $("#intEngIMwCount").val() - 1, readInstanzen(this.id, g)) :
-                                                                                                "intBdeIMwLast" == this.id ? (h = $("#intBdeIMwCount").val() - 1, readInstanzen(this.id, h)) :
-                                                                                                    "eAnlLast" == this.id ? (eAnlNavID = $("#eAnlCount").val() - 1, readInstanzen(this.id, eAnlNavID)) :
-                                                                                                        "ePrdLast" == this.id ? (ePrdNavID = $("#ePrdCount").val() - 1, readInstanzen(this.id, ePrdNavID)) :
-                                                                                                            "zpLast" == this.id ? (zpNavID = $("#zpCount").val() - 1, readInstanzen(this.id, zpNavID)) :
-                                                                                                                "knzLast" == this.id ? (knzNavID = $("#knzInsCount").val() - 1, readInstanzen(this.id, knzNavID)) :
-                                                                                                                    "betrParLast" == this.id && (betrParNavID = $("#betrParCount").val() - 1, readInstanzen(this.id, betrParNavID));
+    $("#manLast, #orgLast, #liegLast, #extDlLast, #berLast, #mstELast, #mstBLast, #stdLast, #stdDrLast, #anlLast, #msmLast, #entLast, #enfLast, #eRngLast, #intEngIMwLast, #intBdeIMwLast, #eAnlLast, #ePrdLast, #zpLast, #prdLast, #knzLast, #betrParLast").click(function() {
+        "manLast" == this.id ? (manNavID = $("#manCount").val() - 1, $(".manPfad").prop("selectedIndex", manNavID), readInstanzen(this.id, manNavID), organisationenEinlesen(), readInstanzen("orgFirst", 0)) :
+        "orgLast" == this.id ? (orgNavID = $("#orgCount").val() - 1, $(".orgPfad").prop("selectedIndex", orgNavID), readInstanzen(this.id, orgNavID), liegenschaftenEinlesen(), readInstanzen("liegFirst", 0)) :
+        "liegLast" == this.id ? (liegNavID = $("#liegCount").val() - 1, $(".liegPfad").prop("selectedIndex", liegNavID), readInstanzen(this.id, liegNavID), bereicheEinlesen()) :
+        "extDlLast" == this.id ? (extDlNavID = $("#extDlCount").val() - 1, readInstanzen(this.id, extDlNavID)) :
+        "berLast" == this.id ? (berNavID = $("#berCount").val() - 1, mstENavID = mstBNavID = 0, $(".berPfad").prop("selectedIndex", berNavID), readInstanzen(this.id, berNavID), clearFields("mstEHinz"), clearFields("mstBHinz")) :
+        "mstELast" == this.id ? (mstENavID = $("#mstECount").val() - 1, readInstanzen(this.id, mstENavID)) :
+        "mstBLast" == this.id ? (mstBNavID = $("#mstBCount").val() - 1, readInstanzen(this.id, mstBNavID)) :
+        "stdLast" == this.id ? (stdNavID = $("#stdCount").val() - 1, readInstanzen(this.id, stdNavID)) :
+        "stdDrLast" == this.id ? (stdDrNavID = $("#stdDrCount").val() - 1, readInstanzen(this.id, stdDrNavID)) :
+        "anlLast" == this.id ? (anlNavID = $("#anlCount").val() - 1, readInstanzen(this.id, anlNavID)) :
+        "msmLast" == this.id ? (msmNavID = $("#msmCount").val() - 1, readInstanzen(this.id, msmNavID)) :
+        "prdLast" == this.id ? (prdNavID = $("#prdCount").val() - 1, readInstanzen(this.id, prdNavID)) :
+        "entLast" == this.id ? (entNavID = $("#entCount").val() - 1, enfNavID = 0, readInstanzen(this.id, entNavID), clearFields("enfHinz"), readInstanzen("enfFirst", 0), $("#modusVers").val("alt")) :
+        "enfLast" == this.id ? (enfNavID = $("#enfCount").val() - 1, readInstanzen(this.id, enfNavID)) :
+        "eRngLast" == this.id ? (eRngNavID = $("#eRngCount").val() - 1, readInstanzen(this.id, eRngNavID)) :
+        "intEngIMwLast" == this.id ? (g = $("#intEngIMwCount").val() - 1, readInstanzen(this.id, g)) :
+        "intBdeIMwLast" == this.id ? (h = $("#intBdeIMwCount").val() - 1, readInstanzen(this.id, h)) :
+        "eAnlLast" == this.id ? (eAnlNavID = $("#eAnlCount").val() - 1, readInstanzen(this.id, eAnlNavID)) :
+        "ePrdLast" == this.id ? (ePrdNavID = $("#ePrdCount").val() - 1, readInstanzen(this.id, ePrdNavID)) :
+        "zpLast" == this.id ? (zpNavID = $("#zpCount").val() - 1, readInstanzen(this.id, zpNavID)) :
+        "knzLast" == this.id ? (knzNavID = $("#knzInsCount").val() - 1, readInstanzen(this.id, knzNavID)) :
+        "betrParLast" == this.id && (betrParNavID = $("#betrParCount").val() - 1, readInstanzen(this.id, betrParNavID));
         b = !1;
         $(".lblNeu").css("display", "none");
         $(".lblAendern").css("display", "inline")
@@ -1913,36 +1966,6 @@ $(document).ready(function() {
     $("#tblOptionenEPrd tbody").on("dblclick", "tr", function() {
         tblOptionenEPrd.row(this).remove().draw()
     });
-    $("#tabAdm, #admMenu").click(function() {
-        manGrpEinlesen();
-    });
-    $(".betrPfad").change(function() {
-
-        $(".betrPfad").val($(this).val());
-
-        $("#betrGrpID").val(betrGrpListe[$(".betrPfad").prop("selectedIndex")].betrGrpID);
-        readInstanzen("betrGrpFirst", $(".betrPfad").prop("selectedIndex"));
-        readInstanzen("sAdmFirst", 0);
-        //manGrpEinlesen();
-    });
-    $(".manGrpPfad").change(function() {
-        $(".manGrpPfad").val($(this).val());
-
-        var a = $(".manGrpPfad  option").eq($(".manGrpPfad").prop("selectedIndex")).prop("id").split("_");
-
-        $("#manOderManGrp").val(a[0]);
-
-        if (head(a) === "optManGrp") {
-            $("#manGrpID").val(manGrpListe[last(a)].manGrpID)
-            readInstanzen("manGrpFirst", $(".manGrpPfad").prop("selectedIndex"))
-        }
-        else {
-            $("#manBID").val($(this).find('option:selected').data('id'));
-            //$("#manRechteID").val(mandantenliste[last(a)].manID)
-        }
-        readInstanzen("admFirst", 0)
-        readInstanzen("benFirst", 0)
-    });
     $(".manPfad").change(function() {
         $(".manPfad").val($(this).val());
         $("#manID").val(mandantenliste[$(this).prop("selectedIndex")].manID);
@@ -1985,164 +2008,151 @@ $(document).ready(function() {
     $(".berPfad").change(function() {
         berPfadChange(this)
     });
-    $("#gipscAdmHinz, #betrGrpHinz, #sAdmHinz, #manGrpHinz, #admHinz, #benHinz, #manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
+    $("#manHinz, #orgHinz, #liegHinz, #extDlHinz, #berHinz, #mstEHinz, #mstBHinz, #stdHinz, #stdDrHinz, #anlHinz, #msmHinz, #entHinz, #enfHinz, #eRngHinz, #iMwHinz, #eAnlHinz, #ePrdHinz, #prdHinz, #zpHinz, #knzHinz").click(function() {
         clearFields(this.id);
         b = !0
     });
-    $("#gipscAdmSpeichern, #betrGrpSpeichern, #sAdmSpeichern, #manGrpSpeichern, #admSpeichern, #benSpeichern, #manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
-        "gipscAdmSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
-            "betrGrpSpeichern" == this.id ? "" != $("#firmaBetrGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#firmaBetrGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                    title: "Meldung!" })) :
-                "sAdmSpeichern" == this.id ? "" != $("#nameSAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameSAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                        title: "Meldung!" })) :
-                    "manGrpSpeichern" == this.id ? "" != $("#nameManGrp").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameManGrp").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                            title: "Meldung!" })) :
-                        "admSpeichern" == this.id ? "" != $("#nameAdm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAdm").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display",
-                            "block"), $("#meldung").dialog({
-                                title: "Meldung!" })) :
-                            "benSpeichern" == this.id ? "" != $("#nameBen").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameBen").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                    title: "Meldung!" })) :
-                                "manSpeichern" == this.id ? "" != $("#nameAllgemeinMan").val() && 1 == b ? (instanzErstellen(this.id), mandantenEinlesen($("#betrGrpID").val(), "man_ID", $("#manID").val()), $(".manPfad").prop("selectedIndex", mandantenliste.length - 1), b = !1) : "" != $("#nameAllgemeinMan").val() && 0 == b ? (instanzSpeichern(this.id), $(".manPfad").prop("selectedIndex", manNavID)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                        title: "Meldung!" })) :
-                                    "orgSpeichern" == this.id ? "" != $("#nameAllgemeinOrg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinOrg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                            title: "Meldung!" })) :
-                                        "liegSpeichern" == this.id ? "" != $("#nameAllgemeinLieg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinLieg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                title: "Meldung!" })) :
-                                            "extDlSpeichern" == this.id ? "" != $("#nameExtDl").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameExtDl").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                    title: "Meldung!" })) :
-                                                "berSpeichern" == this.id ? "" != $("#nameAllgemeinBer").val() && 1 == b ? (instanzErstellen(this.id), berNavID = $("#berCount").val(), b = !1) : "" != $("#nameAllgemeinBer").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                        title: "Meldung!" })) :
-                                                    "mstESpeichern" == this.id ? "" != $("#nameMstE").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstE").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
-                                                        "mstBSpeichern" == this.id ? "" != $("#nameMstB").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstB").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
-                                                            "stdSpeichern" == this.id ? "" != $("#nameStd").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStd").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                    title: "Meldung!" })) :
-                                                                "stdDrSpeichern" == this.id ? "" != $("#nameStdDr").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStdDr").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                        title: "Meldung!" })) :
-                                                                    "anlSpeichern" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? $("#historyOrNot").dialog({
-                                                                            height: 400,
-                                                                            width: 450,
-                                                                            resize: "auto",
-                                                                            show: {
-                                                                                effect: "fade",
-                                                                                duration: 500
-                                                                            },
-                                                                            hide: {
-                                                                                effect: "fade",
-                                                                                duration: 500
-                                                                            },
-                                                                            open: function() {
-                                                                                $("#histSpeichern").off("click");
-                                                                                $("#histNichtSpeichern").off("click");
-                                                                                $("#histOk").off("click");
-                                                                                $("#histAbbrechen").off("click");
-                                                                                $("#histSpeichern").on("click", function() {
-                                                                                    $("#infosBemerkungHist, #histOk").css("display", "inline");
-                                                                                    $("#histSpeichern, #histNichtSpeichern").css("display", "none")
-                                                                                });
-                                                                                $("#histNichtSpeichern").on("click", function() {
-                                                                                    $("#archiviertAnl").val("false");
-                                                                                    instanzSpeichern("anlSpeichern");
-                                                                                    $("#historyOrNot").dialog("close")
-                                                                                });
-                                                                                $("#histOk").on("click", function() {
-                                                                                    $("#archiviertAnl").val("true");
-                                                                                    instanzSpeichern("anlSpeichern");
-                                                                                    instanzErstellen("anlSpeichern");
-                                                                                    $("#infosBemerkungHist, #histOk").css("display", "none");
-                                                                                    $("#infosBemerkungHist input").val("");
-                                                                                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                                                                                    $("#historyOrNot").dialog("close")
-                                                                                });
-                                                                                $("#histAbbrechen").on("click", function() {
-                                                                                    $("#infosBemerkungHist, #histOk").css("display", "none");
-                                                                                    $("#histSpeichern, #histNichtSpeichern").css("display",
-                                                                                        "inline");
-                                                                                    $("#infosBemerkungHist input").val("");
-                                                                                    $("#historyOrNot").dialog("close")
-                                                                                })
-                                                                            },
-                                                                            close: function() {
-                                                                                $("#infosBemerkungHist input").val("");
-                                                                                $("#infosBemerkungHist, #histOk").css("display", "none");
-                                                                                $("#histSpeichern, #histNichtSpeichern").css("display", "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                            title: "Meldung!" })) :
-                                                                        "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? ($("#archiviertAnl").val(!0), instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                title: "Meldung!" })) :
-                                                                            "msmSpeichern" == this.id ? "" != $("#messmittelNrAllgemeinMsm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#messmittelNrAllgemeinMsm").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display",
-                                                                                "block"), $("#meldung").dialog({
-                                                                                    title: "Meldung!" })) :
-                                                                                "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (instanzErstellen(this.id), b = !1, energietrInDBoxLieg()) : "" != $("#nameEnt").val() && 0 == b ? (instanzSpeichern(this.id), energietrInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                        title: "Meldung!" })) :
-                                                                                    "enfSpeichern" == this.id ? "" != $("#nameEnf").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                            title: "Meldung!" })) :
-                                                                                        "eRngSpeichern" == this.id ? "" != $("#nrERng").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nrERng").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                                title: "Meldung!" })) :
-                                                                                            "intEngIMwSpeichern" == this.id ? instanzSpeichern(this.id) : "intBdeIMwSpeichern" == this.id ? instanzSpeichern(this.id) :
-                                                                                                "eAnlSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                                        title: "Meldung!" })) :
-                                                                                                    "ePrdSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                                            title: "Meldung!" })) :
-                                                                                                        "grpDiagSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                                                title: "Meldung!"
-                                                                                                            })) :
-                                                                                                            "prdSpeichern" == this.id ? 1 == b ? ($("#archiviertPrd").val(!1), instanzErstellen(this.id, "neueGrp"), b = !1) : 0 == b ? $("#historyOrNot").dialog({
-                                                                                                                    height: 400,
-                                                                                                                    width: 450,
-                                                                                                                    resize: "auto",
-                                                                                                                    show: {
-                                                                                                                        effect: "fade",
-                                                                                                                        duration: 500
-                                                                                                                    },
-                                                                                                                    hide: {
-                                                                                                                        effect: "fade",
-                                                                                                                        duration: 500
-                                                                                                                    },
-                                                                                                                    open: function() {
-                                                                                                                        $("#histSpeichern,\n                                                        #histNichtSpeichern,\n                                                        #histOk,\n                                                        #histAbbrechen").off("click");
-                                                                                                                        $("#histSpeichern").on("click", function() {
-                                                                                                                            $("#infosBemerkungHist, #histOk").css("display", "inline");
-                                                                                                                            $("#histSpeichern, #histNichtSpeichern").css("display", "none")
-                                                                                                                        });
-                                                                                                                        $("#histNichtSpeichern").on("click", function() {
-                                                                                                                            $("#archiviertPrd").val("false");
-                                                                                                                            instanzSpeichern("prdSpeichern");
-                                                                                                                            $("#historyOrNot").dialog("close")
-                                                                                                                        });
-                                                                                                                        $("#histOk").on("click", function() {
-                                                                                                                            $("#archiviertPrd").val("true");
-                                                                                                                            instanzSpeichern("prdSpeichern");
-                                                                                                                            instanzErstellen("prdSpeichern");
-                                                                                                                            $("#infosBemerkungHist, #histOk").css("display", "none");
-                                                                                                                            $("#infosBemerkungHist input").val("");
-                                                                                                                            $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                                                                                                                            $("#historyOrNot").dialog("close")
-                                                                                                                        });
-                                                                                                                        $("#histAbbrechen").on("click", function() {
-                                                                                                                            $("#infosBemerkungHist, #histOk").css("display", "none");
-                                                                                                                            $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
-                                                                                                                            $("#infosBemerkungHist input").val("");
-                                                                                                                            $("#historyOrNot").dialog("close")
-                                                                                                                        })
-                                                                                                                    },
-                                                                                                                    close: function() {
-                                                                                                                        $("#infosBemerkungHist input").val("");
-                                                                                                                        $("#infosBemerkungHist, #histOk").css("display", "none");
-                                                                                                                        $("#histSpeichern, #histNichtSpeichern").css("display",
-                                                                                                                            "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                                                    title: "Meldung!" })) :
-                                                                                                                "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                                                        title: "Meldung!" })) :
-                                                                                                                    "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                                                            title: "Meldung!" })) :
-                                                                                                                        "betrParSpeichern" == this.id && (1 == b || 0 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
-                                                                                                                            title: "Meldung!"
-                                                                                                                        })))
+    $("#manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
+        "manSpeichern" == this.id ? "" != $("#nameAllgemeinMan").val() && 1 == b ? (instanzErstellen(this.id), mandantenEinlesen($("#betrGrpID").val(), "man_ID", $("#manID").val()), $(".manPfad").prop("selectedIndex", mandantenliste.length - 1), b = !1) : "" != $("#nameAllgemeinMan").val() && 0 == b ? (instanzSpeichern(this.id), $(".manPfad").prop("selectedIndex", manNavID)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "orgSpeichern" == this.id ? "" != $("#nameAllgemeinOrg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinOrg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "liegSpeichern" == this.id ? "" != $("#nameAllgemeinLieg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinLieg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "extDlSpeichern" == this.id ? "" != $("#nameExtDl").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameExtDl").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "berSpeichern" == this.id ? "" != $("#nameAllgemeinBer").val() && 1 == b ? (instanzErstellen(this.id), berNavID = $("#berCount").val(), b = !1) : "" != $("#nameAllgemeinBer").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "mstESpeichern" == this.id ? "" != $("#nameMstE").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstE").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+        "mstBSpeichern" == this.id ? "" != $("#nameMstB").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameMstB").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({ title: "Meldung!" })) :
+        "stdSpeichern" == this.id ? "" != $("#nameStd").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStd").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "stdDrSpeichern" == this.id ? "" != $("#nameStdDr").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameStdDr").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "anlSpeichern" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? $("#historyOrNot").dialog({
+            height: 400,
+            width: 450,
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open: function() {
+                $("#histSpeichern").off("click");
+                $("#histNichtSpeichern").off("click");
+                $("#histOk").off("click");
+                $("#histAbbrechen").off("click");
+                $("#histSpeichern").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "inline");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "none")
+                });
+                $("#histNichtSpeichern").on("click", function() {
+                    $("#archiviertAnl").val("false");
+                    instanzSpeichern("anlSpeichern");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histOk").on("click", function() {
+                    $("#archiviertAnl").val("true");
+                    instanzSpeichern("anlSpeichern");
+                    instanzErstellen("anlSpeichern");
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#infosBemerkungHist input").val("");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histAbbrechen").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#histSpeichern, #histNichtSpeichern").css("display",
+                        "inline");
+                    $("#infosBemerkungHist input").val("");
+                    $("#historyOrNot").dialog("close")
+                })
+            },
+            close: function() {
+                $("#infosBemerkungHist input").val("");
+                $("#infosBemerkungHist, #histOk").css("display", "none");
+                $("#histSpeichern, #histNichtSpeichern").css("display", "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "anlSpeichernHist" == this.id ? "" != $("#nummerAllgemeinAnl").val() && 1 == b ? ($("#archiviertAnl").val(!1), instanzErstellen(this.id), b = !1) : "" != $("#nummerAllgemeinAnl").val() && 0 == b ? ($("#archiviertAnl").val(!0), instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "msmSpeichern" == this.id ? "" != $("#messmittelNrAllgemeinMsm").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#messmittelNrAllgemeinMsm").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display",
+            "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "entSpeichern" == this.id ? "" != $("#nameEnt").val() && 1 == b ? (instanzErstellen(this.id), b = !1, energietrInDBoxLieg()) : "" != $("#nameEnt").val() && 0 == b ? (instanzSpeichern(this.id), energietrInDBoxLieg()) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "enfSpeichern" == this.id ? "" != $("#nameEnf").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameEnf").val() && 0 == b ? (instanzSpeichern(this.id)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "eRngSpeichern" == this.id ? "" != $("#nrERng").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nrERng").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "intEngIMwSpeichern" == this.id ? instanzSpeichern(this.id) : "intBdeIMwSpeichern" == this.id ? instanzSpeichern(this.id) :
+        "eAnlSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "ePrdSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "grpDiagSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!"
+        })) :
+        "prdSpeichern" == this.id ? 1 == b ? ($("#archiviertPrd").val(!1), instanzErstellen(this.id, "neueGrp"), b = !1) : 0 == b ? $("#historyOrNot").dialog({
+            height: 400,
+            width: 450,
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open: function() {
+                $("#histSpeichern,\n                                                        #histNichtSpeichern,\n                                                        #histOk,\n                                                        #histAbbrechen").off("click");
+                $("#histSpeichern").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "inline");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "none")
+                });
+                $("#histNichtSpeichern").on("click", function() {
+                    $("#archiviertPrd").val("false");
+                    instanzSpeichern("prdSpeichern");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histOk").on("click", function() {
+                    $("#archiviertPrd").val("true");
+                    instanzSpeichern("prdSpeichern");
+                    instanzErstellen("prdSpeichern");
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#infosBemerkungHist input").val("");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histAbbrechen").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#infosBemerkungHist input").val("");
+                    $("#historyOrNot").dialog("close")
+                })
+            },
+            close: function() {
+                $("#infosBemerkungHist input").val("");
+                $("#infosBemerkungHist, #histOk").css("display", "none");
+                $("#histSpeichern, #histNichtSpeichern").css("display",
+                    "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!" })) :
+        "betrParSpeichern" == this.id && (1 == b || 0 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? alert("Um die G\u00fcltigkeit bereits erstellter Formeln zu garantieren,\nist der '\u00c4ndern-Modus' hier deaktiviert!") : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+                title: "Meldung!"
+            })))
     });
     $("#orgLoeschen, #liegLoeschen, #extDlLoeschen, #berLoeschen,#mstELoeschen, #mstBLoeschen,#stdLoeschen, #stdDrLoeschen, #anlLoeschen,#msmLoeschen, #eRngLoeschen, #zpLoeschen, #eAnlLoeschen, #prdLoeschen, #entLoeschen").click(function() {
         fensterLoeschenmeldung(this.id)
     })
 });
-
 
 $(".berDialogSchlButton").click(function() {
     $("#messmittelSuchenContainer").dialog("close")
@@ -4681,7 +4691,7 @@ $(document).ready(function(){
             }
         }
         if((inputValFirst !='' && inputValNext !='') && (typeof(inputValFirst) !='undefined' && typeof(inputValNext) !='undefined')){
-            // console.log(calcVal) ; //After Delete Value Code 
+            // console.log(calcVal) ; //After Delete Value Code
             // <----1-7-2021----
             if(min_val != '' && max_val != ''){ //By Default Else Case Was Working
                 if(controlsystem == "1" || controlsystem == "2"){ //Count Up Case
@@ -4948,10 +4958,10 @@ $(document).ready(function(){
          var max_val = $(this).closest('tr').attr('max_val');
          var controlsystem = $(this).closest('tr').attr('controlsystem');
          var current_val_control = $(this).val();
- 
+
          //Disabled Field Value
          var current_td_input_id = $(this).attr('id');
- 
+
          //--end--->
 
         if(anlageObj[rowMstID]){
@@ -5046,7 +5056,7 @@ $(document).ready(function(){
                         return false;
                     }
                     //--end--->
-                   
+
                 }
             }else if(($("#inputPrevValDB").val() !='' && $(inptCurrId).val() !='') && (typeof($("#inputPrevValDB").val()) !='undefined' && typeof($(inptCurrId).val()) !='undefined')){
                 if(Number($(inptCurrId).val()) <= Number($("#inputPrevValDB").val())){
@@ -6435,7 +6445,7 @@ $(document).ready(function(){
                  var max_val = $(this).closest('tr').attr('max_val');
                  var controlsystem = $(this).closest('tr').attr('controlsystem');
                  var current_val_control = $(this).val();
- 
+
                  //Disabled Field Value
                  var current_td_input_id = $(this).attr('id');
                  // --ennd->
@@ -6870,7 +6880,7 @@ $(document).ready(function(){
                                         $(inputCurrId).focus();
                                         resetInputsSearchMasseneingabe();
                                         return false;
-                                    }   
+                                    }
                                 }
                             }
                             else{
@@ -7193,7 +7203,7 @@ $(document).ready(function(){
                  var max_val = $(this).closest('tr').attr('max_val');
                  var controlsystem = $(this).closest('tr').attr('controlsystem');
                  var current_val_control = $(this).val();
- 
+
                  //Disabled Field Value
                  var current_td_input_id = $(this).attr('id');
                  // --ennd->
@@ -8202,9 +8212,14 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
         $("#tblMstOhneZeitintervallIMw_wrapper").show();
         $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").hide();
 
-        //$("#mstIMw").prop("disabled",false);
-        $("#mstIMw").val("").prop("readonly",false);
-        $("#mstIMw").prop("disabled",false);
+                //$("#mstIMw").prop("disabled",false);
+
+                //<***14-6-2021---
+                //$("#mstIMw").val("").prop("readonly",false); //Old code comment
+                $("#mstIMw").val("").prop("readonly",true);
+                //end--->
+
+                $("#mstIMw").prop("disabled",false);
 
         $(".artikelnummerIntBdeDiv").show();
         $(".bezeichnungIntBdeDiv").show();
@@ -8257,12 +8272,15 @@ $('input:radio[name=BetriebsdatenFilter]').change(function () {
         $("#tblMstOhneZeitintervallIMw_wrapper").hide();
         $("#tblMstOhneZeitintervallIMwMessstelle_wrapper").show();
 
-        if($("#mstIMw").val() == ""){
-            $("#mstIMw").val("").prop("readonly",false);
-        }
-        else{
-            $("#mstIMw").val("").prop("readonly",true);
-        }
+                if($("#mstIMw").val() == ""){
+                    //<--14-6-2021--
+                    // $("#mstIMw").val("").prop("readonly",false); //Old code comment
+                    $("#mstIMw").val("").prop("readonly",true);
+                    //end-->
+                }
+                else{
+                    $("#mstIMw").val("").prop("readonly",true);
+                }
 
         $(".bezeichnungIntBdeDiv").hide();
         $(".artikelnummerIntBdeDiv").hide();
@@ -8535,62 +8553,6 @@ $("#intBdePrdktIMwHinz").click(function() {
 });
 /*new-mm-end 25-03-2021*/
 
-/** Benutzer Delete Functionality */
-
-$("#benLoeschen").on('click', function() {
-    benLoeschen();
-});
-
-/** Admin Delete Functionality */
-$("#admLoeschen").on('click', function() {
-    admLoeschen();
-});
-
-/** BetreGroup/Superadmin Delete Functionality */
-$("#betrGrpLoeschen").on('click', function() {
-    betrGrpLoeschen();
-});
-
-/** Superadmin Delete Functionality */
-$("#sAdmLoeschen").on('click', function() {
-    sAdmLoeschen();
-});
-
-/** MandantenGruppen Delete Functionality */
-$("#manGrpLoeschen").on('click', function() {
-    manGrpLoeschen();
-});
-
-$("#betrGrpHinz").on('click', function() {
-    mandantenAuswahllisteErstellenCheckbox('', '')
-});
-
-$("#sAdmHinz").on('click', function(){
-    $( "div#superadmincommTreeview" ).empty();
-    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-    var tw = new TreeView(
-        treeObject,
-        {showAlwaysCheckBox:true,fold:false});
-    document.getElementById("superadmincommTreeview").appendChild( tw.root	 )
-});
-
-$("#admHinz").on('click', function(){
-    $( "div#admincommTreeview" ).empty();
-    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-    var tw = new TreeView(
-        treeObject,
-        {showAlwaysCheckBox:true,fold:false});
-    document.getElementById("admincommTreeview").appendChild( tw.root	 )
-});
-$("#benHinz").on('click', function(){
-    $( "div#benutzerTreeview" ).empty();
-    var treeObject = JSON.parse(localStorage.getItem('gipsAdm'));
-    var tw = new TreeView(
-        treeObject,
-        {showAlwaysCheckBox:true,fold:false});
-    document.getElementById("benutzerTreeview").appendChild( tw.root	 )
-});
-
 // ***7-6-2021---
 $("#infosIntEnergiedaten_measuring_point").click(function() {
     var a,b;
@@ -8845,7 +8807,7 @@ $(document).on('blur', '#min_prompt_invest_value_measuring ,#max_prompt_invest_v
 //        $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('position','absolute');
 //     //    $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('background-color','rgb(221, 221, 221)');
 //    }else{
-//     $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('position',''); 
+//     $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('position','');
 //     // $('#timeIntervalWerteEnergiedatenIMwPrdkt #tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child').css('background-color','');
 //    }
 // });
@@ -8860,7 +8822,7 @@ $(document).ready( function (){
         $('body').addClass('backgroundDisabledColor');
         $(".chartImageDiv").show();
         setTimeout( function(){
-            
+
             $(".manPfad ").val(chartStorageDb).trigger('change');
             $('#mstVerglMenu').trigger('click');
             localStorage.removeItem('dashboardDBChart');
@@ -8870,7 +8832,7 @@ $(document).ready( function (){
             dashboardLocalStorage();
             return false;
             // console.log('After',$('.manPfad').val());
-        },1500) 
+        },1500)
     }
     else if(dashboardHomeRedirect != null && dashboardHomeRedirect != undefined){
         $('.menu-wrap nav').addClass('backgroundDisabled');
@@ -8885,10 +8847,10 @@ $(document).ready( function (){
             $('.menu-wrap nav').removeClass('backgroundDisabled');
             dashboardLocalStorage();
             return false;
-        },1500) 
+        },1500)
 
     }
-    setTimeout(function(){ 
+    setTimeout(function(){
         dashboardLocalStorage();
     },1500);
 })
