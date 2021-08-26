@@ -77,6 +77,7 @@
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{asset('template/plugins/jsgrid/jsgrid.min.css')}}">
 <link rel="stylesheet" href="{{asset('template/plugins/jsgrid/jsgrid-theme.min.css')}}">
+<link rel="stylesheet" href="{{asset('template/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
 @stop
 @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -122,7 +123,7 @@
                     <select class="form-control groupData" id="select_group_options" style="width: 100%;">
                         <option value="">Select</option>
                         @foreach($groupData['groupData'] as $group)
-                        <option value="{{$group->id}}">{{$group->option_name}}</option>
+                            <option value="{{$group->id}}">{{$group->option_name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -143,38 +144,44 @@
             </div>
         </div>
         @endisset
-        <div class=col-sm-6>
-            <nav class="main-header navbar navbar-expand navbar-dark" style="border-bottom:unset;">
-                <!-- Right navbar links -->
-                <ul class="navbar-nav ml-auto">
-                    <div class="fc-toolbar-chunk">
-                        <div class="btn-group float-right">
-                            <button class="fc-search btn btn-primary" id="searchMachines" type="button" aria-label="search">
-                                <span class="fa fa-search"></span>
-                            </button>
-                        </div>
-                        <div class="btn-group float-right mr-3 navigation" data-value="{{$data['anl_ID']}}">
-                            <button class="fc-step-backward btn btn-primary" type="button" event-type="first" aria-label="prev">
-                                <span class="fa fa-step-backward"></span>
-                            </button>
-                            <button class="fc-prev-button btn btn-primary" type="button" event-type="prev" aria-label="prev">
-                                <span class="fa fa-chevron-left"></span>
-                            </button>
-                            <button class="fc-next-button btn btn-primary" type="button" event-type="next" aria-label="next">
-                                <span class="fa fa-chevron-right"></span>
-                            </button>
-                            <button class="fc-step-forward btn btn-primary" type="button" event-type="last" aria-label="next">
-                                <span class="fa fa-step-forward"></span>
-                            </button>
-                        </div>
-                        <div class="btn-group float-right" style="margin-right: 50px;font-size: 18px;">
-                            <input type="checkbox" id="modeSelector" checked data-toggle="toggle" data-on="View Mode" data-off="Edit Mode" data-onstyle="success" data-offstyle="info">
-                        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="btn-group float-right" style="font-size: 18px;top: 17px;">
+                        <input type="checkbox" id="modeSelector" checked data-toggle="toggle" data-on="View Mode" data-off="Edit Mode" data-onstyle="success" data-offstyle="info">
                     </div>
+                </div>
+                <div class="col-sm-4">
+                    <nav class="main-header navbar navbar-expand navbar-dark view-mode" style="border-bottom:unset;">
+                        <!-- Right navbar links -->
+                        <ul class="navbar-nav ml-auto" style="position: relative;top: 15px;">
+                            <div class="fc-toolbar-chunk">
+                                <div class="btn-group float-right">
+                                    <button class="fc-search btn btn-primary" id="searchMachines" type="button" aria-label="search">
+                                        <span class="fa fa-search"></span>
+                                    </button>
+                                </div>
+                                <div class="btn-group float-right mr-3 navigation" data-value="{{$data['anl_ID']}}">
+                                    <button class="fc-step-backward btn btn-primary" type="button" event-type="first" aria-label="prev">
+                                        <span class="fa fa-step-backward"></span>
+                                    </button>
+                                    <button class="fc-prev-button btn btn-primary" type="button" event-type="prev" aria-label="prev">
+                                        <span class="fa fa-chevron-left"></span>
+                                    </button>
+                                    <button class="fc-next-button btn btn-primary" type="button" event-type="next" aria-label="next">
+                                        <span class="fa fa-chevron-right"></span>
+                                    </button>
+                                    <button class="fc-step-forward btn btn-primary" type="button" event-type="last" aria-label="next">
+                                        <span class="fa fa-step-forward"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </ul>
+                    </nav>
 
-                </ul>
-            </nav>
-
+                    <button type="button" class="btn btn-block btn-info edit-mode" style="display:none;position: relative;top: 17px;"  data-toggle="modal" data-target="#modal-machine-configuration">Machine Table Configrations</button>
+                </div>
+            </div>
         </div>
     </div>
     @else
@@ -540,6 +547,8 @@
         </div>
         <!-- Modal End -->
 
+        
+
     </section>
     <!-- view mode end-->
 
@@ -607,7 +616,32 @@
             </div>
         </div>
     </section>
-    <!-- edit mode end-->
+
+    <div class="modal fade" id="modal-machine-configuration">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Machine Table Configurations</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <section class="content">
+                        <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <label>Select Machine Table Column</label>
+                                <select class="form-control duallistbox" multiple="multiple">
+                                  
+                                </select>
+                              </div>
+                            </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
     @endif
     <div id="msg" style="display:none; text-align: center; font-size: 25px; font-weight: 800;">
         <span>Record Not Found!</span>
@@ -620,6 +654,7 @@
 <script src="{{asset('js/dashboard/dashboard_ajax.js')}}"></script>
 <script src="{{asset('js/dashboard/jsGridMachines.js')}}"></script>
 <script src="{{asset('js/dashboard/dashboardMode.js')}}"></script>
+<script src="{{asset('template/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 <!-- Bootstrap Switch -->
 <script type="text/javascript">
     @if(!empty($data))
@@ -706,6 +741,8 @@
         });
         /* END LINE CHART */
     @endif
+
+    $('.duallistbox').bootstrapDualListbox()
 </script>
 
 @stop
