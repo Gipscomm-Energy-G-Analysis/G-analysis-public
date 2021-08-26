@@ -534,6 +534,7 @@ $(document).ready( function(){
             
             $('.dashboard_count_div .stretch-card').removeClass('tile-click-table');
             $('.dashboard_count_div .stretch-card').addClass('tiles-click');
+            $('.dashboard_count_div .stretch-card').addClass('hide_table_main');
 
             $('.save_table_div_show').hide();
         }

@@ -742,7 +742,7 @@ class dashboardController {
             $total_result = count($dataResult);
             if($dataResult != null && count($dataResult)>0){
                 for($i= 0; $i<=$total_result; $i++){
-                    $measurement_title = $total_result[$i]['tile_title'];
+//                    $measurement_title = $total_result[$i]['tile_title'];
                     $style= '';
                     if($i == $total_result){
                         $measurement_title = $_POST['measurement_title'];;
@@ -771,6 +771,7 @@ class dashboardController {
                     } 
                     
                     if($i < $total_result){
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
                        $tileHtml.= $dataResult[$i]['tile_html'];
                     } 
                 }
@@ -1580,7 +1581,16 @@ class dashboardController {
     //     } 
     // }
     // --end-->
+    public function getDimentions(){
 
+
+        global $conn;
+        $id=$_POST['id'];
+        $getResult =  "SELECT height,width from tableFormat where id=".$id;
+//        print_r($getResult);die;
+        $dataResult = queryDB($conn, $getResult, "read");
+        return array('data'=>$dataResult[0]);
+    }
   
 }
 $obj = new dashboardController();

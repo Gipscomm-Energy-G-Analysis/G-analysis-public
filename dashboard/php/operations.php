@@ -89,16 +89,7 @@ class dashboardControllerOperations {
         }
     }
     // --end-->
-    public function getWidthHeight(){
-       
-    
-        global $conn;
-        $id=$_POST['id'];
-        $getResult =  "SELECT height,width from tableFormat where=".$id;
-        print_r($getResult);
-        $dataResult = queryDB($conn, $getResult, "read");
-            return array('data'=>$dataResult);
-    }
+
 }
 
 $obj = new dashboardControllerOperations();

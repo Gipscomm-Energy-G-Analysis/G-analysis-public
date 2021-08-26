@@ -201,10 +201,28 @@
     margin-top: 30px;
 }
 
-.hide_table_main{
+#dashboard_count_div_tile .hide_table_main{
     height: 135px !important;
     width: 293px  !important;
 }
-.hide_table_main table{
+#dashboard_count_div_tile .hide_table_main table{
    display: none;
 }
+.card-border{
+    overflow: hidden;
+}
+#dashboard_count_div_tile .align-items-center{
+    margin: -5px 568px 4px 3px;
+}
+#dashboard_count_div_tile .overflow-hide{
+    margin: -82px 20px 21px 22px;
+    padding: 0px 0px 0px 109px;
+}
+.hide_table_preview{
+    height: 135px !important;
+    width: 293px  !important;
+}
+.hide_table_preview table{
+    display: none;
+}
+

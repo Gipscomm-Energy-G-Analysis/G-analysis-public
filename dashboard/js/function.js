@@ -1,4 +1,8 @@
-//Count Dashboard Boxes 
+//Count Dashboard Boxes
+setTimeout(function () {
+    $('.background-image').trigger('click');
+},1000);
+
 function countDashboard(){
     $.ajax({
         type: "POST",
@@ -255,10 +259,7 @@ function saveTableFormat(type){
     var measurement_table_width = $('#modal-width-input-measurement-hidden').val();
     //<--23-8-2021---
     var last_index_tile = $('#total_records').val();
-  
-    $('.measurement_html_modal_'+last_index_tile).addAttribute('height','0');
-    $('.measurement_html_modal_'+last_index_tile).addAttribute('width','0');
-    // console.log($('.measurement_html_modal_'+last_index_tile).html());return;
+
     var tile_html = $('.measurement_html_modal_'+last_index_tile).html();
     var tableHtml = $('.measurement_html_modal_'+last_index_tile+' table').html();
     $('#total_records').remove();
@@ -925,11 +926,41 @@ function saveDashboardSelect(arData){
   });
 }
 $(document).on('click','.stretch-card',function(){
-$(this).removeClass('hide_table_main');
-var id=$(this).attr('class');
-id=id.charAt(0);
-})
 
+
+var id=$(this).attr('class');
+
+id=id.split(" ")[0];
+getDimentions(id);
+setTimeout(function () {
+    $('.'+id+'.tiles-click').removeClass('hide_table_main');
+    $('.'+id+'.tiles-click').removeClass('col-md-3');
+    $('.'+id+'.tiles-click').css('width',localStorage.getItem('width')+'px');
+    $('.'+id+'.tiles-click').css('height',localStorage.getItem('height')+'px');
+},1000);
+
+})
+function getDimentions(id) {
+    $.ajax({
+        type : "POST",
+        url : 'php/retreive.php',
+        async: false,
+        dataType: 'json',
+        data: {
+            action: "getDimentions",
+            id: id,
+            nameDB: $("#nameDashboardDB").val()
+        },
+        fail: function() {
+            alert("failed!!")
+        },
+        success: function(a) {
+            console.log(a);
+           localStorage.setItem('width',a.data.width);
+           localStorage.setItem('height',a.data.height);
+        }
+    });
+}
 // <--09-8-2021-- Sort Code
 // function comparer(index,tableHeaderValue) {
 //   return function(a, b) {
