@@ -37,6 +37,7 @@ const scpRechteverwaltung =
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
                             , "#sAdmMenuLi"
+                            , ".hideBetrGrp"
                             ].forEach(hideElement)
                             break;
 
@@ -49,6 +50,7 @@ const scpRechteverwaltung =
                             , "#tabManGrp"
                             , "#admMenu"
                             , "#tabAdm"
+                            , ".hideBetrGrp"
                             ].forEach(hideElement)
                             break;
                             
@@ -84,7 +86,8 @@ const scpRechteverwaltung =
             const getMenuIDs =
                 () =>
                 array($("[data-menus]").length)()()
-                .map((_, i) => $("[data-menus]").eq(i).attr("data-menus"))
+                .map((_, i) => $("[data-menus][data-hidden]").eq(i).attr("data-menus"))
+                .filter(a => a !== undefined)
 
             const menuItemText =
                 id => 
