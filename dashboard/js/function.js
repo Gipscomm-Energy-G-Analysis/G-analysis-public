@@ -255,6 +255,10 @@ function saveTableFormat(type){
     var measurement_table_width = $('#modal-width-input-measurement-hidden').val();
     //<--23-8-2021---
     var last_index_tile = $('#total_records').val();
+  
+    $('.measurement_html_modal_'+last_index_tile).addAttribute('height','0');
+    $('.measurement_html_modal_'+last_index_tile).addAttribute('width','0');
+    // console.log($('.measurement_html_modal_'+last_index_tile).html());return;
     var tile_html = $('.measurement_html_modal_'+last_index_tile).html();
     var tableHtml = $('.measurement_html_modal_'+last_index_tile+' table').html();
     $('#total_records').remove();
@@ -346,18 +350,22 @@ function getTableFormatDashboard(){
         $('.dashboard_count_div').html('');
         var arHtml = '';
         a['data'].forEach(value => {
-            // if(value['type'] == "Measurement"){
-              // $('#measuremet_dashboard_tile_title').text(value['tile_title']);
-              // $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
-              // $('#mesurement_count_div').show();
-              //
-            // }
+            if(value['type'] == "Measurement"){
+              $('#measuremet_dashboard_tile_title').text(value['tile_title']);
+              $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
+              $('#mesurement_count_div').show();
+             
+            }
             // console.log(value['id']);
+            console.log(value['id'])
+          value['tile_html']=value['tile_html'].replace("grid-margin", value['id']+" grid-margin");
+
           arHtml +=value['tile_html'];
           
         });
-        // $('#dashboard_count_div_tile').html(arHtml);
-        // $('#dashboard_count_div_tile .stretch-card').css('height',145);
+        $('#dashboard_count_div_tile').html(arHtml);
+        $('.stretch-card').addClass('hide_table_main');
+                // $('#dashboard_count_div_tile .stretch-card').css('height',145);
         // $('#dashboard_count_div_tile .stretch-card').css('width',285);
 
         // $('#dashboard_count_div_tile .stretch-card').addClass('col-md-3');
@@ -916,7 +924,11 @@ function saveDashboardSelect(arData){
     }
   });
 }
-
+$(document).on('click','.stretch-card',function(){
+$(this).removeClass('hide_table_main');
+var id=$(this).attr('class');
+id=id.charAt(0);
+})
 
 // <--09-8-2021-- Sort Code
 // function comparer(index,tableHeaderValue) {

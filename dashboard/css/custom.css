@@ -201,3 +201,10 @@
     margin-top: 30px;
 }
 
+.hide_table_main{
+    height: 135px !important;
+    width: 293px  !important;
+}
+.hide_table_main table{
+   display: none;
+}
