@@ -740,6 +740,11 @@ class dashboardController {
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
+
+            $url  = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+            $url .= $_SERVER['SERVER_NAME'];
+            $url .= $_SERVER['REQUEST_URI'];
+            $url_path =  dirname(dirname($url)); 
             if($dataResult != null && count($dataResult)>0){
                 for($i= 0; $i<=$total_result; $i++){
 //                    $measurement_title = $total_result[$i]['tile_title'];
@@ -747,13 +752,16 @@ class dashboardController {
                     if($i == $total_result){
                         $measurement_title = $_POST['measurement_title'];;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$total_result'>";
-                        $tileHtml.="<div class='measurement_html_modal_$i'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$i' data-i='$i'>
+                        $tileHtml.="<div class='measurement_html_modal_$i'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$i' data-i='$i' data-type-tile='Measurement'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
                                             <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
-                                                <h3 class='mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal' ></h3>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='$url_path/images/edit.png'  style='height: 30px; width: 30px;'>
+                                                    <img src='$url_path/images/delete.png' class='id_val delete_btn_tile' style='height: 30px; width: 30px;'>
+                                                </div>
                                                 <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0'></i>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success'>(30 days)<span class='text-black ml-1'><small></small></span></p>
@@ -778,14 +786,17 @@ class dashboardController {
                 
             }
             else{
-                $tileHtml.="<div class='measurement_html_modal_$total_result'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$total_result' data-i='$total_result'>
+                $tileHtml.="<div class='measurement_html_modal_$total_result'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$total_result' data-i='$total_result' data-type-tile='Measurement'>
                                 <input type='hidden' id='total_records' value='$total_result'>                
                                 <div class='card card-border'>
                                     <div class='card-body overflow-hide display-flex'>
                                         <div id='' class=''>
                                             <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
-                                            <h3 class='mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal' ></h3>
+                                            <div class='action-modal-button-div'>
+                                                <img src='$url_path/images/edit.png'  style='height: 30px; width: 30px;'>
+                                                <img src='$url_path/images/delete.png' class='id_val delete_btn_tile' style='height: 30px; width: 30px;'>
+                                            </div>
                                             <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0'></i>
                                             </div>  
                                             <p class='mb-0 mt-2 text-success'>(30 days)<span class='text-black ml-1'><small></small></span></p>
@@ -812,6 +823,25 @@ class dashboardController {
         }
 
     }
+
+    // <---27-8-2021--
+    public function deleteTile(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $deleteQuery = "DELETE FROM tableFormat where id = $id ";
+            $dataResult = queryDB($conn, $deleteQuery, "write");
+             
+            if($dataResult){
+                return array('status'=>200,'msg'=>"Successful Deleted");
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
     //Get Records Energy
     public function getNumberRecordsEnergy()
     {

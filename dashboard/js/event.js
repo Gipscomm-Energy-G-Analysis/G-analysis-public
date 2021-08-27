@@ -574,6 +574,14 @@ $(document).ready( function(){
     });
     // --end-->
 
+    // 23-8-2021---
+    $(document).on('click','.delete_btn_tile',function(){
+        var id=$(this).attr('class');
+        id_val =id.split(" ")[0];
+        deleteTile(id_val);
+    })
+    //--end-->
+
 
     // <---12-8-2021----
     // $('#mesurement_count_div').hover(

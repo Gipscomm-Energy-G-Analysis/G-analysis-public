@@ -334,6 +334,7 @@ function saveTableFormat(type){
 
 // <---16-8-2021---
 function getTableFormatDashboard(){
+  $('.dashboard_count_div').html('');
   $.ajax({
     type: "POST",
     url: "php/retreive.php",
@@ -358,9 +359,12 @@ function getTableFormatDashboard(){
              
             }
             // console.log(value['id']);
-            console.log(value['id'])
+            // console.log(value['id'])
           value['tile_html']=value['tile_html'].replace("grid-margin", value['id']+" grid-margin");
 
+          // <---27-8-2021--
+          value['tile_html']=value['tile_html'].replace("id_val", value['id']+" id_val");
+          // end-->
           arHtml +=value['tile_html'];
           
         });
@@ -955,11 +959,35 @@ function getDimentions(id) {
             alert("failed!!")
         },
         success: function(a) {
-            console.log(a);
+            // console.log(a);
            localStorage.setItem('width',a.data.width);
            localStorage.setItem('height',a.data.height);
         }
     });
+}
+
+function deleteTile(id_val){
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "deleteTile",
+        id: id_val,
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      setTimeout(()=>{
+        getTableFormatDashboard();
+      },1500); 
+    }
+});
+
+
 }
 // <--09-8-2021-- Sort Code
 // function comparer(index,tableHeaderValue) {

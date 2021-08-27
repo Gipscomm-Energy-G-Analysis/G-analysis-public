@@ -225,4 +225,10 @@
 .hide_table_preview table{
     display: none;
 }
+/* .gernerated_measurement_modal_tiles .action-modal-button-div{
+    display: none;
+} */
 
+.action-modal-button-div{
+    display: flex;
+}
