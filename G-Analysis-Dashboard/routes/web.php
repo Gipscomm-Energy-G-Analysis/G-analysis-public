@@ -40,3 +40,5 @@ Route::post('save-configuration-data', [\App\Http\Controllers\GroupConfiguration
 Route::post('get-same-type-column', [\App\Http\Controllers\GroupConfigurationController::class, 'getSameTypeColumn'])->name('getSameTypeColumn');
 
 Route::get('get-custom-machine-data', [\App\Http\Controllers\DashboardController::class, 'getCustomTable'])->name('getCustomTable');
+Route::get('get-table-configurations', [\App\Http\Controllers\MachineConfigurationController::class, 'getMachineConfigurations'])->name('getMachineConfigurations');
+Route::post('save-table-configurations', [\App\Http\Controllers\MachineConfigurationController::class, 'saveMachineConfigurations'])->name('saveMachineConfigurations');

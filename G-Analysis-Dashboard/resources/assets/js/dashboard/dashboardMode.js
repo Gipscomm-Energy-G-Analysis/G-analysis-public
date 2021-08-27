@@ -258,3 +258,58 @@ $(document).on('change', '#primary_key_subGroup', function() {
         }
     });
 })
+
+const showTableConfigurations = (data) => {
+    let html = '';
+    $.each(data, function(key, value) {
+        html += `<option value="${value.column}" ${value.option}>${value.column}</option>`;
+    });
+    $(".duallistbox").empty().append(html);
+    dualList.bootstrapDualListbox('refresh', true);
+}
+
+$(document).on('click', '#machine_table_configuration', function() {
+    $.ajax({
+        type: "GET",
+        url: "/get-table-configurations",
+        success:function(result) {
+            if(result.status == 200) {
+                showTableConfigurations(result.data);
+            }
+        },
+        error:function(result) {
+            toastr.error(result);
+        }
+    });
+})
+
+const saveTableConfigurations = (data) => {
+    $.ajax({
+        type: "POST",
+        url: "/save-table-configurations",
+        data: {
+            column: data
+        },
+        success:function(result) {
+            if(result.status == 200) {
+                console.log('result',result);
+            }
+        },
+        error:function(result) {
+            toastr.error(result);
+        }
+    });
+}
+
+$(document).on('click', '#save_table_configuration_button', function() {
+    console.log('duallistArray',$('.duallistbox').val());
+    let selectedColumn = $('.duallistbox').val();
+    if(selectedColumn.length == 0 ) {
+        toastr.warning('Please select columns!');
+        return false;
+    } else if(selectedColumn.length >12) {
+        toastr.warning('Only 12 columns can be selected!');
+        return false;
+    }
+    saveTableConfigurations(selectedColumn);
+})

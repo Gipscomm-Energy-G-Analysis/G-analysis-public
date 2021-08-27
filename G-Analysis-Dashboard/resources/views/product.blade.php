@@ -179,7 +179,7 @@
                         </ul>
                     </nav>
 
-                    <button type="button" class="btn btn-block btn-info edit-mode" style="display:none;position: relative;top: 17px;"  data-toggle="modal" data-target="#modal-machine-configuration">Machine Table Configrations</button>
+                    <button type="button" class="btn btn-block btn-info edit-mode" style="display:none;position: relative;top: 17px;" id="machine_table_configuration"  data-toggle="modal" data-target="#modal-machine-configuration">Machine Table Configrations</button>
                 </div>
             </div>
         </div>
@@ -633,9 +633,13 @@
                               <div class="form-group">
                                 <label>Select Machine Table Column</label>
                                 <select class="form-control duallistbox" multiple="multiple">
-                                  
                                 </select>
                               </div>
+                              <div class="popup">
+                                <div class="col-sm-3" style="margin-right:5px;float:right;">
+                                    <button type="button" class="btn btn-block btn-primary" id="save_table_configuration_button">Save Configrations</button>
+                                </div>
+                            </div>
                             </div>
                     </section>
                 </div>
@@ -741,8 +745,13 @@
         });
         /* END LINE CHART */
     @endif
-
-    $('.duallistbox').bootstrapDualListbox()
+    const dualList = $('.duallistbox').bootstrapDualListbox({
+        nonSelectedListLabel: 'Non-selected Column',
+        selectedListLabel: 'Selected Column',
+        preserveSelectionOnMove: 'moved',
+        showFilterInputs: false,
+        selectorMinimalHeight: '300'
+    });
 </script>
 
 @stop

@@ -47,4 +47,18 @@ class MigrationController extends Controller
         return;
     }
 
+    public static function createMachineTableConfigurations() {
+        $table_exits = DB::getSchemaBuilder()->hasTable('machine_table_config');
+        if (!$table_exits) {
+            Schema::create('machine_table_config', function (Blueprint $table) {
+                $table->id();
+                $table->integer('column_name');
+                $table->enum('status',['0','1','2']);
+                $table->string('table_name')->nullable();
+                $table->timestamps();
+            });
+        }
+        return;
+    }
+
 }
