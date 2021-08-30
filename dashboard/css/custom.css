@@ -52,7 +52,8 @@
 
 .pagination_items{
     text-align: center;
-    margin-left: 357px;
+    /* margin-left: 357px; */
+    margin-left: 465px;
 }
 .pagination_html{
     margin-top: 8px;
@@ -202,8 +203,8 @@
 }
 
 #dashboard_count_div_tile .hide_table_main{
-    height: 135px !important;
-    width: 293px  !important;
+    height: 145px !important;
+    width: 285px  !important;
 }
 #dashboard_count_div_tile .hide_table_main table{
    display: none;
@@ -219,16 +220,19 @@
     padding: 0px 0px 0px 109px;
 }
 .hide_table_preview{
-    height: 135px !important;
-    width: 293px  !important;
+    height: 145px !important;
+    width: 285px  !important;
 }
 .hide_table_preview table{
     display: none;
 }
-/* .gernerated_measurement_modal_tiles .action-modal-button-div{
+.gernerated_measurement_modal_tiles .action-modal-button-div{
     display: none;
-} */
+}
 
 .action-modal-button-div{
     display: flex;
+}
+.measurement-icon{
+    margin-top: -17px !important;
 }

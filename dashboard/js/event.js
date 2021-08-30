@@ -421,10 +421,10 @@ $(document).ready( function(){
 
             }
             else{
-                
-                height_value = parseInt(height_val)+145;
-                if(height_value >=450){
-                    height_value = 450;
+                height_val = parseInt(height_val)+1;
+                height_value = parseInt(height_val)*145;
+                if(height_value >=580){
+                    height_value = 580;
                 }
 
                 $('#measurement_count_tile_modal_'+total_records).css('height',height_value);
@@ -444,7 +444,8 @@ $(document).ready( function(){
                 // $('#modal-width-input-measurement').val(width_val);
             }
             else{
-                width_value = parseInt(width_val)+285;
+                width_val = parseInt(width_val) + 1;
+                width_value = parseInt(width_val)*285;
                 if(width_value >=1130){
                     width_value = 1130;
                 }
@@ -537,6 +538,7 @@ $(document).ready( function(){
             $('.dashboard_count_div .stretch-card').addClass('hide_table_main');
 
             $('.save_table_div_show').hide();
+            $('.action-modal-button-div').removeClass('col-md-12');
         }
     });
 
@@ -576,9 +578,13 @@ $(document).ready( function(){
 
     // 23-8-2021---
     $(document).on('click','.delete_btn_tile',function(){
-        var id=$(this).attr('class');
-        id_val =id.split(" ")[0];
-        deleteTile(id_val);
+        var confResult = confirm('Are you sure want to Delete');
+        if(confResult == true){
+            var id=$(this).attr('class');
+            id_val =id.split(" ")[0];
+            deleteTile(id_val);
+        }
+        
     })
     //--end-->
 

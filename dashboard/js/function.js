@@ -263,7 +263,8 @@ function saveTableFormat(type){
     var tile_html = $('.measurement_html_modal_'+last_index_tile).html();
     var tableHtml = $('.measurement_html_modal_'+last_index_tile+' table').html();
     $('#total_records').remove();
-    var tile_html = tile_html.replace('total_records','');
+    tile_html = tile_html.replace('total_records','');
+    tile_html = tile_html.replace('hide_table_main','');
   // --end-->
     if(measuremnt_table_height != '' && measurement_table_width != ''){
       var measurement_preview_data = [];
@@ -370,6 +371,7 @@ function getTableFormatDashboard(){
         });
         $('#dashboard_count_div_tile').html(arHtml);
         $('.stretch-card').addClass('hide_table_main');
+        // $('#dashboard_count_div_tile .action-modal-button-div').removeClass('col-md-12');
                 // $('#dashboard_count_div_tile .stretch-card').css('height',145);
         // $('#dashboard_count_div_tile .stretch-card').css('width',285);
 
@@ -417,6 +419,7 @@ function generateHtmlMeasurementTiles(type){
     success: function(a) {
       // console.log(a);
        $('.gernerated_measurement_modal_tiles').html(a['tile_html']);
+      //  $('.gernerated_measurement_modal_tiles .stretch-card').removeClass('hide_table_preview');
     }
   });
 
@@ -981,9 +984,9 @@ function deleteTile(id_val){
         alert("failed!!")
     },
     success: function(a) {
-      setTimeout(()=>{
+      // setTimeout(()=>{
         getTableFormatDashboard();
-      },1500); 
+      // },1500); 
     }
 });
 

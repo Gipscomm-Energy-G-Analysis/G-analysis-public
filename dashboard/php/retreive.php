@@ -756,15 +756,16 @@ class dashboardController {
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
-                                            <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
+                                                <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
-                                                <div class='action-modal-button-div'>
-                                                    <img src='$url_path/images/edit.png'  style='height: 30px; width: 30px;'>
-                                                    <img src='$url_path/images/delete.png' class='id_val delete_btn_tile' style='height: 30px; width: 30px;'>
-                                                </div>
-                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0'></i>
+                                               
+                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='$url_path/images/edit.png'  style='height: 20px; width: 20px; margin-right: 5px;'>
+                                                    <img src='$url_path/images/delete.png' class='id_val delete_btn_tile' style='height: 20px; width: 20px;'>
+                                                </div>
                                             </div>
                                             
                                             <div class='overflow-hide ml-3'>
@@ -793,13 +794,14 @@ class dashboardController {
                                         <div id='' class=''>
                                             <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
-                                            <div class='action-modal-button-div'>
-                                                <img src='$url_path/images/edit.png'  style='height: 30px; width: 30px;'>
-                                                <img src='$url_path/images/delete.png' class='id_val delete_btn_tile' style='height: 30px; width: 30px;'>
-                                            </div>
-                                            <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0'></i>
+                                            
+                                            <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0 measurement-icon'></i>
                                             </div>  
                                             <p class='mb-0 mt-2 text-success'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                            <div class='action-modal-button-div'>
+                                                <img src='$url_path/images/edit.png'  style='height: 20px; width: 20px; margin-right: 5px'>
+                                                <img src='$url_path/images/delete.png' class='id_val delete_btn_tile' style='height: 20px; width: 20px;'>
+                                            </div>
                                         </div>
                                         
                                         <div class='overflow-hide ml-3'>
