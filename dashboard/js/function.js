@@ -944,6 +944,9 @@ setTimeout(function () {
     $('.'+id+'.tiles-click').removeClass('col-md-3');
     $('.'+id+'.tiles-click').css('width',localStorage.getItem('width')+'px');
     $('.'+id+'.tiles-click').css('height',localStorage.getItem('height')+'px');
+    // <---30-8-2021--
+    $('.'+id+' .card-body').removeClass('row');
+    // --end-->
 },1000);
 
 })
