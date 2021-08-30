@@ -18,11 +18,12 @@ $fax = $_POST['fax'] ;
 $mobiltelefon = $_POST['mobiltelefon'] ;
 $username = $_POST['username'] ;
 $passHash = $_POST['passHash'] ;
-$rechte = $_POST['rechte'] ;
+$rechteTreeView = $_POST['rechteTreeView'] ;
+$rechteMenu = $_POST['rechteMenu'] ;
 
 if($modus === "new") {
-       $query =  "INSERT INTO benutzer(manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, passHash, position, rechte, deleted) " ;
-       $query .= "VALUES($manGrpID, '$manID', '$name', '$vorname', '$username', '$titel', '$email', '$telefon', '$fax', '$mobiltelefon', '$passHash', 'adm', '$rechte', 0) " ;
+       $query =  "INSERT INTO benutzer(manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
+       $query .= "VALUES($manGrpID, '$manID', '$name', '$vorname', '$username', '$titel', '$email', '$telefon', '$fax', '$mobiltelefon', '$passHash', 'adm', '$rechteTreeView', '$rechteMenu', 0) " ;
 }
 else {
     $benID = $_POST['benID'] ;
@@ -33,7 +34,7 @@ else {
         $query .= "name = '$name', vorname = '$vorname', " ;
         $query .= "username = '$username', titel = '$titel', " ;
         $query .= "eMail = '$email', telefon = '$telefon', " ;
-        $query .= "fax = '$fax', rechte = '$rechte' " ;
+        $query .= "fax = '$fax', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;
         $query .= "WHERE ben_ID = ".$benID." " ;
     }
     else {
@@ -42,7 +43,7 @@ else {
         $query .= "name = '$name', vorname = '$vorname', " ;
         $query .= "username = '$username', titel = '$titel', " ;
         $query .= "eMail = '$email', telefon = '$telefon', " ;
-        $query .= "fax = '$fax', passHash = '$passHash', rechte = '$rechte' " ;
+        $query .= "fax = '$fax', passHash = '$passHash', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;
         $query .= "WHERE ben_ID = ".$benID." " ;
     }
 }

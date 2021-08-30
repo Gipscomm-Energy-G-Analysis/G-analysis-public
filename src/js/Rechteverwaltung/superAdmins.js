@@ -24,19 +24,20 @@ const scpRechteverwaltung_superAdmins =
             // Returns an object that contains the form data
             const getFormData =
                  () => (
-                    { modus : getFieldValue("sAdmState")
-                    , sAdmID : getFieldValue("sAdmID")
-                    , betrGrpID : getFieldValue("betrGrpID")
-                    , titelSAdm : getFieldValue("titelSAdm")
-                    , nameSAdm : getFieldValue("nameSAdm")
-                    , vornameSAdm : getFieldValue("vornameSAdm")
-                    , emailSAdm : getFieldValue("emailSAdm")
-                    , telefonSAdm : getFieldValue("telefonSAdm")
-                    , faxSAdm : getFieldValue("faxSAdm")
+                    { modus            : getFieldValue("sAdmState")
+                    , sAdmID           : getFieldValue("sAdmID")
+                    , betrGrpID        : getFieldValue("betrGrpID")
+                    , titelSAdm        : getFieldValue("titelSAdm")
+                    , nameSAdm         : getFieldValue("nameSAdm")
+                    , vornameSAdm      : getFieldValue("vornameSAdm")
+                    , emailSAdm        : getFieldValue("emailSAdm")
+                    , telefonSAdm      : getFieldValue("telefonSAdm")
+                    , faxSAdm          : getFieldValue("faxSAdm")
                     , mobiltelefonSAdm : getFieldValue("mobiltelefonSAdm")
-                    , username : getFieldValue("benutzernameSAdm")
-                    , passHash : getHash(getFieldValue("passwortSAdm"))
-                    , rechte : treeSAdm.getValues().join(",")
+                    , username         : getFieldValue("benutzernameSAdm")
+                    , passHash         : getHash(getFieldValue("passwortSAdm"))
+                    , rechteTreeView   : treeSAdm.getValues().join(",")
+                    , rechteMenu       : scpTreeView.getSelectedNodes(treeSAdm).join(",")
                     }
                 )
 
@@ -195,7 +196,7 @@ const scpRechteverwaltung_superAdmins =
 
                             setState("edit")
 
-                            treeSAdm.setValues(superAdmin.rechte.split(","))
+                            treeSAdm.setValues(record.rechteTreeView.split(","))
                         }
                     )
                 }

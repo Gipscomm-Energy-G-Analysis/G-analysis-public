@@ -27,6 +27,11 @@ const scpTreeView =
                 id =>
                 partition(nextLvlAndChild(id))({selected : [], unselected : []})
 
+            this.getSelectedNodes =
+                tree =>
+                tree.selectedNodes
+                .map(a => a.id)
+
             this.build = 
                 nodes => 
                 arr => 

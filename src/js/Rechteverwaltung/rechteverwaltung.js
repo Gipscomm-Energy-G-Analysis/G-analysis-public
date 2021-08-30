@@ -7,6 +7,7 @@
 const scpRechteverwaltung =
     freeze (
         new function () {
+
             this.populateIndexedDB =
                 () =>
                 ajaxPost("php/Rechteverwaltung/readRechteverwaltung.php")({})
@@ -21,6 +22,26 @@ const scpRechteverwaltung =
                     ].forEach(scpIndexedDB.dataIntoIDB(result))   
                 )
 
+            const User = 
+                { GipscommAdmin : "gipsAdm"
+                , SuperAdmin    : "sAdm"
+                , Admin         : "adm"
+                , Benutzer      : "ben"
+                }
+
+            this.getRechteArray =
+                () =>
+                itemSessionGet("rechteMenu").split(",")
+                
+            const remove =
+                id => 
+                $(`[data-menus="${id}"]`).remove()
+
+            const removeMenus =
+                () =>
+                difference(this.getMenuIDs())(this.getRechteArray())
+                .forEach(remove)
+
             const hideElement =
                 element =>
                 $(element).css("display", "none")
@@ -29,10 +50,10 @@ const scpRechteverwaltung =
                 position => {
                     switch (position) {
 
-                        case "gipsAdm":
+                        case User.GipscommAdmin:
                             break;
 
-                        case "sAdm":
+                        case User.SuperAdmin:
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
@@ -41,7 +62,7 @@ const scpRechteverwaltung =
                             ].forEach(hideElement)
                             break;
 
-                        case "adm":
+                        case User.Admin:
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
@@ -54,13 +75,16 @@ const scpRechteverwaltung =
                             ].forEach(hideElement)
                             break;
                             
-                        case "ben":
+                        case User.Benutzer:
                             hideElement("#rechtMenuLi")
                             break;
-                    
-                        default:
-                            console.log("Rechteverwaltung -> rechteverwaltung.js -> hideTabsAndMenus : case " + position + " is not covered !")
-                            break;
+                    }
+
+                    if (!equal(position)(User.GipscommAdmin)) {
+                        removeMenus()
+                    }
+                    else {
+                        // Nothing
                     }
                 }
 
@@ -79,15 +103,14 @@ const scpRechteverwaltung =
                     const [betrGrpID, ins, manOderManGrpID] = readInMandantenArgs(position)
                 
                     hideTabsAndMenus(position)
-
+                
                     mandantenEinlesen(betrGrpID, ins, manOderManGrpID)
                 }
 
-            const getMenuIDs =
+            this.getMenuIDs =
                 () =>
                 array($("[data-menus]").length)()()
-                .map((_, i) => $("[data-menus][data-hidden]").eq(i).attr("data-menus"))
-                .filter(a => a !== undefined)
+                .map((_, i) => $("[data-menus]").eq(i).attr("data-menus"))
 
             const menuItemText =
                 id => 
@@ -99,7 +122,7 @@ const scpRechteverwaltung =
                 
             this.menuHtml2Json =
                 () => 
-                getMenuIDs()
+                this.getMenuIDs()
                 .map( menuItemText )
             
             const Type =

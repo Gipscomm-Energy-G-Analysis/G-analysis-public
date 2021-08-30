@@ -18,23 +18,24 @@ $fax = $_POST['fax'] ;
 $mobiltelefon = $_POST['mobiltelefon'] ;
 $username = $_POST['username'] ;
 $passHash = $_POST['passHash'] ;
-$rechte = $_POST['rechte'] ;
+$rechteTreeView = $_POST['rechteTreeView'] ;
+$rechteMenu = $_POST['rechteMenu'] ;
 
 if($modus === "new") {
-   $query =  "INSERT INTO admins(manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechte, deleted) " ;
-   $query .= "VALUES($manGrpID, $manID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', '$rechte', 0) " ;
+   $query =  "INSERT INTO admins(manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
+   $query .= "VALUES($manGrpID, $manID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', '$rechteTreeView', '$rechteMenu', 0) " ;
 }
 else {
     $admID = $_POST['admID'] ;
 
-    if($passHash === "") {
+    if(trim($passHash) === "") {
         $query =  "UPDATE admins " ;
-        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechte = '$rechte' " ;
+        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;
         $query .= "WHERE adm_ID = ".$admID." " ;
     }
     else {
         $query =  "UPDATE admins " ;
-        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechte = '$rechte', passHash = '$passHash' " ;
+        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu', passHash = '$passHash' " ;
         $query .= "WHERE adm_ID = ".$admID." " ;
     }
 }

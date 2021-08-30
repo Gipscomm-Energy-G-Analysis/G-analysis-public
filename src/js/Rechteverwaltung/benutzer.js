@@ -15,20 +15,21 @@ const scpRechteverwaltung_benutzer =
             // Returns an object that contains the form data
             const getFormData =
                 () => (
-                    { modus        : helper.fieldValue("benState")
-                    , benID        : helper.fieldValue("benID")
-                    , manID        : helper.fieldValue("manID")
-                    , manGrpID     : helper.fieldValue("manGrpID")
-                    , titel        : helper.fieldValue("titelBen")
-                    , name         : helper.fieldValue("nameBen")
-                    , vorname      : helper.fieldValue("vornameBen")
-                    , email        : helper.fieldValue("emailBen")
-                    , telefon      : helper.fieldValue("telefonBen")
-                    , fax          : helper.fieldValue("faxBen")
-                    , mobiltelefon : helper.fieldValue("mobiltelefonBen")
-                    , username     : helper.fieldValue("benutzernameBen")
-                    , passHash     : getHash(helper.fieldValue("passwortBen"))
-                    , rechte       : treeBen.getValues().join(",")
+                    { modus          : helper.fieldValue("benState")
+                    , benID          : helper.fieldValue("benID")
+                    , manID          : helper.fieldValue("manID")
+                    , manGrpID       : helper.fieldValue("manGrpID")
+                    , titel          : helper.fieldValue("titelBen")
+                    , name           : helper.fieldValue("nameBen")
+                    , vorname        : helper.fieldValue("vornameBen")
+                    , email          : helper.fieldValue("emailBen")
+                    , telefon        : helper.fieldValue("telefonBen")
+                    , fax            : helper.fieldValue("faxBen")
+                    , mobiltelefon   : helper.fieldValue("mobiltelefonBen")
+                    , username       : helper.fieldValue("benutzernameBen")
+                    , passHash       : getHash(helper.fieldValue("passwortBen"))
+                    , rechteTreeView : treeBen.getValues().join(",")
+                    , rechteMenu     : scpTreeView.getSelectedNodes(treeBen).join(",")
                     }
                 )
 
@@ -167,7 +168,8 @@ const scpRechteverwaltung_benutzer =
 
                             helper.setState("ben")("edit")
 
-                            treeBen.setValues(record.rechte.split(","))
+                            treeBen.setValues(record.rechteTreeView.split(","))
+
                         }
                     )
                 }
