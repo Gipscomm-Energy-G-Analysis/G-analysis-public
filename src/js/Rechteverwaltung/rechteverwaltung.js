@@ -109,12 +109,12 @@ const scpRechteverwaltung =
 
             this.getMenuIDs =
                 () =>
-                array($("[data-menus]").length)()()
-                .map((_, i) => $("[data-menus]").eq(i).attr("data-menus"))
+                array($("a[data-menus]").length)()()
+                .map((_, i) => $("a[data-menus]").eq(i).attr("data-menus"))
 
             const menuItemText =
                 id => 
-                ( { id, text : $(`[data-menus=${id}]`).text() } )
+                ( { id, text : $(`a[data-menus=${id}]`).text() } )
 
             this.getMainMenus =
                 menus =>
