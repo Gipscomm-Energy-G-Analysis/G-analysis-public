@@ -292,7 +292,8 @@ const saveTableConfigurations = (data) => {
         },
         success:function(result) {
             if(result.status == 200) {
-                console.log('result',result);
+                $('#modal-machine-configuration').modal('hide');
+                toastr.success(result.msg);
             }
         },
         error:function(result) {

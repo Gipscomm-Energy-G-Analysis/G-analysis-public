@@ -52,10 +52,10 @@ class MigrationController extends Controller
         if (!$table_exits) {
             Schema::create('machine_table_config', function (Blueprint $table) {
                 $table->id();
-                $table->integer('column_name');
+                $table->string('column_name')->nullable();
+                $table->string('label_name')->nullable();
                 $table->enum('status',['0','1','2']);
                 $table->string('table_name')->nullable();
-                $table->timestamps();
             });
         }
         return;

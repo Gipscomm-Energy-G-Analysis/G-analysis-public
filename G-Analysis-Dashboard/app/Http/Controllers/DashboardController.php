@@ -323,9 +323,9 @@ class DashboardController extends Controller
                         'anl_ID'        =>  $anl_ID,
                         'username'      =>  $username,
                         "dbName"        =>  $dbName,
-                        'label_name'         =>  $label,
-                        "table_name"     =>  $tableName,
-                        "column_name"    =>  $columnName,
+                        'label_name'    =>  $label,
+                        "table_name"    =>  $tableName,
+                        "column_name"   =>  $columnName,
                         "primary_key"   =>  $primaryKey,
                         "foreign_key"   =>  $foreignKey);
                     DashboardProduktionConfig::insert($data);
@@ -505,12 +505,19 @@ class DashboardController extends Controller
         return ['odd'=>$odd, 'even' =>$even];
     }
 
-    public function getCustomFieldData($machineData) {
-        $data = DB::table('dashboardProduktionConfig')->get()->toArray();
+    public function getCustomFieldData($machineData, $selected=null) {
+        if(!empty($selected)) {
+            $data = DB::table('dashboardProduktionConfig');
+            foreach($selected as $name){
+                $data->orWhere('column_name', $name);
+            }
+            $data = $data->get()->toArray();
+        } else {
+            $data = DB::table('dashboardProduktionConfig')->get()->toArray();
+        }
         $columnData = [];
         if (!empty($data)) {
             foreach($data as $tableData) {
-
                 $primary_key = $tableData->primary_key;   
                 $data = DB::table($tableData->table_name)
                 ->select(DB::raw($tableData->column_name.' AS "'.$tableData->label_name.'"'))
@@ -523,35 +530,33 @@ class DashboardController extends Controller
     }
 
     public function getCustomTable() {
+        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get()->toArray();
+        $defaultString = $this->makeDefaultColumnQuery($columnData);
         $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->limit(5)->get();
         $machineDataCustom = [];
         if(!empty($machineData)){
-            
             foreach($machineData as $machine) {
                 $subGroupId = $this->getSubGroupid($machine->custom1Anl);
                 $primary_key = $this->getPrimaryKey($subGroupId);
                 $machineName = explode ( '-' ,$machine->nummerAnl);
                 $machineName = $machineName[0];
                 $subGroupConfig = [];
-                $prodData = DB::table('TWP_PROD_OVERVIEW')->where('MANAME',$machineName)->orderBy('id', 'desc')->first();
-                if(!empty($prodData)){                    
-                    $dynamicData  = [
-                        'anlage' => Str::of($prodData->MANAME)->trim(),
-                        'auftragsmenge' => (int)($prodData->AMOUNT_REQUEST),
-                        'programm' => Str::of($prodData->STATETEXT)->trim(),
-                        'zeit_zyklus' => number_format($prodData->CYCLETIME, 2),
-                        'bestellung' =>  Str::of($prodData->MPSNAME)->trim(),
-                        'werkzeug' => Str::of($prodData->TOOLNAME)->trim(),
-                        'artikel' => Str::of($prodData->MAORDER)->trim(),
-                        'kavitäten' =>(int)$prodData->CAVITY,
-                        'gutmenge' => (int)($prodData->AMOUNT_GOOD),
-                        'letzte_störung' => Str::of($prodData->LASTUPDATE)->trim(),
-                        'ausschuss' => (int)($prodData->AMOUNT_BAD),
-                        'bisher_produziert' => (int)($prodData->AMOUNT_GOOD),
-                    ];
-                    $customColumns = array_merge($dynamicData, $this->getCustomFieldData($machine));
-                    array_push($machineDataCustom, $customColumns);
+                if(!empty($defaultString['string'])) {
+                    $prodData = DB::table('TWP_PROD_OVERVIEW')
+                    ->select(DB::raw($defaultString['string']))
+                    ->where('MANAME',$machineName)->orderBy('id', 'desc')->first();
+                    if(!empty($prodData)){
+                        $prodData = (array) $prodData;
+                    }
+                } else {
+                    $prodData = [];
                 }
+                if(!empty($defaultString['customData'])){
+                    $customColumns = array_merge($prodData, $this->getCustomFieldData($machine, $defaultString['customData']));
+                } else {
+                    $customColumns = $prodData;
+                }
+                array_push($machineDataCustom, $customColumns);
             }
             $theadData = array_keys($machineDataCustom[0]);
             return ['status' => 200 , 'thead' => $theadData , 'tbody' => $machineDataCustom];
@@ -560,4 +565,21 @@ class DashboardController extends Controller
         }
         
     }
+
+    public function makeDefaultColumnQuery($column) {
+        $string = null;
+        $customData = [];
+        if(!empty($column)) {
+            foreach($column as $tableData) {
+                if($tableData->status == '2'){
+                    $string .= "RTRIM( LTRIM(".$tableData->label_name.")) AS '".$tableData->column_name."', ";
+                } else if($tableData->status == '1') {
+                    array_push($customData, $tableData->column_name);
+                }
+            }
+        }
+        $string = rtrim($string, ", ");
+        return ['string'=>$string, 'customData'=>$customData];
+    }
+
 }
