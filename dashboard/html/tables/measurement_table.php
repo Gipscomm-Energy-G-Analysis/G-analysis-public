@@ -96,13 +96,13 @@
                           <div class="row">
                               <div class="form-group col-md-3">
                                 <label for="modal-height-input-measurement" class="text-mute">Column</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-measurement" placeholder="Height">
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-measurement" placeholder="Column">
                                 <input type="hidden" id="modal-height-input-measurement-hidden" value="145">
                               </div>
 
                               <div class="form-group col-md-3">
                                 <label for="modal-width-input-measurement" class="text-mute">Row</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-measurement" placeholder="Width">
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-measurement" placeholder="Row">
                                 <input type="hidden" id="modal-width-input-measurement-hidden" value="285">
                               </div>
 
