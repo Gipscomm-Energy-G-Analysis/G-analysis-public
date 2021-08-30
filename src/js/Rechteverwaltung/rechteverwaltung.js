@@ -29,7 +29,7 @@ const scpRechteverwaltung =
                 , Benutzer      : "ben"
                 }
 
-            this.getRechteArray =
+            const getRechteArray =
                 () =>
                 itemSessionGet("rechteMenu").split(",")
                 
@@ -39,7 +39,7 @@ const scpRechteverwaltung =
 
             const removeMenus =
                 () =>
-                difference(this.getMenuIDs())(this.getRechteArray())
+                difference(getMenuIDs())(getRechteArray())
                 .forEach(remove)
 
             const hideElement =
@@ -107,7 +107,7 @@ const scpRechteverwaltung =
                     mandantenEinlesen(betrGrpID, ins, manOderManGrpID)
                 }
 
-            this.getMenuIDs =
+            const getMenuIDs =
                 () =>
                 array($("a[data-menus]").length)()()
                 .map((_, i) => $("a[data-menus]").eq(i).attr("data-menus"))
@@ -122,7 +122,7 @@ const scpRechteverwaltung =
                 
             this.menuHtml2Json =
                 () => 
-                this.getMenuIDs()
+                getMenuIDs()
                 .map( menuItemText )
             
             const Type =
