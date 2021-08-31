@@ -81,6 +81,8 @@ const scpRechteverwaltung =
                     }
 
                     if (!equal(position)(User.GipscommAdmin)) {
+                        idxDB.mandanten.clear()
+                        idxDB.gipscommAdmins.clear()
                         removeMenus()
                     }
                     else {

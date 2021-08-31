@@ -11103,9 +11103,18 @@
                 <script type="text/javascript" src="dist/js/objects.min.js"></script>
                 <script type="text/javascript" src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
                 <script>
+                    const newVersion =
+                        () => 
+                        Number(
+                            new Date()
+                            .toISOString()
+                            .slice(0,10)
+                            .replace(/-/g,"")
+                        )
+
                     idxDB = new Dexie("G-Analysis")
                     idxDB
-                    .version(1)
+                    .version(newVersion())
                     .stores(
                         { mandanten : "man_ID, betrGrp_ID, nameMan, dbName"
 

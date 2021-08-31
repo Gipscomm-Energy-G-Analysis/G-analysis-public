@@ -181,18 +181,18 @@ const scpRechteverwaltung_superAdmins =
                 idx => {
                     querySuperAdminDataIDB(idx)
                     .then(
-                        superAdmin => {
+                        record => {
 
                             $("#sAdmIdx").val(idx)
-                            $("#sAdmID").val(superAdmin.sAdm_ID)
-                            $("#titelSAdm").val(superAdmin.titelSAdm)
-                            $("#nameSAdm").val(superAdmin.nameSAdm)
-                            $("#vornameSAdm").val(superAdmin.vornameSAdm)
-                            $("#emailSAdm").val(superAdmin.emailSAdm)
-                            $("#telefonSAdm").val(superAdmin.telefonSAdm)
-                            $("#faxSAdm").val(superAdmin.faxSAdm)
-                            $("#mobiltelefonSAdm").val(superAdmin.mobiltelefonSAdm)
-                            $("#benutzernameSAdm").val(superAdmin.username)
+                            $("#sAdmID").val(record.sAdm_ID)
+                            $("#titelSAdm").val(record.titelSAdm)
+                            $("#nameSAdm").val(record.nameSAdm)
+                            $("#vornameSAdm").val(record.vornameSAdm)
+                            $("#emailSAdm").val(record.emailSAdm)
+                            $("#telefonSAdm").val(record.telefonSAdm)
+                            $("#faxSAdm").val(record.faxSAdm)
+                            $("#mobiltelefonSAdm").val(record.mobiltelefonSAdm)
+                            $("#benutzernameSAdm").val(record.username)
 
                             setState("edit")
 

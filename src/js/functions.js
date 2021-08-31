@@ -1634,7 +1634,7 @@ try {
             this.manGrpID = b
         },
         betrGrpInDropbox = function(a) {
-            $(".betrPfadl, .dataBetrGrpAdm, .dataBetrGrpBen").empty();
+            $(".betrPfad, .dataBetrGrpAdm, .dataBetrGrpBen").empty();
             for (n = 0; n < a.length; n++) betrGrpListe[n] =
                 new betrGrp(a[n].firma, a[n].betrGrp_ID), $(".betrPfad, .dataBetrGrpAdm, .dataBetrGrpBen").append("<option>" + betrGrpListe[n].firma + "</option>")
         },

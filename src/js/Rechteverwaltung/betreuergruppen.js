@@ -298,7 +298,9 @@ const scpRechteverwaltung_betreuergruppen =
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
-                        , this.updateIndexedDB().then(this.readFirst)
+                        , this.updateIndexedDB()
+                        .then(betrGrpEinlesen)
+                        .then(this.readFirst)
                         )
                     )
                 }
@@ -351,7 +353,8 @@ const scpRechteverwaltung_betreuergruppen =
                                 const selectedRecord =
                                     tblBetrGrpSuchen.row(this).data()
 
-                                this.readIntoFormFields(head(selectedRecord))
+                                    scpRechteverwaltung_betreuergruppen
+                                    .readIntoFormFields(head(selectedRecord))
 
                                 $("#betrGrpSuchenContainer").dialog("close")
                             })
