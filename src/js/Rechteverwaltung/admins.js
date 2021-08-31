@@ -27,7 +27,10 @@ const scpRechteverwaltung_admins =
                     , fax            : helper.fieldValue("faxAdm")
                     , mobiltelefon   : helper.fieldValue("mobiltelefonAdm")
                     , username       : helper.fieldValue("benutzernameAdm")
-                    , passHash       : getHash(helper.fieldValue("passwortAdm"))
+                    , passHash       : 
+                        emptyString(helper.fieldValue("passwortAdm")) ? 
+                        "" :
+                        getHash(helper.fieldValue("passwortAdm"))
                     , rechteTreeView : treeAdm.getValues().join(",")
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeAdm).join(",")
                     }

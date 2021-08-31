@@ -27,7 +27,10 @@ const scpRechteverwaltung_benutzer =
                     , fax            : helper.fieldValue("faxBen")
                     , mobiltelefon   : helper.fieldValue("mobiltelefonBen")
                     , username       : helper.fieldValue("benutzernameBen")
-                    , passHash       : getHash(helper.fieldValue("passwortBen"))
+                    , passHash       : 
+                        emptyString(helper.fieldValue("passwortBen")) ? 
+                        "" :
+                        getHash(helper.fieldValue("passwortBen"))
                     , rechteTreeView : treeBen.getValues().join(",")
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeBen).join(",")
                     }

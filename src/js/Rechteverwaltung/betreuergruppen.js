@@ -16,12 +16,6 @@ const scpRechteverwaltung_betreuergruppen =
                     scpIndexedDB.dataIntoIDB(result)("betreuerGruppen")   
                 )
 
-            // Returns an input value depending on the elements id
-            const getFieldValue =
-                a =>
-                $(`#${a}`).val()
-
-            // Extracts the mandanten ID's from the table
             const getManIDs =
                 () =>
                 array($("#tblMandantenBetrGrp tbody tr").length)()()
@@ -33,25 +27,23 @@ const scpRechteverwaltung_betreuergruppen =
                 array($("#tblMandantenBetrGrp tbody tr").length)()()
                 .map((_, i) => tblMandantenBetrGrp.cell(i, 0).data())
 
-            // Returns an object that contains the form data
             const getFormData =
                 () => (
-                    { modus : getFieldValue("betrGrpState")
-                    , betrGrpID : getFieldValue("betrGrpID")
-                    , firma : getFieldValue("firmaBetrGrp")
-                    , anzahlMitarbeiter : getFieldValue("anzahlMitarbeiterBetrGrp")
-                    , anschrift : getFieldValue("anschriftBetrGrp")
-                    , plz : getFieldValue("plzBetrGrp")
-                    , ort : getFieldValue("ortBetrGrp")
-                    , geschaeftsfuehrer : getFieldValue("geschaeftsfuehrerBetrGrp")
-                    , telefon : getFieldValue("telefonBetrGrp")
-                    , eMail : getFieldValue("emailBetrGrp")
-                    , notiz : getFieldValue("notizBetrGrp")
-                    , mandantenIDs : getManIDs()
+                    { modus             : helper.fieldValue("betrGrpState")
+                    , betrGrpID         : helper.fieldValue("betrGrpID")
+                    , firma             : helper.fieldValue("firmaBetrGrp")
+                    , anzahlMitarbeiter : helper.fieldValue("anzahlMitarbeiterBetrGrp")
+                    , anschrift         : helper.fieldValue("anschriftBetrGrp")
+                    , plz               : helper.fieldValue("plzBetrGrp")
+                    , ort               : helper.fieldValue("ortBetrGrp")
+                    , geschaeftsfuehrer : helper.fieldValue("geschaeftsfuehrerBetrGrp")
+                    , telefon           : helper.fieldValue("telefonBetrGrp")
+                    , eMail             : helper.fieldValue("emailBetrGrp")
+                    , notiz             : helper.fieldValue("notizBetrGrp")
+                    , mandantenIDs      : getManIDs()
                     }
                 )
 
-            // Checks if there are empty input values
             const completeFormData =
                 formData => 
                 [ "firma"
@@ -68,9 +60,7 @@ const scpRechteverwaltung_betreuergruppen =
                 .map(field(formData))
                 .every(a => !emptyString(a))
             
-            // Inserts or updates the given record into the sql srv DB
-            // and then updates the indexedDB
-            const saveFormData =
+            const save =
                 formData =>
                 ajaxPost("php/Rechteverwaltung/Betreuergruppen/saveBetreuergruppe.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
@@ -82,9 +72,6 @@ const scpRechteverwaltung_betreuergruppen =
                     false
                 )
 
-            // If the form data contains empty input elements a
-            // dialog is shown which asks if the record should be
-            // saved anyways
             const nonCompleteDataDialog =
                 formData =>
                 $("#saveBetrGrpDialog").dialog({
@@ -104,7 +91,7 @@ const scpRechteverwaltung_betreuergruppen =
                         $("#saveBetrGrpOk").off("click")
                         $("#saveBetrGrpOk").on("click",
                             () =>
-                            ( saveFormData(formData)
+                            ( save(formData)
                             , $("#saveBetrGrpDialog").dialog("close")
                             )
                         )
@@ -117,40 +104,15 @@ const scpRechteverwaltung_betreuergruppen =
                     }
                 })
 
-            // Checks if all input elements are set and either shows the
-            // dialog which asks if the record should be saved anyways
-            // or if complete directly saves the record
-            this.validateAndSaveFormData =
+            this.validateAndsave =
                     () => {
                         const formData =
                             getFormData()
 
                         !completeFormData(formData) ?
                         nonCompleteDataDialog(formData) :
-                        saveFormData(formData) 
+                        save(formData) 
                     }
-
-            // Sets the create new or update state for saving
-            const setState =
-                state =>
-                state === "new" ?
-                ( $("#betrGrpState").val(state)
-                , $(".betrGrpForm")
-                    .css("background", "antiquewhite")
-                    .css("border", "1px solid black")
-                    .css("padding", "1px")
-                ) :
-                ( $("#betrGrpState").val(state)
-                , $(".betrGrpForm")
-                    .css("background", "white")
-                    .css("border", "1px solid black")
-                    .css("padding", "1px")
-                )
-
-            // Resets the value of a given input to an empty string
-            const clearField =
-                field =>
-                $(`#${field}`).val("")
 
             this.clearFields =
                 () =>
@@ -165,24 +127,21 @@ const scpRechteverwaltung_betreuergruppen =
                   , "emailBetrGrp"
                   , "notizBetrGrp"
                   ]    
-                  .forEach(clearField)
+                  .forEach(helper.clearField)
                 , clearTable(tblMandantenBetrGrp)
-                , setState("new")
+                , helper.setState("betrGrp")("new")
                 )
 
-            // Returns an array of the Schicht Modelle from indexedDB
-            const queryBetreuerGruppenDataIDB =
+            const queryDatasIDB =
                 () => 
                 idxDB.betreuerGruppen
                 .toArray()
 
-            // Returns a certain Schicht Modell depending on an index
             this.queryBetreuerGruppeDataIDB =
                 idx =>
-                queryBetreuerGruppenDataIDB()
-                .then(betreuerGruppen => betreuerGruppen[idx])
+                queryDatasIDB()
+                .then(records => records[idx])
 
-            // Prepares the table data for the search dialog
             const prepareTableDataMan =
                 records =>
                 records.map(
@@ -193,7 +152,6 @@ const scpRechteverwaltung_betreuergruppen =
                     ]
                 )
 
-            // Fills the search dialog table with data
             const fillMandantenTbl =
                 tbl =>
                 data => {
@@ -211,30 +169,29 @@ const scpRechteverwaltung_betreuergruppen =
                 that =>
                 tblMandantenBetrGrp.row(that).remove().draw()
 
-            // Sets the form data retrieved from indexedDB
             this.readIntoFormFields =
                 idx => {
                     this.queryBetreuerGruppeDataIDB(idx)
                     .then(
-                        betreuerGruppe => {
+                        record => {
 
                             $("#betrGrpIdx").val(idx)
-                            $("#betrGrpID").val(betreuerGruppe.betrGrp_ID)
-                            $("#firmaBetrGrp").val(betreuerGruppe.firma)
-                            $("#anzahlMitarbeiterBetrGrp").val(betreuerGruppe.anzahlMitarbeiter)
-                            $("#anschriftBetrGrp").val(betreuerGruppe.anschrift)
-                            $("#plzBetrGrp").val(betreuerGruppe.plz)
-                            $("#ortBetrGrp").val(betreuerGruppe.ort)
-                            $("#geschaeftsfuehrerBetrGrp").val(betreuerGruppe.geschaeftsfuehrer)
-                            $("#telefonBetrGrp").val(betreuerGruppe.telefon)
-                            $("#emailBetrGrp").val(betreuerGruppe.eMail)
-                            $("#notizBetrGrp").val(betreuerGruppe.notiz)
+                            $("#betrGrpID").val(record.betrGrp_ID)
+                            $("#firmaBetrGrp").val(record.firma)
+                            $("#anzahlMitarbeiterBetrGrp").val(record.anzahlMitarbeiter)
+                            $("#anschriftBetrGrp").val(record.anschrift)
+                            $("#plzBetrGrp").val(record.plz)
+                            $("#ortBetrGrp").val(record.ort)
+                            $("#geschaeftsfuehrerBetrGrp").val(record.geschaeftsfuehrer)
+                            $("#telefonBetrGrp").val(record.telefon)
+                            $("#emailBetrGrp").val(record.eMail)
+                            $("#notizBetrGrp").val(record.notiz)
                             $(".betrPfad").prop("selectedIndex", idx)
                             $(".dataBetrGrpAdm").prop("selectedIndex", idx)
                             $(".dataBetrGrpBen").prop("selectedIndex", idx)
-                            readIntoMandantenTable(betreuerGruppe)
+                            readIntoMandantenTable(record)
 
-                            setState("edit")
+                            helper.setState("betrGrp")("edit")
                         }
                     )
                     .then(scpRechteverwaltung_superAdmins.readFirst)
@@ -244,7 +201,6 @@ const scpRechteverwaltung_betreuergruppen =
                     .then(scpRechteverwaltung_benutzer.readFirst)
                 }
 
-            // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
                 idxDB.betreuerGruppen
@@ -256,28 +212,23 @@ const scpRechteverwaltung_betreuergruppen =
                     this.clearFields()
                 )
                 
-            // Sets the form data input values of the previous Schicht Modell
-            // depending on the current records index
             this.readPrevious =
                 () =>
-                greaterZero(getFieldValue("betrGrpIdx")) ?
-                this.readIntoFormFields(decr(getFieldValue("betrGrpIdx"))) :
+                greaterZero(helper.fieldValue("betrGrpIdx")) ?
+                this.readIntoFormFields(decr(helper.fieldValue("betrGrpIdx"))) :
                 false
 
-            // Sets the form data input values of the next Schicht Modell
-            // depending on the current records index
             this.readNext =
                 () =>
                 idxDB.betreuerGruppen
                 .count()
                 .then( 
                     count => 
-                    greater(decr(count))(getFieldValue("betrGrpIdx")) ?
-                    this.readIntoFormFields(incr(getFieldValue("betrGrpIdx"))) :
+                    greater(decr(count))(helper.fieldValue("betrGrpIdx")) ?
+                    this.readIntoFormFields(incr(helper.fieldValue("betrGrpIdx"))) :
                     false
                 )
 
-            // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
                 idxDB.betreuerGruppen
@@ -289,7 +240,6 @@ const scpRechteverwaltung_betreuergruppen =
                     false
                 )
 
-            // Deletes the current Schicht Modell(sets col deleted = true)
             this.deleteBetreuerGruppe =
                 () => {
                     const betrGrpID = $("#betrGrpID").val()
@@ -305,8 +255,7 @@ const scpRechteverwaltung_betreuergruppen =
                     )
                 }
 
-            // Prepares the table data for the search dialog
-            const prepareTableDataBetrGrp =
+            const prepareData =
                 records =>
                 records.map(
                     (a, i) =>
@@ -317,19 +266,17 @@ const scpRechteverwaltung_betreuergruppen =
                     ]
                 )
 
-            // Fills the search dialog table with data
-            const fillBetreuerGruppenTbl =
+            const fillTbl =
                 data => {
                     clearTable(tblBetrGrpSuchen)
-                    intoTable(tblBetrGrpSuchen)(prepareTableDataBetrGrp(data))
+                    intoTable(tblBetrGrpSuchen)(prepareData(data))
                 }
 
-            // Triggers opening the search dialog
             this.searchBetreuerGruppen =
                 () => {
 
-                    queryBetreuerGruppenDataIDB()
-                    .then(fillBetreuerGruppenTbl)
+                    queryDatasIDB()
+                    .then(fillTbl)
 
                     $("#betrGrpSuchenContainer").dialog({
                         height: 450,
@@ -366,7 +313,7 @@ const scpRechteverwaltung_betreuergruppen =
                 () =>
                 scpRechteverwaltung_betreuergruppen
                 .queryBetreuerGruppeDataIDB(
-                    Number(getFieldValue("betrGrpIdx"))
+                    Number(helper.fieldValue("betrGrpIdx"))
                 )
 
             this.arrayBetrGrpManIDs =
