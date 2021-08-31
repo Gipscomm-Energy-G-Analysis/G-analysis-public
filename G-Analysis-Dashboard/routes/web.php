@@ -17,7 +17,7 @@ Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'ind
 Route::get('/dashboard/charts', [\App\Http\Controllers\ChartController::class, 'index'])->name('charts');
 Route::get('/dashboard/table', [\App\Http\Controllers\TableController::class, 'index'])->name('tables');
 Route::post('/dashboard/machine', [\App\Http\Controllers\DashboardController::class, 'getMachineDetail'])->name('machineDetails');
-Route::post('/dashboard/getMachineTableData', [\App\Http\Controllers\DashboardController::class, 'getMachineTableData'])->name('getMachineTableData');
+Route::post('/dashboard/getMachineTableData', [\App\Http\Controllers\DashboardController::class, 'getCustomTable'])->name('getCustomTable');
 Route::get('/product/data-table', [\App\Http\Controllers\TableController::class, 'getProductDataTable'])
     ->name('getProductDataTable');
 Route::get('/charts-donut-ajax', [\App\Http\Controllers\ChartController::class, 'getEnergyConsumptionPerMachine'])

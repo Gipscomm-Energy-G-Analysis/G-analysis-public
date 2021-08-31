@@ -4,9 +4,10 @@ let intiated = false;
 
 const searchMachineFunction = () => {
     $('#modal-Machine-list').modal('show');
+    jsGridFunction();
     if(!intiated){
-      //  jsGridFunction()
-      customMachineTable();
+        jsGridFunction();
+    //  customMachineTable();
     }
 }
 
@@ -58,7 +59,7 @@ const createCustomTbody = (tbody) => {
 
 const jsGridFunction = () => {
     intiated = true;
-    $("#jsGrid1").jsGrid({
+    $("#custom_machine_table").jsGrid({
         height: "100%",
         width: "100%",
         sorting: true,
@@ -71,7 +72,6 @@ const jsGridFunction = () => {
             let container = config.container[0];
             let spinner = new Spinner();
             container.classList.add("opaque");
-
             return {
                 show: function() {
                     spinner.spin(container);
