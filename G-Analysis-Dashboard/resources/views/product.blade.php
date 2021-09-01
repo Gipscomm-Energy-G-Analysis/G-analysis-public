@@ -71,6 +71,23 @@
     .capital {
         text-transform: capitalize;
     }
+    /* Pagination links */
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+/* Style the active/current link */
+.pagination a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+/* Add a grey background color on mouse-over */
+.pagination a:hover:not(.active) {background-color: #ddd;}
 </style>
 @extends('layout.app')
 @section('headContent')
@@ -282,7 +299,7 @@
         <div class="row">
             <div class="col-12">
               <!-- Custom Tabs -->
-              <div class="card">
+              <div class="card card-success">
                 <div class="card-header d-flex p-0">
                   <h3 class="card-title p-3">Sub Group Configurations</h3>
                 </div><!-- /.card-header -->
@@ -425,7 +442,7 @@
 
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="save_field">Save changes</button>
                     </div>
                 </div>
@@ -514,27 +531,20 @@
             <div class="modal-dialog modal-xl" style="max-width: 1800px;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Anlagen</h4>
+                        <h4 class="modal-title">Custom Machine Table</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <section class="content">
-                            <div class="card">
+                            <div class="card card-success">
                                 <div class="card-header">
                                     <h3 class="card-title">Anlagen Table Data</h3>
                                 </div>
-                                <!-- /.card-header -->
-                                <!-- <div class="card-body" style="height: 740px;">
-                                    <div id="jsGrid1"></div>
-                                </div> -->
-                                <table class="table table-bordered white-border-head white-border-body" id="custom_machine_table">
-                                    <thead>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <div class="card-body" style="height: 300px;">
+                                    <div id="custom_machine_table"></div>
+                                </div>
                                 <!-- /.card-body -->
                             </div>
                             <!-- /.card -->
@@ -554,7 +564,7 @@
 
     <!-- edit mode start-->
     <section class="content edit-mode" style="display:none;">
-        <div class="card card-success">
+        <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">Edit Sub Group Configrations</h3>
                 <div class="card-tools">
@@ -595,7 +605,6 @@
                                                 <tr>
                                                     <th >Column</th>
                                                     <th>Label</th>
-                                                    <th style="width: 10px;">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -659,6 +668,7 @@
 <script src="{{asset('js/dashboard/jsGridMachines.js')}}"></script>
 <script src="{{asset('js/dashboard/dashboardMode.js')}}"></script>
 <script src="{{asset('template/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
+<script src="{{asset('template/js/pagination.js')}}"></script>
 <!-- Bootstrap Switch -->
 <script type="text/javascript">
     @if(!empty($data))

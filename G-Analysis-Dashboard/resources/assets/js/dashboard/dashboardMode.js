@@ -45,9 +45,9 @@ let showConfigrationTable = (data , label_data=false) => {
             <td class="custom_label_td" style="text-align:center;">
                 <span class="custom_label_span">${label}</span>
                 <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="form-control custom_label_input"/>
-                <button type="button" name="remove" class="btn btn-info edit_label float-right"><i class="fas fa-edit"></i></button>
-            </td>
-            <td><button type="button" name="remove" class="btn btn-danger remove_column"><i class="far fa-trash-alt"></i></button></td>
+                <button type="button" name="remove"  class="btn btn-danger remove_column float-right"><i class="far fa-trash-alt"></i></button>
+                <button type="button" name="remove" style="margin-right:5px;" class="btn btn-info edit_label float-right"><i class="fas fa-edit"></i></button>
+                </td>
             </tr>`;
             
         });
@@ -99,6 +99,7 @@ let getGroupData = () => {
                 if(result.status == 200) {
                     $('.showData').show();
                     $('.hideData').hide();
+                    console.log(result);
                     showConfigrationTable(result.table_data, result.legacy);
                     showPrimaryKey(result.primary_key, result.selected_primary_key);
                     showForeignKey(result.foreign_key, result.selected_foreign_key);
@@ -293,6 +294,7 @@ const saveTableConfigurations = (data) => {
         success:function(result) {
             if(result.status == 200) {
                 $('#modal-machine-configuration').modal('hide');
+                getCustomColumns();
                 toastr.success(result.msg);
             }
         },
@@ -308,8 +310,8 @@ $(document).on('click', '#save_table_configuration_button', function() {
     if(selectedColumn.length == 0 ) {
         toastr.warning('Please select columns!');
         return false;
-    } else if(selectedColumn.length >12) {
-        toastr.warning('Only 12 columns can be selected!');
+    } else if(selectedColumn.length >5) {
+        toastr.warning('Only 5 columns can be selected!');
         return false;
     }
     saveTableConfigurations(selectedColumn);

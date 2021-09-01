@@ -17,7 +17,7 @@ Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'ind
 Route::get('/dashboard/charts', [\App\Http\Controllers\ChartController::class, 'index'])->name('charts');
 Route::get('/dashboard/table', [\App\Http\Controllers\TableController::class, 'index'])->name('tables');
 Route::post('/dashboard/machine', [\App\Http\Controllers\DashboardController::class, 'getMachineDetail'])->name('machineDetails');
-Route::post('/dashboard/getMachineTableData', [\App\Http\Controllers\DashboardController::class, 'getCustomTable'])->name('getCustomTable');
+Route::post('/dashboard/getMachineTableData', [\App\Http\Controllers\DashboardController::class, 'getMachineTableData'])->name('getCustomTable');
 Route::get('/product/data-table', [\App\Http\Controllers\TableController::class, 'getProductDataTable'])
     ->name('getProductDataTable');
 Route::get('/charts-donut-ajax', [\App\Http\Controllers\ChartController::class, 'getEnergyConsumptionPerMachine'])
@@ -39,6 +39,7 @@ Route::post('get-configuration-data', [\App\Http\Controllers\GroupConfigurationC
 Route::post('save-configuration-data', [\App\Http\Controllers\GroupConfigurationController::class, 'saveConfigurationData'])->name('saveConfigurationData');
 Route::post('get-same-type-column', [\App\Http\Controllers\GroupConfigurationController::class, 'getSameTypeColumn'])->name('getSameTypeColumn');
 
-Route::get('get-custom-machine-data', [\App\Http\Controllers\DashboardController::class, 'getCustomTable'])->name('getCustomTable');
+Route::post('get-custom-machine-data', [\App\Http\Controllers\DashboardController::class, 'getCustomTable'])->name('getCustomTable');
+Route::get('get-custom-machine-columns', [\App\Http\Controllers\DashboardController::class, 'getCustomColumnName'])->name('getCustomColumnName');
 Route::get('get-table-configurations', [\App\Http\Controllers\MachineConfigurationController::class, 'getMachineConfigurations'])->name('getMachineConfigurations');
 Route::post('save-table-configurations', [\App\Http\Controllers\MachineConfigurationController::class, 'saveMachineConfigurations'])->name('saveMachineConfigurations');

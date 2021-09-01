@@ -529,10 +529,19 @@ class DashboardController extends Controller
         return $columnData;
     }
 
-    public function getCustomTable() {
+    public function getCustomTable(Request $request) {
+        //find the total number of results stored in the database  
+        $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0);
+        $number_of_result = $machineData->count();  
+        $pageIndex = $request['pageIndex'];
+        $limit = $request['pageSize'];
+        $totalRecords = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->count();
+        $totalPages = ceil($totalRecords / $limit);
+        $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
+        if($start < 0) $start = 0;
+        $machineData = $machineData->limit($limit)->offset($start)->get();
         $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get()->toArray();
         $defaultString = $this->makeDefaultColumnQuery($columnData);
-        $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->limit(5)->get();
         $machineDataCustom = [];
         if(!empty($machineData)){
             foreach($machineData as $machine) {
@@ -547,9 +556,12 @@ class DashboardController extends Controller
                     ->where('MANAME',$machineName)->orderBy('id', 'desc')->first();
                     if(!empty($prodData)){
                         $prodData = (array) $prodData;
+                        $prodData['anl_ID'] = $machine->anl_ID;
+                    } else {
+                        continue;
                     }
                 } else {
-                    $prodData = [];
+                    continue;
                 }
                 if(!empty($defaultString['customData'])){
                     $customColumns = array_merge($prodData, $this->getCustomFieldData($machine, $defaultString['customData']));
@@ -558,12 +570,25 @@ class DashboardController extends Controller
                 }
                 array_push($machineDataCustom, $customColumns);
             }
-            $theadData = array_keys($machineDataCustom[0]);
-            return ['status' => 200 , 'thead' => $theadData , 'tbody' => $machineDataCustom];
+            return [ 'data'=> $machineDataCustom, 'itemsCount'=> $totalRecords];
+            //return ['status' => 200 , 'thead' => $theadData , 'tbody' => $machineDataCustom, 'pagination'=> $machineData];
         } else {
             return ['status' => 400 , 'msg' => 'No record found!'];
         }
         
+    }
+
+    public function getCustomColumnName() {
+        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get();
+        $columns = [
+            ['name' =>'anl_ID', 'type' => 'number', 'title' =>'anl_ID', 'align'=> 'center','visible'=>false]
+        ];
+        if(!empty($columnData)) {
+            foreach($columnData as $value) {
+                array_push($columns, ['name' =>$value->column_name, 'type' => 'number', 'title' =>$value->column_name, 'align'=> 'center']);
+            }
+        }
+        return $columns;
     }
 
     public function makeDefaultColumnQuery($column) {

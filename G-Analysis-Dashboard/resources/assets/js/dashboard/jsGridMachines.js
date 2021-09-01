@@ -4,10 +4,10 @@ let intiated = false;
 
 const searchMachineFunction = () => {
     $('#modal-Machine-list').modal('show');
-    jsGridFunction();
+    jsGridFunction(columns);
     if(!intiated){
-        jsGridFunction();
-    //  customMachineTable();
+     //   jsGridFunction();
+ //    customMachineTable();
     }
 }
 
@@ -24,6 +24,7 @@ const customMachineTable = () => {
             if(result.status == 200) {
                 createCustomThead(result.thead);
                 createCustomTbody(result.tbody);
+                
             }
         },
         error:function(result) {
@@ -57,7 +58,22 @@ const createCustomTbody = (tbody) => {
     $('#custom_machine_table tbody').html(html);
 }
 
-const jsGridFunction = () => {
+const getCustomColumns = () => {
+    $.ajax({
+        type: "GET",
+        url: "get-custom-machine-columns",
+        success:function(result) {
+            console.log(result);
+            columns = result;
+        },
+        error:function(result) {
+            toastr.error(result);
+        }
+    });
+}
+getCustomColumns();
+
+const jsGridFunction = (columns) => {
     intiated = true;
     $("#custom_machine_table").jsGrid({
         height: "100%",
@@ -65,7 +81,7 @@ const jsGridFunction = () => {
         sorting: true,
         paging: true,
         pageIndex: 1,
-        pageSize: 15,
+        pageSize: 5,
         autoload: true,
         pageLoading:true,
         loadIndicator: function(config) {
@@ -90,7 +106,7 @@ const jsGridFunction = () => {
             loadData: function (filter) {
                 const d = $.Deferred();
                 $.ajax({
-                    url: "/dashboard/getMachineTableData",
+                    url: "get-custom-machine-data",
                     type: 'POST',
                     dataType: "json",
                     data:{
@@ -98,18 +114,12 @@ const jsGridFunction = () => {
                         'pageSize':filter.pageSize,
                     }
                 }).done(function(response) {
-                    d.resolve(response)
+                    d.resolve(response);
                 });
                 return d.promise();
             }
         },
-
-        fields: [
-            { name: "anl_ID", type: "number", width: 50, title: "ID", align: "center" },
-            { name: "datumAnl", type: "date", width: 50, title: "Date", align: "center" },
-            { name: "nummerAnl", type: "number", width: 50, title: "Machine Name", align: "center" },
-            { name: "bezeichnungAnl", type: "description", title: "Description", align: "center" }
-        ]
+        fields: columns
     });
 }
 

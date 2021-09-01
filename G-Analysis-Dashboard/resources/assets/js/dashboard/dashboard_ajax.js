@@ -5,7 +5,7 @@ const graphDiv = document.getElementById('graph_div');
 const anl_ID = document.getElementById('anl_ID').value;
 const dbName = document.getElementById("nameDB").value;
 const username = document.getElementById("username").value; 
-
+let columns;
 
 let machineDataAjax;
 let spinner = new Spinner();
