@@ -5334,7 +5334,7 @@ function getDatesInToArray(start, end) {
     while (dt <= end) {
         var date = new Date(dt);
         var year=date.getFullYear();
-        var month=("0" + (date.getMonth() + 1)).slice(-2);
+        var month=("0" + (date.gejtMonth() + 1)).slice(-2);
         var day=("0" + date.getDate()).slice(-2);
         var formattedDates=year+"-"+month+"-"+day;
         //console.log(formatted);

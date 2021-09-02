@@ -233,7 +233,8 @@
 
                         <div class="modal-footer">
                           <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-sm btn-success" data-type="Measurement-table-format"  id="save_table_btn">Save</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement-table-format"  id="save_table_btn">Save</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement"  id="update_table_btn_measurement">Update</button>
                         </div>
 
                        

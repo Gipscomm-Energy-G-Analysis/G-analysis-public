@@ -535,7 +535,7 @@ class dashboardController {
 
                 //ScreenShot Code
                 $paginationHTMl.="<div id='save_table_format' class='text-center'>
-                                    <input type='button' id='modal_open_button' class='btn btn-sm btn-success' value='Save & Preview'>
+                                    <input type='button' id='modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";            
                 return $paginationHTMl;
                 // $records['pagination_html'] = $paginationHTMl;
@@ -555,7 +555,9 @@ class dashboardController {
             $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' ";
             $dataResult = queryDB($conn, $getResult, "read");
             if($dataResult != '' && count($dataResult) > 0){
+
                 $records['data'] = $dataResult;
+                $records['total_record'] = count($dataResult);
                 $dataMeasurement = '';
                 if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == ''){
                     //Seacrh Record 
@@ -740,7 +742,13 @@ class dashboardController {
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
-
+            $last_id = 0;
+            if($total_result>0){
+                $last_id=$dataResult[$total_result-1]['id']+1;
+                
+            }
+           
+            // print_r($last_id);die;
             $url  = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
             $url .= $_SERVER['SERVER_NAME'];
             $url .= $_SERVER['REQUEST_URI'];
@@ -750,9 +758,10 @@ class dashboardController {
 //                    $measurement_title = $total_result[$i]['tile_title'];
                     $style= '';
                     if($i == $total_result){
+                         
                         $measurement_title = $_POST['measurement_title'];;
-                        $tileHtml .= "<input type='hidden' id='total_records' value='$total_result'>";
-                        $tileHtml.="<div class='measurement_html_modal_$i'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$i' data-i='$i' data-type-tile='Measurement'>
+                        $tileHtml .= "<input type='hidden' id='total_records' value='$last_id'>";
+                        $tileHtml.="<div class='measurement_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
@@ -761,10 +770,10 @@ class dashboardController {
                                                
                                                 <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
                                                 </div>  
-                                                <p class='mb-0 mt-2 text-success'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
-                                                    <img src='$url_path/images/edit.png'  style='height: 20px; width: 20px; margin-right: 5px;'>
-                                                    <img src='$url_path/images/delete.png' class='id_val delete_btn_tile' style='height: 20px; width: 20px;'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
                                                 </div>
                                             </div>
                                             
@@ -797,10 +806,10 @@ class dashboardController {
                                             
                                             <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0 measurement-icon'></i>
                                             </div>  
-                                            <p class='mb-0 mt-2 text-success'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                            <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
-                                                <img src='$url_path/images/edit.png'  style='height: 20px; width: 20px; margin-right: 5px'>
-                                                <img src='$url_path/images/delete.png' class='id_val delete_btn_tile' style='height: 20px; width: 20px;'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$total_result' style='height: 20px; width: 20px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
                                             </div>
                                         </div>
                                         
@@ -816,6 +825,8 @@ class dashboardController {
             }
             $records['tile_html'] = $tileHtml;
             $records['data'] = $dataResult;
+            $records['total_record'] = count($dataResult) + 1;
+            $records['last_id'] = $last_id;
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
 
@@ -837,6 +848,87 @@ class dashboardController {
             if($dataResult){
                 return array('status'=>200,'msg'=>"Successful Deleted");
             }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
+
+    // /<---Edit tile Functionality--
+    public function getEditTiles(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $type = $_REQUEST['type'];
+            $getResult =  "SELECT * from tableFormat ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            $i_value = $_REQUEST['i_value'];
+            $measurement_title = $_REQUEST['measurement_title'];
+            if($dataResult != null && count($dataResult)){
+                for($i = 0; $i < $total_result; $i++){
+                    if($id == $dataResult[$i]['id']){
+                        // $total_record_id = $id-1;
+                        $tileHtml .= "<input type='hidden' id='total_records' value='$i_value'>";
+                        // $tileHtml.= $dataResult[$i]['tile_html'];
+                        $tileHtml.="<div class='measurement_html_modal_$i_value'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$i_value' data-i='$i_value' data-type-tile='Measurement'>
+                                    <div class='card card-border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                               
+                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$i_value' style='height: 20px; width: 20px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3'>
+                                                <div class='save_table_div_show_table'> 
+                                                    <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
+
+                        $records['data'] = $dataResult[$i];
+                    }
+                    else{
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        $tileHtml.= $dataResult[$i]['tile_html'];
+                    }
+                    
+                }
+            $records['tile_html'] = $tileHtml;
+            $records['total_record'] = count($dataResult);
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --endd->
+
+
+    // <----01-9-2021---
+    public function getEditDataDashboard(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $selectQuery = "SELECT * from tableFormat where id ='$id' ";
+            $records['data'] = queryDB($conn, $selectQuery, "read"); 
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE); 
             die;
         }
         catch(Exception $e) {

@@ -38,7 +38,7 @@
           </div>
 
           <!-- 20-8-2021-- -->
-          <button type="button" class="btn btn-success btn-sm mb-3" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
+          <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
 
           <div class="modal fade" id="dashboard_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -77,7 +77,7 @@
                     </div>
 
                     <div id="save_btn_tile_div">
-                      <input type="button" id="save_and_proceed_btn_dashboard" class="btn btn-sm btn-success save_and_proceed_btn_dashboard" value="Save & Proceed">
+                      <input type="button" id="save_and_proceed_btn_dashboard" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard" value="Save & Proceed">
                     </div>
                   </div>
                 </div>
@@ -229,7 +229,7 @@
             <!-- --end-- -->
           </div>
           
-          <div class="row dashboard_count_div">
+          <div class="row dashboard_count_div_chart">
             <div class="col-md-6 grid-margin stretch-card" id="energy_graph_chart" style="display: none">
               <div class="card">
                 <div class="card-body">

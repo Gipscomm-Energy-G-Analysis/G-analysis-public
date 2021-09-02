@@ -236,3 +236,6 @@
 .measurement-icon{
     margin-top: -17px !important;
 }
+.display-none{
+    display: none;
+}
