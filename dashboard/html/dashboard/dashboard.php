@@ -90,6 +90,53 @@
           </div>
           <!-- end -->
 
+          <!-- 02-9-2021-- -->
+          <!-- <button type="button" style="display: none" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile_chart" data-toggle="modal" data-target="#dashboard_tile_modal_chart">Add Chart</button> -->
+          <div class="modal fade" id="dashboard_tile_modal_chart" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg max-width-modal">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="text-mute text-dark">Instrumententafel Chart</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="form-group col-md-3">
+                      <label for="measurement-height-chart" class="text-mute">Column</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="measurement-height-chart" placeholder="Column">
+                      <input type="hidden" id="measurement-height-chart-hidden" value="145">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                      <label for="measurement-width-chart" class="text-mute">Row</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Row">
+                      <input type="hidden" id="measurement-width-chart-hidden" value="285">
+                    </div>
+                  </div>
+                  
+                  <div class="row dashboard_chart_tiles">
+                    
+                  </div>
+
+                  <div id="measurement_modal_loader_div_chart" style="display: none">
+                    <img src="images/loader_dashboard.gif" id="measurement_modal_loader_image_chart">
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                  <!-- <div id="save_btn_tile_div"> -->
+                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Save & Proceed">
+                    <!-- </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- --end- -->
+
 
           <div class="row dashboard_count_div" id="dashboard_count_div_tile">
             <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
@@ -236,7 +283,7 @@
                   <p class="card-title">Energiedaten One Month</p>
                   <p class="text-muted font-weight-light">Received overcame oh sensible so at an. Formed do change merely to county it. Am separate contempt domestic to to oh. On relation my so addition branched.</p>
                   <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
-                  <canvas id="sales-chart"></canvas>
+                  <!-- <canvas id="sales-chart"></canvas> -->
                 </div>
              
               </div>

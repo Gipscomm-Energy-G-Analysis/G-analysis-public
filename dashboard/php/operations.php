@@ -132,6 +132,31 @@ class dashboardControllerOperations {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+
+    public function saveTileChart(){
+        try{
+            global $conn;
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_POST['height'];
+            $width = $_POST['width'];
+            $input_height = $_POST['input_height'];
+            $input_width = $_POST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $type_data_tile = $_POST['type_data_tile'];
+            $type = "Measurement";
+            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type ) ";
+            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile') ";
+            $insertRecord = queryDB($conn, $insertQuery, "write");
+            if($insertQuery){
+                return array('Staus' => 200 , 'Message' => 'Successfully Inserted');
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
     // --end-->
 
 }

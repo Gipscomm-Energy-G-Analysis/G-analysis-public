@@ -435,7 +435,7 @@ function getTableFormatDashboard(){
           
         });
         $('#dashboard_count_div_tile').html(arHtml);
-        $('.stretch-card').addClass('hide_table_main');
+        $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
         // $('#dashboard_count_div_tile .count_result_tile').text(a['total_record']+' Records');
         // $('#dashboard_count_div_tile .action-modal-button-div').removeClass('col-md-12');
                 // $('#dashboard_count_div_tile .stretch-card').css('height',145);
@@ -637,7 +637,7 @@ function dashboardChart(){
                           //   backgroundColor: '#8EB0FF'
                           // },
                           {
-                            label: 'One Month Energy',
+                            label: 'One Month Measurement',
                             data: ar,
                             backgroundColor: '#316FFF'
                           }
@@ -1039,9 +1039,25 @@ function getDimentions(id) {
             alert("failed!!")
         },
         success: function(a) {
-            // console.log(a);
+            // console.log(a.data.width);
            localStorage.setItem('width',a.data.width);
            localStorage.setItem('height',a.data.height);
+          //  <---2-9-2021--
+          $('.chart-width canvas').attr('id','sales-chart-none');
+          $('.chartjs-size-monitor').remove();
+          var type_data_val = a['data']['tile_data_type'];
+          if(type_data_val == "chart"){
+            // $('.'+id+'.tiles-click .card-body').addClass('display-flex');
+            // $('.'+id+'.tiles-click .card-body div:first-child').css('width','20%');
+            // $('.'+id+'.tiles-click .card-body div:first-child').removeClass('col-md-12');
+            // $('.'+id+'.tiles-click .card-body .ml-3').removeClass('overflow-hide');
+
+            var tile_html = $('.'+id+'.tiles-click').html();
+            tile_html = tile_html.replace('sales-chart-none','sales-chart');
+            $('.'+id+'.tiles-click').html(tile_html);
+            dashboardChart();
+          }
+          // --show-->
         }
     });
 }
@@ -1209,6 +1225,97 @@ function getEditDataDashboard(id,i_value){
   });
 
 }
+
+// <--2-9-2021---
+function getChartTileDashboard(){
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        measurement_title : ar['title_modal_tile'],
+        action: "getChartDataDashboard",
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('.dashboard_chart_tiles').html(a['tile_html']);
+      dashboardChart();
+    }
+  });
+}
+// --end-->
+
+// <---02-9-2021----
+function saveDashboardTileChart(){
+  var measuremnt_table_height = $('#measurement-height-chart-hidden').val();
+  var measurement_table_width = $('#measurement-width-chart-hidden').val();
+  var input_height = $('#measurement-height-chart').val(); 
+  var input_width = $('#measurement-width-chart').val();
+  
+  //<--23-8-2021---
+  var last_index_tile = $('#total_records_chart').val();
+  // var table_length = $('.measurement_html_modal_'+last_index_tile+' table tbody tr').length;
+  // $('.measurement_html_modal_'+last_index_tile+' .count_result_tile').text(table_length+' Records');
+  
+  var tile_html = $('.dashboard_chart_tile_html_'+last_index_tile).html();
+  $('#total_records_chart').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+  tile_html = tile_html.replace("sales-chart",'sales-chart-none');
+  // console.log(tile_html);
+  // return false;
+
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+    // --end->
+// --end-->
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "saveTileChart",
+        nameDB: $("#nameDashboardDB").val(),
+        title : tile_title,
+        tile_html : tile_html,
+        height: measuremnt_table_height,
+        width : measurement_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#measurement_modal_loader_div_chart').show();
+      $('#dashboard_tile_modal_chart .modal-content').css('opacity','0.8');
+      
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#measurement_modal_loader_div_chart').hide();
+        $('#dashboard_tile_modal_chart .modal-content').css('opacity','1');
+        $('#dashboard_tile_modal_chart').modal('hide');
+      }, 500);
+    }
+  });
+}
+
+// --end-->
+
+
 // ---end-->
 // <--09-8-2021-- Sort Code
 // function comparer(index,tableHeaderValue) {

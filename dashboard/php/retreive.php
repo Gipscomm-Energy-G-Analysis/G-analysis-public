@@ -738,15 +738,20 @@ class dashboardController {
             global $conn;
             $measurement_title =  $_POST['measurement_title'];
             $type =  $_POST['type'];
-            $getResult =  "SELECT * from tableFormat ";
+            $getResult =  "SELECT * from tableFormat Where tile_data_type='table' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
-            $last_id = 0;
-            if($total_result>0){
-                $last_id=$dataResult[$total_result-1]['id']+1;
+            
+            $last_id_query = "SELECT max(id) as max_id from tableFormat ";
+            $last_id = queryDB($conn, $last_id_query, "read");
+            $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id']+1 : 0; 
+
+            // $last_id = 0;
+            // if($total_result>0){
+            //     $last_id=$dataResult[$total_result-1]['id']+1;
                 
-            }
+            // }
            
             // print_r($last_id);die;
             $url  = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
@@ -796,8 +801,8 @@ class dashboardController {
                 
             }
             else{
-                $tileHtml.="<div class='measurement_html_modal_$total_result'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$total_result' data-i='$total_result' data-type-tile='Measurement'>
-                                <input type='hidden' id='total_records' value='$total_result'>                
+                $tileHtml.="<div class='measurement_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                                <input type='hidden' id='total_records' value='$last_id'>                
                                 <div class='card card-border'>
                                     <div class='card-body overflow-hide display-flex'>
                                         <div id='' class=''>
@@ -808,7 +813,7 @@ class dashboardController {
                                             </div>  
                                             <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
-                                                <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$total_result' style='height: 20px; width: 20px; margin-right: 5px'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px'>
                                                 <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
                                             </div>
                                         </div>
@@ -834,6 +839,106 @@ class dashboardController {
         catch(Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
+
+    }
+
+    public function getChartDataDashboard(){
+        try{
+            global $conn;
+            $measurement_title  = $_POST['measurement_title'];
+            // $measurement_title  = "Test Chart";
+
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart'";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            $last_id_query = "SELECT max(id) as max_id from tableFormat ";
+            $last_id = queryDB($conn, $last_id_query, "read");
+            $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id']+1 : 0; 
+            // if($total_result>0){
+            //     $last_id=$dataResult[$total_result-1]['id']+1;
+                
+            // }
+            
+            if($dataResult != null && count($dataResult)>0){
+                for($i= 0; $i<=$total_result; $i++){
+//                    $measurement_title = $total_result[$i]['tile_title'];
+                    $style= '';
+                    if($i == $total_result){
+                         
+                        $measurement_title = $_POST['measurement_title'];;
+                        $tileHtml .= "<input type='hidden' id='total_records_chart' value='$last_id'>";
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                                    <div class='card card-border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                               
+                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val_chart edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val_chart delete_btn_tile_chart' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 chart-width'>
+                                                <div class='save_table_div_show_table'> 
+                                                    <canvas class='sales-class-chart' id='sales-chart'></canvas>                       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
+                    } 
+                    
+                    if($i < $total_result){
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                       $tileHtml.= $dataResult[$i]['tile_html'];
+                    } 
+                }
+                
+            }
+            else{
+                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                                <input type='hidden' id='total_records_chart' value='$last_id'>                
+                                <div class='card card-border'>
+                                    <div class='card-body overflow-hide display-flex'>
+                                        <div id='' class=''>
+                                            <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
+                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                            
+                                            <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0 measurement-icon'></i>
+                                            </div>  
+                                            <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                            <div class='action-modal-button-div'>
+                                                <img src='images/edit.png' class='edit_val_chart edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val_chart delete_btn_tile_chart' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class='overflow-hide ml-3 chart-width'>
+                                            <div class='save_table_div_show_table'> 
+                                                <canvas class='sales-class-chart' id='sales-chart'></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div></div>";    
+            }
+            $records['tile_html'] = $tileHtml;
+            $records['data'] = $dataResult;
+            $records['total_record'] = count($dataResult) + 1;
+            $records['last_id'] = $last_id;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
 
     }
 
@@ -1483,21 +1588,39 @@ class dashboardController {
             for($i = 1; $i<=6; $i++){
                $days_val = 5 * $i; 
                $date_differnce = date('Y-m-d', strtotime("-$days_val days"));
-               
-               $energyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
-               $energyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
-               $energyConsumed .= "ON T1.mstID = T2.mst_ID ";
-               $energyConsumed .= "WHERE T2.on_date >= '$date_differnce' ";
-               $energyConsumed .= "AND T2.on_date <= '$current_date' ";
-               $energyConsumed .= "AND T2.type = '1' ";
-               $energyConsumed .= "AND T1.deleted <> 'true' ";
-               $energyConsumed.= "AND T1.archiviert ='true' ";
+            //    <---old Code---
+            //    $energyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
+            //    $energyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
+            //    $energyConsumed .= "ON T1.mstID = T2.mst_ID ";
+            //    $energyConsumed .= "WHERE T2.on_date >= '$date_differnce' ";
+            //    $energyConsumed .= "AND T2.on_date <= '$current_date' ";
+            //    $energyConsumed .= "AND T2.type = '1' ";
+            //    $energyConsumed .= "AND T1.deleted <> 'true' ";
+            //    $energyConsumed.= "AND T1.archiviert ='true' ";
               
-               $dataEnergy = queryDB($conn, $energyConsumed, "read");
-               array_push($ar,$dataEnergy);
+            //    $dataEnergy = queryDB($conn, $energyConsumed, "read");
+            //    array_push($ar,$dataEnergy);
+            // ---end-->
+
+                // <---02-9-2021--
+                $queryTotalRecords = "SELECT SUM(cast(T2.val as int)) as val ";
+                $queryTotalRecords .= "FROM produktionsAnlagenConfig as T1 ";
+                $queryTotalRecords .= "INNER JOIN masseneingabeSucheIMw as T2 ";
+                $queryTotalRecords .= "ON T1.mst_ID = T2.mst_ID ";
+                // $queryTotalRecords  .= "where T1.iBdeType='2' ";
+                $queryTotalRecords .= "WHERE T2.on_date >= '$date_differnce' ";
+                $queryTotalRecords .= "AND T2.on_date <= '$current_date' ";
+                $queryTotalRecords .= "AND T2.type = '1' ";
+                $queryTotalRecords .= "AND T1.intTp_ID = '1' ";
+                $queryTotalRecords .= "AND T1.iBdeType = '2' ";
+                $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+                
+                array_push($ar,$totalRecordsValue);
             }
             
             $energy_chart['energy_chart_ar'] = $ar;
+
+           
             
 
 
@@ -1710,7 +1833,7 @@ class dashboardController {
 
         global $conn;
         $id=$_POST['id'];
-        $getResult =  "SELECT height,width from tableFormat where id=".$id;
+        $getResult =  "SELECT * from tableFormat where id=".$id;
 //        print_r($getResult);die;
         $dataResult = queryDB($conn, $getResult, "read");
         return array('data'=>$dataResult[0]);

@@ -4783,6 +4783,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                         var countInvest = 0;
+                        // console.log('Value',min_val);
 
                         //<---19-7-2021---
                         var headingText = "";
@@ -5334,7 +5335,7 @@ function getDatesInToArray(start, end) {
     while (dt <= end) {
         var date = new Date(dt);
         var year=date.getFullYear();
-        var month=("0" + (date.gejtMonth() + 1)).slice(-2);
+        var month=("0" + (date.getMonth() + 1)).slice(-2);
         var day=("0" + date.getDate()).slice(-2);
         var formattedDates=year+"-"+month+"-"+day;
         //console.log(formatted);
