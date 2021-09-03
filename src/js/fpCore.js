@@ -136,6 +136,7 @@ Object
                     return newAcc
                 }
             }
+        this.difference = arr1 => arr2 => arr1.filter(a1 => !arr2.some(equal(a1)))
     }
 );
 const { split_
@@ -201,5 +202,6 @@ const { split_
       , itemSessionGet
       , push
       , partition
+      , difference
       } = scpCore;
     // module.exports = scpCore;

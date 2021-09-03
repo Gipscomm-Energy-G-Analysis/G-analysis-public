@@ -15,20 +15,24 @@ const scpRechteverwaltung_admins =
             // Returns an object that contains the form data
             const getFormData =
                 () => (
-                    { modus        : helper.fieldValue("admState")
-                    , admID        : helper.fieldValue("admID")
-                    , manID        : helper.fieldValue("manID")
-                    , manGrpID     : helper.fieldValue("manGrpID")
-                    , titel        : helper.fieldValue("titelAdm")
-                    , name         : helper.fieldValue("nameAdm")
-                    , vorname      : helper.fieldValue("vornameAdm")
-                    , email        : helper.fieldValue("emailAdm")
-                    , telefon      : helper.fieldValue("telefonAdm")
-                    , fax          : helper.fieldValue("faxAdm")
-                    , mobiltelefon : helper.fieldValue("mobiltelefonAdm")
-                    , username     : helper.fieldValue("benutzernameAdm")
-                    , passHash     : getHash(helper.fieldValue("passwortAdm"))
-                    , rechte       : treeAdm.getValues().join(",")
+                    { modus          : helper.fieldValue("admState")
+                    , admID          : helper.fieldValue("admID")
+                    , manID          : helper.fieldValue("manID")
+                    , manGrpID       : helper.fieldValue("manGrpID")
+                    , titel          : helper.fieldValue("titelAdm")
+                    , name           : helper.fieldValue("nameAdm")
+                    , vorname        : helper.fieldValue("vornameAdm")
+                    , email          : helper.fieldValue("emailAdm")
+                    , telefon        : helper.fieldValue("telefonAdm")
+                    , fax            : helper.fieldValue("faxAdm")
+                    , mobiltelefon   : helper.fieldValue("mobiltelefonAdm")
+                    , username       : helper.fieldValue("benutzernameAdm")
+                    , passHash       : 
+                        emptyString(helper.fieldValue("passwortAdm")) ? 
+                        "" :
+                        getHash(helper.fieldValue("passwortAdm"))
+                    , rechteTreeView : treeAdm.getValues().join(",")
+                    , rechteMenu     : scpTreeView.getSelectedNodes(treeAdm).join(",")
                     }
                 )
 
@@ -167,7 +171,7 @@ const scpRechteverwaltung_admins =
 
                             helper.setState("adm")("edit")
 
-                            treeAdm.setValues(record.rechte.split(","))
+                            treeAdm.setValues(record.rechteTreeView.split(","))
                         }
                     )
                 }
@@ -294,4 +298,4 @@ const scpRechteverwaltung_admins =
 
 // Initialize Permissions TreeView
 //
-const treeAdm = scpTreeView.show("admTreeview")
+let treeAdm 

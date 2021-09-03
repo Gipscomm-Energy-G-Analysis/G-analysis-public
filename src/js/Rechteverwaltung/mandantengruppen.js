@@ -16,12 +16,6 @@ const scpRechteverwaltung_mandantengruppen =
                     scpIndexedDB.dataIntoIDB(result)("mandantenGruppen")   
                 )
 
-            // Returns an input value depending on the elements id
-            const getFieldValue =
-                a =>
-                $(`#${a}`).val()
-
-            // Extracts the mandanten ID's from the table
             const getManIDs =
                 () =>
                 array($("#tblMandantengruppe tbody tr").length)()()
@@ -33,21 +27,19 @@ const scpRechteverwaltung_mandantengruppen =
                 array($("#tblMandantengruppe tbody tr").length)()()
                 .map((_, i) => tblMandantengruppe.cell(i, 0).data())
 
-            // Returns an object that contains the form data
             const getFormData =
                 () => (
-                    { modus : getFieldValue("manGrpState")
-                    , manGrpIdx : getFieldValue("manGrpIdx")
-                    , manGrpID : getFieldValue("manGrpID")
-                    , betrGrpID : getFieldValue("betrGrpID")
-                    , name : getFieldValue("nameManGrp")
-                    , kurz : getFieldValue("kurzManGrp")
-                    , notiz : getFieldValue("notizManGrp")
+                    { modus : helper.fieldValue("manGrpState")
+                    , manGrpIdx : helper.fieldValue("manGrpIdx")
+                    , manGrpID : helper.fieldValue("manGrpID")
+                    , betrGrpID : helper.fieldValue("betrGrpID")
+                    , name : helper.fieldValue("nameManGrp")
+                    , kurz : helper.fieldValue("kurzManGrp")
+                    , notiz : helper.fieldValue("notizManGrp")
                     , mandantenIDs : getManIDs()
                     }
                 )
 
-            // Checks if there are empty input values
             const completeFormData =
                 formData => 
                 [ "name"
@@ -57,9 +49,7 @@ const scpRechteverwaltung_mandantengruppen =
                 .map(field(formData))
                 .every(a => !emptyString(a))
             
-            // Inserts or updates the given record into the sql srv DB
-            // and then updates the indexedDB
-            const saveFormData =
+            const save =
                 formData =>
                 ajaxPost("php/Rechteverwaltung/Mandantengruppen/save.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
@@ -71,9 +61,6 @@ const scpRechteverwaltung_mandantengruppen =
                     false
                 )
 
-            // If the form data contains empty input elements a
-            // dialog is shown which asks if the record should be
-            // saved anyways
             const nonCompleteDataDialog =
                 formData =>
                 $("#saveManGrpDialog").dialog({
@@ -93,7 +80,7 @@ const scpRechteverwaltung_mandantengruppen =
                         $("#saveManGrpOk").off("click")
                         $("#saveManGrpOk").on("click",
                             () =>
-                            ( saveFormData(formData)
+                            ( save(formData)
                             , $("#saveManGrpDialog").dialog("close")
                             )
                         )
@@ -106,86 +93,57 @@ const scpRechteverwaltung_mandantengruppen =
                     }
                 })
 
-            // Checks if all input elements are set and either shows the
-            // dialog which asks if the record should be saved anyways
-            // or if complete directly saves the record
-            this.validateAndSaveFormData =
+            this.validateAndSave =
                     () => {
                         const formData =
                             getFormData()
 
                         !completeFormData(formData) ?
                         nonCompleteDataDialog(formData) :
-                        saveFormData(formData) 
+                        save(formData) 
                     }
-
-            // Sets the create new or update state for saving
-            const setState =
-                state =>
-                state === "new" ?
-                ( $("#manGrpState").val(state)
-                , $(".manGrpForm")
-                    .css("background", "antiquewhite")
-                    .css("border", "1px solid black")
-                    .css("padding", "1px")
-                ) :
-                ( $("#manGrpState").val(state)
-                , $(".manGrpForm")
-                    .css("background", "white")
-                    .css("border", "1px solid black")
-                    .css("padding", "1px")
-                )
-
-            // Resets the value of a given input to an empty string
-            const clearField =
-                field =>
-                $(`#${field}`).val("")
 
             this.clearFields =
                 () =>
                 ( [ "nameManGrp"
                   , "kurzManGrp"
                   ]    
-                  .forEach(clearField)
+                  .forEach(helper.clearField)
                 , clearTable(tblMandantengruppe)
-                , setState("new")
+                , helper.setState("manGrp")("new")
                 )
 
             const getBetrGrpRefRecords =
                 () =>   
                 idxDB.mandantenGruppen   
                 .where("betrGrp_ID")    
-                .equals(Number(getFieldValue("betrGrpID"))) 
+                .equals(Number(helper.fieldValue("betrGrpID"))) 
 
-            // Returns an array of the Schicht Modelle from indexedDB
             this.queryMandantengruppenDataIDB =
                 () => 
                 getBetrGrpRefRecords()
                 .toArray()
 
-            // Returns a certain Schicht Modell depending on an index
             const queryMandantenGruppeDataIDB =
                 idx =>
                 this.queryMandantengruppenDataIDB()
-                .then(mandantenGruppen => mandantenGruppen[idx])
+                .then(records => records[idx])
 
-            // Prepares the table data for the search dialog
-            const prepareTableDataMan =
+            const prepareDataMan =
                 records =>
                 records.map(
-                    (a, i) =>
+                    a =>
                     [ a.man_ID
                     , a.nameMan
                     , a.dbName
                     ]
                 )
 
-            // Fills the search dialog table with data
             const fillMandantenTbl =
                 tbl =>
                 data => {
                     clearTable(tbl)
-                    intoTable(tbl)(prepareTableDataMan(data))
+                    intoTable(tbl)(prepareDataMan(data))
                 }
 
             const readIntoMandantenTable =
@@ -198,27 +156,25 @@ const scpRechteverwaltung_mandantengruppen =
                 that =>
                 tblMandantengruppe.row(that).remove().draw()
 
-            // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
                 idx => {
                     queryMandantenGruppeDataIDB(idx)
                     .then(
-                        mandantenGruppe => {
+                        record => {
 
                             $("#manGrpIdx").val(idx)
-                            $("#manGrpID").val(mandantenGruppe.manGrp_ID)
-                            $("#nameManGrp").val(mandantenGruppe.name)
-                            $("#kurzManGrp").val(mandantenGruppe.kurz)
-                            $("#notizManGrp").val(mandantenGruppe.notiz)
+                            $("#manGrpID").val(record.manGrp_ID)
+                            $("#nameManGrp").val(record.name)
+                            $("#kurzManGrp").val(record.kurz)
+                            $("#notizManGrp").val(record.notiz)
 
-                            readIntoMandantenTable(mandantenGruppe)
+                            readIntoMandantenTable(record)
 
-                            setState("edit")
+                            helper.setState("manGrp")("edit")
                         }
                     )
                 }
 
-            // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
                 getBetrGrpRefRecords()
@@ -230,28 +186,23 @@ const scpRechteverwaltung_mandantengruppen =
                     this.clearFields()
                 )
                 
-            // Sets the form data input values of the previous Schicht Modell
-            // depending on the current records index
             this.readPrevious =
                 () =>
-                greaterZero(getFieldValue("manGrpIdx")) ?
-                readIntoFormFields(decr(getFieldValue("manGrpIdx"))) :
+                greaterZero(helper.fieldValue("manGrpIdx")) ?
+                readIntoFormFields(decr(helper.fieldValue("manGrpIdx"))) :
                 false
 
-            // Sets the form data input values of the next Schicht Modell
-            // depending on the current records index
             this.readNext =
                 () =>
                 getBetrGrpRefRecords()
                 .count()
                 .then( 
                     count => 
-                    greater(decr(count))(getFieldValue("manGrpIdx")) ?
-                    readIntoFormFields(incr(getFieldValue("manGrpIdx"))) :
+                    greater(decr(count))(helper.fieldValue("manGrpIdx")) ?
+                    readIntoFormFields(incr(helper.fieldValue("manGrpIdx"))) :
                     false
                 )
 
-            // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
                 getBetrGrpRefRecords()
@@ -263,8 +214,7 @@ const scpRechteverwaltung_mandantengruppen =
                     false
                 )
 
-            // Deletes the current Schicht Modell(sets col deleted = true)
-            this.deleteMandantenGruppe =
+            this.delete =
                 () => {
                     const manGrpID = $("#manGrpID").val()
 
@@ -277,8 +227,7 @@ const scpRechteverwaltung_mandantengruppen =
                     )
                 }
 
-            // Prepares the table data for the search dialog
-            const prepareTableDataManGrp =
+            const prepareData =
                 records =>
                 records.map(
                     (a, i) =>
@@ -288,19 +237,17 @@ const scpRechteverwaltung_mandantengruppen =
                     ]
                 )
 
-            // Fills the search dialog table with data
-            const fillMandantenGruppenTbl =
+            const fillTbl =
                 data => {
                     clearTable(tblManGrpSuchen)
-                    intoTable(tblManGrpSuchen)(prepareTableDataManGrp(data))
+                    intoTable(tblManGrpSuchen)(prepareData(data))
                 }
 
-            // Triggers opening the search dialog
-            this.searchMandantenGruppen =
+            this.search =
                 () => {
 
                     this.queryMandantengruppenDataIDB()
-                    .then(fillMandantenGruppenTbl)
+                    .then(fillTbl)
 
                     $("#manGrpSuchenContainer").dialog({
                         height: 450,
