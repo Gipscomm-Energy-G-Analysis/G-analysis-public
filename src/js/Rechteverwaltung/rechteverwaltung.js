@@ -87,16 +87,15 @@ const scpRechteverwaltung =
                     if (!equal(position)(User.GipscommAdmin)) {
                         removeMenus()
 
-                        treeSAdm = scpTreeView.show("sAdmTreeview")
-                        treeAdm = scpTreeView.show("admTreeview")
-                        treeBen = scpTreeView.show("benTreeview")
-
                         scpRechteverwaltung_betreuergruppen
                         .readIntoFormFieldsByID(getBetrGrpID())
                     }
                     else {
                         // Nothing
                     }
+                    treeSAdm = scpTreeView.show("sAdmTreeview")
+                    treeAdm = scpTreeView.show("admTreeview")
+                    treeBen = scpTreeView.show("benTreeview")
                 }
 
             const readInMandantenArgs =
