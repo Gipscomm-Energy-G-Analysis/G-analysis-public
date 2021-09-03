@@ -1593,11 +1593,11 @@ $(document).ready(function() {
     //
     // Search Navigation
     //
-    $("#betrGrpSuchen").click(scpRechteverwaltung_betreuergruppen.searchBetreuerGruppen)
+    $("#betrGrpSuchen").click(scpRechteverwaltung_betreuergruppen.search)
     //
     // Delete Record
     //
-    $("#betrGrpLoeschen").click(scpRechteverwaltung_betreuergruppen.deleteBetreuerGruppe)
+    $("#betrGrpLoeschen").click(scpRechteverwaltung_betreuergruppen.delete)
     //
     // Clear Fields For Creation Of New Record
     //
@@ -1605,7 +1605,7 @@ $(document).ready(function() {
     //
     // Create New Or Update Form Data After Form Validation
     //
-    $("#betrGrpSpeichern").click(scpRechteverwaltung_betreuergruppen.validateAndSaveFormData)
+    $("#betrGrpSpeichern").click(scpRechteverwaltung_betreuergruppen.validateAndSave)
     //
     // Show Mandanten Selection Table
     //

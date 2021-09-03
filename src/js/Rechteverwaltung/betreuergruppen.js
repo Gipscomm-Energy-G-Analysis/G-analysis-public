@@ -10,7 +10,7 @@ const scpRechteverwaltung_betreuergruppen =
 
             this.updateIndexedDB =
                 () =>
-                ajaxPost("php/Rechteverwaltung/Betreuergruppen/readBetreuergruppen.php")({})
+                ajaxPost("php/Rechteverwaltung/Betreuergruppen/read.php")({})
                 .then(
                     result => 
                     scpIndexedDB.dataIntoIDB(result)("betreuerGruppen")   
@@ -62,15 +62,30 @@ const scpRechteverwaltung_betreuergruppen =
             
             const save =
                 formData =>
-                ajaxPost("php/Rechteverwaltung/Betreuergruppen/saveBetreuergruppe.php")(formData)
+                ajaxPost("php/Rechteverwaltung/Betreuergruppen/save.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
+                .then(() => {
+                    betrGrpEinlesen()
+                    
+                    return new Promise ( function(resolve) {
+
+                        setTimeout( 
+                            () => {
+                               resolve()
+                            }
+                            , 800
+                        )
+
+                    })
+                })  // After save the betrGrp dropbox is read in again 
                 .then(
                     () =>
                     equal($("#betrGrpState").val())("new") ?
                     this.readLast() :
-                    false
+                    this.readIntoFormFields(helper.fieldValue("betrGrpIdx"))
                 )
+                
 
             const nonCompleteDataDialog =
                 formData =>
@@ -104,7 +119,7 @@ const scpRechteverwaltung_betreuergruppen =
                     }
                 })
 
-            this.validateAndsave =
+            this.validateAndSave =
                     () => {
                         const formData =
                             getFormData()
@@ -169,6 +184,48 @@ const scpRechteverwaltung_betreuergruppen =
                 that =>
                 tblMandantenBetrGrp.row(that).remove().draw()
 
+            this.readIntoFormFieldsByID =
+                id => {
+                    queryDatasIDB()
+                    .then( 
+                        records => {
+                            return head(
+                                        records.map((rec, idx) => ({rec, idx}))
+                                        .filter( 
+                                            record => equal(record.rec.betrGrp_ID)(id)
+                                        )
+                                    )
+                        }
+                    )
+                    .then(
+                        record => {
+
+                            $("#betrGrpIdx").val(record.idx)
+                            $("#betrGrpID").val(record.rec.betrGrp_ID)
+                            $("#firmaBetrGrp").val(record.rec.firma)
+                            $("#anzahlMitarbeiterBetrGrp").val(record.rec.anzahlMitarbeiter)
+                            $("#anschriftBetrGrp").val(record.rec.anschrift)
+                            $("#plzBetrGrp").val(record.rec.plz)
+                            $("#ortBetrGrp").val(record.rec.ort)
+                            $("#geschaeftsfuehrerBetrGrp").val(record.rec.geschaeftsfuehrer)
+                            $("#telefonBetrGrp").val(record.rec.telefon)
+                            $("#emailBetrGrp").val(record.rec.eMail)
+                            $("#notizBetrGrp").val(record.rec.notiz)
+                            $(".betrPfad").val(record.rec.firma)
+                            $(".dataBetrGrpAdm").val(record.rec.firma)
+                            $(".dataBetrGrpBen").val(record.rec.firma)
+                            readIntoMandantenTable(record.rec)
+
+                            helper.setState("betrGrp")("edit")
+                        }
+                    )
+                    .then(scpRechteverwaltung.readIntoMandantGruppeDropbox)
+                    .then(scpRechteverwaltung_superAdmins.readFirst)
+                    .then(scpRechteverwaltung_mandantengruppen.readFirst)
+                    .then(scpRechteverwaltung_admins.readFirst)
+                    .then(scpRechteverwaltung_benutzer.readFirst)
+                }
+
             this.readIntoFormFields =
                 idx => {
                     this.queryBetreuerGruppeDataIDB(idx)
@@ -194,9 +251,9 @@ const scpRechteverwaltung_betreuergruppen =
                             helper.setState("betrGrp")("edit")
                         }
                     )
+                    .then(scpRechteverwaltung.readIntoMandantGruppeDropbox)
                     .then(scpRechteverwaltung_superAdmins.readFirst)
                     .then(scpRechteverwaltung_mandantengruppen.readFirst)
-                    .then(scpRechteverwaltung.readIntoMandantGruppeDropbox)
                     .then(scpRechteverwaltung_admins.readFirst)
                     .then(scpRechteverwaltung_benutzer.readFirst)
                 }
@@ -240,11 +297,11 @@ const scpRechteverwaltung_betreuergruppen =
                     false
                 )
 
-            this.deleteBetreuerGruppe =
+            this.delete =
                 () => {
                     const betrGrpID = $("#betrGrpID").val()
 
-                    ajaxPost("php/Rechteverwaltung/Betreuergruppen/deleteBetreuergruppe.php")({betrGrpID})
+                    ajaxPost("php/Rechteverwaltung/Betreuergruppen/delete.php")({betrGrpID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
@@ -272,7 +329,7 @@ const scpRechteverwaltung_betreuergruppen =
                     intoTable(tblBetrGrpSuchen)(prepareData(data))
                 }
 
-            this.searchBetreuerGruppen =
+            this.search =
                 () => {
 
                     queryDatasIDB()

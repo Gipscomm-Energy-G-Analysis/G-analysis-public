@@ -32,6 +32,10 @@ const scpRechteverwaltung =
             const getRechteArray =
                 () =>
                 itemSessionGet("rechteMenu").split(",")
+
+            const getBetrGrpID = 
+                () =>
+                itemSessionGet("betrGrp_ID")
                 
             const remove =
                 id => 
@@ -81,9 +85,14 @@ const scpRechteverwaltung =
                     }
 
                     if (!equal(position)(User.GipscommAdmin)) {
-                        idxDB.mandanten.clear()
-                        idxDB.gipscommAdmins.clear()
                         removeMenus()
+
+                        treeSAdm = scpTreeView.show("sAdmTreeview")
+                        treeAdm = scpTreeView.show("admTreeview")
+                        treeBen = scpTreeView.show("benTreeview")
+
+                        scpRechteverwaltung_betreuergruppen
+                        .readIntoFormFieldsByID(getBetrGrpID())
                     }
                     else {
                         // Nothing

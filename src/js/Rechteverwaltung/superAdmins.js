@@ -157,6 +157,7 @@ const scpRechteverwaltung_superAdmins =
                             $("#faxSAdm").val(record.faxSAdm)
                             $("#mobiltelefonSAdm").val(record.mobiltelefonSAdm)
                             $("#benutzernameSAdm").val(record.username)
+                            $("#passwortSAdm").val("")
 
                             helper.setState("sAdm")("edit")
 
@@ -173,7 +174,7 @@ const scpRechteverwaltung_superAdmins =
                     count =>
                     greaterZero(count) ?
                     readIntoFormFields(0) :
-                    this.helper.clearFields()
+                    this.clearFields()
                 )
                 
             this.readPrevious =
@@ -213,11 +214,10 @@ const scpRechteverwaltung_superAdmins =
                         () =>
                         ( alert("erfolgreich gelöscht!")
                         , this.updateIndexedDB()
-                          .then( 
-                              readIntoFormFields( helper.fieldValue( "sAdmIdx" ) ) 
-                          )
+                          .then(this.readFirst) 
                         )
                     )
+                    
                 }
 
             const prepareData =
@@ -275,4 +275,4 @@ const scpRechteverwaltung_superAdmins =
         }
     )
 
-const treeSAdm = scpTreeView.show("sAdmTreeview")
+let treeSAdm

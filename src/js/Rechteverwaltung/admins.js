@@ -298,4 +298,4 @@ const scpRechteverwaltung_admins =
 
 // Initialize Permissions TreeView
 //
-const treeAdm = scpTreeView.show("admTreeview")
+let treeAdm 
