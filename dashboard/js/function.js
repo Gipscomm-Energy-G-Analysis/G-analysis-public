@@ -1021,6 +1021,10 @@ setTimeout(function () {
     // <---30-8-2021--
     $('.'+id+' .card-body').removeClass('row');
     // --end-->
+
+    // <---03-9-2021--
+    $('.'+id+'.tiles-click .card-body div:first-child').removeClass('col-md-12');
+    // --end--->
 },1000);
 
 })
@@ -1042,6 +1046,9 @@ function getDimentions(id) {
             // console.log(a.data.width);
            localStorage.setItem('width',a.data.width);
            localStorage.setItem('height',a.data.height);
+
+           
+
           //  <---2-9-2021--
           $('.chart-width canvas').attr('id','sales-chart-none');
           $('.chartjs-size-monitor').remove();

@@ -274,3 +274,7 @@
 #dashboard_count_div_tile .hide_table_main canvas{
     display: none !important;
  }
+
+ #dashboard_count_div_tile table{
+    margin-left: -58px;
+ }
