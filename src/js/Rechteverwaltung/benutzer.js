@@ -15,20 +15,24 @@ const scpRechteverwaltung_benutzer =
             // Returns an object that contains the form data
             const getFormData =
                 () => (
-                    { modus        : helper.fieldValue("benState")
-                    , benID        : helper.fieldValue("benID")
-                    , manID        : helper.fieldValue("manID")
-                    , manGrpID     : helper.fieldValue("manGrpID")
-                    , titel        : helper.fieldValue("titelBen")
-                    , name         : helper.fieldValue("nameBen")
-                    , vorname      : helper.fieldValue("vornameBen")
-                    , email        : helper.fieldValue("emailBen")
-                    , telefon      : helper.fieldValue("telefonBen")
-                    , fax          : helper.fieldValue("faxBen")
-                    , mobiltelefon : helper.fieldValue("mobiltelefonBen")
-                    , username     : helper.fieldValue("benutzernameBen")
-                    , passHash     : getHash(helper.fieldValue("passwortBen"))
-                    , rechte       : treeBen.getValues().join(",")
+                    { modus          : helper.fieldValue("benState")
+                    , benID          : helper.fieldValue("benID")
+                    , manID          : helper.fieldValue("manID")
+                    , manGrpID       : helper.fieldValue("manGrpID")
+                    , titel          : helper.fieldValue("titelBen")
+                    , name           : helper.fieldValue("nameBen")
+                    , vorname        : helper.fieldValue("vornameBen")
+                    , email          : helper.fieldValue("emailBen")
+                    , telefon        : helper.fieldValue("telefonBen")
+                    , fax            : helper.fieldValue("faxBen")
+                    , mobiltelefon   : helper.fieldValue("mobiltelefonBen")
+                    , username       : helper.fieldValue("benutzernameBen")
+                    , passHash       : 
+                        emptyString(helper.fieldValue("passwortBen")) ? 
+                        "" :
+                        getHash(helper.fieldValue("passwortBen"))
+                    , rechteTreeView : treeBen.getValues().join(",")
+                    , rechteMenu     : scpTreeView.getSelectedNodes(treeBen).join(",")
                     }
                 )
 
@@ -97,9 +101,6 @@ const scpRechteverwaltung_benutzer =
                     }
                 })                                      
 
-            // Checks if all input elements are set and either shows the
-            // dialog which asks if the record should be saved anyways
-            // or if complete directly saves the record
             this.validateAndSave =
                     () => {
                         const formData =
@@ -134,19 +135,16 @@ const scpRechteverwaltung_benutzer =
                   .where($(".manGrpPfad").val().split("-")[0])
                   .equals(Number($(".manGrpPfad").val().split("-")[1]))
             
-            // Returns an array of the Schicht Modelle from indexedDB
             const queryDatasIDB =
                 () =>
                 getRef()
                 .toArray()
 
-            // Returns a certain Schicht Modell depending on an index
             const queryDataIDB =
                 idx =>
                 queryDatasIDB()
                 .then(records => records[idx])
 
-            // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
                 idx => {
                     queryDataIDB(idx)
@@ -167,12 +165,12 @@ const scpRechteverwaltung_benutzer =
 
                             helper.setState("ben")("edit")
 
-                            treeBen.setValues(record.rechte.split(","))
+                            treeBen.setValues(record.rechteTreeView.split(","))
+
                         }
                     )
                 }
             
-            // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
                 getRef()
@@ -184,16 +182,12 @@ const scpRechteverwaltung_benutzer =
                     this.clearFields()
                 )
                 
-            // Sets the form data input values of the previous Schicht Modell
-            // depending on the current records index
             this.readPrevious =
                 () =>
                 greaterZero(helper.fieldValue("benIdx")) ?
                 readIntoFormFields(decr(helper.fieldValue("benIdx"))) :
                 false
 
-            // Sets the form data input values of the next Schicht Modell
-            // depending on the current records index
             this.readNext =
                 () =>
                 getRef()
@@ -205,7 +199,6 @@ const scpRechteverwaltung_benutzer =
                     false
                 )
 
-            // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
                 getRef()
@@ -217,7 +210,6 @@ const scpRechteverwaltung_benutzer =
                     false
                 )
 
-            // Deletes the current Schicht Modell(sets col deleted = true)
             this.delete =
                 () => {
                     const benID = $("#benID").val()
@@ -234,7 +226,6 @@ const scpRechteverwaltung_benutzer =
                     )
                 }
 
-            // Prepares the table data for the search dialog
             const prepareData =
                 records =>
                 records.map(
@@ -246,14 +237,12 @@ const scpRechteverwaltung_benutzer =
                     ]
                 )
 
-            // Fills the search dialog table with data
             const fillTbl =
                 data => {
                     clearTable(tblBenSuchen)
                     intoTable(tblBenSuchen)(prepareData(data))
                 }
 
-            // Triggers opening the search dialog
             this.search =
                 () => {
 
@@ -292,6 +281,4 @@ const scpRechteverwaltung_benutzer =
         }
     )
 
-// Initialize Permissions TreeView
-//
-const treeBen = scpTreeView.show("benTreeview")
+let treeBen

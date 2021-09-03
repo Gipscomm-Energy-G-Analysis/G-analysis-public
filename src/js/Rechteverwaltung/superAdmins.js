@@ -16,31 +16,28 @@ const scpRechteverwaltung_superAdmins =
                     scpIndexedDB.dataIntoIDB(result)("superAdmins")   
                 )
 
-            // Returns an input value depending on the elements id
-            const getFieldValue =
-                a =>
-                $(`#${a}`).val()
-
-            // Returns an object that contains the form data
             const getFormData =
                  () => (
-                    { modus : getFieldValue("sAdmState")
-                    , sAdmID : getFieldValue("sAdmID")
-                    , betrGrpID : getFieldValue("betrGrpID")
-                    , titelSAdm : getFieldValue("titelSAdm")
-                    , nameSAdm : getFieldValue("nameSAdm")
-                    , vornameSAdm : getFieldValue("vornameSAdm")
-                    , emailSAdm : getFieldValue("emailSAdm")
-                    , telefonSAdm : getFieldValue("telefonSAdm")
-                    , faxSAdm : getFieldValue("faxSAdm")
-                    , mobiltelefonSAdm : getFieldValue("mobiltelefonSAdm")
-                    , username : getFieldValue("benutzernameSAdm")
-                    , passHash : getHash(getFieldValue("passwortSAdm"))
-                    , rechte : treeSAdm.getValues().join(",")
+                    { modus            : helper.fieldValue("sAdmState")
+                    , sAdmID           : helper.fieldValue("sAdmID")
+                    , betrGrpID        : helper.fieldValue("betrGrpID")
+                    , titelSAdm        : helper.fieldValue("titelSAdm")
+                    , nameSAdm         : helper.fieldValue("nameSAdm")
+                    , vornameSAdm      : helper.fieldValue("vornameSAdm")
+                    , emailSAdm        : helper.fieldValue("emailSAdm")
+                    , telefonSAdm      : helper.fieldValue("telefonSAdm")
+                    , faxSAdm          : helper.fieldValue("faxSAdm")
+                    , mobiltelefonSAdm : helper.fieldValue("mobiltelefonSAdm")
+                    , username         : helper.fieldValue("benutzernameSAdm")
+                    , passHash         : 
+                        emptyString(helper.fieldValue("passwortSAdm")) ? 
+                        "" :
+                        getHash(helper.fieldValue("passwortSAdm"))
+                    , rechteTreeView   : treeSAdm.getValues().join(",")
+                    , rechteMenu       : scpTreeView.getSelectedNodes(treeSAdm).join(",")
                     }
                 )
 
-            // Checks if there are empty input values
             const completeFormData =
                 formData => 
                 [ "titelSAdm"
@@ -54,11 +51,9 @@ const scpRechteverwaltung_superAdmins =
                 ]
                 .map(field(formData))
                 .every(a => !emptyString(a)) &&
-                !emptyString(getFieldValue("passwortSAdm"))
+                !emptyString(helper.fieldValue("passwortSAdm"))
             
-            // Inserts or updates the given record into the sql srv DB
-            // and then updates the indexedDB
-            const saveFormData =
+            const save =
                 formData =>
                 ajaxPost("php/Rechteverwaltung/SuperAdmins/saveSuperAdmin.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
@@ -70,9 +65,6 @@ const scpRechteverwaltung_superAdmins =
                     false
                 )
 
-            // If the form data contains empty input elements a
-            // dialog is shown which asks if the record should be
-            // saved anyways
             const nonCompleteDataDialog =
                 formData =>
                 $("#saveSAdmDialog").dialog({
@@ -92,7 +84,7 @@ const scpRechteverwaltung_superAdmins =
                         $("#saveSAdmOk").off("click")
                         $("#saveSAdmOk").on("click",
                             () =>
-                            ( saveFormData(formData)
+                            ( save(formData)
                             , $("#saveSAdmDialog").dialog("close")
                             )
                         )
@@ -105,39 +97,15 @@ const scpRechteverwaltung_superAdmins =
                     }
                 })
 
-            // Checks if all input elements are set and either shows the
-            // dialog which asks if the record should be saved anyways
-            // or if complete directly saves the record
-            this.validateAndSaveFormData =
+            this.validateAndSave =
                     () => {
                         const formData =
                             getFormData()
 
                         !completeFormData(formData) ?
                         nonCompleteDataDialog(formData) :
-                        saveFormData(formData) 
+                        save(formData) 
                     }
-
-            const colorState =
-                state =>
-                state === "new" ? 
-                "antiquewhite" :
-                "white"
-
-            // Sets the create new or update state for saving
-            const setState =
-                state =>
-                ( $("#sAdmState").val(state)
-                , $(".sAdmForm")
-                    .css("background", colorState(state))
-                    .css("border", "1px solid black")
-                    .css("padding", "1px")
-                ) 
-
-            // Resets the value of a given input to an empty string
-            const clearField =
-                field =>
-                $(`#${field}`).val("")
 
             this.clearFields =
                 () =>
@@ -152,55 +120,52 @@ const scpRechteverwaltung_superAdmins =
                   , "benutzernameSAdm"
                   , "passwortSAdm"
                   ]    
-                  .forEach(clearField)
+                  .forEach(helper.clearField)
                 , scpTreeView.clear(treeSAdm)
-                , setState("new")
+                , helper.setState("sAdm")("new")
                 )
 
             const getBetrGrpRefRecords =
                 () => 
                 idxDB.superAdmins
                 .where("betrGrp_ID")
-                .equals(Number(getFieldValue("betrGrpID")))
+                .equals(Number(helper.fieldValue("betrGrpID")))
 
-            // Returns an array of the Schicht Modelle from indexedDB
-            const querySuperAdminsDataIDB =
+            const queryDatasIDB =
                 () => 
                 getBetrGrpRefRecords()
                 .toArray()
 
-            // Returns a certain Schicht Modell depending on an index
-            const querySuperAdminDataIDB =
+            const queryDataIDB =
                 idx =>
-                querySuperAdminsDataIDB()
-                .then(superAdmins => superAdmins[idx])
+                queryDatasIDB()
+                .then(records => records[idx])
 
-            // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
                 idx => {
-                    querySuperAdminDataIDB(idx)
+                    queryDataIDB(idx)
                     .then(
-                        superAdmin => {
+                        record => {
 
                             $("#sAdmIdx").val(idx)
-                            $("#sAdmID").val(superAdmin.sAdm_ID)
-                            $("#titelSAdm").val(superAdmin.titelSAdm)
-                            $("#nameSAdm").val(superAdmin.nameSAdm)
-                            $("#vornameSAdm").val(superAdmin.vornameSAdm)
-                            $("#emailSAdm").val(superAdmin.emailSAdm)
-                            $("#telefonSAdm").val(superAdmin.telefonSAdm)
-                            $("#faxSAdm").val(superAdmin.faxSAdm)
-                            $("#mobiltelefonSAdm").val(superAdmin.mobiltelefonSAdm)
-                            $("#benutzernameSAdm").val(superAdmin.username)
+                            $("#sAdmID").val(record.sAdm_ID)
+                            $("#titelSAdm").val(record.titelSAdm)
+                            $("#nameSAdm").val(record.nameSAdm)
+                            $("#vornameSAdm").val(record.vornameSAdm)
+                            $("#emailSAdm").val(record.emailSAdm)
+                            $("#telefonSAdm").val(record.telefonSAdm)
+                            $("#faxSAdm").val(record.faxSAdm)
+                            $("#mobiltelefonSAdm").val(record.mobiltelefonSAdm)
+                            $("#benutzernameSAdm").val(record.username)
+                            $("#passwortSAdm").val("")
 
-                            setState("edit")
+                            helper.setState("sAdm")("edit")
 
-                            treeSAdm.setValues(superAdmin.rechte.split(","))
+                            treeSAdm.setValues(record.rechteTreeView.split(","))
                         }
                     )
                 }
 
-            // Sets the form data input values of the first Schicht Modell
             this.readFirst =
                 () =>
                 getBetrGrpRefRecords()
@@ -212,28 +177,23 @@ const scpRechteverwaltung_superAdmins =
                     this.clearFields()
                 )
                 
-            // Sets the form data input values of the previous Schicht Modell
-            // depending on the current records index
             this.readPrevious =
                 () =>
-                greaterZero(getFieldValue("sAdmIdx")) ?
-                readIntoFormFields(decr(getFieldValue("sAdmIdx"))) :
+                greaterZero(helper.fieldValue("sAdmIdx")) ?
+                readIntoFormFields(decr(helper.fieldValue("sAdmIdx"))) :
                 false
 
-            // Sets the form data input values of the next Schicht Modell
-            // depending on the current records index
             this.readNext =
                 () =>
                 getBetrGrpRefRecords()
                 .count()
                 .then( 
                     count => 
-                    greater(decr(count))(getFieldValue("sAdmIdx")) ?
-                    readIntoFormFields(incr(getFieldValue("sAdmIdx"))) :
+                    greater(decr(count))(helper.fieldValue("sAdmIdx")) ?
+                    readIntoFormFields(incr(helper.fieldValue("sAdmIdx"))) :
                     false
                 )
 
-            // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
                 getBetrGrpRefRecords()
@@ -245,8 +205,7 @@ const scpRechteverwaltung_superAdmins =
                     false
                 )
 
-            // Deletes the current Schicht Modell(sets col deleted = true)
-            this.deleteSuperAdmin =
+            this.delete =
                 () => {
                     const sAdmID = $("#sAdmID").val()
 
@@ -255,15 +214,13 @@ const scpRechteverwaltung_superAdmins =
                         () =>
                         ( alert("erfolgreich gelöscht!")
                         , this.updateIndexedDB()
-                          .then( 
-                              readIntoFormFields( getFieldValue( "sAdmIdx" ) ) 
-                          )
+                          .then(this.readFirst) 
                         )
                     )
+                    
                 }
 
-            // Prepares the table data for the search dialog
-            const prepareTableData =
+            const prepareData =
                 records =>
                 records.map(
                     (a, i) =>
@@ -274,19 +231,17 @@ const scpRechteverwaltung_superAdmins =
                     ]
                 )
 
-            // Fills the search dialog table with data
-            const fillSuperAdminsTbl =
+            const fillTbl =
                 data => {
                     clearTable(tblSAdmSuchen)
-                    intoTable(tblSAdmSuchen)(prepareTableData(data))
+                    intoTable(tblSAdmSuchen)(prepareData(data))
                 }
 
-            // Triggers opening the search dialog
-            this.searchSuperAdmins =
+            this.search =
                 () => {
 
-                    querySuperAdminsDataIDB()
-                    .then(fillSuperAdminsTbl)
+                    queryDatasIDB()
+                    .then(fillTbl)
 
                     $("#sAdmSuchenContainer").dialog({
                         height: 450,
@@ -320,6 +275,4 @@ const scpRechteverwaltung_superAdmins =
         }
     )
 
-// Initialize Permissions TreeViewscpRechteverwaltung_superAdmins.showTreeView()
-//
-const treeSAdm = scpTreeView.show("sAdmTreeview")
+let treeSAdm

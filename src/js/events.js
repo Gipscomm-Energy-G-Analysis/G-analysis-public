@@ -1593,11 +1593,11 @@ $(document).ready(function() {
     //
     // Search Navigation
     //
-    $("#betrGrpSuchen").click(scpRechteverwaltung_betreuergruppen.searchBetreuerGruppen)
+    $("#betrGrpSuchen").click(scpRechteverwaltung_betreuergruppen.search)
     //
     // Delete Record
     //
-    $("#betrGrpLoeschen").click(scpRechteverwaltung_betreuergruppen.deleteBetreuerGruppe)
+    $("#betrGrpLoeschen").click(scpRechteverwaltung_betreuergruppen.delete)
     //
     // Clear Fields For Creation Of New Record
     //
@@ -1605,7 +1605,7 @@ $(document).ready(function() {
     //
     // Create New Or Update Form Data After Form Validation
     //
-    $("#betrGrpSpeichern").click(scpRechteverwaltung_betreuergruppen.validateAndSaveFormData)
+    $("#betrGrpSpeichern").click(scpRechteverwaltung_betreuergruppen.validateAndSave)
     //
     // Show Mandanten Selection Table
     //
@@ -1636,11 +1636,11 @@ $(document).ready(function() {
     //
     // Search Navigation
     //
-    $("#sAdmSuchen").click(scpRechteverwaltung_superAdmins.searchSuperAdmins)
+    $("#sAdmSuchen").click(scpRechteverwaltung_superAdmins.search)
     //
     // Delete Record
     //
-    $("#sAdmLoeschen").click(scpRechteverwaltung_superAdmins.deleteSuperAdmin)
+    $("#sAdmLoeschen").click(scpRechteverwaltung_superAdmins.delete)
     //
     // Clear Fields For Creation Of New Record
     //
@@ -1648,7 +1648,7 @@ $(document).ready(function() {
     //
     // Create New Or Update Form Data After Form Validation
     //
-    $("#sAdmSpeichern").click(scpRechteverwaltung_superAdmins.validateAndSaveFormData)
+    $("#sAdmSpeichern").click(scpRechteverwaltung_superAdmins.validateAndSave)
     //
 
     //
@@ -1665,11 +1665,11 @@ $(document).ready(function() {
     //
     // Search Navigation
     //
-    $("#manGrpSuchen").click(scpRechteverwaltung_mandantengruppen.searchMandantenGruppen)
+    $("#manGrpSuchen").click(scpRechteverwaltung_mandantengruppen.search)
     //
     // Delete Record
     //
-    $("#manGrpLoeschen").click(scpRechteverwaltung_mandantengruppen.deleteMandantenGruppe)
+    $("#manGrpLoeschen").click(scpRechteverwaltung_mandantengruppen.delete)
     //
     // Clear Fields For Creation Of New Record
     //
@@ -1677,7 +1677,7 @@ $(document).ready(function() {
     //
     // Create New Or Update Form Data After Form Validation
     //
-    $("#manGrpSpeichern").click(scpRechteverwaltung_mandantengruppen.validateAndSaveFormData)
+    $("#manGrpSpeichern").click(scpRechteverwaltung_mandantengruppen.validateAndSave)
     //
     // Show Mandanten Selection Table
     //

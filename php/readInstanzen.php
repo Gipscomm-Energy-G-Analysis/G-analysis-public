@@ -278,34 +278,10 @@ elseif($id == "betrPar"){
 
   $query = "SELECT * FROM config.betriebsparameter ";
 
-} elseif($id == 'admSuchen') {
-
-  $man_ID = $_POST['manID'];
-
-  $manData = "SELECT * FROM mandanten WHERE nameMan = '$man_ID' ";
-  $data = queryDB($conn, $manData, "read");
-  
-  $manId = $data[0]['man_ID'];
-  $query = "SELECT * FROM admins WHERE deleted_at IS NULL AND man_ID = '$manId' OR manGrp_ID = '$manId'";
-  //$query .= "WHERE deleted <> 'true' ";   //<> not equal
-} elseif($id == 'benSuchen') {
-
-  $man_ID = $_POST['manID'];
-
-  $manData = "SELECT * FROM mandanten WHERE nameMan = '$man_ID' ";
-  $data = queryDB($conn, $manData, "read");
-
-  $manId = $data[0]['man_ID'];
-
-  $query = "SELECT * FROM benutzer WHERE deleted_at IS NULL AND man_ID = '$manId' OR manGrp_ID = '$manId' ";
-    //$query .= "WHERE deleted <> 'true' ";   //<> not equal
-
-} 
-
-if($id != 'mandantenBetrGruppen') {
-  $records = queryDB($conn, $query, "read") ;
-  echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
 }
+
+$records = queryDB($conn, $query, "read") ;
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
 
 include('bottom-cache.php');
 ?>

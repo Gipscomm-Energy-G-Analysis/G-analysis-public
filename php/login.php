@@ -10,10 +10,6 @@ require 'DbOperations.php';
 $nameDB = "gipscomm";
 $conn = connectToDB ( $nameDB );
 
-// echo "connection_test\n";
-// echo $conn == false;
-// echo "\n\n";
-
 $userLogin = $_POST['user'];
 
 $query = "SELECT * FROM Users ";
