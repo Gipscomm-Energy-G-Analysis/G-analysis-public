@@ -1041,6 +1041,32 @@ class dashboardController {
         }
     }
     // --end-->
+
+    // <---03-9-2021---
+    public function getChartTimeIntervalRecord(){
+        try{
+            global $conn;
+            $time_interval = $_REQUEST['time_interval'];
+            $query1 = "SELECT T1.mstIMw,T1.mst_ID,T2.val,T1.iBdeType ";
+            $query1 .= "FROM produktionsAnlagenConfig as T1 ";
+            $query1 .= "INNER JOIN ";
+            $query1 .= "(SELECT T2.mst_ID as t2_mst_id , sum(cast(T2.val as int)) as val from masseneingabeSucheIMw as T2 ";
+            $query1 .= "group by T2.mst_ID) T2 ";
+            $query1 .= "ON T1.mst_ID = t2_mst_id ";
+            $query1  .= "where T1.iBdeType='2' ";
+            $query1 .= "AND T1.intTp_ID = '$time_interval' ";
+            $query1 .= "Order by T2.val  Desc ";
+            $data = queryDB($conn, $query1, "read");
+            echo json_encode($data,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
+
+    // ---end--->
     //Get Records Energy
     public function getNumberRecordsEnergy()
     {

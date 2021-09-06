@@ -278,3 +278,11 @@
  #dashboard_count_div_tile table{
     margin-left: -58px;
  }
+
+ #chart_records_label{
+     text-transform: capitalize;;
+ }
+
+ #chart_records{
+    text-transform: capitalize;;
+ }

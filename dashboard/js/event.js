@@ -630,11 +630,15 @@ $(document).ready( function(){
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
             getChartTileDashboard();
+            getChartTimeIntervalRecord();
+            dashboardChart();
             $('#measurement-height-chart').val('');
             $('#measurement-height-chart-hidden').val('145');
             $('#measurement-width-chart').val('');
             $('#measurement-width-chart-hidden').val('285');
             $('#dashboard_tile_modal_chart').modal('show');
+            $('#chart_records_label').text('Select '+record_type_of_tile);
+
         }
         $('#title_modal_tile').val('');
         $('#record_type_of_tile option[value=measurement]').prop('selected','selected');
@@ -742,6 +746,13 @@ $(document).ready( function(){
     })
     // --end-->
 
+    $(document).on('change','#time_interval_chart',function(){
+        getChartTimeIntervalRecord();
+    });
+
+    $(document).on('change','#chart_record_filter',function(){
+       chartRecordFilter(); 
+    });
 
     // <---12-8-2021----
     // $('#mesurement_count_div').hover(

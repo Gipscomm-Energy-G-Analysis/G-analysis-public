@@ -115,6 +115,34 @@
                       <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Row">
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
                     </div>
+
+                    <div class="form-group col-md-2">
+                      <label for="time_interval_chart" class="text-mute">Time Interval</label>
+                      <select class="form-control form-control-sm text-dark" id="time_interval_chart">
+                        <option value="1">Days</option>
+                        <option value="2">Weeks</option>
+                        <option value="3">Months</option>
+                        <option value="4">Years</option>
+                      </select>
+                    </div>
+                    
+                    
+                    <div class="form-group col-md-2" id="chart_record_div">
+                      <label for="chart_records" class="text-mute" id="chart_records_label"></label>
+                      <select class="form-control form-control-sm text-dark" id="chart_records">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2" id="chart_record_filter_div">
+                      <label for="chart_record_filter" class="text-mute">Filters</label>
+                      <select class="form-control form-control-sm text-dark" id="chart_record_filter">
+                        <option value=''>Select Filters</option>
+                        <option value="10">Last 10 Days Records</option>
+                        <option value="20">Last 20 Days Records</option>
+                        <option value="30">Last 30 Days Records</option>
+                        <option value="all">All Records</option>
+                      </select>
+                    </div>
                   </div>
                   
                   <div class="row dashboard_chart_tiles">

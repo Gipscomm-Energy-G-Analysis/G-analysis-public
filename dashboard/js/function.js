@@ -1252,7 +1252,7 @@ function getChartTileDashboard(){
     },
     success: function(a) {
       $('.dashboard_chart_tiles').html(a['tile_html']);
-      dashboardChart();
+      
     }
   });
 }
@@ -1321,6 +1321,57 @@ function saveDashboardTileChart(){
 }
 
 // --end-->
+
+// <----3-9-2021---
+function getChartTimeIntervalRecord(){
+ var time_interval = $('#time_interval_chart').val();
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getChartTimeIntervalRecord",
+        nameDB: $("#nameDashboardDB").val(),
+        time_interval:time_interval
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      var select_html = '';
+      if(a != ''){
+        var ar = localStorage.getItem('dashboard_tile_data');
+        ar = JSON.parse(ar);
+        var record_type_of_tile = ar['record_type_of_tile'];
+        select_html+="<option value=''>Select "+record_type_of_tile+"</option>";
+        a.forEach((val)=>{
+          select_html+="<option value='"+val['mst_ID']+"' type='"+val['iBdeType']+"' total_value='"+val['val']+"'>"+val['mstIMw']+"</option>";
+        });
+        $('#chart_record_filter_div').show();
+        $("#chart_record_filter option[value='']").prop('selected','selected');
+      }
+      else{
+        select_html+="<option>No Record Found</option>";
+        $('#chart_record_filter_div').hide();
+      }
+      $('#chart_records').html(select_html);
+    }
+  });
+}
+// --end-->
+
+
+// <----6-9-2021---
+function chartRecordFilter(){
+  var filterVal = $('#chart_record_filter').val();
+  var measuremetRecordFilter = $('#chart_records').val();
+  if(filterVal != '' && measuremetRecordFilter != ''){
+    var type = $('#chart_records option:selected').attr('type');
+    
+  }
+}
+// ---end-->
 
 
 // ---end-->
