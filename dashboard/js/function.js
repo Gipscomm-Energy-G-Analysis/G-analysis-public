@@ -99,6 +99,18 @@ function getNumberRecordsMesurement(){
             $('#measurement_number_record option[value='+val_selected+']').prop('selected', 'selected');
 
             localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+            // <---02-9-2021--
+            var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+            if(edit_value == 'true'){
+                $('#modal_open_button').val('Update & Preview');
+                $('#modal_open_button').attr('tile-edit','true');
+            }
+            else{
+              $('#modal_open_button').val('Save & Preview');
+              $('#modal_open_button').attr('tile-edit','false');
+            }
+            // --end-->
           }
       });
     }
@@ -145,6 +157,17 @@ function getNumberRecordsMesurementPagination(page_val,selected_number_record_me
             $('#measurement_number_record option[value='+val_selected+']').prop('selected', 'selected');
 
             localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+            // <---02-9-2021--
+            var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+            if(edit_value == 'true'){
+                $('#modal_open_button').val('Update & Preview');
+                $('#modal_open_button').attr('tile-edit','true');
+            }
+            else{
+              $('#modal_open_button').val('Save & Preview');
+              $('#modal_open_button').attr('tile-edit','false');
+            }
           }
       });
     }
@@ -197,6 +220,17 @@ function rowClickMeasurementTableData(mst_id,data_type){
         $('#measurement_number_record option[value='+number_records+']').prop('selected', 'selected');
 
         localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+        // <---02-9-2021--
+        var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+        if(edit_value == 'true'){
+            $('#modal_open_button').val('Update & Preview');
+            $('#modal_open_button').attr('tile-edit','true');
+        }
+        else{
+          $('#modal_open_button').val('Save & Preview');
+          $('#modal_open_button').attr('tile-edit','false');
+        }
       }
     });
   }
@@ -240,6 +274,17 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,sele
 
         //LocalStorage
         localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+        // <---02-9-2021--
+        var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+        if(edit_value == 'true'){
+            $('#modal_open_button').val('Update & Preview');
+            $('#modal_open_button').attr('tile-edit','true');
+        }
+        else{
+          $('#modal_open_button').val('Save & Preview');
+          $('#modal_open_button').attr('tile-edit','false');
+        }
       }
     });
   }
@@ -250,20 +295,34 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,sele
 function saveTableFormat(type){
   var row_enteries_length = $('#mesurement_select_table_entries tr').length;
   var query_data = localStorage.getItem('query_data');
-  var tile_title = $('.measurement_html_modal_'+last_index_tile+' #measurement_tile_heading_modal').text();
+  
 
   
   if(query_data != undefined && query_data != null && query_data != '')
   {
     var measuremnt_table_height = $('#modal-height-input-measurement-hidden').val();
     var measurement_table_width = $('#modal-width-input-measurement-hidden').val();
+    var input_height = $('#modal-height-input-measurement').val(); 
+    var input_width = $('#modal-width-input-measurement').val();
+    
     //<--23-8-2021---
     var last_index_tile = $('#total_records').val();
-
+    // var table_length = $('.measurement_html_modal_'+last_index_tile+' table tbody tr').length;
+    // $('.measurement_html_modal_'+last_index_tile+' .count_result_tile').text(table_length+' Records');
+    
     var tile_html = $('.measurement_html_modal_'+last_index_tile).html();
     var tableHtml = $('.measurement_html_modal_'+last_index_tile+' table').html();
     $('#total_records').remove();
-    var tile_html = tile_html.replace('total_records','');
+    tile_html = tile_html.replace('total_records','');
+    tile_html = tile_html.replace('hide_table_main','');
+
+    // <----01-9-2021---
+    var ar = localStorage.getItem('dashboard_tile_data');
+    ar = JSON.parse(ar);
+    var tile_title =ar['title_modal_tile'];
+    var record_type_of_tile =ar['record_type_of_tile'];
+    var type_data_tile =ar['type_data_tile'];
+    // --end->
   // --end-->
     if(measuremnt_table_height != '' && measurement_table_width != ''){
       var measurement_preview_data = [];
@@ -284,9 +343,11 @@ function saveTableFormat(type){
             tile_html : tile_html,
             height: measuremnt_table_height,
             width : measurement_table_width,
-            tableHtml : tableHtml
-
-
+            tableHtml : tableHtml,
+            input_height : input_height,
+            input_width : input_width,
+            record_type_of_tile :record_type_of_tile,
+            type_data_tile : type_data_tile
         },
         fail: function() {
             alert("failed!!")
@@ -334,6 +395,7 @@ function saveTableFormat(type){
 
 // <---16-8-2021---
 function getTableFormatDashboard(){
+  $('.dashboard_count_div').html('');
   $.ajax({
     type: "POST",
     url: "php/retreive.php",
@@ -358,14 +420,24 @@ function getTableFormatDashboard(){
              
             }
             // console.log(value['id']);
-            console.log(value['id'])
+            // console.log(value['id'])
           value['tile_html']=value['tile_html'].replace("grid-margin", value['id']+" grid-margin");
 
+          // <---27-8-2021--
+          value['tile_html']=value['tile_html'].replace("id_val", value['id']+" id_val");
+          value['tile_html']=value['tile_html'].replace("edit_val", value['id']+" edit_val");
+          // end-->
+
+          // <---1-9-2021---
+
+          // --end-->
           arHtml +=value['tile_html'];
           
         });
         $('#dashboard_count_div_tile').html(arHtml);
-        $('.stretch-card').addClass('hide_table_main');
+        $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
+        // $('#dashboard_count_div_tile .count_result_tile').text(a['total_record']+' Records');
+        // $('#dashboard_count_div_tile .action-modal-button-div').removeClass('col-md-12');
                 // $('#dashboard_count_div_tile .stretch-card').css('height',145);
         // $('#dashboard_count_div_tile .stretch-card').css('width',285);
 
@@ -413,6 +485,15 @@ function generateHtmlMeasurementTiles(type){
     success: function(a) {
       // console.log(a);
        $('.gernerated_measurement_modal_tiles').html(a['tile_html']);
+
+      var last_id = a['last_id'];
+      setTimeout(()=>{
+        var table_length = $('.measurement_html_modal_'+last_id+' table tbody tr').length;
+        $('.measurement_html_modal_'+last_id+' .count_result_tile').text(table_length+' Records');
+      },1000)
+      
+      //  $('.gernerated_measurement_modal_tiles .count_result_tile').text(a['total_record']+' Records');
+      //  $('.gernerated_measurement_modal_tiles .stretch-card').removeClass('hide_table_preview');
     }
   });
 
@@ -556,7 +637,7 @@ function dashboardChart(){
                           //   backgroundColor: '#8EB0FF'
                           // },
                           {
-                            label: 'One Month Energy',
+                            label: 'One Month Measurement',
                             data: ar,
                             backgroundColor: '#316FFF'
                           }
@@ -937,6 +1018,13 @@ setTimeout(function () {
     $('.'+id+'.tiles-click').removeClass('col-md-3');
     $('.'+id+'.tiles-click').css('width',localStorage.getItem('width')+'px');
     $('.'+id+'.tiles-click').css('height',localStorage.getItem('height')+'px');
+    // <---30-8-2021--
+    $('.'+id+' .card-body').removeClass('row');
+    // --end-->
+
+    // <---03-9-2021--
+    $('.'+id+'.tiles-click .card-body div:first-child').removeClass('col-md-12');
+    // --end--->
 },1000);
 
 })
@@ -955,12 +1043,287 @@ function getDimentions(id) {
             alert("failed!!")
         },
         success: function(a) {
-            console.log(a);
+            // console.log(a.data.width);
            localStorage.setItem('width',a.data.width);
            localStorage.setItem('height',a.data.height);
+
+           
+
+          //  <---2-9-2021--
+          $('.chart-width canvas').attr('id','sales-chart-none');
+          $('.chartjs-size-monitor').remove();
+          var type_data_val = a['data']['tile_data_type'];
+          if(type_data_val == "chart"){
+            // $('.'+id+'.tiles-click .card-body').addClass('display-flex');
+            // $('.'+id+'.tiles-click .card-body div:first-child').css('width','20%');
+            // $('.'+id+'.tiles-click .card-body div:first-child').removeClass('col-md-12');
+            // $('.'+id+'.tiles-click .card-body .ml-3').removeClass('overflow-hide');
+
+            var tile_html = $('.'+id+'.tiles-click').html();
+            tile_html = tile_html.replace('sales-chart-none','sales-chart');
+            $('.'+id+'.tiles-click').html(tile_html);
+            dashboardChart();
+          }
+          // --show-->
         }
     });
 }
+
+function deleteTile(id_val){
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "deleteTile",
+        id: id_val,
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      // setTimeout(()=>{
+        getTableFormatDashboard();
+      // },1500); 
+    }
+});
+
+
+}
+
+function edit_tile(type,edit_id){
+  var i_val = localStorage.getItem('edit-i-value');
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var measurement_title = ar['title_modal_tile'];
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getEditTiles",
+        id: edit_id,
+        type, type,
+        i_value : i_val,
+        measurement_title : measurement_title,
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      var i_val = localStorage.getItem('edit-i-value');
+      $('.gernerated_measurement_modal_tiles').html(a['tile_html']);
+      
+      // <---1-8-2021---
+      // $('.gernerated_measurement_modal_tiles #total_records').val(i_val);
+      // --end-->
+      setTimeout(()=>{
+        var table_length = $('.measurement_html_modal_'+i_val+' table tbody tr').length;
+        $('.measurement_html_modal_'+i_val+' .count_result_tile').text(table_length+' Records');
+      },1000);
+      
+      // $('.gernerated_measurement_modal_tiles .count_result_tile').text(a['total_record']+' Records');
+      $('.gernerated_measurement_modal_tiles #measurement_count_tile_modal_'+i_val).css('height',a['data']['height']);
+      $('.gernerated_measurement_modal_tiles #measurement_count_tile_modal_'+i_val).css('width',a['data']['width']);
+      $('#modal-height-input-measurement-hidden').val(a['data']['height']);
+      $('#modal-width-input-measurement-hidden').val(a['data']['width']);
+      (a['data']['input_height'] != 0) ? $('#modal-height-input-measurement').val(a['data']['input_height']) : $('#modal-height-input-measurement').val('');
+      (a['data']['input_width'] != 0) ? $('#modal-width-input-measurement').val(a['data']['input_width']) : $('#modal-width-input-measurement').val('');
+    }
+  });
+
+}
+
+// <----31-8-2021----
+function updateTileRecord(){
+  var id = localStorage.getItem('edit-measurement-tile');
+  var input_height = $('#modal-height-input-measurement').val();
+  var input_width = $('#modal-width-input-measurement').val();
+  var height = $('#modal-height-input-measurement-hidden').val();
+  var width = $('#modal-width-input-measurement-hidden').val();
+
+  // <---1-9-2021----
+  var query_data = localStorage.getItem('query_data');
+
+  var last_index_tile = $('#total_records').val();
+
+  var tile_html = $('.measurement_html_modal_'+last_index_tile).html();
+  var tableHtml = $('.measurement_html_modal_'+last_index_tile+' table').html();
+  $('#total_records').remove();
+  // tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+  // --end-->
+
+  if(id != null && id != undefined){
+    $.ajax({
+      type : "POST",
+      url : 'php/operations.php',
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "updateTileRecord",
+          id: id,
+          query_data : JSON.parse(query_data),
+          title : tile_title,
+          tile_html :tile_html,
+          input_height :input_height,
+          input_width :input_width,
+          height : height,
+          width : width,
+          record_type_of_tile : record_type_of_tile,
+          type_data_tile : type_data_tile,
+          nameDB: $("#nameDashboardDB").val()
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#measurement_modal_loader_div').show();
+        $('.bd-example-modal-lg .modal-content').css('opacity','0.8');
+        
+        setTimeout(() => {
+          $('#dashboard_sidebar').click();
+          $('#measurement_modal_loader_div').hide();
+          $('.bd-example-modal-lg .modal-content').css('opacity','1');
+          $('.bd-example-modal-lg').modal('hide');
+        }, 500);
+      }
+    });
+  }
+
+}
+
+function getEditDataDashboard(id,i_value){
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getEditDataDashboard",
+        id: id,
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      a['data'].forEach((val)=>{
+        $('#title_modal_tile').val(val['tile_title']);
+        $('#record_type_of_tile option[value=' + val['tile_record_type'] + ']').prop('selected', 'selected');
+        $('#type_data_tile option[value=' + val['tile_data_type'] + ']').prop('selected', 'selected');
+        localStorage.setItem('edit-measurement-tile',id);
+        localStorage.setItem('edit-i-value',i_value);
+        $('#save_and_proceed_btn_dashboard').val('Update & Proceed');
+        $('#save_and_proceed_btn_dashboard').attr('data-edit','true');
+      });
+    }
+  });
+
+}
+
+// <--2-9-2021---
+function getChartTileDashboard(){
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        measurement_title : ar['title_modal_tile'],
+        action: "getChartDataDashboard",
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('.dashboard_chart_tiles').html(a['tile_html']);
+      dashboardChart();
+    }
+  });
+}
+// --end-->
+
+// <---02-9-2021----
+function saveDashboardTileChart(){
+  var measuremnt_table_height = $('#measurement-height-chart-hidden').val();
+  var measurement_table_width = $('#measurement-width-chart-hidden').val();
+  var input_height = $('#measurement-height-chart').val(); 
+  var input_width = $('#measurement-width-chart').val();
+  
+  //<--23-8-2021---
+  var last_index_tile = $('#total_records_chart').val();
+  // var table_length = $('.measurement_html_modal_'+last_index_tile+' table tbody tr').length;
+  // $('.measurement_html_modal_'+last_index_tile+' .count_result_tile').text(table_length+' Records');
+  
+  var tile_html = $('.dashboard_chart_tile_html_'+last_index_tile).html();
+  $('#total_records_chart').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+  tile_html = tile_html.replace("sales-chart",'sales-chart-none');
+  // console.log(tile_html);
+  // return false;
+
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+    // --end->
+// --end-->
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "saveTileChart",
+        nameDB: $("#nameDashboardDB").val(),
+        title : tile_title,
+        tile_html : tile_html,
+        height: measuremnt_table_height,
+        width : measurement_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#measurement_modal_loader_div_chart').show();
+      $('#dashboard_tile_modal_chart .modal-content').css('opacity','0.8');
+      
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#measurement_modal_loader_div_chart').hide();
+        $('#dashboard_tile_modal_chart .modal-content').css('opacity','1');
+        $('#dashboard_tile_modal_chart').modal('hide');
+      }, 500);
+    }
+  });
+}
+
+// --end-->
+
+
+// ---end-->
 // <--09-8-2021-- Sort Code
 // function comparer(index,tableHeaderValue) {
 //   return function(a, b) {

@@ -4783,6 +4783,7 @@ function getDataMasseneingabeIMwSearchMesssetelle(zeitintervallAnl,startDate,end
                         var controlSystem = a.queryInvest[e].einheitControlSys != "0" ? a.queryInvest[e].einheitControlSys : '';
                         var table_config_id = a.queryInvest[e].iBdePrdktConf_ID != "0" ? a.queryInvest[e].iBdePrdktConf_ID : '';
                         var countInvest = 0;
+                        // console.log('Value',min_val);
 
                         //<---19-7-2021---
                         var headingText = "";
