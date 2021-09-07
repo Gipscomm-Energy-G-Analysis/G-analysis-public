@@ -63,6 +63,7 @@ const scpRechteverwaltung_betreuergruppen =
             const save =
                 formData =>
                 ajaxPost("php/Rechteverwaltung/Betreuergruppen/save.php")(formData)
+                .then(result => {console.log("result betrGrp save"); console.log(result); return result})
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
                 .then(() => {

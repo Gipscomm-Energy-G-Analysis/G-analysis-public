@@ -8,6 +8,13 @@ const scpRechteverwaltung =
     freeze (
         new function () {
 
+            const POSITION =
+                { GipscommAdmin : 0
+                , SuperAdmin    : 1
+                , Admin         : 2
+                , Benutzer      : 3
+                }
+
             this.populateIndexedDB =
                 () =>
                 ajaxPost("php/Rechteverwaltung/readRechteverwaltung.php")({})
@@ -87,6 +94,9 @@ const scpRechteverwaltung =
                     if (!equal(position)(User.GipscommAdmin)) {
                         removeMenus()
 
+                        console.log("betrGrpID from sessionStorage with getBetrGrpID() in hideTabsAndMenus")
+                        console.log(getBetrGrpID())
+
                         scpRechteverwaltung_betreuergruppen
                         .readIntoFormFieldsByID(getBetrGrpID())
                     }
@@ -94,14 +104,14 @@ const scpRechteverwaltung =
                         // Nothing
                     }
                     treeSAdm = scpTreeView.show("sAdmTreeview")
-                    treeAdm = scpTreeView.show("admTreeview")
-                    treeBen = scpTreeView.show("benTreeview")
+                    treeAdm  = scpTreeView.show("admTreeview")
+                    treeBen  = scpTreeView.show("benTreeview")
                 }
 
             const readInMandantenArgs =
                 position =>
                 equal(position)("sAdm") ?
-                [$("#betrGrpID").val(), null, null] :
+                [itemSessionGet("betrGrp_ID"), null, null] :
                 equal(position)("adm") || equal(position)("ben") ?
                 ($.isNumeric(sessionStorage.getItem("manGrp_ID")) ?
                 [null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")] :
@@ -155,8 +165,8 @@ const scpRechteverwaltung =
 
             this.readIntoMandantGruppeDropbox =
                 async () => {
-                    const betrGrpManIDs = await scpRechteverwaltung_betreuergruppen.arrayBetrGrpManIDs()
-                    const mandanten = await scpUnternehmensstruktur_mandanten.queryMandantenWithIDs(betrGrpManIDs)
+                    const betrGrpManIDs    = await scpRechteverwaltung_betreuergruppen.arrayBetrGrpManIDs()
+                    const mandanten        = await scpUnternehmensstruktur_mandanten.queryMandantenWithIDs(betrGrpManIDs)
                     const mandantengruppen = await scpRechteverwaltung_mandantengruppen.queryMandantengruppenDataIDB()
 
                     $(".manGrpPfad").empty()
