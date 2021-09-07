@@ -181,11 +181,7 @@ const scpRechteverwaltung_betreuergruppen =
                 .queryMandantenWithIDs(betreuerGruppe.mandantenIDs.split(","))
                 .then(fillMandantenTbl(tblMandantenBetrGrp))
 
-            this.removeFromMandantenTbl =
-                that =>
-                tblMandantenBetrGrp.row(that).remove().draw()
-
-            this.readIntoFormFieldsByID =
+            this.readIntoFormFields =
                 id => {
                     queryDatasIDB()
                     .then( 

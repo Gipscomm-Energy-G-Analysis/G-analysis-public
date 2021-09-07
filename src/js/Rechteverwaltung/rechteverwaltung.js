@@ -9,15 +9,54 @@ const scpRechteverwaltung =
         new function () {
 
             const POSITION =
-                { GipscommAdmin : 0
-                , SuperAdmin    : 1
-                , Admin         : 2
-                , Benutzer      : 3
+                { GipscommAdmin : "gipsAdm"
+                , SuperAdmin    : "sAdm"
+                , Admin         : "adm"
+                , Benutzer      : "ben"
+                }
+            
+            const readRechteverwaltung =
+                position => {
+
+                    const ajaxRechte = 
+                        ajaxPost("php/Rechteverwaltung/readRechteverwaltung.php")
+                    let betrGrpID
+                      , manGrpID
+                      , manID
+
+                    switch (position) {
+
+                        case POSITION.GipscommAdmin:
+                            return ajaxRechte({position})
+                            break;
+                        
+                        case POSITION.SuperAdmin:
+                            betrGrpID = itemSessionGet("betrGrp_ID")
+
+                            return ajaxRechte({position, betrGrpID})
+                            break;
+                        
+                        case POSITION.Admin:
+                            betrGrpID = itemSessionGet("betrGrp_ID")
+                            manGrpID  = itemSessionGet("manGrp_ID")
+                            manID     = itemSessionGet("man_ID")
+
+                            return ajaxRechte({position, betrGrpID, manGrpID, manID})
+                            break;
+                        
+                        case POSITION.Benutzer:
+                            betrGrpID = itemSessionGet("betrGrp_ID")
+                            manGrpID  = itemSessionGet("manGrp_ID")
+                            manID     = itemSessionGet("man_ID")
+
+                            return ajaxRechte({position, betrGrpID, manGrpID, manID})
+                            break;
+                    }
                 }
 
             this.populateIndexedDB =
                 () =>
-                ajaxPost("php/Rechteverwaltung/readRechteverwaltung.php")({})
+                readRechteverwaltung(itemSessionGet("position"))
                 .then(
                     result => 
                     [ "gipscommAdmins"
@@ -98,7 +137,7 @@ const scpRechteverwaltung =
                         console.log(getBetrGrpID())
 
                         scpRechteverwaltung_betreuergruppen
-                        .readIntoFormFieldsByID(getBetrGrpID())
+                        .readIntoFormFields(0)
                     }
                     else {
                         // Nothing

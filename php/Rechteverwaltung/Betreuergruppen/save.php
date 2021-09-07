@@ -5,9 +5,9 @@ ini_set ( 'display_errors', 'On' ) ;
 require '../../DbOperations.php' ;
 
 abstract class TYPE_ID
-{ const Last  = 0 ;
-  const Given = 1 ;
-}
+    { const Last  = 0 ;
+      const Given = 1 ;
+    }
 
 define('conn', connectToDB("gipscomm")) ;
 
