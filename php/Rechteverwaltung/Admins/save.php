@@ -6,24 +6,25 @@ require '../../DbOperations.php' ;
 
 $conn = connectToDB("gipscomm") ;
 
-$modus = $_POST['modus'] ;
-$manID = $_POST['manID'] ;
-$manGrpID = $_POST['manGrpID'] ;
-$titel = $_POST['titel'] ;
-$name = $_POST['name'] ;
-$vorname = $_POST['vorname'] ;
-$email = $_POST['email'] ;
-$telefon = $_POST['telefon'] ;
-$fax = $_POST['fax'] ;
-$mobiltelefon = $_POST['mobiltelefon'] ;
-$username = $_POST['username'] ;
-$passHash = $_POST['passHash'] ;
+$modus          = $_POST['modus'] ;
+$manID          = $_POST['manID'] ;
+$manGrpID       = $_POST['manGrpID'] ;
+$titel          = $_POST['titel'] ;
+$name           = $_POST['name'] ;
+$vorname        = $_POST['vorname'] ;
+$email          = $_POST['email'] ;
+$telefon        = $_POST['telefon'] ;
+$fax            = $_POST['fax'] ;
+$mobiltelefon   = $_POST['mobiltelefon'] ;
+$username       = $_POST['username'] ;
+$passHash       = $_POST['passHash'] ;
 $rechteTreeView = $_POST['rechteTreeView'] ;
-$rechteMenu = $_POST['rechteMenu'] ;
+$rechteMenu     = $_POST['rechteMenu'] ;
+$betrGrpID      = $_POST['betrGrpID'] ;
 
 if($modus === "new") {
-   $query =  "INSERT INTO admins(manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
-   $query .= "VALUES($manGrpID, $manID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', '$rechteTreeView', '$rechteMenu', 0) " ;
+   $query =  "INSERT INTO admins(manGrp_ID, betrGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
+   $query .= "VALUES($manGrpID, $betrGrpID, $manID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', '$rechteTreeView', '$rechteMenu', 0) " ;
 }
 else {
     $admID = $_POST['admID'] ;
