@@ -64,7 +64,7 @@ class DashboardController extends Controller
                         $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'']);
                         $data = $this->getMachineDetail($request);
     
-                        return View::make("product", ["data"=>$data['data'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groupData'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData']]);
+                        return View::make("product", ["data"=>$data['data'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData']]);
                     } else {
                         return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);
                     }

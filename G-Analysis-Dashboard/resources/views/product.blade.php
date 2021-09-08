@@ -132,46 +132,22 @@
             </div>
         </div>
 
-        @isset($groupData['groupData'][0])
-        <div class="col-sm-3 edit-mode" style="display:none;">
-            <div class="form-group row property">
-                <label class="col-sm-4 col-form-label">{{$groupData['groupData'][0]->name}}</label>
-                <div class="col-sm-9">
-                    <select class="form-control groupData" id="select_group_options" style="width: 100%;">
-                        <option value="">Select</option>
-                        @foreach($groupData['groupData'] as $group)
-                            <option value="{{$group->id}}">{{$group->option_name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+        <div class="col-sm-6 edit-mode" style="display: none;">
+            
         </div>
 
-        <div class="col-sm-3 edit-mode" style="display:none;">
-            <div class="form-group row property">
-                <label class="col-sm-4 col-form-label">Tables</label>
-                <div class="col-sm-9">
-                    <select class="form-control tableData" id="select_group_table" style="width: 100%;">
-                        <option value="">Select</option>
-                        @foreach($tables as $table)
-                        <option value="{{$table['TABLE_NAME']}}">{{$table['TABLE_NAME']}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-        @endisset
+        
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-8">
-                    <div class="btn-group float-right" style="font-size: 18px;top: 17px;">
+                    <div class="btn-group float-right" style="font-size: 18px;">
                         <input type="checkbox" id="modeSelector" checked data-toggle="toggle" data-on="View Mode" data-off="Edit Mode" data-onstyle="success" data-offstyle="info">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <nav class="main-header navbar navbar-expand navbar-dark view-mode" style="border-bottom:unset;">
                         <!-- Right navbar links -->
-                        <ul class="navbar-nav ml-auto" style="position: relative;top: 15px;">
+                        <ul class="navbar-nav ml-auto" style="position: relative;">
                             <div class="fc-toolbar-chunk">
                                 <div class="btn-group float-right">
                                     <button class="fc-search btn btn-primary" id="searchMachines" type="button" aria-label="search">
@@ -196,7 +172,7 @@
                         </ul>
                     </nav>
 
-                    <button type="button" class="btn btn-block btn-info edit-mode" style="display:none;position: relative;top: 17px;" id="machine_table_configuration"  data-toggle="modal" data-target="#modal-machine-configuration">Machine Table Configrations</button>
+                    <button type="button" class="btn btn-block btn-info edit-mode" style="display:none;position: relative;" id="machine_table_configuration"  data-toggle="modal" data-target="#modal-machine-configuration">Machine Table Configrations</button>
                 </div>
             </div>
         </div>
@@ -451,7 +427,7 @@
             <!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
-        @php $groupData = json_decode(json_encode($groupData), true); @endphp
+        @php $groupData = json_decode(json_encode($groups), true); @endphp
         <div class="modal fade" id="group-modal" aria-modal="true" role="dialog">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -573,16 +549,53 @@
             <div class="card-body">
 
                 <div class="row" id="data-card">
+                        @isset($groups['groupData'][0])
+                            <div class="col-sm-3">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">{{$groups['groupData'][0]->name}}</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control groupData" id="select_group_options" style="width: 100%;">
+                                            <option value="">Select</option>
+                                            @foreach($groups['groupData'] as $group)
+                                                <option value="{{$group->id}}">{{$group->option_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Tables</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control tableData" id="select_group_table" style="width: 100%;">
+                                            <option value="">Select</option>
+                                            @foreach($tables as $table)
+                                            <option value="{{$table['TABLE_NAME']}}">{{$table['TABLE_NAME']}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        @endisset
+                        
+                        <div class="col-sm-6">
+                            <div class="btn-group float-right" style="width: 160px;height: 40px;font-size: 18px;">
+                                <input type="checkbox" id="modeSelectorColumns" checked data-toggle="toggle" data-on="Group Columns" data-off="Default Columns" data-onstyle="success" data-offstyle="info">
+                            </div>
+                        </div>
                 
                     <div class="col-12 col-sm-12">
                     
                         <form class="form-horizontal">
                             <div class="card-body" id="spin_container">
                                 <div class="row hideData">
+                                    <div class="col-sm-6">
                                     <div class="alert alert-warning alert-dismissible">
                                         <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
                                         No Confugurations for the Sub Group Found!
                                       </div>
+                                    </div>
                                 </div>
                                 <div class="showData" style="display: none;">
                                     <div class="row">

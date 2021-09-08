@@ -25,3 +25,4 @@
 <link rel="stylesheet" href="{{asset('template/plugins/summernote/summernote-bs4.min.css')}}">
 <link rel="stylesheet" href="{{asset('template/plugins/spin-js/spin-css.css')}}">
 <link rel="stylesheet" href="{{asset('template/plugins/toastr/toastr.min.css')}}">
+<link rel="stylesheet" href="{{asset('../css/app.css')}}">
