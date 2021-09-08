@@ -579,6 +579,8 @@
                             </div>
                         @endisset
                         
+
+                        
                         <div class="col-sm-6">
                             <div class="btn-group float-right" style="width: 160px;height: 40px;font-size: 18px;">
                                 <input type="checkbox" id="modeSelectorColumns" checked data-toggle="toggle" data-on="Group Columns" data-off="Default Columns" data-onstyle="success" data-offstyle="info">
