@@ -27,6 +27,7 @@ $(document).ready( function(){
     // Edit Local Storage Remove
     localStorage.removeItem('edit-measurement-tile');
     localStorage.removeItem('edit-i-value');
+    // localStorage.removeItem('dashboard_tile_data');
     // --end-->
     
 
@@ -54,6 +55,7 @@ $(document).ready( function(){
                 // Edit Local Storage Remove
                 localStorage.removeItem('edit-measurement-tile');
                 localStorage.removeItem('edit-i-value');
+                // localStorage.removeItem('dashboard_tile_data');
                 // --end-->
                 break;
             
@@ -390,8 +392,16 @@ $(document).ready( function(){
 
     //<--15-8-2021--
     $(document).on('click','#save_table_btn', function(){
-        var type = $(this).attr('data-type');
-        saveTableFormat(type);
+        var ar = localStorage.getItem('dashboard_tile_data');
+        ar = JSON.parse(ar);
+        if(ar['type_data_tile'] == 'overall_count')
+        {
+            saveOverallCountTile();
+        }
+        else{
+            var type = $(this).attr('data-type');
+            saveTableFormat(type);
+        }
     })
     //-end-->
     
@@ -475,79 +485,99 @@ $(document).ready( function(){
     $(document).on('click','#modal_open_button', function(){
         var edit_id = localStorage.getItem('edit-measurement-tile');
         var tile_edit_value = $(this).attr('tile-edit');
-        if(tile_edit_value == 'false'){
-        $('#save_table_btn').removeClass('display-none');
-        $('#update_table_btn_measurement').addClass('display-none');
-        var tableLength = $('#mesurement_select_table_entries tr').length;
-        if(parseInt(tableLength) <= 5){
+        var ar = localStorage.getItem('dashboard_tile_data');
+        dashboard_tile_data = JSON.parse(ar);
+        var type_data_tile = dashboard_tile_data['type_data_tile'];
+        var countValue = $('#overall_count').val();
+      
+        if(tile_edit_value == 'false' && type_data_tile == "overall_count"){
+            $('#save_table_btn').removeClass('display-none');
+            $('#update_table_btn_measurement').addClass('display-none');
             $('.bd-example-modal-lg').modal('show');
-            // <----20-8--2021---
+            // <----08-9--2021---
             var type = "Measurement";
             generateHtmlMeasurementTiles(type);
+
             // --end-->
+            var record_name = $('#mst_id_hidden').attr('data-name');
+            var count_html = "<h4 class='text-muted record-name-overall-count'>"+record_name+"</h4>";
+            count_html += "<h4 class='text-muted text-overall-count'>"+countValue+"</h4>";
+            
             var last_div_index = $('#total_records').val();
-            var table_html = $('#measurement_record_tb').html();
-            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table').html(table_html);
-            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table thead ,.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody tr').removeAttr('class');
-            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody').removeAttr('id');
+            $('.measurement_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
+            $('.measurement_html_modal_'+last_div_index+' .save_table_div_show_table').html(count_html);
 
-            //<--Height width Set --
-            var measurement_preview_data =  localStorage.getItem('measurement_preview_data');
-            // if(measurement_preview_data != null && measurement_preview_data != undefined)
-            // {   
-            //     measurement_preview_data = JSON.parse(measurement_preview_data);
-            //     height =  measurement_preview_data[0]['height'];
-            //     width = measurement_preview_data[0]['width'];
-            //     if(height <=145){
-            //         var  height_input = "";
-            //     }
-            //     else{
-            //         var  height_input = parseInt(height) - 145;
-                   
-            //     }
+            //<--Edit and Delete Button
+            $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div img').removeClass('edit_btn_tile');
+            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div img').removeClass('id_val delete_btn_tile');
+            
 
-            //     if(width <= 285)
-            //     {
-            //         var  width_input = "";
-            //     }
-            //     else{
-            //         var  width_input =  parseInt(width) - 285;
-            //     }
-                
-            //     $('#modal-height-input-measurement').val(height_input);
-            //     $('#measurement_count_tile_modal').css('height',height);
-            //     $('#modal-width-input-measurement').val(width_input);
-            //     $('#measurement_count_tile_modal').css('width',width);
+            $('#modal-height-input-measurement').attr('disabled',true);
+            $('#modal-width-input-measurement').attr('disabled',true);
 
-            //     //console.log(JSON.parse(measurement_preview_data['height']));
-            // }
-            //--end-->
-
-            // <---23-8-2021---
+            $('#modal-height-input-measurement').val('1');
+            $('#modal-width-input-measurement').val('1');
             $('#modal-height-input-measurement-hidden').val(145);
-            $('#modal-height-input-measurement').val('');
             $('#modal-width-input-measurement-hidden').val(285);
-            $('#modal-width-input-measurement').val('');
-            // --end-->
+
+            setTimeout(()=>{
+                $('.measurement_html_modal_'+last_div_index+' .count_result_tile').text('Count');
+            },1100);
 
         }
-        else{
-            alert('Records are Always be less than 5');
-        }
-        }
-        else{
-            $('#save_table_btn').addClass('display-none');
-            $('#update_table_btn_measurement').removeClass('display-none');
-            $('.bd-example-modal-lg').modal('show');
-            var type = "Measurement";
-            edit_tile(type,edit_id);
-            var last_div_index = $('#total_records').val();
-            var table_html = $('#measurement_record_tb').html();
-            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table').html(table_html);
-            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table thead ,.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody tr').removeAttr('class');
-            $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody').removeAttr('id');
+        else if(tile_edit_value == 'false' && type_data_tile == 'table'){
+            $('#save_table_btn').removeClass('display-none');
+            $('#update_table_btn_measurement').addClass('display-none');
+            var tableLength = $('#mesurement_select_table_entries tr').length;
+            if(parseInt(tableLength) <= 5){
+                $('.bd-example-modal-lg').modal('show');
+                // <----20-8--2021---
+                var type = "Measurement";
+                generateHtmlMeasurementTiles(type);
+                // --end-->
+                var last_div_index = $('#total_records').val();
+                var table_html = $('#measurement_record_tb').html();
+                $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table').html(table_html);
+                $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table thead ,.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody tr').removeAttr('class');
+                $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody').removeAttr('id');
 
-           
+                // <---23-8-2021---
+                $('#modal-height-input-measurement-hidden').val(145);
+                $('#modal-height-input-measurement').val('');
+                $('#modal-width-input-measurement-hidden').val(285);
+                $('#modal-width-input-measurement').val('');
+                // --end-->
+
+                $('#modal-height-input-measurement').attr('disabled',false);
+                $('#modal-width-input-measurement').attr('disabled',false);
+
+            }
+            else{
+                alert('Records are Always be less than 5');
+            }
+        }
+        else{
+            if(tile_edit_value == 'true' && type_data_tile == 'table'){
+                var tableLength = $('#mesurement_select_table_entries tr').length;
+                if(parseInt(tableLength) <= 5){
+                    $('#save_table_btn').addClass('display-none');
+                    $('#update_table_btn_measurement').removeClass('display-none');
+                    $('.bd-example-modal-lg').modal('show');
+                    var type = "Measurement";
+                    edit_tile(type,edit_id);
+                    var last_div_index = $('#total_records').val();
+                    var table_html = $('#measurement_record_tb').html();
+                    $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table').html(table_html);
+                    $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table thead ,.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody tr').removeAttr('class');
+                    $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table tbody').removeAttr('id');
+
+                    $('#modal-height-input-measurement').attr('disabled',false);
+                    $('#modal-width-input-measurement').attr('disabled',false);
+                }
+                else{
+                    alert('Records are Always be less than 5');
+                }
+            }
         }
 
     })
@@ -598,7 +628,7 @@ $(document).ready( function(){
         e.preventDefault();
         var record_type_of_tile =  $('#record_type_of_tile').val();
         var type_data_tile = $('#type_data_tile').val();
-        if(record_type_of_tile == "measurement" && type_data_tile == "table"){
+        if(record_type_of_tile == "measurement" && (type_data_tile == "table" || type_data_tile == 'overall_count') ){
             $('#tables_sidebar').click();
             $('#measurement_sidebar_option').click();
             $('#dashboard_tile_modal').modal('hide');
@@ -693,6 +723,8 @@ $(document).ready( function(){
     $(document).on('click','#dashboard_add_tile', function(){
         $('#save_and_proceed_btn_dashboard').val('Save & Proceed');
         $('#save_and_proceed_btn_dashboard').attr('data-edit','false');
+
+        $("#type_data_tile").removeAttr('disabled');
     });
     // --end-->
 
@@ -754,6 +786,33 @@ $(document).ready( function(){
        chartRecordFilter(); 
     });
 
+    // <---7-9-2021----
+    $(document).on('change','#measurement_type', function(){
+        var val = $(this).val();
+        if(val == 'manually')
+        {
+            getNumberRecordsMesurement();
+        }
+        else{
+            var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
+            $('#mesurement_select_table_entries').html(tr);
+        }
+    })
+
+
+    // $(document).on('click','#dashboard_drag_btn', function(){
+    //     $('#dashboard_count_div_tile .stretch-card').draggable();
+    // })
+
+    // $(document).on('click','#reset_drag_btn', function(){
+    //     getTableFormatDashboard();
+    //     $(document).trigger('click');
+    //     $('#dashboard_count_div_tile .stretch-card').draggable();
+    // })
+    // --end-->
+
+    
+    
     // <---12-8-2021----
     // $('#mesurement_count_div').hover(
     //     function(){

@@ -40,6 +40,10 @@
           <!-- 20-8-2021-- -->
           <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
 
+          <!-- 7-9-2021- -->
+          <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
+          <input type="button" class="btn btn-success btn-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
+          <!-- --end-- -->
           <div class="modal fade" id="dashboard_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
@@ -73,6 +77,7 @@
                       <select class="form-control form-control-sm text-dark" id="type_data_tile">
                           <option value="table">Table</option>
                           <option value="chart">Chart</option>
+                          <option value="overall_count">Overall Count</option>
                       </select>
                     </div>
 

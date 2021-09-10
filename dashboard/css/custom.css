@@ -286,3 +286,36 @@
  #chart_records{
     text-transform: capitalize;;
  }
+
+ #dashboard_tile_modal_chart .modal-body .row .form-group{
+    cursor: pointer !important;
+ }
+ 
+ #dashboard_tile_modal_chart .modal-body .row .dashboard_chart_tiles{
+    cursor: pointer;   
+ }
+
+ .text-overall-count{
+     /* padding: 27px 0px 27px 0px; */
+ }
+
+ .record-name-overall-count{
+    margin-top: 29px;
+    font-size: x-large;
+ }
+
+ .hide_table_preview .text-overall-count,.hide_table_preview .record-name-overall-count{
+    display: none;
+}
+
+
+.hide_table_main .save_table_div_show_table h4{
+    display: none;
+}
+#dashboard_count_div_tile .record-name-overall-count {
+    margin: 14px 0px 5px -53px;
+}
+
+#dashboard_count_div_tile .text-overall-count {
+    margin-left: -51px;
+}

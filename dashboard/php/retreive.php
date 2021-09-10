@@ -7,6 +7,7 @@ require '..\..\/php/DbOperations.php';
 
 $nameDB = $_POST['nameDB'];
 // $nameDB = 'g000_demo';
+session_start();
 $conn = connectToDB($nameDB);
 
 class dashboardController {
@@ -552,7 +553,8 @@ class dashboardController {
     function getTableFormatDashboard(){
         try{
             global $conn;
-            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' ";
+            $username = $_SESSION['username']; 
+            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             if($dataResult != '' && count($dataResult) > 0){
 
@@ -587,14 +589,17 @@ class dashboardController {
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
                 }
                 else{
-                    $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
-                    $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
-                    $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-                    $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
-                    $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+                    if($dataResult[0]['tile_data_type'] == 'table'){
+                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                        $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
+                        $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+                        $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
+                        $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
 
-                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                        echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                    }
                 }
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
                 die;
             }else{
                 $tr = "<thead>";
@@ -736,9 +741,10 @@ class dashboardController {
     public function generateHtmlMeasurementTiles(){
         try{
             global $conn;
+            $username = $_SESSION['username']; 
             $measurement_title =  $_POST['measurement_title'];
             $type =  $_POST['type'];
-            $getResult =  "SELECT * from tableFormat Where tile_data_type='table' ";
+            $getResult =  "SELECT * from tableFormat Where (tile_data_type='table' OR tile_data_type='overall_count')  AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
@@ -845,10 +851,11 @@ class dashboardController {
     public function getChartDataDashboard(){
         try{
             global $conn;
+            $username = $_SESSION['username']; 
             $measurement_title  = $_POST['measurement_title'];
             // $measurement_title  = "Test Chart";
 
-            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart'";
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
@@ -879,8 +886,8 @@ class dashboardController {
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
-                                                    <img src='images/edit.png' class='edit_val_chart edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px;'>
-                                                    <img src='images/delete.png' class='id_val_chart delete_btn_tile_chart' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
                                                 </div>
                                             </div>
                                             
@@ -914,8 +921,8 @@ class dashboardController {
                                             </div>  
                                             <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
-                                                <img src='images/edit.png' class='edit_val_chart edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px'>
-                                                <img src='images/delete.png' class='id_val_chart delete_btn_tile_chart' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
                                             </div>
                                         </div>
                                         
@@ -942,32 +949,16 @@ class dashboardController {
 
     }
 
-    // <---27-8-2021--
-    public function deleteTile(){
-        try{
-            global $conn;
-            $id = $_REQUEST['id'];
-            $deleteQuery = "DELETE FROM tableFormat where id = $id ";
-            $dataResult = queryDB($conn, $deleteQuery, "write");
-             
-            if($dataResult){
-                return array('status'=>200,'msg'=>"Successful Deleted");
-            }
-            die;
-        }
-        catch(Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
-    }
-    // --end-->
+    
 
     // /<---Edit tile Functionality--
     public function getEditTiles(){
         try{
             global $conn;
+            $username = $_SESSION['username']; 
             $id = $_REQUEST['id'];
             $type = $_REQUEST['type'];
-            $getResult =  "SELECT * from tableFormat ";
+            $getResult =  "SELECT * from tableFormat where username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
@@ -1030,8 +1021,9 @@ class dashboardController {
     public function getEditDataDashboard(){
         try{
             global $conn;
+            $username = $_SESSION['username']; 
             $id = $_REQUEST['id'];
-            $selectQuery = "SELECT * from tableFormat where id ='$id' ";
+            $selectQuery = "SELECT * from tableFormat where id ='$id' AND username = '$username' ";
             $records['data'] = queryDB($conn, $selectQuery, "read"); 
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE); 
             die;
@@ -1858,11 +1850,145 @@ class dashboardController {
 
 
         global $conn;
+        $username = $_SESSION['username']; 
         $id=$_POST['id'];
-        $getResult =  "SELECT * from tableFormat where id=".$id;
+        $getResult =  "SELECT * from tableFormat where id='$id' AND username = '$username' ";
 //        print_r($getResult);die;
         $dataResult = queryDB($conn, $getResult, "read");
         return array('data'=>$dataResult[0]);
+    }
+
+
+    // <---09-8-2021---
+    public function getTileClickOverAllCount(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $mst_id = $_REQUEST['mst_id'];
+            $queryTotalSum = "SELECT sum(cast(t2.val as int)) as total_value from produktionsAnlagenConfig  as t1 ";
+            $queryTotalSum .= "INNER JOIN masseneingabeSucheIMw as t2 ";
+            $queryTotalSum .= "ON t1.mst_ID = t2.mst_ID ";
+            $queryTotalSum .= "Where t1.mst_ID = $mst_id ";
+            $totalSum = queryDB($conn, $queryTotalSum, "read");
+            $totalSum = $totalSum[0]['total_value'] != null ?  $totalSum[0]['total_value'] : '';
+
+
+            $queryUnit = "SELECT unt_ID,mstIMw FROM produktionsAnlagenConfig where mst_ID = $mst_id ";
+            $resultUnit = queryDB($conn, $queryUnit, "read");
+            // echo json_encode($resultUnit); die;
+            // Units Checks
+            $unit = '';
+            if($resultUnit != null){
+                if($resultUnit[0]['unt_ID'] == "1"){
+                    $unit = "Hrs.";
+                }
+                else if($resultUnit[0]['unt_ID'] == "2"){
+                    $unit = "kWh";
+                }
+                else if($resultUnit[0]['unt_ID'] == "3"){
+                    $unit = "m³";
+                }
+                else if($resultUnit[0]['unt_ID'] == "4"){
+
+                    $unit = "l";
+                }
+                else if($resultUnit[0]['unt_ID'] == "5"){
+                    $unit = "kg";
+                }
+            }
+
+            $total_name_merge='';
+            if($totalSum != '' && $resultUnit != null){
+                $total_name_merge = $totalSum.' '.$unit;
+            }
+            return $total_name_merge;
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    // --end-->
+
+    public function getTableDashboardData(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $username = $_SESSION['username']; 
+            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' AND username = '$username' AND id = $id ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            if($dataResult != '' && count($dataResult) > 0){
+                $dataMeasurement = '';
+                if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == ''){
+                    //Seacrh Record 
+                    // echo json_encode($dataResult[0]['query_data_records']); die;
+                    $firstPostion =  strpos($dataResult[0]['query_data_records'],'%');
+                    $lastPostion = strripos($dataResult[0]['query_data_records'],'%');
+                    $subStr = "%";
+                    $attachment = "$";
+                    if($firstPostion != '' && $lastPostion != '')
+                    {
+                        // $firstPostionQuery = str_replace($subStr, $attachment.$subStr, $dataResult[0]['query_data_records']);
+                        //$firstPostionQuery = str_replace($dataResult[0]['query_data_records'],$attachment, $firstPostion,0);
+                        // $firstPostionQuery = substr_replace($dataResult[0]['query_data_records'],$attachment, $lastPostion,0);
+                        $firstPostionQuery= substr_replace($dataResult[0]['query_data_records'],$attachment,$firstPostion,1);
+                        // $firstPostionQuery = str_replace($subStr, $attachment, $dataResult[0]['query_data_records'],0);
+                        $firstPostionQuery=str_replace('%',"%'", $firstPostionQuery);
+                        $firstPostionQuery=str_replace('$',"'%", $firstPostionQuery);
+                        $dataMeasurement = queryDB($conn, $firstPostionQuery, "read");
+                    }
+                    else{
+                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                    }
+                    $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement);
+                    $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                }
+                else{
+                    if($dataResult[0]['tile_data_type'] == 'table'){
+                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                        $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
+                        $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+                        $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
+                        $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+
+                        echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                    }
+                }
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                die;
+            }else{
+                $tr = "<thead>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Created Date</th>";
+                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Status</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+                $tr .= "<tbody><tr><td colspan='5' class='text-center'>No Data</td></tr></tbody>";
+                $records['dashboardMeasurementHtml'] = $tr;
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+            }
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+
+    public function getChartRecordFilter(){
+        try{
+            global $conn;
+            echo "String";
+            die;
+
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
     }
   
 }

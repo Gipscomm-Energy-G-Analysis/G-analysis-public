@@ -9,6 +9,15 @@
                   <h4 class="card-title">Messstellen</h4>
                   
                   <div class="row">
+
+                    <div class="form-group col-md-3">
+                      <label for="measurement_type">Measurement Type</label>
+                      <select class="form-control form-control-sm text-dark" id="measurement_type">
+                        <option value="automatic">Read in Automatically</option>
+                        <option value="manually">Entered Manually</option>
+                        <!-- <option value="calculated">Calculated</option> -->
+                      </select>
+                    </div>
                     
                     <div class="form-group col-md-3">
                       <label for="measurement_time_interval">Select Time Interval</label>
@@ -68,6 +77,8 @@
                       </table>
                     </div>
 
+                    <input type="hidden" id="mst_id_hidden">
+                    <input type="hidden" id="overall_count">
                   </div>
                   <!-- <p class="card-description">
                     Add class <code>.table-striped</code>
@@ -79,7 +90,7 @@
 
                   <!-- Modal -->
                  <!-- Large modal -->
-                  <button type="button" style="display: none" class="btn btn-primary" id="modal_open_button" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
+                  <!-- <button type="button" style="display: none" class="btn btn-primary" id="modal_open_button" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button> -->
 
                   <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg max-width-modal">

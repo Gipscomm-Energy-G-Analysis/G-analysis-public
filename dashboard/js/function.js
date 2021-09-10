@@ -37,6 +37,16 @@ function countDashboard(){
 
 //Selected Number of Records Mesurement
 function getNumberRecordsMesurement(){
+    // <---7-9-2021--
+    var measurement_type = $('#measurement_type').val();
+    // console.log(measurement_type);
+    if(measurement_type != 'manually'){
+      var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
+      $('#mesurement_select_table_entries').html(tr);
+      $('#pagination_html').html('');
+      return false;
+    }
+    // --end-->
     var number_record_local_val = localStorage.getItem('number_record_measurement');
     if(number_record_local_val != undefined && number_record_local_val != null){
         $('#measurement_total_number_record').val(number_record_local_val);
@@ -111,6 +121,21 @@ function getNumberRecordsMesurement(){
               $('#modal_open_button').attr('tile-edit','false');
             }
             // --end-->
+
+            // <---7-9-2021----
+            setTimeout(()=>{
+              var type_data = localStorage.getItem('dashboard_tile_data');
+              type_data = JSON.parse(type_data);
+              if(type_data['type_data_tile'] == 'overall_count')
+              {
+                $('#modal_open_button').hide();
+              }
+              else{
+                $('#modal_open_button').show();
+              }
+            },500)
+            
+            // ---end--->
           }
       });
     }
@@ -118,6 +143,16 @@ function getNumberRecordsMesurement(){
 
 //Get Number Records Mesurement Pagination
 function getNumberRecordsMesurementPagination(page_val,selected_number_record_measurement = 'false'){
+    // <---7-9-2021--
+    var measurement_type = $('#measurement_type').val();
+    // console.log(measurement_type);
+    if(measurement_type != 'manually'){
+      var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
+      $('#mesurement_select_table_entries').html(tr);
+      $('#pagination_html').html('');
+      return false;
+    }
+    // --end-->
     var number_records = $('#measurement_number_record').val();
     var time_interval = $('#measurement_time_interval').val();
     var records_order_by_val = $('#measurement_records_order_by').val();
@@ -168,6 +203,18 @@ function getNumberRecordsMesurementPagination(page_val,selected_number_record_me
               $('#modal_open_button').val('Save & Preview');
               $('#modal_open_button').attr('tile-edit','false');
             }
+
+            // <---7-9-2021----
+            var type_data = localStorage.getItem('dashboard_tile_data');
+            type_data = JSON.parse(type_data);
+            if(type_data['type_data_tile'] == 'overall_count')
+            {
+              $('#modal_open_button').hide();
+            }
+            else{
+              $('#modal_open_button').show();
+            }
+            // ---end--->
           }
       });
     }
@@ -175,6 +222,24 @@ function getNumberRecordsMesurementPagination(page_val,selected_number_record_me
 }
 
 function rowClickMeasurementTableData(mst_id,data_type){
+  // <---7-9-2021--
+  var measurement_type = $('#measurement_type').val();
+  // console.log(measurement_type);
+  if(measurement_type != 'manually'){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
+    $('#mesurement_select_table_entries').html(tr);
+    $('#pagination_html').html('');
+    return false;
+  }
+  $('#mst_id_hidden').val(mst_id);
+  
+  // $('#measurement_record_table table tbody tr').children('td:eq(3)').text();
+  var total_count = $("tr[data-mst='"+mst_id+"']").children('td:eq(3)').text();
+  $('#overall_count').val(total_count);
+
+  var record_name = $("tr[data-mst='"+mst_id+"']").children('td:eq(0)').text();
+  $('#mst_id_hidden').attr('data-name',record_name);
+  // --end-->
   var number_records = $('#measurement_number_record').val();  
   var total_number_records = $('#measurement_total_number_record').val();
 
@@ -231,12 +296,28 @@ function rowClickMeasurementTableData(mst_id,data_type){
           $('#modal_open_button').val('Save & Preview');
           $('#modal_open_button').attr('tile-edit','false');
         }
+
+        // <---7-9-2021--
+        setTimeout(()=>{
+          $('#modal_open_button').show();
+        },500)
+        // --end-->
       }
     });
   }
 }
 
 function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,selected_number_record_measurement = 'false'){
+  // <---7-9-2021--
+  var measurement_type = $('#measurement_type').val();
+  // console.log(measurement_type);
+  if(measurement_type != 'manually'){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
+    $('#mesurement_select_table_entries').html(tr);
+    $('#pagination_html').html('');
+    return false;
+  }
+  // --end--> 
   var number_records = $('#measurement_number_record').val();
   var total_number_records = $('#measurement_total_number_record').val(); 
   var records_order_by_val = $('#measurement_records_order_by').val(); 
@@ -285,6 +366,10 @@ function rowClickMeasurementPaginationTableData(mst_id,data_type,page_value,sele
           $('#modal_open_button').val('Save & Preview');
           $('#modal_open_button').attr('tile-edit','false');
         }
+
+         // <---7-9-2021--
+         $('#modal_open_button').show();
+         // --end-->
       }
     });
   }
@@ -436,6 +521,8 @@ function getTableFormatDashboard(){
         });
         $('#dashboard_count_div_tile').html(arHtml);
         $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
+
+        $('#dashboard_count_div_tile .stretch-card').draggable(); //<---8-9-2021---
         // $('#dashboard_count_div_tile .count_result_tile').text(a['total_record']+' Records');
         // $('#dashboard_count_div_tile .action-modal-button-div').removeClass('col-md-12');
                 // $('#dashboard_count_div_tile .stretch-card').css('height',145);
@@ -1064,7 +1151,15 @@ function getDimentions(id) {
             $('.'+id+'.tiles-click').html(tile_html);
             dashboardChart();
           }
+          else if(type_data_val == "overall_count"){
+            var mst_id = a['data']['mst_id'];
+            getTileClickOverAllCount(id,mst_id);
+          }
+          else if(type_data_val == "table"){
+            getTableDashboardData(id);
+          }
           // --show-->
+
         }
     });
 }
@@ -1072,7 +1167,7 @@ function getDimentions(id) {
 function deleteTile(id_val){
   $.ajax({
     type : "POST",
-    url : 'php/retreive.php',
+    url : 'php/operations.php',
     async: false,
     dataType: 'json',
     data: {
@@ -1227,6 +1322,7 @@ function getEditDataDashboard(id,i_value){
         localStorage.setItem('edit-i-value',i_value);
         $('#save_and_proceed_btn_dashboard').val('Update & Proceed');
         $('#save_and_proceed_btn_dashboard').attr('data-edit','true');
+        $("#type_data_tile").attr('disabled','disabled');
       });
     }
   });
@@ -1365,13 +1461,176 @@ function getChartTimeIntervalRecord(){
 // <----6-9-2021---
 function chartRecordFilter(){
   var filterVal = $('#chart_record_filter').val();
-  var measuremetRecordFilter = $('#chart_records').val();
-  if(filterVal != '' && measuremetRecordFilter != ''){
+  var mst_id = $('#chart_records').val();
+  if(filterVal != '' && mst_id != ''){
     var type = $('#chart_records option:selected').attr('type');
-    
+    $.ajax({
+      type: "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "getChartRecordFilter",
+          nameDB: $("#nameDashboardDB").val(),
+          mst_id:mst_id,
+          type : type
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+
+        // var areaData = {
+        //   labels: ["2013", "2014", "2015", "2016", "2017"],
+        //   datasets: [{
+        //     label: '# of Votes',
+        //     data: [12, 19, 3, 5, 2, 3],
+        //     backgroundColor: [
+        //       'rgba(255, 99, 132, 0.2)',
+        //       'rgba(54, 162, 235, 0.2)',
+        //       'rgba(255, 206, 86, 0.2)',
+        //       'rgba(75, 192, 192, 0.2)',
+        //       'rgba(153, 102, 255, 0.2)',
+        //       'rgba(255, 159, 64, 0.2)'
+        //     ],
+        //     borderColor: [
+        //       'rgba(255,99,132,1)',
+        //       'rgba(54, 162, 235, 1)',
+        //       'rgba(255, 206, 86, 1)',
+        //       'rgba(75, 192, 192, 1)',
+        //       'rgba(153, 102, 255, 1)',
+        //       'rgba(255, 159, 64, 1)'
+        //     ],
+        //     borderWidth: 1,
+        //     fill: true, // 3: no fill
+        //   }]
+        // };
+
+        // var areaOptions = {
+        //   plugins: {
+        //     filler: {
+        //       propagate: true
+        //     }
+        //   }
+        // }
+
+        // if ($("#areaChart").length) {
+        //   var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+        //   var areaChart = new Chart(areaChartCanvas, {
+        //     type: 'line',
+        //     data: areaData,
+        //     options: areaOptions
+        //   });
+        // }
+      
+       
+      }
+    });
+
   }
 }
 // ---end-->
+
+// <---8-9-2021----
+function saveOverallCountTile(){
+  var measuremnt_table_height = $('#modal-height-input-measurement-hidden').val();
+  var measurement_table_width = $('#modal-width-input-measurement-hidden').val();
+  var input_height = $('#modal-height-input-measurement').val(); 
+  var input_width = $('#modal-width-input-measurement').val();
+  var mst_ID = $('#mst_id_hidden').val();
+  
+  var last_index_tile = $('#total_records').val();
+  var tile_html = $('.measurement_html_modal_'+last_index_tile).html();
+  $('#total_records').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+    // --end->
+// --end-->
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "saveOverallCountTile",
+        nameDB: $("#nameDashboardDB").val(),
+        title : tile_title,
+        tile_html : tile_html,
+        height: measuremnt_table_height,
+        width : measurement_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile,
+        mst_ID : mst_ID
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#measurement_modal_loader_div').show();
+      $('.bd-example-modal-lg .modal-content').css('opacity','0.8');
+      
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#measurement_modal_loader_div').hide();
+        $('.bd-example-modal-lg .modal-content').css('opacity','1');
+        $('.bd-example-modal-lg').modal('hide');
+      }, 500);
+    }
+  });
+}
+// --end-->
+
+// <---09-8-2021--
+function getTileClickOverAllCount(id,mst_id){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getTileClickOverAllCount",
+        nameDB: $("#nameDashboardDB").val(),
+        id:id,
+        mst_id : mst_id
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('.'+id+'.tiles-click .save_table_div_show_table .text-overall-count').text(a);
+    }
+  });
+}
+// ---end-->
+
+function getTableDashboardData(id){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getTableDashboardData",
+        nameDB: $("#nameDashboardDB").val(),
+        id:id,
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('.'+id+'.tiles-click .save_table_div_show_table .table').html('');
+      $('.'+id+'.tiles-click .save_table_div_show_table .table').html(a['dashboardMeasurementHtml']);
+    }
+  });
+}
 
 
 // ---end-->
