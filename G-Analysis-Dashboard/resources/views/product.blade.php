@@ -254,12 +254,12 @@
                                             @endisset
                                         </div>
                                         <div class="popup">
-                                            <div class="add_group col-sm-3" data-toggle="modal" data-target="#modal-default">
+                                            <!-- <div class="add_group col-sm-3" data-toggle="modal" data-target="#modal-default">
                                                 <button type="button" class="btn btn-block btn-primary" id="add_more_field">Add Custom Fields</button>
-                                            </div>
-                                            <div class="add_group col-sm-3" data-toggle="modal" data-target="#group-modal" style="margin-right:5px;">
+                                            </div> -->
+                                            <!-- <div class="add_group col-sm-3" data-toggle="modal" data-target="#group-modal" style="margin-right:5px;">
                                                 <button type="button" class="btn btn-block btn-primary">Add Group Options</button>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -380,52 +380,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="modal-default">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add Custom Fields</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <label for="add_label_field">Enter Label Name</label>
-                        <input type="text" class="form-control" id="add_label_field">
-                        <label for="select_table">Select Table</label>
-                        <select class="form-control select_table" onchange="select_table()" id="select_table">
-                            <option value="">Select</option>
-                            <option value="data_value_15m">data_value_15m</option>
-                            <option value="data_value_1m">data_value_1m</option>
-                            <option value="data_value_1s">data_value_1s</option>
-                            <option value="spiesnet">spiesnet</option>
-                            <option value="spiesnetFAs">spiesnetFAs</option>
-                        </select>
-                        <label for="select_column">Select Column</label>
-                        <select class="form-control select_column" id="select_column">
-                            <option value="">Select</option>
-                        </select>
-
-                        <label for="select_column">Select Primary key</label>
-                        <select class="form-control select_primary_column" id="select_primary_column">
-                            <option value="">Select</option>
-                        </select>
-
-                        <label for="select_column">Select Foreign key</label>
-                        <select class="form-control select_foreign_column" id="select_foreign_column">
-                            <option value="">Select</option>
-                        </select>
-
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="save_field">Save changes</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
+        
         <!-- /.modal -->
         @php $groupData = json_decode(json_encode($groups), true); @endphp
         <div class="modal fade" id="group-modal" aria-modal="true" role="dialog">
@@ -550,7 +505,7 @@
 
                 <div class="row" id="data-card">
                         @isset($groups['groupData'][0])
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 select_group_options_div">
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">{{$groups['groupData'][0]->name}}</label>
                                     <div class="col-sm-9">
@@ -564,7 +519,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-3 select_group_options_div">
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Tables</label>
                                     <div class="col-sm-9">
@@ -577,21 +532,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6 select_group_options_div_alt" style="display: none;">
+                                
+                            </div>
+                            
                         @endisset
                         
 
                         
                         <div class="col-sm-6">
-                            <div class="btn-group float-right" style="width: 160px;height: 40px;font-size: 18px;">
-                                <input type="checkbox" id="modeSelectorColumns" checked data-toggle="toggle" data-on="Group Columns" data-off="Default Columns" data-onstyle="success" data-offstyle="info">
+                            <div class="col-sm-6">
+                                <div class="btn-group float-right" style="width: 160px;height: 40px;font-size: 18px;">
+                                    <input type="checkbox" id="modeSelectorColumns" checked data-toggle="toggle" data-on="Group Columns" data-off="Default Columns" data-onstyle="success" data-offstyle="info">
+                                </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="add_group select_group_options_div_alt" data-toggle="modal" data-target="#group-modal" style="margin-right:5px;display: none;">
+                                    <button type="button" class="btn btn-block btn-primary">Add Group Options</button>
+                                </div>
+                            </div>
+                            
+                            
+                            
                         </div>
                 
                     <div class="col-12 col-sm-12">
                     
-                        <form class="form-horizontal">
+                        <form class="form-horizontal select_group_options_div">
                             <div class="card-body" id="spin_container">
-                                <div class="row hideData">
+                                <div class="row hideData" style="margin-top: 20px;">
                                     <div class="col-sm-6">
                                     <div class="alert alert-warning alert-dismissible">
                                         <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
@@ -635,6 +604,57 @@
                                 </div>
                             </div>
                         </form>
+
+                        <form class="form-horizontal coustom-column-div" style="display: none;">
+                            <div class="card-body" id="spin_container">
+                                <div class="showData">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-sm-offset-3" style="margin-left: 25%;">
+                                            <div class="col-sm-12">
+                                                <label for="add_label_field">Enter Label Name</label>
+                                                <input type="text" class="form-control" id="add_label_field">
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label for="select_table">Select Table</label>
+                                                <select class="form-control select_table" id="select_table">
+                                                    <option value="">Select</option>
+                                                    <option value="data_value_15m">data_value_15m</option>
+                                                    <option value="data_value_1m">data_value_1m</option>
+                                                    <option value="data_value_1s">data_value_1s</option>
+                                                    <option value="spiesnet">spiesnet</option>
+                                                    <option value="spiesnetFAs">spiesnetFAs</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label for="select_column">Select Column</label>
+                                                <select class="form-control select_column" id="select_column">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label for="select_column">Select Primary key</label>
+                                                <select class="form-control select_primary_column" id="select_primary_column">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-sm-12">
+                                                <label for="select_column">Select Foreign key</label>
+                                                <select class="form-control select_foreign_column" id="select_foreign_column">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                            <div class="popup">
+                                                <div class="col-sm-3" style="margin-right:5px;">
+                                                    <button type="button" class="btn btn-primary" id="save_field">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>

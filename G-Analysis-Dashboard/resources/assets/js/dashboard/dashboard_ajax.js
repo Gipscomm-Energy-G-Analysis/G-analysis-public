@@ -287,7 +287,13 @@ function select_table() {
     });
 }
 
+$(document).on('change','#select_table', function() {
+    select_table();
+})
+
+
 $("#save_field").on("click", function(e) {
+    console.log('here');
     let container = document.getElementById('dynamic_subgroup_field');
     spinner.spin(container);
     let label  = document.getElementById("add_label_field").value;
@@ -426,6 +432,4 @@ $(document).on('click', '.btn_delete', function() {
 });
 
 
-$(document).on('click', '#add_more_field', function() {
-    getPrimaryKey();
-});
+getPrimaryKey();

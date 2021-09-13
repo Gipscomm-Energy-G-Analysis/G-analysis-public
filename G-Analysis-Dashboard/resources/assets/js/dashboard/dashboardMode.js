@@ -9,6 +9,19 @@ $(document).on('change', '#modeSelector', function(){
     }
 });
 
+
+$(document).on('change', '#modeSelectorColumns', function(){
+    if ($(this).prop('checked')) {   
+        $('.select_group_options_div').show();
+        $('.select_group_options_div_alt').hide();
+        $('.coustom-column-div').hide();
+    } else {
+        $('.select_group_options_div').hide();
+        $('.select_group_options_div_alt').show();
+        $('.coustom-column-div').show();
+    }
+});
+
 let saveSubGroupConfigurations = (data) => {
     let container = document.getElementById('spin_container');
     spinner.spin(container);
@@ -134,7 +147,7 @@ $(document).on('focusout', '.custom_label_input', function() {
 });
 
 $(document).on('change', '#select_group_table', function(){
-    if( $(this).val()) {
+    if( $(this).val() && $('#modeSelectorColumns').prop('checked')) {
         getGroupData();
     }
 });
@@ -198,6 +211,10 @@ $(document).on('click', '#save_configuration_button', function() {
 $(document).on('change', '#select_primary_column', function() {
     if ($('#select_table').val() == '') {
         toastr.warning('Please select Table!');
+        return false;
+    }
+    if ($(this).val() == '') {
+        toastr.warning('Please select primary column!');
         return false;
     }
     $.ajax({
