@@ -68,20 +68,9 @@ const scpRechteverwaltung =
                     ].forEach(scpIndexedDB.dataIntoIDB(result))   
                 )
 
-            const User = 
-                { GipscommAdmin : "gipsAdm"
-                , SuperAdmin    : "sAdm"
-                , Admin         : "adm"
-                , Benutzer      : "ben"
-                }
-
             const getRechteArray =
                 () =>
                 itemSessionGet("rechteMenu").split(",")
-
-            const getBetrGrpID = 
-                () =>
-                itemSessionGet("betrGrp_ID")
                 
             const remove =
                 id => 
@@ -100,10 +89,10 @@ const scpRechteverwaltung =
                 position => {
                     switch (position) {
 
-                        case User.GipscommAdmin:
+                        case POSITION.GipscommAdmin:
                             break;
 
-                        case User.SuperAdmin:
+                        case POSITION.SuperAdmin:
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
@@ -112,7 +101,7 @@ const scpRechteverwaltung =
                             ].forEach(hideElement)
                             break;
 
-                        case User.Admin:
+                        case POSITION.Admin:
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
@@ -125,16 +114,13 @@ const scpRechteverwaltung =
                             ].forEach(hideElement)
                             break;
                             
-                        case User.Benutzer:
+                        case POSITION.Benutzer:
                             hideElement("#rechtMenuLi")
                             break;
                     }
 
-                    if (!equal(position)(User.GipscommAdmin)) {
+                    if (!equal(position)(POSITION.GipscommAdmin)) {
                         removeMenus()
-
-                        console.log("betrGrpID from sessionStorage with getBetrGrpID() in hideTabsAndMenus")
-                        console.log(getBetrGrpID())
 
                         scpRechteverwaltung_betreuergruppen
                         .readIntoFormFields(0)
@@ -149,9 +135,9 @@ const scpRechteverwaltung =
 
             const readInMandantenArgs =
                 position =>
-                equal(position)("sAdm") ?
+                equal(position)(POSITION.SuperAdmin) ?
                 [itemSessionGet("betrGrp_ID"), null, null] :
-                equal(position)("adm") || equal(position)("ben") ?
+                equal(position)(POSITION.Admin) || equal(position)("ben") ?
                 ($.isNumeric(sessionStorage.getItem("manGrp_ID")) ?
                 [null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")] :
                 [null, "man_ID", sessionStorage.getItem("man_ID")]) :

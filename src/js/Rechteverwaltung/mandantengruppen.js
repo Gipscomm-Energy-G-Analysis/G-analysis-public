@@ -54,6 +54,7 @@ const scpRechteverwaltung_mandantengruppen =
                 ajaxPost("php/Rechteverwaltung/Mandantengruppen/save.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
+                .then(() => $(".dataBetrGrpAdm").trigger("change"))
                 .then(
                     () =>
                     equal($("#betrGrpState").val())("new") ?

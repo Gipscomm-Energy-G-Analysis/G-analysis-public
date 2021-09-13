@@ -74,7 +74,7 @@ const scpRechteverwaltung_betreuergruppen =
                             () => {
                                resolve()
                             }
-                            , 800
+                            , 1000
                         )
 
                     })
