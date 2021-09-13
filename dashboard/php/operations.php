@@ -212,6 +212,38 @@ class dashboardControllerOperations {
         }
     }
     // --end-->
+    public function updateTileRecordOverallCount(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $username = $_SESSION['username']; 
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_POST['height'];
+            $width = $_POST['width'];
+            $input_height = $_POST['input_height'];
+            $input_width = $_POST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $type_data_tile = $_POST['type_data_tile'];
+            $mst_Id = $_POST['mst_ID'];
+            $type = "Measurement";
+           
+            
+            // $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_iD ) ";
+            // $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username', $mst_Id) ";
+            
+            $updateQuery = "UPDATE tableFormat set tile_title='$title' , tile_html='$html' ,height='$height',width='$width', input_height='$input_height' , input_width = '$input_width' , tile_record_type = '$record_type_of_tile' , tile_data_type = '$type_data_tile', mst_iD = '$mst_Id' ";
+            $updateQuery .= "WHERE id = $id AND username = '$username' ";
+            $updateRecord = queryDB($conn, $updateQuery, "write");
+            if($updateRecord){
+                return array('Staus' => 200 , 'Message' => 'Successfully Updated');
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
 
 }
 

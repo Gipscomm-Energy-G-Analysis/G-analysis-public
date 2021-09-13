@@ -310,7 +310,7 @@
 
 
 .hide_table_main .save_table_div_show_table h4{
-    display: none;
+    /* display: none; */
 }
 #dashboard_count_div_tile .record-name-overall-count {
     margin: 14px 0px 5px -53px;

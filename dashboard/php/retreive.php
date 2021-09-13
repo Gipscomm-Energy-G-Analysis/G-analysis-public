@@ -958,7 +958,7 @@ class dashboardController {
             $username = $_SESSION['username']; 
             $id = $_REQUEST['id'];
             $type = $_REQUEST['type'];
-            $getResult =  "SELECT * from tableFormat where username = '$username' ";
+            $getResult =  "SELECT * from tableFormat where (tile_data_type ='table' OR tile_data_type='overall_count') AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);

@@ -1632,6 +1632,65 @@ function getTableDashboardData(id){
   });
 }
 
+// <--13-9-21--
+function updateTileRecordOverallCount()
+{
+  var id = localStorage.getItem('edit-measurement-tile');
+  var measuremnt_table_height = $('#modal-height-input-measurement-hidden').val();
+  var measurement_table_width = $('#modal-width-input-measurement-hidden').val();
+  var input_height = $('#modal-height-input-measurement').val(); 
+  var input_width = $('#modal-width-input-measurement').val();
+  var mst_ID = $('#mst_id_hidden').val();
+  
+  var last_index_tile = $('#total_records').val();
+  var tile_html = $('.measurement_html_modal_'+last_index_tile).html();
+  $('#total_records').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "updateTileRecordOverallCount",
+        nameDB: $("#nameDashboardDB").val(),
+        id : id,
+        title : tile_title,
+        tile_html : tile_html,
+        height: measuremnt_table_height,
+        width : measurement_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile,
+        mst_ID : mst_ID
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#measurement_modal_loader_div').show();
+      $('.bd-example-modal-lg .modal-content').css('opacity','0.8');
+      
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#measurement_modal_loader_div').hide();
+        $('.bd-example-modal-lg .modal-content').css('opacity','1');
+        $('.bd-example-modal-lg').modal('hide');
+      }, 500);
+     
+    }
+  });
+}
+// --end-->
+
 
 // ---end-->
 // <--09-8-2021-- Sort Code
