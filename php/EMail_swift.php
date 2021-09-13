@@ -5,7 +5,7 @@ require_once 'vendor/autoload.php';
 function eMail($empfaenger, $betreff, $emailText) {
 
     // Create the Transport
-    $transport = (new Swift_SmtpTransport('mail.hostedoffice.ag', 587))
+    $transport = (new Swift_SmtpTransport('mail.hostedoffice.ag', 587, 'tls'))
     ->setUsername('g-analysis@energie-gipscomm.de')
     ->setPassword('16785AW1610a')
     ;

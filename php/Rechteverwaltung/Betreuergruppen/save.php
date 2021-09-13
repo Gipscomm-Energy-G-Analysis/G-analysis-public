@@ -51,49 +51,11 @@ function updateBetrGrp($id) {
     return $queryUpdateBetrGrp ;
 }
 
-function idBetrGrp($type, $id = 0) {
-    switch ($type) {
-        case TYPE_ID::Last:
-            $query = "(SELECT MAX(betrGrp_ID) FROM betreuerGruppen) " ;
-
-            return queryDB(conn, $query, "write") ;
-            break;
-
-        case TYPE_ID::Given:
-            return $id ;
-            break;
-    }
-}
-
-function updateMandant($last, $manID, $type = TYPE_ID::Last, $id = 0) {
-    $queryUpdateMan  = $last."UPDATE mandanten SET betrGrp_ID = ".idBetrGrp($type, $id) ;
-    $queryUpdateMan .= "WHERE man_ID = ".$manID." " ;
-
-    return $queryUpdateMan ;
-}
-
-function updateMandantenLastID($manIDs) {
-    return array_reduce($manIDs, 'updateMandant') ;
-}
-
-function updateMandantenGivenID($manIDs) {
-    $queryUpdateMandant = "" ;
-    for ($i=0; $i < count($manIDs); $i++) { 
-        $queryUpdateMandant .= updateMandant($queryUpdateMandant, $manIDs[$i], TYPE_ID::Given, $_POST['betrGrpID']) ;
-    }
-    return $queryUpdateMandant ;
-}
-
 if($modus === "new") {
-    queryDB($conn, insertBetrGrp(), "write") ;
-
-    $query = updateMandantenLastID(explode(",", $mandantenIDs)) ;
-
+    $query = insertBetrGrp() ;
 }
 else {
-    $query  = updateBetrGrp($_POST['betrGrpID']) ;
-    $query .= updateMandantenGivenID(explode(",", $mandantenIDs)) ;
-    
+    $query  = updateBetrGrp($_POST['betrGrpID']) ;    
 }
 
 queryDB(conn, $query, "write") ;
