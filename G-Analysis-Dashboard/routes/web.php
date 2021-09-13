@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+Route::get('/product-dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('product-dashboard');
 Route::get('/dashboard/charts', [\App\Http\Controllers\ChartController::class, 'index'])->name('charts');
 Route::get('/dashboard/table', [\App\Http\Controllers\TableController::class, 'index'])->name('tables');
 Route::post('/dashboard/machine', [\App\Http\Controllers\DashboardController::class, 'getMachineDetail'])->name('machineDetails');
@@ -27,7 +27,7 @@ Route::get('/charts-bar-ajax', [\App\Http\Controllers\ChartController::class, 'g
 Route::get('/switch-database', [\App\Http\Controllers\ManageDatabaseController::class, 'switchDatabase'])
     ->name('switchDatabase');
 Route::post('/uploadImage', [\App\Http\Controllers\UploadImageController::class, 'imageUpload'])->name('imageUpload');
-Route::post('/graph/filter', [\App\Http\Controllers\DashboardController::class, 'getChartsData'])->name('getChartsData');
+Route::post('/graph/filter', [\App\Http\Controllers\GraphController::class, 'getChartsData'])->name('getChartsData');
 Route::post('/dashboard/propertyData', [\App\Http\Controllers\DashboardController::class, 'getPropertyData'])->name('getPropertyData');
 Route::get('/dashboard/tablename', [\App\Http\Controllers\DashboardController::class, 'getAllTables'])->name('getAllTables');
 Route::post('/dashboard/tableColumn', [\App\Http\Controllers\DashboardController::class, 'getTableColumns'])->name('getTableColumns');
@@ -43,3 +43,6 @@ Route::post('get-custom-machine-data', [\App\Http\Controllers\DashboardControlle
 Route::get('get-custom-machine-columns', [\App\Http\Controllers\DashboardController::class, 'getCustomColumnName'])->name('getCustomColumnName');
 Route::get('get-table-configurations', [\App\Http\Controllers\MachineConfigurationController::class, 'getMachineConfigurations'])->name('getMachineConfigurations');
 Route::post('save-table-configurations', [\App\Http\Controllers\MachineConfigurationController::class, 'saveMachineConfigurations'])->name('saveMachineConfigurations');
+
+
+Route::get('product-graph/{graph_id}', [\App\Http\Controllers\GraphController::class, 'showGraph'])->name('showGraph');

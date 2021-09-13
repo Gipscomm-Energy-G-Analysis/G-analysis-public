@@ -262,8 +262,36 @@
                                             </div> -->
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </form>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 even_sub_data">
+                            @isset($subGroupConfig['even'])
+                                @forEach($subGroupConfig['even'] as $label=>$value)
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <label class="col-form-label capital">{{$label}}</label>
+                                            <input type="text" class="form-control" placeholder="{{$label}}" value="{{$value}}" readonly>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
+                        </div>
+                        <div class="col-sm-6 odd_sub_data">
+                            @isset($subGroupConfig['odd'])
+                                @forEach($subGroupConfig['odd'] as $label=>$value)
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <label class="col-form-label capital">{{$label}}</label>
+                                            <input type="text" class="form-control" placeholder="{{$label}}" value="{{$value}}" readonly>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
                         </div>
                     </div>
 
@@ -272,52 +300,7 @@
                 </div>
             </div>
 
-        <div class="row">
-            <div class="col-12">
-              <!-- Custom Tabs -->
-              <div class="card card-success">
-                <div class="card-header d-flex p-0">
-                  <h3 class="card-title p-3">Sub Group Configurations</h3>
-                </div><!-- /.card-header -->
-                <div class="card-body">
-                  <div class="tab-content">
-                    <div class="tab-pane active">
-                        <div class="row">
-                            <div class="col-sm-6 even_sub_data">
-                                @isset($subGroupConfig['even'])
-                                    @forEach($subGroupConfig['even'] as $label=>$value)
-                                        <div class="form-group row">
-                                            <div class="col-sm-12">
-                                                <label class="col-form-label capital">{{$label}}</label>
-                                                <input type="text" class="form-control" placeholder="{{$label}}" value="{{$value}}" readonly>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endisset
-                            </div>
-                            <div class="col-sm-6 odd_sub_data">
-                                @isset($subGroupConfig['odd'])
-                                    @forEach($subGroupConfig['odd'] as $label=>$value)
-                                        <div class="form-group row">
-                                            <div class="col-sm-12">
-                                                <label class="col-form-label capital">{{$label}}</label>
-                                                <input type="text" class="form-control" placeholder="{{$label}}" value="{{$value}}" readonly>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endisset
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.tab-pane -->
-                  </div>
-                  <!-- /.tab-content -->
-                </div><!-- /.card-body -->
-              </div>
-              <!-- ./card -->
-            </div>
-            <!-- /.col -->
-          </div>
+        
         <!-- /.card -->
         <!-- Bar Chart -->
         <div class="card card-success" id="bar_chart" style="display:block;">
@@ -362,7 +345,15 @@
                     <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Line Chart for {{$key}}</h3>
+                                <h3 class="card-title">Line Chart for {{$key}}
+                                    <span class="float-right">
+                                        <a href="/product-graph/{{$value['id']}}" target="_blank">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </a>
+                                        
+                                    </span>
+                                    
+                                </h3>
                             </div>
                             <div class="card-body">
                                 <div class="chart">
@@ -383,79 +374,7 @@
         
         <!-- /.modal -->
         @php $groupData = json_decode(json_encode($groups), true); @endphp
-        <div class="modal fade" id="group-modal" aria-modal="true" role="dialog">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add Group Options</h4>
-                        <input type="hidden" value="{{$groupData['groupData'][0]['eAnl_ID']}}" id="group_id" />
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <section class="content">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">{{$groupData['groupData'][0]['name']}}</h3>
-                                    <button type="button" name="add" id="add_sub" class="btn btn-success" id="add_subgroup">Add Subgroup</button>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-bordered white-border-head white-border-body" id="dynamic_subgroup_field">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 10px;">#</th>
-                                                <th>Options</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($groupData['groupData'] as $key=>$options)
-                                            @php $key++; @endphp
-                                            <tr id="subrow{{$key}}">
-                                                @if(isset($options['option_name']))
-                                                <td>{{$key}}</td>
-                                                <td>
-                                                    <div class="form-group ">
-                                                        <label for="{{$options['option_name']}}" class="col-form-label group-label">{{$options['option_name']}}</label>
-                                                        <input type="hidden" name="sub_group[]" class="form-control name_list" value="{{$options['option_name']}}" />
-                                                        <button style="float:right;" type="button" name="remove" id="{{$key}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
-                                                    </div>
-                                                    
-                                                </td>
-
-                                                @else
-                                                @php $options = explode(',',$options['optionen']); @endphp
-                                                @foreach($options as $opt)
-                                                <td>{{$key}}</td>
-                                                <td>
-                                                    <input type="text" name="sub_group[]" placeholder="Enter Subgroup Name" class="form-control name_list" value="{{$opt}}" />
-
-                                                </td>
-                                                @endforeach
-                                                <td>
-                                                    <button type="button" name="remove" id="{{$key}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
-                                                </td>
-                                                @endif
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </section>
-
-
-
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="save_subgroup_options">Save changes</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
+        
 
         <!-- Modal Start -->
         <div class="modal fade" id="modal-Machine-list">
@@ -548,12 +467,9 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="add_group select_group_options_div_alt" data-toggle="modal" data-target="#group-modal" style="margin-right:5px;display: none;">
-                                    <button type="button" class="btn btn-block btn-primary">Add Group Options</button>
+                                    <button type="button" class="btn btn-block btn-info">Add Group Options</button>
                                 </div>
                             </div>
-                            
-                            
-                            
                         </div>
                 
                     <div class="col-12 col-sm-12">
@@ -690,6 +606,80 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="group-modal" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Group Options</h4>
+                    <input type="hidden" value="{{$groupData['groupData'][0]['eAnl_ID']}}" id="group_id" />
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <section class="content">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">{{$groupData['groupData'][0]['name']}}</h3>
+                                <button type="button" name="add" id="add_sub" class="btn btn-success" id="add_subgroup">Add Subgroup</button>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered white-border-head white-border-body" id="dynamic_subgroup_field">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px;">#</th>
+                                            <th>Options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($groupData['groupData'] as $key=>$options)
+                                        @php $key++; @endphp
+                                        <tr id="subrow{{$key}}">
+                                            @if(isset($options['option_name']))
+                                            <td>{{$key}}</td>
+                                            <td>
+                                                <div class="form-group ">
+                                                    <label for="{{$options['option_name']}}" class="col-form-label group-label">{{$options['option_name']}}</label>
+                                                    <input type="hidden" name="sub_group[]" class="form-control name_list" value="{{$options['option_name']}}" />
+                                                    <button style="float:right;" type="button" name="remove" id="{{$key}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
+                                                </div>
+                                                
+                                            </td>
+
+                                            @else
+                                            @php $options = explode(',',$options['optionen']); @endphp
+                                            @foreach($options as $opt)
+                                            <td>{{$key}}</td>
+                                            <td>
+                                                <input type="text" name="sub_group[]" placeholder="Enter Subgroup Name" class="form-control name_list" value="{{$opt}}" />
+
+                                            </td>
+                                            @endforeach
+                                            <td>
+                                                <button type="button" name="remove" id="{{$key}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
+                                            </td>
+                                            @endif
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save_subgroup_options">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     @endif
     <div id="msg" style="display:none; text-align: center; font-size: 25px; font-weight: 800;">
         <span>Record Not Found!</span>
@@ -717,7 +707,7 @@
                 let ctx = document.getElementById(id).getContext('2d');
                 if (myChart) myChart.destroy();
                 myChart = new Chart(ctx, {
-                    type: 'line',
+                    type: 'doughnut',
                     data: {
                         labels: label,
                         datasets: [{

@@ -25,6 +25,7 @@ use Config;
 use DB;
 use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\UtilityController;
+use App\Http\Controllers\GraphController;
 
 class DashboardController extends Controller
 {
@@ -32,6 +33,7 @@ class DashboardController extends Controller
     {
         $this->database = (new ManageDatabaseController)->checkDB($_SESSION['nameDB']);
         $this->database_result = (new ManageDatabaseController)->switchDatabase($this->database);
+        $this->graphController = new GraphController();
     }
     /**
      * Display a listing of the resource.
@@ -144,8 +146,8 @@ class DashboardController extends Controller
                         if(!empty($machineData->$string)) {
                             $shards++;
                             $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData->$string;
-                            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$machineData->$string, 'limit' => 5]);
-                            $chartsData->put($string,$this->getChartsData( $request));
+                            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>31, 'limit' => 5]);
+                            $chartsData->put($string.$i,$this->graphController->getChartsData( $request));
                         }
                     }
                     
@@ -211,31 +213,6 @@ class DashboardController extends Controller
         ->offset($start)
         ->get();
         return [ 'data'=> $data, 'itemsCount'=> $totalRecords];
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Support\Collection
-     */
-    public function getChartsData(Request $request) {
-        $measuringPoint = $request['measuringPoint'];
-        $limit = $request['limit'];
-        $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$measuringPoint)
-            ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
-            ->orderby('MessstellenEnergiedaten.Time','desc')->limit($limit)->get();
-        return $this->getlineChartData($data, $measuringPoint);
-    }
-
-    /**
-     * @param $data
-     * @param $id
-     * @return array
-     */
-    public function getlineChartData($data, $id) {
-        $recordData = $data->IsNotEmpty() ? true: false;
-        $label = $data->reverse()->pluck('Time')->toArray();
-        $data = $data->reverse()->pluck('Value')->toArray();
-        return ['label'=>$label, 'data'=>$data, 'id'=>$id , 'record'=>$recordData];
     }
 
     /**
