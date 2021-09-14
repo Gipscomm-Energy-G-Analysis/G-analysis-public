@@ -1,4 +1,4 @@
-body,section, div, nav{
+body,section,.content-wrapper, nav{
     background: url(../images/5653.jpg) no-repeat center center fixed;
     background-size: cover;
     margin: 0px;
@@ -6,11 +6,11 @@ body,section, div, nav{
 } 
 
 .dark-mode .navbar-dark label {
-    color: black !important;
+    color: white !important;
 }
 
 .dark-mode .card h3{
-color: black !important;
+color: white !important;
 }
 
 .dark-mode .card label{
@@ -29,4 +29,20 @@ color: black !important;
   }
   .navbar div{
   	 background-image: none;
+  }
+
+  .card-header {
+    background-color: #6B6F73 !important;
+  }
+
+  .card-body {
+    background-color: #CED6DE !important;
+  }
+
+  .toggle-on{
+    color: white !important;
+  }
+
+  .mode_css_second div div label {
+      color:white;
   }

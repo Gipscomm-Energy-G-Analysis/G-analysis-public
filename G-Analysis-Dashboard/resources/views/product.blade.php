@@ -54,11 +54,13 @@
     }
 
     .white-border-head thead tr th {
-        border: 1px solid white !important;
+        border: 1px solid black !important;
+        color:black;
     }
 
     .white-border-body tbody tr td {
-        border: 1px solid white !important;
+        border: 1px solid black !important;
+        color:black;
     }
 
     .active-mode {
@@ -318,7 +320,7 @@
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label>No. of Records</label>
-                            <select class="custom-select time_filter" id="timeFilter">
+                            <select class="form-control time_filter" id="timeFilter">
                                 <option value="5" selected>5</option>
                                 <option value="10">10</option>
                                 <option value="15">15</option>
@@ -329,7 +331,7 @@
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label>Time Interval</label>
-                            <select class="custom-select" id="timeFilterInterval">
+                            <select class="form-control" id="timeFilterInterval">
                                 <option value="1">1 Minutes</option>
                                 <option value="5">5 Minutes</option>
                                 <option value="10">10 Minutes</option>
@@ -460,7 +462,7 @@
 
                         
                         <div class="col-sm-6">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 mode_css_second">
                                 <div class="btn-group float-right" style="width: 160px;height: 40px;font-size: 18px;">
                                     <input type="checkbox" id="modeSelectorColumns" checked data-toggle="toggle" data-on="Group Columns" data-off="Default Columns" data-onstyle="success" data-offstyle="info">
                                 </div>
@@ -523,7 +525,7 @@
 
                         <form class="form-horizontal coustom-column-div" style="display: none;">
                             <div class="card-body" id="spin_container">
-                                <div class="showData">
+                                <div class="">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3" style="margin-left: 25%;">
                                             <div class="col-sm-12">

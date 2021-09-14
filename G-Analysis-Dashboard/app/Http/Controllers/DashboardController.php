@@ -68,13 +68,16 @@ class DashboardController extends Controller
                         $groupData = $this->getGroup();
                         $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'']);
                         $data = $this->getMachineDetail($request);
+                        if($data['code'] == 401) {
+                           return  View::make("404", ['message'=>$data['message']]);
+                        }
                         return View::make("product", ["data"=>$data['data'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData']]);
                     } else {
-                        return View::make("product", ["data"=>"",'message'=>'Data Not Found in Anlagen Table!']);
+                        return View::make("404", ['message'=>'Data Not Found in Anlagen Table!']);
                     }
                 }
             } else {
-                return View::make("product", ["data"=>"",'message'=>'Data Not Found in Organisation Table!']);
+                return View::make("404", ['message'=>'Data Not Found in Organisation Table!']);
             }
         }
     }
@@ -185,13 +188,13 @@ class DashboardController extends Controller
                    // if(!empty($primary_key)) {
                       //  $primary_key = $machineData->$primary_key;
                      //   $subGroupConfig = $this->getSubgroupData($subGroupId , $primary_key);
-                        $subGroupConfig = $this->getSubgroupData('202', '2');
+                        $subGroupConfig = $this->getSubgroupData('6', '2');
                   //  }
                     
                     $mergeArray = $this->splitArray(array_merge(array_merge($subGroupConfig, $customColumns['extra']['odd']), $customColumns['extra']['even']));
                     return ['code'=>200, 'data' =>$prodData, 'dynamicData' => $customColumns ,'anl_ID'=>$machineData->anl_ID, 'subGroupConfig' => $mergeArray, 'message'=>'Data Retrived Successfully.'];
                 } else{
-                    return ['code'=>401, 'data' =>$prodData, 'dynamicData' => $customColumns , 'anl_ID'=>$machineData->anl_ID, 'subGroupConfig' => $mergeArray, 'message'=>'No Record Found in TWP_PROD_OVERVIEW Table!'];
+                    return ['code'=>401, 'message'=>'No Record Found in TWP_PROD_OVERVIEW Table!'];
                 }
             }
             else{
@@ -278,8 +281,8 @@ class DashboardController extends Controller
         $primaryKey = $request['primaryKey'];
         $foreignKey = $request['foreignKey'];
         if(!empty($this->database_result)){
-            DashboardProduktionConfig::where('username', $this->username)
-            ->update(array('status' => '0'));
+            // DashboardProduktionConfig::where('username', $this->username)
+            // ->update(array('status' => '0'));
             $columnData = [
                 "table_name" =>  $tableName,
                 "column_name" =>  $columnName,
@@ -289,13 +292,12 @@ class DashboardController extends Controller
                 "anl_ID"        =>  $anl_ID,
                 "dbName"        =>  $dbName,
                 "label_name"    =>  $label,
-                "column_name"   =>  $columnName,
                 "status"        =>  '1',
                 "primary_key"   =>  $primaryKey,
                 "foreign_key"   =>  $foreignKey);
             DashboardProduktionConfig::updateOrCreate($columnData, $data);
         }
-        return ['status'=>200, 'msg' => $msg];
+        return ['status'=>200, 'msg' => 'Record Inserted Successfully.'];
     }
 
     public function checkDB($database){
@@ -382,14 +384,17 @@ class DashboardController extends Controller
     }
 
     public function getSubgroupData($option , $where) {
-        $data = DB::table('SubGroupConfiguration')->where('sub_group_id', $option)->get()->toArray();
+        $data = DB::table('SubGroupConfiguration')->where('sub_group_id', $option)
+        ->where('username', $this->username)
+        ->where('status', '1')
+        ->get()->toArray();
         $queryData = UtilityController::createCustomQuery($data, $where);
+        
         if($queryData['status'] == 200){
             $data = DB::table($queryData['table'])
              ->select(DB::raw($queryData['rawSelect']))
              ->where($queryData['foreign_key'], $where)
              ->first();
-             
             return (array) $data;
         }
         return [];
@@ -461,7 +466,12 @@ class DashboardController extends Controller
     }
 
     public function getCustomTable(Request $request) {
-        //find the total number of results stored in the database  
+        //find the total number of results stored in the database 
+        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get()->toArray();
+        if(empty($columnData)){
+            $postRequest = Request::create( '/dashboard/getMachineTableData', 'POST', ['pageIndex'=>$request['pageIndex'], 'pageSize'=>$request['pageSize']]);
+            return $this->getMachineTableData($postRequest);
+        }
         $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0);
         $number_of_result = $machineData->count();  
         $pageIndex = $request['pageIndex'];
@@ -471,7 +481,6 @@ class DashboardController extends Controller
         $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
         if($start < 0) $start = 0;
         $machineData = $machineData->limit($limit)->offset($start)->get();
-        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get()->toArray();
         $defaultString = $this->makeDefaultColumnQuery($columnData);
         $machineDataCustom = [];
         if(!empty($machineData)){
@@ -510,7 +519,7 @@ class DashboardController extends Controller
     }
 
     public function getCustomColumnName() {
-        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get();
+        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get()->toArray();
         $columns = [
             ['name' =>'anl_ID', 'type' => 'number', 'title' =>'anl_ID', 'align'=> 'center','visible'=>false]
         ];
@@ -518,6 +527,13 @@ class DashboardController extends Controller
             foreach($columnData as $value) {
                 array_push($columns, ['name' =>$value->column_name, 'type' => 'number', 'title' =>$value->column_name, 'align'=> 'center']);
             }
+        } else {
+            $columns = [
+                ['name' =>'anl_ID', 'type' => 'number', 'title' =>'anl_ID', 'align'=> 'center'],
+                ['name' =>'datumAnl', 'type' => 'string', 'title' =>'datumAnl', 'align'=> 'center'],
+                ['name' =>'nummerAnl', 'type' => 'string', 'title' =>'nummerAnl', 'align'=> 'center'],
+                ['name' =>'bezeichnungAnl', 'type' => 'string', 'title' =>'bezeichnungAnl', 'align'=> 'center']
+            ];
         }
         return $columns;
     }

@@ -91,7 +91,7 @@ const getMachineData = (machine_id, type) => {
             $("#msg").hide();
             $('.navigation').attr('data-value', data.anl_ID);
             $('#anl_ID').val(data.anl_ID);
-            showMachineData(response.dynamicData);
+            showMachineData(response.dynamicData.main);
             $('#machine-image').attr('src',data.bildAnl);
             $('#timeFilter').val('5');
             $("#machine-image").on("error", function () {
@@ -101,8 +101,8 @@ const getMachineData = (machine_id, type) => {
                 graphDivHook(key, value);
             });
             
-            if(response.subGroupConfig) {
-                loadSubGroup(response.subGroupConfig);
+            if(response.subGroupConfig.main) {
+                loadSubGroup(response.subGroupConfig.main);
             }
         } else if(response.anl_ID !== undefined) {
             toastr.error(response.message);
@@ -125,9 +125,7 @@ const getMachineData = (machine_id, type) => {
             $('#machine-image').attr('src','images/Blasanlage.jpg');
         }
         else{
-           $("#data-card").hide();
-           $("#bar_chart").hide();
-           $("#msg").show();
+            toastr.error(response.message);
         }
     });
 }

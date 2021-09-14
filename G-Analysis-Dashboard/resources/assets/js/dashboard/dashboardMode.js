@@ -132,7 +132,7 @@ $(document).on('click', '.edit_label', function() {
     $(ele).find('.custom_label_span').val('');
     $(this).hide();
     $(ele).find('.custom_label_span').hide();
-    $(ele).find('.custom_label_input').show();
+    $(ele).find('.custom_label_input').show().focus();
 });
 
 $(document).on('focusout', '.custom_label_input', function() {

@@ -66,9 +66,7 @@ class GroupConfigurationController extends Controller
                 'label_name' => $label[$i],
                 'primary_key' => $primary_key,
                 'foreign_key' => $foreign_key,
-                'status' => '1',
-                'created_at' => DB::raw('CURRENT_TIMESTAMP'),
-                'updated_at' => DB::raw('CURRENT_TIMESTAMP')];
+                'status' => '1'];
 
             SubGroupConfiguration::updateOrCreate($columnData, $data);
         }

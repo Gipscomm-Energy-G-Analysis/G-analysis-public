@@ -13,5 +13,7 @@ class DashboardProduktionConfig extends Model
      *
      * @var string
      */
+    protected $fillable = ['table_name', 'column_name', 'username', 'anl_ID','dbName','label_name', 'status', 'primary_key', 'foreign_key'];
     protected $table = 'dashboardProduktionConfig';
+    public $timestamps = false;
 }
