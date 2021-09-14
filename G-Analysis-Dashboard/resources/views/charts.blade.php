@@ -60,7 +60,7 @@
                         </div>
                         <div class="card-body">
                             <div class="chart">
-                                <canvas id="dynamicChart" style="min-height: 250px; height: 500px; max-height: 500px; max-width: 100%;"></canvas>
+                                <canvas id="dynamicChart" style="min-height: 250px; height: 550px; max-height: 700px; max-width: 100%;background-color: white;"></canvas>
                             </div>
                         </div>
                         <!-- /.card-body -->

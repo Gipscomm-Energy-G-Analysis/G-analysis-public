@@ -230,8 +230,8 @@
                                     <input type="hidden" class="form-control" id="anl_ID" value="{{$data['anl_ID']}}">
                                     <div class="row">
                                         <div class="col-md-6 left_section">
-                                            @isset($dynamicData['even'])
-                                                @forEach($dynamicData['even'] as $label=>$value)
+                                            @isset($dynamicData['main']['even'])
+                                                @forEach($dynamicData['main']['even'] as $label=>$value)
                                                     <div class="form-group row">
                                                         <div class="col-sm-12">
                                                             <label for="{{$label}}" class="col-form-label capital">{{$label}}</label>
@@ -242,8 +242,8 @@
                                             @endisset
                                         </div>
                                         <div class="col-md-6 right_section">
-                                            @isset($dynamicData['odd'])
-                                                @forEach($dynamicData['odd'] as $label=>$value)
+                                            @isset($dynamicData['main']['odd'])
+                                                @forEach($dynamicData['main']['odd'] as $label=>$value)
                                                     <div class="form-group row">
                                                         <div class="col-sm-12">
                                                             <label for="{{$label}}" class="col-form-label capital">{{$label}}</label>
@@ -270,8 +270,8 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6 even_sub_data">
-                            @isset($subGroupConfig['even'])
-                                @forEach($subGroupConfig['even'] as $label=>$value)
+                            @isset($subGroupConfig['main']['even'])
+                                @forEach($subGroupConfig['main']['even'] as $label=>$value)
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <label class="col-form-label capital">{{$label}}</label>
@@ -282,8 +282,8 @@
                             @endisset
                         </div>
                         <div class="col-sm-6 odd_sub_data">
-                            @isset($subGroupConfig['odd'])
-                                @forEach($subGroupConfig['odd'] as $label=>$value)
+                            @isset($subGroupConfig['main']['odd'])
+                                @forEach($subGroupConfig['main']['odd'] as $label=>$value)
                                     <div class="form-group row">
                                         <div class="col-sm-12">
                                             <label class="col-form-label capital">{{$label}}</label>
@@ -707,7 +707,7 @@
                 let ctx = document.getElementById(id).getContext('2d');
                 if (myChart) myChart.destroy();
                 myChart = new Chart(ctx, {
-                    type: 'doughnut',
+                    type: 'line',
                     data: {
                         labels: label,
                         datasets: [{

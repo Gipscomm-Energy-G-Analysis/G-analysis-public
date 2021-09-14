@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\MigrationController;
 use DB;
 use App\Http\Controllers\ManageDatabaseController;
+use App\Models\SubGroupConfiguration;
 
 class GroupConfigurationController extends Controller
 {
     public function __construct()
     {
-        $this->database = (new ManageDatabaseController)->checkDB($_SESSION['nameDB']);
-        $this->database_result = (new ManageDatabaseController)->switchDatabase($this->database);
+        $this->database = isset($this->database)?$this->database:(new ManageDatabaseController)->checkDB($_SESSION['nameDB']);
+        $this->database_result = isset($this->database_result)?$this->database:(new ManageDatabaseController)->switchDatabase($this->database);
+        $this->username = $_SESSION['username'];
     }
 
     public function getTableColumns($table) {
@@ -23,7 +25,7 @@ class GroupConfigurationController extends Controller
         $subGroupId = $request->grosubGroupId;
         $table = $request->table;
         MigrationController::createSubGroupConfigurationTable();
-        $table_data = DB::table('SubGroupConfiguration')->where('sub_group_id', $subGroupId)->where('table_name', $table)->get()->toArray();
+        $table_data = DB::table('SubGroupConfiguration')->where('status', '1')->where('sub_group_id', $subGroupId)->where('username', $this->username)->where('table_name', $table)->get()->toArray();
         $primary_key_data = $this->getTableColumns('anlagen');
         $foreign_key_data = $this->getTableColumns($table);
         $selected_primary_key = isset($table_data[0])?$table_data[0]->primary_key:null;
@@ -51,22 +53,24 @@ class GroupConfigurationController extends Controller
         $foreign_key = $request->foreign_key;
         $primary_key = $request->primary_key;
         //delete previous records
-        $this->deleteConfigurations($subGroupId, $table);
-      // dd($column);
+        $this->changeStatus($subGroupId, $table, $this->username);
         for($i=0;$i<count($column);$i++) {
-            DB::table('SubGroupConfiguration')->insert([
-                [
+            $columnData = [
                 'group_id' => $groupId->group_id,
                 'sub_group_id' => $subGroupId,
-                'user_id' => 1,
+                "username"=>$this->username,
                 'table_name' => $table,
                 'column_name' => $column[$i],
+            ];
+            $data=[
                 'label_name' => $label[$i],
                 'primary_key' => $primary_key,
                 'foreign_key' => $foreign_key,
+                'status' => '1',
                 'created_at' => DB::raw('CURRENT_TIMESTAMP'),
-                'updated_at' => DB::raw('CURRENT_TIMESTAMP')]
-            ]);
+                'updated_at' => DB::raw('CURRENT_TIMESTAMP')];
+
+            SubGroupConfiguration::updateOrCreate($columnData, $data);
         }
         return ['status' => 200, 'msg' => 'Record Inserted Sucessfully'];
     }
@@ -78,10 +82,20 @@ class GroupConfigurationController extends Controller
     public function deleteConfigurations($group_id, $table) {
         return DB::table('SubGroupConfiguration')->where('sub_group_id', $group_id)->delete();
     }
+
+    public function changeStatus($group_id, $table, $username) {
+        return DB::table('SubGroupConfiguration')
+        ->where('username', $username)
+        ->update(array('status' => '0'));
+    }
     
     public function getSelectedConfigurationData(Request $request) {
         $subGroupId = $request->subGroupId;
-        $table = DB::table('SubGroupConfiguration')->select('table_name')->where('sub_group_id', $subGroupId)->first();
+        $table = DB::table('SubGroupConfiguration')->select('table_name')
+        ->where('sub_group_id', $subGroupId)
+        ->where('username', $this->username)
+        ->where('status', '1')
+        ->first();
         return isset($table->table_name)?$table->table_name:'';
     }
 

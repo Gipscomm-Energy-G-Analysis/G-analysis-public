@@ -9,6 +9,15 @@ use Illuminate\Database\Schema\Blueprint;
 
 class MigrationController extends Controller
 {
+    public static function runMigrations() {
+        self::createSubGroupConfigurationTable();
+        self::createDashboardProduktionConfigTable();
+        self::createMachineTableConfigurations();
+        self::createSubGroupOptionTable();
+        return;
+    }
+
+
     public static function createSubGroupConfigurationTable() {
         $table_exits = DB::getSchemaBuilder()->hasTable('SubGroupConfiguration');
         if (!$table_exits) {
@@ -16,12 +25,14 @@ class MigrationController extends Controller
                 $table->id();
                 $table->bigInteger('group_id');
                 $table->bigInteger('sub_group_id');
-                $table->bigInteger('user_id');
+                $table->bigInteger('user_id')->nullable();
+                $table->string('username')->nullable();
                 $table->string('table_name');
                 $table->string('column_name');
                 $table->string('label_name');
                 $table->string('primary_key');
                 $table->string('foreign_key');
+                $table->enum('status',['0','1']);
                 $table->timestamps();
             });
         }
@@ -34,6 +45,7 @@ class MigrationController extends Controller
             Schema::create('dashboardProduktionConfig', function (Blueprint $table) {
                 $table->id();
                 $table->integer('anl_ID');
+                $table->bigInteger('user_id')->nullable();
                 $table->string('username');
                 $table->string('dbName');
                 $table->string('label_name');
@@ -41,6 +53,7 @@ class MigrationController extends Controller
                 $table->string('column_name');
                 $table->string('primary_key');
                 $table->string('foreign_key');
+                $table->enum('status',['0','1']);
                 $table->timestamps();
             });
         }
@@ -52,10 +65,29 @@ class MigrationController extends Controller
         if (!$table_exits) {
             Schema::create('machine_table_config', function (Blueprint $table) {
                 $table->id();
+                $table->bigInteger('user_id')->nullable();
+                $table->string('username')->nullable();
                 $table->string('column_name')->nullable();
                 $table->string('label_name')->nullable();
                 $table->enum('status',['0','1','2']);
                 $table->string('table_name')->nullable();
+                $table->timestamps();
+            });
+        }
+        return;
+    }
+
+    public static function createSubGroupOptionTable() {
+        $table_exits = DB::getSchemaBuilder()->hasTable('subGroupOptions');
+        if (!$table_exits) {
+            Schema::create('subGroupOptions', function (Blueprint $table) {
+                $table->id();
+                $table->bigInteger('user_id')->nullable();
+                $table->string('username')->nullable();
+                $table->string('option_name');
+                $table->string('group_id');
+                $table->enum('status',['0','1']);
+                $table->timestamps();
             });
         }
         return;

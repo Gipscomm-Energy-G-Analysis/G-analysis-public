@@ -13,8 +13,9 @@ class MachineConfigurationController extends Controller
 {
     public function __construct()
     {
-        $this->database = (new ManageDatabaseController)->checkDB($_SESSION['nameDB']);
-        $this->database_result = (new ManageDatabaseController)->switchDatabase($this->database);
+        $this->database = isset($this->database)?$this->database:(new ManageDatabaseController)->checkDB($_SESSION['nameDB']);
+        $this->database_result = isset($this->database_result)?$this->database:(new ManageDatabaseController)->switchDatabase($this->database);
+        $this->username = $_SESSION['username'];
     }
 
     public function getMachineConfigurations(Request $request) {
@@ -66,7 +67,7 @@ class MachineConfigurationController extends Controller
         $customColumns = $this->addSelectedOption(array_diff($selectedColumns,$columns), '1');
         $selecteData = array_merge($defaultColumns, $customColumns);
         if(!empty($selecteData)) {
-            DB::table('machine_table_config')->update(array('status' => '0'));
+            DB::table('machine_table_config')->where('username', $this->username)->update(array('status' => '0'));
             foreach($selecteData as $value){
                 if($value['option'] == 2){
                     $table = 'TWP_PROD_OVERVIEW';
@@ -74,7 +75,8 @@ class MachineConfigurationController extends Controller
                     $table = null;
                 }
                 $columnData = [
-                    "column_name" =>  $value['column']
+                    "column_name" =>  $value['column'],
+                    "username" => $this->username
                 ];
                 $data=array(
                     "status"      =>  $value['option'],

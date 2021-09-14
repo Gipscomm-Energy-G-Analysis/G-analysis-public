@@ -13,6 +13,7 @@ class subGroupOptions extends Model
      *
      * @var string
      */
-
+    protected $fillable = ['option_name', 'group_id', 'user_id', 'status','username','created_at','updated_at'];
     protected $table = 'subGroupOptions';
+    public $timestamps = false;
 }
