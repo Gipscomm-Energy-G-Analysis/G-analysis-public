@@ -11,10 +11,10 @@
                         <label class="col-sm-4 col-form-label">Chart Type</label>
                         <div class="col-sm-9">
                             <select class="form-control" style="width: 100%;" id="select_chart_type">
-                                <option selected value="line">line chart</option>
-                                <option value="doughnut">doughnut chart</option>
-                                <option value="pie">pie chart</option>
-                                <option value="bar">bar chart</option>
+                                <option selected value="line">Line chart</option>
+                                <option value="doughnut">Doughnut chart</option>
+                                <option value="pie">Pie chart</option>
+                                <option value="bar">Bar chart</option>
                             </select>
                         </div>
                     </div>
@@ -87,7 +87,25 @@
     let data = @json($chartData['data']);
     let label = @json($chartData['label']);
 
-    const lineChartHook = (id, label, data, type) => {
+    const getRandomColor = () => {
+        let letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
+
+
+    const generateColorArray = (length) => {
+        let colorArray = [];
+        for (let i = 0; i < length; i++) {
+            colorArray.push(getRandomColor());
+        }
+        return colorArray;
+    }
+
+    const lineChartHook = (id, label, data, type, colorArray='rgb(0, 188, 140, 0.2)') => {
         $(".main_chart").css("display", "block");
         // $("#not_found_msg").css("display","none");
         let ctx = document.getElementById(id).getContext('2d');
@@ -99,7 +117,7 @@
                 datasets: [{
                     label: `Energy consumption Data`,
                     data: data,
-                    backgroundColor: 'rgb(0, 188, 140, 0.2)',
+                    backgroundColor: colorArray,
                     borderColor: 'rgb(0, 188, 140)',
                     borderWidth: 1,
                 }]
@@ -129,6 +147,14 @@
     const getGraphData = (id, limit, event_id) => {
         let container = document.getElementById('data-card');
         let spinner = new Spinner();
+        let type = $('#select_chart_type').val();
+        let colorArray;
+        if(type === 'doughnut' || type === 'pie' || type === 'bar'){
+            colorArray = generateColorArray(limit);
+        } else {
+            colorArray = 'rgb(0, 188, 140, 0.2)';
+        }
+        
         spinner.spin(container);
         $.ajax({
             url: '/graph/filter',
@@ -139,12 +165,14 @@
             },
         }).done(function(response) {
             spinner.stop();
-            lineChartHook(event_id, response.label, response.data, $('#select_chart_type').val());
+            lineChartHook(event_id, response.label, response.data, type, colorArray);
         });
     }
 
     lineChartHook(chart_id, label, data, type);
+
     $(document).on('change', '#select_chart_type, #timeFilter', function() {
+        $('.dynamic_title').text($('#select_chart_type option:selected').text());
         getGraphData(chart_data_id, $('#timeFilter').val(), chart_id);
     });
 </script>

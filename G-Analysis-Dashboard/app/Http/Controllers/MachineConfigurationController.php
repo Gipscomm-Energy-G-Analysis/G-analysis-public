@@ -20,7 +20,7 @@ class MachineConfigurationController extends Controller
 
     public function getMachineConfigurations(Request $request) {
         MigrationController::createMachineTableConfigurations();
-        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->pluck('column_name')->toArray();
+        $columnData = DB::table('machine_table_config')->where('username', $this->username)->orWhere('status', ['1','2'])->pluck('column_name')->toArray();
         $columns = ['anlage', 'auftragsmenge', 'programm', 'zeit_zyklus', 'bestellung', 'werkzeug', 'artikel', 'kavitäten',
              'gutmenge', 'letzte_störung', 'ausschuss', 'bisher_produziert'];
         $customData = DB::table('dashboardProduktionConfig')->pluck('column_name')->toArray();

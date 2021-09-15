@@ -467,7 +467,7 @@ class DashboardController extends Controller
 
     public function getCustomTable(Request $request) {
         //find the total number of results stored in the database 
-        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get()->toArray();
+        $columnData = DB::table('machine_table_config')->where('username', $this->username)->orWhere('status', ['1','2'])->get()->toArray();
         if(empty($columnData)){
             $postRequest = Request::create( '/dashboard/getMachineTableData', 'POST', ['pageIndex'=>$request['pageIndex'], 'pageSize'=>$request['pageSize']]);
             return $this->getMachineTableData($postRequest);
@@ -519,7 +519,7 @@ class DashboardController extends Controller
     }
 
     public function getCustomColumnName() {
-        $columnData = DB::table('machine_table_config')->where('status', '1') ->orWhere('status', '2')->get()->toArray();
+        $columnData = DB::table('machine_table_config')->where('username', $this->username)->orWhere('status', ['1','2'])->get()->toArray();
         $columns = [
             ['name' =>'anl_ID', 'type' => 'number', 'title' =>'anl_ID', 'align'=> 'center','visible'=>false]
         ];

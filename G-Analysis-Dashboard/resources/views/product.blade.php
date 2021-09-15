@@ -346,8 +346,8 @@
                     @if($value['record'])
                     <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
                         <div class="card card-info">
-                            <div class="card-header">
-                                <h3 class="card-title">Line Chart for {{$key}}
+                            <div class="card-header" >
+                                <h3 class="card-title" style="float:revert;">Line Chart for {{$key}}
                                     <span class="float-right">
                                         <a href="/product-graph/{{$value['id']}}" target="_blank">
                                             <i class="fa fa-eye" aria-hidden="true"></i>
@@ -774,8 +774,8 @@
             if (getChartsDiv.length > 0) {
                 getChartsDiv.forEach((node) => {
                     let id = node.getAttribute('data_value');
+                    let data_event = node.getAttribute('data_event');
                     let name = data_event.split("_").pop();
-                    console.log('id', id, 'limit', limit, 'data_event', data_event, 'name', name);
                     getGraphData(id, limit, data_event, name);
                 });
             }
