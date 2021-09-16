@@ -178,6 +178,9 @@ const scpRechteverwaltung =
                 array($("a[data-menus]").length)()()
                 .map((_, i) => $("a[data-menus]").eq(i).attr("data-menus"))
 
+            const notBetreuergruppen =
+                a => a.text !== "Betreuergruppen"
+
             const menuItemText =
                 id => 
                 ( { id, text : $(`a[data-menus=${id}]`).text() } )
@@ -190,6 +193,7 @@ const scpRechteverwaltung =
                 () => 
                 getMenuIDs()
                 .map( menuItemText )
+                .filter( notBetreuergruppen )
             
             const Type =
                 { Mandant : 0
