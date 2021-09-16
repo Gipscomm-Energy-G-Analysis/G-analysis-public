@@ -13,7 +13,7 @@ body {
 }
 #asideRight, #asideRight2 {
   position: absolute;
-  height: 230px;
+  height: fit-content;
   width: 210px;
   top: 117px;
   border-radius: 8px;
