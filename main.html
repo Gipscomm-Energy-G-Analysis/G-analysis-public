@@ -1468,7 +1468,8 @@
                         <input id="manGrpCount" />
                         <input id="admCount" />
                         <input id="benCount" />
-                        <input id="manOderManGrp"/>
+                        <input id="abManID"/>
+                        <input id="abManGrpID"/>
                   </div>
                   <div id="infosGipscommAdmins" style="display:none;">
                      <div class="infosBlock">
@@ -1787,16 +1788,14 @@
                         </div>
                         <div class="controlDiv">
                            <label>Passwort</label>
-                           <input id="passwortBen" class="benForm"/>
+                           <input id="passwortBen" type="password" class="benForm"/>
                         </div>
                         <div class="infosBlock" id="benutzerRoles">
                            <div class="sectionHeader">
                                <label>Rollen und Berechtigungen</label>
                            </div>
                            <div id="benTreeview">
-
                         </div>
-
                      </div>
                   </div>
                </div>
@@ -11130,8 +11129,8 @@
                         , betreuerGruppen : "betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs"
                         , superAdmins : "sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechteTreeView, rechteMenu"
                         , mandantenGruppen : "manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs"
-                        , admins : "adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu"
-                        , benutzer : "ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu"
+                        , admins : "adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu"
+                        , benutzer : "ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu"
                         }
                     )
                 </script>

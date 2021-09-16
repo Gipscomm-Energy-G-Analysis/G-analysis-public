@@ -19,6 +19,7 @@ const scpRechteverwaltung_admins =
                     , admID          : helper.fieldValue("admID")
                     , manID          : helper.fieldValue("abManID")
                     , manGrpID       : helper.fieldValue("abManGrpID")
+                    , betrGrpID      : helper.fieldValue("betrGrpID")
                     , titel          : helper.fieldValue("titelAdm")
                     , name           : helper.fieldValue("nameAdm")
                     , vorname        : helper.fieldValue("vornameAdm")

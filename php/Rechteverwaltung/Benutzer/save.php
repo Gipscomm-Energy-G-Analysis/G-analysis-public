@@ -9,6 +9,7 @@ $conn = connectToDB("gipscomm") ;
 $modus = $_POST['modus'] ;
 $manID = $_POST['manID'] ;
 $manGrpID = $_POST['manGrpID'] ;
+$betrGrpID = $_POST['betrGrpID'] ;
 $titel = $_POST['titel'] ;
 $name = $_POST['name'] ;
 $vorname = $_POST['vorname'] ;
@@ -22,16 +23,21 @@ $rechteTreeView = $_POST['rechteTreeView'] ;
 $rechteMenu = $_POST['rechteMenu'] ;
 
 if($modus === "new") {
-       $query =  "INSERT INTO benutzer(manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
-       $query .= "VALUES($manGrpID, '$manID', '$name', '$vorname', '$username', '$titel', '$email', '$telefon', '$fax', '$mobiltelefon', '$passHash', 'adm', '$rechteTreeView', '$rechteMenu', 0) " ;
+    if($manGrpID !== "0") {
+        $query =  "INSERT INTO benutzer(manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
+        $query .= "VALUES($manGrpID, 1, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'ben', '$rechteTreeView', '$rechteMenu', 0) " ;
+    }
+    else {
+        $query =  "INSERT INTO benutzer(man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
+        $query .= "VALUES($manID, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'ben', '$rechteTreeView', '$rechteMenu', 0) " ; 
+    }
 }
 else {
     $benID = $_POST['benID'] ;
 
     if($passHash === "") {
         $query =  "UPDATE benutzer " ;
-        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', " ;
-        $query .= "name = '$name', vorname = '$vorname', " ;
+        $query .= "SET name = '$name', vorname = '$vorname', " ;
         $query .= "username = '$username', titel = '$titel', " ;
         $query .= "eMail = '$email', telefon = '$telefon', " ;
         $query .= "fax = '$fax', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;
@@ -39,8 +45,7 @@ else {
     }
     else {
         $query =  "UPDATE benutzer " ;
-        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', " ;
-        $query .= "name = '$name', vorname = '$vorname', " ;
+        $query .= "SET name = '$name', vorname = '$vorname', " ;
         $query .= "username = '$username', titel = '$titel', " ;
         $query .= "eMail = '$email', telefon = '$telefon', " ;
         $query .= "fax = '$fax', passHash = '$passHash', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;

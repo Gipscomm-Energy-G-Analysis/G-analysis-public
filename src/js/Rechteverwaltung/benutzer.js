@@ -19,6 +19,7 @@ const scpRechteverwaltung_benutzer =
                     , benID          : helper.fieldValue("benID")
                     , manID          : helper.fieldValue("abManID")
                     , manGrpID       : helper.fieldValue("abManGrpID")
+                    , betrGrpID      : helper.fieldValue("betrGrpID")
                     , titel          : helper.fieldValue("titelBen")
                     , name           : helper.fieldValue("nameBen")
                     , vorname        : helper.fieldValue("vornameBen")

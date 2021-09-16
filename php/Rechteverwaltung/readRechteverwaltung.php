@@ -36,10 +36,10 @@ switch ($_POST["position"]) {
         $mandantenGruppen  = "SELECT manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs FROM mandantenGruppen " ;
         $mandantenGruppen .= "WHERE deleted = 0 " ;
 
-        $admins            = "SELECT adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
+        $admins            = "SELECT adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
         $admins           .= "WHERE deleted = 0 " ;
 
-        $benutzer          = "SELECT ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
+        $benutzer          = "SELECT ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
         $benutzer         .= "WHERE deleted = 0 " ;
 
         break;
@@ -54,10 +54,10 @@ switch ($_POST["position"]) {
         $mandantenGruppen  = "SELECT manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs FROM mandantenGruppen " ;
         $mandantenGruppen .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
 
-        $admins            = "SELECT adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
+        $admins            = "SELECT adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
         $admins           .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
 
-        $benutzer          = "SELECT ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
+        $benutzer          = "SELECT ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
         $benutzer         .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
         
         break;
@@ -82,10 +82,10 @@ switch ($_POST["position"]) {
             $manOrManGrp = "AND manGrp_ID = ".$manGrpID ;
         }
 
-        $admins    = "SELECT adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
+        $admins    = "SELECT adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
         $admins   .= "WHERE deleted = 0 ".$manOrManGrp ;
 
-        $benutzer  = "SELECT ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
+        $benutzer  = "SELECT ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
         $benutzer .= "WHERE deleted = 0 ".$manOrManGrp ;
 
         break;

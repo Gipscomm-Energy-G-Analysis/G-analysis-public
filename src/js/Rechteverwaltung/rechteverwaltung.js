@@ -90,18 +90,22 @@ const scpRechteverwaltung =
                     switch (position) {
 
                         case POSITION.GipscommAdmin:
+
                             break;
 
                         case POSITION.SuperAdmin:
+
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
                             , "#sAdmMenuLi"
                             , ".hideBetrGrp"
                             ].forEach(hideElement)
+
                             break;
 
                         case POSITION.Admin:
+
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
@@ -112,6 +116,9 @@ const scpRechteverwaltung =
                             , "#tabAdm"
                             , ".hideBetrGrp"
                             ].forEach(hideElement)
+
+                            readManManGrp()
+
                             break;
                             
                         case POSITION.Benutzer:
@@ -133,11 +140,25 @@ const scpRechteverwaltung =
                     treeBen  = scpTreeView.show("benTreeview")
                 }
 
+            const readManManGrp =
+                () => {
+                    const manGrpID = itemSessionGet("manGrp_ID")
+                    const manID    = itemSessionGet("man_ID")
+
+                    if (manGrpID !== null) {
+                        $(".manGrpPfad").val(`manGrp_ID-${manGrpID}`)
+                    }
+                    else {
+                        $(".manGrpPfad").val(`man_ID-${manID}`)
+                    }
+                }
+
+
             const readInMandantenArgs =
                 position =>
                 equal(position)(POSITION.SuperAdmin) ?
                 [itemSessionGet("betrGrp_ID"), null, null] :
-                equal(position)(POSITION.Admin) || equal(position)("ben") ?
+                equal(position)(POSITION.Admin) || equal(position)(POSITION.Benutzer) ?
                 ($.isNumeric(sessionStorage.getItem("manGrp_ID")) ?
                 [null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")] :
                 [null, "man_ID", sessionStorage.getItem("man_ID")]) :
