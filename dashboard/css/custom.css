@@ -319,3 +319,6 @@
 #dashboard_count_div_tile .text-overall-count {
     margin-left: -51px;
 }
+.count_result_tile{
+    text-transform: capitalize;
+}

@@ -488,6 +488,7 @@ $(document).ready( function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         dashboard_tile_data = JSON.parse(ar);
         var type_data_tile = dashboard_tile_data['type_data_tile'];
+        var measurement_type = $('#measurement_type').val();
       
         if(tile_edit_value == 'false' && type_data_tile == "overall_count"){
             $('#save_table_btn').removeClass('display-none');
@@ -522,7 +523,7 @@ $(document).ready( function(){
             $('#modal-width-input-measurement-hidden').val(285);
 
             setTimeout(()=>{
-                $('.measurement_html_modal_'+last_div_index+' .count_result_tile').text('Count');
+                $('.measurement_html_modal_'+last_div_index+' .count_result_tile').text(measurement_type);
             },1100);
 
         }
@@ -608,7 +609,7 @@ $(document).ready( function(){
             $('#modal-width-input-measurement-hidden').val(285);
 
             setTimeout(()=>{
-                $('.measurement_html_modal_'+last_div_index+' .count_result_tile').text('Count');
+                $('.measurement_html_modal_'+last_div_index+' .count_result_tile').text(measurement_type);
             },1100);
         }
 
@@ -831,14 +832,14 @@ $(document).ready( function(){
     // <---7-9-2021----
     $(document).on('change','#measurement_type', function(){
         var val = $(this).val();
-        if(val == 'manually')
-        {
+        // if(val == 'manually')
+        // {
             getNumberRecordsMesurement();
-        }
-        else{
-            var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
-            $('#mesurement_select_table_entries').html(tr);
-        }
+        // }
+        // else{
+        //     var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
+        //     $('#mesurement_select_table_entries').html(tr);
+        // }
     })
 
 

@@ -95,6 +95,14 @@
           </div>
           <!-- end -->
 
+          <!-- 16-9-2021-- -->
+          <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <input type="button" draggable="true" ondragstart="drag(event)" id="drag2" width="88" height="31">
+          </div>
+
+          <div id="div2" class="row" style="height: 240px; border: 1px solid black;" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+          <!-----end-- -->
+
           <!-- 02-9-2021-- -->
           <!-- <button type="button" style="display: none" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile_chart" data-toggle="modal" data-target="#dashboard_tile_modal_chart">Add Chart</button> -->
           <div class="modal fade" id="dashboard_tile_modal_chart" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

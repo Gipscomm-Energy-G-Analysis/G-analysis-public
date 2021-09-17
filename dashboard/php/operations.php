@@ -62,6 +62,7 @@ class dashboardControllerOperations {
             $input_width = $_POST['input_width'];
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
+            $table_other = $_POST['table_other'];
             // echo str_replace("total_records","",$html); die;
 
             
@@ -78,8 +79,8 @@ class dashboardControllerOperations {
             //     }
             // }
             // else{
-                $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username ) ";
-                $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username') ";
+                $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other ) ";
+                $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other') ";
                 $insertRecord = queryDB($conn, $insertQuery, "write");
                 if($insertQuery){
                     return array('Staus' => 200 , 'Message' => 'Successfully Inserted');
@@ -118,12 +119,14 @@ class dashboardControllerOperations {
             $input_width = $_REQUEST['input_width'];
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
+            $table_other = $_POST['table_other'];
+            
 
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
 
             // $tile_html = $_REQUEST['tile_html'];
-            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' WHERE id = $id AND username ='$username' ";
+            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other'  WHERE id = $id AND username ='$username' ";
             // echo $updateQuery; die;
             $updateRecord = queryDB($conn, $updateQuery, "write");
             if($updateQuery){
@@ -199,8 +202,9 @@ class dashboardControllerOperations {
             $type_data_tile = $_POST['type_data_tile'];
             $mst_Id = $_POST['mst_ID'];
             $type = "Measurement";
-            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_iD ) ";
-            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username', $mst_Id) ";
+            $data_table_other = $_POST['data_table_other'];
+            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_iD,table_other ) ";
+            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username', $mst_Id ,'$data_table_other') ";
             $insertRecord = queryDB($conn, $insertQuery, "write");
             if($insertQuery){
                 return array('Staus' => 200 , 'Message' => 'Successfully Inserted');
@@ -226,13 +230,14 @@ class dashboardControllerOperations {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
             $mst_Id = $_POST['mst_ID'];
+            $data_other = $_POST['data_other'];
             $type = "Measurement";
            
             
             // $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_iD ) ";
             // $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username', $mst_Id) ";
             
-            $updateQuery = "UPDATE tableFormat set tile_title='$title' , tile_html='$html' ,height='$height',width='$width', input_height='$input_height' , input_width = '$input_width' , tile_record_type = '$record_type_of_tile' , tile_data_type = '$type_data_tile', mst_iD = '$mst_Id' ";
+            $updateQuery = "UPDATE tableFormat set tile_title='$title' , tile_html='$html' ,height='$height',width='$width', input_height='$input_height' , input_width = '$input_width' , tile_record_type = '$record_type_of_tile' , tile_data_type = '$type_data_tile', mst_iD = '$mst_Id' ,table_other = '$data_other' ";
             $updateQuery .= "WHERE id = $id AND username = '$username' ";
             $updateRecord = queryDB($conn, $updateQuery, "write");
             if($updateRecord){
