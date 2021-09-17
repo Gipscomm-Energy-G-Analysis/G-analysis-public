@@ -1468,7 +1468,8 @@
                         <input id="manGrpCount" />
                         <input id="admCount" />
                         <input id="benCount" />
-                        <input id="manOderManGrp"/>
+                        <input id="abManID"/>
+                        <input id="abManGrpID"/>
                   </div>
                   <div id="infosGipscommAdmins" style="display:none;">
                      <div class="infosBlock">
@@ -1746,7 +1747,7 @@
                      <div class="navDropBox" style="height:20px;padding:3px;"> <img id="benLoeschen" title="Benutzer löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="benSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="benHinz" title="Neuen Benutzer erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="benSuchen" title="Benutzer suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="benMap" title="Organigramm öffnen" src="images/map.png" alt="treeChart" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="benLast" data-record="last" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Benutzer" src="images/last.png" alt="letzte" /> <img id="benNext" data-record="next" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Benutzer" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="benPrevious" data-record="previous" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Benutzer" src="images/previous.png" alt="vorherige" /> <img id="benFirst" data-record="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Benutzer" src="images/first.png" alt="erste" />
                         <label class="hideBetrGrp">Betr. Gruppe:</label>
                         <select class="hideBetrGrp dataBetrGrpBen"></select>
-                        <label>Mandant/Gruppe:</label>
+                        <label id="hideManManGrpLbl">Mandant/Gruppe:</label>
                         <select class="manGrpPfad"></select>
                      </div>
                      <div class="infosBlock">
@@ -1787,16 +1788,14 @@
                         </div>
                         <div class="controlDiv">
                            <label>Passwort</label>
-                           <input id="passwortBen" class="benForm"/>
+                           <input id="passwortBen" type="password" class="benForm"/>
                         </div>
                         <div class="infosBlock" id="benutzerRoles">
                            <div class="sectionHeader">
                                <label>Rollen und Berechtigungen</label>
                            </div>
                            <div id="benTreeview">
-
                         </div>
-
                      </div>
                   </div>
                </div>
@@ -6266,11 +6265,11 @@
                     </div>
                     <div class="controlDiv">
                         <label for="eegUntERng">EEG-Umlage<br> (unter 10^6 kWh)</label>
-                        <input id="eegUntERng" class="evuRng">
+                        <input id="eegUntERng" value="0.0" class="evuRng">
                      </div>
                      <div class="controlDiv">
                         <label for="eegUebERng">EEG-Umlage<br> (über 10^6 kWh)</label>
-                        <input id="eegUebERng" class="evuRng">
+                        <input id="eegUebERng" value="0.0" class="evuRng">
                      </div>
                      <div>
                         <div class="controlDiv ">
@@ -11130,8 +11129,8 @@
                         , betreuerGruppen : "betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs"
                         , superAdmins : "sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechteTreeView, rechteMenu"
                         , mandantenGruppen : "manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs"
-                        , admins : "adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu"
-                        , benutzer : "ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu"
+                        , admins : "adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu"
+                        , benutzer : "ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu"
                         }
                     )
                 </script>

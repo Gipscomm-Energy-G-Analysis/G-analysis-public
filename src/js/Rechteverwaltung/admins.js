@@ -17,9 +17,9 @@ const scpRechteverwaltung_admins =
                 () => (
                     { modus          : helper.fieldValue("admState")
                     , admID          : helper.fieldValue("admID")
-                    , manID          : helper.fieldValue("manID")
+                    , manID          : helper.fieldValue("abManID")
+                    , manGrpID       : helper.fieldValue("abManGrpID")
                     , betrGrpID      : helper.fieldValue("betrGrpID")
-                    , manGrpID       : helper.fieldValue("manGrpID")
                     , titel          : helper.fieldValue("titelAdm")
                     , name           : helper.fieldValue("nameAdm")
                     , vorname        : helper.fieldValue("vornameAdm")
@@ -232,9 +232,7 @@ const scpRechteverwaltung_admins =
                         () =>
                         ( alert("erfolgreich gelöscht!")
                         , updateIndexedDB()
-                          .then( 
-                              readIntoFormFields( helper.fieldValue( "admIdx" ) ) 
-                          )
+                          .then( this.readFirst )
                         )
                     )
                 }

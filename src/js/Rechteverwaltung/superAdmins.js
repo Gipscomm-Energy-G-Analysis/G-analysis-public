@@ -217,7 +217,6 @@ const scpRechteverwaltung_superAdmins =
                           .then(this.readFirst) 
                         )
                     )
-                    
                 }
 
             const prepareData =

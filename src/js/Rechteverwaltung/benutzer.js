@@ -17,8 +17,8 @@ const scpRechteverwaltung_benutzer =
                 () => (
                     { modus          : helper.fieldValue("benState")
                     , benID          : helper.fieldValue("benID")
-                    , manID          : helper.fieldValue("manID")
-                    , manGrpID       : helper.fieldValue("manGrpID")
+                    , manID          : helper.fieldValue("abManID")
+                    , manGrpID       : helper.fieldValue("abManGrpID")
                     , betrGrpID      : helper.fieldValue("betrGrpID")
                     , titel          : helper.fieldValue("titelBen")
                     , name           : helper.fieldValue("nameBen")
@@ -220,9 +220,7 @@ const scpRechteverwaltung_benutzer =
                         () =>
                         ( alert("erfolgreich gelöscht!")
                         , updateIndexedDB()
-                          .then( 
-                              readIntoFormFields( helper.fieldValue( "benIdx" ) ) 
-                          )
+                          .then( this.readFirst )
                         )
                     )
                 }

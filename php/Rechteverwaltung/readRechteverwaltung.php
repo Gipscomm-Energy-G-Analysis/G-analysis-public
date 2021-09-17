@@ -4,44 +4,106 @@ ini_set ( 'display_errors', 'On' ) ;
 
 require '../DbOperations.php' ;
 
-$conn = connectToDB( "gipscomm" ) ;
+abstract class POSITION
+    { const GipscommAdmin = "gipsAdm" ;
+      const SuperAdmin    = "sAdm" ;
+      const Admin         = "adm" ;
+      const Benutzer      = "ben" ;
+    }
 
-$query  = "SELECT gipsAdm_ID, username, betrGrp_ID, position, manGrp_ID, man_ID FROM gipscommAdmins " ;
-$query .= "WHERE deleted = 0 " ;
+define('conn', connectToDB( "gipscomm" )) ;
 
-$gipscommAdmins = queryDB( $conn, $query, "read" ) ;
+$gipscommAdmins   = "" ;
+$betreuerGruppen  = "" ;
+$superAdmins      = "" ;
+$mandantenGruppen = "" ;
+$admins           = "" ;
+$benutzer         = "" ;
 
-$query2  = "SELECT betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs FROM betreuerGruppen " ;
-$query2 .= "WHERE deleted = 0 " ;
+switch ($_POST["position"]) {
 
-$betreuerGruppen = queryDB( $conn, $query2, "read" ) ;
+    case POSITION::GipscommAdmin:
 
-$query3  = "SELECT sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechteTreeView, rechteMenu FROM superAdmins " ;
-$query3 .= "WHERE deleted = 0 " ;
+        $gipscommAdmins    = "SELECT gipsAdm_ID, username, betrGrp_ID, position, manGrp_ID, man_ID FROM gipscommAdmins " ;
+        $gipscommAdmins   .= "WHERE deleted = 0 " ;
 
-$superAdmins = queryDB( $conn, $query3, "read" ) ;
+        $betreuerGruppen   = "SELECT betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs FROM betreuerGruppen " ;
+        $betreuerGruppen  .= "WHERE deleted = 0 " ;
 
-$query4  = "SELECT manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs FROM mandantenGruppen " ;
-$query4 .= "WHERE deleted = 0 " ;
+        $superAdmins       = "SELECT sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechteTreeView, rechteMenu FROM superAdmins " ;
+        $superAdmins      .= "WHERE deleted = 0 " ;
 
-$mandantenGruppen = queryDB( $conn, $query4, "read" ) ;
+        $mandantenGruppen  = "SELECT manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs FROM mandantenGruppen " ;
+        $mandantenGruppen .= "WHERE deleted = 0 " ;
 
-$query5  = "SELECT adm_ID, manGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
-$query5 .= "WHERE deleted = 0 " ;
+        $admins            = "SELECT adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
+        $admins           .= "WHERE deleted = 0 " ;
 
-$admins = queryDB( $conn, $query5, "read" ) ;
+        $benutzer          = "SELECT ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
+        $benutzer         .= "WHERE deleted = 0 " ;
 
-$query6  = "SELECT ben_ID, manGrp_ID, man_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
-$query6 .= "WHERE deleted = 0 " ;
+        break;
 
-$benutzer = queryDB( $conn, $query6, "read" ) ;
+    case POSITION::SuperAdmin:
+
+        $betrGrpID = $_POST["betrGrpID"] ;
+
+        $betreuerGruppen   = "SELECT betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs FROM betreuerGruppen " ;
+        $betreuerGruppen  .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
+
+        $mandantenGruppen  = "SELECT manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs FROM mandantenGruppen " ;
+        $mandantenGruppen .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
+
+        $admins            = "SELECT adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
+        $admins           .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
+
+        $benutzer          = "SELECT ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
+        $benutzer         .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
+        
+        break;
+
+    case POSITION::Admin:
+    case POSITION::Benutzer:
+
+        $betrGrpID   = $_POST["betrGrpID"] ;
+        $manGrpID    = $_POST["manGrpID"] ;
+        $manID       = $_POST["manID"] ;
+        $manOrManGrp = "" ;
+
+        $betreuerGruppen  = "SELECT betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs FROM betreuerGruppen " ;
+        $betreuerGruppen .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
+
+        $admins    = "SELECT adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
+        $admins   .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
+
+        $benutzer  = "SELECT ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
+        $benutzer .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
+
+        break;
+}
+
+function runQuery($query) {
+
+    return queryDB( conn, $query, "read" ) ;
+}
+
+$queries =
+    [ $gipscommAdmins
+    , $betreuerGruppen
+    , $superAdmins
+    , $mandantenGruppen
+    , $admins
+    , $benutzer
+    ] ;
+
+$results = array_map('runQuery', $queries) ;
 
 echo json_encode(
-    [ "gipscommAdmins" => $gipscommAdmins
-    , "betreuerGruppen" => $betreuerGruppen
-    , "superAdmins" => $superAdmins
-    , "mandantenGruppen" => $mandantenGruppen
-    , "admins" => $admins
-    , "benutzer" => $benutzer
+    [ "gipscommAdmins"   => $results[0]
+    , "betreuerGruppen"  => $results[1]
+    , "superAdmins"      => $results[2]
+    , "mandantenGruppen" => $results[3]
+    , "admins"           => $results[4]
+    , "benutzer"         => $results[5]
     ] , JSON_INVALID_UTF8_IGNORE) ;
 ?>

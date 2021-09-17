@@ -54,6 +54,7 @@ const scpRechteverwaltung_mandantengruppen =
                 ajaxPost("php/Rechteverwaltung/Mandantengruppen/save.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
+                .then(() => $(".dataBetrGrpAdm").trigger("change"))
                 .then(
                     () =>
                     equal($("#betrGrpState").val())("new") ?
@@ -325,12 +326,20 @@ const scpRechteverwaltung_mandantengruppen =
                     }
                 })
             }
+            this.changeManManGrp = 
+                () =>  {
+                    const manManGrp = $(".manGrpPfad").val()
 
-            this.readinManManGrpDropBox =
-                () => {
-                    $(".manGrpPfad optgroup [label='Mandanten']").empty()
-
-
-                }     
+                    switch (head(manManGrp.split("-"))) {
+                        case "manGrp_ID":
+                            $("#abManGrpID").val(manManGrp.split("-")[1])
+                            $("#abManID").val(0)
+                            break;
+                        case "man_ID":
+                            $("#abManID").val(manManGrp.split("-")[1])
+                            $("#abManGrpID").val(0)
+                            break;
+                    }
+                }
         }
     )

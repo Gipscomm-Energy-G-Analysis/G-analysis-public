@@ -6,37 +6,44 @@ require '../../DbOperations.php' ;
 
 $conn = connectToDB("gipscomm") ;
 
-$modus          = $_POST['modus'] ;
-$manID          = $_POST['manID'] ;
-$manGrpID       = $_POST['manGrpID'] ;
-$titel          = $_POST['titel'] ;
-$name           = $_POST['name'] ;
-$vorname        = $_POST['vorname'] ;
-$email          = $_POST['email'] ;
-$telefon        = $_POST['telefon'] ;
-$fax            = $_POST['fax'] ;
-$mobiltelefon   = $_POST['mobiltelefon'] ;
-$username       = $_POST['username'] ;
-$passHash       = $_POST['passHash'] ;
+$modus = $_POST['modus'] ;
+$manID = $_POST['manID'] ;
+$manGrpID = $_POST['manGrpID'] ;
+$betrGrpID = $_POST['betrGrpID'] ;
+$titel = $_POST['titel'] ;
+$name = $_POST['name'] ;
+$vorname = $_POST['vorname'] ;
+$email = $_POST['email'] ;
+$telefon = $_POST['telefon'] ;
+$fax = $_POST['fax'] ;
+$mobiltelefon = $_POST['mobiltelefon'] ;
+$username = $_POST['username'] ;
+$passHash = $_POST['passHash'] ;
 $rechteTreeView = $_POST['rechteTreeView'] ;
 $rechteMenu     = $_POST['rechteMenu'] ;
 $betrGrpID      = $_POST['betrGrpID'] ;
 
 if($modus === "new") {
-   $query =  "INSERT INTO admins(manGrp_ID, betrGrp_ID, man_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
-   $query .= "VALUES($manGrpID, $betrGrpID, $manID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', '$rechteTreeView', '$rechteMenu', 0) " ;
+    if($manGrpID !== "0") {
+        $query =  "INSERT INTO admins(manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
+        $query .= "VALUES($manGrpID, 1, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', '$rechteTreeView', '$rechteMenu', 0) " ;
+    }
+    else {
+        $query =  "INSERT INTO admins(man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
+        $query .= "VALUES($manID, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'adm', '$rechteTreeView', '$rechteMenu', 0) " ; 
+    }
 }
 else {
     $admID = $_POST['admID'] ;
 
     if(trim($passHash) === "") {
         $query =  "UPDATE admins " ;
-        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;
+        $query .= "SET titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;
         $query .= "WHERE adm_ID = ".$admID." " ;
     }
     else {
         $query =  "UPDATE admins " ;
-        $query .= "SET manGrp_ID = '$manGrpID', man_ID = '$manID', titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu', passHash = '$passHash' " ;
+        $query .= "SET titel = '$titel', name = '$name', vorname = '$vorname', email = '$email', telefon = '$telefon', fax = '$fax', mobiltelefon = '$mobiltelefon', username = '$username', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu', passHash = '$passHash' " ;
         $query .= "WHERE adm_ID = ".$admID." " ;
     }
 }

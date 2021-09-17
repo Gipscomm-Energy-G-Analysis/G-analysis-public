@@ -8,9 +8,55 @@ const scpRechteverwaltung =
     freeze (
         new function () {
 
+            const POSITION =
+                { GipscommAdmin : "gipsAdm"
+                , SuperAdmin    : "sAdm"
+                , Admin         : "adm"
+                , Benutzer      : "ben"
+                }
+            
+            const readRechteverwaltung =
+                position => {
+
+                    const ajaxRechte = 
+                        ajaxPost("php/Rechteverwaltung/readRechteverwaltung.php")
+                    let betrGrpID
+                      , manGrpID
+                      , manID
+
+                    switch (position) {
+
+                        case POSITION.GipscommAdmin:
+                            return ajaxRechte({position})
+                            break;
+                        
+                        case POSITION.SuperAdmin:
+                            betrGrpID = itemSessionGet("betrGrp_ID")
+
+                            return ajaxRechte({position, betrGrpID})
+                            break;
+                        
+                        case POSITION.Admin:
+                            betrGrpID = itemSessionGet("betrGrp_ID")
+                            manGrpID  = itemSessionGet("manGrp_ID")
+                            manID     = itemSessionGet("man_ID")
+
+                            return ajaxRechte({position, betrGrpID, manGrpID, manID})
+                            break;
+                        
+                        case POSITION.Benutzer:
+                            betrGrpID = itemSessionGet("betrGrp_ID")
+                            manGrpID  = itemSessionGet("manGrp_ID")
+                            manID     = itemSessionGet("man_ID")
+
+                            return ajaxRechte({position, betrGrpID, manGrpID, manID})
+                            break;
+                    }
+                }
+
             this.populateIndexedDB =
                 () =>
-                ajaxPost("php/Rechteverwaltung/readRechteverwaltung.php")({})
+                readRechteverwaltung(itemSessionGet("position"))
                 .then(
                     result => 
                     [ "gipscommAdmins"
@@ -22,20 +68,9 @@ const scpRechteverwaltung =
                     ].forEach(scpIndexedDB.dataIntoIDB(result))   
                 )
 
-            const User = 
-                { GipscommAdmin : "gipsAdm"
-                , SuperAdmin    : "sAdm"
-                , Admin         : "adm"
-                , Benutzer      : "ben"
-                }
-
             const getRechteArray =
                 () =>
                 itemSessionGet("rechteMenu").split(",")
-
-            const getBetrGrpID = 
-                () =>
-                itemSessionGet("betrGrp_ID")
                 
             const remove =
                 id => 
@@ -50,23 +85,38 @@ const scpRechteverwaltung =
                 element =>
                 $(element).css("display", "none")
 
+            const setManManGrp =
+                manGrpID =>
+                manID =>
+                () =>
+                manGrpID !== "null" ?
+                $(".manGrpPfad").val(`manGrp_ID-${manGrpID}`) :
+                $(".manGrpPfad").val(`man_ID-${manID}`)
+
             const hideTabsAndMenus =
                 position => {
                     switch (position) {
 
-                        case User.GipscommAdmin:
+                        case POSITION.GipscommAdmin:
+
                             break;
 
-                        case User.SuperAdmin:
+                        case POSITION.SuperAdmin:
+
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
                             , "#sAdmMenuLi"
                             , ".hideBetrGrp"
                             ].forEach(hideElement)
+
+                            scpRechteverwaltung_betreuergruppen
+                            .readIntoFormFields(0)
+
                             break;
 
-                        case User.Admin:
+                        case POSITION.Admin:
+
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
@@ -76,33 +126,46 @@ const scpRechteverwaltung =
                             , "#admMenu"
                             , "#tabAdm"
                             , ".hideBetrGrp"
+                            , ".manGrpPfad"
+                            , "#hideManManGrpLbl"
                             ].forEach(hideElement)
+
+                            scpRechteverwaltung_betreuergruppen
+                            .readIntoFormFields(0)
+                            .then(
+                                setManManGrp(
+                                    itemSessionGet("manGrp_ID")
+                                )(
+                                    itemSessionGet("man_ID")
+                                )
+                            )
+
                             break;
                             
-                        case User.Benutzer:
+                        case POSITION.Benutzer:
                             hideElement("#rechtMenuLi")
+
+                            scpRechteverwaltung_betreuergruppen
+                            .readIntoFormFields(0)
                             break;
                     }
 
-                    if (!equal(position)(User.GipscommAdmin)) {
+                    if (!equal(position)(POSITION.GipscommAdmin)) {
                         removeMenus()
-
-                        scpRechteverwaltung_betreuergruppen
-                        .readIntoFormFieldsByID(getBetrGrpID())
                     }
                     else {
                         // Nothing
                     }
                     treeSAdm = scpTreeView.show("sAdmTreeview")
-                    treeAdm = scpTreeView.show("admTreeview")
-                    treeBen = scpTreeView.show("benTreeview")
+                    treeAdm  = scpTreeView.show("admTreeview")
+                    treeBen  = scpTreeView.show("benTreeview")
                 }
 
             const readInMandantenArgs =
                 position =>
-                equal(position)("sAdm") ?
-                [$("#betrGrpID").val(), null, null] :
-                equal(position)("adm") || equal(position)("ben") ?
+                equal(position)(POSITION.SuperAdmin) ?
+                [itemSessionGet("betrGrp_ID"), null, null] :
+                equal(position)(POSITION.Admin) || equal(position)(POSITION.Benutzer) ?
                 ($.isNumeric(sessionStorage.getItem("manGrp_ID")) ?
                 [null, "manGrp_ID", sessionStorage.getItem("manGrp_ID")] :
                 [null, "man_ID", sessionStorage.getItem("man_ID")]) :
@@ -122,6 +185,9 @@ const scpRechteverwaltung =
                 array($("a[data-menus]").length)()()
                 .map((_, i) => $("a[data-menus]").eq(i).attr("data-menus"))
 
+            const notBetreuergruppen =
+                a => a.text !== "Betreuergruppen"
+
             const menuItemText =
                 id => 
                 ( { id, text : $(`a[data-menus=${id}]`).text() } )
@@ -134,6 +200,7 @@ const scpRechteverwaltung =
                 () => 
                 getMenuIDs()
                 .map( menuItemText )
+                .filter( notBetreuergruppen )
             
             const Type =
                 { Mandant : 0
@@ -155,8 +222,8 @@ const scpRechteverwaltung =
 
             this.readIntoMandantGruppeDropbox =
                 async () => {
-                    const betrGrpManIDs = await scpRechteverwaltung_betreuergruppen.arrayBetrGrpManIDs()
-                    const mandanten = await scpUnternehmensstruktur_mandanten.queryMandantenWithIDs(betrGrpManIDs)
+                    const betrGrpManIDs    = await scpRechteverwaltung_betreuergruppen.arrayBetrGrpManIDs()
+                    const mandanten        = await scpUnternehmensstruktur_mandanten.queryMandantenWithIDs(betrGrpManIDs)
                     const mandantengruppen = await scpRechteverwaltung_mandantengruppen.queryMandantengruppenDataIDB()
 
                     $(".manGrpPfad").empty()
