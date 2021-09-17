@@ -85,6 +85,14 @@ const scpRechteverwaltung =
                 element =>
                 $(element).css("display", "none")
 
+            const setManManGrp =
+                manGrpID =>
+                manID =>
+                () =>
+                manGrpID !== "null" ?
+                $(".manGrpPfad").val(`manGrp_ID-${manGrpID}`) :
+                $(".manGrpPfad").val(`man_ID-${manID}`)
+
             const hideTabsAndMenus =
                 position => {
                     switch (position) {
@@ -102,6 +110,9 @@ const scpRechteverwaltung =
                             , ".hideBetrGrp"
                             ].forEach(hideElement)
 
+                            scpRechteverwaltung_betreuergruppen
+                            .readIntoFormFields(0)
+
                             break;
 
                         case POSITION.Admin:
@@ -115,22 +126,32 @@ const scpRechteverwaltung =
                             , "#admMenu"
                             , "#tabAdm"
                             , ".hideBetrGrp"
+                            , ".manGrpPfad"
+                            , "#hideManManGrpLbl"
                             ].forEach(hideElement)
 
-                            readManManGrp()
+                            scpRechteverwaltung_betreuergruppen
+                            .readIntoFormFields(0)
+                            .then(
+                                setManManGrp(
+                                    itemSessionGet("manGrp_ID")
+                                )(
+                                    itemSessionGet("man_ID")
+                                )
+                            )
 
                             break;
                             
                         case POSITION.Benutzer:
                             hideElement("#rechtMenuLi")
+
+                            scpRechteverwaltung_betreuergruppen
+                            .readIntoFormFields(0)
                             break;
                     }
 
                     if (!equal(position)(POSITION.GipscommAdmin)) {
                         removeMenus()
-
-                        scpRechteverwaltung_betreuergruppen
-                        .readIntoFormFields(0)
                     }
                     else {
                         // Nothing
@@ -139,20 +160,6 @@ const scpRechteverwaltung =
                     treeAdm  = scpTreeView.show("admTreeview")
                     treeBen  = scpTreeView.show("benTreeview")
                 }
-
-            const readManManGrp =
-                () => {
-                    const manGrpID = itemSessionGet("manGrp_ID")
-                    const manID    = itemSessionGet("man_ID")
-
-                    if (manGrpID !== null) {
-                        $(".manGrpPfad").val(`manGrp_ID-${manGrpID}`)
-                    }
-                    else {
-                        $(".manGrpPfad").val(`man_ID-${manID}`)
-                    }
-                }
-
 
             const readInMandantenArgs =
                 position =>

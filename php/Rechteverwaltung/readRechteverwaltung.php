@@ -73,20 +73,11 @@ switch ($_POST["position"]) {
         $betreuerGruppen  = "SELECT betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs FROM betreuerGruppen " ;
         $betreuerGruppen .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
 
-        if (empty($manGrpID)) {
-
-            $manOrManGrp = "AND man_ID = ".$manID ;
-        }
-        else {
-
-            $manOrManGrp = "AND manGrp_ID = ".$manGrpID ;
-        }
-
         $admins    = "SELECT adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu FROM admins " ;
-        $admins   .= "WHERE deleted = 0 ".$manOrManGrp ;
+        $admins   .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
 
         $benutzer  = "SELECT ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu FROM benutzer " ;
-        $benutzer .= "WHERE deleted = 0 ".$manOrManGrp ;
+        $benutzer .= "WHERE deleted = 0 AND betrGrp_ID = ".$betrGrpID ;
 
         break;
 }

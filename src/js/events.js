@@ -1721,8 +1721,6 @@ $(document).ready(function() {
     //
     $(".manGrpPfad").change(
         function() {
-            console.log("IN $('.manGrpPfad').change")
-
             $(".manGrpPfad").val(this.value)
             scpRechteverwaltung_mandantengruppen.changeManManGrp()
             scpRechteverwaltung_admins.readFirst()

@@ -181,78 +181,35 @@ const scpRechteverwaltung_betreuergruppen =
                 .then(fillMandantenTbl(tblMandantenBetrGrp))
 
             this.readIntoFormFields =
-                id => {
-                    queryDatasIDB()
-                    .then( 
-                        records => {
-                            return head(
-                                        records.map((rec, idx) => ({rec, idx}))
-                                        .filter( 
-                                            record => equal(record.rec.betrGrp_ID)(id)
-                                        )
-                                    )
-                        }
-                    )
-                    .then(
-                        record => {
+                idx => 
+                this.queryBetreuerGruppeDataIDB(idx)
+                .then(
+                    record => {
 
-                            $("#betrGrpIdx").val(record.idx)
-                            $("#betrGrpID").val(record.rec.betrGrp_ID)
-                            $("#firmaBetrGrp").val(record.rec.firma)
-                            $("#anzahlMitarbeiterBetrGrp").val(record.rec.anzahlMitarbeiter)
-                            $("#anschriftBetrGrp").val(record.rec.anschrift)
-                            $("#plzBetrGrp").val(record.rec.plz)
-                            $("#ortBetrGrp").val(record.rec.ort)
-                            $("#geschaeftsfuehrerBetrGrp").val(record.rec.geschaeftsfuehrer)
-                            $("#telefonBetrGrp").val(record.rec.telefon)
-                            $("#emailBetrGrp").val(record.rec.eMail)
-                            $("#notizBetrGrp").val(record.rec.notiz)
-                            $(".betrPfad").val(record.rec.firma)
-                            $(".dataBetrGrpAdm").val(record.rec.firma)
-                            $(".dataBetrGrpBen").val(record.rec.firma)
-                            readIntoMandantenTable(record.rec)
+                        $("#betrGrpIdx").val(idx)
+                        $("#betrGrpID").val(record.betrGrp_ID)
+                        $("#firmaBetrGrp").val(record.firma)
+                        $("#anzahlMitarbeiterBetrGrp").val(record.anzahlMitarbeiter)
+                        $("#anschriftBetrGrp").val(record.anschrift)
+                        $("#plzBetrGrp").val(record.plz)
+                        $("#ortBetrGrp").val(record.ort)
+                        $("#geschaeftsfuehrerBetrGrp").val(record.geschaeftsfuehrer)
+                        $("#telefonBetrGrp").val(record.telefon)
+                        $("#emailBetrGrp").val(record.eMail)
+                        $("#notizBetrGrp").val(record.notiz)
+                        $(".betrPfad").prop("selectedIndex", idx)
+                        $(".dataBetrGrpAdm").prop("selectedIndex", idx)
+                        $(".dataBetrGrpBen").prop("selectedIndex", idx)
+                        readIntoMandantenTable(record)
 
-                            helper.setState("betrGrp")("edit")
-                        }
-                    )
-                    .then(scpRechteverwaltung.readIntoMandantGruppeDropbox)
-                    .then(scpRechteverwaltung_superAdmins.readFirst)
-                    .then(scpRechteverwaltung_mandantengruppen.readFirst)
-                    .then(scpRechteverwaltung_admins.readFirst)
-                    .then(scpRechteverwaltung_benutzer.readFirst)
-                }
-
-            this.readIntoFormFields =
-                idx => {
-                    this.queryBetreuerGruppeDataIDB(idx)
-                    .then(
-                        record => {
-
-                            $("#betrGrpIdx").val(idx)
-                            $("#betrGrpID").val(record.betrGrp_ID)
-                            $("#firmaBetrGrp").val(record.firma)
-                            $("#anzahlMitarbeiterBetrGrp").val(record.anzahlMitarbeiter)
-                            $("#anschriftBetrGrp").val(record.anschrift)
-                            $("#plzBetrGrp").val(record.plz)
-                            $("#ortBetrGrp").val(record.ort)
-                            $("#geschaeftsfuehrerBetrGrp").val(record.geschaeftsfuehrer)
-                            $("#telefonBetrGrp").val(record.telefon)
-                            $("#emailBetrGrp").val(record.eMail)
-                            $("#notizBetrGrp").val(record.notiz)
-                            $(".betrPfad").prop("selectedIndex", idx)
-                            $(".dataBetrGrpAdm").prop("selectedIndex", idx)
-                            $(".dataBetrGrpBen").prop("selectedIndex", idx)
-                            readIntoMandantenTable(record)
-
-                            helper.setState("betrGrp")("edit")
-                        }
-                    )
-                    .then(scpRechteverwaltung.readIntoMandantGruppeDropbox)
-                    .then(scpRechteverwaltung_superAdmins.readFirst)
-                    .then(scpRechteverwaltung_mandantengruppen.readFirst)
-                    .then(scpRechteverwaltung_admins.readFirst)
-                    .then(scpRechteverwaltung_benutzer.readFirst)
-                }
+                        helper.setState("betrGrp")("edit")
+                    }
+                )
+                .then(scpRechteverwaltung.readIntoMandantGruppeDropbox)
+                .then(scpRechteverwaltung_superAdmins.readFirst)
+                .then(scpRechteverwaltung_mandantengruppen.readFirst)
+                .then(scpRechteverwaltung_admins.readFirst)
+                .then(scpRechteverwaltung_benutzer.readFirst)
 
             this.readFirst =
                 () =>
