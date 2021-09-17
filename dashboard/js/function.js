@@ -100,8 +100,6 @@ function getNumberRecordsMesurement(){
               var thVal =  $('#measurement_record_table table thead tr').children('th:eq(4)').text();
               if(thVal == '' || thVal == undefined){
                 $('#measurement_record_table table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
-              $('#measurement_record_table table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
-                $('#measurement_record_table table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
               }
               $('#measurement_record_table table thead tr').children('th:eq(3)').text('Total Units');
               $('#measurement_record_table table thead tr').children('th:eq(2)').text('Created Date');
