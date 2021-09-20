@@ -127,7 +127,11 @@ class dashboardControllerOperations {
 
             // $tile_html = $_REQUEST['tile_html'];
             $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other'  WHERE id = $id AND username ='$username' ";
-            // echo $updateQuery; die;
+            // echo '<pre>';
+            // echo htmlspecialchars($updateQuery);
+            // echo '</pre>';
+            // die;
+            
             $updateRecord = queryDB($conn, $updateQuery, "write");
             if($updateQuery){
                 return array('Staus' => 200 , 'Message' => 'Successfully Updated');

@@ -791,14 +791,14 @@ class dashboardController {
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
-                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                
-                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
+                                                <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
-                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px;'>
-                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                                 </div>
                                             </div>
                                             
@@ -827,14 +827,14 @@ class dashboardController {
                                     <div class='card-body overflow-hide display-flex'>
                                         <div id='' class=''>
                                             <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
-                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-tile logo-image-main-div'>
                                             
-                                            <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0 measurement-icon'></i>
+                                            <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
                                             </div>  
                                             <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
-                                                <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px'>
-                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                             </div>
                                         </div>
                                         
@@ -900,8 +900,8 @@ class dashboardController {
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
-                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px;'>
-                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                                 </div>
                                             </div>
                                             
@@ -935,8 +935,8 @@ class dashboardController {
                                             </div>  
                                             <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
-                                                <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px'>
-                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                             </div>
                                         </div>
                                         
@@ -989,14 +989,15 @@ class dashboardController {
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
-                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                
-                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
+                                                
+                                                <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
-                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$i_value' style='height: 20px; width: 20px; margin-right: 5px;'>
-                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                                 </div>
                                             </div>
                                             
