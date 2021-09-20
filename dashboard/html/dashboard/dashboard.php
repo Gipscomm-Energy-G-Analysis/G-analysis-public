@@ -40,6 +40,10 @@
           <!-- 20-8-2021-- -->
           <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
 
+          <!-- 7-9-2021- -->
+          <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
+          <input type="button" class="btn btn-success btn-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
+          <!-- --end-- -->
           <div class="modal fade" id="dashboard_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
@@ -73,6 +77,7 @@
                       <select class="form-control form-control-sm text-dark" id="type_data_tile">
                           <option value="table">Table</option>
                           <option value="chart">Chart</option>
+                          <option value="overall_count">Overall Count</option>
                       </select>
                     </div>
 
@@ -89,6 +94,14 @@
             </div>
           </div>
           <!-- end -->
+
+          <!-- 16-9-2021-- -->
+          <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <input type="button" draggable="true" ondragstart="drag(event)" id="drag2" width="88" height="31">
+          </div>
+
+          <div id="div2" class="row" style="height: 240px; border: 1px solid black;" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+          <!-----end-- -->
 
           <!-- 02-9-2021-- -->
           <!-- <button type="button" style="display: none" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile_chart" data-toggle="modal" data-target="#dashboard_tile_modal_chart">Add Chart</button> -->
@@ -114,6 +127,34 @@
                       <label for="measurement-width-chart" class="text-mute">Row</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Row">
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
+                    </div>
+
+                    <div class="form-group col-md-2">
+                      <label for="time_interval_chart" class="text-mute">Time Interval</label>
+                      <select class="form-control form-control-sm text-dark" id="time_interval_chart">
+                        <option value="1">Days</option>
+                        <option value="2">Weeks</option>
+                        <option value="3">Months</option>
+                        <option value="4">Years</option>
+                      </select>
+                    </div>
+                    
+                    
+                    <div class="form-group col-md-2" id="chart_record_div">
+                      <label for="chart_records" class="text-mute" id="chart_records_label"></label>
+                      <select class="form-control form-control-sm text-dark" id="chart_records">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2" id="chart_record_filter_div">
+                      <label for="chart_record_filter" class="text-mute">Filters</label>
+                      <select class="form-control form-control-sm text-dark" id="chart_record_filter">
+                        <option value=''>Select Filters</option>
+                        <option value="10">Last 10 Days Records</option>
+                        <option value="20">Last 20 Days Records</option>
+                        <option value="30">Last 30 Days Records</option>
+                        <option value="all">All Records</option>
+                      </select>
                     </div>
                   </div>
                   

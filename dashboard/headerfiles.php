@@ -19,5 +19,8 @@
   <link rel="shortcut icon" href="images/G-Analysis/favicon.png" />
 
   <link  rel="stylesheet" href="css/jquery.multiselect.css" />
+  <!-- 7-9-2021-- -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!-- --end -->
 </head>
 <body>

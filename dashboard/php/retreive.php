@@ -7,6 +7,7 @@ require '..\..\/php/DbOperations.php';
 
 $nameDB = $_POST['nameDB'];
 // $nameDB = 'g000_demo';
+session_start();
 $conn = connectToDB($nameDB);
 
 class dashboardController {
@@ -140,9 +141,16 @@ class dashboardController {
             $order_by_val = $_POST['measurement_order_by_val'];
             $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
+            $measurement_type = $_POST['measurement_type'];
             $dataMesaurement = '';
             $queryMaxVal = '';
             $pagesCount = '';
+            // <----14-9-2021---
+            if($measurement_type == "automatic"){
+                $this->getAutomaticTableMeasurementData();
+                die;
+            }
+            // --end-->
 
             if($order_by_val == 'order_by_desc'){
                 $order_by_val = "Order by cast(T2.val as int) desc ";
@@ -255,6 +263,13 @@ class dashboardController {
             $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
             $order_by_val = $_POST['measurement_order_by_val'];
+            $measurement_type = $_POST['measurement_type'];
+            // <---15-9-2021----
+            if($measurement_type == "automatic"){
+                $this->rowClickAutomaticMeasurementTableData();
+                die;
+            }
+            // --end--->
 
             $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
             $current_date = date('Y-m-d');
@@ -386,7 +401,7 @@ class dashboardController {
                 else if($queryMaxVal != '' && $queryMaxVal == $value['val']){
                     $style="style='background-color: #f77171'";
                 }
-                $tr .= "<tr $style $class_val data-mst=".$value['mst_ID']." data-type=".$value['intTp_ID'].">";
+                $tr .= "<tr $style $class_val data-mst=".$value['mst_ID']." data-type=".$value['intTp_ID']." data-table-other='false'>";
                 
                 $tr.= "<td>".$value['mstIMw']."</td>";
                 if($value['intTp_ID'] == "1"){
@@ -552,14 +567,15 @@ class dashboardController {
     function getTableFormatDashboard(){
         try{
             global $conn;
-            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' ";
+            $username = $_SESSION['username']; 
+            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             if($dataResult != '' && count($dataResult) > 0){
 
                 $records['data'] = $dataResult;
                 $records['total_record'] = count($dataResult);
                 $dataMeasurement = '';
-                if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == ''){
+                if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == '' && $dataResult[0]['tile_data_type'] == 'table' && $dataResult[0]['table_other'] == 'false'){
                     //Seacrh Record 
                     
                     $firstPostion =  strpos($dataResult[0]['query_data_records'],'%');
@@ -587,14 +603,17 @@ class dashboardController {
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
                 }
                 else{
-                    $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
-                    $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
-                    $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-                    $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
-                    $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+                    if($dataResult[0]['tile_data_type'] == 'table' && $dataResult[0]['table_other'] == 'false'){
+                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                        $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
+                        $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+                        $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
+                        $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
 
-                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                        echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                    }
                 }
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
                 die;
             }else{
                 $tr = "<thead>";
@@ -736,9 +755,10 @@ class dashboardController {
     public function generateHtmlMeasurementTiles(){
         try{
             global $conn;
+            $username = $_SESSION['username']; 
             $measurement_title =  $_POST['measurement_title'];
             $type =  $_POST['type'];
-            $getResult =  "SELECT * from tableFormat Where tile_data_type='table' ";
+            $getResult =  "SELECT * from tableFormat Where (tile_data_type='table' OR tile_data_type='overall_count')  AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
@@ -771,14 +791,14 @@ class dashboardController {
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
-                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                
-                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
+                                                <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
-                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px;'>
-                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                                 </div>
                                             </div>
                                             
@@ -807,14 +827,14 @@ class dashboardController {
                                     <div class='card-body overflow-hide display-flex'>
                                         <div id='' class=''>
                                             <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
-                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-tile logo-image-main-div'>
                                             
-                                            <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0 measurement-icon'></i>
+                                            <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
                                             </div>  
                                             <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
-                                                <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px'>
-                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                             </div>
                                         </div>
                                         
@@ -845,10 +865,11 @@ class dashboardController {
     public function getChartDataDashboard(){
         try{
             global $conn;
+            $username = $_SESSION['username']; 
             $measurement_title  = $_POST['measurement_title'];
             // $measurement_title  = "Test Chart";
 
-            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart'";
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
@@ -879,8 +900,8 @@ class dashboardController {
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
-                                                    <img src='images/edit.png' class='edit_val_chart edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px;'>
-                                                    <img src='images/delete.png' class='id_val_chart delete_btn_tile_chart' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                                 </div>
                                             </div>
                                             
@@ -914,8 +935,8 @@ class dashboardController {
                                             </div>  
                                             <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
-                                                <img src='images/edit.png' class='edit_val_chart edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 20px; width: 20px; margin-right: 5px'>
-                                                <img src='images/delete.png' class='id_val_chart delete_btn_tile_chart' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                             </div>
                                         </div>
                                         
@@ -942,32 +963,16 @@ class dashboardController {
 
     }
 
-    // <---27-8-2021--
-    public function deleteTile(){
-        try{
-            global $conn;
-            $id = $_REQUEST['id'];
-            $deleteQuery = "DELETE FROM tableFormat where id = $id ";
-            $dataResult = queryDB($conn, $deleteQuery, "write");
-             
-            if($dataResult){
-                return array('status'=>200,'msg'=>"Successful Deleted");
-            }
-            die;
-        }
-        catch(Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
-    }
-    // --end-->
+    
 
     // /<---Edit tile Functionality--
     public function getEditTiles(){
         try{
             global $conn;
+            $username = $_SESSION['username']; 
             $id = $_REQUEST['id'];
             $type = $_REQUEST['type'];
-            $getResult =  "SELECT * from tableFormat ";
+            $getResult =  "SELECT * from tableFormat where (tile_data_type ='table' OR tile_data_type='overall_count') AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
@@ -984,14 +989,15 @@ class dashboardController {
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
-                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                
-                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
+                                                
+                                                <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
-                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$i_value' style='height: 20px; width: 20px; margin-right: 5px;'>
-                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 20px; width: 20px;'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                                 </div>
                                             </div>
                                             
@@ -1030,8 +1036,9 @@ class dashboardController {
     public function getEditDataDashboard(){
         try{
             global $conn;
+            $username = $_SESSION['username']; 
             $id = $_REQUEST['id'];
-            $selectQuery = "SELECT * from tableFormat where id ='$id' ";
+            $selectQuery = "SELECT * from tableFormat where id ='$id' AND username = '$username' ";
             $records['data'] = queryDB($conn, $selectQuery, "read"); 
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE); 
             die;
@@ -1041,6 +1048,32 @@ class dashboardController {
         }
     }
     // --end-->
+
+    // <---03-9-2021---
+    public function getChartTimeIntervalRecord(){
+        try{
+            global $conn;
+            $time_interval = $_REQUEST['time_interval'];
+            $query1 = "SELECT T1.mstIMw,T1.mst_ID,T2.val,T1.iBdeType ";
+            $query1 .= "FROM produktionsAnlagenConfig as T1 ";
+            $query1 .= "INNER JOIN ";
+            $query1 .= "(SELECT T2.mst_ID as t2_mst_id , sum(cast(T2.val as int)) as val from masseneingabeSucheIMw as T2 ";
+            $query1 .= "group by T2.mst_ID) T2 ";
+            $query1 .= "ON T1.mst_ID = t2_mst_id ";
+            $query1  .= "where T1.iBdeType='2' ";
+            $query1 .= "AND T1.intTp_ID = '$time_interval' ";
+            $query1 .= "Order by T2.val  Desc ";
+            $data = queryDB($conn, $query1, "read");
+            echo json_encode($data,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
+
+    // ---end--->
     //Get Records Energy
     public function getNumberRecordsEnergy()
     {
@@ -1832,12 +1865,644 @@ class dashboardController {
 
 
         global $conn;
+        $username = $_SESSION['username']; 
         $id=$_POST['id'];
-        $getResult =  "SELECT * from tableFormat where id=".$id;
+        $getResult =  "SELECT * from tableFormat where id='$id' AND username = '$username' ";
 //        print_r($getResult);die;
         $dataResult = queryDB($conn, $getResult, "read");
         return array('data'=>$dataResult[0]);
     }
+
+
+    // <---09-8-2021---
+    public function getTileClickOverAllCount(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $mst_id = $_REQUEST['mst_id'];
+
+            $queryTableFormat = "Select * from tableFormat where id = $id ";
+            $getResult = queryDB($conn, $queryTableFormat, "read");
+            if($getResult[0]['table_other'] == "true"){
+               $this->getTileClickOverAllCountAutomatic();
+               die;
+            }
+
+            $queryTotalSum = "SELECT sum(cast(t2.val as int)) as total_value from produktionsAnlagenConfig  as t1 ";
+            $queryTotalSum .= "INNER JOIN masseneingabeSucheIMw as t2 ";
+            $queryTotalSum .= "ON t1.mst_ID = t2.mst_ID ";
+            $queryTotalSum .= "Where t1.mst_ID = $mst_id ";
+            $totalSum = queryDB($conn, $queryTotalSum, "read");
+            $totalSum = $totalSum[0]['total_value'] != null ?  $totalSum[0]['total_value'] : '';
+
+
+            $queryUnit = "SELECT unt_ID,mstIMw FROM produktionsAnlagenConfig where mst_ID = $mst_id ";
+            $resultUnit = queryDB($conn, $queryUnit, "read");
+            $record['name_value'] = $resultUnit[0]['mstIMw'];
+            // echo json_encode($resultUnit); die;
+            // Units Checks
+            $unit = '';
+            if($resultUnit != null){
+                if($resultUnit[0]['unt_ID'] == "1"){
+                    $unit = "Hrs.";
+                }
+                else if($resultUnit[0]['unt_ID'] == "2"){
+                    $unit = "kWh";
+                }
+                else if($resultUnit[0]['unt_ID'] == "3"){
+                    $unit = "m³";
+                }
+                else if($resultUnit[0]['unt_ID'] == "4"){
+
+                    $unit = "l";
+                }
+                else if($resultUnit[0]['unt_ID'] == "5"){
+                    $unit = "kg";
+                }
+            }
+
+            $total_name_merge='';
+            if($totalSum != '' && $resultUnit != null){
+                $total_name_merge = $totalSum.' '.$unit;
+            }
+            $record['total_sum'] = $total_name_merge;
+            $record['measurement_type'] = 'Mannual';
+            echo json_encode($record,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    // --end-->
+
+    public function getTableDashboardData(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $username = $_SESSION['username']; 
+            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' AND username = '$username' AND id = $id ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            if($dataResult != '' && count($dataResult) > 0){
+                $dataMeasurement = '';
+                if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == ''){
+                    //Seacrh Record 
+                    // echo json_encode($dataResult[0]['query_data_records']); die;
+                    $firstPostion =  strpos($dataResult[0]['query_data_records'],'%');
+                    $lastPostion = strripos($dataResult[0]['query_data_records'],'%');
+                    $subStr = "%";
+                    $attachment = "$";
+                    if($firstPostion != '' && $lastPostion != '')
+                    {
+                        // $firstPostionQuery = str_replace($subStr, $attachment.$subStr, $dataResult[0]['query_data_records']);
+                        //$firstPostionQuery = str_replace($dataResult[0]['query_data_records'],$attachment, $firstPostion,0);
+                        // $firstPostionQuery = substr_replace($dataResult[0]['query_data_records'],$attachment, $lastPostion,0);
+                        $firstPostionQuery= substr_replace($dataResult[0]['query_data_records'],$attachment,$firstPostion,1);
+                        // $firstPostionQuery = str_replace($subStr, $attachment, $dataResult[0]['query_data_records'],0);
+                        $firstPostionQuery=str_replace('%',"%'", $firstPostionQuery);
+                        $firstPostionQuery=str_replace('$',"'%", $firstPostionQuery);
+                        $dataMeasurement = queryDB($conn, $firstPostionQuery, "read");
+                    }
+                    else{
+                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                    }
+                    // <----15-9-2021---
+                    $dashboardMeasurementHtml = '';
+                    if($dataResult[0]['table_other'] == 'false'){
+                        $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement);
+                    }else{
+                        $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement);
+                    }
+                    // --end-->
+                    $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                }
+                else{
+                    if($dataResult[0]['tile_data_type'] == 'table'){
+                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                        $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
+                        $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+                        // <---15-9-2021---
+                        $dashboardMeasurementHtml = '';
+                        if($dataResult[0]['table_other'] == 'false'){
+                            $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
+                        }
+                        else{
+                            $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement,$queryMaxVal);
+                        }
+                        // --end---->
+                        $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+
+                        echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                    }
+                }
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                die;
+            }else{
+                $tr = "<thead>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Created Date</th>";
+                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Status</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+                $tr .= "<tbody><tr><td colspan='5' class='text-center'>No Data</td></tr></tbody>";
+                $records['dashboardMeasurementHtml'] = $tr;
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+            }
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+
+    public function getChartRecordFilter(){
+        try{
+            global $conn;
+            echo "String";
+            die;
+
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+
+    // <----14-9-2021---
+    public function getAutomaticTableMeasurementData(){
+        try{
+            global $conn;
+            $total_number_records = $_POST['total_number_records'];
+            $number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $time_interval = $_POST['time_interval'];
+            $order_by_val = $_POST['measurement_order_by_val'];
+            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
+            $measurement_type = $_POST['measurement_type'];
+            $dataMesaurement = '';
+            $queryMaxVal = '';
+            $pagesCount = '';
+
+            if($order_by_val == 'order_by_desc'){
+                $order_by_val = "Order by convert(decimal(38,5), T2.val) desc ";
+            }
+            else if($order_by_val == 'order_by_asc'){
+                $order_by_val = "Order by convert(decimal(38,5), T2.val) asc ";
+            }
+
+            $search_record = isset($_POST['search_record']) ? $_POST['search_record'] : '';
+            $queryTotalRecordCondition = "";
+            $queryMainCondition = '';
+            if($search_record != ''){
+                $queryTotalRecordCondition = "WHERE T1.nameMSt LIKE '%$search_record%' ";
+                $queryMainCondition = "WHERE T1.nameMSt LIKE '%$search_record%' ";
+            }
+
+            //Pagination Code
+            $queryTotalRecords = "SELECT TOP($total_number_records) * ";
+            $queryTotalRecords .= "FROM messstellen as T1 ";
+            $queryTotalRecords .= "INNER JOIN ";
+            $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            $queryTotalRecords .= "berechneteEnergiedaten as T2 ";
+            $queryTotalRecords .= "GROUP By T2.mst_id) ";
+            $queryTotalRecords .= "T2 ";
+            $queryTotalRecords .= "ON T1.mst_ID = T2.table_2_mst_id ";
+            $queryTotalRecords .= $queryTotalRecordCondition;
+            $queryTotalRecords .= $order_by_val;
+            // echo $queryTotalRecords; die;
+
+
+            $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            // echo json_encode($totalRecordsValue); die;s
+            
+            $pagesCount = '';
+            $offSetVal = 0;
+            if(count($totalRecordsValue) > 0){
+               if($total_number_records <= $number_records){
+                   $offSetVal = 0;
+                   $number_records = $total_number_records;
+                   $pagesCount = 1; 
+                   $page_val = 1;
+               }
+               else{
+
+                    if($selected_number_record_measurement == 'true'){
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $page_val = 1;
+                        $offSetVal = 0;
+
+                    }
+                    else{
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+                        
+                        //Only Valid when User Click on Last page
+                        if($page_val == $pagesCount){
+                            $number_records = $total_number_records - $offSetVal;
+                        }
+                    }
+                //    echo $number_records;s
+               }
+
+            }
+            $query1 = "SELECT * ";
+            $query1 .= "FROM messstellen as T1 ";
+            $query1 .= "INNER JOIN ";
+            $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            $query1 .= "berechneteEnergiedaten as T2 ";
+            $query1 .= "GROUP By T2.mst_id) ";
+            $query1 .= "T2 ";
+            $query1 .= "ON T1.mst_ID = T2.table_2_mst_id ";
+            $query1 .= $queryMainCondition;
+            $query1 .= $order_by_val;
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";  
+            // echo $query1; die; 
+            
+            $dataMesaurement = queryDB($conn, $query1, "read");
+            
+            $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement);
+
+            $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val,$pagesCount,$dataMesaurement);
+
+            // echo $pagination_html['paginationHTMl']; die;
+            //<---13-8-2021--
+            $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement');
+            $records['query_data'] = $ar;
+             // --end-->
+
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+
+    // <--15-9-2021
+    public function rowClickAutomaticMeasurementTableData(){
+        try{
+            global $conn;
+            $total_number_records = $_POST['total_number_records'];
+            $mst_id = $_POST['mst_id'];
+            $type = $_POST['data_type'];
+            $number_records = $_POST['number_records'];
+            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
+            $order_by_val = $_POST['measurement_order_by_val'];
+            $measurement_type = $_POST['measurement_type'];
+
+            $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
+            $current_date = date('Y-m-d');
+
+            if($order_by_val == 'order_by_desc'){
+                $order_by_val = "Order by convert(decimal(38,5), T1.Value) desc ";
+            }
+            else if($order_by_val == 'order_by_asc'){
+                $order_by_val = "Order by convert(decimal(38,5), T1.Value) asc ";
+            }
+
+            //Pagination Code 
+            $queryTotalPagination = "SELECT TOP($total_number_records) * ";
+            $queryTotalPagination .= "FROM berechneteEnergiedaten as T1 ";
+            $queryTotalPagination .= "INNER JOIN ";
+            $queryTotalPagination .= "messstellen as T2 ";
+            $queryTotalPagination .= "ON T1.mst_ID = T2.mst_Id ";
+            $queryTotalPagination .= "WHERE T1.mst_ID = '$mst_id' ";
+            $totalRecordsValue = queryDB($conn, $queryTotalPagination, "read");
+            
+            
+            $pagesCount = '';
+            $offSetVal = 0;
+            if(count($totalRecordsValue) > 0){
+               if($total_number_records <= $number_records){
+                    $offSetVal = 0;
+                    $number_records = $total_number_records;
+                    $pagesCount = 1; 
+                    $page_val = 1;
+               }
+               else{
+                    if($selected_number_record_measurement == 'true'){
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $page_val = 1;
+                        $offSetVal = 0;
+
+                    }
+                    else{ 
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+                        
+                        if($page_val == $pagesCount){
+                            $number_records = $total_number_records - $offSetVal;
+                        }
+                    }
+               } 
+
+            }
+
+            //--end-->
+            
+            $queryMaxValue = "SELECT TOP($total_number_records) max(convert(decimal(38,5), Value)) as val ";
+            $queryMaxValue .= "FROM berechneteEnergiedaten as T1 ";
+            $queryMaxValue .= "INNER JOIN ";
+            $queryMaxValue .= "messstellen as T2 ";
+            $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
+            $queryMaxValue .= "WHERE T1.mst_ID = '$mst_id' ";
+            // echo json_encode($queryMaxValue); die;
+            //<---15-8-2021
+            $queryMaximum = $queryMaxValue;
+            // --end-->
+            $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
+            $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+            
+
+            $query1 = "SELECT * ";
+            $query1 .= "FROM berechneteEnergiedaten as T1 ";
+            $query1 .= "INNER JOIN ";
+            $query1 .= "messstellen as T2 ";
+            $query1 .= "ON T1.mst_ID = T2.mst_ID ";
+            $query1 .= "Where T1.mst_ID = '$mst_id' ";
+            $query1 .= "$order_by_val ";
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+            $dataMesaurement = queryDB($conn, $query1, "read"); 
+            // echo json_encode($dataMesaurement); die;
+            
+
+            $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement,$queryMaxVal);
+            $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val,$pagesCount,$dataMesaurement,$type,$mst_id);
+            
+            // <--15-8-2021--
+            $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => $queryMaximum,'row_click' => 'true', 'type' => 'Measurement');
+            $records['query_data'] = $ar;
+            // --end-->
+           
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+
+           die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+
+    // <---2-8-2021--
+    public function generateHtmlAutomaticTableMeasurementData($dataMesaurement,$queryMaxVal = false){
+        global $conn;
+        $tr = '';
+        $col_span = "";
+        if($queryMaxVal == ""){
+            $col_span = "colspan='5'";
+        }
+        else if($queryMaxVal != ''){
+            $col_span = "colspan='4'";
+        }
+        if($dataMesaurement != '' && count($dataMesaurement) > 0){
+            foreach($dataMesaurement as $key => $value){
+                $style='';
+                $class_val = '';
+                $unit = '';
+                $mst_id = $value['mst_ID'];
+
+
+                $queryResult = '';
+                if($queryMaxVal == ''){
+                    $queryData = "SELECT Top(1) * from berechneteEnergiedaten where mst_ID = $mst_id order by Time desc ";
+                    $queryResult = queryDB($conn, $queryData, "read");
+                }
+                
+                
+                if($queryMaxVal == ""){
+                    $class_val = 'class="row_click"';
+                }
+                else if($queryMaxVal != '' && $queryMaxVal == $value['Value']){
+                    $style="style='background-color: #f77171'";
+                }
+                $tr .= "<tr $style $class_val data-mst=".$value['mst_ID']." data-type='1' data-table-other='true'>";
+                
+                $tr.= "<td>".$value['nameMSt']."</td>";
+               
+                if($queryMaxVal == '')
+                {
+                    $tr.= "<td>".$queryResult[0]['Time']."</td>";
+                    $tr.= "<td>".$queryResult[0]['ConvFactor']."</td>";
+                    $tr.= "<td>".$value['val']."</td>";
+                }
+                else{
+                    $tr.= "<td>".$value['Time']."</td>";
+                    $tr.= "<td>".$value['ConvFactor']."</td>";
+                    $tr.= "<td>".$value['Value']."</td>";
+                }
+                $tr.="</tr>";
+            }
+        }else{
+                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+        }
+        return $tr;
+        // $records['measurement_html'] = $tr;
+
+    }
+
+    public function generatePaginationHtmlAutomaticMeasurementData($page_val,$pagesCount,$dataMesaurement,$data_type = false ,$mst_id = false){
+        try{
+            //Pagination Code HTML
+            // echo $pagesCount; die;
+            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != ''){
+                $style_background = '';
+                $class_page_count_val = 'page_count_val';
+                $style_background_end = '';
+                $class_page_count_val_end = 'page_count_val';
+                // echo $page_val ; die;
+                if($page_val == "1"){
+                    $style_background = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val = '';
+                    if($pagesCount == "1"){
+                        $style_background_end = "style='background: #d6d6d6; color: black'";
+                        $class_page_count_val_end = '';  
+                    }
+                    
+                }
+                else if($page_val == $pagesCount){
+                    $style_background_end = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val_end = '';
+                }
+                else{
+                    $style_background = '';
+                    $style_background_end = '';
+                }
+                $paginationHTMl="<nav aria-label='Page navigation example'>
+                    <input type='hidden' id='row_click_table' data_type='$data_type' data_mst='$mst_id'>
+                    <div class='pagination_items'>
+                            <ul class='pagination'>
+                                <li class='page-item $class_page_count_val' data_type='$data_type' data_mst='$mst_id' id='previous_pagination_val'>
+                                    <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
+                                        <span aria-hidden='true'>&laquo;</span>
+                                        <span class='sr-only'>Previous</span>
+                                    </a>
+                                </li>";
+                                
+                for($i = 1; $i <= $pagesCount; $i++){
+                    $active = $i == $page_val ? 'active' : '';
+                    $hide_style='display: none';
+                    if($i == $page_val){
+                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
+                        $hide_style = 'display: block';
+                    }
+                    $paginationHTMl.="<li style='$hide_style' class='page-item  $active '><input type='number' class='active_background pagination_input_val page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
+
+                    if($i == $pagesCount){
+                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
+                        $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val' href='javascript:void(0);'>$i</a></li>";
+                    }
+                }
+                $paginationHTMl.="<li class='page-item $class_page_count_val_end' data_type='$data_type' data_mst='$mst_id' id='next_pagination_val'>
+                                        <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
+                                            <span aria-hidden='true'>&raquo;</span>
+                                            <span class='sr-only'>Next</span>
+                                        </a>
+                                    </li>";
+
+                //Pagination Select Tag   
+                
+                $paginationHTMl.="<li class ='page-item'>
+                                        <select class='page-link select_pagination' id='measurement_number_record' data_type='$data_type' data_mst='$mst_id'>
+                                            <option value='5'>5</option>
+                                            <option value='10'>10</option>
+                                            <option value='20'>20</option>
+                                            <option value='30'>30</option>
+                                            <option value='50'>50</option>
+                                        </select>
+                                    </li>
+                                    </ul>
+                                </div>
+                            </nav>";
+
+                //ScreenShot Code
+                $paginationHTMl.="<div id='save_table_format' class='text-center'>
+                                    <input type='button' id='modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                                </div>";            
+                return $paginationHTMl;
+                // $records['pagination_html'] = $paginationHTMl;
+            }
+
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
+
+    // <---15-9-2021---
+    public function dashboardMeasurementHtmlAutomatic($dataMeasurement,$queryMaxVal = false)
+    {
+        try{
+            global $conn;
+            $col_span = "";
+            $tr = "";
+            if($queryMaxVal == ""){
+                $col_span = "colspan='5'";
+                $tr = "<thead>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time</th>";
+                $tr .= "<th>Conv. Factor</th>";
+                $tr .= "<th>Value</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+            }
+            else if($queryMaxVal != ''){
+                $col_span = "colspan='4'";
+                $tr = "<thead style='background-color: #c5c8d2'>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time</th>";
+                $tr .= "<th>Conv. Factor</th>";
+                $tr .= "<th>Value</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+            }
+            if($dataMeasurement != '' && count($dataMeasurement) > 0){
+                $tr .= "<tbody>";
+                foreach($dataMeasurement as $key => $value){
+                    $unit = '';
+                    $style='';
+                    $mst_id = $value['mst_ID'];
+                    if($queryMaxVal != '' && $queryMaxVal == $value['Value']){
+                        $style="style='background-color: #f77171; padding: 8px !important; font-size: .875rem'";
+                    }
+                    
+                    $tr .= "<tr $style>";
+
+                    $queryResult = '';
+                    if($queryMaxVal == ''){
+                        $queryData = "SELECT Top(1) * from berechneteEnergiedaten where mst_ID = $mst_id order by Time desc ";
+                        $queryResult = queryDB($conn, $queryData, "read");
+                    }
+
+                    $tr.= "<td>".$value['nameMSt']."</td>";
+               
+                    if($queryMaxVal == '')
+                    {
+                        $tr.= "<td>".$queryResult[0]['Time']."</td>";
+                        $tr.= "<td>".$queryResult[0]['ConvFactor']."</td>";
+                        $tr.= "<td>".$value['val']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['Time']."</td>";
+                        $tr.= "<td>".$value['ConvFactor']."</td>";
+                        $tr.= "<td>".$value['Value']."</td>";
+                    }
+                    $tr.="</tr>";
+                }
+                $tr.= "</tbody>";
+            }else{
+                    $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+            }
+            return $tr;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+     // <---09-8-2021---
+     public function getTileClickOverAllCountAutomatic(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $mst_id = $_REQUEST['mst_id'];
+            $queryTotalSum = "SELECT sum(convert(decimal(38,5), Value)) as val from berechneteEnergiedaten  as t1 ";
+            $queryTotalSum .= "Where t1.mst_ID = $mst_id ";
+            $totalSum = queryDB($conn, $queryTotalSum, "read");
+            $totalSumVal = $totalSum[0]['val'] != null ?  $totalSum[0]['val'] : '';
+            
+            $queryName = "SELECT TOp(1) nameMSt from messstellen Where mst_ID = $mst_id ";
+            $queryNameVal = queryDB($conn, $queryName, "read");
+            $nameVal = $queryNameVal != null ?  $queryNameVal[0]['nameMSt'] : '';
+            
+            $record['name_value'] = $nameVal;
+            $record['total_sum'] = $totalSumVal;
+            $record['measurement_type'] = 'Automatic';
+            
+            echo json_encode($record,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    // --end-->
   
 }
 $obj = new dashboardController();

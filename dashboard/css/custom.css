@@ -216,7 +216,7 @@
     margin: -5px 568px 4px 3px;
 }
 #dashboard_count_div_tile .overflow-hide{
-    margin: -82px 20px 21px 22px;
+    margin: -105px 20px 21px 22px;
     padding: 0px 0px 0px 109px;
 }
 .hide_table_preview{
@@ -276,5 +276,79 @@
  }
 
  #dashboard_count_div_tile table{
-    margin-left: -58px;
+    /* margin-left: -58px; */
+    margin-left: -49px;
  }
+
+ #chart_records_label{
+     text-transform: capitalize;;
+ }
+
+ #chart_records{
+    text-transform: capitalize;;
+ }
+
+ #dashboard_tile_modal_chart .modal-body .row .form-group{
+    cursor: pointer !important;
+ }
+ 
+ #dashboard_tile_modal_chart .modal-body .row .dashboard_chart_tiles{
+    cursor: pointer;   
+ }
+
+ .record-name-overall-count{
+    margin-top: 0px;
+    font-size: x-large;
+    font-family: sans-serif
+ }
+
+ .hide_table_preview .text-overall-count,.hide_table_preview .record-name-overall-count{
+    display: none;
+}
+
+
+.hide_table_main .save_table_div_show_table h4{
+    /* display: none; */
+}
+#dashboard_count_div_tile .record-name-overall-count {
+    margin: 14px 0px 5px -37px;
+}
+
+#dashboard_count_div_tile .text-overall-count {
+    margin-left: -35px;
+}
+.count_result_tile{
+    text-transform: capitalize;
+}
+
+#dashboard_count_div_tile .card-body,.gernerated_measurement_modal_tiles .card-body,.dashboard_chart_tiles .card-body{
+    opacity: 0.8;
+}
+
+#dashboard_count_div_tile .card-body:hover,.gernerated_measurement_modal_tiles .card-body:hover,.dashboard_chart_tiles .card-body:hover{
+    opacity: 1;
+}
+
+#measurement_tile_heading_modal{
+    color: black !important;
+}
+.record-name-overall-count{
+    color: black !important;
+}
+
+.text-overall-count{
+    color: black !important;
+    font-family: sans-serif
+}
+
+.tile-image-icon-table{
+    height: 57px;
+    width: 55px;
+    margin: -17px 13px -12px 0px !important;
+}
+
+.tile-image-icon-count{
+    height: 62px;
+    width: 100px;
+    margin: -18px -1px -15px -30px !important;
+}

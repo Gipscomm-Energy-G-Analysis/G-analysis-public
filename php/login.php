@@ -22,6 +22,7 @@ $rCount = count($records);
 
 if ($rCount == 1) {
     $_SESSION["login_state"] = "true";
+    $_SESSION['username'] = $records[0]['username']; //<--6-9-2021---
     echo json_encode($records);
 }
 else {
