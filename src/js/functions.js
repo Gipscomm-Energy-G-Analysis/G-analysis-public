@@ -7078,9 +7078,9 @@ try {
                     , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
                     , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
                     , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
-                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
-                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
-                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , eegUmlage: containsNaN($("#eegERng").val()) ? 0 : formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: emptyString($("#eegUntERng").val()) ? 0 : formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: emptyString($("#eegUebERng").val()) ? 0 : formatNumber("deform", $("#eegUebERng").val())
                     , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
                     , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
                     , nevUnter: formatNumber("deform", $("#nevUntERng").val())
@@ -7102,9 +7102,7 @@ try {
                     }
 
                 ajaxPost("php/instanzIntoDb.php")(data)
-                .then(result => {
-                    alert(datensatzGespeichert(result))
-                })
+                .then(result => alert(datensatzGespeichert(result)))
             }
             else if ("intEngIMwSpeichern" == a) {
                 var x = "",
@@ -8286,9 +8284,9 @@ try {
                     , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
                     , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
                     , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
-                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
-                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
-                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , eegUmlage: containsNaN($("#eegERng").val()) ? 0 : formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: emptyString($("#eegUntERng").val()) ? 0 : formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: emptyString($("#eegUebERng").val()) ? 0 : formatNumber("deform", $("#eegUebERng").val())
                     , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
                     , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
                     , nevUnter: formatNumber("deform", $("#nevUntERng").val())
