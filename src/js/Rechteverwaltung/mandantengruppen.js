@@ -29,13 +29,13 @@ const scpRechteverwaltung_mandantengruppen =
 
             const getFormData =
                 () => (
-                    { modus : helper.fieldValue("manGrpState")
-                    , manGrpIdx : helper.fieldValue("manGrpIdx")
-                    , manGrpID : helper.fieldValue("manGrpID")
-                    , betrGrpID : helper.fieldValue("betrGrpID")
-                    , name : helper.fieldValue("nameManGrp")
-                    , kurz : helper.fieldValue("kurzManGrp")
-                    , notiz : helper.fieldValue("notizManGrp")
+                    { modus        : helper.fieldValue("manGrpState")
+                    , manGrpIdx    : helper.fieldValue("manGrpIdx")
+                    , manGrpID     : helper.fieldValue("manGrpID")
+                    , betrGrpID    : helper.fieldValue("betrGrpID")
+                    , name         : helper.fieldValue("nameManGrp")
+                    , kurz         : helper.fieldValue("kurzManGrp")
+                    , notiz        : helper.fieldValue("notizManGrp")
                     , mandantenIDs : getManIDs()
                     }
                 )
