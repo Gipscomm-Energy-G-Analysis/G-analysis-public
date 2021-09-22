@@ -568,7 +568,7 @@ class dashboardController {
         try{
             global $conn;
             $username = $_SESSION['username']; 
-            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' AND username = '$username' ";
+            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' AND username = '$username' order by priority asc";
             $dataResult = queryDB($conn, $getResult, "read");
             if($dataResult != '' && count($dataResult) > 0){
 

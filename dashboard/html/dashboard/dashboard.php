@@ -40,6 +40,8 @@
           <!-- 20-8-2021-- -->
           <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
 
+          <button type="button" class="btn btn-success btn-sm mb-3" style="display: none" id="save_position_tile">Save Tile</button>
+
           <!-- 7-9-2021- -->
           <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
           <input type="button" class="btn btn-success btn-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
@@ -98,9 +100,9 @@
           <!-- 16-9-2021-- -->
           <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
             <input type="button" draggable="true" ondragstart="drag(event)" id="drag2" width="88" height="31">
-          </div>
+          </div> -->
 
-          <div id="div2" class="row" style="height: 240px; border: 1px solid black;" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+          <!-- <div id="div2" class="row dashboard_count_div" style="height: 240px; border: 1px solid black;" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
           <!-----end-- -->
 
           <!-- 02-9-2021-- -->
@@ -178,8 +180,18 @@
           </div>
           <!-- --end- -->
 
+          <!-- <div draggable="true" class="box">A</div>
+              <div draggable="true" class="box">B</div>
+              <div draggable="true" class="box">C</div> -->
 
-          <div class="row dashboard_count_div" id="dashboard_count_div_tile">
+            <!-- 21-9-2021--- -->
+            <input type="hidden" id="start_tile_data">
+            <input type="hidden" id="drop_tile_data">
+
+            <!-- --end -->
+
+
+          <div class="row dashboard_count_div"  id="dashboard_count_div_tile">
             <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">

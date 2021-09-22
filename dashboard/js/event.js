@@ -637,7 +637,7 @@ $(document).ready( function(){
             $('.dashboard_count_div .stretch-card').css('height',145);
             $('.dashboard_count_div .stretch-card').css('width',285);
 
-            $('.dashboard_count_div .stretch-card').addClass('col-md-3');
+            $('.dashboard_count_div .movetile').addClass('col-md-3');
             $('.dashboard_count_div .stretch-card .card-body').addClass('row');
             $('.dashboard_count_div .stretch-card .card-body div:first-child').addClass('col-md-12');
 
@@ -855,6 +855,21 @@ $(document).ready( function(){
         //     $('#mesurement_select_table_entries').html(tr);
         // }
     })
+
+    // <---21-9-2021---
+    $(document).on('click','#save_position_tile', function(){
+        let tilelength = $('#dashboard_count_div_tile .stretch-card').length;
+        if(tilelength > 0){
+            var ar = [];
+            $('#dashboard_count_div_tile .stretch-card').each(function(i,val){
+                var id = $(this).attr('class');
+                id_val =id.split(" ")[0];
+                ar.push({'id': id_val , 'position' : i});
+            });
+            saveDashboardTilePosititon(ar);
+        }
+    });
+    // ---end-->
 
 
     // $(document).on('click','#dashboard_drag_btn', function(){

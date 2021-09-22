@@ -254,6 +254,29 @@ class dashboardControllerOperations {
         }
     }
 
+    public function saveDashboardTilePosititon(){
+        try{
+            global $conn; 
+            $data = json_decode($_POST['data'],JSON_INVALID_UTF8_IGNORE);
+            $username = $_SESSION['username']; 
+            $updateRecord = '';
+            if(!empty($data) && count($data) > 0){
+                foreach($data as $key){
+                    $id =  $key['id'];
+                    $positon = $key['position'];
+                    $queryUpdate = "UPDATE tableFormat set priority = $positon where id = $id AND username = '$username' ";
+                    $updateRecord = queryDB($conn, $queryUpdate, "write");
+                    
+                }
+                return array('Staus' => 200 , 'Message' => 'Successfully Updated');
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
 }
 
 $obj = new dashboardControllerOperations();

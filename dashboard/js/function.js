@@ -538,9 +538,12 @@ function getTableFormatDashboard(){
     },
     success: function(a) {
       if(a['data'] != '' && a['data'] != null){
+        
         $('.dashboard_count_div').html('');
         var arHtml = '';
+      
         a['data'].forEach(value => {
+
             if(value['type'] == "Measurement"){
               $('#measuremet_dashboard_tile_title').text(value['tile_title']);
               $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
@@ -559,13 +562,130 @@ function getTableFormatDashboard(){
           // <---1-9-2021---
 
           // --end-->
+          arHtml+='<div class="movetile col-md-3">';
           arHtml +=value['tile_html'];
+          arHtml+='</div>';
           
         });
         $('#dashboard_count_div_tile').html(arHtml);
         $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
 
-        $('#dashboard_count_div_tile .stretch-card').draggable(); //<---8-9-2021---
+        $('#dashboard_count_div_tile .stretch-card').removeClass('col-md-3');
+        $('#save_position_tile').show();
+
+        //$('#dashboard_count_div_tile .stretch-card').draggable(); //<---8-9-2021---
+
+        //  <----21-9-2021---
+        $('#dashboard_count_div_tile .movetile').attr('draggable','true');
+        var dragSrcEl = null;
+        function handleDragStart(e) {
+          $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
+          this.style.opacity = '0.4';
+          
+          dragSrcEl = this;
+      
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/html', this.innerHTML);
+          
+          var class_data =$(this).attr('class');
+          var data_i = $(this).attr('data-i');
+          $('#start_tile_data').attr('data-id',this.id);
+          $('#start_tile_data').attr('data-class',class_data);
+          $('#start_tile_data').attr('data-i',data_i);
+
+        }
+      
+        function handleDragOver(e) {
+          
+          if (e.preventDefault) {
+            e.preventDefault();
+          }
+      
+          e.dataTransfer.dropEffect = 'move';
+          
+          return false;
+        }
+      
+        function handleDragEnter(e) {
+          this.classList.add('over');
+        }
+      
+        function handleDragLeave(e) {
+          this.classList.remove('over');
+          
+          // console.log('Leae',this.id);
+          var class_data =$(this).attr('class');
+          var data_i = $(this).attr('data-i');
+          $('#drop_tile_data').attr('data-id',this.id);
+          $('#drop_tile_data').attr('data-class',class_data);
+          $('#drop_tile_data').attr('data-i',data_i);
+
+         
+        
+        // --end-->
+        }
+      
+        function handleDrop(e) {
+          if (e.stopPropagation) {
+            e.stopPropagation(); // stops the browser from redirecting.
+          }
+          
+          if (dragSrcEl != this) {
+            dragSrcEl.innerHTML = this.innerHTML;
+            this.innerHTML = e.dataTransfer.getData('text/html');
+          }
+          
+          return false;
+        }
+      
+        function handleDragEnd(e) {
+          this.style.opacity = '1';
+          
+          items.forEach(function (item) {
+            item.classList.remove('over');
+          });
+
+           //Start
+          // setTimeout(()=>{
+            var class_val_start = $('#start_tile_data').attr('data-class');
+            var i_val_start = $('#start_tile_data').attr('data-i');
+            var id_val_start = $('#start_tile_data').attr('data-id');
+
+            var class_val_drop = $('#drop_tile_data').attr('data-class');
+            var i_val_drop = $('#drop_tile_data').attr('data-i');
+            var id_val_drop = $('#drop_tile_data').attr('data-id');
+            
+            if(class_val_start != undefined && class_val_drop != undefined && class_val_start != class_val_drop){
+               
+                // $('#'+id_val_start).attr('class',class_val_drop);
+                // $('#'+id_val_start).attr('data-i',i_val_drop);
+                // // $('#'+id_val_start).attr('id',id_val_drop);
+                // // $('.'+class_val_drop).attr('id',id_val_drop);
+
+                // $('#'+id_val_drop).attr('class',class_val_start);
+                // $('#'+id_val_drop).attr('data-i',i_val_start);
+                // // $('#'+id_val_drop).attr('id',id_val_start);
+                // // $('.'+class_val_start).attr('id',id_val_start);
+                
+                // $('#'+id_val_start).addClass('hide_table_main ');
+                // $('#'+id_val_drop).addClass('hide_table_main ');
+            }
+
+          // },1500);
+        }
+        
+        
+        let items = document.querySelectorAll('#dashboard_count_div_tile .movetile');
+        items.forEach(function(item) {
+          item.addEventListener('dragstart', handleDragStart, false);
+          item.addEventListener('dragenter', handleDragEnter, false);
+          item.addEventListener('dragover', handleDragOver, false);
+          item.addEventListener('dragleave', handleDragLeave, false);
+          item.addEventListener('drop', handleDrop, false);
+          item.addEventListener('dragend', handleDragEnd, false);
+        });
+
+        
         // $('#dashboard_count_div_tile .count_result_tile').text(a['total_record']+' Records');
         // $('#dashboard_count_div_tile .action-modal-button-div').removeClass('col-md-12');
                 // $('#dashboard_count_div_tile .stretch-card').css('height',145);
@@ -1155,6 +1275,10 @@ setTimeout(function () {
     // <---03-9-2021--
     $('.'+id+'.tiles-click .card-body div:first-child').removeClass('col-md-12');
     // --end--->
+
+    // <---22-9-2021---
+    $('.'+id+'.tiles-click').parent('div').removeClass('col-md-3');
+    // ---end-->
 },1000);
 
 })
@@ -1744,20 +1868,64 @@ function updateTileRecordOverallCount()
 }
 // --end-->
 
+// <----22-9-2021---
+function saveDashboardTilePosititon(ar){
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "saveDashboardTilePosititon",
+        nameDB: $("#nameDashboardDB").val(),
+        data:JSON.stringify(ar),
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      
+    }
+  });
+}
+// --end-->
+
 // <---16-9-2021---
 // function allowDrop(ev) {
+//   var classVal = $(ev.path[0]).attr('class');
+//   // console.log(classVal);
+//   // if(classVal == 'row dashboard_count_div')
+//   // {
+//   //   ev.preventDefault();
+//   // }
 //   ev.preventDefault();
+//   // var position = ev.position();
+//   // var id = $(ev.srcElement.firstElementChild.id);
 // }
 
 // function drag(ev) {
+//   // console.log(ev.target.id);
+//   console.log(ev);
 //   ev.dataTransfer.setData("text", ev.target.id);
 // }
 
 // function drop(ev) {
 //   ev.preventDefault();
+//   // console.log(ev.target);
 //   var data = ev.dataTransfer.getData("text");
+//   console.log('Data Value',ev.target.appendChild(document.getElementById(data)));
 //   ev.target.appendChild(document.getElementById(data));
+
 // }
+// --end-->
+
+// <----21-9-2021---
+
+  // document.addEventListener('DOMContentLoaded', (event) => {
+    
+  // });
+
+
 // --end-->
 
 
