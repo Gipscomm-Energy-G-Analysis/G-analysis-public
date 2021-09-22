@@ -1884,6 +1884,10 @@ function saveDashboardTilePosititon(ar){
         alert("failed!!")
     },
     success: function(a) {
+      if(a['Staus'] == 200)
+      {
+        alert('Successfully Saved');
+      }
       
     }
   });
