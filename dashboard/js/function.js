@@ -580,7 +580,7 @@ function getTableFormatDashboard(){
         var dragSrcEl = null;
         function handleDragStart(e) {
           $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
-          this.style.opacity = '0.4';
+          this.style.opacity = '1.0';
           
           dragSrcEl = this;
       

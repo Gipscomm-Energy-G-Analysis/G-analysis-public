@@ -311,7 +311,7 @@
     /* display: none; */
 }
 #dashboard_count_div_tile .record-name-overall-count {
-    margin: 14px 0px 5px -37px;
+    margin: -3px 0px 5px -37px;
 }
 
 #dashboard_count_div_tile .text-overall-count {
