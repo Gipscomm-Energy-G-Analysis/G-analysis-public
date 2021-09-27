@@ -54,11 +54,26 @@
                   <div class="column">
                     <h3>Berichte</h3>
                     <a href="#">ISO</a>
-                    <a href="#">Berichte</a>
+                    <div class="sub_menu_open">
+                      <span> Berichte </span>
+                      <i class="ti-angle-down"></i>
+                      <div class="sub_menu_1_div">
+                        <a href="#" class="dashboard_sub_menu_1">SpaEfV_Tabelle_1</a>
+                        <a href="#" class="dashboard_sub_menu_1">SpaEfV_Tabelle_2</a>
+                      </div>
+                    </div>
                   </div>
                   <div class="column">
                     <h3>Diagramme</h3>
-                    <a href="#">Neu erstellen</a>
+                    <div class="sub_menu_open">
+                      <span>Neu erstellen</span>
+                      <i class="ti-angle-down"></i>
+                      <div class="sub_menu_1_div">
+                        <a href="#" class="dashboard_sub_menu_1">Messstellenvergleich</a>
+                        <a href="#" class="dashboard_sub_menu_1">Zeitvergleich</a>
+                        <a href="#" class="dashboard_sub_menu_1">Kennzahlendarstellung</a>
+                      </div>
+                    </div>
                     <a href="#">Gespeichertes Laden</a>
                   </div>
                   <div class="column">
