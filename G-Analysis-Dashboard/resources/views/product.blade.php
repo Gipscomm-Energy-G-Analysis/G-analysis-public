@@ -591,14 +591,14 @@
                 <div class="modal-body">
                     <section class="content">
                         <div class="row">
-                            <div class="col-md-12">
-                              <div class="form-group">
+                            <div class="col-md-12 machine_column_div">
+                              <div class="form-group machine_column_div">
                                 <label>Select Machine Table Column</label>
                                 <select class="form-control duallistbox" multiple="multiple">
                                 </select>
                               </div>
-                              <div class="popup">
-                                <div class="col-sm-3" style="margin-right:5px;float:right;">
+                              <div class="popup machine_column_div">
+                                <div class="col-sm-3" style="margin-right:5px;float:right;margin-bottom: 10px;">
                                     <button type="button" class="btn btn-block btn-primary" id="save_table_configuration_button">Save Configrations</button>
                                 </div>
                             </div>

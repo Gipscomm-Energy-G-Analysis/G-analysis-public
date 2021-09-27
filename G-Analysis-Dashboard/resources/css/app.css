@@ -35,6 +35,10 @@ color: black !important;
     background-color: #6B6F73 !important;
   }
 
+  .machine_column_div {
+    background-color: #6B6F73 !important;
+  }
+  
   .card-body {
     background-color: #CED6DE !important;
   }
@@ -45,4 +49,8 @@ color: black !important;
 
   .mode_css_second div div label {
       color:white;
+  }
+
+  .btn-outline-secondary {
+    color:white !important;
   }
