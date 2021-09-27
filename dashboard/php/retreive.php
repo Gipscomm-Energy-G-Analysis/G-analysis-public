@@ -793,7 +793,7 @@ class dashboardController {
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                
-                                                <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
@@ -829,7 +829,7 @@ class dashboardController {
                                             <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-tile logo-image-main-div'>
                                             
-                                            <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                            <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
                                             </div>  
                                             <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
@@ -992,7 +992,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                
                                                 
-                                                <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>

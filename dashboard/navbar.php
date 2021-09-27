@@ -89,7 +89,78 @@
 
 
 
-          <li><a href="#" class="text-muted menu_dashboard font-weight-bold">Stammdaten</a></li>
+          <!-- 27-9-2021- -->
+          <li>
+            <div class="dropdown">
+              <button class="dropbtn text-muted menu_dashboard font-weight-bold">Stammdaten 
+                <!-- <i class="fa fa-caret-down"></i> -->
+              </button>
+              <div class="dropdown-content">
+                <!-- <div class="header">
+                  <h2>Mega Menu</h2>
+                </div>    -->
+                <div class="row">
+                  <div class="column">
+                    <h3>Rechteverwaltung</h3>
+                    <a href="#">Betreuergruppen</a>
+                    <a href="#">Mandantengruppen</a>
+                    <a href="#">Superadmins</a>
+                    <a href="#">Admins</a>
+                    <a href="#">Benutzer</a>
+                  </div>
+            
+                  <div class="column">
+                    <h3>Unternehmensstruktur</h3>
+                    <a href="#">Mandanten</a>
+                    <a href="#">Organisationen</a>
+                    <a href="#">Liegenschaften</a>
+                    <a href="#">Vers.Bereiche</a>
+                    <a href="#">Messstellen-E</a>
+                    <a href="#">Messstellen-B</a>
+                    <a href="#">Standorte</a>
+                    <a href="#">Standortdaten 3.</a>
+                  </div>
+
+                  <div class="column">
+                    <h3>Anlagenverwaltung</h3>
+                    <a href="#">Anlagen</a>
+                    <a href="#">Organisationen</a>
+                    <a href="#">Energieversorgung</a>
+                    <a href="#">weitere Konfiguration</a>
+                    <a href="#">Dokumente</a>
+                    <a href="#">Messstellen-B</a>
+                    <a href="#">Historie</a>
+                  </div>
+
+                  <div class="column">
+                    <h3>Messmittelverwaltung</h3>
+                  </div>
+                  
+                  <div class="column">
+                    <h3>Produkteverwaltung</h3>
+                    <a href="#">Produkte</a>
+                    <a href="#">weitere Konfiguration</a>
+                    <a href="#">Historie</a>
+                  </div>
+                  
+                  <div class="column">
+                    <h3>Kennzahlen/Alarme</h3>
+                    <a href="#">Kennzahlen</a>
+                    <a href="#">Alarme</a>
+                  </div>
+                  
+                  <div class="column">
+                    <h3>Editor</h3>
+                    <a href="#">Berechnungsformeln</a>
+                    <a href="#">Vorlagenformeln</a>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </li>
+          <!-- --end-- -->
+
           <li><a href="#" class="text-muted menu_dashboard font-weight-bold">Manuell</a></li>
           <li><a href="#" class="text-muted menu_dashboard font-weight-bold">Optionen</a></li>
           <li><a href="#" class="text-muted menu_dashboard font-weight-bold">Hilfe</a></li>
