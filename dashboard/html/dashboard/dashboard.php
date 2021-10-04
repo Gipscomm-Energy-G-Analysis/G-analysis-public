@@ -172,7 +172,7 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                   <!-- <div id="save_btn_tile_div"> -->
-                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Save & Proceed">
+                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" disabled class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Save & Proceed">
                     <!-- </div> -->
                 </div>
               </div>
@@ -404,6 +404,35 @@
           </div>
           <!-- --end-- -->
         </div>
+        <!-- <canvas id="areaChart"></canvas> -->
+        <!-- 30-9-2021- -->
+        <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div>  -->
+        <!-- <div style="height: 500px; width: 570px;" class="3 grid-margin actual_tile_height stretch-card tiles-click" id="measurement_count_tile_modal_3" data-i="3" data-type-tile="Measurement">
+                                    <div class="card card-border">
+                                        <div class="card-body">
+                                            <div id="" class="">
+                                                <p class="card-title text-md-center text-xl-left" id="measurement_tile_heading_modal">Tile Table</p>
+                                                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div">
+                                               
+                                                <img src="images/table_logo.png" class="tile-image-icon tile-image-icon-table">
+                                                </div>  
+                                                <p class="mb-0 mt-2 text-success count_result_tile">5 Records</p>
+                                                <div class="action-modal-button-div">
+                                                    <img src="images/edit.png" class="3 edit_val edit_btn_tile" data-type-tile="Measurement" data-i-value="3" style="height: 17px; width: 17px; margin-right: 5px;">
+                                                    <img src="images/delete.png" class="3 id_val delete_btn_tile" data-type-tile="Measurement" style="height: 17px; width: 17px;">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="overflow-hide ml-3">
+                                                <div class="save_table_div_show_table"> 
+                                                  <canvas id="areaChart"></canvas>
+                                                  <div id="chartContainer" style="height: 145px; width: 570px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+        <!-- end -->
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">

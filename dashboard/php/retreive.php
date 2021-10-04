@@ -5,7 +5,7 @@ ini_set ('display_errors', 'On');
 
 require '..\..\/php/DbOperations.php';
 
-$nameDB = $_POST['nameDB'];
+$nameDB = isset($_POST['nameDB']) ? $_POST['nameDB'] : '';
 // $nameDB = 'g000_demo';
 session_start();
 $conn = connectToDB($nameDB);
@@ -14,6 +14,20 @@ class dashboardController {
     public function __construct() {
         $action = $_REQUEST['action'];
         echo json_encode($this->$action());
+    }
+    public function getDatabaseList(){
+        try{
+            global $conn;
+            $query = "SELECT * FROM mandanten " ;
+            $query .= "ORDER BY nameMan " ;
+
+            $records = queryDB ( $conn, $query, "read") ;
+            echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
     }
     public function getCountDashBoard()
     {
@@ -793,7 +807,7 @@ class dashboardController {
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                
-                                                <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
@@ -829,7 +843,7 @@ class dashboardController {
                                             <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-tile logo-image-main-div'>
                                             
-                                            <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                            <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
                                             </div>  
                                             <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
@@ -889,7 +903,7 @@ class dashboardController {
                          
                         $measurement_title = $_POST['measurement_title'];;
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$last_id'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
@@ -907,7 +921,7 @@ class dashboardController {
                                             
                                             <div class='overflow-hide ml-3 chart-width'>
                                                 <div class='save_table_div_show_table'> 
-                                                    <canvas class='sales-class-chart' id='sales-chart'></canvas>                       
+                                                    <canvas class='sales-class-chart' id='areaChart'></canvas>                       
                                                 </div>
                                             </div>
                                         </div>
@@ -923,7 +937,7 @@ class dashboardController {
                 
             }
             else{
-                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                 <input type='hidden' id='total_records_chart' value='$last_id'>                
                                 <div class='card card-border'>
                                     <div class='card-body overflow-hide display-flex'>
@@ -942,7 +956,7 @@ class dashboardController {
                                         
                                         <div class='overflow-hide ml-3 chart-width'>
                                             <div class='save_table_div_show_table'> 
-                                                <canvas class='sales-class-chart' id='sales-chart'></canvas>
+                                                <canvas class='sales-class-chart' id='areaChart'></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -992,7 +1006,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                
                                                 
-                                                <img src='images/table_logo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
@@ -2023,7 +2037,116 @@ class dashboardController {
     public function getChartRecordFilter(){
         try{
             global $conn;
-            echo "String";
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $filter_val = $_POST['filterVal'];
+            $type = $_POST['type'];
+            $mst_id = $_POST['mst_id'];
+            if($record_type_of_tile == 'measurement')
+            {
+                if($filter_val == 10){
+                    $ar_days = [];
+                    $ar_value = [];
+                    for($i = 1; $i <= 10; $i++){
+                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                        $query .= "(SELECT id From masseneingabeSucheIMw ";
+                        $query .= "WHERE mst_ID = '$mst_id' ";
+                        $query .= "ORDER by id DESC ";
+                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                        $result = queryDB($conn, $query, "read");
+                        if($result[0]['val'] != null){
+                            array_push($ar_value, $result[0]['val']);
+                        }
+                        
+                        array_push($ar_days,$i);
+
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($filter_val == 20){
+                    $ar_days = [];
+                    $ar_value = [];
+                    for($i = 1; $i <= 20; $i++){
+                        
+                        $offset_val = 2 * $i;
+                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                        $query .= "(SELECT id From masseneingabeSucheIMw ";
+                        $query .= "WHERE mst_ID = '$mst_id' ";
+                        $query .= "ORDER by id DESC ";
+                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                        $result = queryDB($conn, $query, "read");
+                        if($result[0]['val'] != null){
+                            array_push($ar_value, $result[0]['val']);
+                        }
+                      
+                            $day_20 =  $i;
+                            // $r+2;
+                            array_push($ar_days,$day_20);
+    
+                        // }
+                        
+                    }
+                    // print_r($ar_value);die;
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($filter_val == 30) {
+                    $ar_days = [];
+                    $ar_value = [];
+                    for($i = 1; $i <= 30; $i++){
+                        $offset_val = 3 * $i;
+                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                        $query .= "(SELECT id From masseneingabeSucheIMw ";
+                        $query .= "WHERE mst_ID = '$mst_id' ";
+                        $query .= "ORDER by id DESC ";
+                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                        $result = queryDB($conn, $query, "read");
+                        if($result[0]['val'] != null){
+                            array_push($ar_value, $result[0]['val']);
+                        }
+                        $day_30 = $i;
+                        array_push($ar_days,$day_30);
+
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                    
+                }
+                else if($filter_val == 'all') {
+                    $ar_days = [];
+                    $ar_value = [];
+                    for($i = 1; $i <= 50; $i++){
+                        $offset_val = 5 * $i;
+                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                        $query .= "(SELECT id From masseneingabeSucheIMw ";
+                        $query .= "WHERE mst_ID = '$mst_id' ";
+                        $query .= "ORDER by id DESC ";
+                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                        $result = queryDB($conn, $query, "read");
+                        if($result[0]['val'] != null){
+                            array_push($ar_value, $result[0]['val']);
+                        }
+                        $day_50 = $i;
+                        array_push($ar_days,$day_50);
+
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                    
+                }
+
+                $records = ['status'=>400,'message'=>'Data Not found'];
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                
+            }
             die;
 
         }

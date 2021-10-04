@@ -59,7 +59,11 @@
                     setTimeout(function(){ 
                         window.open("main.html","_self");
                      }, 1000)
-                    
+                   
+                    //  <---28-9-2021--
+                    localStorage.removeItem('dashboardDB');
+                    localStorage.removeItem('dashboardDBName');
+                    // --end-->
                 }
                 else {
                     alert("Ihr Benutzername oder Passwort ist falsch!")

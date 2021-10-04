@@ -218,6 +218,7 @@ $(document).ready( function(){
     // dashboardChart();
     energy_consumed_five_days();
     getTableFormatDashboard();
+    getDatabaseList();
     // getDashboardSelectOption();
 
 
@@ -709,10 +710,10 @@ $(document).ready( function(){
             getChartTileDashboard();
             getChartTimeIntervalRecord();
             dashboardChart();
-            $('#measurement-height-chart').val('');
-            $('#measurement-height-chart-hidden').val('145');
-            $('#measurement-width-chart').val('');
-            $('#measurement-width-chart-hidden').val('285');
+            $('#measurement-height-chart').val('2');
+            $('#measurement-height-chart-hidden').val('290');
+            $('#measurement-width-chart').val('2');
+            $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');
             $('#chart_records_label').text('Select '+record_type_of_tile);
 
@@ -794,8 +795,8 @@ $(document).ready( function(){
             $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).removeClass('col-md-3');
             $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).removeClass('actual_tile_height');
             var height_val = $('#measurement-height-chart').val();
-            if(height_val <= 0){
-                $('#measurement-height-chart').val('');
+            if(height_val <= 1){
+                $('#measurement-height-chart').val(2);
             }
             else{
                 height_value = parseInt(height_val)*145;
@@ -813,8 +814,8 @@ $(document).ready( function(){
             $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).removeClass('col-md-3');
             $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).removeClass('actual_tile_width');
             var width_val = $('#measurement-width-chart').val();
-            if(width_val <= 0){
-                $('#measurement-width-chart').val('');
+            if(width_val <= 1){
+                $('#measurement-width-chart').val(2);
             }
             else{
                 width_value = parseInt(width_val)*285;
@@ -837,6 +838,7 @@ $(document).ready( function(){
 
     $(document).on('change','#time_interval_chart',function(){
         getChartTimeIntervalRecord();
+        chartRecordFilter();
     });
 
     $(document).on('change','#chart_record_filter',function(){
@@ -871,6 +873,137 @@ $(document).ready( function(){
     });
     // ---end-->
 
+
+    //<----28-9-2021---
+    $(document).on('click','.dashboard_menu_click', function(){
+        var id_val = $(this).attr('id');
+        localStorage.setItem('dashboard_menu_click_option',id_val);
+        var pathname = window.location.pathname;
+        var arPathname = pathname.split('/');
+        if(arPathname.length > 3){
+            window.open('/'+arPathname[1]+'/main.html','_self');
+        }
+        else{
+            window.open('/main.html','_self');
+        }
+    });
+    // --end-->
+
+
+    // <---30-9-2021---
+    $(document).on('change','#dashboard_database_list',function(){
+        var val = $(this).val();
+        // var dashboardDbName = $(this).attr("dashboardbValue");
+        var dashboardDbName = $('option:selected', this).attr('dashboardbValue');
+        // console.log(dashboardDbName);
+        localStorage.setItem('dashboardDBName',val);
+        localStorage.setItem('dashboardDB',dashboardDbName);
+
+    });
+    // -end-->
+
+    // <---3-9-2021--
+    $(document).on('change','#chart_records', function(){
+        chartRecordFilter();
+    });
+    // --end-->
+
+
+    // // <---1-10-2021--
+    // // Graph
+    // // window.onload = function () {
+
+    //     var chart = new CanvasJS.Chart("chartContainer", {
+    //         animationEnabled: true,
+    //         theme: "light2",
+    //         title:{
+    //             text: "Site Traffic"
+    //         },
+    //         axisX:{
+    //             valueFormatString: "DD MMM",
+    //             crosshair: {
+    //                 enabled: true,
+    //                 snapToDataPoint: true
+    //             }
+    //         },
+    //         axisY: {
+    //             title: "Number of Visits",
+    //             includeZero: true,
+    //             crosshair: {
+    //                 enabled: true
+    //             }
+    //         },
+    //         toolTip:{
+    //             shared:true
+    //         },  
+    //         legend:{
+    //             cursor:"pointer",
+    //             verticalAlign: "bottom",
+    //             horizontalAlign: "left",
+    //             dockInsidePlotArea: true,
+    //             itemclick: toogleDataSeries
+    //         },
+    //         data: [{
+    //             type: "line",
+    //             showInLegend: true,
+    //             name: "Total Visit",
+    //             markerType: "square",
+    //             xValueFormatString: "DD MMM, YYYY",
+    //             color: "#F08080",
+    //             dataPoints: [
+    //                 { x: new Date(2017, 0, 3), y: 650 },
+    //                 { x: new Date(2017, 0, 4), y: 700 },
+    //                 { x: new Date(2017, 0, 5), y: 710 },
+    //                 { x: new Date(2017, 0, 6), y: 658 },
+    //                 { x: new Date(2017, 0, 7), y: 734 },
+    //                 { x: new Date(2017, 0, 8), y: 963 },
+    //                 { x: new Date(2017, 0, 9), y: 847 },
+    //                 { x: new Date(2017, 0, 10), y: 853 },
+    //                 { x: new Date(2017, 0, 11), y: 869 },
+    //                 { x: new Date(2017, 0, 12), y: 943 },
+    //                 { x: new Date(2017, 0, 13), y: 970 },
+    //                 { x: new Date(2017, 0, 14), y: 869 },
+    //                 { x: new Date(2017, 0, 15), y: 890 },
+    //                 { x: new Date(2017, 0, 16), y: 930 }
+    //             ]
+    //         },
+    //         {
+    //             type: "line",
+    //             showInLegend: true,
+    //             name: "Unique Visit",
+    //             lineDashType: "dash",
+    //             dataPoints: [
+    //                 { x: new Date(2017, 0, 3), y: 510 },
+    //                 { x: new Date(2017, 0, 4), y: 560 },
+    //                 { x: new Date(2017, 0, 5), y: 540 },
+    //                 { x: new Date(2017, 0, 6), y: 558 },
+    //                 { x: new Date(2017, 0, 7), y: 544 },
+    //                 { x: new Date(2017, 0, 8), y: 693 },
+    //                 { x: new Date(2017, 0, 9), y: 657 },
+    //                 { x: new Date(2017, 0, 10), y: 663 },
+    //                 { x: new Date(2017, 0, 11), y: 639 },
+    //                 { x: new Date(2017, 0, 12), y: 673 },
+    //                 { x: new Date(2017, 0, 13), y: 660 },
+    //                 { x: new Date(2017, 0, 14), y: 562 },
+    //                 { x: new Date(2017, 0, 15), y: 643 },
+    //                 { x: new Date(2017, 0, 16), y: 570 }
+    //             ]
+    //         }]
+    //     });
+    //     chart.render();
+        
+    //     function toogleDataSeries(e){
+    //         console.log(e)
+    //         if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+    //             e.dataSeries.visible = false;
+    //         } else{
+    //             e.dataSeries.visible = true;
+    //         }
+    //         chart.render();
+    //     }
+        
+    //     // }
+    // --end-->
 
     // $(document).on('click','#dashboard_drag_btn', function(){
     //     $('#dashboard_count_div_tile .stretch-card').draggable();

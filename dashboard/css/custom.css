@@ -344,11 +344,210 @@
 .tile-image-icon-table{
     height: 57px;
     width: 55px;
-    margin: -17px 13px -12px 0px !important;
+    margin: -16px 13px -9px 0px !important;
 }
 
 .tile-image-icon-count{
-    height: 62px;
-    width: 100px;
-    margin: -18px -1px -15px -30px !important;
+    height: 55px;
+    /* width: 100px; */
+    margin: -15px -1px -8px -6px !important;
 }
+
+.row{
+    margin-right: 14px !important;
+}
+
+.menu_dashboard{
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+.menu_dashboard_ul{
+    /* margin-left: 20%; */
+    margin-left: -3%;
+}
+
+.menu_dashboard_database{
+    font-size: 1.08em;
+}
+
+
+.menu_dashboard_database  select{
+    padding: 3px;
+    font-family: sans-serif;
+}
+.menu_dashboard_database  select:hover{
+    color: #4a4a4a;
+}
+
+
+
+
+
+/* <----Sub menu */
+
+/* .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    margin-left: 16px;
+    margin-top: -14px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a:hover {
+    color: #4a4a4a;
+} */
+  
+/* ---end-- */
+
+
+/* <--new Su menu */
+
+.dropdown {
+    float: left;
+    position: static;
+    /* overflow: hidden; */
+}
+  
+.dropdown .dropbtn {
+    /* font-size: 16px;   */
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    /* font: inherit; */
+    margin: 0;
+}
+  
+.navbar a:hover, .dropdown:hover .dropbtn {
+    /* background-color: red; */
+}
+  
+.dropdown-content{
+    display: none;
+    position: absolute;
+    color: rgba(0, 0, 0, 0.7);
+    /* width: 100%; */
+    width: 50%;
+    left: 0;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    background-color: rgba(255,255,255,0.8);
+    padding: 20px;
+    right: 0;
+    margin: auto;
+}
+
+.dropdown-content .header {
+    background: red;
+    padding: 16px;
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 3px;
+    /* background-color: white; */
+    /* height: 250px; */
+}
+
+.column a {
+    float: none;
+    color: black;
+    padding: 3px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.column a:hover {
+    /* background-color: #4a4a4a; */
+    color: #4a4a4a;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.dropdown-content .column h3{
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(203, 198, 198, 1);
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.dropdown-content .column {
+    width: 31%;
+    padding: 2%;
+}
+
+.dashboard_sub_menu_1{
+    margin:-4px 0px 0px 20px;
+
+}
+
+.sub_menu_1_div{
+    display: none;
+
+}
+
+.column .sub_menu_open:hover .sub_menu_1_div{
+    display: block; 
+    color: red;
+}
+  
+.sub_menu_open span{
+    color: black
+}
+ 
+
+.cursor_pointer{
+    cursor: pointer;
+}
+
+.dashboard_chart_tiles .edit_btn_tile_chart{
+    display: none;
+}
+ 
+.dashboard_chart_tiles .delete_btn_tile{
+    display: none;
+}
+#dashboard_tile_modal_chart{
+    overflow-y: auto;
+}
+  
