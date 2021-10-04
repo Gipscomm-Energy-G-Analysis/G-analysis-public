@@ -534,8 +534,20 @@
 .sub_menu_open span{
     color: black
 }
-  
-  
  
-  
+
+.cursor_pointer{
+    cursor: pointer;
+}
+
+.dashboard_chart_tiles .edit_btn_tile_chart{
+    display: none;
+}
+ 
+.dashboard_chart_tiles .delete_btn_tile{
+    display: none;
+}
+#dashboard_tile_modal_chart{
+    overflow-y: auto;
+}
   

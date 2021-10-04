@@ -870,6 +870,7 @@ function dashboardChart(){
             arTimeInterval[3] =  a['yearEnergyConsumed'][0]['val'] != null  ?  a['yearEnergyConsumed'][0]['val'] : 0;
             // console.log('arTimeinterval',arTimeInterval);
             // console.log('totalEnergyConsumed',totalEnergyConsumed);
+            // <---OlD Chart---
             (function($) {
                 'use strict';
                 $(function() {
@@ -1024,6 +1025,7 @@ function dashboardChart(){
                   }
                 });
               })(jQuery);
+             // --end-->
         }
     });
     
@@ -1525,6 +1527,14 @@ function getChartTileDashboard(){
 
 // <---02-9-2021----
 function saveDashboardTileChart(){
+  var chart_records = $('#chart_records').val();
+  var chart_record_filter = $('#chart_record_filter').val();
+  //console.log('chart_recorda Value ',chart_records);
+  //console.log('chart_recorda Filter ',chart_record_filter);
+  if(chart_records == '' || chart_record_filter == ''){
+      return false;
+  }
+  return false;
   var measuremnt_table_height = $('#measurement-height-chart-hidden').val();
   var measurement_table_width = $('#measurement-width-chart-hidden').val();
   var input_height = $('#measurement-height-chart').val(); 
@@ -1539,7 +1549,7 @@ function saveDashboardTileChart(){
   $('#total_records_chart').remove();
   tile_html = tile_html.replace('total_records','');
   tile_html = tile_html.replace('hide_table_main','');
-  tile_html = tile_html.replace("sales-chart",'sales-chart-none');
+  tile_html = tile_html.replace("areaChart",'areaChart-none');
   // console.log(tile_html);
   // return false;
 
@@ -1550,6 +1560,8 @@ function saveDashboardTileChart(){
   var record_type_of_tile =ar['record_type_of_tile'];
   var type_data_tile =ar['type_data_tile'];
     // --end->
+
+  
 // --end-->
   $.ajax({
     type: "POST",
@@ -1617,7 +1629,7 @@ function getChartTimeIntervalRecord(){
         $("#chart_record_filter option[value='']").prop('selected','selected');
       }
       else{
-        select_html+="<option>No Record Found</option>";
+        select_html+="<option value=''>No Record Found</option>";
         $('#chart_record_filter_div').hide();
       }
       $('#chart_records').html(select_html);
@@ -1631,6 +1643,9 @@ function getChartTimeIntervalRecord(){
 function chartRecordFilter(){
   var filterVal = $('#chart_record_filter').val();
   var mst_id = $('#chart_records').val();
+  var dashboard_tile_data = JSON.parse(localStorage.getItem('dashboard_tile_data'));
+  var record_type_of_tile = dashboard_tile_data['record_type_of_tile'];
+
   if(filterVal != '' && mst_id != ''){
     var type = $('#chart_records option:selected').attr('type');
     $.ajax({
@@ -1642,60 +1657,78 @@ function chartRecordFilter(){
           action: "getChartRecordFilter",
           nameDB: $("#nameDashboardDB").val(),
           mst_id:mst_id,
-          type : type
+          type : type,
+          filterVal : filterVal,
+          record_type_of_tile : record_type_of_tile
       },
       fail: function() {
           alert("failed!!")
       },
       success: function(a) {
+        var html_canvas_chart = "<canvas class='sales-class-chart' id='areaChart'></canvas>";
+        var div_i_id = $('#total_records_chart').val();
+        $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        
+        // console.log('Working');
+        var areaData = {
+          // <--X Axis Value---
+          // labels: ["2013", "2014", "2015", "2016", "2017","2019","2021","2023"],
+          labels: a['count_days'],
+          datasets: [{
+            label: 'Count',
+            // <--Y Axix Value--
+            // data: [12, 19, 3, 5, 2, 3,25,105],
+            // data : [], 
+            data: a['count_val'],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1,
+            fill: true, // 3: no fill
+          }]
+        };
 
-        // var areaData = {
-        //   labels: ["2013", "2014", "2015", "2016", "2017"],
-        //   datasets: [{
-        //     label: '# of Votes',
-        //     data: [12, 19, 3, 5, 2, 3],
-        //     backgroundColor: [
-        //       'rgba(255, 99, 132, 0.2)',
-        //       'rgba(54, 162, 235, 0.2)',
-        //       'rgba(255, 206, 86, 0.2)',
-        //       'rgba(75, 192, 192, 0.2)',
-        //       'rgba(153, 102, 255, 0.2)',
-        //       'rgba(255, 159, 64, 0.2)'
-        //     ],
-        //     borderColor: [
-        //       'rgba(255,99,132,1)',
-        //       'rgba(54, 162, 235, 1)',
-        //       'rgba(255, 206, 86, 1)',
-        //       'rgba(75, 192, 192, 1)',
-        //       'rgba(153, 102, 255, 1)',
-        //       'rgba(255, 159, 64, 1)'
-        //     ],
-        //     borderWidth: 1,
-        //     fill: true, // 3: no fill
-        //   }]
-        // };
+        var areaOptions = {
+          plugins: {
+            filler: {
+              propagate: true
+            }
+          }
+        }
 
-        // var areaOptions = {
-        //   plugins: {
-        //     filler: {
-        //       propagate: true
-        //     }
-        //   }
-        // }
-
-        // if ($("#areaChart").length) {
-        //   var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
-        //   var areaChart = new Chart(areaChartCanvas, {
-        //     type: 'line',
-        //     data: areaData,
-        //     options: areaOptions
-        //   });
-        // }
+        if ($("#areaChart").length) {
+          var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+          var areaChart = new Chart(areaChartCanvas, {
+            type: 'line',
+            data: areaData,
+            options: areaOptions
+          });
+        }
       
        
       }
     });
 
+  }
+  else{
+    var html_canvas_chart = "<canvas class='sales-class-chart' id='areaChart'></canvas>";
+    var div_i_id = $('#total_records_chart').val();
+    $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+    $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
   }
 }
 // ---end-->
@@ -1893,6 +1926,36 @@ function saveDashboardTilePosititon(ar){
   });
 }
 // --end-->
+
+// <----28-9-2021----
+function getDatabaseList(){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getDatabaseList",
+        nameDB : "gipscomm",
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#dashboard_database_list').html('');
+      var listHTML = '';
+      if(a != ''){
+        $.each( a, (key,val)=>{
+          listHTML += "<option value='"+val['nameMan']+"'  dashboardbValue='"+val['dbName']+"'>"+val['nameMan']+"</option>";
+        });
+        $('#dashboard_database_list').html(listHTML);
+        var localStorageDb = localStorage.getItem('dashboardDBName');
+        $("#dashboard_database_list option[value='"+localStorageDb+"']").prop('selected','selected');
+      }
+    }
+  });
+}
+// ---end--->
 
 // <---16-9-2021---
 // function allowDrop(ev) {
