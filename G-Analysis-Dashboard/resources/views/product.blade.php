@@ -141,12 +141,12 @@
         
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-7">
                     <div class="btn-group float-right" style="font-size: 18px;">
                         <input type="checkbox" id="modeSelector" checked data-toggle="toggle" data-on="View Mode" data-off="Edit Mode" data-onstyle="success" data-offstyle="info">
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <nav class="main-header navbar navbar-expand navbar-dark view-mode" style="border-bottom:unset;">
                         <!-- Right navbar links -->
                         <ul class="navbar-nav ml-auto" style="position: relative;">
@@ -209,7 +209,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row" id="data-card">
+                    <div class="row" id="data-card" style="min-height:440px;">
                         <div class="col-12 col-sm-5">
                             <div class="col-12">
                                 <img src="{{$image}}" class="product-image" alt="Product Image" id="machine-image">
@@ -228,7 +228,7 @@
                         </div>
                         <div class="col-12 col-sm-7">
                             <form class="form-horizontal">
-                                <div class="card-body">
+                                <div class="card-body" style="padding-left: 0px;padding-right: 0px;">
                                     <input type="hidden" class="form-control" id="anl_ID" value="{{$data['anl_ID']}}">
                                     <div class="row">
                                         <div class="col-md-6 left_section">
@@ -271,7 +271,7 @@
                         
                     </div>
                     <div class="row">
-                        <div class="col-sm-6 even_sub_data">
+                        <div class="col-sm-5 even_sub_data">
                             @isset($subGroupConfig['main']['even'])
                                 @forEach($subGroupConfig['main']['even'] as $label=>$value)
                                     <div class="form-group row">
@@ -283,7 +283,7 @@
                                 @endforeach
                             @endisset
                         </div>
-                        <div class="col-sm-6 odd_sub_data">
+                        <div class="col-sm-7 odd_sub_data">
                             @isset($subGroupConfig['main']['odd'])
                                 @forEach($subGroupConfig['main']['odd'] as $label=>$value)
                                     <div class="form-group row">
@@ -428,7 +428,7 @@
                         @isset($groups['groupData'][0])
                             <div class="col-sm-3 select_group_options_div">
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">{{$groups['groupData'][0]->name}}</label>
+                                    <label class="col-sm-5 col-form-label">{{$groups['groupData'][0]->name}}</label>
                                     <div class="col-sm-9">
                                         <select class="form-control groupData" id="select_group_options" style="width: 100%;">
                                             <option value="">Select</option>
@@ -442,7 +442,7 @@
 
                             <div class="col-sm-3 select_group_options_div">
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Tables</label>
+                                    <label class="col-sm-5 col-form-label">Tables</label>
                                     <div class="col-sm-9">
                                         <select class="form-control tableData" id="select_group_table" style="width: 100%;">
                                             <option value="">Select</option>

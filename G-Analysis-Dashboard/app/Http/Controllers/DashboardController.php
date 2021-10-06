@@ -184,6 +184,7 @@ class DashboardController extends Controller
 
                     $customColumns = $this->splitArray(array_merge($dynamicData, $this->getCustomFieldData($machineData)), true);
                 //    dd($customColumns);
+                //    dd($customColumns);
                  //   array_push($prodData, $prod);
                    // if(!empty($primary_key)) {
                       //  $primary_key = $machineData->$primary_key;
@@ -420,7 +421,7 @@ class DashboardController extends Controller
         $i = 0;
         if(!empty($data)) {
             foreach ($data as $k => $v) {
-                if ($i > 15 && $customData) {
+                if ($i > 11 && $customData) {
                     if ($i % 2 == 0) {
                         $extraEven[$k] = $v;
                     }
