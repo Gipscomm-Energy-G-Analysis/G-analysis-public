@@ -309,66 +309,167 @@
             <div class="card-header">
                 <h3 class="card-title">Charts</h3>
                 <div class="card-tools">
-                    {{-- <button type="button" class="btn btn-tool" data-card-widget="collapse">--}}
-                    {{-- <i class="fas fa-minus"></i>--}}
-                    {{-- </button>--}}
+                    <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
+                        <input type="checkbox" id="graphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
+                    </div>
                 </div>
             </div>
             <!-- LINE CHART -->
             <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            <label>No. of Records</label>
-                            <select class="form-control time_filter" id="timeFilter">
-                                <option value="5" selected>5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                            </select>
+                <div class="graph-mode">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label>No. of Records</label>
+                                <select class="form-control time_filter" id="timeFilter">
+                                    <option value="5" selected>5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label>Time Interval</label>
+                                <select class="form-control" id="timeFilterInterval">
+                                    <option value="1">1 Minutes</option>
+                                    <option value="5">5 Minutes</option>
+                                    <option value="10">10 Minutes</option>
+                                    <option value="15" selected>15 Minutes</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            <label>Time Interval</label>
-                            <select class="form-control" id="timeFilterInterval">
-                                <option value="1">1 Minutes</option>
-                                <option value="5">5 Minutes</option>
-                                <option value="10">10 Minutes</option>
-                                <option value="15" selected>15 Minutes</option>
-                            </select>
+
+                    <div class="row" id="graph_div">
+                        @foreach($data['chartsData'] as $key=>$value)
+                        @if($value['record'])
+                        <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
+                            <div class="card card-info">
+                                <div class="card-header" >
+                                    <h3 class="card-title" style="float:revert;">Line Chart for {{$key}}
+                                        <span class="float-right">
+                                            <a href="/product-graph/{{$value['id']}}" target="_blank">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </a>
+                                            
+                                        </span>
+                                        
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart">
+                                        <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
+                        <div id="not_found_msg" style="display:none;">
+                            <span>Record Not Found!</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="row" id="graph_div">
-                    @foreach($data['chartsData'] as $key=>$value)
-                    @if($value['record'])
-                    <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
-                        <div class="card card-info">
-                            <div class="card-header" >
-                                <h3 class="card-title" style="float:revert;">Line Chart for {{$key}}
-                                    <span class="float-right">
-                                        <a href="/product-graph/{{$value['id']}}" target="_blank">
-                                            <i class="fa fa-eye" aria-hidden="true"></i>
-                                        </a>
-                                        
-                                    </span>
-                                    
-                                </h3>
+                <div class="history-mode" style="display:none;">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Period</label>
+                                <select class="form-control" id="periodFilterInterval">
+                                    <option value="year">Year</option>
+                                    <option value="month">Month</option>
+                                    <option value="month_15min">Month 15min</option>
+                                    <option value="day">Day</option>
+                                    <option value="day_15min">Day 15min</option>
+                                </select>
                             </div>
-                            <div class="card-body">
-                                <div class="chart">
-                                    <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;"></canvas>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
                         </div>
-                    </div>
-                    @endif
-                    @endforeach
-                    <div id="not_found_msg" style="display:none;">
-                        <span>Record Not Found!</span>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Type</label>
+                                <select class="form-control" id="typeFilterInterval">
+                                    <option value="line">line Diagram</option>
+                                    <option value="bar">Bar Graph</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Year</label>
+                                <select class="form-control" id="yearFilterInterval">
+                                    <option value="">Select</option>
+                                    @for($i=date('Y');$i >date('Y')-4;$i--)
+                                        <option value="{{$i}}">{{$i}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Month</label>
+                                <select class="form-control" id="monthFilterInterval">
+                                    <option value="">Select</option>
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Day</label>
+                                <select class="form-control" id="dayFilterInterval">
+                                    <option value="">Select</option>
+                                    <option value="01">1</option>
+                                    <option value="02">2</option>
+                                    <option value="03">3</option>
+                                    <option value="04">4</option>
+                                    <option value="05">5</option>
+                                    <option value="06">6</option>
+                                    <option value="07">7</option>
+                                    <option value="08">8</option>
+                                    <option value="09">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -694,6 +795,7 @@
 <script src="{{asset('js/dashboard/dashboard_ajax.js')}}"></script>
 <script src="{{asset('js/dashboard/jsGridMachines.js')}}"></script>
 <script src="{{asset('js/dashboard/dashboardMode.js')}}"></script>
+<script src="{{asset('js/dashboard/graphMode.js')}}"></script>
 <script src="{{asset('template/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 <script src="{{asset('template/js/pagination.js')}}"></script>
 <!-- Bootstrap Switch -->
