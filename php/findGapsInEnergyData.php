@@ -10,17 +10,22 @@ function warning_handler($errno, $errstr) {
     throw new Exception("ErrorNr : ".$errno.", ErrorDescr : ".$errstr) ;
 }
 
+define("db", $_GET["db"]) ;
+define("mst_ID", $_GET["mst_ID"]) ;
+
 // If there is NULL or 0 value data for consecutive days we call 
 // it a gap.
 
-function queryMstData($db, $mstID) {
+// Every found day with a gap has at least one gap(not necessaryly the whole day !)
+
+function queryMstData($db_, $mstID) {
     $query  = "SELECT Time_ FROM " ;
     $query .= "	(SELECT CONVERT(varchar(10), Time, 120) AS Time_ FROM MessstellenEnergiedaten " ;
-    $query .= "	WHERE Name = 'Mst-003' AND (Value = 0 OR Value IS NULL)) AS div " ;
+    $query .= "	 WHERE mst_ID = ".$mstID." AND (Value = 0 OR Value IS NULL)) AS div " ;
     $query .= "GROUP BY Time_ " ;
     $query .= "ORDER BY Time_ " ;
 
-    return queryDB(connectToDB($db) , $query, "read") ;
+    return queryDB(connectToDB($db_), $query, "read") ;
 }
 
 function consecutiveDays($date1, $date2) {
@@ -46,17 +51,25 @@ function findGaps($data) {
     return $groups ;
 }
 
-function createRows() {
+function gapFromTo($gapGroup) {
+    return
+        count($gapGroup) === 1 ? 
+        ["db" => db, "mstID" => mst_ID, "from" => $gapGroup[0], "to" => $gapGroup[0]] :
+        ["db" => db, "mstID" => mst_ID, "from" => $gapGroup[0], "to" => $gapGroup[count($gapGroup) - 1]] ;
+}
+
+function createRows($acc, $gap) {
     return $acc.
         "<tr>
-            <td>".$mst["index"]."</td>
-            <td>".$mst["db"]."</td>
-            <td>".$mst["mst_ID"]."</td>
-            <td>".$mst["Name"]."</td>
-            <td>".$mst["Channel1"]."</td>
-            <td>".$mst["Channel2"]."</td>
-            <td>".$mst["Channel3"]."</td>
+            <td>".$gap["db"]."</td>
+            <td>".$gap["mstID"]."</td>
+            <td>".$gap["from"]."</td>
+            <td>".$gap["to"]."</td>
         </tr>" ;
+}
+
+function generateTblData($data) {
+    return array_reduce($data, 'createRows') ;
 }
 
 function printResult($tblData) {
@@ -76,21 +89,18 @@ function printResult($tblData) {
                 <table style='border:2px solid black;'>
                     <thead>
                         <tr>
-                            <th>Zeile</th>
-                            <th>Kunde</th>
-                            <th>mst_ID</th>
-                            <th>Name</th>
-                            <th>Channel 1</th>
-                            <th>Channel 2</th>
-                            <th>Channel 3</th>
+                            <th>DB</th>
+                            <th>Mst</th>
+                            <th>Von</th>
+                            <th>Bis</th>
                         </tr>
                     </thead>
                     <tbody>".$tblData."</tbody>
                 </table><br><br>" ;
+    echo $table ;
 }
+printResult(generateTblData(array_map('gapFromTo',findGaps(queryMstData(db, mst_ID))))) ;
 
-print_r(findGaps(queryMstData("g002_badber", 217))) ;
-
-// https://g-analysis.com/testwebsite3/php/findGapsInEnergyData.php
+// https://g-analysis.com/testwebsite3/php/findGapsInEnergyData.php?db=g002_badber&mst_ID=117
 
 ?>
