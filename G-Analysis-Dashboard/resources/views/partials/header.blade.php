@@ -22,6 +22,7 @@
 <!-- Daterange picker -->
 <link rel="stylesheet" href="{{asset('template/plugins/daterangepicker/daterangepicker.css')}}">
 <!-- summernote -->
+<link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="{{asset('template/plugins/summernote/summernote-bs4.min.css')}}">
 <link rel="stylesheet" href="{{asset('template/plugins/spin-js/spin-css.css')}}">
 <link rel="stylesheet" href="{{asset('template/plugins/toastr/toastr.min.css')}}">

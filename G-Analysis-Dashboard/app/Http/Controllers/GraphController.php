@@ -51,4 +51,8 @@ class GraphController extends Controller
         $data = $data->reverse()->pluck('Value')->toArray();
         return ['label'=>$label, 'data'=>$data, 'id'=>$id , 'record'=>$recordData];
     }
+
+    public function historicGraph(Request $request) {
+        dd($request->all());
+    }
 }

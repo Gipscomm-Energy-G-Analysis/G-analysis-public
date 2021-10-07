@@ -46,3 +46,4 @@ Route::post('save-table-configurations', [\App\Http\Controllers\MachineConfigura
 
 
 Route::get('product-graph/{graph_id}', [\App\Http\Controllers\GraphController::class, 'showGraph'])->name('showGraph');
+Route::post('product-graph/history', [\App\Http\Controllers\GraphController::class, 'historicGraph'])->name('historicGraph');
