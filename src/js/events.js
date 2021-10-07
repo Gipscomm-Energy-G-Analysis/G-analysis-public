@@ -1551,6 +1551,17 @@ $(document).ready(function() {
         $(".lblAendern").css("display", "inline")
     });
 
+    // TODO : IMPLEMENT KENNZAHLEN IN NEW LOGIC AND STRUCTURE !!!
+    // Kennzahlen
+    //
+    // Kennzahlen
+    //
+    // See Kennzahlen/kennzahlen.js
+    //
+    // Delete Record
+    //
+    $("#knzLoeschen").click(scpKennzahlen_kennzahlen.delete)
+
     // Rechteverwaltung
     //
     // GipscommAdmins
