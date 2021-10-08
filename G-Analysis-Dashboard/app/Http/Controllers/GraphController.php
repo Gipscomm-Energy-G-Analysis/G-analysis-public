@@ -27,6 +27,11 @@ class GraphController extends Controller
         return View::make("charts", ["chartData"=>$chartsData]);
     }
 
+    public function historicGraph() 
+    {
+        return View::make("historicCharts");
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Support\Collection
@@ -52,7 +57,48 @@ class GraphController extends Controller
         return ['label'=>$label, 'data'=>$data, 'id'=>$id , 'record'=>$recordData];
     }
 
-    public function historicGraph(Request $request) {
-        dd($request->all());
+    public function historicData(Request $request) {
+        $graphPoints = isset($request->graphPoints)?$request->graphPoints:null;
+        $periodFilter = $request->periodFilter;
+        if (!empty($request->graphPoints)) {
+            $graphArray = explode(',',$graphPoints);
+            $graphData = [];
+            foreach($graphArray as $val) {
+                switch ($periodFilter) {
+                    case 'year':
+                        $year = $request->yearFilter;
+                        $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
+                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
+                        ->whereYear('MessstellenEnergiedaten.Time', '=', $year)
+                        ->orderby('MessstellenEnergiedaten.Time','desc')->limit(10)->get();
+                        break;
+                    case 'month':
+                        $month = $request->monthFilter;
+                        $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
+                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
+                        ->whereYear('MessstellenEnergiedaten.Time', '=', date('Y'))
+                        ->whereMonth('MessstellenEnergiedaten.Time', '=', $month)
+                        ->orderby('MessstellenEnergiedaten.Time','desc')->limit(10)->get();
+                        break;
+                    case 'custom':
+                        $start = date_create($request->startDate);
+                        $start = date_format($start,"Y-m-d H:i:s.u");
+                        $end = date_create($request->endDate);
+                        $end = date_format($end,"Y-m-d H:i:s.u");
+                        $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
+                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
+                        ->whereDate('MessstellenEnergiedaten.Time', '>=',$start)
+                        ->whereDate('MessstellenEnergiedaten.Time', '<=',$end)
+                        ->orderby('MessstellenEnergiedaten.Time','asc')->limit(100)->get();
+                        break;
+                    default:
+                        return ['code'=>400, 'msg' => 'no record found'];
+                }
+                $pointData =$this->getlineChartData($data, $val);
+                array_push($graphData, $pointData);
+            }
+            return ['code'=>200, 'graphData' => $graphData];
+        }
+        return ['code'=>400, 'msg' => 'no record found'];
     }
 }

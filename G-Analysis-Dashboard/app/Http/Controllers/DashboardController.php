@@ -146,6 +146,7 @@ class DashboardController extends Controller
                     $shards = 0;
                     $chartsData = collect();
                     $measuringPoint = [];
+                    $msGraphData = [];
                     for ($i=1; $i <= 4; $i++){
                         $string = 'messstelle'.$i.'IDAnl';
                         if(!empty($machineData->$string)) {
@@ -153,9 +154,11 @@ class DashboardController extends Controller
                             $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData->$string;
                             $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>31, 'limit' => 5]);
                             $chartsData->put($string.$i,$this->graphController->getChartsData( $request));
+                            array_push($msGraphData, 31);
                         }
                     }
                     
+                    $msGraphData = implode(',',$msGraphData);
                     $dynamicData  = [
                         'anlage' => Str::of($prodData->MANAME)->trim(),
                         'auftragsmenge' => (int)($prodData->AMOUNT_REQUEST),
@@ -177,7 +180,8 @@ class DashboardController extends Controller
                         'shards' => $shards,
                         'machineshards' => $measuringPoint,
                         'shardsData' => $measuringPoint,
-                        'chartsData' => $chartsData
+                        'chartsData' => $chartsData,
+                        'msGraphData' => $msGraphData
                     ];
 
                     

@@ -41,6 +41,11 @@ $("#end_date").datepicker(
 
 $(document).on('submit', '#historicGraphData', function(e) {
     e.preventDefault();
+    console.log('msgraphData', $('#msgraphData').val());
+    if($('#msgraphData').val() === undefined || $('#msgraphData').val() === ''){
+        toastr.warning('No measuring points found for the particular record.');
+        return false;
+    }
     $.ajax({
         type: "POST",
         url: "product-graph/history",
@@ -51,10 +56,11 @@ $(document).on('submit', '#historicGraphData', function(e) {
             monthFilter: $("#monthFilterInterval").val(),
             startDate: $("#start_date").val(),
             endDate: $("#end_date").val(),
+            graphPoints: $('#msgraphData').val()
         },
         success:function(result) {
             if(result.status == 200) {
-               
+               console.log(result);
             }
         },
         error:function(result) {

@@ -375,6 +375,10 @@
                 <div class="history-mode" style="display:none;">
                     <form id="historicGraphData">
                         <div class="row">
+                            @isset($data['msGraphData'])
+                            <input type="hidden" value="{{$data['msGraphData']}}" id="msgraphData">
+                            @endisset
+
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Period</label>
