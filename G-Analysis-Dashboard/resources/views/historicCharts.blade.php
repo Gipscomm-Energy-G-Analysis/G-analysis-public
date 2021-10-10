@@ -54,100 +54,120 @@
 @section('jsContent')
 <!-- Page specific script -->
 <script>
-    // let myChart;
-    // let type = 'line';
-    // let chart_data_id = "{{$chartData['id']}}";
-    // const chart_id = 'dynamicChart';
-    // let data = @json($chartData['data']);
-    // let label = @json($chartData['label']);
+    if(localStorage.getItem('graphData')) {
+        let myChart;
+        let graphData = JSON.parse(localStorage.getItem('graphData'));
+        console.log('graphData', graphData);
+        let graphDataObject = [];
+        let graphIds = [];
+        let count = 0;
+        for (const data of graphData) {
+            count++;
+            graphIds.push(data.id);
+            console.log('dsfsdghdsag', data);
+            let graphObject = {
+                labels: data.label,
+                datasets: [{
+                    label: `Energy consumption Data`,
+                    data: data.data,
+                    backgroundColor: 'rgb(0, 188, 140, 0.2)',
+                    borderColor: 'rgb(0, 188, 140)',
+                    borderWidth: 1,
+                }]
+            };
+            graphDataObject.push(graphObject);
+            console.log(count);
+        }
 
-    // const getRandomColor = () => {
-    //     let letters = '0123456789ABCDEF';
-    //     let color = '#';
-    //     for (let i = 0; i < 6; i++) {
-    //         color += letters[Math.floor(Math.random() * 16)];
-    //     }
-    //     return color;
-    // };
-
-
-    // const generateColorArray = (length) => {
-    //     let colorArray = [];
-    //     for (let i = 0; i < length; i++) {
-    //         colorArray.push(getRandomColor());
-    //     }
-    //     return colorArray;
-    // }
-
-    // const lineChartHook = (id, label, data, type, colorArray='rgb(0, 188, 140, 0.2)') => {
-    //     $(".main_chart").css("display", "block");
-    //     // $("#not_found_msg").css("display","none");
-    //     let ctx = document.getElementById(id).getContext('2d');
-    //     if (myChart) myChart.destroy();
-    //     myChart = new Chart(ctx, {
-    //         type: type,
-    //         data: {
-    //             labels: label,
-    //             datasets: [{
-    //                 label: `Energy consumption Data`,
-    //                 data: data,
-    //                 backgroundColor: colorArray,
-    //                 borderColor: 'rgb(0, 188, 140)',
-    //                 borderWidth: 1,
-    //             }]
-    //         },
-    //         options: {
-    //             scales: {
-    //                 x: {
-    //                     title: {
-    //                         color: 'red',
-    //                         display: true,
-    //                         text: 'Server Time'
-    //                     }
-    //                 },
-    //                 y: {
-    //                     title: {
-    //                         color: 'red',
-    //                         display: true,
-    //                         text: 'Power'
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     })
-    // }
-
-
-    // const getGraphData = (id, limit, event_id) => {
-    //     let container = document.getElementById('data-card');
-    //     let spinner = new Spinner();
-    //     let type = $('#select_chart_type').val();
-    //     let colorArray;
-    //     if(type === 'doughnut' || type === 'pie' || type === 'bar'){
-    //         colorArray = generateColorArray(limit);
-    //     } else {
-    //         colorArray = 'rgb(0, 188, 140, 0.2)';
-    //     }
+        console.log('fsdgfsd', graphDataObject);
         
-    //     spinner.spin(container);
-    //     $.ajax({
-    //         url: '/graph/filter',
-    //         type: 'POST',
-    //         data: {
-    //             measuringPoint: id,
-    //             limit: limit
-    //         },
-    //     }).done(function(response) {
-    //         spinner.stop();
-    //         lineChartHook(event_id, response.label, response.data, type, colorArray);
-    //     });
-    // }
+        let type = 'line';
+        // let chart_data_id = graphData.id;
+        const chart_id = 'dynamicChart';
+        // let data = graphData.data;
+        // let label = graphData.label;
 
-    // lineChartHook(chart_id, label, data, type);
+        const getRandomColor = () => {
+            let letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        };
 
-    // $(document).on('change', '#select_chart_type, #timeFilter', function() {
-    //     $('.dynamic_title').text($('#select_chart_type option:selected').text());
-    //     getGraphData(chart_data_id, $('#timeFilter').val(), chart_id);
-    // });
+
+        const generateColorArray = (length) => {
+            let colorArray = [];
+            for (let i = 0; i < length; i++) {
+                colorArray.push(getRandomColor());
+            }
+            return colorArray;
+        }
+
+        const lineChartHook = (id, graphDataObject, type, colorArray='rgb(0, 188, 140, 0.2)') => {
+            $(".main_chart").css("display", "block");
+            let ctx = document.getElementById(id).getContext('2d');
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: type,
+                data: graphDataObject,
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                color: 'red',
+                                display: true,
+                                text: 'Server Time'
+                            }
+                        },
+                        y: {
+                            title: {
+                                color: 'red',
+                                display: true,
+                                text: 'Power'
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
+
+        const getGraphData = (id, limit, event_id) => {
+            let container = document.getElementById('data-card');
+            let spinner = new Spinner();
+            let type = $('#select_chart_type').val();
+            let colorArray;
+            if(type === 'doughnut' || type === 'pie' || type === 'bar'){
+                colorArray = generateColorArray(limit);
+            } else {
+                colorArray = 'rgb(0, 188, 140, 0.2)';
+            }
+            
+            spinner.spin(container);
+            $.ajax({
+                url: '/graph/filter',
+                type: 'POST',
+                data: {
+                    measuringPoint: id,
+                    limit: limit
+                },
+            }).done(function(response) {
+                spinner.stop();
+                lineChartHook(event_id, response.label, response.data, type, colorArray);
+            });
+        }
+
+        lineChartHook(chart_id, graphDataObject, type);
+
+        $(document).on('change', '#select_chart_type, #timeFilter', function() {
+            $('.dynamic_title').text($('#select_chart_type option:selected').text());
+            getGraphData(graphIds, $('#timeFilter').val(), chart_id);
+        });
+    }
+
+
+    
 </script>
 @stop

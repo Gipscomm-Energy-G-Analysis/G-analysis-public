@@ -97,6 +97,9 @@ class GraphController extends Controller
                 $pointData =$this->getlineChartData($data, $val);
                 array_push($graphData, $pointData);
             }
+            if (empty($graphData)) {
+                return ['code'=>400, 'graphData' => $graphData, 'msg' => 'no record found'];
+            }
             return ['code'=>200, 'graphData' => $graphData];
         }
         return ['code'=>400, 'msg' => 'no record found'];

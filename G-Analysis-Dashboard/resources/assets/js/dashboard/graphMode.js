@@ -59,8 +59,9 @@ $(document).on('submit', '#historicGraphData', function(e) {
             graphPoints: $('#msgraphData').val()
         },
         success:function(result) {
-            if(result.status == 200) {
-               console.log(result);
+            if(result.code == 200) {
+                localStorage.setItem('graphData', JSON.stringify(result.graphData));
+                window.open('/product-graph/history/data', '_blank');
             }
         },
         error:function(result) {
