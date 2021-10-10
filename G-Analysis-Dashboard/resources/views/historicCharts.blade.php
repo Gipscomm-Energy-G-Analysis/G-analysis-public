@@ -54,38 +54,16 @@
 @section('jsContent')
 <!-- Page specific script -->
 <script>
-    if(localStorage.getItem('graphData')) {
-        let myChart;
-        let graphData = JSON.parse(localStorage.getItem('graphData'));
-        console.log('graphData', graphData);
-        let graphDataObject = [];
-        let graphIds = [];
-        let count = 0;
-        for (const data of graphData) {
-            count++;
-            graphIds.push(data.id);
-            console.log('dsfsdghdsag', data);
-            let graphObject = {
-                labels: data.label,
-                datasets: [{
-                    label: `Energy consumption Data`,
-                    data: data.data,
-                    backgroundColor: 'rgb(0, 188, 140, 0.2)',
-                    borderColor: 'rgb(0, 188, 140)',
-                    borderWidth: 1,
-                }]
-            };
-            graphDataObject.push(graphObject);
-            console.log(count);
-        }
-
-        console.log('fsdgfsd', graphDataObject);
-        
+    let myChart;
+    let graphDataObject = [];
+    let graphIds = [];
+    let count = 0;
+    
         let type = 'line';
         // let chart_data_id = graphData.id;
         const chart_id = 'dynamicChart';
         // let data = graphData.data;
-        // let label = graphData.label;
+        let label;
 
         const getRandomColor = () => {
             let letters = '0123456789ABCDEF';
@@ -105,13 +83,17 @@
             return colorArray;
         }
 
-        const lineChartHook = (id, graphDataObject, type, colorArray='rgb(0, 188, 140, 0.2)') => {
+        const lineChartHook = (id, lable, graphDataObject, type, colorArray='rgb(0, 188, 140, 0.2)') => {
+            console.log('hereline',graphDataObject);
             $(".main_chart").css("display", "block");
             let ctx = document.getElementById(id).getContext('2d');
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: type,
-                data: graphDataObject,
+                data: {
+                    labels: label,
+                    datasets: graphDataObject
+                },
                 options: {
                     scales: {
                         x: {
@@ -159,14 +141,33 @@
             });
         }
 
-        lineChartHook(chart_id, graphDataObject, type);
+        
 
         $(document).on('change', '#select_chart_type, #timeFilter', function() {
             $('.dynamic_title').text($('#select_chart_type option:selected').text());
             getGraphData(graphIds, $('#timeFilter').val(), chart_id);
         });
+    
+    if(localStorage.getItem('graphData')) {
+        let graphData = JSON.parse(localStorage.getItem('graphData'));
+        
+        for (const data of graphData) {
+            graphIds.push(data.id);
+            label = data.label;
+            let graphObject = {
+                        label: `Energy consumption Data`,
+                        data: data.data,
+                        backgroundColor: 'rgb(0, 188, 140, 0.2)',
+                        borderColor: 'rgb(0, 188, 140)',
+                        borderWidth: 1,
+                    };
+            graphDataObject.push(graphObject);
+        }
+//        setTimeout(function(){
+            lineChartHook(chart_id, label, graphDataObject, type);
+        // }, 1000)
+        
     }
-
 
     
 </script>

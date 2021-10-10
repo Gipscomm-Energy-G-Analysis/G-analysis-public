@@ -70,7 +70,7 @@ class GraphController extends Controller
                         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
                         ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
                         ->whereYear('MessstellenEnergiedaten.Time', '=', $year)
-                        ->orderby('MessstellenEnergiedaten.Time','desc')->limit(10)->get();
+                        ->orderby('MessstellenEnergiedaten.Time','desc')->limit(1000)->get();
                         break;
                     case 'month':
                         $month = $request->monthFilter;
@@ -78,7 +78,7 @@ class GraphController extends Controller
                         ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
                         ->whereYear('MessstellenEnergiedaten.Time', '=', date('Y'))
                         ->whereMonth('MessstellenEnergiedaten.Time', '=', $month)
-                        ->orderby('MessstellenEnergiedaten.Time','desc')->limit(10)->get();
+                        ->orderby('MessstellenEnergiedaten.Time','desc')->limit(1000)->get();
                         break;
                     case 'custom':
                         $start = date_create($request->startDate);
@@ -89,7 +89,7 @@ class GraphController extends Controller
                         ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
                         ->whereDate('MessstellenEnergiedaten.Time', '>=',$start)
                         ->whereDate('MessstellenEnergiedaten.Time', '<=',$end)
-                        ->orderby('MessstellenEnergiedaten.Time','asc')->limit(100)->get();
+                        ->orderby('MessstellenEnergiedaten.Time','asc')->limit(1000)->get();
                         break;
                     default:
                         return ['code'=>400, 'msg' => 'no record found'];
