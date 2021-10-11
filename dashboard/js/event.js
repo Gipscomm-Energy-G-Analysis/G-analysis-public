@@ -653,8 +653,37 @@ $(document).ready( function(){
             $('.save_table_div_show').hide();
             $('.action-modal-button-div').removeClass('col-md-12');
 
+            // // <---7-10-2021---
+            // console.log('Click Working');
+            // var tile_html = $('.dashboard_count_div').html();
+            // // // <---7-10-2021--
+            //     tile_html = tile_html.replace("lineChart",'lineChart-none'); 
+            //     tile_html = tile_html.replace("areaChart",'areaChart-none');
+            //     tile_html = tile_html.replace("pieChart",'pieChart-none');
+            //     tile_html = tile_html.replace("barChart",'barChart-none');
+            // $('.dashboard_count_div').html(tile_html);
+
             // <---3-9-2021---
-            // $('.dashboard_count_div canvas').removeAttr('id');    
+            // $('.dashboard_count_div canvas').removeAttr('id'); 
+            
+            // <---8-10-2021---
+            $('.dashboard_count_div canvas').each(function(){
+                var id = $(this).attr('id');
+                if(id == 'areaChart'){
+                    $(this).attr('id','areaChart-none');
+                }
+                else if(id == 'lineChart'){
+                    $(this).attr('id','lineChart-none');
+                }
+                else if(id == 'pieChart'){
+                    $(this).attr('id','pieChart-none');
+                }
+                else if(id == 'barChart'){
+                    $(this).attr('id','barChart-none');
+                }
+            });
+            // --end-->   
+            
             // --end-->
         }
         
@@ -676,6 +705,7 @@ $(document).ready( function(){
         e.preventDefault();
         var record_type_of_tile =  $('#record_type_of_tile').val();
         var type_data_tile = $('#type_data_tile').val();
+        var data_edit_chart = $(this).attr('data-edit-chart');
         if(record_type_of_tile == "measurement" && (type_data_tile == "table" || type_data_tile == 'overall_count') ){
             $('#tables_sidebar').click();
             $('#measurement_sidebar_option').click();
@@ -701,13 +731,14 @@ $(document).ready( function(){
             $('#dashboard_tile_modal').modal('hide');
         }
         //chart
-        else if(record_type_of_tile == "measurement" && type_data_tile == "chart")
+        else if(record_type_of_tile == "measurement" && type_data_tile == "chart" && data_edit_chart == 'false')
         {
             $('#dashboard_tile_modal').modal('hide');
             // $('#dashboard_add_tile_chart').click();
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
             getChartTileDashboard();
+            $('#time_interval_chart option[value=1]').prop('selected','selected');
             getChartTimeIntervalRecord();
             dashboardChart();
             $('#measurement-height-chart').val('2');
@@ -715,6 +746,23 @@ $(document).ready( function(){
             $('#measurement-width-chart').val('2');
             $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');
+            $('#chart_records_label').text('Select '+record_type_of_tile);
+            $('#update_and_proceed_btn_dashboard_chart').hide();
+            $('#save_and_proceed_btn_dashboard_chart').show();
+
+        }
+        else if(record_type_of_tile == "measurement" && type_data_tile == "chart" && data_edit_chart == 'true')
+        {
+            $('#dashboard_tile_modal').modal('hide');
+            // $('#dashboard_add_tile_chart').click();
+            var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
+            localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
+            //getChartTimeIntervalRecord();
+            getEditChartTileDashboard();
+        
+            $('#dashboard_tile_modal_chart').modal('show');
+            $('#update_and_proceed_btn_dashboard_chart').show();
+            $('#save_and_proceed_btn_dashboard_chart').hide();
             $('#chart_records_label').text('Select '+record_type_of_tile);
 
         }
@@ -781,6 +829,8 @@ $(document).ready( function(){
     $(document).on('click','#dashboard_add_tile', function(){
         $('#save_and_proceed_btn_dashboard').val('Save & Proceed');
         $('#save_and_proceed_btn_dashboard').attr('data-edit','false');
+        $('#save_and_proceed_btn_dashboard').attr('data-edit-chart','false');
+        
 
         $("#type_data_tile").removeAttr('disabled');
     });
@@ -903,10 +953,26 @@ $(document).ready( function(){
     // -end-->
 
     // <---3-9-2021--
-    $(document).on('change','#chart_records', function(){
+    $(document).on('change','#chart_records,#chart_type', function(){
         chartRecordFilter();
     });
     // --end-->
+
+    // <--7-10-2021---
+    $(document).on('click','.edit_btn_tile_chart',function(){
+        var id=$(this).attr('class');
+        var i_value = $(this).attr('data-i-value');
+        id_val =id.split(" ")[0];
+        getEditDataDashboard(id_val,i_value);
+        $('#dashboard_tile_modal').modal('show');   
+    });
+    // --end---->
+    
+    // <---7-10-2021--
+    $(document).on('click','#update_and_proceed_btn_dashboard_chart', function(){
+        updateDashboardChart();
+    });
+    // --end--->
 
 
     // // <---1-10-2021--

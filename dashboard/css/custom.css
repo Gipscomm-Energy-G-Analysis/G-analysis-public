@@ -551,3 +551,10 @@
     overflow-y: auto;
 }
   
+.stretch-card .card .ml-3{
+    width: 100%;
+}
+
+#dashboard_count_div_tile canvas{
+    margin-top: 16px;
+}

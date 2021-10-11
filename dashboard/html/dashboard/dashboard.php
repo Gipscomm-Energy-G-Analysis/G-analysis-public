@@ -119,13 +119,13 @@
 
                 <div class="modal-body">
                   <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                       <label for="measurement-height-chart" class="text-mute">Column</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="measurement-height-chart" placeholder="Column">
                       <input type="hidden" id="measurement-height-chart-hidden" value="145">
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                       <label for="measurement-width-chart" class="text-mute">Row</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Row">
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
@@ -158,6 +158,16 @@
                         <option value="all">All Records</option>
                       </select>
                     </div>
+
+                    <div class="form-group col-md-2" id="chart_record_type_div">
+                      <label for="chart_type" class="text-mute">Chart Type</label>
+                      <select class="form-control form-control-sm text-dark" id="chart_type">
+                        <option value="line_chart">Line Chart</option>
+                        <option value="area_chart">Area Chart</option>
+                        <option value="pie_chart">Pie Chart</option>
+                        <option value="bar_chart">Bar Chart</option>
+                      </select>
+                    </div>
                   </div>
                   
                   <div class="row dashboard_chart_tiles">
@@ -172,7 +182,9 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                   <!-- <div id="save_btn_tile_div"> -->
-                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" disabled class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Save & Proceed">
+                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" data-edit-chart='false' class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Save & Proceed">
+
+                    <input type="button" id="update_and_proceed_btn_dashboard_chart"  class="btn btn-sm btn-success update_and_proceed_btn_dashboard_chart" value="Update & Proceed">
                     <!-- </div> -->
                 </div>
               </div>
