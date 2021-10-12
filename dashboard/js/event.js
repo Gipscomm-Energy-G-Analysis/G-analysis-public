@@ -218,6 +218,7 @@ $(document).ready( function(){
     // dashboardChart();
     energy_consumed_five_days();
     getTableFormatDashboard();
+    getDatabaseList();
     // getDashboardSelectOption();
 
 
@@ -637,7 +638,7 @@ $(document).ready( function(){
             $('.dashboard_count_div .stretch-card').css('height',145);
             $('.dashboard_count_div .stretch-card').css('width',285);
 
-            $('.dashboard_count_div .stretch-card').addClass('col-md-3');
+            $('.dashboard_count_div .movetile').addClass('col-md-3');
             $('.dashboard_count_div .stretch-card .card-body').addClass('row');
             $('.dashboard_count_div .stretch-card .card-body div:first-child').addClass('col-md-12');
 
@@ -652,8 +653,37 @@ $(document).ready( function(){
             $('.save_table_div_show').hide();
             $('.action-modal-button-div').removeClass('col-md-12');
 
+            // // <---7-10-2021---
+            // console.log('Click Working');
+            // var tile_html = $('.dashboard_count_div').html();
+            // // // <---7-10-2021--
+            //     tile_html = tile_html.replace("lineChart",'lineChart-none'); 
+            //     tile_html = tile_html.replace("areaChart",'areaChart-none');
+            //     tile_html = tile_html.replace("pieChart",'pieChart-none');
+            //     tile_html = tile_html.replace("barChart",'barChart-none');
+            // $('.dashboard_count_div').html(tile_html);
+
             // <---3-9-2021---
-            // $('.dashboard_count_div canvas').removeAttr('id');    
+            // $('.dashboard_count_div canvas').removeAttr('id'); 
+            
+            // <---8-10-2021---
+            $('.dashboard_count_div canvas').each(function(){
+                var id = $(this).attr('id');
+                if(id == 'areaChart'){
+                    $(this).attr('id','areaChart-none');
+                }
+                else if(id == 'lineChart'){
+                    $(this).attr('id','lineChart-none');
+                }
+                else if(id == 'pieChart'){
+                    $(this).attr('id','pieChart-none');
+                }
+                else if(id == 'barChart'){
+                    $(this).attr('id','barChart-none');
+                }
+            });
+            // --end-->   
+            
             // --end-->
         }
         
@@ -675,6 +705,7 @@ $(document).ready( function(){
         e.preventDefault();
         var record_type_of_tile =  $('#record_type_of_tile').val();
         var type_data_tile = $('#type_data_tile').val();
+        var data_edit_chart = $(this).attr('data-edit-chart');
         if(record_type_of_tile == "measurement" && (type_data_tile == "table" || type_data_tile == 'overall_count') ){
             $('#tables_sidebar').click();
             $('#measurement_sidebar_option').click();
@@ -700,20 +731,38 @@ $(document).ready( function(){
             $('#dashboard_tile_modal').modal('hide');
         }
         //chart
-        else if(record_type_of_tile == "measurement" && type_data_tile == "chart")
+        else if(record_type_of_tile == "measurement" && type_data_tile == "chart" && data_edit_chart == 'false')
         {
             $('#dashboard_tile_modal').modal('hide');
             // $('#dashboard_add_tile_chart').click();
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
             getChartTileDashboard();
+            $('#time_interval_chart option[value=1]').prop('selected','selected');
             getChartTimeIntervalRecord();
             dashboardChart();
-            $('#measurement-height-chart').val('');
-            $('#measurement-height-chart-hidden').val('145');
-            $('#measurement-width-chart').val('');
-            $('#measurement-width-chart-hidden').val('285');
+            $('#measurement-height-chart').val('2');
+            $('#measurement-height-chart-hidden').val('290');
+            $('#measurement-width-chart').val('2');
+            $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');
+            $('#chart_records_label').text('Select '+record_type_of_tile);
+            $('#update_and_proceed_btn_dashboard_chart').hide();
+            $('#save_and_proceed_btn_dashboard_chart').show();
+
+        }
+        else if(record_type_of_tile == "measurement" && type_data_tile == "chart" && data_edit_chart == 'true')
+        {
+            $('#dashboard_tile_modal').modal('hide');
+            // $('#dashboard_add_tile_chart').click();
+            var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
+            localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
+            //getChartTimeIntervalRecord();
+            getEditChartTileDashboard();
+        
+            $('#dashboard_tile_modal_chart').modal('show');
+            $('#update_and_proceed_btn_dashboard_chart').show();
+            $('#save_and_proceed_btn_dashboard_chart').hide();
             $('#chart_records_label').text('Select '+record_type_of_tile);
 
         }
@@ -780,6 +829,8 @@ $(document).ready( function(){
     $(document).on('click','#dashboard_add_tile', function(){
         $('#save_and_proceed_btn_dashboard').val('Save & Proceed');
         $('#save_and_proceed_btn_dashboard').attr('data-edit','false');
+        $('#save_and_proceed_btn_dashboard').attr('data-edit-chart','false');
+        
 
         $("#type_data_tile").removeAttr('disabled');
     });
@@ -794,8 +845,8 @@ $(document).ready( function(){
             $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).removeClass('col-md-3');
             $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).removeClass('actual_tile_height');
             var height_val = $('#measurement-height-chart').val();
-            if(height_val <= 0){
-                $('#measurement-height-chart').val('');
+            if(height_val <= 1){
+                $('#measurement-height-chart').val(2);
             }
             else{
                 height_value = parseInt(height_val)*145;
@@ -813,8 +864,8 @@ $(document).ready( function(){
             $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).removeClass('col-md-3');
             $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).removeClass('actual_tile_width');
             var width_val = $('#measurement-width-chart').val();
-            if(width_val <= 0){
-                $('#measurement-width-chart').val('');
+            if(width_val <= 1){
+                $('#measurement-width-chart').val(2);
             }
             else{
                 width_value = parseInt(width_val)*285;
@@ -837,6 +888,7 @@ $(document).ready( function(){
 
     $(document).on('change','#time_interval_chart',function(){
         getChartTimeIntervalRecord();
+        chartRecordFilter();
     });
 
     $(document).on('change','#chart_record_filter',function(){
@@ -856,6 +908,168 @@ $(document).ready( function(){
         // }
     })
 
+    // <---21-9-2021---
+    $(document).on('click','#save_position_tile', function(){
+        let tilelength = $('#dashboard_count_div_tile .stretch-card').length;
+        if(tilelength > 0){
+            var ar = [];
+            $('#dashboard_count_div_tile .stretch-card').each(function(i,val){
+                var id = $(this).attr('class');
+                id_val =id.split(" ")[0];
+                ar.push({'id': id_val , 'position' : i});
+            });
+            saveDashboardTilePosititon(ar);
+        }
+    });
+    // ---end-->
+
+
+    //<----28-9-2021---
+    $(document).on('click','.dashboard_menu_click', function(){
+        var id_val = $(this).attr('id');
+        localStorage.setItem('dashboard_menu_click_option',id_val);
+        var pathname = window.location.pathname;
+        var arPathname = pathname.split('/');
+        if(arPathname.length > 3){
+            window.open('/'+arPathname[1]+'/main.html','_self');
+        }
+        else{
+            window.open('/main.html','_self');
+        }
+    });
+    // --end-->
+
+
+    // <---30-9-2021---
+    $(document).on('change','#dashboard_database_list',function(){
+        var val = $(this).val();
+        // var dashboardDbName = $(this).attr("dashboardbValue");
+        var dashboardDbName = $('option:selected', this).attr('dashboardbValue');
+        // console.log(dashboardDbName);
+        localStorage.setItem('dashboardDBName',val);
+        localStorage.setItem('dashboardDB',dashboardDbName);
+
+    });
+    // -end-->
+
+    // <---3-9-2021--
+    $(document).on('change','#chart_records,#chart_type', function(){
+        chartRecordFilter();
+    });
+    // --end-->
+
+    // <--7-10-2021---
+    $(document).on('click','.edit_btn_tile_chart',function(){
+        var id=$(this).attr('class');
+        var i_value = $(this).attr('data-i-value');
+        id_val =id.split(" ")[0];
+        getEditDataDashboard(id_val,i_value);
+        $('#dashboard_tile_modal').modal('show');   
+    });
+    // --end---->
+    
+    // <---7-10-2021--
+    $(document).on('click','#update_and_proceed_btn_dashboard_chart', function(){
+        updateDashboardChart();
+    });
+    // --end--->
+
+
+    // // <---1-10-2021--
+    // // Graph
+    // // window.onload = function () {
+
+    //     var chart = new CanvasJS.Chart("chartContainer", {
+    //         animationEnabled: true,
+    //         theme: "light2",
+    //         title:{
+    //             text: "Site Traffic"
+    //         },
+    //         axisX:{
+    //             valueFormatString: "DD MMM",
+    //             crosshair: {
+    //                 enabled: true,
+    //                 snapToDataPoint: true
+    //             }
+    //         },
+    //         axisY: {
+    //             title: "Number of Visits",
+    //             includeZero: true,
+    //             crosshair: {
+    //                 enabled: true
+    //             }
+    //         },
+    //         toolTip:{
+    //             shared:true
+    //         },  
+    //         legend:{
+    //             cursor:"pointer",
+    //             verticalAlign: "bottom",
+    //             horizontalAlign: "left",
+    //             dockInsidePlotArea: true,
+    //             itemclick: toogleDataSeries
+    //         },
+    //         data: [{
+    //             type: "line",
+    //             showInLegend: true,
+    //             name: "Total Visit",
+    //             markerType: "square",
+    //             xValueFormatString: "DD MMM, YYYY",
+    //             color: "#F08080",
+    //             dataPoints: [
+    //                 { x: new Date(2017, 0, 3), y: 650 },
+    //                 { x: new Date(2017, 0, 4), y: 700 },
+    //                 { x: new Date(2017, 0, 5), y: 710 },
+    //                 { x: new Date(2017, 0, 6), y: 658 },
+    //                 { x: new Date(2017, 0, 7), y: 734 },
+    //                 { x: new Date(2017, 0, 8), y: 963 },
+    //                 { x: new Date(2017, 0, 9), y: 847 },
+    //                 { x: new Date(2017, 0, 10), y: 853 },
+    //                 { x: new Date(2017, 0, 11), y: 869 },
+    //                 { x: new Date(2017, 0, 12), y: 943 },
+    //                 { x: new Date(2017, 0, 13), y: 970 },
+    //                 { x: new Date(2017, 0, 14), y: 869 },
+    //                 { x: new Date(2017, 0, 15), y: 890 },
+    //                 { x: new Date(2017, 0, 16), y: 930 }
+    //             ]
+    //         },
+    //         {
+    //             type: "line",
+    //             showInLegend: true,
+    //             name: "Unique Visit",
+    //             lineDashType: "dash",
+    //             dataPoints: [
+    //                 { x: new Date(2017, 0, 3), y: 510 },
+    //                 { x: new Date(2017, 0, 4), y: 560 },
+    //                 { x: new Date(2017, 0, 5), y: 540 },
+    //                 { x: new Date(2017, 0, 6), y: 558 },
+    //                 { x: new Date(2017, 0, 7), y: 544 },
+    //                 { x: new Date(2017, 0, 8), y: 693 },
+    //                 { x: new Date(2017, 0, 9), y: 657 },
+    //                 { x: new Date(2017, 0, 10), y: 663 },
+    //                 { x: new Date(2017, 0, 11), y: 639 },
+    //                 { x: new Date(2017, 0, 12), y: 673 },
+    //                 { x: new Date(2017, 0, 13), y: 660 },
+    //                 { x: new Date(2017, 0, 14), y: 562 },
+    //                 { x: new Date(2017, 0, 15), y: 643 },
+    //                 { x: new Date(2017, 0, 16), y: 570 }
+    //             ]
+    //         }]
+    //     });
+    //     chart.render();
+        
+    //     function toogleDataSeries(e){
+    //         console.log(e)
+    //         if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+    //             e.dataSeries.visible = false;
+    //         } else{
+    //             e.dataSeries.visible = true;
+    //         }
+    //         chart.render();
+    //     }
+        
+    //     // }
+    // --end-->
 
     // $(document).on('click','#dashboard_drag_btn', function(){
     //     $('#dashboard_count_div_tile .stretch-card').draggable();

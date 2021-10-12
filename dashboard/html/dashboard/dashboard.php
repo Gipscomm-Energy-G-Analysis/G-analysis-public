@@ -5,7 +5,8 @@
             <div class="col-md-12 grid-margin">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <h4 class="font-weight-bold mb-0 text-muted">Instrumententafel</h4>
+                  <h4 class="font-weight-bold mb-0 text-muted" style="    margin-left: 20px;
+">Dashboard</h4>
                 </div>
                 <!-- <div>
                     <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
@@ -38,7 +39,12 @@
           </div>
 
           <!-- 20-8-2021-- -->
-          <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
+            <div class="dashboard-btn">
+                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
+
+                <button type="button" class="btn btn-success btn-sm mb-3" style="display: none" id="save_position_tile">Save Tile</button>
+
+            </div>
 
           <!-- 7-9-2021- -->
           <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
@@ -77,7 +83,7 @@
                       <select class="form-control form-control-sm text-dark" id="type_data_tile">
                           <option value="table">Table</option>
                           <option value="chart">Chart</option>
-                          <option value="overall_count">Overall Count</option>
+                          <option value="overall_count">Value</option>
                       </select>
                     </div>
 
@@ -98,9 +104,9 @@
           <!-- 16-9-2021-- -->
           <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
             <input type="button" draggable="true" ondragstart="drag(event)" id="drag2" width="88" height="31">
-          </div>
+          </div> -->
 
-          <div id="div2" class="row" style="height: 240px; border: 1px solid black;" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+          <!-- <div id="div2" class="row dashboard_count_div" style="height: 240px; border: 1px solid black;" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
           <!-----end-- -->
 
           <!-- 02-9-2021-- -->
@@ -117,13 +123,13 @@
 
                 <div class="modal-body">
                   <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                       <label for="measurement-height-chart" class="text-mute">Column</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="measurement-height-chart" placeholder="Column">
                       <input type="hidden" id="measurement-height-chart-hidden" value="145">
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                       <label for="measurement-width-chart" class="text-mute">Row</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Row">
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
@@ -156,6 +162,16 @@
                         <option value="all">All Records</option>
                       </select>
                     </div>
+
+                    <div class="form-group col-md-2" id="chart_record_type_div">
+                      <label for="chart_type" class="text-mute">Chart Type</label>
+                      <select class="form-control form-control-sm text-dark" id="chart_type">
+                        <option value="line_chart">Line Chart</option>
+                        <option value="area_chart">Area Chart</option>
+                        <option value="pie_chart">Pie Chart</option>
+                        <option value="bar_chart">Bar Chart</option>
+                      </select>
+                    </div>
                   </div>
                   
                   <div class="row dashboard_chart_tiles">
@@ -170,7 +186,9 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                   <!-- <div id="save_btn_tile_div"> -->
-                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Save & Proceed">
+                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" data-edit-chart='false' class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Save & Proceed">
+
+                    <input type="button" id="update_and_proceed_btn_dashboard_chart"  class="btn btn-sm btn-success update_and_proceed_btn_dashboard_chart" value="Update & Proceed">
                     <!-- </div> -->
                 </div>
               </div>
@@ -178,8 +196,18 @@
           </div>
           <!-- --end- -->
 
+          <!-- <div draggable="true" class="box">A</div>
+              <div draggable="true" class="box">B</div>
+              <div draggable="true" class="box">C</div> -->
 
-          <div class="row dashboard_count_div" id="dashboard_count_div_tile">
+            <!-- 21-9-2021--- -->
+            <input type="hidden" id="start_tile_data">
+            <input type="hidden" id="drop_tile_data">
+
+            <!-- --end -->
+
+
+          <div class="row dashboard_count_div"  id="dashboard_count_div_tile">
             <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">
@@ -392,6 +420,35 @@
           </div>
           <!-- --end-- -->
         </div>
+        <!-- <canvas id="areaChart"></canvas> -->
+        <!-- 30-9-2021- -->
+        <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div>  -->
+        <!-- <div style="height: 500px; width: 570px;" class="3 grid-margin actual_tile_height stretch-card tiles-click" id="measurement_count_tile_modal_3" data-i="3" data-type-tile="Measurement">
+                                    <div class="card card-border">
+                                        <div class="card-body">
+                                            <div id="" class="">
+                                                <p class="card-title text-md-center text-xl-left" id="measurement_tile_heading_modal">Tile Table</p>
+                                                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div">
+                                               
+                                                <img src="images/table_logo.png" class="tile-image-icon tile-image-icon-table">
+                                                </div>  
+                                                <p class="mb-0 mt-2 text-success count_result_tile">5 Records</p>
+                                                <div class="action-modal-button-div">
+                                                    <img src="images/edit.png" class="3 edit_val edit_btn_tile" data-type-tile="Measurement" data-i-value="3" style="height: 17px; width: 17px; margin-right: 5px;">
+                                                    <img src="images/delete.png" class="3 id_val delete_btn_tile" data-type-tile="Measurement" style="height: 17px; width: 17px;">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="overflow-hide ml-3">
+                                                <div class="save_table_div_show_table"> 
+                                                  <canvas id="areaChart"></canvas>
+                                                  <div id="chartContainer" style="height: 145px; width: 570px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+        <!-- end -->
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">

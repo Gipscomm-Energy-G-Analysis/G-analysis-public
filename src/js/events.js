@@ -8866,5 +8866,27 @@ $(document).ready( function (){
     setTimeout(function(){
         dashboardLocalStorage();
     },1500);
+
+    // <---28-9-2021--
+    var dashboard_menu_click_option = localStorage.getItem('dashboard_menu_click_option');
+    var dashboardDBName = localStorage.getItem('dashboardDBName');
+    if(dashboard_menu_click_option != null && dashboard_menu_click_option != undefined && dashboardDBName != null && dashboardDBName != undefined)
+    {
+        $('.menu-wrap nav').addClass('backgroundDisabled');
+        $('body').addClass('backgroundDisabledColor');
+        $(".chartImageDiv").show();
+        setTimeout( function(){
+            $(".manPfad ").val(dashboardDBName).trigger('change');
+            localStorage.removeItem('dashboardDbRedirectHome');
+            $('#'+dashboard_menu_click_option).trigger('click');
+            localStorage.removeItem('dashboard_menu_click_option');
+            $(".chartImageDiv").hide();
+            $('body').removeClass('backgroundDisabledColor');
+            $('.menu-wrap nav').removeClass('backgroundDisabled');
+            dashboardLocalStorage();
+            return false;
+        },1500)
+    }
+    //-end-->
 })
 //--end-->

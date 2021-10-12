@@ -1736,6 +1736,16 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
 }
 /* end --->*/
 
+/* <---28-9-2021-- */
+#loader_image_redirect{
+  width: 6%;
+  height: 5%;
+}
+
+.loader_image_redirect_div{
+  text-align: center;
+}
+/* --end-- */
 
 /* 21-7-2021---- */
 .backgroundDisabled{
