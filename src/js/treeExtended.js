@@ -3,6 +3,7 @@
  * @version 1.8.0
  * @see https://github.com/daweilv/treejs
  */
+
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -655,6 +656,7 @@ Tree.createLiEle = function (node, closed) {
 
   const checkbox = document.createElement('span');
   checkbox.classList.add('treejs-checkbox');
+  checkbox.id = node.text.replace(" ", "-") + "View"
   li.appendChild(checkbox);
   
   const label = document.createElement('span');
@@ -668,6 +670,7 @@ Tree.createLiEle = function (node, closed) {
   
   const checkboxEdit = document.createElement('input');
   checkboxEdit.classList.add('treejs-checkbox-edit');
+  checkboxEdit.id = node.text.replace(" ", "-")
   li.appendChild(checkboxEdit);
   $(".treejs-checkbox-edit").prop("type", "checkbox")
   
@@ -678,6 +681,18 @@ Tree.createLiEle = function (node, closed) {
   
   labelEdit.appendChild(textEdit);
   li.appendChild(labelEdit);
+
+  $(".treejs-checkbox-edit").on("click", function () {
+
+      if ($(this).prop("checked")) {
+            
+          console.log("$(`#${this.id}View`)")
+          console.log($(`#${this.id}View`))
+
+          $(`#${this.id}View`).trigger("click")
+      }
+  })
+
   return li;
 };
 
@@ -686,7 +701,6 @@ Tree.createLiEle = function (node, closed) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
 
 Object.defineProperty(exports, "__esModule", {
   value: true
