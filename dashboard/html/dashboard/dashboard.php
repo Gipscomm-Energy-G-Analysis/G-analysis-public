@@ -5,7 +5,8 @@
             <div class="col-md-12 grid-margin">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <h4 class="font-weight-bold mb-0 text-muted">Instrumententafel</h4>
+                  <h4 class="font-weight-bold mb-0 text-muted" style="    margin-left: 20px;
+">Dashboard</h4>
                 </div>
                 <!-- <div>
                     <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
@@ -38,9 +39,12 @@
           </div>
 
           <!-- 20-8-2021-- -->
-          <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
+            <div class="dashboard-btn">
+                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
 
-          <button type="button" class="btn btn-success btn-sm mb-3" style="display: none" id="save_position_tile">Save Tile</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" style="display: none" id="save_position_tile">Save Tile</button>
+
+            </div>
 
           <!-- 7-9-2021- -->
           <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
@@ -79,7 +83,7 @@
                       <select class="form-control form-control-sm text-dark" id="type_data_tile">
                           <option value="table">Table</option>
                           <option value="chart">Chart</option>
-                          <option value="overall_count">Overall Count</option>
+                          <option value="overall_count">Value</option>
                       </select>
                     </div>
 
