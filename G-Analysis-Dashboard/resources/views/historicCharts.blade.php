@@ -58,113 +58,116 @@
     let graphDataObject = [];
     let graphIds = [];
     let count = 0;
+    let type = 'line';
     
-        let type = 'line';
-        // let chart_data_id = graphData.id;
-        const chart_id = 'dynamicChart';
-        // let data = graphData.data;
-        let label;
+    // let chart_data_id = graphData.id;
+    const chart_id = 'dynamicChart';
+    // let data = graphData.data;
+    let label;
 
-        const getRandomColor = () => {
-            let letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        };
-
-
-        const generateColorArray = (length) => {
-            let colorArray = [];
-            for (let i = 0; i < length; i++) {
-                colorArray.push(getRandomColor());
-            }
-            return colorArray;
+    const getRandomColor = () => {
+        let letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
         }
+        return color;
+    };
 
-        const lineChartHook = (id, lable, graphDataObject, type, colorArray='rgb(0, 188, 140, 0.2)') => {
-            console.log('hereline',graphDataObject);
-            $(".main_chart").css("display", "block");
-            let ctx = document.getElementById(id).getContext('2d');
-            if (myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: type,
-                data: {
-                    labels: label,
-                    datasets: graphDataObject
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: {
-                                color: 'red',
-                                display: true,
-                                text: 'Server Time'
-                            }
-                        },
-                        y: {
-                            title: {
-                                color: 'red',
-                                display: true,
-                                text: 'Power'
-                            }
+
+    const generateColorArray = (length) => {
+        
+        for (let i = 0; i < length; i++) {
+            colorArray.push(getRandomColor());
+        }
+        return colorArray;
+    }
+
+    const lineChartHook = (id, lable, graphDataObject, type, colorArray='rgb(0, 188, 140, 0.2)') => {
+        console.log('hereline',graphDataObject);
+        $(".main_chart").css("display", "block");
+        let ctx = document.getElementById(id).getContext('2d');
+        if (myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: type,
+            data: {
+                labels: label,
+                datasets: graphDataObject
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            color: 'red',
+                            display: true,
+                            text: 'Server Time'
+                        }
+                    },
+                    y: {
+                        title: {
+                            color: 'red',
+                            display: true,
+                            text: 'Power'
                         }
                     }
                 }
-            })
-        }
-
-
-        const getGraphData = (id, limit, event_id) => {
-            let container = document.getElementById('data-card');
-            let spinner = new Spinner();
-            let type = $('#select_chart_type').val();
-            let colorArray;
-            if(type === 'doughnut' || type === 'pie' || type === 'bar'){
-                colorArray = generateColorArray(limit);
-            } else {
-                colorArray = 'rgb(0, 188, 140, 0.2)';
             }
-            
-            spinner.spin(container);
-            $.ajax({
-                url: '/graph/filter',
-                type: 'POST',
-                data: {
-                    measuringPoint: id,
-                    limit: limit
-                },
-            }).done(function(response) {
-                spinner.stop();
-                lineChartHook(event_id, response.label, response.data, type, colorArray);
-            });
+        })
+    }
+
+
+    const getGraphData = (id, limit, event_id) => {
+        let container = document.getElementById('data-card');
+        let spinner = new Spinner();
+        let type = $('#select_chart_type').val();
+        let colorArray;
+        if(type === 'doughnut' || type === 'pie' || type === 'bar'){
+            colorArray = generateColorArray(limit);
+        } else {
+            colorArray = 'rgb(0, 188, 140, 0.2)';
         }
-
         
-
-        $(document).on('change', '#select_chart_type, #timeFilter', function() {
-            $('.dynamic_title').text($('#select_chart_type option:selected').text());
-            getGraphData(graphIds, $('#timeFilter').val(), chart_id);
+        spinner.spin(container);
+        $.ajax({
+            url: '/graph/filter',
+            type: 'POST',
+            data: {
+                measuringPoint: id,
+                limit: limit
+            },
+        }).done(function(response) {
+            spinner.stop();
+            lineChartHook(event_id, response.label, response.data, type, colorArray);
         });
+    }
+
+    
+
+    $(document).on('change', '#select_chart_type, #timeFilter', function() {
+        $('.dynamic_title').text($('#select_chart_type option:selected').text());
+        getGraphData(graphIds, $('#timeFilter').val(), chart_id);
+    });
     
     if(localStorage.getItem('graphData')) {
         let graphData = JSON.parse(localStorage.getItem('graphData'));
-        
+        let graphType = localStorage.getItem('graphType');
+        console.log('graphType', graphType);
+        let colorArray = {'key1':'rgb(0, 188, 140)','key2':'#EEB532', 'key3':'#73A7AF', 'key4': '#E04E51'};
+        let count = 1;
         for (const data of graphData) {
             graphIds.push(data.id);
             label = data.label;
             let graphObject = {
-                        label: `Energy consumption Data`,
-                        data: data.data,
-                        backgroundColor: 'rgb(0, 188, 140, 0.2)',
-                        borderColor: 'rgb(0, 188, 140)',
-                        borderWidth: 1,
-                    };
+                label: `Energy consumption Data for Measuring Point ${count}`,
+                data: data.data,
+                borderColor: colorArray['key'+count],
+                borderWidth: 1,
+            };
             graphDataObject.push(graphObject);
+            count++;
         }
 //        setTimeout(function(){
-            lineChartHook(chart_id, label, graphDataObject, type);
+            lineChartHook(chart_id, label, graphDataObject, graphType);
         // }, 1000)
         
     }

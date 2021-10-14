@@ -20,7 +20,7 @@ $(document).on('change', '#periodFilterInterval', function(){
     } else if($(this).val() == 'month') {
         $('.custom_filter').hide();
         $('.month_filter').show();
-        $('.year_filter').hide();
+        $('.year_filter').show();
     } else {
         $('.custom_filter').hide();
         $('.month_filter').hide();
@@ -41,7 +41,6 @@ $("#end_date").datepicker(
 
 $(document).on('submit', '#historicGraphData', function(e) {
     e.preventDefault();
-    console.log('msgraphData', $('#msgraphData').val());
     if($('#msgraphData').val() === undefined || $('#msgraphData').val() === ''){
         toastr.warning('No measuring points found for the particular record.');
         return false;
@@ -61,6 +60,7 @@ $(document).on('submit', '#historicGraphData', function(e) {
         success:function(result) {
             if(result.code == 200) {
                 localStorage.setItem('graphData', JSON.stringify(result.graphData));
+                localStorage.setItem('graphType', result.type);
                 window.open('/product-graph/history/data', '_blank');
             }
         },

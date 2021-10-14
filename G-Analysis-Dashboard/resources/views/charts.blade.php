@@ -149,8 +149,10 @@
         let spinner = new Spinner();
         let type = $('#select_chart_type').val();
         let colorArray;
-        if(type === 'doughnut' || type === 'pie' || type === 'bar'){
+        if(type === 'doughnut' || type === 'pie'){
             colorArray = generateColorArray(limit);
+        } else if(type === 'bar') {
+            colorArray = 'rgb(0, 188, 140, 0.2)';
         } else {
             colorArray = 'rgb(0, 188, 140, 0.2)';
         }

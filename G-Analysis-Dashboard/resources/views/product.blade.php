@@ -399,7 +399,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4 year_filter" style="display:none;">
+                            <div class="col-sm-4 year_filter">
                                 <div class="form-group">
                                     <label>Year</label>
                                     <select class="form-control" id="yearFilterInterval">
