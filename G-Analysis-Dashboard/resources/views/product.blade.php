@@ -305,44 +305,46 @@
         
         <!-- /.card -->
         <!-- Bar Chart -->
-        <div class="card card-success" id="bar_chart" style="display:block;">
-            <div class="card-header">
-                <h3 class="card-title">Charts</h3>
-                <div class="card-tools">
+        
+        <!-- accordion for graph mode start -->
+        <div id="accordion">
+            <div class="card">
+              <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#graphCollapseOne" aria-expanded="true" aria-controls="graphCollapseOne">
+                <h5 class="mb-0">
+                    Charts
+                </h5>
+              </div>
+              <div id="graphCollapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
                     <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
                         <input type="checkbox" id="graphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
                     </div>
-                </div>
-            </div>
-            <!-- LINE CHART -->
-            <div class="card-body">
-                <div class="graph-mode">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label>No. of Records</label>
-                                <select class="form-control time_filter" id="timeFilter">
-                                    <option value="5" selected>5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                </select>
+                    <!-- Graph Mode Start -->
+                    <div class="graph-mode">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>No. of Records</label>
+                                    <select class="form-control time_filter" id="timeFilter">
+                                        <option value="5" selected>5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Time Interval</label>
+                                    <select class="form-control" id="timeFilterInterval">
+                                        <option value="1">1 Minutes</option>
+                                        <option value="5">5 Minutes</option>
+                                        <option value="10">10 Minutes</option>
+                                        <option value="15" selected>15 Minutes</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label>Time Interval</label>
-                                <select class="form-control" id="timeFilterInterval">
-                                    <option value="1">1 Minutes</option>
-                                    <option value="5">5 Minutes</option>
-                                    <option value="10">10 Minutes</option>
-                                    <option value="15" selected>15 Minutes</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row" id="graph_div">
                         @foreach($data['chartsData'] as $key=>$value)
                         @if($value['record'])
                         <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
@@ -366,97 +368,109 @@
                         </div>
                         @endif
                         @endforeach
-                        <div id="not_found_msg" style="display:none;">
-                            <span>Record Not Found!</span>
-                        </div>
                     </div>
+                    <!-- Graph Mode end -->
+                    <!-- Edit Mode start -->
+                    <div class="history-mode" style="display:none;">
+                        <form id="historicGraphData">
+                            <div class="row">
+                                @isset($data['msGraphData'])
+                                <input type="hidden" value="{{$data['msGraphData']}}" id="msgraphData">
+                                @endisset
+    
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Period</label>
+                                        <select class="form-control" id="periodFilterInterval">
+                                            <option value="year">Year</option>
+                                            <option value="month">Month</option>
+                                            <option value="custom">Custom</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" id="typeFilterInterval">
+                                            <option value="line">Line Graph</option>
+                                            <option value="bar">Bar Graph</option>
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 year_filter">
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        <select class="form-control" id="yearFilterInterval">
+                                            <option value="">Select</option>
+                                            @for($i=date('Y');$i >date('Y')-4;$i--)
+                                                <option value="{{$i}}">{{$i}}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 clear month_filter" style="display:none;">
+                                    <div class="form-group">
+                                        <label>Month</label>
+                                        <select class="form-control" id="monthFilterInterval">
+                                            <option value="">Select</option>
+                                            <option value="01">January</option>
+                                            <option value="02">February</option>
+                                            <option value="03">March</option>
+                                            <option value="04">April</option>
+                                            <option value="05">May</option>
+                                            <option value="06">June</option>
+                                            <option value="07">July</option>
+                                            <option value="08">August</option>
+                                            <option value="09">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 custom_filter" style="display:none;">
+                                    <div class="form-group">
+                                        <label>Start Date</label>
+                                        <input type="text" id="start_date" class="form-control" placeholder="Start Date" value="" readonly="">
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 custom_filter" style="display:none;">
+                                    <div class="form-group">
+                                        <label>End Date</label>
+                                        <input type="text" id="end_date" class="form-control" placeholder="End Date" value="" readonly="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="popup">
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-block btn-primary" id="create_graph">Create Graph</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Edit mode end -->
                 </div>
-
-                <div class="history-mode" style="display:none;">
-                    <form id="historicGraphData">
-                        <div class="row">
-                            @isset($data['msGraphData'])
-                            <input type="hidden" value="{{$data['msGraphData']}}" id="msgraphData">
-                            @endisset
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>Period</label>
-                                    <select class="form-control" id="periodFilterInterval">
-                                        <option value="year">Year</option>
-                                        <option value="month">Month</option>
-                                        <option value="custom">Custom</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>Type</label>
-                                    <select class="form-control" id="typeFilterInterval">
-                                        <option value="line">Line Graph</option>
-                                        <option value="bar">Bar Graph</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4 year_filter">
-                                <div class="form-group">
-                                    <label>Year</label>
-                                    <select class="form-control" id="yearFilterInterval">
-                                        <option value="">Select</option>
-                                        @for($i=date('Y');$i >date('Y')-4;$i--)
-                                            <option value="{{$i}}">{{$i}}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4 clear month_filter" style="display:none;">
-                                <div class="form-group">
-                                    <label>Month</label>
-                                    <select class="form-control" id="monthFilterInterval">
-                                        <option value="">Select</option>
-                                        <option value="01">January</option>
-                                        <option value="02">February</option>
-                                        <option value="03">March</option>
-                                        <option value="04">April</option>
-                                        <option value="05">May</option>
-                                        <option value="06">June</option>
-                                        <option value="07">July</option>
-                                        <option value="08">August</option>
-                                        <option value="09">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4 custom_filter" style="display:none;">
-                                <div class="form-group">
-                                    <label>Start Date</label>
-                                    <input type="text" id="start_date" class="form-control" placeholder="Start Date" value="" readonly="">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4 custom_filter" style="display:none;">
-                                <div class="form-group">
-                                    <label>End Date</label>
-                                    <input type="text" id="end_date" class="form-control" placeholder="End Date" value="" readonly="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="popup">
-                            <div class="col-sm-3">
-                                <button type="submit" class="btn btn-block btn-primary" id="create_graph">Create Graph</button>
-                            </div>
-                        </div>
-                    </form>
+              </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#graphCollapseTwo" aria-expanded="true" aria-controls="graphCollapseTwo">
+                  <h5 class="mb-0">
+                      Other Charts
+                  </h5>
                 </div>
-
+                <div id="graphCollapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+                  <div class="card-body">
+                      
+                  </div>
+                </div>
             </div>
         </div>
-        
+        <!-- accordion for graph mode end -->        
         <!-- /.modal -->
         @php $groupData = json_decode(json_encode($groups), true); @endphp
 
