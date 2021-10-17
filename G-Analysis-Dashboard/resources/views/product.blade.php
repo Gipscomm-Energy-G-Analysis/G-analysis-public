@@ -97,6 +97,8 @@
 <link rel="stylesheet" href="{{asset('template/plugins/jsgrid/jsgrid.min.css')}}">
 <link rel="stylesheet" href="{{asset('template/plugins/jsgrid/jsgrid-theme.min.css')}}">
 <link rel="stylesheet" href="{{asset('template/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
+<link rel="stylesheet" href="{{asset('template/plugins/select2/css/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('template/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @stop
 @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -309,12 +311,12 @@
         <!-- accordion for graph mode start -->
         <div id="accordion">
             <div class="card">
-              <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#graphCollapseOne" aria-expanded="true" aria-controls="graphCollapseOne">
+              <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#graphCollapseOne" aria-expanded="false" aria-controls="graphCollapseOne">
                 <h5 class="mb-0">
                     Charts
                 </h5>
               </div>
-              <div id="graphCollapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+              <div id="graphCollapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
                     <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
                         <input type="checkbox" id="graphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
@@ -458,12 +460,12 @@
             </div>
             
             <div class="card">
-                <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#graphCollapseTwo" aria-expanded="true" aria-controls="graphCollapseTwo">
+                <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#graphCollapseTwo" aria-expanded="false" aria-controls="graphCollapseTwo">
                   <h5 class="mb-0">
                       Other Charts
                   </h5>
                 </div>
-                <div id="graphCollapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div id="graphCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                   <div class="card-body">
                       
                   </div>
@@ -673,6 +675,19 @@
                 </div>
             </div>
         </div>
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Add Graph Configrations</h3>
+                <div class="card-tools">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" id="data-card">
+                       
+                </div>
+            </div>
+        </div>
+
     </section>
 
     <div class="modal fade" id="modal-machine-configuration">
@@ -686,7 +701,23 @@
                 </div>
                 <div class="modal-body">
                     <section class="content">
-                        <div class="row">
+                        
+                        <div class="row card-body-temp">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Select Machine</label>
+                                  <select multiple="multiple" data-placeholder="Select Machine Priority" id="multi-machine-prioprity" style="width: 100%;">
+                                    <option>Alabama</option>
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                  </select>
+                                </div>
+                            </div>
+
                             <div class="col-md-12 machine_column_div">
                               <div class="form-group machine_column_div">
                                 <label>Select Machine Table Column</label>
@@ -793,8 +824,15 @@
 <script src="{{asset('js/dashboard/graphMode.js')}}"></script>
 <script src="{{asset('template/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 <script src="{{asset('template/js/pagination.js')}}"></script>
+<script src="{{asset('template/plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- Bootstrap Switch -->
 <script type="text/javascript">
+    $(function () {
+    //Initialize Select2 Elements
+    $('#multi-machine-prioprity').select2()
+    });
+
+
     @if(!empty($data))
         let getChartsDiv = document.querySelectorAll('.main_chart');
         const timeFilterHook = document.getElementById('timeFilter');

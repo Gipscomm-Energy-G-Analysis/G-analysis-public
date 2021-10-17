@@ -472,7 +472,12 @@ class DashboardController extends Controller
 
     public function getCustomTable(Request $request) {
         //find the total number of results stored in the database 
-        $columnData = DB::table('machine_table_config')->where('username', $this->username)->orWhere('status', ['1','2'])->get()->toArray();
+        $columnData = DB::table('machine_table_config')->where('username', $this->username)->Where('status', '!=', '0')->get()->toArray();
+        $priorityData = DB::table('machine_priority')->select('machines')->where('username', $this->username)->first();
+        $selectedMachines = '';
+        if (!empty($priorityData)) {
+            $selectedMachines = implode(',',json_decode($priorityData->machines));
+        }
         if(empty($columnData)){
             $postRequest = Request::create( '/dashboard/getMachineTableData', 'POST', ['pageIndex'=>$request['pageIndex'], 'pageSize'=>$request['pageSize']]);
             return $this->getMachineTableData($postRequest);
@@ -486,6 +491,7 @@ class DashboardController extends Controller
         $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
         if($start < 0) $start = 0;
         $machineData = $machineData->limit($limit)->offset($start)->get();
+        dd($machineData);
         $defaultString = $this->makeDefaultColumnQuery($columnData);
         $machineDataCustom = [];
         if(!empty($machineData)){
@@ -524,7 +530,7 @@ class DashboardController extends Controller
     }
 
     public function getCustomColumnName() {
-        $columnData = DB::table('machine_table_config')->where('username', $this->username)->orWhere('status', ['1','2'])->get()->toArray();
+        $columnData = DB::table('machine_table_config')->where('username', $this->username)->Where('status', '!=', '0')->get()->toArray();
         $columns = [
             ['name' =>'anl_ID', 'type' => 'number', 'title' =>'anl_ID', 'align'=> 'center','visible'=>false]
         ];

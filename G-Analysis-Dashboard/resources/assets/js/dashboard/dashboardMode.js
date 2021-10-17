@@ -293,6 +293,7 @@ $(document).on('click', '#machine_table_configuration', function() {
         success:function(result) {
             if(result.status == 200) {
                 showTableConfigurations(result.data);
+                showMachinePrioritySelect(result.machinePriorityData);
             }
         },
         error:function(result) {
@@ -301,12 +302,25 @@ $(document).on('click', '#machine_table_configuration', function() {
     });
 })
 
-const saveTableConfigurations = (data) => {
+const showMachinePrioritySelect = (data) => {
+    let selectHtml = '';
+    for(const select_name of data.allMachines) {
+        if(data.selected.includes(select_name.anl_ID)){
+            selectHtml += `<option value='${select_name.anl_ID}' selected>${select_name.nummerAnl}</option>`;
+        } else {
+            selectHtml += `<option value='${select_name.anl_ID}'>${select_name.nummerAnl}</option>`;
+        }
+    }
+    $('#multi-machine-prioprity').html(selectHtml).select2("destroy").select2();
+}
+
+const saveTableConfigurations = (data, priorityMachines) => {
     $.ajax({
         type: "POST",
         url: "/save-table-configurations",
         data: {
-            column: data
+            column: data,
+            priorityMachines: priorityMachines
         },
         success:function(result) {
             if(result.status == 200) {
@@ -324,6 +338,7 @@ const saveTableConfigurations = (data) => {
 $(document).on('click', '#save_table_configuration_button', function() {
     console.log('duallistArray',$('.duallistbox').val());
     let selectedColumn = $('.duallistbox').val();
+    let priorityMachines = $('#multi-machine-prioprity').val();
     if(selectedColumn.length == 0 ) {
         toastr.warning('Please select columns!');
         return false;
@@ -331,5 +346,5 @@ $(document).on('click', '#save_table_configuration_button', function() {
         toastr.warning('Only 5 columns can be selected!');
         return false;
     }
-    saveTableConfigurations(selectedColumn);
+    saveTableConfigurations(selectedColumn, priorityMachines);
 })

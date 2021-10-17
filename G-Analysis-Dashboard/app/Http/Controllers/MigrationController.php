@@ -14,6 +14,8 @@ class MigrationController extends Controller
         self::createDashboardProduktionConfigTable();
         self::createMachineTableConfigurations();
         self::createSubGroupOptionTable();
+        self::createMachinePriorityTable();
+        self::createGraphConfigurationTable();
         return;
     }
 
@@ -86,6 +88,39 @@ class MigrationController extends Controller
                 $table->string('username')->nullable();
                 $table->string('option_name');
                 $table->string('group_id');
+                $table->enum('status',['0','1']);
+                $table->timestamps();
+            });
+        }
+        return;
+    }
+
+    public static function createMachinePriorityTable() {
+        $table_exits = DB::getSchemaBuilder()->hasTable('machine_priority');
+        if (!$table_exits) {
+            Schema::create('machine_priority', function (Blueprint $table) {
+                $table->id();
+                $table->bigInteger('user_id')->nullable();
+                $table->string('username')->nullable();
+                $table->text('machines');
+                $table->string('order')->nullable();
+                $table->integer('limit')->nullable();
+                $table->timestamps();
+            });
+        }
+        return;
+    }
+
+    public static function createGraphConfigurationTable() {
+        $table_exits = DB::getSchemaBuilder()->hasTable('graph_configurations');
+        if (!$table_exits) {
+            Schema::create('graph_configurations', function (Blueprint $table) {
+                $table->id();
+                $table->bigInteger('user_id')->nullable();
+                $table->string('username')->nullable();
+                $table->string('label');
+                $table->string('data');
+                $table->string('type')->nullable();
                 $table->enum('status',['0','1']);
                 $table->timestamps();
             });
