@@ -26,6 +26,7 @@ use DB;
 use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\GraphController;
+use App\Models\GraphConfiguration;
 
 class DashboardController extends Controller
 {
@@ -157,7 +158,7 @@ class DashboardController extends Controller
                             array_push($msGraphData, 31);
                         }
                     }
-                    
+                    $otherGraphData = $this->getGraphConfigurations($machineData);
                     $msGraphData = implode(',',$msGraphData);
                     $dynamicData  = [
                         'anlage' => Str::of($prodData->MANAME)->trim(),
@@ -181,7 +182,8 @@ class DashboardController extends Controller
                         'machineshards' => $measuringPoint,
                         'shardsData' => $measuringPoint,
                         'chartsData' => $chartsData,
-                        'msGraphData' => $msGraphData
+                        'msGraphData' => $msGraphData,
+                        'otherGraph' => $otherGraphData
                     ];
 
                     
@@ -197,6 +199,8 @@ class DashboardController extends Controller
                   //  }
                     
                     $mergeArray = $this->splitArray(array_merge(array_merge($subGroupConfig, $customColumns['extra']['odd']), $customColumns['extra']['even']));
+                    
+                   // dd($otherGraphData);
                     return ['code'=>200, 'data' =>$prodData, 'dynamicData' => $customColumns ,'anl_ID'=>$machineData->anl_ID, 'subGroupConfig' => $mergeArray, 'message'=>'Data Retrived Successfully.'];
                 } else{
                     return ['code'=>401, 'message'=>'No Record Found in TWP_PROD_OVERVIEW Table!'];
@@ -476,53 +480,37 @@ class DashboardController extends Controller
         $priorityData = DB::table('machine_priority')->select('machines')->where('username', $this->username)->first();
         $selectedMachines = '';
         if (!empty($priorityData)) {
-            $selectedMachines = implode(',',json_decode($priorityData->machines));
+            $selectedMachines = json_decode($priorityData->machines);
         }
         if(empty($columnData)){
             $postRequest = Request::create( '/dashboard/getMachineTableData', 'POST', ['pageIndex'=>$request['pageIndex'], 'pageSize'=>$request['pageSize']]);
             return $this->getMachineTableData($postRequest);
         }
-        $machineData = Anlagen::whereNotNull('datumAnl')->where('deleted',0);
-        $number_of_result = $machineData->count();  
+        $machineDataQuery = Anlagen::whereNotNull('datumAnl')->where('deleted',0);
+        $number_of_result = $machineDataQuery->count();  
         $pageIndex = $request['pageIndex'];
+       // dd($pageIndex);
         $limit = $request['pageSize'];
         $totalRecords = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->count();
         $totalPages = ceil($totalRecords / $limit);
         $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
         if($start < 0) $start = 0;
-        $machineData = $machineData->limit($limit)->offset($start)->get();
-        dd($machineData);
         $defaultString = $this->makeDefaultColumnQuery($columnData);
+        $priorityMachineData = [];
+        if($pageIndex == 1) {
+            $priorityArray = count($selectedMachines);
+            $limit = $priorityArray >10?10:$limit-$priorityArray;
+            $start = $limit * $pageIndex - $limit;
+            $machineData = $machineDataQuery->limit($limit)->offset($start)->get()->toArray();
+            $priorityMachineData = $machineDataQuery->whereIn('anl_ID', $selectedMachines)->get()->toArray();
+        } else {
+            $machineData = $machineData->limit($limit)->offset($start)->get()->toArray();
+        }
+        $machineData = array_merge($priorityMachineData, $machineData);
         $machineDataCustom = [];
         if(!empty($machineData)){
-            foreach($machineData as $machine) {
-                $subGroupId = $this->getSubGroupid($machine->custom1Anl);
-                $primary_key = $this->getPrimaryKey($subGroupId);
-                $machineName = explode ( '-' ,$machine->nummerAnl);
-                $machineName = $machineName[0];
-                $subGroupConfig = [];
-                if(!empty($defaultString['string'])) {
-                    $prodData = DB::table('TWP_PROD_OVERVIEW')
-                    ->select(DB::raw($defaultString['string']))
-                    ->where('MANAME',$machineName)->orderBy('id', 'desc')->first();
-                    if(!empty($prodData)){
-                        $prodData = (array) $prodData;
-                        $prodData['anl_ID'] = $machine->anl_ID;
-                    } else {
-                        continue;
-                    }
-                } else {
-                    continue;
-                }
-                if(!empty($defaultString['customData'])){
-                    $customColumns = array_merge($prodData, $this->getCustomFieldData($machine, $defaultString['customData']));
-                } else {
-                    $customColumns = $prodData;
-                }
-                array_push($machineDataCustom, $customColumns);
-            }
+            $machineDataCustom = $this->getListingData($machineData, $machineDataCustom , $defaultString);
             return [ 'data'=> $machineDataCustom, 'itemsCount'=> $totalRecords];
-            //return ['status' => 200 , 'thead' => $theadData , 'tbody' => $machineDataCustom, 'pagination'=> $machineData];
         } else {
             return ['status' => 400 , 'msg' => 'No record found!'];
         }
@@ -565,4 +553,49 @@ class DashboardController extends Controller
         return ['string'=>$string, 'customData'=>$customData];
     }
 
+    public function getListingData($machineData, $machineDataCustom , $defaultString) {
+        foreach($machineData as $machine) {
+            $subGroupId = $this->getSubGroupid($machine['custom1Anl']);
+            $primary_key = $this->getPrimaryKey($subGroupId);
+            $machineName = explode ( '-' ,$machine['nummerAnl']);
+            $machineName = $machineName[0];
+            $subGroupConfig = [];
+            if(!empty($defaultString['string'])) {
+                $prodData = DB::table('TWP_PROD_OVERVIEW')
+                ->select(DB::raw($defaultString['string']))
+                ->where('MANAME',$machineName)->orderBy('id', 'desc')->first();
+                if(!empty($prodData)){
+                    $prodData = (array) $prodData;
+                    $prodData['anl_ID'] = $machine['anl_ID'];
+                } else {
+                    continue;
+                }
+            } else {
+                continue;
+            }
+            if(!empty($defaultString['customData'])){
+                $customColumns = array_merge($prodData, $this->getCustomFieldData($machine, $defaultString['customData']));
+            } else {
+                $customColumns = $prodData;
+            }
+            array_push($machineDataCustom, $customColumns);
+        }
+        return $machineDataCustom;
+    }
+
+    public function getGraphConfigurations($machineData) {
+        $graph_data =GraphConfiguration::where('username',$this->username)->get();
+        $graphJsData = [];
+        if (!empty($graph_data)) {
+            foreach($graph_data as $gdata) {
+                $primary_key = $gdata->primary_key;
+                $query = DB::table($gdata->table_name)->where($gdata->foreign_key, $machineData->$primary_key);
+                $label = $query->pluck($gdata->label)->toArray();
+                $data = $query->pluck($gdata->data)->toArray();
+                $dataJs = ['name' =>$gdata->graph_name, 'label' => $label, 'data'=>$data];
+                array_push($graphJsData, $dataJs);
+            }
+        }
+        return $graphJsData;
+    }
 }

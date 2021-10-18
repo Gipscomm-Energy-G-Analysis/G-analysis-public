@@ -155,7 +155,7 @@
                             <div class="fc-toolbar-chunk">
                                 <div class="btn-group float-right">
                                     <button class="fc-search btn btn-primary" id="searchMachines" type="button" aria-label="search">
-                                        <span class="fa fa-search"></span>
+                                        <span class="fa fa-bars"></span>
                                     </button>
                                 </div>
                                 <div class="btn-group float-right mr-3 navigation" data-value="{{$data['anl_ID']}}">
@@ -347,29 +347,31 @@
                                 </div>
                             </div>
                         </div>
-                        @foreach($data['chartsData'] as $key=>$value)
-                        @if($value['record'])
-                        <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
-                            <div class="card card-info">
-                                <div class="card-header" >
-                                    <h3 class="card-title" style="float:revert;">Line Chart for {{$key}}
-                                        <span class="float-right">
-                                            <a href="/product-graph/{{$value['id']}}" target="_blank">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                            </a>
-                                        </span>
-                                    </h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart">
-                                        <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;"></canvas>
+                        <div class="row" id="graph_div">
+                            @foreach($data['chartsData'] as $key=>$value)
+                                @if($value['record'])
+                                <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
+                                    <div class="card card-info">
+                                        <div class="card-header" >
+                                            <h3 class="card-title" style="float:revert;">Line Chart for {{$key}}
+                                                <span class="float-right">
+                                                    <a href="/product-graph/{{$value['id']}}" target="_blank">
+                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                    </a>
+                                                </span>
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="chart">
+                                                <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
                                     </div>
                                 </div>
-                                <!-- /.card-body -->
-                            </div>
+                                @endif
+                            @endforeach
                         </div>
-                        @endif
-                        @endforeach
                     </div>
                     <!-- Graph Mode end -->
                     <!-- Edit Mode start -->
@@ -467,7 +469,29 @@
                 </div>
                 <div id="graphCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                   <div class="card-body">
-                      
+                    <div class="row" id="other_graph_div">
+                        @foreach($data['otherGraph'] as $key=>$value)
+                            @if($value['name'])
+                            <div class="col-sm-6 main_chart_other">
+                                <div class="card card-info">
+                                    <div class="card-header" >
+                                        <h3 class="card-title" style="float:revert;">{{$value['name']}}
+                                            <span class="float-right">
+                                               
+                                            </span>
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart">
+                                            <canvas id="{{$value['name']}}" style="background:#F1F6FD;"></canvas>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                            </div>
+                            @endif
+                        @endforeach
+                    </div>
                   </div>
                 </div>
             </div>
@@ -492,7 +516,7 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Anlagen Table Data</h3>
                                 </div>
-                                <div class="card-body" style="height: 300px;">
+                                <div class="card-body" style="height: 500px;">
                                     <div id="custom_machine_table"></div>
                                 </div>
                                 <!-- /.card-body -->
@@ -682,8 +706,58 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row" id="data-card">
-                       
+                <div id="data-card">
+                    <form id="graph_data_form">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="graph_name">Enter Graph Name</label>
+                                <input type="text" class="form-control" id="graph_name" name="graph_name">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="select_graph_table">Select Table</label>
+                                <select class="form-control" id="select_graph_table" name="select_graph_table">
+                                    <option value="">Select</option>
+                                    <option value="data_value_15m">data_value_15m</option>
+                                    <option value="data_value_1m">data_value_1m</option>
+                                    <option value="data_value_1s">data_value_1s</option>
+                                    <option value="spiesnet">spiesnet</option>
+                                    <option value="spiesnetFAs">spiesnetFAs</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="label_column">Select Label Column</label>
+                                <select class="form-control graph_column" id="label_column" name="label_column">
+                                    <option value="">Select</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="label_column">Select Data Column</label>
+                                <select class="form-control graph_column" id="data_column" name="data_column">
+                                    <option value="">Select</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="select_column">Select Primary key</label>
+                                <select class="form-control select_primary_column" id="select_graph_primary_column" name="select_graph_primary_column">
+                                    <option value="">Select</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="select_column">Select Foreign key</label>
+                                <select class="form-control select_foreign_column" id="select_graph_foreign_column" name="select_graph_foreign_column">
+                                    <option value="">Select</option>
+                                </select>
+                            </div>
+
+                            <div class="popup">
+                                <div class="col-sm-3" style="margin-right:5px;">
+                                    <button type="submit" class="btn btn-primary" id="save_graph_field">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -827,10 +901,7 @@
 <script src="{{asset('template/plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- Bootstrap Switch -->
 <script type="text/javascript">
-    $(function () {
-    //Initialize Select2 Elements
-    $('#multi-machine-prioprity').select2()
-    });
+
 
 
     @if(!empty($data))
@@ -838,6 +909,7 @@
         const timeFilterHook = document.getElementById('timeFilter');
         let myChart;
         const lineChartHook = (id, label, data, name) => {
+            console.log('here-data',data);
             if (data.length > 0) {
                 $(".main_chart").css("display", "block");
                 // $("#not_found_msg").css("display","none");
@@ -900,6 +972,10 @@
 
         @foreach($data['chartsData'] as $key => $value)
             lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
+        @endforeach
+
+        @foreach($data['otherGraph'] as $key => $value)
+          //  lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         //adding event listener to time filter hook

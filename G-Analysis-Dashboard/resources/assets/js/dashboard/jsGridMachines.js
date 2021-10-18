@@ -81,7 +81,7 @@ const jsGridFunction = (columns) => {
         sorting: true,
         paging: true,
         pageIndex: 1,
-        pageSize: 5,
+        pageSize: 10,
         autoload: true,
         pageLoading:true,
         loadIndicator: function(config) {
@@ -125,3 +125,53 @@ const jsGridFunction = (columns) => {
 
 searchMachine.addEventListener('click', searchMachineFunction);
 
+$("#graph_data_form").validate({
+    rules: {
+        graph_name: {
+            required: true
+        },
+        label_column: {
+            required: true
+        },
+        data_column: {
+            required: true
+        },
+        select_graph_table: {
+            required: true
+        },
+        select_graph_primary_column: {
+            required: true
+        },
+        select_graph_foreign_column: {
+            required: true
+        }
+    },
+    submitHandler: function (form) {
+        var email = $("#email").val();
+        $.ajax({type: "POST",
+            url: "product-graph/save",
+            data: { 
+                graph_name: $('#graph_name').val(), 
+                table_name: $('#select_graph_table').val(), 
+                label_name: $('#label_column').val(),
+                data: $('#data_column').val(),
+                primaryKey: $('#select_graph_primary_column').val(),
+                foreignKey: $('#select_graph_foreign_column').val(),
+            },
+            success:function(result) {
+                spinner.stop();
+                if(result.status == 200 ){
+                    toastr.success(result.msg);
+                    getMachineData($('.navigation').attr('data-value'),"current");
+                }
+            },
+            error:function(result) {
+                spinner.stop();
+                toastr.success('Internal Server Error!');
+            }
+        });
+    }
+
+
+
+});

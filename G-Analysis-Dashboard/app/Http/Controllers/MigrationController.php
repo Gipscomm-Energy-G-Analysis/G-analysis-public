@@ -118,6 +118,10 @@ class MigrationController extends Controller
                 $table->id();
                 $table->bigInteger('user_id')->nullable();
                 $table->string('username')->nullable();
+                $table->string('graph_name');
+                $table->string('table_name');
+                $table->string('primary_key');
+                $table->string('foreign_key');
                 $table->string('label');
                 $table->string('data');
                 $table->string('type')->nullable();

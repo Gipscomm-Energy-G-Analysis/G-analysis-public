@@ -35,9 +35,9 @@ const getPrimaryKey = () => {
                 table:'anlagen'
             },
         }).done( function(response) {
-            $('#select_primary_column').html('<option value="">Select</option>');
+            $('.select_primary_column').html('<option value="">Select</option>');
             $.each(response, function(key, value) {
-                $('#select_primary_column').append('<option value="'+ value +'">'+ value +'</option>');
+                $('.select_primary_column').append('<option value="'+ value +'">'+ value +'</option>');
             });
     });
 }
@@ -85,6 +85,7 @@ const getMachineData = (machine_id, type) => {
         const data = response.data;
         spinner.stop();
         if(response.code == 200 ){
+            console.log('graphDiv', graphDiv);
             graphDiv.innerHTML = '';
             $("#data-card").show();
             $("#bar_chart").show();
@@ -287,6 +288,26 @@ function select_table() {
 
 $(document).on('change','#select_table', function() {
     select_table();
+})
+
+$(document).on('change','#select_graph_table', function() {
+    let table  = $(this).val();
+    let dbName = document.getElementById("nameDB").value;
+    console.log('table', table);
+    $('.graph_column').html("");
+    $.ajax({
+        url:'/dashboard/tableColumn',
+        type: 'POST',
+            data: {
+                table:table,
+                dbName:dbName
+            },
+        }).done( function(response) {
+            $('.graph_column').html('<option value="">Select</option>');
+            $.each(response, function(key, value) {
+                $('.graph_column').append('<option value="'+ value +'">'+ value +'</option>');
+            });
+    });
 })
 
 

@@ -277,6 +277,46 @@ $(document).on('change', '#primary_key_subGroup', function() {
     });
 })
 
+
+$(document).on('change', '#select_graph_primary_column', function() {
+    let container = document.getElementById('spin_container');
+    spinner.spin(container);
+    if ($('#select_graph_table').val() == '') {
+        spinner.stop();
+        toastr.warning('Please select Group Table!');
+        return false;
+    } else if ($(this).val() == '') {
+        spinner.stop();
+        toastr.warning('Please select Primary key!');
+        return false;
+    }
+    $.ajax({
+        type: "POST",
+        url: "/get-same-type-column",
+        data:{
+            'column':$(this).val(),
+            'foreign_key_table':$('#select_graph_table').val()
+        },
+        success:function(result) {
+            spinner.stop();
+            if(result.status == 200) {
+                let html = '<option value="">Select</option>';
+                $.each(result.data, function(key, value) {
+                    html += `<option value="${value}">${value}</option>`;
+                });
+                $('#select_graph_foreign_column').html(html);
+            }
+        },
+        error:function(result) {
+            spinner.stop();
+            toastr.error(result);
+        }
+    });
+})
+
+
+
+
 const showTableConfigurations = (data) => {
     let html = '';
     $.each(data, function(key, value) {

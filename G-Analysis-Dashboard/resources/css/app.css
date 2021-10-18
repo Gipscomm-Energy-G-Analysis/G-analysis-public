@@ -219,3 +219,6 @@ color: black !important;
   color: black !important;
 }
 /* end */
+.error label{
+    color:red !important;
+}

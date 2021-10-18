@@ -9,13 +9,16 @@ use App\Models\UsersDatabases;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\ManageDatabaseController;
+use App\Models\GraphConfiguration;
 
 class GraphController extends Controller
 {
     public function __construct()
     {
+        
         $this->database = (new ManageDatabaseController)->checkDB($_SESSION['nameDB']);
         $this->database_result = (new ManageDatabaseController)->switchDatabase($this->database);
+        $this->username = $_SESSION['username'];
     }
 
     public function showGraph($graph, $limit=null) 
@@ -60,7 +63,6 @@ class GraphController extends Controller
     public function historicData(Request $request) {
         $graphPoints = isset($request->graphPoints)?$request->graphPoints:null;
         $periodFilter = $request->periodFilter;
-        $graphType = $request->typeFilter;
         if (!empty($request->graphPoints)) {
             $graphArray = explode(',',$graphPoints);
             $graphData = [];
@@ -70,17 +72,14 @@ class GraphController extends Controller
                         $year = $request->yearFilter;
                         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
                         ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
-                        ->where('MessstellenEnergiedaten.Value','!=','.00000')
                         ->whereYear('MessstellenEnergiedaten.Time', '=', $year)
                         ->orderby('MessstellenEnergiedaten.Time','desc')->limit(1000)->get();
                         break;
                     case 'month':
                         $month = $request->monthFilter;
-                        $year = $request->yearFilter;
                         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
                         ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
-                        ->where('MessstellenEnergiedaten.Value','!=','.00000')
-                        ->whereYear('MessstellenEnergiedaten.Time', '=', $year)
+                        ->whereYear('MessstellenEnergiedaten.Time', '=', date('Y'))
                         ->whereMonth('MessstellenEnergiedaten.Time', '=', $month)
                         ->orderby('MessstellenEnergiedaten.Time','desc')->limit(1000)->get();
                         break;
@@ -91,7 +90,6 @@ class GraphController extends Controller
                         $end = date_format($end,"Y-m-d H:i:s.u");
                         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
                         ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
-                        ->where('MessstellenEnergiedaten.Value','!=','.00000')
                         ->whereDate('MessstellenEnergiedaten.Time', '>=',$start)
                         ->whereDate('MessstellenEnergiedaten.Time', '<=',$end)
                         ->orderby('MessstellenEnergiedaten.Time','asc')->limit(1000)->get();
@@ -103,10 +101,26 @@ class GraphController extends Controller
                 array_push($graphData, $pointData);
             }
             if (empty($graphData)) {
-                return ['code'=>400, 'graphData' => $graphData, 'type'=>$graphType, 'msg' => 'no record found'];
+                return ['code'=>400, 'graphData' => $graphData, 'msg' => 'no record found'];
             }
-            return ['code'=>200, 'graphData' => $graphData, 'type'=>$graphType];
+            return ['code'=>200, 'graphData' => $graphData];
         }
         return ['code'=>400, 'msg' => 'no record found'];
+    }
+
+    public function saveGraphConfigurations(Request $request) {
+        $columnData = [
+            "graph_name" =>  $request->graph_name,
+            "username" => $this->username
+        ];
+        $data=array(
+            "table_name"   =>  $request->table_name,
+            "primary_key"  =>  $request->primaryKey,
+            "foreign_key"  =>  $request->foreignKey,
+            "label"     =>  $request->label_name,
+            "data"      =>  $request->data,
+            "status"  =>  '1');
+        GraphConfiguration::updateOrCreate($columnData, $data);
+        return ['status'=> 200 , 'msg' => 'Graph configurations saved successfully.'];
     }
 }
