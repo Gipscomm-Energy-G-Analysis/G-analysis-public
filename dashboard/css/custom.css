@@ -456,7 +456,7 @@
     left: 0;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255,255,255,0.9);
     padding: 20px;
     right: 0;
     margin: auto;
@@ -577,3 +577,23 @@
 .dashboard-btn{
     margin-left: 14px;
 }
+/*
+.chart-width{
+    margin-top: -145px !important;
+}
+.count_result_tile {
+    max-width: 100px;
+}*/
+.dashboard_count_div .count_result_tile{
+    margin-top: 19px !important;
+    margin-bottom: 19px !important;
+}
+.dashboard_count_div .chart-width{
+    margin-top: -128px !important;
+}
+.dashboard_count_div .overflow-hide{
+    margin-top: -124px !important;
+}
+/*.dashboard_count_div .count_result_tile {*/
+/*    max-width: 100px;*/
+/*}*/

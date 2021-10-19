@@ -160,6 +160,10 @@ class dashboardController {
             $queryMaxVal = '';
             $pagesCount = '';
             // <----14-9-2021---
+            if($measurement_type == "calculated"){
+                $this->getAutomaticTableMeasurementData1();
+                die;
+            }
             if($measurement_type == "automatic"){
                 $this->getAutomaticTableMeasurementData();
                 die;
@@ -2327,7 +2331,7 @@ class dashboardController {
             // echo $query1; die; 
             
             $dataMesaurement = queryDB($conn, $query1, "read");
-            
+
             $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement);
 
             $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val,$pagesCount,$dataMesaurement);
@@ -2347,7 +2351,118 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         } 
     }
+    public function getAutomaticTableMeasurementData1(){
+        try{
+            global $conn;
+            $total_number_records = $_POST['total_number_records'];
+            $number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $time_interval = $_POST['time_interval'];
+            $order_by_val = $_POST['measurement_order_by_val'];
+            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
+            $measurement_type = $_POST['measurement_type'];
+            $dataMesaurement = '';
+            $queryMaxVal = '';
+            $pagesCount = '';
 
+            if($order_by_val == 'order_by_desc'){
+                $order_by_val = "Order by convert(decimal(38,5), T2.val) desc ";
+            }
+            else if($order_by_val == 'order_by_asc'){
+                $order_by_val = "Order by convert(decimal(38,5), T2.val) asc ";
+            }
+
+            $search_record = isset($_POST['search_record']) ? $_POST['search_record'] : '';
+            $queryTotalRecordCondition = "";
+            $queryMainCondition = '';
+            if($search_record != ''){
+                $queryTotalRecordCondition = "WHERE T1.nameMSt LIKE '%$search_record%' ";
+                $queryMainCondition = "WHERE T1.nameMSt LIKE '%$search_record%' ";
+            }
+
+            //Pagination Code
+            $queryTotalRecords = "SELECT TOP($total_number_records) * ";
+            $queryTotalRecords .= "FROM messstellen as T1 ";
+            $queryTotalRecords .= "INNER JOIN ";
+            $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            $queryTotalRecords .= "berechneteEnergiedaten as T2 ";
+            $queryTotalRecords .= "GROUP By T2.mst_id) ";
+            $queryTotalRecords .= "T2 ";
+            $queryTotalRecords .= "ON T1.mst_ID = T2.table_2_mst_id ";
+            $queryTotalRecords .= $queryTotalRecordCondition;
+            $queryTotalRecords .= $order_by_val;
+            // echo $queryTotalRecords; die;
+
+
+            $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            // echo json_encode($totalRecordsValue); die;s
+
+            $pagesCount = '';
+            $offSetVal = 0;
+            if(count($totalRecordsValue) > 0){
+                if($total_number_records <= $number_records){
+                    $offSetVal = 0;
+                    $number_records = $total_number_records;
+                    $pagesCount = 1;
+                    $page_val = 1;
+                }
+                else{
+
+                    if($selected_number_record_measurement == 'true'){
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $page_val = 1;
+                        $offSetVal = 0;
+
+                    }
+                    else{
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+
+                        //Only Valid when User Click on Last page
+                        if($page_val == $pagesCount){
+                            $number_records = $total_number_records - $offSetVal;
+                        }
+                    }
+                    //    echo $number_records;s
+                }
+
+            }
+            $query1 = "SELECT * ";
+            $query1 .= "FROM messstellen as T1 ";
+            $query1 .= "INNER JOIN ";
+            $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            $query1 .= "berechneteEnergiedaten as T2 ";
+            $query1 .= "GROUP By T2.mst_id) ";
+            $query1 .= "T2 ";
+            $query1 .= "ON T1.mst_ID = T2.table_2_mst_id ";
+            $query1 .= $queryMainCondition;
+            $query1 .= $order_by_val;
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+            // echo $query1; die;
+
+            $dataMesaurement = queryDB($conn, $query1, "read");
+            $dataMesaurement=[];
+            $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement);
+
+            $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val,$pagesCount,$dataMesaurement);
+
+            // echo $pagination_html['paginationHTMl']; die;
+            //<---13-8-2021--
+            $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement');
+            $records['query_data'] = $ar;
+            // --end-->
+
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
     // <--15-9-2021
     public function rowClickAutomaticMeasurementTableData(){
         try{
