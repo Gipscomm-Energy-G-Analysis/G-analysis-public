@@ -274,6 +274,8 @@ $(document).ready( function(){
     });
 
     $(document).on('keypress keyup blur focusin', '#measurement_search_record', function(){
+        $('#measurement_records_order_by option:contains("Maximum")').text('Order By Max Units Consumed');
+        $('#measurement_records_order_by option:contains("Minimum")').text('Order By Min Units Consumed');
         getNumberRecordsMesurement(); 
     });
 
@@ -282,6 +284,8 @@ $(document).ready( function(){
         var mst_id = $(this).attr('data-mst');
         var name_val = $(this).children('td:first').text();
         $('#measurement_search_record').val(name_val);
+        $('#measurement_records_order_by option:contains("Order By Max Units Consumed")').text('Maximum');
+        $('#measurement_records_order_by option:contains("Order By Min Units Consumed")').text('Minimum');
         rowClickMeasurementTableData(mst_id,data_type);
     })
 
@@ -387,7 +391,9 @@ $(document).ready( function(){
 
     $(document).on('click', '.tiles-click', function(){
         var div_id = $(this).attr('id');
+        console.log($(this).attr('data-i'));
         $("#"+div_id).fadeOut("20");
+        $(".small-table_"+$(this).attr('data-i')).hide();
         tiles_click(div_id);
     });
 
@@ -502,8 +508,8 @@ $(document).ready( function(){
             // --end-->
             var countValue = $('#overall_count').val();
             var record_name = $('#mst_id_hidden').attr('data-name');
-            var count_html = "<h4 class='text-muted record-name-overall-count'>"+record_name+"</h4>";
-            count_html += "<h4 class='text-muted text-overall-count'>"+countValue+"</h4>";
+            var count_html = "<h4 class='text-muted record-name-overall-count font-weight-bold mb-2'>"+record_name+"</h4>";
+            count_html += "<h4 class='text-muted text-overall-count'>"+countValue+"(value)</h4>";
             
             var last_div_index = $('#total_records').val();
             $('.measurement_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
@@ -595,8 +601,8 @@ $(document).ready( function(){
             edit_tile(type,edit_id);
             var countValue = $('#overall_count').val();
             var record_name = $('#mst_id_hidden').attr('data-name');
-            var count_html = "<h4 class='text-muted record-name-overall-count'>"+record_name+"</h4>";
-            count_html += "<h4 class='text-muted text-overall-count'>"+countValue+"</h4>";
+            var count_html = "<h4 class='text-muted record-name-overall-count font-weight-bold mb-2'>"+record_name+"</h4>";
+            count_html += "<h4 class='text-muted text-overall-count'>"+countValue+"(value)</h4>";
             
             var last_div_index = $('#total_records').val();
             $('.measurement_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
@@ -652,6 +658,7 @@ $(document).ready( function(){
 
             $('.save_table_div_show').hide();
             $('.action-modal-button-div').removeClass('col-md-12');
+
 
             // // <---7-10-2021---
             // console.log('Click Working');
@@ -898,6 +905,13 @@ $(document).ready( function(){
     // <---7-9-2021----
     $(document).on('change','#measurement_type', function(){
         var val = $(this).val();
+        if(val == 'automatic'){
+            $('#measurement_records_order_by option:contains("Order By Max Units Consumed")').text('Maximum');
+            $('#measurement_records_order_by option:contains("Order By Min Units Consumed")').text('Minimum');
+        }else{
+            $('#measurement_records_order_by option:contains("Maximum")').text('Order By Max Units Consumed');
+            $('#measurement_records_order_by option:contains("Minimum")').text('Order By Min Units Consumed');   
+        }
         // if(val == 'manually')
         // {
             getNumberRecordsMesurement();

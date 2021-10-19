@@ -1601,6 +1601,7 @@ function getEditChartTileDashboard(){
 // --end-->
 // <---02-9-2021----
 function saveDashboardTileChart(){
+  $('.small-table').attr('style','display:block');
   var chart_records = $('#chart_records').val();
   var chart_record_filter = $('#chart_record_filter').val();
   //console.log('chart_recorda Value ',chart_records);
@@ -1740,10 +1741,18 @@ function getChartTimeIntervalRecord(){
 function chartRecordFilter(){
   var filterVal = $('#chart_record_filter').val();
   var mst_id = $('#chart_records').val();
+  var mst_value = $("#chart_records option:selected").text();
+  var mst_input_value = $('#total_records_chart').val();
   var dashboard_tile_data = JSON.parse(localStorage.getItem('dashboard_tile_data'));
   var record_type_of_tile = dashboard_tile_data['record_type_of_tile'];
 
   var chart_type = $('#chart_type').val();
+  var mst_check = $('#save_and_proceed_btn_dashboard').val();
+  if(mst_check == 'Update & Proceed'){
+    $('.chart_text_edit_' + mst_input_value).text(mst_value+'('+filterVal+' Days)');
+  }else{
+    $('.chart_text_' + mst_input_value).text(mst_value+'('+filterVal+' Days)');
+  }
   if(filterVal != '' && mst_id != ''){
     var type = $('#chart_records option:selected').attr('type');
     $.ajax({
@@ -1763,6 +1772,8 @@ function chartRecordFilter(){
           alert("failed!!")
       },
       success: function(a) {
+        $('#td_text_' + mst_input_value).text(mst_value);
+        $('#td_two_text_' + mst_input_value).text(a['count_val'][9]);
         if(chart_type == "line_chart"){
           var html_canvas_chart = "<canvas id='lineChart'></canvas>";
           var div_i_id = $('#total_records_chart').val();
@@ -2331,7 +2342,7 @@ function getTileClickOverAllCount(id,mst_id){
     success: function(a) {
       if(a['total_sum'] != '' && a['name_value']){
         $('.'+id+'.tiles-click .save_table_div_show_table .record-name-overall-count').text(a['name_value']);
-        $('.'+id+'.tiles-click .save_table_div_show_table .text-overall-count').text(a['total_sum']);
+        $('.'+id+'.tiles-click .save_table_div_show_table .text-overall-count').text(a['total_sum']+'(value)');
         $('#dashboard_count_div_tile '+'.'+id+'.tiles-click .count_result_tile').text(a['measurement_type']);
       }
     }
@@ -2984,6 +2995,10 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
 
 // <---7-10-2021---
 function updateDashboardChart(){
+  $('.small-table').attr('style','display:block');
+  var mst_input_value = $('#total_records_chart').val();
+  $('.chart_text_edit_'+mst_input_value).attr('class', 'mb-0 mt-2 text-success count_result_tile chart_text_'+mst_input_value);
+  $('.chart_text_'+mst_input_value).removeClass('chart_text_edit_'+mst_input_value);
   var chart_records = $('#chart_records').val();
   var chart_record_filter = $('#chart_record_filter').val();
   //console.log('chart_recorda Value ',chart_records);

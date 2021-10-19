@@ -203,7 +203,7 @@
 }
 
 #dashboard_count_div_tile .hide_table_main{
-    height: 145px !important;
+    height: auto !important;
     width: 285px  !important;
 }
 #dashboard_count_div_tile .hide_table_main table{
@@ -557,4 +557,20 @@
 
 #dashboard_count_div_tile canvas{
     margin-top: 16px;
+    width: 377px !important;
+}
+.wish-table th {
+    background: #c5c8d2;
+    padding: 4px;
+    font-size: 8px;
+}
+.wish-table {
+    width: 100%;
+    border: 1px solid #c9ccd7;
+}
+.wish-table td {
+    padding: 4px;
+    border-right: 1px solid #c9ccd7;
+    border-bottom: 1px solid #c9ccd7;
+    font-size: 8px;
 }

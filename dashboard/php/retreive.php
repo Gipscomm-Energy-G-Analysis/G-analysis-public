@@ -901,18 +901,17 @@ class dashboardController {
                     $style= '';
                     if($i == $total_result){
                          
-                        $measurement_title = $_POST['measurement_title'];;
+                        $measurement_title = $_POST['measurement_title'];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$last_id'>";
                         $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                     <div class='card card-border'>
-                                        <div class='card-body overflow-hide display-flex'>
+                                        <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
-                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
-                                               
-                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                <img src='images/chartlogo.png' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
-                                                <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
                                                     <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
                                                     <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
@@ -920,6 +919,10 @@ class dashboardController {
                                             </div>
                                             
                                             <div class='overflow-hide ml-3 chart-width'>
+                                            <div class='col-md-6 p-0 small-table small-table_$last_id' style='display:none'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Name</th><th>Units Consumed</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
+                                            </table>
+                                            </div> 
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
@@ -940,14 +943,13 @@ class dashboardController {
                 $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                 <input type='hidden' id='total_records_chart' value='$last_id'>                
                                 <div class='card card-border'>
-                                    <div class='card-body overflow-hide display-flex'>
+                                    <div class='card-body overflow-hide display-flex pr-0'>
                                         <div id='' class=''>
                                             <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>".$measurement_title."</p>
                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
-                                            
-                                            <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0 measurement-icon'></i>
-                                            </div>  
-                                            <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <img src='images/chartlogo.png' class='tile-image-icon tile-image-icon-table'>
+                                            </div> 
+                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                             <div class='action-modal-button-div'>
                                                 <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px'>
                                                 <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
@@ -955,6 +957,10 @@ class dashboardController {
                                         </div>
                                         
                                         <div class='overflow-hide ml-3 chart-width'>
+                                        <div class='col-md-6 p-0 small-table small-table_$last_id' style='display:none'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Name</th><th>Units Consumed</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
+                                            </table>
+                                            </div> 
                                             <div class='save_table_div_show_table'> 
                                                 <canvas id='areaChart'></canvas>
                                             </div>
@@ -1004,8 +1010,6 @@ class dashboardController {
                                             <div id='' class=''>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
-                                               
-                                                
                                                 <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
                                                 <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
@@ -1072,14 +1076,13 @@ class dashboardController {
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
                         $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Measurement'>
                                     <div class='card card-border'>
-                                        <div class='card-body overflow-hide display-flex'>
+                                        <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$tile_title</p>
-                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
-                                               
-                                                <i class='ti-calendar icon-md text-muted mb-0 mb-md-3 measurement-icon mb-xl-0'></i>
-                                                </div>  
-                                                <p class='mb-0 mt-2 text-success count_result_tile'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                <img src='images/chartlogo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div> 
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
                                                 <div class='action-modal-button-div'>
                                                     <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
                                                     <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
@@ -1087,6 +1090,10 @@ class dashboardController {
                                             </div>
                                             
                                             <div class='overflow-hide ml-3 chart-width'>
+                                            <div class='col-md-6 p-0 small-table small-table_$i_value' style='display:none'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Name</th><th>Units Consumed</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
+                                            </table>
+                                            </div>
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>

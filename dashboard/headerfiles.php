@@ -22,5 +22,13 @@
   <!-- 7-9-2021-- -->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!-- --end -->
+  <style type="text/css">
+    .text-muted {
+         color: #0a0a0a !important;
+      }
+      body{
+         font-family: Calibri,Arial, Helvetica, sans-serif !important;
+      }
+  </style>
 </head>
 <body>

@@ -34,8 +34,8 @@
                     <div class="form-group col-md-3">
                       <label for="measurement_records_order_by">Filter Units Consumed</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_records_order_by">
-                        <option value="order_by_desc">Order By Max Units Consumed</option>
-                        <option value="order_by_asc">Order By Min Units Consumed</option>
+                        <option value="order_by_desc">Maximum</option>
+                        <option value="order_by_asc">Minimum</option>
                         <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
                       </select>
                     </div>

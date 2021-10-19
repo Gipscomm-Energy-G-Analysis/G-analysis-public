@@ -7,7 +7,7 @@
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end act_background">
       
         <ul class="navbar-nav mr-lg-2 menu_dashboard_ul">
-          <li class="text-muted menu_dashboard_database font-weight-bold">
+          <li class="text-muted menu_dashboard_database">
             <select id="dashboard_database_list">
               <!-- <option>Agrodur Bad Berleburg</option>
               <option>Agrodur Kunststofftechnik</option>
@@ -31,10 +31,10 @@
               <option>Spies</option> -->
             </select>
           </li>
-          <li><a href="javascript:void(0);" class="text-muted menu_dashboard font-weight-bold">Dashboard</a></li>
+          <li><a href="javascript:void(0);" class="text-muted menu_dashboard">Dashboard</a></li>
           
           <!-- <li class="dropdown">
-            <a href="#" class="text-muted menu_dashboard font-weight-bold dropbtn">Auswertungen</a>
+            <a href="#" class="text-muted menu_dashboard dropbtn">Auswertungen</a>
             <div class="dropdown-content">
               <a href="#">Link 1</a>
               <a href="#">Link 2</a>
@@ -43,7 +43,7 @@
           </li> -->
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard font-weight-bold">Auswertungen 
+              <button class="dropbtn text-muted menu_dashboard">Auswertungen 
                 <!-- <i class="fa fa-caret-down"></i> -->
               </button>
               <div class="dropdown-content">
@@ -92,7 +92,7 @@
           <!-- 27-9-2021- -->
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard font-weight-bold">Stammdaten 
+              <button class="dropbtn text-muted menu_dashboard">Stammdaten 
                 <!-- <i class="fa fa-caret-down"></i> -->
               </button>
               <div class="dropdown-content">
@@ -160,7 +160,7 @@
 
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard font-weight-bold">Manuell 
+              <button class="dropbtn text-muted menu_dashboard">Manuell 
                 <!-- <i class="fa fa-caret-down"></i> -->
               </button>
               <div class="dropdown-content">
@@ -184,7 +184,7 @@
 
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard font-weight-bold">Optionen 
+              <button class="dropbtn text-muted menu_dashboard">Optionen 
                 <!-- <i class="fa fa-caret-down"></i> -->
               </button>
               <div class="dropdown-content">
@@ -221,8 +221,8 @@
           </li>
           <!-- --end-- -->
 
-          <li><a href="javascript:void(0);" class="text-muted menu_dashboard font-weight-bold">Hilfe</a></li>
-          <li><a href="javascript:void(0);" id="logout" class="dashboard_menu_click text-muted menu_dashboard font-weight-bold"><img src="images/logout2.png"></a></li>
+          <li><a href="javascript:void(0);" class="text-muted menu_dashboard">Hilfe</a></li>
+          <li><a href="javascript:void(0);" id="logout" class="dashboard_menu_click text-muted menu_dashboard"><img src="images/logout2.png"></a></li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
          
