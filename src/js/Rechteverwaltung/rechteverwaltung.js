@@ -89,9 +89,11 @@ const scpRechteverwaltung =
                 manGrpID =>
                 manID =>
                 () =>
-                manGrpID !== "null" ?
-                $(".manGrpPfad").val(`manGrp_ID-${manGrpID}`) :
-                $(".manGrpPfad").val(`man_ID-${manID}`)
+                ( manGrpID !== "null" ?
+                  $(".manGrpPfad").val(`manGrp_ID-${manGrpID}`) :
+                  $(".manGrpPfad").val(`man_ID-${manID}`)
+                , $(".manGrpPfad").trigger("change")
+                )
 
             const hideTabsAndMenus =
                 position => {

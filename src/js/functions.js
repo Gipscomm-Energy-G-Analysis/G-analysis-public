@@ -4798,7 +4798,7 @@ try {
             "entHinz" == a ? (b = "#nameEnt #kuerzelEnt #allgemEntEnt #notizEnt #versorgerEvuEnt #versorgerUenbEnt #versorgerMsbEnt #einheit1Ent #einheit2Ent #einheit3Ent #entEinh1FaktorKwh #entEinh2FaktorKwh #entEinh3FaktorKwh #entEinh1FaktorCO2 #entEinh2FaktorCO2 #entEinh3FaktorCO2 #entEinh1FaktorX1 #entEinh2FaktorX1 #entEinh3FaktorX1 #entEinh1FaktorX2 #entEinh2FaktorX2 #entEinh3FaktorX2 #entEinh1FaktorX3 #entEinh2FaktorX3 #entEinh3FaktorX3 #gueltigVomEnt #gueltigBisEnt".split(" "), $("#lblEntEinh1FaktorX1").text(""),
                     $("#lblEntEinh2FaktorX1").text(""), $("#lblEntEinh3FaktorX1").text(""), $("#lblEntEinh1FaktorX2").text(""), $("#lblEntEinh2FaktorX2").text(""), $("#lblEntEinh3FaktorX2").text(""), $("#lblEntEinh1FaktorX3").text(""), $("#lblEntEinh2FaktorX3").text(""), $("#lblEntEinh3FaktorX3").text("")) : "enfHinz" == a ? (b = "#nameEnf #kuerzelEnf #notizEnf #einheit1Enf #einheit2Enf #einheit3Enf #enfEinh1FaktorKwh #enfEinh2FaktorKwh #enfEinh3FaktorKwh #enfEinh1FaktorCO2 #enfEinh2FaktorCO2 #enfEinh3FaktorCO2 #enfEinh1FaktorX1 #enfEinh2FaktorX1 #enfEinh3FaktorX1 #enfEinh1FaktorX2 #enfEinh2FaktorX2 #enfEinh3FaktorX2 #enfEinh1FaktorX3 #enfEinh2FaktorX3 #enfEinh3FaktorX3 #gueltigVomEnf #gueltigBisEnf".split(" "),
                     $("#aktivEnf").prop("checked", !1), $("#lblEnfEinh1FaktorX1").text(""), $("#lblEnfEinh2FaktorX1").text(""), $("#lblEnfEinh3FaktorX1").text(""), $("#lblEnfEinh1FaktorX2").text(""), $("#lblEnfEinh2FaktorX2").text(""), $("#lblEnfEinh3FaktorX2").text(""), $("#lblEnfEinh1FaktorX3").text(""), $("#lblEnfEinh2FaktorX3").text(""), $("#lblEnfEinh3FaktorX3").text("")) :
-            "eRngHinz" == a ? ($(".htNtInp").val(0), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
+            "eRngHinz" == a ? ($(".htNtInp").val(0), $("#mwstPercentERng").val(19), $("#mwstPercentERng").trigger("change"), $("#dokuAuswahlERng").text(""), b = ".standRng .evuRng .bafaRng #zpNrERng #aktuellesDokIDERng #aktuellesDokNameERng #dokuAuswahlERng".split(" ")) :
             "iMwHinz" == a ? b = [".iMwHinz"] :
             "intEngIMwFirst" == a ? b = [".iMwEngHinz"] :
             "eAnlHinz" == a ? (b = ["#nameEAnl", "#kuerzelEAnl", "#beschreibungEAnl", "#optionEAnl"], tblOptionenEAnl.clear().draw()) : "ePrdHinz" == a ? (b = ["#nameEPrd", "#kuerzelEPrd", "#beschreibungEPrd", "#optionEPrd"], tblOptionenEPrd.clear().draw()) : "zpHinz" == a ? b = ["#zaehlpunktNrZp", "#energietraegerZp", "#mstZp", "#messsystemZp", "#messgenauZp"] : "knzHinz" == a ? (b = "#bezKnz #instanzAllgemeinKnz #instanzAllgemeinIDKnz #zustaendigerMitarbeiterAllgemeinKnz #beschreibungAllgemeinKnz #bez_1_Knz #anwendungsbereichKennzahldetails1Knz #datumEinfuehrung1Knz #datumLetzteUeberpruefung1Knz #datumDeaktivierung1Knz #einheitKennzahldetail1Knz #formel1Knz #formel1IDKnz #kennzahl1Knz #toleranzgrenzeOben1Knz #toleranzgrenzeUnten1Knz #bez_2_Knz #anwendungsbereichKennzahldetails2Knz #datumEinfuehrung2Knz #datumLetzteUeberpruefung2Knz #datumDeaktivierung2Knz #einheitKennzahldetail2Knz #formel2Knz #formel2IDKnz #kennzahl2Knz #toleranzgrenzeOben2Knz #toleranzgrenzeUnten2Knz #bez_3_Knz #anwendungsbereichKennzahldetails3Knz #datumEinfuehrung3Knz #datumLetzteUeberpruefung3Knz #datumDeaktivierung3Knz #einheitKennzahldetail3Knz #formel3Knz #formel3IDKnz #kennzahl3Knz #toleranzgrenzeOben3Knz #toleranzgrenzeUnten3Knz #bez_4_Knz #anwendungsbereichKennzahldetails4Knz #datumEinfuehrung4Knz #datumLetzteUeberpruefung4Knz #datumDeaktivierung4Knz #einheitKennzahldetail4Knz #formel4Knz #formel4IDKnz #kennzahl4Knz #toleranzgrenzeOben4Knz #toleranzgrenzeUnten4Knz #bez_5_Knz #anwendungsbereichKennzahldetails5Knz #datumEinfuehrung5Knz #datumLetzteUeberpruefung5Knz #datumDeaktivierung5Knz #einheitKennzahldetail5Knz #formel5Knz #formel5IDKnz #kennzahl5Knz #toleranzgrenzeOben5Knz #toleranzgrenzeUnten5Knz #bez_6_Knz #anwendungsbereichKennzahldetails6Knz #datumEinfuehrung6Knz #datumLetzteUeberpruefung6Knz #datumDeaktivierung6Knz #einheitKennzahldetail6Knz #formel6Knz #formel6IDKnz #kennzahl6Knz #toleranzgrenzeOben6Knz #toleranzgrenzeUnten6Knz #bez_7_Knz #anwendungsbereichKennzahldetails7Knz #datumEinfuehrung7Knz #datumLetzteUeberpruefung7Knz #datumDeaktivierung7Knz #einheitKennzahldetail7Knz #formel7Knz #formel7IDKnz #kennzahl7Knz #toleranzgrenzeOben7Knz #toleranzgrenzeUnten7Knz #bez_8_Knz #anwendungsbereichKennzahldetails8Knz #datumEinfuehrung8Knz #datumLetzteUeberpruefung8Knz #datumDeaktivierung8Knz #einheitKennzahldetail8Knz #formel8Knz #formel8IDKnz #kennzahl8Knz #toleranzgrenzeOben8Knz #toleranzgrenzeUnten8Knz #bez_9_Knz #anwendungsbereichKennzahldetails9Knz #datumEinfuehrung9Knz #datumLetzteUeberpruefung9Knz #datumDeaktivierung9Knz #einheitKennzahldetail9Knz #formel9Knz #formel9IDKnz #kennzahl9Knz #toleranzgrenzeOben9Knz #toleranzgrenzeUnten9Knz #bez_10_Knz #anwendungsbereichKennzahldetails10Knz #datumEinfuehrung10Knz #datumLetzteUeberpruefung10Knz #datumDeaktivierung10Knz #einheitKennzahldetail10Knz #formel10Knz #formel10IDKnz #kennzahl10Knz #toleranzgrenzeOben10Knz #toleranzgrenzeUnten10Knz".split(" "),
@@ -5860,30 +5860,6 @@ try {
                         createDocumentList("ERng")
                     })
                     break;
-                /*mm-comment*/
-                /*case "intEngIMw":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readInstanzen.php",
-                        data: {
-                            id: "intEngIMw",
-                            nameDB: $("#nameDB").val(),
-                            liegID: $("#liegID").val(),
-                            intEngIMwID: $("#intEngIMwID").val()
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            a = $.parseJSON(a);
-                            $("#intEngIMwCount").val(a.length);
-                            0 < a.length ? ($("#mstID").val(a[b].mst_ID), $("#mstIMw").val(a[b].nameMSt), $("#energietraegerIMw").val(a[b].energietraegerMst), $("#zeitintervallMst").val(a[b].zeitintervallMst), $("#einheitMst").val(a[b].einheitMst), $("#notizMesswertManuell").val(a[b].notizMesswertManuell)) : clearFields("iMwHinz")
-                        }
-                    });
-                    break;*/
-                /*mm-comment*/
-                /*17-03-2021*/
                 /*new-mm-start*/
                 case "intEngIMw":
                     $.ajax({
@@ -7078,9 +7054,9 @@ try {
                     , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
                     , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
                     , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
-                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
-                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
-                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , eegUmlage: containsNaN($("#eegERng").val()) ? 0 : formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: emptyString($("#eegUntERng").val()) ? 0 : formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: emptyString($("#eegUebERng").val()) ? 0 : formatNumber("deform", $("#eegUebERng").val())
                     , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
                     , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
                     , nevUnter: formatNumber("deform", $("#nevUntERng").val())
@@ -7102,9 +7078,7 @@ try {
                     }
 
                 ajaxPost("php/instanzIntoDb.php")(data)
-                .then(result => {
-                    alert(datensatzGespeichert(result))
-                })
+                .then(result => alert(datensatzGespeichert(result)))
             }
             else if ("intEngIMwSpeichern" == a) {
                 var x = "",
@@ -8286,9 +8260,9 @@ try {
                     , stromsteuer: formatNumber("deform", $("#strSteuERng").val())
                     , arbeitspreisNetz: formatNumber("deform", $("#abpNetzERng").val())
                     , konzessionsabgabe: formatNumber("deform", $("#konzERng").val())
-                    , eegUmlage: formatNumber("deform", $("#eegERng").val())
-                    , eegUmlageUntMill: formatNumber("deform", $("#eegUntERng").val())
-                    , eegUmlageUebMill: formatNumber("deform", $("#eegUebERng").val())
+                    , eegUmlage: containsNaN($("#eegERng").val()) ? 0 : formatNumber("deform", $("#eegERng").val())
+                    , eegUmlageUntMill: emptyString($("#eegUntERng").val()) ? 0 : formatNumber("deform", $("#eegUntERng").val())
+                    , eegUmlageUebMill: emptyString($("#eegUebERng").val()) ? 0 : formatNumber("deform", $("#eegUebERng").val())
                     , kwkUnter: formatNumber("deform", $("#kwkUntERng").val())
                     , kwkUeber: formatNumber("deform", $("#kwkObERng").val())
                     , nevUnter: formatNumber("deform", $("#nevUntERng").val())
@@ -8561,32 +8535,7 @@ try {
                     zielVon10: $("#zielVon10Knz").val(),
                     zielBis10: $("#zielBis10Knz").val()
                 };
-                g = new Date;
-                e = {
-                    dataToLog: "\n            ##########################################################################\n\n            Neu\n            +++\n            Datum: " +
-                        g.getDate() + "." + (g.getMonth() + 1) + ".2019 " + g.getHours() + ":" + (g.getMinutes() + 1) + "\n\n            bezug: " + c.bezug + "\n            instanzID: " + c.instanzID + "\n            zustaendigerMitarbeiter: " + c.zustaendigerMitarbeiter + "\n            beschreibung: " + c.beschreibung + "\n\n            nKnzs: " + e + "\n\n            bezeichnung1: " + c.bezeichnung1 + "\n            anwendungsbereich1: " + c.anwendungsbereich1 + "\n            status1: " + c.status1 + "\n            einfuehrung1: " + c.einfuehrung1 + "\n            letzteUeberpruefung1: " +
-                        c.letzteUeberpruefung1 + "\n            deaktivierung1: " + c.deaktivierung1 + "\n            einheit1: " + c.einheit1 + "\n            formelID1: " + c.formelID1 + "\n            kennzahl1: " + c.kennzahl1 + "\n            toleranzgrenzeOben1:  " + c.toleranzgrenzeOben1 + "\n            toleranzgrenzeUnten1: " + c.toleranzgrenzeUnten1 + "\n\n            bezeichnung2: " + c.bezeichnung2 + "\n            anwendungsbereich2: " + c.anwendungsbereich2 + "\n            status2: " + c.status2 + "\n            einfuehrung2: " + c.einfuehrung2 +
-                        "\n            letzteUeberpruefung2: " + c.letzteUeberpruefung2 + "\n            deaktivierung2: " + c.deaktivierung2 + "\n            einheit2: " + c.einheit2 + "\n            formelID2: " + c.formelID2 + "\n            kennzahl2: " + c.kennzahl2 + "\n            toleranzgrenzeOben2:  " + c.toleranzgrenzeOben2 + "\n            toleranzgrenzeUnten2: " + c.toleranzgrenzeUnten2 + "\n\n            bezeichnung3: " + c.bezeichnung3 + "\n            anwendungsbereich3: " + c.anwendungsbereich3 + "\n            status3: " + c.status3 + "\n            einfuehrung3: " +
-                        c.einfuehrung3 + "\n            letzteUeberpruefung3: " + c.letzteUeberpruefung3 + "\n            deaktivierung3: " + c.deaktivierung3 + "\n            einheit3: " + c.einheit3 + "\n            formelID3: " + c.formelID3 + "\n            kennzahl3: " + c.kennzahl3 + "\n            toleranzgrenzeOben3:  " + c.toleranzgrenzeOben3 + "\n            toleranzgrenzeUnten3: " + c.toleranzgrenzeUnten3 + "\n\n            bezeichnung4: " + c.bezeichnung4 + "\n            anwendungsbereich4: " + c.anwendungsbereich4 + "\n            status4: " + c.status4 +
-                        "\n            einfuehrung4: " + c.einfuehrung4 + "\n            letzteUeberpruefung4: " + c.letzteUeberpruefung4 + "\n            deaktivierung4: " + c.deaktivierung4 + "\n            einheit4: " + c.einheit4 + "\n            formelID4: " + c.formelID4 + "\n            kennzahl4: " + c.kennzahl4 + "\n            toleranzgrenzeOben4:  " + c.toleranzgrenzeOben4 + "\n            toleranzgrenzeUnten4: " + c.toleranzgrenzeUnten4 + "\n\n            bezeichnung5: " + c.bezeichnung5 + "\n            anwendungsbereich5: " + c.anwendungsbereich5 +
-                        "\n            status5: " + c.status5 + "\n            einfuehrung5: " + c.einfuehrung5 + "\n            letzteUeberpruefung5: " + c.letzteUeberpruefung5 + "\n            deaktivierung5: " + c.deaktivierung5 + "\n            einheit5: " + c.einheit5 + "\n            formelID5: " + c.formelID5 + "\n            kennzahl5: " + c.kennzahl5 + "\n            toleranzgrenzeOben5:  " + c.toleranzgrenzeOben5 + "\n            toleranzgrenzeUnten5: " + c.toleranzgrenzeUnten5 + "\n\n            bezeichnung6: " + c.bezeichnung6 + "\n            anwendungsbereich6: " +
-                        c.anwendungsbereich6 + "\n            status6: " + c.status6 + "\n            einfuehrung6: " + c.einfuehrung6 + "\n            letzteUeberpruefung6: " + c.letzteUeberpruefung6 + "\n            deaktivierung6: " + c.deaktivierung6 + "\n            einheit6: " + c.einheit6 + "\n            formelID6: " + c.formelID6 + "\n            kennzahl6: " + c.kennzahl6 + "\n            toleranzgrenzeOben6:  " + c.toleranzgrenzeOben6 + "\n            toleranzgrenzeUnten6: " + c.toleranzgrenzeUnten6 + "\n\n            bezeichnung7: " + c.bezeichnung7 +
-                        "\n            anwendungsbereich7: " + c.anwendungsbereich7 + "\n            status7: " + c.status7 + "\n            einfuehrung7: " + c.einfuehrung7 + "\n            letzteUeberpruefung7: " + c.letzteUeberpruefung7 + "\n            deaktivierung7: " + c.deaktivierung7 + "\n            einheit7: " + c.einheit7 + "\n            formelID7: " + c.formelID7 + "\n            kennzahl7: " + c.kennzahl7 + "\n            toleranzgrenzeOben7:  " + c.toleranzgrenzeOben7 + "\n            toleranzgrenzeUnten7: " + c.toleranzgrenzeUnten7 + "\n\n            bezeichnung8: " +
-                        c.bezeichnung8 + "\n            anwendungsbereich8: " + c.anwendungsbereich8 + "\n            status8: " + c.status8 + "\n            einfuehrung8: " + c.einfuehrung8 + "\n            letzteUeberpruefung8: " + c.letzteUeberpruefung8 + "\n            deaktivierung8: " + c.deaktivierung8 + "\n            einheit8: " + c.einheit8 + "\n            formelID8: " + c.formelID8 + "\n            kennzahl8: " + c.kennzahl8 + "\n            toleranzgrenzeOben8:  " + c.toleranzgrenzeOben8 + "\n            toleranzgrenzeUnten8: " + c.toleranzgrenzeUnten8 +
-                        "\n\n            bezeichnung9: " + c.bezeichnung9 + "\n            anwendungsbereich9: " + c.anwendungsbereich9 + "\n            status9: " + c.status9 + "\n            einfuehrung9: " + c.einfuehrung9 + "\n            letzteUeberpruefung9: " + c.letzteUeberpruefung9 + "\n            deaktivierung9: " + c.deaktivierung9 + "\n            einheit9: " + c.einheit9 + "\n            formelID9: " + c.formelID9 + "\n            kennzahl9: " + c.kennzahl9 + "\n            toleranzgrenzeOben9:  " + c.toleranzgrenzeOben9 + "\n            toleranzgrenzeUnten9: " +
-                        c.toleranzgrenzeUnten9 + "\n\n            bezeichnung10: " + c.bezeichnung10 + "\n            anwendungsbereich10: " + c.anwendungsbereich10 + "\n            status10: " + c.status10 + "\n            einfuehrung10: " + c.einfuehrung10 + "\n            letzteUeberpruefung10: " + c.letzteUeberpruefung10 + "\n            deaktivierung10: " + c.deaktivierung10 + "\n            einheit10: " + c.einheit10 + "\n            formelID10: " + c.formelID10 + "\n            kennzahl10: " + c.kennzahl10 + "\n            toleranzgrenzeOben10:  " + c.toleranzgrenzeOben10 +
-                        "\n            toleranzgrenzeUnten10: " + c.toleranzgrenzeUnten10 + "\n\n            ",
-                    ins: "Knz"
-                };
-                $.ajax({
-                    type: "POST",
-                    async: !0,
-                    url: "../php/log.php",
-                    data: e,
-                    success: function(a) {
-                        alert("Logged data!")
-                    }
-                });
+                
                 $.ajax({
                     type: "POST",
                     async: !0,
