@@ -37,9 +37,9 @@ const scpTreeView =
                 arr => 
                 greaterZero(nodes.length) ?
                 nodes.map(
-                    ({ id, text }) => 
+                    ({ id, text, edit }) => 
                     (({ selected, unselected } = getChildren(id)(arr)) =>
-                    ({ id, text, children : this.build(selected)(unselected)}))()
+                    ({ id, text, edit, children : this.build(selected)(unselected)}))()
                 ) : nodes
 
             this.clear =
@@ -52,10 +52,12 @@ const scpTreeView =
                     const mainMenus = scpRechteverwaltung.getMainMenus(menus)
                     const treeJson = scpTreeView.build(mainMenus)(menus)
                     const data =
-                        [ { id : "0"
-                        , text : "Menüs"
-                        , children : treeJson 
-                        }
+                        [ 
+                          { id : "0"
+                          , text : "Menüs"
+                          , edit : false
+                          , children : treeJson 
+                          }
                         ]
 
                     return new Tree( 

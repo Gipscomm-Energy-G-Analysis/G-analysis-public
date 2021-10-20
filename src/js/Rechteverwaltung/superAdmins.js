@@ -10,11 +10,25 @@ const scpRechteverwaltung_superAdmins =
 
             this.updateIndexedDB =
                 () =>
-                ajaxPost("php/Rechteverwaltung/SuperAdmins/readSuperAdmins.php")({})
+                ajaxPost("php/Rechteverwaltung/SuperAdmins/read.php")({})
                 .then(
                     result => 
                     scpIndexedDB.dataIntoIDB(result)("superAdmins")   
                 )
+
+            const getMenuAndEditConfig =
+                () =>
+                JSON.stringify(
+                    { values     : treeSAdm.getValues().join(",")
+                    , editValues : treeSAdm.getEditValues().join(",")
+                    }
+                )
+
+            const getHash_ = 
+                () =>
+                emptyString(helper.fieldValue("passwortSAdm")) ? 
+                "" :
+                getHash(helper.fieldValue("passwortSAdm"))
 
             const getFormData =
                  () => (
@@ -29,11 +43,8 @@ const scpRechteverwaltung_superAdmins =
                     , faxSAdm          : helper.fieldValue("faxSAdm")
                     , mobiltelefonSAdm : helper.fieldValue("mobiltelefonSAdm")
                     , username         : helper.fieldValue("benutzernameSAdm")
-                    , passHash         : 
-                        emptyString(helper.fieldValue("passwortSAdm")) ? 
-                        "" :
-                        getHash(helper.fieldValue("passwortSAdm"))
-                    , rechteTreeView   : treeSAdm.getValues().join(",")
+                    , passHash         : getHash_()
+                    , rechteTreeView   : getMenuAndEditConfig()
                     , rechteMenu       : scpTreeView.getSelectedNodes(treeSAdm).join(",")
                     }
                 )
@@ -55,7 +66,7 @@ const scpRechteverwaltung_superAdmins =
             
             const save =
                 formData =>
-                ajaxPost("php/Rechteverwaltung/SuperAdmins/saveSuperAdmin.php")(formData)
+                ajaxPost("php/Rechteverwaltung/SuperAdmins/save.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
                 .then(
@@ -141,6 +152,14 @@ const scpRechteverwaltung_superAdmins =
                 queryDatasIDB()
                 .then(records => records[idx])
 
+            const values_ =
+                  record =>
+                  json(record.rechteTreeView).values.split(",")
+
+            const editValues_ =
+                  record =>
+                  json(record.rechteTreeView).editValues.split(",")
+
             const readIntoFormFields =
                 idx => {
                     queryDataIDB(idx)
@@ -161,7 +180,8 @@ const scpRechteverwaltung_superAdmins =
 
                             helper.setState("sAdm")("edit")
 
-                            treeSAdm.setValues(record.rechteTreeView.split(","))
+                            treeSAdm.setValues(values_(record))
+                            treeSAdm.setEditValues(editValues_(record))
                         }
                     )
                 }
@@ -209,7 +229,7 @@ const scpRechteverwaltung_superAdmins =
                 () => {
                     const sAdmID = $("#sAdmID").val()
 
-                    ajaxPost("php/Rechteverwaltung/SuperAdmins/deleteSuperAdmin.php")({sAdmID})
+                    ajaxPost("php/Rechteverwaltung/SuperAdmins/delete.php")({sAdmID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")

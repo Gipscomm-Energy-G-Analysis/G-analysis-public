@@ -81,6 +81,10 @@ const scpRechteverwaltung =
                 difference(getMenuIDs())(getRechteArray())
                 .forEach(remove)
 
+            // const removeEdit =
+            //     () =>
+
+
             const hideElement =
                 element =>
                 $(element).css("display", "none")
