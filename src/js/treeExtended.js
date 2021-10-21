@@ -662,11 +662,11 @@ Tree.createLiEle = function (node, closed) {
     li.appendChild(switcher);
   } else {
     li.classList.add('treejs-placeholder');
+    li.id = node.text.replace(" ", "-") + "View"
   }
 
   const checkbox = document.createElement('span');
   checkbox.classList.add('treejs-checkbox');
-  checkbox.id = node.text.replace(" ", "-") + "View"
   li.appendChild(checkbox);
   
   const label = document.createElement('span');
@@ -691,6 +691,18 @@ Tree.createLiEle = function (node, closed) {
   
   labelEdit.appendChild(textEdit);
   li.appendChild(labelEdit);
+
+  checkbox.addEventListener("click", function () {
+    if (li.classList.contains("treejs-node__checked") && checkboxEdit.checked) {
+        checkboxEdit.checked = false
+    }
+  })
+
+  checkboxEdit.addEventListener("click", function () {
+    if (checkboxEdit.checked && !li.classList.contains("treejs-node__checked")) {
+        li.click()
+    }
+  })
 
   return li;
 };
