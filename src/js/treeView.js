@@ -44,7 +44,9 @@ const scpTreeView =
 
             this.clear =
                 that =>
-                that.setValues([])   
+                ( that.setValues([])
+                , $(".treejs-checkbox-edit").prop("checked", false)  
+                ) 
 
             this.show =
                 divID => {

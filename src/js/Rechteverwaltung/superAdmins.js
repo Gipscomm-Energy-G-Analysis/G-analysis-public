@@ -109,14 +109,14 @@ const scpRechteverwaltung_superAdmins =
                 })
 
             this.validateAndSave =
-                    () => {
-                        const formData =
-                            getFormData()
+                () => {
+                    const formData =
+                        getFormData()
 
-                        !completeFormData(formData) ?
-                        nonCompleteDataDialog(formData) :
-                        save(formData) 
-                    }
+                    !completeFormData(formData) ?
+                    nonCompleteDataDialog(formData) :
+                    save(formData) 
+                }
 
             this.clearFields =
                 () =>

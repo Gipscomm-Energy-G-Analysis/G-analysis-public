@@ -692,17 +692,25 @@ Tree.createLiEle = function (node, closed) {
   labelEdit.appendChild(textEdit);
   li.appendChild(labelEdit);
 
-  checkbox.addEventListener("click", function () {
-    if (li.classList.contains("treejs-node__checked") && checkboxEdit.checked) {
-        checkboxEdit.checked = false
-    }
-  })
+  const shouldUncheckEdit = 
+    () =>
+    li.classList.contains("treejs-node__checked") && checkboxEdit.checked
 
-  checkboxEdit.addEventListener("click", function () {
-    if (checkboxEdit.checked && !li.classList.contains("treejs-node__checked")) {
-        li.click()
-    }
-  })
+  const uncheckEdit =
+    () =>
+    (checkboxEdit.checked = false)
+    
+  checkbox.addEventListener("click", () => shouldUncheckEdit() ? uncheckEdit() : false)
+
+  const shouldClickLi =
+    () =>
+    checkboxEdit.checked && !li.classList.contains("treejs-node__checked")
+
+  const clickLi =
+    () =>
+    li.click()
+
+  checkboxEdit.addEventListener("click", () => shouldClickLi() ? clickLi() : false)
 
   return li;
 };
