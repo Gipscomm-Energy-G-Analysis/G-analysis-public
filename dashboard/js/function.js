@@ -573,8 +573,26 @@ function getTableFormatDashboard(){
 
             var act_height = value['height'];
             var act_width = value['width'];
+
+            var input_width = value['input_width'];
+
+            var width_padding = '';
+            //Width Checks
+            if(input_width == "1" || input_width <= "0"){
+              width_padding = 285;
+            }
+            else if(input_width == "2"){
+              width_padding = 600;
+            }
+            else if(input_width == "3"){
+              // value['tile_html']=value['tile_html'].replace("overflow-hide ml-3", "overflow-hide ml-3 overflow-margin-3");
+              width_padding = 915;
+            }
+            else if(input_width >= "4"){
+              width_padding = 1230;
+            }
             value['tile_html'] = value['tile_html'].replace(act_height+'px', act_height+'px !important');
-            value['tile_html'] = value['tile_html'].replace(act_width+'px', act_width+'px !important');
+            value['tile_html'] = value['tile_html'].replace(act_width+'px', width_padding+'px !important');
           }
           arHtml+='<div class="movetile">';
           arHtml +=value['tile_html'];
@@ -1329,9 +1347,29 @@ function getDimentions(id) {
         },
         success: function(a) {
             // console.log(a.data.width);
-           localStorage.setItem('width',a.data.width);
+          //  localStorage.setItem('width',a.data.width);
            localStorage.setItem('height',a.data.height);
            localStorage.setItem('expand_view',a.data.expand_view);
+           
+          //  <--25-10-2021---
+            var input_width = a['data']['input_width'];
+
+            var width_padding = '285';
+            //Width Checks
+            if(input_width == "1" || input_width <= "0"){
+              width_padding = 285;
+            }
+            else if(input_width == "2"){
+              width_padding = 600; //285 * 2 + 30 Padding
+            }
+            else if(input_width == "3"){
+              width_padding = 915;
+            }
+            else if(input_width >= "4"){
+              width_padding = 1230;
+            }
+            localStorage.setItem('width',width_padding);
+            // --end-->
 
 
           //  <---2-9-2021--

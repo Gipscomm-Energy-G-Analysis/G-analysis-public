@@ -553,13 +553,17 @@
     overflow-y: auto;
 }
   
-.stretch-card .card .ml-3{
+.dashboard_chart_tiles .stretch-card .card .ml-3{
     width: 100%;
+}
+
+.dashboard_count_div .stretch-card .card .ml-3{
+    width: 97%;
 }
 
 #dashboard_count_div_tile canvas{
     margin-top: 16px;
-    width: 377px !important;
+    /* width: 377px !important; */
 }
 .wish-table th {
     background: #c5c8d2;
@@ -607,10 +611,16 @@
 
 }
 
-.movetile{
+.dashboard_count_div .movetile{
     /* position: relative; */
     padding-right: 15px;
     padding-left: 15px;
 }
 
 /* --end--> */
+
+/* <---25-10-2021- */
+.dashboard_count_div .overflow-margin-3{
+    margin-top: -228px !important;
+}
+/* -end--> */
