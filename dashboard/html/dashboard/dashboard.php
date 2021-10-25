@@ -172,6 +172,17 @@
                         <option value="bar_chart">Bar Chart</option>
                       </select>
                     </div>
+
+                    <!--20-10-2021-- -->
+                    <diV class="form-group col-md-2">
+                      <div class="form-check form-check-primary">
+                        <label class="form-check-label">
+                          Expand View
+                          <input type="checkbox" class="text-mute form-check-input" id="expand_view_chart" name="expand_view" value="0">  
+                        </label>
+                      </div>
+                    </div>
+                    <!-- end -->
                   </div>
                   
                   <div class="row dashboard_chart_tiles">

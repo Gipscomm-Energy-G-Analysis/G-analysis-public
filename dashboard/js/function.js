@@ -559,12 +559,35 @@ function getTableFormatDashboard(){
           value['tile_html']=value['tile_html'].replace("edit_val", value['id']+" edit_val");
           // end-->
 
-          // <---1-9-2021---
-
+          // <---25-10-2021--
+          if(value['tile_data_type'] == "overall_count"){
+            value['tile_html']=value['tile_html'].replace("grid-margin", "overall_value_tile grid-margin");
+          }
           // --end-->
-          arHtml+='<div class="movetile col-md-3">';
-          arHtml +=value['tile_html'];
-          arHtml+='</div>';
+
+
+          // <---21-10-2021--
+          if(value['expand_view'] == 1){
+            // $('.'+id+'.tiles-click')
+            value['tile_html']=value['tile_html'].replace("p-0 small-table", "p-0 small-table mt-0");
+
+            var act_height = value['height'];
+            var act_width = value['width'];
+            value['tile_html'] = value['tile_html'].replace(act_height+'px', act_height+'px !important');
+            value['tile_html'] = value['tile_html'].replace(act_width+'px', act_width+'px !important');
+            arHtml+='<div class="movetile">';
+            arHtml +=value['tile_html'];
+            arHtml+='</div>';
+          }
+          else{
+            arHtml+='<div class="movetile col-md-3">';
+            arHtml +=value['tile_html'];
+            arHtml+='</div>';
+          }
+          // --end-->
+
+          
+          
           
         });
         $('#dashboard_count_div_tile').html(arHtml);
@@ -1303,6 +1326,14 @@ function getDimentions(id) {
            localStorage.setItem('width',a.data.width);
            localStorage.setItem('height',a.data.height);
 
+
+           // <----25-10-2021---
+           var expand_view = a['data']['expand_view'];
+           if(expand_view != null && expand_view == 1){
+             var arClickTileData = {div_id : id , expand_view : expand_view, height : a['data']['height'], width : a['data']['width']};
+             localStorage.setItem('tileDashboardClickData', JSON.stringify(arClickTileData));
+           }
+           // ---end---->
            
 
           //  <---2-9-2021--
@@ -1594,6 +1625,16 @@ function getEditChartTileDashboard(){
           $('#measurement_count_tile_modal_chart_'+i_value).css('width',a['data']['width']);
           chartRecordFilter();
       },200);
+      // <---21-10-2021--
+      if(a['data']['expand_view'] == 1){
+        $('#expand_view_chart').prop('checked',true);
+        $('#expand_view_chart').val('1');
+      }
+      else{
+        $('#expand_view_chart').prop('checked',false);
+        $('#expand_view_chart').val('0');
+      }
+      // --end-->
       
     }
   });
@@ -1624,6 +1665,8 @@ function saveDashboardTileChart(){
   $('#total_records_chart').remove();
   tile_html = tile_html.replace('total_records','');
   tile_html = tile_html.replace('hide_table_main','');
+
+  var expand_view = $('#expand_view_chart').val();
 
   // <---6-10-2021--
   if(chart_type == "line_chart"){
@@ -1673,7 +1716,8 @@ function saveDashboardTileChart(){
         mst_id : chart_records,
         chart_record_filter : chart_record_filter,
         chart_type : chart_type,
-        chart_time_interval : chart_time_interval
+        chart_time_interval : chart_time_interval,
+        expand_view : expand_view
     },
     fail: function() {
         alert("failed!!")
@@ -1681,6 +1725,9 @@ function saveDashboardTileChart(){
     success: function(a) {
       $('#measurement_modal_loader_div_chart').show();
       $('#dashboard_tile_modal_chart .modal-content').css('opacity','0.8');
+
+      $('#expand_view_chart').prop('checked',false);
+      $('#expand_view_chart').val('0');
       
       setTimeout(() => {
         $('#dashboard_sidebar').click();
@@ -1748,6 +1795,8 @@ function chartRecordFilter(){
 
   var chart_type = $('#chart_type').val();
   var mst_check = $('#save_and_proceed_btn_dashboard').val();
+
+  var time_interval_value  = $('#time_interval_chart').val();
   if(mst_check == 'Update & Proceed'){
     $('.chart_text_edit_' + mst_input_value).text(mst_value+'('+filterVal+' Days)');
   }else{
@@ -1772,8 +1821,19 @@ function chartRecordFilter(){
           alert("failed!!")
       },
       success: function(a) {
-        $('#td_text_' + mst_input_value).text(mst_value);
+        // $('#td_text_' + mst_input_value).text(mst_value);
         $('#td_two_text_' + mst_input_value).text(a['count_val'][9]);
+
+        // <---20-10-2021---
+        if(a['countDate'] != ''){
+          if(time_interval_value == "2"){ //Week Case
+            $('#td_text_' + mst_input_value).text(a['countDate'][0]['on_week']+'-'+a['countDate'][0]['on_date']);
+          }
+          else{
+            $('#td_text_' + mst_input_value).text(a['countDate'][0]['on_date']);
+          }
+        } 
+        // --end-->
         if(chart_type == "line_chart"){
           var html_canvas_chart = "<canvas id='lineChart'></canvas>";
           var div_i_id = $('#total_records_chart').val();
@@ -3022,6 +3082,10 @@ function updateDashboardChart(){
   tile_html = tile_html.replace('total_records','');
   tile_html = tile_html.replace('hide_table_main','');
 
+  // <---21-10-2021--
+  var expand_view = $('#expand_view_chart').val();
+  // --emd-->
+
   // <---6-10-2021--
   if(chart_type == "line_chart"){
     tile_html = tile_html.replace("lineChart",'lineChart-none');  
@@ -3073,7 +3137,8 @@ function updateDashboardChart(){
         chart_record_filter : chart_record_filter,
         chart_type : chart_type,
         chart_time_interval : chart_time_interval,
-        id : id
+        id : id,
+        expand_view : expand_view
     },
     fail: function() {
         alert("failed!!")
@@ -3081,6 +3146,9 @@ function updateDashboardChart(){
     success: function(a) {
       $('#measurement_modal_loader_div_chart').show();
       $('#dashboard_tile_modal_chart .modal-content').css('opacity','0.8');
+
+      $('#expand_view_chart').prop('checked',false);
+      $('#expand_view_chart').val('0');
       
       setTimeout(() => {
         $('#dashboard_sidebar').click();

@@ -203,7 +203,8 @@
 }
 
 #dashboard_count_div_tile .hide_table_main{
-    height: auto !important;
+    /* height: auto !important; */
+    height: 145px !important;
     width: 285px  !important;
 }
 #dashboard_count_div_tile .hide_table_main table{
@@ -216,7 +217,7 @@
     margin: -5px 568px 4px 3px;
 }
 #dashboard_count_div_tile .overflow-hide{
-    margin: -105px 20px 21px 22px;
+    /* margin: -105px 16px 21px 22px;  */
     padding: 0px 0px 0px 109px;
 }
 .hide_table_preview{
@@ -232,6 +233,7 @@
 
 .action-modal-button-div{
     display: flex;
+    float: right;
 }
 .measurement-icon{
     margin-top: -17px !important;
@@ -597,3 +599,18 @@
 /*.dashboard_count_div .count_result_tile {*/
 /*    max-width: 100px;*/
 /*}*/
+
+/* 21-10-2021 */
+.dashboard_count_div .hide_table_main .small-table{
+    display: block !important;
+    margin-top: 31px;
+
+}
+
+.movetile{
+    /* position: relative; */
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* --end--> */

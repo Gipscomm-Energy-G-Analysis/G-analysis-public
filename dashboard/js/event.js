@@ -391,7 +391,7 @@ $(document).ready( function(){
 
     $(document).on('click', '.tiles-click', function(){
         var div_id = $(this).attr('id');
-        console.log($(this).attr('data-i'));
+        // console.log($(this).attr('data-i'));
         $("#"+div_id).fadeOut("20");
         $(".small-table_"+$(this).attr('data-i')).hide();
         tiles_click(div_id);
@@ -641,10 +641,10 @@ $(document).ready( function(){
 
     $(document).on('click', function (event) {
         if (!$(event.target).closest('#mesurement_count_div,#product_count_div,#energy_count_div,#energy_consumed_div,#five_days_energy_consumed').length) {
-            $('.dashboard_count_div .stretch-card').css('height',145);
-            $('.dashboard_count_div .stretch-card').css('width',285);
+            // $('.dashboard_count_div .stretch-card').css('height',145);
+            // $('.dashboard_count_div .stretch-card').css('width',285);
 
-            $('.dashboard_count_div .movetile').addClass('col-md-3');
+            // $('.dashboard_count_div .movetile').addClass('col-md-3');
             $('.dashboard_count_div .stretch-card .card-body').addClass('row');
             $('.dashboard_count_div .stretch-card .card-body div:first-child').addClass('col-md-12');
 
@@ -658,6 +658,13 @@ $(document).ready( function(){
 
             $('.save_table_div_show').hide();
             $('.action-modal-button-div').removeClass('col-md-12');
+
+            // $('.dashboard_count_div .stretch-card .small-table').show();
+
+            // <----25-10-2021---
+            $('.dashboard_count_div .movetile .overall_value_tile .card-body').removeClass('row');
+            $('.dashboard_count_div .movetile .overall_value_tile .card-body div:first-child').removeClass('col-md-12');
+            // --end-->
 
 
             // // <---7-10-2021---
@@ -689,7 +696,10 @@ $(document).ready( function(){
                     $(this).attr('id','barChart-none');
                 }
             });
-            // --end-->   
+            // --end-->  
+            // <---20-10-2021---
+            // $('.dashboard_count_div .small-table').show();
+            // --end--> 
             
             // --end-->
         }
@@ -987,6 +997,40 @@ $(document).ready( function(){
         updateDashboardChart();
     });
     // --end--->
+
+    // <----20-10-2021---
+    $(document).on('click','#expand_view_chart', ()=>{
+        var valIsChecked = $('#expand_view_chart').is(":checked");
+        if(valIsChecked == true){
+            $('#expand_view_chart').val("1");
+        }
+        else{
+            $('#expand_view_chart').val("0");
+        }
+    });
+    // --end-->
+
+
+    // <---22-10-2021--
+    // $("body").not($(".dashboard_count_div .movetile")).click(function(){
+    //     // console.log("323");
+    // });
+
+    $(document).on('click', function (event) {
+        // console.log($(event.target).closest('#dashboard_count_div_tile .movetile .tiles-click').length);
+        if (!$(event.target).closest('#dashboard_count_div_tile .movetile .tiles-click').length) {
+          // ... clicked on the 'body', but not inside of #menutop
+          //   getTableFormatDashboard();
+          // console.log('Working on a OutSide tile');
+          var tileClickData = localStorage.getItem('tileDashboardClickData');
+          if(tileClickData != null && tileClickData != undefined){
+            tileClickData = JSON.parse(tileClickData);
+            console.log(tileClickData['height']);
+          }
+            
+        }
+    });
+    // --end-->
 
 
     // // <---1-10-2021--
