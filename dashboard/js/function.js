@@ -575,15 +575,11 @@ function getTableFormatDashboard(){
             var act_width = value['width'];
             value['tile_html'] = value['tile_html'].replace(act_height+'px', act_height+'px !important');
             value['tile_html'] = value['tile_html'].replace(act_width+'px', act_width+'px !important');
-            arHtml+='<div class="movetile">';
-            arHtml +=value['tile_html'];
-            arHtml+='</div>';
           }
-          else{
-            arHtml+='<div class="movetile col-md-3">';
-            arHtml +=value['tile_html'];
-            arHtml+='</div>';
-          }
+          arHtml+='<div class="movetile">';
+          arHtml +=value['tile_html'];
+          arHtml+='</div>';
+         
           // --end-->
 
           
