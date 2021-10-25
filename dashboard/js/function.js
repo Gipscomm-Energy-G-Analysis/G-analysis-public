@@ -1291,8 +1291,18 @@ getDimentions(id);
 setTimeout(function () {
     $('.'+id+'.tiles-click').removeClass('hide_table_main');
     $('.'+id+'.tiles-click').removeClass('col-md-3');
-    $('.'+id+'.tiles-click').css('width',localStorage.getItem('width')+'px');
-    $('.'+id+'.tiles-click').css('height',localStorage.getItem('height')+'px');
+
+    // <---25-10-2021-----
+    var expand_view = localStorage.getItem('expand_view');
+    if(expand_view != null && expand_view != undefined && expand_view == "1"){
+      var height_expand = localStorage.getItem('height')+'px';
+      var width_expand = localStorage.getItem('width')+'px';
+      $('.'+id+'.tiles-click').attr('style', "height: "+height_expand+" !important; width: "+width_expand+" !important;");
+    }
+    else{
+      $('.'+id+'.tiles-click').css('width',localStorage.getItem('width')+'px');
+      $('.'+id+'.tiles-click').css('height',localStorage.getItem('height')+'px');
+    }
     // <---30-8-2021--
     $('.'+id+' .card-body').removeClass('row');
     // --end-->
@@ -1325,16 +1335,8 @@ function getDimentions(id) {
             // console.log(a.data.width);
            localStorage.setItem('width',a.data.width);
            localStorage.setItem('height',a.data.height);
+           localStorage.setItem('expand_view',a.data.expand_view);
 
-
-           // <----25-10-2021---
-           var expand_view = a['data']['expand_view'];
-           if(expand_view != null && expand_view == 1){
-             var arClickTileData = {div_id : id , expand_view : expand_view, height : a['data']['height'], width : a['data']['width']};
-             localStorage.setItem('tileDashboardClickData', JSON.stringify(arClickTileData));
-           }
-           // ---end---->
-           
 
           //  <---2-9-2021--
           // $('.chart-width canvas').attr('id','sales-chart-none');

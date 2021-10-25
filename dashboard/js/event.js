@@ -1022,11 +1022,6 @@ $(document).ready( function(){
           // ... clicked on the 'body', but not inside of #menutop
           //   getTableFormatDashboard();
           // console.log('Working on a OutSide tile');
-          var tileClickData = localStorage.getItem('tileDashboardClickData');
-          if(tileClickData != null && tileClickData != undefined){
-            tileClickData = JSON.parse(tileClickData);
-            console.log(tileClickData['height']);
-          }
             
         }
     });
