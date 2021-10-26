@@ -376,6 +376,11 @@ Tree.prototype.getValues = function () {
   return values;
 };
 
+Tree.prototype.getEditValues = function () {
+  return array($("#sAdmTreeview .treejs-checkbox-edit").length)()()
+         .map((_, i) => $("#sAdmTreeview .treejs-checkbox-edit").eq(i).prop("checked"))
+};
+
 Tree.prototype.setValues = function (values) {
   var _this4 = this;
 
@@ -387,6 +392,11 @@ Tree.prototype.setValues = function (values) {
   var onChange = this.options.onChange;
   onChange && onChange.call(this);
 };
+
+Tree.prototype.setEditValues = 
+    editValues =>
+    editValues
+    .map((a, i) => $("#sAdmTreeview .treejs-checkbox-edit").eq(i).prop("checked", equal(a)("false") ? false : true))
 
 Tree.prototype.setDisable = function (value) {
   var node = this.nodesById[value];
@@ -652,11 +662,11 @@ Tree.createLiEle = function (node, closed) {
     li.appendChild(switcher);
   } else {
     li.classList.add('treejs-placeholder');
+    li.id = node.text.replace(" ", "-") + "View"
   }
 
   const checkbox = document.createElement('span');
   checkbox.classList.add('treejs-checkbox');
-  checkbox.id = node.text.replace(" ", "-") + "View"
   li.appendChild(checkbox);
   
   const label = document.createElement('span');
@@ -682,16 +692,25 @@ Tree.createLiEle = function (node, closed) {
   labelEdit.appendChild(textEdit);
   li.appendChild(labelEdit);
 
-  $(".treejs-checkbox-edit").on("click", function () {
+  const shouldUncheckEdit = 
+    () =>
+    li.classList.contains("treejs-node__checked") && checkboxEdit.checked
 
-      if ($(this).prop("checked")) {
-            
-          console.log("$(`#${this.id}View`)")
-          console.log($(`#${this.id}View`))
+  const uncheckEdit =
+    () =>
+    (checkboxEdit.checked = false)
+    
+  checkbox.addEventListener("click", () => shouldUncheckEdit() ? uncheckEdit() : false)
 
-          $(`#${this.id}View`).trigger("click")
-      }
-  })
+  const shouldClickLi =
+    () =>
+    checkboxEdit.checked && !li.classList.contains("treejs-node__checked")
+
+  const clickLi =
+    () =>
+    li.click()
+
+  checkboxEdit.addEventListener("click", () => shouldClickLi() ? clickLi() : false)
 
   return li;
 };
