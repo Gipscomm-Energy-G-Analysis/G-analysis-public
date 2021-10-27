@@ -96,9 +96,22 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                 </div>
+
+                <!-- ----27-10-2021--- -->
+                <!-- <div id="dashboard_loader_div" style="display: none">
+                  <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+                </div> -->
+                <!-- end -->
+
               </div>
             </div>
           </div>
+          <!-- end -->
+          
+          <!-- ----27-10-2021--- -->
+          <!-- <div id="dashboard_loader_div" style="display: none">
+            <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+          </div> -->
           <!-- end -->
 
           <!-- 16-9-2021-- -->
@@ -192,6 +205,12 @@
                   <div id="measurement_modal_loader_div_chart" style="display: none">
                     <img src="images/loader_dashboard.gif" id="measurement_modal_loader_image_chart">
                   </div>
+
+                   <!-- 27-10-2021-- -->
+                  <div id="dashboard_loader_div" style="display: none">
+                    <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+                  </div>
+                  <!-- end-- -->
                 </div>
 
                 <div class="modal-footer">
@@ -462,6 +481,7 @@
         <!-- end -->
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
+        
         <footer class="footer">
           <!-- <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>

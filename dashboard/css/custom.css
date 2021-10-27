@@ -263,8 +263,8 @@
 #measurement_modal_loader_div_chart{
     text-align: center;
     position: absolute;
-    bottom: 177px;
-    left: 497px;
+    bottom: 37%;
+    left: 44%;
 }
 
 #measurement_modal_loader_image_chart{
@@ -568,7 +568,7 @@
 .wish-table th {
     background: #c5c8d2;
     padding: 4px;
-    font-size: 8px;
+    font-size: 10px;
 }
 .wish-table {
     width: 100%;
@@ -578,7 +578,7 @@
     padding: 4px;
     border-right: 1px solid #c9ccd7;
     border-bottom: 1px solid #c9ccd7;
-    font-size: 8px;
+    font-size: 10px;
 }
 .dashboard-btn{
     margin-left: 14px;
@@ -624,3 +624,46 @@
     margin-top: -228px !important;
 }
 /* -end--> */
+
+/* 26-10-2021 */
+.dashboard_chart_tiles .small-table{
+    max-width: 98%;
+}
+
+.dashboard_chart_tiles .wish-table th ,.dashboard_chart_tiles .wish-table td{
+    font-size: 10px;
+}
+
+.dashboard_modal_tile .overflow-hide{
+    width: 100%;
+}
+
+.dashboard_count_div .overall_value_tile  .action-modal-button-div{
+    margin-bottom: 9px;
+}
+
+.dashboard_count_div .chart_tile.hide_table_main .overflow-hide{
+    padding-left: 90px !important;
+}
+
+.dashboard_count_div .hide_table_main .chart_overflow_margin_2{
+    margin-top: -157px !important;
+}
+.dashboard_count_div .hide_table_main .chart_overflow_margin_3{
+    margin-top: -230px !important;
+}
+.dashboard_count_div .hide_table_main .chart_overflow_margin_4{
+    margin-top: -304px !important;
+}
+
+#dashboard_loader_div{
+    text-align: center;
+    position: absolute;
+    bottom: 37%;
+    left: 38%;
+}
+
+#dashboard_loader_image{
+    width: 30%;
+}
+/* end */

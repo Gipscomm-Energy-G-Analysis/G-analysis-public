@@ -666,6 +666,11 @@ $(document).ready( function(){
             $('.dashboard_count_div .movetile .overall_value_tile .card-body div:first-child').removeClass('col-md-12');
             // --end-->
 
+            // <--26-10-2021--
+            $('.dashboard_count_div .movetile .table_tile .card-body').removeClass('row');
+            $('.dashboard_count_div .movetile .table_tile .card-body div:first-child').removeClass('col-md-12');
+            // ---end-->
+
 
             // // <---7-10-2021---
             // console.log('Click Working');
@@ -766,6 +771,7 @@ $(document).ready( function(){
             $('#chart_records_label').text('Select '+record_type_of_tile);
             $('#update_and_proceed_btn_dashboard_chart').hide();
             $('#save_and_proceed_btn_dashboard_chart').show();
+            $('#dashboard_loader_div').hide();
 
         }
         else if(record_type_of_tile == "measurement" && type_data_tile == "chart" && data_edit_chart == 'true')
@@ -781,12 +787,13 @@ $(document).ready( function(){
             $('#update_and_proceed_btn_dashboard_chart').show();
             $('#save_and_proceed_btn_dashboard_chart').hide();
             $('#chart_records_label').text('Select '+record_type_of_tile);
+            $('#dashboard_loader_div').hide();
 
         }
         $('#title_modal_tile').val('');
         $('#record_type_of_tile option[value=measurement]').prop('selected','selected');
         $('#type_data_tile option[value=table').prop('selected', 'selected');
-        
+        // $('#dashboard_loader_div').hide();
     });
     // --end-->
 

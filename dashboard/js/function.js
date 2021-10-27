@@ -563,6 +563,12 @@ function getTableFormatDashboard(){
           if(value['tile_data_type'] == "overall_count"){
             value['tile_html']=value['tile_html'].replace("grid-margin", "overall_value_tile grid-margin");
           }
+          else if(value['tile_data_type'] == "table"){
+            value['tile_html']=value['tile_html'].replace("grid-margin", "table_tile grid-margin");
+          }
+          else if(value['tile_data_type'] == "chart"){
+            value['tile_html']=value['tile_html'].replace("grid-margin", "chart_tile grid-margin");
+          }
           // --end-->
 
 
@@ -575,6 +581,7 @@ function getTableFormatDashboard(){
             var act_width = value['width'];
 
             var input_width = value['input_width'];
+            var input_height = value['input_height'];
 
             var width_padding = '';
             //Width Checks
@@ -591,6 +598,19 @@ function getTableFormatDashboard(){
             else if(input_width >= "4"){
               width_padding = 1230;
             }
+
+
+            // <---26-10-2021---  //Height Add Class in Overflow
+            if(input_height <=2){
+              value['tile_html']=value['tile_html'].replace("overflow-hide ml-3", "overflow-hide ml-3 chart_overflow_margin_2");
+            }
+            else if(input_height == 3){
+              value['tile_html']=value['tile_html'].replace("overflow-hide ml-3", "overflow-hide ml-3 chart_overflow_margin_3");
+            }
+            if(input_height >= 4){
+              value['tile_html']=value['tile_html'].replace("overflow-hide ml-3", "overflow-hide ml-3 chart_overflow_margin_4");
+            }
+            // --end-->
             value['tile_html'] = value['tile_html'].replace(act_height+'px', act_height+'px !important');
             value['tile_html'] = value['tile_html'].replace(act_width+'px', width_padding+'px !important');
           }
@@ -1602,6 +1622,7 @@ function getEditDataDashboard(id,i_value){
 function getChartTileDashboard(){
   var ar = localStorage.getItem('dashboard_tile_data');
   ar = JSON.parse(ar);
+  $('#dashboard_loader_div').show()
   $.ajax({
     type : "POST",
     url : 'php/retreive.php',
@@ -1629,6 +1650,7 @@ function getEditChartTileDashboard(){
   var id = localStorage.getItem('edit-measurement-tile');
   var i_value = localStorage.getItem('edit-i-value');
   ar = JSON.parse(ar);
+  $('#dashboard_loader_div').show();
   $.ajax({
     type : "POST",
     url : 'php/retreive.php',
