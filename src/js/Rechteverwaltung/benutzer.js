@@ -12,6 +12,20 @@ const scpRechteverwaltung_benutzer =
                 scpIndexedDB
                 .updateIndexedDB("php/Rechteverwaltung/Benutzer/read.php")("benutzer")
 
+            const getMenuAndEditConfig =
+                () =>
+                JSON.stringify(
+                    { values     : treeBen.getValues().join(",")
+                    , editValues : treeBen.getEditValues().join(",")
+                    }
+                )
+
+            const getHash_ = 
+                () =>
+                emptyString(helper.fieldValue("passwortBen")) ? 
+                "" :
+                getHash(helper.fieldValue("passwortBen"))
+
             // Returns an object that contains the form data
             const getFormData =
                 () => (
@@ -28,11 +42,8 @@ const scpRechteverwaltung_benutzer =
                     , fax            : helper.fieldValue("faxBen")
                     , mobiltelefon   : helper.fieldValue("mobiltelefonBen")
                     , username       : helper.fieldValue("benutzernameBen")
-                    , passHash       : 
-                        emptyString(helper.fieldValue("passwortBen")) ? 
-                        "" :
-                        getHash(helper.fieldValue("passwortBen"))
-                    , rechteTreeView : treeBen.getValues().join(",")
+                    , passHash       : getHash_()
+                    , rechteTreeView : getMenuAndEditConfig()
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeBen).join(",")
                     }
                 )
@@ -146,6 +157,14 @@ const scpRechteverwaltung_benutzer =
                 queryDatasIDB()
                 .then(records => records[idx])
 
+            const values_ =
+                record =>
+                json(record.rechteTreeView).values.split(",")
+
+            const editValues_ =
+                record =>
+                json(record.rechteTreeView).editValues.split(",")
+
             const readIntoFormFields =
                 idx => {
                     queryDataIDB(idx)
@@ -166,8 +185,8 @@ const scpRechteverwaltung_benutzer =
 
                             helper.setState("ben")("edit")
 
-                            treeBen.setValues(record.rechteTreeView.split(","))
-
+                            treeBen.setValues(values_(record))
+                            treeBen.setEditValues(editValues_(record))
                         }
                     )
                 }

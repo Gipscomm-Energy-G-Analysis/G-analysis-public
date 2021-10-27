@@ -12,6 +12,20 @@ const scpRechteverwaltung_admins =
                 scpIndexedDB
                 .updateIndexedDB("php/Rechteverwaltung/Admins/read.php")("admins")
 
+            const getMenuAndEditConfig =
+                () =>
+                JSON.stringify(
+                    { values     : treeAdm.getValues().join(",")
+                    , editValues : treeAdm.getEditValues().join(",")
+                    }
+                )
+
+            const getHash_ = 
+                () =>
+                emptyString(helper.fieldValue("passwortAdm")) ? 
+                "" :
+                getHash(helper.fieldValue("passwortAdm"))
+
             // Returns an object that contains the form data
             const getFormData =
                 () => (
@@ -28,11 +42,8 @@ const scpRechteverwaltung_admins =
                     , fax            : helper.fieldValue("faxAdm")
                     , mobiltelefon   : helper.fieldValue("mobiltelefonAdm")
                     , username       : helper.fieldValue("benutzernameAdm")
-                    , passHash       : 
-                        emptyString(helper.fieldValue("passwortAdm")) ? 
-                        "" :
-                        getHash(helper.fieldValue("passwortAdm"))
-                    , rechteTreeView : treeAdm.getValues().join(",")
+                    , passHash       : getHash_()
+                    , rechteTreeView : getMenuAndEditConfig()
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeAdm).join(",")
                     }
                 )
@@ -151,6 +162,14 @@ const scpRechteverwaltung_admins =
                 queryDatasIDB()
                 .then(records => records[idx])
 
+            const values_ =
+                record =>
+                json(record.rechteTreeView).values.split(",")
+
+            const editValues_ =
+                record =>
+                json(record.rechteTreeView).editValues.split(",")
+
             // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
                 idx => {
@@ -172,7 +191,8 @@ const scpRechteverwaltung_admins =
 
                             helper.setState("adm")("edit")
 
-                            treeAdm.setValues(record.rechteTreeView.split(","))
+                            treeAdm.setValues(values_(record))
+                            treeAdm.setEditValues(editValues_(record))
                         }
                     )
                 }
