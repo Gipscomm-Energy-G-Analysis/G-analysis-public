@@ -196,6 +196,29 @@
                       </div>
                     </div>
                     <!-- end -->
+
+                    <!-- <--28-10-2021 -->
+                    <diV class="form-group col-md-2">
+                      <div class="form-check form-check-primary">
+                        <label class="form-check-label">
+                          Outisde Tile Structure
+                          <input type="checkbox" class="text-mute form-check-input" id="chart_outside_tile_structure" name="chart_outside_tile_structure" value="0">  
+                        </label>
+                      </div>
+                    </div>
+                    <!-- -end -->
+
+                    <!-- 29-10-2021 -->
+                    <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
+                      <label for="chart_height_outer_structure" class="text-mute">Outside Tile Column</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="chart_height_outer_structure" placeholder="Outer Column">
+                    </div>
+
+                    <div class="form-group col-md-2 chart_outisde_tile_controls"  style="display: none">
+                      <label for="chart_width_outer_structure" class="text-mute">Outisde Tile Row</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="chart_width_outer_structure" placeholder="Outer Row">
+                    </div>
+                    <!-- -end- -->
                   </div>
                   
                   <div class="row dashboard_chart_tiles">
@@ -236,7 +259,7 @@
 
             <!-- --end -->
 
-
+          <input type="hidden" id='save_tile_id'>
           <div class="row dashboard_count_div"  id="dashboard_count_div_tile">
             <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
               <div class="card card-border">

@@ -666,4 +666,10 @@
 #dashboard_loader_image{
     width: 30%;
 }
+
+.tile_border{
+    /* border : 2px solid #adebad; */
+    border-left: 4px solid #50fb50;
+    border-right: 4px solid #50fb50;
+}
 /* end */
