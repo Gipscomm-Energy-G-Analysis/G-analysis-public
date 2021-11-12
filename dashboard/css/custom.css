@@ -672,4 +672,34 @@
     border-left: 4px solid #50fb50;
     border-right: 4px solid #50fb50;
 }
+
+#chart_outer_tile_div{
+    margin-top: 15px;
+    margin-right: 2%;
+}
+
+.gernerated_measurement_modal_tiles .small-table{
+    max-width: 99%;
+}
+
+.gernerated_measurement_modal_tiles .hide_table_preview .tile_table_small_table{
+    display: block !important;
+}
+
+#dashboard_count_div_tile .overall_value_tile .small-table{
+    display: none !important;
+}
+
+
+.dashboard_count_div .table_tile.hide_table_main .overflow-hide .small-table{ 
+    margin-top: 6px;
+    max-width: 99%;
+}
+.dashboard_count_div .table_tile.hide_table_main .overflow-hide{ 
+    padding: 0px 0px 0px 62px !important;
+}
+
+/* .dashboard_count_div .chart_tile .count_result_tile {
+    width: 13%;
+} */
 /* end */

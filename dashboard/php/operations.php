@@ -82,8 +82,13 @@ class dashboardControllerOperations {
                 $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other ) ";
                 $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other') ";
                 $insertRecord = queryDB($conn, $insertQuery, "write");
+
+                $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
+                $maxResult = queryDB($conn, $selectMaxId, "read");
+
+
                 if($insertQuery){
-                    return array('Staus' => 200 , 'Message' => 'Successfully Inserted');
+                    return array('Staus' => 200 , 'Message' => 'Successfully Inserted','max_id'=>$maxResult);
                 }
             // }
 
@@ -184,10 +189,11 @@ class dashboardControllerOperations {
             $outside_chart_checkbox =  $_POST['outside_chart_checkbox'];
             $outside_chart_input_height =  $_REQUEST['outside_chart_input_height'];
             $outside_chart_input_width =  $_REQUEST['outside_chart_input_width'];
+            $outside_chart_display = $_POST['outside_chart_display'];
 
 
-            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_filter,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width ) ";
-            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username',$mst_id,'$chart_filter','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width') ";
+            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_filter,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display ) ";
+            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username',$mst_id,'$chart_filter','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width','$outside_chart_display') ";
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
@@ -223,8 +229,12 @@ class dashboardControllerOperations {
             $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_iD,table_other ) ";
             $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username', $mst_Id ,'$data_table_other') ";
             $insertRecord = queryDB($conn, $insertQuery, "write");
+
+            $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
+            $maxResult = queryDB($conn, $selectMaxId, "read");
+
             if($insertQuery){
-                return array('Staus' => 200 , 'Message' => 'Successfully Inserted');
+                return array('Staus' => 200 , 'Message' => 'Successfully Inserted','max_id'=>$maxResult);
             }
             die;
         }

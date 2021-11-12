@@ -377,6 +377,14 @@ class dashboardController {
             $dataMesaurement = queryDB($conn, $query1, "read"); 
             // echo json_encode($date_differnce_five_days); die;
 
+            // <---10-11-2021----
+            $queryLastDate = "SELECT TOP(1) * From masseneingabeSucheIMw as T1 ";
+            $queryLastDate.= "WHERE T1.mst_ID = '$mst_id' ";
+            $queryLastDate.= "AND T1.type = '$type' ";
+            $queryLastDate.= "ORDER BY T1.id desc ";
+            $queryLastDateData = queryDB($conn, $queryLastDate, "read");
+            //--end-->
+
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement,$queryMaxVal);
             $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount,$dataMesaurement,$type,$mst_id);
             
@@ -385,6 +393,8 @@ class dashboardController {
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => $queryMaximum,'row_click' => 'true', 'type' => 'Measurement');
             $records['query_data'] = $ar;
+
+            $records['queryLastDate'] = $queryLastDateData;
             // --end-->
            
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
@@ -496,7 +506,7 @@ class dashboardController {
         try{
             //Pagination Code HTML
             // echo $pagesCount; die;
-            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != ''){
+            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0){
                 $style_background = '';
                 $class_page_count_val = 'page_count_val';
                 $style_background_end = '';
@@ -805,7 +815,7 @@ class dashboardController {
                         $measurement_title = $_POST['measurement_title'];;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$last_id'>";
                         $tileHtml.="<div class='measurement_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Measurement'>
-                                    <div class='card card-border'>
+                                    <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
                                                 <div class='action-modal-button-div'>
@@ -822,6 +832,10 @@ class dashboardController {
                                             </div>
                                             
                                             <div class='overflow-hide ml-3'>
+                                                <div class='col-md-6 p-0 small-table small-table_$last_id' style='display: none'>
+                                                    <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
+                                                    </table>
+                                                </div>
                                                 <div class='save_table_div_show_table'> 
                                                     <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
                                                     </table>                        
@@ -842,7 +856,7 @@ class dashboardController {
             else{
                 $tileHtml.="<div class='measurement_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                 <input type='hidden' id='total_records' value='$last_id'>                
-                                <div class='card card-border'>
+                                <div class='card card-border tile_border'>
                                     <div class='card-body overflow-hide display-flex'>
                                         <div id='' class=''>
                                             <div class='action-modal-button-div'>
@@ -859,6 +873,10 @@ class dashboardController {
                                         </div>
                                         
                                         <div class='overflow-hide ml-3'>
+                                            <div class='col-md-6 p-0 small-table small-table_$last_id' style='display: none'>
+                                                <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
+                                                </table>
+                                            </div>
                                             <div class='save_table_div_show_table'> 
                                                 <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
                                                 </table>                        
@@ -957,7 +975,7 @@ class dashboardController {
                                     
                                     <div class='overflow-hide ml-3 chart-width'>
                                         <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                            <p class='text-muted'>Outer Tile</p>
+                                            <p class='text-muted'>Outer Tile View</p>
                                         </div>
                                         <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -1028,7 +1046,7 @@ class dashboardController {
                                             
                                             <div class='overflow-hide ml-3 chart-width'>
                                                 <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                    <p class='text-muted'>Outer Tile</p>
+                                                    <p class='text-muted'>Outer Tile View</p>
                                                 </div>
                                                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -1093,6 +1111,10 @@ class dashboardController {
                                             </div>
                                             
                                             <div class='overflow-hide ml-3'>
+                                                <div class='col-md-6 p-0 small-table small-table_$i_value' style='display: none'>
+                                                    <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$i_value'></td><td id='td_table_tile_two_text_$i_value'></td></tr></tbody>
+                                                    </table>
+                                                </div>
                                                 <div class='save_table_div_show_table'> 
                                                     <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
                                                     </table>                        
@@ -1195,7 +1217,7 @@ class dashboardController {
                                                         
                                                         <div class='overflow-hide ml-3 chart-width'>
                                                             <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                                <p class='text-muted'>Outer Tile</p>
+                                                                <p class='text-muted'>Outer Tile View</p>
                                                             </div>
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
@@ -2228,99 +2250,183 @@ class dashboardController {
             $mst_id = $_POST['mst_id'];
             if($record_type_of_tile == 'measurement')
             {
+                $queryOverAllCount = "SELECT * From masseneingabeSucheIMw ";
+                $queryOverAllCount .= "WHERE mst_ID = '$mst_id' ";
+                $resultOverallCount = queryDB($conn, $queryOverAllCount, "read");
+                $overallCount = count($resultOverallCount);
                 if($filter_val == 10){
                     $ar_days = [];
                     $ar_value = [];
+                    $countSum = '';
                     for($i = 1; $i <= 10; $i++){
-                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
-                        $query .= "(SELECT id From masseneingabeSucheIMw ";
-                        $query .= "WHERE mst_ID = '$mst_id' ";
-                        $query .= "ORDER by id DESC ";
-                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
-                        $result = queryDB($conn, $query, "read");
-                        if($result[0]['val'] != null){
-                            array_push($ar_value, $result[0]['val']);
+                        if($i <= $overallCount){
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 10){
+                                $countSum = $result[0]['val'];
+                               
+                            }
+                            
+                            array_push($ar_days,$i);
+
+                            // <---11-11-2021-
                         }
-                        
-                        array_push($ar_days,$i);
 
                     }
-                    // <----20-10-2021---
-                    $queryDate = "SELECT TOP(1) * FROM masseneingabeSucheIMw WHERE mst_Id  = $mst_id ";
-                    $queryDate .= "ORDER by id DESC ";
-                    $resultDate = queryDB($conn, $queryDate, "read");
-                    $records['countDate'] = $resultDate;
+
+                    // <--11-11-2021--
+                    $offsetDate = '';
+                    $resultDateData = '';
+                    if($overallCount > 0 && $overallCount <= $filter_val){ //10 RECORD Condition
+                        $offsetDate = $overallCount - 1;
+                    }
+                    else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                        $offsetDate = $filter_val - 1;
+                        $overallCount = 10;
+                    }
+                    else{
+                        $offsetDate = '';
+                    }
+                    
+                    if($offsetDate != '')
+                    {
+                        $queryDateData = "SELECT * from masseneingabeSucheIMw ";
+                        $queryDateData .= "WHERE mst_ID = '$mst_id' ";
+                        $queryDateData .= "ORDER by id ASC ";
+                        $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
+                        $resultDateData = queryDB($conn, $queryDateData, "read");
+                        // echo json_encode($resultDateData); die;
+                        
+                    }
                     // --end-->
+                    $records['countDate'] = $resultDateData;
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
                     die;
                 }
                 else if($filter_val == 20){
                     $ar_days = [];
                     $ar_value = [];
+                    $countSum = '';
                     for($i = 1; $i <= 20; $i++){
+                        if($i <= $overallCount){
+                            $offset_val = 2 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 20){
+                                $countSum = $result[0]['val'];
+                            }
                         
-                        $offset_val = 2 * $i;
-                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
-                        $query .= "(SELECT id From masseneingabeSucheIMw ";
-                        $query .= "WHERE mst_ID = '$mst_id' ";
-                        $query .= "ORDER by id DESC ";
-                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
-                        $result = queryDB($conn, $query, "read");
-                        if($result[0]['val'] != null){
-                            array_push($ar_value, $result[0]['val']);
+                                $day_20 =  $i;
+                                // $r+2;
+                                array_push($ar_days,$day_20);
+        
+                            // }
                         }
-                      
-                            $day_20 =  $i;
-                            // $r+2;
-                            array_push($ar_days,$day_20);
-    
-                        // }
                         
                     }
                     // print_r($ar_value);die;
 
-                    // <----20-10-2021---
-                    $queryDate = "SELECT TOP(1) * FROM masseneingabeSucheIMw WHERE mst_Id  = $mst_id ";
-                    $queryDate .= "ORDER by id DESC ";
-                    $resultDate = queryDB($conn, $queryDate, "read");
-                    $records['countDate'] = $resultDate;
+                    // <--11-11-2021--
+                    $offsetDate = '';
+                    $resultDateData = '';
+                    if($overallCount > 0 && $overallCount <= $filter_val){ //20 RECORD Condition
+                        $offsetDate = $overallCount - 1;
+                    }
+                    else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 20 Condition
+                        $offsetDate = $filter_val - 1;
+                        $overallCount = 20;
+                    }
+                    else{
+                        $offsetDate = '';
+                    }
+                    
+                    if($offsetDate != '')
+                    {
+                        $queryDateData = "SELECT * from masseneingabeSucheIMw ";
+                        $queryDateData .= "WHERE mst_ID = '$mst_id' ";
+                        $queryDateData .= "ORDER by id ASC ";
+                        $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
+                        $resultDateData = queryDB($conn, $queryDateData, "read");
+                    }
+                    $records['countDate'] = $resultDateData;
                     // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
                     die;
                 }
                 else if($filter_val == 30) {
                     $ar_days = [];
                     $ar_value = [];
+                    $countSum = '';
                     for($i = 1; $i <= 30; $i++){
-                        $offset_val = 3 * $i;
-                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
-                        $query .= "(SELECT id From masseneingabeSucheIMw ";
-                        $query .= "WHERE mst_ID = '$mst_id' ";
-                        $query .= "ORDER by id DESC ";
-                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
-                        $result = queryDB($conn, $query, "read");
-                        if($result[0]['val'] != null){
-                            array_push($ar_value, $result[0]['val']);
+                        if($i <= $overallCount){
+                            $offset_val = 3 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 30){
+                                $countSum = $result[0]['val'];
+                            }
+                            $day_30 = $i;
+                            array_push($ar_days,$day_30);
                         }
-                        $day_30 = $i;
-                        array_push($ar_days,$day_30);
 
                     }
 
-                    // <----20-10-2021---
-                    $queryDate = "SELECT TOP(1) * FROM masseneingabeSucheIMw WHERE mst_Id  = $mst_id ";
-                    $queryDate .= "ORDER by id DESC ";
-                    $resultDate = queryDB($conn, $queryDate, "read");
-                    $records['countDate'] = $resultDate;
+                    // <--11-11-2021--
+                    $offsetDate = '';
+                    $resultDateData = '';
+                    if($overallCount > 0 && $overallCount <= $filter_val){ //30 RECORD Condition
+                        $offsetDate = $overallCount - 1;
+                    }
+                    else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 30 Condition
+                        $offsetDate = $filter_val - 1;
+                        $overallCount = 30;
+                    }
+                    else{
+                        $offsetDate = '';
+                    }
+                    
+                    if($offsetDate != '')
+                    {
+                        $queryDateData = "SELECT * from masseneingabeSucheIMw ";
+                        $queryDateData .= "WHERE mst_ID = '$mst_id' ";
+                        $queryDateData .= "ORDER by id ASC ";
+                        $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
+                        $resultDateData = queryDB($conn, $queryDateData, "read");
+                    }
+                    $records['countDate'] = $resultDateData;
                     // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
                     die;
                     
@@ -2328,31 +2434,56 @@ class dashboardController {
                 else if($filter_val == 'all') {
                     $ar_days = [];
                     $ar_value = [];
+                    $countSum = '';
                     for($i = 1; $i <= 50; $i++){
-                        $offset_val = 5 * $i;
-                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
-                        $query .= "(SELECT id From masseneingabeSucheIMw ";
-                        $query .= "WHERE mst_ID = '$mst_id' ";
-                        $query .= "ORDER by id DESC ";
-                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
-                        $result = queryDB($conn, $query, "read");
-                        if($result[0]['val'] != null){
-                            array_push($ar_value, $result[0]['val']);
+                        if($i <= $overallCount){
+                            $offset_val = 5 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 50){
+                                $countSum = $result[0]['val'];
+                            }
+                            $day_50 = $i;
+                            array_push($ar_days,$day_50);
                         }
-                        $day_50 = $i;
-                        array_push($ar_days,$day_50);
 
                     }
 
-                    // <----20-10-2021---
-                    $queryDate = "SELECT TOP(1) * FROM masseneingabeSucheIMw WHERE mst_Id  = $mst_id ";
-                    $queryDate .= "ORDER by id DESC ";
-                    $resultDate = queryDB($conn, $queryDate, "read");
-                    $records['countDate'] = $resultDate;
+                    // <--11-11-2021--
+                    $offsetDate = '';
+                    $resultDateData = '';
+                    if($overallCount > 0 && $overallCount <= 50){ //50 RECORD Condition
+                        $offsetDate = $overallCount - 1;
+                    }
+                    else if($overallCount > 0 && $overallCount > 50){ //More Than 50 Condition
+                        $offsetDate = 50 - 1;
+                        $overallCount = 50;
+                    }
+                    else{
+                        $offsetDate = '';
+                    }
+                    
+                    if($offsetDate != '')
+                    {
+                        $queryDateData = "SELECT * from masseneingabeSucheIMw ";
+                        $queryDateData .= "WHERE mst_ID = '$mst_id' ";
+                        $queryDateData .= "ORDER by id ASC ";
+                        $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
+                        $resultDateData = queryDB($conn, $queryDateData, "read");
+                    }
+                    $records['countDate'] = $resultDateData;
                     // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
                     die;
                     
@@ -2689,11 +2820,22 @@ class dashboardController {
             $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement,$queryMaxVal);
             $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val,$pagesCount,$dataMesaurement,$type,$mst_id);
             
+
+            // <---10-11-2021----
+            $queryLastDate = "SELECT TOP(1) * From berechneteEnergiedaten as T1 ";
+            $queryLastDate.= "WHERE T1.mst_ID = '$mst_id' ";
+            $queryLastDate.= "ORDER BY T1.berNrg_ID desc ";
+            $queryLastDateData = queryDB($conn, $queryLastDate, "read");
+            //--end-->
+
+
             // <--15-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => $queryMaximum,'row_click' => 'true', 'type' => 'Measurement');
             $records['query_data'] = $ar;
+
+            $records['queryLastDate'] = $queryLastDateData;
             // --end-->
            
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
@@ -2767,7 +2909,7 @@ class dashboardController {
         try{
             //Pagination Code HTML
             // echo $pagesCount; die;
-            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != ''){
+            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0){
                 $style_background = '';
                 $class_page_count_val = 'page_count_val';
                 $style_background_end = '';
