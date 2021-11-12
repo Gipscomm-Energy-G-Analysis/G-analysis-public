@@ -49,3 +49,11 @@ Route::get('product-graph/{graph_id}', [\App\Http\Controllers\GraphController::c
 Route::post('product-graph/history', [\App\Http\Controllers\GraphController::class, 'historicData'])->name('historicData');
 Route::get('product-graph/history/data', [\App\Http\Controllers\GraphController::class, 'historicGraph'])->name('historicGraph');
 Route::post('/product-graph/save', [\App\Http\Controllers\GraphController::class, 'saveGraphConfigurations'])->name('saveGraphConfigurations');
+
+
+
+
+
+Route::post('/on-change', [\App\Http\Controllers\ManageDatabaseController::class, 'changeDB'])->name('onchange');
+
+

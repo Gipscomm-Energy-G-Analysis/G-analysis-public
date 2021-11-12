@@ -43,4 +43,16 @@ class ManageDatabaseController extends Controller
         }
         return $database;
     }
+
+
+
+    public function changeDB(Request $request){
+        dd($request->all());
+        $_SESSION['nameDB'] = $request->dbname;
+        $data = $this->checkDB($request->dbname);
+
+        return ['code'=>200,'result'=>$data];
+        
+    }
+    
 }

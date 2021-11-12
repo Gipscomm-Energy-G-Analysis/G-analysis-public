@@ -37,7 +37,18 @@
                 <img src="{{asset('template/img/g_analysisNeu6.png')}}" class="mr-2 logo-g-analysis" alt="logo">
             </a>
         </div>
-    </li>    
+    </li>  
+    
+    <!-- ******Select Box Start****** -->
+
+    <li>
+    <select class="manPfad" size="1" title="Mandant" style="margin-top:17px; margin-right:16px;"><option>Agrodur Bad Berleburg</option><option>Agrodur Kunststofftechnik</option><option>Alfried Krupp KH</option><option>AST</option><option>Benjamins</option><option>ELB</option><option>EST-Edelstahl</option><option>Familie Derichsweiler</option><option>Gipscomm Holding</option><option>HBS-gipshold</option><option>HBS-Herholz-Tueren</option><option>Henkedruck</option><option>Heute + Comp</option><option>hpg plastics gmbh</option><option>Huendgen Swisttal</option><option>InduRade</option><option>K.H.Schumacher</option><option>Linsen Druckcenter GmbH</option><option>MB-DAH-Energy</option><option>Mustermandant</option><option>Raderplast</option><option>Spies</option></select>
+    </li>
+
+    <!-- ******Select Box End***** -->
+
+
+
     <li>
       <div class="dropdown">
         <button class="dropbtn text-muted menu_dashboard font-weight-bold">Auswertungen 
