@@ -515,24 +515,15 @@ getPrimaryKey();
 
 $(".manPfad").on("change", function () {
     var dataVal = $(this).val();
-    console.log(dataVal);
-    $.ajaxSetup({
-        headers: {
-            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        },
-    });
     $.ajax({
         type: "POST",
         url: "/on-change",
-        data: { data: dataVal },
+        data: { dbname: dataVal },
         success: function (result) {
-            alert("Changed");
-            console.log(result);
             spinner.stop();
-            if (result.status == 200) {
-                createGroupTable(result.data);
+
                 toastr.success(result.msg);
-            }
+                window.location.reload();
         },
         error: function (result) {
             spinner.stop();

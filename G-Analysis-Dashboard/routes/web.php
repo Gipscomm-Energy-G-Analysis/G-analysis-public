@@ -50,8 +50,8 @@ Route::post('product-graph/history', [\App\Http\Controllers\GraphController::cla
 Route::get('product-graph/history/data', [\App\Http\Controllers\GraphController::class, 'historicGraph'])->name('historicGraph');
 Route::post('/product-graph/save', [\App\Http\Controllers\GraphController::class, 'saveGraphConfigurations'])->name('saveGraphConfigurations');
 
-
-
+Route::get('get-graph-configuration', [\App\Http\Controllers\GraphController::class, 'getOtherGraphData'])->name('getOtherGraphData');
+Route::post('delete-graph-configuration', [\App\Http\Controllers\GraphController::class, 'deleteOtherGraphData'])->name('deleteOtherGraphData');
 
 
 Route::post('/on-change', [\App\Http\Controllers\ManageDatabaseController::class, 'changeDB'])->name('onchange');

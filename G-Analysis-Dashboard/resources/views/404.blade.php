@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layout.app',['database' => $databases, 'selectedDatabase' => $selectedDatabase])
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -18,4 +18,19 @@
 @stop
 @section('jsContent')
 <!-- Page specific script -->
+<script type="text/javascript">
+  $(".manPfad").on("change", function () {
+    var dataVal = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: "/on-change",
+        data: { dbname: dataVal },
+        success: function (result) {
+                window.location.reload();
+        },
+        error: function (result) {
+        },
+    });
+  });
+</script>
 @stop

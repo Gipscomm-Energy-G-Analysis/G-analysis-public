@@ -133,18 +133,6 @@ $("#graph_data_form").validate({
         label_column: {
             required: true
         },
-        data_column: {
-            required: true
-        },
-        select_graph_table: {
-            required: true
-        },
-        select_graph_primary_column: {
-            required: true
-        },
-        select_graph_foreign_column: {
-            required: true
-        }
     },
     submitHandler: function (form) {
         var email = $("#email").val();
@@ -152,17 +140,15 @@ $("#graph_data_form").validate({
             url: "product-graph/save",
             data: { 
                 graph_name: $('#graph_name').val(), 
-                table_name: $('#select_graph_table').val(), 
                 label_name: $('#label_column').val(),
-                data: $('#data_column').val(),
-                primaryKey: $('#select_graph_primary_column').val(),
-                foreignKey: $('#select_graph_foreign_column').val(),
+                accordion_setting: $('#accordion_setting').val()
             },
             success:function(result) {
                 spinner.stop();
                 if(result.status == 200 ){
                     toastr.success(result.msg);
                     getMachineData($('.navigation').attr('data-value'),"current");
+                    getGraphConfiguration();
                 }
             },
             error:function(result) {
@@ -171,7 +157,57 @@ $("#graph_data_form").validate({
             }
         });
     }
-
-
-
 });
+
+const getGraphConfiguration = () => {
+
+    $.ajax({
+        type: "GET",
+        url: "get-graph-configuration",
+        success:function(result) {
+            if(result.status == 200) {
+                getGraphConfigurationHook(result);
+            }
+        },
+        error:function(result) {
+            toastr.error(result);
+        }
+    });
+                            
+}
+
+const getGraphConfigurationHook = (result) =>{
+    let html = '<tr>';
+    $.each(result.data, function(key, value) {
+            html += `<tr>
+            <td>${key+1}</td>
+            <td>${value.graph_name}</td>
+            <td>${value.label}</td>
+            <td><button type="button" name="remove" id="${value.id}" class="btn btn-danger btn_delete_graph_conf"><i class="far fa-trash-alt"></i></button></td>
+        </tr>`;
+    });
+    
+    $('#dynamic_subgroup_field tbody').html(html);
+}
+
+$(document).on('click','.btn_delete_graph_conf',function() {
+    deleteGraphConfiguration($(this).attr('id'));
+});
+
+const deleteGraphConfiguration = (id) => {
+    $.ajax({
+        type: "POST",
+        url: "delete-graph-configuration",
+        data: { 
+            id: id, 
+        },
+        success:function(result) {
+            if(result.status == 200) {
+                getGraphConfigurationHook(result);
+            }
+        },
+        error:function(result) {
+            toastr.error(result);
+        }
+    });
+}

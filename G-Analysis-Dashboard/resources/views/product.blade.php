@@ -91,7 +91,7 @@
 /* Add a grey background color on mouse-over */
 .pagination a:hover:not(.active) {background-color: #ddd;}
 </style>
-@extends('layout.app')
+@extends('layout.app' ,['database' => $databases, 'selectedDatabase' => $selectedDatabase])
 @section('headContent')
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{asset('template/plugins/jsgrid/jsgrid.min.css')}}">
@@ -317,7 +317,7 @@
                     Charts
                 </h5>
               </div>
-              <div id="graphCollapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div id="graphCollapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
                     <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
                         <input type="checkbox" id="graphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
@@ -351,25 +351,29 @@
                         <div class="row" id="graph_div">
                             @foreach($data['chartsData'] as $key=>$value)
                                 @if($value['record'])
-                                <div class="col-sm-6 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
-                                    <div class="card card-info">
-                                        <div class="card-header" >
-                                            <h3 class="card-title" style="float:revert;">Line Chart for {{$key}}
-                                                <span class="float-right">
-                                                    <a href="/product-graph/{{$value['id']}}" target="_blank">
-                                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                                    </a>
-                                                </span>
-                                            </h3>
-                                        </div>
+                                    <div class="col-sm-12 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
+                                      <div class="card-header" id="{{$value['id']}}">
+                                        <h5 class="mb-0">
+                                          <button class="btn" data-toggle="collapse" data-target="#accordion_lineChart_{{$key}}" aria-expanded="true" aria-controls="accordion_lineChart_{{$key}}">
+                                            Line Chart for {{$key}}    
+                                          </button>
+                                          <span class="float-right">
+                                            <a href="/product-graph/{{$value['id']}}" target="_blank">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </a>
+                                        </span>
+                                        </h5>
+                                      </div>
+
+                                      <div id="accordion_lineChart_{{$key}}" class="collapse show" aria-labelledby="{{$value['id']}}" data-parent="#graph_div">
                                         <div class="card-body">
                                             <div class="chart">
                                                 <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;"></canvas>
                                             </div>
                                         </div>
-                                        <!-- /.card-body -->
+                                      </div>
                                     </div>
-                                </div>
+
                                 @endif
                             @endforeach
                         </div>
@@ -715,43 +719,22 @@
                                 <input type="text" class="form-control" id="graph_name" name="graph_name">
                             </div>
                             <div class="col-sm-3">
-                                <label for="select_graph_table">Select Table</label>
-                                <select class="form-control" id="select_graph_table" name="select_graph_table">
-                                    <option value="">Select</option>
-                                    <option value="data_value_15m">data_value_15m</option>
-                                    <option value="data_value_1m">data_value_1m</option>
-                                    <option value="data_value_1s">data_value_1s</option>
-                                    <option value="spiesnet">spiesnet</option>
-                                    <option value="spiesnetFAs">spiesnetFAs</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
                                 <label for="label_column">Select Label Column</label>
                                 <select class="form-control graph_column" id="label_column" name="label_column">
-                                    <option value="">Select</option>
+                                    @isset($otherGraph)
+                                        @foreach($otherGraph as $lable=>$val)
+                                            <option value="{{$lable}}">{{$lable}}</option>
+                                        @endforeach
+                                    @endisset
                                 </select>
                             </div>
                             <div class="col-sm-3">
-                                <label for="label_column">Select Data Column</label>
-                                <select class="form-control graph_column" id="data_column" name="data_column">
-                                    <option value="">Select</option>
+                                <label for="accordion_setting">Select Accordion Settings</label>
+                                <select class="form-control" id="accordion_setting" name="is_open">
+                                    <option value="hide">Closed</option>
+                                    <option value="show">Open</option>
                                 </select>
                             </div>
-
-                            <div class="col-sm-3">
-                                <label for="select_column">Select Primary key</label>
-                                <select class="form-control select_primary_column" id="select_graph_primary_column" name="select_graph_primary_column">
-                                    <option value="">Select</option>
-                                </select>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <label for="select_column">Select Foreign key</label>
-                                <select class="form-control select_foreign_column" id="select_graph_foreign_column" name="select_graph_foreign_column">
-                                    <option value="">Select</option>
-                                </select>
-                            </div>
-
                             <div class="popup">
                                 <div class="col-sm-3" style="margin-right:5px;">
                                     <button type="submit" class="btn btn-primary" id="save_graph_field">Save changes</button>
@@ -759,6 +742,29 @@
                             </div>
                         </div>
                     </form>
+
+                    <!-- Graph Table Configuration start-->
+                    <table class="table table-bordered white-border-head white-border-body" id="dynamic_subgroup_field">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px;">#</th>
+                                <th>Graph Name</th>
+                                <th>Label</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($otherGraphTable as $key=>$options)
+                            <tr>
+                                <td>{{$key+1}}</td>
+                                <td>{{$options->graph_name}}</td>
+                                <td>{{$options->label}}</td>
+                                <td><button type="button" name="remove" id="{{$options->id}}" class="btn btn-danger btn_delete_graph_conf"><i class="far fa-trash-alt"></i></button></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <!-- Graph Table Configuration end -->
                 </div>
             </div>
         </div>
@@ -782,13 +788,6 @@
                                 <div class="form-group">
                                   <label>Select Machine</label>
                                   <select multiple="multiple" data-placeholder="Select Machine Priority" id="multi-machine-prioprity" style="width: 100%;">
-                                    <option>Alabama</option>
-                                    <option>Alaska</option>
-                                    <option>California</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
                                   </select>
                                 </div>
                             </div>
@@ -910,7 +909,7 @@
         const timeFilterHook = document.getElementById('timeFilter');
         let myChart;
         const lineChartHook = (id, label, data, name) => {
-            console.log('here-data',data);
+            console.log('here-data',id);
             if (data.length > 0) {
                 $(".main_chart").css("display", "block");
                 // $("#not_found_msg").css("display","none");

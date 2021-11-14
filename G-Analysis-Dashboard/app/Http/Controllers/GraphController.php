@@ -114,13 +114,22 @@ class GraphController extends Controller
             "username" => $this->username
         ];
         $data=array(
-            "table_name"   =>  $request->table_name,
-            "primary_key"  =>  $request->primaryKey,
-            "foreign_key"  =>  $request->foreignKey,
+            "is_open"   =>  $request->accordion_setting,
             "label"     =>  $request->label_name,
-            "data"      =>  $request->data,
             "status"  =>  '1');
         GraphConfiguration::updateOrCreate($columnData, $data);
         return ['status'=> 200 , 'msg' => 'Graph configurations saved successfully.'];
+    }
+
+    public function getOtherGraphData() {
+        $database = DB::table('graph_configurations')->where('username', $this->username)->get()->toArray();
+        return ['status'=> 200 , 'data' => $database];
+    }
+
+    public function deleteOtherGraphData(Request $request) {
+        $id = $request->id;
+        $database = DB::table('graph_configurations')->where('id', $id)->delete();
+        $graph = DB::table('graph_configurations')->where('username', $this->username)->get()->toArray();
+        return ['status'=> 200 , 'data' => $graph];
     }
 }

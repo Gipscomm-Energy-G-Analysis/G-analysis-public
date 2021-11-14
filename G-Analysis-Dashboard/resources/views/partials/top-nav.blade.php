@@ -42,8 +42,19 @@
     <!-- ******Select Box Start****** -->
 
     <li>
-    <select class="manPfad" size="1" title="Mandant" style="margin-top:17px; margin-right:16px;"><option>Agrodur Bad Berleburg</option><option>Agrodur Kunststofftechnik</option><option>Alfried Krupp KH</option><option>AST</option><option>Benjamins</option><option>ELB</option><option>EST-Edelstahl</option><option>Familie Derichsweiler</option><option>Gipscomm Holding</option><option>HBS-gipshold</option><option>HBS-Herholz-Tueren</option><option>Henkedruck</option><option>Heute + Comp</option><option>hpg plastics gmbh</option><option>Huendgen Swisttal</option><option>InduRade</option><option>K.H.Schumacher</option><option>Linsen Druckcenter GmbH</option><option>MB-DAH-Energy</option><option>Mustermandant</option><option>Raderplast</option><option>Spies</option></select>
-    </li>
+    <select class="custom-select rounded-0 form-control form-control-sidebar manPfad" id="database-handler" style="margin-top:17px; margin-right:16px;">
+        @isset($database)
+          @foreach ($database as $databases)
+                @if($selectedDatabase == $databases->dbName)
+                  <option value="{{$databases->dbName}}" selected>{{$databases->nameMan}}</option>
+                @else
+                    <option value="{{$databases->dbName}}">{{$databases->nameMan}}</option>
+                @endif
+          @endforeach
+      @endif
+    </select>
+  
+  </li>
 
     <!-- ******Select Box End***** -->
 

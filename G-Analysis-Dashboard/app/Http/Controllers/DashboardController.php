@@ -49,6 +49,7 @@ class DashboardController extends Controller
         $res =[];
         $column = [];
         $groupData =[];
+        $databases = (new ManageDatabaseController)->getDatabases();
         if(!empty($this->database_result)){
             MigrationController::runMigrations();
             $org= $this->getOrganisations($this->database);
@@ -70,15 +71,16 @@ class DashboardController extends Controller
                         $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'']);
                         $data = $this->getMachineDetail($request);
                         if($data['code'] == 401) {
-                           return  View::make("404", ['message'=>$data['message']]);
+                           return  View::make("404", ['message'=>$data['message'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                         }
-                        return View::make("product", ["data"=>$data['data'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData']]);
+                        return View::make("product", ["data"=>$data['data'], 'otherGraphTable'=>$data['otherGraphTable'], 'otherGraph'=>$data['otherGraph'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                     } else {
-                        return View::make("404", ['message'=>'Data Not Found in Anlagen Table!']);
+                        return View::make("404", ['message'=>'Data Not Found in Anlagen Table!', 'databases' => $databases, 'selectedDatabase' => $this->database]);
                     }
                 }
             } else {
-                return View::make("404", ['message'=>'Data Not Found in Organisation Table!']);
+                
+                return View::make("404", ['message'=>'Data Not Found in Organisation Table!', 'databases' => $databases, 'selectedDatabase' => $this->database]);
             }
         }
     }
@@ -186,9 +188,9 @@ class DashboardController extends Controller
                         'otherGraph' => $otherGraphData
                     ];
 
-                    
-
-                    $customColumns = $this->splitArray(array_merge($dynamicData, $this->getCustomFieldData($machineData)), true);
+                    $customDataMerge = array_merge($dynamicData, $this->getCustomFieldData($machineData));
+                    $customColumns = $this->splitArray($customDataMerge, true);
+                    $otherGraphTable = (new ManageDatabaseController)->getOtherGraphData($this->username);
                 //    dd($customColumns);
                 //    dd($customColumns);
                  //   array_push($prodData, $prod);
@@ -201,7 +203,7 @@ class DashboardController extends Controller
                     $mergeArray = $this->splitArray(array_merge(array_merge($subGroupConfig, $customColumns['extra']['odd']), $customColumns['extra']['even']));
                     
                    // dd($otherGraphData);
-                    return ['code'=>200, 'data' =>$prodData, 'dynamicData' => $customColumns ,'anl_ID'=>$machineData->anl_ID, 'subGroupConfig' => $mergeArray, 'message'=>'Data Retrived Successfully.'];
+                    return ['code'=>200, 'otherGraph'=>$customDataMerge, 'otherGraphTable'=>$otherGraphTable, 'data' =>$prodData, 'dynamicData' => $customColumns ,'anl_ID'=>$machineData->anl_ID, 'subGroupConfig' => $mergeArray, 'message'=>'Data Retrived Successfully.'];
                 } else{
                     return ['code'=>401, 'message'=>'No Record Found in TWP_PROD_OVERVIEW Table!'];
                 }
@@ -213,6 +215,8 @@ class DashboardController extends Controller
             return ['code'=>401, 'data' =>"", 'message'=>'No Record Found!'];
         }
     }
+
+    
 
     public function getMachineTableData(Request $request) {
         $pageIndex = $request['pageIndex'];
@@ -584,18 +588,34 @@ class DashboardController extends Controller
     }
 
     public function getGraphConfigurations($machineData) {
-        $graph_data =GraphConfiguration::where('username',$this->username)->get();
+        $graph_data = GraphConfiguration::where('username',$this->username)->get();
         $graphJsData = [];
+        $label = '';
         if (!empty($graph_data)) {
             foreach($graph_data as $gdata) {
-                $primary_key = $gdata->primary_key;
-                $query = DB::table($gdata->table_name)->where($gdata->foreign_key, $machineData->$primary_key);
-                $label = $query->pluck($gdata->label)->toArray();
-                $data = $query->pluck($gdata->data)->toArray();
-                $dataJs = ['name' =>$gdata->graph_name, 'label' => $label, 'data'=>$data];
-                array_push($graphJsData, $dataJs);
+                $configData = DashboardProduktionConfig::where('label_name',$gdata->label)->where('username',$this->username)->first();
+                if (!empty($configData)) {
+                    $label = $configData->column_name;
+                    $query = DB::table($configData->table_name)->where($configData->foreign_key, $machineData->$primary_key);
+                } else {
+                    $tableConfigData = DB::table('machine_table_config')->where('label_name',$gdata->label)->where('username', $this->username)->Where('status', '2')->first();
+                    if (!empty($tableConfigData)) {
+                        $label = $tableConfigData->column_name;
+                        $machineName = explode (   '-' ,$machineData->nummerAnl);
+                        $machineName = $machineName[0];
+                        $query = DB::table('TWP_PROD_OVERVIEW')->where('MANAME',$machineName);
+                    }
+                }
+                if(isset($query)) {
+                    $label = $query->pluck($label)->limit(10)->toArray();
+                    $data = $query->pluck('servertime')->limit(10)->toArray();
+                    $dataJs = ['name' =>$gdata->graph_name, 'label' => $label, 'data'=>$data];
+                    array_push($graphJsData, $dataJs);
+                } 
             }
         }
         return $graphJsData;
     }
+
+    
 }

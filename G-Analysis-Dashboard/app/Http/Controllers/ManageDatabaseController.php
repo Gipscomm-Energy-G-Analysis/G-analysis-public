@@ -47,12 +47,19 @@ class ManageDatabaseController extends Controller
 
 
     public function changeDB(Request $request){
-        dd($request->all());
         $_SESSION['nameDB'] = $request->dbname;
         $data = $this->checkDB($request->dbname);
+        return ['code'=>200,'result'=>$data, 'msg' =>'Database changed successfully!'];
+    }
 
-        return ['code'=>200,'result'=>$data];
-        
+    public function getDatabases() {
+        $database = DB::connection('sqlsrvSuperAdmin')->table('mandanten')->get()->toArray();
+        return $database;
+    }
+
+    public function getOtherGraphData($username) {
+        $database = DB::table('graph_configurations')->where('username', $username)->get()->toArray();
+        return $database;
     }
     
 }
