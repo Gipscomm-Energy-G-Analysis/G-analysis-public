@@ -699,7 +699,6 @@
     padding: 0px 0px 0px 62px !important;
 }
 
-/* .dashboard_count_div .chart_tile .count_result_tile {
-    width: 13%;
-} */
-/* end */
+.dashboard_count_div .count_result_custom_width{
+    width: 21%;
+}

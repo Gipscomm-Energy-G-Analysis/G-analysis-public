@@ -559,7 +559,12 @@ function saveTableFormat(type){
               $('#measurement_modal_loader_div').hide();
               $('.bd-example-modal-lg .modal-content').css('opacity','1');
               $('.bd-example-modal-lg').modal('hide');
+
+              // <---12-11-2021--
+              $('#save_position_tile').trigger('click');
+              // --end--->
             }, 500);
+            $('#save_position_tile').attr('btn_click','table');
           }
         }
       });
@@ -671,6 +676,7 @@ function getTableFormatDashboard(){
             if(value['outside_tile_input_width'] > 1 && value['outside_tile_input_height'] > 1)
             {
               value['tile_html']=value['tile_html'].replace("p-0 small-table", "p-0 small-table mt-0");
+              value['tile_html']=value['tile_html'].replace("count_result_tile", "count_result_tile count_result_custom_width");
             }
 
             // Height Checks
@@ -1876,6 +1882,8 @@ function getEditChartTileDashboard(){
           $('#measurement-width-chart-hidden').val(a.data['width']);
           $('#measurement_count_tile_modal_chart_'+i_value).css('height',a['data']['height']);
           $('#measurement_count_tile_modal_chart_'+i_value).css('width',a['data']['width']);
+
+          $('#chart_outer_table_limit_column').val(a['data']['outer_table_column_limit']);
           
           $('.dashboard_chart_tile_html_'+i_value+' #measurement_count_tile_modal_chart_'+i_value+' .card-border').addClass('tile_border');
           $('.dashboard_chart_outer_tile_html_'+i_value+' #measurement_count_outer_tile_modal_chart_'+i_value+' .card-border').addClass('tile_border');
@@ -1965,6 +1973,7 @@ function saveDashboardTileChart(){
   var measurement_table_width = $('#measurement-width-chart-hidden').val();
   var input_height = $('#measurement-height-chart').val(); 
   var input_width = $('#measurement-width-chart').val();
+  var chart_outer_table_limit_column  = $('#chart_outer_table_limit_column').val();
   
   //<--23-8-2021---
   var last_index_tile = $('#total_records_chart').val();
@@ -2049,7 +2058,8 @@ function saveDashboardTileChart(){
         outside_chart_checkbox : outside_chart_checkbox,
         outside_chart_input_height : outside_chart_input_height,
         outside_chart_input_width : outside_chart_input_width,
-        outside_chart_display : outside_chart_display
+        outside_chart_display : outside_chart_display,
+        chart_outer_table_limit_column : chart_outer_table_limit_column
     },
     fail: function() {
         alert("failed!!")
@@ -2067,7 +2077,11 @@ function saveDashboardTileChart(){
         $('#dashboard_tile_modal_chart .modal-content').css('opacity','1');
         $('#dashboard_tile_modal_chart').modal('hide');
         // window.location.reload();
+        // <---12-11-2021--
+        $('#save_position_tile').trigger('click');
+        // --end--->
       }, 500);
+      $('#save_position_tile').attr('btn_click','chart');
     }
   });
 }
@@ -2136,8 +2150,10 @@ function chartRecordFilter(){
   }else{
     $('.chart_text_' + mst_input_value).text(mst_value+'('+filterVal+' Days)');
   }
+  var chart_outer_table_limit_column = $('#chart_outer_table_limit_column').val();
   if(filterVal != '' && mst_id != ''){
     var type = $('#chart_records option:selected').attr('type');
+    $('#measurement_modal_loader_div_chart').show();
     $.ajax({
       type: "POST",
       url: "php/retreive.php",
@@ -2149,7 +2165,8 @@ function chartRecordFilter(){
           mst_id:mst_id,
           type : type,
           filterVal : filterVal,
-          record_type_of_tile : record_type_of_tile
+          record_type_of_tile : record_type_of_tile,
+          chart_outer_table_limit_column : chart_outer_table_limit_column
       },
       fail: function() {
           alert("failed!!")
@@ -2178,6 +2195,14 @@ function chartRecordFilter(){
           }
         } 
         // --end-->
+
+        // <---12-11-2021--
+        $('#measurement_modal_loader_div_chart').hide();
+        var div_id_html = $('#total_records_chart').val();
+        $('.dashboard_chart_tile_html_'+div_id_html+' .small-table table tbody').html(a['outer_table_html']);
+        $('.dashboard_chart_outer_tile_html_'+div_id_html+' .small-table table tbody').html(a['outer_table_html']);
+        // -end--->
+
         if(chart_type == "line_chart"){
           var html_canvas_chart = "<canvas id='lineChart'></canvas>";
           var div_i_id = $('#total_records_chart').val();
@@ -2801,7 +2826,12 @@ function saveOverallCountTile(){
         $('#measurement_modal_loader_div').hide();
         $('.bd-example-modal-lg .modal-content').css('opacity','1');
         $('.bd-example-modal-lg').modal('hide');
+
+        // <---12-11-2021--
+        $('#save_position_tile').trigger('click');
+        // --end--->
       }, 500);
+      $('#save_position_tile').attr('btn_click','overall_count');
     }
   });
 }
@@ -2937,7 +2967,14 @@ function saveDashboardTilePosititon(ar){
     success: function(a) {
       if(a['Staus'] == 200)
       {
-        alert('Successfully Saved');
+        var btn_click = $('#save_position_tile').attr('btn_click');
+        if(btn_click == "dashboard")
+        {
+          alert('Successfully Saved');
+        }
+        else if(btn_click == 'table' || btn_click == 'overall_count' || btn_click == 'chart'){
+          $('#save_position_tile').attr('btn_click','dashboard');
+        }
       }
       
     }
@@ -3509,6 +3546,7 @@ function updateDashboardChart(){
   var measurement_table_width = $('#measurement-width-chart-hidden').val();
   var input_height = $('#measurement-height-chart').val(); 
   var input_width = $('#measurement-width-chart').val();
+  var chart_outer_table_limit_column = $('#chart_outer_table_limit_column').val();
   
   //<--23-8-2021---
   var last_index_tile = $('#total_records_chart').val();
@@ -3594,7 +3632,8 @@ function updateDashboardChart(){
         expand_view : expand_view,
         outside_chart_checkbox : outside_chart_checkbox,
         outside_chart_input_height : outside_chart_input_height,
-        outside_chart_input_width : outside_chart_input_width
+        outside_chart_input_width : outside_chart_input_width,
+        chart_outer_table_limit_column : chart_outer_table_limit_column
     },
     fail: function() {
         alert("failed!!")

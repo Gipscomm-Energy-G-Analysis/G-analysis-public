@@ -1227,6 +1227,21 @@ $(document).ready( function(){
     // -end--->
 
 
+    // <---12-11-2021---
+    $(document).on('blur change', '#chart_outer_table_limit_column', function(){
+        var val = $('#chart_outer_table_limit_column').val();
+        if(val < 1)
+        {
+            $('#chart_outer_table_limit_column').val('1');
+        }
+        else if(val > 10){
+            $('#chart_outer_table_limit_column').val('10');
+        }
+        chartRecordFilter();
+    });
+    // --end-->
+
+
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {

@@ -42,7 +42,7 @@
             <div class="dashboard-btn">
                 <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
 
-                <button type="button" class="btn btn-success btn-sm mb-3" style="display: none" id="save_position_tile">Save Tile</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Save Tile</button>
 
             </div>
 
@@ -217,6 +217,11 @@
                     <div class="form-group col-md-2 chart_outisde_tile_controls"  style="display: none">
                       <label for="chart_width_outer_structure" class="text-mute">Outisde Tile Row</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="chart_width_outer_structure" placeholder="Outer Row">
+                    </div>
+
+                    <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
+                      <label for="chart_outer_table_limit_column" class="text-mute">Column Limit</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="chart_outer_table_limit_column" placeholder="Limit Column" value='1'>
                     </div>
                     
                     <!-- -end- -->

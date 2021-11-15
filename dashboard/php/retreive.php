@@ -2248,6 +2248,7 @@ class dashboardController {
             $filter_val = $_POST['filterVal'];
             $type = $_POST['type'];
             $mst_id = $_POST['mst_id'];
+            $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'] != '' ? $_POST['chart_outer_table_limit_column'] : 1;
             if($record_type_of_tile == 'measurement')
             {
                 $queryOverAllCount = "SELECT * From masseneingabeSucheIMw ";
@@ -2258,6 +2259,7 @@ class dashboardController {
                     $ar_days = [];
                     $ar_value = [];
                     $countSum = '';
+                    $loopCount = '';
                     for($i = 1; $i <= 10; $i++){
                         if($i <= $overallCount){
                             $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
@@ -2273,13 +2275,65 @@ class dashboardController {
                                 $countSum = $result[0]['val'];
                                
                             }
-                            
+                            // <---12-11-2021--
+                            $loopCount = $i;
+                            // --end-->
                             array_push($ar_days,$i);
-
-                            // <---11-11-2021-
                         }
 
                     }
+                    // <---12-11-2021--
+                    // $ar_reverse_val = array_reverse($ar_value);
+                    // echo json_encode($ar_reverse_val); die;
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //10 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT * from masseneingabeSucheIMw ";
+                        $queryOutsideTable .= "WHERE mst_ID = '$mst_id' ";
+                        $queryOutsideTable .= "ORDER by id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
 
                     // <--11-11-2021--
                     $offsetDate = '';
@@ -2317,6 +2371,7 @@ class dashboardController {
                     $ar_days = [];
                     $ar_value = [];
                     $countSum = '';
+                    $loopCount = '';
                     for($i = 1; $i <= 20; $i++){
                         if($i <= $overallCount){
                             $offset_val = 2 * $i;
@@ -2332,7 +2387,7 @@ class dashboardController {
                             if($i == $overallCount || $i == 20){
                                 $countSum = $result[0]['val'];
                             }
-                        
+                                $loopCount = $i;
                                 $day_20 =  $i;
                                 // $r+2;
                                 array_push($ar_days,$day_20);
@@ -2342,6 +2397,56 @@ class dashboardController {
                         
                     }
                     // print_r($ar_value);die;
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 20 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //20 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 20 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT * from masseneingabeSucheIMw ";
+                        $queryOutsideTable .= "WHERE mst_ID = '$mst_id' ";
+                        $queryOutsideTable .= "ORDER by id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
 
                     // <--11-11-2021--
                     $offsetDate = '';
@@ -2378,6 +2483,7 @@ class dashboardController {
                     $ar_days = [];
                     $ar_value = [];
                     $countSum = '';
+                    $loopCount = '';
                     for($i = 1; $i <= 30; $i++){
                         if($i <= $overallCount){
                             $offset_val = 3 * $i;
@@ -2393,11 +2499,62 @@ class dashboardController {
                             if($i == $overallCount || $i == 30){
                                 $countSum = $result[0]['val'];
                             }
+                            $loopCount = $i;
                             $day_30 = $i;
                             array_push($ar_days,$day_30);
                         }
 
                     }
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 30 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //30 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 30 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT * from masseneingabeSucheIMw ";
+                        $queryOutsideTable .= "WHERE mst_ID = '$mst_id' ";
+                        $queryOutsideTable .= "ORDER by id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
 
                     // <--11-11-2021--
                     $offsetDate = '';
@@ -2435,6 +2592,7 @@ class dashboardController {
                     $ar_days = [];
                     $ar_value = [];
                     $countSum = '';
+                    $loopCount = '';
                     for($i = 1; $i <= 50; $i++){
                         if($i <= $overallCount){
                             $offset_val = 5 * $i;
@@ -2450,11 +2608,62 @@ class dashboardController {
                             if($i == $overallCount || $i == 50){
                                 $countSum = $result[0]['val'];
                             }
+                            $loopCount = $i;
                             $day_50 = $i;
                             array_push($ar_days,$day_50);
                         }
 
                     }
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > 50){ //More Than 50 Condition
+                                $offsetLoopVal = $overallCount -  50;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= 50){ //50 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > 50){ //More Than 50 Condition
+                                $offsetLoopVal = $overallCount -  50;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT * from masseneingabeSucheIMw ";
+                        $queryOutsideTable .= "WHERE mst_ID = '$mst_id' ";
+                        $queryOutsideTable .= "ORDER by id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
 
                     // <--11-11-2021--
                     $offsetDate = '';
@@ -3104,21 +3313,27 @@ class dashboardController {
             $mst_id = $_POST['mst_id'];
             if($record_type_of_tile == 'measurement')
             {
+                $queryOverAllCount = "SELECT * From masseneingabeSucheIMw ";
+                $queryOverAllCount .= "WHERE mst_ID = '$mst_id' ";
+                $resultOverallCount = queryDB($conn, $queryOverAllCount, "read");
+                $overallCount = count($resultOverallCount);
                 if($filter_val == 10){
                     $ar_days = [];
                     $ar_value = [];
                     for($i = 1; $i <= 10; $i++){
-                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
-                        $query .= "(SELECT id From masseneingabeSucheIMw ";
-                        $query .= "WHERE mst_ID = '$mst_id' ";
-                        $query .= "ORDER by id DESC ";
-                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
-                        $result = queryDB($conn, $query, "read");
-                        if($result[0]['val'] != null){
-                            array_push($ar_value, $result[0]['val']);
+                        if($i <= $overallCount){
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            
+                            array_push($ar_days,$i);
                         }
-                        
-                        array_push($ar_days,$i);
 
                     }
                     $records['count_val'] = $ar_value;
@@ -3130,23 +3345,23 @@ class dashboardController {
                     $ar_days = [];
                     $ar_value = [];
                     for($i = 1; $i <= 20; $i++){
+                        if($i <= $overallCount){
+                            $offset_val = 2 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
                         
-                        $offset_val = 2 * $i;
-                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
-                        $query .= "(SELECT id From masseneingabeSucheIMw ";
-                        $query .= "WHERE mst_ID = '$mst_id' ";
-                        $query .= "ORDER by id DESC ";
-                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
-                        $result = queryDB($conn, $query, "read");
-                        if($result[0]['val'] != null){
-                            array_push($ar_value, $result[0]['val']);
-                        }
-                      
-                            $day_20 =  $i;
-                            // $r+2;
-                            array_push($ar_days,$day_20);
+                                $day_20 =  $i;
+                                // $r+2;
+                                array_push($ar_days,$day_20);
     
-                        // }
+                        }
                         
                     }
                     // print_r($ar_value);die;
@@ -3159,18 +3374,20 @@ class dashboardController {
                     $ar_days = [];
                     $ar_value = [];
                     for($i = 1; $i <= 30; $i++){
-                        $offset_val = 3 * $i;
-                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
-                        $query .= "(SELECT id From masseneingabeSucheIMw ";
-                        $query .= "WHERE mst_ID = '$mst_id' ";
-                        $query .= "ORDER by id DESC ";
-                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
-                        $result = queryDB($conn, $query, "read");
-                        if($result[0]['val'] != null){
-                            array_push($ar_value, $result[0]['val']);
+                        if($i <= $overallCount){
+                            $offset_val = 3 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            $day_30 = $i;
+                            array_push($ar_days,$day_30);
                         }
-                        $day_30 = $i;
-                        array_push($ar_days,$day_30);
 
                     }
                     $records['count_val'] = $ar_value;
@@ -3183,18 +3400,20 @@ class dashboardController {
                     $ar_days = [];
                     $ar_value = [];
                     for($i = 1; $i <= 50; $i++){
-                        $offset_val = 5 * $i;
-                        $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
-                        $query .= "(SELECT id From masseneingabeSucheIMw ";
-                        $query .= "WHERE mst_ID = '$mst_id' ";
-                        $query .= "ORDER by id DESC ";
-                        $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
-                        $result = queryDB($conn, $query, "read");
-                        if($result[0]['val'] != null){
-                            array_push($ar_value, $result[0]['val']);
+                        if($i <= $overallCount){
+                            $offset_val = 5 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            $day_50 = $i;
+                            array_push($ar_days,$day_50);
                         }
-                        $day_50 = $i;
-                        array_push($ar_days,$day_50);
 
                     }
                     $records['count_val'] = $ar_value;
