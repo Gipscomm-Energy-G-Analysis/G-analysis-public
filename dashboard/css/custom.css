@@ -355,7 +355,7 @@
     margin: -15px -1px -8px -6px !important;
 }
 
-.row{
+.row.dashboard_count_div ,.dashboard_count_div .row{
     margin-right: 14px !important;
 }
 
@@ -700,5 +700,24 @@
 }
 
 .dashboard_count_div .count_result_custom_width{
-    width: 21%;
+    width: 17%;
 }
+
+/* 16-11-2021--- */
+.dashboard_chart_tiles .small-table {
+    height: 85%;
+}
+
+.dashboard_chart_tiles .small-table  table{
+    height: 85%;
+}
+
+.dashboard_count_div .small-table {
+    height: 85%;
+}
+
+.dashboard_count_div .small-table  table{
+    height: 85%;
+}
+
+/* --end--- */

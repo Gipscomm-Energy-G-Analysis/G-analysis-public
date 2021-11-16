@@ -2216,7 +2216,7 @@ function chartRecordFilter(){
           var data = {
             labels: a['count_days'],
             datasets: [{
-              label: '# of Votes',
+              label: 'Consumption',
               data: a['count_val'],
               backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -2295,7 +2295,7 @@ function chartRecordFilter(){
           // labels: ["2013", "2014", "2015", "2016", "2017","2019","2021","2023"],
           labels: a['count_days'],
           datasets: [{
-            label: 'Count',
+            label: 'Consumption',
             // <--Y Axix Value--
             // data: [12, 19, 3, 5, 2, 3,25,105],
             // data : [], 
@@ -2555,7 +2555,7 @@ function chartRecordFilter(){
         var data = {
           labels: a['count_days'],
           datasets: [{
-            label: '# of Votes',
+            label: 'Consumption',
             // data: [10, 19, 3, 5, 2, 3],
             data : a['count_val'],
             backgroundColor: [
@@ -3039,7 +3039,7 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
         var data = {
           labels: a['count_days'],
           datasets: [{
-            label: '# of Votes',
+            label: 'Consumption',
             data: a['count_val'],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
@@ -3117,7 +3117,7 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
             // labels: ["2013", "2014", "2015", "2016", "2017","2019","2021","2023"],
             labels: a['count_days'],
             datasets: [{
-              label: 'Count',
+              label: 'Consumption',
               // <--Y Axix Value--
               // data: [12, 19, 3, 5, 2, 3,25,105],
               // data : [], 
@@ -3349,7 +3349,7 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
         var data = {
           labels: a['count_days'],
           datasets: [{
-            label: '# of Votes',
+            label: 'Consumption',
             // data: [10, 19, 3, 5, 2, 3],
             data : a['count_val'],
             backgroundColor: [
