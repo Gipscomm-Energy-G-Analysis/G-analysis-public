@@ -1626,7 +1626,18 @@ function getDimentions(id) {
             //     tile_html = tile_html.replace('areaChart','areaChart-none');
             //     $('.'+id+'.tiles-click').html(tile_html);
             //  },2000);
-            
+
+            // <----17-11-2021---
+            var pathname = window.location.pathname;
+            var arPathname = pathname.split('/');
+            if(arPathname.length > 3){
+                window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
+            }
+            else{
+                window.open('/dashboard/html/dashboard/chart_new.php','_blank');
+            }
+            // --end-->
+           
           }
           else if(type_data_val == "overall_count"){
             var mst_id = a['data']['mst_id'];
@@ -1634,6 +1645,17 @@ function getDimentions(id) {
           }
           else if(type_data_val == "table"){
             getTableDashboardData(id);
+
+            // <----17-11-2021---
+            var pathname = window.location.pathname;
+            var arPathname = pathname.split('/');
+            if(arPathname.length > 3){
+                window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
+            }
+            else{
+                window.open('/dashboard/html/dashboard/chart_new.php','_blank');
+            }
+            // --end-->
           }
           // --show-->
 
@@ -2879,6 +2901,12 @@ function getTableDashboardData(id){
         alert("failed!!")
     },
     success: function(a) {
+
+      // <----17-9-2021----
+      var chart_tile_click_data = {'table_html' : a['dashboardMeasurementHtml'],'tile_click_type' : 'table'}
+      localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
+      // -end->
+
       $('.'+id+'.tiles-click .save_table_div_show_table .table').html('');
       $('.'+id+'.tiles-click .save_table_div_show_table .table').html(a['dashboardMeasurementHtml']);
     }
@@ -3029,6 +3057,11 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
         alert("failed!!")
     },
     success: function(a) {
+
+      // <----17-9-2021----
+      var chart_tile_click_data = {'count_days' : a['count_days'],'count_val': a['count_val'],'chart_type' : chart_type,'tile_click_type' : 'chart'}
+      localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
+      // -end->
       var tile_html = $('.'+id+'.tiles-click').html();
       if(chart_type == "line_chart"){
         // var html_canvas_chart = "<canvas id='lineChart'></canvas>";
