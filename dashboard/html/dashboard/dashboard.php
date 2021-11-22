@@ -23,8 +23,8 @@
                     <option value="mesurement_count_div" description="Measurement Entries Count">Messstellen</option>
                     <option value="product_count_div" description="Product Entries Count">Produkte</option>
                     <option value="energy_count_div" description="Energy Entries Count">Energiedaten</option>
-                    <option value="energy_consumed_div" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
-                    <option value="five_days_energy_consumed" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option>
+                    <!-- <option value="energy_consumed_div" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option> -->
+                    <!-- <option value="five_days_energy_consumed" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
                     <!-- <option value="40">40</option>
                     <option value="50">50</option> -->
                   </select>
@@ -73,8 +73,8 @@
                           <option value="measurement" description="Measurement Entries Count">Messstellen</option>
                           <option value="product" description="Product Entries Count">Produkte</option>
                           <option value="energy" description="Energy Entries Count">Energiedaten</option>
-                          <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
-                          <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option>
+                          <!-- <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
+                          <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
                       </select>
                     </div>
 

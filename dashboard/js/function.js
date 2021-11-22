@@ -925,9 +925,69 @@ function generateHtmlMeasurementTiles(type){
   // --end-->
 }
 
+// <---22-11-2021---
+function generateHtmlEnergyTiles(type){
+  var energy_title = localStorage.getItem('energy_title_modal_tile');
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "generateHtmlEnergyTiles",
+        nameDB: $("#nameDashboardDB").val(),
+        energy_title : energy_title,
+        type : type
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      // console.log(a);
+       $('.gernerated_energy_modal_tiles').html(a['tile_html']);
+
+      var last_id = a['last_id'];
+      setTimeout(()=>{
+        var table_length = $('.energy_html_modal_'+last_id+' .save_table_div_show_table table tbody tr').length;
+        $('.energy_html_modal_'+last_id+' .count_result_tile').text(table_length+' Records');
+      },1000)
+    }
+  });
+
+}
+// --end--->
+
+// <---18-11-2021---
 //Selected Number of Records Energy
 function getNumberRecordsEnergy(){
-    var number_records = $('#energy_number_record').val();
+  var energy_type = $('#energy_type').val();
+  var number_record_local_val = localStorage.getItem('number_record_energy');
+  if(number_record_local_val != undefined && number_record_local_val != null){
+      $('#energy_total_number_record').val(number_record_local_val);
+  }
+  else{
+      $('#energy_total_number_record').val('');
+  }
+
+  //6-8-2021---
+  var selected_number_record = localStorage.getItem('selected_number_record_energy');
+  if(selected_number_record == undefined || selected_number_record == ''){
+      selected_number_record = 5;
+  }
+  //----end-->
+  var total_number_records = $('#energy_total_number_record').val();
+  var time_interval = $('#energy_time_interval').val();
+  var records_order_by_val = $('#energy_records_order_by').val();
+  var search_record = $('#energy_search_record').val();
+
+  $('.energy_table_header').removeClass('row_click_table');
+  $('.table-margin .table th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
+  if(total_number_records == ''){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
+    $('#energy_select_table_entries').html(tr);
+    $('#pagination_html_energy').html('');
+  }
+  else{
     $.ajax({
         type: "POST",
         url: "php/retreive.php",
@@ -936,16 +996,361 @@ function getNumberRecordsEnergy(){
         data: {
             action: "getNumberRecordsEnergy",
             nameDB: $("#nameDashboardDB").val(),
-            number_records : number_records
+            total_number_records : total_number_records,
+            time_interval : time_interval,
+            energy_order_by_val : records_order_by_val,
+            search_record : search_record,
+            number_records : selected_number_record,
+            energy_type : energy_type
         },
         fail: function() {
             alert("failed!!")
         },
         success: function(a) {
-           $('#energy_select_table_entries').html(a['energy_html']);
+          // a = JSON.parse(a);
+          $('#energy_select_table_entries').html(a['energy_html']);
+          if(energy_type == 'manually')
+          {
+            var thVal =  $('#energy_record_table table thead tr').children('th:eq(4)').text();
+            if(thVal == '' || thVal == undefined){
+              $('#energy_record_table table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
+            }
+            $('#energy_record_table table thead tr').children('th:eq(3)').text('Total Units');
+            $('#energy_record_table table thead tr').children('th:eq(2)').text('Created Date');
+            $('#energy_record_table table thead tr').children('th:eq(1)').text('Time Interval');
+            $('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
+          }
+          else if(energy_type == 'automatic'){
+            $('#energy_record_table table thead tr').children('th:eq(4)').remove(); 
+            $('#energy_record_table table thead tr').children('th:eq(3)').text('Values'); 
+            $('#energy_record_table table thead tr').children('th:eq(2)').text('Conv Factor');
+            $('#energy_record_table table thead tr').children('th:eq(1)').text('Time');
+            $('.table-margin .table td').attr('style','padding: 8px !important;font-size: small !important;');
+          }
+          
+          $('#pagination_html_energy').html(a['pagination_html_energy']);
+          //$('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
+          
+          $('.table-margin').removeClass('margin-remove-table');
+          // $('#energy_record_table table thead tr').children('th:eq(2)').text('Created Date');
+          // $('#energy_record_table table thead tr').children('th:eq(3)').text('Total Units');
+
+          var val_selected = localStorage.getItem('selected_number_record_energy');
+          $('#energy_number_record option[value='+val_selected+']').prop('selected', 'selected');
+
+          localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+          // <---02-9-2021--
+          var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+          if(edit_value == 'true'){
+              $('#energy_modal_open_button').val('Update & Preview');
+              $('#energy_modal_open_button').attr('tile-edit','true');
+          }
+          else{
+            $('#energy_modal_open_button').val('Save & Preview');
+            $('#energy_modal_open_button').attr('tile-edit','false');
+          }
+          // --end-->
+
+          // <---7-9-2021----
+          setTimeout(()=>{
+            var type_data = localStorage.getItem('dashboard_tile_data');
+            type_data = JSON.parse(type_data);
+            if(type_data['type_data_tile'] == 'overall_count')
+            {
+              $('#energy_modal_open_button').hide();
+            }
+            else{
+              $('#energy_modal_open_button').show();
+            }
+          },500)
+
+          // ---end--->
         }
     });
+  }
+
 }
+
+
+//Get Number Records Energy Pagination
+function getNumberRecordsEnergyPagination(page_val,energy_search_record = 'false'){
+  var energy_type = $('#energy_type').val();
+  var number_records = $('#energy_number_record').val();
+  var time_interval = $('#energy_time_interval').val();
+  var records_order_by_val = $('#energy_records_order_by').val();
+  var search_record = $('#energy_search_record').val();
+  var total_number_records = $('#energy_total_number_record').val();
+  if(total_number_records == ''){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
+    $('#energy_select_table_entries').html(tr);
+    $('#pagination_html_energy').html('');
+  }
+  else{
+    $.ajax({
+        type: "POST",
+        url: "php/retreive.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            action: "getNumberRecordsEnergy",
+            nameDB: $("#nameDashboardDB").val(),
+            number_records : number_records,
+            time_interval : time_interval,
+            energy_order_by_val : records_order_by_val,
+            page_val : page_val,
+            search_record : search_record,
+            total_number_records : total_number_records,
+            energy_search_record : energy_search_record,
+            energy_type : energy_type
+        },
+        fail: function() {
+            alert("failed!!")
+        },
+        success: function(a) {
+          $('#energy_select_table_entries').html(a['energy_html']);
+          $('#pagination_html_energy').html(a['pagination_html_energy']);
+          if(energy_type == 'manually')
+          {
+            $('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
+          }
+          else if(energy_type == 'automatic'){
+            $('.table-margin .table td').attr('style','padding: 8px !important;font-size: small !important;');
+          }
+          
+          var val_selected = localStorage.getItem('selected_number_record_energy');
+          $('#energy_number_record option[value='+val_selected+']').prop('selected', 'selected');
+
+          localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+          // <---02-9-2021--
+          var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+          if(edit_value == 'true'){
+              $('#energy_modal_open_button').val('Update & Preview');
+              $('#energy_modal_open_button').attr('tile-edit','true');
+          }
+          else{
+            $('#energy_modal_open_button').val('Save & Preview');
+            $('#energy_modal_open_button').attr('tile-edit','false');
+          }
+
+          // <---7-9-2021----
+          var type_data = localStorage.getItem('dashboard_tile_data');
+          type_data = JSON.parse(type_data);
+          if(type_data['type_data_tile'] == 'overall_count')
+          {
+            $('#energy_modal_open_button').hide();
+          }
+          else{
+            $('#energy_modal_open_button').show();
+          }
+          // ---end--->
+        }
+    });
+  }
+
+}
+
+function rowClickEnergyTableData(mst_id,data_type){
+  var energy_type = $('#energy_type').val();
+  $('#mst_id_hidden_energy').val(mst_id);
+  
+  var total_count = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(3)').text();
+  $('#overall_count_energy').val(total_count);
+
+  var record_name = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(0)').text();
+  $('#mst_id_hidden_energy').attr('data-name',record_name);
+  // --end-->
+
+  var table_other = $('#energy_record_table table tbody').children('tr:eq(0)').attr('data-table-other'); 
+  $('#mst_id_hidden_energy').attr('data-table-other',table_other);
+
+  var number_records = $('#energy_number_record').val();  
+  var total_number_records = $('#energy_total_number_record').val();
+
+  var records_order_by_val = $('#energy_records_order_by').val();
+
+  //Classes Add
+  $('.energy_table_header').addClass('row_click_table');
+  $('.table-margin .table th').removeAttr('style');
+  if(total_number_records == ''){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
+    $('#energy_select_table_entries').html(tr);
+    $('#pagination_html_energy').html('');
+  }
+  else{
+    $.ajax({
+      type : "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "rowClickenergyTableData",
+          nameDB: $("#nameDashboardDB").val(),
+          mst_id : mst_id,
+          data_type : data_type,
+          number_records : number_records,
+          total_number_records : total_number_records,
+          energy_order_by_val : records_order_by_val,
+          energy_type : energy_type
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#energy_record_table table thead tr').children('th:eq(4)').remove(); 
+
+        // <---15-9-2021---
+        if(energy_type == 'manually'){
+          $('#energy_record_table table thead tr').children('th:eq(1)').text('Time Interval');
+          $('#energy_record_table table thead tr').children('th:eq(2)').text('Date');
+          $('#energy_record_table table thead tr').children('th:eq(3)').text('Units Consumed');
+        }
+        else if(energy_type == 'automatic'){
+          $('#energy_record_table table thead tr').children('th:eq(1)').text('Time');
+          $('#energy_record_table table thead tr').children('th:eq(2)').text('Conv Factor');
+          $('#energy_record_table table thead tr').children('th:eq(3)').text('Values');
+        }
+        // --end--->
+
+        $('#energy_select_table_entries').html(a['energy_html']);
+        $('#pagination_html_energy').html(a['pagination_html_energy']);
+        $('.table-margin .table td').removeAttr('style');
+        
+        $('.table-margin').addClass('margin-remove-table');
+        // $('#energy_record_table table thead tr').children('th:eq(2)').text('Date');
+        // $('#energy_record_table table thead tr').children('th:eq(3)').text('Units Consumed');
+
+        $('#energy_number_record option[value='+number_records+']').prop('selected', 'selected');
+
+        localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+        // <---02-9-2021--
+        var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+        if(edit_value == 'true'){
+            $('#energy_modal_open_button').val('Update & Preview');
+            $('#energy_modal_open_button').attr('tile-edit','true');
+        }
+        else{
+          $('#energy_modal_open_button').val('Save & Preview');
+          $('#energy_modal_open_button').attr('tile-edit','false');
+        }
+
+        // <---7-9-2021--
+        setTimeout(()=>{
+          $('#energy_modal_open_button').show();
+        },500)
+        // --end-->
+
+        // <----10-11-2021--
+        if(a['queryLastDate'] != undefined && a['queryLastDate'] != ''){
+          if(energy_type == 'manually'){
+            if(a['queryLastDate'][0]['type'] == '2'){
+              $('#row_click_last_date_energy').val(a['queryLastDate'][0]['on_week']+'-'+a['queryLastDate'][0]['on_date']);
+            }
+            else{
+              $('#row_click_last_date_energy').val(a['queryLastDate'][0]['on_date']);
+            }
+          }
+          else if(energy_type == 'automatic'){
+            var date_data = a['queryLastDate'][0]['Time'];
+            date_data = date_data.split(' ');
+            $('#row_click_last_date_energy').val(date_data[0]);
+          }
+        }
+        else{
+          $('#row_click_last_date_energy').val('');
+        }
+        // --end-->
+      }
+    });
+  }
+}
+
+function rowClickEnergyPaginationTableData(mst_id,data_type,page_value,selected_number_record_energy = 'false'){
+  // <---7-9-2021--
+  var energy_type = $('#energy_type').val();
+  var number_records = $('#energy_number_record').val();
+  var total_number_records = $('#energy_total_number_record').val(); 
+  var records_order_by_val = $('#energy_records_order_by').val(); 
+  if(total_number_records == ''){
+    var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Total No. of Records</td></tr>";
+    $('#energy_select_table_entries').html(tr);
+    $('#pagination_html_energy').html('');
+  }
+  else{
+    $.ajax({
+      type : "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "rowClickenergyTableData",
+          nameDB: $("#nameDashboardDB").val(),
+          mst_id : mst_id,
+          data_type : data_type,
+          number_records : number_records,
+          page_val : page_value,
+          selected_number_record_energy : selected_number_record_energy,
+          total_number_records : total_number_records,
+          energy_order_by_val : records_order_by_val,
+          energy_type : energy_type
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#energy_select_table_entries').html(a['energy_html']);
+        $('#pagination_html_energy').html(a['pagination_html_energy']);
+        $('.table-margin .table td').removeAttr('style');
+
+        $('#energy_number_record option[value='+number_records+']').prop('selected', 'selected');
+
+        //LocalStorage
+        localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+        // <---02-9-2021--
+        var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+        if(edit_value == 'true'){
+            $('#energy_modal_open_button').val('Update & Preview');
+            $('#energy_modal_open_button').attr('tile-edit','true');
+        }
+        else{
+          $('#energy_modal_open_button').val('Save & Preview');
+          $('#energy_modal_open_button').attr('tile-edit','false');
+        }
+
+         // <---7-9-2021--
+         $('#energy_modal_open_button').show();
+         // --end-->
+
+        // <----10-11-2021--
+        if(a['queryLastDate'] != undefined && a['queryLastDate'] != ''){
+          if(energy_type == 'manually'){
+            if(a['queryLastDate'][0]['type'] == '2'){
+              $('#row_click_last_date_energy').val(a['queryLastDate'][0]['on_week']+'-'+a['queryLastDate'][0]['on_date']);
+            }
+            else{
+              $('#row_click_last_date_energy').val(a['queryLastDate'][0]['on_date']);
+            }
+          }
+          else if(energy_type == 'automatic'){
+            var date_data = a['queryLastDate'][0]['Time'];
+            date_data = date_data.split(' ');
+            $('#row_click_last_date_energy').val(date_data[0]);
+          }
+        }
+        else{
+          $('#row_click_last_date_energy').val('');
+        }
+        // --end-->
+      }
+    });
+  }
+
+}
+
+// --end-->
 
 //Selected Number of Records Product
 function getNumberRecordsProduct(){
@@ -1433,7 +1838,7 @@ function saveDashboardSelect(arData){
     }
   });
 }
-$(document).on('click','.stretch-card',function(){
+$(document).on('click','.movetile .stretch-card',function(){
 
 
 var id=$(this).attr('class');
