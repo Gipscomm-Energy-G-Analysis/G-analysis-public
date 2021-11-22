@@ -13,7 +13,7 @@ body {
 }
 #asideRight, #asideRight2 {
   position: absolute;
-  height: 230px;
+  height: fit-content;
   width: 210px;
   top: 117px;
   border-radius: 8px;
@@ -306,7 +306,7 @@ nav {
 }
 .manPfad, .manLiegLabel {
   font-size:14px;
-  width:150px;
+  width:194px;
 }
 #tabsUnternehmensstruktur, #tabsAnlagenverwaltung, #tabsPruefmittelverwaltung, #tabsMessmittelverwaltung, #tabsProdukteverwaltung, #tabsKennzahlenAlarme, #tabsManuell, #tabsAuswertungen {
   display: inline-block;
@@ -318,7 +318,7 @@ nav {
 #tabMsg, #tabKnz, #tabAlm, #tabAnl, #tabAnl_energie, #tabAnl_dokumente, #tabAnl_historie, #tabEng, #tabZp, #tabBerechnungsformeln,
 #tabGsf, #tabMgs, #tabExtRechnungen,  #tabIntEnergiedatenIMw, #tabIntBetriebsdatenIMw,#tabIntBetriebsdatenIMwHist,#tabIntBetriebsdatenIMwHistPrdkt,#tabIntBetriebsdatenIMwHistMesssetelle, #tabAusw_eRng_iMw, #tabSpaEfV_Tbl1, #tabSpaEfV_Tbl2, #tabEAnl, #tabProd, #tabLnDiag, #tabTimeCompDiag, #tabVerbrauchsdatenExp,
 #tabEPrd, #tabPrd, #tabPrd_historie, #tabVorlagenformeln, #tabAnl_weitereKonfig, #tabPrd_konfig, #tabDiagKnz,
-#tabGrpDiag, #tabSchtDat, #tabHzk,#tabTaschenrechner,#tabDynamicKorrekturFktr {
+#tabGrpDiag, #tabSchtDat, #tabSchtDatHist, #tabHzk,#tabTaschenrechner,#tabDynamicKorrekturFktr {
   display: inline;
   margin: 0px;
   background-color: #B9C0C7;
@@ -410,6 +410,7 @@ nav {
 #infosWeiterePrdKonfig,
 #infosGruppierungDiagramme,
 #infosSchichtdaten,
+#infosSchichtdatenHist,
 #infosKorrekturFaktor,
 #infosDynamicKorrekturFaktor,
 #intBdeIMwHistorieDiv,
@@ -547,7 +548,8 @@ nav {
 #saveMstFormulaAbbrechen,
 #anlPrdLink,
 #btnShowRecordsAnlBtn,
-#btnShowRecordsAnlBtnPrdkt{
+#btnShowRecordsAnlBtnPrdkt,
+#manZuBetrGrpHinz {
   border: 0px solid black;
   border-radius: 5px;
   background-color: transparent;
@@ -725,7 +727,8 @@ nav {
 #histDataNein:hover,
 #saveMstFormulaAbbrechen:hover,
 #anlPrdLink:hover
-#btnShowRecordsAnlBtn:hover {
+#btnShowRecordsAnlBtn:hover,
+#manZuBetrGrpHinz:hover {
   background-color: white;
   cursor: pointer;
 }
@@ -1390,7 +1393,8 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_1 input,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_3 input,
 .infosMasseneingabeDateRangeDiv .zeitintervallAnl_4 input {
-    width: 20%;
+    /* width: 20%; */
+    width: 8%;
     height: 24px;
     border-radius: 3px;
     border-color: none;
@@ -1399,7 +1403,8 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 .infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_1 input,
 .infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_3 input,
 .infosMasseneingabeDateRangeDivPrdkt .zeitintervallAnlPrdkt_4 input {
-    width: 20%;
+    /* width: 20%;  */
+    width: 8%;
     height: 24px;
     border-radius: 3px;
     border-color: none;
@@ -1409,7 +1414,8 @@ div#intBdeIMwHistorieDiv .controlDiv input{
 .infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_1 input,
 .infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_3 input,
 .infosMasseneingabeDateRangeDivMesssetelle .zeitintervallAnl_4 input {
-    width: 20%;
+    /* width: 20%; */
+    width: 8%;
     height: 24px;
     border-radius: 3px;
     border-color: none;
@@ -1578,7 +1584,7 @@ table#tblMasseneingabeDataIMwTbl td input {
   left:0;
   margin: 0;
   height: 100%;
-  /*width: 100%;*/
+  width: 100%;
   max-width: 156px;
   border: none;
   padding: 3px;
@@ -1588,18 +1594,27 @@ table#tblMasseneingabeDataIMwTbl td input {
 #timeIntervalWerteEnergiedatenIMw{
     width: 1100px;
     overflow-x: auto;
-    height: 150px;
+    /* 7-7-2021 */
+    /* height: 324px; */
+    /* end */
+    /* height: 258px;  */
 }
 /*new-mm-start 31-03-2021*/
 #timeIntervalWerteEnergiedatenIMwPrdkt{
     width: 1100px;
     overflow-x: auto;
-    height: 150px;
+    /* 7-7-2021 */
+    /* height: 324px; */
+    /* end */
+    /* height: 150px; */
 }
 #timeIntervalWerteEnergiedatenIMwMesssetelle{
     width: 1100px;
     overflow-x: auto;
-    height: 150px;
+    /* 7-7-2021 */
+    /* height: 324px; */
+    /* end */
+    /* height: 150px; */
 }
 /*new-mm-start 31-03-2021*/
 /*new-mm-start 30-03-2021*/
@@ -1677,4 +1692,116 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
     width: 2cm;
 }
 
+
 /*new-mm-end 23-03-2021*/
+/* --1-7-2021-- */
+#tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr th{
+  position: sticky;
+  top: 0;
+  background-color: #dddddd;
+}
+
+#tblMasseneingabeDataIMw #tblMasseneingabeDataIMwTbl tr td:first-child {
+  /* background-color: green; */
+}
+/* --end-- */
+/* 12-7-2021-- */
+#tageMassEingDataAnlPrdktStart6,#wochenWMassEingDataAnlPrdktStart6,
+#monateMassEingDataAnlPrdktStart6,#jahrMassEingDataAnlPrdktStart6{
+  margin-left: 80px;
+}
+
+/* Measurement */
+#tageMassEingDataAnlStart5,#wochenWMassEingDataAnlStart5,
+#monateMassEingDataAnlStart5,#jahrMassEingDataAnlStart5{
+  margin-left: 80px;
+}
+
+/* Energy */
+#tageMassEingDataAnlStart4,#wochenWMassEingDataAnlStart4,
+#monateMassEingDataAnlStart4,#jahrMassEingDataAnlStart4{
+  margin-left: 80px;
+}
+/* ---end */
+
+
+/* <--19-7-2021--- */
+#chartSrchImg{
+  width: 10%;
+  height: 5%;
+  
+}
+.chartImageDiv{
+  text-align: center;
+}
+/* end --->*/
+
+/* <---28-9-2021-- */
+#loader_image_redirect{
+  width: 6%;
+  height: 5%;
+}
+
+.loader_image_redirect_div{
+  text-align: center;
+}
+/* --end-- */
+
+/* 21-7-2021---- */
+.backgroundDisabled{
+  z-index: 99999;
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  background-color: #1d1c1c;
+  /* color: #aaa; */
+  opacity: 0.8;
+}
+.backgroundDisabledColor{
+  background: #a9a9a9; 
+}
+/* --end-- */
+#tblMasseneingabeDataIMw {
+  width: 100%;
+  overflow:auto;
+  margin-top: 20px;
+  max-height: 88vh;
+}
+#tblMasseneingabeDataIMw table {
+  border: none;
+  border-collapse: separate;
+  border-spacing: 0;
+  /* table-layout: fixed; */
+  border: 1px solid black;
+  width: 100%;
+  border-left: 0;
+}
+#tblMasseneingabeDataIMw table th:nth-child(1), #tblMasseneingabeDataIMw table td:nth-child(1) {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 10vw;
+  background: white;
+  left: 0;
+  border-left: 1px solid #000;
+}
+#tblMasseneingabeDataIMw table th, #tblMasseneingabeDataIMw table td {
+  /* padding: 15px; */
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+#tblMasseneingabeDataIMw table tr .input-field {
+  width: 100%;
+  height: 35px;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+#tblMasseneingabeDataIMw table tr th:first-child {
+  z-index: 9;
+}

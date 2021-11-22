@@ -177,3 +177,5 @@ About
 *.json
 *.json
 *.json
+phpInfo.php
+php/prepareKennzahlendaten.php

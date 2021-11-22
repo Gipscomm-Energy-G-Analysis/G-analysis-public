@@ -10,14 +10,11 @@ require 'DbOperations.php';
 $nameDB = "gipscomm";
 $conn = connectToDB ( $nameDB );
 
-// echo "connection_test\n";
-// echo $conn == false;
-// echo "\n\n";
-
 $userLogin = $_POST['user'];
 $_SESSION["username"] = $_POST['user'];
 $query = "SELECT * FROM Users ";
 $query .= "WHERE username = '$userLogin' ";
+$query .= "AND deleted = 0 ";
 
 $records = queryDB($conn, $query, "read");
 
@@ -25,6 +22,7 @@ $rCount = count($records);
 
 if ($rCount == 1) {
     $_SESSION["login_state"] = "true";
+    $_SESSION['username'] = $records[0]['username']; //<--6-9-2021---
     echo json_encode($records);
 }
 else {

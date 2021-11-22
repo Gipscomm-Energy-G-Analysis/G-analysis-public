@@ -1619,7 +1619,7 @@ function mapErstellen(untTab) {
                 // Normalize for fixed-depth.
                 nodes.forEach(function (d) { d.y = d.depth * 180; });
 
-                // Update the nodes…
+                // Update the nodesï¿½
                 var node = svg.selectAll("g.node")
                     .data(nodes, function (d) { return d.id || (d.id = ++i); });
 
@@ -1665,7 +1665,7 @@ function mapErstellen(untTab) {
                 nodeExit.select("text")
                     .style("fill-opacity", 1e-6);
 
-                // Update the links…
+                // Update the linksï¿½
                 var link = svg.selectAll("path.link")
                     .data(links, function (d) { return d.target.id; });
 
@@ -1800,7 +1800,7 @@ function bereichsAuswahllisteErstellen(gehoertZu) {
                     //Event Handler entfernen
                     $("#tblBereichelisteBer tbody").off("dblclick", "tr");
 
-                    //Bereich auswählen und in Form einlesen
+                    //Bereich auswï¿½hlen und in Form einlesen
                     $("#tblBereichelisteBer tbody").on("dblclick", "tr", function () {
                         var data = tblBereichAussuchen.row(this).data();
 
@@ -1824,6 +1824,7 @@ function bereichsAuswahllisteErstellen(gehoertZu) {
 }
 
 function messstellenAuswahllisteErstellen() {
+    console.log('defult is owrking');
     $.ajax({
         type: 'POST',
         async: true,
@@ -1873,7 +1874,7 @@ function messstellenAuswahllisteErstellen() {
                     //Event Handler entfernen
                     $("#tblMessstellenlisteMst tbody").off("dblclick", "tr");
 
-                    //Bereich auswählen und in Form einlesen
+                    //Bereich auswï¿½hlen und in Form einlesen
                     $("#tblMessstellenlisteMst tbody").on("dblclick", "tr", function () {
                         var data = tblVorgelagerteMessstelleAuswahl.row(this).data();
 
@@ -1886,6 +1887,7 @@ function messstellenAuswahllisteErstellen() {
         }
     });
 }
+
 
 function bereicheMessstellenlisteErstellen() {
     $("#anlListeContainer tr").not("#anlListeContainer tr:nth-child(1)").remove();
@@ -1939,7 +1941,7 @@ function bereicheMessstellenlisteErstellen() {
                     //Hover Cursor festlegen
                     $("#tblBereichelisteAnl tbody tr").css("cursor", "pointer");
 
-                    ////Anlage auswählen und in Form einlesen
+                    ////Anlage auswï¿½hlen und in Form einlesen
                     //$("#tblBereichelisteAnl tbody").on("dblclick", "tr", function () {
                     //    var data = tblAnlagen.row(this).data();
 
@@ -1957,7 +1959,7 @@ function bereicheMessstellenlisteErstellen() {
                     //    switch (caseVal) {
                     //        case "Schema Speichern":
                     //            break;
-                    //        case "Schließen":
+                    //        case "Schlieï¿½en":
                     //            $("#anlListeContainer").dialog("close");
                     //    }
                     //});
@@ -2019,7 +2021,7 @@ function standorteListeErstellen(gehoertZu) {
 
                     $("#tblStandorteListe tbody").off("dblclick", "tr");
 
-                    //Standort auswählen und in Form einlesen
+                    //Standort auswï¿½hlen und in Form einlesen
                     $("#tblStandorteListe tbody").on("dblclick", "tr", function () {
                         var data = tblStandorte.row(this).data();
 
@@ -2123,7 +2125,7 @@ function anlagenlisteErstellen() {
                     //Hover Cursor festlegen
                     $("#anlagenListe tbody tr").css("cursor", "pointer");
 
-                    //Anlage auswählen und in Form einlesen
+                    //Anlage auswï¿½hlen und in Form einlesen
                     $("#anlagenListe tbody").on("dblclick", "tr", function () {
                         var data = tblAnlagen.row(this).data();                        
 
@@ -2147,7 +2149,7 @@ function anlagenlisteErstellen() {
                         switch (caseVal) {
                             case "Schema Speichern":
                                 break;
-                            case "Schließen":
+                            case "Schlieï¿½en":
                                 $("#anlListeContainer").dialog("close");
                         }
                     });
@@ -2346,4 +2348,8 @@ function messmittelOderBerechnungslogik(element) {
    }
 
 }
+
+
+
+
 

@@ -24,7 +24,7 @@ function queryProdData($artikelnummer) {
     $query .= "WHERE artikelnummer = '".$artikelnummer."' " ;
     $query .= "AND auftrag <> '' " ;
     $query .= "AND (gutmenge + ausschuss) > 0 " ;
-    $query .= "AND (auftrag = '000995340020' OR auftrag = '000995350020' OR auftrag = '000995370020' OR auftrag = '000995380020') " ;
+    $query .= "AND (auftrag = '001011530020' OR auftrag = '001029400020' OR auftrag = '001029410020') " ; // 
     $query .= "ORDER BY auftrag, zeitstempel " ;
 
     return queryDB(connect, $query, "read") ;
@@ -247,69 +247,6 @@ function writeToDB($records) {
     return $records ;
 }
 
-function testIfDataInDB($records) {
-
-    $initialRecords = $records ;
-
-    function queryData() {
-        $query = "SELECT * FROM ProdData " ;
-        $query .= "WHERE mst_ID = ".mstID." " ;
-        $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".add15min(startDate)."', 121) AND CONVERT(varchar(50), '".add15min(endDate)."', 121) " ;
-        $query .= "ORDER BY Time " ;
-
-        return queryDB(connect, $query, "read") ;
-    }
-
-    function deleteInsertedData() {
-        $query = "DELETE FROM berechneteEnergiedaten " ;
-        $query .= "WHERE mst_ID = ".mstID." " ;
-        $query .= "AND CONVERT(varchar(50), Time, 121 ) BETWEEN CONVERT(varchar(50), '".add15min(startDate)."', 121) AND CONVERT(varchar(50), '".add15min(endDate)."', 121) " ;
-
-        queryDB(connect, $query, "read") ;
-    }
-
-    function setExecuted($bool) {
-
-        $conn = connectToDB("gipscomm") ;
-
-        $query = "UPDATE phpScriptsToExecute " ;
-        $query .= "SET dateExec = '".dateNow()."', executed = '".$bool."' " ;
-        $query .= "WHERE pathScript= '".getURL()."'" ;
-
-        queryDB($conn, $query, "write") ;
-
-        closeDbConn($conn) ;
-    }
-
-    function sendAlertEmail() {
-
-        $empfaenger = "sdm@energie-gipscomm.de" ;
-
-        $betreff = "Berechnete Energiedaten Konnten nicht in DB geschrieben werden. (G-Analysis)" ;
-
-        $emailText = "Letzter Datensatz : <br><br>" ;
-        $emailText .= getURL() ;
-
-        eMail($empfaenger, $betreff, $emailText) ;
-    }
-
-    function alertIfNeccessary($sameLength) {
-        if (!$sameLength) {
-            setExecuted("false") ;
-            deleteInsertedData() ;
-            sendAlertEmail() ;
-            print_r(" FALSE ") ;
-        }
-        else {
-            setExecuted("true") ;
-            print_r(" TRUE ") ;
-        }
-        return !$sameLength ;
-    }
-
-    return alertIfNeccessary(equalLength($initialRecords, queryData())) ;
-}
-
 $start = hrtime(true) ;
 
 // Test if data in DB has to be still implemented
@@ -328,7 +265,7 @@ $end = hrtime(true) ;
 
 echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
-// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=002_badber&artikelnummer=100899404
+// https://g-analysis.com/testwebsite3/php/prepareKennzahlendaten.php?nameDB=g002_badber&artikelnummer=100837611
 
 
 

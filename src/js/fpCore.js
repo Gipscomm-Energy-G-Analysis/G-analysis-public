@@ -103,7 +103,7 @@ Object
         this.ajaxPost = this.callAjax("POST");
         this.ajaxGet = this.callAjax("GET");
         this.pipe = (...fns) => {
-            results = [this.head(fns)]
+            let results = [this.head(fns)]
             for(k=1;this.smaller(k)(fns.length);k++) {
                 results = this.push(results)(fns[k](results[this.decr(k)]))
             }
@@ -112,6 +112,32 @@ Object
         this.itemSessionSet = key => value => sessionStorage.setItem(key, value);
         this.itemSessionGet = key => sessionStorage.getItem(key);
         this.push = a => b => { a[a.length] = b;return a };
+        this.leftRight = fn => val => fn(val) ? { left : val } :  { right : val }
+        this.partition =
+            fn =>    
+            acc =>
+            arr => {
+                
+                let newAcc = acc
+
+                if(arr.length > 0) {
+        
+                    const selected_ = this.leftRight(fn)(head(arr))
+        
+                    const newAcc =
+                        exists(selected_)("left") ?
+                        { unselected : acc.unselected, selected : push(acc.selected)(selected_.left) } :
+                        { unselected : push(acc.unselected)(selected_.right), selected : acc.selected } 
+                        
+        
+                    return partition(fn)(newAcc)(tail(arr))
+                }
+                else {
+                    return newAcc
+                }
+            }
+        this.difference = arr1 => arr2 => arr1.filter(a1 => !arr2.some(equal(a1)))
+        this.containsNaN = str => this.unequal(str.search("NaN"))(-1)
     }
 );
 const { split_
@@ -176,5 +202,8 @@ const { split_
       , itemSessionSet
       , itemSessionGet
       , push
+      , partition
+      , difference
+      , containsNaN
       } = scpCore;
     // module.exports = scpCore;

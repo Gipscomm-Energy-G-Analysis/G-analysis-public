@@ -11,7 +11,7 @@ function connectToDB( $nameDB ) {
  $executionStartTime = microtime(true);
   if($GLOBALS['QueryStatsIntoFile'] == true) {
       $GLOBALS['StartTimeConn'] = $executionStartTime;
-  } 
+  }
 
 
   $conn = sqlsrv_connect( $serverName, $connectionInfo ) ;
@@ -93,6 +93,7 @@ function connectToDB( $nameDB ) {
     if( $mode_ === "read" ) {
       $result = sqlsrv_query( $conn_, $query_ ) ;
       $data = array() ;
+//      print_r($data);die;
 
       while( $row = sqlsrv_fetch_array( $result, SQLSRV_FETCH_ASSOC ) ) {
           $data[] = $row ;

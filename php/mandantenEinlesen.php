@@ -18,8 +18,13 @@ if( $betrGrpID == "alle" ) {
 }
 else {
   if( $ins == null && $manOderManGrpID == null ) {
-    $query = "SELECT * FROM mandanten " ;
-    $query .= "WHERE betrGrp_ID = '$betrGrpID' " ;
+    $queryBetrGrp  = "SELECT mandantenIDs FROM betreuerGruppen " ;
+    $queryBetrGrp .= "WHERE betrGrp_ID = '$betrGrpID' " ;
+
+    $result = queryDB ($conn, $queryBetrGrp, "read")[0]["mandantenIDs"] ;
+
+    $query  = "SELECT * FROM mandanten " ;
+    $query .= "WHERE man_ID IN (".$result.") " ;
   }
   elseif( $ins == "man_ID" ) {
     $query = "SELECT * FROM mandanten " ;

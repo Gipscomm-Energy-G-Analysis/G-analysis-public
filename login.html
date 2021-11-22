@@ -19,20 +19,22 @@
     <script type="text/javascript">
     //Wenn Login Button von form geklickt dann per ajax überprüfen ob gültig wenn ja auf mainP leiten
     $("#btnLogin").click(function () {
-        rollenUndBerechtigungenSuperadmin();
         userLogin();
         //Gipscomm Logo ausblenden
         $("#Glogo, #logo").css("display", "none");
     });
 
     function userLogin() {
-        const user = $("#user").val();
+        const user = $("#user").val()
 
         ajaxPost('php/login.php')({user})
         .then(
             record => {
                 const dbHash =
-                    head(record).passHash;
+                    head(record).passHash
+
+                const permissions =
+                    head(record).rechteMenu
 
                 const fieldnames =
                     [ "betrGrp_ID"
@@ -41,49 +43,33 @@
                     , "nameDB"
                     , "position"
                     , "username"
-                    ];
+                    ]
 
                 const valueField =
-                    name =>head(record)[name] ;
+                    name => head(record)[name] ;
 
                 if ( equal( getHash( $("#pw").val() ) ) ( dbHash ) ) {
                     fieldnames
                     .map(
                         name => itemSessionSet(name)( valueField(name) )
                     )
+
+                    itemSessionSet("rechteMenu")(permissions)
+
                     setTimeout(function(){ 
                         window.open("main.html","_self");
-                     }, 1000);
-                    
+                     }, 1000)
+                   
+                    //  <---28-9-2021--
+                    localStorage.removeItem('dashboardDB');
+                    localStorage.removeItem('dashboardDBName');
+                    // --end-->
                 }
                 else {
-                    alert("Ihr Benutzername oder Passwort ist falsch!");
+                    alert("Ihr Benutzername oder Passwort ist falsch!")
                 }
             }
         )
-    }
-
-    function rollenUndBerechtigungenSuperadmin(){
-        var userNameData = $("#user").val();
-        $.ajax({
-            type: "POST",
-            async: !0,
-            url: "php/readInstanzen.php",
-            data: {
-                id: "rollenUndBerechtigungenSuperadmin",
-                nameDB: "gipscomm",
-                userId:'',
-                auth: userNameData,
-                },
-            fail: function() {
-                alert("failed!!")
-            },
-            success: function(a) {
-                a = JSON.parse(a); 
-                localStorage.setItem('gipsAdm', JSON.stringify(a));
-                console.log(a); 
-            }            
-        });   
     }
 
     /**
