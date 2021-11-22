@@ -198,6 +198,8 @@ class DashboardController extends Controller
                       //  $primary_key = $machineData->$primary_key;
                      //   $subGroupConfig = $this->getSubgroupData($subGroupId , $primary_key);
                         $subGroupConfig = $this->getSubgroupData('6', '2');
+                        $customDataMerge = array_merge($customDataMerge, $subGroupConfig);
+                      //  dd($customDataMerge);
                   //  }
                     
                     $mergeArray = $this->splitArray(array_merge(array_merge($subGroupConfig, $customColumns['extra']['odd']), $customColumns['extra']['even']));
@@ -592,28 +594,38 @@ class DashboardController extends Controller
         $graphJsData = [];
         $label = '';
         if (!empty($graph_data)) {
-            foreach($graph_data as $gdata) {
+            foreach($graph_data as $key=>$gdata) {
+                $query = null;
                 $configData = DashboardProduktionConfig::where('label_name',$gdata->label)->where('username',$this->username)->first();
                 if (!empty($configData)) {
                     $label = $configData->column_name;
-                    $query = DB::table($configData->table_name)->where($configData->foreign_key, $machineData->$primary_key);
+                    $query = DB::table($configData->table_name)->where($configData->foreign_key, $machineData->$primary_key)->limit(100);
                 } else {
-                    $tableConfigData = DB::table('machine_table_config')->where('label_name',$gdata->label)->where('username', $this->username)->Where('status', '2')->first();
+                    $tableConfigData = DB::table('machine_table_config')->where('column_name',$gdata->label)->where('username', $this->username)->first();
                     if (!empty($tableConfigData)) {
-                        $label = $tableConfigData->column_name;
+                        $label = $tableConfigData->label_name;
                         $machineName = explode (   '-' ,$machineData->nummerAnl);
                         $machineName = $machineName[0];
-                        $query = DB::table('TWP_PROD_OVERVIEW')->where('MANAME',$machineName);
+                        $query = DB::table('TWP_PROD_OVERVIEW')->where('MANAME',$machineName)->limit(100);
+                    } else {
+                        $label = $gdata->label;
+                        $subGroupConfigData = DB::table('SubGroupConfiguration')->where('column_name',$gdata->label)->where('username', $this->username)->where('status','1')->first();
+                        if(!empty($subGroupConfigData)) {
+                            $datVal = $subGroupConfigData->primary_key;
+                            $query = DB::table($subGroupConfigData->table_name)->where($subGroupConfigData->foreign_key, $machineData->$datVal)->limit(100);
+                           // dd($query);
+                        }
                     }
                 }
-                if(isset($query)) {
-                    $label = $query->pluck($label)->limit(10)->toArray();
-                    $data = $query->pluck('servertime')->limit(10)->toArray();
-                    $dataJs = ['name' =>$gdata->graph_name, 'label' => $label, 'data'=>$data];
+                if(isset($query) && !empty($query)) {
+                    $data = $query->pluck($label)->toArray();
+                    $label = [];
+                    $dataJs = ['name' =>str_replace(' ', '_', $gdata->graph_name), 'label' => $label, 'data'=>$data];
                     array_push($graphJsData, $dataJs);
                 } 
             }
         }
+       // dd($graphJsData);
         return $graphJsData;
     }
 

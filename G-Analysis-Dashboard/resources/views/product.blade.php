@@ -477,7 +477,7 @@
                     <div class="row" id="other_graph_div">
                         @foreach($data['otherGraph'] as $key=>$value)
                             @if($value['name'])
-                            <div class="col-sm-6 main_chart_other">
+                            <div class="col-sm-12 main_chart_other">
                                 <div class="card card-info">
                                     <div class="card-header" >
                                         <h3 class="card-title" style="float:revert;">{{$value['name']}}
@@ -847,7 +847,6 @@
                                                     <input type="hidden" name="sub_group[]" class="form-control name_list" value="{{$options['option_name']}}" />
                                                     <button style="float:right;" type="button" name="remove" id="{{$key}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
                                                 </div>
-                                                
                                             </td>
 
                                             @else
@@ -856,7 +855,6 @@
                                             <td>{{$key}}</td>
                                             <td>
                                                 <input type="text" name="sub_group[]" placeholder="Enter Subgroup Name" class="form-control name_list" value="{{$opt}}" />
-
                                             </td>
                                             @endforeach
                                             <td>
@@ -907,9 +905,8 @@
     @if(!empty($data))
         let getChartsDiv = document.querySelectorAll('.main_chart');
         const timeFilterHook = document.getElementById('timeFilter');
-        let myChart;
+        let myChart, otherMyChart;
         const lineChartHook = (id, label, data, name) => {
-            console.log('here-data',id);
             if (data.length > 0) {
                 $(".main_chart").css("display", "block");
                 // $("#not_found_msg").css("display","none");
@@ -948,8 +945,48 @@
                 })
             } else {
                 $(".main_chart").css("display", "none");
-                // $("#not_found_msg").css("display","block");
+            }
+        }
 
+        const OtherChartHook = (id, label, data, name) => {
+            if (data.length > 0) {
+                $(".main_chart").css("display", "block");
+                // $("#not_found_msg").css("display","none");
+                let ctx = document.getElementById(id).getContext('2d');
+               // if (otherMyChart) otherMyChart.destroy();
+                otherMyChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: label,
+                        datasets: [{
+                            label: `Energy consumption for ${id}`,
+                            data: data,
+                            backgroundColor: 'rgb(0, 188, 140, 0.2)',
+                            borderColor: 'rgb(0, 188, 140)',
+                            borderWidth: 1,
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    color: 'red',
+                                    display: true,
+                                    text: 'Server Time'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    color: 'red',
+                                    display: true,
+                                    text: 'Power'
+                                }
+                            }
+                        }
+                    }
+                })
+            } else {
+                $(".main_chart").css("display", "none");
             }
         }
 
@@ -975,7 +1012,7 @@
         @endforeach
 
         @foreach($data['otherGraph'] as $key => $value)
-          //  lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
+            OtherChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         //adding event listener to time filter hook
