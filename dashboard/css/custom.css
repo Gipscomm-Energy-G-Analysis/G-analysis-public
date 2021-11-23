@@ -593,6 +593,7 @@
 .dashboard_count_div .count_result_tile{
     margin-top: 19px !important;
     margin-bottom: 19px !important;
+    max-width: 90px;
 }
 .dashboard_count_div .chart-width{
     margin-top: -128px !important;
@@ -607,7 +608,7 @@
 /* 21-10-2021 */
 .dashboard_count_div .hide_table_main .small-table{
     display: block !important;
-    margin-top: 31px;
+    /*margin-top: 31px;*/
 
 }
 
