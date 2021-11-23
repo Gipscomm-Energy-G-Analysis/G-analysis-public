@@ -42,7 +42,7 @@
             <div class="dashboard-btn">
                 <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
 
-                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Save Tile</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Save Tile Structure</button>
 
             </div>
 

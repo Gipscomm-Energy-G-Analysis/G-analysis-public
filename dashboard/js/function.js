@@ -2112,22 +2112,22 @@ function getDimentions(id) {
             $('.'+id+'.tiles-click').html(tile_html);
             $('.dashboard_chart_tiles').html(''); //Add Chart Tiles Remove Other wise Chat not implemented
             // dashboardChart();
-             getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value,chart_type);
-            //  setTimeout(()=>{
-            //     tile_html = tile_html.replace('areaChart','areaChart-none');
-            //     $('.'+id+'.tiles-click').html(tile_html);
-            //  },2000);
+            getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value,chart_type);
 
-            // <----17-11-2021---
-            var pathname = window.location.pathname;
-            var arPathname = pathname.split('/');
-            if(arPathname.length > 3){
-                window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
-            }
-            else{
-                window.open('/dashboard/html/dashboard/chart_new.php','_blank');
-            }
-            // --end-->
+            // <--23-11-2021---
+            // console.log('working');
+            // $('.tiles-click').dblclick(function(){
+            //   alert('working');
+              var pathname = window.location.pathname;
+              var arPathname = pathname.split('/');
+              if(arPathname.length > 3){
+                  window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
+              }
+              else{
+                  window.open('/dashboard/html/dashboard/chart_new.php','_blank');
+              }
+            // });
+            // ---end-->
            
           }
           else if(type_data_val == "overall_count"){
@@ -2137,16 +2137,23 @@ function getDimentions(id) {
           else if(type_data_val == "table"){
             getTableDashboardData(id);
 
-            // <----17-11-2021---
-            var pathname = window.location.pathname;
-            var arPathname = pathname.split('/');
-            if(arPathname.length > 3){
-                window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
-            }
-            else{
-                window.open('/dashboard/html/dashboard/chart_new.php','_blank');
-            }
-            // --end-->
+
+            // <--23-11-2021---
+            $('.'+id+'.tiles-click').dblclick(function(){
+              // alert('Working');
+              // <----17-11-2021---
+              var pathname = window.location.pathname;
+              var arPathname = pathname.split('/');
+              if(arPathname.length > 3){
+                  window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
+              }
+              else{
+                  window.open('/dashboard/html/dashboard/chart_new.php','_blank');
+              }
+              // --end-->
+            });
+            // ---end-->
+            
           }
           // --show-->
 
