@@ -166,6 +166,14 @@
     font-size: small;
 }
 
+#energy_modal_table th{
+    padding:  10px 6px 10px 6px !important;
+}
+
+#energy_modal_table td{
+    padding:  6px !important;
+    font-size: small;
+}
 
 .dashboard_tile_height{
     height: 145px;
@@ -227,7 +235,7 @@
 .hide_table_preview table{
     display: none;
 }
-.gernerated_measurement_modal_tiles .action-modal-button-div{
+.gernerated_measurement_modal_tiles .action-modal-button-div , .gernerated_energy_modal_tiles .action-modal-button-div{
     display: none;
 }
 
@@ -327,9 +335,18 @@
     opacity: 0.8;
 }
 
+.gernerated_energy_modal_tiles .card-body,.dashboard_chart_tiles .card-body{
+    opacity: 0.8;
+}
+
 #dashboard_count_div_tile .card-body:hover,.gernerated_measurement_modal_tiles .card-body:hover,.dashboard_chart_tiles .card-body:hover{
     opacity: 1;
 }
+
+.gernerated_energy_modal_tiles .card-body:hover,.dashboard_chart_tiles .card-body:hover{
+    opacity: 1;
+}
+
 
 #measurement_tile_heading_modal{
     color: black !important;
@@ -687,6 +704,14 @@
     display: block !important;
 }
 
+.gernerated_energy_modal_tiles .small-table{
+    max-width: 99%;
+}
+
+.gernerated_energy_modal_tiles .hide_table_preview .tile_table_small_table{
+    display: block !important;
+}
+
 #dashboard_count_div_tile .overall_value_tile .small-table{
     display: none !important;
 }
@@ -722,3 +747,14 @@
 }
 
 /* --end--- */
+
+
+/* <----18-9-2021-- */
+.pagination_input_val_energy{
+    width: 69px;
+}
+
+.pagination_html_energy{
+    margin-top : 8px
+}
+/* --end-- */
