@@ -45,7 +45,6 @@ let saveSubGroupConfigurations = (data) => {
 
 let showConfigrationTable = (data , label_data=false) => {
     let html = '';
-
         $.each(data, function(key, value) {
             let label = value;
             let column = value;
@@ -62,7 +61,6 @@ let showConfigrationTable = (data , label_data=false) => {
                 <button type="button" name="remove" style="margin-right:5px;" class="btn btn-info edit_label float-right"><i class="fas fa-edit"></i></button>
                 </td>
             </tr>`;
-            
         });
 
     $('#configuration_table tbody').html(html);
@@ -76,7 +74,6 @@ let showPrimaryKey = (data, selected) => {
         } else {
             html += `<option value="${value}">${value}</option>`;
         }
-        
     });
     $('.primary_key_subGroup').html(html);
 }
@@ -98,7 +95,6 @@ let getGroupData = () => {
     spinner.spin(container);
     let groupId = $('#select_group_options').val();
     let table = $('#select_group_table').val();
-    
     if(groupId && table) {
         $.ajax({
             type: "POST",
@@ -112,7 +108,6 @@ let getGroupData = () => {
                 if(result.status == 200) {
                     $('.showData').show();
                     $('.hideData').hide();
-                    console.log(result);
                     showConfigrationTable(result.table_data, result.legacy);
                     showPrimaryKey(result.primary_key, result.selected_primary_key);
                     showForeignKey(result.foreign_key, result.selected_foreign_key);

@@ -2,6 +2,7 @@ const navigationHook = document.querySelectorAll(".navigation button");
 const replaceImageButton = document.getElementById("replace-image-button");
 const imageInputField = document.getElementById("machineImage");
 const graphDiv = document.getElementById("graph_div");
+const other_graph_div = document.getElementById("other_graph_div");
 const anl_ID = document.getElementById("anl_ID").value;
 const dbName = document.getElementById("nameDB").value;
 const username = document.getElementById("username").value;
@@ -10,21 +11,81 @@ let columns;
 let machineDataAjax;
 let spinner = new Spinner();
 const graphDivHook = (key, value) => {
-    let html = `<div class="col-sm-6 main_chart" data_value="${value.id}" data_event="lineChart_${key}">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Line Chart for ${key}</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="chart">
-                                <canvas id="lineChart_${key}" style="background:#F1F6FD;" ></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+    let html = `<div class="col-sm-12 main_chart" data_value="${value.id}" data_event="lineChart_${key}">
+    <div class="card-header" id="${value.id}">
+      <h5 class="mb-0">
+        <button class="btn" data-toggle="collapse" data-target="#accordion_lineChart_${key}" aria-expanded="true" aria-controls="accordion_lineChart_${key}">
+          Line Chart for ${key}    
+        </button>
+        <span class="float-right">
+          <a href="/product-graph/${value.id}" target="_blank">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+      </span>
+      </h5>
+    </div>
+
+    <div id="accordion_lineChart_${key}" class="collapse show" aria-labelledby="${value.id}" data-parent="#graph_div">
+      <div class="card-body">
+          <div class="chart">
+              <canvas id="lineChart_${key}" style="background:#F1F6FD;"></canvas>
+          </div>
+      </div>
+    </div>
+  </div>`;
     //appending data to graphDiv
     $("#graph_div").append(html);
     lineChartHook("lineChart_" + key, value.label, value.data, key);
+};
+
+
+const otherGraphDivHook = (key, value) => {
+    let html_table = '';
+    $.each(value.data, function (key1, value1) {
+        if(key1 > 9) return false;
+        html_table += `<tr>
+            <td>${key1+1}</td>
+            <td>${value1}</td>
+        </tr>`;
+    });
+
+    let html = `<div class="col-sm-12 main_chart_other">
+    <div class="card card-info">
+        <div class="card-header" >
+            <h3 class="card-title" style="float:revert;">
+                <button class="btn showPopup" data-toggle="collapse" data-target="#accordion_otherChart_${key}" aria-expanded="true" aria-controls="accordion_otherChart_${key}">
+                ${value.name}
+                </button>
+            </h3>
+            <div class="add-popup" style="display: none;">
+                <h4>${value.name}</h4>
+                <div class="add-popup-body">
+                    <table class="wish-table table-striped table-bordered m-0" style="display:table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>${value.name}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${html_table}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="accordion_otherChart_${key}" class="collapse ${value.mode}" aria-labelledby="${value.id}" data-parent="#other_graph_div">
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="${value.name}" style="background:#F1F6FD;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>`;
+    //appending data to graphDiv
+    $("#other_graph_div").append(html);
+    OtherChartHook(value.name, value.label, value.data, key);
 };
 
 const getPrimaryKey = () => {
@@ -87,8 +148,9 @@ const getMachineData = (machine_id, type) => {
         const data = response.data;
         spinner.stop();
         if (response.code == 200) {
-            console.log("graphDiv", graphDiv);
+
             graphDiv.innerHTML = "";
+            other_graph_div.innerHTML = "";
             $("#data-card").show();
             $("#bar_chart").show();
             $("#msg").hide();
@@ -102,6 +164,10 @@ const getMachineData = (machine_id, type) => {
             });
             $.each(data.chartsData, function (key, value) {
                 graphDivHook(key, value);
+            });
+            console.log('here',data.otherGraph);
+            $.each(data.otherGraph, function (key, value) {
+                otherGraphDivHook(key, value);
             });
 
             if (response.subGroupConfig.main) {
@@ -261,7 +327,7 @@ function select_org() {
             dbName: dbName,
         },
     }).done(function (response) {
-        $(".liegenschaft").append('<option value="">Please Select--</option>');
+        $(".liegenschaft").append('<option value="">Please Select</option>');
         $.each(response, function (key, value) {
             if (key == 0) {
                 $(".liegenschaft").append(

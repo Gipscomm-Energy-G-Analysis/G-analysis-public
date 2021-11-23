@@ -503,7 +503,7 @@ class DashboardController extends Controller
         if($start < 0) $start = 0;
         $defaultString = $this->makeDefaultColumnQuery($columnData);
         $priorityMachineData = [];
-        if($pageIndex == 1) {
+        if ($pageIndex == 1) {
             $priorityArray = count($selectedMachines);
             $limit = $priorityArray >10?10:$limit-$priorityArray;
             $start = $limit * $pageIndex - $limit;
@@ -520,7 +520,6 @@ class DashboardController extends Controller
         } else {
             return ['status' => 400 , 'msg' => 'No record found!'];
         }
-        
     }
 
     public function getCustomColumnName() {
@@ -613,19 +612,17 @@ class DashboardController extends Controller
                         if(!empty($subGroupConfigData)) {
                             $datVal = $subGroupConfigData->primary_key;
                             $query = DB::table($subGroupConfigData->table_name)->where($subGroupConfigData->foreign_key, $machineData->$datVal)->limit(100);
-                           // dd($query);
                         }
                     }
                 }
                 if(isset($query) && !empty($query)) {
                     $data = $query->pluck($label)->toArray();
                     $label = [];
-                    $dataJs = ['name' =>str_replace(' ', '_', $gdata->graph_name), 'label' => $label, 'data'=>$data];
+                    $dataJs = ['name' =>str_replace(' ', '_', $gdata->graph_name), 'label' => $label, 'data'=>$data, 'mode' => $gdata->is_open];
                     array_push($graphJsData, $dataJs);
                 } 
             }
         }
-       // dd($graphJsData);
         return $graphJsData;
     }
 

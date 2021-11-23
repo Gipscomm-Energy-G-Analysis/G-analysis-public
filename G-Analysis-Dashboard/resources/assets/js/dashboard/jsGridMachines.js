@@ -24,7 +24,6 @@ const customMachineTable = () => {
             if(result.status == 200) {
                 createCustomThead(result.thead);
                 createCustomTbody(result.tbody);
-                
             }
         },
         error:function(result) {
@@ -63,7 +62,6 @@ const getCustomColumns = () => {
         type: "GET",
         url: "get-custom-machine-columns",
         success:function(result) {
-            console.log(result);
             columns = result;
         },
         error:function(result) {
@@ -135,6 +133,8 @@ $("#graph_data_form").validate({
         },
     },
     submitHandler: function (form) {
+        let container = document.getElementById('spin_container');
+        spinner.spin(container);
         var email = $("#email").val();
         $.ajax({type: "POST",
             url: "product-graph/save",
@@ -160,20 +160,24 @@ $("#graph_data_form").validate({
 });
 
 const getGraphConfiguration = () => {
-
+    let container = document.getElementById('spin_container');
+    spinner.spin(container);
     $.ajax({
         type: "GET",
         url: "get-graph-configuration",
         success:function(result) {
+            spinner.stop();
             if(result.status == 200) {
+                
                 getGraphConfigurationHook(result);
+                getMachineData($('.navigation').attr('data-value'),"current");
             }
         },
         error:function(result) {
+            spinner.stop();
             toastr.error(result);
         }
-    });
-                            
+    });                     
 }
 
 const getGraphConfigurationHook = (result) =>{
@@ -204,6 +208,7 @@ const deleteGraphConfiguration = (id) => {
         success:function(result) {
             if(result.status == 200) {
                 getGraphConfigurationHook(result);
+                getMachineData($('.navigation').attr('data-value'),"current");
             }
         },
         error:function(result) {

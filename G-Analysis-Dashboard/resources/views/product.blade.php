@@ -90,6 +90,34 @@
 
 /* Add a grey background color on mouse-over */
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
+.wish-table th {
+    background: #c5c8d2;
+    padding: 4px;
+    font-size: 10px;
+}
+.wish-table {
+    width: 100%;
+    border: 1px solid #c9ccd7;
+}
+.wish-table td {
+    padding: 4px;
+    border-right: 1px solid #c9ccd7;
+    border-bottom: 1px solid #c9ccd7;
+    font-size: 10px;
+}
+.add-popup {
+    border-radius: 3px;
+    border: 1px solid #d0d0d0;
+    margin: 5px 0 0;
+    width: 50%;
+    position: absolute;
+    z-index: 99999;
+    left: 143px;
+    top: -2px;
+    background-color: #343a40;
+}
+
 </style>
 @extends('layout.app' ,['database' => $databases, 'selectedDatabase' => $selectedDatabase])
 @section('headContent')
@@ -468,9 +496,9 @@
             
             <div class="card">
                 <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#graphCollapseTwo" aria-expanded="false" aria-controls="graphCollapseTwo">
-                  <h5 class="mb-0">
-                      Other Charts
-                  </h5>
+                    <h5 class="mb-0">
+                        Other Charts
+                    </h5>
                 </div>
                 <div id="graphCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                   <div class="card-body">
@@ -480,18 +508,45 @@
                             <div class="col-sm-12 main_chart_other">
                                 <div class="card card-info">
                                     <div class="card-header" >
-                                        <h3 class="card-title" style="float:revert;">{{$value['name']}}
-                                            <span class="float-right">
-                                               
-                                            </span>
+                                        <h3 class="card-title" style="float:revert;">
+                                            <button class="btn showPopup" data-toggle="collapse" data-target="#accordion_otherChart_{{$key}}" aria-expanded="true" aria-controls="accordion_otherChart_{{$key}}">
+                                                {{$value['name']}}
+                                            </button>
                                         </h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart">
-                                            <canvas id="{{$value['name']}}" style="background:#F1F6FD;"></canvas>
+                                        <div class="add-popup" style="display: none;">
+                                            <h4>{{$value['name']}}</h4>
+                                            <div class="add-popup-body">
+                                                <table class="wish-table table-striped table-bordered m-0" style="display:table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>{{$value['name']}}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @isset($value['data'])
+                                                        @foreach($value['data'] as $ckey=>$cData)
+                                                        @if($ckey > 9) 
+                                                            @break
+                                                        @endif
+                                                        <tr>
+                                                            <td>{{$ckey+1}}</td>
+                                                            <td>{{$cData}}</td>
+                                                        </tr>
+                                                        @endforeach
+                                                    @endisset
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- /.card-body -->
+                                    <div id="accordion_otherChart_{{$key}}" class="collapse {{$value['mode']}}" aria-labelledby="{{$value['name']}}" data-parent="#other_graph_div">
+                                        <div class="card-body">
+                                            <div class="chart">
+                                                <canvas id="{{$value['name']}}" style="background:#F1F6FD;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             @endif
@@ -710,7 +765,7 @@
                 <div class="card-tools">
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="spin_container_class">
                 <div id="data-card">
                     <form id="graph_data_form">
                         <div class="row">
@@ -899,8 +954,13 @@
 <script src="{{asset('template/plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- Bootstrap Switch -->
 <script type="text/javascript">
+    $(document).on('mouseover','.showPopup', function() {
+        $(this).parent().parent().find('.add-popup').show();
+    })
 
-
+    $(document).on('mouseout','.showPopup', function() {
+        $(this).parent().parent().find('.add-popup').hide();
+    })
 
     @if(!empty($data))
         let getChartsDiv = document.querySelectorAll('.main_chart');
