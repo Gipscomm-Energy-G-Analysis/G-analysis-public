@@ -561,10 +561,10 @@ function saveTableFormat(type){
               $('.bd-example-modal-lg').modal('hide');
 
               // <---12-11-2021--
-              $('#save_position_tile').trigger('click');
+              // $('#save_position_tile').trigger('click');
               // --end--->
             }, 500);
-            $('#save_position_tile').attr('btn_click','table');
+            // $('#save_position_tile').attr('btn_click','table');
           }
         }
       });
@@ -647,10 +647,10 @@ function saveTableFormatEnergy(type){
               $('.energy_tile_modal').modal('hide');
 
               // <---12-11-2021--
-              $('#save_position_tile').trigger('click');
+              // $('#save_position_tile').trigger('click');
               // --end--->
             }, 500);
-            $('#save_position_tile').attr('btn_click','table');
+            // $('#save_position_tile').attr('btn_click','table');
         }
       });
     }
@@ -2598,10 +2598,10 @@ function saveDashboardTileChart(){
         $('#dashboard_tile_modal_chart').modal('hide');
         // window.location.reload();
         // <---12-11-2021--
-        $('#save_position_tile').trigger('click');
+        // $('#save_position_tile').trigger('click');
         // --end--->
       }, 500);
-      $('#save_position_tile').attr('btn_click','chart');
+      // $('#save_position_tile').attr('btn_click','chart');
     }
   });
 }
@@ -3348,10 +3348,10 @@ function saveOverallCountTile(){
         $('.bd-example-modal-lg').modal('hide');
 
         // <---12-11-2021--
-        $('#save_position_tile').trigger('click');
+        // $('#save_position_tile').trigger('click');
         // --end--->
       }, 500);
-      $('#save_position_tile').attr('btn_click','overall_count');
+      // $('#save_position_tile').attr('btn_click','overall_count');
     }
   });
 }
