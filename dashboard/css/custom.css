@@ -206,6 +206,19 @@
     position: relative;
 }
 
+#energy_modal_loader_div{
+    text-align: center;
+    position: absolute;
+    bottom: 177px;
+    left: 497px;
+}
+
+#energy_modal_loader_image{
+    height: 100px;
+    width: 105px;
+    position: relative;
+}
+
 #save_btn_tile_div{
     margin-top: 30px;
 }

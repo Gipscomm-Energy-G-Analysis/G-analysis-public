@@ -596,51 +596,14 @@ class dashboardController {
         try{
             global $conn;
             $username = $_SESSION['username']; 
-            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' AND username = '$username' order by priority asc";
+            $getResult = "SELECT * from tableFormat WHERE username = '$username' order by priority asc";
             $dataResult = queryDB($conn, $getResult, "read");
             if($dataResult != '' && count($dataResult) > 0){
 
                 $records['data'] = $dataResult;
                 $records['total_record'] = count($dataResult);
                 $dataMeasurement = '';
-                if($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == '' && $dataResult[0]['tile_data_type'] == 'table' && $dataResult[0]['table_other'] == 'false'){
-                    //Seacrh Record 
-                    
-                    $firstPostion =  strpos($dataResult[0]['query_data_records'],'%');
-                    $lastPostion = strripos($dataResult[0]['query_data_records'],'%');
-                    $subStr = "%";
-                    $attachment = "$";
-                    if($firstPostion != '' && $lastPostion != '')
-                    {
-                        // $firstPostionQuery = str_replace($subStr, $attachment.$subStr, $dataResult[0]['query_data_records']);
-                        //$firstPostionQuery = str_replace($dataResult[0]['query_data_records'],$attachment, $firstPostion,0);
-                        // $firstPostionQuery = substr_replace($dataResult[0]['query_data_records'],$attachment, $lastPostion,0);
-                        $firstPostionQuery= substr_replace($dataResult[0]['query_data_records'],$attachment,$firstPostion,1);
-                        // $firstPostionQuery = str_replace($subStr, $attachment, $dataResult[0]['query_data_records'],0);
-                        
-                        $firstPostionQuery=str_replace('%',"%'", $firstPostionQuery);
-                        $firstPostionQuery=str_replace('$',"'%", $firstPostionQuery);
-                        $dataMeasurement = queryDB($conn, $firstPostionQuery, "read");
-                    }
-                    else{
-                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
-                    }
-                    $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement);
-                    $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
-
-                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
-                }
-                else{
-                    if($dataResult[0]['tile_data_type'] == 'table' && $dataResult[0]['table_other'] == 'false'){
-                        $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
-                        $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
-                        $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-                        $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
-                        $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
-
-                        echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
-                    }
-                }
+                
                 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
                 die;
             }else{
@@ -778,6 +741,120 @@ class dashboardController {
         }
     }
     // --end-->
+
+    public function dashboardEnergyHtml($dataMeasurement,$queryMaxVal = false)
+    {
+        try{
+            $col_span = "";
+            $tr = "";
+            if($queryMaxVal == ""){
+                $col_span = "colspan='5'";
+                $tr = "<thead>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Created Date</th>";
+                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Status</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+            }
+            else if($queryMaxVal != ''){
+                $col_span = "colspan='4'";
+                $tr = "<thead style='background-color: #c5c8d2'>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Date</th>";
+                $tr .= "<th>Units Consumed</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+            }
+            if($dataMeasurement != '' && count($dataMeasurement) > 0){
+                $tr .= "<tbody>";
+                foreach($dataMeasurement as $key => $value){
+                    $unit = '';
+                    $style='';
+                    if($queryMaxVal != '' && $queryMaxVal == $value['val']){
+                        $style="style='background-color: #f77171; padding: 8px !important; font-size: .875rem'";
+                    }
+                    
+                    $tr .= "<tr $style>";
+                    
+                    $tr.= "<td>".$value['nameMSt']."</td>";
+                    if($value['intTp_ID'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($value['intTp_ID'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($value['intTp_ID'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($value['intTp_ID'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+    
+                    //Units Checks
+                    if($value['unt_ID'] == "1"){
+                        $unit = "Hrs.";
+                    }
+                    else if($value['unt_ID'] == "2"){
+                        $unit = "kWh";
+                    }
+                    else if($value['unt_ID'] == "3"){
+                        $unit = "m³";
+                    }
+                    else if($value['unt_ID'] == "4"){
+                        $unit = "l";
+                    }
+                    else if($value['unt_ID'] == "5"){
+                        $unit = "kg";
+                    }
+    
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                        if($queryMaxVal != ''){
+                            $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
+                        }
+                        else{
+                            $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                        }
+                    }
+                    else if($queryMaxVal != ''){
+                        $tr.= "<td>".$value['on_date']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['startDate']."</td>";
+                    }
+                    
+                    if($value['val'] == null){
+                        $tr.= "<td> - </td>";
+                        if($queryMaxVal == ""){
+                            $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                        }
+                    }
+                    else{
+                        $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                        if($queryMaxVal == ""){
+                            $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                        }
+                    }
+                    $tr.="</tr>";
+                }
+                $tr.= "</tbody>";
+            }else{
+                    $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+            }
+            return $tr;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
 
     // <---23-4-2021--
     public function generateHtmlMeasurementTiles(){
@@ -3061,7 +3138,7 @@ class dashboardController {
             global $conn;
             $id = $_REQUEST['id'];
             $username = $_SESSION['username']; 
-            $getResult = "SELECT * from tableFormat WHERE type = 'Measurement' AND username = '$username' AND id = $id ";
+            $getResult = "SELECT * from tableFormat WHERE username = '$username' AND id = $id ";
             $dataResult = queryDB($conn, $getResult, "read");
             if($dataResult != '' && count($dataResult) > 0){
                 $dataMeasurement = '';
@@ -3088,8 +3165,16 @@ class dashboardController {
                     }
                     // <----15-9-2021---
                     $dashboardMeasurementHtml = '';
+                    // echo json_encode($dataMeasurement); die;
                     if($dataResult[0]['table_other'] == 'false'){
-                        $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement);
+                        if($dataResult[0]['type'] == 'Energy')
+                        {
+                            // echo json_encode($dataMeasurement); die;
+                            $dashboardMeasurementHtml = $this->dashboardEnergyHtml($dataMeasurement);
+                        }
+                        else if($dataResult[0]['type'] == 'Measurement'){
+                            $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement);
+                        }
                     }else{
                         $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement);
                     }
@@ -3106,7 +3191,13 @@ class dashboardController {
                         // <---15-9-2021---
                         $dashboardMeasurementHtml = '';
                         if($dataResult[0]['table_other'] == 'false'){
-                            $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
+                            if($dataResult[0]['type'] == 'Energy')
+                            {
+                                $dashboardMeasurementHtml = $this->dashboardEnergyHtml($dataMeasurement,$queryMaxVal);
+                            }
+                            else if($dataResult[0]['type'] == 'Measurement'){
+                                $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
+                            }
                         }
                         else{
                             $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement,$queryMaxVal);
