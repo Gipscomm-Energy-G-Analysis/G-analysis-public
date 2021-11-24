@@ -15,7 +15,7 @@
                       <select class="form-control form-control-sm text-dark" id="measurement_type">
                         <option value="automatic">Read in Automatically</option>
                         <option value="manually">Entered Manually</option>
-                         <option value="calculated">Calculated</option>
+                         <!-- <option value="calculated">Calculated</option> -->
                       </select>
                     </div>
                     
