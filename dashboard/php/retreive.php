@@ -3085,18 +3085,43 @@ class dashboardController {
                die;
             }
 
-            $queryTotalSum = "SELECT sum(cast(t2.val as int)) as total_value from produktionsAnlagenConfig  as t1 ";
-            $queryTotalSum .= "INNER JOIN masseneingabeSucheIMw as t2 ";
-            $queryTotalSum .= "ON t1.mst_ID = t2.mst_ID ";
-            $queryTotalSum .= "Where t1.mst_ID = $mst_id ";
-            $totalSum = queryDB($conn, $queryTotalSum, "read");
-            $totalSum = $totalSum[0]['total_value'] != null ?  $totalSum[0]['total_value'] : '';
+            $totalSum = '';
+            $resultUnit = '';
+            if($getResult[0]['type'] == 'Measurement'){
+                $queryTotalSum = "SELECT sum(cast(t2.val as int)) as total_value from produktionsAnlagenConfig  as t1 ";
+                $queryTotalSum .= "INNER JOIN masseneingabeSucheIMw as t2 ";
+                $queryTotalSum .= "ON t1.mst_ID = t2.mst_ID ";
+                $queryTotalSum .= "Where t1.mst_ID = $mst_id ";
+                $totalSum = queryDB($conn, $queryTotalSum, "read");
+                $totalSum = $totalSum[0]['total_value'] != null ?  $totalSum[0]['total_value'] : '';
 
+                $queryUnit = "SELECT unt_ID,mstIMw FROM produktionsAnlagenConfig where mst_ID = $mst_id ";
+                $resultUnit = queryDB($conn, $queryUnit, "read");
+                $record['name_value'] = $resultUnit[0]['mstIMw'];
+                // echo json_encode($resultUnit); die;
+            }
+            else if($getResult[0]['type'] == 'Energy'){
+                $queryTotalSum = "SELECT sum(cast(t2.val as int)) as total_value from interneMesswerteConfig  as t1 ";
+                $queryTotalSum .= "INNER JOIN masseneingabeSucheIMw as t2 ";
+                $queryTotalSum .= "ON t1.mst_ID = t2.mst_ID ";
+                $queryTotalSum .=  "INNER JOIN ";
+                $queryTotalSum .= "MessstellenAnlagen  as T3 ";
+                $queryTotalSum .= "ON T1.mst_ID = T3.mst_ID ";
+                $queryTotalSum .= "Where t1.mst_ID = $mst_id ";
+                $totalSum = queryDB($conn, $queryTotalSum, "read");
+                $totalSum = $totalSum[0]['total_value'] != null ?  $totalSum[0]['total_value'] : '';
 
-            $queryUnit = "SELECT unt_ID,mstIMw FROM produktionsAnlagenConfig where mst_ID = $mst_id ";
-            $resultUnit = queryDB($conn, $queryUnit, "read");
-            $record['name_value'] = $resultUnit[0]['mstIMw'];
-            // echo json_encode($resultUnit); die;
+                $queryUnit = "SELECT unt_ID,nameMST FROM interneMesswerteConfig as t1 ";
+                $queryUnit .= "INNER JOIN masseneingabeSucheIMw as t2 ";
+                $queryUnit .= "ON t1.mst_ID = t2.mst_ID ";
+                $queryUnit .=  "INNER JOIN ";
+                $queryUnit .= "MessstellenAnlagen  as T3 ";
+                $queryUnit .= "ON T1.mst_ID = T3.mst_ID ";
+                $queryUnit .= "where t1.mst_ID = $mst_id ";
+                $resultUnit = queryDB($conn, $queryUnit, "read");
+                $record['name_value'] = $resultUnit[0]['nameMST'];
+
+            }
             // Units Checks
             $unit = '';
             if($resultUnit != null){

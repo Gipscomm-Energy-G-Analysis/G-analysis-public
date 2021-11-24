@@ -580,7 +580,7 @@ $(document).ready( function(){
         ar = JSON.parse(ar);
         if(ar['type_data_tile'] == 'overall_count' && ar['record_type_of_tile'] == 'energy')
         {
-            // saveOverallCountTile();
+            saveOverallCountTileEnergy();
         }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'energy'){
             saveTableFormatEnergy();
@@ -916,46 +916,40 @@ $(document).ready( function(){
         var energy_type = $('#energy_type').val();
       
         if(tile_edit_value == 'false' && type_data_tile == "overall_count"){
-            $('#save_table_btn').removeClass('display-none');
-            $('#update_table_btn_measurement').addClass('display-none');
+            $('#save_table_btn_energy').removeClass('display-none');
+            $('#update_table_btn_measurement_energy').addClass('display-none');
             $('.energy_tile_modal').modal('show');
             // <----08-9--2021---
-            var type = "Measurement";
+            var type = "Energy";
             generateHtmlEnergyTiles(type);
 
             // --end-->
-            var countValue = $('#overall_count').val();
-            var record_name = $('#mst_id_hidden').attr('data-name');
+            var countValue = $('#overall_count_energy').val();
+            var record_name = $('#mst_id_hidden_energy').attr('data-name');
             var count_html = "<h4 class='text-muted record-name-overall-count font-weight-bold mb-2'>"+record_name+"</h4>";
             count_html += "<h4 class='text-muted text-overall-count'>"+countValue+"(value)</h4>";
             
             var last_div_index = $('#total_records').val();
-            $('.measurement_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
-            $('.measurement_html_modal_'+last_div_index+' .save_table_div_show_table').html(count_html);
+            $('.energy_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
+            $('.energy_html_modal_'+last_div_index+' .save_table_div_show_table').html(count_html);
 
             // <----17-9-2021----
-            $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').attr('src','images/sum_logo.png');
-            $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').removeClass('tile-image-icon-table');
-            $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');
+            $('.energy_html_modal_'+last_div_index+' .tile-image-icon').attr('src','images/sum_logo.png');
+            $('.energy_html_modal_'+last_div_index+' .tile-image-icon').removeClass('tile-image-icon-table');
+            $('.energy_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');
 
             // --end--->
 
-            //<--Edit and Delete Button
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div .edit_val').addClass('edit_btn_tile_count');
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div img').removeClass('edit_btn_tile');
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div img').removeClass('id_val delete_btn_tile');
-            
+            $('#modal-height-input-energy').attr('disabled',true);
+            $('#modal-width-input-energy').attr('disabled',true);
 
-            $('#modal-height-input-measurement').attr('disabled',true);
-            $('#modal-width-input-measurement').attr('disabled',true);
-
-            $('#modal-height-input-measurement').val('1');
-            $('#modal-width-input-measurement').val('1');
-            $('#modal-height-input-measurement-hidden').val(145);
-            $('#modal-width-input-measurement-hidden').val(285);
+            $('#modal-height-input-energy').val('1');
+            $('#modal-width-input-energy').val('1');
+            $('#modal-height-input-energy-hidden').val(145);
+            $('#modal-width-input-energy-hidden').val(285);
 
             setTimeout(()=>{
-                $('.measurement_html_modal_'+last_div_index+' .count_result_tile').text(energy_type);
+                $('.energy_html_modal_'+last_div_index+' .count_result_tile').text(energy_type);
             },1100);
 
         }

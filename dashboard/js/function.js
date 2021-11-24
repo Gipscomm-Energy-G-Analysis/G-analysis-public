@@ -2128,6 +2128,23 @@ function getDimentions(id) {
               }
             // });
             // ---end-->
+            // setTimeout( function(){
+            //   $(document).on('dblclick','.'+id+'.tiles-click', function (){
+            //     // $('.tiles-click').dblclick(function(){
+            //     //   alert('working');
+            //     var pathname = window.location.pathname;
+            //     var arPathname = pathname.split('/');
+            //     if(arPathname.length > 3){
+            //         window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
+            //     }
+            //     else{
+            //         window.open('/dashboard/html/dashboard/chart_new.php','_blank');
+            //     }
+            //   });
+            // },1000);
+             
+
+
            
           }
           else if(type_data_val == "overall_count"){
@@ -3330,7 +3347,8 @@ function saveOverallCountTile(){
         record_type_of_tile :record_type_of_tile,
         type_data_tile : type_data_tile,
         mst_ID : mst_ID,
-        data_table_other : data_table_other
+        data_table_other : data_table_other,
+        type : 'Measurement'
     },
     fail: function() {
         alert("failed!!")
@@ -3356,6 +3374,74 @@ function saveOverallCountTile(){
   });
 }
 // --end-->
+
+// <---23-11-2021---
+function saveOverallCountTileEnergy(){
+  var energy_table_height = $('#modal-height-input-energy-hidden').val();
+  var energy_table_width = $('#modal-width-input-energy-hidden').val();
+  var input_height = $('#modal-height-input-energy').val(); 
+  var input_width = $('#modal-width-input-energy').val();
+  var mst_ID = $('#mst_id_hidden_energy').val();
+  var data_table_other = $('#mst_id_hidden_energy').attr('data-table-other');
+  
+  var last_index_tile = $('#total_records').val();
+  $('.energy_html_modal_'+last_index_tile+' .card-border').removeClass('tile_border');
+  var tile_html = $('.energy_html_modal_'+last_index_tile).html();
+  $('#total_records').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+    // --end->
+// --end-->
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "saveOverallCountTile",
+        nameDB: $("#nameDashboardDB").val(),
+        title : tile_title,
+        tile_html : tile_html,
+        height: energy_table_height,
+        width : energy_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile,
+        mst_ID : mst_ID,
+        data_table_other : data_table_other,
+        type : 'Energy'
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#energy_modal_loader_div').show();
+      $('.energy_tile_modal .modal-content').css('opacity','0.8');
+
+      $('#save_tile_id').val(a['max_id'][0]['max_id']);
+      
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#energy_modal_loader_div').hide();
+        $('.energy_tile_modal .modal-content').css('opacity','1');
+        $('.energy_tile_modal ').modal('hide');
+
+        // <---12-11-2021--
+        // $('#save_position_tile').trigger('click');
+        // --end--->
+      }, 500);
+      // $('#save_position_tile').attr('btn_click','overall_count');
+    }
+  });
+}
+// -end--->
 
 // <---09-8-2021--
 function getTileClickOverAllCount(id,mst_id){
