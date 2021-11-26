@@ -180,7 +180,7 @@ class dashboardControllerOperations {
             $input_width = $_POST['input_width'];
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
-            $type = "Measurement";
+            $type = $_POST['type'];
             $mst_id = $_POST['mst_id'];
             $chart_filter = $_POST['chart_record_filter'];
             $chart_type = $_POST['chart_type'];
@@ -336,7 +336,7 @@ class dashboardControllerOperations {
             $input_width = $_POST['input_width'];
             $record_type_of_tile = $_POST['record_type_of_tile'];
             // $type_data_tile = $_POST['type_data_tile'];
-            $type = "Measurement";
+            $type = $_POST['type'];
             $mst_id = $_POST['mst_id'];
             $chart_filter = $_POST['chart_record_filter'];
             $chart_type = $_POST['chart_type'];

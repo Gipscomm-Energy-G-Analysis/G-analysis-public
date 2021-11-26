@@ -1698,6 +1698,114 @@ class dashboardController {
     }
     // -endd--->
 
+    // <--25-11-2021--
+    public function getEditChartDataDashboardEnergy(){
+        try{
+            global $conn;
+            $username = $_SESSION['username'];
+            $i_value = $_POST['i_value'];
+            $id = $_POST['id'];
+            $tile_title = $_POST['energy_title'];
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $chart_type = '';
+            $chart_filter = '';
+            $mst_id = '';
+            $chart_time_interval = '';
+            $total_result = count($dataResult);
+            if($dataResult != null && count($dataResult)>0){
+                for($i= 0; $i < $total_result; $i++){
+                    if($id == $dataResult[$i]['id']){
+                        $chart_type = $dataResult[$i]['chart_type'];
+                        $chart_filter = $dataResult[$i]['chart_filter'];
+                        $mst_id = $dataResult[$i]['mst_id'];
+                        $chart_time_interval = $dataResult[$i]['chart_time_interval'];
+                        $records['data'] = $dataResult[$i];
+                        $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                    <div class='card card-border'>
+                                        <div class='card-body overflow-hide display-flex pr-0'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Energy' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Energy' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$tile_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                </div> 
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 chart-width'>
+                                            <div class='col-md-6 p-0 small-table small-table_$i_value' style='display:none'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
+                                            </table>
+                                            </div>
+                                                <div class='save_table_div_show_table'> 
+                                                    <canvas id='areaChart'></canvas>                       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";
+                                
+                                //Tile Outer HTML
+                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                                <div class='card card-border'>
+                                                    <div class='card-body overflow-hide display-flex pr-0'>
+                                                        <div id='' class=''>
+                                                            <div class='action-modal-button-div'>
+                                                                <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Energy' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Energy' style='height: 17px; width: 17px;'>
+                                                            </div>
+                                                            <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$tile_title</p>
+                                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                            <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                            </div>  
+                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class='overflow-hide ml-3 chart-width'>
+                                                            <div id='chart_outer_tile_text_heading' style='text-align: center'>
+                                                                <p class='text-muted'>Outer Tile View</p>
+                                                            </div>
+                                                            <div class='col-md-6 p-0 small-table small-table_$i_value'>
+                                                                <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
+                                                                </table>
+                                                            </div> 
+                                                            <div class='save_table_div_show_table'> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></div>"; 
+
+                    }
+                    else{
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        $tileHtml.= $dataResult[$i]['tile_html'];
+                    }
+                }
+                $records['tile_html'] = $tileHtml;
+                $records['total_record'] = count($dataResult);
+                $records['mst_id'] = $mst_id;
+                $records['chart_filter'] = $chart_filter;
+                $records['chart_type'] = $chart_type;
+                $records['chart_time_interval'] = $chart_time_interval;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
+
 
     // <----01-9-2021---
     public function getEditDataDashboard(){
@@ -1721,7 +1829,9 @@ class dashboardController {
         try{
             global $conn;
             $time_interval = $_REQUEST['time_interval'];
+            $record_type_of_tile = $_REQUEST['record_type_of_tile'];
             $data = '';
+            if($record_type_of_tile == 'measurement'){
             $query1 = "SELECT T1.mstIMw,T1.mst_ID,T2.val,T1.iBdeType ";
             $query1 .= "FROM produktionsAnlagenConfig as T1 ";
             $query1 .= "INNER JOIN ";
@@ -1732,6 +1842,21 @@ class dashboardController {
             $query1 .= "AND T1.intTp_ID = '$time_interval' ";
             $query1 .= "Order by T2.val  Desc ";
             $data = queryDB($conn, $query1, "read");
+            }
+            else if($record_type_of_tile == 'energy'){
+                $query1 = "SELECT T3.nameMST ,T1.mst_ID,T2.val ";
+                $query1 .= "FROM interneMesswerteConfig as T1 ";
+                $query1 .= "INNER JOIN ";
+                $query1 .= "(SELECT T2.mst_ID as t2_mst_id , sum(cast(T2.val as int)) as val from masseneingabeSucheIMw as T2 ";
+                $query1 .= "group by T2.mst_ID) T2 ";
+                $query1 .= "ON T1.mst_ID = t2_mst_id ";
+                $query1 .= "INNER JOIN ";
+                $query1 .= "MessstellenAnlagen as T3 ";
+                $query1 .= "ON T1.mst_ID = T3.mst_ID ";
+                $query1 .= "Where T1.intTp_ID = '$time_interval' ";
+                $query1 .= "Order by T2.val  Desc ";
+                $data = queryDB($conn, $query1, "read");
+            }
             echo json_encode($data,JSON_INVALID_UTF8_IGNORE);
             die;
         }
@@ -3511,6 +3636,479 @@ class dashboardController {
         } 
     }
 
+       // <---24-11-2021---
+       public function getChartRecordFilterEnergy(){
+        try{
+            global $conn;
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $filter_val = $_POST['filterVal'];
+            $type = $_POST['type'];
+            $mst_id = $_POST['mst_id'];
+            $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'] != '' ? $_POST['chart_outer_table_limit_column'] : 1;
+            if($record_type_of_tile == 'energy')
+            {
+                $queryOverAllCount = "SELECT * From masseneingabeSucheIMw ";
+                $queryOverAllCount .= "WHERE mst_ID = '$mst_id' ";
+                $resultOverallCount = queryDB($conn, $queryOverAllCount, "read");
+                $overallCount = count($resultOverallCount);
+                if($filter_val == 10){
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    for($i = 1; $i <= 10; $i++){
+                        if($i <= $overallCount){
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 10){
+                                $countSum = $result[0]['val'];
+                               
+                            }
+                            // <---12-11-2021--
+                            $loopCount = $i;
+                            // --end-->
+                            array_push($ar_days,$i);
+                        }
+
+                    }
+                    // <---12-11-2021--
+                    // $ar_reverse_val = array_reverse($ar_value);
+                    // echo json_encode($ar_reverse_val); die;
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //10 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT * from masseneingabeSucheIMw ";
+                        $queryOutsideTable .= "WHERE mst_ID = '$mst_id' ";
+                        $queryOutsideTable .= "ORDER by id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+
+                    // <--11-11-2021--
+                    $offsetDate = '';
+                    $resultDateData = '';
+                    if($overallCount > 0 && $overallCount <= $filter_val){ //10 RECORD Condition
+                        $offsetDate = $overallCount - 1;
+                    }
+                    else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                        $offsetDate = $filter_val - 1;
+                        $overallCount = 10;
+                    }
+                    else{
+                        $offsetDate = '';
+                    }
+                    
+                    if($offsetDate != '')
+                    {
+                        $queryDateData = "SELECT * from masseneingabeSucheIMw ";
+                        $queryDateData .= "WHERE mst_ID = '$mst_id' ";
+                        $queryDateData .= "ORDER by id ASC ";
+                        $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
+                        $resultDateData = queryDB($conn, $queryDateData, "read");
+                        // echo json_encode($resultDateData); die;
+                        
+                    }
+                    // --end-->
+                    $records['countDate'] = $resultDateData;
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($filter_val == 20){
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    for($i = 1; $i <= 20; $i++){
+                        if($i <= $overallCount){
+                            $offset_val = 2 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 20){
+                                $countSum = $result[0]['val'];
+                            }
+                                $loopCount = $i;
+                                $day_20 =  $i;
+                                // $r+2;
+                                array_push($ar_days,$day_20);
+        
+                            // }
+                        }
+                        
+                    }
+                    // print_r($ar_value);die;
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 20 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //20 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 20 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT * from masseneingabeSucheIMw ";
+                        $queryOutsideTable .= "WHERE mst_ID = '$mst_id' ";
+                        $queryOutsideTable .= "ORDER by id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+
+                    // <--11-11-2021--
+                    $offsetDate = '';
+                    $resultDateData = '';
+                    if($overallCount > 0 && $overallCount <= $filter_val){ //20 RECORD Condition
+                        $offsetDate = $overallCount - 1;
+                    }
+                    else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 20 Condition
+                        $offsetDate = $filter_val - 1;
+                        $overallCount = 20;
+                    }
+                    else{
+                        $offsetDate = '';
+                    }
+                    
+                    if($offsetDate != '')
+                    {
+                        $queryDateData = "SELECT * from masseneingabeSucheIMw ";
+                        $queryDateData .= "WHERE mst_ID = '$mst_id' ";
+                        $queryDateData .= "ORDER by id ASC ";
+                        $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
+                        $resultDateData = queryDB($conn, $queryDateData, "read");
+                    }
+                    $records['countDate'] = $resultDateData;
+                    // --end-->
+
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($filter_val == 30) {
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    for($i = 1; $i <= 30; $i++){
+                        if($i <= $overallCount){
+                            $offset_val = 3 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 30){
+                                $countSum = $result[0]['val'];
+                            }
+                            $loopCount = $i;
+                            $day_30 = $i;
+                            array_push($ar_days,$day_30);
+                        }
+
+                    }
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 30 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //30 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 30 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT * from masseneingabeSucheIMw ";
+                        $queryOutsideTable .= "WHERE mst_ID = '$mst_id' ";
+                        $queryOutsideTable .= "ORDER by id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+
+                    // <--11-11-2021--
+                    $offsetDate = '';
+                    $resultDateData = '';
+                    if($overallCount > 0 && $overallCount <= $filter_val){ //30 RECORD Condition
+                        $offsetDate = $overallCount - 1;
+                    }
+                    else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 30 Condition
+                        $offsetDate = $filter_val - 1;
+                        $overallCount = 30;
+                    }
+                    else{
+                        $offsetDate = '';
+                    }
+                    
+                    if($offsetDate != '')
+                    {
+                        $queryDateData = "SELECT * from masseneingabeSucheIMw ";
+                        $queryDateData .= "WHERE mst_ID = '$mst_id' ";
+                        $queryDateData .= "ORDER by id ASC ";
+                        $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
+                        $resultDateData = queryDB($conn, $queryDateData, "read");
+                    }
+                    $records['countDate'] = $resultDateData;
+                    // --end-->
+
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                    
+                }
+                else if($filter_val == 'all') {
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    for($i = 1; $i <= 50; $i++){
+                        if($i <= $overallCount){
+                            $offset_val = 5 * $i;
+                            $query = "SELECT SUM(CAST(val as int)) as val FROM masseneingabeSucheIMw WHERE id in ";
+                            $query .= "(SELECT id From masseneingabeSucheIMw ";
+                            $query .= "WHERE mst_ID = '$mst_id' ";
+                            $query .= "ORDER by id ASC ";
+                            $query .= "offset 0 rows FETCH NEXT $i ROWS ONLY )";
+                            $result = queryDB($conn, $query, "read");
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 50){
+                                $countSum = $result[0]['val'];
+                            }
+                            $loopCount = $i;
+                            $day_50 = $i;
+                            array_push($ar_days,$day_50);
+                        }
+
+                    }
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > 50){ //More Than 50 Condition
+                                $offsetLoopVal = $overallCount -  50;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= 50){ //50 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > 50){ //More Than 50 Condition
+                                $offsetLoopVal = $overallCount -  50;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT * from masseneingabeSucheIMw ";
+                        $queryOutsideTable .= "WHERE mst_ID = '$mst_id' ";
+                        $queryOutsideTable .= "ORDER by id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+
+                    // <--11-11-2021--
+                    $offsetDate = '';
+                    $resultDateData = '';
+                    if($overallCount > 0 && $overallCount <= 50){ //50 RECORD Condition
+                        $offsetDate = $overallCount - 1;
+                    }
+                    else if($overallCount > 0 && $overallCount > 50){ //More Than 50 Condition
+                        $offsetDate = 50 - 1;
+                        $overallCount = 50;
+                    }
+                    else{
+                        $offsetDate = '';
+                    }
+                    
+                    if($offsetDate != '')
+                    {
+                        $queryDateData = "SELECT * from masseneingabeSucheIMw ";
+                        $queryDateData .= "WHERE mst_ID = '$mst_id' ";
+                        $queryDateData .= "ORDER by id ASC ";
+                        $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
+                        $resultDateData = queryDB($conn, $queryDateData, "read");
+                    }
+                    $records['countDate'] = $resultDateData;
+                    // --end-->
+
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                    
+                }
+
+                $records = ['status'=>400,'message'=>'Data Not found'];
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE); 
+                die;
+                
+            }
+            die;
+
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    // --end-->
+
+
     public function getChartRecordFilter(){
         try{
             global $conn;
@@ -3519,7 +4117,11 @@ class dashboardController {
             $type = $_POST['type'];
             $mst_id = $_POST['mst_id'];
             $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'] != '' ? $_POST['chart_outer_table_limit_column'] : 1;
-            if($record_type_of_tile == 'measurement')
+            if($record_type_of_tile == 'energy'){
+                $this->getChartRecordFilterEnergy();
+                die;
+            }
+            else if($record_type_of_tile == 'measurement')
             {
                 $queryOverAllCount = "SELECT * From masseneingabeSucheIMw ";
                 $queryOverAllCount .= "WHERE mst_ID = '$mst_id' ";
@@ -4581,7 +5183,7 @@ class dashboardController {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $filter_val = $_POST['chart_filter_value'];
             $mst_id = $_POST['mst_id'];
-            if($record_type_of_tile == 'measurement')
+            if($record_type_of_tile == 'measurement' || $record_type_of_tile == 'energy')
             {
                 $queryOverAllCount = "SELECT * From masseneingabeSucheIMw ";
                 $queryOverAllCount .= "WHERE mst_ID = '$mst_id' ";
