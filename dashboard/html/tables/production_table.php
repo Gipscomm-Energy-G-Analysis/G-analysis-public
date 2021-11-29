@@ -45,9 +45,9 @@
                                   <th>
                                     Start
                                   </th>
-                                  <th>
+                                  <!-- <th>
                                     Status
-                                  </th>
+                                  </th> -->
                                 </tr>
                               </thead>
                               <tbody id="product_select_table_entries">
