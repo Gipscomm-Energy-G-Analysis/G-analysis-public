@@ -1441,6 +1441,8 @@ function rowClickEnergyPaginationTableData(mst_id,data_type,page_value,selected_
 //Selected Number of Records Product
 function getNumberRecordsProduct(){
     var number_records = $('#product_number_record').val();
+    var page_val = $('#val').val();
+    // console.log('Page Value',page_val);
     $.ajax({
         type: "POST",
         url: "php/retreive.php",
@@ -1456,6 +1458,7 @@ function getNumberRecordsProduct(){
         },
         success: function(a) {
            $('#product_select_table_entries').html(a['product_html']);
+           $('#pagination_all_product').html(a['pagination_html']);
         }
     });
 }

@@ -1779,6 +1779,15 @@ $(document).ready( function(){
     // --end-->
 
 
+
+    // <-----26-11-2021---
+    $(document).on('click','#all_product_image', function(){
+        $('.modal_all_products').modal('show');
+        getNumberRecordsProduct();
+    });
+    // --end--->
+
+
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {

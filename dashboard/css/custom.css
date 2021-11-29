@@ -771,3 +771,16 @@
     margin-top : 8px
 }
 /* --end-- */
+
+
+/* 26-11-2021-- */
+#all_product_image{
+    height: 20px;
+    width: 20px;
+    margin: 5px;
+}
+
+#product_field_div{
+    display: flex;
+}
+/* end- */
