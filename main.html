@@ -65,47 +65,47 @@
             <select class="manPfad" size="1" title="Mandant">
             </select>
           </li>
-          <li><a href="dashboard/" class="text-muted menu_dashboard">Dashboard</a></li>
+          <li><a href="dashboard/" class="text-muted menu_dashboard" data-menus="1">Dashboard</a></li>
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard">Auswertungen 
+              <a class="dropbtn text-muted menu_dashboard" data-menus="2">Auswertungen 
                 <!-- <i class="fa fa-caret-down"></i> -->
-              </button>
+              </a>
               <div class="dropdown-content">
                 <!-- <div class="header">
                   <h2>Mega Menu</h2>
                 </div>    -->
                 <div class="row">
                   <div class="column">
-                    <h3>Berichte</h3>
-                    <a href="javascript:void(0);">ISO</a>
+                    <h3 data-menus="2-1">Berichte</h3>
+                    <a href="javascript:void(0);" data-menus="2-1-1">ISO</a>
                     <div class="sub_menu_open">
                       <span> Berichte </span>
                       <i class="ti-angle-down"></i>
                       <div class="sub_menu_1_div">
-                        <a href="javascript:void(0);" id="spaEfVTab1Menu" href="#" data-menus="1-1-1-1" class="dashboard_sub_menu_1 dashboard_menu_click">SpaEfV_Tabelle_1</a>
-                        <a href="javascript:void(0);" id="spaEfVTab2Menu" href="#" data-menus="1-1-1-2" class="dashboard_sub_menu_1 dashboard_menu_click">SpaEfV_Tabelle_2</a>
+                        <a href="javascript:void(0);" id="spaEfVTab1Menu" href="#" data-menus="2-1-1-1" class="dashboard_sub_menu_1 dashboard_menu_click">SpaEfV_Tabelle_1</a>
+                        <a href="javascript:void(0);" id="spaEfVTab2Menu" href="#" data-menus="2-1-1-2" class="dashboard_sub_menu_1 dashboard_menu_click">SpaEfV_Tabelle_2</a>
                       </div>
                     </div>
                   </div>
                   <div class="column">
-                    <h3>Diagramme</h3>
+                    <h3 data-menus="2-2">Diagramme</h3>
                     <div class="sub_menu_open">
-                      <span>Neu erstellen</span>
+                      <span data-menus="2-2-1">Neu erstellen</span>
                       <i class="ti-angle-down"></i>
                       <div class="sub_menu_1_div">
-                        <a href="javascript:void(0);" id="mstVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click">Messstellenvergleich</a>
-                        <a href="javascript:void(0);" id="zeitVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click">Zeitvergleich</a>
-                        <a href="javascript:void(0);" id="knzDarst" class="dashboard_sub_menu_1 dashboard_menu_click">Kennzahlendarstellung</a>
+                        <a href="javascript:void(0);" id="mstVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click" data-menus="2-2-1-1">Messstellenvergleich</a>
+                        <a href="javascript:void(0);" id="zeitVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click" data-menus="2-2-1-2">Zeitvergleich</a>
+                        <a href="javascript:void(0);" id="knzDarst" class="dashboard_sub_menu_1 dashboard_menu_click"data-menus="2-2-1-3">Kennzahlendarstellung</a>
                       </div>
                     </div>
-                    <a href="javascript:void(0);" id="zeitVerglMenu" class="dashboard_menu_click">Gespeichertes Laden</a>
+                    <a href="javascript:void(0);" id="zeitVerglMenu" class="dashboard_menu_click" data-menus="2-2-2">Gespeichertes Laden</a>
                   </div>
                   <div class="column">
-                    <h3 id="verbExportMenu" class="dashboard_menu_click cursor_pointer">Verbrauchsdatenexport</h3>
+                    <h3 id="verbExportMenu" class="dashboard_menu_click cursor_pointer"data-menus="2-3">Verbrauchsdatenexport</h3>
                   </div>
                   <div class="column">
-                    <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer">Production</h3>
+                    <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer"data-menus="2-4">Produktion</h3>
                   </div>
                 </div>
               </div>
@@ -117,65 +117,65 @@
           <!-- 27-9-2021- -->
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard">Stammdaten 
+              <a class="dropbtn text-muted menu_dashboard" data-menus="3">Stammdaten 
                 <!-- <i class="fa fa-caret-down"></i> -->
-              </button>
+              </a>
               <div class="dropdown-content">
                 <!-- <div class="header">
                   <h2>Mega Menu</h2>
                 </div>    -->
                 <div class="row">
                   <div class="column">
-                    <h3>Rechteverwaltung</h3>
-                    <a href="javascript:void(0);" id="betrGrpMenu" class="dashboard_menu_click">Betreuergruppen</a>
-                    <a href="javascript:void(0);" id="manGrpMenu" class="dashboard_menu_click">Mandantengruppen</a>
-                    <a href="javascript:void(0);" id="betrGrpMenu" class="dashboard_menu_click">Superadmins</a>
-                    <a href="javascript:void(0);" id="admMenu" class="dashboard_menu_click">Admins</a>
-                    <a href="javascript:void(0);" id="benMenu" class="dashboard_menu_click">Benutzer</a>
+                    <h3 data-menus="3-1">Rechteverwaltung</h3>
+                    <a href="javascript:void(0);" id="betrGrpMenu" data-menus="3-1-1" class="dashboard_menu_click">Betreuergruppen</a>
+                    <a href="javascript:void(0);" id="manGrpMenu" data-menus="3-1-2" class="dashboard_menu_click">Mandantengruppen</a>
+                    <a href="javascript:void(0);" id="betrGrpMenu" data-menus="3-1-3" class="dashboard_menu_click">Superadmins</a>
+                    <a href="javascript:void(0);" id="admMenu" data-menus="3-1-4" class="dashboard_menu_click">Admins</a>
+                    <a href="javascript:void(0);" id="benMenu" data-menus="3-1-5" class="dashboard_menu_click">Benutzer</a>
                   </div>
             
                   <div class="column">
-                    <h3>Unternehmensstruktur</h3>
-                    <a href="javascript:void(0);" id="manMenu" class="dashboard_menu_click">Mandanten</a>
-                    <a href="javascript:void(0);" id="orgMenu" class="dashboard_menu_click">Organisationen</a>
-                    <a href="javascript:void(0);" id="liegMenu" class="dashboard_menu_click">Liegenschaften</a>
-                    <a href="javascript:void(0);" id="berMenu" class="dashboard_menu_click">Vers.Bereiche</a>
-                    <a href="javascript:void(0);" id="mstEMenu" class="dashboard_menu_click">Messstellen-E</a>
-                    <a href="javascript:void(0);" id="mstBMenu" class="dashboard_menu_click">Messstellen-B</a>
-                    <a href="javascript:void(0);" id="stdMenu" class="dashboard_menu_click">Standorte</a>
-                    <a href="javascript:void(0);" id="stdDrMenu" class="dashboard_menu_click">Standortdaten 3.</a>
+                    <h3 data-menus="3-2">Unternehmensstruktur</h3>
+                    <a href="javascript:void(0);" id="manMenu" data-menus="3-2-1" class="dashboard_menu_click">Mandanten</a>
+                    <a href="javascript:void(0);" id="orgMenu" data-menus="3-2-2" class="dashboard_menu_click">Organisationen</a>
+                    <a href="javascript:void(0);" id="liegMenu" data-menus="3-2-3" class="dashboard_menu_click">Liegenschaften</a>
+                    <a href="javascript:void(0);" id="berMenu" data-menus="3-2-4" class="dashboard_menu_click">Vers.Bereiche</a>
+                    <a href="javascript:void(0);" id="mstEMenu" data-menus="3-2-5" class="dashboard_menu_click">Messstellen-E</a>
+                    <a href="javascript:void(0);" id="mstBMenu" data-menus="3-2-6" class="dashboard_menu_click">Messstellen-B</a>
+                    <a href="javascript:void(0);" id="stdMenu" data-menus="3-2-7" class="dashboard_menu_click">Standorte</a>
+                    <a href="javascript:void(0);" id="stdDrMenu" data-menus="3-2-8" class="dashboard_menu_click">Standortdaten 3.</a>
                   </div>
 
                   <div class="column">
-                    <h3>Anlagenverwaltung</h3>
-                    <a href="javascript:void(0);" id="anl_Menu" class="dashboard_menu_click">Anlagen</a>
-                    <a href="javascript:void(0);" id="anl_Eng_Menu" class="dashboard_menu_click">Energieversorgung</a>
-                    <a href="javascript:void(0);" id="anl_Konfig_Menu" class="dashboard_menu_click">weitere Konfiguration</a>
-                    <a href="javascript:void(0);" id="anl_Dok_Menu" class="dashboard_menu_click">Dokumente</a>
-                    <a href="javascript:void(0);" id="anl_Hist_Menu" class="dashboard_menu_click">Historie</a>
+                    <h3 data-menus="3-3">Anlagenverwaltung</h3>
+                    <a href="javascript:void(0);" data-menus="3-3-1" id="anl_Menu" class="dashboard_menu_click">Anlagen</a>
+                    <a href="javascript:void(0);" data-menus="3-3-2" id="anl_Eng_Menu" class="dashboard_menu_click">Energieversorgung</a>
+                    <a href="javascript:void(0);" data-menus="3-3-3" id="anl_Konfig_Menu" class="dashboard_menu_click">weitere Konfiguration</a>
+                    <a href="javascript:void(0);" data-menus="3-3-4" id="anl_Dok_Menu" class="dashboard_menu_click">Dokumente</a>
+                    <a href="javascript:void(0);" data-menus="3-3-5" id="anl_Hist_Menu" class="dashboard_menu_click">Historie</a>
                   </div>
 
                   <div class="column">
-                    <h3 id="msmMenu" class="cursor_pointer dashboard_menu_click">Messmittelverwaltung</h3>
+                    <h3 id="msmMenu" data-menus="3-4" class="cursor_pointer dashboard_menu_click">Messmittelverwaltung</h3>
                   </div>
                   
                   <div class="column">
-                    <h3>Produkteverwaltung</h3>
-                    <a href="javascript:void(0);" id="prd_Menu" class="dashboard_menu_click">Produkte</a>
-                    <a href="javascript:void(0);" id="prd_Konfig_Menu" class="dashboard_menu_click">weitere Konfiguration</a>
-                    <a href="javascript:void(0);" id="prd_Hist_Menu" class="dashboard_menu_click">Historie</a>
+                    <h3 data-menus="3-5">Produkteverwaltung</h3>
+                    <a href="javascript:void(0);" data-menus="3-5-1" id="prd_Menu" class="dashboard_menu_click">Produkte</a>
+                    <a href="javascript:void(0);" data-menus="3-5-2" id="prd_Konfig_Menu" class="dashboard_menu_click">weitere Konfiguration</a>
+                    <a href="javascript:void(0);" data-menus="3-5-3" id="prd_Hist_Menu" class="dashboard_menu_click">Historie</a>
                   </div>
                   
                   <div class="column">
-                    <h3>Kennzahlen/Alarme</h3>
-                    <a href="javascript:void(0);" id="knzMenu" class="dashboard_menu_click">Kennzahlen</a>
-                    <a href="javascript:void(0);" id="almMenu" class="dashboard_menu_click">Alarme</a>
+                    <h3 data-menus="3-6">Kennzahlen/Alarme</h3>
+                    <a href="javascript:void(0);" data-menus="3-6-1" id="knzMenu" class="dashboard_menu_click">Kennzahlen</a>
+                    <a href="javascript:void(0);" data-menus="3-6-2" id="almMenu" class="dashboard_menu_click">Alarme</a>
                   </div>
                   
                   <div class="column">
-                    <h3>Editor</h3>
-                    <a href="javascript:void(0);" id="menuBerechnungsformeln" class="dashboard_menu_click">Berechnungsformeln</a>
-                    <a href="javascript:void(0);" id="menuVorlagenformeln" class="dashboard_menu_click">Vorlagenformeln</a>
+                    <h3 data-menus="3-7">Editor</h3>
+                    <a href="javascript:void(0);" data-menus="3-7-1" id="menuBerechnungsformeln" class="dashboard_menu_click">Berechnungsformeln</a>
+                    <a href="javascript:void(0);" data-menus="3-7-2" id="menuVorlagenformeln" class="dashboard_menu_click">Vorlagenformeln</a>
                   </div>
                   
                 </div>
@@ -185,21 +185,21 @@
 
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard">Manuell 
+              <a class="dropbtn text-muted menu_dashboard" data-menus="4">Manuell 
                 <!-- <i class="fa fa-caret-down"></i> -->
-              </button>
+              </a>
               <div class="dropdown-content">
                 <div class="row">
                   <div class="column">
-                    <h3>In. Messwerte</h3>
-                    <a href="javascript:void(0);" id="intEngIMwMenu" class="dashboard_menu_click">Interne Betriebsdaten</a>
-                    <a href="javascript:void(0);" id="intBdeIMwMenu" class="dashboard_menu_click">Interne Energiedaten</a>
+                    <h3 data-menus="4-1">In. Messwerte</h3>
+                    <a href="javascript:void(0);" data-menus="4-1-1" id="intEngIMwMenu" class="dashboard_menu_click">Interne Betriebsdaten</a>
+                    <a href="javascript:void(0);" data-menus="4-1-2" id="intBdeIMwMenu" class="dashboard_menu_click">Interne Energiedaten</a>
                   </div>
             
                   <div class="column">
-                    <h3>Ex. Rechnungen</h3>
-                    <a href="javascript:void(0);" id="extRngMenu" class="dashboard_menu_click">Rechnungen</a>
-                    <a href="javascript:void(0);" id="eRngVergleichMenu" class="dashboard_menu_click">Rechnungsvergleich</a>
+                    <h3 data-menus="4-2">Ex. Rechnungen</h3>
+                    <a href="javascript:void(0);" data-menus="4-2-1" id="extRngMenu" class="dashboard_menu_click">Rechnungen</a>
+                    <a href="javascript:void(0);" data-menus="4-2-2" id="eRngVergleichMenu" class="dashboard_menu_click">Rechnungsvergleich</a>
                   </div>
 
                 </div>
@@ -209,16 +209,16 @@
 
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard">Optionen 
+              <a class="dropbtn text-muted menu_dashboard" data-menus="5">Optionen 
                 <!-- <i class="fa fa-caret-down"></i> -->
-              </button>
+              </a>
               <div class="dropdown-content">
                 <div class="row">
                   <div class="column">
                     <h3>Basisdaten</h3>
-                    <a href="javascript:void(0);" class="dashboard_menu_click" id="entMenu">Energieträger</a>
-                    <a href="javascript:void(0);" class="dashboard_menu_click" id="enfMenu">Energieformen</a>
-                    <a href="javascript:void(0);" class="dashboard_menu_click" id="zpMenu">Zählpunktnummern</a>
+                    <a href="javascript:void(0);" class="dashboard_menu_click" id="entMenu" data-menus="">Energieträger</a>
+                    <a href="javascript:void(0);" class="dashboard_menu_click" id="enfMenu" data-menus="">Energieformen</a>
+                    <a href="javascript:void(0);" class="dashboard_menu_click" id="zpMenu" data-menus="">Zählpunktnummern</a>
                     
                     <div class="sub_menu_open">
                       <span>Erweiterungen</span>
@@ -334,87 +334,87 @@
          <!--Top Ten Tabelle-->
          <!--Tab Control-->
          <div id="tabs">
-            <div id="tabsAuswertungen" data-menus="1" style="display:none;">
-               <button id="tabProd" data-menus="1-4">Produktion</button>
-               <button id="tabBerechnungsformeln" data-menus="2-7-1">Berechnungsformeln</button>
-               <button id="tabVorlagenformeln" data-menus="2-7-2">Vorlagenformeln</button>
-               <button id="tabSpaEfV_Tbl1" data-menus="1-1-1-1">SpaEfV Tabelle 1</button>
-               <button id="tabSpaEfV_Tbl2" data-menus="1-1-1-2">SpaEfV Tabelle 2</button>
-               <button id="tabVerbrauchsdatenExp" data-menus="1-3">Verbrauchsdatenexport</button>
-               <button id="tabLnDiag" data-menus="1-2-1-1">Messstellenvergleich</button>
-               <button id="tabTimeCompDiag" data-menus="1-2-1-2">Zeitvergleich</button>
-               <button id="tabDiagKnz" data-menus="1-2-1-3">Kennzahlendarstellung</button>
+            <div id="tabsAuswertungen" data-menus="2" style="display:none;">
+               <button id="tabProd" data-menus="2-4">Produktion</button>
+               <button id="tabBerechnungsformeln" data-menus="3-7-1">Berechnungsformeln</button>
+               <button id="tabVorlagenformeln" data-menus="3-7-2">Vorlagenformeln</button>
+               <button id="tabSpaEfV_Tbl1" data-menus="2-1-1-1">SpaEfV Tabelle 1</button>
+               <button id="tabSpaEfV_Tbl2" data-menus="2-1-1-2">SpaEfV Tabelle 2</button>
+               <button id="tabVerbrauchsdatenExp" data-menus="2-3">Verbrauchsdatenexport</button>
+               <button id="tabLnDiag" data-menus="2-2-1-1">Messstellenvergleich</button>
+               <button id="tabTimeCompDiag" data-menus="2-2-1-2">Zeitvergleich</button>
+               <button id="tabDiagKnz" data-menus="2-2-1-3">Kennzahlendarstellung</button>
             </div>
-            <div id="tabsRechteverwaltung" data-menus="2-1" style="display:none;">
+            <div id="tabsRechteverwaltung" data-menus="3-1" style="display:none;">
                <button id="tabGipscAdm">GipscommAdmins</button>
-               <button id="tabBetrGrp" data-menus="2-1-1" style="background-color:#CED6DE;">Betreuergruppen/Superadmins</button>
-               <button id="tabManGrp" data-menus="2-1-2">Mandantengruppen</button>
-               <button id="tabAdm" data-menus="2-1-4">Admins</button>
-               <button id="tabBen" data-menus="2-1-5">Benutzer</button>
+               <button id="tabBetrGrp" data-menus="3-1-1" style="background-color:#CED6DE;">Betreuergruppen/Superadmins</button>
+               <button id="tabManGrp" data-menus="3-1-2">Mandantengruppen</button>
+               <button id="tabAdm" data-menus="3-1-4">Admins</button>
+               <button id="tabBen" data-menus="3-1-5">Benutzer</button>
             </div>
-            <div id="tabsUnternehmensstruktur" data-menus="2-2" style="display:none;">
-               <button id="tabMan" data-menus="2-2-1" style="background-color:#CED6DE;">Mandanten</button>
-               <button id="tabOrg" data-menus="2-2-2">Organisationen</button>
-               <button id="tabLieg" data-menus="2-2-3">Liegenschaften</button>
-               <button id="tabBer" data-menus="2-2-4">Vers.Bereiche</button>
-               <button id="tabMstE" data-menus="2-2-5">Messstellen-E</button>
-               <button id="tabMstB" data-menus="2-2-6">Messstellen-B</button>
-               <button id="tabStd" data-menus="2-2-7">Standorte</button>
+            <div id="tabsUnternehmensstruktur" data-menus="3-2" style="display:none;">
+               <button id="tabMan" data-menus="3-2-1" style="background-color:#CED6DE;">Mandanten</button>
+               <button id="tabOrg" data-menus="3-2-2">Organisationen</button>
+               <button id="tabLieg" data-menus="3-2-3">Liegenschaften</button>
+               <button id="tabBer" data-menus="3-2-4">Vers.Bereiche</button>
+               <button id="tabMstE" data-menus="3-2-5">Messstellen-E</button>
+               <button id="tabMstB" data-menus="3-2-6">Messstellen-B</button>
+               <button id="tabStd" data-menus="3-2-7">Standorte</button>
                <button id="tabExtDl" style="display:none;">Durchleitung an 3.</button>
-               <button id="tabStdDr" data-menus="2-2-8" style="display:none;">Standortdaten 3.</button>
+               <button id="tabStdDr" data-menus="3-2-8" style="display:none;">Standortdaten 3.</button>
             </div>
-            <div id="tabsAnlagenverwaltung" data-menus="2-3" style="display:none;">
-               <button id="tabAnl" data-menus="2-3-1" style="background-color:#CED6DE;">Anlage</button>
-               <button id="tabAnl_energie" data-menus="2-3-2">Energieversorgung</button>
-               <button id="tabAnl_dokumente" data-menus="2-3-4">Dokumente</button>
-               <button id="tabAnl_historie" data-menus="2-3-5">Historie</button>
+            <div id="tabsAnlagenverwaltung" data-menus="3-3" style="display:none;">
+               <button id="tabAnl" data-menus="3-3-1" style="background-color:#CED6DE;">Anlage</button>
+               <button id="tabAnl_energie" data-menus="3-3-2">Energieversorgung</button>
+               <button id="tabAnl_dokumente" data-menus="3-3-4">Dokumente</button>
+               <button id="tabAnl_historie" data-menus="3-3-5">Historie</button>
             </div>
             <div id="tabsPruefmittelverwaltung" style="display:none;">
                <button id="tabPm" style="background-color:#CED6DE;"></button>
             </div>
-            <div id="tabsMessmittelverwaltung" data-menus="2-4" style="display:none;">
+            <div id="tabsMessmittelverwaltung" data-menus="3-4" style="display:none;">
                <button id="tabMsm" style="background-color:#CED6DE;">Messmittel</button>
                <button id="tabConfig">Konfiguration</button>
                <button id="tabDok_Msm">Dokumente</button>
                <button id="tabHis_Msm">Historie</button>
             </div>
-            <div id="tabsProdukteverwaltung" data-menus="2-5" style="display:none;">
-               <button id="tabPrd" data-menus="2-5-1" style="background-color:#CED6DE;">Produkte</button>
-               <button id="tabPrd_konfig" data-menus="2-5-2">weitere Konfiguration</button>
-               <button id="tabPrd_historie" data-menus="2-5-3">Historie</button>
+            <div id="tabsProdukteverwaltung" data-menus="3-5" style="display:none;">
+               <button id="tabPrd" data-menus="3-5-1" style="background-color:#CED6DE;">Produkte</button>
+               <button id="tabPrd_konfig" data-menus="3-5-2">weitere Konfiguration</button>
+               <button id="tabPrd_historie" data-menus="3-5-3">Historie</button>
             </div>
-            <div id="tabsKennzahlenAlarme" data-menus="2-6" style="display:none;">
-               <button id="tabKnz" data-menus="2-6-1" style="background-color:#CED6DE;">Kennzahlen</button>
-               <button id="tabAlm" data-menus="2-6-2">Alarme</button>
+            <div id="tabsKennzahlenAlarme" data-menus="3-6" style="display:none;">
+               <button id="tabKnz" data-menus="3-6-1" style="background-color:#CED6DE;">Kennzahlen</button>
+               <button id="tabAlm" data-menus="3-6-2">Alarme</button>
             </div>
-            <div id="tabsOptionen" data-menus="4" style="display:none;">
-               <div id="tabsBasisdaten" data-menus="4-1" style="display:none;">
-                  <button id="tabEng" data-menus="4-1-1" data-menus="4-1-2" class="no_korrector_tabs">Energie</button>
-                  <button id="tabZp" data-menus="4-1-3" class="no_korrector_tabs">Zählpunktnummer</button>
-                  <div id="tabsErweiterungen" data-menus="4-1-4" class="no_korrector_tabs">
-                     <button id="tabEAnl" data-menus="4-1-4-1">Erweiterung Anlagen</button>
-                     <button id="tabEPrd" data-menus="4-1-4-2">Erweiterung Produkte</button>
+            <div id="tabsOptionen" data-menus="5" style="display:none;">
+               <div id="tabsBasisdaten" data-menus="5-1" style="display:none;">
+                  <button id="tabEng" data-menus="5-1-1" class="no_korrector_tabs">Energie</button>
+                  <button id="tabZp" data-menus="5-1-3" class="no_korrector_tabs">Zählpunktnummer</button>
+                  <div id="tabsErweiterungen" data-menus="5-1-4" class="no_korrector_tabs">
+                     <button id="tabEAnl" data-menus="5-1-4-1">Erweiterung Anlagen</button>
+                     <button id="tabEPrd" data-menus="5-1-4-2">Erweiterung Produkte</button>
                   </div>
-                  <button id="tabGrpDiag" data-menus="4-1-5" class="no_korrector_tabs">Gruppierung Diagramme</button>
-                  <button id="tabTaschenrechner" data-menus="4-1-4-3">statische Korrekturfaktoren</button>
-                  <button id="tabDynamicKorrekturFktr" data-menus="4-1-4-4">dynamische Korrekturfaktoren</button>
+                  <button id="tabGrpDiag" data-menus="5-1-5" class="no_korrector_tabs">Gruppierung Diagramme</button>
+                  <button id="tabTaschenrechner" data-menus="5-1-4-3">statische Korrekturfaktoren</button>
+                  <button id="tabDynamicKorrekturFktr" data-menus="5-1-4-4">dynamische Korrekturfaktoren</button>
                </div>
-               <div id="tabsSchichtdaten" data-menus="4-2" data-menus="4-2" style="display:none;">
+               <div id="tabsSchichtdaten" data-menus="5-2" style="display:none;">
                   <button id="tabSchtDat" class="no_korrector_tabs">Schichtdaten</button>
                   <button id="tabSchtDatHist" class="no_korrector_tabs">Historie</button>
                </div>
             </div>
-            <div id="tabsManuell" data-menus="3" style="display:none;">
-                <div id="tabsIntMesswerte" data-menus="3-1" style="display:none;">
-                    <button id="tabIntEnergiedatenIMw" data-menus="3-1-1">Interne Betriebsdaten</button>
-                    <button id="tabIntBetriebsdatenIMw" data-menus="3-1-2">Interne Energiedaten</button><!-- new-mm-end -->
+            <div id="tabsManuell" data-menus="4" style="display:none;">
+                <div id="tabsIntMesswerte" data-menus="4-1" style="display:none;">
+                    <button id="tabIntEnergiedatenIMw" data-menus="4-1-1">Interne Betriebsdaten</button>
+                    <button id="tabIntBetriebsdatenIMw" data-menus="4-1-2">Interne Energiedaten</button><!-- new-mm-end -->
                     <button id="tabIntBetriebsdatenIMwHist">Historie</button>
                     <button id="tabIntBetriebsdatenIMwHistPrdkt" style="display:none;">Historie</button>
                     <button id="tabIntBetriebsdatenIMwHistMesssetelle" style="display:none;">Historie</button>
                 </div>
-                <div id="tabsExterneRechnungen" data-menus="3-2" style="display:none;">
-                    <button id="tabExtRechnungen" data-menus="3-2-1">Externe Rechnungen</button>
-                    <button id="tabAusw_eRng_iMw" data-menus="3-2-2">Rechnungsvergleich</button>
+                <div id="tabsExterneRechnungen" data-menus="4-2" style="display:none;">
+                    <button id="tabExtRechnungen" data-menus="4-2-1">Externe Rechnungen</button>
+                    <button id="tabAusw_eRng_iMw" data-menus="4-2-2">Rechnungsvergleich</button>
                 </div>
          </div>
       </div>

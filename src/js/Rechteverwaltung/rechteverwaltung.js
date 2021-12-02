@@ -184,15 +184,20 @@ const scpRechteverwaltung =
 
             const getMenuIDs =
                 () =>
-                array($("a[data-menus]").length)()()
-                .map((_, i) => $("a[data-menus]").eq(i).attr("data-menus"))
-
+                Array.from(
+                    new Set(
+                        array($("[data-menus]").length)()()
+                        .map((_, i) => $("[data-menus]").not("button[data-menus]").eq(i).attr("data-menus"))
+                        .filter(a => !emptyString(a))
+                    )
+                ).sort()
+                
             const notBetreuergruppen =
                 a => a.text !== "Betreuergruppen"
 
             const menuItemText =
                 id => 
-                ( { id, text : $(`a[data-menus=${id}]`).text() } )
+                ( { id, text : $(`[data-menus=${id}]`).text() } )
 
             this.getMainMenus =
                 menus =>
