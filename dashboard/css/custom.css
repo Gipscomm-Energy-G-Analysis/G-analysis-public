@@ -53,7 +53,8 @@
 .pagination_items{
     text-align: center;
     /* margin-left: 357px; */
-    margin-left: 465px;
+    /* margin-left: 465px; */
+    margin-left: 42%;
 }
 .pagination_html{
     margin-top: 8px;
@@ -784,3 +785,26 @@
     display: flex;
 }
 /* end- */
+
+#pagination_all_product{
+    margin-top: 15px;
+    float: right;
+}
+
+.modal_all_products table thead tr{
+    text-align: center;
+}
+
+#product_select_table_entries_pagination{
+    margin: 10px;
+}
+
+.mt_pr_alignment{
+    margin-top: -32px;
+}
+
+#product_select_table_entries_table thead tr th{
+    padding:  10px 6px 10px 6px !important;
+    font-size: small;
+    
+}

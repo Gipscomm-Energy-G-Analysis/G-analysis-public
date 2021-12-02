@@ -1787,6 +1787,119 @@ $(document).ready( function(){
     });
     // --end--->
 
+    // <---29-11-2021---
+    $(document).on('click','.page_count_val_all_product,.pagination_input_val_all_product', function(){
+        var id = $(this).attr('id');
+        var class_btn = $(this).hasClass('pagination_input_val_all_product');
+        if(id == 'previous_pagination_val_all_product'){
+            var page_val = $('#pagination_all_product').find('li.active').find('input').val();
+            page_val = parseInt(page_val) - 1;
+            getNumberRecordsProduct(page_val);
+
+        }
+        else if(id == 'next_pagination_val_all_product'){
+            var page_val = $('#pagination_all_product').find('li.active').find('input').val();
+            page_val = parseInt(page_val) + 1;
+            getNumberRecordsProduct(page_val);
+        }
+        else if(class_btn == true){
+            var page_val = $(this).val();
+            getNumberRecordsProduct(page_val);
+        }
+    });
+
+
+    $(document).on('click','.all_product_table_row_click' , function(){
+        var prd_id  = $(this).attr('prd_id');
+        var prd_name  = $(this).attr('prd_name');
+        // console.log('prd_id',prd_id);
+        // console.log('Name',prd_name);
+        var textNoRecord = $('.modal_all_products  table #all_product_table_entries tr').children('td:first').text();
+        if(textNoRecord != 'No Data')
+        {
+            $('#all_product_input_text_field').val(prd_name);
+            getAllProductClickTableHTML(prd_id);
+            $('.modal_all_products').modal('hide');
+        }
+        else{
+            $('#all_product_input_text_field').val('');
+            $('#product_select_table_entries').html('');
+            $('#product_select_table_entries_pagination').html('');
+            $('.modal_all_products').modal('hide');
+
+        }
+        
+    });
+
+
+    $(document).on('click','.page_count_val_particluar_product,.pagination_input_val_particular_product', function(){
+        var id = $(this).attr('id');
+        var prd_id = $(this).attr('prd_id');
+        var class_btn = $(this).hasClass('pagination_input_val_particular_product');
+        var analgen_config_id = $('#prd_id_hidden').attr('analgen_config_id');
+        var order_by = $('#product_records_order_by').val();
+        if(analgen_config_id == '') //All Product Case
+        {
+            if(id == 'previous_pagination_val_particular_product'){
+                var page_val = $('#product_select_table_entries_pagination').find('li.active').find('input').val();
+                page_val = parseInt(page_val) - 1;
+                getAllProductClickTableHTML(prd_id,page_val,order_by);
+
+            }
+            else if(id == 'next_pagination_val_particular_product'){
+                var page_val = $('#product_select_table_entries_pagination').find('li.active').find('input').val();
+                page_val = parseInt(page_val) + 1;
+                getAllProductClickTableHTML(prd_id,page_val,order_by);
+            }
+            else if(class_btn == true){
+                var page_val = $(this).val();
+                getAllProductClickTableHTML(prd_id,page_val,order_by);
+            } 
+        }
+        else{
+            if(id == 'previous_pagination_val_particular_product'){
+                var page_val = $('#product_select_table_entries_pagination').find('li.active').find('input').val();
+                page_val = parseInt(page_val) - 1;
+                rowClickParticularProductEntry(analgen_config_id,page_val,order_by);
+
+            }
+            else if(id == 'next_pagination_val_particular_product'){
+                var page_val = $('#product_select_table_entries_pagination').find('li.active').find('input').val();
+                page_val = parseInt(page_val) + 1;
+                rowClickParticularProductEntry(analgen_config_id,page_val,order_by);
+            }
+            else if(class_btn == true){
+                var page_val = $(this).val();
+                rowClickParticularProductEntry(analgen_config_id,page_val,order_by);
+            }
+        } 
+    })
+
+    $(document).on('change','#product_records_order_by', function(){
+        var textNoRecord = $('#product_select_table_entries_table table #product_select_table_entries tr').children('td:first').text();
+        if(textNoRecord == 'No Data')
+        {
+            return false;
+        }
+        var prd_id = $('#prd_id_hidden').attr('prd_id');
+        var analgen_config_id = $('#prd_id_hidden').attr('analgen_config_id');
+        var order_by = $(this).val();
+        if(analgen_config_id == ''){
+            getAllProductClickTableHTML(prd_id,1,order_by);
+        }else{
+            rowClickParticularProductEntry(analgen_config_id,1,order_by);
+        }
+    })
+
+    $(document).on('click','.row_click_particular_product_entry', function(){
+        var analgen_config_id =  $(this).attr('analgen_config_id');
+        rowClickParticularProductEntry(analgen_config_id);
+    });
+    // --end--->
+
+
+    
+
 
     // // <---1-10-2021--
     // // Graph

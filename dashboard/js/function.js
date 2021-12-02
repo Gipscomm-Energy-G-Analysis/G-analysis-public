@@ -1439,10 +1439,8 @@ function rowClickEnergyPaginationTableData(mst_id,data_type,page_value,selected_
 // --end-->
 
 //Selected Number of Records Product
-function getNumberRecordsProduct(){
-    var number_records = $('#product_number_record').val();
-    var page_val = $('#val').val();
-    // console.log('Page Value',page_val);
+function getNumberRecordsProduct(page_val = 1){
+    // var number_records = $('#product_number_record').val();
     $.ajax({
         type: "POST",
         url: "php/retreive.php",
@@ -1451,14 +1449,17 @@ function getNumberRecordsProduct(){
         data: {
             action: "getNumberRecordsProduct",
             nameDB: $("#nameDashboardDB").val(),
-            number_records : number_records
+            // number_records : number_records,
+            page_val : page_val
         },
         fail: function() {
             alert("failed!!")
         },
         success: function(a) {
-           $('#product_select_table_entries').html(a['product_html']);
+           $('#all_product_table_entries').html(a['product_html']);
            $('#pagination_all_product').html(a['pagination_html']);
+           $('#all_product_table_entries tr td').attr('style','padding: 12px !important; font-size: small');
+           
         }
     });
 }
@@ -4646,6 +4647,115 @@ function updateDashboardChart(){
   
 }
 // --end-->
+
+// <---29-11-2021---
+function getAllProductClickTableHTML(prd_id,page_val = 1,order_by = 'desc'){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getAllProductClickTable",
+        nameDB: $("#nameDashboardDB").val(),
+        prd_id : prd_id,
+        page_val : page_val,
+        order_by : order_by
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      if(a != ''){
+
+        var thVal =  $('#product_select_table_entries_table thead tr').children('th:eq(4)').text();
+        if(thVal == '' || thVal == undefined){
+          $('#product_select_table_entries_table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
+        }
+
+        $('#product_select_table_entries_table thead tr').children('th:eq(2)').text('Created Date');
+        $('#product_select_table_entries_table thead tr').children('th:eq(3)').text('Total Units');
+
+        $('#product_select_table_entries').html(a['product_html']);
+        $('#product_select_table_entries_pagination').html(a['pagination_html']);
+
+        $('#product_select_table_entries_table thead tr th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
+        $('#product_select_table_entries_table tbody tr td').attr('style','padding: 6px !important;font-size: small !important;');
+        $('#product_select_table_entries_table thead tr').children('th:eq(2)').text('Created Date');
+
+        $('#product_records_order_by_div').show();
+        localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+      }
+    }
+  });
+
+}
+// ---end--->
+
+
+// <-----30-11-2021---
+function rowClickParticularProductEntry(analgen_config_id,page_val = 1,order_by = 'desc'){
+  // $('#measurement_record_table table tbody tr').children('td:eq(3)').text();
+  var total_count = $("#product_select_table_entries tr[analgen_config_id='"+analgen_config_id+"']").children('td:eq(3)').text();
+  $('#overall_count_product').val(total_count);
+
+  var record_name = $("#product_select_table_entries tr[analgen_config_id='"+analgen_config_id+"']").children('td:eq(0)').text();
+  $('#analgen_config_id_input').attr('data-name',record_name);
+  // --end-->
+
+  var table_other = $('#product_select_table_entries').children('tr:eq(0)').attr('data-table-other'); 
+  $('#analgen_config_id_input').attr('data-table-other',table_other);
+  $('#analgen_config_id_input').val(analgen_config_id);
+  // console.log('Worrking Function');
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "rowClickParticularProductEntry",
+        nameDB: $("#nameDashboardDB").val(),
+        analgen_config_id : analgen_config_id,
+        page_val : page_val,
+        order_by : order_by
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#product_select_table_entries_table thead tr').children('th:eq(4)').remove();
+      
+      $('#product_select_table_entries_table thead tr').children('th:eq(2)').text('Date');
+      $('#product_select_table_entries_table thead tr').children('th:eq(3)').text('Units Consumed');
+
+      $('#product_select_table_entries').html(a['product_html']);
+      $('#product_select_table_entries_pagination').html(a['pagination_html']);
+
+      $('#product_select_table_entries_table thead tr th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
+      $('#product_select_table_entries_table tbody tr td').attr('style','padding: 6px !important;font-size: small !important;');
+      $('#product_select_table_entries_table thead tr').children('th:eq(2)').text('Date');
+
+      localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+
+      // <---2-12-2021---
+      if(a['queryLastDate'] != undefined && a['queryLastDate'] != ''){
+        if(a['queryLastDate'][0]['type'] == '2'){
+          $('#row_click_last_date_product').val(a['queryLastDate'][0]['on_week']+'-'+a['queryLastDate'][0]['on_date']);
+        }
+        else{
+          $('#row_click_last_date_product').val(a['queryLastDate'][0]['on_date']);
+        }
+       
+      }
+      else{
+        $('#row_click_last_date_product').val('');
+      }
+      // ---end-->
+    }
+  });
+}
+// ---end--->
 
 // <---16-9-2021---
 // function allowDrop(ev) {

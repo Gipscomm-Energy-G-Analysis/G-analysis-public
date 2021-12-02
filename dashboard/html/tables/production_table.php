@@ -12,7 +12,15 @@
                   <div class="row">
                     <div class="form-group col-md-3" id="product_field_div">
                       <img src="images/search.png" id="all_product_image">
-                      <input type='text' class='form-control form-control-sm text-dark' placeholder='All Product' readonly >
+                      <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='All Product' readonly >
+                    </div>
+
+                    <div class="form-group col-md-3 mt_pr_alignment" id="product_records_order_by_div" style="display: none">
+                      <label for="product_records_order_by">Filter Units Consumed</label>
+                      <select class="form-control form-control-sm text-dark" id="product_records_order_by">
+                        <option value='desc'>Order By Max Units Consumed</option>
+                        <option value='asc'>Order By Min Units Consumed</option>
+                      </select>
                     </div>
                   </div>
 
@@ -50,7 +58,7 @@
                                   </th> -->
                                 </tr>
                               </thead>
-                              <tbody id="product_select_table_entries">
+                              <tbody id="all_product_table_entries">
                               
                               </tbody>
                             </table>
@@ -69,37 +77,27 @@
                     </div>
                   </div>
 
-
-
-
-
-
-
-
-
                   <!-- --end-- -->
                   
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label for="exampleFormControlSelect3">Select No. of Records</label>
                     <select class="form-control form-control-sm text-dark " id="product_number_record">
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="30">30</option>
-                      <!-- <option value="40">40</option>
-                      <option value="50">50</option> -->
                     </select>
-                  </div>
+                  </div> -->
                   
                   <!-- <p class="card-description">
                     Add class <code>.table-striped</code>
                   </p> -->
-                  <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
+                  <div class="table-responsive" id="product_select_table_entries_table">
+                    <table class="table table-striped table-bordered" id="product_select_table_entries_table">
                       <thead>
                         <tr>
-                          <th>
+                          <!-- <th>
                             Product Name
-                          </th>
+                          </th> -->
 
                           <th>
                             Item Name
@@ -109,8 +107,13 @@
                             Time Interval
                           </th>
                           <th>
-                            Start
+                            Created Date
                           </th>
+
+                          <th>
+                            Total Units
+                          </th>
+
                           <th>
                             Status
                           </th>
@@ -120,7 +123,14 @@
                       
                       </tbody>
                     </table>
+
+                    <div id="product_select_table_entries_pagination">
+                    </div>
                   </div>
+
+                  <input type="hidden" id="overall_count_product">
+                  <input type="hidden" id="row_click_last_date_product">
+                  <input type="hidden" id="analgen_config_id_input">
                 </div>
               </div>
             </div>

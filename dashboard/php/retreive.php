@@ -2725,28 +2725,11 @@ class dashboardController {
             global $conn;
             // $number_records = $_POST['number_records'];
             // <--26-11-2021--
-            $page_val = isset($_POST['page_val']) ?  $_POST['page_val '] : 1;
+            $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
             $number_records = 5;
             $pagesCount = '';
             $offSetVal = 0;
 
-            $queryTotalRecord = "SELECT * FROM produktionsAnlagenConfig as t1 ";
-            $queryTotalRecord .="INNER join "; 
-            $queryTotalRecord.="( ";
-            $queryTotalRecord .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
-            $queryTotalRecord .="from produktionsAnlagenMoreOpt as t2 ";
-            $queryTotalRecord.=") ";
-            $queryTotalRecord .="t2 ";
-            $queryTotalRecord .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
-            $queryTotalRecord .= "INNER join ";
-            $queryTotalRecord .= "( ";
-            $queryTotalRecord .= "select t3.prd_anl_ID as table_3_prd_anl_Id , max(cast(t3.val as int)) as val ";
-            $queryTotalRecord .= "from masseneingabeSuchePrdIMw  as t3 group by t3.prd_anl_ID ";
-            $queryTotalRecord .= ") ";
-            $queryTotalRecord .= "t3 ";
-            $queryTotalRecord .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
-            $queryTotalRecord .= "where t1.iBdeType='1' ";
-            $queryTotalRecord .= "order by t1.iBdePrdktConf_ID desc ";
             // <----29-11-2021--
             $queryTotalRecord  = "SELECT t1.prd_id from produktionsAnlagenConfig as t1 ";
             $queryTotalRecord .= "where t1.iBdeType = 1 AND t1.prd_id != '0' ";
@@ -2783,27 +2766,6 @@ class dashboardController {
             // left join anlagen as t3 on t1.anl_id = t3.anl_ID
             // where t1.iBdeType='1' order by t1.iBdePrdktConf_ID desc";
             //--end-->
-            $query1 = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
-            $query1 .="LEFT join "; 
-            $query1.="( ";
-            $query1 .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
-            $query1 .="from produktionsAnlagenMoreOpt as t2 ";
-            $query1.=") ";
-            $query1 .="t2 ";
-            $query1 .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
-            $query1 .= "left join ";
-            $query1 .= "( ";
-            $query1 .= "select t3.prd_anl_ID as table_3_prd_anl_Id , max(cast(t3.val as int)) as val ";
-            $query1 .= "from masseneingabeSuchePrdIMw  as t3 group by t3.prd_anl_ID ";
-            $query1 .= ") ";
-            $query1 .= "t3 ";
-            $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
-            $query1 .= "left join produkte as t4 on t1.prd_iD = t4.prd_ID ";
-            $query1 .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $query1 .= "where t1.iBdeType='1' ";
-            $query1 .= "order by t1.iBdePrdktConf_ID desc ";
-            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-
 
             // <---29-11-2021---
             $query1 = "SELECT * from produktionsAnlagenConfig as Mt ";
@@ -2820,7 +2782,7 @@ class dashboardController {
             // --end--
             $dataProduct = queryDB($conn, $query1, "read");
             // echo json_encode($dataProduct); die;
-
+            // $dataProduct = '';
             $tr = $this->generateAllProductTableHTML($dataProduct);
             $pagination_html = $this->generateAllProductPaginationHTML($page_val,$pagesCount,$dataProduct);
             $records['product_html'] = $tr;
@@ -2863,7 +2825,10 @@ class dashboardController {
             $tr = '';
             if($dataProduct != '' && count($dataProduct) > 0){
                 foreach($dataProduct as $key => $value){
-                    $tr .= '<tr>';
+                    $val_prd_ID = $value['prd_ID'];
+                    $prd_name = $value['namePrd'];
+
+                    $tr .= '<tr class="all_product_table_row_click" prd_id="'.$val_prd_ID.'" prd_name="'.$prd_name.'">';
                     $tr.= "<td>".$value['namePrd']."</td>";
                     // $tr.= "<td>".$value['bezeichnungAnl']."</td>";
                     // if($value['intTp_ID'] == "1"){
@@ -2898,7 +2863,7 @@ class dashboardController {
                     $tr.="</tr>";
                 }
             }else{
-                 $tr = "<tr><td colspan='4' class='text-center'>No Data</td></tr>";
+                 $tr = "<tr><td colspan='4' class='text-center all_product_table_row_click'>No Data</td></tr>";
             }
 
             return $tr;
@@ -2936,7 +2901,7 @@ class dashboardController {
                     $style_background_end = '';
                 }
                 $paginationHTMl="<nav aria-label='Page navigation example'>
-                    <div class='pagination_items'>
+                    <div class=''>
                             <ul class='pagination'>
                                 <li class='page-item $class_page_count_val' data_type='$data_type' data_mst='$mst_id' id='previous_pagination_val_all_product'>
                                     <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
@@ -2953,7 +2918,7 @@ class dashboardController {
                     // }
 
                     if($i == $page_val || $i == $pagesCount){
-                        $paginationHTMl.="<li class='page-item  $active '><input type='button' class='active_background pagination_input_val_all_product page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
+                        $paginationHTMl.="<li class='page-item  $active '><input type='button' class='pagination_input_val_all_product page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
                     }
                     else{
                         $paginationHTMl.="<li class='page-item'><input type='button' class='pagination_input_val_all_product page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
@@ -2963,13 +2928,16 @@ class dashboardController {
                     //     $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_all_product' href='javascript:void(0);'>$i</a></li>";
                     // }
                 }
-                $paginationHTMl.="<li class='page-item $class_page_count_val' data_type='$data_type' data_mst='$mst_id' id='next_pagination_val_all_product'>
+                $paginationHTMl.="<li class='page-item $class_page_count_val_end' data_type='$data_type' data_mst='$mst_id' id='next_pagination_val_all_product'>
                                         <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
                                             <span aria-hidden='true'>&raquo;</span>
                                             <span class='sr-only'>Next</span>
                                         </a>
-                                    </li>";
-                      
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>";
+    
                 return $paginationHTMl;
                 // $records['pagination_html'] = $paginationHTMl;
             }
@@ -2980,6 +2948,443 @@ class dashboardController {
         }
     }
     // ---end--->
+
+    // <---30-11-2021---
+    public function getAllProductClickTable()
+    {
+        try{
+            global $conn;
+
+            $prd_id = $_POST['prd_id'];
+            $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
+            $number_records = 5;
+            $pagesCount = '';
+            $offSetVal = 0;
+            $order_condition = $_POST['order_by'];
+
+            $queryTotalRecord = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+            $queryTotalRecord .="LEFT join "; 
+            $queryTotalRecord.="( ";
+            $queryTotalRecord .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+            $queryTotalRecord .="from produktionsAnlagenMoreOpt as t2 ";
+            $queryTotalRecord.=") ";
+            $queryTotalRecord .="t2 ";
+            $queryTotalRecord .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+            $queryTotalRecord .= "left join ";
+            $queryTotalRecord .= "( ";
+            $queryTotalRecord .= "select t3.prd_anl_ID as table_3_prd_anl_Id , sum(cast(t3.val as int)) as val ";
+            $queryTotalRecord .= "from masseneingabeSuchePrdIMw  as t3 group by t3.prd_anl_ID ";
+            $queryTotalRecord .= ") ";
+            $queryTotalRecord .= "t3 ";
+            $queryTotalRecord .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+            $queryTotalRecord .= "left join produkte as t4 on t1.prd_iD = t4.prd_ID ";
+            $queryTotalRecord .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
+            $queryTotalRecord .= "where t1.iBdeType='1' ";
+            $queryTotalRecord .= "AND t1.prd_iD = '$prd_id' ";
+            $queryTotalRecord .= "order by t1.iBdePrdktConf_ID desc ";
+            $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
+
+            $total_number_records = count($totalRecordsValue);
+
+            if(count($totalRecordsValue) > 0){
+               if($total_number_records <= $number_records){
+                    $offSetVal = 0;
+                    $number_records = $total_number_records;
+                    $pagesCount = 1; 
+                    $page_val = 1;
+               }
+               else{
+                    $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                    $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                    $offSetVal = ($page_val - 1) * $number_records;
+                    
+                    if($page_val == $pagesCount){
+                        $number_records = $total_number_records - $offSetVal;
+                    }
+                    
+               } 
+
+            }
+            // --end-->
+
+            $query1 = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+            $query1 .="LEFT join "; 
+            $query1.="( ";
+            $query1 .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+            $query1 .="from produktionsAnlagenMoreOpt as t2 ";
+            $query1.=") ";
+            $query1 .="t2 ";
+            $query1 .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+            $query1 .= "left join ";
+            $query1 .= "( ";
+            $query1 .= "select t3.prd_anl_ID as table_3_prd_anl_Id , sum(cast(t3.val as int)) as val ";
+            $query1 .= "from masseneingabeSuchePrdIMw  as t3 group by t3.prd_anl_ID ";
+            $query1 .= ") ";
+            $query1 .= "t3 ";
+            $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+            $query1 .= "left join produkte as t4 on t1.prd_iD = t4.prd_ID ";
+            $query1 .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
+            $query1 .= "where t1.iBdeType='1' AND t1.prd_ID = '$prd_id' ";
+            $query1 .= "order by t3.val $order_condition ";
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+            // echo $query1; die;
+            $dataProduct = queryDB($conn, $query1, "read");
+            // echo json_encode($dataProduct); die;
+            $tr = $this->getAllProductClickTableHTML($dataProduct);
+            $pagination_html = $this->getAllProductClickTablePagination($page_val,$pagesCount,$dataProduct,$prd_id);
+            $records['product_html'] = $tr;
+            $records['pagination_html'] = $pagination_html;
+
+            $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product');
+            $records['query_data'] = $ar;
+
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+     // <---1-12-2021---
+     public function rowClickParticularProductEntry(){
+        try{
+            global $conn;
+            $analgen_config_id = $_POST['analgen_config_id'];
+            $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
+            $number_records = 5;
+            $pagesCount = '';
+            $offSetVal = 0;
+            $order_condition = $_POST['order_by'];
+
+            $queryTotalRecord = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+            $queryTotalRecord .="INNER join "; 
+            $queryTotalRecord.="( ";
+            $queryTotalRecord .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+            $queryTotalRecord .="from produktionsAnlagenMoreOpt as t2 ";
+            $queryTotalRecord.=") ";
+            $queryTotalRecord .="t2 ";
+            $queryTotalRecord .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+            $queryTotalRecord .= "INNER join ";
+            $queryTotalRecord .= "( ";
+            $queryTotalRecord .= "select t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+            $queryTotalRecord .= "from masseneingabeSuchePrdIMw  as t3 ";
+            $queryTotalRecord .= ") ";
+            $queryTotalRecord .= "t3 ";
+            $queryTotalRecord .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+            $queryTotalRecord .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
+            $queryTotalRecord .= "where t1.iBdeType='1' ";
+            $queryTotalRecord .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+            $queryTotalRecord .= "order by t3.val $order_condition ";
+            $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
+            // echo json_encode($totalRecordsValue);die;
+            $total_number_records = count($totalRecordsValue);
+
+            if(count($totalRecordsValue) > 0){
+               if($total_number_records <= $number_records){
+                    $offSetVal = 0;
+                    $number_records = $total_number_records;
+                    $pagesCount = 1; 
+                    $page_val = 1;
+               }
+               else{
+                    $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                    $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                    $offSetVal = ($page_val - 1) * $number_records;
+                    
+                    if($page_val == $pagesCount){
+                        $number_records = $total_number_records - $offSetVal;
+                    }
+                    
+               } 
+
+            }
+            // --end-->
+
+            $queryMaxValue = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+            $queryMaxValue .="INNER join "; 
+            $queryMaxValue.="( ";
+            $queryMaxValue .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+            $queryMaxValue .="from produktionsAnlagenMoreOpt as t2 ";
+            $queryMaxValue.=") ";
+            $queryMaxValue .="t2 ";
+            $queryMaxValue .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+            $queryMaxValue .= "INNER join ";
+            $queryMaxValue .= "( ";
+            $queryMaxValue .= "select t3.prd_anl_ID as table_3_prd_anl_Id , max(cast(t3.val as int)) as val ";
+            $queryMaxValue .= "from masseneingabeSuchePrdIMw  as t3 group by t3.prd_anl_ID ";
+            $queryMaxValue .= ") ";
+            $queryMaxValue .= "t3 ";
+            $queryMaxValue .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+            $queryMaxValue .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
+            $queryMaxValue .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+            $queryMaxValue .= "order by t3.val $order_condition ";
+            // $queryMaxValue .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+
+            $queryMaximum = $queryMaxValue;
+            // --end-->
+            $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
+            // echo json_encode($queryMaxValue); die;
+            $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+
+            
+
+            $query1 = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+            $query1 .="INNER join "; 
+            $query1.="( ";
+            $query1 .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+            $query1 .="from produktionsAnlagenMoreOpt as t2 ";
+            $query1.=") ";
+            $query1 .="t2 ";
+            $query1 .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+            $query1 .= "INNER join ";
+            $query1 .= "( ";
+            $query1 .= "select t3.prd_anl_ID as table_3_prd_anl_Id , t3.val , t3.on_date, t3.on_week ";
+            $query1 .= "from masseneingabeSuchePrdIMw  as t3 ";
+            $query1 .= ") ";
+            $query1 .= "t3 ";
+            $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+            $query1 .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
+            $query1 .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+            $query1 .= "order by t3.val $order_condition ";
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+            // echo $query1; die;
+            $dataProduct = queryDB($conn, $query1, "read");
+            // echo json_encode($dataProduct); die;
+            $tr = $this->getAllProductClickTableHTML($dataProduct,$queryMaxVal);
+            $pagination_html = $this->getAllProductClickTablePagination($page_val,$pagesCount,$dataProduct,'',$analgen_config_id);
+            $records['product_html'] = $tr;
+            $records['pagination_html'] = $pagination_html;
+
+            $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => $queryMaximum,'row_click' => 'true', 'type' => 'Product');
+            $records['query_data'] = $ar;
+
+
+            $queryLastDate = "SELECT  TOP(1)* FROM produktionsAnlagenConfig as t1 ";
+            $queryLastDate .="INNER join "; 
+            $queryLastDate.="( ";
+            $queryLastDate .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+            $queryLastDate .="from produktionsAnlagenMoreOpt as t2 ";
+            $queryLastDate.=") ";
+            $queryLastDate .="t2 ";
+            $queryLastDate .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+            $queryLastDate .= "INNER join ";
+            $queryLastDate .= "( ";
+            $queryLastDate .= "select t3.prd_anl_ID as table_3_prd_anl_Id , t3.type, t3.val ,t3.id, t3.on_date, t3.on_week ";
+            $queryLastDate .= "from masseneingabeSuchePrdIMw  as t3 ";
+            $queryLastDate .= ") ";
+            $queryLastDate .= "t3 ";
+            $queryLastDate .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+            $queryLastDate .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+            $queryLastDate .= "order by t3.id  desc ";
+            $queryLastDateResult = queryDB($conn, $queryLastDate, "read");
+            // echo json_encode($queryLastDateResult); die;
+            $records['queryLastDate'] = $queryLastDateResult;
+            // --end--->
+
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
+    // -end--->
+
+    public function getAllProductClickTableHTML($dataProduct,$queryMaxVal = false)
+    {
+        try{
+            // echo json_encode($dataProduct); die;
+            $tr = '';
+            $col_span = '';
+            if($queryMaxVal == ""){
+                $col_span = "colspan='5'";
+            }
+            else if($queryMaxVal != ''){
+                $col_span = "colspan='4'";
+            }
+
+            if($dataProduct != '' && count($dataProduct) > 0){
+                foreach($dataProduct as $key => $value){
+
+                    $class_val='';
+                    $style ='';
+                    $attr = '';
+                    if($queryMaxVal == ""){
+                        $class_val = 'class="row_click_particular_product_entry"';
+                    }
+                    else if($queryMaxVal != '' && $queryMaxVal == $value['val']){
+                        $style="style='background-color: #f77171'";
+                        $attr = 'data-max-row="true"';
+                    }
+                    
+                    $val_prd_ID = '';
+                    $prd_name = '';
+                    if($queryMaxVal == '')
+                    {
+                        $val_prd_ID = $value['prd_ID'];
+                        $prd_name = $value['namePrd'];
+                    }
+
+                    $tr .= "<tr $style $class_val $attr prd_id='$val_prd_ID' analgen_config_id=".$value['iBdePrdktConf_ID']." data-table-other='false' prd_name='$prd_name'>";
+                    // $tr.= "<td>".$value['namePrd']."</td>";
+                    $tr.= "<td>".$value['bezeichnungAnl']."</td>";
+                    if($value['intTp_ID'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($value['intTp_ID'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($value['intTp_ID'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($value['intTp_ID'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+
+                    //Units Checks
+                    $unit='';
+                    if($value['unt_ID'] == "1"){
+                        $unit = "Hrs.";
+                    }
+                    else if($value['unt_ID'] == "2"){
+                        $unit = "kWh";
+                    }
+                    else if($value['unt_ID'] == "3"){
+                        $unit = "m³";
+                    }
+                    else if($value['unt_ID'] == "4"){
+                        $unit = "l";
+                    }
+                    else if($value['unt_ID'] == "5"){
+                        $unit = "kg";
+                    }
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                        if($queryMaxVal != ''){
+                            $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
+                        }
+                        else{
+                            $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                        }
+                    }
+                    else if($queryMaxVal != ''){
+                        $tr.= "<td>".$value['on_date']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['startDate']."</td>";
+                    }
+                    if($value['val'] == null){
+                        $tr.= "<td> - </td>";
+                        if($queryMaxVal == ''){
+                            $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                        }
+                    }
+                    else{
+                        $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                        if($queryMaxVal == ''){
+                            $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                        }
+                    }
+                    $tr.="</tr>";
+                }
+            }else{
+                 $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+            }
+
+            return $tr;
+            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    public function getAllProductClickTablePagination($page_val,$pagesCount,$dataProduct,$prd_id = false ,$analgen_config_id = false ){
+        try{
+            if($page_val > 0 && $pagesCount > 0 && $dataProduct != '' && count($dataProduct) > 0){
+                $style_background = '';
+                $class_page_count_val = 'page_count_val_particluar_product';
+                $style_background_end = '';
+                $class_page_count_val_end = 'page_count_val_particluar_product';
+                // echo $page_val ; die;
+                if($page_val == "1"){
+                    $style_background = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val = '';
+                    if($pagesCount == "1"){
+                        $style_background_end = "style='background: #d6d6d6; color: black'";
+                        $class_page_count_val_end = '';  
+                    }
+                    
+                }
+                else if($page_val == $pagesCount){
+                    $style_background_end = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val_end = '';
+                }
+                else{
+                    $style_background = '';
+                    $style_background_end = '';
+                }
+                $paginationHTMl="<nav aria-label='Page navigation example'>
+                    <input type='hidden' id='prd_id_hidden' prd_id='$prd_id' analgen_config_id='$analgen_config_id'>
+                    <div class='pagination_items'>
+                            <ul class='pagination'>
+                                <li class='page-item $class_page_count_val' prd_id='$prd_id' id='previous_pagination_val_particular_product'>
+                                    <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
+                                        <span aria-hidden='true'>&laquo;</span>
+                                        <span class='sr-only'>Previous</span>
+                                    </a>
+                                </li>";
+                                
+                for($i = 1; $i <= $pagesCount; $i++){
+                    $active = $i == $page_val ? 'active' : '';
+                    
+                    // if($i == $page_val){
+                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
+                    // }
+
+                    if($i == $page_val || $i == $pagesCount){
+                        $paginationHTMl.="<li class='page-item  $active '><input type='button' class='pagination_input_val_particular_product page-link' prd_id='$prd_id' value='$i'></li>";
+                    }
+                    else{
+                        $paginationHTMl.="<li class='page-item'><input type='button' class='pagination_input_val_particular_product page-link' prd_id='$prd_id' value='$i'></li>";
+                    }
+                    // if($i == $pagesCount){
+                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
+                    //     $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_all_product' href='javascript:void(0);'>$i</a></li>";
+                    // }
+                }
+                $paginationHTMl.="<li class='page-item $class_page_count_val_end' prd_id='$prd_id' id='next_pagination_val_particular_product'>
+                                        <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
+                                            <span aria-hidden='true'>&raquo;</span>
+                                            <span class='sr-only'>Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>";
+
+                //ScreenShot Code
+                $paginationHTMl.="<div id='save_table_format_product' class='text-center'>
+                                    <input type='button' id='product_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                                </div>";
+                      
+                return $paginationHTMl;
+                // $records['pagination_html'] = $paginationHTMl;
+            }
+            
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
+
 
     public function getNumberRecordsProductionData(){
        try{
