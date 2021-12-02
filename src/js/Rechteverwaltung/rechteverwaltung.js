@@ -187,7 +187,7 @@ const scpRechteverwaltung =
                 Array.from(
                     new Set(
                         array($("[data-menus]").length)()()
-                        .map((_, i) => $("[data-menus]").not("button[data-menus]").eq(i).attr("data-menus"))
+                        .map((_, i) => $("[data-menus]").eq(i).attr("data-menus"))
                         .filter(a => !emptyString(a))
                     )
                 ).sort()
@@ -197,7 +197,7 @@ const scpRechteverwaltung =
 
             const menuItemText =
                 id => 
-                ( { id, text : $(`[data-menus=${id}]`).text() } )
+                ( { id, text : $(`[data-menus=${id}]`).not("button").text().split(" ").length > 2 ? $(`[data-menus=${id}]`).not("button").text().split(" ")[0] : $(`[data-menus=${id}]`).not("button").text() } )
 
             this.getMainMenus =
                 menus =>
