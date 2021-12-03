@@ -856,6 +856,127 @@ class dashboardController {
         }
     }
 
+    public function dashboardProductHtml($dataProduct,$queryMaxVal = false)
+    {
+        try{
+            $col_span = "";
+            $tr = "";
+            if($queryMaxVal == ""){
+                $col_span = "colspan='5'";
+                $tr = "<thead>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Created Date</th>";
+                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Status</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+            }
+            else if($queryMaxVal != ''){
+                $col_span = "colspan='4'";
+                $tr = "<thead style='background-color: #c5c8d2'>";
+                $tr .= "<tr>";
+                $tr .= "<th>Name</th>";
+                $tr .= "<th>Time Interval</th>";
+                $tr .= "<th>Date</th>";
+                $tr .= "<th>Units Consumed</th>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
+            }
+            if($dataProduct != '' && count($dataProduct) > 0){
+                $tr .= "<tbody>";
+                foreach($dataProduct as $key => $value){
+                    $style ='';
+                    if($queryMaxVal != '' && $queryMaxVal == $value['val']){
+                        $style="style='background-color: #f77171'";
+                    }
+                    
+                    $val_prd_ID = '';
+                    $prd_name = '';
+                    if($queryMaxVal == '')
+                    {
+                        $val_prd_ID = $value['prd_ID'];
+                        $prd_name = $value['namePrd'];
+                    }
+
+                    $tr .= "<tr $style prd_id='$val_prd_ID' analgen_config_id=".$value['iBdePrdktConf_ID']." data-table-other='false' prd_name='$prd_name'>";
+                    // $tr.= "<td>".$value['namePrd']."</td>";
+                    $tr.= "<td>".$value['bezeichnungAnl']."</td>";
+                    if($value['intTp_ID'] == "1"){
+                        $tr.= "<td>Days</td>";
+                    }
+                    else if($value['intTp_ID'] == "2"){
+                        $tr.= "<td>Weeks</td>";
+                    }
+                    else if($value['intTp_ID'] == "3"){
+                        $tr.= "<td>Months</td>";
+                    }
+                    else if($value['intTp_ID'] == "4"){
+                        $tr.= "<td>Years</td>";
+                    }
+                    else{
+                        $tr.= "<td></td>";
+                    }
+
+                    //Units Checks
+                    $unit='';
+                    if($value['unt_ID'] == "1"){
+                        $unit = "Hrs.";
+                    }
+                    else if($value['unt_ID'] == "2"){
+                        $unit = "kWh";
+                    }
+                    else if($value['unt_ID'] == "3"){
+                        $unit = "m³";
+                    }
+                    else if($value['unt_ID'] == "4"){
+                        $unit = "l";
+                    }
+                    else if($value['unt_ID'] == "5"){
+                        $unit = "kg";
+                    }
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                        if($queryMaxVal != ''){
+                            $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
+                        }
+                        else{
+                            $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                        }
+                    }
+                    else if($queryMaxVal != ''){
+                        $tr.= "<td>".$value['on_date']."</td>";
+                    }
+                    else{
+                        $tr.= "<td>".$value['startDate']."</td>";
+                    }
+                    if($value['val'] == null){
+                        $tr.= "<td> - </td>";
+                        if($queryMaxVal == ''){
+                            $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                        }
+                    }
+                    else{
+                        $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                        if($queryMaxVal == ''){
+                            $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                        }
+                    }
+                    $tr.="</tr>";
+                }
+                $tr .= "</tbody>";
+            }else{
+                $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+            }
+
+            return $tr;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
     // <---23-4-2021--
     public function generateHtmlMeasurementTiles(){
         try{
@@ -976,6 +1097,117 @@ class dashboardController {
         }
 
     }
+
+    // <---2-12-2021---
+    public function generateHtmlProductTiles(){
+        try{
+            global $conn;
+            $username = $_SESSION['username']; 
+            $product_title =  $_POST['product_title'];
+            $type =  $_POST['type'];
+            $getResult =  "SELECT * from tableFormat Where (tile_data_type='table' OR tile_data_type='overall_count')  AND username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            
+            $last_id_query = "SELECT max(id) as max_id from tableFormat ";
+            $last_id = queryDB($conn, $last_id_query, "read");
+            $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id']+1 : 0; 
+           
+            if($dataResult != null && count($dataResult)>0){
+                for($i= 0; $i<=$total_result; $i++){
+//                    $measurement_title = $total_result[$i]['tile_title'];
+                    $style= '';
+                    if($i == $total_result){
+                         
+                        $product_title = $_POST['product_title'];;
+                        $tileHtml .= "<input type='hidden' id='total_records' value='$last_id'>";
+                        $tileHtml.="<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$product_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3'>
+                                                <div class='col-md-6 p-0 small-table small-table_$last_id' style='display: none'>
+                                                    <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
+                                                    </table>
+                                                </div>
+                                                <div class='save_table_div_show_table'> 
+                                                    <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
+                    } 
+                    
+                    if($i < $total_result){
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                       $tileHtml.= $dataResult[$i]['tile_html'];
+                    } 
+                }
+                
+            }
+            else{
+                $tileHtml.="<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
+                                <input type='hidden' id='total_records' value='$last_id'>                
+                                <div class='card card-border tile_border'>
+                                    <div class='card-body overflow-hide display-flex'>
+                                        <div id='' class=''>
+                                            <div class='action-modal-button-div'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                            </div>
+                                            <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>".$product_title."</p>
+                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-tile logo-image-main-div'>
+                                            
+                                            <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                            </div>  
+                                            <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                            
+                                        </div>
+                                        
+                                        <div class='overflow-hide ml-3'>
+                                            <div class='col-md-6 p-0 small-table small-table_$last_id' style='display: none'>
+                                                <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
+                                                </table>
+                                            </div>
+                                            <div class='save_table_div_show_table'> 
+                                                <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
+                                                </table>                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div></div>";    
+            }
+            $records['tile_html'] = $tileHtml;
+            $records['data'] = $dataResult;
+            $records['total_record'] = count($dataResult) + 1;
+            $records['last_id'] = $last_id;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
+    // --end--->
 
     // <---22-11-2021---
     public function generateHtmlEnergyTiles(){
@@ -4087,6 +4319,41 @@ class dashboardController {
                 $record['name_value'] = $resultUnit[0]['nameMST'];
 
             }
+            else if($getResult[0]['type'] == 'Product'){
+                $analgen_config_id = $getResult[0]['prd_anlagen_config_id'];
+
+                $queryTotalSum = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                $queryTotalSum .="INNER join "; 
+                $queryTotalSum.="( ";
+                $queryTotalSum .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                $queryTotalSum .="from produktionsAnlagenMoreOpt as t2 ";
+                $queryTotalSum.=") ";
+                $queryTotalSum .="t2 ";
+                $queryTotalSum .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                $queryTotalSum .= "INNER join ";
+                $queryTotalSum .= "( ";
+                $queryTotalSum .= "select t3.prd_anl_ID as table_3_prd_anl_Id , sum(cast(t3.val as int)) as total_value ";
+                $queryTotalSum .= "from masseneingabeSuchePrdIMw  as t3 group by t3.prd_anl_ID ";
+                $queryTotalSum .= ") ";
+                $queryTotalSum .= "t3 ";
+                $queryTotalSum .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                $queryTotalSum .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
+                $queryTotalSum .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                $totalSum = queryDB($conn, $queryTotalSum, "read");
+                $totalSum = $totalSum[0]['total_value'] != null ?  $totalSum[0]['total_value'] : '';
+
+                $queryUnit = "SELECT t1.unt_ID, t2.bezeichnungAnl,t3.namePrd FROM produktionsAnlagenConfig as t1 ";
+                $queryUnit .= "INNER JOIN anlagen as t2 ";
+                $queryUnit .= "ON t1.anl_id = t2.anl_Id ";
+                $queryUnit .= "INNER JOIN produkte as t3 ";
+                $queryUnit .= "ON t1.prd_Id = t3.prd_Id ";
+                $queryUnit .= "where t1.iBdePrdktConf_ID = $analgen_config_id ";
+                $resultUnit = queryDB($conn, $queryUnit, "read");
+                
+                $record['name_value'] = $resultUnit[0]['bezeichnungAnl'];
+                $record['prd_name'] = $resultUnit[0]['namePrd'];
+
+            }
             // Units Checks
             $unit = '';
             if($resultUnit != null){
@@ -4165,6 +4432,9 @@ class dashboardController {
                         else if($dataResult[0]['type'] == 'Measurement'){
                             $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement);
                         }
+                        else if($dataResult[0]['type'] == 'Product'){
+                            $dashboardMeasurementHtml = $this->dashboardProductHtml($dataMeasurement);
+                        }
                     }else{
                         $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement);
                     }
@@ -4187,6 +4457,9 @@ class dashboardController {
                             }
                             else if($dataResult[0]['type'] == 'Measurement'){
                                 $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement,$queryMaxVal);
+                            }
+                            else if($dataResult[0]['type'] == 'Product'){
+                                $dashboardMeasurementHtml = $this->dashboardProductHtml($dataMeasurement,$queryMaxVal);
                             }
                         }
                         else{

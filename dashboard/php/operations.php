@@ -235,11 +235,12 @@ class dashboardControllerOperations {
             $input_width = $_POST['input_width'];
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
-            $mst_Id = $_POST['mst_ID'];
+            $mst_Id = isset($_POST['mst_ID']) ? $_POST['mst_ID'] : '';
+            $analgen_config_id = isset($_POST['analgen_config_id']) ? $_POST['analgen_config_id'] : '';
             $type = $_POST['type'];
             $data_table_other = $_POST['data_table_other'];
-            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_iD,table_other ) ";
-            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username', $mst_Id ,'$data_table_other') ";
+            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_iD,table_other,prd_anlagen_config_id ) ";
+            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username', '$mst_Id' ,'$data_table_other','$analgen_config_id') ";
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
@@ -278,7 +279,8 @@ class dashboardControllerOperations {
             $input_width = $_POST['input_width'];
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
-            $mst_Id = $_POST['mst_ID'];
+            $mst_Id = isset($_POST['mst_ID']) ? $_POST['mst_ID'] : '';
+            $analgen_config_id = isset($_POST['analgen_config_id']) ? $_POST['analgen_config_id'] : '';
             $data_other = $_POST['data_other'];
             $type = $_POST['type'];
            

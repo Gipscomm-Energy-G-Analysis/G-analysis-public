@@ -91,7 +91,7 @@
                   <!-- <p class="card-description">
                     Add class <code>.table-striped</code>
                   </p> -->
-                  <div class="table-responsive" id="product_select_table_entries_table">
+                  <div class="table-responsive" id="product_select_table_entries_table_div">
                     <table class="table table-striped table-bordered" id="product_select_table_entries_table">
                       <thead>
                         <tr>
@@ -120,6 +120,9 @@
                         </tr>
                       </thead>
                       <tbody id="product_select_table_entries">
+                        <tr>
+                          <td style="padding: 6px !important" class='text-center' colspan='5'>Please Select Product</td>
+                        </tr>
                       
                       </tbody>
                     </table>
@@ -131,6 +134,55 @@
                   <input type="hidden" id="overall_count_product">
                   <input type="hidden" id="row_click_last_date_product">
                   <input type="hidden" id="analgen_config_id_input">
+
+                  <div class="modal fade product_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg max-width-modal">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="text-mute text-dark">Instrumententafel</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+
+                        <div class="modal-body">
+                          <!-- Height and Width -->
+                          <div class="row">
+                              <div class="form-group col-md-3">
+                                <label for="modal-height-input-product" class="text-mute">Column</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-product" placeholder="Column">
+                                <input type="hidden" id="modal-height-input-product-hidden" value="145">
+                              </div>
+
+                              <div class="form-group col-md-3">
+                                <label for="modal-width-input-product" class="text-mute">Row</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-product" placeholder="Row">
+                                <input type="hidden" id="modal-width-input-product-hidden" value="285">
+                              </div>
+
+                          </div>
+                          <!-- --end -->
+                          <!-- 23-8-21 -->
+                          <div class="row dashboard_modal_tile gernerated_product_modal_tiles">
+                          </div>
+                          <!-- --end-- -->
+
+                          <div id="product_modal_loader_div" style="display: none">
+                            <img src="images/loader_dashboard.gif" id="product_modal_loader_image">
+                          </div>
+                        
+                        </div>
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="product-table-format"  id="save_table_btn_product">Save</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Product"  id="update_table_btn_product">Update</button>
+                        </div>
+
+                       
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
