@@ -143,6 +143,7 @@ const scpRechteverwaltung_betreuergruppen =
                   , "notizBetrGrp"
                   ]    
                   .forEach(helper.clearField)
+                , scpRechteverwaltung_superAdmins.clearFields()
                 , clearTable(tblMandantenBetrGrp)
                 , helper.setState("betrGrp")("new")
                 )
