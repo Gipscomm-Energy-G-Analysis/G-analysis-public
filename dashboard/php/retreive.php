@@ -1822,6 +1822,76 @@ class dashboardController {
     }
     // --end-->
 
+    // <----06-12-2021--
+    // /<---Edit tile Functionality--
+    public function getEditTilesProduct(){
+        try{
+            global $conn;
+            $username = $_SESSION['username']; 
+            $id = $_REQUEST['id'];
+            $type = $_REQUEST['type'];
+            $getResult =  "SELECT * from tableFormat where (tile_data_type ='table' OR tile_data_type='overall_count') AND username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            $i_value = $_REQUEST['i_value'];
+            $product_title = $_REQUEST['product_title'];
+            if($dataResult != null && count($dataResult)){
+                for($i = 0; $i < $total_result; $i++){
+                    if($id == $dataResult[$i]['id']){
+                        // $total_record_id = $id-1;
+                        $tileHtml .= "<input type='hidden' id='total_records' value='$i_value'>";
+                        // $tileHtml.= $dataResult[$i]['tile_html'];
+                        $tileHtml.="<div class='product_html_modal_$i_value'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_$i_value' data-i='$i_value' data-type-tile='Product'>
+                                    <div class='card card-border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Product' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$product_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                               
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3'>
+                                                <div class='col-md-6 p-0 small-table small-table_$i_value' style='display: none'>
+                                                    <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$i_value'></td><td id='td_table_tile_two_text_$i_value'></td></tr></tbody>
+                                                    </table>
+                                                </div>
+                                                <div class='save_table_div_show_table'> 
+                                                    <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
+
+                        $records['data'] = $dataResult[$i];
+                    }
+                    else{
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        $tileHtml.= $dataResult[$i]['tile_html'];
+                    }
+                    
+                }
+            $records['tile_html'] = $tileHtml;
+            $records['total_record'] = count($dataResult);
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // -end--->
+
     // <---7-10-2021---
     public function getEditChartDataDashboard(){
         try{

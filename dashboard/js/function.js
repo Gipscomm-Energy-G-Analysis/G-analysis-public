@@ -2423,6 +2423,53 @@ function edit_tile_energy(type,edit_id){
 }
 // --end--->
 
+// <--6-12-2021--
+function edit_tile_product(type,edit_id){
+  var i_val = localStorage.getItem('edit-i-value');
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var product_title = ar['title_modal_tile'];
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getEditTilesProduct",
+        id: edit_id,
+        type, type,
+        i_value : i_val,
+        product_title : product_title,
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      var i_val = localStorage.getItem('edit-i-value');
+
+      $('.gernerated_product_modal_tiles').html(a['tile_html']);
+      setTimeout(()=>{
+        var table_length = $('.product_html_modal_'+i_val+' .save_table_div_show_table table tbody tr').length;
+        $('.product_html_modal_'+i_val+' .count_result_tile').text(table_length+' Records');
+      },1000);
+      
+      // $('.gernerated_measurement_modal_tiles .count_result_tile').text(a['total_record']+' Records');
+      $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val).css('height',a['data']['height']);
+      $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val).css('width',a['data']['width']);
+      $('#modal-height-input-product-hidden').val(a['data']['height']);
+      $('#modal-width-input-product-hidden').val(a['data']['width']);
+      (a['data']['input_height'] != 0) ? $('#modal-height-input-product').val(a['data']['input_height']) : $('#modal-height-input-product').val('');
+      (a['data']['input_width'] != 0) ? $('#modal-width-input-product').val(a['data']['input_width']) : $('#modal-width-input-product').val('');
+
+      $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val+' .card-border').addClass('tile_border');
+
+    }
+  });
+
+}
+// --end--->
+
 // <----31-8-2021----
 function updateTileRecord(){
   var id = localStorage.getItem('edit-measurement-tile');
@@ -2566,6 +2613,79 @@ function updateTileRecordEnergy(){
   }
 
 }
+
+// <---6-12-2021---
+function updateTileRecordProduct(){
+  var id = localStorage.getItem('edit-measurement-tile');
+  var input_height = $('#modal-height-input-product').val();
+  var input_width = $('#modal-width-input-product').val();
+  var height = $('#modal-height-input-product-hidden').val();
+  var width = $('#modal-width-input-product-hidden').val();
+  var table_other = $('#product_select_table_entries_table_div table tbody').children('tr:eq(0)').attr('data-table-other');
+
+  // <---1-9-2021----
+  var query_data = localStorage.getItem('query_data');
+
+  var last_index_tile = $('#total_records').val();
+
+  $('.product_html_modal_'+last_index_tile+' .card-border').removeClass('tile_border');
+
+  var tile_html = $('.product_html_modal_'+last_index_tile).html();
+  var tableHtml = $('.product_html_modal_'+last_index_tile+' table').html();
+  $('#total_records').remove();
+  // tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+  // --end-->
+
+  if(id != null && id != undefined){
+    $.ajax({
+      type : "POST",
+      url : 'php/operations.php',
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "updateTileRecord",
+          id: id,
+          query_data : JSON.parse(query_data),
+          title : tile_title,
+          tile_html :tile_html,
+          input_height :input_height,
+          input_width :input_width,
+          height : height,
+          width : width,
+          record_type_of_tile : record_type_of_tile,
+          type_data_tile : type_data_tile,
+          table_other : table_other,
+          nameDB: $("#nameDashboardDB").val()
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#product_modal_loader_div').show();
+        $('.product_tile_modal .modal-content').css('opacity','0.8');
+
+        $('#save_tile_id').val(id);
+        
+        setTimeout(() => {
+          $('#dashboard_sidebar').click();
+          $('#product_modal_loader_div').hide();
+          $('.product_tile_modal .modal-content').css('opacity','1');
+          $('.product_tile_modal').modal('hide');
+        }, 500);
+      }
+    });
+  }
+
+}
+// --end--->
 
 function getEditDataDashboard(id,i_value){
   $.ajax({
@@ -4108,6 +4228,69 @@ function updateTileRecordOverallCountEnergy()
   });
 }
 // --end-->
+
+function updateTileRecordOverallCountProduct()
+{
+  var id = localStorage.getItem('edit-measurement-tile');
+  var product_table_height = $('#modal-height-input-product-hidden').val();
+  var product_table_width = $('#modal-width-input-product-hidden').val();
+  var input_height = $('#modal-height-input-product').val(); 
+  var input_width = $('#modal-width-input-product').val();
+  var analgen_config_id = $('#analgen_config_id_input').val();
+  var data_table_other = $('#analgen_config_id_input').attr('data-table-other');
+  
+  var last_index_tile = $('#total_records').val();
+  $('.product_html_modal_'+last_index_tile+' .card-border').removeClass('tile_border');
+  var tile_html = $('.product_html_modal_'+last_index_tile).html();
+  $('#total_records').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "updateTileRecordOverallCount",
+        nameDB: $("#nameDashboardDB").val(),
+        id : id,
+        title : tile_title,
+        tile_html : tile_html,
+        height: product_table_height,
+        width : product_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile,
+        data_other : data_table_other,
+        analgen_config_id : analgen_config_id,
+        type : 'Product'
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#product_modal_loader_div').show();
+      $('.product_tile_modal .modal-content').css('opacity','0.8');
+      
+      $('#save_tile_id').val(id);
+      
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#product_modal_loader_div').hide();
+        $('.product_tile_modal .modal-content').css('opacity','1');
+        $('.product_tile_modal').modal('hide');
+      }, 500);
+     
+    }
+  });
+}
 
 
 // <----22-9-2021---
