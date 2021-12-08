@@ -688,7 +688,8 @@
                                             <thead>
                                                 <tr>
                                                     <th >Column</th>
-                                                    <th>Label</th>
+                                                    <th>Graph</th>
+                                                    <th>Label</th> 
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -742,6 +743,14 @@
                                                 <label for="select_column">Select Foreign key</label>
                                                 <select class="form-control select_foreign_column" id="select_foreign_column">
                                                     <option value="">Select</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <label for="select_column">Graph Value</label>
+                                                <select class="form-control graph_value" id="select_graph_value">
+                                                    <option value="0">No</option>
+                                                    <option value="1">Yes</option>
                                                 </select>
                                             </div>
                                             <div class="popup">

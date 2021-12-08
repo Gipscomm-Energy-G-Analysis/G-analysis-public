@@ -35,6 +35,7 @@ class MigrationController extends Controller
                 $table->string('primary_key');
                 $table->string('foreign_key');
                 $table->enum('status',['0','1']);
+                $table->enum('is_graph',['0','1'])->default('0');
                 $table->timestamps();
             });
         }
@@ -56,6 +57,7 @@ class MigrationController extends Controller
                 $table->string('primary_key');
                 $table->string('foreign_key');
                 $table->enum('status',['0','1']);
+                $table->enum('is_graph',['0','1'])->default('0');
                 $table->timestamps();
             });
         }

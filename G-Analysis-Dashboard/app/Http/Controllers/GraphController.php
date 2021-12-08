@@ -132,4 +132,6 @@ class GraphController extends Controller
         $graph = DB::table('graph_configurations')->where('username', $this->username)->get()->toArray();
         return ['status'=> 200 , 'data' => $graph];
     }
+
+    
 }

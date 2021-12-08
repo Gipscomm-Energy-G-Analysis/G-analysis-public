@@ -216,3 +216,26 @@ const deleteGraphConfiguration = (id) => {
         }
     });
 }
+
+const getOtherGraphLabel = () => {
+    $.ajax({
+        type: "POST",
+        url: "get-other-graph-label",
+        data: { 
+            id: $('.navigation').attr('data-value'), 
+        },
+        success:function(result) {
+            if(result.status == 200) {
+                let html = '';
+                $.each(result.data, function(key, value) {
+                    html += `<option value="${key}">${key}</option>`;
+                });
+                console.log('html', html);
+                $('#label_column').html(html);
+            }
+        },
+        error:function(result) {
+            toastr.error(result);
+        }
+    });
+}

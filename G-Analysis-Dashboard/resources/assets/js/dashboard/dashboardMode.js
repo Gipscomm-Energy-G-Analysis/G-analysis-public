@@ -33,6 +33,7 @@ let saveSubGroupConfigurations = (data) => {
             spinner.stop();
             if(result.status == 200) {
                 toastr.success(result.msg);
+                getOtherGraphLabel();
                 getMachineData($('.navigation').attr('data-value'),"current");
             }
         },
@@ -54,15 +55,16 @@ let showConfigrationTable = (data , label_data=false) => {
             }
             html += `<tr>
             <td>${column}<input hidden class="configuration_column_data" value="${column}"></td>
+            <td style="text-align:center;"><input type="checkbox" name="graph[]" class="custom_checkbox" ></td>
             <td class="custom_label_td" style="text-align:center;">
                 <span class="custom_label_span">${label}</span>
                 <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="form-control custom_label_input"/>
                 <button type="button" name="remove"  class="btn btn-danger remove_column float-right"><i class="far fa-trash-alt"></i></button>
                 <button type="button" name="remove" style="margin-right:5px;" class="btn btn-info edit_label float-right"><i class="fas fa-edit"></i></button>
-                </td>
+            </td>
             </tr>`;
         });
-
+    console.log('html', html);
     $('#configuration_table tbody').html(html);
 }
 
@@ -192,11 +194,18 @@ $(document).on('click', '#save_configuration_button', function() {
     }
     let column = $(".configuration_column_data").map(function(){return $(this).val();}).get();
     let label = $(".custom_label_input").map(function(){return $(this).val();}).get();
+    let checkbox = $(".custom_checkbox").map(function(){
+        if($(this).is(':checked')){
+            return '1';
+        }
+        return '0';
+    }).get();
     let dataArray = {
         'table': $('#select_group_table').val(),
         'group_id' :$('#select_group_options').val() ,
         'primary_key' :$('#primary_key_subGroup').val() ,
         'foreign_key' : $('#foreign_key_subGroup').val() ,
+        'checkbox' : checkbox,
         'column' : column,
         'label' :label
     }

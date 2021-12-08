@@ -13,7 +13,7 @@ class SubGroupConfiguration extends Model
      *
      * @var string
      */
-    protected $fillable = ['group_id', 'sub_group_id', 'user_id', 'username','table_name','column_name', 'label_name', 'primary_key', 'foreign_key','created_at','updated_at','status'];
+    protected $fillable = ['group_id', 'sub_group_id', 'user_id', 'username','table_name','column_name', 'label_name', 'primary_key', 'foreign_key','created_at','updated_at','status','is_graph'];
     protected $table = 'SubGroupConfiguration';
     public $timestamps = false;
 }

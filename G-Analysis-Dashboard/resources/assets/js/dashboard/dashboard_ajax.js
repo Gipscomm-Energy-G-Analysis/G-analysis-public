@@ -406,6 +406,7 @@ $("#save_field").on("click", function (e) {
     let column = document.getElementById("select_column").value;
     let primary = document.getElementById("select_primary_column").value;
     let foreign = document.getElementById("select_foreign_column").value;
+    let is_graph = document.getElementById("select_graph_value").value;
     if (label == "") {
         toastr.warning("Please Enter Label!");
         return false;
@@ -435,11 +436,13 @@ $("#save_field").on("click", function (e) {
                 columnName: column,
                 primaryKey: primary,
                 foreignKey: foreign,
+                is_graph:is_graph
             },
             success: function (result) {
                 spinner.stop();
                 if (result.status == 200) {
                     toastr.success(result.msg);
+                    getOtherGraphLabel();
                     getMachineData(
                         $(".navigation").attr("data-value"),
                         "current"

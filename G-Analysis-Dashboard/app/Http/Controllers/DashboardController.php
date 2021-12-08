@@ -161,6 +161,7 @@ class DashboardController extends Controller
                         }
                     }
                     $otherGraphData = $this->getGraphConfigurations($machineData);
+                    
                     $msGraphData = implode(',',$msGraphData);
                     $dynamicData  = [
                         'anlage' => Str::of($prodData->MANAME)->trim(),
@@ -176,7 +177,6 @@ class DashboardController extends Controller
                         'ausschuss' => (int)($prodData->AMOUNT_BAD),
                         'bisher_produziert' => (int)($prodData->AMOUNT_GOOD),
                     ];
-
                     $prodData =[
                         'anl_ID' => $machineData->anl_ID,
                         'bildAnl' => $machineData->bildAnl,
@@ -198,13 +198,13 @@ class DashboardController extends Controller
                       //  $primary_key = $machineData->$primary_key;
                      //   $subGroupConfig = $this->getSubgroupData($subGroupId , $primary_key);
                         $subGroupConfig = $this->getSubgroupData('6', '2');
-                        $customDataMerge = array_merge($customDataMerge, $subGroupConfig);
-                      //  dd($customDataMerge);
+                        $customDataMerge = array_merge($this->getCustomFieldData($machineData, null, true), $this->getSubgroupData('6', '2', true));
+                       // dd($customDataMerge);
                   //  }
                     
                     $mergeArray = $this->splitArray(array_merge(array_merge($subGroupConfig, $customColumns['extra']['odd']), $customColumns['extra']['even']));
                     
-                   // dd($otherGraphData);
+                   //dd($customDataMerge);
                     return ['code'=>200, 'otherGraph'=>$customDataMerge, 'otherGraphTable'=>$otherGraphTable, 'data' =>$prodData, 'dynamicData' => $customColumns ,'anl_ID'=>$machineData->anl_ID, 'subGroupConfig' => $mergeArray, 'message'=>'Data Retrived Successfully.'];
                 } else{
                     return ['code'=>401, 'message'=>'No Record Found in TWP_PROD_OVERVIEW Table!'];
@@ -295,6 +295,7 @@ class DashboardController extends Controller
         $columnName = $request['columnName'];
         $primaryKey = $request['primaryKey'];
         $foreignKey = $request['foreignKey'];
+        $is_graph = $request['is_graph'];
         if(!empty($this->database_result)){
             // DashboardProduktionConfig::where('username', $this->username)
             // ->update(array('status' => '0'));
@@ -309,7 +310,8 @@ class DashboardController extends Controller
                 "label_name"    =>  $label,
                 "status"        =>  '1',
                 "primary_key"   =>  $primaryKey,
-                "foreign_key"   =>  $foreignKey);
+                "foreign_key"   =>  $foreignKey,
+                "is_graph"      =>  $is_graph);
             DashboardProduktionConfig::updateOrCreate($columnData, $data);
         }
         return ['status'=>200, 'msg' => 'Record Inserted Successfully.'];
@@ -398,11 +400,20 @@ class DashboardController extends Controller
         }
     }
 
-    public function getSubgroupData($option , $where) {
-        $data = DB::table('SubGroupConfiguration')->where('sub_group_id', $option)
-        ->where('username', $this->username)
-        ->where('status', '1')
-        ->get()->toArray();
+    public function getSubgroupData($option , $where, $is_graph=false) {
+        if ($is_graph) {
+            $data = DB::table('SubGroupConfiguration')->where('sub_group_id', $option)
+            ->where('username', $this->username)
+            ->where('status', '1')
+            ->where('is_graph','1')
+            ->get()->toArray();
+        } else {
+            $data = DB::table('SubGroupConfiguration')->where('sub_group_id', $option)
+            ->where('username', $this->username)
+            ->where('status', '1')
+            ->get()->toArray();
+        }
+        
         $queryData = UtilityController::createCustomQuery($data, $where);
         
         if($queryData['status'] == 200){
@@ -456,24 +467,28 @@ class DashboardController extends Controller
         return ['main' => ['odd'=>$odd, 'even' =>$even], 'extra' =>['odd'=>$extraOdd, 'even' =>$extraEven]];
     }
 
-    public function getCustomFieldData($machineData, $selected=null) {
+    public function getCustomFieldData($machineData, $selected=null, $is_graph=false) {
         if(!empty($selected)) {
             $data = DB::table('dashboardProduktionConfig');
             foreach($selected as $name){
                 $data->orWhere('column_name', $name);
             }
-            $data = $data->get()->toArray();
+            if($is_graph) {
+                $data = $data->Where('is_graph','1')->get()->toArray();
+            } else {
+                $data = $data->get()->toArray();
+            }
         } else {
             $data = DB::table('dashboardProduktionConfig')->get()->toArray();
         }
         $columnData = [];
         if (!empty($data)) {
             foreach($data as $tableData) {
-                $primary_key = $tableData->primary_key;   
+                $primary_key = $tableData->primary_key;
                 $data = DB::table($tableData->table_name)
                 ->select(DB::raw($tableData->column_name.' AS "'.$tableData->label_name.'"'))
                 ->where($tableData->foreign_key, $machineData->$primary_key)
-                ->first();
+                ->first(); 
                 $columnData[$tableData->label_name] = isset($data->label_name)?$data->label_name:null;    
             }
         }
@@ -598,6 +613,7 @@ class DashboardController extends Controller
                 $configData = DashboardProduktionConfig::where('label_name',$gdata->label)->where('username',$this->username)->first();
                 if (!empty($configData)) {
                     $label = $configData->column_name;
+                    $primary_key = $configData->primary_key;
                     $query = DB::table($configData->table_name)->where($configData->foreign_key, $machineData->$primary_key)->limit(100);
                 } else {
                     $tableConfigData = DB::table('machine_table_config')->where('column_name',$gdata->label)->where('username', $this->username)->first();
@@ -626,5 +642,11 @@ class DashboardController extends Controller
         return $graphJsData;
     }
 
-    
+    public function getOtherGraphLabel(Request $request) {
+        $id = $request->id;
+        $machineData = DB::table('anlagen')->whereNotNull('datumAnl')->where('deleted',0)->where('anl_ID', $id)->first();
+        $customDataMerge = array_merge($this->getCustomFieldData($machineData, null, true), $this->getSubgroupData('6', '2', true));
+        return ['status'=> 200 , 'data' => $customDataMerge];
+    }
+
 }
