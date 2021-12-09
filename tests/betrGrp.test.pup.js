@@ -57,6 +57,13 @@ colors = require("colors");
             return await page.evaluate(el => el.value, element) 
         }
 
+    content =
+        async selector => {
+            await page.waitForSelector(selector)
+            element = await page.$(selector)
+            return await page.evaluate(el => el.textContent, element) 
+        }
+
     browser = await puppeteer.launch({headless: true})
     page = await browser.newPage()
     
@@ -142,6 +149,9 @@ colors = require("colors");
     valueTelefonBetrGrp = await value("#telefonBetrGrp")
     valueEmailBetrGrp = await value("#emailBetrGrp")
     valueNotizBetrGrp = await value("#notizBetrGrp")
+    firstMandanten = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(1) > td:nth-child(2)")
+    middleMandanten = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(12) > td:nth-child(2)")
+    lastMandanten = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(22) > td:nth-child(2)")
 
     correctValues =
         () =>
@@ -154,6 +164,9 @@ colors = require("colors");
         , [valueTelefonBetrGrp, "+49 (2192) 791986-16"]
         , [valueEmailBetrGrp, "info@energie-gipscomm.de"]
         , [valueNotizBetrGrp, ""]
+        , [firstMandanten, "Mustermandant"]
+        , [middleMandanten, "HBS-Herholz-Tueren"]
+        , [lastMandanten, "Huendgen Swisttal"]
         ]
         .every(a => a[0] == a[1])
 
@@ -164,6 +177,9 @@ colors = require("colors");
     //
     // Test clearing fields
     //
+    // clear fields and Mandanten list
+    await click("#betrGrpHinz")
+
     // fill fields
     await page.type("#firmaBetrGrp", "Firma")
     await page.type("#anzahlMitarbeiterBetrGrp", "23")
@@ -184,6 +200,23 @@ colors = require("colors");
     await page.type("#benutzernameSAdm", "Benutzername")
     await page.type("#passwortSAdm", "Passwort")
 
+    // fill Mandanten list
+    // add Mandant 1
+    await click("#manZuBetrGrpHinz")
+    await page.waitForSelector("#tblMandantenAuswahl > tbody > tr:nth-child(8) > td:nth-child(2)")
+    await dblclick("#tblMandantenAuswahl > tbody > tr:nth-child(8) > td:nth-child(2)")
+    
+    // add Mandant 2
+    await click("#manZuBetrGrpHinz")
+    await page.waitForSelector("#tblMandantenAuswahl > tbody > tr:nth-child(10) > td:nth-child(2)")
+    await dblclick("#tblMandantenAuswahl > tbody > tr:nth-child(10) > td:nth-child(2)")
+    
+    // add Mandant 3
+    await click("#manZuBetrGrpHinz")
+    await page.waitForSelector("#tblMandantenAuswahl > tbody > tr:nth-child(20) > td:nth-child(2)")
+    await dblclick("#tblMandantenAuswahl > tbody > tr:nth-child(20) > td:nth-child(2)")
+
+    // clear fields and Mandanten list
     await click("#betrGrpHinz")
 
     // betreuergruppe form fields
@@ -196,6 +229,7 @@ colors = require("colors");
     valueTelefon = await value("#telefonBetrGrp")
     valueEmail = await value("#emailBetrGrp")
     valueNotiz = await value("#notizBetrGrp")
+    valueMandantenlist = await content("#tblMandantenBetrGrp > tbody > tr > td")
     
     // superadmin form fields
     valueTitelSAdm = await value("#titelSAdm")
@@ -228,7 +262,8 @@ colors = require("colors");
         , valueMobiltelefonSAdm
         , valueBenutzernameSAdm
         , valuePasswortSAdm
-        ].every(a => String(a) === "")
+        ].every(a => String(a) === "") 
+        && valueMandantenlist === "No data available in table"
 
     // create new betrGrp
     await page.type("#firmaBetrGrp", "Firma", {delay: 200})
@@ -239,16 +274,32 @@ colors = require("colors");
     await page.type("#geschaeftsfuehrerBetrGrp", "Geschäftsführer", {delay: 200})
     await page.type("#telefonBetrGrp", "Telefon", {delay: 200})
     await page.type("#emailBetrGrp", "Email", {delay: 200})
-    await page.type("#notizBetrGrp", "Notiz", {delay: 200})
+    await page.type("#notizBetrGrp", "", {delay: 200})
+
+    // fill Mandanten list
+    // add Mandant 1
+    // Heute + Comp
+    await click("#manZuBetrGrpHinz")
+    await dblclick("#tblMandantenAuswahl > tbody > tr:nth-child(2) > td:nth-child(2)")
+    
+    // add Mandant 2
+    // AST
+    await click("#manZuBetrGrpHinz")
+    await dblclick("#tblMandantenAuswahl > tbody > tr:nth-child(9) > td:nth-child(2)")
+
+    // add Mandant 3
+    // Spies
+    await click("#manZuBetrGrpHinz")
+    await dblclick("#tblMandantenAuswahl > tbody > tr:nth-child(13) > td:nth-child(2)")
     
     // click save
-    await click("#betrGrpSpeichern")
+    await click1("#betrGrpSpeichern")
 
     // accept dialog
-    await click1("#saveBetrGrpOk")
+    await click("#saveBetrGrpOk")
 
     // navigate to first record
-    await click1("#betrGrpFirst")
+    await click("#betrGrpFirst")
 
     // navigate to newly created(last)
     await click("#betrGrpLast")
@@ -263,7 +314,11 @@ colors = require("colors");
     valueTelefonBetrGrp = await value("#telefonBetrGrp")
     valueEmailBetrGrp = await value("#emailBetrGrp")
     valueNotizBetrGrp = await value("#notizBetrGrp")
-
+    contentMandant1 = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(1) > td:nth-child(1)")
+    contentMandant2 = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(2) > td:nth-child(1)")
+    contentMandant3 = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(3) > td:nth-child(1)")
+    
+    // compare values
     correctValues =
         () =>
         [ [valueFirmaBetrGrp, "Firma"]
@@ -274,7 +329,10 @@ colors = require("colors");
         , [valueGeschaeftsfuehrerBetrGrp, "Geschäftsführer"]
         , [valueTelefonBetrGrp, "Telefon"]
         , [valueEmailBetrGrp, "Email"]
-        , [valueNotizBetrGrp, "Notiz"]
+        , [valueNotizBetrGrp, ""]
+        , [contentMandant1, "Heute + Comp"]
+        , [contentMandant2, "AST"]
+        , [contentMandant3, "Spies"]
         ]
         .every(a => a[0] == a[1])
 
@@ -285,12 +343,44 @@ colors = require("colors");
     describe("Test saving new betrGrp")
     assert(correctValues())(true)("Create new")
 
-    // Test deleting a betrGrp
-    await click("#betrGrpLast")
+    // Test changing a betrGrp
 
-    await click1("#betrGrpLoeschen")
+    // changes to apply
+    changeFirmaBetrGrp = "Neu"
+    changeAnzahlMitarbeiterBetrGrp = "1"
+    changeAnschriftBetrGrp = "22"
+    changePlzBetrGrp = "876"
+    changeOrtBetrGrp = "Hueck"
+    changeGeschaeftsfuehrerBetrGrp = "1"
+    changeTelefonBetrGrp = "nummer"
+    changeEmailBetrGrp = " 25"
+    changeNotizBetrGrp = "ohne Sinn"
+    changeMandantenlist1BetrGrp = "Henkedruck"
+    changeMandantenlist2BetrGrp = "InduRade"
 
-    await click("#betrGrpLast")
+    // Changing values
+    await page.type("#firmaBetrGrp", changeFirmaBetrGrp, {delay: 200})
+    await page.type("#anzahlMitarbeiterBetrGrp", changeAnzahlMitarbeiterBetrGrp, {delay: 200})
+    await page.type("#anschriftBetrGrp", changeAnschriftBetrGrp, {delay: 200})
+    await page.type("#plzBetrGrp", changePlzBetrGrp, {delay: 200})
+    await page.type("#ortBetrGrp", changeOrtBetrGrp, {delay: 200})
+    await page.type("#geschaeftsfuehrerBetrGrp", changeGeschaeftsfuehrerBetrGrp, {delay: 200})
+    await page.type("#telefonBetrGrp", changeTelefonBetrGrp, {delay: 200})
+    await page.type("#emailBetrGrp", changeEmailBetrGrp, {delay: 200})
+    await page.type("#notizBetrGrp", changeNotizBetrGrp, {delay: 200})
+    
+    // add Mandant 4
+    // Henkedruck
+    await click("#manZuBetrGrpHinz")
+    await dblclick("#tblMandantenAuswahl > tbody > tr:nth-child(15) > td:nth-child(2)")
+    
+    // add Mandant 5
+    // InduRade
+    await click("#manZuBetrGrpHinz")
+    await dblclick("#tblMandantenAuswahl > tbody > tr:nth-child(20) > td:nth-child(2)")
+
+    // save changed betrGrp
+    await click("#betrGrpSpeichern")
 
     // betreuergruppe form fields
     valueFirmaBetrGrp = await value("#firmaBetrGrp")
@@ -302,23 +392,69 @@ colors = require("colors");
     valueTelefonBetrGrp = await value("#telefonBetrGrp")
     valueEmailBetrGrp = await value("#emailBetrGrp")
     valueNotizBetrGrp = await value("#notizBetrGrp")
-
+    contentMandant4BetrGrp = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(4) > td:nth-child(1)")
+    contentMandant5BetrGrp = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(5) > td:nth-child(1)")
+    
+    // compare values
     correctValues =
         () =>
-        [ [valueFirmaBetrGrp, "Firma"]
-        , [valueMitarbeiterBetrGrp, 10]
-        , [valueAnschriftBetrGrp, "Anschrift"]
-        , [valuePlzBetrGrp, "PLZ"]
-        , [valueOrtBetrGrp, "Ort"]
-        , [valueGeschaeftsfuehrerBetrGrp, "Geschäftsführer"]
-        , [valueTelefonBetrGrp, "Telefon"]
-        , [valueEmailBetrGrp, "Email"]
-        , [valueNotizBetrGrp, "Notiz"]
+        [ [valueFirmaBetrGrp, "Firma" + changeFirmaBetrGrp]
+        , [valueMitarbeiterBetrGrp, "10" + changeAnzahlMitarbeiterBetrGrp]
+        , [valueAnschriftBetrGrp, "Anschrift" + changeAnschriftBetrGrp]
+        , [valuePlzBetrGrp, "PLZ" + changePlzBetrGrp]
+        , [valueOrtBetrGrp, "Ort" + changeOrtBetrGrp]
+        , [valueGeschaeftsfuehrerBetrGrp, "Geschäftsführer" + changeGeschaeftsfuehrerBetrGrp]
+        , [valueTelefonBetrGrp, "Telefon" + changeTelefonBetrGrp]
+        , [valueEmailBetrGrp, "Email" + changeEmailBetrGrp]
+        , [valueNotizBetrGrp, changeNotizBetrGrp]
+        , [contentMandant4BetrGrp, "Henkedruck"]
+        , [contentMandant5BetrGrp, "InduRade"]
         ]
-        .reduce((acc, a) => Number(acc) + Number(a[0] !== a[1] ? 1 : 0), 0) > 4
+        .every(a => a[0] == a[1])
 
-    describe("Test deleting a betrGrp")
-    assert(correctValues())(true)("Delete")
+    describe("Test changing a betrGrp")
+    assert(correctValues())(true)("Change existing")
+
+
+    // // Test deleting a betrGrp
+
+    // // navigate to last record
+    // await click("#betrGrpLast")
+    
+    // // click löschen
+    // await click1("#betrGrpLoeschen")
+    
+    // // navigate to last record
+    // await click("#betrGrpLast")
+
+    // // betreuergruppe form fields
+    // valueFirmaBetrGrp = await value("#firmaBetrGrp")
+    // valueMitarbeiterBetrGrp = await value("#anzahlMitarbeiterBetrGrp")
+    // valueAnschriftBetrGrp = await value("#anschriftBetrGrp")
+    // valuePlzBetrGrp = await value("#plzBetrGrp")
+    // valueOrtBetrGrp = await value("#ortBetrGrp")
+    // valueGeschaeftsfuehrerBetrGrp = await value("#geschaeftsfuehrerBetrGrp")
+    // valueTelefonBetrGrp = await value("#telefonBetrGrp")
+    // valueEmailBetrGrp = await value("#emailBetrGrp")
+    // valueNotizBetrGrp = await value("#notizBetrGrp")
+    
+    // // check if at least 5 values differ
+    // correctValues =
+    //     () =>
+    //     [ [valueFirmaBetrGrp, "Firma" + changeFirmaBetrGrp]
+    //     , [valueMitarbeiterBetrGrp, "10" + changeAnzahlMitarbeiterBetrGrp]
+    //     , [valueAnschriftBetrGrp, "Anschrift" + changeAnschriftBetrGrp]
+    //     , [valuePlzBetrGrp, "PLZ" + changePlzBetrGrp]
+    //     , [valueOrtBetrGrp, "Ort" + changeOrtBetrGrp]
+    //     , [valueGeschaeftsfuehrerBetrGrp, "Geschäftsführer" + changeGeschaeftsfuehrerBetrGrp]
+    //     , [valueTelefonBetrGrp, "Telefon" + changeTelefonBetrGrp]
+    //     , [valueEmailBetrGrp, "Email" + changeEmailBetrGrp]
+    //     , [valueNotizBetrGrp, "Notiz" + changeNotizBetrGrp]
+    //     ]
+    //     .reduce((acc, a) => Number(acc) + Number(a[0] !== a[1] ? 1 : 0), 0) > 4
+
+    // describe("Test deleting a betrGrp")
+    // assert(correctValues())(true)("Delete")
 
     await browser.close()
 })()
