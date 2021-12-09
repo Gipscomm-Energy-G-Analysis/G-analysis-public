@@ -86,7 +86,6 @@ const scpRechteverwaltung_betreuergruppen =
                     this.readIntoFormFields(helper.fieldValue("betrGrpIdx"))
                 )
                 
-
             const nonCompleteDataDialog =
                 formData =>
                 $("#saveBetrGrpDialog").dialog({
