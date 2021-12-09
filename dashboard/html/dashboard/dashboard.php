@@ -148,7 +148,7 @@
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
                     </div>
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-2" id="time_interval_div">
                       <label for="time_interval_chart" class="text-mute">Time Interval</label>
                       <select class="form-control form-control-sm text-dark" id="time_interval_chart">
                         <option value="1">Days</option>
@@ -162,6 +162,19 @@
                     <div class="form-group col-md-2" id="chart_record_div">
                       <label for="chart_records" class="text-mute" id="chart_records_label"></label>
                       <select class="form-control form-control-sm text-dark" id="chart_records">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2 chart_product_div" id="chart_record_product_div">
+                      <label for="chart_records_product" class="text-mute" id="chart_records_label_product"></label>
+                      <select class="form-control form-control-sm text-dark" id="chart_records_product">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2 chart_product_div" id="chart_record_product_item_div">
+                      <label for="chart_records_product_item" class="text-mute">Select Item</label>
+                      <select class="form-control form-control-sm text-dark" id="chart_records_product_item">
+                        <option value=''>Select Item</option>
                       </select>
                     </div>
 

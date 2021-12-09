@@ -390,6 +390,12 @@
 #measurement_tile_heading_modal{
     color: black !important;
 }
+#energy_tile_heading_modal{
+    color: black !important;
+}
+#product_tile_heading_modal{
+    color: black !important;
+}
 .record-name-overall-count{
     color: black !important;
 }

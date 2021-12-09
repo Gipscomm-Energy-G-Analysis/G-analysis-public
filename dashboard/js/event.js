@@ -1310,6 +1310,12 @@ $(document).ready( function(){
             $('#chart_width_outer_structure').val('');
             // --end-->
 
+            // <--7-12-2021--
+            $('.chart_product_div').hide();
+            $('#chart_record_div').show();
+            $('#time_interval_div').show();
+            // --end--->
+
         }
         else if((record_type_of_tile == "measurement" || record_type_of_tile == "energy") && type_data_tile == "chart" && data_edit_chart == 'true')
         {
@@ -1332,7 +1338,54 @@ $(document).ready( function(){
             $('#chart_records_label').text('Select '+record_type_of_tile);
             $('#dashboard_loader_div').hide();
 
+            // <--7-12-2021--
+            $('.chart_product_div').hide();
+            $('#chart_record_div').show();
+            $('#time_interval_div').show();
+            // --end--->
+            
+
         }
+        else if(record_type_of_tile == "product" && type_data_tile == "chart" && data_edit_chart == 'false')
+        {
+            $('#dashboard_tile_modal').modal('hide');
+            // $('#dashboard_add_tile_chart').click();
+            var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
+            localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
+            getChartTileDashboard();
+            $('#time_interval_chart option[value=1]').prop('selected','selected');
+            getChartTimeIntervalRecordProduct();
+            // dashboardChart();
+            $('#measurement-height-chart').val('2');
+            $('#measurement-height-chart-hidden').val('290');
+            $('#measurement-width-chart').val('2');
+            $('#measurement-width-chart-hidden').val('570');
+            $('#dashboard_tile_modal_chart').modal('show');
+            $('#chart_records_label_product').text('Select '+record_type_of_tile);
+            $('#update_and_proceed_btn_dashboard_chart').hide();
+            $('#save_and_proceed_btn_dashboard_chart').show();
+            $('#dashboard_loader_div').hide();
+
+            // <---1-11-2021---
+            $('#expand_view_chart').prop('checked',false);
+            $('#expand_view_chart').val('0');
+
+            $('#chart_outside_tile_structure').prop('checked',false);
+            $('#chart_outside_tile_structure').val('0');
+
+            $('.chart_outisde_tile_controls').hide();
+            $('#chart_height_outer_structure').val('');
+            $('#chart_width_outer_structure').val('');
+            // --end-->
+
+            // <--7-12-2021--
+            $('.chart_product_div').show();
+            $('#chart_record_div').hide();
+            $('#time_interval_div').hide();
+            // --end--->
+
+        }
+
         $('#title_modal_tile').val('');
         $('#record_type_of_tile option[value=measurement]').prop('selected','selected');
         $('#type_data_tile option[value=table').prop('selected', 'selected');
@@ -1456,6 +1509,11 @@ $(document).ready( function(){
                 $('.dashboard_chart_tiles #energy_count_tile_modal_chart_'+total_records).removeClass('col-md-3');
                 $('.dashboard_chart_tiles #energy_count_tile_modal_chart_'+total_records).removeClass('actual_tile_height');
             }
+            else if(record_type_of_tile == 'product')
+            {
+                $('.dashboard_chart_tiles #product_count_tile_modal_chart_'+total_records).removeClass('col-md-3');
+                $('.dashboard_chart_tiles #product_count_tile_modal_chart_'+total_records).removeClass('actual_tile_height');
+            }
             
             var height_val = $('#measurement-height-chart').val();
             if(height_val <= 1){
@@ -1475,6 +1533,10 @@ $(document).ready( function(){
                 {
                     $('.dashboard_chart_tiles #energy_count_tile_modal_chart_'+total_records).css('height',height_value);
                 }
+                else if(record_type_of_tile == 'product')
+                {
+                    $('.dashboard_chart_tiles #product_count_tile_modal_chart_'+total_records).css('height',height_value);
+                }
                 
                 $('#measurement-height-chart-hidden').val(height_value);
             }
@@ -1492,6 +1554,11 @@ $(document).ready( function(){
             {
                 $('.dashboard_chart_tiles #energy_count_tile_modal_chart_'+total_records).removeClass('col-md-3');
                 $('.dashboard_chart_tiles #energy_count_tile_modal_chart_'+total_records).removeClass('actual_tile_width');
+            }
+            else if(record_type_of_tile == 'product')
+            {
+                $('.dashboard_chart_tiles #product_count_tile_modal_chart_'+total_records).removeClass('col-md-3');
+                $('.dashboard_chart_tiles #product_count_tile_modal_chart_'+total_records).removeClass('actual_tile_width');
             }
 
             var width_val = $('#measurement-width-chart').val();
@@ -1511,6 +1578,9 @@ $(document).ready( function(){
                 else if(record_type_of_tile == 'energy'){
                     $('.dashboard_chart_tiles #energy_count_tile_modal_chart_'+total_records).css('width',width_value);
                 }
+                else if(record_type_of_tile == 'product'){
+                    $('.dashboard_chart_tiles #product_count_tile_modal_chart_'+total_records).css('width',width_value);
+                }
                 $('#measurement-width-chart-hidden').val(width_value);
             }
 
@@ -1520,7 +1590,15 @@ $(document).ready( function(){
 
     // <---02-8-2021----
     $(document).on('click', '#save_and_proceed_btn_dashboard_chart', function(){
-        saveDashboardTileChart();
+        var ar = localStorage.getItem('dashboard_tile_data');
+        ar = JSON.parse(ar);
+        if(ar['record_type_of_tile'] == 'product')
+        {
+            saveDashboardTileChartProduct();
+        }
+        else{
+            saveDashboardTileChart();
+        }
     })
     // --end-->
 
@@ -1712,6 +1790,11 @@ $(document).ready( function(){
                 $('.dashboard_chart_tiles #energy_count_outer_tile_modal_chart_'+total_records).removeClass('col-md-3');
                 $('.dashboard_chart_tiles #energy_count_outer_tile_modal_chart_'+total_records).removeClass('actual_tile_height');
             }
+            else if(record_type_of_tile == 'product')
+            {
+                $('.dashboard_chart_tiles #product_count_outer_tile_modal_chart_'+total_records).removeClass('col-md-3');
+                $('.dashboard_chart_tiles #product_count_outer_tile_modal_chart_'+total_records).removeClass('actual_tile_height');
+            }
             var height_val = $('#chart_height_outer_structure').val();
             if(height_val <= 0){
                 $('#chart_height_outer_structure').val(1);
@@ -1729,6 +1812,10 @@ $(document).ready( function(){
                 {
                     $('.dashboard_chart_tiles #energy_count_outer_tile_modal_chart_'+total_records).css('height',height_value);
                 }
+                else if(record_type_of_tile == 'product')
+                {
+                    $('.dashboard_chart_tiles #product_count_outer_tile_modal_chart_'+total_records).css('height',height_value);
+                }
                 // $('#measurement-height-chart-hidden').val(height_value);
             }
         }
@@ -1742,6 +1829,11 @@ $(document).ready( function(){
             {
                 $('.dashboard_chart_tiles #energy_count_outer_tile_modal_chart_'+total_records).removeClass('col-md-3');
                 $('.dashboard_chart_tiles #energy_count_outer_tile_modal_chart_'+total_records).removeClass('actual_tile_width');
+            }
+            else if(record_type_of_tile == 'product')
+            {
+                $('.dashboard_chart_tiles #product_count_outer_tile_modal_chart_'+total_records).removeClass('col-md-3');
+                $('.dashboard_chart_tiles #product_count_outer_tile_modal_chart_'+total_records).removeClass('actual_tile_width');
             }
             var width_val = $('#chart_width_outer_structure').val();
             if(width_val <= 0){
@@ -1759,6 +1851,10 @@ $(document).ready( function(){
                 else if(record_type_of_tile == 'energy')
                 {
                     $('.dashboard_chart_tiles #energy_count_outer_tile_modal_chart_'+total_records).css('width',width_value);
+                }
+                else if(record_type_of_tile == 'product')
+                {
+                    $('.dashboard_chart_tiles #product_count_outer_tile_modal_chart_'+total_records).css('width',width_value);
                 }
 
                 // $('#measurement-width-chart-hidden').val(width_value);
@@ -2173,6 +2269,16 @@ $(document).ready( function(){
             
         }
         
+    });
+    // --end-->
+
+    // <---7-12-2021--
+    $(document).on('change','#chart_records_product', function(){
+        getChartSelectProductItem();
+    });
+
+    $(document).on('change','#chart_records_product_item', function(){
+        chartRecordFilterProduct();
     });
     // --end-->
 

@@ -2239,7 +2239,15 @@ function getDimentions(id) {
             $('.'+id+'.tiles-click').html(tile_html);
             $('.dashboard_chart_tiles').html(''); //Add Chart Tiles Remove Other wise Chat not implemented
             // dashboardChart();
-            getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value,chart_type);
+            if(record_type_of_tile == 'product')
+            {
+              var analgen_config_id = a['data']['prd_anlagen_config_id'];
+              getClickDashboardChartProduct(id,record_type_of_tile,analgen_config_id,chart_filter_value,chart_type);
+            }
+            else{
+              getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value,chart_type);
+            }
+            
 
             // <--23-11-2021---
             // console.log('working');
@@ -3124,6 +3132,120 @@ function saveDashboardTileChart(){
 
 // --end-->
 
+// <----8-12-2021--
+function saveDashboardTileChartProduct(){
+  var chart_records_product = $('#chart_records_product').val();
+  var analgen_config_id = $('#chart_records_product_item').val();
+  var chart_record_filter = $('#chart_record_filter').val();
+  //console.log('chart_recorda Value ',chart_records);
+  //console.log('chart_recorda Filter ',chart_record_filter);
+  if(chart_records_product == '' || analgen_config_id == '' || chart_record_filter == ''){
+      return false;
+  }
+  $('.small-table').attr('style','display:block');
+  var chart_type = $('#chart_type').val();
+  var measuremnt_table_height = $('#measurement-height-chart-hidden').val();
+  var measurement_table_width = $('#measurement-width-chart-hidden').val();
+  var input_height = $('#measurement-height-chart').val(); 
+  var input_width = $('#measurement-width-chart').val();
+  var chart_outer_table_limit_column  = $('#chart_outer_table_limit_column').val();
+  
+  var last_index_tile = $('#total_records_chart').val();
+  
+  $('.dashboard_chart_tile_html_'+last_index_tile+' .card-border').removeClass('tile_border');
+  
+  var tile_html = $('.dashboard_chart_tile_html_'+last_index_tile).html();
+  $('#total_records_chart').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+
+  var expand_view = $('#expand_view_chart').val();
+
+  if(chart_type == "line_chart"){
+    tile_html = tile_html.replace("lineChart",'lineChart-none');  
+  }
+  else if(chart_type == "area_chart"){
+    tile_html = tile_html.replace("areaChart",'areaChart-none');
+  }
+  else if(chart_type == "pie_chart"){
+    tile_html = tile_html.replace("pieChart",'pieChart-none');
+  }
+  else if(chart_type == "bar_chart"){
+    tile_html = tile_html.replace("barChart",'barChart-none');
+  }
+
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+
+  var outside_chart_checkbox = $('#chart_outside_tile_structure').val();
+  var outside_chart_input_height =  $('#chart_height_outer_structure').val();
+  var outside_chart_input_width = $('#chart_width_outer_structure').val();
+
+  var outside_chart_display  = $('#display_chart_outside_tile').val();
+
+  if(outside_chart_checkbox == 0){
+    outside_chart_input_height = '';
+    outside_chart_input_width = '';
+  }
+  var type_tile = 'Product';
+
+// --end-->
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "saveTileChart",
+        nameDB: $("#nameDashboardDB").val(),
+        title : tile_title,
+        tile_html : tile_html,
+        height: measuremnt_table_height,
+        width : measurement_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile,
+        chart_record_filter : chart_record_filter,
+        chart_type : chart_type,
+        expand_view : expand_view,
+        outside_chart_checkbox : outside_chart_checkbox,
+        outside_chart_input_height : outside_chart_input_height,
+        outside_chart_input_width : outside_chart_input_width,
+        outside_chart_display : outside_chart_display,
+        chart_outer_table_limit_column : chart_outer_table_limit_column,
+        type : type_tile,
+        analgen_config_id : analgen_config_id
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#measurement_modal_loader_div_chart').show();
+      $('#dashboard_tile_modal_chart .modal-content').css('opacity','0.8');
+
+      $('#expand_view_chart').prop('checked',false);
+      $('#expand_view_chart').val('0');
+      $('#save_tile_id').val(a['max_id'][0]['max_id']);
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#measurement_modal_loader_div_chart').hide();
+        $('#dashboard_tile_modal_chart .modal-content').css('opacity','1');
+        $('#dashboard_tile_modal_chart').modal('hide');
+        // window.location.reload();
+        // <---12-11-2021--
+        // $('#save_position_tile').trigger('click');
+        // --end--->
+      }, 500);
+      // $('#save_position_tile').attr('btn_click','chart');
+    }
+  });
+}
+// --end--->
+
 // <----3-9-2021---
 function getChartTimeIntervalRecord(){
  var time_interval = $('#time_interval_chart').val();
@@ -3178,16 +3300,114 @@ function getChartTimeIntervalRecord(){
 }
 // --end-->
 
+// <----07-12-2021--
+function getChartTimeIntervalRecordProduct(){
+  var arDashboard = localStorage.getItem('dashboard_tile_data');
+  arDashboard = JSON.parse(arDashboard);
+  var record_type_of_tile_set = arDashboard['record_type_of_tile'];
+   $.ajax({
+     type: "POST",
+     url: "php/retreive.php",
+     async: false,
+     dataType: 'json',
+     data: {
+         action: "getChartTimeIntervalRecordProduct",
+         nameDB: $("#nameDashboardDB").val(),
+         record_type_of_tile : record_type_of_tile_set
+     },
+     fail: function() {
+         alert("failed!!")
+     },
+     success: function(a) {
+       var select_html = '';
+       if(a != ''){
+         var ar = localStorage.getItem('dashboard_tile_data');
+         ar = JSON.parse(ar);
+         var record_type_of_tile = ar['record_type_of_tile'];
+         select_html+="<option value=''>Select "+record_type_of_tile+"</option>";
+         a.forEach((val)=>{
+            select_html+="<option value='"+val['prd_id']+"' type='"+val['iBdeType']+"'>"+val['namePrd']+"</option>";
+         });
+         $('#chart_record_filter_div').show();
+         $('#chart_record_type_div').show();
+         $("#chart_record_filter option[value='']").prop('selected','selected');
+         $("#chart_records_product_item option[value='']").prop('selected','selected');
+         $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
+       }
+       else{
+         select_html+="<option value=''>No Record Found</option>";
+         $('#chart_record_filter_div').hide();
+         $('#chart_record_type_div').hide();
+         $('#save_and_proceed_btn_dashboard_chart').attr('disabled',true);
+       }
+       $('#chart_records_product').html(select_html);
+     }
+   });
+ }
+
+
+ function getChartSelectProductItem(){
+  var prd_id = $('#chart_records_product').val();
+  var arDashboard = localStorage.getItem('dashboard_tile_data');
+  arDashboard = JSON.parse(arDashboard);
+  var record_type_of_tile_set = arDashboard['record_type_of_tile'];
+   $.ajax({
+     type: "POST",
+     url: "php/retreive.php",
+     async: false,
+     dataType: 'json',
+     data: {
+         action: "getChartSelectProductItem",
+         nameDB: $("#nameDashboardDB").val(),
+         record_type_of_tile : record_type_of_tile_set,
+         prd_id : prd_id
+     },
+     fail: function() {
+         alert("failed!!")
+     },
+     success: function(a) {
+       var select_html = '';
+       if(a != ''){
+         select_html+="<option value=''>Select Item</option>";
+         a.forEach((val)=>{
+            select_html+="<option value='"+val['iBdePrdktConf_ID']+"' total_value='"+val['val']+"'>"+val['bezeichnungAnl']+"</option>";
+         });
+         $('#chart_record_filter_div').show();
+         $('#chart_record_type_div').show();
+         $("#chart_record_filter option[value='']").prop('selected','selected');
+         $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
+       }
+       else{
+         select_html+="<option value=''>No Record Found</option>";
+         $('#chart_record_filter_div').hide();
+         $('#chart_record_type_div').hide();
+         $('#save_and_proceed_btn_dashboard_chart').attr('disabled',true);
+         var html_canvas_chart = "<canvas></canvas>";
+         var div_i_id = $('#total_records_chart').val();
+         $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+         $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+       }
+       $('#chart_records_product_item').html(select_html);
+     }
+   });
+ }
+//  ---end--->
+
 
 // <----6-9-2021---
 function chartRecordFilter(){
+  var dashboard_tile_data = JSON.parse(localStorage.getItem('dashboard_tile_data'));
+  var record_type_of_tile = dashboard_tile_data['record_type_of_tile'];
+  if(record_type_of_tile == 'product')
+  { 
+    chartRecordFilterProduct();
+    return false;
+  }
+
   var filterVal = $('#chart_record_filter').val();
   var mst_id = $('#chart_records').val();
   var mst_value = $("#chart_records option:selected").text();
   var mst_input_value = $('#total_records_chart').val();
-  var dashboard_tile_data = JSON.parse(localStorage.getItem('dashboard_tile_data'));
-  var record_type_of_tile = dashboard_tile_data['record_type_of_tile'];
-
   var chart_type = $('#chart_type').val();
   var mst_check = $('#save_and_proceed_btn_dashboard').val();
 
@@ -3840,6 +4060,553 @@ function chartRecordFilter(){
   }
 }
 // ---end-->
+
+// <----7-12-2021---
+function chartRecordFilterProduct(){
+  var prd_id = $('#chart_records_product').val();
+  var analgen_config_id = $('#chart_records_product_item').val();
+  var filterVal = $('#chart_record_filter').val();
+  var mst_value = $("#chart_records_product_item option:selected").text();
+  var mst_input_value = $('#total_records_chart').val();
+  var dashboard_tile_data = JSON.parse(localStorage.getItem('dashboard_tile_data'));
+  var record_type_of_tile = dashboard_tile_data['record_type_of_tile'];
+
+  var chart_type = $('#chart_type').val();
+  var mst_check = $('#save_and_proceed_btn_dashboard').val();
+
+  if(mst_check == 'Update & Proceed'){
+    $('.chart_text_edit_' + mst_input_value).text(mst_value+'('+filterVal+' Days)');
+  }else{
+    $('.chart_text_' + mst_input_value).text(mst_value+'('+filterVal+' Days)');
+  }
+  var chart_outer_table_limit_column = $('#chart_outer_table_limit_column').val();
+  if(prd_id != '' && analgen_config_id != '' && filterVal != ''){
+    $('#measurement_modal_loader_div_chart').show();
+    $.ajax({
+      type: "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "getChartRecordFilterProduct",
+          nameDB: $("#nameDashboardDB").val(),
+          analgen_config_id:analgen_config_id,
+          filterVal : filterVal,
+          record_type_of_tile : record_type_of_tile,
+          chart_outer_table_limit_column : chart_outer_table_limit_column
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        // <---12-11-2021--
+        $('#measurement_modal_loader_div_chart').hide();
+        var div_id_html = $('#total_records_chart').val();
+        $('.dashboard_chart_tile_html_'+div_id_html+' .small-table table tbody').html(a['outer_table_html']);
+        $('.dashboard_chart_outer_tile_html_'+div_id_html+' .small-table table tbody').html(a['outer_table_html']);
+        // -end--->
+
+        if(chart_type == "line_chart"){
+          var html_canvas_chart = "<canvas id='lineChart'></canvas>";
+          var div_i_id = $('#total_records_chart').val();
+          // <--8-12-2021---
+          $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+          $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+          // --end-->
+
+          var data = {
+            labels: a['count_days'],
+            datasets: [{
+              label: 'Consumption',
+              data: a['count_val'],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }]
+          };
+
+          var options = {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            },
+            legend: {
+              display: false
+            },
+            elements: {
+              point: {
+                radius: 0
+              }
+            }
+        
+          };
+
+          if ($("#lineChart").length) {
+            var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+            var lineChart = new Chart(lineChartCanvas, {
+              type: 'line',
+              data: data,
+              options: options
+            });
+          }
+
+        }
+        else if (chart_type == "area_chart"){
+        var html_canvas_chart = "<canvas id='areaChart'></canvas>";
+        var div_i_id = $('#total_records_chart').val();
+        // <---25-11-2021---
+        $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        //--end-->
+        
+        // console.log('Working');
+        var areaData = {
+          // <--X Axis Value---
+          // labels: ["2013", "2014", "2015", "2016", "2017","2019","2021","2023"],
+          labels: a['count_days'],
+          datasets: [{
+            label: 'Consumption',
+            // <--Y Axix Value--
+            // data: [12, 19, 3, 5, 2, 3,25,105],
+            // data : [], 
+            data: a['count_val'],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1,
+            fill: true, // 3: no fill
+          }]
+        };
+
+        var areaOptions = {
+          plugins: {
+            filler: {
+              propagate: true
+            }
+          }
+        }
+
+        if ($("#areaChart").length) {
+          var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+          var areaChart = new Chart(areaChartCanvas, {
+            type: 'line',
+            data: areaData,
+            options: areaOptions
+          });
+        }
+       
+      }
+      else if(chart_type == "pie_chart"){
+        var html_canvas_chart = "<canvas id='pieChart'></canvas>";
+        var div_i_id = $('#total_records_chart').val();
+
+        // <---8-12-2021---
+        $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        // --end-->
+
+        var doughnutPieData = {
+          datasets: [{
+            //data: [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
+            data : a['count_val'],
+            backgroundColor: [
+              // 1
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 2
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 3
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 4
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 5
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 6
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 7
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 8
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              // 'rgba(255, 206, 86, 0.5)',
+              // 'rgba(75, 192, 192, 0.5)',
+              // 'rgba(153, 102, 255, 0.5)',
+              // 'rgba(255, 159, 64, 0.5)'
+
+        
+            ],
+            borderColor: [
+              // 1
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 2
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 3
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              //4
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 5
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 6
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 7
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 8
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+            ],
+          }],
+      
+          // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels : a['count_days']
+          
+          
+        };
+        var doughnutPieOptions = {
+          responsive: true,
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          }
+        };
+        
+        if ($("#pieChart").length) {
+          var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+          var pieChart = new Chart(pieChartCanvas, {
+            type: 'pie',
+            data: doughnutPieData,
+            options: doughnutPieOptions
+          });
+        }
+      
+      }
+      else if(chart_type == "bar_chart"){
+        var html_canvas_chart = "<canvas id='barChart'></canvas>";
+        var div_i_id = $('#total_records_chart').val();
+        // <-----8-12-2021--
+        $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        // --end--->
+
+        var data = {
+          labels: a['count_days'],
+          datasets: [{
+            label: 'Consumption',
+            // data: [10, 19, 3, 5, 2, 3],
+            data : a['count_val'],
+            backgroundColor: [
+              // 1
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 2
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 3
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 4
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 5
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 6
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 7
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 8
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+              // 1
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 2
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              
+              // 3
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 4
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 5
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 6
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              
+              // 7
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 8
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+            ],
+            borderWidth: 1,
+            fill: false
+          }]
+        };
+
+        var options = {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          legend: {
+            display: false
+          },
+          elements: {
+            point: {
+              radius: 0
+            }
+          }
+      
+        };
+
+
+        if($("#barChart").length) {
+          var barChartCanvas = $("#barChart").get(0).getContext("2d");
+          // This will get the first returned node in the jQuery collection.
+          var barChart = new Chart(barChartCanvas, {
+            type: 'bar',
+            data: data,
+            options: options
+          });
+        }
+
+      }
+      
+      }
+    });
+
+  }
+  else{
+    var html_canvas_chart = "<canvas></canvas>";
+    var div_i_id = $('#total_records_chart').val();
+    $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+    $('#product_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+   
+  }
+}
+// --end-->
 
 // <---8-9-2021----
 function saveOverallCountTile(){
@@ -4876,6 +5643,527 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
   });
 
 }
+
+// <----8-12-2021---
+function getClickDashboardChartProduct(id,record_type_of_tile,analgen_config_id,chart_filter_value,chart_type){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getClickDashboardChartProduct",
+        nameDB : $("#nameDashboardDB").val(),
+        analgen_config_id : analgen_config_id,
+        chart_filter_value : chart_filter_value,
+        record_type_of_tile : record_type_of_tile
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+
+      var chart_tile_click_data = {'count_days' : a['count_days'],'count_val': a['count_val'],'chart_type' : chart_type,'tile_click_type' : 'chart'}
+      localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
+      var tile_html = $('.'+id+'.tiles-click').html();
+      if(chart_type == "line_chart"){
+        // var html_canvas_chart = "<canvas id='lineChart'></canvas>";
+        // var div_i_id = $('#total_records_chart').val();
+        // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        
+        var data = {
+          labels: a['count_days'],
+          datasets: [{
+            label: 'Consumption',
+            data: a['count_val'],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1,
+            fill: false
+          }]
+        };
+
+        var options = {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          legend: {
+            display: false
+          },
+          elements: {
+            point: {
+              radius: 0
+            }
+          }
+      
+        };
+
+        if ($("#lineChart").length) {
+          var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+          var lineChart = new Chart(lineChartCanvas, {
+            type: 'line',
+            data: data,
+            options: options
+          });
+        }
+
+        // <---9-11-2021--
+        // if ($("#lineChartOutSideTile").length) {
+        //   var lineChartCanvas = $("#lineChartOutSideTile").get(0).getContext("2d");
+        //   var lineChart = new Chart(lineChartCanvas, {
+        //     type: 'line',
+        //     data: data,
+        //     options: options
+        //   });
+        // }
+        // --end->
+
+        // tile_html = tile_html.replace('lineChart-none','lineChart');
+        // $('.'+id+'.tiles-click').html(tile_html);
+
+      }
+      else if (chart_type == "area_chart"){
+          // var html_canvas_chart = "<canvas id='areaChart'></canvas>";
+          // var div_i_id = $('#total_records_chart').val();
+          // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+          // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        
+          // console.log('Working');
+          var areaData = {
+            // <--X Axis Value---
+            // labels: ["2013", "2014", "2015", "2016", "2017","2019","2021","2023"],
+            labels: a['count_days'],
+            datasets: [{
+              label: 'Consumption',
+              // <--Y Axix Value--
+              // data: [12, 19, 3, 5, 2, 3,25,105],
+              // data : [], 
+              data: a['count_val'],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1,
+              fill: true, // 3: no fill
+            }]
+          };
+
+          var areaOptions = {
+            plugins: {
+              filler: {
+                propagate: true
+              }
+            }
+          }
+
+          if ($('#areaChart').length) {
+            var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+            var areaChart = new Chart(areaChartCanvas, {
+              type: 'line',
+              data: areaData,
+              options: areaOptions
+            });
+          }
+          // setTimeout(()=>{
+          //   tile_html = tile_html.replace('areaChart','areaChart-none');
+          //   $('.'+id+'.tiles-click').html(tile_html);
+          // },15000);
+          
+      }
+      else if(chart_type == "pie_chart"){
+        // var html_canvas_chart = "<canvas id='pieChart'></canvas>";
+        // var div_i_id = $('#total_records_chart').val();
+        // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        var doughnutPieData = {
+          datasets: [{
+            //data: [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
+            data : a['count_val'],
+            backgroundColor: [
+              // 1
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 2
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 3
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 4
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 5
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 6
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 7
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 8
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              // 'rgba(255, 206, 86, 0.5)',
+              // 'rgba(75, 192, 192, 0.5)',
+              // 'rgba(153, 102, 255, 0.5)',
+              // 'rgba(255, 159, 64, 0.5)'
+
+        
+            ],
+            borderColor: [
+              // 1
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 2
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 3
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              //4
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 5
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 6
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 7
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 8
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+            ],
+          }],
+      
+          // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels : a['count_days']
+          
+          
+        };
+        var doughnutPieOptions = {
+          responsive: true,
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          }
+        };
+        
+        if ($("#pieChart").length) {
+          var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+          var pieChart = new Chart(pieChartCanvas, {
+            type: 'pie',
+            data: doughnutPieData,
+            options: doughnutPieOptions
+          });
+        }
+      }
+      else if(chart_type == "bar_chart"){
+        // var html_canvas_chart = "<canvas id='barChart'></canvas>";
+        // var div_i_id = $('#total_records_chart').val();
+        // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+
+        var data = {
+          labels: a['count_days'],
+          datasets: [{
+            label: 'Consumption',
+            // data: [10, 19, 3, 5, 2, 3],
+            data : a['count_val'],
+            backgroundColor: [
+              // 1
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 2
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 3
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 4
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 5
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 6
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 7
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 8
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+              // 1
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 2
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              
+              // 3
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 4
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 5
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 6
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              
+              // 7
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 8
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+            ],
+            borderWidth: 1,
+            fill: false
+          }]
+        };
+
+        var options = {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          legend: {
+            display: false
+          },
+          elements: {
+            point: {
+              radius: 0
+            }
+          }
+      
+        };
+
+
+        if($("#barChart").length) {
+          var barChartCanvas = $("#barChart").get(0).getContext("2d");
+          // This will get the first returned node in the jQuery collection.
+          var barChart = new Chart(barChartCanvas, {
+            type: 'bar',
+            data: data,
+            options: options
+          });
+        }
+      }
+    }
+  });
+
+}
+// --end-->
 
 // <---7-10-2021---
 function updateDashboardChart(){

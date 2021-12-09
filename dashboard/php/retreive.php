@@ -1349,6 +1349,10 @@ class dashboardController {
                 $this->getChartDataDashboardEnergy();
                 die;
             }
+            else if($record_type_of_tile == 'product'){
+                $this->getChartDataDashboardProduct();
+                die;
+            }
             // --end--->
             
             if($dataResult != null && count($dataResult)>0){
@@ -1644,6 +1648,174 @@ class dashboardController {
                                                     <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Energy' style='height: 17px; width: 17px;'>
                                                 </div>
                                                 <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$measurement_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 chart-width'>
+                                                <div id='chart_outer_tile_text_heading' style='text-align: center'>
+                                                    <p class='text-muted'>Outer Tile View</p>
+                                                </div>
+                                                <div class='col-md-6 p-0 small-table small-table_$last_id'>
+                                                    <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
+                                                    </table>
+                                                </div> 
+                                                <div class='save_table_div_show_table'> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
+            }
+            $records['tile_html'] = $tileHtml;
+            $records['data'] = $dataResult;
+            $records['total_record'] = count($dataResult) + 1;
+            $records['last_id'] = $last_id;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+
+    }
+    // ---end-->
+
+    // <--7-12-2021---
+    public function getChartDataDashboardProduct(){
+        try{
+            global $conn;
+            $username = $_SESSION['username']; 
+            $measurement_title  = $_POST['measurement_title'];
+            // $measurement_title  = "Test Chart";
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            $last_id_query = "SELECT max(id) as max_id from tableFormat ";
+            $last_id = queryDB($conn, $last_id_query, "read");
+            $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id']+1 : 0; 
+         
+            if($dataResult != null && count($dataResult)>0){
+                for($i= 0; $i<=$total_result; $i++){
+                    $style= '';
+                    if($i == $total_result){
+                        $measurement_title = $_POST['measurement_title'];
+                        $tileHtml .= "<input type='hidden' id='total_records_chart' value='$last_id'>";
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex pr-0'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$measurement_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 chart-width'>
+                                            <div class='col-md-6 p-0 small-table small-table_$last_id' style='display:none'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
+                                            </table>
+                                            </div> 
+                                                <div class='save_table_div_show_table'> 
+                                                    <canvas id='areaChart'></canvas>                       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
+
+                        //Tile Outer HTML
+                        $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
+                            <div class='card card-border tile_border'>
+                                <div class='card-body overflow-hide display-flex pr-0'>
+                                    <div id='' class=''>
+                                        <div class='action-modal-button-div'>
+                                            <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                            <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                        </div>
+                                        <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$measurement_title</p>
+                                        <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                        <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                        </div>  
+                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                        
+                                    </div>
+                                    
+                                    <div class='overflow-hide ml-3 chart-width'>
+                                        <div id='chart_outer_tile_text_heading' style='text-align: center'>
+                                            <p class='text-muted'>Outer Tile View</p>
+                                        </div>
+                                        <div class='col-md-6 p-0 small-table small-table_$last_id'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
+                                            </table>
+                                        </div> 
+                                        <div class='save_table_div_show_table'> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div></div>"; 
+                    } 
+                    
+                    if($i < $total_result){
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                       $tileHtml.= $dataResult[$i]['tile_html'];
+                    } 
+                }
+                
+            }
+            else{
+                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
+                                <input type='hidden' id='total_records_chart' value='$last_id'>                
+                                <div class='card card-border tile_border'>
+                                    <div class='card-body overflow-hide display-flex pr-0'>
+                                        <div id='' class=''>
+                                            <div class='action-modal-button-div'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                            </div>
+                                            <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>".$measurement_title."</p>
+                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
+                                                <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                            </div> 
+                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                            
+                                        </div>
+                                        
+                                        <div class='overflow-hide ml-3 chart-width'>
+                                        <div class='col-md-6 p-0 small-table small-table_$last_id' style='display:none'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
+                                            </table>
+                                            </div> 
+                                            <div class='save_table_div_show_table'> 
+                                                <canvas id='areaChart'></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div></div>"; 
+                            
+                    //Tile Outer HTML
+                    $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex pr-0'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$measurement_title</p>
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
@@ -2169,6 +2341,69 @@ class dashboardController {
     }
 
     // ---end--->
+
+    // <----7-12-2021---
+    public function getChartTimeIntervalRecordProduct(){
+        try{
+            global $conn;
+            $record_type_of_tile = $_REQUEST['record_type_of_tile'];
+            $data = '';
+            $query1 = "SELECT * from produktionsAnlagenConfig as Mt ";
+            $query1 .= "LEFT JOIN produkte as t2 ";
+            $query1 .= "ON Mt.prd_iD = t2.prd_ID ";
+            $query1 .= "WHERE iBdePrdktConf_ID  IN ( ";
+            $query1 .= "SELECT max(t1.iBdePrdktConf_ID) FROM produktionsAnlagenConfig as t1 ";
+            $query1 .= "where t1.iBdeType='1' AND t1.prd_id != '0' ";
+            $query1 .= "GROUP BY t1.prd_id ";
+            $query1 .= ") ";
+            $query1 .= "order by Mt.iBdePrdktConf_ID desc ";
+            $data = queryDB($conn, $query1, "read");
+            // echo $query1; die;
+            echo json_encode($data,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
+
+    public function getChartSelectProductItem(){
+        try{
+            global $conn;
+            $record_type_of_tile = $_REQUEST['record_type_of_tile'];
+            $prd_id = $_POST['prd_id'];
+            $data = '';
+            $query1 = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+            $query1 .="INNER join "; 
+            $query1.="( ";
+            $query1 .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+            $query1 .="from produktionsAnlagenMoreOpt as t2 ";
+            $query1.=") ";
+            $query1 .="t2 ";
+            $query1 .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+            $query1 .= "INNER join ";
+            $query1 .= "( ";
+            $query1 .= "select t3.prd_anl_ID as table_3_prd_anl_Id , sum(cast(t3.val as int)) as val ";
+            $query1 .= "from masseneingabeSuchePrdIMw  as t3 group by t3.prd_anl_ID ";
+            $query1 .= ") ";
+            $query1 .= "t3 ";
+            $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+            $query1 .= "INNER join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+            $query1 .= "where t1.iBdeType='1' AND t1.prd_ID = '$prd_id' ";
+            $query1 .= "order by t3.val desc ";
+            $data = queryDB($conn, $query1, "read");
+            // echo $query1; die;
+            echo json_encode($data,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
+    // --end-->
+
     //Get Records Energy
     public function getNumberRecordsEnergy()
     {
@@ -4564,8 +4799,8 @@ class dashboardController {
         } 
     }
 
-       // <---24-11-2021---
-       public function getChartRecordFilterEnergy(){
+    // <---24-11-2021---
+    public function getChartRecordFilterEnergy(){
         try{
             global $conn;
             $record_type_of_tile = $_POST['record_type_of_tile'];
@@ -5035,6 +5270,451 @@ class dashboardController {
         } 
     }
     // --end-->
+
+    // <--07-12-2021--
+    public function getChartRecordFilterProduct(){
+        try{
+            global $conn;
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $analgen_config_id = $_POST['analgen_config_id'];
+            $filter_val = $_POST['filterVal'];
+            $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'] != '' ? $_POST['chart_outer_table_limit_column'] : 1;
+            if($record_type_of_tile == 'product')
+            {
+                $queryOverAllCount = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                $queryOverAllCount .="INNER join "; 
+                $queryOverAllCount.="( ";
+                $queryOverAllCount .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                $queryOverAllCount .="from produktionsAnlagenMoreOpt as t2 ";
+                $queryOverAllCount.=") ";
+                $queryOverAllCount .="t2 ";
+                $queryOverAllCount .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                $queryOverAllCount .= "INNER join ";
+                $queryOverAllCount .= "( ";
+                $queryOverAllCount .= "select t3.id as t3_id , t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+                $queryOverAllCount .= "from masseneingabeSuchePrdIMw  as t3 ";
+                $queryOverAllCount .= ") ";
+                $queryOverAllCount .= "t3 ";
+                $queryOverAllCount .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                $queryOverAllCount .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+                $queryOverAllCount .= "where t1.iBdeType='1' ";
+                $queryOverAllCount .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                $queryOverAllCount .= "order by t3.t3_id asc ";
+                $resultOverallCount = queryDB($conn, $queryOverAllCount, "read");
+                // echo json_encode($resultOverallCount); die;
+                $overallCount = count($resultOverallCount);
+
+                if($filter_val == 10){
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    $preVal = 0;
+                    for($i = 1; $i <= 10; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 10){
+                                $countSum = $result[0]['val'];
+                               
+                            }
+                            // <---12-11-2021--
+                            $loopCount = $i;
+                            // --end-->
+                            array_push($ar_days,$i);
+                        }
+                    }
+                    // echo json_encode($ar_value); die;
+                    // <---12-11-2021--
+                    // $ar_reverse_val = array_reverse($ar_value);
+                    // echo json_encode($ar_reverse_val); die;
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //10 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                        $queryOutsideTable .="INNER join "; 
+                        $queryOutsideTable.="( ";
+                        $queryOutsideTable .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                        $queryOutsideTable .="from produktionsAnlagenMoreOpt as t2 ";
+                        $queryOutsideTable.=") ";
+                        $queryOutsideTable .="t2 ";
+                        $queryOutsideTable .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                        $queryOutsideTable .= "INNER join ";
+                        $queryOutsideTable .= "( ";
+                        $queryOutsideTable .= "select t3.id as t3_id , t3.type , t3.on_week , t3.on_date ,t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+                        $queryOutsideTable .= "from masseneingabeSuchePrdIMw  as t3 ";
+                        $queryOutsideTable .= ") ";
+                        $queryOutsideTable .= "t3 ";
+                        $queryOutsideTable .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                        $queryOutsideTable .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+                        $queryOutsideTable .= "where t1.iBdeType='1' ";
+                        $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                        $queryOutsideTable .= "order by t3.t3_id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        // echo $queryOutsideTable; die;
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+                    
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($filter_val == 20){
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    $preVal = 0;
+                    for($i = 1; $i <= 20; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 20){
+                                $countSum = $result[0]['val'];
+                            }
+                                $loopCount = $i;
+                                $day_20 =  $i;
+                                // $r+2;
+                                array_push($ar_days,$day_20);
+        
+                            // }
+                        }
+                        
+                    }
+                    // print_r($ar_value);die;
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 20 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //20 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 20 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                        $queryOutsideTable .="INNER join "; 
+                        $queryOutsideTable.="( ";
+                        $queryOutsideTable .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                        $queryOutsideTable .="from produktionsAnlagenMoreOpt as t2 ";
+                        $queryOutsideTable.=") ";
+                        $queryOutsideTable .="t2 ";
+                        $queryOutsideTable .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                        $queryOutsideTable .= "INNER join ";
+                        $queryOutsideTable .= "( ";
+                        $queryOutsideTable .= "select t3.id as t3_id , t3.type , t3.on_week , t3.on_date ,t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+                        $queryOutsideTable .= "from masseneingabeSuchePrdIMw  as t3 ";
+                        $queryOutsideTable .= ") ";
+                        $queryOutsideTable .= "t3 ";
+                        $queryOutsideTable .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                        $queryOutsideTable .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+                        $queryOutsideTable .= "where t1.iBdeType='1' ";
+                        $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                        $queryOutsideTable .= "order by t3.t3_id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        // echo $queryOutsideTable; die;
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($filter_val == 30) {
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    $preVal = 0;
+                    for($i = 1; $i <= 30; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 30){
+                                $countSum = $result[0]['val'];
+                            }
+                            $loopCount = $i;
+                            $day_30 = $i;
+                            array_push($ar_days,$day_30);
+                        }
+
+                    }
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 30 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //30 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 30 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                        $queryOutsideTable .="INNER join "; 
+                        $queryOutsideTable.="( ";
+                        $queryOutsideTable .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                        $queryOutsideTable .="from produktionsAnlagenMoreOpt as t2 ";
+                        $queryOutsideTable.=") ";
+                        $queryOutsideTable .="t2 ";
+                        $queryOutsideTable .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                        $queryOutsideTable .= "INNER join ";
+                        $queryOutsideTable .= "( ";
+                        $queryOutsideTable .= "select t3.id as t3_id , t3.type , t3.on_week , t3.on_date ,t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+                        $queryOutsideTable .= "from masseneingabeSuchePrdIMw  as t3 ";
+                        $queryOutsideTable .= ") ";
+                        $queryOutsideTable .= "t3 ";
+                        $queryOutsideTable .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                        $queryOutsideTable .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+                        $queryOutsideTable .= "where t1.iBdeType='1' ";
+                        $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                        $queryOutsideTable .= "order by t3.t3_id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        // echo $queryOutsideTable; die;
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                    
+                }
+                else if($filter_val == 'all') {
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    $preVal = 0;
+                    for($i = 1; $i <= 50; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 50){
+                                $countSum = $result[0]['val'];
+                            }
+                            $loopCount = $i;
+                            $day_50 = $i;
+                            array_push($ar_days,$day_50);
+                        }
+
+                    }
+
+                    // <---12-11-2021--
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > 50){ //More Than 50 Condition
+                                $offsetLoopVal = $overallCount -  50;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= 50){ //50 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > 50){ //More Than 50 Condition
+                                $offsetLoopVal = $overallCount -  50;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                        $queryOutsideTable .="INNER join "; 
+                        $queryOutsideTable.="( ";
+                        $queryOutsideTable .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                        $queryOutsideTable .="from produktionsAnlagenMoreOpt as t2 ";
+                        $queryOutsideTable.=") ";
+                        $queryOutsideTable .="t2 ";
+                        $queryOutsideTable .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                        $queryOutsideTable .= "INNER join ";
+                        $queryOutsideTable .= "( ";
+                        $queryOutsideTable .= "select t3.id as t3_id , t3.type , t3.on_week , t3.on_date ,t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+                        $queryOutsideTable .= "from masseneingabeSuchePrdIMw  as t3 ";
+                        $queryOutsideTable .= ") ";
+                        $queryOutsideTable .= "t3 ";
+                        $queryOutsideTable .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                        $queryOutsideTable .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+                        $queryOutsideTable .= "where t1.iBdeType='1' ";
+                        $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                        $queryOutsideTable .= "order by t3.t3_id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                    
+                }
+
+                $records = ['status'=>400,'message'=>'Data Not found'];
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE); 
+                die;
+                
+            }
+            die;
+
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    // ---end-->
 
 
     public function getChartRecordFilter(){
@@ -6232,6 +6912,142 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         } 
     }
+
+    // <----8-12-2021---
+    public function getClickDashboardChartProduct(){
+        try{
+            global $conn;
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $filter_val = $_POST['chart_filter_value'];
+            $analgen_config_id = $_POST['analgen_config_id'];
+            if($record_type_of_tile == 'product')
+            {
+                $queryOverAllCount = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                $queryOverAllCount .="INNER join "; 
+                $queryOverAllCount.="( ";
+                $queryOverAllCount .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                $queryOverAllCount .="from produktionsAnlagenMoreOpt as t2 ";
+                $queryOverAllCount.=") ";
+                $queryOverAllCount .="t2 ";
+                $queryOverAllCount .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                $queryOverAllCount .= "INNER join ";
+                $queryOverAllCount .= "( ";
+                $queryOverAllCount .= "select t3.id as t3_id , t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+                $queryOverAllCount .= "from masseneingabeSuchePrdIMw  as t3 ";
+                $queryOverAllCount .= ") ";
+                $queryOverAllCount .= "t3 ";
+                $queryOverAllCount .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                $queryOverAllCount .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+                $queryOverAllCount .= "where t1.iBdeType='1' ";
+                $queryOverAllCount .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                $queryOverAllCount .= "order by t3.t3_id asc ";
+                $resultOverallCount = queryDB($conn, $queryOverAllCount, "read");
+                $overallCount = count($resultOverallCount);
+                if($filter_val == 10){
+                    $ar_days = [];
+                    $ar_value = [];
+                    $preVal = 0;
+                    for($i = 1; $i <= 10; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            
+                            array_push($ar_days,$i);
+                        }
+
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($filter_val == 20){
+                    $ar_days = [];
+                    $ar_value = [];
+                    $preVal = 0;
+                    for($i = 1; $i <= 20; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                        
+                                $day_20 =  $i;
+                                // $r+2;
+                                array_push($ar_days,$day_20);
+    
+                        }
+                        
+                    }
+                    // print_r($ar_value);die;
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($filter_val == 30) {
+                    $ar_days = [];
+                    $ar_value = [];
+                    $preVal = 0;
+                    for($i = 1; $i <= 30; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            $day_30 = $i;
+                            array_push($ar_days,$day_30);
+                        }
+
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                    
+                }
+                else if($filter_val == 'all') {
+                    $ar_days = [];
+                    $ar_value = [];
+                    $preVal = 0;
+                    for($i = 1; $i <= 50; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            $day_50 = $i;
+                            array_push($ar_days,$day_50);
+                        }
+
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                    
+                }
+
+                $records = ['status'=>400,'message'=>'Data Not found'];
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                
+            }
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    // --end-->
   
 }
 $obj = new dashboardController();
