@@ -847,3 +847,13 @@
     font-size: small;
     
 }
+
+.image_symbol_tile{
+    height: 19px;
+    width: 24px;
+    float: right;
+    margin: -17px -26px 0px 0px;
+    border-radius: 50%;
+    border: 1px solid;
+    padding: 4px;
+}

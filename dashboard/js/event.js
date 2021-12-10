@@ -1324,6 +1324,16 @@ $(document).ready( function(){
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
             //getChartTimeIntervalRecord();
+            $('#expand_view_chart').prop('checked',false);
+            $('#expand_view_chart').val('0');
+
+            $('#chart_outside_tile_structure').prop('checked',false);
+            $('#chart_outside_tile_structure').val('0');
+
+            $('.chart_outisde_tile_controls').hide();
+            $('#chart_height_outer_structure').val('');
+            $('#chart_width_outer_structure').val('');
+
             if(record_type_of_tile == 'measurement')
             {
                 getEditChartTileDashboard();
@@ -1385,6 +1395,40 @@ $(document).ready( function(){
             // --end--->
 
         }
+        else if(record_type_of_tile == "product" && type_data_tile == "chart" && data_edit_chart == 'true')
+        {
+            $('#dashboard_tile_modal').modal('hide');
+            // $('#dashboard_add_tile_chart').click();
+            var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
+            localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
+
+            $('#expand_view_chart').prop('checked',false);
+            $('#expand_view_chart').val('0');
+
+            $('#chart_outside_tile_structure').prop('checked',false);
+            $('#chart_outside_tile_structure').val('0');
+
+            $('.chart_outisde_tile_controls').hide();
+            $('#chart_height_outer_structure').val('');
+            $('#chart_width_outer_structure').val('');
+
+            getEditChartTileDashboardProduct();
+        
+            $('#dashboard_tile_modal_chart').modal('show');
+            $('#update_and_proceed_btn_dashboard_chart').show();
+            $('#save_and_proceed_btn_dashboard_chart').hide();
+            $('#chart_records_label_product').text('Select '+record_type_of_tile);
+            $('#dashboard_loader_div').hide();
+
+            // <--7-12-2021--
+            $('.chart_product_div').show();
+            $('#chart_record_div').hide();
+            $('#time_interval_div').hide();
+            // --end--->
+            
+
+        }
+        
 
         $('#title_modal_tile').val('');
         $('#record_type_of_tile option[value=measurement]').prop('selected','selected');
@@ -1685,6 +1729,7 @@ $(document).ready( function(){
         // console.log(dashboardDbName);
         localStorage.setItem('dashboardDBName',val);
         localStorage.setItem('dashboardDB',dashboardDbName);
+        $("#nameDashboardDB").val(dashboardDbName);
 
     });
     // -end-->
@@ -1707,7 +1752,15 @@ $(document).ready( function(){
     
     // <---7-10-2021--
     $(document).on('click','#update_and_proceed_btn_dashboard_chart', function(){
-        updateDashboardChart();
+        var ar = localStorage.getItem('dashboard_tile_data');
+        ar = JSON.parse(ar);
+        if(ar['record_type_of_tile'] == 'product')
+        {
+            updateDashboardChartProduct();
+        }   
+        else{
+            updateDashboardChart();
+        }
     });
     // --end--->
 

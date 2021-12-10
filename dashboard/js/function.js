@@ -2863,7 +2863,7 @@ function getEditChartTileDashboard(){
         $('#chart_outside_tile_structure').prop('checked',false);
         $('#chart_outside_tile_structure').val('0');
 
-        $('.chart_outisde_tile_controls').show();
+        $('.chart_outisde_tile_controls').hide();
         $('#chart_height_outer_structure').val('');
         $('#chart_width_outer_structure').val('');
       }
@@ -2979,7 +2979,7 @@ function getEditChartTileDashboardEnergy(){
         $('#chart_outside_tile_structure').prop('checked',false);
         $('#chart_outside_tile_structure').val('0');
 
-        $('.chart_outisde_tile_controls').show();
+        $('.chart_outisde_tile_controls').hide();
         $('#chart_height_outer_structure').val('');
         $('#chart_width_outer_structure').val('');
       }
@@ -2989,6 +2989,123 @@ function getEditChartTileDashboardEnergy(){
   });
 }
 // ---end--.>
+
+// <---9-12-2021--
+function getEditChartTileDashboardProduct(){
+  var ar = localStorage.getItem('dashboard_tile_data');
+  var id = localStorage.getItem('edit-measurement-tile');
+  var i_value = localStorage.getItem('edit-i-value');
+  ar = JSON.parse(ar);
+  $('#dashboard_loader_div').show();
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getEditChartDataDashboardProduct",
+        nameDB: $("#nameDashboardDB").val(),
+        product_title : ar['title_modal_tile'],
+        id : id,
+        i_value : i_value
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('.dashboard_chart_tiles').html(a['tile_html']);
+      getChartTimeIntervalRecordProduct();
+      // var chart_records = $('#chart_records').val();
+      setTimeout(()=>{
+          $("#chart_records_product option[value='"+a.prd_id+"']").prop('selected','selected');
+          getChartSelectProductItem();
+          $("#chart_records_product_item option[value='"+a.analgen_config_id+"']").prop('selected','selected');
+          $("#chart_record_filter option[value='"+a.chart_filter+"']").prop('selected','selected');
+          $("#chart_type option[value='"+a.chart_type+"']").prop('selected','selected');
+          $('#measurement-height-chart').val(a.data['input_height']);
+          $('#measurement-height-chart-hidden').val(a.data['height']);
+          $('#measurement-width-chart').val(a.data['input_width']);
+          $('#measurement-width-chart-hidden').val(a.data['width']);
+          $('#measurement_count_tile_modal_chart_'+i_value).css('height',a['data']['height']);
+          $('#measurement_count_tile_modal_chart_'+i_value).css('width',a['data']['width']);
+
+          $('#chart_outer_table_limit_column').val(a['data']['outer_table_column_limit']);
+
+          // <---
+          
+          $('.dashboard_chart_tile_html_'+i_value+' #product_count_tile_modal_chart_'+i_value+' .card-border').addClass('tile_border');
+          $('.dashboard_chart_outer_tile_html_'+i_value+' #product_count_outer_tile_modal_chart_'+i_value+' .card-border').addClass('tile_border');
+
+          // 1-11-2021---
+          if(a['data']['outside_tile_checkbox'] == 1 && a['data']['tile_data_type'] == "chart"){
+            var outside_tile_height = '';
+            var outside_tile_width = '';
+            // Height Checks
+            if(a['data']['outside_tile_input_height'] <= 1){
+                outside_tile_height = 145;
+            }
+            else if(a['data']['outside_tile_input_height'] == 2){
+              outside_tile_height = 290;
+            }
+            else if(a['data']['outside_tile_input_height'] == 3){
+              outside_tile_height = 435;
+            }
+            else if(a['data']['outside_tile_input_height'] >= 4){
+              outside_tile_height = 580;
+            }
+
+            // Width Checks
+            if(a['data']['outside_tile_input_width'] <= 1){
+              outside_tile_width = 285;
+            }
+            else if(a['data']['outside_tile_input_width'] == "2"){
+              outside_tile_width = 570;
+            }
+            else if(a['data']['outside_tile_input_width'] == "3"){
+              outside_tile_width = 855;
+            }
+            else if(a['data']['outside_tile_input_width'] >= "4"){
+              outside_tile_width = 1140;
+            }
+            $('#product_count_outer_tile_modal_chart_'+i_value).css('height',outside_tile_height);
+            $('#product_count_outer_tile_modal_chart_'+i_value).css('width',outside_tile_width);
+
+          }
+          
+          // --end-->
+          chartRecordFilterProduct();
+      },200);
+      // <---21-10-2021--
+      if(a['data']['expand_view'] == 1){
+        $('#expand_view_chart').prop('checked',true);
+        $('#expand_view_chart').val('1');
+      }
+      else if(a['data']['outside_tile_checkbox'] == 1)
+      {
+        $('#chart_outside_tile_structure').prop('checked',true);
+        $('#chart_outside_tile_structure').val('1');
+
+        $('.chart_outisde_tile_controls').show();
+        a['data']['outside_tile_input_height'] != 0 ? $('#chart_height_outer_structure').val(a['data']['outside_tile_input_height']) : $('#chart_height_outer_structure').val('');
+        a['data']['outside_tile_input_width'] != 0  ? $('#chart_width_outer_structure').val(a['data']['outside_tile_input_width']) : $('#chart_width_outer_structure').val('');
+      }
+      else{
+        $('#expand_view_chart').prop('checked',false);
+        $('#expand_view_chart').val('0');
+
+        $('#chart_outside_tile_structure').prop('checked',false);
+        $('#chart_outside_tile_structure').val('0');
+
+        $('.chart_outisde_tile_controls').hide();
+        $('#chart_height_outer_structure').val('');
+        $('#chart_width_outer_structure').val('');
+      }
+      // --end-->
+      
+    }
+  });
+}
+// ---end--->
 
 // <---02-9-2021----
 function saveDashboardTileChart(){
@@ -6309,6 +6426,120 @@ function updateDashboardChart(){
   
 }
 // --end-->
+
+// <---09-12-2021---
+function updateDashboardChartProduct(){
+  var mst_input_value = $('#total_records_chart').val();
+  $('.chart_text_edit_'+mst_input_value).attr('class', 'mb-0 mt-2 text-success count_result_tile chart_text_'+mst_input_value);
+  $('.chart_text_'+mst_input_value).removeClass('chart_text_edit_'+mst_input_value);
+  var chart_records_product = $('#chart_records').val();
+  var chart_record_filter = $('#chart_record_filter').val();
+  var chart_records_product_item = $('#chart_records_product_item').val();
+
+  if(chart_records_product == '' || chart_records_product_item == '' || chart_record_filter == ''){
+      return false;
+  }
+  $('.small-table').attr('style','display:block');
+  var chart_type = $('#chart_type').val();
+  var measuremnt_table_height = $('#measurement-height-chart-hidden').val();
+  var measurement_table_width = $('#measurement-width-chart-hidden').val();
+  var input_height = $('#measurement-height-chart').val(); 
+  var input_width = $('#measurement-width-chart').val();
+  var chart_outer_table_limit_column = $('#chart_outer_table_limit_column').val();
+  
+  var last_index_tile = $('#total_records_chart').val();
+  
+  $('.dashboard_chart_tile_html_'+last_index_tile+' .card-border').removeClass('tile_border');
+
+  var tile_html = $('.dashboard_chart_tile_html_'+last_index_tile).html();
+  $('#total_records_chart').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+
+  var expand_view = $('#expand_view_chart').val();
+
+  if(chart_type == "line_chart"){
+    tile_html = tile_html.replace("lineChart",'lineChart-none');  
+  }
+  else if(chart_type == "area_chart"){
+    tile_html = tile_html.replace("areaChart",'areaChart-none');
+  }
+  else if(chart_type == "pie_chart"){
+    tile_html = tile_html.replace("pieChart",'pieChart-none');
+  }
+  else if(chart_type == "bar_chart"){
+    tile_html = tile_html.replace("barChart",'barChart-none');
+  }
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+
+  var id = localStorage.getItem('edit-measurement-tile');
+
+  var outside_chart_checkbox = $('#chart_outside_tile_structure').val();
+  var outside_chart_input_height =  $('#chart_height_outer_structure').val();
+  var outside_chart_input_width = $('#chart_width_outer_structure').val();
+
+  if(outside_chart_checkbox == 0){
+    outside_chart_input_height = '';
+    outside_chart_input_width = '';
+  }
+
+  var type_tile = 'Product';
+
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "updateDashboardChart",
+        nameDB: $("#nameDashboardDB").val(),
+        title : tile_title,
+        tile_html : tile_html,
+        height: measuremnt_table_height,
+        width : measurement_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile,
+        analgen_config_id : chart_records_product_item,
+        chart_record_filter : chart_record_filter,
+        chart_type : chart_type,
+        id : id,
+        expand_view : expand_view,
+        outside_chart_checkbox : outside_chart_checkbox,
+        outside_chart_input_height : outside_chart_input_height,
+        outside_chart_input_width : outside_chart_input_width,
+        chart_outer_table_limit_column : chart_outer_table_limit_column,
+        type : type_tile
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#measurement_modal_loader_div_chart').show();
+      $('#dashboard_tile_modal_chart .modal-content').css('opacity','0.8');
+
+      $('#expand_view_chart').prop('checked',false);
+      $('#expand_view_chart').val('0');
+
+      $('#save_tile_id').val(id);
+      
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#measurement_modal_loader_div_chart').hide();
+        $('#dashboard_tile_modal_chart .modal-content').css('opacity','1');
+        $('#dashboard_tile_modal_chart').modal('hide');
+        // window.location.reload();
+      }, 500);
+    }
+  });
+  
+}
+// ---end--->
 
 // <---29-11-2021---
 function getAllProductClickTableHTML(prd_id,page_val = 1,order_by = 'desc'){
