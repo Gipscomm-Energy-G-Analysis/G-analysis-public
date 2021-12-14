@@ -33,7 +33,6 @@ let saveSubGroupConfigurations = (data) => {
             spinner.stop();
             if(result.status == 200) {
                 toastr.success(result.msg);
-                getOtherGraphLabel();
                 getMachineData($('.navigation').attr('data-value'),"current");
             }
         },
@@ -46,25 +45,31 @@ let saveSubGroupConfigurations = (data) => {
 
 let showConfigrationTable = (data , label_data=false) => {
     let html = '';
+
         $.each(data, function(key, value) {
             let label = value;
             let column = value;
+            let graph_value = value;
+
             if (label_data) {
                 label = value.label_name;
                 column = value.column_name;
+                graph_value = value.graph_value_name;
             }
             html += `<tr>
             <td>${column}<input hidden class="configuration_column_data" value="${column}"></td>
-            <td style="text-align:center;"><input type="checkbox" name="graph[]" class="custom_checkbox" ></td>
             <td class="custom_label_td" style="text-align:center;">
                 <span class="custom_label_span">${label}</span>
                 <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="form-control custom_label_input"/>
                 <button type="button" name="remove"  class="btn btn-danger remove_column float-right"><i class="far fa-trash-alt"></i></button>
                 <button type="button" name="remove" style="margin-right:5px;" class="btn btn-info edit_label float-right"><i class="fas fa-edit"></i></button>
             </td>
+            <td  style="width: 160px; padding-top: 20px; text-align:center;">
+            <input type="checkbox" id="" checked data-toggle="toggle" data-on="" data-off="" data-onstyle="success" data-offstyle="info">
+            </td>  
             </tr>`;
         });
-    console.log('html', html);
+
     $('#configuration_table tbody').html(html);
 }
 
@@ -76,6 +81,7 @@ let showPrimaryKey = (data, selected) => {
         } else {
             html += `<option value="${value}">${value}</option>`;
         }
+        
     });
     $('.primary_key_subGroup').html(html);
 }
@@ -97,6 +103,7 @@ let getGroupData = () => {
     spinner.spin(container);
     let groupId = $('#select_group_options').val();
     let table = $('#select_group_table').val();
+    
     if(groupId && table) {
         $.ajax({
             type: "POST",
@@ -110,6 +117,7 @@ let getGroupData = () => {
                 if(result.status == 200) {
                     $('.showData').show();
                     $('.hideData').hide();
+                    console.log(result);
                     showConfigrationTable(result.table_data, result.legacy);
                     showPrimaryKey(result.primary_key, result.selected_primary_key);
                     showForeignKey(result.foreign_key, result.selected_foreign_key);
@@ -194,18 +202,11 @@ $(document).on('click', '#save_configuration_button', function() {
     }
     let column = $(".configuration_column_data").map(function(){return $(this).val();}).get();
     let label = $(".custom_label_input").map(function(){return $(this).val();}).get();
-    let checkbox = $(".custom_checkbox").map(function(){
-        if($(this).is(':checked')){
-            return '1';
-        }
-        return '0';
-    }).get();
     let dataArray = {
         'table': $('#select_group_table').val(),
         'group_id' :$('#select_group_options').val() ,
         'primary_key' :$('#primary_key_subGroup').val() ,
         'foreign_key' : $('#foreign_key_subGroup').val() ,
-        'checkbox' : checkbox,
         'column' : column,
         'label' :label
     }
@@ -280,7 +281,7 @@ $(document).on('change', '#primary_key_subGroup', function() {
         }
     });
 })
-
+                                                                                                       
 
 $(document).on('change', '#select_graph_primary_column', function() {
     let container = document.getElementById('spin_container');
@@ -391,4 +392,4 @@ $(document).on('click', '#save_table_configuration_button', function() {
         return false;
     }
     saveTableConfigurations(selectedColumn, priorityMachines);
-})
+})  

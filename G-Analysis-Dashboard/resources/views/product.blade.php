@@ -931,7 +931,6 @@
         let getChartsDiv = document.querySelectorAll('.main_chart');
         const timeFilterHook = document.getElementById('timeFilter');
         let myChart;
-        let ejData;
         const lineChartHook = (id, label, data, name) => {
             console.log('here-data',id);
             if (data.length > 0) {
@@ -995,7 +994,6 @@
         }
 
         @foreach($data['chartsData'] as $key => $value)
-            ejData = @json($value['data']);
             lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
@@ -1039,11 +1037,10 @@
 }
 </style>
 
-
 <!-- Chart code -->
 <script>
-
 am5.ready(function() {
+
 /**
  * ---------------------------------------
  * This demo was created using amCharts 5.
@@ -1172,5 +1169,6 @@ chart.appear(1000, 100);
 
 }); // end am5.ready()
 </script>
+
 
 @stop

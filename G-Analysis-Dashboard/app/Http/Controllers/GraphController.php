@@ -44,7 +44,7 @@ class GraphController extends Controller
         $limit = $request['limit'];
         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$measuringPoint)
             ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
-            ->orderby('MessstellenEnergiedaten.Time','desc')->get();
+            ->orderby('MessstellenEnergiedaten.Time','desc')->limit($limit)->get();
         return $this->getlineChartData($data, $measuringPoint);
     }
 
@@ -57,7 +57,7 @@ class GraphController extends Controller
         $recordData = $data->IsNotEmpty() ? true: false;
         $label = $data->reverse()->pluck('Time')->toArray();
         $data = $data->reverse()->pluck('Value')->toArray();
-        return ['label'=>$label, 'data'=>['date'=>$label, 'value'=>$data], 'id'=>$id , 'record'=>$recordData];
+        return ['label'=>$label, 'data'=>$data, 'id'=>$id , 'record'=>$recordData];
     }
 
     public function historicData(Request $request) {
@@ -132,6 +132,4 @@ class GraphController extends Controller
         $graph = DB::table('graph_configurations')->where('username', $this->username)->get()->toArray();
         return ['status'=> 200 , 'data' => $graph];
     }
-
-    
 }

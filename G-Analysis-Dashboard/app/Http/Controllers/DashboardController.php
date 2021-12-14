@@ -45,7 +45,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-      
+        
         $username = $_SESSION['username'];
         $res =[];
         $column = [];
