@@ -45,6 +45,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
+      
         $username = $_SESSION['username'];
         $res =[];
         $column = [];
@@ -277,6 +278,7 @@ class DashboardController extends Controller
     */
     public function getTableColumns(Request $request)
     { 
+
         $table = $request['table'];
         if(!empty($this->database_result)){
             return DB::getSchemaBuilder()->getColumnListing($table);

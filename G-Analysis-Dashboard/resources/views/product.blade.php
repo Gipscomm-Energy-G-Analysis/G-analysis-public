@@ -90,34 +90,6 @@
 
 /* Add a grey background color on mouse-over */
 .pagination a:hover:not(.active) {background-color: #ddd;}
-
-.wish-table th {
-    background: #c5c8d2;
-    padding: 4px;
-    font-size: 10px;
-}
-.wish-table {
-    width: 100%;
-    border: 1px solid #c9ccd7;
-}
-.wish-table td {
-    padding: 4px;
-    border-right: 1px solid #c9ccd7;
-    border-bottom: 1px solid #c9ccd7;
-    font-size: 10px;
-}
-.add-popup {
-    border-radius: 3px;
-    border: 1px solid #d0d0d0;
-    margin: 5px 0 0;
-    width: 50%;
-    position: absolute;
-    z-index: 99999;
-    left: 143px;
-    top: -2px;
-    background-color: #343a40;
-}
-
 </style>
 @extends('layout.app' ,['database' => $databases, 'selectedDatabase' => $selectedDatabase])
 @section('headContent')
@@ -395,10 +367,11 @@
 
                                       <div id="accordion_lineChart_{{$key}}" class="collapse show" aria-labelledby="{{$value['id']}}" data-parent="#graph_div">
                                         <div class="card-body">
-                                            <div class="chart">
-                                                <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;"></canvas>
+                                            <div class="chart" id="chartdiv">
+                                                <!-- <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;"></canvas> -->
                                             </div>
                                         </div>
+
                                       </div>
                                     </div>
 
@@ -460,7 +433,7 @@
                                             <option value="06">June</option>
                                             <option value="07">July</option>
                                             <option value="08">August</option>
-                                            <option value="09">September</option>
+                                            <option value="09">September</option>   
                                             <option value="10">October</option>
                                             <option value="11">November</option>
                                             <option value="12">December</option>
@@ -496,57 +469,30 @@
             
             <div class="card">
                 <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#graphCollapseTwo" aria-expanded="false" aria-controls="graphCollapseTwo">
-                    <h5 class="mb-0">
-                        Other Charts
-                    </h5>
+                  <h5 class="mb-0">
+                      Other Charts
+                  </h5>
                 </div>
                 <div id="graphCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                   <div class="card-body">
                     <div class="row" id="other_graph_div">
                         @foreach($data['otherGraph'] as $key=>$value)
                             @if($value['name'])
-                            <div class="col-sm-12 main_chart_other">
+                            <div class="col-sm-6 main_chart_other">
                                 <div class="card card-info">
                                     <div class="card-header" >
-                                        <h3 class="card-title" style="float:revert;">
-                                            <button class="btn showPopup" data-toggle="collapse" data-target="#accordion_otherChart_{{$key}}" aria-expanded="true" aria-controls="accordion_otherChart_{{$key}}">
-                                                {{$value['name']}}
-                                            </button>
+                                        <h3 class="card-title" style="float:revert;">{{$value['name']}}
+                                            <span class="float-right">
+                                               
+                                            </span>
                                         </h3>
-                                        <div class="add-popup" style="display: none;">
-                                            <h4>{{$value['name']}}</h4>
-                                            <div class="add-popup-body">
-                                                <table class="wish-table table-striped table-bordered m-0" style="display:table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>{{$value['name']}}</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @isset($value['data'])
-                                                        @foreach($value['data'] as $ckey=>$cData)
-                                                        @if($ckey > 9) 
-                                                            @break
-                                                        @endif
-                                                        <tr>
-                                                            <td>{{$ckey+1}}</td>
-                                                            <td>{{$cData}}</td>
-                                                        </tr>
-                                                        @endforeach
-                                                    @endisset
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart">
+                                            <canvas id="{{$value['name']}}" style="background:#F1F6FD;"></canvas>
                                         </div>
                                     </div>
-                                    <div id="accordion_otherChart_{{$key}}" class="collapse {{$value['mode']}}" aria-labelledby="{{$value['name']}}" data-parent="#other_graph_div">
-                                        <div class="card-body">
-                                            <div class="chart">
-                                                <canvas id="{{$value['name']}}" style="background:#F1F6FD;"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!-- /.card-body -->
                                 </div>
                             </div>
                             @endif
@@ -688,8 +634,8 @@
                                             <thead>
                                                 <tr>
                                                     <th >Column</th>
-                                                    <th>Graph</th>
-                                                    <th>Label</th> 
+                                                    <th>Label</th>
+                                                    <th>Graph Value</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -746,13 +692,20 @@
                                                 </select>
                                             </div>
 
+                                            <!-- *** Graph Start *** -->
+
                                             <div class="col-sm-12">
-                                                <label for="select_column">Graph Value</label>
-                                                <select class="form-control graph_value" id="select_graph_value">
-                                                    <option value="0">No</option>
-                                                    <option value="1">Yes</option>
+                                                <label for="graph">Graph</label>
+                                                <select class="form-control graph" id="graph">
+                                                    <option value="no">No</option>
+                                                    <option value="yes">Yes</option>
+                                                   
                                                 </select>
                                             </div>
+
+                                            <!-- *** Graph End *** -->
+
+
                                             <div class="popup">
                                                 <div class="col-sm-3" style="margin-right:5px;">
                                                     <button type="button" class="btn btn-primary" id="save_field">Save changes</button>
@@ -774,14 +727,14 @@
                 <div class="card-tools">
                 </div>
             </div>
-            <div class="card-body" id="spin_container_class">
+            <div class="card-body">
                 <div id="data-card">
                     <form id="graph_data_form">
                         <div class="row">
                             <div class="col-sm-3">
                                 <label for="graph_name">Enter Graph Name</label>
                                 <input type="text" class="form-control" id="graph_name" name="graph_name">
-                            </div>
+                            </div>      
                             <div class="col-sm-3">
                                 <label for="label_column">Select Label Column</label>
                                 <select class="form-control graph_column" id="label_column" name="label_column">
@@ -911,6 +864,7 @@
                                                     <input type="hidden" name="sub_group[]" class="form-control name_list" value="{{$options['option_name']}}" />
                                                     <button style="float:right;" type="button" name="remove" id="{{$key}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
                                                 </div>
+                                                
                                             </td>
 
                                             @else
@@ -919,6 +873,7 @@
                                             <td>{{$key}}</td>
                                             <td>
                                                 <input type="text" name="sub_group[]" placeholder="Enter Subgroup Name" class="form-control name_list" value="{{$opt}}" />
+
                                             </td>
                                             @endforeach
                                             <td>
@@ -961,21 +916,24 @@
 <script src="{{asset('template/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 <script src="{{asset('template/js/pagination.js')}}"></script>
 <script src="{{asset('template/plugins/select2/js/select2.full.min.js')}}"></script>
+
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+
 <!-- Bootstrap Switch -->
 <script type="text/javascript">
-    $(document).on('mouseover','.showPopup', function() {
-        $(this).parent().parent().find('.add-popup').show();
-    })
 
-    $(document).on('mouseout','.showPopup', function() {
-        $(this).parent().parent().find('.add-popup').hide();
-    })
+
 
     @if(!empty($data))
         let getChartsDiv = document.querySelectorAll('.main_chart');
         const timeFilterHook = document.getElementById('timeFilter');
-        let myChart, otherMyChart;
+        let myChart;
+        let ejData;
         const lineChartHook = (id, label, data, name) => {
+            console.log('here-data',id);
             if (data.length > 0) {
                 $(".main_chart").css("display", "block");
                 // $("#not_found_msg").css("display","none");
@@ -1014,48 +972,8 @@
                 })
             } else {
                 $(".main_chart").css("display", "none");
-            }
-        }
+                // $("#not_found_msg").css("display","block");
 
-        const OtherChartHook = (id, label, data, name) => {
-            if (data.length > 0) {
-                $(".main_chart").css("display", "block");
-                // $("#not_found_msg").css("display","none");
-                let ctx = document.getElementById(id).getContext('2d');
-               // if (otherMyChart) otherMyChart.destroy();
-                otherMyChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: label,
-                        datasets: [{
-                            label: `Energy consumption for ${id}`,
-                            data: data,
-                            backgroundColor: 'rgb(0, 188, 140, 0.2)',
-                            borderColor: 'rgb(0, 188, 140)',
-                            borderWidth: 1,
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                title: {
-                                    color: 'red',
-                                    display: true,
-                                    text: 'Server Time'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    color: 'red',
-                                    display: true,
-                                    text: 'Power'
-                                }
-                            }
-                        }
-                    }
-                })
-            } else {
-                $(".main_chart").css("display", "none");
             }
         }
 
@@ -1077,11 +995,12 @@
         }
 
         @foreach($data['chartsData'] as $key => $value)
+            ejData = @json($value['data']);
             lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         @foreach($data['otherGraph'] as $key => $value)
-            OtherChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
+          //  lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         //adding event listener to time filter hook
@@ -1106,6 +1025,152 @@
         showFilterInputs: false,
         selectorMinimalHeight: '300'
     });
+
+
+
+</script>
+
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+  max-width: 100%;
+}
+</style>
+
+
+<!-- Chart code -->
+<script>
+
+am5.ready(function() {
+/**
+ * ---------------------------------------
+ * This demo was created using amCharts 5.
+ *
+ * For more information visit:
+ * https://www.amcharts.com/
+ *
+ * Documentation is available at:
+ * https://www.amcharts.com/docs/v5/
+ * ---------------------------------------
+ */
+
+// Create root element
+// https://www.amcharts.com/docs/v5/getting-started/#Root_element
+var root = am5.Root.new("chartdiv");
+
+
+// Set themes
+// https://www.amcharts.com/docs/v5/concepts/themes/
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
+
+
+// Create chart
+// https://www.amcharts.com/docs/v5/charts/xy-chart/
+var chart = root.container.children.push(am5xy.XYChart.new(root, {
+  panX: false,
+  panY: false,
+  wheelX: "panX",
+  wheelY: "zoomX"
+}));
+
+
+// Add cursor
+// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+  behavior: "zoomX"
+}));
+cursor.lineY.set("visible", false);
+
+// Generate random data
+var date = new Date();
+date.setHours(0, 0, 0, 0);
+var value = 1;
+
+function generateData() {
+  value = Math.round((Math.random() * 10 - 5) + value);
+  if (date.getDay() == 5) {
+    am5.time.add(date, "day", 3);
+  } else {
+    am5.time.add(date, "day", 1);
+  }
+
+  return {
+    date: date.getTime(),
+    value: value
+  };
+}
+
+function generateDatas(count) {
+  var data = [];
+  for (var i = 0; i < count; ++i) {
+    data.push(generateData());
+  }
+  return data;
+}
+
+
+// Create axes
+// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/category-date-axis/
+var xRenderer = am5xy.AxisRendererX.new(root, {});
+xRenderer.labels.template.set("minPosition", 0.01);
+xRenderer.labels.template.set("maxPosition", 0.99);
+
+var xAxis = chart.xAxes.push(
+  am5xy.CategoryDateAxis.new(root, {
+    categoryField: "date",
+    baseInterval: {
+      timeUnit: "day",
+      count: 1
+    },
+    renderer: xRenderer,
+    tooltip: am5.Tooltip.new(root, {})
+  })
+);
+
+var yAxis = chart.yAxes.push(
+  am5xy.ValueAxis.new(root, {
+    renderer: am5xy.AxisRendererY.new(root, {})
+  })
+);
+
+
+// Add series
+// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+var series = chart.series.push(am5xy.LineSeries.new(root, {
+  name: "Series",
+  xAxis: xAxis,
+  yAxis: yAxis,
+  valueYField: "value",
+  categoryXField: "date"
+}));
+
+var tooltip = series.set("tooltip", am5.Tooltip.new(root, {}));
+tooltip.label.set("text", "{valueY}");
+
+// Add scrollbar
+// https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+chart.set("scrollbarX", am5.Scrollbar.new(root, {
+  orientation: "horizontal"
+}));
+
+
+// Set data
+var data = generateDatas(200);
+series.data.setAll(data);
+xAxis.data.setAll(data);
+
+
+// Make stuff animate on load
+// https://www.amcharts.com/docs/v5/concepts/animations/
+series.appear(1000);
+chart.appear(1000, 100);
+
+}); // end am5.ready()
 </script>
 
 @stop
