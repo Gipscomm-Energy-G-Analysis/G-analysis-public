@@ -993,12 +993,12 @@
             });
         }
 
-        @foreach($data['chartsData'] as $key => $value)
-            // lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
-        @endforeach
+        // @foreach($data['chartsData'] as $key => $value)
+        //     lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
+        // @endforeach
 
         @foreach($data['otherGraph'] as $key => $value)
-            // lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
+          //  lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         //adding event listener to time filter hook
@@ -1039,8 +1039,6 @@
 
 <!-- Chart code -->
 <script>
-
-
 am5.ready(function() {
 
 /**
@@ -1089,8 +1087,6 @@ var date = new Date();
 date.setHours(0, 0, 0, 0);
 var value = 1;
 
-
-
 function generateData() {
   value = Math.round((Math.random() * 10 - 5) + value);
   if (date.getDay() == 5) {
@@ -1104,7 +1100,6 @@ function generateData() {
     value: value
   };
 }
-
 
 // function generateDatas(count) {
 //   var data = [];
@@ -1120,8 +1115,8 @@ function generateData() {
 // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
 // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/category-date-axis/
 var xRenderer = am5xy.AxisRendererX.new(root, {});
-xRenderer.labels.template.set("minPosition", 0.01);
-xRenderer.labels.template.set("maxPosition", 0.99);
+// xRenderer.labels.template.set("minPosition", 0.01);
+// xRenderer.labels.template.set("maxPosition", 0.99);
 
 var xAxis = chart.xAxes.push(
   am5xy.CategoryDateAxis.new(root, {
@@ -1162,9 +1157,6 @@ chart.set("scrollbarX", am5.Scrollbar.new(root, {
 }));
 
 
-// Set data
-// var data = generateDatas(200);
-
 @foreach($data['chartsData'] as $key => $value)
     generateDatas(@json($value['amData']));
 @endforeach
@@ -1173,12 +1165,19 @@ function generateDatas(data) {
     console.log(data);
     series.data.setAll(data);
     xAxis.data.setAll(data);
+    series.appear(1000);
+    chart.appear(1000, 100);
 }
+
+// Set data
+//var data = generateDatas(200);
+//console.log(data);
+    
+
 
 // Make stuff animate on load
 // https://www.amcharts.com/docs/v5/concepts/animations/
-series.appear(1000);
-chart.appear(1000, 100);
+
 
 }); // end am5.ready()
 </script>
