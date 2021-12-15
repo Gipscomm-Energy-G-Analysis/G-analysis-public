@@ -1163,7 +1163,7 @@ chart.set("scrollbarX", am5.Scrollbar.new(root, {
 
 
 // Set data
-//var data = generateDatas(200);
+// var data = generateDatas(200);
 
 @foreach($data['chartsData'] as $key => $value)
     generateDatas(@json($value['amData']));
