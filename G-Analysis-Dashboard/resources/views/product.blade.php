@@ -994,11 +994,11 @@
         }
 
         @foreach($data['chartsData'] as $key => $value)
-            lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
+            // lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         @foreach($data['otherGraph'] as $key => $value)
-          //  lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
+            // lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         //adding event listener to time filter hook
@@ -1039,6 +1039,8 @@
 
 <!-- Chart code -->
 <script>
+
+
 am5.ready(function() {
 
 /**
@@ -1087,6 +1089,8 @@ var date = new Date();
 date.setHours(0, 0, 0, 0);
 var value = 1;
 
+
+
 function generateData() {
   value = Math.round((Math.random() * 10 - 5) + value);
   if (date.getDay() == 5) {
@@ -1101,13 +1105,15 @@ function generateData() {
   };
 }
 
-function generateDatas(count) {
-  var data = [];
-  for (var i = 0; i < count; ++i) {
-    data.push(generateData());
-  }
-  return data;
-}
+
+// function generateDatas(count) {
+//   var data = [];
+//   for (var i = 0; i < count; ++i) {
+//     data.push(generateData());
+//   }
+//   console.log('datat', data);
+//   return data;
+// }
 
 
 // Create axes
@@ -1157,10 +1163,17 @@ chart.set("scrollbarX", am5.Scrollbar.new(root, {
 
 
 // Set data
-var data = generateDatas(200);
-series.data.setAll(data);
-xAxis.data.setAll(data);
+//var data = generateDatas(200);
 
+@foreach($data['chartsData'] as $key => $value)
+    generateDatas(@json($value['amData']));
+@endforeach
+
+function generateDatas(data) {
+    console.log(data);
+    series.data.setAll(data);
+    xAxis.data.setAll(data);
+}
 
 // Make stuff animate on load
 // https://www.amcharts.com/docs/v5/concepts/animations/
