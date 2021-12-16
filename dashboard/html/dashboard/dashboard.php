@@ -70,9 +70,9 @@
                     <div class="form-group col-md-3">
                       <label for="record_type_of_tile">Type of Record</label>
                       <select class="form-control form-control-sm text-dark" id="record_type_of_tile">
-                          <option value="measurement" description="Measurement Entries Count">Messstellen</option>
-                          <option value="product" description="Product Entries Count">Produkte</option>
-                          <option value="energy" description="Energy Entries Count">Energiedaten</option>
+                          <option value="energy" description="Energy Entries Count">Messtellen-Energie</option>
+                          <option value="product" description="Product Entries Count">Produktion</option>
+                          <option value="measurement" description="Measurement Entries Count">Messtellen-Betrieb</option>
                           <!-- <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
                           <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
                       </select>

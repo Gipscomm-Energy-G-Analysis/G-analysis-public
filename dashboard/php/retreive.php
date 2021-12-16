@@ -3375,9 +3375,15 @@ class dashboardController {
             // $number_records = $_POST['number_records'];
             // <--26-11-2021--
             $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
+            // $product_type = $_POST['product_type'];
             $number_records = 5;
             $pagesCount = '';
             $offSetVal = 0;
+            // if($product_type == 'automatic')
+            // {
+            //     $this->getNumberRecordsProductAutomatic();
+            // }
+
 
             // <----29-11-2021--
             $queryTotalRecord  = "SELECT t1.prd_id from produktionsAnlagenConfig as t1 ";
@@ -3465,6 +3471,284 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+
+    // <----13-12-201---
+    public function getNumberRecordsProductAutomatic()
+    {
+        try{
+            global $conn;
+            $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
+            $product_type = $_POST['product_type'];
+            $number_records = 5;
+            $pagesCount = '';
+            $offSetVal = 0;
+
+            $queryPrdOverviewRecord  = "SELECT * from TWP_PROD_OVERVIEW as t1 ";
+            $queryPrdOverviewRecord .= "order BY t1.id desc ";
+            $queryPrdOverviewRecord .= "offset 0 rows FETCH NEXT 12 ROWS ONLY ";
+            $lastPrdOverviewRecord = queryDB($conn, $queryPrdOverviewRecord, "read");
+            $manameValue = $lastPrdOverviewRecord != null ? $lastPrdOverviewRecord[0]['MANAME'] : '';
+            // echo $manameValue; die;
+            if($manameValue != '')
+            {
+                // $manameType =  is_numeric($manameValue);
+                // echo $manameType; die;
+                // $manameValue = 'Arburg SPM';
+                $queryTotalRecord  = "SELECT * from anlagen as t1 ";
+                $queryTotalRecord .= "Where bezeichnungAnl = '$manameValue' ";
+                $queryTotalRecord .= "order BY t1.anl_Id desc ";
+                $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
+                // echo json_encode($queryTotalRecord); die;
+                $total_number_records = count($totalRecordsValue);
+
+                if(count($totalRecordsValue) > 0){
+                    if($total_number_records <= $number_records){
+                        $offSetVal = 0;
+                        $number_records = $total_number_records;
+                        $pagesCount = 1; 
+                        $page_val = 1;
+                    }
+                    else{
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+                        
+                        if($page_val == $pagesCount){
+                            $number_records = $total_number_records - $offSetVal;
+                        }
+                            
+                    } 
+
+                }
+                $query1 = "SELECT * from anlagen as t1 ";
+                $query1 .= "Where bezeichnungAnl = '$manameValue' ";
+                $query1 .= "order BY t1.anl_Id desc ";
+                $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+                $dataProduct = queryDB($conn, $query1, "read");
+                // echo json_encode($dataProduct); die;
+                // $dataProduct = '';
+                $tr = $this->generateAllItemAutomaticTableHTML($dataProduct);
+                $th = $this->generateAllItemAutomaticTableHeaderHTML($dataProduct);
+                $pagination_html = $this->generateAllItemAutomaticPaginationHTML($page_val,$pagesCount,$dataProduct);
+                $records['product_html'] = $tr;
+                $records['product_table_header'] = $th;
+                $records['pagination_html'] = $pagination_html;
+
+                $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product');
+                $records['query_data'] = $ar;
+
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                die;
+            }
+            else{
+                $tr = $this->generateAllItemAutomaticTableHTML($dataProduct);
+                $pagination_html = $this->generateAllItemAutomaticPaginationHTML($page_val,$pagesCount,$dataProduct);
+            }
+            
+            
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    // <---14-12-2021---
+    public function generateAllItemAutomaticTableHTML($dataProduct,$queryMaxVal = false)
+    {
+        try{
+            // echo json_encode($dataProduct); die;
+            global $conn;
+            $tr = '';
+            $col_span = '';
+            if($queryMaxVal == ""){
+                $col_span = "colspan='5'";
+            }
+            else if($queryMaxVal != ''){
+                $col_span = "colspan='4'";
+            }
+
+            if($dataProduct != '' && count($dataProduct) > 0){
+                foreach($dataProduct as $key => $value){
+                    $class_val='';
+                    $style ='';
+                    $attr = '';
+                    // if($queryMaxVal == ""){
+                    //     $class_val = 'class="row_click_particular_product_entry"';
+                    // }
+                    // else if($queryMaxVal != '' && $queryMaxVal == $value['val']){
+                    //     $style="style='background-color: #f77171'";
+                    //     $attr = 'data-max-row="true"';
+                    // }
+                    
+                    $val_prd_ID = '';
+                    $prd_name = '';
+                    // if($queryMaxVal == '')
+                    // {
+                    //     $val_prd_ID = $value['prd_ID'];
+                    //     $prd_name = $value['namePrd'];
+                    // }
+
+                    $tr .= "<tr $style $class_val $attr prd_id='$val_prd_ID' data-table-other='true' prd_name='$prd_name'>";
+                    // $tr.= "<td>".$value['namePrd']."</td>";
+                    $tr.= "<td>".$value['bezeichnungAnl']."</td>";
+                    $tr.= "<td>".$value['datumAnl']->format('Y-m-d')."</td>";
+                    
+                    //Units Checkss
+                    $unit='kWh';
+                    $total_unit = $value['anschlussleistung1Anl'] + $value['mittlereAuslastungProzent1Anl'] + $value['mittlereAuslastungKw1Anl'] + $value['betriebstemperatur1Anl'] + $value['abwaerme1Anl'];
+                    $tr.= "<td>".$total_unit.' '.$unit."</td>";
+
+                    // if($value['unt_ID'] == "1"){
+                    //     $unit = "Hrs.";
+                    // }
+                    // else if($value['unt_ID'] == "2"){
+                    //     $unit = "kWh";
+                    // }
+                    // else if($value['unt_ID'] == "3"){
+                    //     $unit = "m³";
+                    // }
+                    // else if($value['unt_ID'] == "4"){
+                    //     $unit = "l";
+                    // }
+                    // else if($value['unt_ID'] == "5"){
+                    //     $unit = "kg";
+                    // }
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    // if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                    //     if($queryMaxVal != ''){
+                    //         $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
+                    //     }
+                    //     else{
+                    //         $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                    //     }
+                    // }
+                    // else if($queryMaxVal != ''){
+                    //     $tr.= "<td>".$value['on_date']."</td>";
+                    // }
+                    // else{
+                    //     $tr.= "<td>".$value['startDate']."</td>";
+                    // }
+                    // if($value['val'] == null){
+                    //     $tr.= "<td> - </td>";
+                    //     if($queryMaxVal == ''){
+                    //         $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                    //     }
+                    // }
+                    // else{
+                    //     $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                    //     if($queryMaxVal == ''){
+                    //         $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                    //     }
+                    // }
+                    $tr.="</tr>";
+                }
+            }else{
+                 $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+            }
+
+            return $tr;
+            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    public function generateAllItemAutomaticTableHeaderHTML(){
+        try{
+            $tr = "<tr>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Item Name</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Created Date</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units</th>";
+            $tr .= "</tr>";
+            return $tr;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    public function generateAllItemAutomaticPaginationHTML($page_val,$pagesCount,$dataProduct,$prd_id = false ,$analgen_config_id = false ){
+        try{
+            if($page_val > 0 && $pagesCount > 0 && $dataProduct != '' && count($dataProduct) > 0){
+                $style_background = '';
+                $class_page_count_val = 'page_count_product_automatic';
+                $style_background_end = '';
+                $class_page_count_val_end = 'page_count_product_automatic';
+                // echo $page_val ; die;
+                if($page_val == "1"){
+                    $style_background = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val = '';
+                    if($pagesCount == "1"){
+                        $style_background_end = "style='background: #d6d6d6; color: black'";
+                        $class_page_count_val_end = '';  
+                    }
+                    
+                }
+                else if($page_val == $pagesCount){
+                    $style_background_end = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val_end = '';
+                }
+                else{
+                    $style_background = '';
+                    $style_background_end = '';
+                }
+                $paginationHTMl="<nav aria-label='Page navigation example'>
+                    <input type='hidden' id='prd_id_hidden' prd_id='$prd_id' analgen_config_id='$analgen_config_id'>
+                    <div class='pagination_items'>
+                            <ul class='pagination'>
+                                <li class='page-item $class_page_count_val' prd_id='$prd_id' id='previous_pagination_val_product_automatic'>
+                                    <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
+                                        <span aria-hidden='true'>&laquo;</span>
+                                        <span class='sr-only'>Previous</span>
+                                    </a>
+                                </li>";
+                                
+                for($i = 1; $i <= $pagesCount; $i++){
+                    $active = $i == $page_val ? 'active' : '';
+                    
+                    // if($i == $page_val){
+                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
+                    // }
+
+                    if($i == $page_val || $i == $pagesCount){
+                        $paginationHTMl.="<li class='page-item  $active '><input type='button' class='pagination_input_val_product_automatic page-link' prd_id='$prd_id' value='$i'></li>";
+                    }
+                    else{
+                        $paginationHTMl.="<li class='page-item'><input type='button' class='pagination_input_val_product_automatic page-link' prd_id='$prd_id' value='$i'></li>";
+                    }
+                    // if($i == $pagesCount){
+                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
+                    //     $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_all_product' href='javascript:void(0);'>$i</a></li>";
+                    // }
+                }
+                $paginationHTMl.="<li class='page-item $class_page_count_val_end' prd_id='$prd_id' id='next_pagination_product_automatic'>
+                                        <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
+                                            <span aria-hidden='true'>&raquo;</span>
+                                            <span class='sr-only'>Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>";
+
+                //ScreenShot Code
+                $paginationHTMl.="<div id='save_table_format_product' class='text-center'>
+                                    <input type='button' id='product_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                                </div>";
+                      
+                return $paginationHTMl;
+                // $records['pagination_html'] = $paginationHTMl;
+            }
+            
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    
+    // --end--->
 
     // <-----26-11-2021---
     public function generateAllProductTableHTML($dataProduct)
@@ -3680,8 +3964,10 @@ class dashboardController {
             $dataProduct = queryDB($conn, $query1, "read");
             // echo json_encode($dataProduct); die;
             $tr = $this->getAllProductClickTableHTML($dataProduct);
+            $th = $this->getAllProductClickTableHeaderHTML();
             $pagination_html = $this->getAllProductClickTablePagination($page_val,$pagesCount,$dataProduct,$prd_id);
             $records['product_html'] = $tr;
+            $records['product_table_header'] = $th;
             $records['pagination_html'] = $pagination_html;
 
             $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product');
@@ -3801,8 +4087,10 @@ class dashboardController {
             $dataProduct = queryDB($conn, $query1, "read");
             // echo json_encode($dataProduct); die;
             $tr = $this->getAllProductClickTableHTML($dataProduct,$queryMaxVal);
+            $th = $this->rowClickParticularProductHeaderHtml();
             $pagination_html = $this->getAllProductClickTablePagination($page_val,$pagesCount,$dataProduct,'',$analgen_config_id);
             $records['product_html'] = $tr;
+            $records['product_table_header'] = $th;
             $records['pagination_html'] = $pagination_html;
 
             $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => $queryMaximum,'row_click' => 'true', 'type' => 'Product');
@@ -3840,6 +4128,37 @@ class dashboardController {
 
     }
     // -end--->
+
+    public function getAllProductClickTableHeaderHTML(){
+        try{
+            $tr = "<tr>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Item Name</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval Date</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Create Dated </th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units </th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
+            $tr .= "</tr>";
+            return $tr;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    public function rowClickParticularProductHeaderHtml(){
+        try{
+            $tr = "<tr>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Item Name</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval Date</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Date</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Units Consumed </th>";
+            $tr .= "</tr>";
+            return $tr;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
 
     public function getAllProductClickTableHTML($dataProduct,$queryMaxVal = false)
     {
@@ -4910,6 +5229,138 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         } 
     }
+
+    // <---15-12-2021
+    public function getTableDashboardDataProductAutomatic(){
+        try{
+            global $conn;
+            $id = $_REQUEST['id'];
+            $username = $_SESSION['username']; 
+            $queryDataRecords = $_POST['queryDataRecords'];
+            $firstPosition =  strpos($queryDataRecords,'=');
+            $firstPosition = $firstPosition + 1;
+            $firstPositionQuery= substr_replace($queryDataRecords,"'",$firstPosition,1);
+            
+            $lastPosition = strpos($firstPositionQuery,'order BY t1.anl_Id desc');
+            $lastPosition = $lastPosition - 1;
+            $lastPositionQuery= substr_replace($firstPositionQuery,"'",$lastPosition,1);
+            // echo $lastPositionQuery; die;
+            $dataProduct = queryDB($conn, $lastPositionQuery, "read");
+            // echo json_encode($dataProduct); die;
+            
+            $dashboardMeasurementHtml = $this->generateDashboardAllItemAutomaticTableHTML($dataProduct);
+            $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
+
+            echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+
+            // echo $lastPositionQuery; die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+
+    // <---14-12-2021---
+    public function generateDashboardAllItemAutomaticTableHTML($dataProduct,$queryMaxVal = false)
+    {
+        try{
+            // echo json_encode($dataProduct); die;
+            global $conn;
+            $tr = "<thead>";
+            $tr .= "<tr>";
+            $tr .= "<th>Item Name</th>";
+            $tr .= "<th>Created Date</th>";
+            $tr .= "<th>Total Units</th>";
+            $tr .= "</tr>";
+            $tr .= "</thead>";
+            if($dataProduct != '' && count($dataProduct) > 0){
+                foreach($dataProduct as $key => $value){
+                    $class_val='';
+                    $style ='';
+                    $attr = '';
+                    // if($queryMaxVal == ""){
+                    //     $class_val = 'class="row_click_particular_product_entry"';
+                    // }
+                    // else if($queryMaxVal != '' && $queryMaxVal == $value['val']){
+                    //     $style="style='background-color: #f77171'";
+                    //     $attr = 'data-max-row="true"';
+                    // }
+                    
+                    $val_prd_ID = '';
+                    $prd_name = '';
+                    // if($queryMaxVal == '')
+                    // {
+                    //     $val_prd_ID = $value['prd_ID'];
+                    //     $prd_name = $value['namePrd'];
+                    // }
+
+                    $tr .= "<tr>";
+                    // $tr.= "<td>".$value['namePrd']."</td>";
+                    $tr.= "<td>".$value['bezeichnungAnl']."</td>";
+                    $tr.= "<td>".$value['datumAnl']->format('Y-m-d')."</td>";
+                    
+                    //Units Checkss
+                    $unit='kWh';
+                    $total_unit = $value['anschlussleistung1Anl'] + $value['mittlereAuslastungProzent1Anl'] + $value['mittlereAuslastungKw1Anl'] + $value['betriebstemperatur1Anl'] + $value['abwaerme1Anl'];
+                    $tr.= "<td>".$total_unit.' '.$unit."</td>";
+
+                    // if($value['unt_ID'] == "1"){
+                    //     $unit = "Hrs.";
+                    // }
+                    // else if($value['unt_ID'] == "2"){
+                    //     $unit = "kWh";
+                    // }
+                    // else if($value['unt_ID'] == "3"){
+                    //     $unit = "m³";
+                    // }
+                    // else if($value['unt_ID'] == "4"){
+                    //     $unit = "l";
+                    // }
+                    // else if($value['unt_ID'] == "5"){
+                    //     $unit = "kg";
+                    // }
+                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
+                    // if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
+                    //     if($queryMaxVal != ''){
+                    //         $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
+                    //     }
+                    //     else{
+                    //         $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
+                    //     }
+                    // }
+                    // else if($queryMaxVal != ''){
+                    //     $tr.= "<td>".$value['on_date']."</td>";
+                    // }
+                    // else{
+                    //     $tr.= "<td>".$value['startDate']."</td>";
+                    // }
+                    // if($value['val'] == null){
+                    //     $tr.= "<td> - </td>";
+                    //     if($queryMaxVal == ''){
+                    //         $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
+                    //     }
+                    // }
+                    // else{
+                    //     $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                    //     if($queryMaxVal == ''){
+                    //         $tr.= "<td><label class='badge badge-success'>Active </label></td>";
+                    //     }
+                    // }
+                    $tr.="</tr>";
+                }
+            }else{
+                $tr .= "<tbody><tr><td colspan='5' class='text-center'>No Data</td></tr></tbody>";
+            }
+
+            return $tr;
+            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // ---end-->
 
     // <---24-11-2021---
     public function getChartRecordFilterEnergy(){

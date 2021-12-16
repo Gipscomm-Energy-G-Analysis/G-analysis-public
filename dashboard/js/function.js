@@ -1564,6 +1564,16 @@ function rowClickEnergyPaginationTableData(mst_id,data_type,page_value,selected_
 //Selected Number of Records Product
 function getNumberRecordsProduct(page_val = 1){
     // var number_records = $('#product_number_record').val();
+    var product_type = $('#product_type').val();
+    // <---13-12-2021---
+    if(product_type == 'automatic'){
+      var tr = "<tr><td colspan='5' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Product Type Entered Mannually</td></tr>";
+      $('#all_product_table_entries').html(tr);
+      $('#pagination_all_product').html('');
+      return false;
+    }
+    // --end-->
+    
     $.ajax({
         type: "POST",
         url: "php/retreive.php",
@@ -1573,7 +1583,8 @@ function getNumberRecordsProduct(page_val = 1){
             action: "getNumberRecordsProduct",
             nameDB: $("#nameDashboardDB").val(),
             // number_records : number_records,
-            page_val : page_val
+            page_val : page_val,
+            product_type : product_type
         },
         fail: function() {
             alert("failed!!")
@@ -1585,6 +1596,72 @@ function getNumberRecordsProduct(page_val = 1){
            
         }
     });
+}
+
+function getNumberRecordsProductAutomatic(page_val = 1){
+  // var number_records = $('#product_number_record').val();
+  var product_type = $('#product_type').val();
+  // <---14-12-2021---
+  var nameDB = "";
+  if(product_type == 'automatic'){
+    nameDB = "g002_badber";
+  }
+  else{
+    nameDB = $("#nameDashboardDB").val();
+  }
+  // --end-->
+  
+  $.ajax({
+      type: "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "getNumberRecordsProductAutomatic",
+          nameDB: nameDB,
+          // number_records : number_records,
+          page_val : page_val,
+          product_type : product_type
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#product_select_table_entries').html(a['product_html']);
+        $('#product_select_table_entries_table_div table thead').html(a['product_table_header']);
+        $('#product_select_table_entries_pagination').html(a['pagination_html']);
+
+
+        $('#product_select_table_entries_table thead tr th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
+        $('#product_select_table_entries_table tbody tr td').attr('style','padding: 6px !important;font-size: small !important;');
+
+
+        $('#product_records_order_by_div').hide();
+        localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+        var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+        if(edit_value == 'true'){
+            $('#product_modal_open_button').val('Update & Preview');
+            $('#product_modal_open_button').attr('tile-edit','true');
+        }
+        else{
+          $('#product_modal_open_button').val('Save & Preview');
+          $('#product_modal_open_button').attr('tile-edit','false');
+        }
+       
+        var type_data = localStorage.getItem('dashboard_tile_data');
+        type_data = JSON.parse(type_data);
+        if(type_data['type_data_tile'] == 'overall_count')
+        {
+          $('#product_modal_open_button').hide();
+        }
+        else{
+          $('#product_modal_open_button').show();
+        }
+        // ---end--->
+         
+      }
+  });
 }
 
 
@@ -2287,7 +2364,13 @@ function getDimentions(id) {
             getTileClickOverAllCount(id,mst_id);
           }
           else if(type_data_val == "table"){
-            getTableDashboardData(id);
+            // console.log(a['data']);
+            if(a['data']['tile_record_type'] == 'product' && a['data']['table_other'] == 'true')
+            {
+              getTableDashboardDataProductAutomatic(id,a['data']['query_data_records']);
+            }else{
+              getTableDashboardData(id);
+            }
 
 
             // <--23-11-2021---
@@ -4983,6 +5066,35 @@ function getTableDashboardData(id){
   });
 }
 
+function getTableDashboardDataProductAutomatic(id,queryDataRecords){
+  // $("#nameDashboardDB").val(),
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getTableDashboardDataProductAutomatic",
+        nameDB: 'g002_badber',
+        id:id,
+        queryDataRecords : queryDataRecords
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+
+      // <----17-11-2021----
+      var chart_tile_click_data = {'table_html' : a['dashboardMeasurementHtml'],'tile_click_type' : 'table'}
+      localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
+      // -end->
+
+      $('.'+id+'.tiles-click .save_table_div_show_table .table').html('');
+      $('.'+id+'.tiles-click .save_table_div_show_table .table').html(a['dashboardMeasurementHtml']);
+    }
+  });
+}
+
 // <--13-9-21--
 function updateTileRecordOverallCount()
 {
@@ -6561,16 +6673,17 @@ function getAllProductClickTableHTML(prd_id,page_val = 1,order_by = 'desc'){
     success: function(a) {
       if(a != ''){
 
-        var thVal =  $('#product_select_table_entries_table thead tr').children('th:eq(4)').text();
-        if(thVal == '' || thVal == undefined){
-          $('#product_select_table_entries_table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
-        }
+        // var thVal =  $('#product_select_table_entries_table thead tr').children('th:eq(4)').text();
+        // if(thVal == '' || thVal == undefined){
+        //   $('#product_select_table_entries_table thead tr').children('th:eq(3)').after("<th>Status</th>"); 
+        // }
 
-        $('#product_select_table_entries_table thead tr').children('th:eq(2)').text('Created Date');
-        $('#product_select_table_entries_table thead tr').children('th:eq(3)').text('Total Units');
+        // $('#product_select_table_entries_table thead tr').children('th:eq(2)').text('Created Date');
+        // $('#product_select_table_entries_table thead tr').children('th:eq(3)').text('Total Units');
 
         $('#product_select_table_entries').html(a['product_html']);
         $('#product_select_table_entries_pagination').html(a['pagination_html']);
+        $('#product_select_table_entries_table_div table thead').html(a['product_table_header']);
 
         $('#product_select_table_entries_table thead tr th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
         $('#product_select_table_entries_table tbody tr td').attr('style','padding: 6px !important;font-size: small !important;');
@@ -6637,13 +6750,14 @@ function rowClickParticularProductEntry(analgen_config_id,page_val = 1,order_by 
         alert("failed!!")
     },
     success: function(a) {
-      $('#product_select_table_entries_table thead tr').children('th:eq(4)').remove();
+      // $('#product_select_table_entries_table thead tr').children('th:eq(4)').remove();
       
-      $('#product_select_table_entries_table thead tr').children('th:eq(2)').text('Date');
-      $('#product_select_table_entries_table thead tr').children('th:eq(3)').text('Units Consumed');
+      // $('#product_select_table_entries_table thead tr').children('th:eq(2)').text('Date');
+      // $('#product_select_table_entries_table thead tr').children('th:eq(3)').text('Units Consumed');
 
       $('#product_select_table_entries').html(a['product_html']);
       $('#product_select_table_entries_pagination').html(a['pagination_html']);
+      $('#product_select_table_entries_table_div table thead').html(a['product_table_header']);
 
       $('#product_select_table_entries_table thead tr th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
       $('#product_select_table_entries_table tbody tr td').attr('style','padding: 6px !important;font-size: small !important;');

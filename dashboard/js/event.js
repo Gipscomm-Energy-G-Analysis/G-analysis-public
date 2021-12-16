@@ -132,7 +132,9 @@ $(document).ready( function(){
                 $('#all_product_input_text_field').val('');
                 $('#product_records_order_by_div').hide();
 
-                getNumberRecordsProduct();
+                // getNumberRecordsProduct();
+                $("#product_type option[value='automatic']").prop('selected','selecetd');
+                getNumberRecordsProductAutomatic();
 
 
                 break;
@@ -535,7 +537,7 @@ $(document).ready( function(){
 
     //Product
     $(document).on('change','#product_number_record',function(){
-        getNumberRecordsProduct();
+        // getNumberRecordsProduct();
     });
 
     //Production Data 
@@ -1236,12 +1238,13 @@ $(document).ready( function(){
         var type_data_tile = $('#type_data_tile').val();
         var data_edit_chart = $(this).attr('data-edit-chart');
         if(record_type_of_tile == "measurement" && (type_data_tile == "table" || type_data_tile == 'overall_count') ){
-            $('#tables_sidebar').click();
-            $('#measurement_sidebar_option').click();
-            $('#dashboard_tile_modal').modal('hide');
             localStorage.setItem('measurement_title_modal_tile',title_modal_tile);
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
+
+            $('#tables_sidebar').click();
+            $('#measurement_sidebar_option').click();
+            $('#dashboard_tile_modal').modal('hide');
             
             var edit_value = $(this).attr('data-edit');
             if(edit_value == 'true'){
@@ -1250,12 +1253,13 @@ $(document).ready( function(){
             }
         }
         else if(record_type_of_tile == "product" && (type_data_tile == "table" || type_data_tile == 'overall_count') ){
-            $('#tables_sidebar').click();
-            $('#product_sidebar_option').click();
-            $('#dashboard_tile_modal').modal('hide');
             localStorage.setItem('product_title_modal_tile',title_modal_tile);
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
+            
+            $('#tables_sidebar').click();
+            $('#product_sidebar_option').click();
+            $('#dashboard_tile_modal').modal('hide');
 
             var edit_value = $(this).attr('data-edit');
             if(edit_value == 'true'){
@@ -1264,13 +1268,14 @@ $(document).ready( function(){
             }
         }
         else if(record_type_of_tile == "energy" && (type_data_tile == "table" || type_data_tile == 'overall_count') ){
-            $('#tables_sidebar').click();
-            $('#energy_sidebar_option').click();
-            $('#dashboard_tile_modal').modal('hide');
             localStorage.setItem('energy_title_modal_tile',title_modal_tile);
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
 
+            $('#tables_sidebar').click();
+            $('#energy_sidebar_option').click();
+            $('#dashboard_tile_modal').modal('hide');
+         
             var edit_value = $(this).attr('data-edit');
             if(edit_value == 'true'){
                 $('#energy_modal_open_button').val('Update & Preview');
@@ -2074,6 +2079,30 @@ $(document).ready( function(){
         } 
     })
 
+    // <--14-12-2021--
+    $(document).on('click','.page_count_product_automatic,.pagination_input_val_product_automatic', function(){
+        var id = $(this).attr('id');
+        var class_btn = $(this).hasClass('pagination_input_val_product_automatic');
+        // var order_by = $('#product_records_order_by').val();
+        if(id == 'previous_pagination_val_product_automatic'){
+            var page_val = $('#product_select_table_entries_pagination').find('li.active').find('input').val();
+            page_val = parseInt(page_val) - 1;
+            getNumberRecordsProductAutomatic(page_val);
+
+        }
+        else if(id == 'next_pagination_product_automatic'){
+            var page_val = $('#product_select_table_entries_pagination').find('li.active').find('input').val();
+            page_val = parseInt(page_val) + 1;
+            getNumberRecordsProductAutomatic(page_val);
+        }
+        else if(class_btn == true){
+            var page_val = $(this).val();
+            getNumberRecordsProductAutomatic(page_val);
+        } 
+       
+    })
+    // --end--->
+
     $(document).on('change','#product_records_order_by', function(){
         var textNoRecord = $('#product_select_table_entries_table_div table #product_select_table_entries tr').children('td:first').text();
         if(textNoRecord == 'No Data')
@@ -2333,6 +2362,23 @@ $(document).ready( function(){
     $(document).on('change','#chart_records_product_item', function(){
         chartRecordFilterProduct();
     });
+    // --end-->
+
+
+    // <---14-12-2021----
+    $(document).on('change','#product_type', function(){
+        var prdTypeVal= $(this).val();
+        $('#all_product_input_text_field').val('');
+        if(prdTypeVal == 'automatic')
+        {
+            getNumberRecordsProductAutomatic();
+        }else {
+            var tr = "<tr><td colspan='5' style='padding: 12px !important; font-size: small' class='text-center'>Please Select All Product</td></tr>";
+            $('#product_select_table_entries').html(tr);
+            $('#product_select_table_entries_pagination').html('');
+            getNumberRecordsProduct();
+        }
+    })
     // --end-->
 
 

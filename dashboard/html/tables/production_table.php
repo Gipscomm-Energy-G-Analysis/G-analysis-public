@@ -15,6 +15,14 @@
                       <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='All Product' readonly >
                     </div>
 
+                    <div class="form-group col-md-3 mt_pr_alignment" id="product_type_div">
+                      <label for="product_type">Product Type</label>
+                      <select class="form-control form-control-sm text-dark" id="product_type">
+                        <option value='automatic'>Read in Automatically</option>
+                        <option value='mannual'>Entered Manually</option>
+                      </select>
+                    </div>
+
                     <div class="form-group col-md-3 mt_pr_alignment" id="product_records_order_by_div" style="display: none">
                       <label for="product_records_order_by">Filter Units Consumed</label>
                       <select class="form-control form-control-sm text-dark" id="product_records_order_by">
@@ -22,6 +30,7 @@
                         <option value='asc'>Order By Min Units Consumed</option>
                       </select>
                     </div>
+
                   </div>
 
                   <div class="modal fade modal_all_products" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -93,7 +102,7 @@
                   </p> -->
                   <div class="table-responsive" id="product_select_table_entries_table_div">
                     <table class="table table-striped table-bordered" id="product_select_table_entries_table">
-                      <thead>
+                      <thead id="product_select_table_entries_table_header">
                         <tr>
                           <!-- <th>
                             Product Name
@@ -103,9 +112,9 @@
                             Item Name
                           </th>
 
-                          <th>
+                          <!-- <th>
                             Time Interval
-                          </th>
+                          </th> -->
                           <th>
                             Created Date
                           </th>
@@ -114,9 +123,9 @@
                             Total Units
                           </th>
 
-                          <th>
+                          <!-- <th>
                             Status
-                          </th>
+                          </th> -->
                         </tr>
                       </thead>
                       <tbody id="product_select_table_entries">
