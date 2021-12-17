@@ -14,7 +14,7 @@
                       <select class="form-control form-control-sm text-dark" id="energy_type">
                         <option value="automatic">Read in Automatically</option>
                         <option value="manually">Entered Manually</option>
-                         <!-- <option value="calculated">Calculated</option> -->
+                        <option value="layer_model">SchichtModelle</option>
                       </select>
                     </div>
 
@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="form-group col-md-3">
-                      <label for="energy_records_order_by">Filter Units Consumed</label>
+                      <label for="energy_records_order_by" id="energy_record_order_by_label">Filter Units Consumed</label>
                       <select class="form-control form-control-sm text-dark" id="energy_records_order_by">
                         <option value="order_by_desc">Maximum</option>
                         <option value="order_by_asc">Minimum</option>

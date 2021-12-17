@@ -1683,12 +1683,18 @@ $(document).ready( function(){
     // <---17-11-2021---
     $(document).on('change','#energy_type', function(){
         var val = $(this).val();
+        $('#energy_record_order_by_label').text('Filter Units Consumed');
         if(val == 'automatic'){
-            $('#energy_records_order_by option:contains("Order By Max Units Consumed")').text('Maximum');
-            $('#energy_records_order_by option:contains("Order By Min Units Consumed")').text('Minimum');
+            $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum');
+            $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum');
+        }
+        else if(val == 'layer_model'){
+            $('#energy_record_order_by_label').text('Filter Quantity');
+            $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum Quantity');
+            $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum Quantity');
         }else{
-            $('#energy_records_order_by option:contains("Maximum")').text('Order By Max Units Consumed');
-            $('#energy_records_order_by option:contains("Minimum")').text('Order By Min Units Consumed');   
+            $("#energy_records_order_by option[value= 'order_by_desc']").text('Order By Max Units Consumed');
+            $("#energy_records_order_by option[value= 'order_by_asc']").text('Order By Min Units Consumed');   
         }
         getNumberRecordsEnergy();
     })

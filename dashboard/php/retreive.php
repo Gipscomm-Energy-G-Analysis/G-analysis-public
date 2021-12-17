@@ -2534,10 +2534,10 @@ class dashboardController {
 
             
             // <----14-9-2021---
-            // if($energy_type == "calculated"){
-            //     $this->getAutomaticTableEnergyData1();
-            //     die;
-            // }
+            if($energy_type == "layer_model"){
+                $this->getLayerTableEnergyData();
+                die;
+            }
             if($energy_type == "automatic"){
                 $this->getAutomaticTableEnergyData();
                 die;
@@ -2668,7 +2668,7 @@ class dashboardController {
 
     // <--18-11-2021--
        // <--3-8-2021
-       public function rowClickEnergyTableData(){
+    public function rowClickEnergyTableData(){
         try{
             global $conn;
             $total_number_records = $_POST['total_number_records'];
@@ -2805,6 +2805,107 @@ class dashboardController {
         }
     }
     // --end-->
+
+    public function getEnergyRecordsTableHeader(){
+        try{
+            $energy_type = $_POST['energy_type'];
+            if($energy_type == "automatic")
+            {
+                $tr = "<tr>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Conv Factor</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Values</th>";
+                $tr .= "</tr>";
+
+                $records['table_header'] = $tr;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                die;
+            }
+            else if($energy_type == "manually"){
+                $tr = "<tr>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Created Date</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
+                $tr .= "</tr>";
+
+                $records['table_header'] = $tr;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                die;
+
+            }
+            else if($energy_type == "layer_model"){
+                $tr = '<tr>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Model Name</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Created Date</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Property</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Quantity</th>';
+                $tr .= '</tr>';
+                $records['table_header'] = $tr;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                die;
+                // return $tr;
+            }   
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    public function rowClickEnergyRecordsTableHeader(){
+        try{
+            $energy_type = $_POST['energy_type'];
+            if($energy_type == "automatic")
+            {
+                $tr = '<tr>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Name</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Conv Factor</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Values</th>';
+                $tr .= '</tr>';
+                $records['table_header'] = $tr;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                die;
+                // return $tr;
+            }
+            else if($energy_type == "manually"){
+                $tr = '<tr>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Name</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time Interval</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Units Consumed</th>';
+                $tr .= '</tr>';
+                $records['table_header'] = $tr;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                die;
+                // return $tr;
+
+            }   
+            else if($energy_type == "layer_model"){
+                $tr = '<tr>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Model Name</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Created Date</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Property</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Quantity</th>';
+                $tr .= '</tr>';
+                $records['table_header'] = $tr;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                die;
+                // return $tr;
+            }   
+            
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
 
     // <----18-11-2021----
     public function generateHtmlTableEnergyData($dataMesaurement,$queryMaxVal = false){
@@ -3279,6 +3380,232 @@ class dashboardController {
     }
     
     public function generatePaginationHtmlAutomaticEnergyData($page_val,$pagesCount,$dataMesaurement,$data_type = false ,$mst_id = false){
+        try{
+            //Pagination Code HTML
+            // echo $pagesCount; die;
+            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0){
+                $style_background = '';
+                $class_page_count_val = 'page_count_val_energy';
+                $style_background_end = '';
+                $class_page_count_val_end = 'page_count_val_energy';
+                // echo $page_val ; die;
+                if($page_val == "1"){
+                    $style_background = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val = '';
+                    if($pagesCount == "1"){
+                        $style_background_end = "style='background: #d6d6d6; color: black'";
+                        $class_page_count_val_end = '';  
+                    }
+                    
+                }
+                else if($page_val == $pagesCount){
+                    $style_background_end = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val_end = '';
+                }
+                else{
+                    $style_background = '';
+                    $style_background_end = '';
+                }
+                $paginationHTMl="<nav aria-label='Page navigation example'>
+                    <input type='hidden' id='row_click_table_energy' data_type='$data_type' data_mst='$mst_id'>
+                    <div class='pagination_items'>
+                            <ul class='pagination'>
+                                <li class='page-item $class_page_count_val' data_type='$data_type' data_mst='$mst_id' id='previous_pagination_val_energy'>
+                                    <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
+                                        <span aria-hidden='true'>&laquo;</span>
+                                        <span class='sr-only'>Previous</span>
+                                    </a>
+                                </li>";
+                                
+                for($i = 1; $i <= $pagesCount; $i++){
+                    $active = $i == $page_val ? 'active' : '';
+                    $hide_style='display: none';
+                    if($i == $page_val){
+                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
+                        $hide_style = 'display: block';
+                    }
+                    $paginationHTMl.="<li style='$hide_style' class='page-item  $active '><input type='number' class='active_background pagination_input_val_energy page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
+
+                    if($i == $pagesCount){
+                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
+                        $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_energy' href='javascript:void(0);'>$i</a></li>";
+                    }
+                }
+                $paginationHTMl.="<li class='page-item $class_page_count_val_end' data_type='$data_type' data_mst='$mst_id' id='next_pagination_val_energy'>
+                                        <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
+                                            <span aria-hidden='true'>&raquo;</span>
+                                            <span class='sr-only'>Next</span>
+                                        </a>
+                                    </li>";
+
+                //Pagination Select Tag   
+                
+                $paginationHTMl.="<li class ='page-item'>
+                                        <select class='page-link select_pagination' id='energy_number_record' data_type='$data_type' data_mst='$mst_id'>
+                                            <option value='5'>5</option>
+                                            <option value='10'>10</option>
+                                            <option value='20'>20</option>
+                                            <option value='30'>30</option>
+                                            <option value='50'>50</option>
+                                        </select>
+                                    </li>
+                                    </ul>
+                                </div>
+                            </nav>";
+
+                //ScreenShot Code
+                $paginationHTMl.="<div id='save_table_format' class='text-center'>
+                                    <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                                </div>";            
+                return $paginationHTMl;
+                // $records['pagination_html'] = $paginationHTMl;
+            }
+
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
+
+
+    //<---16-12-2021---
+    public function getLayerTableEnergyData(){
+        try{
+            global $conn;
+            $total_number_records = $_POST['total_number_records'];
+            $number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $time_interval = $_POST['time_interval'];
+            $order_by_val = $_POST['energy_order_by_val'];
+            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $selected_number_record_energy = isset($_POST['energy_search_record']) ? $_POST['energy_search_record'] : 'false';
+            $dataMesaurement = '';
+            $queryMaxVal = '';
+            $pagesCount = '';
+
+            if($order_by_val == 'order_by_desc'){
+                $order_by_val = "Order by T1.anzahl desc ";
+            }
+            else if($order_by_val == 'order_by_asc'){
+                $order_by_val = "Order by T1.anzahl asc ";
+            }
+
+            $search_record = isset($_POST['search_record']) ? $_POST['search_record'] : '';
+            $queryTotalRecordCondition = "";
+            $queryMainCondition = '';
+            if($search_record != ''){
+                $queryTotalRecordCondition = "WHERE T1.modellBez LIKE '%$search_record%' ";
+                $queryMainCondition = "WHERE T1.modellBez LIKE '%$search_record%' ";
+            }
+
+            //Pagination Code
+            $queryTotalRecords = "SELECT TOP($total_number_records) * ";
+            $queryTotalRecords .= "FROM schichtModelle as T1 ";
+            $queryTotalRecords .= $queryTotalRecordCondition;
+            $queryTotalRecords .= $order_by_val;
+            // echo $queryTotalRecords; die;
+            $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            // echo json_encode($totalRecordsValue); die;s
+            
+            $pagesCount = '';
+            $offSetVal = 0;
+            if(count($totalRecordsValue) > 0){
+               if($total_number_records <= $number_records){
+                   $offSetVal = 0;
+                   $number_records = $total_number_records;
+                   $pagesCount = 1; 
+                   $page_val = 1;
+               }
+               else{
+                    if($selected_number_record_energy == 'true'){
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $page_val = 1;
+                        $offSetVal = 0;
+
+                    }
+                    else{
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+                        
+                        //Only Valid when User Click on Last page
+                        if($page_val == $pagesCount){
+                            $number_records = $total_number_records - $offSetVal;
+                        }
+                    }
+                //    echo $number_records;s
+               }
+
+            }
+            $query1 = "SELECT * ";
+            $query1 .= "FROM schichtModelle as T1 ";
+            $query1 .= "INNER JOIN  liegenschaften as T2 ";
+            $query1 .= "ON T1.lieg_ID = T2.lieg_ID ";
+            $query1 .= $queryMainCondition;
+            $query1 .= $order_by_val;
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";  
+            // echo $query1; die; 
+            $dataMesaurement = queryDB($conn, $query1, "read");
+            // echo json_encode($dataMesaurement); die;
+
+            $records['energy_html'] = $this->generateHtmlLayerTableEnergyData($dataMesaurement);
+
+            $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($page_val,$pagesCount,$dataMesaurement);
+
+            $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy');
+            $records['query_data'] = $ar;
+
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+
+    public function generateHtmlLayerTableEnergyData($dataMesaurement,$queryMaxVal = false){
+        global $conn;
+        $tr = '';
+        $col_span = "";
+        if($queryMaxVal == ""){
+            $col_span = "colspan='5'";
+        }
+        else if($queryMaxVal != ''){
+            $col_span = "colspan='4'";
+        }
+        if($dataMesaurement != '' && count($dataMesaurement) > 0){
+            foreach($dataMesaurement as $key => $value){
+                $style='';
+                $class_val = '';
+                $unit = '';
+
+                // if($queryMaxVal == ""){
+                //     // $class_val = 'class="row_click_energy"';
+                // }
+                // else if($queryMaxVal != '' && $queryMaxVal == $value['Value']){
+                //     $style="style='background-color: #f77171'";
+                // }
+                // echo $value['datum']->format('Y-m-d:h:i:s'); die;
+                $tr .= "<tr $style $class_val data-layer-model=".$value['schtMdl_ID']." data-type='1' data-table-other='schichtModelle'>";
+                $tr.= "<td>".$value['modellBez']."</td>";
+                $tr.= "<td>".$value['datum']->format('Y-m-d h:i:s')."</td>";
+                $tr.= "<td>".$value['nameLieg']."</td>";
+                $tr.= "<td>".$value['gueltigVon']->format('Y-m-d')."</td>";
+                $tr.= "<td>".$value['anzahl']."</td>";
+                $tr.="</tr>";
+            }
+        }else{
+                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+        }
+        return $tr;
+        // $records['measurement_html'] = $tr;
+
+    }
+    
+    public function generatePaginationHtmlLayerEnergyData($page_val,$pagesCount,$dataMesaurement,$data_type = false ,$mst_id = false){
         try{
             //Pagination Code HTML
             // echo $pagesCount; die;
