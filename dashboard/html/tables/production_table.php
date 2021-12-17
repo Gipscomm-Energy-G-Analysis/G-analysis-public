@@ -10,17 +10,17 @@
 
                   <!-- 26-11-2021 -->
                   <div class="row">
-                    <div class="form-group col-md-3" id="product_field_div">
-                      <img src="images/search.png" id="all_product_image">
-                      <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='All Product' readonly >
-                    </div>
-
                     <div class="form-group col-md-3 mt_pr_alignment" id="product_type_div">
                       <label for="product_type">Product Type</label>
                       <select class="form-control form-control-sm text-dark" id="product_type">
                         <option value='automatic'>Read in Automatically</option>
                         <option value='mannual'>Entered Manually</option>
                       </select>
+                    </div>
+
+                    <div class="form-group col-md-3" id="product_field_div">
+                      <img src="images/search.png" id="all_product_image">
+                      <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='All Product' readonly >
                     </div>
 
                     <div class="form-group col-md-3 mt_pr_alignment" id="product_records_order_by_div" style="display: none">

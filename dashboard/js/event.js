@@ -2377,11 +2377,13 @@ $(document).ready( function(){
         $('#all_product_input_text_field').val('');
         if(prdTypeVal == 'automatic')
         {
+            $('#product_field_div').hide();
             getNumberRecordsProductAutomatic();
         }else {
-            var tr = "<tr><td colspan='5' style='padding: 12px !important; font-size: small' class='text-center'>Please Select All Product</td></tr>";
+            var tr = "<tr><td colspan='5' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Product</td></tr>";
             $('#product_select_table_entries').html(tr);
             $('#product_select_table_entries_pagination').html('');
+            $('#product_field_div').show();
             getNumberRecordsProduct();
         }
     })

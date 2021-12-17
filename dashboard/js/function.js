@@ -1650,6 +1650,7 @@ function getNumberRecordsProduct(page_val = 1){
 }
 
 function getNumberRecordsProductAutomatic(page_val = 1){
+  $('#product_field_div').hide();
   // var number_records = $('#product_number_record').val();
   var product_type = $('#product_type').val();
   // <---14-12-2021---

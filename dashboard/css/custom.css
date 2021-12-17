@@ -822,6 +822,7 @@
 
 #product_field_div{
     display: flex;
+    margin-top: 28px;
 }
 /* end- */
 
@@ -839,7 +840,7 @@
 }
 
 .mt_pr_alignment{
-    margin-top: -32px;
+    /* margin-top: -32px; */
 }
 
 #product_select_table_entries_table thead tr th{
