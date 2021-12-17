@@ -151,15 +151,17 @@ class DashboardController extends Controller
                     $chartsData = collect();
                     $measuringPoint = [];
                     $msGraphData = [];
-                    for ($i=1; $i <= 4; $i++){
+                    $tmpArray =[31,290];
+                    for ($i=1; $i <= count($tmpArray); $i++){
                         $string = 'messstelle'.$i.'IDAnl';
-                        if(!empty($machineData->$string)) {
+                      //  if(!empty($machineData->$string)) {
                             $shards++;
+                           // dd($machineData->$string);
                             $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData->$string;
-                            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>31, 'limit' => 5]);
+                            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$tmpArray[$i-1], 'limit' => 5]);
                             $chartsData->put($string.$i,$this->graphController->getChartsData( $request));
-                            array_push($msGraphData, 31);
-                        }
+                            array_push($msGraphData, $tmpArray[$i-1]);
+                      //  }
                     }
                     $otherGraphData = $this->getGraphConfigurations($machineData);
                     

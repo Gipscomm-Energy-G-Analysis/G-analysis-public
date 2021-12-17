@@ -349,34 +349,10 @@
                             </div>
                         </div>
                         <div class="row" id="graph_div">
-                            @foreach($data['chartsData'] as $key=>$value)
-                                @if($value['record'])
-                                    <div class="col-sm-12 main_chart" data_value="{{$value['id']}}" data_event="lineChart_{{$key}}">
-                                      <div class="card-header" id="{{$value['id']}}">
-                                        <h5 class="mb-0">
-                                          <button class="btn" data-toggle="collapse" data-target="#accordion_lineChart_{{$key}}" aria-expanded="true" aria-controls="accordion_lineChart_{{$key}}">
-                                            Line Chart for {{$key}}    
-                                          </button>
-                                          <span class="float-right">
-                                            <a href="/product-graph/{{$value['id']}}" target="_blank">
-                                                <i class="fa fa-eye" aria-hidden="true"></i>
-                                            </a>
-                                        </span>
-                                        </h5>
-                                      </div>
-
-                                      <div id="accordion_lineChart_{{$key}}" class="collapse show" aria-labelledby="{{$value['id']}}" data-parent="#graph_div">
-                                        <div class="card-body">
-                                            <div class="chart" id="chartdiv">
-                                                <!-- <canvas id="lineChart_{{$key}}" style="background:#F1F6FD;"></canvas> -->
-                                            </div>
-                                        </div>
-
-                                      </div>
-                                    </div>
-
-                                @endif
-                            @endforeach
+                            
+                            <div class="chart" id="chartdiv">
+                                
+                            </div>
                         </div>
                     </div>
                     <!-- Graph Mode end -->
@@ -998,7 +974,7 @@
         // @endforeach
 
         @foreach($data['otherGraph'] as $key => $value)
-          //  lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
+            lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
         @endforeach
 
         //adding event listener to time filter hook
@@ -1041,22 +1017,9 @@
 <script>
 am5.ready(function() {
 
-/**
- * ---------------------------------------
- * This demo was created using amCharts 5.
- *
- * For more information visit:
- * https://www.amcharts.com/
- *
- * Documentation is available at:
- * https://www.amcharts.com/docs/v5/
- * ---------------------------------------
- */
-
 // Create root element
 // https://www.amcharts.com/docs/v5/getting-started/#Root_element
 var root = am5.Root.new("chartdiv");
-
 
 // Set themes
 // https://www.amcharts.com/docs/v5/concepts/themes/
@@ -1064,123 +1027,121 @@ root.setThemes([
   am5themes_Animated.new(root)
 ]);
 
-
 // Create chart
 // https://www.amcharts.com/docs/v5/charts/xy-chart/
-var chart = root.container.children.push(am5xy.XYChart.new(root, {
-  panX: false,
-  panY: false,
-  wheelX: "panX",
-  wheelY: "zoomX"
-}));
+var chart = root.container.children.push(
+  am5xy.XYChart.new(root, {
+    focusable: true,
+    panX: true,
+    panY: true,
+    wheelX: "panX",
+    wheelY: "zoomX"
+  })
+);
 
-
-// Add cursor
-// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-  behavior: "zoomX"
-}));
-cursor.lineY.set("visible", false);
-
-// Generate random data
-var date = new Date();
-date.setHours(0, 0, 0, 0);
-var value = 1;
-
-function generateData() {
-  value = Math.round((Math.random() * 10 - 5) + value);
-  if (date.getDay() == 5) {
-    am5.time.add(date, "day", 3);
-  } else {
-    am5.time.add(date, "day", 1);
-  }
-
-  return {
-    date: date.getTime(),
-    value: value
-  };
-}
-
-// function generateDatas(count) {
-//   var data = [];
-//   for (var i = 0; i < count; ++i) {
-//     data.push(generateData());
-//   }
-//   console.log('datat', data);
-//   return data;
-// }
-
+var easing = am5.ease.linear;
+chart.get("colors").set("step", 3);
 
 // Create axes
 // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-// https://www.amcharts.com/docs/v5/charts/xy-chart/axes/category-date-axis/
-var xRenderer = am5xy.AxisRendererX.new(root, {});
-// xRenderer.labels.template.set("minPosition", 0.01);
-// xRenderer.labels.template.set("maxPosition", 0.99);
-
 var xAxis = chart.xAxes.push(
-  am5xy.CategoryDateAxis.new(root, {
-    categoryField: "date",
+  am5xy.DateAxis.new(root, {
+    maxDeviation: 0.1,
+    groupData: false,
     baseInterval: {
-      timeUnit: "day",
-      count: 1
+      timeUnit: "minutes",
+      count: 15
     },
-    renderer: xRenderer,
+    renderer: am5xy.AxisRendererX.new(root, {}),
     tooltip: am5.Tooltip.new(root, {})
   })
 );
 
-var yAxis = chart.yAxes.push(
-  am5xy.ValueAxis.new(root, {
-    renderer: am5xy.AxisRendererY.new(root, {})
-  })
-);
+function createAxisAndSeries(startValue, opposite) {
+  var yRenderer = am5xy.AxisRendererY.new(root, {
+    opposite: opposite
+  });
+  var yAxis = chart.yAxes.push(
+    am5xy.ValueAxis.new(root, {
+      maxDeviation: 1,
+      renderer: yRenderer
+    })
+  );
 
+  if (chart.yAxes.indexOf(yAxis) > 0) {
+    yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
+  }
 
-// Add series
-// https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-var series = chart.series.push(am5xy.LineSeries.new(root, {
-  name: "Series",
+  // Add series
+  // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+  var series = chart.series.push(
+    am5xy.LineSeries.new(root, {
+      xAxis: xAxis,
+      yAxis: yAxis,
+      valueYField: "value",
+      valueXField: "date",
+      tooltip: am5.Tooltip.new(root, {
+        pointerOrientation: "horizontal",
+        labelText: "{valueY}"
+      })
+    })
+  );
+
+  //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });
+  series.strokes.template.setAll({ strokeWidth: 1 });
+
+  yRenderer.grid.template.set("strokeOpacity", 0.05);
+  yRenderer.labels.template.set("fill", series.get("fill"));
+  yRenderer.setAll({
+    stroke: series.get("fill"),
+    strokeOpacity: 1,
+    opacity: 1
+  });
+
+  // Set up data processor to parse string dates
+  // https://www.amcharts.com/docs/v5/concepts/data/#Pre_processing_data
+  series.data.processor = am5.DataProcessor.new(root, {
+    dateFormat: "yyyy-MM-dd",
+    dateFields: ["date"]
+  });
+
+  series.data.setAll(generateChartData(startValue));
+}
+
+// Add cursor
+// https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
   xAxis: xAxis,
-  yAxis: yAxis,
-  valueYField: "value",
-  categoryXField: "date"
+  behavior: "none"
 }));
+cursor.lineY.set("visible", false);
 
-var tooltip = series.set("tooltip", am5.Tooltip.new(root, {}));
-tooltip.label.set("text", "{valueY}");
-
-// Add scrollbar
-// https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+// add scrollbar
 chart.set("scrollbarX", am5.Scrollbar.new(root, {
   orientation: "horizontal"
 }));
 
-
-@foreach($data['chartsData'] as $key => $value)
-    generateDatas(@json($value['amData']));
-@endforeach
-
-function generateDatas(data) {
-    console.log(data);
-    series.data.setAll(data);
-    xAxis.data.setAll(data);
-    series.appear(1000);
-    chart.appear(1000, 100);
+const toTimestamp=(strDate)=>{
+   var datum = Date.parse(strDate);
+   return datum/1000;
 }
-
-// Set data
-//var data = generateDatas(200);
-//console.log(data);
-    
-
+let count = 0;
+let opposite;
+@foreach($data['chartsData'] as $key => $value)
+    opposite = (count == 0)?false:true;
+    createAxisAndSeries(@json($value['amData']), opposite );
+    count++;
+@endforeach
 
 // Make stuff animate on load
 // https://www.amcharts.com/docs/v5/concepts/animations/
+chart.appear(1000, 100);
 
+// Generates random data, quite different range
+function generateChartData(value) {
+  return value;
+}
 
 }); // end am5.ready()
 </script>
-
-
 @stop

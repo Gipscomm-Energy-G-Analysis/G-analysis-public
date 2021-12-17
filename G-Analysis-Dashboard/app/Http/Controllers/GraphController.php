@@ -44,7 +44,7 @@ class GraphController extends Controller
         $limit = $request['limit'];
         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$measuringPoint)
             ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
-            ->orderby('MessstellenEnergiedaten.Time','desc')->get();
+            ->orderby('MessstellenEnergiedaten.Time','asc')->get();
         return $this->getlineChartData($data, $measuringPoint);
     }
 
@@ -58,12 +58,11 @@ class GraphController extends Controller
         $label = $data->reverse()->pluck('Time')->toArray();
         $valData = $data->reverse()->pluck('Value')->toArray();
         $amData = [];
+        
         foreach($data as $key=>$value){
-//             $time = DateTime::createFromFormat('d/m/Y', $value->Time);
-// echo $date->format('Y-m-d H:i:s');
-            array_push($amData, ['date'=>strToTime($value->Time),'value'=>floatval($value->Value),'time'=>$value->Time,'convertedTime'=>'']);
+            $timeData = explode('.',$value->Time);
+            array_push($amData, ['date'=>(strtotime($timeData[0]) * 1000), 'value'=>floatval($value->Value), 'time'=>$value->Time,'convertedTime'=>'']);
         }
-      //  dd($amData);
         return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData];
     }
 
