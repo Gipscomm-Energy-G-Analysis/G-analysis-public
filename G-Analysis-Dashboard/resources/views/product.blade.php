@@ -1037,6 +1037,7 @@
 }
 </style>
 
+
 <!-- Chart code -->
 <script>
 am5.ready(function() {
@@ -1118,13 +1119,9 @@ var xRenderer = am5xy.AxisRendererX.new(root, {});
 // xRenderer.labels.template.set("minPosition", 0.01);
 // xRenderer.labels.template.set("maxPosition", 0.99);
 
-var xAxis = chart.xAxes.push(
-  am5xy.CategoryDateAxis.new(root, {
+var xAxis = chart.xAxes.push(am5xy.CategoryDateAxis.new(root, {
     categoryField: "date",
-    baseInterval: {
-      timeUnit: "day",
-      count: 1
-    },
+    baseInterval: { timeUnit: "minute", count: 1 },
     renderer: xRenderer,
     tooltip: am5.Tooltip.new(root, {})
   })
@@ -1181,6 +1178,5 @@ function generateDatas(data) {
 
 }); // end am5.ready()
 </script>
-
 
 @stop

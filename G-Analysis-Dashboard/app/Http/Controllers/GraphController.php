@@ -53,6 +53,8 @@ class GraphController extends Controller
      * @param $id
      * @return array
      */
+
+
     public function getlineChartData($data, $id) {
         $recordData = $data->IsNotEmpty() ? true: false;
         $label = $data->reverse()->pluck('Time')->toArray();
@@ -60,7 +62,7 @@ class GraphController extends Controller
         $amData = [];
         foreach($data as $key=>$value){
 //             $time = DateTime::createFromFormat('d/m/Y', $value->Time);
-// echo $date->format('Y-m-d H:i:s');
+//             echo $date->format('Y-m-d H:i:s');
             array_push($amData, ['date'=>strToTime($value->Time),'value'=>floatval($value->Value),'time'=>$value->Time,'convertedTime'=>'']);
         }
       //  dd($amData);
