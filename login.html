@@ -34,7 +34,10 @@
                     head(record).passHash
 
                 const permissions =
-                    head(record).rechteMenu
+                    ({ menu: head(record).rechteMenu
+                     , edit: head(record).rechteEdit
+                     }
+                    )
 
                 const fieldnames =
                     [ "betrGrp_ID"
@@ -54,7 +57,8 @@
                         name => itemSessionSet(name)( valueField(name) )
                     )
 
-                    itemSessionSet("rechteMenu")(permissions)
+                    itemSessionSet("rechteMenu")(permissions.menu)
+                    itemSessionSet("rechteEdit")(permissions.edit)
 
                     setTimeout(function(){ 
                         window.open("main.html","_self");

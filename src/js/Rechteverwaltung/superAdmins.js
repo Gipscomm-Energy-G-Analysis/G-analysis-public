@@ -18,11 +18,12 @@ const scpRechteverwaltung_superAdmins =
 
             const getMenuAndEditConfig =
                 () =>
-                JSON.stringify(
-                    { values     : treeSAdm.getValues().join(",")
-                    , editValues : treeSAdm.getEditValues().join(",")
-                    }
-                )
+                    (
+                        { values     : treeSAdm.getValues().join(",")
+                        , editValues : treeSAdm.getEditValues().join(",")
+                        }
+                    )
+                
 
             const getHash_ = 
                 () =>
@@ -44,8 +45,9 @@ const scpRechteverwaltung_superAdmins =
                     , mobiltelefonSAdm : helper.fieldValue("mobiltelefonSAdm")
                     , username         : helper.fieldValue("benutzernameSAdm")
                     , passHash         : getHash_()
-                    , rechteTreeView   : getMenuAndEditConfig()
+                    , rechteTreeView   : JSON.stringify(getMenuAndEditConfig())
                     , rechteMenu       : scpTreeView.getSelectedNodes(treeSAdm).join(",")
+                    , rechteEdit       : getMenuAndEditConfig().editValues
                     }
                 )
 

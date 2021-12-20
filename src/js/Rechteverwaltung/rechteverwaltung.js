@@ -68,18 +68,31 @@ const scpRechteverwaltung =
                     ].forEach(scpIndexedDB.dataIntoIDB(result))   
                 )
 
+            const getEditRechteArray =
+                () =>
+                itemSessionGet("rechteEdit").split(",")
+
             const getRechteArray =
                 () =>
                 itemSessionGet("rechteMenu").split(",")
+
+            const removeEdit =
+                id =>
+                $(`[data-edit="${id}"]`).remove()
+
+            const removeEdits =
+                () =>
+                getEditRechteArray()
+                .forEach(removeEdit)
                 
-            const remove =
+            const removeMenu =
                 id => 
                 $(`[data-menus="${id}"]`).remove()
 
             const removeMenus =
                 () =>
-                difference(getMenuIDs())(getRechteArray())
-                .forEach(remove)
+                difference(this.getMenuIDs())(getRechteArray())
+                .forEach(removeMenu)
 
             const hideElement =
                 element =>
@@ -154,6 +167,7 @@ const scpRechteverwaltung =
 
                     if (!equal(position)(POSITION.GipscommAdmin)) {
                         removeMenus()
+                        removeEdits()
                     }
                     else {
                         // Nothing
@@ -182,7 +196,7 @@ const scpRechteverwaltung =
                     mandantenEinlesen(betrGrpID, ins, manOderManGrpID)
                 }
 
-            const getMenuIDs =
+            this.getMenuIDs =
                 () =>
                 Array.from(
                     new Set(
@@ -205,7 +219,7 @@ const scpRechteverwaltung =
                 
             this.menuHtml2Json =
                 () => 
-                getMenuIDs()
+                this.getMenuIDs()
                 .map( menuItemText )
                 .filter( notBetreuergruppen )
             

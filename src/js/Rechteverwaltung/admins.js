@@ -45,6 +45,7 @@ const scpRechteverwaltung_admins =
                     , passHash       : getHash_()
                     , rechteTreeView : getMenuAndEditConfig()
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeAdm).join(",")
+                    , rechteEdit     : getMenuAndEditConfig().editValues
                     }
                 )
 

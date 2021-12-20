@@ -45,6 +45,7 @@ const scpRechteverwaltung_benutzer =
                     , passHash       : getHash_()
                     , rechteTreeView : getMenuAndEditConfig()
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeBen).join(",")
+                    , rechteEdit     : getMenuAndEditConfig().editValues
                     }
                 )
 

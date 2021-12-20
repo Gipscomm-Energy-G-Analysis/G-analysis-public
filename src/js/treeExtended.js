@@ -379,6 +379,8 @@ Tree.prototype.getValues = function () {
 Tree.prototype.getEditValues = function () {
   return array($("#sAdmTreeview .treejs-checkbox-edit").length)()()
          .map((_, i) => $("#sAdmTreeview .treejs-checkbox-edit").eq(i).prop("checked"))
+         .map((a, i) => a ? scpRechteverwaltung.getMenuIDs()[i] : "")
+         .filter(a => !emptyString(a))
 };
 
 Tree.prototype.setValues = function (values) {
