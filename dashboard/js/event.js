@@ -450,13 +450,24 @@ $(document).ready( function(){
     // <---18-11-2021---
 
     $(document).on('click','.row_click_energy', function(){
-        var data_type = $(this).attr('data-type');
-        var mst_id = $(this).attr('data-mst');
-        var name_val = $(this).children('td:first').text();
-        $('#energy_search_record').val(name_val);
-        $('#energy_records_order_by option:contains("Order By Max Units Consumed")').text('Maximum');
-        $('#energy_records_order_by option:contains("Order By Min Units Consumed")').text('Minimum');
-        rowClickEnergyTableData(mst_id,data_type);
+        var energy_type = $('#energy_type').val();
+
+        if(energy_type == 'layer_modal')
+        {
+            var layer_modal_id = $(this).attr('data-layer-model');
+            var name_val = $(this).children('td:first').text();
+            $('#energy_search_record').val(name_val);
+            rowClickEnergyTableDataLayer(layer_modal_id);
+        }
+        else {
+            var data_type = $(this).attr('data-type');
+            var mst_id = $(this).attr('data-mst');
+            var name_val = $(this).children('td:first').text();
+            $('#energy_search_record').val(name_val);
+            $('#energy_records_order_by option:contains("Order By Max Units Consumed")').text('Maximum');
+            $('#energy_records_order_by option:contains("Order By Min Units Consumed")').text('Minimum');
+            rowClickEnergyTableData(mst_id,data_type);
+        }
     })
 
 
@@ -1010,7 +1021,7 @@ $(document).ready( function(){
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
 
-                if(query_data_row_click['row_click'] == 'true')
+                if(query_data_row_click['row_click'] == 'true' && energy_type != 'layer_modal')
                 {
                     var date_data = $('#row_click_last_date_energy').val();
                     var total_sum = $('#overall_count_energy').val();
@@ -1051,7 +1062,7 @@ $(document).ready( function(){
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
 
-                if(query_data_row_click['row_click'] == 'true')
+                if(query_data_row_click['row_click'] == 'true' && energy_type != 'layer_modal')
                 {
                     var date_data = $('#row_click_last_date_energy').val();
                     var total_sum = $('#overall_count_energy').val();
@@ -1688,7 +1699,7 @@ $(document).ready( function(){
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum');
         }
-        else if(val == 'layer_model'){
+        else if(val == 'layer_modal'){
             $('#energy_record_order_by_label').text('Filter Quantity');
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum Quantity');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum Quantity');
@@ -2388,6 +2399,22 @@ $(document).ready( function(){
         }
     })
     // --end-->
+
+
+    // <---20-12-2021---
+    $(document).on('click','#open_end_layer', function(){
+        var layer_val_checked = $(this).is(":checked");
+        if(layer_val_checked == true){
+            $('#open_end_layer').val('1');
+            $('#open_end_layer').prop('checked',true);
+        }
+        else{
+            $('#open_end_layer').val('0');
+            $('#open_end_layer').prop('checked',false);
+        }
+        getNumberRecordsEnergy();
+    })
+    // ----end--->
 
 
     

@@ -14,7 +14,7 @@
                       <select class="form-control form-control-sm text-dark" id="energy_type">
                         <option value="automatic">Read in Automatically</option>
                         <option value="manually">Entered Manually</option>
-                        <option value="layer_model">SchichtModelle</option>
+                        <option value="layer_modal">SchichtModelle</option>
                       </select>
                     </div>
 
@@ -47,6 +47,15 @@
                        <span class='energy_number_record_error text-danger'></span>
                     </div>
 
+                    <diV class="form-group col-md-3" id="open_end_layer_div" style="display: none">
+                      <div class="form-check form-check-primary">
+                        <label class="form-check-label">
+                          Open End
+                        <input type="checkbox" class="text-mute" id="open_end_layer" name="open_end_layer" checked value="1">  
+                        </label>
+                      </div>
+                    </div>
+
                   </div>
 
                   <div class="row">
@@ -75,6 +84,7 @@
                     <input type="hidden" id="mst_id_hidden_energy">
                     <input type="hidden" id="overall_count_energy">
                     <input type="hidden" id="row_click_last_date_energy">
+                    <input type="hidden" id="layer_modal">
                   </div>
                  
                   <div class="pagination_html_energy" id="pagination_html_energy">

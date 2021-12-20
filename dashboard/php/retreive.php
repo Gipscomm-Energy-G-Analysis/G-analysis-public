@@ -2534,7 +2534,7 @@ class dashboardController {
 
             
             // <----14-9-2021---
-            if($energy_type == "layer_model"){
+            if($energy_type == "layer_modal"){
                 $this->getLayerTableEnergyData();
                 die;
             }
@@ -2806,9 +2806,209 @@ class dashboardController {
     }
     // --end-->
 
+    // <---17-12-2021---
+    public function rowClickEnergyTableDataLayer(){
+        try{
+            global $conn;
+            $total_number_records = $_POST['total_number_records'];
+            $layer_modal_id = $_POST['layer_modal_id'];
+            $type = 1;
+            $number_records = $_POST['number_records'];
+            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
+            $order_by_val = $_POST['energy_order_by_val'];
+            $energy_type = $_POST['energy_type'];
+            $open_end_layer = $_POST['open_end_layer'];
+            // <---15-9-2021----
+            // if($energy_type == "automatic"){
+            //     $this->rowClickAutomaticEnergyTableData();
+            //     die;
+            // }
+            // --end--->
+
+            $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
+            $current_date = date('Y-m-d');
+
+            if($order_by_val == 'order_by_desc'){
+                $order_by_val = "Order by T3.schtDat_ID desc ";
+            }
+            else if($order_by_val == 'order_by_asc'){
+                $order_by_val = "Order by T3.schtDat_ID asc ";
+            }
+
+            //Pagination Code 
+            $queryTotalPagination = '';
+            if($open_end_layer == '1')
+            {
+                $queryTotalPagination = "SELECT TOP($total_number_records) * ";
+                $queryTotalPagination .= "FROM schichtModelle as T1 ";
+                $queryTotalPagination .= "Inner JOIN schichten as T2 ";
+                $queryTotalPagination .= "On T1.schtMdl_ID = T2.schtMdl_ID ";
+                $queryTotalPagination .= "Where T1.schtMdl_ID = $layer_modal_id ";
+                // $queryTotalPagination .= $order_by_val;
+                // echo $queryTotalRecords; die;
+            }
+            else{
+                $queryTotalPagination = "SELECT TOP($total_number_records) * ";
+                $queryTotalPagination .= "FROM schichtModelleHist as T1 ";
+                $queryTotalPagination .= "Inner JOIN schichtenHist as T2 ";
+                $queryTotalPagination .= "On T1.schtMdl_ID = T2.schtMdl_ID ";
+                $queryTotalPagination .= "Where T1.schtMdl_ID = $layer_modal_id ";
+            }
+            $totalRecordsValue = queryDB($conn, $queryTotalPagination, "read");
+            // echo json_encode($queryTotalPagination); die;
+
+            $pagesCount = '';
+            $offSetVal = 0;
+            if(count($totalRecordsValue) > 0){
+               if($total_number_records <= $number_records){
+                    $offSetVal = 0;
+                    $number_records = $total_number_records;
+                    $pagesCount = 1; 
+                    $page_val = 1;
+               }
+               else{
+                    if($selected_number_record_measurement == 'true'){
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $page_val = 1;
+                        $offSetVal = 0;
+
+                    }
+                    else{ 
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+                        
+                        if($page_val == $pagesCount){
+                            $number_records = $total_number_records - $offSetVal;
+                        }
+                    }
+               } 
+
+            }
+
+            //--end-->
+            
+            // $queryMaxValue = "SELECT TOP($total_number_records) max(cast(T2.val as int)) as val ";
+            // $queryMaxValue .= "FROM interneMesswerteConfig as T1 ";
+            // $queryMaxValue .= "INNER JOIN ";
+            // $queryMaxValue .= "masseneingabeSucheIMw as T2 ";
+            // $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
+            // $queryMaxValue .=  "INNER JOIN ";
+            // $queryMaxValue .= "MessstellenAnlagen  as T3 ";
+            // $queryMaxValue .= "ON T1.mst_ID = T3.mst_ID ";
+            // $queryMaxValue .= "where T2.type = '$type' ";
+            // $queryMaxValue .= "AND T2.mst_ID = '$mst_id' ";
+            // echo json_encode($queryMaxValue); die;
+            //<---15-8-2021
+            $queryMaximum = '';
+            // --end-->
+            // $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
+            // $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
+            // echo json_encode($queryMaxVal); die;
+            $query1 = '';
+            if($open_end_layer == '1')
+            {
+                $query1 = "SELECT * ";
+                $query1 .= "FROM schichtModelle as T1 ";
+                $query1 .= "INNER JOIN  liegenschaften as T2 ";
+                $query1 .= "ON T1.lieg_ID = T2.lieg_ID ";
+                $query1 .= "INNER JOIN schichten as T3 ";
+                $query1 .= "ON T1.schtMdl_ID = T3.schtMdl_ID ";
+                $query1 .= "Where T1.schtMdl_ID = $layer_modal_id ";
+                $query1 .= "$order_by_val ";
+                $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+            }
+            else{
+                $query1 = "SELECT * ";
+                $query1 .= "FROM schichtModelleHist as T1 ";
+                $query1 .= "INNER JOIN  liegenschaften as T2 ";
+                $query1 .= "ON T1.lieg_ID = T2.lieg_ID ";
+                $query1 .= "INNER JOIN schichtenHist as T3 ";
+                $query1 .= "ON T1.schtMdl_ID = T3.schtMdl_ID ";
+                $query1 .= "Where T1.schtMdl_ID = $layer_modal_id ";
+                $query1 .= "$order_by_val ";
+                $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+            }
+            // echo $query1; die;
+            $dataMesaurement = queryDB($conn, $query1, "read"); 
+            // echo json_encode($date_differnce_five_days); die;
+
+            // <---10-11-2021----
+            // $queryLastDate = "SELECT TOP(1) * From masseneingabeSucheIMw as T1 ";
+            // $queryLastDate.= "WHERE T1.mst_ID = '$mst_id' ";
+            // $queryLastDate.= "AND T1.type = '$type' ";
+            // $queryLastDate.= "ORDER BY T1.id desc ";
+            // $queryLastDateData = queryDB($conn, $queryLastDate, "read");
+            //--end-->
+
+            $records['energy_html'] = $this->generateRowClickHtmlLayerTableEnergyData($dataMesaurement);
+            $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($page_val,$pagesCount,$dataMesaurement);
+            
+            // <--15-8-2021--
+            $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => $queryMaximum,'row_click' => 'true', 'type' => 'Energy');
+            $records['query_data'] = $ar;
+
+            // $records['queryLastDate'] = $queryLastDateData;
+            // --end-->
+           
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+
+           die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    public function generateRowClickHtmlLayerTableEnergyData($dataMesaurement,$queryMaxVal = false){
+        global $conn;
+        $tr = '';
+        $col_span = "";
+        if($queryMaxVal == ""){
+            $col_span = "colspan='5'";
+        }
+        else if($queryMaxVal != ''){
+            $col_span = "colspan='4'";
+        }
+        if($dataMesaurement != '' && count($dataMesaurement) > 0){
+            foreach($dataMesaurement as $key => $value){
+                $style='';
+                $class_val = '';
+                $unit = '';
+
+                // if($queryMaxVal == ""){
+                //     // $class_val = 'class="row_click_energy"';
+                // }
+                // else if($queryMaxVal != '' && $queryMaxVal == $value['Value']){
+                //     $style="style='background-color: #f77171'";
+                // }
+                // echo $value['datum']->format('Y-m-d:h:i:s'); die;
+                $tr .= "<tr $style $class_val data-layer-model=".$value['schtMdl_ID']." data-type='1' data-table-other='schichtModelle'>";
+                $tr.= "<td>".$value['modellBez']."</td>";
+                $tr.= "<td>".$value['bezeichnung']."</td>";
+                $tr.= "<td>".$value['uhrzeitVon']->format('h:i:s')."</td>";
+                $tr.= "<td>".$value['uhrzeitBis']->format('h:i:s')."</td>";
+                $tr.= "<td>".ucfirst($value['tagVon'])."</td>";
+                $tr.= "<td>".ucfirst($value['tagBis'])."</td>";
+                $tr.="</tr>";
+            }
+        }else{
+                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+        }
+        return $tr;
+        // $records['measurement_html'] = $tr;
+
+    }
+    // --end--->
+
     public function getEnergyRecordsTableHeader(){
         try{
             $energy_type = $_POST['energy_type'];
+            $open_end_layer = $_POST['open_end_layer'];
             if($energy_type == "automatic")
             {
                 $tr = "<tr>";
@@ -2836,12 +3036,18 @@ class dashboardController {
                 die;
 
             }
-            else if($energy_type == "layer_model"){
+            else if($energy_type == "layer_modal"){
                 $tr = '<tr>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Model Name</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Modal Name</th>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Created Date</th>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Property</th>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
+                
+                if($open_end_layer == '0')
+                {
+                    $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date of Expiry</th>';
+                }
+                
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Quantity</th>';
                 $tr .= '</tr>';
                 $records['table_header'] = $tr;
@@ -2885,13 +3091,14 @@ class dashboardController {
                 // return $tr;
 
             }   
-            else if($energy_type == "layer_model"){
+            else if($energy_type == "layer_modal"){
                 $tr = '<tr>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Model Name</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Created Date</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Property</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Quantity</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Modal Name</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Designation Date</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day From</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day To</th>';
                 $tr .= '</tr>';
                 $records['table_header'] = $tr;
                 echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
@@ -3482,6 +3689,7 @@ class dashboardController {
             $dataMesaurement = '';
             $queryMaxVal = '';
             $pagesCount = '';
+            $open_end_layer = $_POST['open_end_layer'];
 
             if($order_by_val == 'order_by_desc'){
                 $order_by_val = "Order by T1.anzahl desc ";
@@ -3499,10 +3707,20 @@ class dashboardController {
             }
 
             //Pagination Code
-            $queryTotalRecords = "SELECT TOP($total_number_records) * ";
-            $queryTotalRecords .= "FROM schichtModelle as T1 ";
-            $queryTotalRecords .= $queryTotalRecordCondition;
-            $queryTotalRecords .= $order_by_val;
+            $queryTotalRecords = '';
+            if($open_end_layer == '1')
+            {
+                $queryTotalRecords = "SELECT TOP($total_number_records) * ";
+                $queryTotalRecords .= "FROM schichtModelle as T1 ";
+                $queryTotalRecords .= $queryTotalRecordCondition;
+                $queryTotalRecords .= $order_by_val;
+            }
+            else{
+                $queryTotalRecords = "SELECT TOP($total_number_records) * ";
+                $queryTotalRecords .= "FROM schichtModelleHist as T1 ";
+                $queryTotalRecords .= $queryTotalRecordCondition;
+                $queryTotalRecords .= $order_by_val;
+            }
             // echo $queryTotalRecords; die;
             $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
             // echo json_encode($totalRecordsValue); die;s
@@ -3538,18 +3756,31 @@ class dashboardController {
                }
 
             }
-            $query1 = "SELECT * ";
-            $query1 .= "FROM schichtModelle as T1 ";
-            $query1 .= "INNER JOIN  liegenschaften as T2 ";
-            $query1 .= "ON T1.lieg_ID = T2.lieg_ID ";
-            $query1 .= $queryMainCondition;
-            $query1 .= $order_by_val;
-            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";  
-            // echo $query1; die; 
+            $query1 = '';
+            if($open_end_layer == '1')
+            {
+                $query1 = "SELECT * ";
+                $query1 .= "FROM schichtModelle as T1 ";
+                $query1 .= "INNER JOIN  liegenschaften as T2 ";
+                $query1 .= "ON T1.lieg_ID = T2.lieg_ID ";
+                $query1 .= $queryMainCondition;
+                $query1 .= $order_by_val;
+                $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";  
+                // echo $query1; die; 
+            }
+            else{
+                $query1 = "SELECT * ";
+                $query1 .= "FROM schichtModelleHist as T1 ";
+                $query1 .= "INNER JOIN  liegenschaften as T2 ";
+                $query1 .= "ON T1.lieg_ID = T2.lieg_ID ";
+                $query1 .= $queryMainCondition;
+                $query1 .= $order_by_val;
+                $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY "; 
+            }
             $dataMesaurement = queryDB($conn, $query1, "read");
             // echo json_encode($dataMesaurement); die;
 
-            $records['energy_html'] = $this->generateHtmlLayerTableEnergyData($dataMesaurement);
+            $records['energy_html'] = $this->generateHtmlLayerTableEnergyData($dataMesaurement,$open_end_layer);
 
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($page_val,$pagesCount,$dataMesaurement);
 
@@ -3566,7 +3797,7 @@ class dashboardController {
         } 
     }
 
-    public function generateHtmlLayerTableEnergyData($dataMesaurement,$queryMaxVal = false){
+    public function generateHtmlLayerTableEnergyData($dataMesaurement,$open_end_layer,$queryMaxVal = false){
         global $conn;
         $tr = '';
         $col_span = "";
@@ -3576,10 +3807,18 @@ class dashboardController {
         else if($queryMaxVal != ''){
             $col_span = "colspan='4'";
         }
+
+        if($open_end_layer == '1')
+        {
+            $data_table_other = "data-table-other='schichtModelle'";
+        }
+        else{
+            $data_table_other = "data-table-other='schichtModelleHist'";
+        }
         if($dataMesaurement != '' && count($dataMesaurement) > 0){
             foreach($dataMesaurement as $key => $value){
                 $style='';
-                $class_val = '';
+                $class_val = 'class="row_click_energy"';
                 $unit = '';
 
                 // if($queryMaxVal == ""){
@@ -3589,11 +3828,15 @@ class dashboardController {
                 //     $style="style='background-color: #f77171'";
                 // }
                 // echo $value['datum']->format('Y-m-d:h:i:s'); die;
-                $tr .= "<tr $style $class_val data-layer-model=".$value['schtMdl_ID']." data-type='1' data-table-other='schichtModelle'>";
+                $tr .= "<tr $style $class_val data-layer-model=".$value['schtMdl_ID']." data-type='1' $data_table_other>";
                 $tr.= "<td>".$value['modellBez']."</td>";
                 $tr.= "<td>".$value['datum']->format('Y-m-d h:i:s')."</td>";
                 $tr.= "<td>".$value['nameLieg']."</td>";
                 $tr.= "<td>".$value['gueltigVon']->format('Y-m-d')."</td>";
+                if($open_end_layer == '0')
+                {
+                    $tr.= "<td>".$value['gueltigBis']->format('Y-m-d')."</td>";
+                }
                 $tr.= "<td>".$value['anzahl']."</td>";
                 $tr.="</tr>";
             }
