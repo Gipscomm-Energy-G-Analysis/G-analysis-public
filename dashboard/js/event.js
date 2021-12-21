@@ -1447,7 +1447,7 @@ $(document).ready( function(){
         
 
         $('#title_modal_tile').val('');
-        $('#record_type_of_tile option[value=measurement]').prop('selected','selected');
+        $('#record_type_of_tile option[value=energy]').prop('selected','selected');
         $('#type_data_tile option[value=table').prop('selected', 'selected');
         // $('#dashboard_loader_div').hide();
     });

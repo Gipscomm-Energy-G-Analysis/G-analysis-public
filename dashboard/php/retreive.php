@@ -2943,7 +2943,7 @@ class dashboardController {
             // $queryLastDateData = queryDB($conn, $queryLastDate, "read");
             //--end-->
 
-            $records['energy_html'] = $this->generateRowClickHtmlLayerTableEnergyData($dataMesaurement);
+            $records['energy_html'] = $this->generateRowClickHtmlLayerTableEnergyData($dataMesaurement,$open_end_layer);
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($page_val,$pagesCount,$dataMesaurement);
             
             // <--15-8-2021--
@@ -2964,7 +2964,7 @@ class dashboardController {
         }
     }
 
-    public function generateRowClickHtmlLayerTableEnergyData($dataMesaurement,$queryMaxVal = false){
+    public function generateRowClickHtmlLayerTableEnergyData($dataMesaurement,$open_end_layer,$queryMaxVal = false){
         global $conn;
         $tr = '';
         $col_span = "";
@@ -2973,6 +2973,15 @@ class dashboardController {
         }
         else if($queryMaxVal != ''){
             $col_span = "colspan='4'";
+        }
+
+        $data_table_other = '';
+        if($open_end_layer == '1')
+        {
+            $data_table_other = "data-table-other='schichtModelle'";
+        }
+        else{
+            $data_table_other = "data-table-other='schichtModelleHist'";
         }
         if($dataMesaurement != '' && count($dataMesaurement) > 0){
             foreach($dataMesaurement as $key => $value){
@@ -2987,7 +2996,7 @@ class dashboardController {
                 //     $style="style='background-color: #f77171'";
                 // }
                 // echo $value['datum']->format('Y-m-d:h:i:s'); die;
-                $tr .= "<tr $style $class_val data-layer-model=".$value['schtMdl_ID']." data-type='1' data-table-other='schichtModelle'>";
+                $tr .= "<tr $style $class_val data-layer-model=".$value['schtMdl_ID']." data-type='1' $data_table_other>";
                 $tr.= "<td>".$value['modellBez']."</td>";
                 $tr.= "<td>".$value['bezeichnung']."</td>";
                 $tr.= "<td>".$value['uhrzeitVon']->format('h:i:s')."</td>";
@@ -3094,7 +3103,7 @@ class dashboardController {
             else if($energy_type == "layer_modal"){
                 $tr = '<tr>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Modal Name</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Designation Date</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Designation</th>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day From</th>';
@@ -3802,7 +3811,7 @@ class dashboardController {
         $tr = '';
         $col_span = "";
         if($queryMaxVal == ""){
-            $col_span = "colspan='5'";
+            $col_span = "colspan='6'";
         }
         else if($queryMaxVal != ''){
             $col_span = "colspan='4'";
@@ -5741,12 +5750,27 @@ class dashboardController {
                         else if($dataResult[0]['type'] == 'Product'){
                             $dashboardMeasurementHtml = $this->dashboardProductHtml($dataMeasurement);
                         }
-                    }else{
+                    }
+                    else if($dataResult[0]['table_other'] == 'schichtModelle')
+                    {
+                        $dashboardMeasurementHtml = $this->dashboardEnergyLayerHtmlChecked($dataMeasurement);
+                    }
+                    elseif($dataResult[0]['table_other'] == 'schichtModelleHist'){
+                        $dashboardMeasurementHtml = $this->dashboardEnergyLayerHtml($dataMeasurement);
+                    }
+                    else{
                         $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement);
                     }
                     // --end-->
                     $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
 
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                }
+                else if($dataResult[0]['row_click'] == 'true' && ($dataResult[0]['table_other'] == 'schichtModelle' || $dataResult[0]['table_other'] == 'schichtModelleHist') ){
+                    $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
+                    
+                    $dashboardMeasurementHtml = $this->dashboardRowClickEnergyLayerHtml($dataMeasurement);
+                    $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
                 }
                 else{
@@ -5799,6 +5823,116 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         } 
     }
+
+    // <----20-12-2021--
+
+    public function dashboardEnergyLayerHtmlChecked($dataMesaurement){
+        global $conn;
+        $tr = '<thead>';
+        $tr .= '<tr>';
+        $tr .= '<th>Modal Name</th>';
+        $tr .= '<th>Created Date</th>';
+        $tr .= '<th>Property</th>';
+        $tr .= '<th>Valid From</th>';
+        $tr .= '<th>Quantity</th>';
+        $tr .= '</tr>';
+        $tr .= "</thead>";
+        $col_span = "6";
+        if($dataMesaurement != '' && count($dataMesaurement) > 0){
+            $tr .= "<tbody>";
+            foreach($dataMesaurement as $key => $value){
+                $tr .= "<tr>";
+                $tr.= "<td>".$value['modellBez']."</td>";
+                $tr.= "<td>".$value['datum']->format('Y-m-d h:i:s')."</td>";
+                $tr.= "<td>".$value['nameLieg']."</td>";
+                $tr.= "<td>".$value['gueltigVon']->format('Y-m-d')."</td>";
+                $tr.= "<td>".$value['anzahl']."</td>";
+                $tr.="</tr>";
+            }
+            $tr .= "</tbody>";
+        }else{
+            $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tbody></tr>";
+        }
+        return $tr;
+        // $records['measurement_html'] = $tr;
+
+    }
+
+
+    public function dashboardEnergyLayerHtml($dataMesaurement){
+        global $conn;
+        $tr = '<thead>';
+        $tr .= '<tr>';
+        $tr .= '<th>Modal Name</th>';
+        $tr .= '<th>Created Date</th>';
+        $tr .= '<th>Property</th>';
+        $tr .= '<th>Valid From</th>';
+        $tr .= '<th>Date of Expiry</th>';
+        $tr .= '<th>Quantity</th>';
+        $tr .= '</tr>';
+        $tr .= "</thead>";
+        $col_span = "6";
+        if($dataMesaurement != '' && count($dataMesaurement) > 0){
+            $tr .= "<tbody>";
+            foreach($dataMesaurement as $key => $value){
+                $tr .= "<tr>";
+                $tr.= "<td>".$value['modellBez']."</td>";
+                $tr.= "<td>".$value['datum']->format('Y-m-d h:i:s')."</td>";
+                $tr.= "<td>".$value['nameLieg']."</td>";
+                $tr.= "<td>".$value['gueltigVon']->format('Y-m-d')."</td>";
+                $tr.= "<td>".$value['gueltigBis']->format('Y-m-d')."</td>";
+                $tr.= "<td>".$value['anzahl']."</td>";
+                $tr.="</tr>";
+            }
+            $tr .= "</tbody>";
+        }else{
+            $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+        }
+        return $tr;
+        // $records['measurement_html'] = $tr;
+
+    }
+
+
+    public function dashboardRowClickEnergyLayerHtml($dataMesaurement){
+        global $conn;
+        // echo json_encode($dataMesaurement); die;
+        $tr = '<thead>';
+        $tr .= '<tr>';
+        $tr .= '<th>Modal Name</th>';
+        $tr .= '<th>Designation</th>';
+        $tr .= '<th>Time From</th>';
+        $tr .= '<th>Time To</th>';
+        $tr .= '<th>Day From</th>';
+        $tr .= '<th>Day To</th>';
+        $tr .= '</tr>';
+        $tr .= "</thead>";
+        $col_span = "colspan='8'";
+        $data_table_other = '';
+        if($dataMesaurement != '' && count($dataMesaurement) > 0){
+            $tr .= "<tbody>";
+            foreach($dataMesaurement as $key => $value){
+                $style='';
+                $class_val = '';
+                $unit = '';
+                $tr .= "<tr $style $class_val data-type='1' $data_table_other>";
+                $tr.= "<td>".$value['modellBez']."</td>";
+                $tr.= "<td>".$value['bezeichnung']."</td>";
+                $tr.= "<td>".$value['uhrzeitVon']->format('h:i:s')."</td>";
+                $tr.= "<td>".$value['uhrzeitBis']->format('h:i:s')."</td>";
+                $tr.= "<td>".ucfirst($value['tagVon'])."</td>";
+                $tr.= "<td>".ucfirst($value['tagBis'])."</td>";
+                $tr.="</tr>";
+            }
+            $tr .= "</tbody>";
+        }else{
+            $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+        }
+        return $tr;
+        // $records['measurement_html'] = $tr;
+
+    }
+    // --end-->
 
     // <---15-12-2021
     public function getTableDashboardDataProductAutomatic(){

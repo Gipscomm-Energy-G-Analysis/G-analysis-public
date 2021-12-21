@@ -83,7 +83,7 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
-            $updatePriority = "UPDATE tableFormat set priority = '$totalResult' where id = '$last_id' ";
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->
 
@@ -208,7 +208,7 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
-            $updatePriority = "UPDATE tableFormat set priority = '$totalResult' where id = '$last_id' ";
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->
 
@@ -254,7 +254,7 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
-            $updatePriority = "UPDATE tableFormat set priority = '$totalResult' where id = '$last_id' ";
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->
 
