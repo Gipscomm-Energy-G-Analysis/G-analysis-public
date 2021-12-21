@@ -43,7 +43,7 @@ const scpRechteverwaltung_benutzer =
                     , mobiltelefon   : helper.fieldValue("mobiltelefonBen")
                     , username       : helper.fieldValue("benutzernameBen")
                     , passHash       : getHash_()
-                    , rechteTreeView : getMenuAndEditConfig()
+                    , rechteTreeView : JSON.stringify(getMenuAndEditConfig())
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeBen).join(",")
                     , rechteEdit     : getMenuAndEditConfig().editValues
                     }
@@ -138,15 +138,15 @@ const scpRechteverwaltung_benutzer =
                   , "passwortBen"
                   ]    
                   .forEach(helper.clearField)
-                , scpTreeView.clear(treeBen)
+                , scpTreeView.clear("#benTreeview")
                 , helper.setState("ben")("new")
                 )
 
             const getRef =
-                  () => 
-                  idxDB.benutzer
-                  .where($(".manGrpPfad").val().split("-")[0])
-                  .equals(Number($(".manGrpPfad").val().split("-")[1]))
+                () => 
+                idxDB.benutzer
+                .where($(".manGrpPfad").val().split("-")[0])
+                .equals(Number($(".manGrpPfad").val().split("-")[1]))
             
             const queryDatasIDB =
                 () =>
@@ -187,7 +187,7 @@ const scpRechteverwaltung_benutzer =
                             helper.setState("ben")("edit")
 
                             treeBen.setValues(values_(record))
-                            treeBen.setEditValues(editValues_(record))
+                            treeBen.setEditValues("#benTreeview")(editValues_(record))
                         }
                     )
                 }

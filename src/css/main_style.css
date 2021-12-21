@@ -1805,3 +1805,7 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
 #tblMasseneingabeDataIMw table tr th:first-child {
   z-index: 9;
 }
+
+.treejs-checkbox-edit {
+    margin-left: 5px;
+}

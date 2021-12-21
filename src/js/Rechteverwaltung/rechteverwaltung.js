@@ -14,6 +14,37 @@ const scpRechteverwaltung =
                 , Admin         : "adm"
                 , Benutzer      : "ben"
                 }
+
+            this.editItems =
+                () =>
+                [ "Mandanten"
+                , "Organisationen"
+                , "Liegenschaften"
+                , "Vers.Bereiche"
+                , "Messstellen-E"
+                , "Messstellen-B"
+                , "Standorte"
+                , "Standortdaten 3."
+                , "Anlagen"
+                , "Messmittelverwaltung"
+                , "Produkte"
+                , "Kennzahlen"
+                , "Alarme"
+                , "Berechnungsformeln"
+                , "Vorlagenformeln"
+                , "Interne Betriebsdaten"
+                , "Interne Energiedaten"
+                , "Rechnungen"
+                , "Energieträger"
+                , "Energieformen"
+                , "Zählpunktnummern"
+                , "Erweiterung Anlagen"
+                , "Erweiterung Produkte"
+                , "statische Korrekturfaktoren"
+                , "dynamischer Korrekturfaktoren"
+                , "Gruppierung Diagramme"
+                , "Schichtdaten"
+                ]
             
             const readRechteverwaltung =
                 position => {
@@ -82,7 +113,7 @@ const scpRechteverwaltung =
 
             const removeEdits =
                 () =>
-                getEditRechteArray()
+                difference(this.getMenuIDs())(getEditRechteArray())
                 .forEach(removeEdit)
                 
             const removeMenu =
