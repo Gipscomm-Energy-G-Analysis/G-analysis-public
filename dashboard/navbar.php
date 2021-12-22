@@ -1,7 +1,7 @@
 <!-- Nav Bar -->
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center act_background">
-        <a class="navbar-brand brand-logo mr-5" href="javascript:void(0);"><img src="images/G-Analysis/g_analysisNeu6.png" class="mr-2 logo-g-analysis" alt="logo"/></a>
+        <a class="navbar-brand brand-logo mr-5 dashboard_redirect_option" href="javascript:void(0);"><img src="images/G-Analysis/g_analysisNeu6.png" class="mr-2 logo-g-analysis" alt="logo"/></a>
         <!-- <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a> -->
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end act_background">
@@ -31,7 +31,7 @@
               <option>Spies</option> -->
             </select>
           </li>
-          <li><a href="javascript:void(0);" class="text-muted menu_dashboard">Dashboard</a></li>
+          <li><a href="javascript:void(0);" class="text-muted menu_dashboard dashboard_redirect_option">Dashboard</a></li>
           
           <!-- <li class="dropdown">
             <a href="#" class="text-muted menu_dashboard dropbtn">Auswertungen</a>

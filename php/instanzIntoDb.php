@@ -591,7 +591,7 @@ elseif($id == "prd") {
         $tsql = "INSERT INTO produkte(datum, org_ID, namePrd, artikelNrPrd, custom1, custom2, custom3, custom4, custom5, custom6, ";
         $tsql .= "anl01_ID, anl02_ID, anl03_ID, anl04_ID, anl05_ID, anl06_ID, anl07_ID, anl08_ID, anl09_ID, gruppenID, deleted, archiviert) ";
         $tsql .= "VALUES (getdate(), '$orgID', '$bezeichnung', '$artikelnummer', '$custom1', '$custom2', '$custom3', '$custom4', '$custom5', '$custom6', ";
-        $tsql .= "'$anl01ID', '$anl02ID', '$anl03ID', '$anl04ID', '$anl05ID', '$anl06ID', '$anl07ID', '$anl08ID', '$anl09ID', $grpID,'false','false') ";
+        $tsql .= "'$anl01ID', '$anl02ID', '$anl03ID', '$anl04ID', '$anl05ID', '$anl06ID', '$anl07ID', '$anl08ID', '$anl09ID', '$grpID','false','false') ";
         $retState = queryDB( $conn, $tsql, "write" );
         echo $tsql;
         /*new-mm-start*/

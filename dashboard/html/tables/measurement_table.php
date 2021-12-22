@@ -15,7 +15,7 @@
                       <select class="form-control form-control-sm text-dark" id="measurement_type">
                         <option value="automatic">Read in Automatically</option>
                         <option value="manually">Entered Manually</option>
-                         <option value="calculated">Calculated</option>
+                         <!-- <option value="calculated">Calculated</option> -->
                       </select>
                     </div>
                     
@@ -91,7 +91,7 @@
                   <!-- Modal -->
                  <!-- Large modal -->
                   <!-- <button type="button" style="display: none" class="btn btn-primary" id="modal_open_button" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button> -->
-
+                  <input type="hidden" id="row_click_last_date">
                   <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg max-width-modal">
                       <div class="modal-content">

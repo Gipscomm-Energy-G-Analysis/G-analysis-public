@@ -23,8 +23,8 @@
                     <option value="mesurement_count_div" description="Measurement Entries Count">Messstellen</option>
                     <option value="product_count_div" description="Product Entries Count">Produkte</option>
                     <option value="energy_count_div" description="Energy Entries Count">Energiedaten</option>
-                    <option value="energy_consumed_div" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
-                    <option value="five_days_energy_consumed" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option>
+                    <!-- <option value="energy_consumed_div" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option> -->
+                    <!-- <option value="five_days_energy_consumed" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
                     <!-- <option value="40">40</option>
                     <option value="50">50</option> -->
                   </select>
@@ -42,7 +42,7 @@
             <div class="dashboard-btn">
                 <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
 
-                <button type="button" class="btn btn-success btn-sm mb-3" style="display: none" id="save_position_tile">Save Tile</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Save Tile Structure</button>
 
             </div>
 
@@ -70,11 +70,11 @@
                     <div class="form-group col-md-3">
                       <label for="record_type_of_tile">Type of Record</label>
                       <select class="form-control form-control-sm text-dark" id="record_type_of_tile">
-                          <option value="measurement" description="Measurement Entries Count">Messstellen</option>
-                          <option value="product" description="Product Entries Count">Produkte</option>
-                          <option value="energy" description="Energy Entries Count">Energiedaten</option>
-                          <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
-                          <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option>
+                          <option value="energy" description="Energy Entries Count">Messtellen-Energie</option>
+                          <option value="product" description="Product Entries Count">Produktion</option>
+                          <option value="measurement" description="Measurement Entries Count">Messtellen-Betrieb</option>
+                          <!-- <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
+                          <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
                       </select>
                     </div>
 
@@ -96,9 +96,22 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                 </div>
+
+                <!-- ----27-10-2021--- -->
+                <!-- <div id="dashboard_loader_div" style="display: none">
+                  <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+                </div> -->
+                <!-- end -->
+
               </div>
             </div>
           </div>
+          <!-- end -->
+          
+          <!-- ----27-10-2021--- -->
+          <!-- <div id="dashboard_loader_div" style="display: none">
+            <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+          </div> -->
           <!-- end -->
 
           <!-- 16-9-2021-- -->
@@ -135,7 +148,7 @@
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
                     </div>
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-2" id="time_interval_div">
                       <label for="time_interval_chart" class="text-mute">Time Interval</label>
                       <select class="form-control form-control-sm text-dark" id="time_interval_chart">
                         <option value="1">Days</option>
@@ -152,13 +165,26 @@
                       </select>
                     </div>
 
+                    <div class="form-group col-md-2 chart_product_div" id="chart_record_product_div">
+                      <label for="chart_records_product" class="text-mute" id="chart_records_label_product"></label>
+                      <select class="form-control form-control-sm text-dark" id="chart_records_product">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2 chart_product_div" id="chart_record_product_item_div">
+                      <label for="chart_records_product_item" class="text-mute">Select Item</label>
+                      <select class="form-control form-control-sm text-dark" id="chart_records_product_item">
+                        <option value=''>Select Item</option>
+                      </select>
+                    </div>
+
                     <div class="form-group col-md-2" id="chart_record_filter_div">
                       <label for="chart_record_filter" class="text-mute">Filters</label>
                       <select class="form-control form-control-sm text-dark" id="chart_record_filter">
                         <option value=''>Select Filters</option>
-                        <option value="10">Last 10 Days Records</option>
-                        <option value="20">Last 20 Days Records</option>
-                        <option value="30">Last 30 Days Records</option>
+                        <option value="10">Last 10 Records</option>
+                        <option value="20">Last 20 Records</option>
+                        <option value="30">Last 30 Records</option>
                         <option value="all">All Records</option>
                       </select>
                     </div>
@@ -183,6 +209,45 @@
                       </div>
                     </div>
                     <!-- end -->
+
+                    <!-- <--28-10-2021 -->
+                    <diV class="form-group col-md-2">
+                      <div class="form-check form-check-primary">
+                        <label class="form-check-label">
+                          Outisde Tile Structure
+                          <input type="checkbox" class="text-mute form-check-input" id="chart_outside_tile_structure" name="chart_outside_tile_structure" value="0">  
+                        </label>
+                      </div>
+                    </div>
+                    <!-- -end -->
+
+                    <!-- 29-10-2021 -->
+                    <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
+                      <label for="chart_height_outer_structure" class="text-mute">Outside Tile Column</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="chart_height_outer_structure" placeholder="Outer Column">
+                    </div>
+
+                    <div class="form-group col-md-2 chart_outisde_tile_controls"  style="display: none">
+                      <label for="chart_width_outer_structure" class="text-mute">Outisde Tile Row</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="chart_width_outer_structure" placeholder="Outer Row">
+                    </div>
+
+                    <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
+                      <label for="chart_outer_table_limit_column" class="text-mute">Column Limit</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="chart_outer_table_limit_column" placeholder="Limit Column" value='1'>
+                    </div>
+                    
+                    <!-- -end- -->
+
+                     <!-- <--28-10-2021 -->
+                    <diV class="form-group col-md-2" style="display: none">
+                      <div class="form-check form-check-primary">
+                        <label class="form-check-label">
+                          Outside Tile Chart
+                          <input type="checkbox" class="text-mute form-check-input" id="display_chart_outside_tile" name="display_chart_outside_tile" value="0">  
+                        </label>
+                      </div>
+                    </div>
                   </div>
                   
                   <div class="row dashboard_chart_tiles">
@@ -192,6 +257,12 @@
                   <div id="measurement_modal_loader_div_chart" style="display: none">
                     <img src="images/loader_dashboard.gif" id="measurement_modal_loader_image_chart">
                   </div>
+
+                   <!-- 27-10-2021-- -->
+                  <div id="dashboard_loader_div" style="display: none">
+                    <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+                  </div>
+                  <!-- end-- -->
                 </div>
 
                 <div class="modal-footer">
@@ -217,7 +288,8 @@
 
             <!-- --end -->
 
-
+          <input type="hidden" id='save_tile_id'>
+          <!-- <div id='outside_tile_chart_display_html'></div> -->
           <div class="row dashboard_count_div"  id="dashboard_count_div_tile">
             <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
               <div class="card card-border">
@@ -462,6 +534,7 @@
         <!-- end -->
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
+        
         <footer class="footer">
           <!-- <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
