@@ -858,3 +858,7 @@
     border: 1px solid;
     padding: 4px;
 }
+
+#product_select_table_entries_table_header tr th{
+    text-transform: capitalize;
+}

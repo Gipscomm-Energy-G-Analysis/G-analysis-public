@@ -1795,17 +1795,27 @@ function getNumberRecordsProduct(page_val = 1){
 
 function getNumberRecordsProductAutomatic(page_val = 1){
   $('#product_field_div').hide();
+  $('.automatic_product_div').show();
   // var number_records = $('#product_number_record').val();
+
+  // <---22-12-2021---
+  var all_tables_product = $('#all_tables_product').val();
+  var all_columns_product = $('#all_columns_product').val();
+  if(all_tables_product == '' || all_columns_product.length == 0)
+  {
+    var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Column</td></tr>";
+    $('#product_select_table_entries').html(tr);
+    $('#product_select_table_entries_pagination').html('');
+    return false;
+  }
+  var columnDataType = [];
+  $('#all_columns_product option:selected').each(function(){
+    var value =$(this).attr('data-type');
+    columnDataType.push(value)
+  });
+  // ---end--->
+
   var product_type = $('#product_type').val();
-  // <---14-12-2021---
-  var nameDB = "";
-  if(product_type == 'automatic'){
-    nameDB = "g002_badber";
-  }
-  else{
-    nameDB = $("#nameDashboardDB").val();
-  }
-  // --end-->
   
   $.ajax({
       type: "POST",
@@ -1814,10 +1824,13 @@ function getNumberRecordsProductAutomatic(page_val = 1){
       dataType: 'json',
       data: {
           action: "getNumberRecordsProductAutomatic",
-          nameDB: nameDB,
+          nameDB: $("#nameDashboardDB").val(),
           // number_records : number_records,
           page_val : page_val,
-          product_type : product_type
+          product_type : product_type,
+          all_tables_product : all_tables_product,
+          all_columns_product : JSON.stringify(all_columns_product),
+          columnDataType : JSON.stringify(columnDataType),
       },
       fail: function() {
           alert("failed!!")
@@ -1860,6 +1873,108 @@ function getNumberRecordsProductAutomatic(page_val = 1){
   });
 }
 
+function getAllProductTables(){
+  $('#product_field_div').hide();
+  $('.automatic_product_div').show();
+  // var number_records = $('#product_number_record').val();
+  var product_type = $('#product_type').val();
+  var nameDB = $("#nameDashboardDB").val();
+  $.ajax({
+      type: "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "getAllProductTables",
+          nameDB: nameDB,
+          product_type : product_type,
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        // <---21-12-2021---
+        if(a['all_tables'] != '')
+        {
+          var all_table = "<option value=''>Please Select Table</option>";;
+          a['all_tables'].forEach((val)=>{
+            all_table +="<option value='"+val['name']+"'>"+val['name']+"</option>";
+          });
+          $('#all_tables_product').html(all_table);
+          
+          var column_option = "<option value=''>Please Select Column</option>";
+          $('#all_columns_product').html(column_option);
+
+          
+        }
+        else{
+          var all_table = "<option>No Data</option>";
+          $('#all_tables_product').html(all_table);
+          $('#all_columns_product').hide();
+        }
+
+        var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Column</td></tr>";
+        $('#product_select_table_entries').html(tr);
+        $('#product_select_table_entries_pagination').html('');
+        // --end--->
+      }
+  });
+}
+
+// <---22-12-2021--
+function getAllColumnProductTables(){
+  $('#product_field_div').hide();
+  $('.automatic_product_div').show();
+  // var number_records = $('#product_number_record').val();
+  var table_name = $('#all_tables_product').val();
+  var nameDB = $("#nameDashboardDB").val();
+  $.ajax({
+      type: "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "getAllColumnProductTables",
+          nameDB: nameDB,
+          table_name : table_name
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        if(a['all_columns'] != '')
+        {
+          // var all_table = "<option value=''>Please Select Column</option>";
+          var all_table = '';
+          a['all_columns'].forEach((val)=>{
+            all_table +="<option value='"+val['column_name']+"' data-type='"+val['data_type']+"'>"+val['column_name']+"</option>";
+          });
+          $('#all_columns_product').html(all_table);
+
+          // $('#all_columns_product').attr('multiple','multiple');
+
+          // $('#all_columns_product').multiselect({
+          //   columns: 1,
+          //   placeholder: 'Please Select Column',
+          //   search: true
+          // });
+
+          var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Column</td></tr>";
+          $('#product_select_table_entries').html(tr);
+          $('#product_select_table_entries_pagination').html('');
+        }
+        else{
+          var all_column = "<option>Please Select Column</option>";
+          $('#all_columns_product').html(all_column);
+
+          var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>No Data</td></tr>";
+          $('#product_select_table_entries').html(tr);
+          $('#product_select_table_entries_pagination').html('');
+        }
+      }
+  });
+}
+// --end->
 
 //Select Number of Record Producttion Data
 function getNumberRecordsProductionData(){

@@ -18,6 +18,21 @@
                       </select>
                     </div>
 
+                    <!-- 21-12-2021-- -->
+                    <div class="form-group col-md-3 automatic_product_div" id="all_tables_product_div">
+                      <label for="product_type">Tables</label>
+                      <select class="form-control form-control-sm text-dark" id="all_tables_product">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-3 automatic_product_div" id="all_columns_product_div">
+                      <label for="product_type">Columns</label>
+                      <select class="form-control form-control-sm text-dark" multiple id="all_columns_product">
+                        <!-- <option value="">Please Select Column</option> -->
+                      </select>
+                    </div>
+                    <!-- -end -->
+
                     <div class="form-group col-md-3" id="product_field_div">
                       <img src="images/search.png" id="all_product_image">
                       <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='All Product' readonly >
@@ -30,6 +45,12 @@
                         <option value='asc'>Order By Min Units Consumed</option>
                       </select>
                     </div>
+
+                    <!-- <div class="form-group col-md-3">
+                      <label for="product_number_record">Select Total No. of Records</label>
+                       <input type="number" class="form-control form-control-sm text-dark" id="product_total_number_record" placeholder="Select Total No. of Records">
+                       <span class="energy_number_record_error text-danger"></span>
+                    </div> -->
 
                   </div>
 

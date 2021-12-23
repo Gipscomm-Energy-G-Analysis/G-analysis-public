@@ -4056,74 +4056,67 @@ class dashboardController {
     {
         try{
             global $conn;
+            $total_number_records = isset($_POST['total_number_records']) ? $_POST['total_number_records'] : 100 ;
             $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
             $product_type = $_POST['product_type'];
             $number_records = 5;
             $pagesCount = '';
             $offSetVal = 0;
 
-            $queryPrdOverviewRecord  = "SELECT * from TWP_PROD_OVERVIEW as t1 ";
-            $queryPrdOverviewRecord .= "order BY t1.id desc ";
-            $queryPrdOverviewRecord .= "offset 0 rows FETCH NEXT 12 ROWS ONLY ";
-            $lastPrdOverviewRecord = queryDB($conn, $queryPrdOverviewRecord, "read");
-            $manameValue = $lastPrdOverviewRecord != null ? $lastPrdOverviewRecord[0]['MANAME'] : '';
-            // echo $manameValue; die;
-            if($manameValue != '')
-            {
-                // $manameType =  is_numeric($manameValue);
-                // echo $manameType; die;
-                // $manameValue = 'Arburg SPM';
-                $queryTotalRecord  = "SELECT * from anlagen as t1 ";
-                $queryTotalRecord .= "Where bezeichnungAnl = '$manameValue' ";
-                $queryTotalRecord .= "order BY t1.anl_Id desc ";
-                $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
-                // echo json_encode($queryTotalRecord); die;
-                $total_number_records = count($totalRecordsValue);
-
-                if(count($totalRecordsValue) > 0){
-                    if($total_number_records <= $number_records){
-                        $offSetVal = 0;
-                        $number_records = $total_number_records;
-                        $pagesCount = 1; 
-                        $page_val = 1;
+            // <----22-12-2021---
+            $tableProduct = $_POST['all_tables_product'];
+            $columnsValue = $_POST['all_columns_product'];
+            $columnsValue = str_replace('[','',$columnsValue);
+            $columnsValue = str_replace(']','',$columnsValue);
+            $columnsValue = str_replace('"','',$columnsValue);
+            $queryTotalRecord  = "SELECT TOP($total_number_records) $columnsValue from $tableProduct as t1 ";
+            $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
+            // echo json_encode($queryTotalRecord); die;
+            
+            $pagesCount = '';
+            $offSetVal = 0;
+            if(count($totalRecordsValue) > 0){
+               if($total_number_records <= $number_records){
+                   $offSetVal = 0;
+                   $number_records = $total_number_records;
+                   $pagesCount = 1; 
+                   $page_val = 1;
+               }
+               else{
+                    $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                    $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                    $offSetVal = ($page_val - 1) * $number_records;
+                    //Only Valid when User Click on Last page
+                    if($page_val == $pagesCount){
+                        $number_records = $total_number_records - $offSetVal;
                     }
-                    else{
-                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
-                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
-                        $offSetVal = ($page_val - 1) * $number_records;
-                        
-                        if($page_val == $pagesCount){
-                            $number_records = $total_number_records - $offSetVal;
-                        }
-                            
-                    } 
+               }
 
-                }
-                $query1 = "SELECT * from anlagen as t1 ";
-                $query1 .= "Where bezeichnungAnl = '$manameValue' ";
-                $query1 .= "order BY t1.anl_Id desc ";
-                $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-                $dataProduct = queryDB($conn, $query1, "read");
-                // echo json_encode($dataProduct); die;
-                // $dataProduct = '';
-                $tr = $this->generateAllItemAutomaticTableHTML($dataProduct);
-                $th = $this->generateAllItemAutomaticTableHeaderHTML($dataProduct);
-                $pagination_html = $this->generateAllItemAutomaticPaginationHTML($page_val,$pagesCount,$dataProduct);
-                $records['product_html'] = $tr;
-                $records['product_table_header'] = $th;
-                $records['pagination_html'] = $pagination_html;
-
-                $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product');
-                $records['query_data'] = $ar;
-
-                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
-                die;
-            }
-            else{
-                $tr = $this->generateAllItemAutomaticTableHTML($dataProduct);
-                $pagination_html = $this->generateAllItemAutomaticPaginationHTML($page_val,$pagesCount,$dataProduct);
             }
             
+            $allColumns= json_decode($_POST['all_columns_product']);
+            $allColumnDataType= json_decode($_POST['columnDataType']);
+            // echo $allColumns[0]; die;
+            $query1 = "SELECT $columnsValue from $tableProduct ";
+            $query1 .= "Order by $allColumns[0] desc ";
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+            // echo $query1; die;
+            $dataProduct = queryDB($conn, $query1, "read");
+            $tr = $this->generateAllItemAutomaticTableHTML($dataProduct,$allColumns,$allColumnDataType);
+            $th = $this->generateAllItemAutomaticTableHeaderHTML($dataProduct,$allColumns);
+            $pagination_html = $this->generateAllItemAutomaticPaginationHTML($page_val,$pagesCount,$dataProduct);
+            $records['product_html'] = $tr;
+            $records['product_table_header'] = $th;
+            $records['pagination_html'] = $pagination_html;
+
+            $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product');
+            $records['query_data'] = $ar;
+
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+
+            // echo json_encode($columnsValue); die;
+            // ---end---->
+            die;
             
         }
         catch (Exception $e) {
@@ -4131,95 +4124,68 @@ class dashboardController {
         }
     }
 
+    // <---21-12-2021--
+    public function getAllProductTables()
+    {
+        try{
+            global $conn;
+            $product_type = $_POST['product_type'];
+            $queryAllTables = "SELECT name from sys.Tables order by name asc ";
+            $queryAllTablesRecord = queryDB($conn, $queryAllTables, "read");
+            $records['all_tables'] = $queryAllTablesRecord;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
+
+    // <----22-12-2021---
+    public function getAllColumnProductTables()
+    {
+        try{
+            global $conn;
+            $table_name = $_POST['table_name'];
+            $queryColumnTables  = "Select column_name,data_type from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '$table_name' ";
+            $queryColumnTablesRecord = queryDB($conn, $queryColumnTables, "read");
+            $records['all_columns'] = $queryColumnTablesRecord;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
+
+
     // <---14-12-2021---
-    public function generateAllItemAutomaticTableHTML($dataProduct,$queryMaxVal = false)
+    public function generateAllItemAutomaticTableHTML($dataProduct,$allColumns,$allColumnDataType)
     {
         try{
             // echo json_encode($dataProduct); die;
             global $conn;
             $tr = '';
-            $col_span = '';
-            if($queryMaxVal == ""){
-                $col_span = "colspan='5'";
-            }
-            else if($queryMaxVal != ''){
-                $col_span = "colspan='4'";
-            }
-
+            $col_span = '50';
             if($dataProduct != '' && count($dataProduct) > 0){
-                foreach($dataProduct as $key => $value){
-                    $class_val='';
-                    $style ='';
-                    $attr = '';
-                    // if($queryMaxVal == ""){
-                    //     $class_val = 'class="row_click_particular_product_entry"';
-                    // }
-                    // else if($queryMaxVal != '' && $queryMaxVal == $value['val']){
-                    //     $style="style='background-color: #f77171'";
-                    //     $attr = 'data-max-row="true"';
-                    // }
-                    
-                    $val_prd_ID = '';
-                    $prd_name = '';
-                    // if($queryMaxVal == '')
-                    // {
-                    //     $val_prd_ID = $value['prd_ID'];
-                    //     $prd_name = $value['namePrd'];
-                    // }
-
-                    $tr .= "<tr $style $class_val $attr prd_id='$val_prd_ID' data-table-other='true' prd_name='$prd_name'>";
-                    // $tr.= "<td>".$value['namePrd']."</td>";
-                    $tr.= "<td>".$value['bezeichnungAnl']."</td>";
-                    $tr.= "<td>".$value['datumAnl']->format('Y-m-d')."</td>";
-                    
-                    //Units Checkss
-                    $unit='kWh';
-                    $total_unit = $value['anschlussleistung1Anl'] + $value['mittlereAuslastungProzent1Anl'] + $value['mittlereAuslastungKw1Anl'] + $value['betriebstemperatur1Anl'] + $value['abwaerme1Anl'];
-                    $tr.= "<td>".$total_unit.' '.$unit."</td>";
-
-                    // if($value['unt_ID'] == "1"){
-                    //     $unit = "Hrs.";
-                    // }
-                    // else if($value['unt_ID'] == "2"){
-                    //     $unit = "kWh";
-                    // }
-                    // else if($value['unt_ID'] == "3"){
-                    //     $unit = "m³";
-                    // }
-                    // else if($value['unt_ID'] == "4"){
-                    //     $unit = "l";
-                    // }
-                    // else if($value['unt_ID'] == "5"){
-                    //     $unit = "kg";
-                    // }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
-                    // if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
-                    //     if($queryMaxVal != ''){
-                    //         $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
-                    //     }
-                    //     else{
-                    //         $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
-                    //     }
-                    // }
-                    // else if($queryMaxVal != ''){
-                    //     $tr.= "<td>".$value['on_date']."</td>";
-                    // }
-                    // else{
-                    //     $tr.= "<td>".$value['startDate']."</td>";
-                    // }
-                    // if($value['val'] == null){
-                    //     $tr.= "<td> - </td>";
-                    //     if($queryMaxVal == ''){
-                    //         $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
-                    //     }
-                    // }
-                    // else{
-                    //     $tr.= "<td>".$value['val'].' '.$unit."</td>";
-                    //     if($queryMaxVal == ''){
-                    //         $tr.= "<td><label class='badge badge-success'>Active </label></td>";
-                    //     }
-                    // }
-                    $tr.="</tr>";
+                for($i = 0; $i < count($dataProduct); $i++ )
+                {
+                    $tr.="<tr>";
+                    for($j = 0; $j < count($allColumns); $j++)
+                    {
+                        $columnName = $allColumns[$j];
+                        $columnDataType = $allColumnDataType[$j];
+                        if($columnDataType == 'date' || $columnDataType == 'datetime')
+                        {
+                            $tr.= "<td>".$dataProduct[$i][$columnName]->format('Y-m-d')."</td>";    
+                        }
+                        else{
+                            $tr.= "<td>".$dataProduct[$i][$columnName]."</td>";    
+                        }
+                    }
+                    $tr .= "</tr>";
                 }
             }else{
                  $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
@@ -4234,13 +4200,14 @@ class dashboardController {
         }
     }
 
-    public function generateAllItemAutomaticTableHeaderHTML(){
+    public function generateAllItemAutomaticTableHeaderHTML($dataProduct,$allColumns){
         try{
             $tr = "<tr>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Item Name</th>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Created Date</th>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units</th>";
-            $tr .= "</tr>";
+            foreach($allColumns as $val)
+            {
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>$val</th>";
+            }
+            $tr .= "</tr>"; 
             return $tr;
         }
         catch (Exception $e) {
