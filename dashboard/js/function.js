@@ -1901,9 +1901,15 @@ function getAllProductTables(){
             all_table +="<option value='"+val['name']+"'>"+val['name']+"</option>";
           });
           $('#all_tables_product').html(all_table);
+
+          var selectHTML = "<label for='product_type'>Columns</label>";
+          selectHTML += "<select class='form-control form-control-sm text-dark'id='all_columns_product'>";
+          selectHTML+= "<option value=''>Please Select Column</option>";
+          selectHTML += "</select>";
+          $('#all_columns_product_div').html(selectHTML);
           
-          var column_option = "<option value=''>Please Select Column</option>";
-          $('#all_columns_product').html(column_option);
+          // var column_option = "<option value=''>Please Select Column</option>";
+          // $('#all_columns_product').html(column_option);
 
           
         }
@@ -1945,27 +1951,37 @@ function getAllColumnProductTables(){
         if(a['all_columns'] != '')
         {
           // var all_table = "<option value=''>Please Select Column</option>";
+          $('#all_columns_product_div').html('');
           var all_table = '';
           a['all_columns'].forEach((val)=>{
             all_table +="<option value='"+val['column_name']+"' data-type='"+val['data_type']+"'>"+val['column_name']+"</option>";
           });
           $('#all_columns_product').html(all_table);
 
-          // $('#all_columns_product').attr('multiple','multiple');
-
-          // $('#all_columns_product').multiselect({
-          //   columns: 1,
-          //   placeholder: 'Please Select Column',
-          //   search: true
-          // });
+          // <----23-12-2021---
+          var selectHTML = "<label for='product_type'>Columns</label>";
+          selectHTML += "<select class='form-control form-control-sm text-dark' multiple id='all_columns_product'>";
+          selectHTML+= all_table;
+          selectHTML += "</select>";
+          $('#all_columns_product_div').html(selectHTML);
+          // --end-->
+          $('#all_columns_product').multiselect({
+            columns: 1,
+            placeholder: 'Please Select Column',
+            search: true
+          });
+          $('#all_columns_product').multiselect('refresh');
 
           var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Column</td></tr>";
           $('#product_select_table_entries').html(tr);
           $('#product_select_table_entries_pagination').html('');
         }
         else{
-          var all_column = "<option>Please Select Column</option>";
-          $('#all_columns_product').html(all_column);
+          var selectHTML = "<label for='product_type'>Columns</label>";
+          selectHTML += "<select class='form-control form-control-sm text-dark'id='all_columns_product'>";
+          selectHTML+= "<option value=''>Please Select Column</option>";
+          selectHTML += "</select>";
+          $('#all_columns_product_div').html(selectHTML);
 
           var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>No Data</td></tr>";
           $('#product_select_table_entries').html(tr);

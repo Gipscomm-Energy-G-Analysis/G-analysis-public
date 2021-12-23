@@ -2391,6 +2391,7 @@ $(document).ready( function(){
         if(prdTypeVal == 'automatic')
         {
             $('#product_field_div').hide();
+            $('#product_records_order_by').hide();
             getAllProductTables();
             // getNumberRecordsProductAutomatic();
         }else {

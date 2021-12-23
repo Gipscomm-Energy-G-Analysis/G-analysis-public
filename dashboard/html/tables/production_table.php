@@ -27,7 +27,7 @@
 
                     <div class="form-group col-md-3 automatic_product_div" id="all_columns_product_div">
                       <label for="product_type">Columns</label>
-                      <select class="form-control form-control-sm text-dark" multiple id="all_columns_product">
+                      <select class="form-control form-control-sm text-dark" id="all_columns_product">
                         <!-- <option value="">Please Select Column</option> -->
                       </select>
                     </div>

@@ -862,3 +862,11 @@
 #product_select_table_entries_table_header tr th{
     text-transform: capitalize;
 }
+
+#all_tables_product option{
+    text-transform: capitalize;
+}
+
+#all_columns_product_div div button{
+    padding-bottom: 11px;
+}
