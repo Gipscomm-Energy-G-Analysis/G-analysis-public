@@ -46,11 +46,11 @@
                       </select>
                     </div>
 
-                    <!-- <div class="form-group col-md-3">
-                      <label for="product_number_record">Select Total No. of Records</label>
+                    <div class="form-group col-md-3 automatic_product_div">
+                      <label for="product_total_number_record">Select Total No. of Records</label>
                        <input type="number" class="form-control form-control-sm text-dark" id="product_total_number_record" placeholder="Select Total No. of Records">
-                       <span class="energy_number_record_error text-danger"></span>
-                    </div> -->
+                       <span class="product_number_record_error text-danger"></span>
+                    </div>
 
                   </div>
 

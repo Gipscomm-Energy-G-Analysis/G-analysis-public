@@ -134,6 +134,10 @@ $(document).ready( function(){
 
                 // getNumberRecordsProduct();
                 $("#product_type option[value='automatic']").prop('selected','selecetd');
+                var number_record_local_val = localStorage.getItem('number_record_product');
+                if(number_record_local_val != undefined && number_record_local_val != null){
+                    $('#product_total_number_record').val(number_record_local_val);
+                }
                 getAllProductTables();
                 // getNumberRecordsProductAutomatic();
 
@@ -619,7 +623,14 @@ $(document).ready( function(){
             saveOverallCountTileProduct();
         }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'product'){
-            saveTableFormatProduct();
+            var product_type = $('#product_type').val();
+            if(product_type == 'automatic')
+            {
+                //saveTableFormatAutomaticProduct();
+            }
+            else{
+                saveTableFormatProduct();
+            }
         }
     })
     
@@ -2391,7 +2402,7 @@ $(document).ready( function(){
         if(prdTypeVal == 'automatic')
         {
             $('#product_field_div').hide();
-            $('#product_records_order_by').hide();
+            $('#product_records_order_by_div').hide();
             getAllProductTables();
             // getNumberRecordsProductAutomatic();
         }else {
@@ -2431,6 +2442,30 @@ $(document).ready( function(){
     $(document).on('change','#all_columns_product', function(){
         $('#product_field_div').hide();
         getNumberRecordsProductAutomatic();
+    });
+
+    $(document).on('change blur', '#product_total_number_record', function(){
+        var val = $(this).val();
+        if(val <=0){
+            $('.product_number_record_error').text('Value always be greater than 0');
+            $('#product_total_number_record').val('');
+           
+            var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Total No. of Records</td></tr>";
+            $('#product_select_table_entries').html(tr);
+            $('#product_select_table_entries_pagination').html('');
+            localStorage.removeItem('number_record_product');
+           
+            $('.product_number_record_error').fadeIn('slow');
+            setTimeout( function(){
+                $('.product_number_record_error').fadeOut('slow');
+            },3000);
+        }
+        else{
+            $('.product_number_record_error').text('');
+            localStorage.setItem('number_record_product',val);
+            getNumberRecordsProductAutomatic();
+        }
+        
     });
     // --end--->
 

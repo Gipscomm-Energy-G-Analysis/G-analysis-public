@@ -1801,7 +1801,15 @@ function getNumberRecordsProductAutomatic(page_val = 1){
   // <---22-12-2021---
   var all_tables_product = $('#all_tables_product').val();
   var all_columns_product = $('#all_columns_product').val();
-  if(all_tables_product == '' || all_columns_product.length == 0)
+  var total_number_records = $('#product_total_number_record').val();
+  if(total_number_records == '')
+  {
+    var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Total No. Record</td></tr>";
+    $('#product_select_table_entries').html(tr);
+    $('#product_select_table_entries_pagination').html('');
+    return false;
+  }
+  else if(all_tables_product == '' || all_columns_product.length == 0)
   {
     var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Column</td></tr>";
     $('#product_select_table_entries').html(tr);
@@ -1829,6 +1837,7 @@ function getNumberRecordsProductAutomatic(page_val = 1){
           page_val : page_val,
           product_type : product_type,
           all_tables_product : all_tables_product,
+          total_number_records : total_number_records,
           all_columns_product : JSON.stringify(all_columns_product),
           columnDataType : JSON.stringify(columnDataType),
       },

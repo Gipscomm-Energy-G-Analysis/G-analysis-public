@@ -4179,10 +4179,10 @@ class dashboardController {
                         $columnDataType = $allColumnDataType[$j];
                         if($columnDataType == 'date' || $columnDataType == 'datetime')
                         {
-                            $tr.= "<td>".$dataProduct[$i][$columnName]->format('Y-m-d')."</td>";    
+                            $tr.= "<td data-table-other='true'>".$dataProduct[$i][$columnName]->format('Y-m-d')."</td>";    
                         }
                         else{
-                            $tr.= "<td>".$dataProduct[$i][$columnName]."</td>";    
+                            $tr.= "<td data-table-other='true'>".$dataProduct[$i][$columnName]."</td>";    
                         }
                     }
                     $tr .= "</tr>";
