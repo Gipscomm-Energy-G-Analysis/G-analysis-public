@@ -328,11 +328,11 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>No. of Records</label>
-                                    <select class="form-control time_filter" id="timeFilter">
+                                    <select class="form-control time_filter" id="timeFilter" onmousedown="this.value='';" onchange="jsFunction(this.value);">
                                         <option value="5" selected>5</option>
                                         <option value="10">10</option>
                                         <option value="15">15</option>
-                                        <option value="20">20</option>
+                                        <option value="100">100</option>
                                     </select>
                                 </div>
                             </div>
@@ -454,7 +454,7 @@
                     <div class="row" id="other_graph_div">
                         @foreach($data['otherGraph'] as $key=>$value)
                             @if($value['name'])
-                            <div class="col-sm-6 main_chart_other">
+                            <div class="col-sm-12 main_chart_other">
                                 <div class="card card-info">
                                     <div class="card-header" >
                                         <h3 class="card-title" style="float:revert;">{{$value['name']}}
@@ -1035,7 +1035,8 @@ var chart = root.container.children.push(
     panX: true,
     panY: true,
     wheelX: "panX",
-    wheelY: "zoomX"
+    wheelY: "zoomX",
+    layout: root.verticalLayout
   })
 );
 
@@ -1057,55 +1058,62 @@ var xAxis = chart.xAxes.push(
   })
 );
 
-function createAxisAndSeries(startValue, opposite) {
-  var yRenderer = am5xy.AxisRendererY.new(root, {
-    opposite: opposite
-  });
-  var yAxis = chart.yAxes.push(
-    am5xy.ValueAxis.new(root, {
-      maxDeviation: 1,
-      renderer: yRenderer
-    })
-  );
+function createAxisAndSeries(startValue, opposite, name) {
+    var yRenderer = am5xy.AxisRendererY.new(root, {
+        opposite: opposite
+    });
+    var yAxis = chart.yAxes.push(
+        am5xy.ValueAxis.new(root, {
+        maxDeviation: 1,
+        renderer: yRenderer
+        })
+    );
 
-  if (chart.yAxes.indexOf(yAxis) > 0) {
-    yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
-  }
+    if (chart.yAxes.indexOf(yAxis) > 0) {
+        yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
+    }
 
-  // Add series
-  // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-  var series = chart.series.push(
-    am5xy.LineSeries.new(root, {
-      xAxis: xAxis,
-      yAxis: yAxis,
-      valueYField: "value",
-      valueXField: "date",
-      tooltip: am5.Tooltip.new(root, {
-        pointerOrientation: "horizontal",
-        labelText: "{valueY}"
-      })
-    })
-  );
+    // Add series
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+    var series = chart.series.push(
+        am5xy.LineSeries.new(root, {
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        valueXField: "date",
+        tooltip: am5.Tooltip.new(root, {
+            pointerOrientation: "horizontal",
+            labelText: "{valueY}"
+        })
+        })
+    );
 
-  //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });
-  series.strokes.template.setAll({ strokeWidth: 1 });
+    //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });
+    series.strokes.template.setAll({ strokeWidth: 1 });
 
-  yRenderer.grid.template.set("strokeOpacity", 0.05);
-  yRenderer.labels.template.set("fill", series.get("fill"));
-  yRenderer.setAll({
-    stroke: series.get("fill"),
-    strokeOpacity: 1,
-    opacity: 1
-  });
+    yRenderer.grid.template.set("strokeOpacity", 0.05);
+    yRenderer.labels.template.set("fill", series.get("fill"));
+    yRenderer.setAll({
+        stroke: series.get("fill"),
+        strokeOpacity: 1,
+        opacity: 1
+    });
 
-  // Set up data processor to parse string dates
-  // https://www.amcharts.com/docs/v5/concepts/data/#Pre_processing_data
-  series.data.processor = am5.DataProcessor.new(root, {
-    dateFormat: "yyyy-MM-dd",
-    dateFields: ["date"]
-  });
+    // Set up data processor to parse string dates
+    // https://www.amcharts.com/docs/v5/concepts/data/#Pre_processing_data
+    series.data.processor = am5.DataProcessor.new(root, {
+        dateFormat: "yyyy-MM-dd",
+        dateFields: ["date"]
+    });
+    
 
-  series.data.setAll(generateChartData(startValue));
+    series.data.setAll(generateChartData(startValue));
+    var legend = chart.children.push(am5.Legend.new(root, {
+        nameField: name
+    })); 
+    legend.data.setAll(chart.series.values);
+
+
 }
 
 // Add cursor
@@ -1129,7 +1137,7 @@ let count = 0;
 let opposite;
 @foreach($data['chartsData'] as $key => $value)
     opposite = (count == 0)?false:true;
-    createAxisAndSeries(@json($value['amData']), opposite );
+    createAxisAndSeries(@json($value['amData']), opposite, @json($key));
     count++;
 @endforeach
 
@@ -1143,5 +1151,142 @@ function generateChartData(value) {
 }
 
 }); // end am5.ready()
+</script>
+
+<script type="text/javascript">
+function jsFunction(value)
+{
+    
+    $.ajax({
+        url: "{{ url('/product-dashboard')}}",
+        type:"GET",
+        data:{limit:value
+        },
+        success:function(data){
+            $('#chartdiv').remove();
+    $('#graph_div').html('<div id="chartdiv"></div>');
+            am5.ready(function() {  
+                console.log("dfefrewfwrfg"); 
+var root = am5.Root.new("chartdiv");
+root.setThemes([
+  am5themes_Animated.new(root)
+]);
+var chart = root.container.children.push(
+  am5xy.XYChart.new(root, {
+    focusable: true,
+    panX: true,
+    panY: true,
+    wheelX: "panX",
+    wheelY: "zoomX",
+    layout: root.verticalLayout
+  })
+);
+
+var easing = am5.ease.linear;
+chart.get("colors").set("step", 3);
+var xAxis = chart.xAxes.push(
+  am5xy.DateAxis.new(root, {
+    maxDeviation: 0.1,
+    groupData: false,
+    baseInterval: {
+      timeUnit: "minutes",
+      count: 15
+    },
+    renderer: am5xy.AxisRendererX.new(root, {}),
+    tooltip: am5.Tooltip.new(root, {})
+  })
+);
+function createAxisAndSeries(startValue, opposite, name) {
+    var yRenderer = am5xy.AxisRendererY.new(root, {
+        opposite: opposite
+    });
+    var yAxis = chart.yAxes.push(
+        am5xy.ValueAxis.new(root, {
+        maxDeviation: 1,
+        renderer: yRenderer
+        })
+    );
+
+    if (chart.yAxes.indexOf(yAxis) > 0) {
+        yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
+    }
+    var series = chart.series.push(
+        am5xy.LineSeries.new(root, {
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        valueXField: "date",
+        tooltip: am5.Tooltip.new(root, {
+            pointerOrientation: "horizontal",
+            labelText: "{valueY}"
+        })
+        })
+    );
+    series.strokes.template.setAll({ strokeWidth: 1 });
+
+    yRenderer.grid.template.set("strokeOpacity", 0.05);
+    yRenderer.labels.template.set("fill", series.get("fill"));
+    yRenderer.setAll({
+        stroke: series.get("fill"),
+        strokeOpacity: 1,
+        opacity: 1
+    });
+    series.data.processor = am5.DataProcessor.new(root, {
+        dateFormat: "yyyy-MM-dd",
+        dateFields: ["date"]
+    });
+    
+
+    series.data.setAll(generateChartData(startValue));
+    var legend = chart.children.push(am5.Legend.new(root, {
+        nameField: name
+    })); 
+    legend.data.setAll(chart.series.values);
+
+
+}
+var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+  xAxis: xAxis,
+  behavior: "none"
+}));
+cursor.lineY.set("visible", false);
+chart.set("scrollbarX", am5.Scrollbar.new(root, {
+  orientation: "horizontal"
+}));
+
+const toTimestamp=(strDate)=>{
+   var datum = Date.parse(strDate);
+   return datum/1000;
+}
+let count = 0;
+let opposite;
+console.log("======================================");
+console.log(data.length);
+console.log(data[0].messstelle1IDAnl1);
+for(var i=0; i<=data.length;i++) {
+//   console.log(value);messstelle1IDAnl1 messstelle2IDAnl2
+
+    opposite = (count == 0)?false:true;
+    if(data[i].amData!==undefined || data[i].amData!==null){
+        createAxisAndSeries(data[i].amData, opposite, data[i]);
+        count++;
+    }
+    
+    // count++;
+//   createAxisAndSeries(value['amData'], opposite,$key);
+}
+// @foreach($data['chartsData'] as $key => $value)
+//     opposite = (count == 0)?false:true;
+//     createAxisAndSeries(@json($value['amData']), opposite, @json($key));
+//     count++;
+// @endforeach
+chart.appear(1000, 100);
+function generateChartData(value) {
+  return value;
+}
+});
+        },
+       });
+}
 </script>
 @stop

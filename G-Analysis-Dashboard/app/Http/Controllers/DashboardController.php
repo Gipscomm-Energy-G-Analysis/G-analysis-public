@@ -43,9 +43,14 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
+        $limit = 5;
+        $ajaxRequest = '';
+        if($request->ajax()){
+            $limit = $request->limit;
+            $ajaxRequest = 'AJAX';
+        }
         $username = $_SESSION['username'];
         $res =[];
         $column = [];
@@ -60,19 +65,26 @@ class DashboardController extends Controller
                 $property = $this->getPropertyData($request);
                 if (!empty($org)) {
                     $machines = DB::table("Anlagen")
-                        ->whereNotNull('datumAnl')
-                        ->where('lieg_ID',$property[0])
+                        ->whereNotNull('datumAnl');
+                    if(!empty($property[0]['lieg_ID'])) {
+                        $machinesData = $machines->where('lieg_ID',$property[0]['lieg_ID'])
                         ->where('deleted',0)->first();
-                    $machines=(array)$machines;
+                    } else {
+                        $machinesData = $machines->where('deleted',0)->first();
+                    }
+                    $machines=(array)$machinesData;
                     if (!empty($machines)) {
                         $tables = $this->getAllTables();
                         $table= $tables['table'];
                         $table = json_decode(json_encode($table), true);
                         $groupData = $this->getGroup();
                         $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'']);
-                        $data = $this->getMachineDetail($request);
+                        $data = $this->getMachineDetail($request, $limit);
                         if($data['code'] == 401) {
                            return  View::make("404", ['message'=>$data['message'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
+                        }
+                        if($ajaxRequest == 'AJAX'){
+                            return json_encode($data['data']['chartsData']);
                         }
                         return View::make("product", ["data"=>$data['data'], 'otherGraphTable'=>$data['otherGraphTable'], 'otherGraph'=>$data['otherGraph'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                     } else {
@@ -85,7 +97,7 @@ class DashboardController extends Controller
             }
         }
     }
-    public function getMachineDetail(Request $request)
+    public function getMachineDetail(Request $request, $limit)
     {
         $id = $request['id'];
         $type = $request['type'];
@@ -158,7 +170,7 @@ class DashboardController extends Controller
                             $shards++;
                            // dd($machineData->$string);
                             $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData->$string;
-                            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$tmpArray[$i-1], 'limit' => 5]);
+                            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$tmpArray[$i-1], 'limit' => $limit]);
                             $chartsData->put($string.$i,$this->graphController->getChartsData( $request));
                             array_push($msGraphData, $tmpArray[$i-1]);
                       //  }
@@ -487,6 +499,7 @@ class DashboardController extends Controller
         }
         $columnData = [];
         if (!empty($data)) {
+         //   dd($data);
             foreach($data as $tableData) {
                 $primary_key = $tableData->primary_key;
                 $data = DB::table($tableData->table_name)

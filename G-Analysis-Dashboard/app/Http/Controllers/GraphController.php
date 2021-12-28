@@ -44,7 +44,7 @@ class GraphController extends Controller
         $limit = $request['limit'];
         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$measuringPoint)
             ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
-            ->orderby('MessstellenEnergiedaten.Time','asc')->get();
+            ->orderby('MessstellenEnergiedaten.Time','asc')->paginate($limit);
         return $this->getlineChartData($data, $measuringPoint);
     }
 
