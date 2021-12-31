@@ -107,6 +107,10 @@
     cursor: pointer;
 }
 
+.dashboard_count_div .product_automatic_tile{
+    cursor: pointer;
+}
+
 .measurement_count_hover_height{
     height: 520px !important;
 }

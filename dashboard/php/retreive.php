@@ -594,32 +594,32 @@ class dashboardController {
     // <---16-8-2021--
     function getTableFormatDashboard(){
         try{
-            global $conn;
+            // global $conn;
             $username = $_SESSION['username']; 
+            // <---27-12-2021-- Get Tiles Gipscommm
+            $conn = connectToDB('gipscomm');
+            $selectGipscommTile  = "SELECT * from tableFormat where username = '$username' order by priority asc ";
+            $dataResultGipscomm = queryDB($conn, $selectGipscommTile, "read");
+            $records['data'] = $dataResultGipscomm;
+            // echo json_encode($records['data']); die;
+            // --end-->
+            $nameDB = $_POST['nameDB'];
+            $conn = connectToDB($nameDB);
             $getResult = "SELECT * from tableFormat WHERE username = '$username' order by priority asc";
             $dataResult = queryDB($conn, $getResult, "read");
-            if($dataResult != '' && count($dataResult) > 0){
+            // echo json_encode($dataResult); die;
+            if($dataResult != 'error')
+            {
+                if($dataResult != '' && count($dataResult) > 0){
 
-                $records['data'] = $dataResult;
-                $records['total_record'] = count($dataResult);
-                $dataMeasurement = '';
-                
-                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
-                die;
-            }else{
-                $tr = "<thead>";
-                $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Time Interval</th>";
-                $tr .= "<th>Created Date</th>";
-                $tr .= "<th>Total Units</th>";
-                $tr .= "<th>Status</th>";
-                $tr .= "</tr>";
-                $tr .= "</thead>";
-                $tr .= "<tbody><tr><td colspan='5' class='text-center'>No Data</td></tr></tbody>";
-                $records['dashboardMeasurementHtml'] = $tr;
-                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                    // $records['data'] = $dataResult;
+                    $arMerge = array_merge($dataResultGipscomm,$dataResult);
+                    $records['data'] = $arMerge;
+                    $records['total_record'] = count($dataResult);
+                    $dataMeasurement = '';
+                }
             }
+            echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
             die;
         }
         catch(Exception $e) {
@@ -1208,6 +1208,118 @@ class dashboardController {
 
     }
     // --end--->
+
+    // <--24-12-2021---
+    public function generateHtmlProductTilesAutomatic(){
+        try{
+            // global $conn;
+            $conn = connectToDB("gipscomm");
+            $username = $_SESSION['username']; 
+            $product_title =  $_POST['product_title'];
+            // $type =  $_POST['type'];
+            $getResult =  "SELECT * from tableFormat Where username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            
+            $last_id_query = "SELECT max(id) as max_id from tableFormat ";
+            $last_id = queryDB($conn, $last_id_query, "read");
+            $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id']+1 : 0; 
+           
+            if($dataResult != null && count($dataResult)>0){
+                for($i= 0; $i<=$total_result; $i++){
+//                    $measurement_title = $total_result[$i]['tile_title'];
+                    $style= '';
+                    if($i == $total_result){
+                         
+                        $product_title = $_POST['product_title'];;
+                        $tileHtml .= "<input type='hidden' id='total_records' value='$last_id'>";
+                        $tileHtml.="<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card product_automatic_tile ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile product_automatic_tile_edit' data-type-tile='Product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile product_automatic_tile_delete' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$product_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3'>
+                                                <div class='col-md-6 p-0 small-table small-table_$last_id' style='display: none'>
+                                                    <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
+                                                    </table>
+                                                </div>
+                                                <div class='save_table_div_show_table'> 
+                                                    <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
+                    } 
+                    
+                    if($i < $total_result){
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                       $tileHtml.= $dataResult[$i]['tile_html'];
+                    } 
+                }
+                
+            }
+            else{
+                $tileHtml.="<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card product_automatic_tile ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
+                                <input type='hidden' id='total_records' value='$last_id'>                
+                                <div class='card card-border tile_border'>
+                                    <div class='card-body overflow-hide display-flex'>
+                                        <div id='' class=''>
+                                            <div class='action-modal-button-div'>
+                                                <img src='images/edit.png' class='edit_val edit_btn_tile product_automatic_tile_edit' data-type-tile='Product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px'>
+                                                <img src='images/delete.png' class='id_val delete_btn_tile product_automatic_tile_delete' data-type-tile='Product' style='height: 17px; width: 17px;'>
+                                            </div>
+                                            <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>".$product_title."</p>
+                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-tile logo-image-main-div'>
+                                            
+                                            <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                            </div>  
+                                            <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                            
+                                        </div>
+                                        
+                                        <div class='overflow-hide ml-3'>
+                                            <div class='col-md-6 p-0 small-table small-table_$last_id' style='display: none'>
+                                                <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
+                                                </table>
+                                            </div>
+                                            <div class='save_table_div_show_table'> 
+                                                <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
+                                                </table>                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div></div>";    
+            }
+            $records['tile_html'] = $tileHtml;
+            $records['data'] = $dataResult;
+            $records['total_record'] = count($dataResult) + 1;
+            $records['last_id'] = $last_id;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
+    // ---end-->
 
     // <---22-11-2021---
     public function generateHtmlEnergyTiles(){
@@ -4168,21 +4280,21 @@ class dashboardController {
             // echo json_encode($dataProduct); die;
             global $conn;
             $tr = '';
-            $col_span = '50';
+            $col_span = 'colspan="50"';
             if($dataProduct != '' && count($dataProduct) > 0){
                 for($i = 0; $i < count($dataProduct); $i++ )
                 {
-                    $tr.="<tr>";
+                    $tr.="<tr data-table-other='true'>";
                     for($j = 0; $j < count($allColumns); $j++)
                     {
                         $columnName = $allColumns[$j];
                         $columnDataType = $allColumnDataType[$j];
                         if($columnDataType == 'date' || $columnDataType == 'datetime')
                         {
-                            $tr.= "<td data-table-other='true'>".$dataProduct[$i][$columnName]->format('Y-m-d')."</td>";    
+                            $tr.= "<td>".$dataProduct[$i][$columnName]->format('Y-m-d')."</td>";    
                         }
                         else{
-                            $tr.= "<td data-table-other='true'>".$dataProduct[$i][$columnName]."</td>";    
+                            $tr.= "<td>".$dataProduct[$i][$columnName]."</td>";    
                         }
                     }
                     $tr .= "</tr>";
@@ -5539,8 +5651,17 @@ class dashboardController {
     // --end-->
     public function getDimentions(){
 
-
-        global $conn;
+        $classPrdAutomatic = $_POST['classPrdAutomatic'];
+        $conn = '';
+        if($classPrdAutomatic == 'true')
+        {
+            $conn = connectToDB('gipscomm');
+        }
+        else{
+            $nameDB = $_POST['nameDB'];
+            $conn = connectToDB($nameDB);
+        }
+        
         $username = $_SESSION['username']; 
         $id=$_POST['id'];
         $getResult =  "SELECT * from tableFormat where id='$id' AND username = '$username' ";
@@ -5904,22 +6025,34 @@ class dashboardController {
     // <---15-12-2021
     public function getTableDashboardDataProductAutomatic(){
         try{
-            global $conn;
+            $conn = connectToDB('gipscomm');
             $id = $_REQUEST['id'];
             $username = $_SESSION['username']; 
-            $queryDataRecords = $_POST['queryDataRecords'];
-            $firstPosition =  strpos($queryDataRecords,'=');
-            $firstPosition = $firstPosition + 1;
-            $firstPositionQuery= substr_replace($queryDataRecords,"'",$firstPosition,1);
-            
-            $lastPosition = strpos($firstPositionQuery,'order BY t1.anl_Id desc');
-            $lastPosition = $lastPosition - 1;
-            $lastPositionQuery= substr_replace($firstPositionQuery,"'",$lastPosition,1);
-            // echo $lastPositionQuery; die;
-            $dataProduct = queryDB($conn, $lastPositionQuery, "read");
+            $selectQuery = "SELECT * from tableFormat where username = '$username' AND id = $id ";
+            $result = queryDB($conn, $selectQuery, "read");
+            // echo json_encode($result[0]['database_name']); die;
+
+            $conn = connectToDB($result[0]['database_name']);
+            $dataProduct = queryDB($conn, $result[0]['query_data_records'], "read");
+            $columnHeader = unserialize($result[0]['prd_all_columns_automatic']);
+            $columnType = unserialize($result[0]['prd_all_columns_type_automatic']);
             // echo json_encode($dataProduct); die;
+            // echo  $result[0]['query_data_records']; die;
+
+
+            // $queryDataRecords = $_POST['queryDataRecords'];
+            // $firstPosition =  strpos($queryDataRecords,'=');
+            // $firstPosition = $firstPosition + 1;
+            // $firstPositionQuery= substr_replace($queryDataRecords,"'",$firstPosition,1);
             
-            $dashboardMeasurementHtml = $this->generateDashboardAllItemAutomaticTableHTML($dataProduct);
+            // $lastPosition = strpos($firstPositionQuery,'order BY t1.anl_Id desc');
+            // $lastPosition = $lastPosition - 1;
+            // $lastPositionQuery= substr_replace($firstPositionQuery,"'",$lastPosition,1);
+            // // echo $lastPositionQuery; die;
+            // $dataProduct = queryDB($conn, $lastPositionQuery, "read");
+            // // echo json_encode($dataProduct); die;
+            
+            $dashboardMeasurementHtml = $this->generateDashboardAllItemAutomaticTableHTML($dataProduct,$columnHeader,$columnType);
             $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
@@ -5932,97 +6065,49 @@ class dashboardController {
     }
 
     // <---14-12-2021---
-    public function generateDashboardAllItemAutomaticTableHTML($dataProduct,$queryMaxVal = false)
+    public function generateDashboardAllItemAutomaticTableHTML($dataProduct,$columnHeader,$columnDataTypeAr)
     {
         try{
             // echo json_encode($dataProduct); die;
-            global $conn;
-            $tr = "<thead>";
-            $tr .= "<tr>";
-            $tr .= "<th>Item Name</th>";
-            $tr .= "<th>Created Date</th>";
-            $tr .= "<th>Total Units</th>";
-            $tr .= "</tr>";
-            $tr .= "</thead>";
-            if($dataProduct != '' && count($dataProduct) > 0){
-                foreach($dataProduct as $key => $value){
-                    $class_val='';
-                    $style ='';
-                    $attr = '';
-                    // if($queryMaxVal == ""){
-                    //     $class_val = 'class="row_click_particular_product_entry"';
-                    // }
-                    // else if($queryMaxVal != '' && $queryMaxVal == $value['val']){
-                    //     $style="style='background-color: #f77171'";
-                    //     $attr = 'data-max-row="true"';
-                    // }
-                    
-                    $val_prd_ID = '';
-                    $prd_name = '';
-                    // if($queryMaxVal == '')
-                    // {
-                    //     $val_prd_ID = $value['prd_ID'];
-                    //     $prd_name = $value['namePrd'];
-                    // }
-
-                    $tr .= "<tr>";
-                    // $tr.= "<td>".$value['namePrd']."</td>";
-                    $tr.= "<td>".$value['bezeichnungAnl']."</td>";
-                    $tr.= "<td>".$value['datumAnl']->format('Y-m-d')."</td>";
-                    
-                    //Units Checkss
-                    $unit='kWh';
-                    $total_unit = $value['anschlussleistung1Anl'] + $value['mittlereAuslastungProzent1Anl'] + $value['mittlereAuslastungKw1Anl'] + $value['betriebstemperatur1Anl'] + $value['abwaerme1Anl'];
-                    $tr.= "<td>".$total_unit.' '.$unit."</td>";
-
-                    // if($value['unt_ID'] == "1"){
-                    //     $unit = "Hrs.";
-                    // }
-                    // else if($value['unt_ID'] == "2"){
-                    //     $unit = "kWh";
-                    // }
-                    // else if($value['unt_ID'] == "3"){
-                    //     $unit = "m³";
-                    // }
-                    // else if($value['unt_ID'] == "4"){
-                    //     $unit = "l";
-                    // }
-                    // else if($value['unt_ID'] == "5"){
-                    //     $unit = "kg";
-                    // }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
-                    // if($value['intTp_ID'] == "2" && $value['startWeek'] != ''){
-                    //     if($queryMaxVal != ''){
-                    //         $tr.= "<td>".$value['on_week'].'-'.$value['on_date']."</td>";
-                    //     }
-                    //     else{
-                    //         $tr.= "<td>".$value['startWeek'].'-'.$value['startDate']."</td>";
-                    //     }
-                    // }
-                    // else if($queryMaxVal != ''){
-                    //     $tr.= "<td>".$value['on_date']."</td>";
-                    // }
-                    // else{
-                    //     $tr.= "<td>".$value['startDate']."</td>";
-                    // }
-                    // if($value['val'] == null){
-                    //     $tr.= "<td> - </td>";
-                    //     if($queryMaxVal == ''){
-                    //         $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
-                    //     }
-                    // }
-                    // else{
-                    //     $tr.= "<td>".$value['val'].' '.$unit."</td>";
-                    //     if($queryMaxVal == ''){
-                    //         $tr.= "<td><label class='badge badge-success'>Active </label></td>";
-                    //     }
-                    // }
-                    $tr.="</tr>";
+            $tr = '';
+            if($columnHeader  != '' && count($columnHeader) > 0 )
+            {
+                $tr = "<thead>";
+                $tr .= "<tr>";
+                foreach($columnHeader as $val)
+                {
+                    $tr .= "<th>".ucfirst($val)."</th>";
                 }
-            }else{
-                $tr .= "<tbody><tr><td colspan='5' class='text-center'>No Data</td></tr></tbody>";
+                $tr .= "</tr>";
+                $tr .= "</thead>";
             }
 
+            if($dataProduct != '' && count($dataProduct) > 0){
+                $tr .="<tbody>";
+                for($i = 0; $i < count($dataProduct); $i++ )
+                {
+                    $tr.="<tr>";
+                    for($j = 0; $j < count($columnHeader); $j++)
+                    {
+                        $columnName = $columnHeader[$j];
+                        $columnDataType = $columnDataTypeAr[$j];
+                        // echo $columnName; die;
+                        if($columnDataType == 'date' || $columnDataType == 'datetime')
+                        {
+                            $tr.= "<td>".$dataProduct[$i][$columnName]->format('Y-m-d')."</td>";    
+                        }
+                        else{
+                            // echo $dataProduct[$i][$columnName]; die;
+                            $tr.= "<td>".$dataProduct[$i][$columnName]."</td>";    
+                        }
+                    }
+                    $tr .= "</tr>";
+                }
+                $tr .="</tbody>";
+            }else{
+                 $tr = "<tbody><tr><td $col_span class='text-center'>No Data</td></tbody></tr>";
+            }
+            // echo $tr; die;
             return $tr;
             // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;

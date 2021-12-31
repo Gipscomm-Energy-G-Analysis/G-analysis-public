@@ -101,6 +101,72 @@ class dashboardControllerOperations {
     }
     // --end-->
 
+
+    // <----24-12-2021---
+    public function saveTableFormatProductAutomatic(){
+        try{
+            // global $conn;
+            $conn = connectToDB("gipscomm");
+            $nameDB = $_POST['nameDB'];
+            $username = $_SESSION['username']; 
+            $queryData = $_REQUEST['query_data'];
+            $number_records = $queryData['number_records']; 
+            $pages_count = $queryData['pages_count']; 
+            $page_value = $queryData['page_val']; 
+            $type = $queryData['type']; 
+            $row_click = $queryData['row_click']; 
+            $query_data_records = $queryData['query1']; 
+            $query_max_val = $queryData['queryMaxValue'];
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_POST['height'];
+            $width = $_POST['width'];
+            $input_height = $_POST['input_height'];
+            $input_width = $_POST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $type_data_tile = $_POST['type_data_tile'];
+            $table_other = $_POST['table_other'];
+            $prd_all_columns_automatic = isset($_POST['prd_all_columns_automatic']) ? serialize(json_decode($_POST['prd_all_columns_automatic'])) : '';
+            $prd_all_columns_type = isset($_POST['columnDataType']) ? serialize(json_decode($_POST['columnDataType'])) : '';
+            // echo str_replace("total_records","",$html); die;
+            // echo $prd_all_columns_automatic;  die;
+            
+            $query_data_records = str_replace("'",'',$query_data_records);
+            $query_max_val = str_replace("'",'',$query_max_val);
+
+        
+            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,database_name,prd_all_columns_automatic,prd_all_columns_type_automatic ) ";
+            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other','$nameDB','$prd_all_columns_automatic','$prd_all_columns_type') ";
+            // echo $insertQuery; die;
+            $insertRecord = queryDB($conn, $insertQuery, "write");
+
+            $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
+            $maxResult = queryDB($conn, $selectMaxId, "read");
+
+            // <----23-11-2021--
+            $totalQuery = "SELECT * from tableFormat ";
+            $totalResult = queryDB($conn, $totalQuery, "read");
+            $totalResult = count($totalResult);
+
+            $last_id = $maxResult[0]['max_id'];
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
+            $updatePriorityResult = queryDB($conn, $updatePriority, "read");
+            // --end-->
+
+            if($insertQuery){
+                return array('Staus' => 200 , 'Message' => 'Successfully Inserted','max_id'=>$maxResult);
+            }
+            // }
+
+            // echo json_encode($_REQUEST['query_data']); die;
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
+
     // <-----31-8-2021---
     public function updateTileRecord(){
         try{
