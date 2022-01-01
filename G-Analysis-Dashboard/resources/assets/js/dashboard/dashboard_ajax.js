@@ -87,8 +87,6 @@ const getMachineData = (machine_id, type) => {
         const data = response.data;
         spinner.stop();
         if (response.code == 200) {
-            console.log("graphDiv", graphDiv);
-            graphDiv.innerHTML = "";
             $("#data-card").show();
             $("#bar_chart").show();
             $("#msg").hide();
@@ -100,10 +98,7 @@ const getMachineData = (machine_id, type) => {
             $("#machine-image").on("error", function () {
                 $(this).attr("src", "images/Blasanlage.jpg");
             });
-            $.each(data.chartsData, function (key, value) {
-                graphDivHook(key, value);
-            });
-
+            createAmChart(root, data.chartsData, true);
             if (response.subGroupConfig.main) {
                 loadSubGroup(response.subGroupConfig.main);
             }

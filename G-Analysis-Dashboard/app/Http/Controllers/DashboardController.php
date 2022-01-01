@@ -97,7 +97,7 @@ class DashboardController extends Controller
             }
         }
     }
-    public function getMachineDetail(Request $request, $limit)
+    public function getMachineDetail(Request $request, $limit=5)
     {
         $id = $request['id'];
         $type = $request['type'];
@@ -171,7 +171,9 @@ class DashboardController extends Controller
                            // dd($machineData->$string);
                             $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData->$string;
                             $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$tmpArray[$i-1], 'limit' => $limit]);
+                        //    dd($this->graphController->getChartsData($request));
                             $chartsData->put($string.$i,$this->graphController->getChartsData( $request));
+
                             array_push($msGraphData, $tmpArray[$i-1]);
                       //  }
                     }

@@ -30,6 +30,20 @@ class GraphController extends Controller
         return View::make("charts", ["chartData"=>$chartsData]);
     }
 
+    public function getPointsData(Request $request) 
+    {
+        
+        $limit = $request->limit;
+        $points = explode(',', $request->points);
+        $data = [];
+        foreach($points as $value) {
+            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$value, 'limit' => $limit]);
+            $chartsData = $this->getChartsData( $request);
+            array_push($data, $chartsData);
+        }
+        return $data;
+    }
+
     public function historicGraph() 
     {
         return View::make("historicCharts");
@@ -43,8 +57,8 @@ class GraphController extends Controller
         $measuringPoint = $request['measuringPoint'];
         $limit = $request['limit'];
         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$measuringPoint)
-            ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
-            ->orderby('MessstellenEnergiedaten.Time','asc')->paginate($limit);
+            ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')->limit($limit)
+            ->orderby('MessstellenEnergiedaten.Time','asc')->get();
         return $this->getlineChartData($data, $measuringPoint);
     }
 

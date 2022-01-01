@@ -57,3 +57,5 @@ Route::post('delete-graph-configuration', [\App\Http\Controllers\GraphController
 Route::post('/on-change', [\App\Http\Controllers\ManageDatabaseController::class, 'changeDB'])->name('onchange');
 
 Route::post('get-other-graph-label', [\App\Http\Controllers\DashboardController::class, 'getOtherGraphLabel'])->name('getOtherGraphLabel');
+
+Route::post('/get-points-data', [\App\Http\Controllers\GraphController::class, 'getPointsData'])->name('getPointsData');
