@@ -452,27 +452,7 @@
                 <div id="graphCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                   <div class="card-body">
                     <div class="row" id="other_graph_div">
-                        @foreach($data['otherGraph'] as $key=>$value)
-                            @if($value['name'])
-                            <div class="col-sm-12 main_chart_other">
-                                <div class="card card-info">
-                                    <div class="card-header" >
-                                        <h3 class="card-title" style="float:revert;">{{$value['name']}}
-                                            <span class="float-right">
-                                               
-                                            </span>
-                                        </h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart">
-                                            <canvas id="{{$value['name']}}" style="background:#F1F6FD;"></canvas>
-                                        </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                            </div>
-                            @endif
-                        @endforeach
+                        
                     </div>
                   </div>
                 </div>
@@ -560,7 +540,6 @@
                             <div class="col-sm-6 select_group_options_div_alt" style="display: none;">
                                 
                             </div>
-                            
                         @endisset
                         
 
@@ -849,7 +828,6 @@
                                             <td>{{$key}}</td>
                                             <td>
                                                 <input type="text" name="sub_group[]" placeholder="Enter Subgroup Name" class="form-control name_list" value="{{$opt}}" />
-
                                             </td>
                                             @endforeach
                                             <td>
@@ -892,7 +870,6 @@
 <script src="{{asset('template/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js')}}"></script>
 <script src="{{asset('template/js/pagination.js')}}"></script>
 <script src="{{asset('template/plugins/select2/js/select2.full.min.js')}}"></script>
-
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
@@ -900,98 +877,6 @@
 
 <!-- Bootstrap Switch -->
 <script type="text/javascript">
-
-
-
-    @if(!empty($data))
-        let getChartsDiv = document.querySelectorAll('.main_chart');
-        const timeFilterHook = document.getElementById('timeFilter');
-        let myChart;
-        const lineChartHook = (id, label, data, name) => {
-            console.log('here-data',id);
-            if (data.length > 0) {
-                $(".main_chart").css("display", "block");
-                // $("#not_found_msg").css("display","none");
-                let ctx = document.getElementById(id).getContext('2d');
-                if (myChart) myChart.destroy();
-                myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: label,
-                        datasets: [{
-                            label: `Energy consumption for ${name}`,
-                            data: data,
-                            backgroundColor: 'rgb(0, 188, 140, 0.2)',
-                            borderColor: 'rgb(0, 188, 140)',
-                            borderWidth: 1,
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                title: {
-                                    color: 'red',
-                                    display: true,
-                                    text: 'Server Time'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    color: 'red',
-                                    display: true,
-                                    text: 'Power'
-                                }
-                            }
-                        }
-                    }
-                })
-            } else {
-                $(".main_chart").css("display", "none");
-                // $("#not_found_msg").css("display","block");
-
-            }
-        }
-
-        const getGraphData = (id, limit, event_id, name) => {
-            let container = document.getElementById('data-card');
-            let spinner = new Spinner();
-            spinner.spin(container);
-            $.ajax({
-                url: '/graph/filter',
-                type: 'POST',
-                data: {
-                    measuringPoint: id,
-                    limit: limit
-                },
-            }).done(function(response) {
-                spinner.stop();
-                lineChartHook(event_id, response.label, response.data, name);
-            });
-        }
-
-        // @foreach($data['chartsData'] as $key => $value)
-        //     lineChartHook('lineChart_{{$key}}', @json($value['label']), @json($value['data']), '{{$key}}');
-        // @endforeach
-
-        @foreach($data['otherGraph'] as $key => $value)
-            lineChartHook("{{$value['name']}}", @json($value['label']), @json($value['data']), '{{$key}}');
-        @endforeach
-
-        //adding event listener to time filter hook
-        timeFilterHook.addEventListener('change', function() {
-            let limit = this.value;
-            let getChartsDiv = document.querySelectorAll('.main_chart');
-            if (getChartsDiv.length > 0) {
-                getChartsDiv.forEach((node) => {
-                    let id = node.getAttribute('data_value');
-                    let data_event = node.getAttribute('data_event');
-                    let name = data_event.split("_").pop();
-                    getGraphData(id, limit, data_event, name);
-                });
-            }
-        });
-        /* END LINE CHART */
-    @endif
     const dualList = $('.duallistbox').bootstrapDualListbox({
         nonSelectedListLabel: 'Non-selected Column',
         selectedListLabel: 'Selected Column',
@@ -999,14 +884,16 @@
         showFilterInputs: false,
         selectorMinimalHeight: '300'
     });
-
-
-
 </script>
 
 <!-- Styles -->
 <style>
 #chartdiv {
+  width: 100%;
+  height: 500px;
+  max-width: 100%;
+}
+#other_graph_div {
   width: 100%;
   height: 500px;
   max-width: 100%;
@@ -1017,9 +904,10 @@
 <script>
 //OLD code end
 let root = am5.Root.new("chartdiv");
+let root_other_graph = am5.Root.new("other_graph_div");
 // New Code
 const createAmChart = (root, chartsData, dispose) => {
-
+    console.log(chartsData);
     if (dispose) {
         root.container.children.clear();
     }
@@ -1062,26 +950,24 @@ const createAmChart = (root, chartsData, dispose) => {
 
     // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
     var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-    xAxis: xAxis,
-    behavior: "none"
-    }));
+        xAxis: xAxis,
+        behavior: "none"
+        })
+    );
     cursor.lineY.set("visible", false);
 
     // add scrollbar
     chart.set("scrollbarX", am5.Scrollbar.new(root, {
-    orientation: "horizontal"
+        orientation: "horizontal"
     }));
 
-    const toTimestamp=(strDate)=>{
-    var datum = Date.parse(strDate);
-    return datum/1000;
-    }
     let count = 0;
     let opposite;
 
     for (const key in chartsData) {
         opposite = (count == 0)?false:true;
-        createAxisAndSeries(chartsData[key]['amData'], opposite, key, root, chart, xAxis);
+        let graphName = chartsData[key]['name'] !== undefined?chartsData[key]['name']:key;
+        createAxisAndSeries(chartsData[key]['amData'], opposite, graphName, root, chart, xAxis);
         count++;
     }
     // Make stuff animate on load
@@ -1093,6 +979,7 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
     var yRenderer = am5xy.AxisRendererY.new(root, {
         opposite: opposite
     });
+
     var yAxis = chart.yAxes.push(
         am5xy.ValueAxis.new(root, {
         maxDeviation: 1,
@@ -1147,12 +1034,9 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
 
 //blade code for measuring points data start
 createAmChart(root, @json($data['chartsData']), false);
+createAmChart(root_other_graph, @json($data['otherGraph']), false);
 //end
-</script>
-
-<script type="text/javascript">
-function jsFunction(value)
-{  
+function jsFunction(value) {  
     $.ajax({
         url: "{{ url('/get-points-data')}}",
         type:"POST",
@@ -1163,5 +1047,6 @@ function jsFunction(value)
         },
     });
 }
+
 </script>
 @stop

@@ -86,6 +86,7 @@ class DashboardController extends Controller
                         if($ajaxRequest == 'AJAX'){
                             return json_encode($data['data']['chartsData']);
                         }
+                       // dd($data['otherGraph']);
                         return View::make("product", ["data"=>$data['data'], 'otherGraphTable'=>$data['otherGraphTable'], 'otherGraph'=>$data['otherGraph'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                     } else {
                         return View::make("404", ['message'=>'Data Not Found in Anlagen Table!', 'databases' => $databases, 'selectedDatabase' => $this->database]);
@@ -127,8 +128,7 @@ class DashboardController extends Controller
                 default:
                     break;
             }
-        }
-        else{
+        } else {
             switch ($type) {
                 case 'first':
                     $machineData = DB::table('anlagen')->whereNotNull('datumAnl')->where('deleted',0)->first();
@@ -178,7 +178,7 @@ class DashboardController extends Controller
                       //  }
                     }
                     $otherGraphData = $this->getGraphConfigurations($machineData);
-                    
+                     //dd($otherGraphData);
                     $msGraphData = implode(',',$msGraphData);
                     $dynamicData  = [
                         'anlage' => Str::of($prodData->MANAME)->trim(),
@@ -627,6 +627,9 @@ class DashboardController extends Controller
         $graphJsData = [];
         $label = '';
         if (!empty($graph_data)) {
+            $machineLabelName = explode (   '-' ,$machineData->nummerAnl);
+            $machineLabelName = $machineLabelName[0];
+            $queryLabel = DB::table('TWP_PROD_OVERVIEW')->where('MANAME',$machineLabelName)->limit(100);
             foreach($graph_data as $key=>$gdata) {
                 $query = null;
                 $configData = DashboardProduktionConfig::where('label_name',$gdata->label)->where('username',$this->username)->first();
@@ -652,8 +655,12 @@ class DashboardController extends Controller
                 }
                 if(isset($query) && !empty($query)) {
                     $data = $query->pluck($label)->toArray();
-                    $label = [];
-                    $dataJs = ['name' =>str_replace(' ', '_', $gdata->graph_name), 'label' => $label, 'data'=>$data, 'mode' => $gdata->is_open];
+                    $label = $queryLabel->pluck('servertime')->toArray();
+                    $amData = [];
+                    foreach($data as $key=>$value){
+                        array_push($amData, ['date'=>(strtotime($label[$key]) * 1000), 'value'=>floatval($value)]);
+                    }
+                    $dataJs = ['name' =>str_replace(' ', '_', $gdata->graph_name), 'label' => $label, 'data'=>$data, 'mode' => $gdata->is_open, 'amData' => $amData];
                     array_push($graphJsData, $dataJs);
                 } 
             }
