@@ -46,7 +46,8 @@ class GraphController extends Controller
 
     public function historicGraph() 
     {
-        return View::make("historicCharts");
+        $databases = (new ManageDatabaseController)->getDatabases();
+        return View::make("historicCharts", ['databases' => $databases, 'selectedDatabase' => $this->database]);
     }
 
     /**

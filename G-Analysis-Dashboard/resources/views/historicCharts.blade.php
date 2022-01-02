@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layout.app',['database' => $databases, 'selectedDatabase' => $selectedDatabase])
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -34,7 +34,9 @@
                         </div>
                         <div class="card-body">
                             <div class="chart">
-                                <canvas id="dynamicChart" style="min-height: 250px; height: 550px; max-height: 700px; max-width: 100%;background-color: white;"></canvas>
+                                <div class="chart" id="chartdiv">
+                                
+                                </div>
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -52,126 +54,154 @@
 </div>
 @stop
 @section('jsContent')
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 <!-- Page specific script -->
+<style>
+    #chartdiv {
+      width: 100%;
+      height: 500px;
+      max-width: 100%;
+    }
+</style>
 <script>
-    let myChart;
-    let graphDataObject = [];
-    let graphIds = [];
-    let count = 0;
-    let type = 'line';
-    
-    // let chart_data_id = graphData.id;
-    const chart_id = 'dynamicChart';
-    // let data = graphData.data;
-    let label;
-
-    const getRandomColor = () => {
-        let letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    };
-
-
-    const generateColorArray = (length) => {
-        
-        for (let i = 0; i < length; i++) {
-            colorArray.push(getRandomColor());
-        }
-        return colorArray;
+    let root = am5.Root.new("chartdiv");
+    //historic data start
+    const createAmChart = (root, chartsData, dispose) => {
+    console.log(chartsData);
+    if (dispose) {
+        root.container.children.clear();
     }
+    // Set themes
+    // https://www.amcharts.com/docs/v5/concepts/themes/
+    root.setThemes([
+    am5themes_Animated.new(root)
+    ]);
 
-    const lineChartHook = (id, lable, graphDataObject, type, colorArray='rgb(0, 188, 140, 0.2)') => {
-        console.log('hereline',graphDataObject);
-        $(".main_chart").css("display", "block");
-        let ctx = document.getElementById(id).getContext('2d');
-        if (myChart) myChart.destroy();
-        myChart = new Chart(ctx, {
-            type: type,
-            data: {
-                labels: label,
-                datasets: graphDataObject
+    // Create chart
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/
+    var chart = root.container.children.push(
+    am5xy.XYChart.new(root, {
+        focusable: true,
+        panX: true,
+        panY: true,
+        wheelX: "panX",
+        wheelY: "zoomX",
+        layout: root.verticalLayout
+    })
+    );
+
+    var easing = am5.ease.linear;
+    chart.get("colors").set("step", 3);
+
+    // Create axes
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+    var xAxis = chart.xAxes.push(
+        am5xy.DateAxis.new(root, {
+            maxDeviation: 0.1,
+            groupData: false,
+            baseInterval: {
+            timeUnit: "minutes",
+            count: 15
             },
-            options: {
-                scales: {
-                    x: {
-                        title: {
-                            color: 'red',
-                            display: true,
-                            text: 'Server Time'
-                        }
-                    },
-                    y: {
-                        title: {
-                            color: 'red',
-                            display: true,
-                            text: 'Power'
-                        }
-                    }
-                }
-            }
+            renderer: am5xy.AxisRendererX.new(root, {}),
+            tooltip: am5.Tooltip.new(root, {})
         })
+    );
+
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+        xAxis: xAxis,
+        behavior: "none"
+        })
+    );
+    cursor.lineY.set("visible", false);
+
+    // add scrollbar
+    chart.set("scrollbarX", am5.Scrollbar.new(root, {
+        orientation: "horizontal"
+    }));
+
+    let count = 0;
+    let opposite;
+
+    for (const key in chartsData) {
+        opposite = (count == 0)?false:true;
+        let graphName = chartsData[key]['name'] !== undefined?chartsData[key]['name']:key;
+        createAxisAndSeries(chartsData[key]['amData'], opposite, graphName, root, chart, xAxis);
+        count++;
+    }
+    // Make stuff animate on load
+    // https://www.amcharts.com/docs/v5/concepts/animations/
+    chart.appear(1000, 100);
+}
+
+function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
+    var yRenderer = am5xy.AxisRendererY.new(root, {
+        opposite: opposite
+    });
+
+    var yAxis = chart.yAxes.push(
+        am5xy.ValueAxis.new(root, {
+        maxDeviation: 1,
+        renderer: yRenderer
+        })
+    );
+
+    if (chart.yAxes.indexOf(yAxis) > 0) {
+        yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
     }
 
+    // Add series
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+    var series = chart.series.push(
+        am5xy.LineSeries.new(root, {
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        valueXField: "date",
+        legendLabelText: name,
+        tooltip: am5.Tooltip.new(root, {
+            pointerOrientation: "horizontal",
+            labelText: "{valueY}"
+        })
+        })
+    );
 
-    const getGraphData = (id, limit, event_id) => {
-        let container = document.getElementById('data-card');
-        let spinner = new Spinner();
-        let type = $('#select_chart_type').val();
-        let colorArray;
-        if(type === 'doughnut' || type === 'pie' || type === 'bar'){
-            colorArray = generateColorArray(limit);
-        } else {
-            colorArray = 'rgb(0, 188, 140, 0.2)';
-        }
-        
-        spinner.spin(container);
-        $.ajax({
-            url: '/graph/filter',
-            type: 'POST',
-            data: {
-                measuringPoint: id,
-                limit: limit
-            },
-        }).done(function(response) {
-            spinner.stop();
-            lineChartHook(event_id, response.label, response.data, type, colorArray);
-        });
-    }
+    //series.fills.template.setAll({ fillOpacity: 0.2, visible: true });
+    series.strokes.template.setAll({ strokeWidth: 1 });
 
-    
+    yRenderer.grid.template.set("strokeOpacity", 0.05);
+    yRenderer.labels.template.set("fill", series.get("fill"));
+    yRenderer.setAll({
+        stroke: series.get("fill"),
+        strokeOpacity: 1,
+        opacity: 1
+    });
 
-    $(document).on('change', '#select_chart_type, #timeFilter', function() {
-        $('.dynamic_title').text($('#select_chart_type option:selected').text());
-        getGraphData(graphIds, $('#timeFilter').val(), chart_id);
+    // Set up data processor to parse string dates
+    // https://www.amcharts.com/docs/v5/concepts/data/#Pre_processing_data
+    series.data.processor = am5.DataProcessor.new(root, {
+        dateFormat: "yyyy-MM-dd",
+        dateFields: ["date"]
     });
     
+
+    series.data.setAll(startValue);
+    var legend = chart.children.push(am5.Legend.new(root, {
+    })); 
+    legend.data.setAll(chart.series.values);
+}
+
+//blade code for measuring points data start
+
+
+    //historic data end
     if(localStorage.getItem('graphData')) {
         let graphData = JSON.parse(localStorage.getItem('graphData'));
         let graphType = localStorage.getItem('graphType');
-        console.log('graphType', graphType);
-        let colorArray = {'key1':'rgb(0, 188, 140)','key2':'#EEB532', 'key3':'#73A7AF', 'key4': '#E04E51'};
-        let count = 1;
-        for (const data of graphData) {
-            graphIds.push(data.id);
-            label = data.label;
-            let graphObject = {
-                label: `Energy consumption Data for Measuring Point ${count}`,
-                data: data.data,
-                borderColor: colorArray['key'+count],
-                borderWidth: 1,
-            };
-            graphDataObject.push(graphObject);
-            count++;
-        }
-//        setTimeout(function(){
-            lineChartHook(chart_id, label, graphDataObject, graphType);
-        // }, 1000)
-        
+        createAmChart(root, graphData, false);
     }
-
-    
 </script>
 @stop
