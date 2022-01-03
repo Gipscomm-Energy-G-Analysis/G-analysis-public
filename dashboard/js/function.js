@@ -704,6 +704,8 @@ function saveTableFormatProductAutomatic(){
       columnDataType.push(value)
     });
 
+    var db_table = $('#all_tables_product').val();
+
     if(row_enteries_length <= 5){
       $.ajax({
         type: "POST",
@@ -725,7 +727,8 @@ function saveTableFormatProductAutomatic(){
             type_data_tile : type_data_tile,
             table_other : table_other,
             prd_all_columns_automatic : JSON.stringify(prd_all_columns_automatic),
-            columnDataType : JSON.stringify(columnDataType)
+            columnDataType : JSON.stringify(columnDataType),
+            db_table : db_table
         },
         fail: function() {
             alert("failed!!")
@@ -1205,31 +1208,31 @@ function generateHtmlProductTiles(type){
     generateHtmlProductTilesAutomatic();
   }
   else{
-  $.ajax({
-    type: "POST",
-    url: "php/retreive.php",
-    async: false,
-    dataType: 'json',
-    data: {
-        action: "generateHtmlProductTiles",
-        nameDB: $("#nameDashboardDB").val(),
-        product_title : product_title,
-        type : type
-    },
-    fail: function() {
-        alert("failed!!")
-    },
-    success: function(a) {
-      // console.log(a);
-       $('.gernerated_product_modal_tiles').html(a['tile_html']);
+    $.ajax({
+      type: "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "generateHtmlProductTiles",
+          nameDB: $("#nameDashboardDB").val(),
+          product_title : product_title,
+          type : type
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        // console.log(a);
+        $('.gernerated_product_modal_tiles').html(a['tile_html']);
 
-      var last_id = a['last_id'];
-      setTimeout(()=>{
-        var table_length = $('.product_html_modal_'+last_id+' .save_table_div_show_table table tbody tr').length;
-        $('.product_html_modal_'+last_id+' .count_result_tile').text(table_length+' Records');
-      },1000)
-    }
-  });
+        var last_id = a['last_id'];
+        setTimeout(()=>{
+          var table_length = $('.product_html_modal_'+last_id+' .save_table_div_show_table table tbody tr').length;
+          $('.product_html_modal_'+last_id+' .count_result_tile').text(table_length+' Records');
+        },1000)
+      }
+    });
   }
 
 }
@@ -2069,7 +2072,7 @@ function getAllProductTables(){
 }
 
 // <---22-12-2021--
-function getAllColumnProductTables(){
+function getAllColumnProductTables(edit_tile_all_columns = false){
   $('#product_field_div').hide();
   $('.automatic_product_div').show();
   // var number_records = $('#product_number_record').val();
@@ -2109,9 +2112,57 @@ function getAllColumnProductTables(){
           $('#all_columns_product').multiselect({
             columns: 1,
             placeholder: 'Please Select Column',
-            search: true
+            search: true,
           });
           $('#all_columns_product').multiselect('refresh');
+
+          // <----31-12-2021-- Autoplopluate Code
+          if(edit_tile_all_columns != false)
+          {
+            var all_columns = JSON.parse(edit_tile_all_columns);
+            var options = [];
+            var flag = 0; 
+            for(var i = 0; i <  a['all_columns'].length; i++)
+            {
+              for(var j = 0; j < all_columns.length; j++)
+              {
+                if(a['all_columns'][i]['column_name'] == all_columns[j])
+                {
+                  flag = 1;
+                  break;
+                }
+                else{
+                   flag = 0;
+                }
+              }
+
+              if(flag == 1)
+              {
+                var val = {
+                  name   : all_columns[j],
+                  value  : all_columns[j],
+                  optionAttributes: ['data-type'],
+                  // data_type : a['all_columns'][i]['data_type'],
+                  checked: true,
+
+                };
+                options.push(val);
+              }
+              else{
+                var val = {
+                  name   : a['all_columns'][i]['column_name'],
+                  value  : a['all_columns'][i]['column_name'],
+                  optionAttributes: ['data-type'],
+                  // data_type : a['all_columns'][i]['data_type'],
+                  checked: false
+                };
+                options.push(val);
+              }
+            }
+            $('#all_columns_product[multiple]')
+            .multiselect('loadOptions', options );
+          }
+          // --end-->
 
           var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Column</td></tr>";
           $('#product_select_table_entries').html(tr);
@@ -2855,6 +2906,11 @@ function edit_tile_product(type,edit_id){
   var ar = localStorage.getItem('dashboard_tile_data');
   ar = JSON.parse(ar);
   var product_title = ar['title_modal_tile'];
+  var product_type = $('#product_type').val();
+  if(product_type == 'automatic')
+  {
+    edit_tile_product_automatic(type,edit_id);
+  }else{
   $.ajax({
     type : "POST",
     url : 'php/retreive.php',
@@ -2862,6 +2918,54 @@ function edit_tile_product(type,edit_id){
     dataType: 'json',
     data: {
         action: "getEditTilesProduct",
+        id: edit_id,
+        type, type,
+        i_value : i_val,
+        product_title : product_title,
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      var i_val = localStorage.getItem('edit-i-value');
+
+      $('.gernerated_product_modal_tiles').html(a['tile_html']);
+      setTimeout(()=>{
+        var table_length = $('.product_html_modal_'+i_val+' .save_table_div_show_table table tbody tr').length;
+        $('.product_html_modal_'+i_val+' .count_result_tile').text(table_length+' Records');
+      },1000);
+      
+      // $('.gernerated_measurement_modal_tiles .count_result_tile').text(a['total_record']+' Records');
+      $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val).css('height',a['data']['height']);
+      $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val).css('width',a['data']['width']);
+      $('#modal-height-input-product-hidden').val(a['data']['height']);
+      $('#modal-width-input-product-hidden').val(a['data']['width']);
+      (a['data']['input_height'] != 0) ? $('#modal-height-input-product').val(a['data']['input_height']) : $('#modal-height-input-product').val('');
+      (a['data']['input_width'] != 0) ? $('#modal-width-input-product').val(a['data']['input_width']) : $('#modal-width-input-product').val('');
+
+      $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val+' .card-border').addClass('tile_border');
+
+    }
+  });
+  }
+
+}
+// --end--->
+
+// <----3-1-2022--
+function edit_tile_product_automatic(type,edit_id){
+  var i_val = localStorage.getItem('edit-i-value');
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var product_title = ar['title_modal_tile'];
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getEditTilesProductAutomatic",
         id: edit_id,
         type, type,
         i_value : i_val,
@@ -3113,7 +3217,94 @@ function updateTileRecordProduct(){
 }
 // --end--->
 
-function getEditDataDashboard(id,i_value){
+// <---3-1-2022--
+function updateTileRecordProductAutomatic(){
+  var id = localStorage.getItem('edit-measurement-tile');
+  var input_height = $('#modal-height-input-product').val();
+  var input_width = $('#modal-width-input-product').val();
+  var height = $('#modal-height-input-product-hidden').val();
+  var width = $('#modal-width-input-product-hidden').val();
+  var table_other = $('#product_select_table_entries_table_div table tbody').children('tr:eq(0)').attr('data-table-other');
+
+  // <---1-9-2021----
+  var query_data = localStorage.getItem('query_data');
+
+  var last_index_tile = $('#total_records').val();
+
+  $('.product_html_modal_'+last_index_tile+' .card-border').removeClass('tile_border');
+
+  var tile_html = $('.product_html_modal_'+last_index_tile).html();
+  var tableHtml = $('.product_html_modal_'+last_index_tile+' table').html();
+  $('#total_records').remove();
+  // tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+  // --end-->
+
+  // <---3-1-2022---
+  var prd_all_columns_automatic = $('#all_columns_product').val();
+  var columnDataType = [];
+  $('#all_columns_product option:selected').each(function(){
+    var value =$(this).attr('data-type');
+    columnDataType.push(value)
+  });
+
+  var db_table = $('#all_tables_product').val();
+  // --end--->
+
+  if(id != null && id != undefined){
+    $.ajax({
+      type : "POST",
+      url : 'php/operations.php',
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "updateTileRecordProductAutomatic",
+          id: id,
+          query_data : JSON.parse(query_data),
+          title : tile_title,
+          tile_html :tile_html,
+          input_height :input_height,
+          input_width :input_width,
+          height : height,
+          width : width,
+          record_type_of_tile : record_type_of_tile,
+          type_data_tile : type_data_tile,
+          table_other : table_other,
+          nameDB: $("#nameDashboardDB").val(),
+          prd_all_columns_automatic : JSON.stringify(prd_all_columns_automatic),
+          columnDataType : JSON.stringify(columnDataType),
+          db_table : db_table
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#product_modal_loader_div').show();
+        $('.product_tile_modal .modal-content').css('opacity','0.8');
+
+        $('#save_tile_id').val(id);
+        
+        setTimeout(() => {
+          $('#dashboard_sidebar').click();
+          $('#product_modal_loader_div').hide();
+          $('.product_tile_modal .modal-content').css('opacity','1');
+          $('.product_tile_modal').modal('hide');
+        }, 500);
+      }
+    });
+  }
+
+}
+// --end-->
+
+function getEditDataDashboard(id,i_value,product_automatic_tile = false){
   $.ajax({
     type : "POST",
     url : 'php/retreive.php',
@@ -3122,7 +3313,8 @@ function getEditDataDashboard(id,i_value){
     data: {
         action: "getEditDataDashboard",
         id: id,
-        nameDB: $("#nameDashboardDB").val()
+        nameDB: $("#nameDashboardDB").val(),
+        product_automatic_tile : product_automatic_tile
     },
     fail: function() {
         alert("failed!!")
@@ -3142,6 +3334,25 @@ function getEditDataDashboard(id,i_value){
           $('#save_and_proceed_btn_dashboard').attr('data-edit','true');
         }
         $("#type_data_tile").attr('disabled','disabled');
+        
+        if(product_automatic_tile == true)
+        {
+          $("#record_type_of_tile").attr('disabled','disabled');
+          $("#product_type option[value='automatic']").prop('selected','selecetd');
+          $("#product_type").attr('disabled','disabled');
+          $('#edit_product_tile_automatic').attr('db_name',val['database_name']);
+          $('#edit_product_tile_automatic').attr('db_table',val['database_table']);
+          $('#edit_product_tile_automatic').attr('all_column',JSON.stringify(a['all_columns']));
+          $('#edit_tile_click_manually').attr('data_click','false');
+        }
+        else{
+          $("#record_type_of_tile").removeAttr('disabled');
+          $("#product_type").attr('disabled','disabled');
+          $('#edit_product_tile_automatic').attr('db_name','');
+          $('#edit_product_tile_automatic').attr('db_table','');
+          $('#edit_product_tile_automatic').attr('all_column','');
+          $('#edit_tile_click_manually').attr('data_click','true');
+        }
       });
     }
   });

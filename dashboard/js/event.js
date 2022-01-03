@@ -1299,6 +1299,25 @@ $(document).ready( function(){
             if(edit_value == 'true'){
                 $('#product_modal_open_button').val('Update & Preview');
                 $('#product_modal_open_button').attr('tile-edit','true');
+
+                //For Edit Case
+                var edit_tile_db_name = $('#edit_product_tile_automatic').attr('db_name');
+                var all_column = $('#edit_product_tile_automatic').attr('all_column');
+                var edit_tile_db_table = $('#edit_product_tile_automatic').attr('db_table');
+                var tile_click_manually = $('#edit_tile_click_manually').attr('data_click');
+                if(edit_tile_db_name != '' && all_column != '' && edit_tile_db_table != '')
+                {
+                    $('#dashboard_database_list option[dashboardbvalue=' + edit_tile_db_name + ']').prop('selected', 'selected');
+                    $('#dashboard_database_list').trigger('change');
+                    // $('#all_tables_product option[value=' + edit_tile_db_table + ']').prop('selected', 'selected');
+                    // getAllColumnProductTables(all_column);
+                    // getAllColumnProductTables();
+                    // getNumberRecordsProductAutomatic();
+                }
+                else if(tile_click_manually != '' && tile_click_manually == 'true'){
+                    $("#product_type option[value='mannual']").prop('selected','selecetd');
+                    $('#product_type').trigger('change');
+                }
             }
         }
         else if(record_type_of_tile == "energy" && (type_data_tile == "table" || type_data_tile == 'overall_count') ){
@@ -1495,7 +1514,8 @@ $(document).ready( function(){
         var id=$(this).attr('class');
         var i_value = $(this).attr('data-i-value');
         id_val =id.split(" ")[0];
-        getEditDataDashboard(id_val,i_value);
+        var product_automatic_tile = $(this).hasClass('product_automatic_tile_edit');
+        getEditDataDashboard(id_val,i_value,product_automatic_tile);
         $('#dashboard_tile_modal').modal('show');   
 
         // if(data_type == "Measurement"){
@@ -1553,7 +1573,14 @@ $(document).ready( function(){
         ar = JSON.parse(ar);
         if(ar['type_data_tile'] == 'table')
         {
-            updateTileRecordProduct();
+            var product_type = $('#product_type').val();
+            if(product_type == 'automatic')
+            {
+                updateTileRecordProductAutomatic();
+            }
+            else{
+                updateTileRecordProduct();
+            }
         }
         else if(ar['type_data_tile'] == 'overall_count')
         {
@@ -1571,6 +1598,15 @@ $(document).ready( function(){
         
 
         $("#type_data_tile").removeAttr('disabled');
+        $("#record_type_of_tile").removeAttr('disabled');
+        $("#product_type").removeAttr('disabled');
+
+        //Product Edit Fields
+        $('#edit_product_tile_automatic').attr('db_name','');
+        $('#edit_product_tile_automatic').attr('db_table','');
+        $('#edit_product_tile_automatic').attr('all_column','');
+        $('#edit_tile_click_manually').attr('data_click','');
+        
     });
     // --end-->
 

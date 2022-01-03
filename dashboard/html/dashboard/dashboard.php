@@ -90,6 +90,8 @@
                     <div id="save_btn_tile_div">
                       <input type="button" id="save_and_proceed_btn_dashboard" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard" value="Save & Proceed">
                     </div>
+                    <input type="hidden" id="edit_product_tile_automatic">
+                    <input type="hidden" id="edit_tile_click_manually">
                   </div>
                 </div>
 

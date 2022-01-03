@@ -128,6 +128,7 @@ class dashboardControllerOperations {
             $table_other = $_POST['table_other'];
             $prd_all_columns_automatic = isset($_POST['prd_all_columns_automatic']) ? serialize(json_decode($_POST['prd_all_columns_automatic'])) : '';
             $prd_all_columns_type = isset($_POST['columnDataType']) ? serialize(json_decode($_POST['columnDataType'])) : '';
+            $db_table = $_POST['db_table'];
             // echo str_replace("total_records","",$html); die;
             // echo $prd_all_columns_automatic;  die;
             
@@ -135,8 +136,8 @@ class dashboardControllerOperations {
             $query_max_val = str_replace("'",'',$query_max_val);
 
         
-            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,database_name,prd_all_columns_automatic,prd_all_columns_type_automatic ) ";
-            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other','$nameDB','$prd_all_columns_automatic','$prd_all_columns_type') ";
+            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,database_name,prd_all_columns_automatic,prd_all_columns_type_automatic,database_table ) ";
+            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other','$nameDB','$prd_all_columns_automatic','$prd_all_columns_type','$db_table') ";
             // echo $insertQuery; die;
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
@@ -213,6 +214,57 @@ class dashboardControllerOperations {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+
+    // <---3-1-2022--
+    public function updateTileRecordProductAutomatic(){
+        try{
+            $conn = connectToDB("gipscomm");
+            $nameDB = $_POST['nameDB'];
+            $username = $_SESSION['username']; 
+            $id = $_REQUEST['id'];
+            $queryData = $_REQUEST['query_data'];
+            $number_records = $queryData['number_records']; 
+            $pages_count = $queryData['pages_count']; 
+            $page_value = $queryData['page_val']; 
+            $type = $queryData['type']; 
+            $row_click = $queryData['row_click']; 
+            $query_data_records = $queryData['query1']; 
+            $query_max_val = $queryData['queryMaxValue'];
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_REQUEST['height'];
+            $width = $_REQUEST['width'];
+            $input_height = $_REQUEST['input_height'];
+            $input_width = $_REQUEST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $type_data_tile = $_POST['type_data_tile'];
+            $table_other = $_POST['table_other'];
+            $prd_all_columns_automatic = isset($_POST['prd_all_columns_automatic']) ? serialize(json_decode($_POST['prd_all_columns_automatic'])) : '';
+            $prd_all_columns_type = isset($_POST['columnDataType']) ? serialize(json_decode($_POST['columnDataType'])) : '';
+            $db_table = $_POST['db_table'];
+            
+
+            $query_data_records = str_replace("'",'',$query_data_records);
+            $query_max_val = str_replace("'",'',$query_max_val);
+
+            // $tile_html = $_REQUEST['tile_html'];
+            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile',database_name = '$nameDB',prd_all_columns_automatic = '$prd_all_columns_automatic',prd_all_columns_type_automatic = '$prd_all_columns_type',database_table = '$db_table' WHERE id = $id AND username ='$username' ";
+            // echo '<pre>';
+            // echo htmlspecialchars($updateQuery);
+            // echo '</pre>';
+            // die;
+            
+            $updateRecord = queryDB($conn, $updateQuery, "write");
+            if($updateQuery){
+                return array('Staus' => 200 , 'Message' => 'Successfully Updated');
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
 
     // <---27-8-2021--
     public function deleteTile(){
