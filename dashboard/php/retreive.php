@@ -603,24 +603,54 @@ class dashboardController {
             $records['data'] = $dataResultGipscomm;
             // echo json_encode($records['data']); die;
             // --end-->
+
+            // <---4-1-2022--
             $nameDB = $_POST['nameDB'];
             $conn = connectToDB($nameDB);
+            // echo $conn; die;
             $getResult = "SELECT * from tableFormat WHERE username = '$username' order by priority asc";
-            $dataResult = queryDB($conn, $getResult, "read");
-            // echo json_encode($dataResult); die;
-            if($dataResult != 'error')
+            $result = sqlsrv_query($conn,$getResult);
+            // echo json_encode(gettype($result)); die;
+            $dataResult = [];
+            if($result != false)
             {
-                if($dataResult != '' && count($dataResult) > 0){
-
-                    // $records['data'] = $dataResult;
+                while( $row = sqlsrv_fetch_array( $result, SQLSRV_FETCH_ASSOC ) ) {
+                    $dataResult[] = $row ;
+                };
+                // echo json_encode(count($dataResult)); die;
+                if(count($dataResult) > 0)
+                {
                     $arMerge = array_merge($dataResultGipscomm,$dataResult);
                     $records['data'] = $arMerge;
                     $records['total_record'] = count($dataResult);
                     $dataMeasurement = '';
                 }
+                // echo json_encode($row); die;
             }
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
             die;
+            // ---end--->
+            // <--Old Code----
+            // $nameDB = $_POST['nameDB'];
+            // $conn = connectToDB($nameDB);
+            // $getResult = "SELECT * from tableFormat WHERE username = '$username' order by priority asc";
+            // $dataResult = queryDB($conn, $getResult, "read");
+            // // echo json_encode($dataResult); die;
+            // if($dataResult != 'error')
+            // {
+            //     if($dataResult != '' && count($dataResult) > 0){
+
+            //         // $records['data'] = $dataResult;
+            //         $arMerge = array_merge($dataResultGipscomm,$dataResult);
+            //         $records['data'] = $arMerge;
+            //         $records['total_record'] = count($dataResult);
+            //         $dataMeasurement = '';
+            //     }
+            // }
+            // echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+            // ---end-->
+            die;
+
         }
         catch(Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
