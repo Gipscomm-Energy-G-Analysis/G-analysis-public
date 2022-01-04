@@ -27,7 +27,7 @@
                 <li class="nav-item"> <a class="nav-link sidebar_redirect" id="measurement_sidebar_option" href="javascript:void(0);">Messstellen</a></li>
                 <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="product_sidebar_option">Produkte</a></li>
                 <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="energy_sidebar_option">Energiedaten</a></li>
-                <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="production_data_sidebar_option">Produktionsdaten</a></li>
+                <!-- <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="production_data_sidebar_option">Produktionsdaten</a></li> -->
               </ul>
             </div>
           </li>

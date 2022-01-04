@@ -53,7 +53,8 @@
 .pagination_items{
     text-align: center;
     /* margin-left: 357px; */
-    margin-left: 465px;
+    /* margin-left: 465px; */
+    margin-left: 42%;
 }
 .pagination_html{
     margin-top: 8px;
@@ -166,6 +167,23 @@
     font-size: small;
 }
 
+#energy_modal_table th{
+    padding:  10px 6px 10px 6px !important;
+}
+
+#energy_modal_table td{
+    padding:  6px !important;
+    font-size: small;
+}
+
+#product_modal_table th{
+    padding:  10px 6px 10px 6px !important;
+}
+
+#product_modal_table td{
+    padding:  6px !important;
+    font-size: small;
+}
 
 .dashboard_tile_height{
     height: 145px;
@@ -193,6 +211,32 @@
 }
 
 #measurement_modal_loader_image{
+    height: 100px;
+    width: 105px;
+    position: relative;
+}
+
+#energy_modal_loader_div{
+    text-align: center;
+    position: absolute;
+    bottom: 177px;
+    left: 497px;
+}
+
+#energy_modal_loader_image{
+    height: 100px;
+    width: 105px;
+    position: relative;
+}
+
+#product_modal_loader_div{
+    text-align: center;
+    position: absolute;
+    bottom: 177px;
+    left: 497px;
+}
+
+#product_modal_loader_image{
     height: 100px;
     width: 105px;
     position: relative;
@@ -227,8 +271,11 @@
 .hide_table_preview table{
     display: none;
 }
-.gernerated_measurement_modal_tiles .action-modal-button-div{
+.gernerated_measurement_modal_tiles .action-modal-button-div , .gernerated_energy_modal_tiles .action-modal-button-div{
     display: none;
+}
+.gernerated_product_modal_tiles .action-modal-button-div{
+    display: none;   
 }
 
 .action-modal-button-div{
@@ -263,8 +310,8 @@
 #measurement_modal_loader_div_chart{
     text-align: center;
     position: absolute;
-    bottom: 177px;
-    left: 497px;
+    bottom: 37%;
+    left: 44%;
 }
 
 #measurement_modal_loader_image_chart{
@@ -313,7 +360,7 @@
     /* display: none; */
 }
 #dashboard_count_div_tile .record-name-overall-count {
-    margin: -3px 0px 5px -37px;
+    margin: 1px 0px 5px -37px;
 }
 
 #dashboard_count_div_tile .text-overall-count {
@@ -327,11 +374,26 @@
     opacity: 0.8;
 }
 
+.gernerated_energy_modal_tiles .card-body,.dashboard_chart_tiles .card-body{
+    opacity: 0.8;
+}
+
 #dashboard_count_div_tile .card-body:hover,.gernerated_measurement_modal_tiles .card-body:hover,.dashboard_chart_tiles .card-body:hover{
     opacity: 1;
 }
 
+.gernerated_energy_modal_tiles .card-body:hover,.dashboard_chart_tiles .card-body:hover{
+    opacity: 1;
+}
+
+
 #measurement_tile_heading_modal{
+    color: black !important;
+}
+#energy_tile_heading_modal{
+    color: black !important;
+}
+#product_tile_heading_modal{
     color: black !important;
 }
 .record-name-overall-count{
@@ -355,7 +417,7 @@
     margin: -15px -1px -8px -6px !important;
 }
 
-.row{
+.row.dashboard_count_div ,.dashboard_count_div .row{
     margin-right: 14px !important;
 }
 
@@ -568,7 +630,7 @@
 .wish-table th {
     background: #c5c8d2;
     padding: 4px;
-    font-size: 8px;
+    font-size: 10px;
 }
 .wish-table {
     width: 100%;
@@ -578,7 +640,7 @@
     padding: 4px;
     border-right: 1px solid #c9ccd7;
     border-bottom: 1px solid #c9ccd7;
-    font-size: 8px;
+    font-size: 10px;
 }
 .dashboard-btn{
     margin-left: 14px;
@@ -593,6 +655,7 @@
 .dashboard_count_div .count_result_tile{
     margin-top: 19px !important;
     margin-bottom: 19px !important;
+    max-width: 90px;
 }
 .dashboard_count_div .chart-width{
     margin-top: -128px !important;
@@ -607,7 +670,7 @@
 /* 21-10-2021 */
 .dashboard_count_div .hide_table_main .small-table{
     display: block !important;
-    margin-top: 31px;
+    /*margin-top: 31px;*/
 
 }
 
@@ -624,3 +687,174 @@
     margin-top: -228px !important;
 }
 /* -end--> */
+
+/* 26-10-2021 */
+.dashboard_chart_tiles .small-table{
+    max-width: 98%;
+}
+
+.dashboard_chart_tiles .wish-table th ,.dashboard_chart_tiles .wish-table td{
+    font-size: 10px;
+}
+
+.dashboard_modal_tile .overflow-hide{
+    width: 100%;
+}
+
+.dashboard_count_div .overall_value_tile  .action-modal-button-div{
+    margin-bottom: 9px;
+}
+
+.dashboard_count_div .chart_tile.hide_table_main .overflow-hide{
+    padding-left: 90px !important;
+}
+
+.dashboard_count_div .hide_table_main .chart_overflow_margin_2{
+    margin-top: -157px !important;
+}
+.dashboard_count_div .hide_table_main .chart_overflow_margin_3{
+    margin-top: -230px !important;
+}
+.dashboard_count_div .hide_table_main .chart_overflow_margin_4{
+    margin-top: -304px !important;
+}
+
+#dashboard_loader_div{
+    text-align: center;
+    position: absolute;
+    bottom: 37%;
+    left: 38%;
+}
+
+#dashboard_loader_image{
+    width: 30%;
+}
+
+.tile_border{
+    /* border : 2px solid #adebad; */
+    border-left: 4px solid #50fb50;
+    border-right: 4px solid #50fb50;
+}
+
+#chart_outer_tile_div{
+    margin-top: 15px;
+    margin-right: 2%;
+}
+
+.gernerated_measurement_modal_tiles .small-table{
+    max-width: 99%;
+}
+
+.gernerated_measurement_modal_tiles .hide_table_preview .tile_table_small_table{
+    display: block !important;
+}
+
+.gernerated_energy_modal_tiles .small-table{
+    max-width: 99%;
+}
+
+.gernerated_energy_modal_tiles .hide_table_preview .tile_table_small_table{
+    display: block !important;
+}
+
+.gernerated_product_modal_tiles .small-table{
+    max-width: 99%;
+}
+
+.gernerated_product_modal_tiles .hide_table_preview .tile_table_small_table{
+    display: block !important;
+}
+
+#dashboard_count_div_tile .overall_value_tile .small-table{
+    display: none !important;
+}
+
+
+.dashboard_count_div .table_tile.hide_table_main .overflow-hide .small-table{ 
+    margin-top: 6px;
+    max-width: 99%;
+}
+.dashboard_count_div .table_tile.hide_table_main .overflow-hide{ 
+    padding: 0px 0px 0px 62px !important;
+}
+
+.dashboard_count_div .count_result_custom_width{
+    width: 17%;
+}
+
+/* 16-11-2021--- */
+.dashboard_chart_tiles .small-table {
+    height: 85%;
+}
+
+.dashboard_chart_tiles .small-table  table{
+    height: 85%;
+}
+
+.dashboard_count_div .small-table {
+    height: 85%;
+}
+
+.dashboard_count_div .small-table  table{
+    height: 85%;
+}
+
+/* --end--- */
+
+
+/* <----18-9-2021-- */
+.pagination_input_val_energy{
+    width: 69px;
+}
+
+.pagination_html_energy{
+    margin-top : 8px
+}
+/* --end-- */
+
+
+/* 26-11-2021-- */
+#all_product_image{
+    height: 20px;
+    width: 20px;
+    margin: 5px;
+}
+
+#product_field_div{
+    display: flex;
+    margin-top: 28px;
+}
+/* end- */
+
+#pagination_all_product{
+    margin-top: 15px;
+    float: right;
+}
+
+.modal_all_products table thead tr{
+    text-align: center;
+}
+
+#product_select_table_entries_pagination{
+    margin: 10px;
+}
+
+.mt_pr_alignment{
+    /* margin-top: -32px; */
+}
+
+#product_select_table_entries_table thead tr th{
+    padding:  10px 6px 10px 6px !important;
+    font-size: small;
+    
+}
+
+.image_symbol_tile{
+    height: 19px;
+    width: 24px;
+    float: right;
+    margin: -17px -26px 0px 0px;
+    border-radius: 50%;
+    border: 1px solid;
+    padding: 4px;
+}
