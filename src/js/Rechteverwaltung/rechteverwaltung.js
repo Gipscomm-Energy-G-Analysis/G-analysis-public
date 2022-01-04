@@ -15,36 +15,22 @@ const scpRechteverwaltung =
                 , Benutzer      : "ben"
                 }
 
-            this.editItems =
-                () =>
-                [ "Mandanten"
-                , "Organisationen"
-                , "Liegenschaften"
-                , "Vers.Bereiche"
-                , "Messstellen-E"
-                , "Messstellen-B"
-                , "Standorte"
-                , "Standortdaten 3."
-                , "Anlagen"
-                , "Messmittelverwaltung"
-                , "Produkte"
-                , "Kennzahlen"
-                , "Alarme"
-                , "Berechnungsformeln"
-                , "Vorlagenformeln"
-                , "Interne Betriebsdaten"
-                , "Interne Energiedaten"
-                , "Rechnungen"
-                , "Energieträger"
-                , "Energieformen"
-                , "Zählpunktnummern"
-                , "Erweiterung Anlagen"
-                , "Erweiterung Produkte"
-                , "statische Korrekturfaktoren"
-                , "dynamischer Korrekturfaktoren"
-                , "Gruppierung Diagramme"
-                , "Schichtdaten"
-                ]
+            const dataEditAttr =
+                a => 
+                $(a).attr("data-edit")
+
+            const getDataEditAttributes =
+                elements =>
+                elements
+                .map(dataEditAttr)
+
+            this.getEditItemIDs =
+                elements =>
+                pipe_( elements )
+                     ( Array.from
+                     , getDataEditAttributes
+                     , removeDuplicates
+                     )
             
             const readRechteverwaltung =
                 position => {

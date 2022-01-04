@@ -109,6 +109,7 @@ Object
             }
             return results
         };
+        this.pipe_ = acc => (...fns) => fns.length === 1 ?  fns[0](acc) :  pipe_(fns[0](acc))(...fns.slice(1))
         this.itemSessionSet = key => value => sessionStorage.setItem(key, value);
         this.itemSessionGet = key => sessionStorage.getItem(key);
         this.push = a => b => { a[a.length] = b;return a };
@@ -138,6 +139,7 @@ Object
             }
         this.difference = arr1 => arr2 => arr1.filter(a1 => !arr2.some(equal(a1)))
         this.containsNaN = str => this.unequal(str.search("NaN"))(-1)
+        this.removeDuplicates = arr => Array.from(new Set(arr))
     }
 );
 const { split_
@@ -199,11 +201,13 @@ const { split_
       , ajaxPost
       , ajaxGet
       , pipe
+      , pipe_
       , itemSessionSet
       , itemSessionGet
       , push
       , partition
       , difference
       , containsNaN
+      , removeDuplicates
       } = scpCore;
     // module.exports = scpCore;
