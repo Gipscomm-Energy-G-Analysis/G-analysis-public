@@ -11,7 +11,7 @@ $nameDB = "gipscomm";
 $conn = connectToDB ( $nameDB );
 
 $userLogin = $_POST['user'];
-
+$_SESSION["username"] = $_POST['user'];
 $query = "SELECT * FROM Users ";
 $query .= "WHERE username = '$userLogin' ";
 $query .= "AND deleted = 0 ";

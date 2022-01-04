@@ -1,12 +1,12 @@
 <?php
-
+session_start();
 include('top-cache.php');
 error_reporting(-1);
 ini_set ('display_errors', 'On');
 require 'DbOperations.php';
 
 $nameDB = $_POST['nameDB'];
-
+$_SESSION["nameDB"] = $nameDB;
 $conn = connectToDB($nameDB);
 
 $id = $_POST['id'];
