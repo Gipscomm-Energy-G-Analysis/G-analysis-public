@@ -1625,7 +1625,7 @@ $(document).ready(function() {
     // Remove Mandant From DB Table
     //
     $("#tblMandantenBetrGrp tbody").on("dblclick", "tr", function() {
-        scpRechteverwaltung_betreuergruppen.removeFromMandantenTbl(this)
+        scpRechteverwaltung_betreuergruppen.removeFromMandantenTbl(this)($(`#betrGrpState`).val())
     })
     //
     // Change Per Dropbox
@@ -1697,7 +1697,7 @@ $(document).ready(function() {
     // Remove Mandant From DB Table
     //
     $("#tblMandantengruppe tbody").on("dblclick", "tr", function() {
-        scpRechteverwaltung_mandantengruppen.removeFromMandantenTbl(this)
+        scpRechteverwaltung_mandantengruppen.removeFromMandantenTbl(this)($(`#manGrpState`).val())
     })
 
     //
