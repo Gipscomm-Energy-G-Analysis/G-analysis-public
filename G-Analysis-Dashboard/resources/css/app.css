@@ -1,0 +1,224 @@
+body,section,.content-wrapper, nav{
+    background: url(../images/5653.jpg) no-repeat center center fixed;
+    background-size: cover;
+    margin: 0px;
+    padding: 0px;
+} 
+
+.dark-mode .navbar-dark label {
+    color: white !important;
+}
+
+.dark-mode .card h3{
+color: white !important;
+}
+
+.dark-mode .card label{
+color: black !important;
+}
+.dark-mode .form-group input {
+    background-color: #fff !important;
+    color: black !important;
+ }
+  .navbar  {
+  	 background: #959fab;
+	 background: -moz-linear-gradient(top,  #959fab 0%, #b6b4b3 100%);
+	 background: -webkit-linear-gradient(top,  #959fab 0%,#b6b4b3 100%);
+	 background: linear-gradient(to bottom,  #959fab 0%,#b6b4b3 100%);
+	 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#959fab', endColorstr='#b6b4b3',GradientType=0 );
+  }
+  .navbar div{
+  	 background-image: none;
+  }
+
+  .card-header{
+    background-color: #6B6F73 !important;
+  }
+
+  .machine_column_div {
+    background-color: #6B6F73 !important;
+  }
+  
+  .card-body {
+    background-color: #CED6DE !important;
+  }
+  .card-body-temp {
+    background-color: #CED6DE !important;
+  }
+
+  .card-body-temp .col-md-6 {
+    color:black;
+    margin-bottom: 20px;
+  }
+
+  .toggle-on{
+    color: white !important;
+  }
+
+  .mode_css_second div div label {
+      color:white;
+  }
+
+  .btn-outline-secondary {
+    color:white !important;
+  }
+
+
+  /* Shrey css start */
+
+.logo-g-analysis{
+    height: 41.67px !important;
+    width: 125px  !important;
+}
+
+
+
+.menu_dashboard{
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+.menu_dashboard_ul{
+    /* margin-left: 20%; */
+    /* margin-left: -3%; */
+}
+
+.menu_dashboard_database{
+    font-size: 1.08em;
+}
+
+
+.menu_dashboard_database  select{
+    padding: 3px;
+    font-family: sans-serif;
+}
+.menu_dashboard_database  select:hover{
+    color: #4a4a4a;
+}
+
+
+
+/* <--new Su menu */
+
+.dropdown {
+    float: left;
+    position: static;
+    /* overflow: hidden; */
+}
+  
+.dropdown .dropbtn {
+    /* font-size: 16px;   */
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    /* font: inherit; */
+    margin: 0;
+}
+  
+.navbar a:hover, .dropdown:hover .dropbtn {
+    /* background-color: red; */
+}
+  
+.dropdown-content{
+    display: none;
+    position: absolute;
+    color: rgba(0, 0, 0, 0.7);
+    /* width: 100%; */
+    width: 50%;
+    left: -333px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    background-color: rgba(255,255,255,0.9);
+    padding: 20px;
+    right: 0;
+    margin: auto;
+}
+
+.dropdown-content .header {
+    background: red;
+    padding: 16px;
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 3px;
+    /* background-color: white; */
+    /* height: 250px; */
+}
+
+.column a {
+    float: none;
+    color: black;
+    padding: 3px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.column a:hover {
+    /* background-color: #4a4a4a; */
+    color: #4a4a4a;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.dropdown-content .column h3{
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(203, 198, 198, 1);
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.dropdown-content .column {
+    width: 31%;
+    padding: 2%;
+}
+
+.dashboard_sub_menu_1{
+    margin:-4px 0px 0px 20px;
+
+}
+
+.sub_menu_1_div{
+    display: none;
+
+}
+
+.column .sub_menu_open:hover .sub_menu_1_div{
+    display: block; 
+    color: red;
+}
+  
+.sub_menu_open span{
+    color: black
+}
+ 
+
+.cursor_pointer{
+    cursor: pointer;
+}
+
+
+.dark-mode .text-muted {
+  color: black !important;
+}
+/* end */
+.error label{
+    color:red !important;
+}
