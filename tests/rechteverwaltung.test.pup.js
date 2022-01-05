@@ -848,21 +848,24 @@ colors = require("colors");
     // save changed betrGrp
     await click("#manGrpSpeichern")
 
+    // navigate to last record
+    await click1("#manGrpLast")
+
     // betreuergruppe form fields
     valueNameManGrp = await value("#nameManGrp")
     valueKurzManGrp = await value("#kurzManGrp")
-    contentMandant4ManGrp = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(4) > td:nth-child(1)")
-    contentMandant5ManGrp = await content("#tblMandantenBetrGrp > tbody > tr:nth-child(5) > td:nth-child(1)")
+    contentMandant4ManGrp = await content("#tblMandantengruppe > tbody > tr:nth-child(4) > td:nth-child(1)")
+    contentMandant5ManGrp = await content("#tblMandantengruppe > tbody > tr:nth-child(5) > td:nth-child(1)")
     
     // compare values
     correctValues =
         () =>
         [ [valueNameManGrp, "Name" + changeNameManGrp]
         , [valueKurzManGrp, "Kurz" + changeKurzManGrp]
-        , [contentMandant4ManGrp, "Linsen Druckcenter GmbH"]
-        , [contentMandant5ManGrp, "Familie Derichsweiler"]
+        , [contentMandant4ManGrp, "K.H.Schumacher"]
+        , [contentMandant5ManGrp, "hpg plastics gmbh"]
         ]
-        // .every(a => a[0] == a[1])
+        .every(a => a[0] == a[1])
 
     describe("Test changing a manGrp")
     assert(correctValues())(true)("Change existing")
