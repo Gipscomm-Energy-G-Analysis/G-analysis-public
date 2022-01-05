@@ -229,7 +229,7 @@
                       <div class="sub_menu_1_div">
                         <a href="javascript:void(0);" data-menus="5-1-4-1" id="erwAnlMenu" class="dashboard_sub_menu_1 dashboard_menu_click">Erweiterung Anlagen</a>
                         <a href="javascript:void(0);" data-menus="5-1-4-2" id="erwPrdMenu" class="dashboard_sub_menu_1 dashboard_menu_click">Erweiterung Produkte</a>
-                        <a href="javascript:void(0);" data-menus="5-1-4-3" id="korrekturFaktorMenu" class="dashboard_sub_menu_1 dashboard_menu_click">statische Korrekturfaktoren</a>
+                        <a href="javascript:void(0);" data-menus="5-1-4-3" id="korrekturFaktorMenu" class="dashboard_sub_menu_1 dashboard_menu_click">statischer Korrekturfaktoren</a>
                         <a href="javascript:void(0);" data-menus="5-1-4-4" id="korrekturFaktorMenuDynamischer" class="dashboard_sub_menu_1 dashboard_menu_click">dynamischer Korrekturfaktoren</a>
                       </div>
                     </div>
@@ -399,7 +399,7 @@
                      <button id="tabEPrd" data-menus="5-1-4-2">Erweiterung Produkte</button>
                   </div>
                   <button id="tabGrpDiag" data-menus="5-1-5" class="no_korrector_tabs">Gruppierung Diagramme</button>
-                  <button id="tabTaschenrechner" data-menus="5-1-4-3">statische Korrekturfaktoren</button>
+                  <button id="tabTaschenrechner" data-menus="5-1-4-3">statischer Korrekturfaktoren</button>
                   <button id="tabDynamicKorrekturFktr" data-menus="5-1-4-4">dynamische Korrekturfaktoren</button>
                </div>
                <div id="tabsSchichtdaten" data-menus="5-2" style="display:none;">
@@ -620,9 +620,9 @@
                         <br>
                         <p><span id="formelLatexDarstellung" style="background-color:white;display:none;"></span></p>
                         Berechnungsformel:
-                        <button id="formelSpeichern" style="margin:0;float:right;">Speichern</button>
-                        <button id="formelfeldLeeren" style="margin:0;float:right;">Leeren</button>
-                        <button id="formelvorlageBenutzen" class="btnVorlFormeln" style="margin:0;float:right;">Formelvorlage</button>
+                        <button id="formelSpeichern" data-edit="3-7-1" style="margin:0;float:right;">Speichern</button>
+                        <button id="formelfeldLeeren" data-edit="3-7-1" style="margin:0;float:right;">Leeren</button>
+                        <button id="formelvorlageBenutzen" data-edit="3-7-1" class="btnVorlFormeln" style="margin:0;float:right;">Formelvorlage</button>
                         <button id="btnInMstVerwaltungSpringen" class="berFormel" style="margin:0;float:right;">Messstellenverwaltung</button>
                         <button id="btnInKnzVerwaltungSpringen" class="knzFormel" style="display:none;margin:0;float:right;">Kennzahlenverwaltung</button>
                         <br>
@@ -773,8 +773,8 @@
                            <br>
                            <p><span id="formelLatexDarstellung" class="vorlFrmPlatzhalter" style="background-color:white;display:none;"></span></p>
                            Vorlagenformel:
-                           <button id="formelVorSpeichern" style="margin:0;float:right;">speichern</button>
-                           <button id="formelVorfeldLeeren" style="margin:0;float:right;">leeren</button>
+                           <button id="formelVorSpeichern" data-edit="3-7-2" style="margin:0;float:right;">speichern</button>
+                           <button id="formelVorfeldLeeren" data-edit="3-7-2" style="margin:0;float:right;">leeren</button>
                            <button id="btnInKnzVerwaltungSpringen" class="knzFormel" style="margin:0;float:right;">Kennzahlenverwaltung</button>
                            <br>
                            <br>
@@ -5315,7 +5315,17 @@
                   <input id="betrParCount" />
                </div>
                <div id="infosEnergie">
-                  <div class="navDropBox" style="height:20px;padding:3px;"> <img id="entLoeschen" title="Energieträger löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="entSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="entHinz" title="Neuen Energieträger erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="entSuchen" title="Energieträger suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="entLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="entNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="entPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="entFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
+                  <div class="navDropBox" style="height:20px;padding:3px;"> 
+                    <img id="entLoeschen" data-edit="5-1-1" title="Energieträger löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                    <img id="entSpeichern" data-edit="5-1-1" src="images/save.png" alt="speichern" " title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img id="entHinz" data-edit="5-1-1" title="Neuen Energieträger erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                    <img id="entSuchen" title="Energieträger suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                    <img id="entLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> 
+                    <img id="entNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> 
+                    <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                    <img id="entPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> 
+                    <img id="entFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
                      <label class="orgPfadLbl">Orga.: </label>
                      <select class="orgPfad"></select>
                      <label>Lieg.: </label>
@@ -5485,7 +5495,18 @@
                            </table>
                         </div>
                      </div>
-                     <div class="navDropBox" style="height:20px;padding:3px;"> <img id="enfLoeschen" title="Energieform löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="enfSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="enfHinz" title="Neue Energieform erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="enfSuchen" title="Energieform suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="enfLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="enfNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="enfPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="enfFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" /> </div>
+                     <div class="navDropBox" style="height:20px;padding:3px;"> 
+                        <img id="enfLoeschen" data-edit="5-1-2" title="Energieform löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                        <img id="enfSpeichern" data-edit="5-1-2" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                        <img id="enfHinz" data-edit="5-1-2" title="Neue Energieform erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                        <img id="enfSuchen" title="Energieform suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                        <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                        <img id="enfLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> 
+                        <img id="enfNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> 
+                        <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                        <img id="enfPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> 
+                        <img id="enfFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" /> 
+                    </div>
                      <div class="infosBlock">
                         <div class="sectionHeader">
                            <label>Energieform</label>
@@ -5623,7 +5644,18 @@
                <!--Ende energietraeger-->
                <div id="infosEnergieformen"> </div>
                <div id="infosErweiterungenAnlagen">
-                  <div class="navDropBox" style="height:20px;padding:3px;"> <img id="eAnlLoeschen" title="Energieträger löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="eAnlSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="eAnlHinz" title="Neuen Energieträger erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="eAnlSuchen" title="Energieträger suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="eAnlLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="eAnlNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="eAnlPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="eAnlFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
+                  <div class="navDropBox" style="height:20px;padding:3px;"> 
+                    <img id="eAnlLoeschen" data-edit="5-1-4-1" title="Energieträger löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                    <img id="eAnlSpeichern" data-edit="5-1-4-1" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img id="eAnlHinz" data-edit="5-1-4-1" title="Neuen Energieträger erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                    <img id="eAnlSuchen
+                    " title="Energieträger suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                    <img id="eAnlLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> 
+                    <img id="eAnlNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> 
+                    <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                    <img id="eAnlPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> 
+                    <img id="eAnlFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
                      <label class="manPfadEnt">Mandant: </label>
                      <select class="manPfad"></select>
                   </div>
@@ -5668,7 +5700,17 @@
                   </div>
                </div>
                <div id="infosGruppierungDiagramme">
-                  <div class="navDropBox" style="height:20px;padding:3px;"> <img id="eAnlLoeschen" title="Energieträger löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="grpDiagSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="grpDiagHinz" title="Neuen Energieträger erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="grpDiagSuchen" title="Energieträger suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="eAnlLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="eAnlNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="eAnlPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="eAnlFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
+                  <div class="navDropBox" style="height:20px;padding:3px;"> 
+                    <img id="eAnlLoeschen" data-edit="5-1-5" title="Energieträger löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                    <img id="grpDiagSpeichern" data-edit="5-1-5" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img id="grpDiagHinz" data-edit="5-1-5" title="Neuen Energieträger erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                    <img id="grpDiagSuchen" title="Energieträger suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                    <img id="eAnlLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> 
+                    <img id="eAnlNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> 
+                    <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                    <img id="eAnlPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> 
+                    <img id="eAnlFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
                      <label class="manPfadEnt">Mandant: </label>
                      <select class="manPfad"></select>
                   </div>
@@ -5700,7 +5742,17 @@
                   </div>
                </div>
                <div id="infosErweiterungenProdukte">
-                  <div class="navDropBox" style="height:20px;padding:3px;"> <img id="ePrdLoeschen" title="löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="ePrdSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="ePrdHinz" title="neu erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="ePrdSuchen" title="suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="ePrdLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="ePrdNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="ePrdPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="ePrdFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
+                  <div class="navDropBox" style="height:20px;padding:3px;"> 
+                    <img id="ePrdLoeschen" data-edit="5-1-4-2" title="löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                    <img id="ePrdSpeichern" data-edit="5-1-4-2" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img id="ePrdHinz" data-edit="5-1-4-2" title="neu erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                    <img id="ePrdSuchen" title="suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                    <img id="ePrdLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> 
+                    <img id="ePrdNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> 
+                    <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                    <img id="ePrdPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> 
+                    <img id="ePrdFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
                      <label class="manPfadEnt">Mandant: </label>
                      <select class="manPfad"></select>
                   </div>
@@ -5793,7 +5845,17 @@
                </div>
                <!--24-02-2020 Tab static Korrektur Faktor form html-->
                <div id="infosKorrekturFaktor">
-                  <div class="navDropBox" style="height:20px;padding:3px;"> <img class="navigation_controls" id="kFeLoeschen" title="löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="kFeSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="kFeHinz" title="neu erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img class="navigation_controls" id="kFeSuchen" title="suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img class="navigation_controls" id="kFeLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img class="navigation_controls" id="kFeNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img class="navigation_controls" id="kFePrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img class="navigation_controls" id="kFeFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
+                  <div class="navDropBox" style="height:20px;padding:3px;"> 
+                    <img class="navigation_controls" id="kFeLoeschen" data-edit="5-1-4-3" title="löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                    <img id="kFeSpeichern" data-edit="5-1-4-3" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img id="kFeHinz" data-edit="5-1-4-3" title="neu erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                    <img class="navigation_controls" id="kFeSuchen" title="suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                    <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                    <img class="navigation_controls" id="kFeLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> 
+                    <img class="navigation_controls" id="kFeNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> 
+                    <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                    <img class="navigation_controls" id="kFePrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> 
+                    <img class="navigation_controls" id="kFeFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
                      <label class="manPfadEnt">Mandant: </label>
                      <select class="manPfad"></select>
                   </div>
@@ -5884,7 +5946,7 @@
                <!--01-04-2020 Tab dynamic Korrektur Faktor form html-->
                <div id="infosDynamicKorrekturFaktor">
                   <div class="navDropBox" style="height:20px;padding:3px;"> <img class="navigation_controls" id="DkFeLoeschen" title="löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
-                     <button id="DkFeSpeichern"><img title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /></button> <img id="DkFeHinz" title="neu erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img class="" id="DkFeSuchen" title="suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img class="" id="DkFeLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img class="" id="DkFeNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img class="" id="DkFePrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img class="navigation_controls1" id="DkFeFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
+                     <button id="DkFeSpeichern" data-edit="5-1-4-4"><img title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /></button> <img id="DkFeHinz" title="neu erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img class="" id="DkFeSuchen" title="suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img class="" id="DkFeLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img class="" id="DkFeNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img class="" id="DkFePrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img class="navigation_controls1" id="DkFeFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
                      <label class="manPfadEnt">Mandant: </label>
                      <select class="manPfad"></select>
                   </div>
@@ -6210,7 +6272,16 @@
                   <div id="infosManagementsysteme"> </div>
                   <div id="infosZaehlpunkte">
                      <div id="infosBlock">
-                        <div class="navDropBox" style="height:20px;padding:3px;"> <img id="zpLoeschen" title="Zählpunkt löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="zpSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="zpHinz" title="Neuen Zählpunkt erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="zpSuchen" title="Zählpunkt suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="zpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Zählpunkt" src="images/last.png" alt="letzte" /> <img id="zpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Zählpunkt" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="zpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Zählpunkt" src="images/previous.png" alt="vorherige" /> <img id="zpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Zählpunkt" src="images/first.png" alt="erste" />
+                        <div class="navDropBox" style="height:20px;padding:3px;"> 
+                            <img id="zpLoeschen" data-edit="5-1-3" title="Zählpunkt löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                            <img id="zpSpeichern" data-edit="5-1-3" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                            <img id="zpHinz" data-edit="5-1-3" title="Neuen Zählpunkt erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                            <img id="zpSuchen" title="Zählpunkt suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                            <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                            <img id="zpLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Zählpunkt" src="images/last.png" alt="letzte" /> 
+                            <img id="zpNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Zählpunkt" src="images/next.png" alt="nächste" /> 
+                            <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="zpPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Zählpunkt" src="images/previous.png" alt="vorherige" /> 
+                            <img id="zpFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Zählpunkt" src="images/first.png" alt="erste" />
                            <label>Liegenschaft: </label>
                            <select class="liegPfad"></select>
                         </div>
@@ -6245,9 +6316,9 @@
                <div id="infosSchichtdaten">
                   <div id="infosBlock">
                      <div class="navDropBox" style="height:20px;padding:3px;">
-                         <img id="schtDatLoeschen" title="Schichtmodell löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
-                         <img id="schtDatSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                         <img id="schtDatHinz" title="Neues Schichtmodell erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
+                         <img id="schtDatLoeschen" data-edit="5-2" title="Schichtmodell löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
+                         <img id="schtDatSpeichern" data-edit="5-2" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                         <img id="schtDatHinz" data-edit="5-2" title="Neues Schichtmodell erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
                          <img id="schtDatSuchen" title="Schichtmodell suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                          <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
                          <img id="schtDatLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letztes Schichtmodell" src="images/last.png" alt="letzte" />
@@ -6355,7 +6426,16 @@
             </div>
             <div id="infosExtRechnungen">
                <div class="navDropBox" style="height:20px;padding:3px;">
-                  <img id="eRngLoeschen" title="Energieträger löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> <img id="eRngSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img id="eRngHinz" title="Neuen Energieträger erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> <img id="eRngSuchen" title="Energieträger suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="eRngLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> <img id="eRngNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="eRngPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> <img id="eRngFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
+                  <img id="eRngLoeschen" data-edit="4-2-1" title="Energieträger löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" /> 
+                  <img id="eRngSpeichern" data-edit="4-2-1" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                  <img id="eRngHinz" data-edit="4-2-1" title="Neuen Energieträger erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" /> 
+                  <img id="eRngSuchen" title="Energieträger suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> 
+                  <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> 
+                  <img id="eRngLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" /> 
+                  <img id="eRngNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächster Mandant" src="images/next.png" alt="nächste" /> 
+                  <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                  <img id="eRngPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorheriger Mandant" src="images/previous.png" alt="vorherige" /> 
+                  <img id="eRngFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erster Mandant" src="images/first.png" alt="erste" />
                   <label>Modus:</label>
                   <select id="modusERng" size="1" title="Modus">
                      <option selected>Standard</option>
@@ -6607,7 +6687,7 @@
                   <div class="navDropBox" style="height:20px;padding:3px;">
                      <img id="intEngIMwLoeschen" title="Messwert löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
                      <!-- <img id="intEngIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> -->
-                     <img id="intBdePrdktIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                     <img id="intBdePrdktIMwSpeichern" data-edit="4-1-1" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                      <img id="intBdeMessetelleIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;display: none;" />
                      <!-- new-mm-start 25-03-2021 -->
                      <img id="intBdePrdktIMwHinz" title="Neuen Messwert erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
@@ -7063,9 +7143,9 @@
                </div>
                <div id="infosIntBetriebsdaten" class="infosIntBetriebsdaten">
                   <div class="navDropBox" style="height:20px;padding:3px;">
-                     <img id="intBdeIMwLoeschen" title="Messwert löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
-                     <img id="intBdeIMwSpeichern" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
-                     <img id="intBdeIMwHinz" title="Neuen Messwert erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
+                     <img id="intBdeIMwLoeschen" data-edit="4-1-2" title="Messwert löschen" src="images/delete.png" alt="löschen" style="height:18px;width:18px;" />
+                     <img id="intBdeIMwSpeichern" data-edit="4-1-2" title="Änderungen speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
+                     <img id="intBdeIMwHinz" data-edit="4-1-2" title="Neuen Messwert erstellen" src="images/new.png" alt="neu" style="height:18px;width:18px;" />
                      <img id="intBdeIMwSuchen" title="Messwerte suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" />
                      <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
                      <img id="intBdeIMwLastMst" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzter Mandant" src="images/last.png" alt="letzte" />
@@ -7713,7 +7793,7 @@
                      <div style="float: right; margin-top: 10px; cursor: pointer;">
                         <div style="display: flex">
                            <img id="config_mannual_default_energy" title="Konfiguration" src="images/config.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 15px" />
-                           <img id="save_mannual_default_energy" title="Eingaben speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 10px" />
+                           <img id="save_mannual_default_energy" data-edit="4-1-2" title="Eingaben speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 10px" />
                         </div>
                         <div style="display: none">
                            <button id="btnKonfigMstAnl">Konfiguration</button>
@@ -7922,7 +8002,7 @@
                         <div class='btn-save-config' style="float: right; margin-top: 10px; cursor: pointer;">
                            <div style="display: flex">
                               <img id="config_mannual" title="Konfiguration" src="images/config.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 15px" />
-                              <img id="save_mannual" title="Eingaben speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 10px" />
+                              <img id="save_mannual" data-edit="4-1-1" title="Eingaben speichern" src="images/save.png" alt="suchen, auswählen" style="height:18px;width:18px; display: block; margin-right: 10px" />
                            </div>
                            <div style="display: none">
                               <button id="btnKonfigPrdkt">Konfiguration</button>
