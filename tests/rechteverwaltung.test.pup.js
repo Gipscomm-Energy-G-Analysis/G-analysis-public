@@ -60,11 +60,11 @@ colors = require("colors");
 
     select =
         async (selector, value) => {
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(500)
 
             await page.select(selector, value)
         
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(500)
         }
 
     value = 
@@ -948,22 +948,199 @@ colors = require("colors");
         ]
         .every(a => String(a) === "") 
 
-    await select(".manGrpPfad", 3)
-
-    cont1 = await value(".manGrpPfad")
-    console.log(cont1)
-
-    await select(".manGrpPfad", 5)
-    cont2 = await value(".manGrpPfad")
-    console.log(cont2)
-
-    await select(".manGrpPfad", 2)
-    cont3 = await value(".manGrpPfad")
-    console.log(cont3)
-
     describe("Test creating a new Admin")
     describe("Test clearing fields")
     assert(allEmpty())(true)("Clear fields")
+
+    // create new adm
+    //
+    // switch select to Mustermandant
+    //
+    await select(".manGrpPfad", "man_ID-3")
+    await select(".manGrpPfad", "man_ID-5")
+    await select(".manGrpPfad", "man_ID-1")
+
+    // Test search navigation
+    await click("#admSuchen")
+    
+    // dblclick second record in list
+    await dblclick("#tblAdmSuchen > tbody > tr.even > td:nth-child(3)")
+            
+    // admin form fields
+    valueTitelAdm = await value("#titelAdm")
+    valueNameAdm = await value("#nameAdm")
+    valueVornameAdm = await value("#vornameAdm")
+    valueEmailAdm = await value("#emailAdm")
+    valueTelefonAdm = await value("#telefonAdm")
+    valueFaxAdm = await value("#faxAdm")
+    valueMobiltelefonAdm = await value("#mobiltelefonAdm")
+    valueBenutzernameAdm = await value("#benutzernameAdm")
+
+    correctValues =
+        () =>
+        [ [valueTitelAdm, "Frau"]
+        , [valueNameAdm, "Musterfrau"]
+        , [valueVornameAdm, "Erika"]
+        , [valueEmailAdm, "email@web.de"]
+        , [valueTelefonAdm, "465756"]
+        , [valueFaxAdm, "567534"]
+        , [valueMobiltelefonAdm, "56756"]
+        , [valueBenutzernameAdm, "User"]
+        ]
+        .every(a => a[0] == a[1])
+
+    describe("Test search navigation")
+    assert(correctValues())(true)("Search")
+
+
+    // clear fields
+    await click("#admHinz")
+
+    await page.type("#titelAdm", "Titel", {delay: 200})
+    await page.type("#nameAdm", "Name", {delay: 200})
+    await page.type("#vornameAdm", "Vorname", {delay: 200})
+    await page.type("#emailAdm", "Email", {delay: 200})
+    await page.type("#telefonAdm", "Telefon", {delay: 200})
+    await page.type("#faxAdm", "Fax", {delay: 200})
+    await page.type("#mobiltelefonAdm", "Mobiltelefon", {delay: 200})
+    await page.type("#benutzernameAdm", "Benutzername", {delay: 200})
+    await page.type("#passwortAdm", "Passwort", {delay: 200})
+
+    // click save
+    await click("#admSpeichern")
+
+    // navigate to previous record
+    await click("#admPrevious")
+
+    // navigate to newly created(next)
+    await click("#admNext")
+
+    // admin form fields
+    valueTitelAdm = await value("#titelAdm")
+    valueNameAdm = await value("#nameAdm")
+    valueVornameAdm = await value("#vornameAdm")
+    valueEmailAdm = await value("#emailAdm")
+    valueTelefonAdm = await value("#telefonAdm")
+    valueFaxAdm = await value("#faxAdm")
+    valueMobiltelefonAdm = await value("#mobiltelefonAdm")
+    valueBenutzernameAdm = await value("#benutzernameAdm")
+
+    // compare values
+    correctValues =
+        () =>
+        [ [valueTitelAdm, "Titel"]
+        , [valueNameAdm, "Name"]
+        , [valueVornameAdm, "Vorname"]
+        , [valueEmailAdm, "Email"]
+        , [valueTelefonAdm, "Telefon"]
+        , [valueFaxAdm, "Fax"]
+        , [valueMobiltelefonAdm, "Mobiltelefon"]
+        , [valueBenutzernameAdm, "Benutzername"]
+        ]
+        .every(a => a[0] == a[1])
+
+    describe("Test saving new adm")
+    assert(correctValues())(true)("Create new")
+
+    // Test changing an adm
+
+    // changes to apply
+    changeTitelAdm = "Fest"
+    changeNameAdm = "Rest"
+    changeVornameAdm = "200"
+    changeEmailAdm = "96"
+    changeTelefonAdm = "Hueckeswagen"
+    changeFaxAdm = "11"
+    changeMobiltelefonAdm = "nummer"
+    changeBenutzernameAdm = "mann"
+
+    // Changing values
+    await page.type("#titelAdm", changeTitelAdm, {delay: 200})
+    await page.type("#nameAdm", changeNameAdm, {delay: 200})
+    await page.type("#vornameAdm", changeVornameAdm, {delay: 200})
+    await page.type("#emailAdm", changeEmailAdm, {delay: 200})
+    await page.type("#telefonAdm", changeTelefonAdm, {delay: 200})
+    await page.type("#faxAdm", changeFaxAdm, {delay: 200})
+    await page.type("#mobiltelefonAdm", changeMobiltelefonAdm, {delay: 200})
+    await page.type("#benutzernameAdm", changeBenutzernameAdm, {delay: 200})
+    
+    // save changed adm
+    await click("#admSpeichern")
+
+    // accept dialog
+    await click("#saveAdmOk")
+
+    // navigate to previous record
+    await click("#admPrevious")
+
+    // navigate to changed record(next)
+    await click("#admNext")
+
+    // superadmin form fields
+    valueTitelAdm = await value("#titelAdm")
+    valueNameAdm = await value("#nameAdm")
+    valueVornameAdm = await value("#vornameAdm")
+    valueEmailAdm = await value("#emailAdm")
+    valueTelefonAdm = await value("#telefonAdm")
+    valueFaxAdm = await value("#faxAdm")
+    valueMobiltelefonAdm = await value("#mobiltelefonAdm")
+    valueBenutzernameAdm = await value("#benutzernameAdm")
+
+    // compare values
+    correctValues =
+        () =>
+        [ [valueTitelAdm, "Titel" + changeTitelAdm]
+        , [valueNameAdm, "Name" + changeNameAdm]
+        , [valueVornameAdm, "Vorname" + changeVornameAdm]
+        , [valueEmailAdm, "Email" + changeEmailAdm]
+        , [valueTelefonAdm, "Telefon" + changeTelefonAdm]
+        , [valueFaxAdm, "Fax" + changeFaxAdm]
+        , [valueMobiltelefonAdm, "Mobiltelefon" + changeMobiltelefonAdm]
+        , [valueBenutzernameAdm, "Benutzername" + changeBenutzernameAdm]
+        ]
+        .every(a => a[0] == a[1])
+
+    describe("Test changing an adm")
+    assert(correctValues())(true)("Change existing")
+
+    // Test deleting an adm
+
+    // navigate to last record
+    await click("#admLast")
+    
+    // click löschen
+    await click1("#admLoeschen")
+    
+    // navigate to last record
+    await click("#admLast")
+
+    // superadmin form fields
+    valueTitelAdm = await value("#titelAdm")
+    valueNameAdm = await value("#nameAdm")
+    valueVornameAdm = await value("#vornameAdm")
+    valueEmailAdm = await value("#emailAdm")
+    valueTelefonAdm = await value("#telefonAdm")
+    valueFaxAdm = await value("#faxAdm")
+    valueMobiltelefonAdm = await value("#mobiltelefonAdm")
+    valueBenutzernameAdm = await value("#benutzernameAdm")
+    
+    // check if at least 4 values differ
+    correctValues =
+        () =>
+        [ [valueTitelAdm, "Titel" + changeTitelAdm]
+        , [valueNameAdm, "Name" + changeNameAdm]
+        , [valueVornameAdm, "Vorname" + changeVornameAdm]
+        , [valueEmailAdm, "Email" + changeEmailAdm]
+        , [valueTelefonAdm, "Telefon" + changeTelefonAdm]
+        , [valueFaxAdm, "Fax" + changeFaxAdm]
+        , [valueMobiltelefonAdm, "Mobiltelefon" + changeMobiltelefonAdm]
+        , [valueBenutzernameAdm, "Benutzername" + changeBenutzernameAdm]
+        ]
+        .reduce((acc, a) => Number(acc) + Number(a[0] !== a[1] ? 1 : 0), 0) > 3
+
+    describe("Test deleting an adm")
+    assert(correctValues())(true)("Delete")
+
 
     await browser.close()
 })()
