@@ -83,6 +83,17 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
+            // <----6-1-2022--
+            // $connGipscomm = connectToDB("gipscomm");
+            // $selectMaxIdGipscomm = "SELECT MAX(id) as max_id from tableFormat ";
+            // $maxResultGipscomm = queryDB($connGipscomm, $selectMaxIdGipscomm, "read");
+            // // echo json_encode($maxResultGipscomm); die;
+            // if($selectMaxIdGipscomm != null){
+            //     $last_id = $maxResultGipscomm[0]['max_id'] + $maxResult[0]['max_id']; 
+            // }
+            // $conn = connectToDB($_POST['nameDB']);
+            // $last_id_val = $maxResult[0]['max_id'];
+            // --end->
             $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->
@@ -105,8 +116,8 @@ class dashboardControllerOperations {
     // <----24-12-2021---
     public function saveTableFormatProductAutomatic(){
         try{
-            // global $conn;
-            $conn = connectToDB("gipscomm");
+            global $conn;
+            // $conn = connectToDB("gipscomm");
             $nameDB = $_POST['nameDB'];
             $username = $_SESSION['username']; 
             $queryData = $_REQUEST['query_data'];
@@ -150,6 +161,28 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
+            // <---5-1-2022--
+            // $nameDB = $_POST['nameDB'];
+            // $connTable = connectToDB($nameDB);
+            // $getResult = "SELECT MAX(id) as max_id from tableFormat ";
+            // $result = sqlsrv_query($connTable,$getResult);
+            // $dataResult = [];
+            // if($result != false)
+            // {
+            //     while( $row = sqlsrv_fetch_array( $result, SQLSRV_FETCH_ASSOC ) ) {
+            //         $dataResult[] = $row ;
+            //     };
+            //     // echo json_encode(count($dataResult)); die;
+            //     if(count($dataResult) > 0)
+            //     {
+            //         $last_id = $dataResult[0]['max_id'] + $maxResult[0]['max_id']; 
+            //     }
+            //     // echo json_encode($row); die;
+            // }
+            
+            // $conn = connectToDB("gipscomm");
+            // $last_id_val = $maxResult[0]['max_id'];
+            // --end-->
             $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->

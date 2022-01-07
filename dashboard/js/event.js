@@ -579,20 +579,26 @@ $(document).ready( function(){
     // --end-->
 
     $(document).on('click', '.tiles-click', function(){
-        var div_id = $(this).attr('id');
+        // var div_id = $(this).attr('class');
         // console.log($(this).attr('data-i'));
-        $("#"+div_id).fadeOut("20");
+        // $("#"+div_id).fadeOut("20");
+        var id=$(this).attr('class');
+        div_id =id.split(" ")[0];
+        $('.'+div_id+'.tiles-click').fadeOut("20");
         $(".small-table_"+$(this).attr('data-i')).hide();
-        tiles_click(div_id);
+        tiles_click(div_id,prd_automatic_tile = false);
     });
 
     // <----28-12-2021--
     $(document).on('click', '.product_automatic_tile', function(){
-        var div_id = $(this).attr('id');
+        // var div_id = $(this).attr('id');
         // console.log($(this).attr('data-i'));
-        $("#"+div_id).fadeOut("20");
+        // $("#"+div_id).fadeOut("20");
+        var id=$(this).attr('class');
+        div_id =id.split(" ")[0];
+        $('.'+div_id+'.product_automatic_tile').fadeOut("20");
         $(".small-table_"+$(this).attr('data-i')).hide();
-        tiles_click(div_id);
+        tiles_click(div_id,prd_automatic_tile = true);
     });
     // --end-->
 

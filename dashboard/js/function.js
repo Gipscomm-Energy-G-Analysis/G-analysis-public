@@ -737,6 +737,7 @@ function saveTableFormatProductAutomatic(){
           $('#product_modal_loader_div').show();
           $('.product_tile_modal .modal-content').css('opacity','0.8');
 
+          // $('#save_tile_id_automatic').val(a['max_id'][0]['max_id']);
           $('#save_tile_id').val(a['max_id'][0]['max_id']);
 
           setTimeout(() => {
@@ -992,11 +993,30 @@ function getTableFormatDashboard(){
 
           // <---2-11-2021--
           var save_tile_id = $('#save_tile_id').val();
+          // var save_tile_id_automatic = $('#save_tile_id_automatic').val();
           if(save_tile_id != '' && value['id'] == save_tile_id)
           {
+            // var resultContain = value['tile_html'].includes("product_automatic_tile_card"); //False When Prd not Automatic tile
+            // if(resultContain != true)
+            // {
+            //   value['tile_html'] = value['tile_html'].replace('card card-border', 'card card-border tile_border');
+            //   $('#save_tile_id').val('');
+            // }
+
             value['tile_html'] = value['tile_html'].replace('card card-border', 'card card-border tile_border');
             $('#save_tile_id').val('');
+            
           }
+          // if(save_tile_id_automatic != '' && value['id'] == save_tile_id_automatic)
+          // {
+          //   var resultContain = value['tile_html'].includes("product_automatic_tile_card"); //True When Prd Automatic tile
+          //   if(resultContain == true)
+          //   {
+          //     value['tile_html'] = value['tile_html'].replace('card card-border product_automatic_tile_card', 'card card-border product_automatic_tile_card tile_border');
+          //     $('#save_tile_id_automatic').val('');
+          //   }
+            
+          // }
           // --end-->
 
           // <--9-11-21--
@@ -1203,11 +1223,11 @@ function generateHtmlMeasurementTiles(type){
 function generateHtmlProductTiles(type){
   var product_title = localStorage.getItem('product_title_modal_tile');
   var product_type = $('#product_type').val();
-  if(product_type == 'automatic')
-  {
-    generateHtmlProductTilesAutomatic();
-  }
-  else{
+  // if(product_type == 'automatic')
+  // {
+  //   generateHtmlProductTilesAutomatic();
+  // }
+  // else{
     $.ajax({
       type: "POST",
       url: "php/retreive.php",
@@ -1233,7 +1253,7 @@ function generateHtmlProductTiles(type){
         },1000)
       }
     });
-  }
+  // }
 
 }
 
@@ -2447,8 +2467,14 @@ function energy_consumed_five_days(){
 }
 
 // <---18-8-2021---
-function tiles_click(div_id){
-  $('#'+div_id).fadeIn("1000");
+function tiles_click(div_id,prd_automatic_tile){
+  if(prd_automatic_tile == true)
+  {
+    $('.'+div_id+'.product_automatic_tile').fadeIn("1000");
+  }
+  else{
+    $('.'+div_id+'.tiles-click').fadeIn("1000");
+  }
 }
 // ---end-->
 
@@ -2731,11 +2757,11 @@ function getDimentions(id,classPrdAutomatic) {
             // console.log(a['data']);
             if(a['data']['tile_record_type'] == 'product' && a['data']['table_other'] == 'true')
             {
-              localStorage.setItem('tile_dashboard_prd_type_automatic','true');
+              // localStorage.setItem('tile_dashboard_prd_type_automatic','true');
               getTableDashboardDataProductAutomatic(id,a['data']['query_data_records']);
 
                // <----30-12-2021---
-              $('.'+id+'.product_automatic_tile').dblclick(function(){
+              $('.'+id+'.tiles-click').dblclick(function(){
                 // alert('Working');
                 // <----17-11-2021---
                 var pathname = window.location.pathname;
@@ -3289,6 +3315,7 @@ function updateTileRecordProductAutomatic(){
         $('#product_modal_loader_div').show();
         $('.product_tile_modal .modal-content').css('opacity','0.8');
 
+        // $('#save_tile_id_automatic').val(id);
         $('#save_tile_id').val(id);
         
         setTimeout(() => {
@@ -3335,6 +3362,7 @@ function getEditDataDashboard(id,i_value,product_automatic_tile = false){
         }
         $("#type_data_tile").attr('disabled','disabled');
         
+        // val['tile_record_type'] == 'product' && val['table_other'] == 'true'
         if(product_automatic_tile == true)
         {
           $("#record_type_of_tile").attr('disabled','disabled');
@@ -5635,8 +5663,8 @@ function getTableDashboardDataProductAutomatic(id,queryDataRecords){
       localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
       // -end->
 
-      $('.'+id+'.product_automatic_tile .save_table_div_show_table .table').html('');
-      $('.'+id+'.product_automatic_tile .save_table_div_show_table .table').html(a['dashboardMeasurementHtml']);
+      $('.'+id+'.tiles-click .save_table_div_show_table .table').html('');
+      $('.'+id+'.tiles-click .save_table_div_show_table .table').html(a['dashboardMeasurementHtml']);
     }
   });
 }

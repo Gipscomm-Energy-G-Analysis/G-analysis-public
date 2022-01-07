@@ -594,61 +594,56 @@ class dashboardController {
     // <---16-8-2021--
     function getTableFormatDashboard(){
         try{
-            // global $conn;
+            global $conn;
             $username = $_SESSION['username']; 
-            // <---27-12-2021-- Get Tiles Gipscommm
-            $conn = connectToDB('gipscomm');
-            $selectGipscommTile  = "SELECT * from tableFormat where username = '$username' order by priority asc ";
-            $dataResultGipscomm = queryDB($conn, $selectGipscommTile, "read");
-            $records['data'] = $dataResultGipscomm;
-            // echo json_encode($records['data']); die;
-            // --end-->
-
-            // <---4-1-2022--
-            $nameDB = $_POST['nameDB'];
-            $conn = connectToDB($nameDB);
-            // echo $conn; die;
-            $getResult = "SELECT * from tableFormat WHERE username = '$username' order by priority asc";
-            $result = sqlsrv_query($conn,$getResult);
-            // echo json_encode(gettype($result)); die;
-            $dataResult = [];
-            if($result != false)
-            {
-                while( $row = sqlsrv_fetch_array( $result, SQLSRV_FETCH_ASSOC ) ) {
-                    $dataResult[] = $row ;
-                };
-                // echo json_encode(count($dataResult)); die;
-                if(count($dataResult) > 0)
-                {
-                    $arMerge = array_merge($dataResultGipscomm,$dataResult);
-                    $records['data'] = $arMerge;
-                    $records['total_record'] = count($dataResult);
-                    $dataMeasurement = '';
-                }
-                // echo json_encode($row); die;
-            }
-            echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+            $selectQuery = "SELECT * from tableFormat where username = '$username' order by priority asc ";
+            $dataResult = queryDB($conn, $selectQuery, "read");
+            $records['data'] = $dataResult;
+            echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
-            // ---end--->
-            // <--Old Code----
+            
+            // <---Old Code With Gipscomm--7-1-2022-
+            // // <---27-12-2021-- Get Tiles Gipscommm
+            // // $conn = connectToDB('gipscomm');
+            // $selectGipscommTile  = "SELECT * from tableFormat where username = '$username' order by priority asc ";
+            // $dataResultGipscomm = queryDB($conn, $selectGipscommTile, "read");
+            // $records['data'] = $dataResultGipscomm;
+            // // echo json_encode($records['data']); die;
+            // // --end-->
+
+            // // <---4-1-2022--
             // $nameDB = $_POST['nameDB'];
             // $conn = connectToDB($nameDB);
+            // // echo $conn; die;
             // $getResult = "SELECT * from tableFormat WHERE username = '$username' order by priority asc";
-            // $dataResult = queryDB($conn, $getResult, "read");
-            // // echo json_encode($dataResult); die;
-            // if($dataResult != 'error')
+            // $result = sqlsrv_query($conn,$getResult);
+            // // echo json_encode(gettype($result)); die;
+            // $dataResult = [];
+            // if($result != false)
             // {
-            //     if($dataResult != '' && count($dataResult) > 0){
-
-            //         // $records['data'] = $dataResult;
+            //     while( $row = sqlsrv_fetch_array( $result, SQLSRV_FETCH_ASSOC ) ) {
+            //         $dataResult[] = $row ;
+            //     };
+            //     // echo json_encode(count($dataResult)); die;
+            //     if(count($dataResult) > 0)
+            //     {
             //         $arMerge = array_merge($dataResultGipscomm,$dataResult);
+            //         // echo json_encode($arMerge); die;
             //         $records['data'] = $arMerge;
             //         $records['total_record'] = count($dataResult);
             //         $dataMeasurement = '';
+
+            //         // <---5-1-2022-
+            //         //$priority = array_column($arMerge,'priority');
+            //         // array_multisort(array_column($arMerge,'priority'), SORT_ASC, $arMerge,SORT_NUMERIC);
+            //         // echo json_encode($arMerge); 
+            //         $records['data'] = $arMerge;
+            //         // --end--->
             //     }
+            //     // echo json_encode($row); die;
             // }
             // echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
-            // ---end-->
+            // ---end--->
             die;
 
         }
@@ -1265,7 +1260,7 @@ class dashboardController {
                         $product_title = $_POST['product_title'];;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$last_id'>";
                         $tileHtml.="<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card product_automatic_tile ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
-                                    <div class='card card-border tile_border'>
+                                    <div class='card card-border product_automatic_tile_card tile_border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
                                                 <div class='action-modal-button-div'>
@@ -1306,7 +1301,7 @@ class dashboardController {
             else{
                 $tileHtml.="<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card product_automatic_tile ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
                                 <input type='hidden' id='total_records' value='$last_id'>                
-                                <div class='card card-border tile_border'>
+                                <div class='card card-border product_automatic_tile_card tile_border'>
                                     <div class='card-body overflow-hide display-flex'>
                                         <div id='' class=''>
                                             <div class='action-modal-button-div'>
@@ -2228,7 +2223,7 @@ class dashboardController {
                         $tileHtml .= "<input type='hidden' id='total_records' value='$i_value'>";
                         // $tileHtml.= $dataResult[$i]['tile_html'];
                         $tileHtml.="<div class='product_html_modal_$i_value'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card product_automatic_tile ' id='product_count_tile_modal_$i_value' data-i='$i_value' data-type-tile='Product'>
-                                    <div class='card card-border'>
+                                    <div class='card card-border product_automatic_tile_card'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
                                                 <div class='action-modal-button-div'>
@@ -6139,7 +6134,8 @@ class dashboardController {
     // <---15-12-2021
     public function getTableDashboardDataProductAutomatic(){
         try{
-            $conn = connectToDB('gipscomm');
+            // $conn = connectToDB('gipscomm');
+            global $conn;
             $id = $_REQUEST['id'];
             $username = $_SESSION['username']; 
             $selectQuery = "SELECT * from tableFormat where username = '$username' AND id = $id ";
