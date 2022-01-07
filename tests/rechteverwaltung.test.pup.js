@@ -46,16 +46,25 @@ colors = require("colors");
         
     dblclick =
         async selector => {
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(500)
             
             await page.click(selector, { clickCount: 2 }) 
 
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(500)
         }
 
     click1 =
         async selector => {
             await page.evaluate(selector_ => document.querySelector(selector_).click(), selector)
+        }
+
+    select =
+        async (selector, value) => {
+            await page.waitForTimeout(1000)
+
+            await page.select(selector, value)
+        
+            await page.waitForTimeout(1000)
         }
 
     value = 
@@ -70,6 +79,25 @@ colors = require("colors");
             await page.waitForSelector(selector)
             element = await page.$(selector)
             return await page.evaluate(el => el.textContent, element) 
+        }
+
+    testTabNavigation = 
+        async (selectorMenu, selectorTab, name) => {
+            await click1(selectorMenu)
+
+            valBgColor = await css(selectorTab, "background-color")
+            
+            prepRgb = 
+                val =>
+                val.split(",")
+                .flatMap(a => a.split("("))
+                .flatMap(a => a.split(")"))
+                .filter(a => a !== "")
+                .filter(a => !isNaN(a)).join(",")
+
+            describe(`Test ${name} tab navigation`)
+            assert(prepRgb(valBgColor))("206, 214, 222")("Tab navigation")
+
         }
 
     browser = await puppeteer.launch({headless: true})
@@ -123,20 +151,7 @@ colors = require("colors");
     //
     describeTest("TEST BETREUERGRUPPEN")
 
-    await click1("#betrGrpMenu")
-
-    valBgColor = await css("#tabBetrGrp", "background-color")
-    
-    prepRgb = 
-        val =>
-        val.split(",")
-        .flatMap(a => a.split("("))
-        .flatMap(a => a.split(")"))
-        .filter(a => a !== "")
-        .filter(a => !isNaN(a)).join(",")
-
-    describe("Test betrGrp tab navigation")
-    assert(prepRgb(valBgColor))("206, 214, 222")("Tab navigation")
+    await testTabNavigation("#betrGrpMenu", "#tabBetrGrp", "betrGrp2")
 
     // Test search navigation
 
@@ -173,7 +188,7 @@ colors = require("colors");
         , [valueGeschaeftsfuehrerBetrGrp, "A.Wieland"]
         , [valueTelefonBetrGrp, "+49 (2192) 791986-16"]
         , [valueEmailBetrGrp, "info@energie-gipscomm.de"]
-        , [valueNotizBetrGrp, ""]
+        , [valueNotizBetrGrp, "Fürs Testen notwendig !"]
         , [firstMandanten, "Mustermandant"]
         , [middleMandanten, "HBS-Herholz-Tueren"]
         , [lastMandanten, "Huendgen Swisttal"]
@@ -703,28 +718,13 @@ colors = require("colors");
     // navigate to first betrGrp
     await click1("#betrGrpFirst")
 
-    await page.waitForTimeout(5000)
-
     // Test Mandantengruppen
     describeTest("TEST MANDANTENGRUPPEN")
 
     // Test navigation to mandantengruppen tab
     //
-    await click1("#manGrpMenu")
-
-    valBgColor = await css("#tabManGrp", "background-color")
+    await testTabNavigation("#manGrpMenu", "#tabManGrp", "manGrp")
     
-    prepRgb = 
-        val =>
-        val.split(",")
-        .flatMap(a => a.split("("))
-        .flatMap(a => a.split(")"))
-        .filter(a => a !== "")
-        .filter(a => !isNaN(a)).join(",")
-
-    describe("Test manGrp tab navigation")
-    assert(prepRgb(valBgColor))("206, 214, 222")("Tab navigation")
-
     // Test creating a new Mandantengruppe
     //
     // Test clearing fields
@@ -896,6 +896,74 @@ colors = require("colors");
     describe("Test deleting a manGrp")
     assert(correctValues())(true)("Delete")
 
+    // Test Admins
+    //
+    
+    describeTest("TEST ADMINS")
+    
+    // Test navigation to Admin tab
+    //
+    await testTabNavigation("#admMenu", "#tabAdm", "adm")
+
+    // Test creating a new Admin
+    //
+    // Test clearing fields
+    //
+    // fill fields
+    await page.type("#titelAdm", "Titel")
+    await page.type("#nameAdm", "Name")
+    await page.type("#vornameAdm", "Vorname")
+    await page.type("#emailAdm", "EMail")
+    await page.type("#telefonAdm", "Telefon")
+    await page.type("#faxAdm", "Fax")
+    await page.type("#mobiltelefonAdm", "Mobiltelefon")
+    await page.type("#benutzernameAdm", "Benutzername")
+    await page.type("#passwortAdm", "Passwort")
+
+    // clear fields
+    await click("#admHinz")
+
+    // admin form fields
+    valueTitelAdm = await value("#titelAdm")
+    valueNameAdm = await value("#nameAdm")
+    valueVornameAdm = await value("#vornameAdm")
+    valueEmailAdm = await value("#emailAdm")
+    valueTelefonAdm = await value("#telefonAdm")
+    valueFaxAdm = await value("#faxAdm")
+    valueMobiltelefonAdm = await value("#mobiltelefonAdm")
+    valueBenutzernameAdm = await value("#benutzernameAdm")
+    valuePasswortAdm = await value("#passwortAdm")
+
+    allEmpty =
+        () =>
+        [ valueTitelAdm
+        , valueNameAdm
+        , valueVornameAdm
+        , valueEmailAdm
+        , valueTelefonAdm
+        , valueFaxAdm
+        , valueMobiltelefonAdm
+        , valueBenutzernameAdm
+        , valuePasswortAdm
+        ]
+        .every(a => String(a) === "") 
+
+    await select(".manGrpPfad", 3)
+
+    cont1 = await value(".manGrpPfad")
+    console.log(cont1)
+
+    await select(".manGrpPfad", 5)
+    cont2 = await value(".manGrpPfad")
+    console.log(cont2)
+
+    await select(".manGrpPfad", 2)
+    cont3 = await value(".manGrpPfad")
+    console.log(cont3)
+
+    describe("Test creating a new Admin")
+    describe("Test clearing fields")
+    assert(allEmpty())(true)("Clear fields")
 
     await browser.close()
 })()
