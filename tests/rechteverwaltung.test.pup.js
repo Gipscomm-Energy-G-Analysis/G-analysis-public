@@ -151,7 +151,7 @@ colors = require("colors");
     //
     describeTest("TEST BETREUERGRUPPEN")
 
-    await testTabNavigation("#betrGrpMenu", "#tabBetrGrp", "betrGrp2")
+    await testTabNavigation("#betrGrpMenu", "#tabBetrGrp", "betrGrp")
 
     // Test search navigation
 
@@ -1076,7 +1076,7 @@ colors = require("colors");
     // navigate to changed record(next)
     await click("#admNext")
 
-    // superadmin form fields
+    // admin form fields
     valueTitelAdm = await value("#titelAdm")
     valueNameAdm = await value("#nameAdm")
     valueVornameAdm = await value("#vornameAdm")
@@ -1114,7 +1114,7 @@ colors = require("colors");
     // navigate to last record
     await click("#admLast")
 
-    // superadmin form fields
+    // admin form fields
     valueTitelAdm = await value("#titelAdm")
     valueNameAdm = await value("#nameAdm")
     valueVornameAdm = await value("#vornameAdm")
@@ -1141,6 +1141,244 @@ colors = require("colors");
     describe("Test deleting an adm")
     assert(correctValues())(true)("Delete")
 
+    // Test Benutzer
+    //
+    
+    describeTest("TEST BENUTZER")
+    
+    // Test navigation to Benutzer tab
+    //
+    await testTabNavigation("#benMenu", "#tabBen", "ben")
+
+    // Test creating a new Benutzer
+    //
+    // Test clearing fields
+    //
+    // fill fields
+    await page.type("#titelBen", "Titel")
+    await page.type("#nameBen", "Name")
+    await page.type("#vornameBen", "Vorname")
+    await page.type("#emailBen", "EMail")
+    await page.type("#telefonBen", "Telefon")
+    await page.type("#faxBen", "Fax")
+    await page.type("#mobiltelefonBen", "Mobiltelefon")
+    await page.type("#benutzernameBen", "Benutzername")
+    await page.type("#passwortBen", "Passwort")
+
+    // clear fields
+    await click("#benHinz")
+
+    // benutzer form fields
+    valueTitelBen = await value("#titelBen")
+    valueNameBen = await value("#nameBen")
+    valueVornameBen = await value("#vornameBen")
+    valueEmailBen = await value("#emailBen")
+    valueTelefonBen = await value("#telefonBen")
+    valueFaxBen = await value("#faxBen")
+    valueMobiltelefonBen = await value("#mobiltelefonBen")
+    valueBenutzernameBen = await value("#benutzernameBen")
+    valuePasswortBen = await value("#passwortBen")
+
+    allEmpty =
+        () =>
+        [ valueTitelBen
+        , valueNameBen
+        , valueVornameBen
+        , valueEmailBen
+        , valueTelefonBen
+        , valueFaxBen
+        , valueMobiltelefonBen
+        , valueBenutzernameBen
+        , valuePasswortBen
+        ]
+        .every(a => String(a) === "") 
+
+    describe("Test creating a new Benutzer")
+    describe("Test clearing fields")
+    assert(allEmpty())(true)("Clear fields")
+
+    // create new ben
+    //
+    // switch select to Mustermandant
+    //
+    await select(".manGrpPfad", "man_ID-3")
+    await select(".manGrpPfad", "man_ID-5")
+    await select(".manGrpPfad", "man_ID-1")
+
+    // Test search navigation
+    await click("#benSuchen")
+    
+    // dblclick second record in list
+    await dblclick("#tblBenSuchen > tbody > tr.even > td:nth-child(3)")
+            
+    // benutzer form fields
+    valueTitelBen = await value("#titelBen")
+    valueNameBen = await value("#nameBen")
+    valueVornameBen = await value("#vornameBen")
+    valueEmailBen = await value("#emailBen")
+    valueTelefonBen = await value("#telefonBen")
+    valueFaxBen = await value("#faxBen")
+    valueMobiltelefonBen = await value("#mobiltelefonBen")
+    valueBenutzernameBen = await value("#benutzernameBen")
+
+    correctValues =
+        () =>
+        [ [valueTitelBen, "Herr"]
+        , [valueNameBen, "Tekniepe"]
+        , [valueVornameBen, "Alfred"]
+        , [valueEmailBen, ""]
+        , [valueTelefonBen, ""]
+        , [valueFaxBen, ""]
+        , [valueMobiltelefonBen, ""]
+        , [valueBenutzernameBen, "A.Tekniepe"]
+        ]
+        .every(a => a[0] == a[1])
+
+    describe("Test search navigation")
+    assert(correctValues())(true)("Search")
+
+
+    // clear fields
+    await click("#benHinz")
+
+    await page.type("#titelBen", "Titel", {delay: 200})
+    await page.type("#nameBen", "Name", {delay: 200})
+    await page.type("#vornameBen", "Vorname", {delay: 200})
+    await page.type("#emailBen", "Email", {delay: 200})
+    await page.type("#telefonBen", "Telefon", {delay: 200})
+    await page.type("#faxBen", "Fax", {delay: 200})
+    await page.type("#mobiltelefonBen", "Mobiltelefon", {delay: 200})
+    await page.type("#benutzernameBen", "Benutzername", {delay: 200})
+    await page.type("#passwortBen", "Passwort", {delay: 200})
+
+    // click save
+    await click("#benSpeichern")
+
+    // navigate to previous record
+    await click("#benLast")
+
+    // benutzer form fields
+    valueTitelBen = await value("#titelBen")
+    valueNameBen = await value("#nameBen")
+    valueVornameBen = await value("#vornameBen")
+    valueEmailBen = await value("#emailBen")
+    valueTelefonBen = await value("#telefonBen")
+    valueFaxBen = await value("#faxBen")
+    valueMobiltelefonBen = await value("#mobiltelefonBen")
+    valueBenutzernameBen = await value("#benutzernameBen")
+
+    // compare values
+    correctValues =
+        () =>
+        [ [valueTitelBen, "Titel"]
+        , [valueNameBen, "Name"]
+        , [valueVornameBen, "Vorname"]
+        , [valueEmailBen, "Email"]
+        , [valueTelefonBen, "Telefon"]
+        , [valueFaxBen, "Fax"]
+        , [valueMobiltelefonBen, "Mobiltelefon"]
+        , [valueBenutzernameBen, "Benutzername"]
+        ]
+        .every(a => a[0] == a[1])
+
+    describe("Test saving new ben")
+    assert(correctValues())(true)("Create new")
+
+    // Test changing a ben
+
+    // changes to apply
+    changeTitelBen = "Fest"
+    changeNameBen = "Rest"
+    changeVornameBen = "200"
+    changeEmailBen = "96"
+    changeTelefonBen = "Hueckeswagen"
+    changeFaxBen = "11"
+    changeMobiltelefonBen = "nummer"
+    changeBenutzernameBen = "mann"
+
+    // Changing values
+    await page.type("#titelBen", changeTitelBen, {delay: 200})
+    await page.type("#nameBen", changeNameBen, {delay: 200})
+    await page.type("#vornameBen", changeVornameBen, {delay: 200})
+    await page.type("#emailBen", changeEmailBen, {delay: 200})
+    await page.type("#telefonBen", changeTelefonBen, {delay: 200})
+    await page.type("#faxBen", changeFaxBen, {delay: 200})
+    await page.type("#mobiltelefonBen", changeMobiltelefonBen, {delay: 200})
+    await page.type("#benutzernameBen", changeBenutzernameBen, {delay: 200})
+    
+    // save changed ben
+    await click("#benSpeichern")
+
+    // accept dialog
+    await click("#saveBenOk")
+
+    // navigate to changed record(next)
+    await click1("#benLast")
+
+    // benutzer form fields
+    valueTitelBen = await value("#titelBen")
+    valueNameBen = await value("#nameBen")
+    valueVornameBen = await value("#vornameBen")
+    valueEmailBen = await value("#emailBen")
+    valueTelefonBen = await value("#telefonBen")
+    valueFaxBen = await value("#faxBen")
+    valueMobiltelefonBen = await value("#mobiltelefonBen")
+    valueBenutzernameBen = await value("#benutzernameBen")
+
+    // compare values
+    correctValues =
+        () =>
+        [ [valueTitelBen, "Titel" + changeTitelBen]
+        , [valueNameBen, "Name" + changeNameBen]
+        , [valueVornameBen, "Vorname" + changeVornameBen]
+        , [valueEmailBen, "Email" + changeEmailBen]
+        , [valueTelefonBen, "Telefon" + changeTelefonBen]
+        , [valueFaxBen, "Fax" + changeFaxBen]
+        , [valueMobiltelefonBen, "Mobiltelefon" + changeMobiltelefonBen]
+        , [valueBenutzernameBen, "Benutzername" + changeBenutzernameBen]
+        ]
+        .every(a => a[0] == a[1])
+
+    describe("Test changing a ben")
+    assert(correctValues())(true)("Change existing")
+
+    // Test deleting a ben
+
+    // navigate to last record
+    await click("#benLast")
+    
+    // click löschen
+    await click1("#benLoeschen")
+    
+    // navigate to last record
+    await click("#benLast")
+
+    // benutzer form fields
+    valueTitelBen = await value("#titelBen")
+    valueNameBen = await value("#nameBen")
+    valueVornameBen = await value("#vornameBen")
+    valueEmailBen = await value("#emailBen")
+    valueTelefonBen = await value("#telefonBen")
+    valueFaxBen = await value("#faxBen")
+    valueMobiltelefonBen = await value("#mobiltelefonBen")
+    valueBenutzernameBen = await value("#benutzernameBen")
+    
+    // check if at least 4 values differ
+    correctValues =
+        () =>
+        [ [valueTitelBen, "Titel" + changeTitelBen]
+        , [valueNameBen, "Name" + changeNameBen]
+        , [valueVornameBen, "Vorname" + changeVornameBen]
+        , [valueEmailBen, "Email" + changeEmailBen]
+        , [valueTelefonBen, "Telefon" + changeTelefonBen]
+        , [valueFaxBen, "Fax" + changeFaxBen]
+        , [valueMobiltelefonBen, "Mobiltelefon" + changeMobiltelefonBen]
+        , [valueBenutzernameBen, "Benutzername" + changeBenutzernameBen]
+        ]
+        .reduce((acc, a) => Number(acc) + Number(a[0] !== a[1] ? 1 : 0), 0) > 3
+
+    describe("Test deleting a ben")
+    assert(correctValues())(true)("Delete")
 
     await browser.close()
 })()
