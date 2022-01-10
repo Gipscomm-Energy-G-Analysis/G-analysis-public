@@ -1176,6 +1176,7 @@ function getTableFormatDashboard(){
         
       }else{
         $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
+        $('#save_position_tile').hide();
       }
       
     }
@@ -2933,10 +2934,10 @@ function edit_tile_product(type,edit_id){
   ar = JSON.parse(ar);
   var product_title = ar['title_modal_tile'];
   var product_type = $('#product_type').val();
-  if(product_type == 'automatic')
-  {
-    edit_tile_product_automatic(type,edit_id);
-  }else{
+  // if(product_type == 'automatic')
+  // {
+  //   edit_tile_product_automatic(type,edit_id);
+  // }else{
   $.ajax({
     type : "POST",
     url : 'php/retreive.php',
@@ -2974,7 +2975,7 @@ function edit_tile_product(type,edit_id){
 
     }
   });
-  }
+  // }
 
 }
 // --end--->
@@ -3363,7 +3364,7 @@ function getEditDataDashboard(id,i_value,product_automatic_tile = false){
         $("#type_data_tile").attr('disabled','disabled');
         
         // val['tile_record_type'] == 'product' && val['table_other'] == 'true'
-        if(product_automatic_tile == true)
+        if(val['tile_record_type'] == 'product' && val['table_other'] == 'true')
         {
           $("#record_type_of_tile").attr('disabled','disabled');
           $("#product_type option[value='automatic']").prop('selected','selecetd');

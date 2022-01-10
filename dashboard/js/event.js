@@ -1314,7 +1314,7 @@ $(document).ready( function(){
                 if(edit_tile_db_name != '' && all_column != '' && edit_tile_db_table != '')
                 {
                     $('#dashboard_database_list option[dashboardbvalue=' + edit_tile_db_name + ']').prop('selected', 'selected');
-                    $('#dashboard_database_list').trigger('change');
+                    // $('#dashboard_database_list').trigger('change');
                     // $('#all_tables_product option[value=' + edit_tile_db_table + ']').prop('selected', 'selected');
                     // getAllColumnProductTables(all_column);
                     // getAllColumnProductTables();
@@ -1819,7 +1819,8 @@ $(document).ready( function(){
         localStorage.setItem('dashboardDB',dashboardDbName);
         $("#nameDashboardDB").val(dashboardDbName);
         getAllProductTables();
-        getTableFormatDashboard();
+        // getTableFormatDashboard();
+        $('#dashboard_sidebar').click();
 
     });
     // -end-->

@@ -251,7 +251,8 @@ class dashboardControllerOperations {
     // <---3-1-2022--
     public function updateTileRecordProductAutomatic(){
         try{
-            $conn = connectToDB("gipscomm");
+            // $conn = connectToDB("gipscomm");
+            global $conn;
             $nameDB = $_POST['nameDB'];
             $username = $_SESSION['username']; 
             $id = $_REQUEST['id'];
