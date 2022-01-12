@@ -95,6 +95,13 @@ function getNumberRecordsMesurement(){
           success: function(a) {
             // a = JSON.parse(a);
             $('#mesurement_select_table_entries').html(a['measurement_html']);
+
+            //Table Not Found Check
+            if(a['table_found'] == 'false'){
+              var htmlTableNotFound = '<tr><td colspan="50" class="text-center">Table Not Found</td></tr>';
+              $('#mesurement_select_table_entries').html(htmlTableNotFound);  
+            }
+
             if(measurement_type == 'manually')
             {
               var thVal =  $('#measurement_record_table table thead tr').children('th:eq(4)').text();
@@ -1379,8 +1386,16 @@ function getNumberRecordsEnergy(){
         },
         success: function(a) {
           // a = JSON.parse(a);
+          // console.log(a['table_found']);
           $('#energy_select_table_entries').html(a['energy_html']);
           $('#open_end_layer_div').hide();
+
+          //Table Not Found Check
+          if(a['table_found'] == 'false'){
+            var htmlTableNotFound = '<tr><td colspan="50" class="text-center">Table Not Found</td></tr>';
+            $('#energy_select_table_entries').html(htmlTableNotFound);  
+          }
+
           if(energy_type == 'manually')
           {
             // var thVal =  $('#energy_record_table table thead tr').children('th:eq(4)').text();
@@ -1944,7 +1959,12 @@ function getNumberRecordsProduct(page_val = 1){
            $('#all_product_table_entries').html(a['product_html']);
            $('#pagination_all_product').html(a['pagination_html']);
            $('#all_product_table_entries tr td').attr('style','padding: 12px !important; font-size: small');
-           
+            
+           if(a['table_found'] == 'false')
+           {
+            var tr = "<tr><td colspan='5' style='padding: 12px !important; font-size: small' class='text-center'>Table Not Found</td></tr>";
+            $('#all_product_table_entries').html(tr);
+           }
         }
     });
 }
@@ -4044,24 +4064,31 @@ function getChartTimeIntervalRecord(){
     success: function(a) {
       var select_html = '';
       if(a != ''){
-        var ar = localStorage.getItem('dashboard_tile_data');
-        ar = JSON.parse(ar);
-        var record_type_of_tile = ar['record_type_of_tile'];
-        select_html+="<option value=''>Select "+record_type_of_tile+"</option>";
-        if(record_type_of_tile == 'measurement'){
-          a.forEach((val)=>{
-            select_html+="<option value='"+val['mst_ID']+"' type='"+val['iBdeType']+"' total_value='"+val['val']+"'>"+val['mstIMw']+"</option>";
-          });
+        if(a['table_found'] == 'false')
+        {
+          select_html="<option value=''>Table Not Found</option>";
         }
-        else if(record_type_of_tile == 'energy'){
-          a.forEach((val)=>{
-            select_html+="<option value='"+val['mst_ID']+"' type='2' total_value='"+val['val']+"'>"+val['nameMST']+"</option>";
-          });
+        else if(a['data'] != '')
+        {
+          var ar = localStorage.getItem('dashboard_tile_data');
+          ar = JSON.parse(ar);
+          var record_type_of_tile = ar['record_type_of_tile'];
+          select_html+="<option value=''>Select "+record_type_of_tile+"</option>";
+          if(record_type_of_tile == 'measurement' && a['data'].length > 0){
+            a['data'].forEach((val)=>{
+              select_html+="<option value='"+val['mst_ID']+"' type='"+val['iBdeType']+"' total_value='"+val['val']+"'>"+val['mstIMw']+"</option>";
+            });
+          }
+          else if(record_type_of_tile == 'energy' && a['data'].length > 0){
+            a['data'].forEach((val)=>{
+              select_html+="<option value='"+val['mst_ID']+"' type='2' total_value='"+val['val']+"'>"+val['nameMST']+"</option>";
+            });
+          }
+          $('#chart_record_filter_div').show();
+          $('#chart_record_type_div').show();
+          $("#chart_record_filter option[value='']").prop('selected','selected');
+          $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
         }
-        $('#chart_record_filter_div').show();
-        $('#chart_record_type_div').show();
-        $("#chart_record_filter option[value='']").prop('selected','selected');
-        $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
       }
       else{
         select_html+="<option value=''>No Record Found</option>";
@@ -4096,11 +4123,17 @@ function getChartTimeIntervalRecordProduct(){
      success: function(a) {
        var select_html = '';
        if(a != ''){
+        if(a['table_found'] == 'false')
+        {
+          select_html="<option value=''>Table Not Found</option>";
+        }
+        else if(a['data'] != '' && a['data'].length > 0)
+        {
          var ar = localStorage.getItem('dashboard_tile_data');
          ar = JSON.parse(ar);
          var record_type_of_tile = ar['record_type_of_tile'];
          select_html+="<option value=''>Select "+record_type_of_tile+"</option>";
-         a.forEach((val)=>{
+         a['data'].forEach((val)=>{
             select_html+="<option value='"+val['prd_id']+"' type='"+val['iBdeType']+"'>"+val['namePrd']+"</option>";
          });
          $('#chart_record_filter_div').show();
@@ -4108,6 +4141,7 @@ function getChartTimeIntervalRecordProduct(){
          $("#chart_record_filter option[value='']").prop('selected','selected');
          $("#chart_records_product_item option[value='']").prop('selected','selected');
          $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
+        }
        }
        else{
          select_html+="<option value=''>No Record Found</option>";
@@ -4193,7 +4227,7 @@ function chartRecordFilter(){
     $('.chart_text_' + mst_input_value).text(mst_value+'('+filterVal+' Days)');
   }
   var chart_outer_table_limit_column = $('#chart_outer_table_limit_column').val();
-  if(filterVal != '' && mst_id != ''){
+  if(filterVal != '' && mst_id != '' && mst_id != null){
     var type = $('#chart_records option:selected').attr('type');
     $('#measurement_modal_loader_div_chart').show();
     $.ajax({

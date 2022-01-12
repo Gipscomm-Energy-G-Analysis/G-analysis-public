@@ -198,7 +198,16 @@ class dashboardController {
             $queryTotalRecords .= "AND T1.intTp_ID = '$time_interval' ";
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
-            $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            
+            $resultQuery = sqlsrv_query($conn,$queryTotalRecords);
+            $totalRecordsValue=[] ;
+            if($resultQuery != false)
+            {
+                $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            }
+            
+
+            // $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
             // echo json_encode($totalRecordsValue); die;s
             
             $pagesCount = '';
@@ -248,7 +257,18 @@ class dashboardController {
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             // echo json_encode($query1); die;
-            $dataMesaurement = queryDB($conn, $query1, "read");
+
+            $resultQuery = sqlsrv_query($conn,$query1);
+            $dataMesaurement=[] ;
+            $tableFound = 'false';
+            if($resultQuery != false)
+            {
+                $dataMesaurement = queryDB($conn, $query1, "read");
+                $tableFound = 'true';
+            }
+            $records['table_found'] = $tableFound;
+
+            // $dataMesaurement = queryDB($conn, $query1, "read");
             
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement);
 
@@ -2648,7 +2668,20 @@ class dashboardController {
             $query1  .= "where T1.iBdeType='2' ";
             $query1 .= "AND T1.intTp_ID = '$time_interval' ";
             $query1 .= "Order by T2.val  Desc ";
-            $data = queryDB($conn, $query1, "read");
+
+            $resultQuery = sqlsrv_query($conn,$query1);
+            $data=[] ;
+            $tableFound = 'false';
+            if($resultQuery != false)
+            {
+                $data = queryDB($conn, $query1, "read");
+                $tableFound = 'true';
+            
+            }
+            $records['table_found'] = $tableFound; 
+            $records['data']  = $data;
+
+            //$data = queryDB($conn, $query1, "read");
             }
             else if($record_type_of_tile == 'energy'){
                 $query1 = "SELECT T3.nameMST ,T1.mst_ID,T2.val ";
@@ -2662,9 +2695,22 @@ class dashboardController {
                 $query1 .= "ON T1.mst_ID = T3.mst_ID ";
                 $query1 .= "Where T1.intTp_ID = '$time_interval' ";
                 $query1 .= "Order by T2.val  Desc ";
-                $data = queryDB($conn, $query1, "read");
+
+                $resultQuery = sqlsrv_query($conn,$query1);
+                $data=[] ;
+                $tableFound = 'false';
+                if($resultQuery != false)
+                {
+                    $data = queryDB($conn, $query1, "read");
+                    $tableFound = 'true';
+                
+                }
+                $records['table_found'] = $tableFound; 
+                $records['data']  = $data;
+
+                // $data = queryDB($conn, $query1, "read");
             }
-            echo json_encode($data,JSON_INVALID_UTF8_IGNORE);
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         }
         catch(Exception $e) {
@@ -2690,9 +2736,22 @@ class dashboardController {
             $query1 .= "GROUP BY t1.prd_id ";
             $query1 .= ") ";
             $query1 .= "order by Mt.iBdePrdktConf_ID desc ";
-            $data = queryDB($conn, $query1, "read");
+
+            $resultQuery = sqlsrv_query($conn,$query1);
+            $data=[] ;
+            $tableFound = 'false';
+            if($resultQuery != false)
+            {
+                $data = queryDB($conn, $query1, "read");
+                $tableFound = 'true';
+            
+            }
+            $records['table_found'] = $tableFound; 
+            $records['data']  = $data;
+            
+            // $data = queryDB($conn, $query1, "read");
             // echo $query1; die;
-            echo json_encode($data,JSON_INVALID_UTF8_IGNORE);
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         }
         catch(Exception $e) {
@@ -2795,7 +2854,13 @@ class dashboardController {
             $queryTotalRecords .= "where T1.intTp_ID = '$time_interval' ";
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
-            $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            $resultQuery = sqlsrv_query($conn,$queryTotalRecords);
+            $totalRecordsValue = [];
+            if($resultQuery != false)
+            {
+                $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            
+            }            
             // echo json_encode($totalRecordsValue); die;
             
             $pagesCount = '';
@@ -2846,8 +2911,16 @@ class dashboardController {
             $query1 .= $queryMainCondition;
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            $dataMesaurement = queryDB($conn, $query1, "read");
+            $resultQuery = sqlsrv_query($conn,$query1);
+            $dataMesaurement =[] ;
+            $tableFound = 'false';
+            if($resultQuery != false)
+            {
+                $dataMesaurement = queryDB($conn, $query1, "read");
+                $tableFound = 'true';
             
+            }
+            $records['table_found'] = $tableFound;     
             $records['energy_html'] = $this->generateHtmlTableEnergyData($dataMesaurement);
 
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlEnergyData($page_val,$pagesCount,$dataMesaurement);
@@ -3567,9 +3640,16 @@ class dashboardController {
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
             // echo $queryTotalRecords; die;
+            $resultQuery = sqlsrv_query($conn,$queryTotalRecords);
+            $totalRecordsValue = [];
+            if($resultQuery != false)
+            {
+                $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            
+            }
 
 
-            $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            // $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
             // echo json_encode($totalRecordsValue); die;s
             
             $pagesCount = '';
@@ -3616,8 +3696,18 @@ class dashboardController {
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";  
             // echo $query1; die; 
+            $resultQuery = sqlsrv_query($conn,$query1);
+            $tableFound = 'false';
+            $dataMesaurement = [];
+            if($resultQuery != false)
+            {
+                $dataMesaurement = queryDB($conn, $query1, "read");
+                $tableFound = 'true';
             
-            $dataMesaurement = queryDB($conn, $query1, "read");
+            }
+            $records['table_found'] = $tableFound;
+            
+            // $dataMesaurement = queryDB($conn, $query1, "read");
 
             $records['energy_html'] = $this->generateHtmlAutomaticTableEnergyData($dataMesaurement);
 
@@ -4190,7 +4280,15 @@ class dashboardController {
             $queryTotalRecord .= "where t1.iBdeType = 1 AND t1.prd_id != '0' ";
             $queryTotalRecord .= "GROUP BY t1.prd_id ";
             // --end-->
-            $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
+            $resultQuery = sqlsrv_query($conn,$queryTotalRecord);
+            $totalRecordsValue = [];
+            if($resultQuery != false)
+            {
+                $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
+            }
+            // $records['table_found'] = $tableFound;
+            
+            // $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
 
             $total_number_records = count($totalRecordsValue);
 
@@ -4235,7 +4333,18 @@ class dashboardController {
             $query1 .= ") ";
             $query1 .= "order by Mt.iBdePrdktConf_ID desc ";
             // --end--
-            $dataProduct = queryDB($conn, $query1, "read");
+            $resultQuery = sqlsrv_query($conn,$query1);
+            $tableFound = 'false';
+            $dataProduct = [];
+            if($resultQuery != false)
+            {
+                $dataProduct = queryDB($conn, $query1, "read");
+                $tableFound = 'true';
+            
+            }
+            $records['table_found'] = $tableFound;
+
+            // $dataProduct = queryDB($conn, $query1, "read");
             // echo json_encode($dataProduct); die;
             // $dataProduct = '';
             $tr = $this->generateAllProductTableHTML($dataProduct);
@@ -7662,6 +7771,13 @@ class dashboardController {
             $queryTotalRecords .= $order_by_val;
             // echo $queryTotalRecords; die;
 
+            $resultQuery = sqlsrv_query($conn,$queryTotalRecords);
+            $totalRecordsValue=[] ;
+            if($resultQuery != false)
+            {
+                $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
+            }
+
 
             $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
             // echo json_encode($totalRecordsValue); die;s
@@ -7711,7 +7827,17 @@ class dashboardController {
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";  
             // echo $query1; die; 
             
-            $dataMesaurement = queryDB($conn, $query1, "read");
+            $resultQuery = sqlsrv_query($conn,$query1);
+            $dataMesaurement=[] ;
+            $tableFound = 'false';
+            if($resultQuery != false)
+            {
+                $dataMesaurement = queryDB($conn, $query1, "read");
+                $tableFound = 'true';
+            }
+            $records['table_found'] = $tableFound;
+
+            // $dataMesaurement = queryDB($conn, $query1, "read");
 
             $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement);
 
