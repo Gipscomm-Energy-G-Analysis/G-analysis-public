@@ -1340,6 +1340,8 @@ $(document).ready( function(){
                 $('#energy_modal_open_button').val('Update & Preview');
                 $('#energy_modal_open_button').attr('tile-edit','true');
             }
+            $('#energy_type option[value=automatic]').prop('selected','selected');
+            $('#energy_type').trigger('change');
         }
         //Chart 
         else if((record_type_of_tile == "measurement" || record_type_of_tile == "energy")  && type_data_tile == "chart" && data_edit_chart == 'false')
@@ -1766,6 +1768,7 @@ $(document).ready( function(){
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum');
             $('.auto_man_div').show();
             $('.layer_modal_filter_div').hide()
+            $('#energy_search_record').attr('readonly',false)
 
         }
         else if(val == 'layer_modal'){
@@ -1774,11 +1777,13 @@ $(document).ready( function(){
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum Quantity');
             $('.auto_man_div').hide();
             $('.layer_modal_filter_div').show()
+            $('#energy_search_record').attr('readonly',true)
         }else{
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Order By Max Units Consumed');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Order By Min Units Consumed');   
             $('.auto_man_div').show();
             $('.layer_modal_filter_div').hide()
+            $('#energy_search_record').attr('readonly',false)
         }
         getNumberRecordsEnergy();
     })
@@ -2539,16 +2544,19 @@ $(document).ready( function(){
         var day_to_val = $('#day_to').val();
         if(day_from_val != '' && day_to_val != '')
         {
-            if(day_from_val == day_to_val)
-            {
-                $('.energy_number_layer_day_filter_error').text('Day From and Day To Cannot be same');
-                $('.energy_number_layer_day_filter_error').fadeIn('slow');
-                setTimeout( function(){
-                    $('.energy_number_layer_day_filter_error').fadeOut('slow');
-                },3000);
-                $("#day_from option[value='']").prop('selected','selected')
-                $("#day_to option[value='']").prop('selected','selected')
-            }
+            // if(day_from_val == day_to_val)
+            // {
+            //     $('.energy_number_layer_day_filter_error').text('Day From and Day To Cannot be same');
+            //     $('.energy_number_layer_day_filter_error').fadeIn('slow');
+            //     setTimeout( function(){
+            //         $('.energy_number_layer_day_filter_error').fadeOut('slow');
+            //     },3000);
+            //     $("#day_from option[value='']").prop('selected','selected')
+            //     $("#day_to option[value='']").prop('selected','selected')
+            // }
+            // else{
+                getNumberRecordsEnergyLayerModal();
+            // }
             // else
             // if(id == 'day_from')
             // {
@@ -2562,6 +2570,12 @@ $(document).ready( function(){
     })
     // --end--->
 
+    // <---13-1-2022--
+    $(document).on('change','#layer_modal_date', function(){
+        getNumberRecordsEnergyLayerModal();
+    });
+    
+    // --end-->
 
     // --end--->
 
