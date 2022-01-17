@@ -1782,6 +1782,7 @@ $(document).ready( function(){
     $(document).on('change','#energy_type', function(){
         var val = $(this).val();
         $('#energy_record_order_by_label').text('Filter Units Consumed');
+        $('#energy_search_record').val('');
         if(val == 'automatic'){
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum');
