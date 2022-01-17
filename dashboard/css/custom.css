@@ -233,6 +233,19 @@
     position: relative;
 }
 
+#energy_table_data_loader_div{
+    text-align: center;
+    position: absolute;
+    bottom: 6%;
+    left: 44%;
+}
+
+#energy_table_data_loader_img{
+    height: 76px;
+    width: 76px;
+    position: relative;
+}
+
 #product_modal_loader_div{
     text-align: center;
     position: absolute;

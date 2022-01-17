@@ -3104,146 +3104,53 @@ class dashboardController {
     public function rowClickEnergyTableDataLayer(){
         try{
             global $conn;
-            $total_number_records = $_POST['total_number_records'];
-            $layer_modal_id = $_POST['layer_modal_id'];
-            $type = 1;
-            $number_records = $_POST['number_records'];
-            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
-            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
-            $order_by_val = $_POST['energy_order_by_val'];
-            $energy_type = $_POST['energy_type'];
-            $open_end_layer = $_POST['open_end_layer'];
-            // <---15-9-2021----
-            // if($energy_type == "automatic"){
-            //     $this->rowClickAutomaticEnergyTableData();
-            //     die;
-            // }
-            // --end--->
-
-            $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
-            $current_date = date('Y-m-d');
-
-            if($order_by_val == 'order_by_desc'){
-                $order_by_val = "Order by T3.schtDat_ID desc ";
-            }
-            else if($order_by_val == 'order_by_asc'){
-                $order_by_val = "Order by T3.schtDat_ID asc ";
-            }
-
-            //Pagination Code 
-            $queryTotalPagination = '';
-            if($open_end_layer == '1')
-            {
-                $queryTotalPagination = "SELECT TOP($total_number_records) * ";
-                $queryTotalPagination .= "FROM schichtModelle as T1 ";
-                $queryTotalPagination .= "Inner JOIN schichten as T2 ";
-                $queryTotalPagination .= "On T1.schtMdl_ID = T2.schtMdl_ID ";
-                $queryTotalPagination .= "Where T1.schtMdl_ID = $layer_modal_id ";
-                // $queryTotalPagination .= $order_by_val;
-                // echo $queryTotalRecords; die;
-            }
-            else{
-                $queryTotalPagination = "SELECT TOP($total_number_records) * ";
-                $queryTotalPagination .= "FROM schichtModelleHist as T1 ";
-                $queryTotalPagination .= "Inner JOIN schichtenHist as T2 ";
-                $queryTotalPagination .= "On T1.schtMdl_ID = T2.schtMdl_ID ";
-                $queryTotalPagination .= "Where T1.schtMdl_ID = $layer_modal_id ";
-            }
-            $totalRecordsValue = queryDB($conn, $queryTotalPagination, "read");
-            // echo json_encode($queryTotalPagination); die;
-
-            $pagesCount = '';
-            $offSetVal = 0;
-            if(count($totalRecordsValue) > 0){
-               if($total_number_records <= $number_records){
-                    $offSetVal = 0;
-                    $number_records = $total_number_records;
-                    $pagesCount = 1; 
-                    $page_val = 1;
-               }
-               else{
-                    if($selected_number_record_measurement == 'true'){
-                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
-                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
-                        $page_val = 1;
-                        $offSetVal = 0;
-
-                    }
-                    else{ 
-                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
-                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
-                        $offSetVal = ($page_val - 1) * $number_records;
-                        
-                        if($page_val == $pagesCount){
-                            $number_records = $total_number_records - $offSetVal;
-                        }
-                    }
-               } 
-
-            }
-
-            //--end-->
-            
-            // $queryMaxValue = "SELECT TOP($total_number_records) max(cast(T2.val as int)) as val ";
-            // $queryMaxValue .= "FROM interneMesswerteConfig as T1 ";
-            // $queryMaxValue .= "INNER JOIN ";
-            // $queryMaxValue .= "masseneingabeSucheIMw as T2 ";
-            // $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
-            // $queryMaxValue .=  "INNER JOIN ";
-            // $queryMaxValue .= "MessstellenAnlagen  as T3 ";
-            // $queryMaxValue .= "ON T1.mst_ID = T3.mst_ID ";
-            // $queryMaxValue .= "where T2.type = '$type' ";
-            // $queryMaxValue .= "AND T2.mst_ID = '$mst_id' ";
-            // echo json_encode($queryMaxValue); die;
-            //<---15-8-2021
-            $queryMaximum = '';
-            // --end-->
-            // $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
-            // $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-            // echo json_encode($queryMaxVal); die;
+            $valid_from = $_POST['valid_from'];
+            $valid_to = $_POST['valid_to'];
+            $click_row_array = $_POST['click_row_array'];
+            // $sk = date('Y-m-d H:i:s',$valid_from);
             $query1 = '';
-            if($open_end_layer == '1')
+            if($valid_from != '' && $valid_to != '')
             {
-                $query1 = "SELECT * ";
-                $query1 .= "FROM schichtModelle as T1 ";
-                $query1 .= "INNER JOIN  liegenschaften as T2 ";
-                $query1 .= "ON T1.lieg_ID = T2.lieg_ID ";
-                $query1 .= "INNER JOIN schichten as T3 ";
-                $query1 .= "ON T1.schtMdl_ID = T3.schtMdl_ID ";
-                $query1 .= "Where T1.schtMdl_ID = $layer_modal_id ";
-                $query1 .= "$order_by_val ";
-                $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+                $query1 = "SELECT Top(100)* ";
+                $query1 .= "FROM MessstellenEnergiedaten as T1 ";
+                $query1 .= "Where convert(date, time) >= '$valid_from' AND convert(date, time) <= '$valid_to' ";
             }
             else{
-                $query1 = "SELECT * ";
-                $query1 .= "FROM schichtModelleHist as T1 ";
-                $query1 .= "INNER JOIN  liegenschaften as T2 ";
-                $query1 .= "ON T1.lieg_ID = T2.lieg_ID ";
-                $query1 .= "INNER JOIN schichtenHist as T3 ";
-                $query1 .= "ON T1.schtMdl_ID = T3.schtMdl_ID ";
-                $query1 .= "Where T1.schtMdl_ID = $layer_modal_id ";
-                $query1 .= "$order_by_val ";
-                $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
+                $query1 = "SELECT Top(100)* ";
+                $query1 .= "FROM MessstellenEnergiedaten as T1 ";
+                $query1 .= "Where convert(date, time) >= '$valid_from' ";
             }
-            // echo $query1; die;
-            $dataMesaurement = queryDB($conn, $query1, "read"); 
-            // echo json_encode($date_differnce_five_days); die;
+            //Query Check
+            $resultQuery = sqlsrv_query($conn,$query1);
+            $tableFound = 'false';
+            $dataMesaurement = [];
+            if($resultQuery != false)
+            {
+                $dataMesaurement = queryDB($conn, $query1, "read");
+                $tableFound = 'true';
+            
+            }
+            $records['table_found'] = $tableFound;
 
-            // <---10-11-2021----
-            // $queryLastDate = "SELECT TOP(1) * From masseneingabeSucheIMw as T1 ";
-            // $queryLastDate.= "WHERE T1.mst_ID = '$mst_id' ";
-            // $queryLastDate.= "AND T1.type = '$type' ";
-            // $queryLastDate.= "ORDER BY T1.id desc ";
-            // $queryLastDateData = queryDB($conn, $queryLastDate, "read");
-            //--end-->
-
-            $records['energy_html'] = $this->generateRowClickHtmlLayerTableEnergyData($dataMesaurement,$open_end_layer);
-            $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($page_val,$pagesCount,$dataMesaurement);
+            //Array Check
+            $sum_value = '';
+            if($dataMesaurement != '' && count($dataMesaurement) > 0)
+            {
+                $array_col = array_column($dataMesaurement,'Value');
+                $sum_value = array_sum($array_col);
+                // echo json_encode($val); die;
+            }
+            // echo $sum_value; die;
+            $rowClickTable = 'true';
+            $records['energy_header'] = $this->generateHtmlLayerTableEnergyDataHeader($rowClickTable);
+            $records['energy_html'] = $this->generateRowClickHtmlLayerTableEnergyData($sum_value,$click_row_array);
+            $records['pagination_html_energy'] =  $this->generatePaginationHtmlRowClickLayerEnergyData($sum_value);
             
             // <--15-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
-            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => $queryMaximum,'row_click' => 'true', 'type' => 'Energy');
+            $pagesCount = isset($_POST['pagesCount']) ? $_POST['pagesCount'] : 1;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => $query1,'row_click' => 'true', 'type' => 'Energy');
             $records['query_data'] = $ar;
 
             // $records['queryLastDate'] = $queryLastDateData;
@@ -3258,47 +3165,25 @@ class dashboardController {
         }
     }
 
-    public function generateRowClickHtmlLayerTableEnergyData($dataMesaurement,$open_end_layer,$queryMaxVal = false){
+    public function generateRowClickHtmlLayerTableEnergyData($sum_value,$click_row_array){
         global $conn;
         $tr = '';
-        $col_span = "";
-        if($queryMaxVal == ""){
-            $col_span = "colspan='5'";
-        }
-        else if($queryMaxVal != ''){
-            $col_span = "colspan='4'";
-        }
-
-        $data_table_other = '';
-        if($open_end_layer == '1')
-        {
-            $data_table_other = "data-table-other='schichtModelle'";
-        }
-        else{
-            $data_table_other = "data-table-other='schichtModelleHist'";
-        }
-        if($dataMesaurement != '' && count($dataMesaurement) > 0){
-            foreach($dataMesaurement as $key => $value){
-                $style='';
-                $class_val = '';
-                $unit = '';
-
-                // if($queryMaxVal == ""){
-                //     // $class_val = 'class="row_click_energy"';
-                // }
-                // else if($queryMaxVal != '' && $queryMaxVal == $value['Value']){
-                //     $style="style='background-color: #f77171'";
-                // }
-                // echo $value['datum']->format('Y-m-d:h:i:s'); die;
-                $tr .= "<tr $style $class_val data-layer-model=".$value['schtMdl_ID']." data-type='1' $data_table_other>";
-                $tr.= "<td>".$value['modellBez']."</td>";
-                $tr.= "<td>".$value['bezeichnung']."</td>";
-                $tr.= "<td>".$value['uhrzeitVon']->format('h:i:s')."</td>";
-                $tr.= "<td>".$value['uhrzeitBis']->format('h:i:s')."</td>";
-                $tr.= "<td>".ucfirst($value['tagVon'])."</td>";
-                $tr.= "<td>".ucfirst($value['tagBis'])."</td>";
-                $tr.="</tr>";
+        $col_span = "colspan='50'";
+        $data_table_other = "data-table-other='SchichtModelleAll'";
+        if($sum_value != ''){
+            $click_row_array_decode = json_decode($click_row_array);
+            // echo $click_row_array_decode[0]; die;
+            $tr .= "<tr sum_value=".$sum_value." data-type='1' $data_table_other>";
+            for($i = 0; $i <= count($click_row_array_decode); $i++){
+                if($i == count($click_row_array_decode))
+                {
+                    $tr.= "<td>".$sum_value."</td>";
+                }
+                else{
+                    $tr.= "<td>$click_row_array_decode[$i]</td>";
+                }
             }
+            $tr.="</tr>";
         }else{
                 $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
         }
@@ -3307,6 +3192,27 @@ class dashboardController {
 
     }
     // --end--->
+    public function generatePaginationHtmlRowClickLayerEnergyData($sum_value){
+        try{
+            //Pagination Code HTML
+            // echo $pagesCount; die;
+            $paginationHTMl = '';
+            if($sum_value != ''){
+                $paginationHTMl="<div id='save_table_format' class='text-center'>
+                                    <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                                </div>";            
+                
+                // $records['pagination_html'] = $paginationHTMl;
+            }
+            return $paginationHTMl;
+
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--
+
 
     public function getEnergyRecordsTableHeader(){
         try{
@@ -4023,12 +3929,11 @@ class dashboardController {
 
             $records['energy_header'] = $this->generateHtmlLayerTableEnergyDataHeader();
             $records['energy_html'] = $this->generateHtmlLayerTableEnergyData($dataMesaurement);
-
-            // $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($page_val,$pagesCount,$dataMesaurement);
+            $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($dataMesaurement);
 
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
-            $pages_count = isset($_POST['pages_count']) ? $_POST['pages_count'] : 5;
+            $pages_count = isset($_POST['pages_count']) ? $_POST['pages_count'] : 1;
             $ar = array('pages_count' => $pages_count,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy');
             $records['query_data'] = $ar;
 
@@ -4077,7 +3982,7 @@ class dashboardController {
                 $unit = '';
 
                 if($rowclickTable == ""){
-                    // $class_val = 'class="row_click_energy"';
+                    $class_val = 'class="row_click_energy"';
                 }
                 // else if($queryMaxVal != '' && $queryMaxVal == $value['Value']){
                 //     $style="style='background-color: #f77171'";
@@ -4107,87 +4012,19 @@ class dashboardController {
 
     }
     
-    public function generatePaginationHtmlLayerEnergyData($page_val,$pagesCount,$dataMesaurement,$data_type = false ,$mst_id = false){
+    public function generatePaginationHtmlLayerEnergyData($dataMesaurement){
         try{
             //Pagination Code HTML
             // echo $pagesCount; die;
-            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0){
-                $style_background = '';
-                $class_page_count_val = 'page_count_val_energy';
-                $style_background_end = '';
-                $class_page_count_val_end = 'page_count_val_energy';
-                // echo $page_val ; die;
-                if($page_val == "1"){
-                    $style_background = "style='background: #d6d6d6; color: black'";
-                    $class_page_count_val = '';
-                    if($pagesCount == "1"){
-                        $style_background_end = "style='background: #d6d6d6; color: black'";
-                        $class_page_count_val_end = '';  
-                    }
-                    
-                }
-                else if($page_val == $pagesCount){
-                    $style_background_end = "style='background: #d6d6d6; color: black'";
-                    $class_page_count_val_end = '';
-                }
-                else{
-                    $style_background = '';
-                    $style_background_end = '';
-                }
-                $paginationHTMl="<nav aria-label='Page navigation example'>
-                    <input type='hidden' id='row_click_table_energy' data_type='$data_type' data_mst='$mst_id'>
-                    <div class='pagination_items'>
-                            <ul class='pagination'>
-                                <li class='page-item $class_page_count_val' data_type='$data_type' data_mst='$mst_id' id='previous_pagination_val_energy'>
-                                    <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
-                                        <span aria-hidden='true'>&laquo;</span>
-                                        <span class='sr-only'>Previous</span>
-                                    </a>
-                                </li>";
-                                
-                for($i = 1; $i <= $pagesCount; $i++){
-                    $active = $i == $page_val ? 'active' : '';
-                    $hide_style='display: none';
-                    if($i == $page_val){
-                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
-                        $hide_style = 'display: block';
-                    }
-                    $paginationHTMl.="<li style='$hide_style' class='page-item  $active '><input type='number' class='active_background pagination_input_val_energy page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
-
-                    if($i == $pagesCount){
-                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
-                        $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_energy' href='javascript:void(0);'>$i</a></li>";
-                    }
-                }
-                $paginationHTMl.="<li class='page-item $class_page_count_val_end' data_type='$data_type' data_mst='$mst_id' id='next_pagination_val_energy'>
-                                        <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
-                                            <span aria-hidden='true'>&raquo;</span>
-                                            <span class='sr-only'>Next</span>
-                                        </a>
-                                    </li>";
-
-                //Pagination Select Tag   
-                
-                $paginationHTMl.="<li class ='page-item'>
-                                        <select class='page-link select_pagination' id='energy_number_record' data_type='$data_type' data_mst='$mst_id'>
-                                            <option value='5'>5</option>
-                                            <option value='10'>10</option>
-                                            <option value='20'>20</option>
-                                            <option value='30'>30</option>
-                                            <option value='50'>50</option>
-                                        </select>
-                                    </li>
-                                    </ul>
-                                </div>
-                            </nav>";
-
-                //ScreenShot Code
-                $paginationHTMl.="<div id='save_table_format' class='text-center'>
+            $paginationHTMl = '';
+            if($dataMesaurement != '' && count($dataMesaurement) > 0){
+                $paginationHTMl="<div id='save_table_format' class='text-center'>
                                     <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";            
-                return $paginationHTMl;
+                
                 // $records['pagination_html'] = $paginationHTMl;
             }
+            return $paginationHTMl;
 
         }
         catch(Exception $e) {

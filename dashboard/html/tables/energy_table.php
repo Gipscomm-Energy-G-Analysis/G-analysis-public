@@ -122,6 +122,10 @@
                     <input type="hidden" id="overall_count_energy">
                     <input type="hidden" id="row_click_last_date_energy">
                     <input type="hidden" id="layer_modal">
+                    
+                    <div id="energy_table_data_loader_div" style="display: none">
+                        <img src="images/loader_dashboard.gif" id="energy_table_data_loader_img">
+                    </div>
                   </div>
                  
                   <div class="pagination_html_energy" id="pagination_html_energy">
