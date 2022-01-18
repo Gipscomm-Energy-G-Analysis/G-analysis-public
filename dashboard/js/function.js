@@ -1598,6 +1598,112 @@ function getNumberRecordsEnergyLayerModal(){
 }
 
 
+// <---17-01-2022--
+function getNumberRecordsEnergyLayerModalPagination(page_value,selected_number_record_energy = 'false'){
+
+  var number_record_local_val = localStorage.getItem('number_record_energy');
+  if(number_record_local_val != undefined && number_record_local_val != null){
+      $('#energy_total_number_record').val(number_record_local_val);
+  }
+  else{
+      $('#energy_total_number_record').val('');
+  }
+
+  // <---13-1-2022-
+  var date_val = $('#layer_modal_date').val();
+  var day_from_val = $('#day_from').val();
+  var day_to_val = $('#day_to').val();
+  // --end--->
+  // selected_number_record = 5;
+  var number_records = $('#energy_number_record_layer').val();
+  //----end-->
+  $('.energy_table_header').removeClass('row_click_table');
+  $('.table-margin .table th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
+  if(date_val == '' || day_from_val == '' || day_to_val == ''){
+    var tr = "<tr><td colspan='50' class='text-center text-muted'>Please Select All Filters</td></tr>";
+    $('#energy_select_table_entries').html(tr);
+    $('#pagination_html_energy').html('');
+  }
+  else{
+    $.ajax({
+        type: "POST",
+        url: "php/retreive.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            action: "getLayerTableEnergyData",
+            nameDB: $("#nameDashboardDB").val(),
+            date_val : date_val,
+            day_from_val : day_from_val,
+            day_to_val : day_to_val,
+            page_value : page_value,
+            number_records : number_records,
+            selected_number_record_energy : selected_number_record_energy
+        },
+        fail: function() {
+            alert("failed!!")
+        },
+        success: function(a) {
+          // a = JSON.parse(a);
+          // console.log(a['table_found']);
+          $('#energy_search_record').val('');
+          $('#energy_record_table #energy_record_tb thead').html(a['energy_header']);
+          $('#energy_select_table_entries').html(a['energy_html']);
+          
+          $('#open_end_layer_div').hide();
+
+          //Table Not Found Check
+          if(a['table_found'] == 'false'){
+            var htmlTableNotFound = '<tr><td colspan="50" class="text-center">Table Not Found</td></tr>';
+            $('#energy_select_table_entries').html(htmlTableNotFound);  
+          }
+
+          $('#pagination_html_energy').html(a['pagination_html_energy']);
+          //$('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
+          
+          $('.table-margin').removeClass('margin-remove-table');
+          // $('#energy_record_table table thead tr').children('th:eq(2)').text('Created Date');
+          // $('#energy_record_table table thead tr').children('th:eq(3)').text('Total Units');
+
+          // var val_selected = localStorage.getItem('selected_number_record_energy');
+          $('#energy_number_record_layer option[value='+number_records+']').prop('selected', 'selected');
+
+          localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+          // <---02-9-2021--
+          var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+          if(edit_value == 'true'){
+              $('#energy_modal_open_button').val('Update & Preview');
+              $('#energy_modal_open_button').attr('tile-edit','true');
+          }
+          else{
+            $('#energy_modal_open_button').val('Save & Preview');
+            $('#energy_modal_open_button').attr('tile-edit','false');
+          }
+          // --end-->
+
+          // <---7-9-2021----
+          setTimeout(()=>{
+            var type_data = localStorage.getItem('dashboard_tile_data');
+            type_data = JSON.parse(type_data);
+            if(type_data['type_data_tile'] == 'overall_count')
+            {
+              $('#energy_modal_open_button').hide();
+            }
+            else{
+              $('#energy_modal_open_button').show();
+            }
+          },500)
+
+          // ---end--->
+        }
+    });
+  }
+
+}
+// --end-->
+
+
 // <--16-12-2021--
 function getEnergyRecordsTableHeader(energy_type){
   var open_end_layer = $('#open_end_layer').val();

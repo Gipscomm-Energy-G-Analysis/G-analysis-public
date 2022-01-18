@@ -3909,11 +3909,62 @@ class dashboardController {
             $date_val = $_POST['date_val'];
             $day_from_val = $_POST['day_from_val'];
             $day_to_val = $_POST['day_to_val'];
+
+            // <----17-1-2022
+            $page_val = isset($_POST['page_value']) ?  $_POST['page_value'] : 1;
+            $number_records = isset($_POST['number_records']) ?  $_POST['number_records'] : 5;
+            $selected_number_record_energy = isset($_POST['selected_number_record_energy']) ? $_POST['selected_number_record_energy'] : 'false';
+            // <----22-12-2021---
+            $queryTotalRecord = "SELECT * ";
+            $queryTotalRecord .= "FROM SchichtModelleAll as T1 ";
+            $queryTotalRecord .= "WHERE gueltigVon <= '$date_val' ";
+            $queryTotalRecord .= "AND tagVon = '$day_from_val' AND tagBis = '$day_to_val' ";
+            $resulTotalRecord = sqlsrv_query($conn,$queryTotalRecord);
+            $totalRecordsValue = [];
+            if($resulTotalRecord != false)
+            {
+                $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
+            }
+            // echo json_encode($queryTotalRecord); die;
+            
+            $pagesCount = '';
+            $offSetVal = 0;
+            if(count($totalRecordsValue) > 0){
+                if(count($totalRecordsValue) <= $number_records){
+                    $offSetVal = 0;
+                    $number_records = count($totalRecordsValue);
+                    $pagesCount = 1; 
+                    $page_val = 1;
+                }
+                else{
+                    if($selected_number_record_energy == 'true'){
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $page_val = 1;
+                        $offSetVal = 0;
+
+                    }
+                    else{
+                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
+                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
+                        $offSetVal = ($page_val - 1) * $number_records;
+                        //Only Valid when User Click on Last page
+                        if($page_val == $pagesCount){
+                            $number_records = count($totalRecordsValue) - $offSetVal;
+                        }
+                    }
+                }
+
+            }
+            // --end-->
+
             $query1 = '';
             $query1 = "SELECT * ";
             $query1 .= "FROM SchichtModelleAll as T1 ";
             $query1 .= "WHERE gueltigVon <= '$date_val' ";
             $query1 .= "AND tagVon = '$day_from_val' AND tagBis = '$day_to_val' ";
+            $query1 .= "Order By T1.modellBez ASC ";
+            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $resultQuery = sqlsrv_query($conn,$query1);
             $tableFound = 'false';
             $dataMesaurement = [];
@@ -3929,7 +3980,7 @@ class dashboardController {
 
             $records['energy_header'] = $this->generateHtmlLayerTableEnergyDataHeader();
             $records['energy_html'] = $this->generateHtmlLayerTableEnergyData($dataMesaurement);
-            $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($dataMesaurement);
+            $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($dataMesaurement,$page_val,$pagesCount);
 
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
@@ -4012,19 +4063,99 @@ class dashboardController {
 
     }
     
-    public function generatePaginationHtmlLayerEnergyData($dataMesaurement){
+    public function generatePaginationHtmlLayerEnergyData($dataMesaurement,$page_val,$pagesCount){
         try{
             //Pagination Code HTML
-            // echo $pagesCount; die;
-            $paginationHTMl = '';
-            if($dataMesaurement != '' && count($dataMesaurement) > 0){
-                $paginationHTMl="<div id='save_table_format' class='text-center'>
+            // echo $page_val; die;
+            // <---17-01-2022--
+            if($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0){
+                $style_background = '';
+                $class_page_count_val = 'page_count_val_energy_layer';
+                $style_background_end = '';
+                $class_page_count_val_end = 'page_count_val_energy_layer';
+                // echo $page_val ; die;
+                if($page_val == "1"){
+                    $style_background = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val = '';
+                    if($pagesCount == "1"){
+                        $style_background_end = "style='background: #d6d6d6; color: black'";
+                        $class_page_count_val_end = '';  
+                    }
+                    
+                }
+                else if($page_val == $pagesCount){
+                    $style_background_end = "style='background: #d6d6d6; color: black'";
+                    $class_page_count_val_end = '';
+                }
+                else{
+                    $style_background = '';
+                    $style_background_end = '';
+                }
+                $paginationHTMl="<nav aria-label='Page navigation example'>
+                    <div class='pagination_items'>
+                            <ul class='pagination'>
+                                <li class='page-item $class_page_count_val' id='previous_pagination_val_energy_layer'>
+                                    <a class='page-link'  $style_background href='javascript:void(0);' aria-label='Previous'>
+                                        <span aria-hidden='true'>&laquo;</span>
+                                        <span class='sr-only'>Previous</span>
+                                    </a>
+                                </li>";
+                                
+                for($i = 1; $i <= $pagesCount; $i++){
+                    $active = $i == $page_val ? 'active' : '';
+                    $hide_style='display: none';
+                    if($i == $page_val){
+                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
+                        $hide_style = 'display: block';
+                    }
+                    $paginationHTMl.="<li style='$hide_style' class='page-item  $active '><input type='number' class='active_background pagination_input_val_energy_layer page-link' value='$i'></li>";
+
+                    if($i == $pagesCount){
+                        $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
+                        $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_energy_layer' href='javascript:void(0);'>$i</a></li>";
+                    }
+                }
+                $paginationHTMl.="<li class='page-item $class_page_count_val_end' id='next_pagination_val_energy_layer'>
+                                        <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
+                                            <span aria-hidden='true'>&raquo;</span>
+                                            <span class='sr-only'>Next</span>
+                                        </a>
+                                    </li>";
+
+                //Pagination Select Tag   
+                
+                $paginationHTMl.="<li class ='page-item'>
+                                        <select class='page-link select_pagination' id='energy_number_record_layer'>
+                                            <option value='5'>5</option>
+                                            <option value='10'>10</option>
+                                            <option value='20'>20</option>
+                                            <option value='30'>30</option>
+                                            <option value='50'>50</option>
+                                        </select>
+                                    </li>
+                                    </ul>
+                                </div>
+                            </nav>";
+
+                //ScreenShot Code
+                $paginationHTMl.="<div id='save_table_format' class='text-center'>
                                     <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";            
-                
+                return $paginationHTMl;
                 // $records['pagination_html'] = $paginationHTMl;
             }
-            return $paginationHTMl;
+            // ----end--->
+
+
+            // $paginationHTMl = '';
+            // if($dataMesaurement != '' && count($dataMesaurement) > 0){
+            //     $paginationHTMl="<div id='save_table_format' class='text-center'>
+            //                         <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+            //                     </div>";            
+                
+            //     // $records['pagination_html'] = $paginationHTMl;
+            // }
+            // return $paginationHTMl;
 
         }
         catch(Exception $e) {

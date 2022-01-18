@@ -509,6 +509,24 @@ $(document).ready( function(){
       
     });
 
+    // <----17-1-2022-
+    $(document).on('click', '.page_count_val_energy_layer', function(){
+        var id = $(this).attr('id');
+        var page_value = $('div').find('li.active').find('input').val();
+        if(id != undefined && id == 'previous_pagination_val_energy_layer'){
+            var find_prev_val = $('#pagination_html_energy div').find('li.active').prev('li').prev('li').find('input').val();
+            page_value = find_prev_val;
+        }
+        else if(id != undefined && id == 'next_pagination_val_energy_layer'){
+            var find_next_val = $('div').find('li.active').next('li').find('input').val();
+            page_value = find_next_val;
+
+        }
+        getNumberRecordsEnergyLayerModalPagination(page_value); 
+      
+    });
+    // -end--->
+
 
     $(document).on('blur','.pagination_input_val_energy', function(){
         var page_value = $(this).val(); //$(this).val();
@@ -537,6 +555,27 @@ $(document).ready( function(){
 
     })
 
+    // <---17-01-2022--
+    $(document).on('blur','.pagination_input_val_energy_layer', function(){
+        var page_value = $(this).val(); //$(this).val();
+        var id = $(this).attr('id');
+        var last_input_val = $('#last_input_val_energy_layer').text();
+        if(parseInt(page_value) <= 0){
+            alert('Value Always Be greater than 0');
+            page_value = 1;
+            $(this).val(page_value);
+
+        }
+        else if(parseInt(page_value) > parseInt(last_input_val)){
+            alert('Value Can not Be greater than end Page');
+            page_value = 1;
+            $(this).val(page_value);
+        }
+        getNumberRecordsEnergyLayerModalPagination(page_value); 
+
+    })
+    // --end-->
+
     $(document).on('change','#energy_number_record', function(){
         var page_value = $('div').find('li.active').find('input').val();
         var data_type = $(this).attr('data_type');
@@ -551,6 +590,12 @@ $(document).ready( function(){
         }
 
     })
+
+    $(document).on('change','#energy_number_record_layer', function(){
+        var page_value = $('div').find('li.active').find('input').val();
+        getNumberRecordsEnergyLayerModalPagination(page_value,energy_search_record = 'true'); 
+    });
+
 
     // ---end--->
 
