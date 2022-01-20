@@ -1930,7 +1930,9 @@ function rowClickEnergyTableData(mst_id,data_type){
     });
   }
 }
-
+var tableCallCount = 1;
+var tableClearInterval;
+var sumAllValue = 0;
 function rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array){
 
   var date_val = $('#layer_modal_date').val();
@@ -1964,7 +1966,15 @@ function rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array){
     $('#pagination_html_energy').html('');
   }
   else{
-    $('#energy_table_data_loader_div').show();
+    tableClearInterval = setInterval(()=>{
+      rowClickEnergyDataLayerAjax(valid_from,valid_to,click_row_array);
+    },1000)
+  }
+}
+
+// <---19-1-2022--
+function rowClickEnergyDataLayerAjax(valid_from,valid_to,click_row_array){
+  $('#energy_table_data_loader_div').show();
     $.ajax({
       type : "POST",
       url: "php/retreive.php",
@@ -1976,22 +1986,20 @@ function rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array){
           valid_from : valid_from,
           valid_to : valid_to,
           click_row_array : JSON.stringify(click_row_array),
+          tableCallCount : tableCallCount
       },
       fail: function() {
           alert("failed!!")
       },
       success: function(a) {
+        // console.log(a);
         $('#energy_table_data_loader_div').hide();
         $('#energy_record_table #energy_record_tb thead').html(a['energy_header']);
-        $('#energy_select_table_entries').html(a['energy_html']);
+        // $('#energy_select_table_entries').html(a['energy_html']);
         $('#pagination_html_energy').html(a['pagination_html_energy']);
 
         // <--17-1-2022--
-        if(a['table_found'] == 'false'){
-          var htmlTableNotFound = '<tr><td colspan="50" class="text-center">Table Not Found</td></tr>';
-          $('#energy_select_table_entries').html(htmlTableNotFound);  
-        }
-        // --end-->
+       
         $('.table-margin .table td').removeAttr('style');
         
         $('.table-margin').addClass('margin-remove-table');
@@ -2026,11 +2034,60 @@ function rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array){
             $('#energy_modal_open_button').hide();
           },500)
         }
+
+        // <---19-1-2022--
+        // if(tableCallCount == 1 && a['table_found'] == 'false'){
+        //   var htmlTableNotFound = '<tr><td colspan="50" class="text-center">Table Not Found</td></tr>';
+        //   $('#energy_select_table_entries').html(htmlTableNotFound);  
+        // }
+
+        if(tableCallCount == 1 && a['sum_value'] == '' && a['table_found'] == 'true') //Data Not Found
+        {
+          tableCallCount = 1;
+          sumAllValue = 0;
+          clearInterval(tableClearInterval);
+          $('#energy_table_data_loader_div').hide();
+          var htmlTableNotFound = '<tr><td colspan="50" class="text-center">Data Not Found</td></tr>';
+          $('#energy_select_table_entries').html(htmlTableNotFound); 
+          $('#pagination_html_energy').html(''); 
+          return false;
+
+        }
+        else if(a['sum_value'] == '' && a['table_found'] == 'true')  //Data Found and Stop function
+        {
+          console.log('Stop Function Callling');
+          tableCallCount = 1;
+          sumAllValue = 0;
+          $('#energy_table_data_loader_div').hide();
+          clearInterval(tableClearInterval);
+          return false;
+          
+        }
+        else if((a['sum_value'] != '' || a['sum_value'] >=0) && a['table_found'] == 'true'){
+          console.log('Sum Value',a['sum_value']);
+          sumAllValue += parseFloat(a['sum_value']);
+          $('#energy_table_data_loader_div').show();
+          // console.log('Sum All Value',sumAllValue);
+          var rowData = '';
+          for(var i = 0; i <= click_row_array.length; i++)
+          {
+            if(i == click_row_array.length)
+            {
+              rowData+="<td>"+sumAllValue+"</td>";
+            }
+            else{
+              rowData+="<td>"+click_row_array[i]+"</td>";
+            }
+          }
+          $('#energy_select_table_entries').html(rowData); 
+        }
+        tableCallCount++;
+        // --end-->
      
       }
     });
   }
-}
+// --end-->
 
 // <--16-12-2021--
 function rowClickEnergyRecordsTableHeader(energy_type){
@@ -7623,6 +7680,22 @@ function rowClickParticularProductEntry(analgen_config_id,page_val = 1,order_by 
   });
 }
 // ---end--->
+
+// <---18-1-2022--
+// var i = 1;
+// function test(){
+//   console.log('function calling');
+//   i++;
+//   console.log(i);
+
+//   if(i == 10)
+//   {
+//     clearInterval(a);
+//   }
+// }
+
+// var a = setInterval(test,1000);
+// --end--->
 
 // <---16-9-2021---
 // function allowDrop(ev) {

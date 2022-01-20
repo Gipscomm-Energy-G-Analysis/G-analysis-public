@@ -3107,23 +3107,31 @@ class dashboardController {
             $valid_from = $_POST['valid_from'];
             $valid_to = $_POST['valid_to'];
             $click_row_array = $_POST['click_row_array'];
-            // $sk = date('Y-m-d H:i:s',$valid_from);
+
+            $tableCallCount = $_POST['tableCallCount'];
+            $offsetValue = ($tableCallCount - 1) * 100;
             $query1 = '';
             if($valid_from != '' && $valid_to != '')
             {
-                $query1 = "SELECT Top(100)* ";
+                $query1 = "SELECT * ";
                 $query1 .= "FROM MessstellenEnergiedaten as T1 ";
                 $query1 .= "Where convert(date, time) >= '$valid_from' AND convert(date, time) <= '$valid_to' ";
+                $query1 .= "Order by mst_ID ";
+                $query1 .= "offset $offsetValue rows FETCH NEXT 100 ROWS ONLY ";
             }
             else{
-                $query1 = "SELECT Top(100)* ";
+                $query1 = "SELECT * ";
                 $query1 .= "FROM MessstellenEnergiedaten as T1 ";
                 $query1 .= "Where convert(date, time) >= '$valid_from' ";
+                $query1 .= "Order by mst_ID ";
+                $query1 .= "offset $offsetValue rows FETCH NEXT 100 ROWS ONLY ";
             }
             //Query Check
+            // echo $query1; die;
             $resultQuery = sqlsrv_query($conn,$query1);
             $tableFound = 'false';
             $dataMesaurement = [];
+            // echo json_encode($resultQuery); die;
             if($resultQuery != false)
             {
                 $dataMesaurement = queryDB($conn, $query1, "read");
@@ -3142,6 +3150,7 @@ class dashboardController {
             }
             // echo $sum_value; die;
             $rowClickTable = 'true';
+            $records['sum_value'] = $sum_value;
             $records['energy_header'] = $this->generateHtmlLayerTableEnergyDataHeader($rowClickTable);
             $records['energy_html'] = $this->generateRowClickHtmlLayerTableEnergyData($sum_value,$click_row_array);
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlRowClickLayerEnergyData($sum_value);
