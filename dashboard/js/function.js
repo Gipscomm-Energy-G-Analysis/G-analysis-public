@@ -2055,7 +2055,6 @@ function rowClickEnergyDataLayerAjax(valid_from,valid_to,click_row_array){
         }
         else if(a['sum_value'] == '' && a['table_found'] == 'true')  //Data Found and Stop function
         {
-          console.log('Stop Function Callling');
           tableCallCount = 1;
           sumAllValue = 0;
           $('#energy_table_data_loader_div').hide();
@@ -2064,7 +2063,6 @@ function rowClickEnergyDataLayerAjax(valid_from,valid_to,click_row_array){
           
         }
         else if((a['sum_value'] != '' || a['sum_value'] >=0) && a['table_found'] == 'true'){
-          console.log('Sum Value',a['sum_value']);
           sumAllValue += parseFloat(a['sum_value']);
           $('#energy_table_data_loader_div').show();
           // console.log('Sum All Value',sumAllValue);
