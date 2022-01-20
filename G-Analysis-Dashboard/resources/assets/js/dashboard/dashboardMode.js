@@ -381,7 +381,6 @@ const saveTableConfigurations = (data, priorityMachines) => {
 }
 
 $(document).on('click', '#save_table_configuration_button', function() {
-    console.log('duallistArray',$('.duallistbox').val());
     let selectedColumn = $('.duallistbox').val();
     let priorityMachines = $('#multi-machine-prioprity').val();
     if(selectedColumn.length == 0 ) {

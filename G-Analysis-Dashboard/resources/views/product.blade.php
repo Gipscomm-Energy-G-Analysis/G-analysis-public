@@ -312,16 +312,25 @@
         <!-- accordion for graph mode start -->
         <div id="accordion">
             <div class="card">
-              <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#graphCollapseOne" aria-expanded="false" aria-controls="graphCollapseOne">
-                <h5 class="mb-0">
-                    Charts
-                </h5>
+              <div class="card-header collapsed" id="headingOne" >
+                <div class="row">
+                    <div class="col-sm-6" data-toggle="collapse" data-target="#graphCollapseOne" aria-expanded="false" aria-controls="graphCollapseOne">
+                        <h5 class="mb-0">
+                            Energy Charts
+                        </h5>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
+                            <input type="checkbox" id="graphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
+                        </div>
+                    </div>
+                </div>
+                
+                
               </div>
               <div id="graphCollapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
-                        <input type="checkbox" id="graphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
-                    </div>
+                    
                     <!-- Graph Mode Start -->
                     <div class="graph-mode">
                         <div class="row">
@@ -432,11 +441,21 @@
                                 </div>
                             </div>
                             <div class="popup">
-                                <div class="col-sm-3">
-                                    <button type="submit" class="btn btn-block btn-primary" id="create_graph">Create Graph</button>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-block btn-primary" id="create_graph">Create Graph</button>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-block btn-primary" id="create_graph_window">Create Graph (New Window)</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
+                        <div class="row historyGraphDiv" style="display:none;">
+                            <div class="charts am_graph_div" id="historyChartdiv">
+                                
+                            </div>
+                        </div>
                     </div>
                     <!-- Edit mode end -->
                 </div>
@@ -444,19 +463,283 @@
             </div>
             
             <div class="card">
-                <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#graphCollapseTwo" aria-expanded="false" aria-controls="graphCollapseTwo">
-                  <h5 class="mb-0">
-                      Other Charts
-                  </h5>
+                <div class="card-header collapsed" id="headingTwo"preference_tab>
+                  <div class="row">
+                    <div class="col-sm-6" data-toggle="collapse" data-target="#graphCollapseTwo" aria-expanded="false" aria-controls="graphCollapseTwo">
+                        <h5 class="mb-0">
+                            Production Charts
+                        </h5>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
+                            <input type="checkbox" id="productGraphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
+                        </div>
+                    </div>
+                </div>
                 </div>
                 <div id="graphCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                   <div class="card-body">
-                    <div class="row" id="other_graph_div">
-                        
+                    <div class="product-graph-mode">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>No. of Records</label>
+                                    <select class="form-control time_filter" id="timeFilterProduction" onmousedown="this.value='';" onchange="jsFunctionProduction(this.value);">
+                                        <option value="5" selected>5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Time Interval</label>
+                                    <select class="form-control" id="timeFilterIntervalProduction">
+                                        <option value="1">1 Minutes</option>
+                                        <option value="5">5 Minutes</option>
+                                        <option value="10">10 Minutes</option>
+                                        <option value="15" selected>15 Minutes</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="other_graph_div">
+                        </div>
                     </div>
+                    <!-- Edit Mode start -->
+                    <div class="product-history-mode" style="display:none;">
+                        <form id="productHistoricGraphData">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Period</label>
+                                        <select class="form-control" id="productPeriodFilterInterval">
+                                            <option value="year">Year</option>
+                                            <option value="month">Month</option>
+                                            <option value="custom">Custom</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Type</label>
+                                        <select class="form-control" id="productTypeFilterInterval">
+                                            <option value="line">Line Graph</option>
+                                            <option value="bar">Bar Graph</option>
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 product_year_filter">
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        <select class="form-control" id="productYearFilterInterval">
+                                            <option value="">Select</option>
+                                            @for($i=date('Y');$i >date('Y')-4;$i--)
+                                                <option value="{{$i}}">{{$i}}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 clear product_month_filter" style="display:none;">
+                                    <div class="form-group">
+                                        <label>Month</label>
+                                        <select class="form-control" id="productMonthFilterInterval">
+                                            <option value="">Select</option>
+                                            <option value="01">January</option>
+                                            <option value="02">February</option>
+                                            <option value="03">March</option>
+                                            <option value="04">April</option>
+                                            <option value="05">May</option>
+                                            <option value="06">June</option>
+                                            <option value="07">July</option>
+                                            <option value="08">August</option>
+                                            <option value="09">September</option>   
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 product_custom_filter" style="display:none;">
+                                    <div class="form-group">
+                                        <label>Start Date</label>
+                                        <input type="text" id="product_start_date" class="form-control" placeholder="Start Date" value="" readonly="">
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 product_custom_filter" style="display:none;">
+                                    <div class="form-group">
+                                        <label>End Date</label>
+                                        <input type="text" id="product_end_date" class="form-control" placeholder="End Date" value="" readonly="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="popup">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-block btn-primary" id="product_create_graph">Create Graph</button>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-block btn-primary" id="product_create_graph_window">Create Graph (New Window)</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row product_historyGraphDiv" style="display:none;">
+                            <div class="charts am_graph_div" id="product_historyChartdiv">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Edit mode end -->
                   </div>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header collapsed" id="headingThree">
+                    <div class="row">
+                        <div class="col-sm-6" data-toggle="collapse" data-target="#graphCollapseThree" aria-expanded="false" aria-controls="graphCollapseThree">
+                            <h5 class="mb-0">
+                                Mixed Charts
+                            </h5>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
+                                <input type="checkbox" id="mixedGraphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="graphCollapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="mixed-graph-mode">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>No. of Records</label>
+                                        <select class="form-control time_filter" id="timeFilterMixed" onmousedown="this.value='';" onchange="jsFunctionMixed(this.value);">
+                                            <option value="5" selected>5</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Time Interval</label>
+                                        <select class="form-control" id="timeFilterIntervalMixed">
+                                            <option value="1">1 Minutes</option>
+                                            <option value="5">5 Minutes</option>
+                                            <option value="10">10 Minutes</option>
+                                            <option value="15" selected>15 Minutes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row am_graph_div" id="mixed_graph_div">
+                                
+                            </div>
+                        </div>
+                    
+                        <!-- Edit Mode start -->
+                        <div class="mixed-history-mode" style="display:none;">
+                            <form id="mixedHistoricGraphData">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Period</label>
+                                            <select class="form-control" id="mixedPeriodFilterInterval">
+                                                <option value="year">Year</option>
+                                                <option value="month">Month</option>
+                                                <option value="custom">Custom</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Type</label>
+                                            <select class="form-control" id="mixedTypeFilterInterval">
+                                                <option value="line">Line Graph</option>
+                                                <option value="bar">Bar Graph</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 mixed_year_filter">
+                                        <div class="form-group">
+                                            <label>Year</label>
+                                            <select class="form-control" id="mixedYearFilterInterval">
+                                                <option value="">Select</option>
+                                                @for($i=date('Y');$i >date('Y')-4;$i--)
+                                                    <option value="{{$i}}">{{$i}}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 clear mixed_month_filter" style="display:none;">
+                                        <div class="form-group">
+                                            <label>Month</label>
+                                            <select class="form-control" id="mixedMonthFilterInterval">
+                                                <option value="">Select</option>
+                                                <option value="01">January</option>
+                                                <option value="02">February</option>
+                                                <option value="03">March</option>
+                                                <option value="04">April</option>
+                                                <option value="05">May</option>
+                                                <option value="06">June</option>
+                                                <option value="07">July</option>
+                                                <option value="08">August</option>
+                                                <option value="09">September</option>   
+                                                <option value="10">October</option>
+                                                <option value="11">November</option>
+                                                <option value="12">December</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 mixed_custom_filter" style="display:none;">
+                                        <div class="form-group">
+                                            <label>Start Date</label>
+                                            <input type="text" id="mixed_start_date" class="form-control" placeholder="Start Date" value="" readonly="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 product_custom_filter" style="display:none;">
+                                        <div class="form-group">
+                                            <label>End Date</label>
+                                            <input type="text" id="mixed_end_date" class="form-control" placeholder="End Date" value="" readonly="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popup">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button type="submit" class="btn btn-block btn-primary" id="mixed_create_graph">Create Graph</button>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-block btn-primary" id="mixed_create_graph_window">Create Graph (New Window)</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row mixed_historyGraphDiv" style="display:none;">
+                                <div class="charts am_graph_div" id="mixed_historyChartdiv">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Edit mode end -->
+                    </div>
+                </div>
+            </div>
+
         </div>
         <!-- accordion for graph mode end -->        
         <!-- /.modal -->
@@ -898,6 +1181,11 @@
   height: 500px;
   max-width: 100%;
 }
+.am_graph_div {
+  width: 100%;
+  height: 500px;
+  max-width: 100%;
+}
 </style>
 
 <!-- OLD Chart code -->
@@ -905,6 +1193,10 @@
 //OLD code end
 let root = am5.Root.new("chartdiv");
 let root_other_graph = am5.Root.new("other_graph_div");
+let historic_root = am5.Root.new("historyChartdiv");
+let product_other_graph = am5.Root.new("product_historyChartdiv");
+let mixed_root = am5.Root.new("mixed_graph_div");
+let mixed_history_graph = am5.Root.new("mixed_historyChartdiv");
 // New Code
 const createAmChart = (root, chartsData, dispose) => {
     console.log(chartsData);
@@ -970,6 +1262,9 @@ const createAmChart = (root, chartsData, dispose) => {
         createAxisAndSeries(chartsData[key]['amData'], opposite, graphName, root, chart, xAxis);
         count++;
     }
+    var legend = chart.children.push(am5.Legend.new(root, {
+    })); 
+    legend.data.setAll(chart.series.values);
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
     chart.appear(1000, 100);
@@ -1027,14 +1322,16 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
     
 
     series.data.setAll(startValue);
-    var legend = chart.children.push(am5.Legend.new(root, {
-    })); 
-    legend.data.setAll(chart.series.values);
+    
 }
 
 //blade code for measuring points data start
-createAmChart(root, @json($data['chartsData']), false);
-createAmChart(root_other_graph, @json($data['otherGraph']), false);
+const energyData = @json($data['chartsData']);
+const productionData = @json($data['otherGraph']);
+createAmChart(root, energyData, false);
+createAmChart(root_other_graph, productionData, false);
+const mixedData = {...energyData, ...productionData};
+createAmChart(mixed_root, mixedData, false);
 //end
 function jsFunction(value) {  
     $.ajax({
@@ -1042,11 +1339,14 @@ function jsFunction(value) {
         type:"POST",
         data:{limit:value,points:$('#msgraphData').val()},
         success:function(data){
-            console.log(data);
-            createAmChart(root, data, true);
+            if(data.code == 200) {
+                createAmChart(root, data.graphData, true);
+            }
         },
     });
 }
+
+
 
 </script>
 @stop

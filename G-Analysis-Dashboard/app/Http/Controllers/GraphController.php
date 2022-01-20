@@ -41,7 +41,7 @@ class GraphController extends Controller
             $chartsData = $this->getChartsData( $request);
             array_push($data, $chartsData);
         }
-        return $data;
+        return ['code'=>200, 'graphData' => $data];
     }
 
     public function historicGraph() 

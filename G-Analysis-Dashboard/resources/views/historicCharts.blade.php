@@ -1,4 +1,4 @@
-@extends('layout.app',['database' => $databases, 'selectedDatabase' => $selectedDatabase])
+@extends('layout.appGraph',['database' => $databases, 'selectedDatabase' => $selectedDatabase])
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">

@@ -59,3 +59,5 @@ Route::post('/on-change', [\App\Http\Controllers\ManageDatabaseController::class
 Route::post('get-other-graph-label', [\App\Http\Controllers\DashboardController::class, 'getOtherGraphLabel'])->name('getOtherGraphLabel');
 
 Route::post('/get-points-data', [\App\Http\Controllers\GraphController::class, 'getPointsData'])->name('getPointsData');
+Route::post('product-graph/history/product', [\App\Http\Controllers\DashboardController::class, 'getHistoryGraphConfigurations'])->name('getHistoryGraphConfigurations');
+Route::post('mixed-graph/history/product', [\App\Http\Controllers\DashboardController::class, 'getMixedChartData'])->name('getMixedChartData');

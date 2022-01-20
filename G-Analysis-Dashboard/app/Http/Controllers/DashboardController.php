@@ -27,6 +27,7 @@ use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\UtilityController;
 use App\Http\Controllers\GraphController;
 use App\Models\GraphConfiguration;
+use App\Models\ProductionDataView;
 
 class DashboardController extends Controller
 {
@@ -64,14 +65,17 @@ class DashboardController extends Controller
                 $request = Request::create( '/dashboard/machine', 'POST', ['orgId'=>$org['org'][0]['org_ID'], 'dbName'=>$this->database]);
                 $property = $this->getPropertyData($request);
                 if (!empty($org)) {
-                    $machines = DB::table("Anlagen")
-                        ->whereNotNull('datumAnl');
+                    // $machines = DB::table("Anlagen")
+                    //     ->whereNotNull('anlagen.datumAnl')->whereNotNull('anlagen.anl_ID');
+                   $machines = DB::table("Anlagen")->Join('ProdData', 'anlagen.anl_ID', '=', 'ProdData.anl_ID')
+                       ->whereNotNull('anlagen.datumAnl')->whereNotNull('anlagen.anl_ID');
                     if(!empty($property[0]['lieg_ID'])) {
                         $machinesData = $machines->where('lieg_ID',$property[0]['lieg_ID'])
-                        ->where('deleted',0)->first();
+                        ->where('anlagen.deleted',0)->first();
                     } else {
-                        $machinesData = $machines->where('deleted',0)->first();
+                        $machinesData = $machines->where('anlagen.deleted',0)->first();
                     }
+                //    dd($machinesData);
                     $machines=(array)$machinesData;
                     if (!empty($machines)) {
                         $tables = $this->getAllTables();
@@ -79,7 +83,8 @@ class DashboardController extends Controller
                         $table = json_decode(json_encode($table), true);
                         $groupData = $this->getGroup();
                         $request = Request::create( '/dashboard/machine', 'POST', ['id'=>$machines['anl_ID'], 'type'=>'current','prop_id'=>'']);
-                        $data = $this->getMachineDetail($request, $limit);
+                        $data = $this->getMachineDetailNew($request, $limit);
+                     //   $data = $this->getMachineDetail($request, $limit);
                         if($data['code'] == 401) {
                            return  View::make("404", ['message'=>$data['message'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                         }
@@ -98,6 +103,132 @@ class DashboardController extends Controller
             }
         }
     }
+
+    public function getMachineDetailNew(Request $request, $limit=5)
+    {
+        $id = $request['id'];
+        $type = $request['type'];
+        $lieg_ID = $request['prop_id'];
+        $machineData = null;
+        $prodData = [];
+        $colData =[];
+        $prod = [];
+        $customColumns = [];
+        $machineData = DB::table('anlagen')->Join('ProdData', 'anlagen.anl_ID', '=', 'ProdData.anl_ID')->Join('ProdData_', 'anlagen.anl_ID', '=', 'ProdData_.anl_ID')->whereNotNull('anlagen.datumAnl')->where('anlagen.deleted',0)->whereNotNull('anlagen.anl_ID');
+        if(($lieg_ID!='')){
+            switch ($type) {
+                case 'first':
+                    $machineData = $machineData->where('anlagen.lieg_ID',$lieg_ID)->first();
+                    break;
+                case 'next':
+                    $machineData = $machineData->where('anlagen.lieg_ID',$lieg_ID)->where('anlagen.anl_ID', '>', $id)->orderBy('anlagen.anl_ID')->first();
+                    break;
+                case 'prev':
+                    $machineData = $machineData->where('anlagen.lieg_ID',$lieg_ID)->where('anlagen.anl_ID', '<', $id)->orderBy('anlagen.anl_ID','desc')->first();
+                    break;
+                case 'last':
+                    $machineData = $machineData->where('anlagen.lieg_ID',$lieg_ID)->orderBy('anlagen.anl_ID','desc')->first();
+                    break;
+                case 'current':
+                    $machineData = $machineData->where('anlagen.lieg_ID',$lieg_ID)->where('anlagen.anl_ID', $id)->first();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch ($type) {
+                case 'first':
+                    $machineData = $machineData->first();
+                    break;
+                case 'next':
+                    $machineData = $machineData->where('anlagen.anl_ID', '>', $id)->orderBy('anlagen.anl_ID')->first();
+                    break;
+                case 'prev':
+                    $machineData = $machineData->where('anlagen.anl_ID', '<', $id)->orderBy('anlagen.anl_ID','desc')->first();
+                    break;
+                case 'last':
+                    $machineData = $machineData->orderBy('anlagen.anl_ID','desc')->first();
+                    break;
+                case 'current':
+                    $machineData = $machineData->where('anlagen.anl_ID', $id)->first();
+                    break;
+                default:
+                    break;
+            }
+        }
+      //  dd($machineData);
+        if(!empty($machineData)){
+            $subGroupId = $this->getSubGroupid($machineData->custom1Anl);
+            $primary_key = $this->getPrimaryKey($subGroupId);
+            $subGroupConfig = [];
+            $shards = 0;
+            $chartsData = collect();
+            $measuringPoint = [];
+            $msGraphData = [];
+            $tmpArray =[31,290];
+            for ($i=1; $i <= count($tmpArray); $i++){
+                $string = 'messstelle'.$i.'IDAnl';
+                //  if(!empty($machineData->$string)) {
+                    $shards++;
+                    // dd($machineData->$string);
+                    $measuringPoint['messstelle'.$i.'IDAnl'] = $machineData->$string;
+                    $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$tmpArray[$i-1], 'limit' => $limit]);
+                //    dd($this->graphController->getChartsData($request));
+                    $chartsData->put($string.$i,$this->graphController->getChartsData( $request));
+                    array_push($msGraphData, $tmpArray[$i-1]);
+                //  }
+            }
+            $otherGraphData = $this->getGraphConfigurations($machineData);
+                //dd($otherGraphData);
+            $msGraphData = implode(',',$msGraphData);
+            $dynamicData  = [
+                'anlage' => Str::of($machineData->maschine)->trim(),
+                'auftragsmenge' => (int)($machineData->sollmenge),
+                'programm' => Str::of($machineData->maschinentyp)->trim(),//wrong
+                'zeit_zyklus' => number_format($machineData->zykluszeit, 2),
+                'bestellung' =>  Str::of($machineData->artikelnummer)->trim(),
+                'werkzeug' => Str::of($machineData->werkzeug)->trim(),
+                'artikel' => Str::of($machineData->auftrag)->trim(),
+                'kavitäten' =>(int)$machineData->nester,
+                'gutmenge' => (int)($machineData->gutmenge),
+                'letzte_störung' => Str::of($machineData->zeitstempel)->trim(),
+                'ausschuss' => (int)($machineData->ausschuss),
+                'bisher_produziert' => (int)($machineData->gutmenge),
+            ];
+            $prodData =[
+                'anl_ID' => $machineData->anl_ID,
+                'bildAnl' => $machineData->bildAnl,
+                'shards' => $shards,
+                'machineshards' => $measuringPoint,
+                'shardsData' => $measuringPoint,
+                'chartsData' => $chartsData,
+                'msGraphData' => $msGraphData,
+                'otherGraph' => $otherGraphData
+            ];
+
+            $customDataMerge = array_merge($dynamicData, $this->getCustomFieldData($machineData));
+            $customColumns = $this->splitArray($customDataMerge, true);
+            $otherGraphTable = (new ManageDatabaseController)->getOtherGraphData($this->username);
+        //    dd($customColumns);
+        //    dd($customColumns);
+            //   array_push($prodData, $prod);
+            // if(!empty($primary_key)) {
+                //  $primary_key = $machineData->$primary_key;
+                //   $subGroupConfig = $this->getSubgroupData($subGroupId , $primary_key);
+                $subGroupConfig = $this->getSubgroupData('6', '2');
+                $customDataMerge = array_merge($this->getCustomFieldData($machineData, null, true), $this->getSubgroupData('6', '2', true));
+                // dd($customDataMerge);
+            //  }
+            
+            $mergeArray = $this->splitArray(array_merge(array_merge($subGroupConfig, $customColumns['extra']['odd']), $customColumns['extra']['even']));
+            
+            //dd($customDataMerge);
+            return ['code'=>200, 'otherGraph'=>$customDataMerge, 'otherGraphTable'=>$otherGraphTable, 'data' =>$prodData, 'dynamicData' => $customColumns ,'anl_ID'=>$machineData->anl_ID, 'subGroupConfig' => $mergeArray, 'message'=>'Data Retrived Successfully.'];
+        } else {
+            return ['code'=>401, 'data' =>"", 'message'=>'No Record Found!'];
+        }
+    }
+
     public function getMachineDetail(Request $request, $limit=5)
     {
         $id = $request['id'];
@@ -627,35 +758,31 @@ class DashboardController extends Controller
         $graphJsData = [];
         $label = '';
         if (!empty($graph_data)) {
-            $machineLabelName = explode (   '-' ,$machineData->nummerAnl);
-            $machineLabelName = $machineLabelName[0];
-            $queryLabel = DB::table('TWP_PROD_OVERVIEW')->where('MANAME',$machineLabelName)->limit(100);
+            $queryLabel = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')->WHERE('ProdData.anl_ID', $machineData->anl_ID)->limit(5);
             foreach($graph_data as $key=>$gdata) {
                 $query = null;
                 $configData = DashboardProduktionConfig::where('label_name',$gdata->label)->where('username',$this->username)->first();
                 if (!empty($configData)) {
                     $label = $configData->column_name;
                     $primary_key = $configData->primary_key;
-                    $query = DB::table($configData->table_name)->where($configData->foreign_key, $machineData->$primary_key)->limit(100);
+                    $query = DB::table($configData->table_name)->where($configData->foreign_key, $machineData->$primary_key)->limit(5);
                 } else {
                     $tableConfigData = DB::table('machine_table_config')->where('column_name',$gdata->label)->where('username', $this->username)->first();
                     if (!empty($tableConfigData)) {
                         $label = $tableConfigData->label_name;
-                        $machineName = explode (   '-' ,$machineData->nummerAnl);
-                        $machineName = $machineName[0];
-                        $query = DB::table('TWP_PROD_OVERVIEW')->where('MANAME',$machineName)->limit(100);
+                        $query = $queryLabel;
                     } else {
                         $label = $gdata->label;
                         $subGroupConfigData = DB::table('SubGroupConfiguration')->where('column_name',$gdata->label)->where('username', $this->username)->where('status','1')->first();
                         if(!empty($subGroupConfigData)) {
                             $datVal = $subGroupConfigData->primary_key;
-                            $query = DB::table($subGroupConfigData->table_name)->where($subGroupConfigData->foreign_key, $machineData->$datVal)->limit(100);
+                            $query = DB::table($subGroupConfigData->table_name)->where($subGroupConfigData->foreign_key, $machineData->$datVal)->limit(5);
                         }
                     }
                 }
                 if(isset($query) && !empty($query)) {
                     $data = $query->pluck($label)->toArray();
-                    $label = $queryLabel->pluck('servertime')->toArray();
+                    $label = $queryLabel->pluck('timeClose')->toArray();
                     $amData = [];
                     foreach($data as $key=>$value){
                         array_push($amData, ['date'=>(strtotime($label[$key]) * 1000), 'value'=>floatval($value)]);
@@ -673,6 +800,62 @@ class DashboardController extends Controller
         $machineData = DB::table('anlagen')->whereNotNull('datumAnl')->where('deleted',0)->where('anl_ID', $id)->first();
         $customDataMerge = array_merge($this->getCustomFieldData($machineData, null, true), $this->getSubgroupData('6', '2', true));
         return ['status'=> 200 , 'data' => $customDataMerge];
+    }
+
+
+    public function getHistoryGraphConfigurations(Request $request) {
+        $anl_id = $request->anl_ID;
+        $limit = $request->limit;
+        $machineDataQuery = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')->where('ProdData.anl_ID',$anl_id)->limit($limit);
+        $machineData = $machineDataQuery->first();
+        $graph_data = GraphConfiguration::where('username',$this->username)->get();
+        $graphJsData = [];
+        $label = '';
+        if (!empty($graph_data)) {
+            $queryLabel = $machineDataQuery;
+            foreach($graph_data as $key=>$gdata) {
+                $query = null;
+                $configData = DashboardProduktionConfig::where('label_name',$gdata->label)->where('username',$this->username)->first();
+                if (!empty($configData)) {
+                    $label = $configData->column_name;
+                    $primary_key = $configData->primary_key;
+                    $query = DB::table($configData->table_name)->where($configData->foreign_key, $machineData->$primary_key)->limit($limit);
+                } else {
+                    $tableConfigData = DB::table('machine_table_config')->where('column_name',$gdata->label)->where('username', $this->username)->first();
+                    if (!empty($tableConfigData)) {
+                        $label = $tableConfigData->label_name;
+                        $machineName = explode (   '-' ,$machineData->nummerAnl);
+                        $machineName = $machineName[0];
+                        $query = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')->limit($limit);
+                    } else {
+                        $label = $gdata->label;
+                        $subGroupConfigData = DB::table('SubGroupConfiguration')->where('column_name',$gdata->label)->where('username', $this->username)->where('status','1')->first();
+                        if(!empty($subGroupConfigData)) {
+                            $datVal = $subGroupConfigData->primary_key;
+                            $query = DB::table($subGroupConfigData->table_name)->where($subGroupConfigData->foreign_key, $machineData->$datVal)->limit($limit);
+                        }
+                    }
+                }
+                if(isset($query) && !empty($query)) {
+                    $data = $query->pluck($label)->toArray();
+                    $label = $queryLabel->pluck('timeClose')->toArray();
+                    $amData = [];
+                    foreach($data as $key=>$value){
+                        array_push($amData, ['date'=>(strtotime($label[$key]) * 1000), 'value'=>floatval($value)]);
+                    }
+                    $dataJs = ['name' =>str_replace(' ', '_', $gdata->graph_name), 'label' => $label, 'data'=>$data, 'mode' => $gdata->is_open, 'amData' => $amData];
+                    array_push($graphJsData, $dataJs);
+                } 
+            }
+        }
+        return ['code'=>200, 'graphData' => $graphJsData];
+    }
+
+    public function getMixedChartData(Request $request) {
+        $productGraphData = $this->getHistoryGraphConfigurations($request);
+        $energyGraphData = $this->graphController->getPointsData($request);
+        $graphJsData = array_merge($productGraphData['graphData'], $energyGraphData['graphData']);
+        return ['code'=>200, 'graphData' => $graphJsData];
     }
 
 }

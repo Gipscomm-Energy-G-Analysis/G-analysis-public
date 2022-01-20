@@ -1,4 +1,5 @@
-@extends('layout.app')
+@extends('layout.appGraph')
+{{dd('here')}}
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
