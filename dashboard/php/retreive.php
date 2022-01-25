@@ -3154,12 +3154,17 @@ class dashboardController {
             $records['energy_header'] = $this->generateHtmlLayerTableEnergyDataHeader($rowClickTable);
             $records['energy_html'] = $this->generateRowClickHtmlLayerTableEnergyData($sum_value,$click_row_array);
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlRowClickLayerEnergyData($sum_value);
+
+            // <----21-01-2022--
+            $arTable = json_decode($click_row_array);
+            $queryName = "Select * from SchichtModelleAll where modellBez = '$arTable[0]' ";
+            // --end--->
             
             // <--15-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $pagesCount = isset($_POST['pagesCount']) ? $_POST['pagesCount'] : 1;
-            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => $query1,'row_click' => 'true', 'type' => 'Energy');
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $queryName ,'queryMaxValue' => $query1,'row_click' => 'true', 'type' => 'Energy');
             $records['query_data'] = $ar;
 
             // $records['queryLastDate'] = $queryLastDateData;
