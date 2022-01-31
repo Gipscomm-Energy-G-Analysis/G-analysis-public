@@ -48,7 +48,7 @@
                     </div>
 
                     <!-- 12-1-2022 Layer Modal Div -->
-                    <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                    <!-- <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
                       <label for="layer_modal_date">Select Date</label>
                        <input type="date" class="form-control form-control-sm text-dark" id="layer_modal_date" placeholder="Select Date">
                     </div>
@@ -81,10 +81,38 @@
                         <option value="sunday">Sunday</option>
                       </select>
                       <span class='energy_number_layer_day_filter_error text-danger'></span>
+                    </div> -->
+                    <!-- --end -->
+
+
+                    <!-- 25-1-2022 -->
+
+                    <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                      <label for="energy_measurement">Select Measurement</label>
+                      <select class="form-control form-control-sm text-dark" id="energy_measurement">
+                        <option value="">Select Measurement</option>
+                      </select>
+                    </div>
+
+
+                    <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                      <label for="select_day_week">Select Filter</label>
+                      <select class="form-control form-control-sm text-dark" id="select_day_week">
+                        <option value="">Select Filter</option>
+                        <option value="day">Day</option>
+                        <option value="week">Week</option>
+                      </select>
+                      <span class='energy_day_week_filter_error text-danger'></span>
+                    </div>
+
+                    <div class="form-group col-md-3 layer_modal_filter_div" id="input_val_week_day_div" style="display: none">
+                      <label class="form-check-label"> Enter Range Value </label>
+                      <input type="number" class="form-control-sm form-control text-mute" id="input_val_week_day" name="input_val_week_day">  
+                      <span class='energy_input_day_week_error text-danger'></span>
                     </div>
                     <!-- --end -->
 
-                    <diV class="form-group col-md-3" id="open_end_layer_div" style="display: none">
+                    <div class="form-group col-md-3" id="open_end_layer_div" style="display: none">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
                           Open End

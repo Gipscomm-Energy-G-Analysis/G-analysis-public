@@ -369,7 +369,12 @@ $(document).ready( function(){
     $(document).on('keypress keyup blur focusin', '#energy_search_record', function(){
         $('#energy_records_order_by option:contains("Maximum")').text('Order By Max Units Consumed');
         $('#energy_records_order_by option:contains("Minimum")').text('Order By Min Units Consumed');
-        getNumberRecordsEnergy(); 
+        var energy_type = $('#energy_type').val();
+        if(energy_type != 'layer_modal')
+        {
+            getNumberRecordsEnergy(); 
+        }
+        
     });
     // --end--->
 
@@ -1833,7 +1838,8 @@ $(document).ready( function(){
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum');
             $('.auto_man_div').show();
             $('.layer_modal_filter_div').hide()
-            $('#energy_search_record').attr('readonly',false)
+            $('#energy_search_record').attr('readonly',false);
+            getNumberRecordsEnergy();
 
         }
         else if(val == 'layer_modal'){
@@ -1841,16 +1847,20 @@ $(document).ready( function(){
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum Quantity');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum Quantity');
             $('.auto_man_div').hide();
-            $('.layer_modal_filter_div').show()
-            $('#energy_search_record').attr('readonly',true)
+            $('.layer_modal_filter_div').show();
+            $('#energy_search_record').attr('readonly',true);
+            $("#select_day_week option[value='']").prop('selected','selected');
+            $('#input_val_week_day').val('');
+            getAllMeasurementEnergy();
         }else{
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Order By Max Units Consumed');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Order By Min Units Consumed');   
             $('.auto_man_div').show();
             $('.layer_modal_filter_div').hide()
-            $('#energy_search_record').attr('readonly',false)
+            $('#energy_search_record').attr('readonly',false);
+            getNumberRecordsEnergy();
         }
-        getNumberRecordsEnergy();
+       
     })
     // ---end--->
 
@@ -2649,6 +2659,58 @@ $(document).ready( function(){
 
     // --end--->
 
+
+    // <----25-1-2022---
+    $(document).on('blur', '#input_val_week_day', function(){
+        var input_val = $(this).val();
+        var select_day_week = $('#select_day_week').val();
+        if(select_day_week == '')
+        {
+            $('.energy_day_week_filter_error').text('Please Select Filter');
+            $('.energy_day_week_filter_error').fadeIn('slow');
+            setTimeout( function(){
+                $('.energy_day_week_filter_error').fadeOut('slow');
+            },3000);
+            $('#input_val_week_day').val('');
+        }
+        else if(select_day_week == 'day')
+        {
+            if(input_val > 7 || input_val < 1)
+            {
+                $('.energy_input_day_week_error').text('Value Cannot be Greater than 7 and less than 0');
+                $('.energy_input_day_week_error').fadeIn('slow');
+                setTimeout( function(){
+                    $('.energy_input_day_week_error').fadeOut('slow');
+                },3000);
+                $('#input_val_week_day').val('');
+            }
+        }
+        else if(select_day_week == 'week')
+        {
+            if(input_val > 52 || input_val < 1)
+            {
+                $('.energy_input_day_week_error').text('Value Cannot be Greater than 52 and less than 0');
+                $('.energy_input_day_week_error').fadeIn('slow');
+                setTimeout( function(){
+                    $('.energy_input_day_week_error').fadeOut('slow');
+                },3000);
+                $('#input_val_week_day').val('');
+            }
+        }
+        getNumberRecordsEnergyLayerModal();
+    });
+    
+    // ---end--->
+
+
+    // <---27-01-2022---
+    $(document).on('change','#energy_measurement,#select_day_week', function(){
+        // $('#input_val_week_day').trigger('blur');
+        $('#input_val_week_day').val('');
+        getNumberRecordsEnergyLayerModal();
+    })
+
+    // ---end--->
 
     
 

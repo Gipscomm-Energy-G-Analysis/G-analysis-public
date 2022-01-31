@@ -1496,9 +1496,16 @@ function getNumberRecordsEnergyLayerModal(){
   // }
 
   // <---13-1-2022-
-  var date_val = $('#layer_modal_date').val();
-  var day_from_val = $('#day_from').val();
-  var day_to_val = $('#day_to').val();
+  // var date_val = $('#layer_modal_date').val();
+  // var day_from_val = $('#day_from').val();
+  // var day_to_val = $('#day_to').val();
+  // --end--->
+
+  // <----25-1-2022---
+  var energy_measurement = $('#energy_measurement').val();
+  var select_day_week = $('#select_day_week').val();
+  var input_val_week_day = $('#input_val_week_day').val();
+
   // --end--->
   selected_number_record = 5;
   //----end-->
@@ -1509,7 +1516,7 @@ function getNumberRecordsEnergyLayerModal(){
 
   $('.energy_table_header').removeClass('row_click_table');
   $('.table-margin .table th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
-  if(date_val == '' || day_from_val == '' || day_to_val == ''){
+  if(energy_measurement == '' || select_day_week == '' || input_val_week_day == ''){
     var tr = "<tr><td colspan='50' class='text-center text-muted'>Please Select All Filters</td></tr>";
     $('#energy_select_table_entries').html(tr);
     $('#pagination_html_energy').html('');
@@ -1523,9 +1530,12 @@ function getNumberRecordsEnergyLayerModal(){
         data: {
             action: "getLayerTableEnergyData",
             nameDB: $("#nameDashboardDB").val(),
-            date_val : date_val,
-            day_from_val : day_from_val,
-            day_to_val : day_to_val
+            mst_id : energy_measurement,
+            select_day_week : select_day_week,
+            input_val_week_day : input_val_week_day     
+            // date_val : date_val,
+            // day_from_val : day_from_val,
+            // day_to_val : day_to_val
 
             // total_number_records : total_number_records,
             // time_interval : time_interval,
@@ -1540,6 +1550,7 @@ function getNumberRecordsEnergyLayerModal(){
         },
         success: function(a) {
           // a = JSON.parse(a);
+          // console.log(a);
           // console.log(a['table_found']);
           $('#energy_search_record').val('');
           $('#energy_record_table #energy_record_tb thead').html(a['energy_header']);
@@ -7678,6 +7689,39 @@ function rowClickParticularProductEntry(analgen_config_id,page_val = 1,order_by 
   });
 }
 // ---end--->
+
+
+//<----25-1-2022---
+function getAllMeasurementEnergy(){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getAllMeasurementEnergy",
+        nameDB: $("#nameDashboardDB").val(),
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#energy_measurement').html(a['measurement_html']);
+      if(a['table_found'] == "false"){
+        var htmlTableNotFound = '<tr><td colspan="50" class="text-center">Table Not Found</td></tr>';
+        $('#energy_select_table_entries').html(htmlTableNotFound);
+        $('#pagination_html_energy').html('');  
+      }
+      else{
+        var tr = "<tr><td colspan='50' class='text-center text-muted'>Please Select All Filters</td></tr>";
+        $('#energy_select_table_entries').html(tr);
+        $('#pagination_html_energy').html('');
+      }
+    }
+  }); 
+}
+// --end---> 
+
 
 // <---18-1-2022--
 // var i = 1;

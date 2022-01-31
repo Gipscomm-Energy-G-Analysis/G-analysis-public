@@ -3916,10 +3916,154 @@ class dashboardController {
     // --end-->
 
 
+    // <----25-1-2022---
+    public function getAllMeasurementEnergy()
+    {
+        try{
+            global $conn;
+            $queryMeasurement = "select mst_Id from MessstellenEnergiedaten group by mst_Id ";
+            $resulTotalRecord = sqlsrv_query($conn,$queryMeasurement);
+            $resultQuery = [];
+            $tablefound = 'false';
+            
+            if($resulTotalRecord != false)
+            {
+                $resultQuery = queryDB($conn, $queryMeasurement, "read");
+                $tablefound = 'true';
+            }
+
+            if($resultQuery != '' && count($resultQuery) > 0)
+            {
+                $ar_mst_id = array_column($resultQuery,'mst_Id');
+                $str_mst_id = implode(',',$ar_mst_id);
+                $nameQuery = "Select mst_id,nameMSt from messstellen where  mst_id in ($str_mst_id) ";
+                $nameQueryResult = queryDB($conn, $nameQuery, "read");
+                // echo json_encode($ar_mst_id); die;
+                $select = "<option value=''>Please Select Measurement</option>";
+                foreach($nameQueryResult as $key=>$val)
+                {
+                    $select .= "<option value=".$val["mst_id"].">".$val['nameMSt']."</option>";    
+                }
+                $result['measurement_html'] = $select;
+            }
+            else{
+                $select = "<option value=''>No Data Found</option>";
+                $result['measurement_html'] = $select;
+            }
+            $result['table_found'] = $tablefound;
+            echo json_encode($result,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    
+    // --end---->
+
     //<---16-12-2021---
     public function getLayerTableEnergyData(){
         try{
             global $conn;
+            // <----27-1-2021---e
+            $mst_id = $_POST['mst_id'];
+            $select_day_week = $_POST['select_day_week'];
+            $input_val_week_day = $_POST['input_val_week_day'];
+            // $date = '2022-02-01';
+            if($select_day_week == 'day') 
+            {   
+                $thead = '<tr>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
+                $thead .= '</tr>';
+                $tbody = '';
+
+                $todayDate = date('Y-m-d');
+
+                //SchichtModelleAll Table Check
+                $tableCheckQuery = "select * from SchichtModelleAll ";
+                $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+                $table_found = 'false';
+                if($resultTableExistCheck != false)
+                {
+                    $table_found = 'true';
+                }
+
+                if($table_found == 'true'){
+                    for($i = 0; $i < $input_val_week_day; $i++)
+                    {
+                        $dateVal = date('Y-m-d', strtotime("-$i days"));
+                        $dayVal = date('l', strtotime("-$i days"));
+                        
+                        $tbody .= '<tr>';
+                        $tbody .= '<td>'.$dayVal.'</td>';
+                        
+                        //Shift Name Get
+                        $shiftNameQuery = "Select distinct(modellBez) as name from SchichtModelleAll where gueltigVon >= '$dateVal' AND gueltigBis <= '$todayDate' ";
+                        $shfitNameResult = queryDB($conn, $shiftNameQuery, "read");
+                        if($shfitNameResult != '' && count($shfitNameResult) > 0)
+                        {
+                            $ar_name = array_column($shfitNameResult,'name');
+                            $convert_comma_name = implode(',',$ar_name);
+                            $tbody .= '<td>'.$convert_comma_name.'</td>';
+                        }else{
+                            $tbody .= '<td></td>';    
+                        }
+                        
+                        //Energy Consumed Check
+                        $query1 = "Select * from MessstellenEnergiedaten where convert(date,time) = '$dateVal' AND mst_ID = '$mst_id' ";
+                        $resultQuery = queryDB($conn, $query1, "read");
+                        if($resultQuery != '' && count($resultQuery) > 0)
+                        {
+                            $energyConsumedValue = $this->calculateLayerEnergyConsumed($resultQuery);
+                            $tbody .= '<td>'.$energyConsumedValue.'</td>';
+
+                            //Save Button
+                            $paginationHTMl="<div id='save_table_format' class='text-center'>
+                            <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                            </div>";
+                            $records['pagination_html_energy'] =  $paginationHTMl;
+                        }
+                        else{
+                            $tbody .= '<td></td>';    
+                        }
+                        $tbody .= '<td>'.$dateVal.'</td>';
+                        $tbody .= '</tr>';
+                    }
+                }
+                $records['energy_header'] = $thead;
+                $records['energy_html'] = $tbody;
+                $records['table_found'] = $table_found;
+
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                die;
+            }
+            else if($select_day_week == 'week')
+            {
+                //SchichtModelleAll Table Check
+                $tableCheckQuery = "select * from SchichtModelleAll ";
+                $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+                $table_found = 'false';
+                if($resultTableExistCheck != false)
+                {
+                    $table_found = 'true';
+                }
+
+                if($table_found == 'true')
+                {
+                    $todayDate = date('Y-m-d');
+                    $dateVal =  date('Y-m-d', strtotime("-14 days"));
+                    $dayVal = date('l',strtotime("-0 days"));
+                    echo $dateVal;
+                    die;
+                }
+                die;
+            }
+
+            // ---end--->
+            die;
             $date_val = $_POST['date_val'];
             $day_from_val = $_POST['day_from_val'];
             $day_to_val = $_POST['day_to_val'];
@@ -4009,6 +4153,28 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         } 
     }
+
+    // <-----27-1-2022---
+    public function calculateLayerEnergyConsumed($resultQuery){
+        try{
+            // echo json_encode($resultQuery); die;
+            $energyConsumed = '';
+            if($resultQuery != '' && count($resultQuery) > 0)
+            {
+              $totalEnergy = 0;
+              for($i = 0; $i < count($resultQuery); $i++)  
+              {
+                $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4; 
+                $totalEnergy += $energyConsumed; 
+              }
+              return $totalEnergy;
+            }
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
 
     // <---13-1-2022--
     public function generateHtmlLayerTableEnergyDataHeader($rowclickTable = false){
