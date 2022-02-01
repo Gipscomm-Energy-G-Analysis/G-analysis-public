@@ -12,6 +12,20 @@ const isCounter =
     data =>
     data.every((a, i, arr) => equalsZero(i) || a.Value >= arr[decr(i)])
 
+const setAsXY = 
+    x => 
+    y => 
+    ({ x, y })
+
+const timeToMonth =
+    time =>
+    time.slice(3, 5)
+
+const assignData =
+    recordsTime =>
+    recordsData =>
+    
+
 function DataTranslator(translationType, inData){
   this.translationType = translationType;
   this.inData = inData;
@@ -36,6 +50,18 @@ function DataTranslator(translationType, inData){
       }
     }
     switch (this.translationType) {
+
+        const monthsXY =
+            range1To(12)
+            .map(prefixZero)
+            .map(flip(setAsXY)(undefined))
+            .sort((a,b) => a.x - b.x)
+
+        
+
+
+        .map(a => this.data.Time.find(equal(a)))
+
       case TranslationType.ENERGY_DATA_01:
         for(let i = 0; i < nMonth; i++){
           if(i < 9){

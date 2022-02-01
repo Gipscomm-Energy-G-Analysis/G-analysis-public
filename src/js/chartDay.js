@@ -331,7 +331,11 @@ $("#container") .ejChart({
         }
     },
     commonSeriesOptions: csOptions,
-    series: []
+    series: [{
+        emptyPointSettings: {
+             displayMode : "gap",
+         } 
+      }]
 });
 
 $("h3").text(headerDiagramm);
