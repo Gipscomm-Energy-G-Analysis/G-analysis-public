@@ -26,7 +26,7 @@ $betrGrpID      = $_POST['betrGrpID'] ;
 
 if($modus === "new") {
     if($manGrpID !== "0") {
-        $query =  "INSERT INTO benutzer(manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, eMail, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, rechteEdit deleted) " ;
+        $query =  "INSERT INTO benutzer(manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, eMail, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, rechteEdit, deleted) " ;
         $query .= "VALUES($manGrpID, 1, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'ben', '$rechteTreeView', '$rechteMenu', '$rechteEdit', 0) " ;
     }
     else {

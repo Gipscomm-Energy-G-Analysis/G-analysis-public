@@ -102,6 +102,7 @@ Object
         };
         this.ajaxPost = this.callAjax("POST");
         this.ajaxGet = this.callAjax("GET");
+        this.prefixZero = n => n < 10 ? "0" + n : String(n)
         this.pipe = (...fns) => {
             let results = [this.head(fns)]
             for(k=1;this.smaller(k)(fns.length);k++) {
@@ -137,6 +138,9 @@ Object
                     return newAcc
                 }
             }
+        
+        this.prepRange1To = arr => n => n > 0 ? range0 (arr.concat(n)) (n - 1) : arr.sort()
+        this.range1To = this.prepRange1To([])
         this.difference = arr1 => arr2 => arr1.filter(a1 => !arr2.some(equal(a1)))
         this.containsNaN = str => this.unequal(str.search("NaN"))(-1)
         this.removeDuplicates = arr => Array.from(new Set(arr))
@@ -200,6 +204,7 @@ const { split_
       , deepFreeze
       , ajaxPost
       , ajaxGet
+      , prefixZero
       , pipe
       , pipe_
       , itemSessionSet

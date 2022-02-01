@@ -145,6 +145,7 @@ function prepareOrders($records) {
                     , "zykluszeit" => $averageCycletimes_[$i]
                     , "auftrag" => $startEndDates_[$i][1]["auftrag"]
                     , "verbrauchAuftrag" => 0
+                    , "zustandAuftrag" => $startEndDates_[$i][1]["zustandAuftrag"]
                     ]
                 ) ;
             }

@@ -4214,6 +4214,8 @@
                <div class="dispNone">
                   <input id="prdID" />
                   <input id="prdCount" />
+                  <input id="prdState" />
+                  <input id="prdIdx" />
                </div>
                <div id="infosProdukte">
                   <div class="navDropBox" style="height:20px;padding:3px;"> 
@@ -4241,36 +4243,36 @@
                      <div style="margin-bottom: 10px;">
                         <div class="controlDiv">
                            <label>Artikelnummer</label>
-                           <input id="artklnrPrd" />
+                           <input id="artklnrPrd" class="prdForm"/>
                         </div>
                         <div class="controlDiv">
                            <label>Bezeichnung</label>
-                           <input id="bezeichnungPrd" />
+                           <input id="bezeichnungPrd" class="prdForm"/>
                         </div>
                      </div>
                      <div class="controlDiv">
                         <label id="lblCustom1Prd">Par 1</label>
-                        <select id="custom1Prd"> </select>
+                        <select id="custom1Prd" class="prdForm"> </select>
                      </div>
                      <div class="controlDiv">
                         <label id="lblCustom2Prd">Par 2</label>
-                        <select id="custom2Prd"> </select>
+                        <select id="custom2Prd" class="prdForm"> </select>
                      </div>
                      <div class="controlDiv">
                         <label id="lblCustom3Prd">Par 3</label>
-                        <select id="custom3Prd"> </select>
+                        <select id="custom3Prd" class="prdForm"> </select>
                      </div>
                      <div class="controlDiv">
                         <label id="lblCustom4Prd">Par 4</label>
-                        <select id="custom4Prd"> </select>
+                        <select id="custom4Prd" class="prdForm"> </select>
                      </div>
                      <div class="controlDiv">
                         <label id="lblCustom5Prd">Par 5</label>
-                        <select id="custom5Prd"> </select>
+                        <select id="custom5Prd" class="prdForm"> </select>
                      </div>
                      <div class="controlDiv">
                         <label id="lblCustom6Prd">Par 6</label>
-                        <select id="custom6Prd"> </select>
+                        <select id="custom6Prd" class="prdForm"> </select>
                      </div>
                   </div>
                   <div class="infosBlock produktionsAnlagenSec">
@@ -4280,10 +4282,10 @@
                      <div id="divAnlPrd1">
                         <div class="controlDiv">
                            <label for="inpAnlage1Prd"><img id="imgBtnAnlage1Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 1</label>
-                           <input id="inpAnlage1Prd" readonly/>
+                           <input id="inpAnlage1Prd" class="prdForm" readonly/>
                            <input id="inpAnlage1IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage1Prd">
+                           <select id="messartMstInpAnlage1Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4291,10 +4293,10 @@
                         </div>
                         <div class="controlDiv">
                            <label for="inpAnlage2Prd"><img id="imgBtnAnlage2Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 2</label>
-                           <input id="inpAnlage2Prd" readonly/>
+                           <input id="inpAnlage2Prd" class="prdForm" readonly/>
                            <input id="inpAnlage2IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage2Prd">
+                           <select id="messartMstInpAnlage2Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4302,10 +4304,10 @@
                         </div>
                         <div class="controlDiv">
                            <label for="inpAnlage3Prd"><img id="imgBtnAnlage3Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 3</label>
-                           <input id="inpAnlage3Prd" readonly/>
+                           <input id="inpAnlage3Prd" class="prdForm" readonly/>
                            <input id="inpAnlage3IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage3Prd">
+                           <select id="messartMstInpAnlage3Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4315,10 +4317,10 @@
                      <div id="divAnlPrd2" style="display:none;">
                         <div class="controlDiv">
                            <label for="inpAnlage4Prd"><img id="imgBtnAnlage4Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 4</label>
-                           <input id="inpAnlage4Prd" readonly/>
+                           <input id="inpAnlage4Prd" class="prdForm" readonly/>
                            <input id="inpAnlage4IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage4Prd">
+                           <select id="messartMstInpAnlage4Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4326,10 +4328,10 @@
                         </div>
                         <div class="controlDiv">
                            <label for="inpAnlage5Prd"><img id="imgBtnAnlage5Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 5</label>
-                           <input id="inpAnlage5Prd" readonly/>
+                           <input id="inpAnlage5Prd" class="prdForm" readonly/>
                            <input id="inpAnlage5IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage5Prd">
+                           <select id="messartMstInpAnlage5Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4337,10 +4339,10 @@
                         </div>
                         <div class="controlDiv">
                            <label for="inpAnlage6Prd"><img id="imgBtnAnlage6Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 6</label>
-                           <input id="inpAnlage6Prd" readonly/>
+                           <input id="inpAnlage6Prd" class="prdForm" readonly/>
                            <input id="inpAnlage6IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage6Prd">
+                           <select id="messartMstInpAnlage6Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4350,10 +4352,10 @@
                      <div id="divAnlPrd3" style="display:none;">
                         <div class="controlDiv">
                            <label for="inpAnlage7Prd"><img id="imgBtnAnlage7Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 7</label>
-                           <input id="inpAnlage7Prd" readonly/>
+                           <input id="inpAnlage7Prd" class="prdForm" readonly/>
                            <input id="inpAnlage7IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage7Prd">
+                           <select id="messartMstInpAnlage7Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4361,10 +4363,10 @@
                         </div>
                         <div class="controlDiv">
                            <label for="inpAnlage8Prd"><img id="imgBtnAnlage8Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 8</label>
-                           <input id="inpAnlage8Prd" readonly/>
+                           <input id="inpAnlage8Prd" class="prdForm" readonly/>
                            <input id="inpAnlage8IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage8Prd">
+                           <select id="messartMstInpAnlage8Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4372,10 +4374,10 @@
                         </div>
                         <div class="controlDiv">
                            <label for="inpAnlage9Prd"><img id="imgBtnAnlage9Prd" class="imgBtnAnlagePrd" title="Anlage auswählen" src="images/search.png" alt="suchen, auswählen" style="height:10px;width:10px;float:right;" />Anlage 9</label>
-                           <input id="inpAnlage9Prd" readonly/>
+                           <input id="inpAnlage9Prd" class="prdForm" readonly/>
                            <input id="inpAnlage9IDPrd" style="display:none;" />
                            <!-- new-mm-start 23-03-2021 -->
-                           <select id="messartMstInpAnlage9Prd">
+                           <select id="messartMstInpAnlage9Prd" class="prdForm">
                               <option value="manuel">Manuel </option>
                               <option value="automatik" selected>Automatik</option>
                            </select>
@@ -4383,7 +4385,18 @@
                         </div>
                      </div>
                      <button id="btnPlusAnlsPrd">zusätzliche Anlagen</button>
-                  </div>
+                    <table id="tblNichtAngelegtPrd">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Artikelnummer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    </div>
                </div>
                <div id="infosWeiterePrdKonfig">
                   <div class="navDropBox" style="height:20px;padding:3px"> 
@@ -8611,6 +8624,18 @@
         <button id="histSpeichern">Ja</button>
         <button id="histNichtSpeichern" style="margin-left:50px;">Nein</button>
         <button id="histAbbrechen" style="margin-left:50px;">Abbrechen</button>
+    </div>
+    <!--Save new Produkt if not all inputs are filled-->
+    <!--Meldung-->
+    <!--  -->
+    <div id="savePrdDialog" style="display:none;">
+        <p>
+            Nicht alle Felder sind ausgefüllt.<br>
+            Soll trotzdem gespeichert werden ? <br>
+        </p>
+        <br>
+        <button id="savePrdOk">Ok</button>
+        <button id="savePrdCancel" style="margin-left:50px;">Abbrechen</button>
     </div>
     <!--Save new Schicht if not all inputs are filled-->
     <!--Meldung-->

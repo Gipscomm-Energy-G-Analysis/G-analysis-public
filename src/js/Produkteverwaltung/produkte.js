@@ -4,318 +4,68 @@
 
 "use strict"
 
-const scpSchichtdaten =
+const scpProdukte =
     freeze (
         new function () {
-            // Schicht Html
-            const nr =
-                n =>
-                `<div class="sectionHeader">
-                    <label>Schicht ${n}</label>
-                </div>`
-
-            const bezeichnung =
-                n =>
-                `<div class="controlDiv">
-                   <label for="bezeichnungScht${n}Dat">Bezeichnung</label>
-                   <input id="bezeichnungScht${n}Dat" type="text">
-                </div>
-                <br>\n`
-
-            const uhrzeitVon =
-                n =>
-                `<div class="controlDiv">
-                   <label for="uhrzeitVonScht${n}Dat">Uhrzeit Von</label>
-                   <input id="uhrzeitVonScht${n}Dat" class="timeFrom" data-idx="${n}" type="time">
-                </div>\n`
-
-            const uhrzeitBis =
-                n =>
-                `<div class="controlDiv">
-                   <label for="uhrzeitBisScht${n}Dat">Uhrzeit Bis</label>
-                   <input id="uhrzeitBisScht${n}Dat" type="time">
-                </div>
-                <br>\n`
-
-            const tagVon =
-                n =>
-                `<div class="controlDiv">
-                   <label for="tagVonScht${n}Dat">Tag Von</label>
-                   <select id="tagVonScht${n}Dat">
-                       <option value="monday">Montag</option>
-                       <option value="tuesday">Dienstag</option>
-                       <option value="wednesday">Mittwoch</option>
-                       <option value="thursday">Donnerstag</option>
-                       <option value="friday">Freitag</option>
-                       <option value="saturday">Samstag</option>
-                       <option value="sunday">Sonntag</option>
-                   </select>
-                </div>\n`
-
-            const tagBis =
-                n =>
-                `<div class="controlDiv">
-                   <label for="tagBisScht${n}Dat">Tag Bis</label>
-                   <select id="tagBisScht${n}Dat">
-                       <option value="monday">Montag</option>
-                       <option value="tuesday">Dienstag</option>
-                       <option value="wednesday">Mittwoch</option>
-                       <option value="thursday">Donnerstag</option>
-                       <option value="friday" selected>Freitag</option>
-                       <option value="saturday">Samstag</option>
-                       <option value="sunday">Sonntag</option>
-                   </select>
-                </div>
-                <br>\n`
-
-            const schichtHtml =
-                n =>
-                [ nr
-                , bezeichnung
-                , uhrzeitVon
-                , uhrzeitBis
-                , tagVon
-                , tagBis
-                ]
-                .map(applyRv(n))
-                .join("")
-
-            // Append Schicht Html to div
-            const addSchicht =
-                elem =>
-                (_, i) =>
-                elem.append(schichtHtml(incr(i)))
-
-            // Append n Schichten to Html
-            this.generateSchichtBlocks =
-                elem =>
-                m =>
-                array(m)()()
-                .forEach(addSchicht(elem))
-
-            // Checks if Ende offen is selected
-            const isEndeOffen =
-                () =>
-                $(`#bisEndeOffenSchtDat`).prop("checked")
-
-            // Enables the Gueltig Bis input
-            const enableGueltigBis =
-                () =>
-                $(`#gueltigBisSchtDat`).prop("disabled", false)
-
-            // Resets the Gueltig Bis input
-            const resetGueltigBis =
-                () =>
-                $("#gueltigBisSchtDat").val("")
-
-            // Disables the Gueltig Bis input
-            const disableGueltigBis =
-                () =>
-                ( $(`#gueltigBisSchtDat`).prop("disabled", true)
-                , resetGueltigBis()
-                )
-
-            // Checks if Gueltig Bis is set(not empty string)
-            const isSetGueltigBis =
-                () =>
-                !emptyString($("#gueltigBisSchtDat").val())
-
-            // Enables Anzahl input
-            const enableAnzahl =
-                () =>
-                $("#anzahlSchtDat").prop("disabled", false)
-
-            // Disables the Anzahl input
-            const disableAnzahl =
-                () =>
-                $("#anzahlSchtDat").prop("disabled", true)
-            
-            // Gets the state of the "Mit Liegenschaftsbezug" checkbox
-            const hasLiegRef =
-                () =>
-                $("#liegSchtDat").prop("checked")
-
-            // Sets that the record should have a lieg reference 
-            const enableLiegRef =
-                () =>
-                $(".schtDatLieg").css("display", "inline")
-
-            // Sets that the record should have no lieg reference
-            const disableLiegRef =
-                () =>
-                $(".schtDatLieg").css("display", "none")
-
-            // Enables / Disables lieg reference
-            this.setLiegRefState =
-                () =>
-                hasLiegRef() ?
-                enableLiegRef() :
-                disableLiegRef()
-
-            // Enables/Disables the Gueltig Bis input depending
-            // on the selection state of Ende offen
-            this.endeOffenOrBis =
-                () =>
-                isEndeOffen() ?
-                disableGueltigBis() :
-                enableGueltigBis()
-
-            // Sets the lower limit of the Gueltig bis date
-            // as the Gueltig von date
-            this.setMinGueltigBis =
-                date =>
-                $("#gueltigBisSchtDat")
-                .prop("min", date)
-                .val("")
-
-            // Returns an input value depending on the elements id
-            const getFieldValue =
-                a =>
-                $(`#${a}`).val()
-
-            // Returns a tuple of an elements id and its input value
-            const tupleSchichtValue =
-                a =>
-                [a, getFieldValue(a)]
-
-            // Returns an array of (id, value) pairs of a Schicht
-            const getSchicht =
-                (_, i) =>
-                [ `bezeichnungScht${incr(i)}Dat`
-                , `uhrzeitVonScht${incr(i)}Dat`
-                , `uhrzeitBisScht${incr(i)}Dat`
-                , `tagVonScht${incr(i)}Dat`
-                , `tagBisScht${incr(i)}Dat`
-                ].map(tupleSchichtValue)
-
-            // Returns an array of arrays of (id, value) pairs
-            const getSchichten =
-                anzahl =>
-                array(anzahl)()()
-                .map(getSchicht)
-
             // Returns an object that contains the form data
             const getFormData =
-                anzahl => (
-                    { nameDB : getFieldValue("nameDB")
-                    , modus : getFieldValue("schtMdlState")
-                    , archived : isSetGueltigBis()
-                    , schtMdlID : getFieldValue("schtMdlID")
-                    , liegID : getFieldValue("liegID")
-                    , modellBezSchtDat : getFieldValue("modellBezSchtDat")
-                    , anzahlSchtDat : anzahl
-                    , gueltigVonSchtDat : getFieldValue("gueltigVonSchtDat")
-                    , gueltigBisSchtDat : getFieldValue("gueltigBisSchtDat")
-                    , notizSchtDat : getFieldValue("notizSchtDat")
-                    , liegRef : hasLiegRef()
-                    , schichten :
-                        getSchichten(anzahl)
-                        .map(a => a.map(last))
-                        .map((a, i) => flatten([[incr(i)], a]))
+                archiviert => {
+                    if(!archiviert) {
+                        return { nameDB : getFieldValue("nameDB")
+                        , modus : getFieldValue("schtMdlState")
+                        , artikelnummer : getFieldValue("artklnrPrd")
+                        , bezeichnung : getFieldValue("bezeichnungPrd")
+                        , orgID : getFieldValue("orgID")
+                        , custom1 : getFieldValue("custom1Prd")
+                        , custom2 : getFieldValue("custom2Prd")
+                        , custom3 : getFieldValue("custom3Prd")
+                        , custom4 : getFieldValue("custom4Prd")
+                        , custom5 : getFieldValue("custom5Prd")
+                        , custom6 : getFieldValue("custom6Prd")
+                        , anl01 : getFieldValue("inpAnlage1IDPrd")
+                        , anl02 : getFieldValue("inpAnlage2IDPrd")
+                        , anl03 : getFieldValue("inpAnlage3IDPrd")
+                        , anl04 : getFieldValue("inpAnlage4IDPrd")
+                        , anl05 : getFieldValue("inpAnlage5IDPrd")
+                        , anl06 : getFieldValue("inpAnlage6IDPrd")
+                        , anl07 : getFieldValue("inpAnlage7IDPrd")
+                        , anl08 : getFieldValue("inpAnlage8IDPrd")
+                        , anl09 : getFieldValue("inpAnlage9IDPrd")
+                        }
                     }
-                )
-
-            // Returns an array depending on the Ende offen state
-            const getBisFormData =
-                () =>
-                isEndeOffen() ?
-                [] : singleton("gueltigBisSchtDat")
-
-            // Returns form data of Schicht Modell (first section)
-            const getGeneralFormData =
-                formData =>
-                flatten(
-                    [ [ "modellBezSchtDat"
-                      , "gueltigVonSchtDat"
-                      ], getBisFormData()
-                    ]
-
-                )
-                .map(field(formData))
-
-            // Returns form data of Schichten
-            const getShiftsFormData =
-                formData =>
-                formData.schichten
-
-            // Checks if there are empty input values
-            const completeFormData =
-                formData => {
-
-                    const retVal =
-                        flatten(
-                            [ ...getGeneralFormData(formData)
-                            , ...getShiftsFormData(formData)
-                            ]
-                        )
-                        .some(emptyString)
-
-                    return !retVal
+                    else {
+                        return { archiviert : getFieldValue("archiviertPrdHist")   
+                        , prdID : getFieldValue("prdID")
+                        , bemerkung : getFieldValue("bemerkungHistFenster")
+                        , gueltigVon : getFieldValue("gueltigVonHistFenster")
+                        , gueltigBis : getFieldValue("gueltigBisHistFenster")
+                        }
+                    }
                 }
 
             // Syncs the indexedDB with the sql srv DB
             this.updateIndexedDB =
                 () =>
-                ajaxPost("php/Schichtdaten/readSchichtdaten.php")({nameDB : $("#nameDB").val()})
+                ajaxPost("php/Produkteverwaltung/read.php")({nameDB : $("#nameDB").val()})
                 .then(
                     result => 
-                    [ "schichtModelle"
-                    , "schichten"
-                    , "schichtModelleHist"
-                    , "schichtenHist"
-                    ].forEach(scpIndexedDB.dataIntoIDB(result))   
+                    scpIndexedDB.dataIntoIDB(result)("produkte")   
                 )
-
-            // Dialog which asks the user if the Schichtmodell should
-            // be closed and archived.
-            const closeSchichtmodellDialog =
-                formData =>
-                $("#saveClosedSchichtDialog").dialog({
-                    height: 223,
-                    width: 568,
-                    resize: "auto",
-                    show: {
-                        effect: "fade",
-                        duration: 500
-                    },
-                    hide: {
-                        effect: "fade",
-                        duration: 500
-                    },
-                    modal: true,
-                    open: () => {
-                        $("#saveClosedSchichtOk").off("click")
-                        $("#saveClosedSchichtOk").on("click",
-                            () =>
-                            ( saveFormData(formData)
-                            , $("#saveClosedSchichtDialog").dialog("close")
-                            )
-                        )
-
-                        $("#saveClosedSchichtCancel").off("click")
-                        $("#saveClosedSchichtCancel").on("click",
-                            () =>
-                            $("#saveClosedSchichtDialog").dialog("close")
-                        )
-                    }
-                })
 
             // Inserts or updates the given record into the sql srv DB
             // and then updates the indexedDB
-            const saveFormData =
+            const save =
                 formData =>
-                ajaxPost("php/Schichtdaten/saveSchichtdaten.php")(formData)
+                ajaxPost("php/Produkteverwaltung/save.php")(formData)
                 .then(result => alert(datensatzGespeichert(result)))
                 .then(this.updateIndexedDB)
                 .then(
                     () =>
-                    equal($("#schtMdlState").val())("new") ?
-                    this.readLast() :
-                    !isEndeOffen() ?
+                    equal($("#prdState").val())("new") ?
                     this.readLast() :
                     false
                 )
-                .then(scpSchichtdaten_historie.readLast)
+                .then(scpProdukte.readLast)
 
             // If the form data contains empty input elements a
             // dialog is shown which asks if the record should be
@@ -336,20 +86,16 @@ const scpSchichtdaten =
                     },
                     modal: true,
                     open: () => {
-                        $("#saveSchichtOk").off("click")
-                        $("#saveSchichtOk").on("click",
+                        $("#savePrdOk").off("click")
+                        $("#savePrdOk").on("click",
                             () =>
-                            ( isSetGueltigBis() ?
-                              closeSchichtmodellDialog(formData) :
-                              saveFormData(formData)
-                            , $("#saveSchichtDialog").dialog("close")
-                            )
+                            $("#savePrdDialog").dialog("close")
                         )
 
-                        $("#saveSchichtCancel").off("click")
-                        $("#saveSchichtCancel").on("click",
+                        $("#savePrdCancel").off("click")
+                        $("#savePrdCancel").on("click",
                             () =>
-                            $("#saveSchichtDialog").dialog("close")
+                            $("#savePrdDialog").dialog("close")
                         )
                     }
                 })
@@ -360,13 +106,11 @@ const scpSchichtdaten =
             this.validateAndSaveFormData =
                 () => {
                     const formData =
-                        getFormData($("#anzahlSchtDat").val())
+                        getFormData(getFieldValue("archiviertPrdHist"))
 
                     !completeFormData(formData) ?
                     nonCompleteDataDialog(formData) :
-                    isSetGueltigBis() ?
-                    closeSchichtmodellDialog(formData) :
-                    saveFormData(formData)
+                    save(formData)
                 }
 
             // Resets the value of a given input to an empty string
@@ -376,37 +120,40 @@ const scpSchichtdaten =
 
             // Resets all of the first section input elements to an
             // empty string
-            const clearGeneralFields =
+            const clearFields =
                 () =>
-                [ "schtMdlID"
-                , "modellBezSchtDat"
-                , "gueltigVonSchtDat"
-                , "notizSchtDat"
+                [ "prdID"
+                , "artklnrPrd"
+                , "bezeichnungPrd"
+                , "custom1Prd"
+                , "custom2Prd"
+                , "custom3Prd"
+                , "custom4Prd"
+                , "custom5Prd"
+                , "custom6Prd"
+                , "inpAnlage1Prd"
+                , "inpAnlage2Prd"
+                , "inpAnlage3Prd"
+                , "inpAnlage4Prd"
+                , "inpAnlage5Prd"
+                , "inpAnlage6Prd"
+                , "inpAnlage7Prd"
+                , "inpAnlage8Prd"
+                , "inpAnlage9Prd"
                 ].forEach(clearField)
-
-            // anzahlSchtDat change resets Schichten
-            const resetAnzahlAndEndeOffen =
-                () =>
-                ( $("#anzahlSchtDat").val(3)
-                , $("#anzahlSchtDat").trigger("change")
-                , $("#bisEndeOffenSchtDat").prop("checked", false)
-                , $("#bisEndeOffenSchtDat").trigger("click")
-                )
 
             // Sets the create new or update state for saving
             const setState =
                 state =>
                 state === "new" ?
-                ( $("#schtMdlState").val(state)
-                , enableAnzahl()
-                , $(".schtDatForm")
+                ( $("#prdState").val(state)
+                , $(".prdForm")
                     .css("background", "antiquewhite")
                     .css("border", "1px solid black")
                     .css("padding", "1px")
                 ) :
-                ( $("#schtMdlState").val(state)
-                , disableAnzahl()
-                , $(".schtDatForm")
+                ( $("#prdState").val(state)
+                , $(".prdForm")
                     .css("background", "white")
                     .css("border", "1px solid black")
                     .css("padding", "1px")
@@ -416,87 +163,56 @@ const scpSchichtdaten =
             // and sets the save state to create new
             this.clearFields =
                 () =>
-                ( clearGeneralFields()
-                , resetAnzahlAndEndeOffen()
+                ( clearFields()
                 , setState("new")
                 )
-            
-            // Filters by Liegenschaften refs
-            const getLiegRefRecords =
-                () =>
-                idxDB.schichtModelle
-                .where("lieg_ID")
-                .equals(Number(getFieldValue("liegID")))
-                .or("liegRef")
-                .equals(0)
 
             // Sorts records by primary key
             const sortByPrimKey =
                 lst =>
                 lst.sort(
                     (a, b) =>
-                    a.schtMdl_ID - b.schtMdl_ID
+                    a.prd_ID - b.prd_ID
                 )
 
             // Returns an array of the Schicht Modelle from indexedDB
-            const querySchichtModelleDataIDB =
+            const queryDatasIDB =
                 () => 
-                getLiegRefRecords()
+                idxDB.produkte
                 .toArray()
 
             // Returns a certain Schicht Modell depending on an index
-            const querySchichtModellDataIDB =
+            const queryDataIDB =
                 idx =>
-                querySchichtModelleDataIDB()
-                .then(sortByPrimKey)
-                .then(schichtModelle => schichtModelle[idx])
-
-            // Returns the Schichten of a given Schicht Modell
-            const querySchichtenDataIDB =
-                idx =>
-                idxDB.schichten
-                .where("schtMdl_ID")
-                .equals(idx)
-                .toArray()
-
-            // Sets the input values of a given Schicht
-            const setSchicht =
-                (schicht, i) =>
-                [ [`bezeichnungScht${incr(i)}Dat`, "bezeichnung"]
-                , [`uhrzeitVonScht${incr(i)}Dat`, "uhrzeitVon"]
-                , [`uhrzeitBisScht${incr(i)}Dat`, "uhrzeitBis"]
-                , [`tagVonScht${incr(i)}Dat`, "tagVon"]
-                , [`tagBisScht${incr(i)}Dat`, "tagBis"]
-                ].forEach(a => $(`#${a[0]}`).val(schicht[a[1]]))
-
-            // Sets the input values of all Schichten
-            const setSchichten =
-                schichten =>
-                schichten.forEach(setSchicht)
+                queryDatasIDB()
+                .then(records => records[idx])
 
             // Sets the form data retrieved from indexedDB
             const readIntoFormFields =
                 idx => {
-                    querySchichtModellDataIDB(idx)
+                    queryDataIDB(idx)
                     .then(
-                        schichtModell => {
+                        record => {
 
-                            $("#schtMdlIdx").val(idx)
-                            $("#schtMdlID").val(schichtModell.schtMdl_ID)
-                            $("#modellBezSchtDat").val(schichtModell.modellBez)
-                            $("#anzahlSchtDat").val(schichtModell.anzahl)
-                            $("#anzahlSchtDat").trigger("change")
-                            $("#gueltigVonSchtDat").val(schichtModell.gueltigVon)
-                            $("#notizSchtDat").val(schichtModell.notiz)
-                            $("#liegSchtDat").prop("checked", schichtModell.liegRef)
-                            $("#bisEndeOffenSchtDat").prop("checked", true)
-
-                            this.setMinGueltigBis($("#gueltigVonSchtDat").val())
-
-                            disableGueltigBis()
-
-                            querySchichtenDataIDB(schichtModell.schtMdl_ID)
-                            .then(setSchichten)
+                            $("#artklnrPrd").val()
+                            $("#bezeichnungPrd").val()
+                            
+                            $("#custom1Prd").val()
+                            $("#custom2Prd").val()
+                            $("#custom3Prd").val()
+                            $("#custom4Prd").val()
+                            $("#custom5Prd").val()
+                            $("#custom6Prd").val()
+                            
+                            $("#inpAnlage1Prd").val(record.anl01)
+                            $("#inpAnlage2Prd").val(record.anl02)
+                            $("#inpAnlage3Prd").val(record.anl03)
+                            $("#inpAnlage4Prd").val(record.anl04)
+                            $("#inpAnlage5Prd").val(record.anl05)
+                            $("#inpAnlage6Prd").val(record.anl06)
+                            $("#inpAnlage7Prd").val(record.anl07)
+                            $("#inpAnlage8Prd").val(record.anl08)
+                            $("#inpAnlage9Prd").val(record.anl09)
 
                             setState("edit")
                         }
@@ -512,27 +228,27 @@ const scpSchichtdaten =
             // depending on the current records index
             this.readPrevious =
                 () =>
-                greaterZero(getFieldValue("schtMdlIdx")) ?
-                readIntoFormFields(decr(getFieldValue("schtMdlIdx"))) :
+                greaterZero(getFieldValue("prdIdx")) ?
+                readIntoFormFields(decr(getFieldValue("prdIdx"))) :
                 false
 
             // Sets the form data input values of the next Schicht Modell
             // depending on the current records index
             this.readNext =
                 () =>
-                getLiegRefRecords()
+                idxDB.produkte
                 .count()
                 .then( 
                     count => 
-                    greater(decr(count))(getFieldValue("schtMdlIdx")) ?
-                    readIntoFormFields(incr(getFieldValue("schtMdlIdx"))) :
+                    greater(decr(count))(getFieldValue("prdIdx")) ?
+                    readIntoFormFields(incr(getFieldValue("prdIdx"))) :
                     false
                 )
 
             // Sets the form data input values of the last Schicht Modell
             this.readLast =
                 () =>
-                getLiegRefRecords()
+                idxDB.produkte
                 .count()
                 .then(
                     count =>
@@ -545,9 +261,9 @@ const scpSchichtdaten =
             this.deleteSchichtModell =
                 () => {
                     const nameDB = $("#nameDB").val()
-                    const schtMdlID = $("#schtMdlID").val()
+                    const prdID = $("#prdID").val()
 
-                    ajaxPost("php/Schichtdaten/deleteSchichtdaten.php")({nameDB, schtMdlID})
+                    ajaxPost("php/Produkteverwaltung/delete.php")({nameDB, prdID})
                     .then(
                         () =>
                         ( alert("erfolgreich gelöscht!")
@@ -562,28 +278,36 @@ const scpSchichtdaten =
                 records.map(
                     (a, i) =>
                     [ i
-                    , a.modellBez
-                    , a.anzahl
-                    , a.gueltigVon
+                    , a.namePrd
+                    , a.artikelNrPrd
+                    , a.custom1
+                    , a.custom2
+                    , a.custom3
                     ]
                 )
 
             // Fills the search dialog table with data
-            const fillSchichtmodelleTbl =
+            const fillTbl =
                 data => {
-                    clearTable(tblSchichtmodellSuchen)
-                    intoTable(tblSchichtmodellSuchen)(prepareTableData(data))
+                    clearTable(tblProdukteSuchen)
+                    intoTable(tblProdukteSuchen)(prepareTableData(data))
+                }
+            
+            const fillNotYetAssignedTbl =
+                data => {
+                    clearTable(tblProdukteSuchen)
+                    intoTable(tblProdukteSuchen)(prepareTableData(data))
                 }
 
             // Triggers opening the search dialog
-            this.searchSchichtModell =
+            this.searchProduktModell =
                 () => {
 
-                    querySchichtModelleDataIDB()
+                    queryDatasIDB()
                     .then(sortByPrimKey)
-                    .then(fillSchichtmodelleTbl)
+                    .then(fillTbl)
 
-                    $("#schichtmodellSuchenContainer").dialog({
+                    $("#produkteSuchenContainer").dialog({
                         height: 450,
                         width: 875,
                         resize: "auto",
@@ -597,17 +321,17 @@ const scpSchichtdaten =
                         },
                         modal: true,
                         open: function() {
-                            $("#tblSchichtmodellSuchen tbody tr").css("cursor", "pointer");
-                            $("#tblSchichtmodellSuchen tbody").off("dblclick", "tr");
-                            $("#tblSchichtmodellSuchen tbody").on("dblclick", "tr",
+                            $("#tblProdukteSuchen tbody tr").css("cursor", "pointer");
+                            $("#tblProdukteSuchen tbody").off("dblclick", "tr");
+                            $("#tblProdukteSuchen tbody").on("dblclick", "tr",
                             function() {
 
                                 const selectedRecord =
-                                    tblSchichtmodellSuchen.row(this).data()
+                                    tblProdukteSuchen.row(this).data()
 
                                 readIntoFormFields(head(selectedRecord))
 
-                                $("#schichtmodellSuchenContainer").dialog("close")
+                                $("#produkteSuchenContainer").dialog("close")
                             })
                         }
                     })
