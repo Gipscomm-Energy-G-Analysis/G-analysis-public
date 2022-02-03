@@ -477,7 +477,7 @@ $(document).ready( function(){
             // console.log(click_row_array); 
             // --end--->
 
-            rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array);
+            // rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array);
         }
         else {
             var data_type = $(this).attr('data-type');
