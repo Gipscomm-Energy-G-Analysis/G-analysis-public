@@ -4020,18 +4020,21 @@ class dashboardController {
                         $query1 = "Select * from MessstellenEnergiedaten where convert(date,time) = '$dateVal' AND mst_ID = '$mst_id' Order by time desc ";
                         // echo $query1; die;
                         $resultQuery = queryDB($conn, $query1, "read");
+                        // echo json_encode($resultQuery); die;
                         if($resultQuery != '' && count($resultQuery) > 0)
                         {
                             $energyConsumedValue = $this->calculateLayerEnergyConsumed($resultQuery,$dayVal,$dateVal);
                             // $energyConsumedValue['tbody'] = str_replace($energyConsumedValue['inArrayTotalValue'],$energyConsumedValue['total_energy'],$energyConsumedValue['tbody']); 
                             $tbody .= $energyConsumedValue['tbody'];
                             $records['total_energy'] = $energyConsumedValue['total_energy'];
+                            $records['ar_value'] =  $energyConsumedValue['ar_value'];
                             // $tbody .= $energyConsumedValue;
                             //Save Button
                             $paginationHTMl="<div id='save_table_format' class='text-center'>
                             <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                             </div>";
                             $records['pagination_html_energy'] =  $paginationHTMl;
+                            
                         }
                         else{
                             $tbody .= '<tr>';
@@ -4197,6 +4200,7 @@ class dashboardController {
               $todayDate = date('Y-m-d');
               $tbody = '';
               $arCheckExistName = [];
+              $arValue = [];
               $inArrayTotalValue = 0;
               for($i = 0; $i < count($resultQuery); $i++)  
               {
@@ -4217,45 +4221,49 @@ class dashboardController {
                     
                     for($j = 0; $j < count($modelNameResult); $j++)
                     {
-                        // if(!in_array($modelNameResult[$j]['bezeichnung'],$arCheckExistName)){
-                        //     array_push($arCheckExistName,$modelNameResult[$j]['bezeichnung']);
+                        if(!in_array($modelNameResult[$j]['bezeichnung'],$arCheckExistName)){
+                            array_push($arCheckExistName,$modelNameResult[$j]['bezeichnung']);
+                            // $tbody .= '<tr>';
+                            // $tbody .= '<td>'.$dayVal.'</td>';
+                            // $tbody.= "<td>".$modelNameResult[$j]['modellBez']."</td>";
+                            // $tbody.= "<td>".$modelNameResult[$j]['gueltigVon']->format('Y-m-d')."</td>";
+                            // $tbody.= "<td>".$modelNameResult[$j]['gueltigBis']->format('Y-m-d')."</td>";
+                            // $tbody.= "<td>".$modelNameResult[$j]['bezeichnung']."</td>";
+                            // $tbody.= "<td>".$modelNameResult[$j]['uhrzeitVon']->format('h:i:s')."</td>";    
+                            // $tbody.= "<td>".$modelNameResult[$j]['uhrzeitBis']->format('h:i:s')."</td>";
+                            // $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4;  
+                            // $tbody.= "<td class='total_energy_layer'>".$energyConsumed."</td>"; 
                             
-                        //     $tbody .= '<tr>';
-                        //     $tbody .= '<td>'.$dayVal.'</td>';
-                        //     $tbody.= "<td>".$modelNameResult[$j]['modellBez']."</td>";
-                        //     $tbody.= "<td>".$modelNameResult[$j]['gueltigVon']->format('Y-m-d')."</td>";
-                        //     $tbody.= "<td>".$modelNameResult[$j]['gueltigBis']->format('Y-m-d')."</td>";
-                        //     $tbody.= "<td>".$modelNameResult[$j]['bezeichnung']."</td>";
-                        //     $tbody.= "<td>".$modelNameResult[$j]['uhrzeitVon']->format('h:i:s')."</td>";    
-                        //     $tbody.= "<td>".$modelNameResult[$j]['uhrzeitBis']->format('h:i:s')."</td>";
+                            // // $tbody = str_replace($inArrayTotalValue,$totalEnergy,$tbody); 
                             
-                        //     $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4;  
-                        //     $tbody.= "<td class='total_energy_layer'>".$energyConsumed."</td>";   
-                            
-                        //     // $tbody = str_replace($inArrayTotalValue,$totalEnergy,$tbody); 
-                            
-                        //     $inArrayTotalValue = $energyConsumed;
-                        //     $tbody .= '<td>'.$dateVal.'</td>';
-                        //     $tbody .= '</tr>';
-                        // }
+                            // $inArrayTotalValue = $energyConsumed;
+                            // $tbody .= '<td>'.$dateVal.'</td>';
+                            // $tbody .= '</tr>';
+
+                            array_push($arValue, $modelNameResult[$j]);
+                            $indArValue = count($arValue) - 1;
+                            // array_push($arValue[$indArValue]['value'], $energyConsumed);
+                            $arValue[$indArValue]['value'] = $energyConsumed;
+                        }
+                        else{
+                            if($arValue != '' && count($arValue) > 0)
+                            {
+                                for($k = 0; $k < count($arValue); $k++)
+                                {
+                                    if($arValue[$k]['bezeichnung'] == $modelNameResult[$j]['bezeichnung'])
+                                    {
+                                        $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4; 
+                                        $particularEnergyConsumed = $energyConsumed + $arValue[$k]['value'];
+                                        // $tbody = str_replace($arValue[$k]['value'],$particularEnergyConsumed,$tbody);
+                                        $arValue[$k]['value'] = $particularEnergyConsumed;
+                                    }
+                                }
+                            }
+                        }
                         // $tbody = str_replace($inArrayTotalValue,$totalEnergy,$tbody); 
                         // else{
                         //    $tbody = str_replace($inArrayTotalValue,$totalEnergy,$tbody); 
                         // }
-                            $tbody .= '<tr>';
-                            $tbody .= '<td>'.$dayVal.'</td>';
-                            $tbody.= "<td>".$modelNameResult[$j]['modellBez']."</td>";
-                            $tbody.= "<td>".$modelNameResult[$j]['gueltigVon']->format('Y-m-d')."</td>";
-                            $tbody.= "<td>".$modelNameResult[$j]['gueltigBis']->format('Y-m-d')."</td>";
-                            $tbody.= "<td>".$modelNameResult[$j]['bezeichnung']."</td>";
-                            $tbody.= "<td>".$modelNameResult[$j]['uhrzeitVon']->format('h:i:s')."</td>";    
-                            $tbody.= "<td>".$modelNameResult[$j]['uhrzeitBis']->format('h:i:s')."</td>";
-                            
-                            $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4;  
-                            $tbody.= "<td class='total_energy_layer'>".$energyConsumed."</td>";   
-                            $inArrayTotalValue = $totalEnergy;
-                            $tbody .= '<td>'.$dateVal.'</td>';
-                            $tbody .= '</tr>';
                         
                     }
 
@@ -4279,10 +4287,30 @@ class dashboardController {
                 }
                 // $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4; 
                 // $totalEnergy += $energyConsumed; 
+                
               }
-            //   echo json_encode($arCheckExistName); die;
-            //   return $tbody;
-            return array('tbody' => $tbody , 'total_energy' => $totalEnergy, 'inArrayTotalValue' => $inArrayTotalValue);
+            // echo json_encode($arValue); die;
+            if($i == count($resultQuery))
+            {
+                if($arValue != '' && count($arValue) > 0)
+                {
+                    for($j = 0; $j < count($arValue); $j++)
+                    {
+                        $tbody .= '<tr>';
+                        $tbody .= '<td>'.$dayVal.'</td>';
+                        $tbody.= "<td>".$arValue[$j]['modellBez']."</td>";
+                        $tbody.= "<td>".$arValue[$j]['gueltigVon']->format('Y-m-d')."</td>";
+                        $tbody.= "<td>".$arValue[$j]['gueltigBis']->format('Y-m-d')."</td>";
+                        $tbody.= "<td>".$arValue[$j]['bezeichnung']."</td>";
+                        $tbody.= "<td>".$arValue[$j]['uhrzeitVon']->format('h:i:s')."</td>";    
+                        $tbody.= "<td>".$arValue[$j]['uhrzeitBis']->format('h:i:s')."</td>";
+                        $tbody.= "<td>".$arValue[$j]['value']."</td>"; 
+                        $tbody .= '<td>'.$dateVal.'</td>';
+                        $tbody .= '</tr>';
+                    }
+                }
+            }
+            return array('tbody' => $tbody , 'total_energy' => $totalEnergy, 'inArrayTotalValue' => $inArrayTotalValue,'ar_value' => $arValue);
             // return $arCheckExistName;
             }
         }

@@ -1522,6 +1522,8 @@ function getNumberRecordsEnergyLayerModal(){
     $('#pagination_html_energy').html('');
   }
   else{
+    // console.log('Before Ajax');
+    $('#energy_table_data_loader_div').show();
     $.ajax({
         type: "POST",
         url: "php/retreive.php",
@@ -1549,6 +1551,8 @@ function getNumberRecordsEnergyLayerModal(){
             alert("failed!!")
         },
         success: function(a) {
+          $('#energy_table_data_loader_div').hide();
+          // console.log('After Ajax');
           // a = JSON.parse(a);
           // console.log(a);
           // console.log(a['table_found']);
