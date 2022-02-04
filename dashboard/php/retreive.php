@@ -4205,7 +4205,7 @@ class dashboardController {
               for($i = 0; $i < count($resultQuery); $i++)  
               {
                 
-                $timeEnergy = $resultQuery[$i]['Time']->format('h:i:s');
+                $timeEnergy = $resultQuery[$i]['Time']->format('H:i:s');
                 $dateEnergy = $resultQuery[$i]['Time']->format('Y-m-d');
                 $modelNameQuery = "Select * from SchichtModelleAll where '$dateEnergy' between gueltigVon AND gueltigBis  AND '$timeEnergy' between uhrzeitVon AND uhrzeitBis ";
                 // $modelNameQuery = "Select * from SchichtModelleAll where  '2021-06-01' between gueltigVon AND gueltigBis AND '10:54:00' between uhrzeitVon ANd uhrzeitBis ";
@@ -4221,25 +4221,10 @@ class dashboardController {
                     
                     for($j = 0; $j < count($modelNameResult); $j++)
                     {
-                        if(!in_array($modelNameResult[$j]['bezeichnung'],$arCheckExistName)){
-                            array_push($arCheckExistName,$modelNameResult[$j]['bezeichnung']);
-                            // $tbody .= '<tr>';
-                            // $tbody .= '<td>'.$dayVal.'</td>';
-                            // $tbody.= "<td>".$modelNameResult[$j]['modellBez']."</td>";
-                            // $tbody.= "<td>".$modelNameResult[$j]['gueltigVon']->format('Y-m-d')."</td>";
-                            // $tbody.= "<td>".$modelNameResult[$j]['gueltigBis']->format('Y-m-d')."</td>";
-                            // $tbody.= "<td>".$modelNameResult[$j]['bezeichnung']."</td>";
-                            // $tbody.= "<td>".$modelNameResult[$j]['uhrzeitVon']->format('h:i:s')."</td>";    
-                            // $tbody.= "<td>".$modelNameResult[$j]['uhrzeitBis']->format('h:i:s')."</td>";
-                            // $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4;  
-                            // $tbody.= "<td class='total_energy_layer'>".$energyConsumed."</td>"; 
+                        $model_and_designation_name = $modelNameResult[$j]['modellBez'].$modelNameResult[$j]['bezeichnung'];
+                        if(!in_array($model_and_designation_name,$arCheckExistName)){
+                            array_push($arCheckExistName,$model_and_designation_name);
                             
-                            // // $tbody = str_replace($inArrayTotalValue,$totalEnergy,$tbody); 
-                            
-                            // $inArrayTotalValue = $energyConsumed;
-                            // $tbody .= '<td>'.$dateVal.'</td>';
-                            // $tbody .= '</tr>';
-
                             array_push($arValue, $modelNameResult[$j]);
                             $indArValue = count($arValue) - 1;
                             // array_push($arValue[$indArValue]['value'], $energyConsumed);
@@ -4250,7 +4235,7 @@ class dashboardController {
                             {
                                 for($k = 0; $k < count($arValue); $k++)
                                 {
-                                    if($arValue[$k]['bezeichnung'] == $modelNameResult[$j]['bezeichnung'])
+                                    if($arValue[$k]['modellBez'] == $modelNameResult[$j]['modellBez'] && $arValue[$k]['bezeichnung'] == $modelNameResult[$j]['bezeichnung'])
                                     {
                                         $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4; 
                                         $particularEnergyConsumed = $energyConsumed + $arValue[$k]['value'];
@@ -4260,10 +4245,6 @@ class dashboardController {
                                 }
                             }
                         }
-                        // $tbody = str_replace($inArrayTotalValue,$totalEnergy,$tbody); 
-                        // else{
-                        //    $tbody = str_replace($inArrayTotalValue,$totalEnergy,$tbody); 
-                        // }
                         
                     }
 
@@ -4285,9 +4266,7 @@ class dashboardController {
                     $tbody .= '<td>'.$dateVal.'</td>';
                     $tbody .= '</tr>';
                 }
-                // $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4; 
-                // $totalEnergy += $energyConsumed; 
-                
+              
               }
             // echo json_encode($arValue); die;
             if($i == count($resultQuery))
@@ -4302,8 +4281,8 @@ class dashboardController {
                         $tbody.= "<td>".$arValue[$j]['gueltigVon']->format('Y-m-d')."</td>";
                         $tbody.= "<td>".$arValue[$j]['gueltigBis']->format('Y-m-d')."</td>";
                         $tbody.= "<td>".$arValue[$j]['bezeichnung']."</td>";
-                        $tbody.= "<td>".$arValue[$j]['uhrzeitVon']->format('h:i:s')."</td>";    
-                        $tbody.= "<td>".$arValue[$j]['uhrzeitBis']->format('h:i:s')."</td>";
+                        $tbody.= "<td>".$arValue[$j]['uhrzeitVon']->format('H:i:s')."</td>";    
+                        $tbody.= "<td>".$arValue[$j]['uhrzeitBis']->format('H:i:s')."</td>";
                         $tbody.= "<td>".$arValue[$j]['value']."</td>"; 
                         $tbody .= '<td>'.$dateVal.'</td>';
                         $tbody .= '</tr>';
