@@ -36,9 +36,9 @@ class GraphController extends Controller
         $limit = $request->limit;
         $points = explode(',', $request->points);
         $data = [];
-        foreach($points as $value) {
-            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$value, 'limit' => $limit]);
-            $chartsData = $this->getChartsData( $request);
+        foreach($points as $key=>$value) {
+            $request = Request::create( '/dashboard/machine', 'POST', ['measuringPoint'=>$value, 'limit' => $limit, 'name' => 'messstelle'.($key+1).'IDAnl']);
+            $chartsData = $this->getChartsData($request);
             array_push($data, $chartsData);
         }
         return ['code'=>200, 'graphData' => $data];
@@ -57,10 +57,11 @@ class GraphController extends Controller
     public function getChartsData(Request $request) {
         $measuringPoint = $request['measuringPoint'];
         $limit = $request['limit'];
+        $name = $request['name'];
         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$measuringPoint)
-            ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')->limit($limit)
+            ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value', 'MessstellenEnergiedaten.ConvFactor')->limit($limit)
             ->orderby('MessstellenEnergiedaten.Time','asc')->get();
-        return $this->getlineChartData($data, $measuringPoint);
+        return $this->getlineChartData($data, $measuringPoint, $name);
     }
 
     /**
@@ -68,7 +69,7 @@ class GraphController extends Controller
      * @param $id
      * @return array
      */
-    public function getlineChartData($data, $id) {
+    public function getlineChartData($data, $id, $name) {
         $recordData = $data->IsNotEmpty() ? true: false;
         $label = $data->reverse()->pluck('Time')->toArray();
         $valData = $data->reverse()->pluck('Value')->toArray();
@@ -76,9 +77,10 @@ class GraphController extends Controller
         
         foreach($data as $key=>$value){
             $timeData = explode('.',$value->Time);
-            array_push($amData, ['date'=>(strtotime($timeData[0]) * 1000), 'value'=>floatval($value->Value), 'time'=>$value->Time,'convertedTime'=>'']);
+            array_push($amData, ['date'=>(strtotime($timeData[0]) * 1000), 'value'=>floatval(($value->Value*$value->ConvFactor)/4), 'time'=>$value->Time,'convertedTime'=>'']);
+            $value->Value = floatval(($value->Value*$value->ConvFactor)/4);
         }
-        return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData];
+        return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data ];
     }
 
     public function historicData(Request $request) {
@@ -87,19 +89,19 @@ class GraphController extends Controller
         if (!empty($request->graphPoints)) {
             $graphArray = explode(',',$graphPoints);
             $graphData = [];
-            foreach($graphArray as $val) {
+            foreach($graphArray as $key=>$val) {
                 switch ($periodFilter) {
                     case 'year':
                         $year = $request->yearFilter;
                         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
-                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
+                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value', 'MessstellenEnergiedaten.ConvFactor')
                         ->whereYear('MessstellenEnergiedaten.Time', '=', $year)
                         ->orderby('MessstellenEnergiedaten.Time','desc')->limit(1000)->get();
                         break;
                     case 'month':
                         $month = $request->monthFilter;
                         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
-                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
+                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value', 'MessstellenEnergiedaten.ConvFactor')
                         ->whereYear('MessstellenEnergiedaten.Time', '=', date('Y'))
                         ->whereMonth('MessstellenEnergiedaten.Time', '=', $month)
                         ->orderby('MessstellenEnergiedaten.Time','desc')->limit(1000)->get();
@@ -110,7 +112,7 @@ class GraphController extends Controller
                         $end = date_create($request->endDate);
                         $end = date_format($end,"Y-m-d H:i:s.u");
                         $data = DB::table('MessstellenEnergiedaten')->where('MessstellenEnergiedaten.mst_ID',$val)
-                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value')
+                        ->select('MessstellenEnergiedaten.Time', 'MessstellenEnergiedaten.Value', 'MessstellenEnergiedaten.ConvFactor')
                         ->whereDate('MessstellenEnergiedaten.Time', '>=',$start)
                         ->whereDate('MessstellenEnergiedaten.Time', '<=',$end)
                         ->orderby('MessstellenEnergiedaten.Time','asc')->limit(1000)->get();
@@ -118,7 +120,8 @@ class GraphController extends Controller
                     default:
                         return ['code'=>400, 'msg' => 'no record found'];
                 }
-                $pointData =$this->getlineChartData($data, $val);
+                $name = 'messstelle'.($key+1).'IDAnl';
+                $pointData =$this->getlineChartData($data, $val, $name);
                 array_push($graphData, $pointData);
             }
             if (empty($graphData)) {
@@ -152,5 +155,10 @@ class GraphController extends Controller
         $database = DB::table('graph_configurations')->where('id', $id)->delete();
         $graph = DB::table('graph_configurations')->where('username', $this->username)->get()->toArray();
         return ['status'=> 200 , 'data' => $graph];
+    }
+
+    public function getDynamicFilterData() {
+        $database = DB::connection('sqlsrvSuperAdmin')->table('prodDashFilterTimeInterval')->get()->toArray();
+        return ['status'=> 200 , 'data' => $database];
     }
 }

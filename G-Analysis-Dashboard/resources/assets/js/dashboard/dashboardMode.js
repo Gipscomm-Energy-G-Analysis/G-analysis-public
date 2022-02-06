@@ -386,9 +386,6 @@ $(document).on('click', '#save_table_configuration_button', function() {
     if(selectedColumn.length == 0 ) {
         toastr.warning('Please select columns!');
         return false;
-    } else if(selectedColumn.length >5) {
-        toastr.warning('Only 5 columns can be selected!');
-        return false;
     }
     saveTableConfigurations(selectedColumn, priorityMachines);
 })  

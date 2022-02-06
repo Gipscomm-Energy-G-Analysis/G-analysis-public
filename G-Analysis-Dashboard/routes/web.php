@@ -52,7 +52,7 @@ Route::post('/product-graph/save', [\App\Http\Controllers\GraphController::class
 
 Route::get('get-graph-configuration', [\App\Http\Controllers\GraphController::class, 'getOtherGraphData'])->name('getOtherGraphData');
 Route::post('delete-graph-configuration', [\App\Http\Controllers\GraphController::class, 'deleteOtherGraphData'])->name('deleteOtherGraphData');
-
+Route::get('get-filter-values', [\App\Http\Controllers\GraphController::class, 'getDynamicFilterData'])->name('getDynamicFilterData');
 
 Route::post('/on-change', [\App\Http\Controllers\ManageDatabaseController::class, 'changeDB'])->name('onchange');
 
@@ -61,3 +61,4 @@ Route::post('get-other-graph-label', [\App\Http\Controllers\DashboardController:
 Route::post('/get-points-data', [\App\Http\Controllers\GraphController::class, 'getPointsData'])->name('getPointsData');
 Route::post('product-graph/history/product', [\App\Http\Controllers\DashboardController::class, 'getHistoryGraphConfigurations'])->name('getHistoryGraphConfigurations');
 Route::post('mixed-graph/history/product', [\App\Http\Controllers\DashboardController::class, 'getMixedChartData'])->name('getMixedChartData');
+

@@ -348,7 +348,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Time Interval</label>
-                                    <select class="form-control" id="timeFilterInterval">
+                                    <select class="form-control graph-filter-dynamic" id="timeFilterInterval">
                                         <option value="1">1 Minutes</option>
                                         <option value="5">5 Minutes</option>
                                         <option value="10">10 Minutes</option>
@@ -495,7 +495,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Time Interval</label>
-                                    <select class="form-control" id="timeFilterIntervalProduction">
+                                    <select class="form-control graph-filter-dynamic" id="timeFilterIntervalProduction">
                                         <option value="1">1 Minutes</option>
                                         <option value="5">5 Minutes</option>
                                         <option value="10">10 Minutes</option>
@@ -515,6 +515,7 @@
                                     <div class="form-group">
                                         <label>Period</label>
                                         <select class="form-control" id="productPeriodFilterInterval">
+                                            <option value="">Select</option>
                                             <option value="year">Year</option>
                                             <option value="month">Month</option>
                                             <option value="custom">Custom</option>
@@ -633,7 +634,7 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Time Interval</label>
-                                        <select class="form-control" id="timeFilterIntervalMixed">
+                                        <select class="form-control graph-filter-dynamic" id="timeFilterIntervalMixed">
                                             <option value="1">1 Minutes</option>
                                             <option value="5">5 Minutes</option>
                                             <option value="10">10 Minutes</option>
@@ -1198,8 +1199,7 @@ let product_other_graph = am5.Root.new("product_historyChartdiv");
 let mixed_root = am5.Root.new("mixed_graph_div");
 let mixed_history_graph = am5.Root.new("mixed_historyChartdiv");
 // New Code
-const createAmChart = (root, chartsData, dispose) => {
-    console.log(chartsData);
+const createAmChart = (root, chartsData, dispose, xtype="date") => {
     if (dispose) {
         root.container.children.clear();
     }
@@ -1319,17 +1319,87 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
         dateFormat: "yyyy-MM-dd",
         dateFields: ["date"]
     });
-    
-
     series.data.setAll(startValue);
-    
+}
+
+//create am category charts
+const createAmChartCategory = (root, chartsData, dispose) => {
+    console.log('chartsData',chartsData);
+    if (dispose) {
+        root.container.children.clear();
+    }
+    // Set themes
+    // https://www.amcharts.com/docs/v5/concepts/themes/
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    // Create chart
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/
+    var chart = root.container.children.push(
+        am5xy.XYChart.new(root, {
+            focusable: true,
+            panX: true,
+            panY: true,
+            wheelX: "panX",
+            wheelY: "zoomX",
+            layout: root.verticalLayout
+        })
+    );
+
+    var easing = am5.ease.linear;
+    chart.get("colors").set("step", 3);
+
+    // Create axes
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+
+    var xAxis = chart.xAxes.push(
+        am5xy.CategoryAxis.new(root, {
+            categoryField: "label",
+            renderer: am5xy.AxisRendererX.new(root, {})
+        })
+    );
+
+    xAxis.data.setAll(chartsData);
+    var yRenderer = am5xy.AxisRendererY.new(root, {
+        opposite: false
+    });
+
+    var yAxis = chart.yAxes.push(
+        am5xy.ValueAxis.new(root, {
+        maxDeviation: 1,
+        renderer: yRenderer
+        })
+    );
+
+    if (chart.yAxes.indexOf(yAxis) > 0) {
+        yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
+    }
+
+    var series = chart.series.push(
+    am5xy.ColumnSeries.new(root, {
+        name: "Series",
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        categoryXField: "label"
+    })
+    );
+
+    series.data.setAll(chartsData);
+    var legend = chart.children.push(am5.Legend.new(root, {})); 
+    legend.data.setAll(chart.series.values);
+    // Make stuff animate on load
+    // https://www.amcharts.com/docs/v5/concepts/animations/
+    chart.appear(1000, 100);
 }
 
 //blade code for measuring points data start
 const energyData = @json($data['chartsData']);
 const productionData = @json($data['otherGraph']);
+
 createAmChart(root, energyData, false);
-createAmChart(root_other_graph, productionData, false);
+createAmChartCategory(root_other_graph, productionData[0]['amData'], false);
 const mixedData = {...energyData, ...productionData};
 createAmChart(mixed_root, mixedData, false);
 //end

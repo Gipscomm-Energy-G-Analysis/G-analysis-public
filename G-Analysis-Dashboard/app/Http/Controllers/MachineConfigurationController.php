@@ -35,18 +35,18 @@ class MachineConfigurationController extends Controller
 
     public function addSelectedOption($data, $option) {
         $selectedData = [
-            'anlage' => 'MANAME', 
-            'auftragsmenge' => 'AMOUNT_REQUEST', 
-            'programm' => 'STATETEXT', 
-            'zeit_zyklus' => 'CYCLETIME', 
-            'bestellung' => 'MPSNAME', 
-            'werkzeug' => 'TOOLNAME', 
-            'artikel' => 'MAORDER', 
-            'kavitäten' => 'CAVITY', 
-            'gutmenge' => 'AMOUNT_GOOD', 
-            'letzte_störung' => 'LASTUPDATE', 
-            'ausschuss' => 'AMOUNT_BAD', 
-            'bisher_produziert' => 'AMOUNT_GOOD'];
+            'anlage' => 'maschine', 
+            'auftragsmenge' => 'sollmenge', 
+            'programm' => 'maschinentyp', 
+            'zeit_zyklus' => 'zykluszeit', 
+            'bestellung' => 'artikelnummer', 
+            'werkzeug' => 'werkzeug', 
+            'artikel' => 'auftrag', 
+            'kavitäten' => 'nester', 
+            'gutmenge' => 'gutmenge', 
+            'letzte_störung' => 'zeitstempel', 
+            'ausschuss' => 'ausschuss', 
+            'bisher_produziert' => 'gutmenge'];
         $columnData = [];
         if(!empty($data)) {
             foreach($data as $value){
@@ -72,7 +72,7 @@ class MachineConfigurationController extends Controller
             DB::table('machine_table_config')->where('username', $this->username)->update(array('status' => '0'));
             foreach($selecteData as $value){
                 if($value['option'] == 2){
-                    $table = 'TWP_PROD_OVERVIEW';
+                    $table = 'ProdData';
                 } else {
                     $table = null;
                 }

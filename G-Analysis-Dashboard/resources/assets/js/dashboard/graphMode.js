@@ -273,7 +273,7 @@ function jsFunctionProduction(value) {
         },
         success:function(result) {
             if(result.code == 200) {
-                createAmChart(root_other_graph, result.graphData, true); 
+                createAmChartCategory(root_other_graph, result.graphData[0]['amData'], true); 
             }
         },
         error:function(result) {

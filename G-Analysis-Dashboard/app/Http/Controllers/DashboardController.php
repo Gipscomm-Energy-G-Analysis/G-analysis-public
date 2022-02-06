@@ -91,7 +91,7 @@ class DashboardController extends Controller
                         if($ajaxRequest == 'AJAX'){
                             return json_encode($data['data']['chartsData']);
                         }
-                       // dd($data['otherGraph']);
+                       // dd(["data"=>$data['data'], 'otherGraphTable'=>$data['otherGraphTable'], 'otherGraph'=>$data['otherGraph'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                         return View::make("product", ["data"=>$data['data'], 'otherGraphTable'=>$data['otherGraphTable'], 'otherGraph'=>$data['otherGraph'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                     } else {
                         return View::make("404", ['message'=>'Data Not Found in Anlagen Table!', 'databases' => $databases, 'selectedDatabase' => $this->database]);
@@ -179,7 +179,6 @@ class DashboardController extends Controller
                 //  }
             }
             $otherGraphData = $this->getGraphConfigurations($machineData);
-                //dd($otherGraphData);
             $msGraphData = implode(',',$msGraphData);
             $dynamicData  = [
                 'anlage' => Str::of($machineData->maschine)->trim(),
@@ -207,6 +206,7 @@ class DashboardController extends Controller
             ];
 
             $customDataMerge = array_merge($dynamicData, $this->getCustomFieldData($machineData));
+            
             $customColumns = $this->splitArray($customDataMerge, true);
             $otherGraphTable = (new ManageDatabaseController)->getOtherGraphData($this->username);
         //    dd($customColumns);
@@ -216,8 +216,9 @@ class DashboardController extends Controller
                 //  $primary_key = $machineData->$primary_key;
                 //   $subGroupConfig = $this->getSubgroupData($subGroupId , $primary_key);
                 $subGroupConfig = $this->getSubgroupData('6', '2');
-                $customDataMerge = array_merge($this->getCustomFieldData($machineData, null, true), $this->getSubgroupData('6', '2', true));
-                // dd($customDataMerge);
+                
+                $customDataMerge = array_merge($customDataMerge, $this->getSubgroupData('6', '2', true));
+              //  dd($customDataMerge);
             //  }
             
             $mergeArray = $this->splitArray(array_merge(array_merge($subGroupConfig, $customColumns['extra']['odd']), $customColumns['extra']['even']));
@@ -309,7 +310,8 @@ class DashboardController extends Controller
                       //  }
                     }
                     $otherGraphData = $this->getGraphConfigurations($machineData);
-                     //dd($otherGraphData);
+
+                    //dd($otherGraphData);
                     $msGraphData = implode(',',$msGraphData);
                     $dynamicData  = [
                         'anlage' => Str::of($prodData->MANAME)->trim(),
@@ -769,7 +771,8 @@ class DashboardController extends Controller
                 } else {
                     $tableConfigData = DB::table('machine_table_config')->where('column_name',$gdata->label)->where('username', $this->username)->first();
                     if (!empty($tableConfigData)) {
-                        $label = $tableConfigData->label_name;
+                        $table_name = !empty($tableConfigData->table_name)?$tableConfigData->table_name.'.':'';
+                        $label = $table_name.$tableConfigData->label_name;
                         $query = $queryLabel;
                     } else {
                         $label = $gdata->label;
@@ -782,16 +785,17 @@ class DashboardController extends Controller
                 }
                 if(isset($query) && !empty($query)) {
                     $data = $query->pluck($label)->toArray();
-                    $label = $queryLabel->pluck('timeClose')->toArray();
+                    $label = $queryLabel->pluck('ProdData.auftrag')->toArray();
                     $amData = [];
                     foreach($data as $key=>$value){
-                        array_push($amData, ['date'=>(strtotime($label[$key]) * 1000), 'value'=>floatval($value)]);
+                        array_push($amData, ['date'=>Str::of($label[$key])->trim(), 'value'=>floatval($value), 'label' => Str::of($label[$key])->trim()]);
                     }
                     $dataJs = ['name' =>str_replace(' ', '_', $gdata->graph_name), 'label' => $label, 'data'=>$data, 'mode' => $gdata->is_open, 'amData' => $amData];
                     array_push($graphJsData, $dataJs);
                 } 
             }
         }
+        //dd($graphJsData);
         return $graphJsData;
     }
 
@@ -806,8 +810,40 @@ class DashboardController extends Controller
     public function getHistoryGraphConfigurations(Request $request) {
         $anl_id = $request->anl_ID;
         $limit = $request->limit;
-        $machineDataQuery = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')->where('ProdData.anl_ID',$anl_id)->limit($limit);
-        $machineData = $machineDataQuery->first();
+        $periodFilter = $request->periodFilter;
+        switch ($periodFilter) {
+            case 'year':
+                $year = $request->yearFilter;
+                $machineDataQuery = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')
+                ->where('ProdData.anl_ID',$anl_id)
+                ->whereYear('ProdData.timeClose', '=', $year)
+                ->limit($limit);
+                break;
+            case 'month':
+                $month = $request->monthFilter;
+                $machineDataQuery = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')
+                ->where('ProdData.anl_ID',$anl_id)
+                ->whereYear('ProdData.timeClose', '=', date('Y'))
+                ->whereMonth('ProdData.timeClose', '=', $month)
+                ->limit($limit);
+                break;
+            case 'custom':
+                $start = date_create($request->startDate);
+                $start = date_format($start,"Y-m-d H:i:s.u");
+                $end = date_create($request->endDate);
+                $end = date_format($end,"Y-m-d H:i:s.u");
+                $machineDataQuery = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')
+                ->where('ProdData.anl_ID',$anl_id)
+                ->whereDate('ProdData.timeClose', '>=',$start)
+                ->whereDate('ProdData.timeClose', '<=',$end)
+                ->limit($limit);
+                break;
+            default:
+                $machineDataQuery = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')
+                ->where('ProdData.anl_ID',$anl_id)
+                ->limit($limit);
+        }
+        $machineData = $machineDataQuery;
         $graph_data = GraphConfiguration::where('username',$this->username)->get();
         $graphJsData = [];
         $label = '';
@@ -823,25 +859,25 @@ class DashboardController extends Controller
                 } else {
                     $tableConfigData = DB::table('machine_table_config')->where('column_name',$gdata->label)->where('username', $this->username)->first();
                     if (!empty($tableConfigData)) {
-                        $label = $tableConfigData->label_name;
-                        $machineName = explode (   '-' ,$machineData->nummerAnl);
-                        $machineName = $machineName[0];
-                        $query = DB::table('ProdData')->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')->limit($limit);
+                        $table_name = !empty($tableConfigData->table_name)?$tableConfigData->table_name.'.':'';
+                        $label = $table_name.$tableConfigData->label_name;
+                        $query = $machineDataQuery;
                     } else {
                         $label = $gdata->label;
                         $subGroupConfigData = DB::table('SubGroupConfiguration')->where('column_name',$gdata->label)->where('username', $this->username)->where('status','1')->first();
                         if(!empty($subGroupConfigData)) {
                             $datVal = $subGroupConfigData->primary_key;
+                            dd($subGroupConfigData);
                             $query = DB::table($subGroupConfigData->table_name)->where($subGroupConfigData->foreign_key, $machineData->$datVal)->limit($limit);
                         }
                     }
                 }
                 if(isset($query) && !empty($query)) {
                     $data = $query->pluck($label)->toArray();
-                    $label = $queryLabel->pluck('timeClose')->toArray();
+                    $label = $queryLabel->pluck('ProdData.auftrag')->toArray();
                     $amData = [];
                     foreach($data as $key=>$value){
-                        array_push($amData, ['date'=>(strtotime($label[$key]) * 1000), 'value'=>floatval($value)]);
+                        array_push($amData, ['date'=>Str::of($label[$key])->trim() , 'value'=>floatval($value),'label' => Str::of($label[$key])->trim()]);
                     }
                     $dataJs = ['name' =>str_replace(' ', '_', $gdata->graph_name), 'label' => $label, 'data'=>$data, 'mode' => $gdata->is_open, 'amData' => $amData];
                     array_push($graphJsData, $dataJs);

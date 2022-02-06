@@ -68,7 +68,8 @@ class GroupConfigurationController extends Controller
                 'primary_key' => $primary_key,
                 'foreign_key' => $foreign_key,
                 'status' => '1',
-                'is_graph' => $checkbox[$i]];
+                'is_graph' => $checkbox[$i]
+            ];
 
             SubGroupConfiguration::updateOrCreate($columnData, $data);
         }

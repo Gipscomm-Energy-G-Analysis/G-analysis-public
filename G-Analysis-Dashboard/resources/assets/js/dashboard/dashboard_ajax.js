@@ -527,4 +527,21 @@ $(".manPfad").on("change", function () {
     });
 });
 
+
+const getFilterData = () => {
+    $.ajax({
+        url: "get-filter-values",
+        type: "GET",
+    }).done(function (response) {
+        if(response.status == '200') {
+            $(".graph-filter-dynamic").html('<option value="">Select</option>');
+            $.each(response.data, function (key, value) {
+                $(".graph-filter-dynamic").append(
+                    '<option value="' + value.value + '">' + value.value + "</option>"
+                );
+            });
+        }
+    });
+};
+getFilterData();
 // **** On-Change End ****
