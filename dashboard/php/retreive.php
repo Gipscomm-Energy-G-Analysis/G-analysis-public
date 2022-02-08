@@ -4089,6 +4089,7 @@ class dashboardController {
                 //SchichtModelleAll Table Check
                 $tableCheckQuery = "select * from SchichtModelleAll ";
                 $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+
                 $table_found = 'false';
                 if($resultTableExistCheck != false)
                 {
@@ -4116,11 +4117,24 @@ class dashboardController {
                         }
 
                     }
+//                    print_r($checkShiftNameQuery);die;
                     // echo $checkShiftNameQuery; die;
                     $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
-                    echo json_encode($resultShiftName); die;
+//                    echo json_encode($resultShiftName); die;
                     // --end--->
-
+                    $arr=[];
+                    foreach($resultShiftName as $key=>$val){
+                        $fromDate=$val['gueltigVon']->format('Y-m-d');
+                        $toDate=$val['gueltigBis']->format('Y-m-d');
+                        $fromTime=$val['uhrzeitVon']->format('H:i:s');
+                        $toTime=$val['uhrzeitBis']->format('H:i:s');
+                        $to=$toDate.'T'.$toTime;
+                        $from=$fromDate.'T'.$fromTime;
+                        $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                        $resultEnergy = queryDB($conn, $query1, "read");
+                        array_push($arr,($resultEnergy[0]['sum'])/4);
+                    }
+                    echo json_encode($arr); die;
                     if($resultShiftName != '' && count($resultShiftName) > 0)
                     {
                         //All Energy Consumed Acc. Week
@@ -5800,7 +5814,7 @@ class dashboardController {
                         $tr.= "<td>".$value['startDate']."</td>";
                     }
                     if($value['min_val'] != null  && $value['max_val'] != null ){
-                        $tr.= "<td><label class='text-danger'>Min Value Greater</label></td>";
+                        $tr.= "<td><label clagetLayerTableEnergyDatass='text-danger'>Min Value Greater</label></td>";
                     }
                     else{
                         $tr.= "<td><label class='badge badge-danger'>NA </label></td>";
