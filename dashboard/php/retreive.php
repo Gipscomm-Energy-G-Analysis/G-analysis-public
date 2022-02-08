@@ -4086,6 +4086,21 @@ class dashboardController {
             }
             else if($select_day_week == 'week')
             {
+
+                $thead = '<tr>';
+                // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid To</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Designation</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
+                // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
+                $thead .= '</tr>';
+                $tbody = '';
+
+
                 //SchichtModelleAll Table Check
                 $tableCheckQuery = "select * from SchichtModelleAll ";
                 $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
@@ -4117,138 +4132,86 @@ class dashboardController {
                         }
 
                     }
-//                    print_r($checkShiftNameQuery);die;
-                    // echo $checkShiftNameQuery; die;
                     $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
-//                    echo json_encode($resultShiftName); die;
+                    // echo json_encode($resultShiftName); die;
                     // --end--->
                     $arr=[];
-                    foreach($resultShiftName as $key=>$val){
-                        $fromDate=$val['gueltigVon']->format('Y-m-d');
-                        $toDate=$val['gueltigBis']->format('Y-m-d');
-                        $fromTime=$val['uhrzeitVon']->format('H:i:s');
-                        $toTime=$val['uhrzeitBis']->format('H:i:s');
-                        $to=$toDate.'T'.$toTime;
-                        $from=$fromDate.'T'.$fromTime;
-                        $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
-                        $resultEnergy = queryDB($conn, $query1, "read");
-                        array_push($arr,($resultEnergy[0]['sum'])/4);
-                    }
-                    echo json_encode($arr); die;
                     if($resultShiftName != '' && count($resultShiftName) > 0)
                     {
-                        //All Energy Consumed Acc. Week
-                        $query1 = "Select * from MessstellenEnergiedaten where convert(date,time) >= '$dateVal' AND mst_ID = '$mst_id' Order by time desc ";
-                        $resultEnergy = queryDB($conn, $query1, "read");
-                        echo json_encode($resultEnergy); die;
-                        
-                        $shiftNameQuery = "Select * from SchichtModelleAll ";
-                        $resultShiftName = queryDB($conn, $shiftNameQuery, "read");
-                        // echo json_encode($resultShiftName); die;
-                        //Get Week Data
-                        $testTotalenergy = 0;
-                        for($i = 1; $i <= $input_val_week_day; $i++)
-                        {
-                            if($resultEnergy != '' && count($resultEnergy) > 0){
-                                //getEvery Week Day
-                                $startWeekDate = date('Y-m-d', strtotime("-$i week"));
-                                $endVal = $i - 1;
-                                $endWeekDate = date('Y-m-d', strtotime("-$endVal week")); 
-                                $testResult = $this->calculateLayerEnergyConsumedWeek($startWeekDate,$endWeekDate,$i,$resultEnergy,$resultShiftName);
-                                $testTotalenergy += $testResult;
-                            }
+                        foreach($resultShiftName as $key=>$val){
+
+                            $fromDate=$val['gueltigVon']->format('Y-m-d');
+                            $toDate=$val['gueltigBis']->format('Y-m-d');
+                            $fromTime=$val['uhrzeitVon']->format('H:i:s');
+                            $toTime=$val['uhrzeitBis']->format('H:i:s');
+                            $to=$toDate.'T'.$toTime;
+                            $from=$fromDate.'T'.$fromTime;
+                            $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                            $resultEnergy = queryDB($conn, $query1, "read");
+                            // echo json_encode($resultEnergy); die;
+                            $totalEnergy = $resultEnergy[0]['sum'] / 4;   
+
+                            $tbody .= '<tr>';
+                            $tbody.= "<td>".$val['modellBez']."</td>";
+                            $tbody.= "<td>".$val['gueltigVon']->format('Y-m-d')."</td>";
+                            $tbody.= "<td>".$val['gueltigBis']->format('Y-m-d')."</td>";
+                            $tbody.= "<td>".$val['bezeichnung']."</td>";
+                            $tbody.= "<td>".$val['uhrzeitVon']->format('H:i:s')."</td>";    
+                            $tbody.= "<td>".$val['uhrzeitBis']->format('H:i:s')."</td>";
+                            $tbody.= "<td>".$totalEnergy."</td>"; 
+                            $tbody .= '</tr>';
+                            // array_push($arr,($resultEnergy[0]['sum'])/4);
                         }
-                        echo json_encode($testTotalenergy); 
+                        $paginationHTMl="<div id='save_table_format' class='text-center'>
+                        <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                        </div>";
+                        $records['pagination_html_energy'] =  $paginationHTMl;
                     }
+                    else{
+                        $tbody .= '<tr>';
+                        $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                        $tbody .= '</tr>';
+                    }
+                    
+                    $records['energy_header'] = $thead;
+                    $records['energy_html'] = $tbody;
+                    $records['table_found'] = $table_found;
+
+                    echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
                     die;
+
+                    // <---Code Commet 8-2-2022---
+                    // if($resultShiftName != '' && count($resultShiftName) > 0)
+                    // {
+                    //     //All Energy Consumed Acc. Week
+                    //     $query1 = "Select * from MessstellenEnergiedaten where convert(date,time) >= '$dateVal' AND mst_ID = '$mst_id' Order by time desc ";
+                    //     $resultEnergy = queryDB($conn, $query1, "read");
+                    //     echo json_encode($resultEnergy); die;
+                        
+                    //     $shiftNameQuery = "Select * from SchichtModelleAll ";
+                    //     $resultShiftName = queryDB($conn, $shiftNameQuery, "read");
+                    //     // echo json_encode($resultShiftName); die;
+                    //     //Get Week Data
+                    //     $testTotalenergy = 0;
+                    //     for($i = 1; $i <= $input_val_week_day; $i++)
+                    //     {
+                    //         if($resultEnergy != '' && count($resultEnergy) > 0){
+                    //             //getEvery Week Day
+                    //             $startWeekDate = date('Y-m-d', strtotime("-$i week"));
+                    //             $endVal = $i - 1;
+                    //             $endWeekDate = date('Y-m-d', strtotime("-$endVal week")); 
+                    //             $testResult = $this->calculateLayerEnergyConsumedWeek($startWeekDate,$endWeekDate,$i,$resultEnergy,$resultShiftName);
+                    //             $testTotalenergy += $testResult;
+                    //         }
+                    //     }
+                    //     echo json_encode($testTotalenergy); 
+                    // }
+                    // die;
+                    // ---end-->
                 }
             }
 
             // ---end--->
-            die;
-            $date_val = $_POST['date_val'];
-            $day_from_val = $_POST['day_from_val'];
-            $day_to_val = $_POST['day_to_val'];
-
-            // <----17-1-2022
-            $page_val = isset($_POST['page_value']) ?  $_POST['page_value'] : 1;
-            $number_records = isset($_POST['number_records']) ?  $_POST['number_records'] : 5;
-            $selected_number_record_energy = isset($_POST['selected_number_record_energy']) ? $_POST['selected_number_record_energy'] : 'false';
-            // <----22-12-2021---
-            $queryTotalRecord = "SELECT * ";
-            $queryTotalRecord .= "FROM SchichtModelleAll as T1 ";
-            $queryTotalRecord .= "WHERE gueltigVon <= '$date_val' ";
-            $queryTotalRecord .= "AND tagVon = '$day_from_val' AND tagBis = '$day_to_val' ";
-            $resulTotalRecord = sqlsrv_query($conn,$queryTotalRecord);
-            $totalRecordsValue = [];
-            if($resulTotalRecord != false)
-            {
-                $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
-            }
-            // echo json_encode($queryTotalRecord); die;
-            
-            $pagesCount = '';
-            $offSetVal = 0;
-            if(count($totalRecordsValue) > 0){
-                if(count($totalRecordsValue) <= $number_records){
-                    $offSetVal = 0;
-                    $number_records = count($totalRecordsValue);
-                    $pagesCount = 1; 
-                    $page_val = 1;
-                }
-                else{
-                    if($selected_number_record_energy == 'true'){
-                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
-                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
-                        $page_val = 1;
-                        $offSetVal = 0;
-
-                    }
-                    else{
-                        $pagesCount = ceil(count($totalRecordsValue) / $number_records);
-                        $pagesCount = $pagesCount <= 0 ? 1 : $pagesCount;
-                        $offSetVal = ($page_val - 1) * $number_records;
-                        //Only Valid when User Click on Last page
-                        if($page_val == $pagesCount){
-                            $number_records = count($totalRecordsValue) - $offSetVal;
-                        }
-                    }
-                }
-
-            }
-            // --end-->
-
-            $query1 = '';
-            $query1 = "SELECT * ";
-            $query1 .= "FROM SchichtModelleAll as T1 ";
-            $query1 .= "WHERE gueltigVon <= '$date_val' ";
-            $query1 .= "AND tagVon = '$day_from_val' AND tagBis = '$day_to_val' ";
-            $query1 .= "Order By T1.modellBez ASC ";
-            $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            $resultQuery = sqlsrv_query($conn,$query1);
-            $tableFound = 'false';
-            $dataMesaurement = [];
-            if($resultQuery != false)
-            {
-                $dataMesaurement = queryDB($conn, $query1, "read");
-                $tableFound = 'true';
-            
-            }
-            $records['table_found'] = $tableFound;
-            // $dataMesaurement = queryDB($conn, $query1, "read");
-            // echo json_encode($dataMesaurement); die;
-
-            $records['energy_header'] = $this->generateHtmlLayerTableEnergyDataHeader();
-            $records['energy_html'] = $this->generateHtmlLayerTableEnergyData($dataMesaurement);
-            $records['pagination_html_energy'] =  $this->generatePaginationHtmlLayerEnergyData($dataMesaurement,$page_val,$pagesCount);
-
-            $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
-            $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
-            $pages_count = isset($_POST['pages_count']) ? $_POST['pages_count'] : 1;
-            $ar = array('pages_count' => $pages_count,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy');
-            $records['query_data'] = $ar;
-
-            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         }
         catch (Exception $e) {
