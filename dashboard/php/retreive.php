@@ -3973,7 +3973,7 @@ class dashboardController {
             if($select_day_week == 'day') 
             {   
                 $thead = '<tr>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
+                // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid To</th>';
@@ -3981,9 +3981,10 @@ class dashboardController {
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
+                // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
                 $thead .= '</tr>';
                 $tbody = '';
+                $checkQuery = '';
 
                 $todayDate = date('Y-m-d');
 
@@ -3999,7 +4000,7 @@ class dashboardController {
                 if($table_found == 'true'){
                     // <---07-02-2022---
                     //*** Check No Shift Name Found Database */
-                    $checkQuery = "Select * from SchichtModelleAll ";
+                    $checkQuery .= "Select * from SchichtModelleAll ";
                     for($c = 0; $c < $input_val_week_day; $c++)
                     {
                         $dateVal = date('Y-m-d', strtotime("-$c days"));
@@ -4012,59 +4013,96 @@ class dashboardController {
                         }
                     }
                     $resultShiftName = queryDB($conn, $checkQuery, "read");
-                    // --end--->
+                    // echo json_encode($resultShiftName);
+                    
+                    // <----09-02-2022----
+                    if($resultShiftName != '' && count($resultShiftName))
+                    {
+                        foreach($resultShiftName as $key => $val){
+                            $fromDate=$val['gueltigVon']->format('Y-m-d');
+                            $toDate=$val['gueltigBis']->format('Y-m-d');
+                            $fromTime=$val['uhrzeitVon']->format('H:i:s');
+                            $toTime=$val['uhrzeitBis']->format('H:i:s');
+                            $to=$toDate.'T'.$toTime;
+                            $from=$fromDate.'T'.$fromTime;
+                            //  $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDate' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                            //echo $query1; die;
+                            $resultEnergy = queryDB($conn, $query1, "read");
+                            // echo json_encode($resultEnergy); die;
+                            $totalEnergy = $resultEnergy[0]['sum'] / 4;
 
-                    if($resultShiftName != '' && count($resultShiftName) > 0){
-                        for($i = 0; $i < $input_val_week_day; $i++)
-                        {
-                            $dateVal = date('Y-m-d', strtotime("-$i days"));
-                            $dayVal = date('l', strtotime("-$i days"));
-                            
-                            // <---07-02-2022--
-                            //Shift Name Get if result found then do energy calulcation
-                            $shiftNameQueryDay = "Select * from SchichtModelleAll Where '$dateVal' between gueltigVon AND gueltigBis ";
-                            $shfitNameResultDay = queryDB($conn, $shiftNameQueryDay, "read");
 
-                            if($shfitNameResultDay != '' && count($shfitNameResultDay) > 0){
-                                //Energy Consumed Check
-                                $query1 = "Select * from MessstellenEnergiedaten where convert(date,time) = '$dateVal' AND mst_ID = '$mst_id' Order by time desc ";
-                                // echo $query1; die;
-                                $resultQuery = queryDB($conn, $query1, "read");
-                                // echo json_encode($resultQuery); die;
-                                if($resultQuery != '' && count($resultQuery) > 0)
-                                {
-                                    $energyConsumedValue = $this->calculateLayerEnergyConsumed($resultQuery,$dayVal,$dateVal);
-                                    // $energyConsumedValue['tbody'] = str_replace($energyConsumedValue['inArrayTotalValue'],$energyConsumedValue['total_energy'],$energyConsumedValue['tbody']); 
-                                    $tbody .= $energyConsumedValue['tbody'];
-                                    $records['total_energy'] = $energyConsumedValue['total_energy'];
-                                    $records['ar_value'] =  $energyConsumedValue['ar_value'];
-                                    // $tbody .= $energyConsumedValue;
-                                    //Save Button
-                                    $paginationHTMl="<div id='save_table_format' class='text-center'>
-                                    <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
-                                    </div>";
-                                    $records['pagination_html_energy'] =  $paginationHTMl;
-                                    
-                                }
-                            
-                                // else{
-                                //     $tbody .= '<tr>';
-                                //     $tbody .= '<td>'.$dayVal.'</td>';
-                                //     $tbody .= '<td></td>';     //Model Name
-                                //     $tbody .= '<td></td>';     //Vaild From
-                                //     $tbody .= '<td></td>';     //Valid To
-                                //     $tbody .= '<td></td>';    //Designation
-                                //     $tbody .= '<td></td>';    //Time From 
-                                //     $tbody .= '<td></td>';    //Time To
-                                //     $tbody .= '<td></td>';    //Energy Consumed
-                                //     $tbody .= '<td>'.$dateVal.'</td>';
-                                //     $tbody .= '</tr>';
-                                // }
-                            }
-                            // --end-->
-                            
+                            $tbody .= '<tr data-table-other="SchichtModelleAll">';
+                            // $tbody .= '<td>'.$dayVal.'</td>';
+                            $tbody.= "<td>".$val['modellBez']."</td>";
+                            $tbody.= "<td>".$val['gueltigVon']->format('Y-m-d')."</td>";
+                            $tbody.= "<td>".$val['gueltigBis']->format('Y-m-d')."</td>";
+                            $tbody.= "<td>".$val['bezeichnung']."</td>";
+                            $tbody.= "<td>".$val['uhrzeitVon']->format('H:i:s')."</td>";    
+                            $tbody.= "<td>".$val['uhrzeitBis']->format('H:i:s')."</td>";
+                            $tbody.= "<td>".$totalEnergy."</td>";
+                            // $tbody .= '<td>'.$dateVal.'</td>';
+                            $tbody .= '</tr>';
                         }
+                        $paginationHTMl="<div id='save_table_format' class='text-center'>
+                        <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                        </div>";
+                        $records['pagination_html_energy'] =  $paginationHTMl;
                     }
+                    // ---end--->
+
+                    // if($resultShiftName != '' && count($resultShiftName) > 0){
+                    //     for($i = 0; $i < $input_val_week_day; $i++)
+                    //     {
+                    //         $dateVal = date('Y-m-d', strtotime("-$i days"));
+                    //         $dayVal = date('l', strtotime("-$i days"));
+                            
+                    //         // <---07-02-2022--
+                    //         //Shift Name Get if result found then do energy calulcation
+                    //         $shiftNameQueryDay = "Select * from SchichtModelleAll Where '$dateVal' between gueltigVon AND gueltigBis ";
+                    //         $shfitNameResultDay = queryDB($conn, $shiftNameQueryDay, "read");
+
+                    //         if($shfitNameResultDay != '' && count($shfitNameResultDay) > 0){
+                    //             //Energy Consumed Check
+                    //             $query1 = "Select * from MessstellenEnergiedaten where convert(date,time) = '$dateVal' AND mst_ID = '$mst_id' Order by time desc ";
+                    //             // echo $query1; die;
+                    //             $resultQuery = queryDB($conn, $query1, "read");
+                    //             // echo json_encode($resultQuery); die;
+                    //             if($resultQuery != '' && count($resultQuery) > 0)
+                    //             {
+                    //                 $energyConsumedValue = $this->calculateLayerEnergyConsumed($resultQuery,$dayVal,$dateVal);
+                    //                 // $energyConsumedValue['tbody'] = str_replace($energyConsumedValue['inArrayTotalValue'],$energyConsumedValue['total_energy'],$energyConsumedValue['tbody']); 
+                    //                 $tbody .= $energyConsumedValue['tbody'];
+                    //                 $records['total_energy'] = $energyConsumedValue['total_energy'];
+                    //                 $records['ar_value'] =  $energyConsumedValue['ar_value'];
+                    //                 // $tbody .= $energyConsumedValue;
+                    //                 //Save Button
+                    //                 $paginationHTMl="<div id='save_table_format' class='text-center'>
+                    //                 <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                    //                 </div>";
+                    //                 $records['pagination_html_energy'] =  $paginationHTMl;
+                                    
+                    //             }
+                            
+                    //             // else{
+                    //             //     $tbody .= '<tr>';
+                    //             //     $tbody .= '<td>'.$dayVal.'</td>';
+                    //             //     $tbody .= '<td></td>';     //Model Name
+                    //             //     $tbody .= '<td></td>';     //Vaild From
+                    //             //     $tbody .= '<td></td>';     //Valid To
+                    //             //     $tbody .= '<td></td>';    //Designation
+                    //             //     $tbody .= '<td></td>';    //Time From 
+                    //             //     $tbody .= '<td></td>';    //Time To
+                    //             //     $tbody .= '<td></td>';    //Energy Consumed
+                    //             //     $tbody .= '<td>'.$dateVal.'</td>';
+                    //             //     $tbody .= '</tr>';
+                    //             // }
+                    //         }
+                    //         // --end-->
+                            
+                    //     }
+                    // }
                 }
                 
 
@@ -4080,6 +4118,9 @@ class dashboardController {
                 $records['energy_header'] = $thead;
                 $records['energy_html'] = $tbody;
                 $records['table_found'] = $table_found;
+
+                $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $checkQuery ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'select_filter_day_week' => $select_day_week ,'input_val_week_day' => $input_val_week_day);
+                $records['query_data'] = $ar;
 
                 echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
                 die;
@@ -4099,6 +4140,7 @@ class dashboardController {
                 // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
                 $thead .= '</tr>';
                 $tbody = '';
+                $checkShiftNameQuery = '';
 
 
                 //SchichtModelleAll Table Check
@@ -4119,7 +4161,7 @@ class dashboardController {
                     // <----07-02-2022--
                     // ****Check Shift Name Exist 
                     $intervalDays = $input_val_week_day * 7; //Week;
-                    $checkShiftNameQuery = "Select * from SchichtModelleAll ";
+                    $checkShiftNameQuery .= "Select * from SchichtModelleAll ";
                     for($interval = 0; $interval <= $intervalDays; $interval++)
                     {
                         $dateValShiftName =  date('Y-m-d', strtotime("-$interval Days"));
@@ -4135,7 +4177,6 @@ class dashboardController {
                     $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
                     // echo json_encode($resultShiftName); die;
                     // --end--->
-                    $arr=[];
                     if($resultShiftName != '' && count($resultShiftName) > 0)
                     {
                         foreach($resultShiftName as $key=>$val){
@@ -4146,12 +4187,14 @@ class dashboardController {
                             $toTime=$val['uhrzeitBis']->format('H:i:s');
                             $to=$toDate.'T'.$toTime;
                             $from=$fromDate.'T'.$fromTime;
-                            $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                            // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDate' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                            
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
                             $totalEnergy = $resultEnergy[0]['sum'] / 4;   
 
-                            $tbody .= '<tr>';
+                            $tbody .= '<tr data-table-other="SchichtModelleAll">';
                             $tbody.= "<td>".$val['modellBez']."</td>";
                             $tbody.= "<td>".$val['gueltigVon']->format('Y-m-d')."</td>";
                             $tbody.= "<td>".$val['gueltigBis']->format('Y-m-d')."</td>";
@@ -4176,6 +4219,10 @@ class dashboardController {
                     $records['energy_header'] = $thead;
                     $records['energy_html'] = $tbody;
                     $records['table_found'] = $table_found;
+
+                    $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $checkShiftNameQuery ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'select_filter_day_week' => $select_day_week ,'input_val_week_day' => $input_val_week_day);
+                    $records['query_data'] = $ar;
+
 
                     echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
                     die;

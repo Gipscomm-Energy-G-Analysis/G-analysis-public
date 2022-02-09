@@ -1082,7 +1082,8 @@ $(document).ready( function(){
             $('#save_table_btn_energy').removeClass('display-none');
             $('#update_table_btn_energy').addClass('display-none');
             var tableLength = $('#energy_select_table_entries tr').length;
-            if(parseInt(tableLength) <= 5){
+            var energyType = $('#energy_type').val();
+            if(parseInt(tableLength) <= 5 || energyType == 'layer_modal'){
                 $('.energy_tile_modal').modal('show');
                 // <----20-8--2021---
                 var type = "Energy";
@@ -1131,7 +1132,8 @@ $(document).ready( function(){
         }
         else if(tile_edit_value == 'true' && type_data_tile == 'table'){ //Table Edit Case
             var tableLength = $('#energy_select_table_entries tr').length;
-            if(parseInt(tableLength) <= 5){
+            var energyType = $('#energy_type').val();
+            if(parseInt(tableLength) <= 5 || energy_type == 'layer_modal'){
                 $('#save_table_btn_energy').addClass('display-none');
                 $('#update_table_btn_energy').removeClass('display-none');
                 $('.energy_tile_modal').modal('show');
