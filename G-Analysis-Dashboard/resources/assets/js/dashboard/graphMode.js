@@ -200,7 +200,6 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
             endDate: $("#product_end_date").val(),
             anl_ID:$('.navigation').attr('data-value'),
             limit: $limit
-
         },
         success:function(result) {
             if(result.code == 200) {
@@ -210,7 +209,9 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
                     window.open('/product-graph/history/data', '_blank');
                 } else {
                     $('.product_historyGraphDiv').show();
-                    createAmChart(conId, result.graphData, true);
+                    let product_key = $('.active_prod_graph').attr('data_key');
+                    console.log(result.graphData);
+                    createAmChartCategory(conId, result.graphData[product_key]['amData'], true, result.graphData[product_key]['name']);
                 }
                 
             }
@@ -273,7 +274,7 @@ function jsFunctionProduction(value) {
         },
         success:function(result) {
             if(result.code == 200) {
-                createAmChartCategory(root_other_graph, result.graphData[0]['amData'], true); 
+                productionDataTmp = result.graphData;
             }
         },
         error:function(result) {

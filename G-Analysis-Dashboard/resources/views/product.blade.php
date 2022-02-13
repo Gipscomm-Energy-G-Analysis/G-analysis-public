@@ -481,28 +481,33 @@
                   <div class="card-body">
                     <div class="product-graph-mode">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>No. of Records</label>
-                                    <select class="form-control time_filter" id="timeFilterProduction" onmousedown="this.value='';" onchange="jsFunctionProduction(this.value);">
-                                        <option value="5" selected>5</option>
-                                        <option value="10">10</option>
-                                        <option value="15">15</option>
-                                        <option value="100">100</option>
-                                    </select>
+                          
+                                
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>No. of Records</label>
+                                            <select class="form-control time_filter" id="timeFilterProduction" onmousedown="this.value='';" onchange="jsFunctionProduction(this.value);">
+                                                <option value="5" selected>5</option>
+                                                <option value="10">10</option>
+                                                <option value="15">15</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Time Interval</label>
+                                            <select class="form-control graph-filter-dynamic" id="timeFilterIntervalProduction">
+                                                <option value="1">1 Minutes</option>
+                                                <option value="5">5 Minutes</option>
+                                                <option value="10">10 Minutes</option>
+                                                <option value="15" selected>15 Minutes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                <div class="col-sm-6 production-graph-icons text-right">
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Time Interval</label>
-                                    <select class="form-control graph-filter-dynamic" id="timeFilterIntervalProduction">
-                                        <option value="1">1 Minutes</option>
-                                        <option value="5">5 Minutes</option>
-                                        <option value="10">10 Minutes</option>
-                                        <option value="15" selected>15 Minutes</option>
-                                    </select>
-                                </div>
-                            </div>
+                            
                         </div>
                         <div class="row" id="other_graph_div">
                         </div>
@@ -1323,8 +1328,8 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
 }
 
 //create am category charts
-const createAmChartCategory = (root, chartsData, dispose) => {
-    console.log('chartsData',chartsData);
+const createAmChartCategory = (root, chartsData, dispose, name) => {
+    let graphName = name !== undefined?name:0;
     if (dispose) {
         root.container.children.clear();
     }
@@ -1378,7 +1383,7 @@ const createAmChartCategory = (root, chartsData, dispose) => {
 
     var series = chart.series.push(
     am5xy.ColumnSeries.new(root, {
-        name: "Series",
+        name: graphName,
         xAxis: xAxis,
         yAxis: yAxis,
         valueYField: "value",
@@ -1394,15 +1399,41 @@ const createAmChartCategory = (root, chartsData, dispose) => {
     chart.appear(1000, 100);
 }
 
+const productionAppButtons = (data) => {
+    let appHtml = '';
+    for (const key in data) {
+        let graphName = data[key]['name'] !== undefined?data[key]['name']:key;
+        let first_prod = key == 0? 'first_prod':'';
+        appHtml += `<a class="btn btn-app product-app-active ${first_prod}" data_key="${key}"><i class="far fa-chart-bar"></i>${graphName}</a>`;
+    }
+    $('.production-graph-icons').html(appHtml);
+    setTimeout(function(){
+        if(appHtml != '') {
+            $('.first_prod').trigger('click');
+        }
+    }, 1000);
+}
+
+
+
 //blade code for measuring points data start
 const energyData = @json($data['chartsData']);
 const productionData = @json($data['otherGraph']);
-
+let productionDataTmp = productionData;
 createAmChart(root, energyData, false);
-createAmChartCategory(root_other_graph, productionData[0]['amData'], false);
+
 const mixedData = {...energyData, ...productionData};
 createAmChart(mixed_root, mixedData, false);
+productionAppButtons(productionData);
 //end
+
+$(document).on('click','.product-app-active',function(){
+    let product_key = $(this).attr('data_key');
+    $('.btn-app').removeClass('bg-success active_prod_graph').addClass('bg-secondary');
+    $(this).addClass('bg-success active_prod_graph').removeClass('bg-secondary');
+    createAmChartCategory(root_other_graph, productionDataTmp[product_key]['amData'], true, productionDataTmp[product_key]['name']);
+});
+
 function jsFunction(value) {  
     $.ajax({
         url: "{{ url('/get-points-data')}}",
@@ -1415,8 +1446,5 @@ function jsFunction(value) {
         },
     });
 }
-
-
-
 </script>
 @stop
