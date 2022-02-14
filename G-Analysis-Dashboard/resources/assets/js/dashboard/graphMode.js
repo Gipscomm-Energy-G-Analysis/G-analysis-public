@@ -274,7 +274,9 @@ function jsFunctionProduction(value) {
         },
         success:function(result) {
             if(result.code == 200) {
+                let product_key=$(".active_prod_graph").attr('data_key');
                 productionDataTmp = result.graphData;
+                createAmChartCategory(root_other_graph, productionDataTmp[product_key]['amData'], true, productionDataTmp[product_key]['name']);
             }
         },
         error:function(result) {
