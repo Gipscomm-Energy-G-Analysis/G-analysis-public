@@ -4,7 +4,7 @@ ini_set ( 'display_errors', 'On' ) ;
 set_error_handler("warning_handler", E_WARNING);
 
 require 'DbOperations.php';
-require 'EMail_swift.php';
+require 'EMail_PHPMailer.php';
 require 'helpers.php';
 
 function warning_handler($errno, $errstr) { 
