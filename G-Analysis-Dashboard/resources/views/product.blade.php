@@ -487,6 +487,7 @@
                                         <div class="form-group">
                                             <label>No. of Records</label>
                                             <select class="form-control time_filter" id="timeFilterProduction" onmousedown="this.value='';" onchange="jsFunctionProduction(this.value);">
+                                            <!-- <select class="form-control time_filter" id="timeFilter" onmousedown="this.value='';" onchange="jsFunction(this.value);"> -->
                                                 <option value="5" selected>5</option>
                                                 <option value="10">10</option>
                                                 <option value="15">15</option>
