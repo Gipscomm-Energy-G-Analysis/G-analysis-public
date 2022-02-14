@@ -659,12 +659,12 @@ class DashboardController extends Controller
             $postRequest = Request::create( '/dashboard/getMachineTableData', 'POST', ['pageIndex'=>$request['pageIndex'], 'pageSize'=>$request['pageSize']]);
             return $this->getMachineTableData($postRequest);
         }
-        $machineDataQuery = Anlagen::whereNotNull('datumAnl')->where('deleted',0);
+        $machineDataQuery = Anlagen::whereNotNull('anlagen.datumAnl')->where('anlagen.deleted',0)->whereNotNull('anlagen.anl_ID');
         $number_of_result = $machineDataQuery->count();  
         $pageIndex = $request['pageIndex'];
        // dd($pageIndex);
         $limit = $request['pageSize'];
-        $totalRecords = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->count();
+        $totalRecords = $number_of_result;
         $totalPages = ceil($totalRecords / $limit);
         $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
         if($start < 0) $start = 0;
@@ -675,11 +675,10 @@ class DashboardController extends Controller
             $limit = $priorityArray >10?10:$limit-$priorityArray;
             $start = $limit * $pageIndex - $limit;
             $machineData = $machineDataQuery->limit($limit)->offset($start)->get()->toArray();
-            $priorityMachineData = $machineDataQuery->whereIn('anl_ID', $selectedMachines)->get()->toArray();
         } else {
-            $machineData = $machineData->limit($limit)->offset($start)->get()->toArray();
+            $machineData = $machineDataQuery->limit($limit)->offset($start)->get()->toArray();
         }
-        $machineData = array_merge($priorityMachineData, $machineData);
+       // $machineData = array_merge($priorityMachineData, $machineData);
         $machineDataCustom = [];
         if(!empty($machineData)){
             $machineDataCustom = $this->getListingData($machineData, $machineDataCustom , $defaultString);
@@ -715,7 +714,7 @@ class DashboardController extends Controller
         if(!empty($column)) {
             foreach($column as $tableData) {
                 if($tableData->status == '2'){
-                    $string .= "RTRIM( LTRIM(".$tableData->label_name.")) AS '".$tableData->column_name."', ";
+                    $string .= "RTRIM( LTRIM(".$tableData->table_name.".".$tableData->label_name.")) AS '".$tableData->column_name."', ";
                 } else if($tableData->status == '1') {
                     array_push($customData, $tableData->column_name);
                 }
@@ -727,24 +726,25 @@ class DashboardController extends Controller
 
     public function getListingData($machineData, $machineDataCustom , $defaultString) {
         foreach($machineData as $machine) {
+            
             $subGroupId = $this->getSubGroupid($machine['custom1Anl']);
             $primary_key = $this->getPrimaryKey($subGroupId);
-            $machineName = explode ( '-' ,$machine['nummerAnl']);
-            $machineName = $machineName[0];
             $subGroupConfig = [];
+            $prodData = DB::table('ProdData')->select(DB::raw($defaultString['string']))
+            ->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')
+            ->where('ProdData.anl_ID',$machine['anl_ID'])->orderBy('ProdData.anl_ID','desc')->get();
+            dd($prodData);
             if(!empty($defaultString['string'])) {
-                $prodData = DB::table('TWP_PROD_OVERVIEW')
-                ->select(DB::raw($defaultString['string']))
-                ->where('MANAME',$machineName)->orderBy('id', 'desc')->first();
                 if(!empty($prodData)){
                     $prodData = (array) $prodData;
-                    $prodData['anl_ID'] = $machine['anl_ID'];
+                    $customColumns = $prodData;
                 } else {
                     continue;
                 }
             } else {
                 continue;
             }
+
             if(!empty($defaultString['customData'])){
                 $customColumns = array_merge($prodData, $this->getCustomFieldData($machine, $defaultString['customData']));
             } else {
