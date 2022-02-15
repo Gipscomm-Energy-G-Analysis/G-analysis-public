@@ -487,7 +487,6 @@
                                         <div class="form-group">
                                             <label>No. of Records</label>
                                             <select class="form-control time_filter" id="timeFilterProduction" onmousedown="this.value='';" onchange="jsFunctionProduction(this.value);">
-                                            <!-- <select class="form-control time_filter" id="timeFilter" onmousedown="this.value='';" onchange="jsFunction(this.value);"> -->
                                                 <option value="5" selected>5</option>
                                                 <option value="10">10</option>
                                                 <option value="15">15</option>
@@ -510,6 +509,7 @@
                                 </div>
                             
                         </div>
+                        <div id="loader_image" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image"></div>
                         <div class="row" id="other_graph_div">
                         </div>
                     </div>

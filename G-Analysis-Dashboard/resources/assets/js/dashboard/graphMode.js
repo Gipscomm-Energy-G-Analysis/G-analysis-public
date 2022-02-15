@@ -258,6 +258,8 @@ function mixedGraphData(conId,windowTrue, $limit=5) {
 }
 
 function jsFunctionProduction(value) {  
+$("#loader_image").show();
+$("#other_graph_div").hide();
     $.ajax({
         type: "POST",
         url: "product-graph/history/product",
@@ -273,13 +275,18 @@ function jsFunctionProduction(value) {
 
         },
         success:function(result) {
+
             if(result.code == 200) {
+                $("#loader_image").hide();
+                $("#other_graph_div").show();
                 let product_key=$(".active_prod_graph").attr('data_key');
                 productionDataTmp = result.graphData;
                 createAmChartCategory(root_other_graph, productionDataTmp[product_key]['amData'], true, productionDataTmp[product_key]['name']);
             }
         },
         error:function(result) {
+            $("#loader_image").hide();
+            $("#other_graph_div").show();
             toastr.error(result);
         }
     });
