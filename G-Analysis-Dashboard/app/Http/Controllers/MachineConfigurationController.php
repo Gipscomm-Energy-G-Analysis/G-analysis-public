@@ -35,7 +35,7 @@ class MachineConfigurationController extends Controller
 
     public function addSelectedOption($data, $option) {
         $selectedData = [
-            'anlage' => 'maschine', 
+            'anlage' => 'anl_ID', 
             'auftragsmenge' => 'sollmenge', 
             'programm' => 'maschinentyp', 
             'zeit_zyklus' => 'zykluszeit', 
