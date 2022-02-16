@@ -464,20 +464,39 @@ $(document).ready( function(){
 
         if(energy_type == 'layer_modal')
         {
-            var valid_from = $(this).attr('valid_from');
-            var valid_to = $(this).attr('valid_to');
-            var name_val = $(this).children('td:first').text();
-            $('#energy_search_record').val(name_val);
-
+            // var valid_from = $(this).attr('valid_from');
+            // var valid_to = $(this).attr('valid_to');
+            // var name_val = $(this).children('td:first').text();
+            // $('#energy_search_record').val(name_val);
+            // console.log($(this).children('td:eq(1)'));
             // <---14-01-2021---
-            var click_row_array = [];
-            $(this).closest('tr').find('td').each((key,val)=>{
-                click_row_array.push(val.innerHTML);
-            });
+            // var click_row_array = [];
+            // $(this).closest('tr').find('td').each((key,val)=>{
+            //     click_row_array.push(val.innerHTML);
+            // });
             // console.log(click_row_array); 
             // --end--->
 
-            // rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array);
+            // <-----15-2-2021---
+            var name_val = $(this).children('td:eq(0)').text();
+            var valid_from = $(this).children('td:eq(1)').text();
+            var valid_to = $(this).children('td:eq(2)').text();
+            var time_from = $(this).children('td:eq(4)').text();
+            var time_to = $(this).children('td:eq(5)').text();
+            var energy_total_value = $(this).children('td:eq(6)').text();
+            $('#energy_search_record').val(name_val);
+            
+            // console.log(energy_total_value);
+            if(energy_total_value == '0')
+            {
+                var tr = "<tr><td colspan='50' class='text-center text-muted'>No Record Found</td></tr>";
+                $('#energy_select_table_entries').html(tr);
+                $('#pagination_html_energy').html('');
+            }
+            else{
+                rowClickEnergyLayer(name_val,valid_from,valid_to,time_from,time_to); 
+            }
+            // rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array)
         }
         else {
             var data_type = $(this).attr('data-type');

@@ -4013,6 +4013,7 @@ class dashboardController {
                         }
                     }
                     $resultShiftName = queryDB($conn, $checkQuery, "read");
+                    // echo $checkQuery; die;
                     // echo json_encode($resultShiftName);
                     
                     // <----09-02-2022----
@@ -4033,7 +4034,7 @@ class dashboardController {
                             $totalEnergy = $resultEnergy[0]['sum'] / 4;
 
 
-                            $tbody .= '<tr data-table-other="SchichtModelleAll">';
+                            $tbody .= '<tr class="row_click_energy" data-table-other="SchichtModelleAll">';
                             // $tbody .= '<td>'.$dayVal.'</td>';
                             $tbody.= "<td>".$val['modellBez']."</td>";
                             $tbody.= "<td>".$val['gueltigVon']->format('Y-m-d')."</td>";
@@ -4194,7 +4195,7 @@ class dashboardController {
                             // echo json_encode($resultEnergy); die;
                             $totalEnergy = $resultEnergy[0]['sum'] / 4;   
 
-                            $tbody .= '<tr data-table-other="SchichtModelleAll">';
+                            $tbody .= '<tr class="row_click_energy" data-table-other="SchichtModelleAll">';
                             $tbody.= "<td>".$val['modellBez']."</td>";
                             $tbody.= "<td>".$val['gueltigVon']->format('Y-m-d')."</td>";
                             $tbody.= "<td>".$val['gueltigBis']->format('Y-m-d')."</td>";
@@ -4265,6 +4266,69 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         } 
     }
+
+    // <---15-2-2022--
+    public function rowClickEnergyLayer()
+    {
+        try{
+            global $conn;
+            $mst_id = $_POST['mst_id'];
+            $name_val = $_POST['name_val'];
+            $valid_from = $_POST['valid_from'];
+            $valid_to = $_POST['valid_to'];
+            $time_from = $_POST['time_from'];
+            $time_to = $_POST['time_to'];
+
+            $thead = '<tr>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
+            $thead .= '</tr>';
+            
+
+            $queryMaxValue = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$valid_from' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id' ";
+            // $resultQuery = queryDB($conn, $queryMaxValue, "read");
+            $query1 =  "Select * from MessstellenEnergiedaten where   convert(date,time) between '$valid_from' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id'  order by Time desc ";
+            $resultQuery = queryDB($conn, $query1, "read");
+            $tbody = '';
+            if($resultQuery != '' && count($resultQuery) > 0)
+            {
+                foreach($resultQuery as $key=>$val)
+                {   
+                    $tbody .= '<tr data-table-other="SchichtModelleAll">';
+                    $tbody.= "<td>".$name_val."</td>";
+                    $tbody.= "<td>".$val['Time']->format('Y-m-d')."</td>";
+                    $tbody.= "<td>".$val['Time']->format('H:i:s')."</td>";
+                    $addVal = $val['Value'] * $val['ConvFactor'];
+                    $totalEnergy = $addVal / 4;
+                    $tbody.= "<td>".$totalEnergy."</td>"; 
+                    $tbody .= '</tr>';
+                }
+                $paginationHTMl="<div id='save_table_format' class='text-center'>
+                <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+                </div>";
+                $records['pagination_html_energy'] =  $paginationHTMl;
+            }
+            else{
+                $tbody .= '<tr>';
+                $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                $tbody .= '</tr>';
+            }
+
+            $records['energy_header'] = $thead;
+            $records['energy_html'] = $tbody;
+
+            $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $query1 ,'queryMaxValue' => $queryMaxValue,'row_click' => 'true' , 'type' => 'Energy');
+            $records['query_data'] = $ar;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE); 
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
 
     // <-----01-2-2022---
     public function calculateLayerEnergyConsumed($resultQuery,$dayVal,$dateVal){
