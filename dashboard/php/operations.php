@@ -63,6 +63,9 @@ class dashboardControllerOperations {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
             $table_other = $_POST['table_other'];
+            $mst_id = isset($queryData['mst_id']) ?  $queryData['mst_id'] : '';
+            $name_val = isset($queryData['name_val']) ? $queryData['name_val'] : '';
+            // echo $mst_id; die;
             // echo str_replace("total_records","",$html); die;
 
             
@@ -70,8 +73,8 @@ class dashboardControllerOperations {
             $query_max_val = str_replace("'",'',$query_max_val);
 
         
-            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other ) ";
-            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other') ";
+            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,mst_id,energy_layer_model_name ) ";
+            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other', '$mst_id' ,'$name_val') ";
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
@@ -225,13 +228,15 @@ class dashboardControllerOperations {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
             $table_other = $_POST['table_other'];
+            $mst_id = isset($queryData['mst_id']) ?  $queryData['mst_id'] : '';
+            $name_val = isset($queryData['name_val']) ? $queryData['name_val'] : '';
             
 
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
 
             // $tile_html = $_REQUEST['tile_html'];
-            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile' WHERE id = $id AND username ='$username' ";
+            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile', mst_id = '$mst_id', energy_layer_model_name = '$name_val' WHERE id = $id AND username ='$username' ";
             // echo '<pre>';
             // echo htmlspecialchars($updateQuery);
             // echo '</pre>';

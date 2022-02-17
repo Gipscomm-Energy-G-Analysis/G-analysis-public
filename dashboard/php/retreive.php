@@ -4287,7 +4287,7 @@ class dashboardController {
             $thead .= '</tr>';
             
 
-            $queryMaxValue = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$valid_from' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id' ";
+            $queryMaxValue = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where convert(date,time) between '$valid_from' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id' ";
             // $resultQuery = queryDB($conn, $queryMaxValue, "read");
             $query1 =  "Select * from MessstellenEnergiedaten where   convert(date,time) between '$valid_from' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id'  order by Time desc ";
             $resultQuery = queryDB($conn, $query1, "read");
@@ -4319,7 +4319,7 @@ class dashboardController {
             $records['energy_header'] = $thead;
             $records['energy_html'] = $tbody;
 
-            $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $query1 ,'queryMaxValue' => $queryMaxValue,'row_click' => 'true' , 'type' => 'Energy');
+            $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $query1 ,'queryMaxValue' => $queryMaxValue,'row_click' => 'true' , 'type' => 'Energy', 'name_val' => $name_val);
             $records['query_data'] = $ar;
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE); 
             die;
@@ -6640,6 +6640,139 @@ class dashboardController {
 
     }
     // --end-->
+
+    // <----16-02-2022--
+    public function getTableDashboardDataEnergyLayer()
+    {
+        try{
+            global $conn;
+            $id = $_POST['id'];
+            $selectQuery = "select * from tableFormat where id = '$id' ";
+            $result = queryDB($conn, $selectQuery, "read");
+            // echo json_encode($result); die;
+            $tbody = '';
+            if($result != '' && count($result) > 0){
+                if($result[0]['row_click'] == 'false')
+                {
+                    $tbody = '<thead>';
+                    $tbody .= '<tr>';
+                    // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid To</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Designation</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
+                    // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
+                    $tbody .= '</tr>';
+                    $tbody .= '</thead>';
+                    
+                    $getQuery = $result[0]['query_data_records'];
+                    $getQuery = str_replace('Where ',"Where '",$getQuery);
+                    $getQuery = str_replace(" between","' between", $getQuery);
+                    $getQuery = str_replace("Or ","Or '", $getQuery);
+                    // echo $getQuery; die;
+                    $resultQuery = queryDB($conn, $getQuery, "read");
+                    // echo json_encode($resultQuery); die;
+                    if($resultQuery != '' && count($resultQuery) > 0){
+                        $tbody .= "<tbody>";
+                        $mst_id = $result[0]['mst_id'];
+                        foreach($resultQuery as $key=>$val)
+                        {   
+                            $fromDate=$val['gueltigVon']->format('Y-m-d');
+                            $toDate=$val['gueltigBis']->format('Y-m-d');
+                            $fromTime=$val['uhrzeitVon']->format('H:i:s');
+                            $toTime=$val['uhrzeitBis']->format('H:i:s');
+                            $to=$toDate.'T'.$toTime;
+                            $from=$fromDate.'T'.$fromTime;
+                            // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDate' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                            
+                            $resultEnergy = queryDB($conn, $query1, "read");
+                            // echo json_encode($resultEnergy); die;
+                            $totalEnergy = $resultEnergy[0]['sum'] / 4;   
+
+                            $tbody .= '<tr>';
+                            $tbody.= "<td>".$val['modellBez']."</td>";
+                            $tbody.= "<td>".$val['gueltigVon']->format('Y-m-d')."</td>";
+                            $tbody.= "<td>".$val['gueltigBis']->format('Y-m-d')."</td>";
+                            $tbody.= "<td>".$val['bezeichnung']."</td>";
+                            $tbody.= "<td>".$val['uhrzeitVon']->format('H:i:s')."</td>";    
+                            $tbody.= "<td>".$val['uhrzeitBis']->format('H:i:s')."</td>";
+                            $tbody.= "<td>".$totalEnergy."</td>"; 
+                            $tbody .= '</tr>';
+                        }
+                        $tbody .= "</tbody>";
+                    }
+                    else{
+                        $tbody .= "<tbody>";
+                        $tbody .= '<tr>';
+                        $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                        $tbody .= '</tr>';
+                        $tbody .= "</tbody>";
+                    }
+
+                    $records['dashboardMeasurementHtml'] = $tbody;
+
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                    die;
+
+                }
+                else{
+                    $tbody .= "<thead>";
+                    $tbody .= '<tr>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
+                    $tbody .= '</tr>';
+                    $tbody .= "</thead>";
+                    $getQuery = $result[0]['query_data_records'];
+                    $getQuery = str_replace("between ","between '", $getQuery);
+                    $getQuery = str_replace(" AND ","' AND '", $getQuery);
+                    $getQuery = str_replace("'convert","convert", $getQuery);
+                    $getQuery = str_replace("'mst_ID","mst_ID", $getQuery);
+                    $resultQuery = queryDB($conn, $getQuery, "read");
+                    // echo json_encode($result);die;
+                    $name_val = $result[0]['energy_layer_model_name'];
+                    if($resultQuery != '' && count($resultQuery) > 0){
+                        $tbody .= "<tbody>";
+                        foreach($resultQuery as $key=>$val)
+                        {   
+                            $tbody .= '<tr>';
+                            $tbody.= "<td>".$name_val."</td>";
+                            $tbody.= "<td>".$val['Time']->format('Y-m-d')."</td>";
+                            $tbody.= "<td>".$val['Time']->format('H:i:s')."</td>";
+                            $addVal = $val['Value'] * $val['ConvFactor'];
+                            $totalEnergy = $addVal / 4;
+                            $tbody.= "<td>".$totalEnergy."</td>"; 
+                            $tbody .= '</tr>';
+                        }
+                        $tbody .= "</tbody>";
+                    }
+                    else{
+                        $tbody .= "<tbody>";
+                        $tbody .= '<tr>';
+                        $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                        $tbody .= '</tr>';
+                        $tbody .= "</tbody>";
+                    }
+
+                    $records['dashboardMeasurementHtml'] = $tbody;
+
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
+                    die;
+                    // if($resu)
+                }
+            }
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    // --end--->
 
     // <---15-12-2021
     public function getTableDashboardDataProductAutomatic(){

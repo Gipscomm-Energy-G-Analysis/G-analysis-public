@@ -3156,7 +3156,26 @@ function getDimentions(id,classPrdAutomatic) {
                 // --end-->
               });
             // --end--->
-            }else{
+            }
+            else if(a['data']['tile_record_type'] == 'energy' && a['data']['table_other'] == 'SchichtModelleAll'){
+              getTableDashboardDataEnergyLayer(id);
+
+              $('.'+id+'.tiles-click').dblclick(function(){
+                // alert('Working');
+                // <----17-11-2021---
+                var pathname = window.location.pathname;
+                var arPathname = pathname.split('/');
+                if(arPathname.length > 3){
+                    window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
+                }
+                else{
+                    window.open('/dashboard/html/dashboard/chart_new.php','_blank');
+                }
+                // --end-->
+              });
+
+            }
+            else{
               getTableDashboardData(id);
                 // <--23-11-2021---
               $('.'+id+'.tiles-click').dblclick(function(){
@@ -6063,6 +6082,35 @@ function getTableDashboardDataProductAutomatic(id,queryDataRecords){
     }
   });
 }
+
+// <----16-02-2021--
+function getTableDashboardDataEnergyLayer(id){
+  // $("#nameDashboardDB").val(),
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getTableDashboardDataEnergyLayer",
+        nameDB: $("#nameDashboardDB").val(),
+        id:id,
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+
+      var chart_tile_click_data = {'table_html' : a['dashboardMeasurementHtml'],'tile_click_type' : 'table'}
+      localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
+
+      $('.'+id+'.tiles-click .save_table_div_show_table .table').html('');
+      $('.'+id+'.tiles-click .save_table_div_show_table .table').html(a['dashboardMeasurementHtml']);
+    }
+  });
+}
+
+// ---end-->
 
 // <--13-9-21--
 function updateTileRecordOverallCount()
