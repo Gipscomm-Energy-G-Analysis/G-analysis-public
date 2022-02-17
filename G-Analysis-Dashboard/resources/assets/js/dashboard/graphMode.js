@@ -151,11 +151,13 @@ $(document).on('click', '#mixed_create_graph_window', function(e) {
     mixedGraphData(mixed_history_graph,true);
 });
 
-function createEnergyDataGraph(windowTrue) {
+function createEnergyDataGraph(windowTrue) { 
     if($('#msgraphData').val() === undefined || $('#msgraphData').val() === ''){
         toastr.warning('No measuring points found for the particular record.');
         return false;
     }
+    $("#loader_image_history_charts").show();
+    $("#historyChartdiv").hide();
     $.ajax({
         type: "POST",
         url: "product-graph/history",
@@ -170,6 +172,8 @@ function createEnergyDataGraph(windowTrue) {
         },
         success:function(result) {
             if(result.code == 200) {
+                $("#loader_image_history_charts").hide();
+                $("#historyChartdiv").show();
                 if(windowTrue) {
                     localStorage.setItem('graphData', JSON.stringify(result.graphData));
                     localStorage.setItem('graphType', result.type);
@@ -182,12 +186,16 @@ function createEnergyDataGraph(windowTrue) {
             }
         },
         error:function(result) {
+            $("#loader_image_history_charts").hide();
+            $("#historyChartdiv").show();
             toastr.error(result);
         }
     });
 }
 
 function createProductHistoryGraph(conId,windowTrue, $limit=5) {
+    $("#loader_image_create_graph").show();
+    $("#product_historyChartdiv").hide();
     $.ajax({
         type: "POST",
         url: "product-graph/history/product",
@@ -203,11 +211,15 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
         },
         success:function(result) {
             if(result.code == 200) {
+                $("#loader_image_create_graph").hide();
+                $("#product_historyChartdiv").show();
                 if(windowTrue) {
                     localStorage.setItem('graphData', JSON.stringify(result.graphData));
                     localStorage.setItem('graphType', result.type);
                     window.open('/product-graph/history/data', '_blank');
                 } else {
+                    $("#loader_image_create_graph").hide();
+                    $("#product_historyChartdiv").show();
                     $('.product_historyGraphDiv').show();
                     let product_key = $('.active_prod_graph').attr('data_key');
                     console.log(result.graphData);
@@ -217,6 +229,8 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
             }
         },
         error:function(result) {
+            $("#loader_image_create_graph").hide();
+            $("#product_historyChartdiv").show();
             toastr.error(result);
         }
     });

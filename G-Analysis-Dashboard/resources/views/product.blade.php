@@ -357,11 +357,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="graph_div">
-                            
+                        <div class="row" id="graph_div"></div>
+
+                        <div id="loader_image_energy_charts" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image">
+                        </div>
+
                             <div class="chart" id="chartdiv">
                                 
-                            </div>
                         </div>
                     </div>
                     <!-- Graph Mode end -->
@@ -451,8 +453,13 @@
                                 </div>
                             </div>
                         </form>
+
+                        <div id="loader_image_history_charts" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image">
+                        </div>
+
                         <div class="row historyGraphDiv" style="display:none;">
-                            <div class="charts am_graph_div" id="historyChartdiv">
+                        
+                        <div class="charts am_graph_div" id="historyChartdiv">
                                 
                             </div>
                         </div>
@@ -593,9 +600,12 @@
                                     <div class="col-sm-3">
                                         <button type="button" class="btn btn-block btn-primary" id="product_create_graph_window">Create Graph (New Window)</button>
                                     </div>
+
                                 </div>
                             </div>
                         </form>
+                        <div id="loader_image_create_graph" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image">
+                                    </div>
                         <div class="row product_historyGraphDiv" style="display:none;">
                             <div class="charts am_graph_div" id="product_historyChartdiv">
                                 
@@ -1436,12 +1446,16 @@ $(document).on('click','.product-app-active',function(){
 });
 
 function jsFunction(value) {  
+    $("#loader_image_energy_charts").show();
+    $("#chartdiv").hide();
     $.ajax({
         url: "{{ url('/get-points-data')}}",
         type:"POST",
         data:{limit:value,points:$('#msgraphData').val()},
         success:function(data){
             if(data.code == 200) {
+                $("#loader_image_energy_charts").hide();
+                $("#chartdiv").show();
                 createAmChart(root, data.graphData, true);
             }
         },
