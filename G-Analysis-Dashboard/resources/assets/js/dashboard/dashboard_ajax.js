@@ -73,6 +73,7 @@ const getMachineData = (machine_id, type) => {
     var formData = new FormData();
     let prop_id = document.getElementById("select_prop").value;
     let container = document.getElementById("data-card");
+
     formData.append("id", machine_id);
     formData.append("type", type);
     formData.append("prop_id", prop_id);
@@ -93,7 +94,12 @@ const getMachineData = (machine_id, type) => {
             $(".navigation").attr("data-value", data.anl_ID);
             $("#anl_ID").val(data.anl_ID);
             showMachineData(response.dynamicData.main);
-            $("#machine-image").attr("src", data.bildAnl);
+            if(data.bildAnl==""  || data.bildAnl==null){
+                $("#machine-image").attr("src", "images/Blasanlage.jpg");
+            }
+            else{
+                $("#machine-image").attr("src", data.bildAnl);
+            }
             $("#timeFilter").val("5");
             $("#machine-image").on("error", function () {
                 $(this).attr("src", "images/Blasanlage.jpg");
