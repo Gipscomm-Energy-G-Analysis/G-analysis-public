@@ -45,11 +45,12 @@ class GroupConfigurationController extends Controller
     }
 
     public function saveConfigurationData(Request $request) {
+        // dd($request->all());
         $table = $request->table;
         $subGroupId = $request->group_id;
         $column = $request->column;
         $label = $request->label;
-        $checkbox = $request->checkbox;
+        $graph_value = $request->graph_value;
         $groupId = $this->getGroupId($subGroupId);
         $foreign_key = $request->foreign_key;
         $primary_key = $request->primary_key;
@@ -63,16 +64,19 @@ class GroupConfigurationController extends Controller
                 'table_name' => $table,
                 'column_name' => $column[$i],
             ];
-            $data=[
+            $data[$i]=[
                 'label_name' => $label[$i],
                 'primary_key' => $primary_key,
                 'foreign_key' => $foreign_key,
                 'status' => '1',
-                'is_graph' => $checkbox[$i]
+                'is_graph' => $graph_value[$i]
             ];
 
             SubGroupConfiguration::updateOrCreate($columnData, $data);
         }
+
+        // dd($data);
+
         return ['status' => 200, 'msg' => 'Record Inserted Sucessfully'];
     }
 

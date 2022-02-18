@@ -205,6 +205,8 @@ class DashboardController extends Controller
                 'otherGraph' => $otherGraphData
             ];
 
+            // dd($prodData);
+
             $customDataMerge = array_merge($dynamicData, $this->getCustomFieldData($machineData));
             
             $customColumns = $this->splitArray($customDataMerge, true);

@@ -65,7 +65,7 @@ let showConfigrationTable = (data , label_data=false) => {
                 <button type="button" name="remove" style="margin-right:5px;" class="btn btn-info edit_label float-right"><i class="fas fa-edit"></i></button>
             </td>
             <td  style="width: 160px; padding-top: 20px; text-align:center;">
-            <input type="checkbox" id="" checked data-toggle="toggle" data-on="" data-off="" data-onstyle="success" data-offstyle="info">
+            <input type="checkbox" value="${label}" class="graph_checkbox_value" checked data-toggle="toggle" data-on="" data-off="" data-onstyle="success" data-offstyle="info">
             </td>  
             </tr>`;
         });
@@ -202,14 +202,28 @@ $(document).on('click', '#save_configuration_button', function() {
     }
     let column = $(".configuration_column_data").map(function(){return $(this).val();}).get();
     let label = $(".custom_label_input").map(function(){return $(this).val();}).get();
+    
+    var checkbox =$(".graph_checkbox_value").map(function(){
+        if($(this).is(":checked")){
+            return '1';
+        }
+        return '0';
+    }).get();
+
+    // console.log('checkbox',checkbox );
+
     let dataArray = {
         'table': $('#select_group_table').val(),
         'group_id' :$('#select_group_options').val() ,
         'primary_key' :$('#primary_key_subGroup').val() ,
         'foreign_key' : $('#foreign_key_subGroup').val() ,
         'column' : column,
-        'label' :label
+        'label' :label,
+        'graph_value':checkbox
     }
+
+    // console.log(checkbox);
+
     saveSubGroupConfigurations(dataArray);
 });
 
