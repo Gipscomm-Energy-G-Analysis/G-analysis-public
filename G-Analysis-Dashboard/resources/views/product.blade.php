@@ -215,7 +215,7 @@
                     <div class="row" id="data-card" style="min-height:440px;">
                         <div class="col-12 col-sm-5">
                             <div class="col-12">
-                                <img src="{{$image}}" class="product-image" alt="Product Image" id="machine-image">
+                                <img src="{{$image}}" class="product-image" alt="Product Images" id="machine-image">
                             </div>
                             <div class="form-group row" style="    float: right; margin-right: 8px;margin-top: 18px">
                                 <div class="btn-group w-10">

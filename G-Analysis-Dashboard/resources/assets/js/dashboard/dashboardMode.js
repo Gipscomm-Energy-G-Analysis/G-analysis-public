@@ -370,7 +370,7 @@ const showMachinePrioritySelect = (data) => {
             selectHtml += `<option value='${select_name.anl_ID}'>${select_name.nummerAnl}</option>`;
         }
     }
-    $('#multi-machine-prioprity').html(selectHtml).select2("destroy").select2();
+    $('#multi-machine-prioprity').html(selectHtml).select2();
 }
 
 const saveTableConfigurations = (data, priorityMachines) => {

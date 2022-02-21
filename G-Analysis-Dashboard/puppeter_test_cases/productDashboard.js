@@ -55,11 +55,11 @@ puppeteer.launch(config.launchOptions).then(async (browser) => {
   await page.click(evaluation.auswertungen);
   await page.click("#menuProduktionAusw");
   await page.click(production.product);
-  await delay(5000);
+  await delay(10000);
 
   // Production Page
   await page.click(viewmode.view);
-  await delay(5000);
+  await delay(10000);
 
   // Edit Sub Group Configuration
   await page.click("#select_group_options");
