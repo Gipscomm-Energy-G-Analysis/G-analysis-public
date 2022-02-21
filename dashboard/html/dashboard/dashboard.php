@@ -150,6 +150,41 @@
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
                     </div>
 
+                    <!-- 18-02-2022 -->
+                    <div class="form-group col-md-2" id="energy_type_dashboard_chart_div">
+                      <label for="time_interval_chart" class="text-mute">Energy Type</label>
+                      <select class="form-control form-control-sm text-dark" id="energy_type_dashboard_chart">
+                        <option value="manually">Manually</option>
+                        <option value="layer_modal">SchichtModelle</option>
+                      </select>
+                    </div> 
+
+                    <!-- *Energy Layer Modal Div -->
+                    <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_measurement_div">
+                      <label for="time_interval_chart" class="text-mute">Select Measurement</label>
+                      <select class="form-control form-control-sm text-dark" id="energy_chart_measurement">
+                        <option value="">Select Measurement</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_layer_filter_div">
+                      <label for="time_interval_chart" class="text-mute">Select Filter</label>
+                      <select class="form-control form-control-sm text-dark" id="energy_chart_layer_filter">
+                        <option value="">Select Filter</option>
+                        <option value="day">Day</option>
+                        <option value="week">Week</option>
+                      </select>
+                      <span class="energy_chart_layer_filter_error text-danger"></span>
+                    </div>
+
+                    <div class="form-group energy_chart_layer_div col-md-2">
+                      <label for="energy_chart_layer_range" class="text-mute">Enter Range</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="energy_chart_layer_range" placeholder="Enter Value">
+                      <span class="energy_chart_layer_range_error text-danger"></span>
+                    </div>
+
+                    <!-- --end-- -->
+
                     <div class="form-group col-md-2" id="time_interval_div">
                       <label for="time_interval_chart" class="text-mute">Time Interval</label>
                       <select class="form-control form-control-sm text-dark" id="time_interval_chart">

@@ -3961,6 +3961,51 @@ class dashboardController {
     
     // --end---->
 
+
+    // <---18-02-2022---
+    public function getEnergyMeasurementChart()
+    {
+        try{
+            global $conn;
+            $queryMeasurement = "select mst_Id from MessstellenEnergiedaten group by mst_Id ";
+            $resulTotalRecord = sqlsrv_query($conn,$queryMeasurement);
+            $resultQuery = [];
+            $tablefound = 'false';
+            
+            if($resulTotalRecord != false)
+            {
+                $resultQuery = queryDB($conn, $queryMeasurement, "read");
+                $tablefound = 'true';
+            }
+
+            if($resultQuery != '' && count($resultQuery) > 0)
+            {
+                $ar_mst_id = array_column($resultQuery,'mst_Id');
+                $str_mst_id = implode(',',$ar_mst_id);
+                $nameQuery = "Select mst_id,nameMSt from messstellen where  mst_id in ($str_mst_id) ";
+                $nameQueryResult = queryDB($conn, $nameQuery, "read");
+                // echo json_encode($ar_mst_id); die;
+                $select = "<option value=''>Please Select Measurement</option>";
+                foreach($nameQueryResult as $key=>$val)
+                {
+                    $select .= "<option value=".$val["mst_id"].">".$val['nameMSt']."</option>";    
+                }
+                $result['measurement_html'] = $select;
+            }
+            else{
+                $select = "<option value=''>No Data Found</option>";
+                $result['measurement_html'] = $select;
+            }
+            $result['table_found'] = $tablefound;
+            echo json_encode($result,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
+
     //<---16-12-2021---
     public function getLayerTableEnergyData(){
         try{
@@ -4019,15 +4064,28 @@ class dashboardController {
                     // <----09-02-2022----
                     if($resultShiftName != '' && count($resultShiftName))
                     {
+                        $ind = $input_val_week_day - 1;
+                        $dateValCheck = date('Y-m-d', strtotime("-$ind days")); 
+                        $fromDateCheck = '';
                         foreach($resultShiftName as $key => $val){
                             $fromDate=$val['gueltigVon']->format('Y-m-d');
+                            // <----21-2-2022---
+                            if($dateValCheck <= $val['gueltigVon']->format('Y-m-d'))
+                            { 
+                               $formDateCheck = $val['gueltigVon']->format('Y-m-d');
+                                 
+                            }
+                            else{
+                               $fromDateCheck = $dateValCheck;
+                            }
+                            // --end-->
                             $toDate=$val['gueltigBis']->format('Y-m-d');
                             $fromTime=$val['uhrzeitVon']->format('H:i:s');
                             $toTime=$val['uhrzeitBis']->format('H:i:s');
                             $to=$toDate.'T'.$toTime;
                             $from=$fromDate.'T'.$fromTime;
                             //  $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
-                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDate' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
                             //echo $query1; die;
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
@@ -4180,16 +4238,26 @@ class dashboardController {
                     // --end--->
                     if($resultShiftName != '' && count($resultShiftName) > 0)
                     {
+                        $weekInd = $input_val_week_day * 7; //Week;
+                        $dateValCheck = date('Y-m-d', strtotime("-$weekInd Days"));
+                        // echo $fromDateCheck; die;
+                        $fromDateCheck = '';
                         foreach($resultShiftName as $key=>$val){
 
                             $fromDate=$val['gueltigVon']->format('Y-m-d');
+                            if($dateValCheck <= $val['gueltigVon']->format('Y-m-d')){
+                                $fromDateCheck  = $val['gueltigVon']->format('Y-m-d');
+                            }
+                            else{
+                                $fromDateCheck  = $dateValCheck;
+                            }
                             $toDate=$val['gueltigBis']->format('Y-m-d');
                             $fromTime=$val['uhrzeitVon']->format('H:i:s');
                             $toTime=$val['uhrzeitBis']->format('H:i:s');
                             $to=$toDate.'T'.$toTime;
                             $from=$fromDate.'T'.$fromTime;
                             // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
-                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDate' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
                             
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
@@ -4278,6 +4346,25 @@ class dashboardController {
             $valid_to = $_POST['valid_to'];
             $time_from = $_POST['time_from'];
             $time_to = $_POST['time_to'];
+            $input_val_week_day = $_POST['input_val_week_day'];
+            $select_day_week = $_POST['select_day_week'];
+
+            $ind = 0;
+            if($select_day_week == 'day')
+            {
+                $ind = $input_val_week_day - 1;
+            }
+            else{
+                $ind = $input_val_week_day * 7;
+            }
+            $dateValCheck = date('Y-m-d', strtotime("-$ind days"));
+            $fromDateCheck = ''; 
+            if($dateValCheck <= $valid_from){
+                $fromDateCheck  = $valid_from;
+            }
+            else{
+                $fromDateCheck  = $dateValCheck;
+            }
 
             $thead = '<tr>';
             $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
@@ -4287,13 +4374,14 @@ class dashboardController {
             $thead .= '</tr>';
             
 
-            $queryMaxValue = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where convert(date,time) between '$valid_from' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id' ";
+            $queryMaxValue = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where convert(date,time) between '$fromDateCheck' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id' ";
             // $resultQuery = queryDB($conn, $queryMaxValue, "read");
-            $query1 =  "Select * from MessstellenEnergiedaten where   convert(date,time) between '$valid_from' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id'  order by Time desc ";
+            $query1 =  "Select * from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id'  order by Time desc ";
             $resultQuery = queryDB($conn, $query1, "read");
             $tbody = '';
             if($resultQuery != '' && count($resultQuery) > 0)
             {
+                $sum=0;
                 foreach($resultQuery as $key=>$val)
                 {   
                     $tbody .= '<tr data-table-other="SchichtModelleAll">';
@@ -4304,7 +4392,10 @@ class dashboardController {
                     $totalEnergy = $addVal / 4;
                     $tbody.= "<td>".$totalEnergy."</td>"; 
                     $tbody .= '</tr>';
+                    $sum+=$totalEnergy;
                 }
+                $tbody.= "<tr class='font-weight-bold'><td colspan='3'>Grand Total: </td><td>$sum</td></tr>";
+                // print_r($sum);die;
                 $paginationHTMl="<div id='save_table_format' class='text-center'>
                 <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                 </div>";
@@ -5888,7 +5979,7 @@ class dashboardController {
                         $tr.= "<td>".$value['startDate']."</td>";
                     }
                     if($value['min_val'] != null  && $value['max_val'] != null ){
-                        $tr.= "<td><label clagetLayerTableEnergyDatass='text-danger'>Min Value Greater</label></td>";
+                        $tr.= "<td><label class='text-danger'>Min Value Greater</label></td>";
                     }
                     else{
                         $tr.= "<td><label class='badge badge-danger'>NA </label></td>";

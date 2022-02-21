@@ -1472,6 +1472,20 @@ $(document).ready( function(){
             $('#time_interval_div').show();
             // --end--->
 
+            // <---18-02-2021--
+            if(record_type_of_tile == "energy")
+            {
+                $('#energy_type_dashboard_chart_div').show();
+                $('#energy_type_dashboard_chart option[value=manually').prop('selected','selected');
+                $('#energy_type_dashboard_chart').trigger('change');
+
+            }
+            else{
+                $('#energy_type_dashboard_chart_div').hide();
+                $('.energy_chart_layer_div').hide();
+            }
+            // --end-->
+
         }
         else if((record_type_of_tile == "measurement" || record_type_of_tile == "energy") && type_data_tile == "chart" && data_edit_chart == 'true')
         {
@@ -2732,6 +2746,64 @@ $(document).ready( function(){
     })
 
     // ---end--->
+
+
+    // <----18-02-2022--
+    $(document).on('change','#energy_type_dashboard_chart', function(){
+        var val = $(this).val();
+        if(val == 'layer_modal')
+        {
+            getEnergyMeasurementChart();
+        }
+        else{
+            $('.energy_chart_layer_div').hide();
+            $('#time_interval_div').show();
+            $('#chart_record_div').show();
+            $('#chart_record_filter_div').show();
+        }
+    });
+
+    $(document).on('blur', '#energy_chart_layer_range', function(){
+        var input_val = $(this).val();
+        var select_day_week = $('#energy_chart_layer_filter').val();
+        if(select_day_week == '')
+        {
+            $('.energy_chart_layer_filter_error').text('Please Select Filter');
+            $('.energy_chart_layer_filter_error').fadeIn('slow');
+            setTimeout( function(){
+                $('.energy_chart_layer_filter_error').fadeOut('slow');
+            },3000);
+            $('#energy_chart_layer_range').val('');
+        }
+        else if(select_day_week == 'day')
+        {
+            if(input_val > 7 || input_val < 1)
+            {
+                $('.energy_chart_layer_range_error').text('Value Cannot be Greater than 7 and less than 0');
+                $('.energy_chart_layer_range_error').fadeIn('slow');
+                setTimeout( function(){
+                    $('.energy_chart_layer_range_error').fadeOut('slow');
+                },3000);
+                $('#energy_chart_layer_range').val('');
+            }
+        }
+        else if(select_day_week == 'week')
+        {
+            if(input_val > 52 || input_val < 1)
+            {
+                $('.energy_chart_layer_range_error').text('Value Cannot be Greater than 52 and less than 0');
+                $('.energy_chart_layer_range_error').fadeIn('slow');
+                setTimeout( function(){
+                    $('.energy_chart_layer_range_error').fadeOut('slow');
+                },3000);
+                $('#energy_chart_layer_range').val('');
+            }
+        }
+        // chartRecordFilter();
+        // getNumberRecordsEnergyLayerModal();
+    });
+    // --end--->
+
 
     
 

@@ -1975,6 +1975,8 @@ function rowClickEnergyLayer(name_val,valid_from,valid_to,time_from,time_to){
             valid_to : valid_to,
             time_from: time_from,
             time_to: time_to,
+            input_val_week_day : input_val_week_day,
+            select_day_week : select_day_week
         },
         fail: function() {
             alert("failed!!")
@@ -7849,6 +7851,38 @@ function getAllMeasurementEnergy(){
 }
 // --end---> 
 
+// <----18-02-2022----
+function getEnergyMeasurementChart(){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getEnergyMeasurementChart",
+        nameDB: $("#nameDashboardDB").val(),
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#energy_chart_measurement').html(a['measurement_html']);
+      if(a['table_found'] == "false"){
+        var htmlTableNotFound = '<option>Table Not Found</option>';
+        $('#energy_chart_measurement').html(htmlTableNotFound);
+        $('.energy_chart_layer_div').hide();
+        $('#energy_chart_measurement').show();
+      }
+      else{
+        $('.energy_chart_layer_div').show();
+      }
+      $('#time_interval_div').hide();
+      $('#chart_record_div').hide();
+      $('#chart_record_filter_div').hide()
+    }
+  });
+}
+// -end---->
 
 // <---18-1-2022--
 // var i = 1;
