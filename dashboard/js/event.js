@@ -2799,8 +2799,21 @@ $(document).ready( function(){
                 $('#energy_chart_layer_range').val('');
             }
         }
-        // chartRecordFilter();
+        chartRecordFilter();
         // getNumberRecordsEnergyLayerModal();
+    });
+    // --end--->
+
+
+    // <----22-2-2022--
+    $(document).on('change', '#energy_chart_measurement' , function(){
+        $('#energy_chart_layer_range').val('');
+        chartRecordFilter();
+    });
+
+    $(document).on('change', '#energy_chart_layer_filter' , function(){
+        $('#energy_chart_layer_range').val('');
+        chartRecordFilter();
     });
     // --end--->
 

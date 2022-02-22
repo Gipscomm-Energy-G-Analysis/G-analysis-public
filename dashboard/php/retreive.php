@@ -4062,7 +4062,7 @@ class dashboardController {
                     // echo json_encode($resultShiftName);
                     
                     // <----09-02-2022----
-                    if($resultShiftName != '' && count($resultShiftName))
+                    if($resultShiftName != '' && count($resultShiftName) > 0)
                     {
                         $ind = $input_val_week_day - 1;
                         $dateValCheck = date('Y-m-d', strtotime("-$ind days")); 
@@ -4072,7 +4072,7 @@ class dashboardController {
                             // <----21-2-2022---
                             if($dateValCheck <= $val['gueltigVon']->format('Y-m-d'))
                             { 
-                               $formDateCheck = $val['gueltigVon']->format('Y-m-d');
+                               $fromDateCheck = $val['gueltigVon']->format('Y-m-d');
                                  
                             }
                             else{
@@ -7878,6 +7878,384 @@ class dashboardController {
         } 
     }
     // ---end-->
+
+
+    // <---21-2-2022--
+    public function getChartRecordFilterEnergyLayer(){
+        try{
+            global $conn;
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'] != '' ? $_POST['chart_outer_table_limit_column'] : 1;
+            if($record_type_of_tile == 'energy')
+            {
+                $mst_id = $_POST['mst_id'];
+                $select_day_week = $_POST['energy_chart_layer_filter'];
+                $input_val_week_day = $_POST['energy_chart_layer_range'];
+                if($select_day_week == 'day') 
+                {   
+                    $checkQuery = '';
+                    $todayDate = date('Y-m-d');
+
+                    //SchichtModelleAll Table Check
+                    $tableCheckQuery = "select * from SchichtModelleAll ";
+                    $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+                    $table_found = 'false';
+                    if($resultTableExistCheck != false)
+                    {
+                        $table_found = 'true';
+                    }
+                    $tableOutsideHTML = '';
+                    if($table_found == 'true'){
+                        // <---07-02-2022---
+                        //*** Check No Shift Name Found Database */
+                        $checkQuery .= "Select * from SchichtModelleAll ";
+                        for($c = 0; $c < $input_val_week_day; $c++)
+                        {
+                            $dateVal = date('Y-m-d', strtotime("-$c days"));
+                            if($c == 0)
+                            {
+                            $checkQuery .= "Where '$dateVal' between gueltigVon AND gueltigBis "; 
+                            }
+                            else{
+                                $checkQuery .= "Or '$dateVal' between gueltigVon AND gueltigBis "; 
+                            }
+                        }
+                        $resultShiftName = queryDB($conn, $checkQuery, "read");
+                        if($resultShiftName != '' && count($resultShiftName) > 0)
+                        {
+                            $ind = $input_val_week_day - 1; //Get last Date
+                            $dateValCheck = date('Y-m-d', strtotime("-$ind days")); 
+                            $fromDateCheck = '';
+                            $ar_value = [];
+                            $ar_names = [];
+
+                            //Outer Table Check
+                            $outerTableLimit = 0;
+                            $modelNameQueryCount = count($resultShiftName);
+                            $i = 0;
+                            foreach($resultShiftName as $key => $val){
+                                $fromDate=$val['gueltigVon']->format('Y-m-d');
+                                // <----21-2-2022---
+                                if($dateValCheck <= $val['gueltigVon']->format('Y-m-d'))
+                                { 
+                                    $fromDateCheck = $val['gueltigVon']->format('Y-m-d');
+                                }
+                                else{
+                                    $fromDateCheck = $dateValCheck;
+                                }
+                                // --end-->
+                                $toDate=$val['gueltigBis']->format('Y-m-d');
+                                $fromTime=$val['uhrzeitVon']->format('H:i:s');
+                                $toTime=$val['uhrzeitBis']->format('H:i:s');
+                                $to=$toDate.'T'.$toTime;
+                                $from=$fromDate.'T'.$fromTime;
+                                //  $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                                $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                                //echo $query1; die;
+                                $resultEnergy = queryDB($conn, $query1, "read");
+                                // echo json_encode($resultEnergy); die;
+                                $totalEnergy = $resultEnergy[0]['sum'] / 4;
+                                array_push($ar_value,$totalEnergy);
+                                $model_name_layer_name = $val['modellBez'].'('.$val['bezeichnung'].')';
+                                array_push($ar_names,$model_name_layer_name);
+
+                                //Outer Table HTML Get Last Records 
+                                if($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount)
+                                {
+                                    $outerTableLimit = $modelNameQueryCount - 1; // -1 for Array Index
+                                    if($i <= $outerTableLimit)
+                                    {
+                                        $tableOutsideHTML .= "<tr>";
+                                        $tableOutsideHTML.= "<td>".$model_name_layer_name."</td>";
+                                        $tableOutsideHTML .= "<td>".$totalEnergy."</td>";
+                                        $tableOutsideHTML .= "</tr>";
+                                    } 
+                                }
+                                else if($chart_outer_table_limit_column < $modelNameQueryCount)
+                                {
+                                    $outerTableLimit = $chart_outer_table_limit_column - 1;
+                                    if($i <= $outerTableLimit)
+                                    {
+                                        $tableOutsideHTML .= "<tr>";
+                                        $tableOutsideHTML.= "<td>".$model_name_layer_name."</td>";
+                                        $tableOutsideHTML .= "<td>".$totalEnergy."</td>";
+                                        $tableOutsideHTML .= "</tr>";
+                                    }
+                                }
+                                $i++;
+                            }
+                            // echo $i; die;
+                            $records['count_val'] = $ar_value;
+                            $records['count_days'] = $ar_names;
+                            $records['count_sum'] = '';
+                        }
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+                    $records['table_found'] = $table_found;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                else if($select_day_week == 'week')
+                {
+                    //SchichtModelleAll Table Check
+                    $tableCheckQuery = "select * from SchichtModelleAll ";
+                    $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+
+                    $table_found = 'false';
+                    if($resultTableExistCheck != false)
+                    {
+                        $table_found = 'true';
+                    }
+
+                    $tableOutsideHTML = '';
+                    if($table_found == 'true')
+                    {
+                        $todayDate = date('Y-m-d');
+                        $dateVal =  date('Y-m-d', strtotime("-$input_val_week_day week"));
+
+                        // <----07-02-2022--
+                        // ****Check Shift Name Exist 
+                        $intervalDays = $input_val_week_day * 7; //Week;
+                        $checkShiftNameQuery = "Select * from SchichtModelleAll ";
+                        for($interval = 0; $interval <= $intervalDays; $interval++)
+                        {
+                            $dateValShiftName =  date('Y-m-d', strtotime("-$interval Days"));
+                            if($interval == 0)
+                            {
+                                $checkShiftNameQuery.= "Where '$dateValShiftName' between gueltigVon AND gueltigBis ";
+                            }
+                            else{
+                                $checkShiftNameQuery.= "Or '$dateValShiftName' between gueltigVon AND gueltigBis ";
+                            }
+
+                        }
+                        $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
+                        // echo json_encode($resultShiftName); die;
+                        // --end--->
+                        if($resultShiftName != '' && count($resultShiftName) > 0)
+                        {
+                            $weekInd = $input_val_week_day * 7; //Week;
+                            $dateValCheck = date('Y-m-d', strtotime("-$weekInd Days"));
+                            // echo $fromDateCheck; die;
+                            $fromDateCheck = '';
+                            $ar_value = [];
+                            $ar_names = [];
+
+                            //Outer Table Check
+                            $outerTableLimit = 0;
+                            $modelNameQueryCount = count($resultShiftName);
+                            $i = 0;
+                            foreach($resultShiftName as $key=>$val){
+
+                                $fromDate=$val['gueltigVon']->format('Y-m-d');
+                                if($dateValCheck <= $val['gueltigVon']->format('Y-m-d')){
+                                    $fromDateCheck  = $val['gueltigVon']->format('Y-m-d');
+                                }
+                                else{
+                                    $fromDateCheck  = $dateValCheck;
+                                }
+                                $toDate=$val['gueltigBis']->format('Y-m-d');
+                                $fromTime=$val['uhrzeitVon']->format('H:i:s');
+                                $toTime=$val['uhrzeitBis']->format('H:i:s');
+                                $to=$toDate.'T'.$toTime;
+                                $from=$fromDate.'T'.$fromTime;
+                                // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                                $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                                
+                                $resultEnergy = queryDB($conn, $query1, "read");
+                                // echo json_encode($resultEnergy); die;
+                                $totalEnergy = $resultEnergy[0]['sum'] / 4;   
+
+                                $resultEnergy = queryDB($conn, $query1, "read");
+                                // echo json_encode($resultEnergy); die;
+                                $totalEnergy = $resultEnergy[0]['sum'] / 4;
+                                array_push($ar_value,$totalEnergy);
+                                $model_name_layer_name = $val['modellBez'].'('.$val['bezeichnung'].')';
+                                array_push($ar_names,$model_name_layer_name);
+
+                                //Outer Table HTML Get Last Records 
+                                if($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount)
+                                {
+                                    $outerTableLimit = $modelNameQueryCount - 1; // -1 for Array Index
+                                    if($i <= $outerTableLimit)
+                                    {
+                                        $tableOutsideHTML .= "<tr>";
+                                        $tableOutsideHTML.= "<td>".$model_name_layer_name."</td>";
+                                        $tableOutsideHTML .= "<td>".$totalEnergy."</td>";
+                                        $tableOutsideHTML .= "</tr>";
+                                    } 
+                                }
+                                else if($chart_outer_table_limit_column < $modelNameQueryCount)
+                                {
+                                    $outerTableLimit = $chart_outer_table_limit_column - 1;
+                                    if($i <= $outerTableLimit)
+                                    {
+                                        $tableOutsideHTML .= "<tr>";
+                                        $tableOutsideHTML.= "<td>".$model_name_layer_name."</td>";
+                                        $tableOutsideHTML .= "<td>".$totalEnergy."</td>";
+                                        $tableOutsideHTML .= "</tr>";
+                                    }
+                                }
+                                $i++;
+
+                            }
+
+                            $records['count_val'] = $ar_value;
+                            $records['count_days'] = $ar_names;
+                            $records['count_sum'] = '';
+                        }
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    $records['table_found'] = $table_found;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+
+            // ---end--->
+            die;
+
+
+
+
+
+                $queryOverAllCount = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                $queryOverAllCount .="INNER join "; 
+                $queryOverAllCount.="( ";
+                $queryOverAllCount .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                $queryOverAllCount .="from produktionsAnlagenMoreOpt as t2 ";
+                $queryOverAllCount.=") ";
+                $queryOverAllCount .="t2 ";
+                $queryOverAllCount .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                $queryOverAllCount .= "INNER join ";
+                $queryOverAllCount .= "( ";
+                $queryOverAllCount .= "select t3.id as t3_id , t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+                $queryOverAllCount .= "from masseneingabeSuchePrdIMw  as t3 ";
+                $queryOverAllCount .= ") ";
+                $queryOverAllCount .= "t3 ";
+                $queryOverAllCount .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                $queryOverAllCount .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+                $queryOverAllCount .= "where t1.iBdeType='1' ";
+                $queryOverAllCount .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                $queryOverAllCount .= "order by t3.t3_id asc ";
+                $resultOverallCount = queryDB($conn, $queryOverAllCount, "read");
+                // echo json_encode($resultOverallCount); die;
+                $overallCount = count($resultOverallCount);
+
+                if($filter_val == 10){
+                    $ar_days = [];
+                    $ar_value = [];
+                    $countSum = '';
+                    $loopCount = '';
+                    $preVal = 0;
+                    for($i = 1; $i <= 10; $i++){
+                        if($i <= $overallCount){
+                            $indexCount = $i - 1;
+                            $preVal += $resultOverallCount[$indexCount]['val'];
+                            $result[0]['val'] = $preVal;
+                            if($result[0]['val'] != null){
+                                array_push($ar_value, $result[0]['val']);
+                            }
+                            if($i == $overallCount || $i == 10){
+                                $countSum = $result[0]['val'];
+                               
+                            }
+                            // <---12-11-2021--
+                            $loopCount = $i;
+                            // --end-->
+                            array_push($ar_days,$i);
+                        }
+                    }
+                    // echo json_encode($ar_value); die;
+                    // <---12-11-2021--
+                    // $ar_reverse_val = array_reverse($ar_value);
+                    // echo json_encode($ar_reverse_val); die;
+                    $offsetLoopVal = '';
+                    $tableOutsideHTML = '';
+                    $offsetLoopVal = '';
+                    if($loopCount != '')
+                    {
+                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
+                        {
+                            $chart_outer_table_limit_column = $loopCount;
+                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                            else{
+                                $offsetLoopVal = 0;
+                            }
+                        }
+                        else if($loopCount > $chart_outer_table_limit_column)
+                        {
+                            if($overallCount > 0 && $overallCount <= $filter_val){ //10 RECORD Condition
+                                $offsetLoopVal = 0;
+                            }
+                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
+                                $offsetLoopVal = $overallCount -  $filter_val;
+                            }
+                        }
+                        
+                        $queryOutsideTable = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
+                        $queryOutsideTable .="INNER join "; 
+                        $queryOutsideTable.="( ";
+                        $queryOutsideTable .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
+                        $queryOutsideTable .="from produktionsAnlagenMoreOpt as t2 ";
+                        $queryOutsideTable.=") ";
+                        $queryOutsideTable .="t2 ";
+                        $queryOutsideTable .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
+                        $queryOutsideTable .= "INNER join ";
+                        $queryOutsideTable .= "( ";
+                        $queryOutsideTable .= "select t3.id as t3_id , t3.type , t3.on_week , t3.on_date ,t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
+                        $queryOutsideTable .= "from masseneingabeSuchePrdIMw  as t3 ";
+                        $queryOutsideTable .= ") ";
+                        $queryOutsideTable .= "t3 ";
+                        $queryOutsideTable .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
+                        $queryOutsideTable .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
+                        $queryOutsideTable .= "where t1.iBdeType='1' ";
+                        $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+                        $queryOutsideTable .= "order by t3.t3_id DESC ";
+                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
+                        // echo $queryOutsideTable; die;
+                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
+
+                        $tableOutsideHTML = '';
+                        for($i = 0; $i < count($resultOutsideTable); $i++)
+                        {
+                            $tableOutsideHTML .= "<tr>";
+                            if($resultOutsideTable[$i]['type'] == '2'){
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            else{
+                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
+                            }
+                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
+                            $tableOutsideHTML .= "</tr>";
+                        }
+
+                    }
+                    
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+                    
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_days;
+                    $records['count_sum'] = $countSum;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  
+                    die;
+                }
+                $records = ['status'=>400,'message'=>'Data Not found'];
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE); 
+                die;
+                
+            }
+            die;
+
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    // --end--->
 
 
     public function getChartRecordFilter(){

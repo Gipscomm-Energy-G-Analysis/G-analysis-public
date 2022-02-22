@@ -4588,9 +4588,15 @@ function getChartTimeIntervalRecordProduct(){
 function chartRecordFilter(){
   var dashboard_tile_data = JSON.parse(localStorage.getItem('dashboard_tile_data'));
   var record_type_of_tile = dashboard_tile_data['record_type_of_tile'];
+  var energy_type_dashboard_chart = $('#energy_type_dashboard_chart').val();
   if(record_type_of_tile == 'product')
   { 
     chartRecordFilterProduct();
+    return false;
+  }
+  else if(record_type_of_tile == 'energy' && energy_type_dashboard_chart == 'layer_modal')
+  {
+    chartRecordFilterEnergyLayer();
     return false;
   }
 
@@ -5797,6 +5803,584 @@ function chartRecordFilterProduct(){
   }
 }
 // --end-->
+
+
+// <----21-2-2022---
+function chartRecordFilterEnergyLayer(){
+  var mst_id = $('#energy_chart_measurement').val();
+  var energy_chart_layer_filter = $('#energy_chart_layer_filter').val();
+  var energy_chart_layer_range = $('#energy_chart_layer_range').val();
+  var mst_value = $("#energy_chart_measurement option:selected").text();
+  var mst_input_value = $('#total_records_chart').val();
+  var dashboard_tile_data = JSON.parse(localStorage.getItem('dashboard_tile_data'));
+  var record_type_of_tile = dashboard_tile_data['record_type_of_tile'];
+
+  var chart_type = $('#chart_type').val();
+  var mst_check = $('#save_and_proceed_btn_dashboard').val();
+
+  var labelChart  = '';
+  if(energy_chart_layer_filter == 'day')
+  {
+    labelChart = 'Day';
+  }
+  else{
+    labelChart = 'Week';
+  }
+
+
+  if(mst_check == 'Update & Proceed'){
+    $('.chart_text_edit_' + mst_input_value).text(mst_value+'('+energy_chart_layer_range+' '+labelChart+')');
+  }else{
+    $('.chart_text_' + mst_input_value).text(mst_value+'('+energy_chart_layer_range+' '+labelChart+')');
+  }
+  var chart_outer_table_limit_column = $('#chart_outer_table_limit_column').val();
+  if(mst_id != '' && energy_chart_layer_filter != '' && energy_chart_layer_range != ''){
+    // $('#measurement_modal_loader_div_chart').show();
+    $.ajax({
+      type: "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "getChartRecordFilterEnergyLayer",
+          nameDB: $("#nameDashboardDB").val(),
+          mst_id : mst_id,
+          energy_chart_layer_filter : energy_chart_layer_filter,
+          energy_chart_layer_range : energy_chart_layer_range,
+          chart_outer_table_limit_column : chart_outer_table_limit_column,
+          record_type_of_tile : record_type_of_tile
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+       
+        // <---12-11-2021--
+        $('#measurement_modal_loader_div_chart').hide();
+        var div_id_html = $('#total_records_chart').val();
+        $('.dashboard_chart_tile_html_'+div_id_html+' .small-table table tbody').html(a['outer_table_html']);
+        $('.dashboard_chart_outer_tile_html_'+div_id_html+' .small-table table tbody').html(a['outer_table_html']);
+        // -end--->
+
+        if(a['table_found'] == 'false')
+        {
+          var htmlTableNotFound = '<option>Table Not Found</option>';
+          $('#energy_chart_measurement').html(htmlTableNotFound);
+          $('.energy_chart_layer_div').hide();
+          $('#energy_chart_measurement_div').show(); 
+          
+          var html_canvas_chart = "<canvas></canvas>";
+          var div_i_id = $('#total_records_chart').val();
+          $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+          $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+
+          return false;
+        }
+
+        if(chart_type == "line_chart"){
+          var html_canvas_chart = "<canvas id='lineChart'></canvas>";
+          var div_i_id = $('#total_records_chart').val();
+          // <--8-12-2021---
+          $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+          $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+          // --end-->
+          // console.log('line chart');
+
+          var data = {
+            labels: a['count_days'],
+            // labels : ["Test 212", "Test 212", "Test 212"],
+            datasets: [{
+              label: 'Consumption',
+              data: a['count_val'],
+              // data : [12696.8265385, 0, 7448.749997],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1,
+              fill: false
+            }]
+          };
+
+          var options = {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            },
+            legend: {
+              display: false
+            },
+            elements: {
+              point: {
+                radius: 0
+              }
+            }
+        
+          };
+
+          if ($("#lineChart").length) {
+            var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+            var lineChart = new Chart(lineChartCanvas, {
+              type: 'line',
+              data: data,
+              options: options
+            });
+          }
+
+        }
+        else if (chart_type == "area_chart"){
+        var html_canvas_chart = "<canvas id='areaChart'></canvas>";
+        var div_i_id = $('#total_records_chart').val();
+        // <---25-11-2021---
+        $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        //--end-->
+        
+        // console.log('Working');
+        var areaData = {
+          // <--X Axis Value---
+          // labels: ["2013", "2014", "2015", "2016", "2017","2019","2021","2023"],
+          labels: a['count_days'],
+          datasets: [{
+            label: 'Consumption',
+            // <--Y Axix Value--
+            // data: [12, 19, 3, 5, 2, 3,25,105],
+            // data : [], 
+            data: a['count_val'],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1,
+            fill: true, // 3: no fill
+          }]
+        };
+
+        var areaOptions = {
+          plugins: {
+            filler: {
+              propagate: true
+            }
+          }
+        }
+
+        if ($("#areaChart").length) {
+          var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+          var areaChart = new Chart(areaChartCanvas, {
+            type: 'line',
+            data: areaData,
+            options: areaOptions
+          });
+        }
+       
+      }
+      else if(chart_type == "pie_chart"){
+        var html_canvas_chart = "<canvas id='pieChart'></canvas>";
+        var div_i_id = $('#total_records_chart').val();
+
+        // <---8-12-2021---
+        $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        // --end-->
+
+        var doughnutPieData = {
+          datasets: [{
+            //data: [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
+            data : a['count_val'],
+            backgroundColor: [
+              // 1
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 2
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 3
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 4
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 5
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 6
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 7
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              // 8
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)',
+
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              // 'rgba(255, 206, 86, 0.5)',
+              // 'rgba(75, 192, 192, 0.5)',
+              // 'rgba(153, 102, 255, 0.5)',
+              // 'rgba(255, 159, 64, 0.5)'
+
+        
+            ],
+            borderColor: [
+              // 1
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 2
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 3
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              //4
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 5
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 6
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 7
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 8
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+            ],
+          }],
+      
+          // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels : a['count_days']
+          
+          
+        };
+        var doughnutPieOptions = {
+          responsive: true,
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          }
+        };
+        
+        if ($("#pieChart").length) {
+          var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+          var pieChart = new Chart(pieChartCanvas, {
+            type: 'pie',
+            data: doughnutPieData,
+            options: doughnutPieOptions
+          });
+        }
+      
+      }
+      else if(chart_type == "bar_chart"){
+        var html_canvas_chart = "<canvas id='barChart'></canvas>";
+        var div_i_id = $('#total_records_chart').val();
+        // <-----8-12-2021--
+        $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+        $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+        // --end--->
+
+        var data = {
+          labels: a['count_days'],
+          datasets: [{
+            label: 'Consumption',
+            // data: [10, 19, 3, 5, 2, 3],
+            data : a['count_val'],
+            backgroundColor: [
+              // 1
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 2
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 3
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 4
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 5
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 6
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 7
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              // 8
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+              // 1
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 2
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              
+              // 3
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 4
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 5
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 6
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              
+              // 7
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              // 8
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+
+              'rgba(255,99,132,1)',
+              'rgba(54, 162, 235, 1)',
+            ],
+            borderWidth: 1,
+            fill: false
+          }]
+        };
+
+        var options = {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          legend: {
+            display: false
+          },
+          elements: {
+            point: {
+              radius: 0
+            }
+          }
+      
+        };
+
+
+        if($("#barChart").length) {
+          var barChartCanvas = $("#barChart").get(0).getContext("2d");
+          // This will get the first returned node in the jQuery collection.
+          var barChart = new Chart(barChartCanvas, {
+            type: 'bar',
+            data: data,
+            options: options
+          });
+        }
+
+      }
+      
+      }
+    });
+
+  }
+  else{
+    var html_canvas_chart = "<canvas></canvas>";
+    var div_i_id = $('#total_records_chart').val();
+    $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
+    $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
+   
+  }
+}
+// --end--->
 
 // <---8-9-2021----
 function saveOverallCountTile(){
@@ -7871,7 +8455,7 @@ function getEnergyMeasurementChart(){
         var htmlTableNotFound = '<option>Table Not Found</option>';
         $('#energy_chart_measurement').html(htmlTableNotFound);
         $('.energy_chart_layer_div').hide();
-        $('#energy_chart_measurement').show();
+        $('#energy_chart_measurement_div').show();
       }
       else{
         $('.energy_chart_layer_div').show();
