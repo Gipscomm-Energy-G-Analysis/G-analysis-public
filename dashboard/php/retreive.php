@@ -4071,13 +4071,14 @@ class dashboardController {
                             $fromDate=$val['gueltigVon']->format('Y-m-d');
                             // <----21-2-2022---
                             if($dateValCheck <= $val['gueltigVon']->format('Y-m-d'))
-                            { 
-                               $formDateCheck = $val['gueltigVon']->format('Y-m-d');
-                                 
+                            {
+                                $fromDateCheck = $val['gueltigVon']->format('Y-m-d');
+
                             }
                             else{
                                $fromDateCheck = $dateValCheck;
                             }
+
                             // --end-->
                             $toDate=$val['gueltigBis']->format('Y-m-d');
                             $fromTime=$val['uhrzeitVon']->format('H:i:s');
@@ -4245,6 +4246,7 @@ class dashboardController {
                         foreach($resultShiftName as $key=>$val){
 
                             $fromDate=$val['gueltigVon']->format('Y-m-d');
+
                             if($dateValCheck <= $val['gueltigVon']->format('Y-m-d')){
                                 $fromDateCheck  = $val['gueltigVon']->format('Y-m-d');
                             }
@@ -4369,7 +4371,8 @@ class dashboardController {
             $thead = '<tr>';
             $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
             $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
-            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">From Time</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">To Time</th>';
             $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
             $thead .= '</tr>';
             
@@ -4382,19 +4385,19 @@ class dashboardController {
             if($resultQuery != '' && count($resultQuery) > 0)
             {
                 $sum=0;
+                $resultQuery=$this->getDateWiseScore($resultQuery);
                 foreach($resultQuery as $key=>$val)
                 {   
                     $tbody .= '<tr data-table-other="SchichtModelleAll">';
                     $tbody.= "<td>".$name_val."</td>";
-                    $tbody.= "<td>".$val['Time']->format('Y-m-d')."</td>";
-                    $tbody.= "<td>".$val['Time']->format('H:i:s')."</td>";
-                    $addVal = $val['Value'] * $val['ConvFactor'];
-                    $totalEnergy = $addVal / 4;
-                    $tbody.= "<td>".$totalEnergy."</td>"; 
+                    $tbody.= "<td>".$val['date']."</td>";
+                    $tbody.= "<td>".$time_from."</td>";
+                    $tbody.= "<td>".$time_to."</td>";
+                    $tbody.= "<td>".$val['Value']."</td>";
                     $tbody .= '</tr>';
-                    $sum+=$totalEnergy;
+                    $sum+=$val['Value'];
                 }
-                $tbody.= "<tr class='font-weight-bold'><td colspan='3'>Grand Total: </td><td>$sum</td></tr>";
+                $tbody.= "<tr class='font-weight-bold'><td colspan='4'>Grand Total: </td><td>$sum</td></tr>";
                 // print_r($sum);die;
                 $paginationHTMl="<div id='save_table_format' class='text-center'>
                 <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
@@ -4418,6 +4421,21 @@ class dashboardController {
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
+    }
+    public function getDateWiseScore($data) {
+        $groups = array();
+        foreach ($data as $item) {
+            $key = $item['Time']->format('Y-m-d');
+            if (!array_key_exists($key, $groups)) {
+                $groups[$key] = array(
+                    'date' => $item['Time']->format('Y-m-d'),
+                    'Value' =>  ($item['Value'] * $item['ConvFactor'])/4,
+                );
+            } else {
+                $groups[$key]['Value'] = $groups[$key]['Value'] + (($item['Value']* $item['ConvFactor'])/4);
+            }
+        }
+        return $groups;
     }
     // --end--->
 
