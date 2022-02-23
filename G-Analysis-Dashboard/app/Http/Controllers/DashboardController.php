@@ -106,6 +106,7 @@ class DashboardController extends Controller
 
     public function getMachineDetailNew(Request $request, $limit=5)
     {
+        // dd($request->all());
         $id = $request['id'];
         $type = $request['type'];
         $lieg_ID = $request['prop_id'];
