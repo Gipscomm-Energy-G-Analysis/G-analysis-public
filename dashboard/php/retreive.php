@@ -2508,6 +2508,116 @@ class dashboardController {
     }
     // --end--->
 
+    // <---23-2-2022--
+    public function getEditChartDataDashboardEnergyLayer(){
+        try{
+            global $conn;
+            $username = $_SESSION['username'];
+            $i_value = $_POST['i_value'];
+            $id = $_POST['id'];
+            $tile_title = $_POST['energy_title'];
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $chart_type = '';
+            $chart_filter = '';
+            $input_range = '';
+            $mst_id = '';
+            $chart_time_interval = '';
+            $total_result = count($dataResult);
+            if($dataResult != null && count($dataResult)>0){
+                for($i= 0; $i < $total_result; $i++){
+                    if($id == $dataResult[$i]['id']){
+                        $chart_type = $dataResult[$i]['chart_type'];
+                        $chart_filter = $dataResult[$i]['energy_layer_filter'];
+                        $input_range = $dataResult[$i]['energy_layer_range'];
+                        $mst_id = $dataResult[$i]['mst_id'];
+                        $records['data'] = $dataResult[$i];
+                        $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                    <div class='card card-border'>
+                                        <div class='card-body overflow-hide display-flex pr-0'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Energy' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Energy' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$tile_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                </div> 
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 chart-width'>
+                                            <div class='col-md-6 p-0 small-table small-table_$i_value' style='display:none'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
+                                            </table>
+                                            </div>
+                                                <div class='save_table_div_show_table'> 
+                                                    <canvas id='areaChart'></canvas>                       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";
+                                
+                                //Tile Outer HTML
+                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                                <div class='card card-border'>
+                                                    <div class='card-body overflow-hide display-flex pr-0'>
+                                                        <div id='' class=''>
+                                                            <div class='action-modal-button-div'>
+                                                                <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Energy' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Energy' style='height: 17px; width: 17px;'>
+                                                            </div>
+                                                            <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$tile_title</p>
+                                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                            <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                            </div>  
+                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class='overflow-hide ml-3 chart-width'>
+                                                            <div id='chart_outer_tile_text_heading' style='text-align: center'>
+                                                                <p class='text-muted'>Outer Tile View</p>
+                                                            </div>
+                                                            <div class='col-md-6 p-0 small-table small-table_$i_value'>
+                                                                <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
+                                                                </table>
+                                                            </div> 
+                                                            <div class='save_table_div_show_table'> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></div>"; 
+
+                    }
+                    else{
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        $tileHtml.= $dataResult[$i]['tile_html'];
+                    }
+                }
+                $records['tile_html'] = $tileHtml;
+                $records['total_record'] = count($dataResult);
+                $records['mst_id'] = $mst_id;
+                $records['chart_filter'] = $chart_filter;
+                $records['chart_type'] = $chart_type;
+                $records['chart_time_interval'] = $chart_time_interval;
+                $records['input_range'] = $input_range;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
+
     // <----09-12-2021--
     public function getEditChartDataDashboardProduct(){
         try{
@@ -4090,8 +4200,7 @@ class dashboardController {
                             //echo $query1; die;
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
-                            $totalEnergy = $resultEnergy[0]['sum'] / 4;
-
+                            $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
 
                             $tbody .= '<tr class="row_click_energy" data-table-other="SchichtModelleAll">';
                             // $tbody .= '<td>'.$dayVal.'</td>';
@@ -4263,7 +4372,7 @@ class dashboardController {
                             
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
-                            $totalEnergy = $resultEnergy[0]['sum'] / 4;   
+                            $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
 
                             $tbody .= '<tr class="row_click_energy" data-table-other="SchichtModelleAll">';
                             $tbody.= "<td>".$val['modellBez']."</td>";
@@ -4431,7 +4540,7 @@ class dashboardController {
                     'date' => $item['Time']->format('Y-m-d'),
                     'Value' =>  ($item['Value'] * $item['ConvFactor'])/4,
                 );
-            } else {
+            }else {
                 $groups[$key]['Value'] = $groups[$key]['Value'] + (($item['Value']* $item['ConvFactor'])/4);
             }
         }
@@ -6777,26 +6886,85 @@ class dashboardController {
                     $tbody .= '</tr>';
                     $tbody .= '</thead>';
                     
-                    $getQuery = $result[0]['query_data_records'];
-                    $getQuery = str_replace('Where ',"Where '",$getQuery);
-                    $getQuery = str_replace(" between","' between", $getQuery);
-                    $getQuery = str_replace("Or ","Or '", $getQuery);
-                    // echo $getQuery; die;
-                    $resultQuery = queryDB($conn, $getQuery, "read");
+                    // $getQuery = $result[0]['query_data_records'];
+                    // $getQuery = str_replace('Where ',"Where '",$getQuery);
+                    // $getQuery = str_replace(" between","' between", $getQuery);
+                    // $getQuery = str_replace("Or ","Or '", $getQuery);
+                    // // echo $getQuery; die;
+                    // // $resultQuery = queryDB($conn, $getQuery, "read");
                     // echo json_encode($resultQuery); die;
+                    // <---23-02-2022--
+                    $input_val_week_day = $result[0]['energy_layer_range'];
+                    $checkQuery = '';
+                    if($result[0]['energy_layer_filter'] == 'day')
+                    {
+                        $checkQuery .= "Select * from SchichtModelleAll ";
+                        for($c = 0; $c < $input_val_week_day; $c++)
+                        {
+                            $dateVal = date('Y-m-d', strtotime("-$c days"));
+                            if($c == 0)
+                            {
+                                $checkQuery .= "Where '$dateVal' between gueltigVon AND gueltigBis "; 
+                            }
+                            else{
+                                $checkQuery .= "Or '$dateVal' between gueltigVon AND gueltigBis "; 
+                            }
+                        }
+                    }
+                    else{
+                        $intervalDays = $input_val_week_day * 7; //Week;
+                        $checkQuery .= "Select * from SchichtModelleAll ";
+                        for($interval = 0; $interval <= $intervalDays; $interval++)
+                        {
+                            $dateValShiftName =  date('Y-m-d', strtotime("-$interval Days"));
+                            if($interval == 0)
+                            {
+                                $checkQuery.= "Where '$dateValShiftName' between gueltigVon AND gueltigBis ";
+                            }
+                            else{
+                                $checkQuery.= "Or '$dateValShiftName' between gueltigVon AND gueltigBis ";
+                            }
+                        }
+                        $resultShiftName = queryDB($conn, $checkQuery, "read");
+                    }
+                    $resultQuery = queryDB($conn, $checkQuery, "read");
+                    // echo json_encode($resultQuery); 
+                    // --end-->
                     if($resultQuery != '' && count($resultQuery) > 0){
                         $tbody .= "<tbody>";
                         $mst_id = $result[0]['mst_id'];
+                        $energy_layer_filter = $result[0]['energy_layer_filter'];
+                        $dateValCheck='';
+                        if($energy_layer_filter == 'day')
+                        {
+                            $ind = $input_val_week_day - 1;
+                            $dateValCheck = date('Y-m-d', strtotime("-$ind days")); 
+                        }
+                        else{
+                            $ind = $input_val_week_day * 7;
+                            $dateValCheck = date('Y-m-d', strtotime("-$ind days")); 
+                        }
+                        $fromDateCheck = '';
                         foreach($resultQuery as $key=>$val)
                         {   
                             $fromDate=$val['gueltigVon']->format('Y-m-d');
+
+                            if($dateValCheck <= $val['gueltigVon']->format('Y-m-d'))
+                            { 
+                               $fromDateCheck = $val['gueltigVon']->format('Y-m-d');
+                                 
+                            }
+                            else{
+                               $fromDateCheck = $dateValCheck;
+                            }
+
                             $toDate=$val['gueltigBis']->format('Y-m-d');
                             $fromTime=$val['uhrzeitVon']->format('H:i:s');
                             $toTime=$val['uhrzeitBis']->format('H:i:s');
                             $to=$toDate.'T'.$toTime;
                             $from=$fromDate.'T'.$fromTime;
                             // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
-                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDate' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                            $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
                             
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
@@ -6833,7 +7001,8 @@ class dashboardController {
                     $tbody .= '<tr>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
-                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time</th>';
+                    // $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
+                    // $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
                     $tbody .= '</tr>';
                     $tbody .= "</thead>";
@@ -6847,17 +7016,32 @@ class dashboardController {
                     $name_val = $result[0]['energy_layer_model_name'];
                     if($resultQuery != '' && count($resultQuery) > 0){
                         $tbody .= "<tbody>";
+                        // foreach($resultQuery as $key=>$val)
+                        // {   
+                        //     $tbody .= '<tr>';
+                        //     $tbody.= "<td>".$name_val."</td>";
+                        //     $tbody.= "<td>".$val['Time']->format('Y-m-d')."</td>";
+                        //     $tbody.= "<td>".$val['Time']->format('H:i:s')."</td>";
+                        //     $addVal = $val['Value'] * $val['ConvFactor'];
+                        //     $totalEnergy = $addVal / 4;
+                        //     $tbody.= "<td>".$totalEnergy."</td>"; 
+                        //     $tbody .= '</tr>';
+                        // }
+                        $sum = 0;
+                        $resultQuery=$this->getDateWiseScore($resultQuery);
                         foreach($resultQuery as $key=>$val)
                         {   
-                            $tbody .= '<tr>';
+                            $tbody .= '<tr data-table-other="SchichtModelleAll">';
                             $tbody.= "<td>".$name_val."</td>";
-                            $tbody.= "<td>".$val['Time']->format('Y-m-d')."</td>";
-                            $tbody.= "<td>".$val['Time']->format('H:i:s')."</td>";
-                            $addVal = $val['Value'] * $val['ConvFactor'];
-                            $totalEnergy = $addVal / 4;
-                            $tbody.= "<td>".$totalEnergy."</td>"; 
+                            $tbody.= "<td>".$val['date']."</td>";
+                            // $tbody.= "<td>".$time_from."</td>";
+                            // $tbody.= "<td>".$time_to."</td>";
+                            $tbody.= "<td>".$val['Value']."</td>";
                             $tbody .= '</tr>';
+                            $sum+=$val['Value'];
                         }
+                        $tbody.= "<tr class='font-weight-bold'><td colspan='2'>Grand Total: </td><td>$sum</td></tr>";
+
                         $tbody .= "</tbody>";
                     }
                     else{
@@ -7961,6 +8145,7 @@ class dashboardController {
                                 else{
                                     $fromDateCheck = $dateValCheck;
                                 }
+                                // echo $fromDateCheck; die;
                                 // --end-->
                                 $toDate=$val['gueltigBis']->format('Y-m-d');
                                 $fromTime=$val['uhrzeitVon']->format('H:i:s');
@@ -7972,7 +8157,7 @@ class dashboardController {
                                 //echo $query1; die;
                                 $resultEnergy = queryDB($conn, $query1, "read");
                                 // echo json_encode($resultEnergy); die;
-                                $totalEnergy = $resultEnergy[0]['sum'] / 4;
+                                $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                                 array_push($ar_value,$totalEnergy);
                                 $model_name_layer_name = $val['modellBez'].'('.$val['bezeichnung'].')';
                                 array_push($ar_names,$model_name_layer_name);
@@ -8083,11 +8268,10 @@ class dashboardController {
 
                                 $resultEnergy = queryDB($conn, $query1, "read");
                                 // echo json_encode($resultEnergy); die;
-                                $totalEnergy = $resultEnergy[0]['sum'] / 4;
+                                // $totalEnergy = $resultEnergy[0]['sum'] / 4;
 
-                                $resultEnergy = queryDB($conn, $query1, "read");
                                 // echo json_encode($resultEnergy); die;
-                                $totalEnergy = $resultEnergy[0]['sum'] / 4;
+                                $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                                 array_push($ar_value,$totalEnergy);
                                 $model_name_layer_name = $val['modellBez'].'('.$val['bezeichnung'].')';
                                 array_push($ar_names,$model_name_layer_name);
@@ -9624,6 +9808,243 @@ class dashboardController {
         } 
     }
     // --end-->
+
+    // <---23-2-2022----
+    public function getClickDashboardChartEnergyLayer(){
+        try{
+            global $conn;
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'] != '' ? $_POST['chart_outer_table_limit_column'] : 1;
+            if($record_type_of_tile == 'energy')
+            {
+                $mst_id = $_POST['mst_id'];
+                $select_day_week = $_POST['energy_chart_layer_filter'];
+                $input_val_week_day = $_POST['energy_chart_layer_range'];
+                if($select_day_week == 'day')
+                {
+                    $checkQuery = '';
+                    $todayDate = date('Y-m-d');
+
+                    //SchichtModelleAll Table Check
+                    $tableCheckQuery = "select * from SchichtModelleAll ";
+                    $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+                    $table_found = 'false';
+                    if($resultTableExistCheck != false)
+                    {
+                        $table_found = 'true';
+                    }
+                    $tableOutsideHTML = '';
+                    if($table_found == 'true'){
+                        // <---07-02-2022---
+                        //*** Check No Shift Name Found Database */
+                        $checkQuery .= "Select * from SchichtModelleAll ";
+                        for($c = 0; $c < $input_val_week_day; $c++)
+                        {
+                            $dateVal = date('Y-m-d', strtotime("-$c days"));
+                            if($c == 0)
+                            {
+                            $checkQuery .= "Where '$dateVal' between gueltigVon AND gueltigBis ";
+                            }
+                            else{
+                                $checkQuery .= "Or '$dateVal' between gueltigVon AND gueltigBis ";
+                            }
+                        }
+                        $resultShiftName = queryDB($conn, $checkQuery, "read");
+                        if($resultShiftName != '' && count($resultShiftName) > 0)
+                        {
+                            $ind = $input_val_week_day - 1; //Get last Date
+                            $dateValCheck = date('Y-m-d', strtotime("-$ind days"));
+                            $fromDateCheck = '';
+                            $ar_value = [];
+                            $ar_names = [];
+
+                            //Outer Table Check
+                            $outerTableLimit = 0;
+                            $modelNameQueryCount = count($resultShiftName);
+                            $i = 0;
+                            foreach($resultShiftName as $key => $val){
+                                $fromDate=$val['gueltigVon']->format('Y-m-d');
+                                // <----21-2-2022---
+                                if($dateValCheck <= $val['gueltigVon']->format('Y-m-d'))
+                                {
+                                    $fromDateCheck = $val['gueltigVon']->format('Y-m-d');
+                                }
+                                else{
+                                    $fromDateCheck = $dateValCheck;
+                                }
+                                // echo $fromDateCheck; die;
+                                // --end-->
+                                $toDate=$val['gueltigBis']->format('Y-m-d');
+                                $fromTime=$val['uhrzeitVon']->format('H:i:s');
+                                $toTime=$val['uhrzeitBis']->format('H:i:s');
+                                $to=$toDate.'T'.$toTime;
+                                $from=$fromDate.'T'.$fromTime;
+                                //  $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                                $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+                                //echo $query1; die;
+                                $resultEnergy = queryDB($conn, $query1, "read");
+                                // echo json_encode($resultEnergy); die;
+                                $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
+                                array_push($ar_value,$totalEnergy);
+                                $model_name_layer_name = $val['modellBez'].'('.$val['bezeichnung'].')';
+                                array_push($ar_names,$model_name_layer_name);
+
+                                //Outer Table HTML Get Last Records
+                                if($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount)
+                                {
+                                    $outerTableLimit = $modelNameQueryCount - 1; // -1 for Array Index
+                                    if($i <= $outerTableLimit)
+                                    {
+                                        $tableOutsideHTML .= "<tr>";
+                                        $tableOutsideHTML.= "<td>".$model_name_layer_name."</td>";
+                                        $tableOutsideHTML .= "<td>".$totalEnergy."</td>";
+                                        $tableOutsideHTML .= "</tr>";
+                                    }
+                                }
+                                else if($chart_outer_table_limit_column < $modelNameQueryCount)
+                                {
+                                    $outerTableLimit = $chart_outer_table_limit_column - 1;
+                                    if($i <= $outerTableLimit)
+                                    {
+                                        $tableOutsideHTML .= "<tr>";
+                                        $tableOutsideHTML.= "<td>".$model_name_layer_name."</td>";
+                                        $tableOutsideHTML .= "<td>".$totalEnergy."</td>";
+                                        $tableOutsideHTML .= "</tr>";
+                                    }
+                                }
+                                $i++;
+                            }
+                            // echo $i; die;
+                            $records['count_val'] = $ar_value;
+                            $records['count_days'] = $ar_names;
+                            $records['count_sum'] = '';
+                        }
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    // --end-->
+                    $records['table_found'] = $table_found;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+                    die;
+                }
+                else if($select_day_week == 'week')
+                {
+                    //SchichtModelleAll Table Check
+                    $tableCheckQuery = "select * from SchichtModelleAll ";
+                    $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+
+                    $table_found = 'false';
+                    if($resultTableExistCheck != false)
+                    {
+                        $table_found = 'true';
+                    }
+
+                    $tableOutsideHTML = '';
+                    if($table_found == 'true')
+                    {
+                        $todayDate = date('Y-m-d');
+                        $dateVal =  date('Y-m-d', strtotime("-$input_val_week_day week"));
+
+                        // <----07-02-2022--
+                        // ****Check Shift Name Exist
+                        $intervalDays = $input_val_week_day * 7; //Week;
+                        $checkShiftNameQuery = "Select * from SchichtModelleAll ";
+                        for($interval = 0; $interval <= $intervalDays; $interval++)
+                        {
+                            $dateValShiftName =  date('Y-m-d', strtotime("-$interval Days"));
+                            if($interval == 0)
+                            {
+                                $checkShiftNameQuery.= "Where '$dateValShiftName' between gueltigVon AND gueltigBis ";
+                            }
+                            else{
+                                $checkShiftNameQuery.= "Or '$dateValShiftName' between gueltigVon AND gueltigBis ";
+                            }
+
+                        }
+                        $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
+                        // echo json_encode($resultShiftName); die;
+                        // --end--->
+                        if($resultShiftName != '' && count($resultShiftName) > 0)
+                        {
+                            $weekInd = $input_val_week_day * 7; //Week;
+                            $dateValCheck = date('Y-m-d', strtotime("-$weekInd Days"));
+                            // echo $fromDateCheck; die;
+                            $fromDateCheck = '';
+                            $ar_value = [];
+                            $ar_names = [];
+
+                            //Outer Table Check
+                            $outerTableLimit = 0;
+                            $modelNameQueryCount = count($resultShiftName);
+                            $i = 0;
+                            foreach($resultShiftName as $key=>$val){
+
+                                $fromDate=$val['gueltigVon']->format('Y-m-d');
+                                if($dateValCheck <= $val['gueltigVon']->format('Y-m-d')){
+                                    $fromDateCheck  = $val['gueltigVon']->format('Y-m-d');
+                                }
+                                else{
+                                    $fromDateCheck  = $dateValCheck;
+                                }
+                                $toDate=$val['gueltigBis']->format('Y-m-d');
+                                $fromTime=$val['uhrzeitVon']->format('H:i:s');
+                                $toTime=$val['uhrzeitBis']->format('H:i:s');
+                                $to=$toDate.'T'.$toTime;
+                                $from=$fromDate.'T'.$fromTime;
+                                // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
+                                $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
+
+                                $resultEnergy = queryDB($conn, $query1, "read");
+                                // echo json_encode($resultEnergy); die;
+                                $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
+                                array_push($ar_value,$totalEnergy);
+                                $model_name_layer_name = $val['modellBez'].'('.$val['bezeichnung'].')';
+                                array_push($ar_names,$model_name_layer_name);
+
+                                //Outer Table HTML Get Last Records
+                                if($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount)
+                                {
+                                    $outerTableLimit = $modelNameQueryCount - 1; // -1 for Array Index
+                                    if($i <= $outerTableLimit)
+                                    {
+                                        $tableOutsideHTML .= "<tr>";
+                                        $tableOutsideHTML.= "<td>".$model_name_layer_name."</td>";
+                                        $tableOutsideHTML .= "<td>".$totalEnergy."</td>";
+                                        $tableOutsideHTML .= "</tr>";
+                                    }
+                                }
+                                else if($chart_outer_table_limit_column < $modelNameQueryCount)
+                                {
+                                    $outerTableLimit = $chart_outer_table_limit_column - 1;
+                                    if($i <= $outerTableLimit)
+                                    {
+                                        $tableOutsideHTML .= "<tr>";
+                                        $tableOutsideHTML.= "<td>".$model_name_layer_name."</td>";
+                                        $tableOutsideHTML .= "<td>".$totalEnergy."</td>";
+                                        $tableOutsideHTML .= "</tr>";
+                                    }
+                                }
+                                $i++;
+
+                            }
+
+                            $records['count_val'] = $ar_value;
+                            $records['count_days'] = $ar_names;
+                            $records['count_sum'] = '';
+                        }
+                    }
+                    $records['outer_table_html'] = $tableOutsideHTML;
+                    $records['table_found'] = $table_found;
+                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+                    die;
+                }
+            }
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
   
 }
 $obj = new dashboardController();

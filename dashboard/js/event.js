@@ -165,6 +165,8 @@ $(document).ready( function(){
                 }
                 else{
                     $('#energy_total_number_record').val('');
+                    $('#energy_search_record').val('');
+                    getNumberRecordsEnergy();
                 }
                 // ---end--->
                 break;
@@ -1507,9 +1509,32 @@ $(document).ready( function(){
             if(record_type_of_tile == 'measurement')
             {
                 getEditChartTileDashboard();
+                $('#chart_record_div').show();
+                $('#time_interval_div').show();
+
+                $('#energy_type_dashboard_chart_div').hide();
+                $('.energy_chart_layer_div').hide();
             }
             else if(record_type_of_tile == 'energy'){
-                getEditChartTileDashboardEnergy();
+                var energy_chart_type = $('#save_and_proceed_btn_dashboard').attr('energy_chart_type');
+                if(energy_chart_type == 'layer_modal'){
+                    getEditChartTileDashboardEnergyLayer();
+                    $('#energy_type_dashboard_chart option[value=layer_modal]').prop('selected','selected');
+                    $('#chart_record_div').hide();
+                    $('#time_interval_div').hide();
+
+                    $('#energy_type_dashboard_chart_div').show();
+                    $('.energy_chart_layer_div').show();
+                }
+                else{
+                    getEditChartTileDashboardEnergy();
+                    $('#energy_type_dashboard_chart option[value=manually]').prop('selected','selected');
+                    $('#chart_record_div').show();
+                    $('#time_interval_div').show();
+                    $('#energy_type_dashboard_chart_div').show();
+                    $('.energy_chart_layer_div').hide();
+                }
+                
             }
         
             $('#dashboard_tile_modal_chart').modal('show');
@@ -1519,9 +1544,9 @@ $(document).ready( function(){
             $('#dashboard_loader_div').hide();
 
             // <--7-12-2021--
+            
             $('.chart_product_div').hide();
-            $('#chart_record_div').show();
-            $('#time_interval_div').show();
+           
             // --end--->
             
 
@@ -1564,6 +1589,11 @@ $(document).ready( function(){
             $('#time_interval_div').hide();
             // --end--->
 
+            // <----23-2-2022--
+            $('#energy_type_dashboard_chart_div').hide();
+            $('.energy_chart_layer_div').hide();
+            // --end--->
+
         }
         else if(record_type_of_tile == "product" && type_data_tile == "chart" && data_edit_chart == 'true')
         {
@@ -1594,6 +1624,12 @@ $(document).ready( function(){
             $('.chart_product_div').show();
             $('#chart_record_div').hide();
             $('#time_interval_div').hide();
+            // --end--->
+
+
+            // <----23-2-2022--
+            $('#energy_type_dashboard_chart_div').hide();
+            $('.energy_chart_layer_div').hide();
             // --end--->
             
 
@@ -1824,9 +1860,14 @@ $(document).ready( function(){
     $(document).on('click', '#save_and_proceed_btn_dashboard_chart', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
+        var energy_chart_measurement = $('#energy_type_dashboard_chart').val();
         if(ar['record_type_of_tile'] == 'product')
         {
             saveDashboardTileChartProduct();
+        }
+        else if(ar['record_type_of_tile'] == 'energy' && energy_chart_measurement == 'layer_modal')
+        {
+            saveDashboardTileChartEnergyLayer();   
         }
         else{
             saveDashboardTileChart();
@@ -1967,10 +2008,15 @@ $(document).ready( function(){
     $(document).on('click','#update_and_proceed_btn_dashboard_chart', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
+        var energy_type_dashboard_chart = $('#energy_type_dashboard_chart').val();
         if(ar['record_type_of_tile'] == 'product')
         {
             updateDashboardChartProduct();
-        }   
+        }
+        else if(ar['record_type_of_tile'] == 'energy' && energy_type_dashboard_chart == 'layer_modal') 
+        {
+            updateDashboardChartEnergyLayer();
+        }  
         else{
             updateDashboardChart();
         }
