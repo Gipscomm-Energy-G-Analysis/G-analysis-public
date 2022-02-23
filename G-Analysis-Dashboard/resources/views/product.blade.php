@@ -110,7 +110,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-     
+
     @if(!empty($data))
     <div class="row navbar navbar-expand navbar-dark">
 
@@ -144,10 +144,10 @@
         </div>
 
         <div class="col-sm-6 edit-mode" style="display: none;">
-            
+
         </div>
 
-        
+
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-7" style= "top: 5px;margin-bottom: 9px;bottom: 9px;"
@@ -274,11 +274,11 @@
                                             </div> -->
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </form>
                         </div>
-                        
+
                     </div>
                     <div class="row">
                         <div class="col-sm-5 even_sub_data">
@@ -312,10 +312,10 @@
                 </div>
             </div>
 
-        
+
         <!-- /.card -->
         <!-- Bar Chart -->
-        
+
         <!-- accordion for graph mode start -->
         <div id="accordion">
             <div class="card">
@@ -332,12 +332,12 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
               </div>
               <div id="graphCollapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    
+
                     <!-- Graph Mode Start -->
                     <div class="graph-mode">
                         <div class="row">
@@ -370,7 +370,7 @@
                         </div>
 
                             <div class="chart" id="chartdiv">
-                                
+
                         </div>
                     </div>
                     <!-- Graph Mode end -->
@@ -381,7 +381,7 @@
                                 @isset($data['msGraphData'])
                                 <input type="hidden" value="{{$data['msGraphData']}}" id="msgraphData">
                                 @endisset
-    
+
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Period</label>
@@ -401,7 +401,7 @@
                                         </select>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 year_filter">
                                     <div class="form-group">
                                         <label>Year</label>
@@ -413,7 +413,7 @@
                                         </select>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 clear month_filter" style="display:none;">
                                     <div class="form-group">
                                         <label>Month</label>
@@ -427,21 +427,21 @@
                                             <option value="06">June</option>
                                             <option value="07">July</option>
                                             <option value="08">August</option>
-                                            <option value="09">September</option>   
+                                            <option value="09">September</option>
                                             <option value="10">October</option>
                                             <option value="11">November</option>
                                             <option value="12">December</option>
                                         </select>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 custom_filter" style="display:none;">
                                     <div class="form-group">
                                         <label>Start Date</label>
                                         <input type="text" id="start_date" class="form-control" placeholder="Start Date" value="" readonly="">
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 custom_filter" style="display:none;">
                                     <div class="form-group">
                                         <label>End Date</label>
@@ -465,9 +465,9 @@
                         </div>
 
                         <div class="row historyGraphDiv" style="display:none;">
-                        
+
                         <div class="charts am_graph_div" id="historyChartdiv">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -475,7 +475,7 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="card">
                 <div class="card-header collapsed" id="headingTwo"preference_tab>
                   <div class="row">
@@ -495,8 +495,8 @@
                   <div class="card-body">
                     <div class="product-graph-mode">
                         <div class="row">
-                          
-                                
+
+
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>No. of Records</label>
@@ -521,7 +521,7 @@
                                     </div>
                                 <div class="col-sm-6 production-graph-icons text-right">
                                 </div>
-                            
+
                         </div>
                         <div id="loader_image" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image"></div>
                         <div class="row" id="other_graph_div">
@@ -551,7 +551,7 @@
                                         </select>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 product_year_filter">
                                     <div class="form-group">
                                         <label>Year</label>
@@ -563,7 +563,7 @@
                                         </select>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 clear product_month_filter" style="display:none;">
                                     <div class="form-group">
                                         <label>Month</label>
@@ -577,21 +577,21 @@
                                             <option value="06">June</option>
                                             <option value="07">July</option>
                                             <option value="08">August</option>
-                                            <option value="09">September</option>   
+                                            <option value="09">September</option>
                                             <option value="10">October</option>
                                             <option value="11">November</option>
                                             <option value="12">December</option>
                                         </select>
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 product_custom_filter" style="display:none;">
                                     <div class="form-group">
                                         <label>Start Date</label>
                                         <input type="text" id="product_start_date" class="form-control" placeholder="Start Date" value="" readonly="">
                                     </div>
                                 </div>
-    
+
                                 <div class="col-sm-4 product_custom_filter" style="display:none;">
                                     <div class="form-group">
                                         <label>End Date</label>
@@ -615,7 +615,7 @@
                                     </div>
                         <div class="row product_historyGraphDiv" style="display:none;">
                             <div class="charts am_graph_div" id="product_historyChartdiv">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -667,10 +667,10 @@
                                 </div>
                             </div>
                             <div class="row am_graph_div" id="mixed_graph_div">
-                                
+
                             </div>
                         </div>
-                    
+
                         <!-- Edit Mode start -->
                         <div class="mixed-history-mode" style="display:none;">
                             <form id="mixedHistoricGraphData">
@@ -720,7 +720,7 @@
                                                 <option value="06">June</option>
                                                 <option value="07">July</option>
                                                 <option value="08">August</option>
-                                                <option value="09">September</option>   
+                                                <option value="09">September</option>
                                                 <option value="10">October</option>
                                                 <option value="11">November</option>
                                                 <option value="12">December</option>
@@ -755,7 +755,7 @@
                             </form>
                             <div class="row mixed_historyGraphDiv" style="display:none;">
                                 <div class="charts am_graph_div" id="mixed_historyChartdiv">
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -765,7 +765,7 @@
             </div>
 
         </div>
-        <!-- accordion for graph mode end -->        
+        <!-- accordion for graph mode end -->
         <!-- /.modal -->
         @php $groupData = json_decode(json_encode($groups), true); @endphp
 
@@ -800,7 +800,7 @@
         </div>
         <!-- Modal End -->
 
-        
+
 
     </section>
     <!-- view mode end-->
@@ -845,12 +845,12 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 select_group_options_div_alt" style="display: none;">
-                                
+
                             </div>
                         @endisset
-                        
 
-                        
+
+
                         <div class="col-sm-6">
                             <div class="col-sm-6 mode_css_second">
                                 <div class="btn-group float-right" style="width: 160px;height: 40px;font-size: 18px;">
@@ -863,9 +863,9 @@
                                 </div>
                             </div>
                         </div>
-                
+
                     <div class="col-12 col-sm-12">
-                    
+
                         <form class="form-horizontal select_group_options_div">
                             <div class="card-body" id="spin_container">
                                 <div class="row hideData" style="margin-top: 20px;">
@@ -881,7 +881,7 @@
                                         <div class="col-sm-6">
                                             <label>Primary Key</label>
                                             <select class="form-control primary_key_subGroup" id="primary_key_subGroup" style="width: 100%;">
-                                                <option value="">Select</option>                                                  
+                                                <option value="">Select</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-6">
@@ -901,7 +901,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
+
                                             </tbody>
                                         </table>
                                         <div class="popup">
@@ -946,7 +946,7 @@
                                                     <option value="">Select</option>
                                                 </select>
                                             </div>
-                                            
+
                                             <div class="col-sm-12">
                                                 <label for="select_column">Select Foreign key</label>
                                                 <select class="form-control select_foreign_column" id="select_foreign_column">
@@ -961,7 +961,7 @@
                                                 <select class="form-control graph" id="graph">
                                                     <option value="no">No</option>
                                                     <option value="yes">Yes</option>
-                                                   
+
                                                 </select>
                                             </div>
 
@@ -996,7 +996,7 @@
                             <div class="col-sm-3">
                                 <label for="graph_name">Enter Graph Name</label>
                                 <input type="text" class="form-control" id="graph_name" name="graph_name">
-                            </div>      
+                            </div>
                             <div class="col-sm-3">
                                 <label for="label_column">Select Label Column</label>
                                 <select class="form-control graph_column" id="label_column" name="label_column">
@@ -1061,7 +1061,7 @@
                 </div>
                 <div class="modal-body">
                     <section class="content">
-                        
+
                         <div class="row card-body-temp">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -1126,7 +1126,7 @@
                                                     <input type="hidden" name="sub_group[]" class="form-control name_list" value="{{$options['option_name']}}" />
                                                     <button style="float:right;" type="button" name="remove" id="{{$key}}" class="btn btn-danger btn_delete"><i class="far fa-trash-alt"></i></button>
                                                 </div>
-                                                
+
                                             </td>
 
                                             @else
@@ -1286,7 +1286,7 @@ const createAmChart = (root, chartsData, dispose, xtype="date") => {
         count++;
     }
     var legend = chart.children.push(am5.Legend.new(root, {
-    })); 
+    }));
     legend.data.setAll(chart.series.values);
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
@@ -1410,7 +1410,7 @@ const createAmChartCategory = (root, chartsData, dispose, name) => {
     );
 
     series.data.setAll(chartsData);
-    var legend = chart.children.push(am5.Legend.new(root, {})); 
+    var legend = chart.children.push(am5.Legend.new(root, {}));
     legend.data.setAll(chart.series.values);
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
@@ -1452,11 +1452,11 @@ $(document).on('click','.product-app-active',function(){
     createAmChartCategory(root_other_graph, productionDataTmp[product_key]['amData'], true, productionDataTmp[product_key]['name']);
 });
 
-function jsFunction(value) {  
+function jsFunction(value) {
     $("#loader_image_energy_charts").show();
     $("#chartdiv").hide();
     $.ajax({
-        url: "{{ url('/get-points-data')}}",
+        url: "{{ url('get-points-data')}}",
         type:"POST",
         data:{limit:value,points:$('#msgraphData').val()},
         success:function(data){

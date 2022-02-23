@@ -1,6 +1,6 @@
 function getTableData(){
     $.ajax({
-        url:'/product/data-table',
+        url:'product/data-table',
         type: 'GET',
     }).done( function(data) {
         $('#example2').dataTable( {

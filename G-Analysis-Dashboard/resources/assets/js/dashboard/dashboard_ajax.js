@@ -29,7 +29,7 @@ const graphDivHook = (key, value) => {
 
 const getPrimaryKey = () => {
     $.ajax({
-        url: "/dashboard/tableColumn",
+        url: "dashboard/tableColumn",
         type: "POST",
         data: {
             table: "anlagen",
@@ -79,7 +79,7 @@ const getMachineData = (machine_id, type) => {
     formData.append("prop_id", prop_id);
     spinner.spin(container);
     machineDataAjax = $.ajax({
-        url: "/dashboard/machine",
+        url: "dashboard/machine",
         type: "POST",
         data: formData,
         processData: false,
@@ -255,7 +255,7 @@ function select_org() {
     let dbName = document.getElementById("nameDB").value;
     $(".liegenschaft").html("");
     $.ajax({
-        url: "/dashboard/propertyData",
+        url: "dashboard/propertyData",
         type: "POST",
         data: {
             orgId: orgId,
@@ -290,7 +290,7 @@ function select_table() {
     let dbName = document.getElementById("nameDB").value;
     $("#select_column").html("");
     $.ajax({
-        url: "/dashboard/tableColumn",
+        url: "dashboard/tableColumn",
         type: "POST",
         data: {
             table: table,
@@ -316,7 +316,7 @@ $(document).on("change", "#select_graph_table", function () {
     // console.log('table', table);
     $(".graph_column").html("");
     $.ajax({
-        url: "/dashboard/tableColumn",
+        url: "dashboard/tableColumn",
         type: "POST",
         data: {
             table: table,
@@ -360,7 +360,7 @@ $("#save_field").on("click", function (e) {
         $("#modal-default").modal("hide");
         $.ajax({
             type: "POST",
-            url: "/dashboard/saveFields",
+            url: "dashboard/saveFields",
             data: {
                 anl_ID: anl_ID,
                 username: username,
@@ -405,7 +405,7 @@ $("#save_subgroup_options").on("click", function (e) {
     } else {
         $.ajax({
             type: "POST",
-            url: "/dashboard/saveGroupOptions",
+            url: "dashboard/saveGroupOptions",
             data: { sub_group_name: sub_group_name, group_id: group_id },
             success: function (result) {
                 spinner.stop();
@@ -518,7 +518,7 @@ $(".manPfad").on("change", function () {
     var dataVal = $(this).val();
     $.ajax({
         type: "POST",
-        url: "/on-change",
+        url: "on-change",
         data: { dbname: dataVal },
         success: function (result) {
             spinner.stop();
