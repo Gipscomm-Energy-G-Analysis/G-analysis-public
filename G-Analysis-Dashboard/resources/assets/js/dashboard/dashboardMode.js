@@ -11,7 +11,7 @@ $(document).on('change', '#modeSelector', function(){
 
 
 $(document).on('change', '#modeSelectorColumns', function(){
-    if ($(this).prop('checked')) {   
+    if ($(this).prop('checked')) {
         $('.select_group_options_div').show();
         $('.select_group_options_div_alt').hide();
         $('.coustom-column-div').hide();
@@ -27,7 +27,7 @@ let saveSubGroupConfigurations = (data) => {
     spinner.spin(container);
     $.ajax({
         type: "POST",
-        url: "/save-configuration-data",
+        url: "save-configuration-data",
         data:data,
         success:function(result) {
             spinner.stop();
@@ -66,7 +66,7 @@ let showConfigrationTable = (data , label_data=false) => {
             </td>
             <td  style="width: 160px; padding-top: 20px; text-align:center;">
             <input type="checkbox" value="${label}" class="graph_checkbox_value" checked data-toggle="toggle" data-on="" data-off="" data-onstyle="success" data-offstyle="info">
-            </td>  
+            </td>
             </tr>`;
         });
 
@@ -81,7 +81,7 @@ let showPrimaryKey = (data, selected) => {
         } else {
             html += `<option value="${value}">${value}</option>`;
         }
-        
+
     });
     $('.primary_key_subGroup').html(html);
 }
@@ -93,7 +93,7 @@ let showForeignKey = (data, selected) => {
             html += `<option selected value="${value}">${value}</option>`;
         } else {
             html += `<option value="${value}">${value}</option>`;
-        }  
+        }
     });
     $('.foreign_key_subGroup').html(html);
 }
@@ -103,11 +103,11 @@ let getGroupData = () => {
     spinner.spin(container);
     let groupId = $('#select_group_options').val();
     let table = $('#select_group_table').val();
-    
+
     if(groupId && table) {
         $.ajax({
             type: "POST",
-            url: "/get-configuration-data",
+            url: "get-configuration-data",
             data:{
                 'grosubGroupId':groupId,
                 'table':table
@@ -129,7 +129,7 @@ let getGroupData = () => {
             }
         });
     }
-    
+
 }
 
 $(document).on('click', '.edit_label', function() {
@@ -172,7 +172,7 @@ $(document).on('change', '#select_group_options', function() {
             if(result != ''){
                 $('.showData').show();
                 $('.hideData').hide();
-                
+
             } else {
                 $('.showData').hide();
                 $('.hideData').show();
@@ -181,10 +181,10 @@ $(document).on('change', '#select_group_options', function() {
         },
         error:function(result) {
             toastr.error(result);
-            
+
         }
     });
-}); 
+});
 
 $(document).on('click', '#save_configuration_button', function() {
     if ($('#select_group_options').val() == '') {
@@ -202,7 +202,7 @@ $(document).on('click', '#save_configuration_button', function() {
     }
     let column = $(".configuration_column_data").map(function(){return $(this).val();}).get();
     let label = $(".custom_label_input").map(function(){return $(this).val();}).get();
-    
+
     var checkbox =$(".graph_checkbox_value").map(function(){
         if($(this).is(":checked")){
             return '1';
@@ -238,7 +238,7 @@ $(document).on('change', '#select_primary_column', function() {
     }
     $.ajax({
         type: "POST",
-        url: "/get-same-type-column",
+        url: "get-same-type-column",
         data:{
             'column':$(this).val(),
             'foreign_key_table':$('#select_table').val()
@@ -274,7 +274,7 @@ $(document).on('change', '#primary_key_subGroup', function() {
     }
     $.ajax({
         type: "POST",
-        url: "/get-same-type-column",
+        url: "get-same-type-column",
         data:{
             'column':$(this).val(),
             'foreign_key_table':$('#select_group_table').val()
@@ -295,7 +295,7 @@ $(document).on('change', '#primary_key_subGroup', function() {
         }
     });
 })
-                                                                                                       
+
 
 $(document).on('change', '#select_graph_primary_column', function() {
     let container = document.getElementById('spin_container');
@@ -311,7 +311,7 @@ $(document).on('change', '#select_graph_primary_column', function() {
     }
     $.ajax({
         type: "POST",
-        url: "/get-same-type-column",
+        url: "get-same-type-column",
         data:{
             'column':$(this).val(),
             'foreign_key_table':$('#select_graph_table').val()
@@ -348,7 +348,7 @@ const showTableConfigurations = (data) => {
 $(document).on('click', '#machine_table_configuration', function() {
     $.ajax({
         type: "GET",
-        url: "/get-table-configurations",
+        url: "get-table-configurations",
         success:function(result) {
             if(result.status == 200) {
                 showTableConfigurations(result.data);
@@ -376,7 +376,7 @@ const showMachinePrioritySelect = (data) => {
 const saveTableConfigurations = (data, priorityMachines) => {
     $.ajax({
         type: "POST",
-        url: "/save-table-configurations",
+        url: "save-table-configurations",
         data: {
             column: data,
             priorityMachines: priorityMachines
@@ -402,4 +402,4 @@ $(document).on('click', '#save_table_configuration_button', function() {
         return false;
     }
     saveTableConfigurations(selectedColumn, priorityMachines);
-})  
+})
