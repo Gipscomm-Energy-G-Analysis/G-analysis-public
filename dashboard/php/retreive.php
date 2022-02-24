@@ -6970,7 +6970,7 @@ class dashboardController {
                             // echo json_encode($resultEnergy); die;
                             $totalEnergy = $resultEnergy[0]['sum'] / 4;   
 
-                            $tbody .= '<tr>';
+                            $tbody .= "<tr tile_id='$id' class='energy_layer_row_click' mst_id='$mst_id' energy_layer_filter='$energy_layer_filter' input_val_week_day='$input_val_week_day'>";
                             $tbody.= "<td>".$val['modellBez']."</td>";
                             $tbody.= "<td>".$val['gueltigVon']->format('Y-m-d')."</td>";
                             $tbody.= "<td>".$val['gueltigBis']->format('Y-m-d')."</td>";

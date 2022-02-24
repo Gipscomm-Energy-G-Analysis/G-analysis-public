@@ -2864,6 +2864,49 @@ $(document).ready( function(){
     // --end--->
 
 
+    // <----24-2-2022-
+    $(document).on('click','.energy_layer_row_click', function(){
+        var tile_id = $(this).attr('tile_id');
+        var mst_id = $(this).attr('mst_id');
+        var energy_layer_filter = $(this).attr('energy_layer_filter');
+        var input_val_week_day = $(this).attr('input_val_week_day');
+        var name_val = $(this).children('td:eq(0)').text();
+        var valid_from = $(this).children('td:eq(1)').text();
+        var valid_to = $(this).children('td:eq(2)').text();
+        var time_from = $(this).children('td:eq(4)').text();
+        var time_to = $(this).children('td:eq(5)').text();
+        var energy_total_value = $(this).children('td:eq(6)').text();
+
+        if(energy_total_value == '0')
+        {
+            var energy_header = "<tr>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Shift Name</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Date</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>From Time</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>To Time</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Energy Consumed</th>";
+            energy_header+= "</tr>";
+
+            var energy_html ="<tr>";
+            energy_html +="<td colspan='50' class='text-center'>No Record Found</td>";
+            energy_html +="</tr>";
+
+           
+            $('.'+tile_id+'.tiles-click .save_table_div_show_table .table thead').html(energy_header);
+            $('.'+tile_id+'.tiles-click .save_table_div_show_table .table tbody').html(energy_html);
+
+            var table_html = $('.'+tile_id+'.tiles-click .save_table_div_show_table .table').html();
+            var chart_tile_click_data = {'table_html' : table_html,'tile_click_type' : 'table'}
+            localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
+
+        }
+        else{
+            rowClickEnergyDashboardLayer(tile_id,mst_id,energy_layer_filter,input_val_week_day,name_val,valid_from,valid_to,time_from,time_to); 
+        }
+    });
+    // --end-->
+
+
     
 
 

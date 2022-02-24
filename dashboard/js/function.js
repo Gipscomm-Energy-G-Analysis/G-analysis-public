@@ -2002,18 +2002,21 @@ function rowClickEnergyLayer(name_val,valid_from,valid_to,time_from,time_to){
             $('#energy_modal_open_button').val('Save & Preview');
             $('#energy_modal_open_button').attr('tile-edit','false');
           }
-          setTimeout(()=>{
-            var type_data = localStorage.getItem('dashboard_tile_data');
-            type_data = JSON.parse(type_data);
-            if(type_data['type_data_tile'] == 'overall_count')
-            {
-              $('#energy_modal_open_button').hide();
-            }
-            else{
-              $('#energy_modal_open_button').show();
-            }
-          },500)
 
+          // <---24-02-2022--
+          $('#energy_modal_open_button').hide();
+          // setTimeout(()=>{
+          //   var type_data = localStorage.getItem('dashboard_tile_data');
+          //   type_data = JSON.parse(type_data);
+          //   if(type_data['type_data_tile'] == 'overall_count')
+          //   {
+          //     $('#energy_modal_open_button').hide();
+          //   }
+          //   else{
+          //     $('#energy_modal_open_button').show();
+          //   }
+          // },500)
+          // --end-->
           // ---end--->
         }
     });
@@ -2884,6 +2887,14 @@ function saveDashboardSelect(arData){
   });
 }
 $(document).on('click','.movetile .stretch-card',function(){
+
+  // <---24-2-2022--
+  // :not(.movetile .stretch-card #energy_modal_table tbody tr Not Check
+  var outer_tile_structure = $(this).hasClass('hide_table_main'); //This Class for Outer tile structure
+  if(outer_tile_structure == false){
+    return false;
+  }
+  // --end--->
 
 
 var id=$(this).attr('class');
@@ -9443,6 +9454,53 @@ function getEnergyMeasurementChart(){
 }
 // -end---->
 
+
+// <----24-02-2022--
+function rowClickEnergyDashboardLayer(tile_id,mst_id,select_day_week,input_val_week_day,name_val,valid_from,valid_to,time_from,time_to){
+  $('.energy_table_header').removeClass('row_click_table');
+  if(energy_measurement == '' || select_day_week == '' || input_val_week_day == ''){
+    var tr = "<tr><td colspan='50' class='text-center text-muted'>Please Select All Filters</td></tr>";
+    $('#energy_select_table_entries').html(tr);
+    $('#pagination_html_energy').html('');
+  }
+  else{
+    $.ajax({
+        type: "POST",
+        url: "php/retreive.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            action: "rowClickEnergyLayer",
+            nameDB: $("#nameDashboardDB").val(),
+            mst_id : mst_id,
+            name_val : name_val,
+            valid_from : valid_from,
+            valid_to : valid_to,
+            time_from: time_from,
+            time_to: time_to,
+            input_val_week_day : input_val_week_day,
+            select_day_week : select_day_week
+        },
+        fail: function() {
+            alert("failed!!")
+        },
+        success: function(a) {
+        
+          $('.'+tile_id+'.tiles-click .save_table_div_show_table .table thead').html('');
+          $('.'+tile_id+'.tiles-click .save_table_div_show_table .table body').html('');
+          $('.'+tile_id+'.tiles-click .save_table_div_show_table .table thead').html(a['energy_header']);
+          $('.'+tile_id+'.tiles-click .save_table_div_show_table .table tbody').html(a['energy_html']);
+
+          var table_html = $('.'+tile_id+'.tiles-click .save_table_div_show_table .table').html();
+          var chart_tile_click_data = {'table_html' : table_html,'tile_click_type' : 'table'}
+          localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
+          
+          // $('#open_end_layer_div').hide();
+        }
+    });
+  }
+} 
+// --end-->
 // <---18-1-2022--
 // var i = 1;
 // function test(){
