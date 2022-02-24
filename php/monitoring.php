@@ -113,7 +113,6 @@ function sendAlertEmails($mstsWithoutData) {
         $gUsers = 
             [ "sdm"
             , "info"
-            , "tmm"
             , "cmu"
             , "rpi"
             , "hts"
@@ -121,7 +120,7 @@ function sendAlertEmails($mstsWithoutData) {
 
         define("gUsers", $gUsers) ;
   
-        $extEMailAdresses = [ "alfred.tekniepe@managee.de", "michael.pauli@managee.de" ] ;
+        $extEMailAdresses = [ "alfred.tekniepe@managee.de" ] ;
             
         define("extEMailAdresses", $extEMailAdresses) ;
 
