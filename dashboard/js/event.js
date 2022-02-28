@@ -247,8 +247,9 @@ $(document).ready( function(){
     countDashboard();
     // dashboardChart();
     energy_consumed_five_days();
-    getTableFormatDashboard();
     getDatabaseList();
+    getTableFormatDashboard();
+    
     // getDashboardSelectOption();
 
 
