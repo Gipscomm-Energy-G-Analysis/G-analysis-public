@@ -8832,11 +8832,11 @@ $(document).ready( function (){
     var  dashboardHomeRedirect = localStorage.getItem('dashboardDbRedirectHome');
     if(chartStorageDb != null && chartStorageDb != undefined){
         // $('.menu-wrap nav').addClass('backgroundDisabled');
-        $('body').addClass('backgroundDisabledColor');
+        // $('body').addClass('backgroundDisabledColor');
         $(".chartImageDiv").show();
         // <---26-02-221--
-        $('.menu-wrap').hide();
-        $('.loader_image_redirect_div').show();
+        $('.menu-wrap').show();
+        // $('.loader_image_redirect_div').show();
         // --end-->
         setTimeout( function(){
 
@@ -8857,11 +8857,11 @@ $(document).ready( function (){
     }
     else if(dashboardHomeRedirect != null && dashboardHomeRedirect != undefined){
         // $('.menu-wrap nav').addClass('backgroundDisabled');
-        $('body').addClass('backgroundDisabledColor');
+        // $('body').addClass('backgroundDisabledColor');
         $(".chartImageDiv").show();
         // <---26-02-221--
-        $('.menu-wrap').hide();
-        $('.loader_image_redirect_div').show();
+        $('.menu-wrap').show();
+        // $('.loader_image_redirect_div').show();
         // --end-->
         setTimeout( function(){
 
@@ -8888,12 +8888,12 @@ $(document).ready( function (){
     var dashboardDBName = localStorage.getItem('dashboardDBName');
     if(dashboard_menu_click_option != null && dashboard_menu_click_option != undefined && dashboardDBName != null && dashboardDBName != undefined)
     {
-        $('.menu-wrap nav').addClass('backgroundDisabled');
-        $('body').addClass('backgroundDisabledColor');
+        // $('.menu-wrap nav').addClass('backgroundDisabled');
+        // $('body').addClass('backgroundDisabledColor');
         $(".chartImageDiv").show();
         // <---26-02-221--
-        $('.menu-wrap').hide();
-        $('.loader_image_redirect_div').show();
+        $('.menu-wrap').show();
+        // $('.loader_image_redirect_div').show();
         // --end-->
         setTimeout( function(){
             $(".manPfad ").val(dashboardDBName).trigger('change');

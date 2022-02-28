@@ -3936,7 +3936,7 @@ class dashboardController {
                     $valEnergy = 0;
                     if($value['Value'] > 0)
                     {
-                        $valEnergy = $value['Value'] / 4;
+                        $valEnergy = ($value['Value'] * $value['ConvFactor'])  / 4;
                     }
                     $tr.= "<td>".$valEnergy."</td>";
                 }
@@ -9479,10 +9479,9 @@ class dashboardController {
                 $col_span = "colspan='5'";
                 $tr = "<thead>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Time</th>";
-                $tr .= "<th>Conv. Factor</th>";
-                $tr .= "<th>Value</th>";
+                $tr .= "<th>Messstelle</th>";
+                $tr .= "<th>Datum</th>";
+                $tr .= "<th>Wert</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             }
@@ -9490,10 +9489,9 @@ class dashboardController {
                 $col_span = "colspan='4'";
                 $tr = "<thead style='background-color: #c5c8d2'>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Time</th>";
-                $tr .= "<th>Conv. Factor</th>";
-                $tr .= "<th>Value</th>";
+                $tr .= "<th>Messstelle</th>";
+                $tr .= "<th>Datum</th>";
+                $tr .= "<th>Wert</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             }
@@ -9520,13 +9518,19 @@ class dashboardController {
                     if($queryMaxVal == '')
                     {
                         $tr.= "<td>".$queryResult[0]['Time']."</td>";
-                        $tr.= "<td>".$queryResult[0]['ConvFactor']."</td>";
-                        $tr.= "<td>".$value['val']."</td>";
+                        $valueEnergy = 0;
+                        if($value['val'] > 0){
+                            $valueEnergy = $value['val'] / 4;
+                        }
+                        $tr.= "<td>".$valueEnergy."</td>";
                     }
                     else{
                         $tr.= "<td>".$value['Time']."</td>";
-                        $tr.= "<td>".$value['ConvFactor']."</td>";
-                        $tr.= "<td>".$value['Value']."</td>";
+                        $valueEnergy = 0;
+                        if($value['Value'] > 0){
+                            $valueEnergy = ($value['Value'] * $value['ConvFactor']) / 4;
+                        }
+                        $tr.= "<td>".$valueEnergy."</td>";
                     }
                     $tr.="</tr>";
                 }

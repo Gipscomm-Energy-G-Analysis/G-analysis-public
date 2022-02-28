@@ -1837,7 +1837,7 @@ function rowClickEnergyTableData(mst_id,data_type){
   // ---end--->
   $('#mst_id_hidden_energy').val(mst_id);
   
-  var total_count = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(3)').text();
+  var total_count = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(2)').text();
   $('#overall_count_energy').val(total_count);
 
   var record_name = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(0)').text();
