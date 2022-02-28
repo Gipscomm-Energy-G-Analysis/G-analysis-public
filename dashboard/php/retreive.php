@@ -3345,10 +3345,9 @@ class dashboardController {
             if($energy_type == "automatic")
             {
                 $tr = "<tr>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Conv Factor</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Values</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Messstelle</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Wert</th>";
                 $tr .= "</tr>";
 
                 $records['table_header'] = $tr;
@@ -3401,10 +3400,9 @@ class dashboardController {
             if($energy_type == "automatic")
             {
                 $tr = '<tr>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Name</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Conv Factor</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Values</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Messstelle</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Datum</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Wert</th>';
                 $tr .= '</tr>';
                 $records['table_header'] = $tr;
                 echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
@@ -3662,7 +3660,10 @@ class dashboardController {
             $queryTotalRecords = "SELECT TOP($total_number_records) * ";
             $queryTotalRecords .= "FROM messstellen as T1 ";
             $queryTotalRecords .= "INNER JOIN ";
-            $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            //$queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            // <---28-02-2022--
+            $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(Value * ConvFactor) as val from ";
+            // -end--->
             $queryTotalRecords .= "berechneteEnergiedaten as T2 ";
             $queryTotalRecords .= "GROUP By T2.mst_id) ";
             $queryTotalRecords .= "T2 ";
@@ -3717,7 +3718,10 @@ class dashboardController {
             $query1 = "SELECT * ";
             $query1 .= "FROM messstellen as T1 ";
             $query1 .= "INNER JOIN ";
-            $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            //$query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value) * convert(decimal(10,5), ConvFactor)) as val from ";
+            // <---28-02-2022--
+            $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(Value * ConvFactor) as val from ";
+            // -end--->
             $query1 .= "berechneteEnergiedaten as T2 ";
             $query1 .= "GROUP By T2.mst_id) ";
             $query1 .= "T2 ";
@@ -3725,7 +3729,6 @@ class dashboardController {
             $query1 .= $queryMainCondition;
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";  
-            // echo $query1; die; 
             $resultQuery = sqlsrv_query($conn,$query1);
             $tableFound = 'false';
             $dataMesaurement = [];
@@ -3890,6 +3893,7 @@ class dashboardController {
         else if($queryMaxVal != ''){
             $col_span = "colspan='4'";
         }
+        // echo json_encode($dataMesaurement); die;
         if($dataMesaurement != '' && count($dataMesaurement) > 0){
             foreach($dataMesaurement as $key => $value){
                 $style='';
@@ -3918,13 +3922,23 @@ class dashboardController {
                 if($queryMaxVal == '')
                 {
                     $tr.= "<td>".$queryResult[0]['Time']."</td>";
-                    $tr.= "<td>".$queryResult[0]['ConvFactor']."</td>";
-                    $tr.= "<td>".$value['val']."</td>";
+                    // $tr.= "<td>".$queryResult[0]['ConvFactor']."</td>";
+                    $valEnergy = 0;
+                    if($value['val'] > 0)
+                    {
+                        $valEnergy = $value['val'] / 4;
+                    }
+                    $tr.= "<td>".$valEnergy."</td>";
                 }
                 else{
                     $tr.= "<td>".$value['Time']."</td>";
-                    $tr.= "<td>".$value['ConvFactor']."</td>";
-                    $tr.= "<td>".$value['Value']."</td>";
+                    // $tr.= "<td>".$value['ConvFactor']."</td>";
+                    $valEnergy = 0;
+                    if($value['Value'] > 0)
+                    {
+                        $valEnergy = $value['Value'] / 4;
+                    }
+                    $tr.= "<td>".$valEnergy."</td>";
                 }
                 $tr.="</tr>";
             }
@@ -4495,6 +4509,17 @@ class dashboardController {
             {
                 $sum=0;
                 $resultQuery=$this->getDateWiseScore($resultQuery);
+                $currentDate = date('Y-m-d');
+                if(!array_key_exists($currentDate,$resultQuery)){
+                    $tbody .= '<tr data-table-other="SchichtModelleAll">';
+                    $tbody.= "<td>".$name_val."</td>";
+                    $tbody.= "<td>".$currentDate."</td>";
+                    $tbody.= "<td>".$time_from."</td>";
+                    $tbody.= "<td>".$time_to."</td>";
+                    $tbody.= "<td>In Progress</td>";
+                    $tbody .= '</tr>';
+                }
+                // echo json_encode ($resultQuery); die;
                 foreach($resultQuery as $key=>$val)
                 {   
                     $tbody .= '<tr data-table-other="SchichtModelleAll">';

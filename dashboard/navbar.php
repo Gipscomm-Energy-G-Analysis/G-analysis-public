@@ -226,22 +226,25 @@
         </ul>
         <ul class="navbar-nav navbar-nav-right">
          
-          <li class="nav-item dropdown">
+        <!-- 28-2-2022 -->
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle nav_bar_redirect" id="notification_nav_bar" href="javascript:void(0);" data-toggle="dropdown" title="Alerts">
               <i class="ti-bell text-muted"></i>
               <span class="count"></span>
             </a>
            
-          </li>
+          </li> -->
 
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle nav_bar_redirect" href="javascript:void(0);" data-toggle="dropdown" id="help_nav_bar" title="Help">
-              <!-- <img src="images/faces/face28.jpg" alt="profile"/> -->
               <i class="ti-help text-muted"></i>
               <span class="menu-title"></span>
             </a>
             
           </li>
+
+
+          <!-- --end- -->
           
 
           <li class="nav-item nav-profile dropdown">

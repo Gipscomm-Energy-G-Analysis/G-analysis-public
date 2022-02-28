@@ -4,6 +4,7 @@ setTimeout(function () {
 },1000);
 
 function countDashboard(){
+  return false;
     $.ajax({
         type: "POST",
         url: "php/retreive.php",
@@ -2827,6 +2828,7 @@ function dashboardChart(){
 }
 
 function energy_consumed_five_days(){
+  return false;
   $.ajax({
     type : "POST",
     url : 'php/retreive.php',
@@ -9458,7 +9460,7 @@ function getEnergyMeasurementChart(){
 // <----24-02-2022--
 function rowClickEnergyDashboardLayer(tile_id,mst_id,select_day_week,input_val_week_day,name_val,valid_from,valid_to,time_from,time_to){
   $('.energy_table_header').removeClass('row_click_table');
-  if(energy_measurement == '' || select_day_week == '' || input_val_week_day == ''){
+  if(mst_id == '' || select_day_week == '' || input_val_week_day == ''){
     var tr = "<tr><td colspan='50' class='text-center text-muted'>Please Select All Filters</td></tr>";
     $('#energy_select_table_entries').html(tr);
     $('#pagination_html_energy').html('');

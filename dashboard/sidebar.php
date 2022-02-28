@@ -31,12 +31,14 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item">
+          <!-- 28-2-2022 -->
+          <!-- <li class="nav-item">
             <a class="nav-link sidebar_redirect" id="wert_sidebar" href="javascript:void(0);">
               <i class="ti-star menu-icon"></i>
               <span class="menu-title">Wert</span>
             </a>
-          </li>
+          </li> -->
+          <!-- -end -->
           <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
               <i class="ti-user menu-icon"></i>
