@@ -307,9 +307,9 @@ class dashboardController {
             else{
                 $tr = "<tr>";
                 $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Created Date</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Erstellungsdatum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Gesamteinheiten</th>";
                 $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
                 $tr .= "</tr>";
                 return $tr;
@@ -715,9 +715,9 @@ class dashboardController {
                 $tr = "<thead>";
                 $tr .= "<tr>";
                 $tr .= "<th>Name</th>";
-                $tr .= "<th>Time Interval</th>";
-                $tr .= "<th>Created Date</th>";
-                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Zeitintervall</th>";
+                $tr .= "<th>Erstellungsdatum</th>";
+                $tr .= "<th>Gesamteinheiten</th>";
                 $tr .= "<th>Status</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
@@ -727,8 +727,8 @@ class dashboardController {
                 $tr = "<thead style='background-color: #c5c8d2'>";
                 $tr .= "<tr>";
                 $tr .= "<th>Name</th>";
-                $tr .= "<th>Time Interval</th>";
-                $tr .= "<th>Date</th>";
+                $tr .= "<th>Zeitintervall</th>";
+                $tr .= "<th>Datum</th>";
                 $tr .= "<th>Units Consumed</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
@@ -943,10 +943,10 @@ class dashboardController {
                 $col_span = "colspan='5'";
                 $tr = "<thead>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Time Interval</th>";
-                $tr .= "<th>Created Date</th>";
-                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Artikelname</th>";
+                $tr .= "<th>Zeitintervall</th>";
+                $tr .= "<th>Erstellungsdatum</th>";
+                $tr .= "<th>Gesamteinheiten</th>";
                 $tr .= "<th>Status</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
@@ -955,10 +955,10 @@ class dashboardController {
                 $col_span = "colspan='4'";
                 $tr = "<thead style='background-color: #c5c8d2'>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Time Interval</th>";
-                $tr .= "<th>Date</th>";
-                $tr .= "<th>Units Consumed</th>";
+                $tr .= "<th>Artikelname</th>";
+                $tr .= "<th>Zeitintervall</th>";
+                $tr .= "<th>Datum</th>";
+                $tr .= "<th>Verbrauchte Einheiten</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             }
@@ -5685,10 +5685,10 @@ class dashboardController {
     public function getAllProductClickTableHeaderHTML(){
         try{
             $tr = "<tr>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Item Name</th>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval Date</th>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Create Dated </th>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units </th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Artikelname</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall Datum</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datiert erstellen </th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Gesamteinheiten</th>";
             $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
             $tr .= "</tr>";
             return $tr;
@@ -5701,10 +5701,10 @@ class dashboardController {
     public function rowClickParticularProductHeaderHtml(){
         try{
             $tr = "<tr>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Item Name</th>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval Date</th>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Date</th>";
-            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Units Consumed </th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Artikelname</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall Datum</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+            $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Verbrauchte Einheiten</th>";
             $tr .= "</tr>";
             return $tr;
         }

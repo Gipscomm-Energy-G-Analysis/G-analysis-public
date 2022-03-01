@@ -12,8 +12,8 @@
                     <div class="form-group col-md-3">
                       <label for="energy_type">Energietyp</label>
                       <select class="form-control form-control-sm text-dark" id="energy_type">
-                        <option value="automatic">Read in Automatically</option>
-                        <option value="manually">Entered Manually</option>
+                        <option value="automatic">Automatisch</option>
+                        <option value="manually">Manuell</option>
                         <option value="layer_modal">SchichtModelle</option>
                       </select>
                     </div>
@@ -23,10 +23,10 @@
                     <div class="form-group col-md-3 auto_man_div">
                       <label for="energy_time_interval">Wählen Sie Zeitintervall</label>
                       <select class="form-control form-control-sm text-dark" id="energy_time_interval">
-                        <option value="1">Days</option>
-                        <option value="2">Weeks</option>
-                        <option value="3">Months</option>
-                        <option value="4">Years</option>
+                        <option value="1">Tage</option>
+                        <option value="2">Wochen</option>
+                        <option value="3">Monate</option>
+                        <option value="4">Jahre</option>
                         <!-- <option value="40">40</option>
                         <option value="50">50</option> -->
                       </select>
@@ -134,9 +134,9 @@
                         <thead class="energy_table_header">
                           <tr>
                             <th>Name</th>
-                            <th>Time Interval</th>
-                            <th>Created Date</th>
-                            <th>Total Units</th>
+                            <th>Zeitintervall</th>
+                            <th>Erstellungsdatum</th>
+                            <th>Gesamteinheiten</th>
                             <th>Status</th>
                           </tr>
                         </thead>
@@ -175,14 +175,14 @@
                           <!-- Height and Width -->
                           <div class="row">
                               <div class="form-group col-md-3">
-                                <label for="modal-height-input-energy" class="text-mute">Column</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-energy" placeholder="Column">
+                                <label for="modal-height-input-energy" class="text-mute">Spalte</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-energy" placeholder="Spalte">
                                 <input type="hidden" id="modal-height-input-energy-hidden" value="145">
                               </div>
 
                               <div class="form-group col-md-3">
-                                <label for="modal-width-input-energy" class="text-mute">Row</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-energy" placeholder="Row">
+                                <label for="modal-width-input-energy" class="text-mute">Reihe</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-energy" placeholder="Reihe">
                                 <input type="hidden" id="modal-width-input-energy-hidden" value="285">
                               </div>
 

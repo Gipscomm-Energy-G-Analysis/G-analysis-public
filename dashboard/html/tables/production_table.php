@@ -11,22 +11,22 @@
                   <!-- 26-11-2021 -->
                   <div class="row">
                     <div class="form-group col-md-3 mt_pr_alignment" id="product_type_div">
-                      <label for="product_type">Product Type</label>
+                      <label for="product_type">Produktart</label>
                       <select class="form-control form-control-sm text-dark" id="product_type">
-                        <option value='automatic'>Read in Automatically</option>
-                        <option value='mannual'>Entered Manually</option>
+                        <option value='automatic'>Automatisch</option>
+                        <option value='mannual'>Manuell</option>
                       </select>
                     </div>
 
                     <!-- 21-12-2021-- -->
                     <div class="form-group col-md-3 automatic_product_div" id="all_tables_product_div">
-                      <label for="product_type">Tables</label>
+                      <label for="product_type">Tische</label>
                       <select class="form-control form-control-sm text-dark" id="all_tables_product">
                       </select>
                     </div>
 
                     <div class="form-group col-md-3 automatic_product_div" id="all_columns_product_div">
-                      <label for="product_type">Columns</label>
+                      <label for="product_type">Säulen</label>
                       <select class="form-control form-control-sm text-dark" id="all_columns_product">
                         <!-- <option value="">Please Select Column</option> -->
                       </select>
@@ -35,11 +35,11 @@
 
                     <div class="form-group col-md-3" id="product_field_div">
                       <img src="images/search.png" id="all_product_image">
-                      <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='All Product' readonly >
+                      <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='Alle Produkte' readonly >
                     </div>
 
                     <div class="form-group col-md-3 mt_pr_alignment" id="product_records_order_by_div" style="display: none">
-                      <label for="product_records_order_by">Filter Units Consumed</label>
+                      <label for="product_records_order_by">Verbrauchte Filtereinheiten</label>
                       <select class="form-control form-control-sm text-dark" id="product_records_order_by">
                         <option value='desc'>Order By Max Units Consumed</option>
                         <option value='asc'>Order By Min Units Consumed</option>
@@ -47,8 +47,8 @@
                     </div>
 
                     <div class="form-group col-md-3 automatic_product_div">
-                      <label for="product_total_number_record">Select Total No. of Records</label>
-                       <input type="number" class="form-control form-control-sm text-dark" id="product_total_number_record" placeholder="Select Total No. of Records">
+                      <label for="product_total_number_record">Gesamtrekorde</label>
+                       <input type="number" class="form-control form-control-sm text-dark" id="product_total_number_record" placeholder="Gesamtrekorde">
                        <span class="product_number_record_error text-danger"></span>
                     </div>
 
@@ -70,7 +70,7 @@
                               <thead>
                                 <tr>
                                   <th>
-                                    Product Name
+                                    Produktname
                                   </th>
 
                                   <!-- <th>
@@ -130,18 +130,18 @@
                           </th> -->
 
                           <th>
-                            Item Name
+                            Artikelname
                           </th>
 
                           <!-- <th>
                             Time Interval
                           </th> -->
                           <th>
-                            Created Date
+                            Erstellungsdatum
                           </th>
 
                           <th>
-                            Total Units
+                            Gesamteinheiten
                           </th>
 
                           <!-- <th>
@@ -179,14 +179,14 @@
                           <!-- Height and Width -->
                           <div class="row">
                               <div class="form-group col-md-3">
-                                <label for="modal-height-input-product" class="text-mute">Column</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-product" placeholder="Column">
+                                <label for="modal-height-input-product" class="text-mute">Spalte</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-product" placeholder="Spalte">
                                 <input type="hidden" id="modal-height-input-product-hidden" value="145">
                               </div>
 
                               <div class="form-group col-md-3">
-                                <label for="modal-width-input-product" class="text-mute">Row</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-product" placeholder="Row">
+                                <label for="modal-width-input-product" class="text-mute">Reihe</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-product" placeholder="Reihe">
                                 <input type="hidden" id="modal-width-input-product-hidden" value="285">
                               </div>
 

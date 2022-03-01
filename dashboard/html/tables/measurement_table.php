@@ -11,28 +11,28 @@
                   <div class="row">
 
                     <div class="form-group col-md-3">
-                      <label for="measurement_type">Measurement Type</label>
+                      <label for="measurement_type">Messtyp</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_type">
-                        <option value="automatic">Read in Automatically</option>
-                        <option value="manually">Entered Manually</option>
+                        <option value="automatic">Automatisch</option>
+                        <option value="manually">Manuell</option>
                          <!-- <option value="calculated">Calculated</option> -->
                       </select>
                     </div>
                     
                     <div class="form-group col-md-3">
-                      <label for="measurement_time_interval">Select Time Interval</label>
+                      <label for="measurement_time_interval">Wählen Sie Zeitintervall</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_time_interval">
-                        <option value="1">Days</option>
-                        <option value="2">Weeks</option>
-                        <option value="3">Months</option>
-                        <option value="4">Years</option>
+                        <option value="1">Tage</option>
+                        <option value="2">Wochen</option>
+                        <option value="3">Monate</option>
+                        <option value="4">Jahre</option>
                         <!-- <option value="40">40</option>
                         <option value="50">50</option> -->
                       </select>
                     </div>
 
                     <div class="form-group col-md-3">
-                      <label for="measurement_records_order_by">Filter Units Consumed</label>
+                      <label for="measurement_records_order_by">Verbrauchte Filtereinheiten</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_records_order_by">
                         <option value="order_by_desc">Maximum</option>
                         <option value="order_by_asc">Minimum</option>
@@ -47,8 +47,8 @@
                       </div> -->
 
                       <div class="form-group col-md-3">
-                      <label for="measurement_number_record">Select Total No. of Records</label>
-                       <input type="number" class="form-control form-control-sm text-dark" id="measurement_total_number_record" placeholder="Select Total No. of Records">
+                      <label for="measurement_number_record">Gesamtrekorde</label>
+                       <input type="number" class="form-control form-control-sm text-dark" id="measurement_total_number_record" placeholder="Gesamtrekorde">
                        <span class='measurement_number_record_error text-danger'></span>
                       </div>
 
@@ -56,8 +56,8 @@
 
                   <div class="row">
                     <div class="form-group col-md-12">
-                      <label for="measurement_search_record">Search Records</label>
-                      <input type="text" class="form-control form-control-sm text-dark" id="measurement_search_record" placeholder="Search Records">
+                      <label for="measurement_search_record">Aufzeichnungen suchen</label>
+                      <input type="text" class="form-control form-control-sm text-dark" id="measurement_search_record" placeholder="Aufzeichnungen suchen">
                     </div>
                     
                     <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
@@ -65,9 +65,9 @@
                         <thead class="measurement_table_header">
                           <tr>
                             <th>Name</th>
-                            <th>Time Interval</th>
-                            <th>Created Date</th>
-                            <th>Total Units</th>
+                            <th>Zeitintervall</th>
+                            <th>Erstellungsdatum</th>
+                            <th>Gesamteinheiten</th>
                             <th>Status</th>
                           </tr>
                         </thead>
@@ -106,14 +106,14 @@
                           <!-- Height and Width -->
                           <div class="row">
                               <div class="form-group col-md-3">
-                                <label for="modal-height-input-measurement" class="text-mute">Column</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-measurement" placeholder="Column">
+                                <label for="modal-height-input-measurement" class="text-mute">Spalte</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-measurement" placeholder="Spalte">
                                 <input type="hidden" id="modal-height-input-measurement-hidden" value="145">
                               </div>
 
                               <div class="form-group col-md-3">
-                                <label for="modal-width-input-measurement" class="text-mute">Row</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-measurement" placeholder="Row">
+                                <label for="modal-width-input-measurement" class="text-mute">Reihe</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-measurement" placeholder="Reihe">
                                 <input type="hidden" id="modal-width-input-measurement-hidden" value="285">
                               </div>
 

@@ -3274,6 +3274,7 @@ function deleteTile(id_val,product_automatic_tile){
     success: function(a) {
       // setTimeout(()=>{
         getTableFormatDashboard();
+        $('#dashboard_main_div').click();
       // },1500); 
     }
   });
@@ -9430,6 +9431,8 @@ function getAllMeasurementEnergy(){
         var htmlTableNotFound = '<tr><td colspan="50" class="text-center">Table Not Found</td></tr>';
         $('#energy_select_table_entries').html(htmlTableNotFound);
         $('#pagination_html_energy').html('');  
+        var tableNotFound = "<option value=''>Table Not Found</option>";
+        $('#energy_measurement').html(tableNotFound);
       }
       else{
         var tr = "<tr><td colspan='50' class='text-center text-muted'>Please Select All Filters</td></tr>";
