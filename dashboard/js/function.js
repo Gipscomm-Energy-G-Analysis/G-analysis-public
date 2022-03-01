@@ -113,6 +113,7 @@ function getNumberRecordsMesurement(){
               $('#measurement_record_table table thead tr').children('th:eq(2)').text('Created Date');
               $('#measurement_record_table table thead tr').children('th:eq(1)').text('Time Interval');
               $('.table-margin .table td').attr('style','padding: 6px !important;font-size: small !important;');
+              $('.measurement_table_header').html(a['table_header']);
             }
             else if(measurement_type == 'automatic'){
               $('#measurement_record_table table thead tr').children('th:eq(4)').remove(); 
@@ -120,6 +121,7 @@ function getNumberRecordsMesurement(){
               $('#measurement_record_table table thead tr').children('th:eq(2)').text('Conv Factor');
               $('#measurement_record_table table thead tr').children('th:eq(1)').text('Time');
               $('.table-margin .table td').attr('style','padding: 8px !important;font-size: small !important;');
+              $('.measurement_table_header').html(a['table_header']);
             }
             
             $('#pagination_html').html(a['pagination_html']);
@@ -265,7 +267,13 @@ function rowClickMeasurementTableData(mst_id,data_type){
   $('#mst_id_hidden').val(mst_id);
   
   // $('#measurement_record_table table tbody tr').children('td:eq(3)').text();
-  var total_count = $("#mesurement_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(3)').text();
+  var total_count = '';
+  if(measurement_type == 'manually'){
+    total_count = $("#mesurement_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(3)').text();
+  }
+  else{
+    total_count = $("#mesurement_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(2)').text();
+  }
   $('#overall_count').val(total_count);
 
   var record_name = $("#mesurement_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(0)').text();
@@ -315,12 +323,15 @@ function rowClickMeasurementTableData(mst_id,data_type){
           $('#measurement_record_table table thead tr').children('th:eq(1)').text('Time Interval');
           $('#measurement_record_table table thead tr').children('th:eq(2)').text('Date');
           $('#measurement_record_table table thead tr').children('th:eq(3)').text('Units Consumed');
+          $('.measurement_table_header').html(a['table_header']);
         }
         else if(measurement_type == 'automatic'){
           $('#measurement_record_table table thead tr').children('th:eq(1)').text('Time');
           $('#measurement_record_table table thead tr').children('th:eq(2)').text('Conv Factor');
           $('#measurement_record_table table thead tr').children('th:eq(3)').text('Values');
+          $('.measurement_table_header').html(a['table_header']);
         }
+        $('#measurement_record_table table thead tr').children('th:eq(4)').remove(); 
         // --end--->
 
         $('#mesurement_select_table_entries').html(a['measurement_html']);
@@ -1836,8 +1847,13 @@ function rowClickEnergyTableData(mst_id,data_type){
   rowClickEnergyRecordsTableHeader(energy_type);
   // ---end--->
   $('#mst_id_hidden_energy').val(mst_id);
-  
-  var total_count = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(2)').text();
+  var total_count =  '';
+  if(energy_type == 'automatic'){
+   total_count = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(2)').text();
+  }
+  else{
+    total_count = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(3)').text();
+  }
   $('#overall_count_energy').val(total_count);
 
   var record_name = $("#energy_select_table_entries tr[data-mst='"+mst_id+"']").children('td:eq(0)').text();

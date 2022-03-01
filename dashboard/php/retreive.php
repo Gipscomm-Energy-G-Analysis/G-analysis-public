@@ -271,6 +271,7 @@ class dashboardController {
             // $dataMesaurement = queryDB($conn, $query1, "read");
             
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement);
+            $records['table_header'] = $this->getNumberRecordsMesurementHeader($measurement_type);
 
             $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount,$dataMesaurement);
 
@@ -289,6 +290,37 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+
+    // <----01-03-2022--
+    public function getNumberRecordsMesurementHeader($measurement_type)
+    {
+        try{
+            if($measurement_type == 'automatic')
+            {
+                $tr = "<tr>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Messstelle</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Wert</th>";
+                $tr .= "</tr>";
+                return $tr;
+            }
+            else{
+                $tr = "<tr>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Created Date</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
+                $tr .= "</tr>";
+                return $tr;
+            }
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    // --end->
 
     // <--3-8-2021
     public function rowClickMeasurementTableData(){
@@ -406,6 +438,7 @@ class dashboardController {
             //--end-->
 
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement,$queryMaxVal);
+            $records['table_header'] = $this->getNumberRecordsMesurementHeader($measurement_type);
             $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val,$pagesCount,$dataMesaurement,$type,$mst_id);
             
             // <--15-8-2021--
@@ -8992,7 +9025,7 @@ class dashboardController {
             $queryTotalRecords = "SELECT TOP($total_number_records) * ";
             $queryTotalRecords .= "FROM messstellen as T1 ";
             $queryTotalRecords .= "INNER JOIN ";
-            $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(Value * ConvFactor) as val from ";
             $queryTotalRecords .= "berechneteEnergiedaten as T2 ";
             $queryTotalRecords .= "GROUP By T2.mst_id) ";
             $queryTotalRecords .= "T2 ";
@@ -9047,7 +9080,8 @@ class dashboardController {
             $query1 = "SELECT * ";
             $query1 .= "FROM messstellen as T1 ";
             $query1 .= "INNER JOIN ";
-            $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            //$query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
+            $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(Value * ConvFactor) as val from ";
             $query1 .= "berechneteEnergiedaten as T2 ";
             $query1 .= "GROUP By T2.mst_id) ";
             $query1 .= "T2 ";
@@ -9070,6 +9104,7 @@ class dashboardController {
             // $dataMesaurement = queryDB($conn, $query1, "read");
 
             $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement);
+            $records['table_header'] = $this->getNumberRecordsMesurementHeader($measurement_type);
 
             $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val,$pagesCount,$dataMesaurement);
 
@@ -9292,6 +9327,7 @@ class dashboardController {
             
 
             $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement,$queryMaxVal);
+            $records['table_header'] = $this->getNumberRecordsMesurementHeader($measurement_type);
             $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val,$pagesCount,$dataMesaurement,$type,$mst_id);
             
 
@@ -9361,13 +9397,24 @@ class dashboardController {
                 if($queryMaxVal == '')
                 {
                     $tr.= "<td>".$queryResult[0]['Time']."</td>";
-                    $tr.= "<td>".$queryResult[0]['ConvFactor']."</td>";
-                    $tr.= "<td>".$value['val']."</td>";
+                    // $tr.= "<td>".$queryResult[0]['ConvFactor']."</td>";
+                    $calulateVal = 0;
+                    if($value['val'] > 0)
+                    {
+                        $calulateVal = $value['val'] / 4;
+                    }
+                    $tr.= "<td>".$calulateVal."</td>";
                 }
                 else{
                     $tr.= "<td>".$value['Time']."</td>";
-                    $tr.= "<td>".$value['ConvFactor']."</td>";
-                    $tr.= "<td>".$value['Value']."</td>";
+                    // $tr.= "<td>".$value['ConvFactor']."</td>";
+                    $calulateVal = 0;
+                    if($value['Value'] > 0)
+                    {
+                        $calulateVal = ($value['Value'] * $value['ConvFactor']) / 4;
+                    }
+
+                    $tr.= "<td>".$calulateVal."</td>";
                 }
                 $tr.="</tr>";
             }
@@ -9551,10 +9598,10 @@ class dashboardController {
             global $conn;
             $id = $_REQUEST['id'];
             $mst_id = $_REQUEST['mst_id'];
-            $queryTotalSum = "SELECT sum(convert(decimal(38,5), Value)) as val from berechneteEnergiedaten  as t1 ";
+            $queryTotalSum = "SELECT sum(Value * ConvFactor) as val from berechneteEnergiedaten  as t1 ";
             $queryTotalSum .= "Where t1.mst_ID = $mst_id ";
             $totalSum = queryDB($conn, $queryTotalSum, "read");
-            $totalSumVal = $totalSum[0]['val'] != null ?  $totalSum[0]['val'] : '';
+            $totalSumVal = $totalSum[0]['val'] != null && $totalSum[0]['val'] != 0 ?  $totalSum[0]['val'] / 4 : '0';
             
             $queryName = "SELECT TOp(1) nameMSt from messstellen Where mst_ID = $mst_id ";
             $queryNameVal = queryDB($conn, $queryName, "read");
