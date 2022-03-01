@@ -1200,6 +1200,8 @@ function getTableFormatDashboard(){
         $('#save_position_tile').hide();
       }
       
+      $('.logo-g-analysis').click();
+      
     }
   });
 
