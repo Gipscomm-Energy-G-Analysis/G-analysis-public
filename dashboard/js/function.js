@@ -1200,7 +1200,7 @@ function getTableFormatDashboard(){
         $('#save_position_tile').hide();
       }
       
-      $('.logo-g-analysis').click();
+      // $('.logo-g-analysis').click();
       
     }
   });
@@ -9520,6 +9520,7 @@ function rowClickEnergyDashboardLayer(tile_id,mst_id,select_day_week,input_val_w
     });
   }
 } 
+
 // --end-->
 // <---18-1-2022--
 // var i = 1;

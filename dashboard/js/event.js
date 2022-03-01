@@ -248,8 +248,11 @@ $(document).ready( function(){
     // dashboardChart();
     energy_consumed_five_days();
     getDatabaseList();
-    getTableFormatDashboard();
-    
+    setTimeout( ()=>{
+        $('#dashboard_database_list').trigger('change');
+        getTableFormatDashboard();
+        $('#dashboard_main_div').click();
+    },500);
     // getDashboardSelectOption();
 
 
@@ -2881,11 +2884,11 @@ $(document).ready( function(){
         if(energy_total_value == '0')
         {
             var energy_header = "<tr>";
-            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Shift Name</th>";
-            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Date</th>";
-            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>From Time</th>";
-            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>To Time</th>";
-            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Energy Consumed</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Schichtname</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Von Zeit</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeit zum</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Energieverbrauch</th>";
             energy_header+= "</tr>";
 
             var energy_html ="<tr>";

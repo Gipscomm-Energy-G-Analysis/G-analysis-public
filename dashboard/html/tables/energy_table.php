@@ -10,7 +10,7 @@
                   <!-- 17-11-2021 -->
                   <div class="row">
                     <div class="form-group col-md-3">
-                      <label for="energy_type">Energy Type</label>
+                      <label for="energy_type">Energietyp</label>
                       <select class="form-control form-control-sm text-dark" id="energy_type">
                         <option value="automatic">Read in Automatically</option>
                         <option value="manually">Entered Manually</option>
@@ -21,7 +21,7 @@
 
                     
                     <div class="form-group col-md-3 auto_man_div">
-                      <label for="energy_time_interval">Select Time Interval</label>
+                      <label for="energy_time_interval">Wählen Sie Zeitintervall</label>
                       <select class="form-control form-control-sm text-dark" id="energy_time_interval">
                         <option value="1">Days</option>
                         <option value="2">Weeks</option>
@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="form-group col-md-3 auto_man_div">
-                      <label for="energy_records_order_by" id="energy_record_order_by_label">Filter Units Consumed</label>
+                      <label for="energy_records_order_by" id="energy_record_order_by_label">Verbrauchte Filtereinheiten</label>
                       <select class="form-control form-control-sm text-dark" id="energy_records_order_by">
                         <option value="order_by_desc">Maximum</option>
                         <option value="order_by_asc">Minimum</option>
@@ -42,8 +42,8 @@
                     </div>
 
                     <div class="form-group col-md-3 auto_man_div">
-                      <label for="energy_number_record">Select Total No. of Records</label>
-                       <input type="number" class="form-control form-control-sm text-dark" id="energy_total_number_record" placeholder="Select Total No. of Records">
+                      <label for="energy_number_record">Gesamtrekorde</label>
+                       <input type="number" class="form-control form-control-sm text-dark" id="energy_total_number_record" placeholder="Gesamtrekorde">
                        <span class='energy_number_record_error text-danger'></span>
                     </div>
 
@@ -88,26 +88,26 @@
                     <!-- 25-1-2022 -->
 
                     <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
-                      <label for="energy_measurement">Select Measurement</label>
+                      <label for="energy_measurement">Messung auswählen</label>
                       <select class="form-control form-control-sm text-dark" id="energy_measurement">
-                        <option value="">Select Measurement</option>
+                        <option value="">Messung auswählen</option>
                       </select>
                     </div>
 
 
                     <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
-                      <label for="select_day_week">Select Filter</label>
+                      <label for="select_day_week">Wählen Sie Filtern aus</label>
                       <select class="form-control form-control-sm text-dark" id="select_day_week">
-                        <option value="">Select Filter</option>
-                        <option value="day">Day</option>
-                        <option value="week">Week</option>
+                        <option value="">Wählen Sie Filtern aus</option>
+                        <option value="day">Tag</option>
+                        <option value="week">Woche</option>
                       </select>
                       <span class='energy_day_week_filter_error text-danger'></span>
                     </div>
 
                     <div class="form-group col-md-3 layer_modal_filter_div" id="input_val_week_day_div" style="display: none">
-                      <label class="form-check-label"> Enter Range Value </label>
-                      <input type="number" class="form-control-sm form-control text-mute" id="input_val_week_day" name="input_val_week_day">  
+                      <label class="form-check-label"> Bereichswert eingeben </label>
+                      <input type="number" class="form-control-sm form-control text-mute" id="input_val_week_day" name="input_val_week_day" placeholder="Bereichswert eingeben">  
                       <span class='energy_input_day_week_error text-danger'></span>
                     </div>
                     <!-- --end -->
@@ -125,8 +125,8 @@
 
                   <div class="row">
                     <div class="form-group col-md-12">
-                      <label for="energy_search_record">Search Records</label>
-                      <input type="text" class="form-control form-control-sm text-dark" id="energy_search_record" placeholder="Search Records">
+                      <label for="energy_search_record">Aufzeichnungen suchen</label>
+                      <input type="text" class="form-control form-control-sm text-dark" id="energy_search_record" placeholder="Aufzeichnungen suchen">
                     </div>
                     
                     <div class="table-responsive col-md-12 table-margin" id="energy_record_table">

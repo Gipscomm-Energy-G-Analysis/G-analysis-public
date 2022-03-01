@@ -830,9 +830,9 @@ class dashboardController {
                 $tr = "<thead>";
                 $tr .= "<tr>";
                 $tr .= "<th>Name</th>";
-                $tr .= "<th>Time Interval</th>";
-                $tr .= "<th>Created Date</th>";
-                $tr .= "<th>Total Units</th>";
+                $tr .= "<th>Zeitintervall</th>";
+                $tr .= "<th>Erstellungsdatum</th>";
+                $tr .= "<th>Gesamteinheiten</th>";
                 $tr .= "<th>Status</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
@@ -842,9 +842,9 @@ class dashboardController {
                 $tr = "<thead style='background-color: #c5c8d2'>";
                 $tr .= "<tr>";
                 $tr .= "<th>Name</th>";
-                $tr .= "<th>Time Interval</th>";
-                $tr .= "<th>Date</th>";
-                $tr .= "<th>Units Consumed</th>";
+                $tr .= "<th>Zeitintervall</th>";
+                $tr .= "<th>Datum</th>";
+                $tr .= "<th>Verbrauchte Einheiten</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             }
@@ -3390,9 +3390,9 @@ class dashboardController {
             else if($energy_type == "manually"){
                 $tr = "<tr>";
                 $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Created Date</th>";
-                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Erstellungsdatum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Gesamteinheiten</th>";
                 $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
                 $tr .= "</tr>";
 
@@ -3445,9 +3445,9 @@ class dashboardController {
             else if($energy_type == "manually"){
                 $tr = '<tr>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Name</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time Interval</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
-                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Units Consumed</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeitintervall</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Datum</th>';
+                $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Verbrauchte Einheiten</th>';
                 $tr .= '</tr>';
                 $records['table_header'] = $tr;
                 echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
@@ -4176,13 +4176,13 @@ class dashboardController {
             {   
                 $thead = '<tr>';
                 // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid To</th>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Designation</th>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
-                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Schichtname</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Gültig ab</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Gültig bis</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Bezeichnung</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit von</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit zum</th>';
+                $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energieverbrauch</th>';
                 // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
                 $thead .= '</tr>';
                 $tbody = '';
@@ -4525,11 +4525,11 @@ class dashboardController {
             }
 
             $thead = '<tr>';
-            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
-            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
-            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">From Time</th>';
-            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">To Time</th>';
-            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Schichtname</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Datum</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Von Zeit</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit zum</th>';
+            $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energieverbrauch</th>';
             $thead .= '</tr>';
             
 
@@ -6933,13 +6933,13 @@ class dashboardController {
                     $tbody = '<thead>';
                     $tbody .= '<tr>';
                     // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
-                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
-                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
-                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid To</th>';
-                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Designation</th>';
-                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
-                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
-                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Schichtname</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Gültig ab</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Gültig bis</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Bezeichnung</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit von</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit zum</th>';
+                    $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energieverbrauch</th>';
                     // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
                     $tbody .= '</tr>';
                     $tbody .= '</thead>';

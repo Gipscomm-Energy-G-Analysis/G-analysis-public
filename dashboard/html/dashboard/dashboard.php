@@ -6,7 +6,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <h4 class="font-weight-bold mb-0 text-muted" style="    margin-left: 20px;
-">Dashboard</h4>
+">Armaturenbrett</h4>
                 </div>
                 <!-- <div>
                     <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
@@ -40,9 +40,9 @@
 
           <!-- 20-8-2021-- -->
             <div class="dashboard-btn">
-                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Add Tile</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Fliese hinzufügen</button>
 
-                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Save Tile Structure</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Kachelstruktur speichern</button>
 
             </div>
 
@@ -64,11 +64,11 @@
                   <div class="row">
                     <input type="hidden" id="modal-open" value="false">
                     <div class="col-md-3 form-group">
-                      <label for="title_modal_tile">Title Name</label>
-                      <input type="text" placeholder="Title" name="title_modal_tile" required id="title_modal_tile" class="form-control form-control-sm">
+                      <label for="title_modal_tile">Kachelname</label>
+                      <input type="text" placeholder="Kachelname" name="title_modal_tile" required id="title_modal_tile" class="form-control form-control-sm">
                     </div>
                     <div class="form-group col-md-3">
-                      <label for="record_type_of_tile">Type of Record</label>
+                      <label for="record_type_of_tile">Art des Datensatzes</label>
                       <select class="form-control form-control-sm text-dark" id="record_type_of_tile">
                           <option value="energy" description="Energy Entries Count">Messtellen-Energie</option>
                           <option value="product" description="Product Entries Count">Produktion</option>
@@ -79,16 +79,16 @@
                     </div>
 
                     <div class="form-group col-md-3">
-                      <label for="type_data_tile">Type of Data</label>
+                      <label for="type_data_tile">Art der Daten</label>
                       <select class="form-control form-control-sm text-dark" id="type_data_tile">
-                          <option value="table">Table</option>
-                          <option value="chart">Chart</option>
-                          <option value="overall_count">Value</option>
+                          <option value="table">Tisch</option>
+                          <option value="chart">Diagramm</option>
+                          <option value="overall_count">Wert</option>
                       </select>
                     </div>
 
                     <div id="save_btn_tile_div">
-                      <input type="button" id="save_and_proceed_btn_dashboard" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard" value="Save & Proceed">
+                      <input type="button" id="save_and_proceed_btn_dashboard" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard" value="Speichern & fortfahren">
                     </div>
                     <input type="hidden" id="edit_product_tile_automatic">
                     <input type="hidden" id="edit_tile_click_manually">
@@ -139,20 +139,20 @@
                 <div class="modal-body">
                   <div class="row">
                     <div class="form-group col-md-2">
-                      <label for="measurement-height-chart" class="text-mute">Column</label>
-                      <input type="number" class="form-control form-control-sm text-dark" id="measurement-height-chart" placeholder="Column">
+                      <label for="measurement-height-chart" class="text-mute">Spalte</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="measurement-height-chart" placeholder="Spalte">
                       <input type="hidden" id="measurement-height-chart-hidden" value="145">
                     </div>
 
                     <div class="form-group col-md-2">
-                      <label for="measurement-width-chart" class="text-mute">Row</label>
-                      <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Row">
+                      <label for="measurement-width-chart" class="text-mute">Reihe</label>
+                      <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Reihe">
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
                     </div>
 
                     <!-- 18-02-2022 -->
                     <div class="form-group col-md-2" id="energy_type_dashboard_chart_div">
-                      <label for="time_interval_chart" class="text-mute">Energy Type</label>
+                      <label for="time_interval_chart" class="text-mute">Energie Type</label>
                       <select class="form-control form-control-sm text-dark" id="energy_type_dashboard_chart">
                         <option value="manually">Manually</option>
                         <option value="layer_modal">SchichtModelle</option>
@@ -186,7 +186,7 @@
                     <!-- --end-- -->
 
                     <div class="form-group col-md-2" id="time_interval_div">
-                      <label for="time_interval_chart" class="text-mute">Time Interval</label>
+                      <label for="time_interval_chart" class="text-mute">Zeitintervall</label>
                       <select class="form-control form-control-sm text-dark" id="time_interval_chart">
                         <option value="1">Days</option>
                         <option value="2">Weeks</option>
@@ -209,9 +209,9 @@
                     </div>
 
                     <div class="form-group col-md-2 chart_product_div" id="chart_record_product_item_div">
-                      <label for="chart_records_product_item" class="text-mute">Select Item</label>
+                      <label for="chart_records_product_item" class="text-mute">Menüpunkt wählen</label>
                       <select class="form-control form-control-sm text-dark" id="chart_records_product_item">
-                        <option value=''>Select Item</option>
+                        <option value=''>Menüpunkt wählen</option>
                       </select>
                     </div>
 
@@ -227,7 +227,7 @@
                     </div>
 
                     <div class="form-group col-md-2" id="chart_record_type_div">
-                      <label for="chart_type" class="text-mute">Chart Type</label>
+                      <label for="chart_type" class="text-mute">Diagramm Typ</label>
                       <select class="form-control form-control-sm text-dark" id="chart_type">
                         <option value="line_chart">Line Chart</option>
                         <option value="area_chart">Area Chart</option>
@@ -240,7 +240,7 @@
                     <diV class="form-group col-md-2">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
-                          Expand View
+                        Ansicht erweitern
                           <input type="checkbox" class="text-mute form-check-input" id="expand_view_chart" name="expand_view" value="0">  
                         </label>
                       </div>
@@ -251,7 +251,7 @@
                     <diV class="form-group col-md-2">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
-                          Outisde Tile Structure
+                          Äußere Fliesenstruktur
                           <input type="checkbox" class="text-mute form-check-input" id="chart_outside_tile_structure" name="chart_outside_tile_structure" value="0">  
                         </label>
                       </div>
@@ -260,17 +260,17 @@
 
                     <!-- 29-10-2021 -->
                     <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
-                      <label for="chart_height_outer_structure" class="text-mute">Outside Tile Column</label>
+                      <label for="chart_height_outer_structure" class="text-mute">Äußere Kachelspalte</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="chart_height_outer_structure" placeholder="Outer Column">
                     </div>
 
                     <div class="form-group col-md-2 chart_outisde_tile_controls"  style="display: none">
-                      <label for="chart_width_outer_structure" class="text-mute">Outisde Tile Row</label>
+                      <label for="chart_width_outer_structure" class="text-mute">Außerhalb der Kachelreihe</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="chart_width_outer_structure" placeholder="Outer Row">
                     </div>
 
                     <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
-                      <label for="chart_outer_table_limit_column" class="text-mute">Column Limit</label>
+                      <label for="chart_outer_table_limit_column" class="text-mute">Spaltenlimit</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="chart_outer_table_limit_column" placeholder="Limit Column" value='1'>
                     </div>
                     
@@ -305,7 +305,7 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                   <!-- <div id="save_btn_tile_div"> -->
-                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" data-edit-chart='false' class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Save & Proceed">
+                    <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" data-edit-chart='false' class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Speichern & fortfahren">
 
                     <input type="button" id="update_and_proceed_btn_dashboard_chart"  class="btn btn-sm btn-success update_and_proceed_btn_dashboard_chart" value="Update & Proceed">
                     <!-- </div> -->
@@ -501,7 +501,7 @@
                       <thead>
                         <tr>
                           <th>Name</th>
-                          <th>Time Interval</th>
+                          <th>Zeitintervall</th>
                           <th>Start</th>
                           <th>Status</th>
                         </tr>
@@ -525,7 +525,7 @@
                       <thead>
                         <tr>
                           <th>Name</th>
-                          <th>Time Interval</th>
+                          <th>Zeitintervall</th>
                           <th>Day</th>
                           <th>Date</th>
                           <th>Units Consumed</th>

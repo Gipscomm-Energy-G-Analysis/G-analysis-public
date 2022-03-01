@@ -12,14 +12,14 @@
           <li class="nav-item">
             <a class="nav-link sidebar_redirect" id="charts_sidebar" href="javascript:void(0);">
               <i class="ti-pie-chart menu-icon"></i>
-              <span class="menu-title">Chart</span>
+              <span class="menu-title">Diagramm</span>
             </a>
           </li>
          
           <li class="nav-item">
             <a class="nav-link sidebar_redirect" id="tables_sidebar" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="ti-view-list-alt menu-icon"></i>
-              <span class="menu-title">Tables</span>
+              <span class="menu-title">Tisch</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
