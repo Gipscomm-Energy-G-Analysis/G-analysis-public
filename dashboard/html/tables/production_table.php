@@ -20,7 +20,7 @@
 
                     <!-- 21-12-2021-- -->
                     <div class="form-group col-md-3 automatic_product_div" id="all_tables_product_div">
-                      <label for="product_type">Tische</label>
+                      <label for="product_type">Tabelle</label>
                       <select class="form-control form-control-sm text-dark" id="all_tables_product">
                       </select>
                     </div>
@@ -39,15 +39,15 @@
                     </div>
 
                     <div class="form-group col-md-3 mt_pr_alignment" id="product_records_order_by_div" style="display: none">
-                      <label for="product_records_order_by">Verbrauchte Filtereinheiten</label>
+                      <label for="product_records_order_by">Filter</label>
                       <select class="form-control form-control-sm text-dark" id="product_records_order_by">
-                        <option value='desc'>Order By Max Units Consumed</option>
-                        <option value='asc'>Order By Min Units Consumed</option>
+                        <option value='desc'>Maximum</option>
+                        <option value='asc'>Minimum</option>
                       </select>
                     </div>
 
                     <div class="form-group col-md-3 automatic_product_div">
-                      <label for="product_total_number_record">Gesamtrekorde</label>
+                      <label for="product_total_number_record">Gesamteinträge</label>
                        <input type="number" class="form-control form-control-sm text-dark" id="product_total_number_record" placeholder="Gesamtrekorde">
                        <span class="product_number_record_error text-danger"></span>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="modal-dialog modal-lg max-width-modal">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="text-mute text-dark">Instrumententafel</h5>
+                          <h5 class="text-mute text-dark">Dashboard</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -100,7 +100,7 @@
                          
 
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
                         </div>
                        
                       </div>
@@ -151,7 +151,7 @@
                       </thead>
                       <tbody id="product_select_table_entries">
                         <tr>
-                          <td style="padding: 6px !important" class='text-center' colspan='5'>Please Select Product</td>
+                          <td style="padding: 6px !important" class='text-center' colspan='5'>Produkt auswählen</td>
                         </tr>
                       
                       </tbody>
@@ -169,7 +169,7 @@
                     <div class="modal-dialog modal-lg max-width-modal">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="text-mute text-dark">Instrumententafel</h5>
+                          <h5 class="text-mute text-dark">Dashboard</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -185,7 +185,7 @@
                               </div>
 
                               <div class="form-group col-md-3">
-                                <label for="modal-width-input-product" class="text-mute">Reihe</label>
+                                <label for="modal-width-input-product" class="text-mute">Zeile</label>
                                 <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-product" placeholder="Reihe">
                                 <input type="hidden" id="modal-width-input-product-hidden" value="285">
                               </div>
@@ -204,9 +204,9 @@
                         </div>
 
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-sm btn-success display-none" data-type="product-table-format"  id="save_table_btn_product">Save</button>
-                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Product"  id="update_table_btn_product">Update</button>
+                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="product-table-format"  id="save_table_btn_product">Speichern</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Product"  id="update_table_btn_product">Ändern</button>
                         </div>
 
                        

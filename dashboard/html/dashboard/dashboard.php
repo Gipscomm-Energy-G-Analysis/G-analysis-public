@@ -17,7 +17,7 @@
                 <!-- 27-6-2021-- -->
               <div class="row" style="display: none">  
                 <div class="form-group col-md-6">
-                  <label class="text-dark mt-3" for="dashboard_select_tag">Select Records</label>
+                  <label class="text-dark mt-3" for="dashboard_select_tag">Datensätze auswählen</label>
                   <select class="form-control form-control-sm text-muted" multiple name="dashboard_select_tag[]" id="dashboard_select_tag">
                     <!-- <option value="">Select Records</option> -->
                     <option value="mesurement_count_div" description="Measurement Entries Count">Messstellen</option>
@@ -31,7 +31,7 @@
                 </div>
                
                 <div class="form-group col-md-6">
-                  <button id='save_select_changes' class="badge badge-success custom-btn">Save Changes</button>
+                  <button id='save_select_changes' class="badge badge-success custom-btn">Änderungen speichern</button>
                 </div>
             </div>
               <!-- -end -->
@@ -40,9 +40,9 @@
 
           <!-- 20-8-2021-- -->
             <div class="dashboard-btn">
-                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Fliese hinzufügen</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Auswertung hinzufügen</button>
 
-                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Kachelstruktur speichern</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Struktur speichern</button>
 
             </div>
 
@@ -54,7 +54,7 @@
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="text-mute text-dark">Instrumententafel</h5>
+                  <h5 class="text-mute text-dark">Dashboard</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
@@ -64,7 +64,7 @@
                   <div class="row">
                     <input type="hidden" id="modal-open" value="false">
                     <div class="col-md-3 form-group">
-                      <label for="title_modal_tile">Kachelname</label>
+                      <label for="title_modal_tile">Name</label>
                       <input type="text" placeholder="Kachelname" name="title_modal_tile" required id="title_modal_tile" class="form-control form-control-sm">
                     </div>
                     <div class="form-group col-md-3">
@@ -81,7 +81,7 @@
                     <div class="form-group col-md-3">
                       <label for="type_data_tile">Art der Daten</label>
                       <select class="form-control form-control-sm text-dark" id="type_data_tile">
-                          <option value="table">Tisch</option>
+                          <option value="table">Tabelle</option>
                           <option value="chart">Diagramm</option>
                           <option value="overall_count">Wert</option>
                       </select>
@@ -96,7 +96,7 @@
                 </div>
 
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
                 </div>
 
                 <!-- ----27-10-2021--- -->
@@ -130,7 +130,7 @@
             <div class="modal-dialog modal-lg max-width-modal">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="text-mute text-dark">Instrumententafel Chart</h5>
+                  <h5 class="text-mute text-dark">Dashboard Diagramm</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
@@ -145,40 +145,40 @@
                     </div>
 
                     <div class="form-group col-md-2">
-                      <label for="measurement-width-chart" class="text-mute">Reihe</label>
+                      <label for="measurement-width-chart" class="text-mute">Zeile</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Reihe">
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
                     </div>
 
                     <!-- 18-02-2022 -->
                     <div class="form-group col-md-2" id="energy_type_dashboard_chart_div">
-                      <label for="time_interval_chart" class="text-mute">Energie Type</label>
+                      <label for="time_interval_chart" class="text-mute">Energie Typ</label>
                       <select class="form-control form-control-sm text-dark" id="energy_type_dashboard_chart">
-                        <option value="manually">Manually</option>
+                        <option value="manually">Manuell</option>
                         <option value="layer_modal">SchichtModelle</option>
                       </select>
                     </div> 
 
                     <!-- *Energy Layer Modal Div -->
                     <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_measurement_div">
-                      <label for="time_interval_chart" class="text-mute">Select Measurement</label>
+                      <label for="time_interval_chart" class="text-mute">Messstelle auswählen</label>
                       <select class="form-control form-control-sm text-dark" id="energy_chart_measurement">
-                        <option value="">Select Measurement</option>
+                        <option value="">Messstelle auswählen</option>
                       </select>
                     </div>
 
                     <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_layer_filter_div">
-                      <label for="time_interval_chart" class="text-mute">Select Filter</label>
+                      <label for="time_interval_chart" class="text-mute">Filter auswählen</label>
                       <select class="form-control form-control-sm text-dark" id="energy_chart_layer_filter">
-                        <option value="">Select Filter</option>
-                        <option value="day">Day</option>
-                        <option value="week">Week</option>
+                        <option value="">Filter auswählen</option>
+                        <option value="day">Tage</option>
+                        <option value="week">Wochen</option>
                       </select>
                       <span class="energy_chart_layer_filter_error text-danger"></span>
                     </div>
 
                     <div class="form-group energy_chart_layer_div col-md-2">
-                      <label for="energy_chart_layer_range" class="text-mute">Enter Range</label>
+                      <label for="energy_chart_layer_range" class="text-mute">Bereich</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="energy_chart_layer_range" placeholder="Enter Value">
                       <span class="energy_chart_layer_range_error text-danger"></span>
                     </div>
@@ -188,10 +188,10 @@
                     <div class="form-group col-md-2" id="time_interval_div">
                       <label for="time_interval_chart" class="text-mute">Zeitintervall</label>
                       <select class="form-control form-control-sm text-dark" id="time_interval_chart">
-                        <option value="1">Days</option>
-                        <option value="2">Weeks</option>
-                        <option value="3">Months</option>
-                        <option value="4">Years</option>
+                        <option value="1">Tage</option>
+                        <option value="2">Wochen</option>
+                        <option value="3">Monate</option>
+                        <option value="4">Jahre</option>
                       </select>
                     </div>
                     
@@ -216,23 +216,23 @@
                     </div>
 
                     <div class="form-group col-md-2" id="chart_record_filter_div">
-                      <label for="chart_record_filter" class="text-mute">Filters</label>
+                      <label for="chart_record_filter" class="text-mute">Filter</label>
                       <select class="form-control form-control-sm text-dark" id="chart_record_filter">
-                        <option value=''>Select Filters</option>
-                        <option value="10">Last 10 Records</option>
-                        <option value="20">Last 20 Records</option>
-                        <option value="30">Last 30 Records</option>
-                        <option value="all">All Records</option>
+                        <option value=''>Filter auswählen</option>
+                        <option value="10">letzte 10 Datensätze</option>
+                        <option value="20">letzte 20 Datensätze</option>
+                        <option value="30">letzte 30 Datensätze</option>
+                        <option value="all">Alle Datensätze</option>
                       </select>
                     </div>
 
                     <div class="form-group col-md-2" id="chart_record_type_div">
                       <label for="chart_type" class="text-mute">Diagramm Typ</label>
                       <select class="form-control form-control-sm text-dark" id="chart_type">
-                        <option value="line_chart">Line Chart</option>
-                        <option value="area_chart">Area Chart</option>
-                        <option value="pie_chart">Pie Chart</option>
-                        <option value="bar_chart">Bar Chart</option>
+                        <option value="line_chart">Liniendiagramm</option>
+                        <option value="area_chart">Flächendiagramm</option>
+                        <option value="pie_chart">Kuchendiagramm</option>
+                        <option value="bar_chart">Balkendiagramm</option>
                       </select>
                     </div>
 
@@ -251,7 +251,7 @@
                     <diV class="form-group col-md-2">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
-                          Äußere Fliesenstruktur
+                          Äußere Kachelstruktur
                           <input type="checkbox" class="text-mute form-check-input" id="chart_outside_tile_structure" name="chart_outside_tile_structure" value="0">  
                         </label>
                       </div>
@@ -303,7 +303,7 @@
                 </div>
 
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
                   <!-- <div id="save_btn_tile_div"> -->
                     <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" data-edit-chart='false' class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Speichern & fortfahren">
 
@@ -338,7 +338,7 @@
                         <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count"></h3>
                         <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                       </div>  
-                      <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                      <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
                   </div>
                   
                   <div class="col-md-9 save_table_div_show overflow-hide" id="measurement_table_show" style="display: none">
@@ -351,11 +351,11 @@
                           <li class="page-item ">
                               <a class="page-link" href="javascript:void(0);" aria-label="Previous">
                                   <span aria-hidden="true">«</span>
-                                  <span class="sr-only">Previous</span>
+                                  <span class="sr-only">das Vorhergehende</span>
                               </a>
                           </li>
                           <li class="page-item">
-                              <a class="page-link" href="javascript:void(0);">Page</a>
+                              <a class="page-link" href="javascript:void(0);">Seite</a>
                           </li>
                           
                           <li style="display: block" class="page-item"><input type="number" readonly class="save_pagination_input_val pagination_input_val page-link"></li>
@@ -365,7 +365,7 @@
                           <li class="page-item " >
                             <a class="page-link" style="background: #d6d6d6; color: black" href="javascript:void(0);" aria-label="Next">
                                 <span aria-hidden="true">»</span>
-                                <span class="sr-only">Next</span>
+                                <span class="sr-only">das Nächste</span>
                             </a>
                           </li>
 
@@ -396,7 +396,7 @@
                         <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="product_count"></h3>
                         <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                       </div>  
-                      <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                      <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
                   </div>
 
                   <div class="col-md-9 save_table_div_show overflow-hide" id="product_table_show" style="display: none">
@@ -410,12 +410,12 @@
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_count_content">
-                    <p class="card-title text-md-center text-xl-left">Energiedaten Entry</p>
+                    <p class="card-title text-md-center text-xl-left">Energiedaten Eintrag</p>
                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_count"></h3>
                       <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                     </div>  
-                    <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
                   </div>
 
                   <div class="col-md-9 save_table_div_show overflow-hide" id="energy_table_show" style="display: none">
@@ -428,12 +428,12 @@
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_consumed_content"> 
-                    <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
+                    <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_consumed_count"></h3><p class="energy_unit text-muted">kWh</p>
                       <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                     </div>  
-                    <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"></span></p>
+                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"></span></p>
                   </div>
 
                   <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_table_show" style="display: none">
@@ -449,12 +449,12 @@
               <div class="card card-border">
                 <div class="row card-body">
                   <div class="col-md-12" id="energy_consumed_five_day_content">
-                    <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
+                    <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="five_days_energy_count"></h3><p class="energy_unit text-muted">kWh</p>
                       <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                     </div>  
-                    <p class="mb-0 mt-2 text-success">(05 days)<span class="text-black ml-1"><small></small></span></p>
+                    <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small></small></span></p>
                   </div>
                   
                   <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_five_day_table_show" style="display: none">
@@ -470,7 +470,7 @@
             <div class="col-md-6 grid-margin stretch-card" id="energy_graph_chart" style="display: none">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title">Energiedaten One Month</p>
+                  <p class="card-title">Energiedaten ein Monat</p>
                   <p class="text-muted font-weight-light">Received overcame oh sensible so at an. Formed do change merely to county it. Am separate contempt domestic to to oh. On relation my so addition branched.</p>
                   <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
                   <!-- <canvas id="sales-chart"></canvas> -->
@@ -495,7 +495,7 @@
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title mb-2">Energiedaten Consumed</p>
+                  <p class="card-title mb-2">Energiedaten Verbrauch</p>
                   <div class="table-responsive table-not-consumed">
                     <table class="table table-hover table-striped table-bordered">
                       <thead>
@@ -519,16 +519,16 @@
             <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div" style="display: none">
               <div class="card card-border">
                 <div class="card-body">
-                  <p class="card-title mb-2">Energiedaten Consumed Five days</p>
+                  <p class="card-title mb-2">Energiedaten 5 Tage Verbrauch</p>
                   <div class="table-responsive table-not-consumed">
                     <table class="table table-hover table-striped table-bordered">
                       <thead>
                         <tr>
                           <th>Name</th>
                           <th>Zeitintervall</th>
-                          <th>Day</th>
-                          <th>Date</th>
-                          <th>Units Consumed</th>
+                          <th>Tag</th>
+                          <th>Datum</th>
+                          <th>Verbrauch</th>
                         </tr>
                       </thead>
                       <tbody id="five_days_energy_consumed_table">

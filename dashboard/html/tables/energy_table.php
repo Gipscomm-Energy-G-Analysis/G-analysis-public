@@ -21,7 +21,7 @@
 
                     
                     <div class="form-group col-md-3 auto_man_div">
-                      <label for="energy_time_interval">Wählen Sie Zeitintervall</label>
+                      <label for="energy_time_interval">Wählen Sie ein Zeitintervall aus</label>
                       <select class="form-control form-control-sm text-dark" id="energy_time_interval">
                         <option value="1">Tage</option>
                         <option value="2">Wochen</option>
@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="form-group col-md-3 auto_man_div">
-                      <label for="energy_number_record">Gesamtrekorde</label>
+                      <label for="energy_number_record">Gesameinträge</label>
                        <input type="number" class="form-control form-control-sm text-dark" id="energy_total_number_record" placeholder="Gesamtrekorde">
                        <span class='energy_number_record_error text-danger'></span>
                     </div>
@@ -96,9 +96,9 @@
 
 
                     <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
-                      <label for="select_day_week">Wählen Sie Filtern aus</label>
+                      <label for="select_day_week">Wählen Sie Filter aus</label>
                       <select class="form-control form-control-sm text-dark" id="select_day_week">
-                        <option value="">Wählen Sie Filtern aus</option>
+                        <option value="">Wählen Sie Filter aus</option>
                         <option value="day">Tag</option>
                         <option value="week">Woche</option>
                       </select>
@@ -165,7 +165,7 @@
                     <div class="modal-dialog modal-lg max-width-modal">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="text-mute text-dark">Instrumententafel</h5>
+                          <h5 class="text-mute text-dark">Dashboard</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -181,7 +181,7 @@
                               </div>
 
                               <div class="form-group col-md-3">
-                                <label for="modal-width-input-energy" class="text-mute">Reihe</label>
+                                <label for="modal-width-input-energy" class="text-mute">Zeile</label>
                                 <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-energy" placeholder="Reihe">
                                 <input type="hidden" id="modal-width-input-energy-hidden" value="285">
                               </div>
@@ -200,9 +200,9 @@
                         </div>
 
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-sm btn-success display-none"  id="save_table_btn_energy">Save</button>
-                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Energy"  id="update_table_btn_energy">Update</button>
+                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                          <button type="button" class="btn btn-sm btn-success display-none"  id="save_table_btn_energy">Speichern</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Energy"  id="update_table_btn_energy">Ändern</button>
                         </div>
 
                        

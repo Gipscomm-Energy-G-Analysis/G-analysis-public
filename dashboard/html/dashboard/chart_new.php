@@ -62,7 +62,7 @@ if($session_val == 'false'){
 
 
 <div class="container-fluid">
-    <h3 class="text-muted text-center" id='upper_label'>Chart</h3>
+    <h3 class="text-muted text-center" id='upper_label'>Diagramm</h3>
     <div id="chart_div_new">
     </div>
 
