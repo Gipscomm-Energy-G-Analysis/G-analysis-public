@@ -1988,6 +1988,7 @@ $(document).ready( function(){
         getAllProductTables();
         // getTableFormatDashboard();
         $('#dashboard_sidebar').click();
+        storeDBValueSession();
 
     });
     // -end-->

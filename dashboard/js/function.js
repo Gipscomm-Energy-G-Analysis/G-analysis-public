@@ -9524,6 +9524,24 @@ function rowClickEnergyDashboardLayer(tile_id,mst_id,select_day_week,input_val_w
   }
 } 
 
+function storeDBValueSession(){
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "storeDBValueSession",
+        nameDB: $("#nameDashboardDB").val(),
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+    }
+  });
+}
+
 // --end-->
 // <---18-1-2022--
 // var i = 1;

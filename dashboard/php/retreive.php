@@ -541,7 +541,8 @@ class dashboardController {
                     }
                 }
                 else{
-                    $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                    $convertValue = $this->convertValueCommaSeperated($value['val']);
+                    $tr.= "<td>".$convertValue.' '.$unit."</td>";
                     if($queryMaxVal == ""){
                         $tr.= "<td><label class='badge badge-success'>Active </label></td>";
                     }
@@ -916,7 +917,8 @@ class dashboardController {
                         }
                     }
                     else{
-                        $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                        $convertValue = $this->convertValueCommaSeperated($value['val']);
+                        $tr.= "<td>".$convertValue.' '.$unit."</td>";
                         if($queryMaxVal == ""){
                             $tr.= "<td><label class='badge badge-success'>Active </label></td>";
                         }
@@ -3558,7 +3560,8 @@ class dashboardController {
                     }
                 }
                 else{
-                    $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                    $convertValue = $this->convertValueCommaSeperated($value['val']);
+                    $tr.= "<td>".$convertValue.' '.$unit."</td>";
                     if($queryMaxVal == ""){
                         $tr.= "<td><label class='badge badge-success'>Active </label></td>";
                     }
@@ -3960,6 +3963,7 @@ class dashboardController {
                     if($value['val'] > 0)
                     {
                         $valEnergy = $value['val'] / 4;
+                        $valEnergy = $this->convertValueCommaSeperated($valEnergy);
                     }
                     $tr.= "<td>".$valEnergy."</td>";
                 }
@@ -3970,6 +3974,7 @@ class dashboardController {
                     if($value['Value'] > 0)
                     {
                         $valEnergy = ($value['Value'] * $value['ConvFactor'])  / 4;
+                        $valEnergy = $this->convertValueCommaSeperated($valEnergy);
                     }
                     $tr.= "<td>".$valEnergy."</td>";
                 }
@@ -4248,7 +4253,7 @@ class dashboardController {
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
                             $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
-
+                            $totalEnergy = $this->convertValueCommaSeperated($totalEnergy);
                             $tbody .= '<tr class="row_click_energy" data-table-other="SchichtModelleAll">';
                             // $tbody .= '<td>'.$dayVal.'</td>';
                             $tbody.= "<td>".$val['modellBez']."</td>";
@@ -4420,7 +4425,7 @@ class dashboardController {
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
                             $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
-
+                            $totalEnergy = $this->convertValueCommaSeperated($totalEnergy);
                             $tbody .= '<tr class="row_click_energy" data-table-other="SchichtModelleAll">';
                             $tbody.= "<td>".$val['modellBez']."</td>";
                             $tbody.= "<td>".$val['gueltigVon']->format('Y-m-d')."</td>";
@@ -4560,10 +4565,12 @@ class dashboardController {
                     $tbody.= "<td>".$val['date']."</td>";
                     $tbody.= "<td>".$time_from."</td>";
                     $tbody.= "<td>".$time_to."</td>";
-                    $tbody.= "<td>".$val['Value']."</td>";
+                    $convertValue = $this->convertValueCommaSeperated($val['Value']);
+                    $tbody.= "<td>".$convertValue."</td>";
                     $tbody .= '</tr>';
                     $sum+=$val['Value'];
                 }
+                $sum = $this->convertValueCommaSeperated($sum);
                 $tbody.= "<tr class='font-weight-bold'><td colspan='4'>Grand Total: </td><td>$sum</td></tr>";
                 // print_r($sum);die;
                 $paginationHTMl="<div id='save_table_format' class='text-center'>
@@ -7026,7 +7033,8 @@ class dashboardController {
                             
                             $resultEnergy = queryDB($conn, $query1, "read");
                             // echo json_encode($resultEnergy); die;
-                            $totalEnergy = $resultEnergy[0]['sum'] / 4;   
+                            $totalEnergy = $resultEnergy[0]['sum'] > 0 ? $resultEnergy[0]['sum'] / 4 : 0; 
+                            $totalEnergy = $this->convertValueCommaSeperated($totalEnergy);
 
                             $tbody .= "<tr tile_id='$id' class='energy_layer_row_click' mst_id='$mst_id' energy_layer_filter='$energy_layer_filter' input_val_week_day='$input_val_week_day'>";
                             $tbody.= "<td>".$val['modellBez']."</td>";
@@ -9403,6 +9411,7 @@ class dashboardController {
                     {
                         $calulateVal = $value['val'] / 4;
                     }
+                    $calulateVal = $this->convertValueCommaSeperated($calulateVal);
                     $tr.= "<td>".$calulateVal."</td>";
                 }
                 else{
@@ -9413,7 +9422,7 @@ class dashboardController {
                     {
                         $calulateVal = ($value['Value'] * $value['ConvFactor']) / 4;
                     }
-
+                    $calulateVal = $this->convertValueCommaSeperated($calulateVal);
                     $tr.= "<td>".$calulateVal."</td>";
                 }
                 $tr.="</tr>";
@@ -9569,6 +9578,7 @@ class dashboardController {
                         if($value['val'] > 0){
                             $valueEnergy = $value['val'] / 4;
                         }
+                        $valueEnergy = $this->convertValueCommaSeperated($valueEnergy);
                         $tr.= "<td>".$valueEnergy."</td>";
                     }
                     else{
@@ -9577,6 +9587,7 @@ class dashboardController {
                         if($value['Value'] > 0){
                             $valueEnergy = ($value['Value'] * $value['ConvFactor']) / 4;
                         }
+                        $valueEnergy = $this->convertValueCommaSeperated($valueEnergy);
                         $tr.= "<td>".$valueEnergy."</td>";
                     }
                     $tr.="</tr>";
@@ -10121,6 +10132,33 @@ class dashboardController {
         }
     }
     // --end--->
+
+    // <----02-03-2022--
+    public function convertValueCommaSeperated($value)
+    {
+        try{
+            return str_replace('.',',',$value);
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+
+
+    public function storeDBValueSession()
+    {
+        try{
+           $nameDB = isset($_POST['nameDB']) ? $_POST['nameDB'] : '';
+           $_SESSION["nameDB"] = $nameDB;
+           die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+    
+
+    // ---end--->
   
 }
 $obj = new dashboardController();
