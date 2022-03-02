@@ -9542,6 +9542,38 @@ function storeDBValueSession(){
   });
 }
 
+function logout(){
+  sessionStorage.clear();
+  localStorage.removeItem('gipsAdm');
+  // <----22-7-2021--
+  localStorage.removeItem('dashboardDB');
+  localStorage.removeItem('dashboardDBName');
+  //--end-->
+  $.ajax({
+    type: "POST",
+    url: "php/retreive.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "logout",
+        nameDB: $("#nameDashboardDB").val(),
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      var pathname = window.location.pathname;
+      var arPathname = pathname.split('/');
+      if(arPathname.length > 3){
+          window.open('/'+arPathname[1]+'/login.html','_self');
+      }
+      else{
+          window.open('/login.html','_self');
+      }
+    }
+  });
+}
+
 // --end-->
 // <---18-1-2022--
 // var i = 1;

@@ -222,7 +222,7 @@
           <!-- --end-- -->
 
           <li><a href="javascript:void(0);" class="text-muted menu_dashboard">Hilfe</a></li>
-          <li><a href="javascript:void(0);" id="logout" class="dashboard_menu_click text-muted menu_dashboard"><img src="images/logout2.png"></a></li>
+          <li><a href="javascript:void(0);" id="logout" class="text-muted menu_dashboard"><img src="images/logout2.png"></a></li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
          

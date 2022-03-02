@@ -2912,6 +2912,13 @@ $(document).ready( function(){
     // --end-->
 
 
+    // <----02-03-2022--
+    $(document).on('click','#logout' , function(){
+        logout();
+    });
+    // --end--->
+
+
     
 
 

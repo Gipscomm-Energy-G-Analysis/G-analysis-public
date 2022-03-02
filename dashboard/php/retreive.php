@@ -802,7 +802,8 @@ class dashboardController {
                         }
                     }
                     else{
-                        $tr.= "<td>".$value['val'].' '.$unit."</td>";
+                        $convertValue = $this->convertValueCommaSeperated($value['val']);
+                        $tr.= "<td>".$convertValue.' '.$unit."</td>";
                         if($queryMaxVal == ""){
                             $tr.= "<td><label class='badge badge-success'>Active </label></td>";
                         }
@@ -9613,7 +9614,8 @@ class dashboardController {
             $queryTotalSum .= "Where t1.mst_ID = $mst_id ";
             $totalSum = queryDB($conn, $queryTotalSum, "read");
             $totalSumVal = $totalSum[0]['val'] != null && $totalSum[0]['val'] != 0 ?  $totalSum[0]['val'] / 4 : '0';
-            
+            $totalSumVal = $this->convertValueCommaSeperated($totalSumVal);
+
             $queryName = "SELECT TOp(1) nameMSt from messstellen Where mst_ID = $mst_id ";
             $queryNameVal = queryDB($conn, $queryName, "read");
             $nameVal = $queryNameVal != null ?  $queryNameVal[0]['nameMSt'] : '';
@@ -10156,6 +10158,21 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         } 
     }
+
+
+    public function logout()
+    {
+        try{
+            session_destroy();
+            return ['destroy' => 'true'];
+           die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
+    }
+
+
     
 
     // ---end--->
