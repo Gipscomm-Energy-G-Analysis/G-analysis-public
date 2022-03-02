@@ -21,7 +21,7 @@ class dashboardController {
             $query = "SELECT * FROM mandanten " ;
             $query .= "ORDER BY nameMan " ;
 
-            $records = queryDB ( $conn, $query, "read") ;
+            $records = queryDB ( $conn, $query, "read");
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
             die;
         }

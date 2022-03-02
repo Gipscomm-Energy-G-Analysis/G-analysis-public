@@ -228,8 +228,8 @@ $(document).ready( function(){
                 localStorage.removeItem('dashboardDBName');
                 var pathname = window.location.pathname;
                 var arPathname = pathname.split('/');
-                console.log('pathname',pathname);
-                console.log('ar pathname',arPathname);
+                // console.log('pathname',pathname);
+                // console.log('ar pathname',arPathname);
                 //return false;
                 // var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
                 // window.open('/'+mainDirectory+'/main.html','_self');
