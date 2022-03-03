@@ -75,7 +75,7 @@ if(isset($_SESSION))
         </table>
     </div>
 
-    <div class="text-center" id='print_btn_div'>
+    <div class="text-center mt-2" id='print_btn_div'>
         <input type='button' id='print_btn' class='text-center btn btn-sm btn-success' value='Print/Download'>
     </div>
 </div>
