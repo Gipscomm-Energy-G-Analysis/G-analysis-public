@@ -162,6 +162,7 @@
                     <!-- *Energy Layer Modal Div -->
                     <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_measurement_div">
                       <label for="time_interval_chart" class="text-mute">Messstelle auswählen</label>
+                      <span class='mandatory_sign'>*</span>
                       <select class="form-control form-control-sm text-dark" id="energy_chart_measurement">
                         <option value="">Messstelle auswählen</option>
                       </select>
@@ -169,6 +170,7 @@
 
                     <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_layer_filter_div">
                       <label for="time_interval_chart" class="text-mute">Filter auswählen</label>
+                      <span class='mandatory_sign'>*</span>
                       <select class="form-control form-control-sm text-dark" id="energy_chart_layer_filter">
                         <option value="">Filter auswählen</option>
                         <option value="day">Tage</option>
@@ -179,6 +181,7 @@
 
                     <div class="form-group energy_chart_layer_div col-md-2">
                       <label for="energy_chart_layer_range" class="text-mute">Bereich</label>
+                      <span class='mandatory_sign'>*</span>
                       <input type="number" class="form-control form-control-sm text-dark" id="energy_chart_layer_range" placeholder="Enter Value">
                       <span class="energy_chart_layer_range_error text-danger"></span>
                     </div>
@@ -198,18 +201,21 @@
                     
                     <div class="form-group col-md-2" id="chart_record_div">
                       <label for="chart_records" class="text-mute" id="chart_records_label"></label>
+                      <span class='mandatory_sign'>*</span>
                       <select class="form-control form-control-sm text-dark" id="chart_records">
                       </select>
                     </div>
 
                     <div class="form-group col-md-2 chart_product_div" id="chart_record_product_div">
                       <label for="chart_records_product" class="text-mute" id="chart_records_label_product"></label>
+                      <span class='mandatory_sign'>*</span>
                       <select class="form-control form-control-sm text-dark" id="chart_records_product">
                       </select>
                     </div>
 
                     <div class="form-group col-md-2 chart_product_div" id="chart_record_product_item_div">
                       <label for="chart_records_product_item" class="text-mute">Menüpunkt wählen</label>
+                      <span class='mandatory_sign'>*</span>
                       <select class="form-control form-control-sm text-dark" id="chart_records_product_item">
                         <option value=''>Menüpunkt wählen</option>
                       </select>
@@ -217,6 +223,7 @@
 
                     <div class="form-group col-md-2" id="chart_record_filter_div">
                       <label for="chart_record_filter" class="text-mute">Filter</label>
+                      <span class='mandatory_sign'>*</span>
                       <select class="form-control form-control-sm text-dark" id="chart_record_filter">
                         <option value=''>Filter auswählen</option>
                         <option value="10">letzte 10 Datensätze</option>

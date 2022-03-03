@@ -1255,7 +1255,9 @@ $(document).ready( function(){
             $('.dashboard_count_div .stretch-card').removeClass('tile-click-table');
             $('.dashboard_count_div .stretch-card').addClass('tiles-click');
             $('.dashboard_count_div .stretch-card.product_automatic_tile ').removeClass('tiles-click');
-            $('.dashboard_count_div .stretch-card').addClass('hide_table_main');
+            // <----03-03-2022--
+            // $('.dashboard_count_div .stretch-card').addClass('hide_table_main');
+            // ---end--->        
 
             $('.save_table_div_show').hide();
             $('.action-modal-button-div').removeClass('col-md-12');

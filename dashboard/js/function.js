@@ -2912,6 +2912,7 @@ $(document).on('click','.movetile .stretch-card',function(){
   // :not(.movetile .stretch-card #energy_modal_table tbody tr Not Check
   var outer_tile_structure = $(this).hasClass('hide_table_main'); //This Class for Outer tile structure
   if(outer_tile_structure == false){
+    $(this).addClass('hide_table_main');
     return false;
   }
   // --end--->
@@ -4349,7 +4350,8 @@ function saveDashboardTileChart(){
   //console.log('chart_recorda Value ',chart_records);
   //console.log('chart_recorda Filter ',chart_record_filter);
   if(chart_records == '' || chart_record_filter == ''){
-      return false;
+    alert('Please Select Required Fields');
+    return false;
   }
   $('.small-table').attr('style','display:block');
   var chart_type = $('#chart_type').val();
@@ -4494,7 +4496,8 @@ function saveDashboardTileChartEnergyLayer(){
   //console.log('chart_recorda Value ',chart_records);
   //console.log('chart_recorda Filter ',chart_record_filter);
   if(energy_type_dashboard_chart != 'layer_modal' || mst_id == '' || chart_record_filter == '' || energy_chart_layer_range == ''){
-      return false;
+    alert('Please Select Required Fields');
+    return false;
   } 
   $('.small-table').attr('style','display:block');
   var chart_type = $('#chart_type').val();
@@ -4634,7 +4637,8 @@ function saveDashboardTileChartProduct(){
   //console.log('chart_recorda Value ',chart_records);
   //console.log('chart_recorda Filter ',chart_record_filter);
   if(chart_records_product == '' || analgen_config_id == '' || chart_record_filter == ''){
-      return false;
+    alert('Please Select Required Fields');  
+    return false;
   }
   $('.small-table').attr('style','display:block');
   var chart_type = $('#chart_type').val();
@@ -4787,6 +4791,9 @@ function getChartTimeIntervalRecord(){
           $('#chart_record_type_div').show();
           $("#chart_record_filter option[value='']").prop('selected','selected');
           $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
+        }
+        else{
+          select_html+="<option value=''>No Record Found</option>";
         }
       }
       else{
@@ -8862,6 +8869,7 @@ function updateDashboardChart(){
   //console.log('chart_recorda Value ',chart_records);
   //console.log('chart_recorda Filter ',chart_record_filter);
   if(chart_records == '' || chart_record_filter == ''){
+      alert('Please Select Required Fields');
       return false;
   }
   $('.small-table').attr('style','display:block');
@@ -9010,7 +9018,8 @@ function updateDashboardChartEnergyLayer(){
   //console.log('chart_recorda Value ',chart_records);
   //console.log('chart_recorda Filter ',chart_record_filter);
   if(chart_records == '' || energy_chart_layer_filter == '' || energy_chart_layer_range == '' || energy_type_dashboard_chart != 'layer_modal'){
-      return false;
+    alert('Please Select Required Fields');  
+    return false;
   }
   $('.small-table').attr('style','display:block');
   var chart_type = $('#chart_type').val();
@@ -9159,7 +9168,8 @@ function updateDashboardChartProduct(){
   var chart_records_product_item = $('#chart_records_product_item').val();
 
   if(chart_records_product == '' || chart_records_product_item == '' || chart_record_filter == ''){
-      return false;
+    alert('Please Select Required Fields');
+    return false;
   }
   $('.small-table').attr('style','display:block');
   var chart_type = $('#chart_type').val();
