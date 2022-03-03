@@ -1,18 +1,22 @@
 <?php
 session_start();
 $session_val = $_SESSION["login_state"];
-if($session_val == 'false'){
-  $url_path = $_SERVER['REQUEST_URI']; 
-  $ar_url_path = explode('/',$url_path);
-  $redirect_path = '';
-  if(count($ar_url_path) > 3){
-    $redirect_path = "/$ar_url_path[1]/index.html";
+if(isset($_SESSION))
+{
+  if(!$_SESSION['username'])
+  {
+    $url_path = $_SERVER['REQUEST_URI']; 
+    $ar_url_path = explode('/',$url_path);
+    $redirect_path = '';
+    if(count($ar_url_path) > 3){
+      $redirect_path = "/$ar_url_path[1]/login.html";
+    }
+    else{
+      $redirect_path = "/login.html";
+    }
+    header('Location:'.$redirect_path);
+    die;
   }
-  else{
-    $redirect_path = "/index.html";
-  }
-  header('Location:'.$redirect_path);
-  die;
 }
 // include_once("..\..\/headerfiles.php");
 ?>
@@ -71,6 +75,9 @@ if($session_val == 'false'){
         </table>
     </div>
 
+    <div class="text-center" id='print_btn_div'>
+        <input type='button' id='print_btn' class='text-center btn btn-sm btn-success' value='Print/Download'>
+    </div>
 </div>
 
 <!-- plugins:js -->
@@ -97,16 +104,19 @@ $(document).ready( function(){
         if(tile_click_type == 'chart')
         {
             $('#table_div_new').hide();
-            $('#upper_label').text('Chart')
+            $('#upper_label').text('Diagramm')
             getClickDashboardChart();
         }
         else if(tile_click_type == 'table'){
             $('#chart_div_new').hide();
-            $('#upper_label').text('Table')
+            $('#upper_label').text('Tabelle')
             getClickDashboardTable();
         }
         localStorage.removeItem('chart_tile_click_data');
 
+    }
+    else{
+        $('#print_btn_div').hide();
     }
 
     // function getClickDashboardChart(count_days,count_val,chart_type){
@@ -593,6 +603,10 @@ $(document).ready( function(){
         var table_html = chart_tile_click_data['table_html'];
         $('#table_html').html(table_html);
     }
+
+    $(document).on('click','#print_btn', function(){
+        window.print();
+    });
 
 });
 </script>

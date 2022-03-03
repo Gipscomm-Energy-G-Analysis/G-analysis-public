@@ -4549,7 +4549,27 @@ class dashboardController {
                 $sum=0;
                 $resultQuery=$this->getDateWiseScore($resultQuery);
                 $currentDate = date('Y-m-d');
-                if(!array_key_exists($currentDate,$resultQuery)){
+                // <---3-3-2021-- Check Shift Expire 
+                if($valid_to < $currentDate)
+                {
+                    for($i = 0; $i < $input_val_week_day; $i++)
+                    {
+                        $dateShiftEnd = date('Y-m-d', strtotime("-$i days"));
+                        if($valid_to < $dateShiftEnd)
+                        {
+                            $tbody .= '<tr data-table-other="SchichtModelleAll">';
+                            $tbody.= "<td>".$name_val."</td>";
+                            $tbody.= "<td>".$dateShiftEnd."</td>";
+                            $tbody.= "<td>".$time_from."</td>";
+                            $tbody.= "<td>".$time_to."</td>";
+                            $tbody.= "<td>Shift Ended</td>";
+                            $tbody .= '</tr>';
+                        }
+
+                    }
+                }
+                // --end-->
+                else if(!array_key_exists($currentDate,$resultQuery)){
                     $tbody .= '<tr data-table-other="SchichtModelleAll">';
                     $tbody.= "<td>".$name_val."</td>";
                     $tbody.= "<td>".$currentDate."</td>";
@@ -5635,7 +5655,7 @@ class dashboardController {
             $query1 .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
             $query1 .= "INNER join ";
             $query1 .= "( ";
-            $query1 .= "select t3.prd_anl_ID as table_3_prd_anl_Id , t3.val , t3.on_date, t3.on_week ";
+            $query1 .= "select t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val , t3.on_date, t3.on_week ";
             $query1 .= "from masseneingabeSuchePrdIMw  as t3 ";
             $query1 .= ") ";
             $query1 .= "t3 ";
@@ -10139,6 +10159,7 @@ class dashboardController {
     public function convertValueCommaSeperated($value)
     {
         try{
+            $value=round($value,3);
             return str_replace('.',',',$value);
         }
         catch (Exception $e) {
