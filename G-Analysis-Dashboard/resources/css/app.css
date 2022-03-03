@@ -222,3 +222,19 @@ color: black !important;
 .error label{
     color:red !important;
 }
+
+.toggle .toggle-on{
+    line-height: 19px;
+  }
+
+  /* .btn-info.off{
+      margin-top: -20px;
+  } */
+
+  .btn-info.off{
+    margin-bottom: 19.5px;
+}
+
+  .btn-success.toggle-on{
+      line-height: 23px;
+  }

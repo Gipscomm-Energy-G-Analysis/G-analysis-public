@@ -45,7 +45,7 @@
     }
 
     .add_group {
-        width: 50%;
+        width: 52%;
         float: right;
     }
 
@@ -149,9 +149,8 @@
 
 
         <div class="col-sm-6">
-            <div class="row">
-                <div class="col-sm-7" style= "top: 5px;margin-bottom: 9px;bottom: 9px;"
->
+            <div class="row align-items-center">
+                <div class="col-sm-7" style= "top: 15px;">
                     <div class="btn-group float-right" style="font-size: 18px;">
                         <input type="checkbox" id="modeSelector" checked data-toggle="toggle" data-on="View Mode" data-off="Edit Mode" data-onstyle="success" data-offstyle="info">
                     </div>
@@ -166,17 +165,17 @@
                                         <span class="fa fa-bars"></span>
                                     </button>
                                 </div>
-                                <div class="btn-group float-right mr-3 navigation" data-value="{{$data['anl_ID']}}">
-                                    <button class="fc-step-backward btn btn-primary" type="button" event-type="first" aria-label="prev">
+                                <div class="btn-group float-right navigation py-2" data-value="{{$data['anl_ID']}}">
+                                    <button class="fc-step-backward btn btn-primary" style="height:37px;" type="button" event-type="first" aria-label="prev">
                                         <span class="fa fa-step-backward"></span>
                                     </button>
-                                    <button class="fc-prev-button btn btn-primary" type="button" event-type="prev" aria-label="prev">
+                                    <button class="fc-prev-button btn btn-primary" style="height:37px;" type="button" event-type="prev" aria-label="prev">
                                         <span class="fa fa-chevron-left"></span>
                                     </button>
-                                    <button class="fc-next-button btn btn-primary" type="button" event-type="next" aria-label="next">
+                                    <button class="fc-next-button btn btn-primary" style="height:37px;" type="button" event-type="next" aria-label="next">
                                         <span class="fa fa-chevron-right"></span>
                                     </button>
-                                    <button class="fc-step-forward btn btn-primary" type="button" event-type="last" aria-label="next">
+                                    <button class="fc-step-forward btn btn-primary" style="height:37px;" type="button" event-type="last" aria-label="next">
                                         <span class="fa fa-step-forward"></span>
                                     </button>
                                 </div>
@@ -853,12 +852,12 @@
 
                         <div class="col-sm-6">
                             <div class="col-sm-6 mode_css_second">
-                                <div class="btn-group float-right" style="width: 160px;height: 40px;font-size: 18px;">
+                                <div class="btn-group float-right" style="width: 160px;height: 59px;font-size: 18px; margin-top: 30px;">
                                     <input type="checkbox" id="modeSelectorColumns" checked data-toggle="toggle" data-on="Group Columns" data-off="Default Columns" data-onstyle="success" data-offstyle="info">
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="add_group select_group_options_div_alt" data-toggle="modal" data-target="#group-modal" style="margin-right:5px;display: none;">
+                                <div class="add_group select_group_options_div_alt" data-toggle="modal" data-target="#group-modal" style="margin-right:2px;display: none;">
                                     <button type="button" class="btn btn-block btn-info">Add Group Options</button>
                                 </div>
                             </div>
@@ -868,8 +867,8 @@
 
                         <form class="form-horizontal select_group_options_div">
                             <div class="card-body" id="spin_container">
-                                <div class="row hideData" style="margin-top: 20px;">
-                                    <div class="col-sm-6">
+                                <div class="row hideData" style="margin-top: 8px;">
+                                    <div class="col-sm-6" style="right: 20px;">
                                     <div class="alert alert-warning alert-dismissible">
                                         <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
                                         No Confugurations for the Sub Group Found!
