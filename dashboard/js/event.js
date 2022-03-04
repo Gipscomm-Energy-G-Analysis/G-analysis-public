@@ -3014,6 +3014,12 @@ $(document).ready( function(){
     // --end--->
 
 
+    // <---04-03-2022--
+    $(document).on('click','.inner_table_energy_automatic' , function(){
+        $(this).removeClass('inner_table_energy_automatic');
+        $(this).addClass('hide_table_main');
+    });
+    // --end-->
     
 
 

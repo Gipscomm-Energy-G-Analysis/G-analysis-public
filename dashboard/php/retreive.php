@@ -7372,11 +7372,11 @@ class dashboardController {
                 // die;
                 if($queryEnergyRecords != '' && count($queryEnergyRecords))
                 {
-                    $tbody .= "<tbody";
+                    $tbody .= "<tbody>";
                     foreach($queryEnergyRecords as  $val1){
                         $totalValue = $val1['value'] > 0 ? $val1['value'] / 4 : 0;
                         $totalValue = $this->convertValueCommaSeperated($totalValue);
-                        $tbody .= "<tr class='hjhjh'>
+                        $tbody .= "<tr tile_id='$id' mst_id='$mst_id'  class='energy_automatic_row_click'>
                         <td>".$energy_measurement_text."</td>
                         <td>".$val1['date']->format('Y-m-d')."</td><td>".$totalValue."</td>
                         </tr>";

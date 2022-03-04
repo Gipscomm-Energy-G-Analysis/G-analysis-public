@@ -912,6 +912,10 @@ function getTableFormatDashboard(){
           }
           else if(value['tile_data_type'] == "table"){
             value['tile_html']=value['tile_html'].replace("grid-margin", "table_tile grid-margin");
+            if(value['tile_record_type'] == 'energy' && (value['table_other'] == 'true' || value['table_other'] == 'SchichtModelleAll'))
+            {
+              value['tile_html']=value['tile_html'].replace("table_tile", "table_tile energy_auto_layer_tile");
+            }
           }
           else if(value['tile_data_type'] == "chart"){
             value['tile_html']=value['tile_html'].replace("grid-margin", "chart_tile grid-margin");
@@ -3069,7 +3073,14 @@ $(document).on('click','.movetile .stretch-card',function(){
   // :not(.movetile .stretch-card #energy_modal_table tbody tr Not Check
   var outer_tile_structure = $(this).hasClass('hide_table_main'); //This Class for Outer tile structure
   if(outer_tile_structure == false){
-    $(this).addClass('hide_table_main');
+    var automatic_energy_tile = $(this).hasClass('energy_auto_layer_tile');
+    if(automatic_energy_tile == false)
+    {
+      $(this).addClass('hide_table_main');
+    }
+    else{
+      $(this).addClass('inner_table_energy_automatic');
+    }
     return false;
   }
   // --end--->
