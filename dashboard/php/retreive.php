@@ -649,7 +649,8 @@ class dashboardController {
     function getTableFormatDashboard(){
         try{
             global $conn;
-            $username = $_SESSION['username']; 
+            $username = $_SESSION['username'];
+            $_SESSION['nameDB'] = isset($_POST['nameDB'])?$_POST['nameDB']:null;
             $selectQuery = "SELECT * from tableFormat where username = '$username' order by priority asc ";
             $dataResult = queryDB($conn, $selectQuery, "read");
             $records['data'] = $dataResult;
@@ -4208,7 +4209,7 @@ class dashboardController {
     {
         try{
             global $conn;
-            $queryMeasurement = "select * from messstellen where messartMst = 'automatisch' And messmittelBerechnungslogikMst != '' ";
+            $queryMeasurement = "select * from messstellen where messartMst = 'automatisch' ";
             $resulTotalRecord = sqlsrv_query($conn,$queryMeasurement);
             $resultQuery = [];
             $tablefound = 'false';
@@ -4224,7 +4225,7 @@ class dashboardController {
                 $select = "<option value=''>Please Select Measurement</option>";
                 foreach($resultQuery as $key=>$val)
                 {
-                    $select .= "<option value=".$val["mst_ID"].">".$val['messmittelBerechnungslogikMst']."</option>";    
+                    $select .= "<option value=".$val["mst_ID"].">".$val['nameMSt']."</option>";    
                 }
                 $result['measurement_html'] = $select;
             }

@@ -35,6 +35,19 @@
                       </select>
                     </div> -->
 
+                    <!-- 04-3-2022 -->
+                    <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                      <label class="form-check-label"> Uhrzeit Von </label>
+                      <input type="time" class="form-control-sm form-control text-mute" id="energy_automatic_input_from_time" name="energy_automatic_input_from_time" placeholder="Uhrzeit Von">  
+                      <span class='energy_automatic_input_from_time_error text-danger'></span>
+                    </div>
+
+                    <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                      <label class="form-check-label"> Uhrzeit Bis </label>
+                      <input type="time" class="form-control-sm form-control text-mute" id="energy_automatic_input_time_to" name="energy_automatic_input_time_to" placeholder="Uhrzeit Bis">  
+                      <span class='energy_automatic_input_to_time_error text-danger'></span>
+                    </div> -->
+
                     <div class="form-group col-md-3 energy_automatic_filter_div" id="energy_automatic_input_div" style="display: none">
                       <label class="form-check-label"> Bereichswert eingeben </label>
                       <input type="number" class="form-control-sm form-control text-mute" id="energy_automatic_input" name="energy_automatic_input" placeholder="Bereichswert eingeben">  
@@ -134,6 +147,12 @@
                       <span class='energy_input_day_week_error text-danger'></span>
                     </div>
                     <!-- --end -->
+
+
+                    <div class="form-group col-md-3">
+                      <input type="button" class="btn btn-sm btn-success" id="energy_btn_table" value='Submit'>  
+                    </div>
+
 
                     <div class="form-group col-md-3" id="open_end_layer_div" style="display: none">
                       <div class="form-check form-check-primary">

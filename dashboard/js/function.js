@@ -2626,15 +2626,15 @@ function getAllProductTables(){
         // <---21-12-2021---
         if(a['all_tables'] != '')
         {
-          var all_table = "<option value=''>Please Select Table</option>";;
+          var all_table = "<option value=''>Tabellenauswahl</option>";;
           a['all_tables'].forEach((val)=>{
             all_table +="<option value='"+val['name']+"'>"+val['name']+"</option>";
           });
           $('#all_tables_product').html(all_table);
 
-          var selectHTML = "<label for='product_type'>Columns</label>";
+          var selectHTML = "<label for='product_type'>Spalten</label>";
           selectHTML += "<select class='form-control form-control-sm text-dark'id='all_columns_product'>";
-          selectHTML+= "<option value=''>Please Select Column</option>";
+          selectHTML+= "<option value=''>Spaltenauswahl</option>";
           selectHTML += "</select>";
           $('#all_columns_product_div').html(selectHTML);
           

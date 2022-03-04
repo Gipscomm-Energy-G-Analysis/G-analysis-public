@@ -80,7 +80,8 @@
                     <h3 id="verbExportMenu" class="dashboard_menu_click cursor_pointer">Verbrauchsdatenexport</h3>
                   </div>
                   <div class="column">
-                    <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer">Production</h3>
+                      <a href="/product/index.php/dashboard">Production</a>
+<!--                    <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer">Production</h3>-->
                   </div>
                 </div>
               </div>
