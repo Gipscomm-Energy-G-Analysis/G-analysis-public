@@ -19,6 +19,29 @@
                     </div>
 
 
+                    <!----3-2-2022 -->
+                    <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                      <label for="energy_measurement_automatic">Messung auswählen</label>
+                      <select class="form-control form-control-sm text-dark" id="energy_measurement_automatic">
+                        <option value="">Messung auswählen</option>
+                      </select>
+                    </div>
+
+                    <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                      <label for="energy_automatic_order_by" id="energy_record_order_by_label">Verbrauchte Filtereinheiten</label>
+                      <select class="form-control form-control-sm text-dark" id="energy_automatic_order_by">
+                        <option value="desc">Maximum</option>
+                        <option value="asc">Minimum</option>
+                      </select>
+                    </div> -->
+
+                    <div class="form-group col-md-3 energy_automatic_filter_div" id="energy_automatic_input_div" style="display: none">
+                      <label class="form-check-label"> Bereichswert eingeben </label>
+                      <input type="number" class="form-control-sm form-control text-mute" id="energy_automatic_input" name="energy_automatic_input" placeholder="Bereichswert eingeben">  
+                      <span class='energy_automatic_input_error text-danger'></span>
+                    </div>
+                    <!-- --end-- -->
+
                     
                     <div class="form-group col-md-3 auto_man_div">
                       <label for="energy_time_interval">Wählen Sie ein Zeitintervall aus</label>

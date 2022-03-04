@@ -160,13 +160,20 @@ $(document).ready( function(){
                 if(number_record_local_val != undefined && number_record_local_val != null){
                     $('#energy_total_number_record').val(number_record_local_val);
                     $('#energy_search_record').val('');
-                    getNumberRecordsEnergy();
+                    //getNumberRecordsEnergy(); //03-3-2022
                     // return false;
+
+                    $('#energy_automatic_input').val('');
+                    getAllMeasurementEnergyAutomatic();
                 }
                 else{
                     $('#energy_total_number_record').val('');
                     $('#energy_search_record').val('');
-                    getNumberRecordsEnergy();
+                    // getNumberRecordsEnergy(); //03-3-2022
+
+
+                    $('#energy_automatic_input').val('');
+                    getAllMeasurementEnergyAutomatic();
                 }
                 // ---end--->
                 break;
@@ -376,7 +383,7 @@ $(document).ready( function(){
         $('#energy_records_order_by option:contains("Maximum")').text('Order By Max Units Consumed');
         $('#energy_records_order_by option:contains("Minimum")').text('Order By Min Units Consumed');
         var energy_type = $('#energy_type').val();
-        if(energy_type != 'layer_modal')
+        if(energy_type == 'manually')
         {
             getNumberRecordsEnergy(); 
         }
@@ -503,6 +510,21 @@ $(document).ready( function(){
                 rowClickEnergyLayer(name_val,valid_from,valid_to,time_from,time_to); 
             }
             // rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array)
+        }
+        else if(energy_type == 'automatic'){
+            var name_val = $(this).children('td:eq(0)').text();
+            var dateValue = $(this).children('td:eq(1)').text();
+            var totalSumValue = $(this).children('td:eq(1)').text();
+            $('#energy_search_record').val(name_val);
+            if(totalSumValue == '0')
+            {
+                var tr = "<tr><td colspan='50' class='text-center text-muted'>No Record Found</td></tr>";
+                $('#energy_select_table_entries').html(tr);
+                $('#pagination_html_energy').html('');
+            }
+            else{
+                rowClickEnergyAutomatic(name_val,dateValue);
+            }
         }
         else {
             var data_type = $(this).attr('data-type');
@@ -1108,7 +1130,7 @@ $(document).ready( function(){
             $('#update_table_btn_energy').addClass('display-none');
             var tableLength = $('#energy_select_table_entries tr').length;
             var energyType = $('#energy_type').val();
-            if(parseInt(tableLength) <= 5 || energyType == 'layer_modal'){
+            if(parseInt(tableLength) <= 5 || energyType == 'layer_modal' || energyType == 'automatic'){
                 $('.energy_tile_modal').modal('show');
                 // <----20-8--2021---
                 var type = "Energy";
@@ -1158,7 +1180,7 @@ $(document).ready( function(){
         else if(tile_edit_value == 'true' && type_data_tile == 'table'){ //Table Edit Case
             var tableLength = $('#energy_select_table_entries tr').length;
             var energyType = $('#energy_type').val();
-            if(parseInt(tableLength) <= 5 || energy_type == 'layer_modal'){
+            if(parseInt(tableLength) <= 5 || energy_type == 'layer_modal' || energyType == 'automatic'){
                 $('#save_table_btn_energy').addClass('display-none');
                 $('#update_table_btn_energy').removeClass('display-none');
                 $('.energy_tile_modal').modal('show');
@@ -1424,9 +1446,10 @@ $(document).ready( function(){
             $('#energy_type option[value=automatic]').prop('selected','selected');
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum');
-            $('.auto_man_div').show();
+            $('.auto_man_div').hide();
+            $('.energy_automatic_filter_div').show();
             $('.layer_modal_filter_div').hide();
-            $('#energy_search_record').attr('readonly',false);
+            $('#energy_search_record').attr('readonly',true);
             // $('#energy_type').trigger('change');
 
 
@@ -1918,10 +1941,17 @@ $(document).ready( function(){
         if(val == 'automatic'){
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum');
-            $('.auto_man_div').show();
+
+            $("#energy_automatic_order_by option[value='desc']").text('Maximum');
+            $("#energy_automatic_order_by option[value='asc']").text('Minimum');
+            
+            $('.auto_man_div').hide();
+            $('.energy_automatic_filter_div').show();
             $('.layer_modal_filter_div').hide()
-            $('#energy_search_record').attr('readonly',false);
-            getNumberRecordsEnergy();
+            $('#energy_search_record').attr('readonly',true);
+            // getNumberRecordsEnergy();
+            $('#energy_automatic_input').val('');
+            getAllMeasurementEnergyAutomatic();
 
         }
         else if(val == 'layer_modal'){
@@ -1929,6 +1959,7 @@ $(document).ready( function(){
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Maximum Quantity');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Minimum Quantity');
             $('.auto_man_div').hide();
+            $('.energy_automatic_filter_div').hide();
             $('.layer_modal_filter_div').show();
             $('#energy_search_record').attr('readonly',true);
             $("#select_day_week option[value='']").prop('selected','selected');
@@ -1938,6 +1969,7 @@ $(document).ready( function(){
             $("#energy_records_order_by option[value= 'order_by_desc']").text('Order By Max Units Consumed');
             $("#energy_records_order_by option[value= 'order_by_asc']").text('Order By Min Units Consumed');   
             $('.auto_man_div').show();
+            $('.energy_automatic_filter_div').hide();
             $('.layer_modal_filter_div').hide()
             $('#energy_search_record').attr('readonly',false);
             getNumberRecordsEnergy();
@@ -2791,6 +2823,31 @@ $(document).ready( function(){
     // ---end--->
 
 
+    // <----03-3-2022-----
+    $(document).on('blur', '#energy_automatic_input', function(){
+        var input_val = $(this).val();
+        if(input_val > 30 || input_val < 1)
+        {
+            $('.energy_automatic_input_error').text('Value Cannot be Greater than 30 and less than 0');
+            $('.energy_automatic_input_error').fadeIn('slow');
+            setTimeout( function(){
+                $('.energy_automatic_input_error').fadeOut('slow');
+            },3000);
+            $('#energy_automatic_input').val('');
+        }
+      
+        getNumberRecordsEnergyAutomatic();
+    });
+    // --end----->
+
+
+    // <----04-03-2022--
+    $(document).on('change','#energy_measurement_automatic', function(){
+        getNumberRecordsEnergyAutomatic();
+    })
+    // --end--->
+
+
     // <---27-01-2022---
     $(document).on('change','#energy_measurement,#select_day_week', function(){
         // $('#input_val_week_day').trigger('blur');
@@ -2917,6 +2974,42 @@ $(document).ready( function(){
     // <----02-03-2022--
     $(document).on('click','#logout' , function(){
         logout();
+    });
+    // --end--->
+
+
+    // <----04-3-2022--
+    $(document).on('click','.energy_automatic_row_click', function(){
+        var tile_id = $(this).attr('tile_id');
+        var mst_id = $(this).attr('mst_id');
+        var name_val = $(this).children('td:eq(0)').text();
+        var date_val = $(this).children('td:eq(1)').text();
+        var energy_total_value = $(this).children('td:eq(2)').text();
+
+        if(energy_total_value == '0')
+        {
+            var energy_header = "<tr>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Messstelle</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+            energy_header+= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Wert</th>";
+            energy_header+= "</tr>";
+
+            var energy_html ="<tr>";
+            energy_html +="<td colspan='50' class='text-center'>No Record Found</td>";
+            energy_html +="</tr>";
+
+           
+            $('.'+tile_id+'.tiles-click .save_table_div_show_table .table thead').html(energy_header);
+            $('.'+tile_id+'.tiles-click .save_table_div_show_table .table tbody').html(energy_html);
+
+            var table_html = $('.'+tile_id+'.tiles-click .save_table_div_show_table .table').html();
+            var chart_tile_click_data = {'table_html' : table_html,'tile_click_type' : 'table'}
+            localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
+
+        }
+        else{
+            rowClickEnergyDashboardAutomatic(tile_id,mst_id,name_val,date_val); 
+        }
     });
     // --end--->
 
