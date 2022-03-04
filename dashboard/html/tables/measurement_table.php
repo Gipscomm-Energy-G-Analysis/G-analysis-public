@@ -52,6 +52,10 @@
                        <span class='measurement_number_record_error text-danger'></span>
                       </div>
 
+                      <div class="form-group col-md-3">
+                      <input type="button" class="btn btn-sm btn-success click_common_btn" id="measurement_btn_table" value='Submit'>  
+                      </div>
+
                   </div>
 
                   <div class="row">

@@ -3728,6 +3728,7 @@ class dashboardController {
                 $tbody .= '<tr>';
                 $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
                 $tbody .= '</tr>';
+                $records['pagination_html_energy'] =  '';
             }
             // --end-->
             
@@ -4453,6 +4454,7 @@ class dashboardController {
                     $tbody .= '<tr>';
                     $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
                     $tbody .= '</tr>';
+                    $records['pagination_html_energy'] =  $paginationHTMl;
                 }
                 // --end-->
                 

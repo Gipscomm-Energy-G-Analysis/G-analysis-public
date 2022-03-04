@@ -52,6 +52,10 @@
                        <span class="product_number_record_error text-danger"></span>
                     </div>
 
+                    <div class="form-group col-md-3">
+                      <input type="button" class="btn btn-sm btn-success click_common_btn" id="production_btn_table" value='Submit'>  
+                    </div>
+
                   </div>
 
                   <div class="modal fade modal_all_products" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
