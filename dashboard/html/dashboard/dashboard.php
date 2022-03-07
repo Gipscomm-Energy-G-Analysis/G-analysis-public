@@ -294,7 +294,7 @@
                     </div>
 
                     <div class="form-group col-md-3">
-                      <input type="button" class="btn btn-sm btn-success click_common_btn_chart" id="chart_btn_click" value='Submit'>  
+                      <input type="button" class="btn btn-sm btn-success click_common_btn_chart" id="chart_btn_click" value='Show Results'>  
                     </div>
 
 

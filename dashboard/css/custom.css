@@ -899,4 +899,9 @@
 
 .click_common_btn{
     margin-top: 32px;
+    cursor: pointer;
+}
+
+.click_common_btn_chart{
+    cursor: pointer;
 }

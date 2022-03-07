@@ -329,10 +329,10 @@ $(document).ready( function(){
             var data_type = $('#row_click_table').attr('data_type');
             var data_mst = $('#row_click_table').attr('data_mst');
             if(data_type != undefined && data_mst != undefined && data_type != '' && data_mst != ''){
-                rowClickMeasurementTableData(data_mst,data_type);
+                // rowClickMeasurementTableData(data_mst,data_type);
             }
             else{
-                getNumberRecordsMesurement();
+                // getNumberRecordsMesurement();
             }
         }
     });
@@ -363,10 +363,10 @@ $(document).ready( function(){
             var data_type = $('#row_click_table_energy').attr('data_type');
             var data_mst = $('#row_click_table_energy').attr('data_mst');
             if(data_type != undefined && data_mst != undefined && data_type != '' && data_mst != ''){
-                rowClickEnergyTableData(data_mst,data_type);
+                // rowClickEnergyTableData(data_mst,data_type);
             }
             else{
-                getNumberRecordsEnergy();
+                // getNumberRecordsEnergy();
             }
         }
     });
@@ -2667,6 +2667,7 @@ $(document).ready( function(){
             $('#product_field_div').hide();
             $('#product_records_order_by_div').hide();
             getAllProductTables();
+            $('#production_btn_table').show();
             // getNumberRecordsProductAutomatic();
         }else {
             var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Product</td></tr>";
@@ -2675,6 +2676,7 @@ $(document).ready( function(){
             $('#product_field_div').show();
             $('.automatic_product_div').hide();
             getNumberRecordsProduct();
+            $('#production_btn_table').hide();
         }
     })
     // --end-->
@@ -2726,7 +2728,7 @@ $(document).ready( function(){
         else{
             $('.product_number_record_error').text('');
             localStorage.setItem('number_record_product',val);
-            getNumberRecordsProductAutomatic();
+            // getNumberRecordsProductAutomatic();
         }
         
     });
@@ -2817,7 +2819,7 @@ $(document).ready( function(){
                 $('#input_val_week_day').val('');
             }
         }
-        getNumberRecordsEnergyLayerModal();
+        // getNumberRecordsEnergyLayerModal();
     });
     
     // ---end--->
@@ -2836,9 +2838,11 @@ $(document).ready( function(){
             $('#energy_automatic_input').val('');
         }
       
-        getNumberRecordsEnergyAutomatic();
+        // getNumberRecordsEnergyAutomatic();
     });
     // --end----->
+
+ 
 
 
     // <----04-03-2022--
@@ -3020,6 +3024,95 @@ $(document).ready( function(){
         $(this).addClass('hide_table_main');
     });
     // --end-->
+
+
+    // <----07-3-2022----
+    // *** Energy Table Case
+    $(document).on('click','#energy_btn_table', function(){
+        var energy_type= $('#energy_type').val();
+        if(energy_type == 'automatic')
+        {
+            var energy_measurement_automatic = $('#energy_measurement_automatic').val();
+            var energy_automatic_input = $('#energy_automatic_input').val();
+            if(energy_measurement_automatic == '' || energy_automatic_input == '' )
+            {
+                alert('Please Select All Filters');
+            }
+            else{
+                getNumberRecordsEnergyAutomatic();
+            }
+        }
+        else if(energy_type == 'manually'){
+            var energy_total_number_record = $('#energy_total_number_record').val();
+            if(energy_total_number_record == '')
+            {
+                alert('Please Select All Filters');
+            }
+            else{
+                getNumberRecordsEnergy();
+            }
+        }
+        else if(energy_type == 'layer_modal'){
+            var energy_measurement = $('#energy_measurement').val();
+            var select_day_week = $('#select_day_week').val();
+            var input_val_week_day = $('#input_val_week_day').val();
+            if(energy_measurement == '' || select_day_week == '' || input_val_week_day == '')
+            {
+                alert('Please Select All Filters');
+            }else{
+                getNumberRecordsEnergyLayerModal();
+            }
+        }
+    });
+
+
+    //Product Case
+    $(document).on('click','#production_btn_table', function(){
+        var product_type = $('#product_type').val();
+        if(product_type == 'automatic')
+        {
+            var all_tables_product = $('#all_tables_product').val();
+            var all_columns_product = $('#all_columns_product').val();
+            var product_total_number_record = $('#product_total_number_record').val();
+            if(all_tables_product == '' || all_columns_product == '' || product_total_number_record == '')
+            {
+                alert('Please Select All Filters');
+            }
+            else{
+                getNumberRecordsProductAutomatic();
+            }
+        }
+    });
+
+
+    //Measuement Case
+    $(document).on('click', '#measurement_btn_table' , function(){
+        var measurement_type = $('#measurement_type').val();
+        if(measurement_type == 'automatic')
+        {
+            var measurement_total_number_record = $('#measurement_total_number_record').val();
+            if(measurement_total_number_record == '')
+            {
+                alert('Please Select All Filters');
+            }
+            else{
+                getNumberRecordsMesurement();
+            }
+        }
+        else if(measurement_type == 'manually')
+        {
+            var measurement_total_number_record = $('#measurement_total_number_record').val();
+            if(measurement_total_number_record == '')
+            {
+                alert('Please Select All Filters');
+            }
+            else{
+                getNumberRecordsMesurement();
+            } 
+        }
+    }); 
+
+    // --end--->
     
 
 

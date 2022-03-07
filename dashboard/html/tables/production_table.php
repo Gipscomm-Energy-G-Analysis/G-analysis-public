@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-group col-md-3">
-                      <input type="button" class="btn btn-sm btn-success click_common_btn" id="production_btn_table" value='Submit'>  
+                      <input type="button" class="btn btn-sm btn-success click_common_btn" id="production_btn_table" value='Show Results'>  
                     </div>
 
                   </div>
