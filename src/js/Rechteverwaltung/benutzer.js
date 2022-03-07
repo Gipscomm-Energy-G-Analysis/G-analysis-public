@@ -14,7 +14,7 @@ const scpRechteverwaltung_benutzer =
 
             const getMenuAndEditConfig =
                 () =>
-                JSON.stringify(
+                (
                     { values     : treeBen.getValues().join(",")
                     , editValues : treeBen.getEditValues().join(",")
                     }
@@ -177,7 +177,7 @@ const scpRechteverwaltung_benutzer =
                             $("#titelBen").val(record.titel)
                             $("#nameBen").val(record.name)
                             $("#vornameBen").val(record.vorname)
-                            $("#emailBen").val(record.email)
+                            $("#emailBen").val(record.eMail)
                             $("#telefonBen").val(record.telefon)
                             $("#faxBen").val(record.fax)
                             $("#mobiltelefonBen").val(record.mobiltelefon)

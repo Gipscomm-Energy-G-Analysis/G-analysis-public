@@ -686,7 +686,7 @@ Tree.createLiEle = function (node, closed) {
   const labelEdit = document.createElement('span');
   const textEdit = document.createTextNode("Ändern");
 
-  if(scpRechteverwaltung.editItems().some(a => text.textContent === a)) {
+  if(scpRechteverwaltung.getEditItemIDs($("[data-edit]")).some(a => node.id === a)) {
       checkboxEdit.classList.add('treejs-checkbox-edit');
       checkboxEdit.id = node.text.replace(" ", "-")
       checkboxEdit.type = "checkbox"
