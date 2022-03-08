@@ -370,7 +370,7 @@ function firstQuery(){
         scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
 
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst, series ] = scpChart.updateChart(chartData)(nameMst_1)
+        const [ colorMst, series ] = scpChart.updateChart(scpChart.Interval.Month)(chartData)(nameMst_1)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_1").text( scpChart.sumSeries(chartData) + " kWh" )
@@ -408,7 +408,7 @@ function secondQuery(){
         scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
 
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst2, series2 ] = scpChart.updateChart(chartData)(nameMst_2)
+        const [ colorMst2, series2 ] = scpChart.updateChart(scpChart.Interval.Month)(chartData)(nameMst_2)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_2").text( scpChart.sumSeries(chartData) + " kWh" )
@@ -446,7 +446,7 @@ function thirdQuery(){
         scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
 
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst3, series3 ] = scpChart.updateChart(chartData)(nameMst_3)
+        const [ colorMst3, series3 ] = scpChart.updateChart(scpChart.Interval.Month)(chartData)(nameMst_3)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_3").text( scpChart.sumSeries(chartData) + " kWh" )

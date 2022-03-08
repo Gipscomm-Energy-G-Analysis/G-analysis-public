@@ -16,6 +16,7 @@ function eMail($empfaenger, $betreff, $emailText) {
     
     $mail = new PHPMailer();
 
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
     $mail->isSMTP();
     $mail->Host = 'mail.hostedoffice.ag';
     $mail->SMTPAuth = true;

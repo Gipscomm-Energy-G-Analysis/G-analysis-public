@@ -270,8 +270,8 @@ const scpRechteverwaltung =
                     $(".manGrpPfad [label='Mandantengruppen']").append(
                             mandantengruppen.map( 
                                 manGrp => 
-                                    pipe( manGrp
-                                        , getIDAndName(Type.Mandantengruppe)
+                                    pipe_(manGrp)( 
+                                        getIDAndName(Type.Mandantengruppe)
                                         , addOption
                                         )[2]
                             ).join("")
@@ -281,8 +281,8 @@ const scpRechteverwaltung =
                     $(".manGrpPfad [label='Mandanten']").append(
                             mandanten.map( 
                                 man_ => 
-                                    pipe( man_
-                                        , getIDAndName(Type.Mandant)
+                                    pipe_(man_)( 
+                                        getIDAndName(Type.Mandant)
                                         , addOption
                                         )[2]
                             ).join("")  

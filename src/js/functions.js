@@ -1667,15 +1667,6 @@ try {
             dbFuerEnergietraegerFestlegen($("#nameDB").val());
             energietrInDBoxLieg();
             readInstanzen("liegFirst", 0);
-            [ "msm"
-            , "std"
-            , "anl"
-            , "ent"
-            , "enf"
-            , "eRng"
-            , "iMw"
-            , "zp" ]
-            .forEach(ident => readInstanzen(`${ident}First`, 0))
             liegNavID =
             berNavID =
             mstENavID =

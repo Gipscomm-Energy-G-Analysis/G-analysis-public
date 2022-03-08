@@ -4,27 +4,15 @@ const TranslationType = {
   ENERGY_DATA_02: 2
 }
 
-const fullHour =
-    minutes =>
-    minutes === "00"
+const TimeMode =
+    { DAY   : 0
+    , MONTH : 1
+    , YEAR  : 2
+    }
 
-const isCounter =
-    data =>
-    data.every((a, i, arr) => equalsZero(i) || a.Value >= arr[decr(i)])
-
-const setAsXY = 
-    x => 
-    y => 
-    ({ x, y })
-
-const timeToMonth =
-    time =>
-    time.slice(3, 5)
-
-const assignData =
-    recordsTime =>
-    recordsData =>
-    
+const makeHour =
+    hour =>
+    hour + ":00"
 
 function DataTranslator(translationType, inData){
   this.translationType = translationType;
@@ -50,17 +38,6 @@ function DataTranslator(translationType, inData){
       }
     }
     switch (this.translationType) {
-
-        const monthsXY =
-            range1To(12)
-            .map(prefixZero)
-            .map(flip(setAsXY)(undefined))
-            .sort((a,b) => a.x - b.x)
-
-        
-
-
-        .map(a => this.data.Time.find(equal(a)))
 
       case TranslationType.ENERGY_DATA_01:
         for(let i = 0; i < nMonth; i++){

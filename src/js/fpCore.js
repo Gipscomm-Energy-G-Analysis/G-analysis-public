@@ -141,6 +141,8 @@ Object
         
         this.prepRange1To = arr => n => n > 0 ? range0 (arr.concat(n)) (n - 1) : arr.sort()
         this.range1To = this.prepRange1To([])
+        this.rangePrep = arrNew => n => m => n < m + 1 ? rangePrep(arrNew.concat(n))(n + 1)(m) : arrNew
+        this.range = this.rangePrep([])
         this.difference = arr1 => arr2 => arr1.filter(a1 => !arr2.some(equal(a1)))
         this.containsNaN = str => this.unequal(str.search("NaN"))(-1)
         this.removeDuplicates = arr => Array.from(new Set(arr))
@@ -214,5 +216,6 @@ const { split_
       , difference
       , containsNaN
       , removeDuplicates
+      , range
       } = scpCore;
     // module.exports = scpCore;
