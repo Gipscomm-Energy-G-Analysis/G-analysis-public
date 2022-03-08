@@ -1471,7 +1471,7 @@ $(document).ready( function(){
             // $('#dashboard_add_tile_chart').click();
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
-            getChartTileDashboard();
+            getChartTileDashboard();                                   
             $('#time_interval_chart option[value=1]').prop('selected','selected');
             getChartTimeIntervalRecord();
             // dashboardChart();
@@ -1506,12 +1506,15 @@ $(document).ready( function(){
             // <---18-02-2021--
             if(record_type_of_tile == "energy")
             {
+                
                 $('#energy_type_dashboard_chart_div').show();
-                $('#energy_type_dashboard_chart option[value=manually').prop('selected','selected');
+                // $('#energy_type_dashboard_chart option[value=manually').prop('selected','selected');
+                $('#energy_type_dashboard_chart option[value=automatic').prop('selected','selected');
                 $('#energy_type_dashboard_chart').trigger('change');
 
             }
             else{
+                $('.energy_automatic_div').hide();
                 $('#energy_type_dashboard_chart_div').hide();
                 $('.energy_chart_layer_div').hide();
             }
@@ -1543,6 +1546,7 @@ $(document).ready( function(){
 
                 $('#energy_type_dashboard_chart_div').hide();
                 $('.energy_chart_layer_div').hide();
+                $('.energy_automatic_div').hide();
             }
             else if(record_type_of_tile == 'energy'){
                 var energy_chart_type = $('#save_and_proceed_btn_dashboard').attr('energy_chart_type');
@@ -1554,6 +1558,21 @@ $(document).ready( function(){
 
                     $('#energy_type_dashboard_chart_div').show();
                     $('.energy_chart_layer_div').show();
+
+                    $('.energy_automatic_div').hide();
+                }
+                else if(energy_chart_type == 'automatic')
+                {
+                    getEditChartDataDashboardEnergyAutomatic();
+                    $('#energy_type_dashboard_chart option[value=automatic]').prop('selected','selected');
+                    $('#chart_record_div').hide();
+                    $('#time_interval_div').hide();
+
+                    $('#energy_type_dashboard_chart_div').show();
+                    $('.energy_chart_layer_div').hide();
+
+                    $('.energy_automatic_div').show();
+
                 }
                 else{
                     getEditChartTileDashboardEnergy();
@@ -1562,6 +1581,8 @@ $(document).ready( function(){
                     $('#time_interval_div').show();
                     $('#energy_type_dashboard_chart_div').show();
                     $('.energy_chart_layer_div').hide();
+
+                    $('.energy_automatic_div').hide();
                 }
                 
             }
@@ -1621,6 +1642,7 @@ $(document).ready( function(){
             // <----23-2-2022--
             $('#energy_type_dashboard_chart_div').hide();
             $('.energy_chart_layer_div').hide();
+            $('.energy_automatic_div').hide();
             // --end--->
 
         }
@@ -1659,6 +1681,7 @@ $(document).ready( function(){
             // <----23-2-2022--
             $('#energy_type_dashboard_chart_div').hide();
             $('.energy_chart_layer_div').hide();
+            $('.energy_automatic_div').hide();
             // --end--->
             
 
@@ -1898,6 +1921,10 @@ $(document).ready( function(){
         {
             saveDashboardTileChartEnergyLayer();   
         }
+        else if(ar['record_type_of_tile'] == 'energy' && energy_chart_measurement == 'automatic')
+        {
+            saveDashboardTileChartEnergyAutomatic();   
+        }
         else{
             saveDashboardTileChart();
         }
@@ -2055,7 +2082,11 @@ $(document).ready( function(){
         else if(ar['record_type_of_tile'] == 'energy' && energy_type_dashboard_chart == 'layer_modal') 
         {
             updateDashboardChartEnergyLayer();
-        }  
+        }
+        else if(ar['record_type_of_tile'] == 'energy' && energy_type_dashboard_chart == 'automatic') 
+        {
+            updateDashboardChartEnergyAutomatic();
+        }
         else{
             updateDashboardChart();
         }
@@ -2869,11 +2900,17 @@ $(document).ready( function(){
         {
             getEnergyMeasurementChart();
         }
+        else if(val == 'automatic')
+        {
+            getEnergyMeasurementChartAutomatic();
+        }
         else{
+            getChartTimeIntervalRecord();
             $('.energy_chart_layer_div').hide();
             $('#time_interval_div').show();
             $('#chart_record_div').show();
             $('#chart_record_filter_div').show();
+            $('.energy_automatic_div').hide();
         }
     });
 
@@ -3113,6 +3150,25 @@ $(document).ready( function(){
     }); 
 
     // --end--->
+
+
+    $(document).on('blur', '#energy_chart_layer_range_automatic', function(){
+        var input_val = $(this).val();
+        if(input_val > 30 || input_val < 1)
+        {
+            $('.energy_chart_layer_automatic_range_error').text('Value Cannot be Greater than 30 and less than 0');
+            $('.energy_chart_layer_automatic_range_error').fadeIn('slow');
+            setTimeout( function(){
+                $('.energy_chart_layer_automatic_range_error').fadeOut('slow');
+            },3000);
+            $('#energy_chart_layer_range_automatic').val('');
+        }
+        chartRecordFilter();
+    });
+
+    $(document).on('change','#energy_chart_measurement_automatic', function(){
+        chartRecordFilter();
+    });
     
 
 

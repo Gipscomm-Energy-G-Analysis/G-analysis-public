@@ -2655,6 +2655,113 @@ class dashboardController {
     }
     // --end--->
 
+
+    // <---08-03-2022--
+    public function getEditChartDataDashboardEnergyAutomatic(){
+        try{
+            global $conn;
+            $username = $_SESSION['username'];
+            $i_value = $_POST['i_value'];
+            $id = $_POST['id'];
+            $tile_title = $_POST['energy_title'];
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $chart_type = '';
+            $input_range = '';
+            $mst_id = '';
+            $chart_time_interval = '';
+            $total_result = count($dataResult);
+            if($dataResult != null && count($dataResult)>0){
+                for($i= 0; $i < $total_result; $i++){
+                    if($id == $dataResult[$i]['id']){
+                        $chart_type = $dataResult[$i]['chart_type'];
+                        $input_range = $dataResult[$i]['energy_layer_range'];
+                        $mst_id = $dataResult[$i]['mst_id'];
+                        $records['data'] = $dataResult[$i];
+                        $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                    <div class='card card-border'>
+                                        <div class='card-body overflow-hide display-flex pr-0'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Energy' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Energy' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$tile_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                </div> 
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 chart-width'>
+                                            <div class='col-md-6 p-0 small-table small-table_$i_value' style='display:none'>
+                                            <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
+                                            </table>
+                                            </div>
+                                                <div class='save_table_div_show_table'> 
+                                                    <canvas id='areaChart'></canvas>                       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";
+                                
+                                //Tile Outer HTML
+                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                                <div class='card card-border'>
+                                                    <div class='card-body overflow-hide display-flex pr-0'>
+                                                        <div id='' class=''>
+                                                            <div class='action-modal-button-div'>
+                                                                <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Energy' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                                <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Energy' style='height: 17px; width: 17px;'>
+                                                            </div>
+                                                            <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$tile_title</p>
+                                                            <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                                            <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
+                                                            </div>  
+                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class='overflow-hide ml-3 chart-width'>
+                                                            <div id='chart_outer_tile_text_heading' style='text-align: center'>
+                                                                <p class='text-muted'>Outer Tile View</p>
+                                                            </div>
+                                                            <div class='col-md-6 p-0 small-table small-table_$i_value'>
+                                                                <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
+                                                                </table>
+                                                            </div> 
+                                                            <div class='save_table_div_show_table'> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div></div>"; 
+
+                    }
+                    else{
+                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        $tileHtml.= $dataResult[$i]['tile_html'];
+                    }
+                }
+                $records['tile_html'] = $tileHtml;
+                $records['total_record'] = count($dataResult);
+                $records['mst_id'] = $mst_id;
+                $records['chart_type'] = $chart_type;
+                $records['input_range'] = $input_range;
+                echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // ---end--->
+
     // <----09-12-2021--
     public function getEditChartDataDashboardProduct(){
         try{
@@ -4272,6 +4379,46 @@ class dashboardController {
                 foreach($nameQueryResult as $key=>$val)
                 {
                     $select .= "<option value=".$val["mst_id"].">".$val['nameMSt']."</option>";    
+                }
+                $result['measurement_html'] = $select;
+            }
+            else{
+                $select = "<option value=''>No Data Found</option>";
+                $result['measurement_html'] = $select;
+            }
+            $result['table_found'] = $tablefound;
+            echo json_encode($result,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
+
+
+    // <-----07-3-2022---
+    public function getEnergyMeasurementChartAutomatic()
+    {
+        try{
+            global $conn;
+            $queryMeasurement = "select * from messstellen where messartMst = 'automatisch' ";
+            $resulTotalRecord = sqlsrv_query($conn,$queryMeasurement);
+            $resultQuery = [];
+            $tablefound = 'false';
+            
+            if($resulTotalRecord != false)
+            {
+                $resultQuery = queryDB($conn, $queryMeasurement, "read");
+                $tablefound = 'true';
+            }
+
+            if($resultQuery != '' && count($resultQuery) > 0)
+            {
+                $select = "<option value=''>Please Select Measurement</option>";
+                foreach($resultQuery as $key=>$val)
+                {
+                    $select .= "<option value=".$val["mst_ID"].">".$val['nameMSt']."</option>";    
                 }
                 $result['measurement_html'] = $select;
             }
@@ -8651,151 +8798,92 @@ class dashboardController {
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                     die;
                 }
-
+            }
             // ---end--->
             die;
-
-
-
-
-
-                $queryOverAllCount = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
-                $queryOverAllCount .="INNER join ";
-                $queryOverAllCount.="( ";
-                $queryOverAllCount .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
-                $queryOverAllCount .="from produktionsAnlagenMoreOpt as t2 ";
-                $queryOverAllCount.=") ";
-                $queryOverAllCount .="t2 ";
-                $queryOverAllCount .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
-                $queryOverAllCount .= "INNER join ";
-                $queryOverAllCount .= "( ";
-                $queryOverAllCount .= "select t3.id as t3_id , t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
-                $queryOverAllCount .= "from masseneingabeSuchePrdIMw  as t3 ";
-                $queryOverAllCount .= ") ";
-                $queryOverAllCount .= "t3 ";
-                $queryOverAllCount .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
-                $queryOverAllCount .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
-                $queryOverAllCount .= "where t1.iBdeType='1' ";
-                $queryOverAllCount .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
-                $queryOverAllCount .= "order by t3.t3_id asc ";
-                $resultOverallCount = queryDB($conn, $queryOverAllCount, "read");
-                // echo json_encode($resultOverallCount); die;
-                $overallCount = count($resultOverallCount);
-
-                if($filter_val == 10){
-                    $ar_days = [];
-                    $ar_value = [];
-                    $countSum = '';
-                    $loopCount = '';
-                    $preVal = 0;
-                    for($i = 1; $i <= 10; $i++){
-                        if($i <= $overallCount){
-                            $indexCount = $i - 1;
-                            $preVal += $resultOverallCount[$indexCount]['val'];
-                            $result[0]['val'] = $preVal;
-                            if($result[0]['val'] != null){
-                                array_push($ar_value, $result[0]['val']);
-                            }
-                            if($i == $overallCount || $i == 10){
-                                $countSum = $result[0]['val'];
-
-                            }
-                            // <---12-11-2021--
-                            $loopCount = $i;
-                            // --end-->
-                            array_push($ar_days,$i);
-                        }
-                    }
-                    // echo json_encode($ar_value); die;
-                    // <---12-11-2021--
-                    // $ar_reverse_val = array_reverse($ar_value);
-                    // echo json_encode($ar_reverse_val); die;
-                    $offsetLoopVal = '';
-                    $tableOutsideHTML = '';
-                    $offsetLoopVal = '';
-                    if($loopCount != '')
-                    {
-                        if($chart_outer_table_limit_column >= $loopCount) //Limit Greater than Overall Count
-                        {
-                            $chart_outer_table_limit_column = $loopCount;
-                            if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
-                                $offsetLoopVal = $overallCount -  $filter_val;
-                            }
-                            else{
-                                $offsetLoopVal = 0;
-                            }
-                        }
-                        else if($loopCount > $chart_outer_table_limit_column)
-                        {
-                            if($overallCount > 0 && $overallCount <= $filter_val){ //10 RECORD Condition
-                                $offsetLoopVal = 0;
-                            }
-                            else if($overallCount > 0 && $overallCount > $filter_val){ //More Than 10 Condition
-                                $offsetLoopVal = $overallCount -  $filter_val;
-                            }
-                        }
-
-                        $queryOutsideTable = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
-                        $queryOutsideTable .="INNER join ";
-                        $queryOutsideTable.="( ";
-                        $queryOutsideTable .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
-                        $queryOutsideTable .="from produktionsAnlagenMoreOpt as t2 ";
-                        $queryOutsideTable.=") ";
-                        $queryOutsideTable .="t2 ";
-                        $queryOutsideTable .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
-                        $queryOutsideTable .= "INNER join ";
-                        $queryOutsideTable .= "( ";
-                        $queryOutsideTable .= "select t3.id as t3_id , t3.type , t3.on_week , t3.on_date ,t3.prd_anl_ID as table_3_prd_anl_Id , cast(t3.val as int) as val ";
-                        $queryOutsideTable .= "from masseneingabeSuchePrdIMw  as t3 ";
-                        $queryOutsideTable .= ") ";
-                        $queryOutsideTable .= "t3 ";
-                        $queryOutsideTable .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
-                        $queryOutsideTable .= "left join anlagen as t4 on t1.anl_id = t4.anl_ID ";
-                        $queryOutsideTable .= "where t1.iBdeType='1' ";
-                        $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
-                        $queryOutsideTable .= "order by t3.t3_id DESC ";
-                        $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
-                        // echo $queryOutsideTable; die;
-                        $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
-
-                        $tableOutsideHTML = '';
-                        for($i = 0; $i < count($resultOutsideTable); $i++)
-                        {
-                            $tableOutsideHTML .= "<tr>";
-                            if($resultOutsideTable[$i]['type'] == '2'){
-                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_week'].'-'.$resultOutsideTable[$i]['on_date']."</td>";
-                            }
-                            else{
-                                $tableOutsideHTML.= "<td>".$resultOutsideTable[$i]['on_date']."</td>";
-                            }
-                            $tableOutsideHTML .= "<td>".$resultOutsideTable[$i]['val']."</td>";
-                            $tableOutsideHTML .= "</tr>";
-                        }
-
-                    }
-
-                    $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
-
-                    $records['count_val'] = $ar_value;
-                    $records['count_days'] = $ar_days;
-                    $records['count_sum'] = $countSum;
-                    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-                    die;
-                }
-                $records = ['status'=>400,'message'=>'Data Not found'];
-                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-                die;
-
-            }
-            die;
-
         }
         catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
     // --end--->
+
+
+    public function getChartRecordFilterEnergyAutomatic(){
+        try{
+            global $conn;
+            $mst_id = $_POST['mst_id'];
+            $input_val_week_day = $_POST['energy_chart_layer_range'];
+            $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
+            $checkQuery = '';
+            //SchichtModelleAll Table Check
+            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
+            $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+            $table_found = 'false';
+            if($resultTableExistCheck != false)
+            {
+                $table_found = 'true';
+            }
+            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
+            $tableOutsideHTML = '';
+            if($table_found == 'true'){
+                $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
+                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
+                $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date asc ";
+                $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
+                // echo $queryEnergy; die;
+                // echo json_encode($queryEnergyRecords); 
+                // die;
+                $ar_value = [];
+                $ar_names = [];
+                if($queryEnergyRecords != '' && count($queryEnergyRecords))
+                {
+                    $i = 0;
+                    $modelNameQueryCount = count($queryEnergyRecords);
+                    // echo json_encode($queryEnergyRecords); die;
+                    foreach($queryEnergyRecords as $key => $val){
+                        $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
+                        // $totalValue = $this->convertValueCommaSeperated($totalValue);
+                        array_push($ar_value,$totalValue);
+                        array_push($ar_names,$val['date']->format('Y-m-d'));
+                        if($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount)
+                        {
+                            $outerTableLimit = $modelNameQueryCount - 1; // -1 for Array Index
+                            if($i <= $outerTableLimit)
+                            {
+                                $tableOutsideHTML .= "<tr>";
+                                $tableOutsideHTML.= "<td>".$val['date']->format('Y-m-d')."</td>";
+                                $tableOutsideHTML .= "<td>".$totalValue."</td>";
+                                $tableOutsideHTML .= "</tr>";
+                            }
+                        }
+                        else if($chart_outer_table_limit_column < $modelNameQueryCount)
+                        {
+                            $outerTableLimit = $chart_outer_table_limit_column - 1;
+                            if($i <= $outerTableLimit)
+                            {
+                                $tableOutsideHTML .= "<tr>";
+                                $tableOutsideHTML.= "<td>".$val['date']->format('Y-m-d')."</td>";
+                                $tableOutsideHTML .= "<td>".$totalValue."</td>";
+                                $tableOutsideHTML .= "</tr>";
+                            }
+                        }
+                        $i++;
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_names;
+                    $records['count_sum'] = '';
+                }
+            }
+            $records['outer_table_html'] = $tableOutsideHTML;
+            $records['table_found'] = $table_found;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
 
 
     public function getChartRecordFilter(){
@@ -10405,6 +10493,84 @@ class dashboardController {
         }
     }
     // --end--->
+
+    // <----08-03-2022--
+    public function getClickDashboardChartEnergyAutomatic(){
+        try{
+            global $conn;
+            $mst_id = $_POST['mst_id'];
+            $input_val_week_day = $_POST['energy_chart_layer_range'];
+            $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
+            $checkQuery = '';
+            //SchichtModelleAll Table Check
+            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
+            $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+            $table_found = 'false';
+            if($resultTableExistCheck != false)
+            {
+                $table_found = 'true';
+            }
+            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
+            $tableOutsideHTML = '';
+            if($table_found == 'true'){
+                $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
+                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
+                $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date asc ";
+                $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
+                // echo $queryEnergy; die;
+                // echo json_encode($queryEnergyRecords); 
+                // die;
+                $ar_value = [];
+                $ar_names = [];
+                if($queryEnergyRecords != '' && count($queryEnergyRecords))
+                {
+                    $i = 0;
+                    $modelNameQueryCount = count($queryEnergyRecords);
+                    // echo json_encode($queryEnergyRecords); die;
+                    foreach($queryEnergyRecords as $key => $val){
+                        $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
+                        // $totalValue = $this->convertValueCommaSeperated($totalValue);
+                        array_push($ar_value,$totalValue);
+                        array_push($ar_names,$val['date']->format('Y-m-d'));
+                        if($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount)
+                        {
+                            $outerTableLimit = $modelNameQueryCount - 1; // -1 for Array Index
+                            if($i <= $outerTableLimit)
+                            {
+                                $tableOutsideHTML .= "<tr>";
+                                $tableOutsideHTML.= "<td>".$val['date']->format('Y-m-d')."</td>";
+                                $tableOutsideHTML .= "<td>".$totalValue."</td>";
+                                $tableOutsideHTML .= "</tr>";
+                            }
+                        }
+                        else if($chart_outer_table_limit_column < $modelNameQueryCount)
+                        {
+                            $outerTableLimit = $chart_outer_table_limit_column - 1;
+                            if($i <= $outerTableLimit)
+                            {
+                                $tableOutsideHTML .= "<tr>";
+                                $tableOutsideHTML.= "<td>".$val['date']->format('Y-m-d')."</td>";
+                                $tableOutsideHTML .= "<td>".$totalValue."</td>";
+                                $tableOutsideHTML .= "</tr>";
+                            }
+                        }
+                        $i++;
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_names;
+                    $records['count_sum'] = '';
+                }
+            }
+            $records['outer_table_html'] = $tableOutsideHTML;
+            $records['table_found'] = $table_found;
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end-->
 
     // <----02-03-2022--
     public function convertValueCommaSeperated($value)

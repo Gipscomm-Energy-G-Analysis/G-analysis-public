@@ -406,7 +406,7 @@ class dashboardControllerOperations {
             $analgen_config_id = isset($_POST['analgen_config_id']) ? $_POST['analgen_config_id'] : '';
 
             
-            $energy_layer_filter = $_POST['chart_record_filter'];
+            $energy_layer_filter = isset($_POST['chart_record_filter']) ? $_POST['chart_record_filter'] : '';
             $energy_chart_layer_range = $_POST['energy_chart_layer_range'];
             $energy_type_dashboard_chart = $_POST['energy_type_dashboard_chart'];
 
@@ -616,7 +616,7 @@ class dashboardControllerOperations {
             $chart_type = $_POST['chart_type'];
             $chart_time_interval = isset($_POST['chart_time_interval']) ? $_POST['chart_time_interval'] : '';
 
-            $energy_chart_layer_filter = $_POST['energy_chart_layer_filter'];
+            $energy_chart_layer_filter = isset($_POST['energy_chart_layer_filter']) ? $_POST['energy_chart_layer_filter'] : '';
             $energy_chart_layer_range = $_POST['energy_chart_layer_range'];
             $energy_type_dashboard_chart = $_POST['energy_type_dashboard_chart'];
 
