@@ -6,7 +6,7 @@
             <div class="col-lg-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Basic Table</h4>
+                  <h4 class="card-title">Tabelle</h4>
                   <p class="card-description">
                     Add class <code>.table</code>
                   </p>
@@ -25,13 +25,13 @@
                           <td>Jacob</td>
                           <td>53275531</td>
                           <td>12 May 2017</td>
-                          <td><label class="badge badge-danger">Pending</label></td>
+                          <td><label class="badge badge-danger">Im Wartezustand</label></td>
                         </tr>
                         <tr>
                           <td>Messsy</td>
                           <td>53275532</td>
                           <td>15 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
+                          <td><label class="badge badge-warning">In Bearbeitung</label></td>
                         </tr>
                         <tr>
                           <td>John</td>
@@ -43,13 +43,13 @@
                           <td>Peter</td>
                           <td>53275534</td>
                           <td>16 May 2017</td>
-                          <td><label class="badge badge-success">Completed</label></td>
+                          <td><label class="badge badge-success">Fertiggestellt</label></td>
                         </tr>
                         <tr>
                           <td>Dave</td>
                           <td>53275535</td>
                           <td>20 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
+                          <td><label class="badge badge-warning">In Bearbeitung</label></td>
                         </tr>
                       </tbody>
                     </table>
@@ -69,8 +69,8 @@
                       <thead>
                         <tr>
                           <th>User</th>
-                          <th>Product</th>
-                          <th>Sale</th>
+                          <th>Produkt</th>
+                          <th>Preis</th>
                           <th>Status</th>
                         </tr>
                       </thead>
@@ -79,13 +79,13 @@
                           <td>Jacob</td>
                           <td>Photoshop</td>
                           <td class="text-danger"> 28.76% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-danger">Pending</label></td>
+                          <td><label class="badge badge-danger">Im Wartezustand</label></td>
                         </tr>
                         <tr>
                           <td>Messsy</td>
                           <td>Flash</td>
                           <td class="text-danger"> 21.06% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-warning">In progress</label></td>
+                          <td><label class="badge badge-warning">In Bearbeitung</label></td>
                         </tr>
                         <tr>
                           <td>John</td>
@@ -97,13 +97,13 @@
                           <td>Peter</td>
                           <td>After effects</td>
                           <td class="text-success"> 82.00% <i class="ti-arrow-up"></i></td>
-                          <td><label class="badge badge-success">Completed</label></td>
+                          <td><label class="badge badge-success">Fertiggestellt</label></td>
                         </tr>
                         <tr>
                           <td>Dave</td>
                           <td>53275535</td>
                           <td class="text-success"> 98.05% <i class="ti-arrow-up"></i></td>
-                          <td><label class="badge badge-warning">In progress</label></td>
+                          <td><label class="badge badge-warning">In Bearbeitung</label></td>
                         </tr>
                       </tbody>
                     </table>
@@ -126,13 +126,13 @@
                             User
                           </th>
                           <th>
-                            First name
+                            Vorname
                           </th>
                           <th>
-                            Progress
+                            Fortschritt
                           </th>
                           <th>
-                            Amount
+                            Anzahl
                           </th>
                           <th>
                             Deadline

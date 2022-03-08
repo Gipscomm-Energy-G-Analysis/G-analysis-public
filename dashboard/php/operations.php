@@ -63,15 +63,22 @@ class dashboardControllerOperations {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
             $table_other = $_POST['table_other'];
+            $mst_id = isset($queryData['mst_id']) ?  $queryData['mst_id'] : '';
+            $name_val = isset($queryData['name_val']) ? $queryData['name_val'] : '';
+            $energy_layer_filter = isset($queryData['select_filter_day_week']) ?  $queryData['select_filter_day_week'] : '';
+            $energy_layer_range = isset($queryData['input_val_week_day']) ?  $queryData['input_val_week_day'] : '';
+            // echo $mst_id; die;
             // echo str_replace("total_records","",$html); die;
+
 
             
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
 
         
-            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other ) ";
-            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other') ";
+            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,mst_id,energy_layer_model_name,energy_layer_filter,energy_layer_range ) ";
+            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other', '$mst_id' ,'$name_val','$energy_layer_filter','$energy_layer_range') ";
+            // echo $insertQuery; die;
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
@@ -83,6 +90,17 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
+            // <----6-1-2022--
+            // $connGipscomm = connectToDB("gipscomm");
+            // $selectMaxIdGipscomm = "SELECT MAX(id) as max_id from tableFormat ";
+            // $maxResultGipscomm = queryDB($connGipscomm, $selectMaxIdGipscomm, "read");
+            // // echo json_encode($maxResultGipscomm); die;
+            // if($selectMaxIdGipscomm != null){
+            //     $last_id = $maxResultGipscomm[0]['max_id'] + $maxResult[0]['max_id']; 
+            // }
+            // $conn = connectToDB($_POST['nameDB']);
+            // $last_id_val = $maxResult[0]['max_id'];
+            // --end->
             $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->
@@ -100,6 +118,95 @@ class dashboardControllerOperations {
         }
     }
     // --end-->
+
+
+    // <----24-12-2021---
+    public function saveTableFormatProductAutomatic(){
+        try{
+            global $conn;
+            // $conn = connectToDB("gipscomm");
+            $nameDB = $_POST['nameDB'];
+            $username = $_SESSION['username']; 
+            $queryData = $_REQUEST['query_data'];
+            $number_records = $queryData['number_records']; 
+            $pages_count = $queryData['pages_count']; 
+            $page_value = $queryData['page_val']; 
+            $type = $queryData['type']; 
+            $row_click = $queryData['row_click']; 
+            $query_data_records = $queryData['query1']; 
+            $query_max_val = $queryData['queryMaxValue'];
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_POST['height'];
+            $width = $_POST['width'];
+            $input_height = $_POST['input_height'];
+            $input_width = $_POST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $type_data_tile = $_POST['type_data_tile'];
+            $table_other = $_POST['table_other'];
+            $prd_all_columns_automatic = isset($_POST['prd_all_columns_automatic']) ? serialize(json_decode($_POST['prd_all_columns_automatic'])) : '';
+            $prd_all_columns_type = isset($_POST['columnDataType']) ? serialize(json_decode($_POST['columnDataType'])) : '';
+            $db_table = $_POST['db_table'];
+            // echo str_replace("total_records","",$html); die;
+            // echo $prd_all_columns_automatic;  die;
+            
+            $query_data_records = str_replace("'",'',$query_data_records);
+            $query_max_val = str_replace("'",'',$query_max_val);
+
+        
+            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,database_name,prd_all_columns_automatic,prd_all_columns_type_automatic,database_table ) ";
+            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other','$nameDB','$prd_all_columns_automatic','$prd_all_columns_type','$db_table') ";
+            // echo $insertQuery; die;
+            $insertRecord = queryDB($conn, $insertQuery, "write");
+
+            $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
+            $maxResult = queryDB($conn, $selectMaxId, "read");
+
+            // <----23-11-2021--
+            $totalQuery = "SELECT * from tableFormat ";
+            $totalResult = queryDB($conn, $totalQuery, "read");
+            $totalResult = count($totalResult);
+
+            $last_id = $maxResult[0]['max_id'];
+            // <---5-1-2022--
+            // $nameDB = $_POST['nameDB'];
+            // $connTable = connectToDB($nameDB);
+            // $getResult = "SELECT MAX(id) as max_id from tableFormat ";
+            // $result = sqlsrv_query($connTable,$getResult);
+            // $dataResult = [];
+            // if($result != false)
+            // {
+            //     while( $row = sqlsrv_fetch_array( $result, SQLSRV_FETCH_ASSOC ) ) {
+            //         $dataResult[] = $row ;
+            //     };
+            //     // echo json_encode(count($dataResult)); die;
+            //     if(count($dataResult) > 0)
+            //     {
+            //         $last_id = $dataResult[0]['max_id'] + $maxResult[0]['max_id']; 
+            //     }
+            //     // echo json_encode($row); die;
+            // }
+            
+            // $conn = connectToDB("gipscomm");
+            // $last_id_val = $maxResult[0]['max_id'];
+            // --end-->
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
+            $updatePriorityResult = queryDB($conn, $updatePriority, "read");
+            // --end-->
+
+            if($insertQuery){
+                return array('Staus' => 200 , 'Message' => 'Successfully Inserted','max_id'=>$maxResult);
+            }
+            // }
+
+            // echo json_encode($_REQUEST['query_data']); die;
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
 
     // <-----31-8-2021---
     public function updateTileRecord(){
@@ -125,13 +232,17 @@ class dashboardControllerOperations {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
             $table_other = $_POST['table_other'];
+            $mst_id = isset($queryData['mst_id']) ?  $queryData['mst_id'] : '';
+            $name_val = isset($queryData['name_val']) ? $queryData['name_val'] : '';
+            $energy_layer_filter = isset($queryData['select_filter_day_week']) ?  $queryData['select_filter_day_week'] : '';
+            $energy_layer_range = isset($queryData['input_val_week_day']) ?  $queryData['input_val_week_day'] : '';
             
 
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
 
             // $tile_html = $_REQUEST['tile_html'];
-            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile' WHERE id = $id AND username ='$username' ";
+            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile', mst_id = '$mst_id', energy_layer_model_name = '$name_val',energy_layer_filter = '$energy_layer_filter', energy_layer_range = '$energy_layer_range' WHERE id = $id AND username ='$username' ";
             // echo '<pre>';
             // echo htmlspecialchars($updateQuery);
             // echo '</pre>';
@@ -147,6 +258,58 @@ class dashboardControllerOperations {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+
+    // <---3-1-2022--
+    public function updateTileRecordProductAutomatic(){
+        try{
+            // $conn = connectToDB("gipscomm");
+            global $conn;
+            $nameDB = $_POST['nameDB'];
+            $username = $_SESSION['username']; 
+            $id = $_REQUEST['id'];
+            $queryData = $_REQUEST['query_data'];
+            $number_records = $queryData['number_records']; 
+            $pages_count = $queryData['pages_count']; 
+            $page_value = $queryData['page_val']; 
+            $type = $queryData['type']; 
+            $row_click = $queryData['row_click']; 
+            $query_data_records = $queryData['query1']; 
+            $query_max_val = $queryData['queryMaxValue'];
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_REQUEST['height'];
+            $width = $_REQUEST['width'];
+            $input_height = $_REQUEST['input_height'];
+            $input_width = $_REQUEST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $type_data_tile = $_POST['type_data_tile'];
+            $table_other = $_POST['table_other'];
+            $prd_all_columns_automatic = isset($_POST['prd_all_columns_automatic']) ? serialize(json_decode($_POST['prd_all_columns_automatic'])) : '';
+            $prd_all_columns_type = isset($_POST['columnDataType']) ? serialize(json_decode($_POST['columnDataType'])) : '';
+            $db_table = $_POST['db_table'];
+            
+
+            $query_data_records = str_replace("'",'',$query_data_records);
+            $query_max_val = str_replace("'",'',$query_max_val);
+
+            // $tile_html = $_REQUEST['tile_html'];
+            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile',database_name = '$nameDB',prd_all_columns_automatic = '$prd_all_columns_automatic',prd_all_columns_type_automatic = '$prd_all_columns_type',database_table = '$db_table' WHERE id = $id AND username ='$username' ";
+            // echo '<pre>';
+            // echo htmlspecialchars($updateQuery);
+            // echo '</pre>';
+            // die;
+            
+            $updateRecord = queryDB($conn, $updateQuery, "write");
+            if($updateQuery){
+                return array('Staus' => 200 , 'Message' => 'Successfully Updated');
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
 
     // <---27-8-2021--
     public function deleteTile(){
@@ -222,6 +385,71 @@ class dashboardControllerOperations {
         }
     }
     // --end-->
+
+
+    // <----22-02-2022---
+    public function saveTileChartEnergyLayer(){
+        try{
+            global $conn;
+            $username = $_SESSION['username']; 
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_POST['height'];
+            $width = $_POST['width'];
+            $input_height = $_POST['input_height'];
+            $input_width = $_POST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $type_data_tile = $_POST['type_data_tile'];
+            $type = $_POST['type'];
+            $energy_type_dashboard_chart = $_POST['energy_type_dashboard_chart'];
+            $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'] : '';
+            $analgen_config_id = isset($_POST['analgen_config_id']) ? $_POST['analgen_config_id'] : '';
+
+            
+            $energy_layer_filter = $_POST['chart_record_filter'];
+            $energy_chart_layer_range = $_POST['energy_chart_layer_range'];
+            $energy_type_dashboard_chart = $_POST['energy_type_dashboard_chart'];
+
+            $chart_type = $_POST['chart_type'];
+            $chart_time_interval = isset($_POST['chart_time_interval']) ? $_POST['chart_time_interval'] : '';
+            $expand_view = $_POST['expand_view'];
+            $outside_chart_checkbox =  $_POST['outside_chart_checkbox'];
+            $outside_chart_input_height =  $_REQUEST['outside_chart_input_height'];
+            $outside_chart_input_width =  $_REQUEST['outside_chart_input_width'];
+            $outside_chart_display = $_POST['outside_chart_display'];
+            $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'];
+
+
+
+
+            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,prd_anlagen_config_id,energy_layer_filter,energy_layer_range,energy_chart_type ) ";
+            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$mst_id','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width','$outside_chart_display','$chart_outer_table_limit_column','$analgen_config_id','$energy_layer_filter','$energy_chart_layer_range','$energy_type_dashboard_chart') ";
+            // echo $mst_id; die;
+            $insertRecord = queryDB($conn, $insertQuery, "write");
+
+            $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
+            $maxResult = queryDB($conn, $selectMaxId, "read");
+
+            // <----23-11-2021--
+            $totalQuery = "SELECT * from tableFormat ";
+            $totalResult = queryDB($conn, $totalQuery, "read");
+            $totalResult = count($totalResult);
+
+            $last_id = $maxResult[0]['max_id'];
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
+            $updatePriorityResult = queryDB($conn, $updatePriority, "read");
+            // --end-->
+
+            if($insertQuery){
+                return array('Staus' => 200 , 'Message' => 'Successfully Inserted' ,'max_id'=>$maxResult);
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+    // --end--->
     
     
     // <---08-9-2021---
@@ -367,6 +595,51 @@ class dashboardControllerOperations {
         }
     }
     // ----end-->
+
+    public function updateDashboardChartEnergyLayer(){
+        try{
+            global $conn;
+            $username = $_SESSION['username']; 
+            $id = $_POST['id'];
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_POST['height'];
+            $width = $_POST['width'];
+            $input_height = $_POST['input_height'];
+            $input_width = $_POST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            // $type_data_tile = $_POST['type_data_tile'];
+            $type = $_POST['type'];
+            $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'] : '';
+            $analgen_config_id = isset($_POST['analgen_config_id']) ? $_POST['analgen_config_id'] : '';
+            $chart_filter = isset($_POST['chart_record_filter']) ? $_POST['chart_record_filter'] : '';
+            $chart_type = $_POST['chart_type'];
+            $chart_time_interval = isset($_POST['chart_time_interval']) ? $_POST['chart_time_interval'] : '';
+
+            $energy_chart_layer_filter = $_POST['energy_chart_layer_filter'];
+            $energy_chart_layer_range = $_POST['energy_chart_layer_range'];
+            $energy_type_dashboard_chart = $_POST['energy_type_dashboard_chart'];
+
+
+            $expand_view = $_POST['expand_view'];
+            $outside_chart_checkbox =  $_POST['outside_chart_checkbox'];
+            $outside_chart_input_height =  $_REQUEST['outside_chart_input_height'];
+            $outside_chart_input_width =  $_REQUEST['outside_chart_input_width'];
+
+            $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'];
+
+            $updateQuery = "UPDATE tableFormat  set type = '$type',tile_title = '$title',tile_html = '$html',height='$height',width='$width' ,input_height='$input_height' ,input_width = '$input_width' ,tile_record_type = '$record_type_of_tile' ,mst_id = '$mst_id' ,chart_filter = '$chart_filter',chart_type = '$chart_type',chart_time_interval = '$chart_time_interval', expand_view = $expand_view , outside_tile_checkbox = $outside_chart_checkbox , outside_tile_input_height = '$outside_chart_input_height', outside_tile_input_width='$outside_chart_input_width', outer_table_column_limit = '$chart_outer_table_limit_column',prd_anlagen_config_id = '$analgen_config_id', energy_layer_filter = '$energy_chart_layer_filter' , energy_layer_range = '$energy_chart_layer_range', energy_chart_type = '$energy_type_dashboard_chart' ";
+            $updateQuery .= "WHERE id = $id AND username = '$username' ";
+            $updateRecord = queryDB($conn, $updateQuery, "write");
+            if($updateQuery){
+                return array('Staus' => 200 , 'Message' => 'Successfully Updated');
+            }
+            die;
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
 
 }
 

@@ -11,28 +11,28 @@
                   <div class="row">
 
                     <div class="form-group col-md-3">
-                      <label for="measurement_type">Measurement Type</label>
+                      <label for="measurement_type">Messtyp</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_type">
-                        <option value="automatic">Read in Automatically</option>
-                        <option value="manually">Entered Manually</option>
+                        <option value="automatic">Automatisch</option>
+                        <option value="manually">Manuell</option>
                          <!-- <option value="calculated">Calculated</option> -->
                       </select>
                     </div>
                     
                     <div class="form-group col-md-3">
-                      <label for="measurement_time_interval">Select Time Interval</label>
+                      <label for="measurement_time_interval">Wählen Sie ein Zeitintervall aus</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_time_interval">
-                        <option value="1">Days</option>
-                        <option value="2">Weeks</option>
-                        <option value="3">Months</option>
-                        <option value="4">Years</option>
+                        <option value="1">Tage</option>
+                        <option value="2">Wochen</option>
+                        <option value="3">Monate</option>
+                        <option value="4">Jahre</option>
                         <!-- <option value="40">40</option>
                         <option value="50">50</option> -->
                       </select>
                     </div>
 
                     <div class="form-group col-md-3">
-                      <label for="measurement_records_order_by">Filter Units Consumed</label>
+                      <label for="measurement_records_order_by">Filter</label>
                       <select class="form-control form-control-sm text-dark" id="measurement_records_order_by">
                         <option value="order_by_desc">Maximum</option>
                         <option value="order_by_asc">Minimum</option>
@@ -47,17 +47,21 @@
                       </div> -->
 
                       <div class="form-group col-md-3">
-                      <label for="measurement_number_record">Select Total No. of Records</label>
-                       <input type="number" class="form-control form-control-sm text-dark" id="measurement_total_number_record" placeholder="Select Total No. of Records">
+                      <label for="measurement_number_record">Gesamteinträge</label>
+                       <input type="number" class="form-control form-control-sm text-dark" id="measurement_total_number_record" placeholder="Gesamtrekorde">
                        <span class='measurement_number_record_error text-danger'></span>
+                      </div>
+
+                      <div class="form-group col-md-3">
+                      <input type="button" class="btn btn-sm btn-success click_common_btn" id="measurement_btn_table" value='Show Results'>  
                       </div>
 
                   </div>
 
                   <div class="row">
                     <div class="form-group col-md-12">
-                      <label for="measurement_search_record">Search Records</label>
-                      <input type="text" class="form-control form-control-sm text-dark" id="measurement_search_record" placeholder="Search Records">
+                      <label for="measurement_search_record">Datensatz suchen</label>
+                      <input type="text" class="form-control form-control-sm text-dark" id="measurement_search_record" placeholder="Aufzeichnungen suchen">
                     </div>
                     
                     <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
@@ -65,9 +69,9 @@
                         <thead class="measurement_table_header">
                           <tr>
                             <th>Name</th>
-                            <th>Time Interval</th>
-                            <th>Created Date</th>
-                            <th>Total Units</th>
+                            <th>Zeitintervall</th>
+                            <th>Erstellungsdatum</th>
+                            <th>Gesamteinheiten</th>
                             <th>Status</th>
                           </tr>
                         </thead>
@@ -96,7 +100,7 @@
                     <div class="modal-dialog modal-lg max-width-modal">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="text-mute text-dark">Instrumententafel</h5>
+                          <h5 class="text-mute text-dark">Dashboard</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -106,14 +110,14 @@
                           <!-- Height and Width -->
                           <div class="row">
                               <div class="form-group col-md-3">
-                                <label for="modal-height-input-measurement" class="text-mute">Column</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-measurement" placeholder="Column">
+                                <label for="modal-height-input-measurement" class="text-mute">Spalte</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-measurement" placeholder="Spalte">
                                 <input type="hidden" id="modal-height-input-measurement-hidden" value="145">
                               </div>
 
                               <div class="form-group col-md-3">
-                                <label for="modal-width-input-measurement" class="text-mute">Row</label>
-                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-measurement" placeholder="Row">
+                                <label for="modal-width-input-measurement" class="text-mute">Zeile</label>
+                                <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-measurement" placeholder="Reihe">
                                 <input type="hidden" id="modal-width-input-measurement-hidden" value="285">
                               </div>
 
@@ -133,7 +137,7 @@
                                         <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal" ></h3>
                                         <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                       </div>  
-                                      <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                                      <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
                                   </div>
                                   
                                   <div class="overflow-hide ml-3">
@@ -154,7 +158,7 @@
                                         <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 product_count_modal"></h3>
                                         <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                       </div>  
-                                      <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                                      <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
                                   </div>
 
                                   <div class="overflow-hide ml-3">
@@ -171,12 +175,12 @@
                               <div class="card card-border">
                                 <div class="card-body overflow-hide display-flex">
                                   <div class="" id="">
-                                    <p class="card-title text-md-center text-xl-left">Energiedaten Entry</p>
+                                    <p class="card-title text-md-center text-xl-left">Energiedateneintrag</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_count_modal"></h3>
                                       <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>  
-                                    <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"><small></small></span></p>
+                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
                                   </div>
                                 
 
@@ -193,12 +197,12 @@
                               <div class="card card-border">
                                 <div class=" card-body overflow-hide display-flex">
                                   <div class="" id=""> 
-                                    <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
+                                    <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_consumed_count_modal"></h3><p class="energy_unit text-muted">kWh</p>
                                       <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>  
-                                    <p class="mb-0 mt-2 text-success">(30 days)<span class="text-black ml-1"></span></p>
+                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"></span></p>
                                   </div>
 
                                   <div class="overflow-hide ml-3">
@@ -216,12 +220,12 @@
                               <div class="card card-border">
                                 <div class="card-body overflow-hide display-flex">
                                   <div class="" id="">
-                                    <p class="card-title text-md-center text-xl-left">Energiedaten Consumed</p>
+                                    <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
                                     <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
                                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 five_days_energy_count_modal">0</h3><p class="energy_unit text-muted">kWh</p>
                                       <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>  
-                                    <p class="mb-0 mt-2 text-success">(05 days)<span class="text-black ml-1"><small></small></span></p>
+                                    <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small></small></span></p>
                                   </div>
                                   
                                   <div class="overflow-hide ml-3">
@@ -243,9 +247,9 @@
                         </div>
 
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement-table-format"  id="save_table_btn">Save</button>
-                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement"  id="update_table_btn_measurement">Update</button>
+                          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement-table-format"  id="save_table_btn">Speichern</button>
+                          <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement"  id="update_table_btn_measurement">Ändern</button>
                         </div>
 
                        

@@ -107,6 +107,10 @@
     cursor: pointer;
 }
 
+.dashboard_count_div .product_automatic_tile{
+    cursor: pointer;
+}
+
 .measurement_count_hover_height{
     height: 520px !important;
 }
@@ -226,6 +230,19 @@
 #energy_modal_loader_image{
     height: 100px;
     width: 105px;
+    position: relative;
+}
+
+#energy_table_data_loader_div{
+    text-align: center;
+    position: absolute;
+    bottom: 6%;
+    left: 44%;
+}
+
+#energy_table_data_loader_img{
+    height: 76px;
+    width: 76px;
     position: relative;
 }
 
@@ -807,6 +824,10 @@
     width: 69px;
 }
 
+.pagination_input_val_energy_layer{
+    width: 69px;
+}
+
 .pagination_html_energy{
     margin-top : 8px
 }
@@ -857,4 +878,30 @@
     border-radius: 50%;
     border: 1px solid;
     padding: 4px;
+}
+
+#product_select_table_entries_table_header tr th{
+    text-transform: capitalize;
+}
+
+#all_tables_product option{
+    text-transform: capitalize;
+}
+
+#all_columns_product_div div button{
+    padding-bottom: 11px;
+}
+
+.mandatory_sign
+{
+    color: red;
+}
+
+.click_common_btn{
+    margin-top: 32px;
+    cursor: pointer;
+}
+
+.click_common_btn_chart{
+    cursor: pointer;
 }
