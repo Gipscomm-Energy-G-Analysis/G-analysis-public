@@ -12,11 +12,6 @@
         margin-top: 12px;
     }
 
-    .select2-selection__choice{
-        color:#000 !important;
-        margin-top: 2px !important;
-    }
-
     .form-horizontal .card-body {
         padding-top: 0;
     }
@@ -78,7 +73,6 @@
     .capital {
         text-transform: capitalize;
     }
-   
     /* Pagination links */
 .pagination a {
   color: black;
@@ -150,14 +144,13 @@
 
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-7" style= "top: 5px;margin-bottom: 9px;bottom: 9px;"
->
+                <div class="col-sm-7">
                     <div class="btn-group float-right" style="font-size: 18px;">
                         <input type="checkbox" id="modeSelector" checked data-toggle="toggle" data-on="View Mode" data-off="Edit Mode" data-onstyle="success" data-offstyle="info">
                     </div>
                 </div>
                 <div class="col-sm-5">
-                    <nav class="main-header navbar navbar-expand navbar-dark view-mode" style="border-bottom:unset;margin-left: 92px;">
+                    <nav class="main-header navbar navbar-expand navbar-dark view-mode" style="border-bottom:unset;">
                         <!-- Right navbar links -->
                         <ul class="navbar-nav ml-auto" style="position: relative;">
                             <div class="fc-toolbar-chunk">
@@ -184,7 +177,7 @@
                         </ul>
                     </nav>
 
-                    <button type="button" class="btn btn-block btn-info edit-mode" style="display:none;position: relative;top: 5px;" id="machine_table_configuration"  data-toggle="modal" data-target="#modal-machine-configuration">Machine Table Configrations</button>
+                    <button type="button" class="btn btn-block btn-info edit-mode" style="display:none;position: relative;" id="machine_table_configuration"  data-toggle="modal" data-target="#modal-machine-configuration">Machine Table Configrations</button>
                 </div>
             </div>
         </div>
@@ -206,7 +199,7 @@
     <!-- Main content -->
 
     @if(!empty($data))
-    @php $image = 'images/Blasanlage.jpg'; @endphp
+    @php $image = '/../images/Blasanlage.jpg'; @endphp
     @if(file_exists($data['bildAnl']))
     @php $image = $data['bildAnl']; @endphp
     @endif
@@ -366,7 +359,7 @@
                         </div>
                         <div class="row" id="graph_div"></div>
 
-                        <div id="loader_image_energy_charts" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image">
+                        <div id="loader_image_energy_charts" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image">
                         </div>
 
                             <div class="chart" id="chartdiv">
@@ -461,7 +454,7 @@
                             </div>
                         </form>
 
-                        <div id="loader_image_history_charts" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image">
+                        <div id="loader_image_history_charts" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image">
                         </div>
 
                         <div class="row historyGraphDiv" style="display:none;">
@@ -523,7 +516,7 @@
                                 </div>
 
                         </div>
-                        <div id="loader_image" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image"></div>
+                        <div id="loader_image" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image"></div>
                         <div class="row" id="other_graph_div">
                         </div>
                     </div>
@@ -611,7 +604,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div id="loader_image_create_graph" style="display:none;  text-align: center;"> <img src="{{url('public/images/loader.gif')}}" alt="Loader Image">
+                        <div id="loader_image_create_graph" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image">
                                     </div>
                         <div class="row product_historyGraphDiv" style="display:none;">
                             <div class="charts am_graph_div" id="product_historyChartdiv">

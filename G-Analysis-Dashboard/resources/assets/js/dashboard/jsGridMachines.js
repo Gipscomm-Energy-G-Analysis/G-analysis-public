@@ -21,9 +21,22 @@ const customMachineTable = () => {
         url: "get-custom-machine-data",
         success:function(result) {
             spinner.stop();
+            console.log('here');
+            console.log(result);
+            console.log(result.data);
             if(result.status == 200) {
-                createCustomThead(result.thead);
-                createCustomTbody(result.tbody);
+
+                $('#custom_machine_table').dataTable( {
+                    "aaData": result.data,
+                    "columns": [
+                        { "data": "anl_ID" },
+                        { "data": "datumAnl" },
+                        { "data": "nummerAnl" },
+                        { "data": "bezeichnungAnl" },
+                    ]
+                })
+                // createCustomThead(result.thead);
+                // createCustomTbody(result.tbody);
             }
         },
         error:function(result) {

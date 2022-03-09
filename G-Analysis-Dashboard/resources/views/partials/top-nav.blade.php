@@ -42,7 +42,7 @@
     <!-- ******Select Box Start****** -->
 
     <li>
-    <select class="custom-select rounded-0 form-control form-control-sidebar manPfad" id="database-handler" style="margin-top:9px; margin-right:16px;">
+    <select class="rounded-0 form-control form-control-sidebar manPfad" id="database-handler" style="margin-top:17px; margin-right:16px;">
         @isset($database)
           @foreach ($database as $databases)
                 @if($selectedDatabase == $databases->dbName)
@@ -99,7 +99,7 @@
               <h3 id="verbExportMenu" class="dashboard_menu_click cursor_pointer">Verbrauchsdatenexport</h3>
             </div>
             <div class="column">
-              <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer">Production</h3>
+              <a href="/product/index.php/dashboard">Production</a>
             </div>
           </div>
         </div>
@@ -249,8 +249,8 @@
         <!-- <a href="javascript:void(0);" class="text-muted menu_dashboard font-weight-bold"></a></li> -->
     <li>
         <div class="dropdown">
-            <button class="dropbtn text-muted menu_dashboard font-weight-bold" style= "padding-top: 16px;">
-                <img src="images/logout2.png">
+            <button class="dropbtn text-muted menu_dashboard font-weight-bold product-logout">
+                <img src="/../images/logout2.png">
             </button>
         </div>
         <!-- <a href="javascript:void(0);" id="logout" class="dashboard_menu_click text-muted menu_dashboard font-weight-bold"></a>

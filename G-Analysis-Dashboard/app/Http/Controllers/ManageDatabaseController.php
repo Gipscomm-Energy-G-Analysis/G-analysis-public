@@ -9,6 +9,7 @@ use App\Models\UsersDatabases;
 use Illuminate\Http\Request;
 use DB;
 use Config;
+use View;
 
 class ManageDatabaseController extends Controller
 {
@@ -53,13 +54,24 @@ class ManageDatabaseController extends Controller
     }
 
     public function getDatabases() {
-        $database = DB::connection('sqlsrvSuperAdmin')->table('mandanten')->get()->toArray();
+        $database = DB::connection('sqlsrvSuperAdmin')->table('mandanten')
+            ->orderBy('nameMan','asc')->get()->toArray();
         return $database;
     }
 
     public function getOtherGraphData($username) {
         $database = DB::table('graph_configurations')->where('username', $username)->get()->toArray();
         return $database;
+    }
+
+    public function checkDBTables($tableArray, $databases, $selectedDB) {
+        foreach ($tableArray as $table) {
+            $table_exits = DB::getSchemaBuilder()->hasTable($table);
+            if(!$table_exits) {
+                return ['tableCheck' => true , 'message'=>"No Data Found in $table!", 'databases' => $databases, 'selectedDatabase' => $selectedDB];
+            }
+        }
+        return false;
     }
     
 }

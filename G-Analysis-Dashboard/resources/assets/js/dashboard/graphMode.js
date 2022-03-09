@@ -177,7 +177,7 @@ function createEnergyDataGraph(windowTrue) {
                 if(windowTrue) {
                     localStorage.setItem('graphData', JSON.stringify(result.graphData));
                     localStorage.setItem('graphType', result.type);
-                    window.open('/product-graph/history/data', '_blank');
+                    window.open('/product/index.php/product-graph/history/data', '_blank');
                 } else {
                     $('.historyGraphDiv').show();
                     createAmChart(historic_root, result.graphData, true);
@@ -216,7 +216,7 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
                 if(windowTrue) {
                     localStorage.setItem('graphData', JSON.stringify(result.graphData));
                     localStorage.setItem('graphType', result.type);
-                    window.open('/product-graph/history/data', '_blank');
+                    window.open('/product/index.php/product-graph/history/data', '_blank');
                 } else {
                     $("#loader_image_create_graph").hide();
                     $("#product_historyChartdiv").show();
@@ -257,12 +257,11 @@ function mixedGraphData(conId,windowTrue, $limit=5) {
                 if(windowTrue) {
                     localStorage.setItem('graphData', JSON.stringify(result.graphData));
                     localStorage.setItem('graphType', result.type);
-                    window.open('/product-graph/history/data', '_blank');
+                    window.open('/product/index.php/product-graph/history/data', '_blank');
                 } else {
                     $('.mixed_historyGraphDiv').show();
                     createAmChart(conId, result.graphData, true);
                 }
-                
             }
         },
         error:function(result) {

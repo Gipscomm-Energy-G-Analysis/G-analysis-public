@@ -8,6 +8,22 @@ $(document).on('click','.active_side_bar', function (){
     localStorage.setItem('active',textContent);
 });
 
+$(document).on('click','.product-logout', function (){
+    $.ajax({
+        type: "GET",
+        url: "dashboard-logout",
+        success:function(result) {
+            if(result.code == 200) {
+                toastr.success("Logged Out Successfully.");
+                window.location.href = "https://g-analysis.com/";
+            }
+        },
+        error:function(result) {
+            toastr.error(result);
+        }
+    });
+});
+
 if (localStorage.getItem('active')){
     const sideBarLi = document.getElementsByClassName('active_side_bar');
     const activeLi = localStorage.getItem('active');
@@ -26,7 +42,6 @@ const databaseHandler = document.getElementById('database-handler');
 const databaseHandlerFunction = () => {
     const changeDataBaseHook = new Promise(function(resolve, reject) {
     const database = databaseHandler.options[databaseHandler.selectedIndex].value;
-    console.log(database);
     $.ajax({
             url:'/switch-database',
             type: 'POST',

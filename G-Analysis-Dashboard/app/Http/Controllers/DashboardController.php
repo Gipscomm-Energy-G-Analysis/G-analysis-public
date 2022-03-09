@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ManageDatabaseController;
 use App\Models\UsersDatabases;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -16,7 +17,6 @@ use App\Models\Liegenschaften;
 use App\Models\DashboardProduktionConfig;
 use App\Models\ErweiterungenAnlagen;
 use App\Models\subGroupOptions;
-use App\Http\Controllers\ManageDatabaseController;
 use Illuminate\Support\Str;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -47,17 +47,17 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $limit = 5;
-        $ajaxRequest = '';
-        if($request->ajax()){
-            $limit = $request->limit;
-            $ajaxRequest = 'AJAX';
-        }
         $username = $_SESSION['username'];
         $res =[];
         $column = [];
         $groupData =[];
         $databases = (new ManageDatabaseController)->getDatabases();
         if(!empty($this->database_result)){
+            $checkTable = (new ManageDatabaseController)->checkDBTables(['ProdData','ProdData_'], $databases, $this->database);
+            if(isset($checkTable['tableCheck']) && $checkTable['tableCheck']){
+                return View::make("404", $checkTable);
+            }
+
             MigrationController::runMigrations();
             $org= $this->getOrganisations($this->database);
             if(!empty($org)){
@@ -88,9 +88,6 @@ class DashboardController extends Controller
                         if($data['code'] == 401) {
                            return  View::make("404", ['message'=>$data['message'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                         }
-                        if($ajaxRequest == 'AJAX'){
-                            return json_encode($data['data']['chartsData']);
-                        }
                        // dd(["data"=>$data['data'], 'otherGraphTable'=>$data['otherGraphTable'], 'otherGraph'=>$data['otherGraph'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                         return View::make("product", ["data"=>$data['data'], 'otherGraphTable'=>$data['otherGraphTable'], 'otherGraph'=>$data['otherGraph'], "org"=>$org["org"], "message"=>$data['message'], "tables"=>$table, "dynamic_fields"=>$res, 'groups'=>$groupData, "subGroupConfig"=>$data['subGroupConfig'], 'dynamicData' => $data['dynamicData'], 'databases' => $databases, 'selectedDatabase' => $this->database]);
                     } else {
@@ -106,7 +103,6 @@ class DashboardController extends Controller
 
     public function getMachineDetailNew(Request $request, $limit=5)
     {
-        // dd($request->all());
         $id = $request['id'];
         $type = $request['type'];
         $lieg_ID = $request['prop_id'];
@@ -651,7 +647,7 @@ class DashboardController extends Controller
     }
 
     public function getCustomTable(Request $request) {
-        //find the total number of results stored in the database 
+        //find the total number of results stored in the database
         $columnData = DB::table('machine_table_config')->where('username', $this->username)->Where('status', '!=', '0')->get()->toArray();
         $priorityData = DB::table('machine_priority')->select('machines')->where('username', $this->username)->first();
         $selectedMachines = '';
@@ -662,26 +658,27 @@ class DashboardController extends Controller
             $postRequest = Request::create( '/dashboard/getMachineTableData', 'POST', ['pageIndex'=>$request['pageIndex'], 'pageSize'=>$request['pageSize']]);
             return $this->getMachineTableData($postRequest);
         }
-        $machineDataQuery = Anlagen::whereNotNull('anlagen.datumAnl')->where('anlagen.deleted',0)->whereNotNull('anlagen.anl_ID');
-        $number_of_result = $machineDataQuery->count();  
+        $machineDataQuery = Anlagen::Join('ProdData', 'anlagen.anl_ID', '=', 'ProdData.anl_ID')->whereNotNull('datumAnl')->where('deleted',0);
+        $number_of_result = $machineDataQuery->count();
         $pageIndex = $request['pageIndex'];
-       // dd($pageIndex);
+        // dd($pageIndex);
         $limit = $request['pageSize'];
-        $totalRecords = $number_of_result;
+        $totalRecords = Anlagen::whereNotNull('datumAnl')->where('deleted',0)->count();
         $totalPages = ceil($totalRecords / $limit);
         $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
         if($start < 0) $start = 0;
         $defaultString = $this->makeDefaultColumnQuery($columnData);
         $priorityMachineData = [];
-        if ($pageIndex == 1) {
+        if($pageIndex == 1) {
             $priorityArray = count($selectedMachines);
             $limit = $priorityArray >10?10:$limit-$priorityArray;
             $start = $limit * $pageIndex - $limit;
             $machineData = $machineDataQuery->limit($limit)->offset($start)->get()->toArray();
+            $priorityMachineData = $machineDataQuery->whereIn('anlagen.anl_ID', $selectedMachines)->get()->toArray();
         } else {
             $machineData = $machineDataQuery->limit($limit)->offset($start)->get()->toArray();
         }
-       // $machineData = array_merge($priorityMachineData, $machineData);
+        $machineData = array_merge($priorityMachineData, $machineData);
         $machineDataCustom = [];
         if(!empty($machineData)){
             $machineDataCustom = $this->getListingData($machineData, $machineDataCustom , $defaultString);
@@ -689,7 +686,51 @@ class DashboardController extends Controller
         } else {
             return ['status' => 400 , 'msg' => 'No record found!'];
         }
+
     }
+
+//    public function getCustomTable(Request $request) {
+//        //find the total number of results stored in the database
+//        $columnData = DB::table('machine_table_config')->where('username', $this->username)->Where('status', '!=', '0')->get()->toArray();
+//        $priorityData = DB::table('machine_priority')->select('machines')->where('username', $this->username)->first();
+//        $selectedMachines = '';
+//        if (!empty($priorityData)) {
+//            $selectedMachines = json_decode($priorityData->machines);
+//        }
+//     //   dd($columnData);
+////        if(empty($columnData)){
+////            $postRequest = Request::create( '/dashboard/getMachineTableData', 'POST', ['pageIndex'=>$request['pageIndex'], 'pageSize'=>$request['pageSize']]);
+////            return $this->getMachineTableData($postRequest);
+////        }
+//        $machineDataQuery = Anlagen::whereNotNull('anlagen.datumAnl')->where('anlagen.deleted',0)->whereNotNull('anlagen.anl_ID');
+//        $number_of_result = $machineDataQuery->count();
+//        $pageIndex = $request['pageIndex'];
+//       // dd($pageIndex);
+//        $limit = $request['pageSize'];
+//        $totalRecords = $number_of_result;
+//        $totalPages = ceil($totalRecords / $limit);
+//        $start = $limit * $pageIndex - $limit; // do not put $limit*($page - 1)
+//        if($start < 0) $start = 0;
+//        $defaultString = $this->makeDefaultColumnQuery($columnData);
+//        $priorityMachineData = [];
+//        if ($pageIndex == 1) {
+//            $priorityArray = count($selectedMachines);
+//            $limit = $priorityArray >10?10:$limit-$priorityArray;
+//            $start = $limit * $pageIndex - $limit;
+//            $machineData = $machineDataQuery->limit($limit)->offset($start)->get()->toArray();
+//        } else {
+//            $machineData = $machineDataQuery->limit($limit)->offset($start)->get()->toArray();
+//        }
+//       // $machineData = array_merge($priorityMachineData, $machineData);
+//        $machineDataCustom = [];
+//        if(!empty($machineData)){
+//            $machineDataCustom = $this->getListingData($machineData, $machineDataCustom , $defaultString);
+//            dd($machineDataCustom);
+//            return [ 'data'=> $machineDataCustom, 'itemsCount'=> $totalRecords];
+//        } else {
+//            return ['status' => 400 , 'msg' => 'No record found!'];
+//        }
+//    }
 
     public function getCustomColumnName() {
         $columnData = DB::table('machine_table_config')->where('username', $this->username)->Where('status', '!=', '0')->get()->toArray();
@@ -729,25 +770,24 @@ class DashboardController extends Controller
 
     public function getListingData($machineData, $machineDataCustom , $defaultString) {
         foreach($machineData as $machine) {
-            
             $subGroupId = $this->getSubGroupid($machine['custom1Anl']);
             $primary_key = $this->getPrimaryKey($subGroupId);
+            $machineName = explode ( '-' ,$machine['nummerAnl']);
+            $machineName = $machineName[0];
             $subGroupConfig = [];
-            $prodData = DB::table('ProdData')->select(DB::raw($defaultString['string']))
-            ->Join('ProdData_', 'ProdData.anl_ID', '=', 'ProdData_.anl_ID')
-            ->where('ProdData.anl_ID',$machine['anl_ID'])->orderBy('ProdData.anl_ID','desc')->get();
-            dd($prodData);
             if(!empty($defaultString['string'])) {
+                $prodData = DB::table('ProdData')
+                    ->select(DB::raw($defaultString['string']))
+                    ->where('ProdData.anl_ID',$machine['anl_ID'])->orderBy('ProdData.anl_ID', 'desc')->first();
                 if(!empty($prodData)){
                     $prodData = (array) $prodData;
-                    $customColumns = $prodData;
+                    $prodData['anl_ID'] = $machine['anl_ID'];
                 } else {
                     continue;
                 }
             } else {
                 continue;
             }
-
             if(!empty($defaultString['customData'])){
                 $customColumns = array_merge($prodData, $this->getCustomFieldData($machine, $defaultString['customData']));
             } else {
@@ -757,6 +797,36 @@ class DashboardController extends Controller
         }
         return $machineDataCustom;
     }
+
+//    public function getListingData($machineData, $machineDataCustom , $defaultString) {
+//        foreach($machineData as $machine) {
+//
+//            $subGroupId = $this->getSubGroupid($machine['custom1Anl']);
+//            $primary_key = $this->getPrimaryKey($subGroupId);
+//            $subGroupConfig = [];
+//            $prodData = DB::table('ProdData')->select(DB::raw($defaultString['string']))
+//            ->where('ProdData.anl_ID',$machine['anl_ID'])->orderBy('ProdData.anl_ID','desc')->get();
+//            if(!empty($defaultString['string'])) {
+//                if(!empty($prodData)){
+//                    $prodData = (array) $prodData;
+//                    $customColumns = $prodData;
+//                    if(!empty($defaultString['customData'])){
+//                        $customColumns = array_merge($prodData, $this->getCustomFieldData($machine, $defaultString['customData']));
+//                    } else {
+//                        $customColumns = $prodData;
+//                    }
+//                } else {
+//                    continue;
+//                }
+//            } else {
+//                continue;
+//            }
+//
+//
+//            array_push($machineDataCustom, $customColumns);
+//        }
+//        return $machineDataCustom;
+//    }
 
     public function getGraphConfigurations($machineData) {
         $graph_data = GraphConfiguration::where('username',$this->username)->get();
@@ -895,6 +965,14 @@ class DashboardController extends Controller
         $energyGraphData = $this->graphController->getPointsData($request);
         $graphJsData = array_merge($productGraphData['graphData'], $energyGraphData['graphData']);
         return ['code'=>200, 'graphData' => $graphJsData];
+    }
+
+    public function logout() {
+        if(isset($_SESSION['nameDB'])) {
+            unset($_SESSION['username']);
+            unset($_SESSION['nameDB']);
+        }
+        return ['code'=>200, 'redirect' => 'true'];
     }
 
 }

@@ -95,14 +95,14 @@ const getMachineData = (machine_id, type) => {
             $("#anl_ID").val(data.anl_ID);
             showMachineData(response.dynamicData.main);
             if(data.bildAnl==""  || data.bildAnl==null){
-                $("#machine-image").attr("src", "images/Blasanlage.jpg");
+                $("#machine-image").attr("src", "/../images/Blasanlage.jpg");
             }
             else{
                 $("#machine-image").attr("src", data.bildAnl);
             }
             $("#timeFilter").val("5");
             $("#machine-image").on("error", function () {
-                $(this).attr("src", "images/Blasanlage.jpg");
+                $(this).attr("src", "/../images/Blasanlage.jpg");
             });
             createAmChart(root, data.chartsData, true);
             if (response.subGroupConfig.main) {
@@ -126,7 +126,7 @@ const getMachineData = (machine_id, type) => {
             $("#letzte_störung").val("");
             $("#werkzeug").val("");
             $("#kavitäten").val("");
-            $("#machine-image").attr("src", "images/Blasanlage.jpg");
+            $("#machine-image").attr("src", "/../images/Blasanlage.jpg");
         } else {
             toastr.error(response.message);
         }
@@ -550,4 +550,29 @@ const getFilterData = () => {
     });
 };
 getFilterData();
+
+$(document).on('click','.dashboard_menu_click', function(){
+
+    var id_val = $(this).attr('id');
+
+    localStorage.setItem('dashboard_menu_click_option',id_val);
+
+    var pathname = window.location.pathname;
+    pathname = pathname.replace('product/','');
+    console.log('pathname', pathname);
+    var arPathname = pathname.split('/');
+
+    if(arPathname.length > 3){
+
+        window.open('https://g-analysis.com/'+arPathname[1]+'/main.html','_self');
+
+    }
+
+    else{
+
+        window.open('https://g-analysis.com/main.html','_self');
+
+    }
+
+});
 // **** On-Change End ****
