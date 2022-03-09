@@ -7,9 +7,28 @@
     color: black;
 }
 
+#messstelle1IDAnl_key_filter{
+    margin-left: 346px !important;
+    margin-top: -15px !important;
+}
+
+#messstelle1IDAnl_key_paginate{
+    margin-left: 217px !important;
+}
+
+#messstelle2IDAnl_key_filter{
+    margin-left: 346px !important;
+    margin-top: -15px !important;
+}
+
+#messstelle2IDAnl_key_paginate{
+    margin-left: 217px !important;
+}
+
 .table tbody tr td {
     border: 1px solid black !important;
     color: black;
+ 
 </style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
