@@ -14,9 +14,9 @@ const scpRechteverwaltung_admins =
 
             const getMenuAndEditConfig =
                 () =>
-                JSON.stringify(
+                (
                     { values     : treeAdm.getValues().join(",")
-                    , editValues : treeAdm.getEditValues().join(",")
+                    , editValues : treeAdm.getEditValues("#admTreeview").join(",")
                     }
                 )
 
@@ -43,8 +43,9 @@ const scpRechteverwaltung_admins =
                     , mobiltelefon   : helper.fieldValue("mobiltelefonAdm")
                     , username       : helper.fieldValue("benutzernameAdm")
                     , passHash       : getHash_()
-                    , rechteTreeView : getMenuAndEditConfig()
+                    , rechteTreeView : JSON.stringify(getMenuAndEditConfig())
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeAdm).join(",")
+                    , rechteEdit     : getMenuAndEditConfig().editValues
                     }
                 )
 
@@ -140,7 +141,7 @@ const scpRechteverwaltung_admins =
                   , "passwortAdm"
                   ]    
                   .forEach(helper.clearField)
-                , scpTreeView.clear(treeAdm)
+                , scpTreeView.clear("#admTreeview")
                 , helper.setState("adm")("new")
                 )
 
@@ -192,7 +193,7 @@ const scpRechteverwaltung_admins =
                             helper.setState("adm")("edit")
 
                             treeAdm.setValues(values_(record))
-                            treeAdm.setEditValues(editValues_(record))
+                            treeAdm.setEditValues("#admTreeview")(editValues_(record))
                         }
                     )
                 }
@@ -242,7 +243,7 @@ const scpRechteverwaltung_admins =
                     false
                 )
 
-            // Deletes the current Schicht Modell(sets col deleted = true)
+            // Deletes the current Admin (sets col deleted = true)
             this.delete =
                 () => {
                     const admID = $("#admID").val()

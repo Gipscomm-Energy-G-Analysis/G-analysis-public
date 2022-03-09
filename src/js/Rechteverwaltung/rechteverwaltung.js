@@ -14,6 +14,23 @@ const scpRechteverwaltung =
                 , Admin         : "adm"
                 , Benutzer      : "ben"
                 }
+
+            const dataEditAttr =
+                a => 
+                $(a).attr("data-edit")
+
+            const getDataEditAttributes =
+                elements =>
+                elements
+                .map(dataEditAttr)
+
+            this.getEditItemIDs =
+                elements =>
+                pipe_( elements )
+                     ( Array.from
+                     , getDataEditAttributes
+                     , removeDuplicates
+                     )
             
             const readRechteverwaltung =
                 position => {
@@ -68,18 +85,31 @@ const scpRechteverwaltung =
                     ].forEach(scpIndexedDB.dataIntoIDB(result))   
                 )
 
+            const getEditRechteArray =
+                () =>
+                itemSessionGet("rechteEdit").split(",")
+
             const getRechteArray =
                 () =>
                 itemSessionGet("rechteMenu").split(",")
+
+            const removeEdit =
+                id =>
+                $(`[data-edit="${id}"]`).remove()
+
+            const removeEdits =
+                () =>
+                difference(this.getMenuIDs())(getEditRechteArray())
+                .forEach(removeEdit)
                 
-            const remove =
+            const removeMenu =
                 id => 
                 $(`[data-menus="${id}"]`).remove()
 
             const removeMenus =
                 () =>
-                difference(getMenuIDs())(getRechteArray())
-                .forEach(remove)
+                difference(this.getMenuIDs())(getRechteArray())
+                .forEach(removeMenu)
 
             const hideElement =
                 element =>
@@ -154,6 +184,7 @@ const scpRechteverwaltung =
 
                     if (!equal(position)(POSITION.GipscommAdmin)) {
                         removeMenus()
+                        removeEdits()
                     }
                     else {
                         // Nothing
@@ -182,17 +213,22 @@ const scpRechteverwaltung =
                     mandantenEinlesen(betrGrpID, ins, manOderManGrpID)
                 }
 
-            const getMenuIDs =
+            this.getMenuIDs =
                 () =>
-                array($("a[data-menus]").length)()()
-                .map((_, i) => $("a[data-menus]").eq(i).attr("data-menus"))
-
+                Array.from(
+                    new Set(
+                        array($("[data-menus]").length)()()
+                        .map((_, i) => $("[data-menus]").eq(i).attr("data-menus"))
+                        .filter(a => !emptyString(a))
+                    )
+                ).sort()
+                
             const notBetreuergruppen =
                 a => a.text !== "Betreuergruppen"
 
             const menuItemText =
                 id => 
-                ( { id, text : $(`a[data-menus=${id}]`).text() } )
+                ( { id, text : $(`[data-menus=${id}]`).not("button").text().split(" ").length > 2 ? $(`[data-menus=${id}]`).not("button").text().split(" ")[0] : $(`[data-menus=${id}]`).not("button").text() } )
 
             this.getMainMenus =
                 menus =>
@@ -200,7 +236,7 @@ const scpRechteverwaltung =
                 
             this.menuHtml2Json =
                 () => 
-                getMenuIDs()
+                this.getMenuIDs()
                 .map( menuItemText )
                 .filter( notBetreuergruppen )
             
@@ -234,8 +270,8 @@ const scpRechteverwaltung =
                     $(".manGrpPfad [label='Mandantengruppen']").append(
                             mandantengruppen.map( 
                                 manGrp => 
-                                    pipe( manGrp
-                                        , getIDAndName(Type.Mandantengruppe)
+                                    pipe_(manGrp)( 
+                                        getIDAndName(Type.Mandantengruppe)
                                         , addOption
                                         )[2]
                             ).join("")
@@ -245,8 +281,8 @@ const scpRechteverwaltung =
                     $(".manGrpPfad [label='Mandanten']").append(
                             mandanten.map( 
                                 man_ => 
-                                    pipe( man_
-                                        , getIDAndName(Type.Mandant)
+                                    pipe_(man_)( 
+                                        getIDAndName(Type.Mandant)
                                         , addOption
                                         )[2]
                             ).join("")  

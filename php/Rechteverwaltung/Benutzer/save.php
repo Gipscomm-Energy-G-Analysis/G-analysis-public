@@ -21,16 +21,17 @@ $username = $_POST['username'] ;
 $passHash = $_POST['passHash'] ;
 $rechteTreeView = $_POST['rechteTreeView'] ;
 $rechteMenu     = $_POST['rechteMenu'] ;
+$rechteEdit     = $_POST['rechteEdit'] ;
 $betrGrpID      = $_POST['betrGrpID'] ;
 
 if($modus === "new") {
     if($manGrpID !== "0") {
-        $query =  "INSERT INTO benutzer(manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
-        $query .= "VALUES($manGrpID, 1, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'ben', '$rechteTreeView', '$rechteMenu', 0) " ;
+        $query =  "INSERT INTO benutzer(manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, eMail, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, rechteEdit, deleted) " ;
+        $query .= "VALUES($manGrpID, 1, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'ben', '$rechteTreeView', '$rechteMenu', '$rechteEdit', 0) " ;
     }
     else {
-        $query =  "INSERT INTO benutzer(man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, deleted) " ;
-        $query .= "VALUES($manID, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'ben', '$rechteTreeView', '$rechteMenu', 0) " ; 
+        $query =  "INSERT INTO benutzer(man_ID, betrGrp_ID, titel, name, vorname, eMail, telefon, fax, mobiltelefon, username, passHash, position, rechteTreeView, rechteMenu, rechteEdit, deleted) " ;
+        $query .= "VALUES($manID, $betrGrpID, '$titel', '$name', '$vorname', '$email', '$telefon', '$fax', '$mobiltelefon', '$username', '$passHash', 'ben', '$rechteTreeView', '$rechteMenu', '$rechteEdit', 0) " ; 
     }
 }
 else {
@@ -40,16 +41,16 @@ else {
         $query =  "UPDATE benutzer " ;
         $query .= "SET name = '$name', vorname = '$vorname', " ;
         $query .= "username = '$username', titel = '$titel', " ;
-        $query .= "eMail = '$email', telefon = '$telefon', " ;
-        $query .= "fax = '$fax', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;
+        $query .= "eMail = '$email', telefon = '$telefon', mobiltelefon = '$mobiltelefon', " ;
+        $query .= "fax = '$fax', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu', rechteEdit = '$rechteEdit' " ;
         $query .= "WHERE ben_ID = ".$benID." " ;
     }
     else {
         $query =  "UPDATE benutzer " ;
         $query .= "SET name = '$name', vorname = '$vorname', " ;
         $query .= "username = '$username', titel = '$titel', " ;
-        $query .= "eMail = '$email', telefon = '$telefon', " ;
-        $query .= "fax = '$fax', passHash = '$passHash', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu' " ;
+        $query .= "eMail = '$email', telefon = '$telefon', mobiltelefon = '$mobiltelefon', " ;
+        $query .= "fax = '$fax', passHash = '$passHash', rechteTreeView = '$rechteTreeView', rechteMenu = '$rechteMenu', rechteEdit = '$rechteEdit' " ;
         $query .= "WHERE ben_ID = ".$benID." " ;
     }
 }

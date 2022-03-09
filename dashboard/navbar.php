@@ -80,7 +80,8 @@
                     <h3 id="verbExportMenu" class="dashboard_menu_click cursor_pointer">Verbrauchsdatenexport</h3>
                   </div>
                   <div class="column">
-                    <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer">Production</h3>
+                      <a href="/product/index.php/dashboard">Production</a>
+<!--                    <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer">Production</h3>-->
                   </div>
                 </div>
               </div>
@@ -222,26 +223,29 @@
           <!-- --end-- -->
 
           <li><a href="javascript:void(0);" class="text-muted menu_dashboard">Hilfe</a></li>
-          <li><a href="javascript:void(0);" id="logout" class="dashboard_menu_click text-muted menu_dashboard"><img src="images/logout2.png"></a></li>
+          <li><a href="javascript:void(0);" id="logout" class="text-muted menu_dashboard"><img src="images/logout2.png"></a></li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
          
-          <li class="nav-item dropdown">
+        <!-- 28-2-2022 -->
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle nav_bar_redirect" id="notification_nav_bar" href="javascript:void(0);" data-toggle="dropdown" title="Alerts">
               <i class="ti-bell text-muted"></i>
               <span class="count"></span>
             </a>
            
-          </li>
+          </li> -->
 
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle nav_bar_redirect" href="javascript:void(0);" data-toggle="dropdown" id="help_nav_bar" title="Help">
-              <!-- <img src="images/faces/face28.jpg" alt="profile"/> -->
               <i class="ti-help text-muted"></i>
               <span class="menu-title"></span>
             </a>
             
           </li>
+
+
+          <!-- --end- -->
           
 
           <li class="nav-item nav-profile dropdown">

@@ -1,18 +1,22 @@
 <?php
 session_start();
 $session_val = $_SESSION["login_state"];
-if($session_val == 'false'){
-  $url_path = $_SERVER['REQUEST_URI']; 
-  $ar_url_path = explode('/',$url_path);
-  $redirect_path = '';
-  if(count($ar_url_path) > 3){
-    $redirect_path = "/$ar_url_path[1]/index.html";
+if(isset($_SESSION))
+{
+  if(!$_SESSION['username'])
+  {
+    $url_path = $_SERVER['REQUEST_URI']; 
+    $ar_url_path = explode('/',$url_path);
+    $redirect_path = '';
+    if(count($ar_url_path) > 3){
+      $redirect_path = "/$ar_url_path[1]/login.html";
+    }
+    else{
+      $redirect_path = "/login.html";
+    }
+    header('Location:'.$redirect_path);
+    die;
   }
-  else{
-    $redirect_path = "/index.html";
-  }
-  header('Location:'.$redirect_path);
-  die;
 }
 include_once("headerfiles.php");
 ?>

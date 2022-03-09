@@ -9,7 +9,7 @@
                   <h4 class="card-title">Produktionsdaten</h4>
                   
                   <div class="form-group">
-                    <label for="exampleFormControlSelect3">Select No. of Records</label>
+                    <label for="exampleFormControlSelect3">Anzahl Datensätze auswählen</label>
                     <select class="form-control form-control-sm text-dark" id="production_data_number_record">
                       <option value="10">10</option>
                       <option value="20">20</option>
@@ -35,7 +35,7 @@
                           </th>
 
                           <th>
-                            Time Interval
+                            Zeitintervall
                           </th>
                           <th>
                             Start

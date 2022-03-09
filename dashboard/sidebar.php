@@ -5,38 +5,40 @@
           <li class="nav-item active">
             <a class="nav-link sidebar_redirect" id="dashboard_sidebar" href="javascript:void(0);">
               <i class="ti-shield menu-icon"></i>
-              <span class="menu-title">Instrumententafel</span>
+              <span class="menu-title">Dashboard</span>
             </a>
           </li>
           
           <li class="nav-item">
             <a class="nav-link sidebar_redirect" id="charts_sidebar" href="javascript:void(0);">
               <i class="ti-pie-chart menu-icon"></i>
-              <span class="menu-title">Chart</span>
+              <span class="menu-title">Diagramm</span>
             </a>
           </li>
          
           <li class="nav-item">
             <a class="nav-link sidebar_redirect" id="tables_sidebar" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="ti-view-list-alt menu-icon"></i>
-              <span class="menu-title">Tables</span>
+              <span class="menu-title">Tisch</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link sidebar_redirect" id="measurement_sidebar_option" href="javascript:void(0);">Messstellen</a></li>
+                <li class="nav-item"> <a class="nav-link sidebar_redirect" id="measurement_sidebar_option" href="javascript:void(0);" style="display: none">Messstellen</a></li>
                 <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="product_sidebar_option">Produkte</a></li>
                 <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="energy_sidebar_option">Energiedaten</a></li>
-                <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="production_data_sidebar_option">Produktionsdaten</a></li>
+                <!-- <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="production_data_sidebar_option">Produktionsdaten</a></li> -->
               </ul>
             </div>
           </li>
-          <li class="nav-item">
+          <!-- 28-2-2022 -->
+          <!-- <li class="nav-item">
             <a class="nav-link sidebar_redirect" id="wert_sidebar" href="javascript:void(0);">
               <i class="ti-star menu-icon"></i>
               <span class="menu-title">Wert</span>
             </a>
-          </li>
+          </li> -->
+          <!-- -end -->
           <!-- <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
               <i class="ti-user menu-icon"></i>

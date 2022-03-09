@@ -21,7 +21,7 @@ else {
     $manGrpID = $_POST['manGrpID'] ;
 
     $query =  "UPDATE mandantenGruppen " ;
-    $query .= "SET name = '$name', kurz = '$kurz', notiz = '$notiz' " ;
+    $query .= "SET name = '$name', kurz = '$kurz', notiz = '$notiz', mandantenIDs = '$mandantenIDs' " ;
     $query .= "WHERE manGrp_ID = ".$manGrpID." " ;
 }
 

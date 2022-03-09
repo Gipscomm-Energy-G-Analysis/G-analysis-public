@@ -34,7 +34,10 @@
                     head(record).passHash
 
                 const permissions =
-                    head(record).rechteMenu
+                    ({ menu: head(record).rechteMenu
+                     , edit: head(record).rechteEdit
+                     }
+                    )
 
                 const fieldnames =
                     [ "betrGrp_ID"
@@ -54,11 +57,23 @@
                         name => itemSessionSet(name)( valueField(name) )
                     )
 
-                    itemSessionSet("rechteMenu")(permissions)
+                    itemSessionSet("rechteMenu")(permissions.menu)
+                    itemSessionSet("rechteEdit")(permissions.edit)
 
                     setTimeout(function(){ 
-                        window.open("main.html","_self");
-                     }, 1000)
+                        // window.open("main.html","_self");
+                        // <---1-3-2022--
+                        var pathname = window.location.pathname;
+                        var arPathname = pathname.split('/');
+                        if(arPathname.length > 2){
+                            window.open('/'+arPathname[1]+'/dashboard/','_self');
+                        }
+                        else{
+                            window.open("/dashboard/","_self");
+                        }
+                        // window.open("/dashboard/","_self");
+                        // --end--->
+                     }, 1000);
                    
                     //  <---28-9-2021--
                     localStorage.removeItem('dashboardDB');

@@ -7,6 +7,11 @@ const scpChart =
     Object
     .freeze (
         new function () {
+            this.Interval = 
+                { Year  : 0
+                , Month : 1
+                , Day   : 2
+                }
             this.getChart = sel => $(sel).ejChart("instance")
 
             this.note = ident => mst => color => note_ =>
@@ -30,19 +35,77 @@ const scpChart =
 
             this.chooseFlag = hx => head(colors().filter(a => equal(hx)(a.hex))).name
 
-            this.updateChart = newDataSeries => nameSeries => {
+            this.prependZero = n => n < 10 ? "0" + String(n) : String(n)
+
+            this.timeSeriesYear = range(1)(12).map(prependZero)
+
+            this.monthArr = [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
+
+            this.timeSeriesMonth = month => range(1)(monthArr[month - 1]).map(prependZero)
+
+            this.timeSeriesDay = range(1)(24).map(prependZero)
+
+            this.setXY = x => y => ({x, y})
+
+            this.timeSeriesX = timeSeries => timeSeries.map(flip(this.setXY)())
+
+            this.addName = name => timeSeries => timeSeries.map(a => ({x : a.x, y : a.y, name}))
+
+            this.timeSeriesAssignY =
+                dataXY =>
+                timeSeriesX_ =>
+                timeSeriesX_
+                .map(
+                    a => {
+                        const foundRecord = dataXY.find(b => a.x === b.x)
+                        
+                        return foundRecord === undefined ? a : foundRecord
+                    }
+                )
+
+            this.generateDataSeries =
+                name =>
+                interval => 
+                data => {
+                    let timeSeries = []
+                    switch (interval) {
+                        case this.Interval.Year:
+                            timeSeries = this.timeSeriesYear
+                            break;
+                        case this.Interval.Month:
+                            timeSeries = this.timeSeriesMonth
+                            break;
+                        case this.Interval.Day:
+                            timeSeries = this.timeSeriesDay
+                            break;
+                    
+                    }
+                    pipe_(timeSeries)(
+                        this.timeSeriesX
+                        , this.addName(name)
+                        , this.timeSeriesAssignY(data)
+                    )
+                }
+
+
+            this.updateChart = interval => newDataSeries => nameSeries => {
 
                 let chart = this.getChart("#container")
                 const nSeries = chart.model.series.length
                 chart.model.series.push({
-                      type: chartType
+                        type: chartType
                     , name: nameSeries
-                    , points: newDataSeries.map(
+                    , points: 
+                        this.generateDataSeries(nameSeries)(interval)(newDataSeries)
+                        .map(
                             a => ({name: a.name, x: a.x + " ", y: a.y})
                         )
                     , xName: "x"
                     , yName: "y"
                 })
+                
+                console.log("Chart Series")
+                console.log(chart.model.series[nSeries])
 
                 chart.redraw()
                 return [chart.model.series[nSeries].fill, nSeries]
@@ -191,5 +254,5 @@ const scpChart =
                     }
                 })
 
-        }
-    );
+    }
+);

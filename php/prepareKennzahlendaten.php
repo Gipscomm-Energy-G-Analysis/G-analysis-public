@@ -12,6 +12,7 @@ require 'EMail_swift.php';
 
 define("connect", connectToDB($_GET['nameDB'])) ;
 define("artikelnummer", $_GET['artikelnummer']) ;
+define("auftrag", $_GET['auftrag']) ;
 
 function flatten($arr) {
     return gettype($arr) === "array" ?
@@ -19,12 +20,12 @@ function flatten($arr) {
            $arr ;
 }
 
-function queryProdData($artikelnummer) {
+function queryProdData($artikelnummer, $auftrag) {
     $query = "SELECT * FROM ProdData_ " ;
     $query .= "WHERE artikelnummer = '".$artikelnummer."' " ;
     $query .= "AND auftrag <> '' " ;
     $query .= "AND (gutmenge + ausschuss) > 0 " ;
-    $query .= "AND (auftrag = '001011530020' OR auftrag = '001029400020' OR auftrag = '001029410020') " ; // 
+    $query .= "AND auftrag = '$auftrag' " ; 
     $query .= "ORDER BY auftrag, zeitstempel " ;
 
     return queryDB(connect, $query, "read") ;
@@ -144,6 +145,7 @@ function prepareOrders($records) {
                     , "zykluszeit" => $averageCycletimes_[$i]
                     , "auftrag" => $startEndDates_[$i][1]["auftrag"]
                     , "verbrauchAuftrag" => 0
+                    , "zustandAuftrag" => $startEndDates_[$i][1]["zustandAuftrag"]
                     ]
                 ) ;
             }
@@ -251,7 +253,7 @@ $start = hrtime(true) ;
 
 // Test if data in DB has to be still implemented
 pipe(
-    [ queryProdData(artikelnummer)
+    [ queryProdData(artikelnummer, auftrag)
     , 'getOrders'
     , 'prepareOrders'
     , 'getEnergyDataOrders'
