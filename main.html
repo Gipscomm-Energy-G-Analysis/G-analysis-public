@@ -17,7 +17,26 @@
    <link href="src/css/jquery.treeview.css" rel="stylesheet">
    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
    <link rel="stylesheet" href="dashboard/css/style.css">
-  <link rel="stylesheet" href="dashboard/css/custom.css">
+   <link rel="stylesheet" href="dashboard/css/custom.css">
+   
+   <!-- Dsashboard  css -->
+
+   <!-- plugins:css -->
+   <link rel="stylesheet" href="dashboard/vendors/ti-icons/css/themify-icons.css">
+   <link rel="stylesheet" href="dashboard/vendors/base/vendor.bundle.base.css">
+   <!-- endinject -->
+   <!-- plugin css for this page -->
+   <!-- End plugin css for this page -->
+   <!-- inject:css -->
+   <link rel="stylesheet" href="dashboard/css/style.css">
+   <link rel="stylesheet" href="dashboard/css/custom.css">
+   <!-- endinject -->
+   <link rel="shortcut icon" href="dashboard/images/G-Analysis/favicon.png" />
+ 
+   <link  rel="stylesheet" href="dashboard/css/jquery.multiselect.css" />
+   <!-- 7-9-2021-- -->
+   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   <!-- --end -->
    <style>
       .ui-dialog .ui-dialog-content {
          position: relative;
@@ -66,10 +85,10 @@
             <select class="manPfad" size="1" title="Mandant">
             </select>
           </li>
-          <li><a href="dashboard/" class="text-muted menu_dashboard">Dashboard</a></li>
+          <li><a href="javascript:void(0)" class="text-muted menu_dashboard dashboard_menu_click" data-tab="dashboardMain">Dashboard</a></li>
           <li>
             <div class="dropdown">
-              <button class="dropbtn text-muted menu_dashboard">Auswertungen 
+              <button class="dropbtn text-muted menu_dashboard">Auswertungen
                 <!-- <i class="fa fa-caret-down"></i> -->
               </button>
               <div class="dropdown-content">
@@ -260,7 +279,1740 @@
     </nav>
       </div>
       </div>
+    <!-- dashboard-Area-Start -->
+
+      <div class="container-fluid page-body-wrapper dashboardDiv">
+         <input type="hidden" id="nameDashboardDB">
+         <!-- sidebar Start -->
+         <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+            <li class="nav-item active">
+               <a class="nav-link sidebar_redirect" id="dashboard_sidebar" href="javascript:void(0);">
+                  <i class="ti-shield menu-icon"></i>
+                  <span class="menu-title">Dashboard</span>
+               </a>
+            </li>
+            
+            <li class="nav-item">
+               <a class="nav-link sidebar_redirect" id="charts_sidebar" href="javascript:void(0);">
+                  <i class="ti-pie-chart menu-icon"></i>
+                  <span class="menu-title">Diagramm</span>
+               </a>
+            </li>
+            
+            <li class="nav-item">
+               <a class="nav-link sidebar_redirect" id="tables_sidebar" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                  <i class="ti-view-list-alt menu-icon"></i>
+                  <span class="menu-title">Tisch</span>
+                  <i class="menu-arrow"></i>
+               </a>
+               <div class="collapse" id="ui-basic">
+                  <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link sidebar_redirect" id="measurement_sidebar_option" href="javascript:void(0);" style="display: none">Messstellen</a></li>
+                  <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="product_sidebar_option">Produkte</a></li>
+                  <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="energy_sidebar_option">Energiedaten</a></li>
+                  <!-- <li class="nav-item"> <a class="nav-link sidebar_redirect" href="javascript:void(0);" id="production_data_sidebar_option">Produktionsdaten</a></li> -->
+                  </ul>
+               </div>
+            </li>
+            <!-- 28-2-2022 -->
+            <!-- <li class="nav-item">
+               <a class="nav-link sidebar_redirect" id="wert_sidebar" href="javascript:void(0);">
+                  <i class="ti-star menu-icon"></i>
+                  <span class="menu-title">Wert</span>
+               </a>
+            </li> -->
+            <!-- -end -->
+            <!-- <li class="nav-item">
+               <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                  <i class="ti-user menu-icon"></i>
+                  <span class="menu-title">User Pages</span>
+                  <i class="menu-arrow"></i>
+               </a>
+               <div class="collapse" id="auth">
+                  <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/login-2.html"> Login 2 </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/register-2.html"> Register 2 </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="pages/samples/lock-screen.html"> Lockscreen </a></li>
+                  </ul>
+               </div>
+            </li> -->
+            <!-- <li class="nav-item">
+               <a class="nav-link" href="documentation/documentation.html">
+                  <i class="ti-write menu-icon"></i>
+                  <span class="menu-title">Documentation</span>
+               </a>
+            </li> -->
+            </ul>
+         </nav>
+         <!-- sidebar end -->
+
+         <!-- alert.php start -->
+         <div class="main-panel" id="alerts_table_main_div" style="display: none">
+            <div class="content-wrapper">
+            <div class="row">
+               <div class="col-lg-12 grid-margin stretch-card">
+                  <div class="card">
+                  <div class="card-body">
+                     <h4 class="card-title">Alerts</h4>
+                     
+                     <div class="table-responsive " id="alerts_table_mesurement">
+                           <p class="card-description">
+                                    Messstellen 
+                           </p>
+                        <div class="tables-alert-width">    
+                           <table class="table table-striped table-bordered">
+                           <thead>
+                              <tr>
+                              <th>
+                                    Name
+                              </th>
+                              <th>
+                                    Time Interval
+                              </th>
+                              <th>
+                                    Start
+                              </th>
+                              <th>
+                                    Status
+                              </th>
+                              </tr>
+                           </thead>
+                           <tbody id="alerts_min_max_null_mesurement_tables">
+                           
+                           </tbody>
+                           </table>
+                        </div>
+                     </div>
+
+                     <div class="table-responsive mt-5" id="alerts_table_product">
+                           <p class="card-description">
+                              Produkte 
+                           </p>
+                        <div class="tables-alert-width">    
+                           <table class="table table-striped table-bordered">
+                           <thead>
+                              <tr>
+                              <th>
+                                    Product Name
+                              </th>
+
+                              <th>
+                                    Item Name
+                              </th>
+
+                              <th>
+                                    Time Interval
+                              </th>
+                              <th>
+                                    Start
+                              </th>
+                              <th>
+                                    Status
+                              </th>
+                              </tr>
+                           </thead>
+                           <tbody id="alerts_min_max_null_product_tables">
+                           
+                           </tbody>
+                           </table>
+                        </div>
+                     </div>
+
+                     <div class="table-responsive mt-5" id="alerts_table_energy">
+                           <p class="card-description">
+                              Energiedaten 
+                           </p>
+                        <div class="tables-alert-width">
+                           <table class="table table-striped table-bordered">
+                           <thead>
+                              <tr>
+                              <th>
+                                    Name
+                              </th>
+                              <th>
+                                    Time Interval
+                              </th>
+                              <th>
+                                    Start
+                              </th>
+                              <th>
+                                    Status
+                              </th>
+                              </tr>
+                           </thead>
+                           <tbody id="alerts_min_max_null_energy_tables">
+                           
+                           </tbody>
+                           </table>
+                        </div>
+                     </div>
+
+                  </div>
+                  </div>
+               </div>
+            </div>
+            </div>   
+         </div>
+         <!-- alert.php end -->
+   
+         <!-- help.php start -->
+         <div class="main-panel" id="help_table_main_div" style="display: none">
+            <!-- <div class="card">
+               <div class="card-body">
+                  <h4 class="card-title">Alerts</h4>
+               </div> -->
+               <div class="main_div text-center">
+                  <h3>Help</h3>
+                  <div  class="video_div">
+                  <!-- <iframe class="border" id='help_video' width="560" height="315" src="https://media.geeksforgeeks.org/wp-content/uploads/20200513195558/Placement100-_-GeeksforGeeks-1.mp4" frameborder="0" allowfullscreen>
+                  </iframe> -->
+
+                  <video width="560" id='help_video' class="border" height="315" controls>
+                     <source src="https://media.geeksforgeeks.org/wp-content/uploads/20200513195558/Placement100-_-GeeksforGeeks-1.mp4" type="video/mp4">
+                     <!-- <source src="movie.ogg" type="video/ogg"> -->
+                     Your browser does not support the video tag.
+                  </video>
+                  </div>
+               </div>
+            <!-- </div> -->
+            
+         </div>
+         <!-- help.php end -->
+
+    <!-- dashboard.php start -->
+    <div class="main-panel" id="dashboard_main_div" style="display: none">
+      <div class="content-wrapper">
+        <div class="row heading-margin-top">
+          <div class="col-md-12 grid-margin">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 class="font-weight-bold mb-0 text-muted" style="    margin-left: 20px;">Armaturenbrett</h4>
+              </div>
+              <!-- <div>
+                  <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
+                    <i class="ti-clipboard btn-icon-prepend"></i>Report
+                  </button>
+              </div> -->
+            </div>
+              <!-- 27-6-2021-- -->
+            <div class="row" style="display: none">  
+              <div class="form-group col-md-6">
+                <label class="text-dark mt-3" for="dashboard_select_tag">Datensätze auswählen</label>
+                <select class="form-control form-control-sm text-muted" multiple name="dashboard_select_tag[]" id="dashboard_select_tag">
+                  <!-- <option value="">Select Records</option> -->
+                  <option value="mesurement_count_div" description="Measurement Entries Count">Messstellen</option>
+                  <option value="product_count_div" description="Product Entries Count">Produkte</option>
+                  <option value="energy_count_div" description="Energy Entries Count">Energiedaten</option>
+                  <!-- <option value="energy_consumed_div" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option> -->
+                  <!-- <option value="five_days_energy_consumed" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
+                  <!-- <option value="40">40</option>
+                  <option value="50">50</option> -->
+                </select>
+              </div>
+             
+              <div class="form-group col-md-6">
+                <button id='save_select_changes' class="badge badge-success custom-btn">Änderungen speichern</button>
+              </div>
+          </div>
+            <!-- -end -->
+          </div>
+        </div>
+
+        <!-- 20-8-2021-- -->
+          <div class="dashboard-btn">
+              <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Auswertung hinzufügen</button>
+
+              <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Struktur speichern</button>
+
+          </div>
+
+        <!-- 7-9-2021- -->
+        <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
+        <input type="button" class="btn btn-success btn-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
+        <!-- --end-- -->
+        <div class="modal fade" id="dashboard_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="text-mute text-dark">Dashboard</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <div class="row">
+                  <input type="hidden" id="modal-open" value="false">
+                  <div class="col-md-3 form-group">
+                    <label for="title_modal_tile">Name</label>
+                    <input type="text" placeholder="Kachelname" name="title_modal_tile" required id="title_modal_tile" class="form-control form-control-sm">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="record_type_of_tile">Art des Datensatzes</label>
+                    <select class="form-control form-control-sm text-dark" id="record_type_of_tile">
+                        <option value="energy" description="Energy Entries Count">Messtellen-Energie</option>
+                        <option value="product" description="Product Entries Count">Produktion</option>
+                        <option value="measurement" description="Measurement Entries Count">Messtellen-Betrieb</option>
+                        <!-- <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
+                        <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-3">
+                    <label for="type_data_tile">Art der Daten</label>
+                    <select class="form-control form-control-sm text-dark" id="type_data_tile">
+                        <option value="table">Tabelle</option>
+                        <option value="chart">Diagramm</option>
+                        <option value="overall_count">Wert</option>
+                    </select>
+                  </div>
+
+                  <div id="save_btn_tile_div">
+                    <input type="button" id="save_and_proceed_btn_dashboard" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard" value="Speichern & fortfahren">
+                  </div>
+                  <input type="hidden" id="edit_product_tile_automatic">
+                  <input type="hidden" id="edit_tile_click_manually">
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+              </div>
+
+              <!-- ----27-10-2021--- -->
+              <!-- <div id="dashboard_loader_div" style="display: none">
+                <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+              </div> -->
+              <!-- end -->
+
+            </div>
+          </div>
+        </div>
+        <!-- end -->
+        
+        <!-- ----27-10-2021--- -->
+        <!-- <div id="dashboard_loader_div" style="display: none">
+          <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+        </div> -->
+        <!-- end -->
+
+        <!-- 16-9-2021-- -->
+        <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+          <input type="button" draggable="true" ondragstart="drag(event)" id="drag2" width="88" height="31">
+        </div> -->
+
+        <!-- <div id="div2" class="row dashboard_count_div" style="height: 240px; border: 1px solid black;" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+        <!-----end-- -->
+
+        <!-- 02-9-2021-- -->
+        <!-- <button type="button" style="display: none" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile_chart" data-toggle="modal" data-target="#dashboard_tile_modal_chart">Add Chart</button> -->
+        <div class="modal fade" id="dashboard_tile_modal_chart" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg max-width-modal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="text-mute text-dark">Dashboard Diagramm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <div class="row">
+                  <div class="form-group col-md-2">
+                    <label for="measurement-height-chart" class="text-mute">Spalte</label>
+                    <input type="number" class="form-control form-control-sm text-dark" id="measurement-height-chart" placeholder="Spalte">
+                    <input type="hidden" id="measurement-height-chart-hidden" value="145">
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <label for="measurement-width-chart" class="text-mute">Zeile</label>
+                    <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Reihe">
+                    <input type="hidden" id="measurement-width-chart-hidden" value="285">
+                  </div>
+
+                  <!-- 18-02-2022 -->
+                  <div class="form-group col-md-2" id="energy_type_dashboard_chart_div">
+                    <label for="time_interval_chart" class="text-mute">Energie Typ</label>
+                    <select class="form-control form-control-sm text-dark" id="energy_type_dashboard_chart">
+                      <option value="automatic">Automatisch</option>
+                      <option value="manually">Manuell</option>
+                      <option value="layer_modal">SchichtModelle</option>
+                    </select>
+                  </div> 
+
+                  <!-- 7-03-2022 Automatic divs-->
+                  <div class="form-group col-md-2 energy_automatic_div" id="energy_chart_measurement_div_automatic">
+                    <label for="energy_chart_measurement_automatic" class="text-mute">Messstelle auswählen</label>
+                    <span class='mandatory_sign'>*</span>
+                    <select class="form-control form-control-sm text-dark" id="energy_chart_measurement_automatic">
+                      <option value="">Messstelle auswählen</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group energy_automatic_div col-md-2">
+                    <label for="energy_chart_layer_range_automatic" class="text-mute">Bereich</label>
+                    <span class='mandatory_sign'>*</span>
+                    <input type="number" class="form-control form-control-sm text-dark" id="energy_chart_layer_range_automatic" placeholder="Enter Value">
+                    <span class="energy_chart_layer_automatic_range_error text-danger"></span>
+                  </div>
+
+                  <!-- end-- -->
+
+                  <!-- *Energy Layer Modal Div -->
+                  <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_measurement_div">
+                    <label for="time_interval_chart" class="text-mute">Messstelle auswählen</label>
+                    <span class='mandatory_sign'>*</span>
+                    <select class="form-control form-control-sm text-dark" id="energy_chart_measurement">
+                      <option value="">Messstelle auswählen</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_layer_filter_div">
+                    <label for="time_interval_chart" class="text-mute">Filter auswählen</label>
+                    <span class='mandatory_sign'>*</span>
+                    <select class="form-control form-control-sm text-dark" id="energy_chart_layer_filter">
+                      <option value="">Filter auswählen</option>
+                      <option value="day">Tage</option>
+                      <option value="week">Wochen</option>
+                    </select>
+                    <span class="energy_chart_layer_filter_error text-danger"></span>
+                  </div>
+
+                  <div class="form-group energy_chart_layer_div col-md-2">
+                    <label for="energy_chart_layer_range" class="text-mute">Bereich</label>
+                    <span class='mandatory_sign'>*</span>
+                    <input type="number" class="form-control form-control-sm text-dark" id="energy_chart_layer_range" placeholder="Enter Value">
+                    <span class="energy_chart_layer_range_error text-danger"></span>
+                  </div>
+
+                  <!-- --end-- -->
+
+                  <div class="form-group col-md-2" id="time_interval_div">
+                    <label for="time_interval_chart" class="text-mute">Zeitintervall</label>
+                    <select class="form-control form-control-sm text-dark" id="time_interval_chart">
+                      <option value="1">Tage</option>
+                      <option value="2">Wochen</option>
+                      <option value="3">Monate</option>
+                      <option value="4">Jahre</option>
+                    </select>
+                  </div>
+                  
+                  
+                  <div class="form-group col-md-2" id="chart_record_div">
+                    <label for="chart_records" class="text-mute" id="chart_records_label"></label>
+                    <span class='mandatory_sign'>*</span>
+                    <select class="form-control form-control-sm text-dark" id="chart_records">
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-2 chart_product_div" id="chart_record_product_div">
+                    <label for="chart_records_product" class="text-mute" id="chart_records_label_product"></label>
+                    <span class='mandatory_sign'>*</span>
+                    <select class="form-control form-control-sm text-dark" id="chart_records_product">
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-2 chart_product_div" id="chart_record_product_item_div">
+                    <label for="chart_records_product_item" class="text-mute">Menüpunkt wählen</label>
+                    <span class='mandatory_sign'>*</span>
+                    <select class="form-control form-control-sm text-dark" id="chart_records_product_item">
+                      <option value=''>Menüpunkt wählen</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-2" id="chart_record_filter_div">
+                    <label for="chart_record_filter" class="text-mute">Filter</label>
+                    <span class='mandatory_sign'>*</span>
+                    <select class="form-control form-control-sm text-dark" id="chart_record_filter">
+                      <option value=''>Filter auswählen</option>
+                      <option value="10">letzte 10 Datensätze</option>
+                      <option value="20">letzte 20 Datensätze</option>
+                      <option value="30">letzte 30 Datensätze</option>
+                      <option value="all">Alle Datensätze</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-2" id="chart_record_type_div">
+                    <label for="chart_type" class="text-mute">Diagramm Typ</label>
+                    <select class="form-control form-control-sm text-dark" id="chart_type">
+                      <option value="line_chart">Liniendiagramm</option>
+                      <option value="area_chart">Flächendiagramm</option>
+                      <option value="pie_chart">Kuchendiagramm</option>
+                      <option value="bar_chart">Balkendiagramm</option>
+                    </select>
+                  </div>
+
+                  <!--20-10-2021-- -->
+                  <diV class="form-group col-md-2">
+                    <div class="form-check form-check-primary">
+                      <label class="form-check-label">
+                      Ansicht erweitern
+                        <input type="checkbox" class="text-mute form-check-input" id="expand_view_chart" name="expand_view" value="0">  
+                      </label>
+                    </div>
+                  </div>
+                  <!-- end -->
+
+                  <!-- <--28-10-2021 -->
+                  <diV class="form-group col-md-2">
+                    <div class="form-check form-check-primary">
+                      <label class="form-check-label">
+                        Äußere Kachelstruktur
+                        <input type="checkbox" class="text-mute form-check-input" id="chart_outside_tile_structure" name="chart_outside_tile_structure" value="0">  
+                      </label>
+                    </div>
+                  </div>
+                  <!-- -end -->
+
+                  <!-- 29-10-2021 -->
+                  <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
+                    <label for="chart_height_outer_structure" class="text-mute">Äußere Kachelspalte</label>
+                    <input type="number" class="form-control form-control-sm text-dark" id="chart_height_outer_structure" placeholder="Outer Column">
+                  </div>
+
+                  <div class="form-group col-md-2 chart_outisde_tile_controls"  style="display: none">
+                    <label for="chart_width_outer_structure" class="text-mute">Außerhalb der Kachelreihe</label>
+                    <input type="number" class="form-control form-control-sm text-dark" id="chart_width_outer_structure" placeholder="Outer Row">
+                  </div>
+
+                  <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
+                    <label for="chart_outer_table_limit_column" class="text-mute">Spaltenlimit</label>
+                    <input type="number" class="form-control form-control-sm text-dark" id="chart_outer_table_limit_column" placeholder="Limit Column" value='1'>
+                  </div>
+                  
+                  <!-- -end- -->
+
+                   <!-- <--28-10-2021 -->
+                  <diV class="form-group col-md-2" style="display: none">
+                    <div class="form-check form-check-primary">
+                      <label class="form-check-label">
+                        Outside Tile Chart
+                        <input type="checkbox" class="text-mute form-check-input" id="display_chart_outside_tile" name="display_chart_outside_tile" value="0">  
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-3">
+                    <input type="button" class="btn btn-sm btn-success click_common_btn_chart" id="chart_btn_click" value='Show Results'>  
+                  </div>
+
+
+                </div>
+                
+                <div class="row dashboard_chart_tiles">
+                  
+                </div>
+
+                <div id="measurement_modal_loader_div_chart" style="display: none">
+                  <img src="images/loader_dashboard.gif" id="measurement_modal_loader_image_chart">
+                </div>
+
+                 <!-- 27-10-2021-- -->
+                <div id="dashboard_loader_div" style="display: none">
+                  <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
+                </div>
+                <!-- end-- -->
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                <!-- <div id="save_btn_tile_div"> -->
+                  <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" data-edit-chart='false' class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Speichern & fortfahren">
+
+                  <input type="button" id="update_and_proceed_btn_dashboard_chart"  class="btn btn-sm btn-success update_and_proceed_btn_dashboard_chart" value="Update & Proceed">
+                  <!-- </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- --end- -->
+
+        <!-- <div draggable="true" class="box">A</div>
+            <div draggable="true" class="box">B</div>
+            <div draggable="true" class="box">C</div> -->
+
+          <!-- 21-9-2021--- -->
+          <input type="hidden" id="start_tile_data">
+          <input type="hidden" id="drop_tile_data">
+
+          <!-- --end -->
+
+        <input type="hidden" id='save_tile_id'>
+        <input type="hidden" id='save_tile_id_automatic'>
+        <!-- <div id='outside_tile_chart_display_html'></div> -->
+        <div class="row dashboard_count_div"  id="dashboard_count_div_tile">
+          <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
+            <div class="card card-border">
+              <div class="row card-body">
+                <div id="mesurement_count_content" class="col-md-12">
+                    <p class="card-title text-md-center text-xl-left" id="measuremet_dashboard_tile_title">Messstellen</p>
+                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                      <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count"></h3>
+                      <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    </div>  
+                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                </div>
+                
+                <div class="col-md-9 save_table_div_show overflow-hide" id="measurement_table_show" style="display: none">
+                  <div class="save_table_height">    
+                      <table class="table table-striped table-bordered table-hover"  id="measurement_dashboard_table">
+                      </table>
+                  </div>
+                  <div class="pagination_save_table" style="display: none">
+                      <ul class="pagination">
+                        <li class="page-item ">
+                            <a class="page-link" href="javascript:void(0);" aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                                <span class="sr-only">das Vorhergehende</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0);">Seite</a>
+                        </li>
+                        
+                        <li style="display: block" class="page-item"><input type="number" readonly class="save_pagination_input_val pagination_input_val page-link"></li>
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">of</a></li>
+                        <li class="page-item"><a class="page-link " href="javascript:void(0);">1</a></li>
+                        
+                        <li class="page-item " >
+                          <a class="page-link" style="background: #d6d6d6; color: black" href="javascript:void(0);" aria-label="Next">
+                              <span aria-hidden="true">»</span>
+                              <span class="sr-only">das Nächste</span>
+                          </a>
+                        </li>
+
+                        <li class="page-item">
+                            <select class="page-link" id="save_measurement_number_record">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select>
+                        </li>
+                      </ul>
+                  </div>
+                </div>
+                <!-- <div class="col-md-9 image_div_show overflow-hide" style="display: none">
+                   <img src="upload/screenshot_table_body.png" id="screenshot_image" alt="Image Not Available" height="167px" width="593px">
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="product_count_div" style="display: none">
+            <div class="card card-border">
+              <div class="row card-body">
+                <div id="product_count_content" class="col-md-12">
+                    <p class="card-title text-md-center text-xl-left">Produkte</p>
+                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                      <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="product_count"></h3>
+                      <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    </div>  
+                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                </div>
+
+                <div class="col-md-9 save_table_div_show overflow-hide" id="product_table_show" style="display: none">
+                   
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="energy_count_div" style="display: none">
+            <div class="card card-border">
+              <div class="row card-body">
+                <div class="col-md-12" id="energy_count_content">
+                  <p class="card-title text-md-center text-xl-left">Energiedaten Eintrag</p>
+                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_count"></h3>
+                    <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                  </div>  
+                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                </div>
+
+                <div class="col-md-9 save_table_div_show overflow-hide" id="energy_table_show" style="display: none">
+                    
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="energy_consumed_div" style="display: none">
+            <div class="card card-border">
+              <div class="row card-body">
+                <div class="col-md-12" id="energy_consumed_content"> 
+                  <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
+                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_consumed_count"></h3><p class="energy_unit text-muted">kWh</p>
+                    <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                  </div>  
+                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"></span></p>
+                </div>
+
+                <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_table_show" style="display: none">
+                   
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+          <!-- 27-7-2021 -->
+          <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width  tiles-click" id="five_days_energy_consumed" style="display: none">
+            <div class="card card-border">
+              <div class="row card-body">
+                <div class="col-md-12" id="energy_consumed_five_day_content">
+                  <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
+                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="five_days_energy_count"></h3><p class="energy_unit text-muted">kWh</p>
+                    <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                  </div>  
+                  <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small></small></span></p>
+                </div>
+                
+                <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_five_day_table_show" style="display: none">
+                   
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- --end-- -->
+        </div>
+        
+        <div class="row dashboard_count_div_chart">
+          <div class="col-md-6 grid-margin stretch-card" id="energy_graph_chart" style="display: none">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-title">Energiedaten ein Monat</p>
+                <p class="text-muted font-weight-light">Received overcame oh sensible so at an. Formed do change merely to county it. Am separate contempt domestic to to oh. On relation my so addition branched.</p>
+                <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
+                <!-- <canvas id="sales-chart"></canvas> -->
+              </div>
+           
+            </div>
+          </div>
+          <div class="col-md-6 grid-margin stretch-card" id="energy_circle_chart" style="display: none">
+            <div class="card border-bottom-0">
+              <div class="card-body pb-0">
+                <p class="card-title">Energiedaten details</p>
+                <p class="text-muted font-weight-light">The argument in favor of using filler text goes something like this: If you use real content in the design process, anytime you reach a review</p>
+            
+              </div>
+              <!-- <canvas id="order-chart" class="w-100"></canvas> -->
+                <canvas id="north-america-chart"></canvas>
+                <div id="north-america-legend"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="display: none">
+          <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-title mb-2">Energiedaten Verbrauch</p>
+                <div class="table-responsive table-not-consumed">
+                  <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Zeitintervall</th>
+                        <th>Start</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="energy_not_consumed_table">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 28-7-2021 -->
+        <div class="row dashboard_count_div">
+          <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div" style="display: none">
+            <div class="card card-border">
+              <div class="card-body">
+                <p class="card-title mb-2">Energiedaten 5 Tage Verbrauch</p>
+                <div class="table-responsive table-not-consumed">
+                  <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Zeitintervall</th>
+                        <th>Tag</th>
+                        <th>Datum</th>
+                        <th>Verbrauch</th>
+                      </tr>
+                    </thead>
+                    <tbody id="five_days_energy_consumed_table">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- --end-- -->
+      </div>
+      <!-- <canvas id="areaChart"></canvas> -->
+      <!-- 30-9-2021- -->
+      <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div>  -->
+      <!-- <div style="height: 500px; width: 570px;" class="3 grid-margin actual_tile_height stretch-card tiles-click" id="measurement_count_tile_modal_3" data-i="3" data-type-tile="Measurement">
+                                  <div class="card card-border">
+                                      <div class="card-body">
+                                          <div id="" class="">
+                                              <p class="card-title text-md-center text-xl-left" id="measurement_tile_heading_modal">Tile Table</p>
+                                              <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div">
+                                             
+                                              <img src="images/table_logo.png" class="tile-image-icon tile-image-icon-table">
+                                              </div>  
+                                              <p class="mb-0 mt-2 text-success count_result_tile">5 Records</p>
+                                              <div class="action-modal-button-div">
+                                                  <img src="images/edit.png" class="3 edit_val edit_btn_tile" data-type-tile="Measurement" data-i-value="3" style="height: 17px; width: 17px; margin-right: 5px;">
+                                                  <img src="images/delete.png" class="3 id_val delete_btn_tile" data-type-tile="Measurement" style="height: 17px; width: 17px;">
+                                              </div>
+                                          </div>
+                                          
+                                          <div class="overflow-hide ml-3">
+                                              <div class="save_table_div_show_table"> 
+                                                <canvas id="areaChart"></canvas>
+                                                <div id="chartContainer" style="height: 145px; width: 570px;"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div> -->
+      <!-- end -->
+      <!-- content-wrapper ends -->
+      <!-- partial:partials/_footer.html -->
       
+      <footer class="footer">
+        <!-- <div class="d-sm-flex justify-content-center justify-content-sm-between">
+          <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard templates</a> from Bootstrapdash.com</span>
+        </div> -->
+      </footer>
+      <!-- partial -->
+    </div>
+
+    <!-- dashboard.php End -->
+
+    <!-- chart.php start -->
+    <div class="main-panel" id="charts_main_div" style="display: none">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Line chart</h4>
+                <canvas id="lineChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Bar chart</h4>
+                <canvas id="barChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Area chart</h4>
+                <canvas id="areaChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Doughnut chart</h4>
+                <canvas id="doughnutChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Pie chart</h4>
+                <canvas id="pieChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Scatter chart</h4>
+                <canvas id="scatterChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+      <!-- partial:../../partials/_footer.html -->
+      <footer class="footer">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+          <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard templates</a> from Bootstrapdash.com</span>
+        </div>
+      </footer>
+      <!-- partial -->
+    </div>  
+    <!-- chart.php End -->
+    
+    <!-- energy_table.php Start -->
+    <div class="main-panel" id="energy_table_main_div" style="display: none">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Energiedaten</h4>
+                <!-- 17-11-2021 -->
+                <div class="row">
+                  <div class="form-group col-md-3">
+                    <label for="energy_type">Energietyp</label>
+                    <select class="form-control form-control-sm text-dark" id="energy_type">
+                      <option value="automatic">Automatisch</option>
+                      <option value="manually">Manuell</option>
+                      <option value="layer_modal">SchichtModelle</option>
+                    </select>
+                  </div>
+
+
+                  <!----3-2-2022 -->
+                  <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                    <label for="energy_measurement_automatic">Messung auswählen</label>
+                    <select class="form-control form-control-sm text-dark" id="energy_measurement_automatic">
+                      <option value="">Messung auswählen</option>
+                    </select>
+                  </div>
+
+                  <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                    <label for="energy_automatic_order_by" id="energy_record_order_by_label">Verbrauchte Filtereinheiten</label>
+                    <select class="form-control form-control-sm text-dark" id="energy_automatic_order_by">
+                      <option value="desc">Maximum</option>
+                      <option value="asc">Minimum</option>
+                    </select>
+                  </div> -->
+
+                  <!-- 04-3-2022 -->
+                  <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                    <label class="form-check-label"> Uhrzeit Von </label>
+                    <input type="time" class="form-control-sm form-control text-mute" id="energy_automatic_input_from_time" name="energy_automatic_input_from_time" placeholder="Uhrzeit Von">  
+                    <span class='energy_automatic_input_from_time_error text-danger'></span>
+                  </div>
+
+                  <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                    <label class="form-check-label"> Uhrzeit Bis </label>
+                    <input type="time" class="form-control-sm form-control text-mute" id="energy_automatic_input_time_to" name="energy_automatic_input_time_to" placeholder="Uhrzeit Bis">  
+                    <span class='energy_automatic_input_to_time_error text-danger'></span>
+                  </div> -->
+
+                  <div class="form-group col-md-3 energy_automatic_filter_div" id="energy_automatic_input_div" style="display: none">
+                    <label class="form-check-label"> Bereichswert eingeben </label>
+                    <input type="number" class="form-control-sm form-control text-mute" id="energy_automatic_input" name="energy_automatic_input" placeholder="Bereichswert eingeben">  
+                    <span class='energy_automatic_input_error text-danger'></span>
+                  </div>
+                  <!-- --end-- -->
+
+                  
+                  <div class="form-group col-md-3 auto_man_div">
+                    <label for="energy_time_interval">Wählen Sie ein Zeitintervall aus</label>
+                    <select class="form-control form-control-sm text-dark" id="energy_time_interval">
+                      <option value="1">Tage</option>
+                      <option value="2">Wochen</option>
+                      <option value="3">Monate</option>
+                      <option value="4">Jahre</option>
+                      <!-- <option value="40">40</option>
+                      <option value="50">50</option> -->
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-3 auto_man_div">
+                    <label for="energy_records_order_by" id="energy_record_order_by_label">Verbrauchte Filtereinheiten</label>
+                    <select class="form-control form-control-sm text-dark" id="energy_records_order_by">
+                      <option value="order_by_desc">Maximum</option>
+                      <option value="order_by_asc">Minimum</option>
+                      <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-3 auto_man_div">
+                    <label for="energy_number_record">Gesameinträge</label>
+                     <input type="number" class="form-control form-control-sm text-dark" id="energy_total_number_record" placeholder="Gesamtrekorde">
+                     <span class='energy_number_record_error text-danger'></span>
+                  </div>
+
+                  <!-- 12-1-2022 Layer Modal Div -->
+                  <!-- <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                    <label for="layer_modal_date">Select Date</label>
+                     <input type="date" class="form-control form-control-sm text-dark" id="layer_modal_date" placeholder="Select Date">
+                  </div>
+
+                  <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                    <label for="day_from">Day of</label>
+                    <select class="form-control form-control-sm text-dark modal_day_filter" id="day_from">
+                      <option value="">Select Day</option>
+                      <option value="monday">Monday</option>
+                      <option value="tuesday">Tuesday</option>
+                      <option value="wednesday">Wednesday</option>
+                      <option value="thursday">Thursday</option>
+                      <option value="friday">Friday</option>
+                      <option value="saturday">Saturday</option>
+                      <option value="sunday">Sunday</option>
+                    </select>
+                    <span class='energy_number_layer_day_filter_error text-danger'></span>
+                  </div>
+
+                  <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                    <label for="day_from">Day of</label>
+                    <select class="form-control form-control-sm text-dark modal_day_filter" id="day_to">
+                      <option value="">Select Day</option>
+                      <option value="monday">Monday</option>
+                      <option value="tuesday">Tuesday</option>
+                      <option value="wednesday">Wednesday</option>
+                      <option value="thursday">Thursday</option>
+                      <option value="friday">Friday</option>
+                      <option value="saturday">Saturday</option>
+                      <option value="sunday">Sunday</option>
+                    </select>
+                    <span class='energy_number_layer_day_filter_error text-danger'></span>
+                  </div> -->
+                  <!-- --end -->
+
+
+                  <!-- 25-1-2022 -->
+
+                  <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                    <label for="energy_measurement">Messung auswählen</label>
+                    <select class="form-control form-control-sm text-dark" id="energy_measurement">
+                      <option value="">Messung auswählen</option>
+                    </select>
+                  </div>
+
+
+                  <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                    <label for="select_day_week">Wählen Sie Filter aus</label>
+                    <select class="form-control form-control-sm text-dark" id="select_day_week">
+                      <option value="">Wählen Sie Filter aus</option>
+                      <option value="day">Tag</option>
+                      <option value="week">Woche</option>
+                    </select>
+                    <span class='energy_day_week_filter_error text-danger'></span>
+                  </div>
+
+                  <div class="form-group col-md-3 layer_modal_filter_div" id="input_val_week_day_div" style="display: none">
+                    <label class="form-check-label"> Bereichswert eingeben </label>
+                    <input type="number" class="form-control-sm form-control text-mute" id="input_val_week_day" name="input_val_week_day" placeholder="Bereichswert eingeben">  
+                    <span class='energy_input_day_week_error text-danger'></span>
+                  </div>
+                  <!-- --end -->
+
+
+                  <div class="form-group col-md-3">
+                    <input type="button" class="btn btn-sm btn-success click_common_btn" id="energy_btn_table" value='Show Results'>  
+                  </div>
+
+
+                  <div class="form-group col-md-3" id="open_end_layer_div" style="display: none">
+                    <div class="form-check form-check-primary">
+                      <label class="form-check-label">
+                        Open End
+                      <input type="checkbox" class="text-mute" id="open_end_layer" name="open_end_layer" checked value="1">  
+                      </label>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label for="energy_search_record">Aufzeichnungen suchen</label>
+                    <input type="text" class="form-control form-control-sm text-dark" id="energy_search_record" placeholder="Aufzeichnungen suchen">
+                  </div>
+                  
+                  <div class="table-responsive col-md-12 table-margin" id="energy_record_table">
+                    <table class="table table-striped table-bordered table-hover" id="energy_record_tb">
+                      <thead class="energy_table_header">
+                        <tr>
+                          <th>Name</th>
+                          <th>Zeitintervall</th>
+                          <th>Erstellungsdatum</th>
+                          <th>Gesamteinheiten</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="energy_select_table_entries">
+                      
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <input type="hidden" id="mst_id_hidden_energy">
+                  <input type="hidden" id="overall_count_energy">
+                  <input type="hidden" id="row_click_last_date_energy">
+                  <input type="hidden" id="layer_modal">
+                  
+                  <div id="energy_table_data_loader_div" style="display: none">
+                      <img src="images/loader_dashboard.gif" id="energy_table_data_loader_img">
+                  </div>
+                </div>
+               
+                <div class="pagination_html_energy" id="pagination_html_energy">
+                </div>
+                <!-- end -->
+
+                <!-- 22-11-2021-- -->
+                <div class="modal fade bd-example-modal-lg energy_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg max-width-modal">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="text-mute text-dark">Dashboard</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <div class="modal-body">
+                        <!-- Height and Width -->
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                              <label for="modal-height-input-energy" class="text-mute">Spalte</label>
+                              <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-energy" placeholder="Spalte">
+                              <input type="hidden" id="modal-height-input-energy-hidden" value="145">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                              <label for="modal-width-input-energy" class="text-mute">Zeile</label>
+                              <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-energy" placeholder="Reihe">
+                              <input type="hidden" id="modal-width-input-energy-hidden" value="285">
+                            </div>
+
+                        </div>
+                        <!-- --end -->
+                        <!-- 23-8-21 -->
+                        <div class="row dashboard_modal_tile gernerated_energy_modal_tiles">
+                        </div>
+                        <!-- --end-- -->
+
+                        <div id="energy_modal_loader_div" style="display: none">
+                          <img src="images/loader_dashboard.gif" id="energy_modal_loader_image">
+                        </div>
+                      
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                        <button type="button" class="btn btn-sm btn-success display-none"  id="save_table_btn_energy">Speichern</button>
+                        <button type="button" class="btn btn-sm btn-success display-none" data-type="Energy"  id="update_table_btn_energy">Ändern</button>
+                      </div>
+
+                     
+                    </div>
+                  </div>
+                </div>
+                <!-- ---end--- -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>   
+    </div>
+    <!-- energy_table.php End -->
+
+    <!-- measurement_table.php Start -->
+    <div class="main-panel" id="measurement_table_main_div" style="display: none">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Messstellen</h4>
+                
+                <div class="row">
+
+                  <div class="form-group col-md-3">
+                    <label for="measurement_type">Messtyp</label>
+                    <select class="form-control form-control-sm text-dark" id="measurement_type">
+                      <option value="automatic">Automatisch</option>
+                      <option value="manually">Manuell</option>
+                       <!-- <option value="calculated">Calculated</option> -->
+                    </select>
+                  </div>
+                  
+                  <div class="form-group col-md-3">
+                    <label for="measurement_time_interval">Wählen Sie ein Zeitintervall aus</label>
+                    <select class="form-control form-control-sm text-dark" id="measurement_time_interval">
+                      <option value="1">Tage</option>
+                      <option value="2">Wochen</option>
+                      <option value="3">Monate</option>
+                      <option value="4">Jahre</option>
+                      <!-- <option value="40">40</option>
+                      <option value="50">50</option> -->
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-3">
+                    <label for="measurement_records_order_by">Filter</label>
+                    <select class="form-control form-control-sm text-dark" id="measurement_records_order_by">
+                      <option value="order_by_desc">Maximum</option>
+                      <option value="order_by_asc">Minimum</option>
+                      <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
+                    </select>
+                  </div>
+
+                  <!-- <div class="form-group col-md-2" style="display: none">
+                    <label for="measurement_number_record">Select No. of Records</label>
+                     <input type="number" class="form-control form-control-sm text-dark" id="measurement_number_record" minlength="5" maxlength="50" placeholder="Select No. of Records">
+                     <span class='measurement_number_record_error text-danger'></span>
+                    </div> -->
+
+                    <div class="form-group col-md-3">
+                    <label for="measurement_number_record">Gesamteinträge</label>
+                     <input type="number" class="form-control form-control-sm text-dark" id="measurement_total_number_record" placeholder="Gesamtrekorde">
+                     <span class='measurement_number_record_error text-danger'></span>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                    <input type="button" class="btn btn-sm btn-success click_common_btn" id="measurement_btn_table" value='Show Results'>  
+                    </div>
+
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label for="measurement_search_record">Datensatz suchen</label>
+                    <input type="text" class="form-control form-control-sm text-dark" id="measurement_search_record" placeholder="Aufzeichnungen suchen">
+                  </div>
+                  
+                  <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
+                    <table class="table table-striped table-bordered table-hover" id="measurement_record_tb">
+                      <thead class="measurement_table_header">
+                        <tr>
+                          <th>Name</th>
+                          <th>Zeitintervall</th>
+                          <th>Erstellungsdatum</th>
+                          <th>Gesamteinheiten</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="mesurement_select_table_entries">
+                      
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <input type="hidden" id="mst_id_hidden">
+                  <input type="hidden" id="overall_count">
+                </div>
+                <!-- <p class="card-description">
+                  Add class <code>.table-striped</code>
+                </p> -->
+               
+                <!-- 30-7-2021 -->
+                <div class="pagination_html" id="pagination_html">
+                </div>
+
+                <!-- Modal -->
+               <!-- Large modal -->
+                <!-- <button type="button" style="display: none" class="btn btn-primary" id="modal_open_button" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button> -->
+                <input type="hidden" id="row_click_last_date">
+                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg max-width-modal">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="text-mute text-dark">Dashboard</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <div class="modal-body">
+                        <!-- Height and Width -->
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                              <label for="modal-height-input-measurement" class="text-mute">Spalte</label>
+                              <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-measurement" placeholder="Spalte">
+                              <input type="hidden" id="modal-height-input-measurement-hidden" value="145">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                              <label for="modal-width-input-measurement" class="text-mute">Zeile</label>
+                              <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-measurement" placeholder="Reihe">
+                              <input type="hidden" id="modal-width-input-measurement-hidden" value="285">
+                            </div>
+
+                        </div>
+                        <!-- --end -->
+                        <!-- 23-8-21 -->
+                        <div class="row dashboard_modal_tile gernerated_measurement_modal_tiles">
+                        </div>
+                        <!-- --end-- -->
+                        <div class="row dashboard_modal_tile">
+                          <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="measurement_count_tile_modal" style="display: none">
+                            <div class="card card-border">
+                              <div class="card-body overflow-hide display-flex">
+                                <div id="" class="">
+                                    <p class="card-title text-md-center text-xl-left" id="measurement_tile_heading_modal"></p>
+                                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                      <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal" ></h3>
+                                      <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                    </div>  
+                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                                </div>
+                                
+                                <div class="overflow-hide ml-3">
+                                  <div class=""> 
+                                    <table class="table table-striped table-bordered table-hover" id="measurement_modal_table">
+                                    </table>                        
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="product_count_tile_modal" style="display: none">
+                            <div class="card card-border">
+                              <div class="card-body overflow-hide display-flex">
+                                <div id="" class="">
+                                    <p class="card-title text-md-center text-xl-left">Produkte</p>
+                                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                      <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 product_count_modal"></h3>
+                                      <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                    </div>  
+                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                                </div>
+
+                                <div class="overflow-hide ml-3">
+                                  <div class=""> 
+                                    <table class="table table-striped table-bordered table-hover">
+                                    </table>                        
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="energy_count_tile_modal" style="display: none">
+                            <div class="card card-border">
+                              <div class="card-body overflow-hide display-flex">
+                                <div class="" id="">
+                                  <p class="card-title text-md-center text-xl-left">Energiedateneintrag</p>
+                                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_count_modal"></h3>
+                                    <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                  </div>  
+                                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                                </div>
+                              
+
+                                <div class="overflow-hide ml-3">
+                                  <div class=""> 
+                                    <table class="table table-striped table-bordered table-hover">
+                                    </table>                        
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="grid-margin actual_tile_height actual_tile_width stretch-card " id="energy_consumed_tile_modal" style="display: none">
+                            <div class="card card-border">
+                              <div class=" card-body overflow-hide display-flex">
+                                <div class="" id=""> 
+                                  <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
+                                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_consumed_count_modal"></h3><p class="energy_unit text-muted">kWh</p>
+                                    <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                  </div>  
+                                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"></span></p>
+                                </div>
+
+                                <div class="overflow-hide ml-3">
+                                  <div class=""> 
+                                    <table class="table table-striped table-bordered table-hover">
+                                    </table>                        
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          <!-- 27-7-2021 -->
+                          <div class="grid-margin actual_tile_height actual_tile_width stretch-card" id="five_days_energy_consumed_tile_modal" style="display: none">
+                            <div class="card card-border">
+                              <div class="card-body overflow-hide display-flex">
+                                <div class="" id="">
+                                  <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
+                                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 five_days_energy_count_modal">0</h3><p class="energy_unit text-muted">kWh</p>
+                                    <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                  </div>  
+                                  <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small></small></span></p>
+                                </div>
+                                
+                                <div class="overflow-hide ml-3">
+                                  <div class=""> 
+                                    <table class="table table-striped table-bordered table-hover">
+                                    </table>                        
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- --end-- -->
+                        </div>
+
+                        <div id="measurement_modal_loader_div" style="display: none">
+                          <img src="images/loader_dashboard.gif" id="measurement_modal_loader_image">
+                        </div>
+                      
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                        <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement-table-format"  id="save_table_btn">Speichern</button>
+                        <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement"  id="update_table_btn_measurement">Ändern</button>
+                      </div>
+
+                     
+                    </div>
+                  </div>
+                </div>
+                <!-- --end -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- measurement_table.php End -->
+
+    <!-- production_data_table.php Start-->
+    <div class="main-panel" id="production_data_table_main_div" style="display: none">
+      <div class="content-wrapper">
+        <div class="row">
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Produktionsdaten</h4>
+                
+                <div class="form-group">
+                  <label for="exampleFormControlSelect3">Anzahl Datensätze auswählen</label>
+                  <select class="form-control form-control-sm text-dark" id="production_data_number_record">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <!-- <option value="40">40</option>
+                    <option value="50">50</option> -->
+                  </select>
+                </div>
+                
+                <!-- <p class="card-description">
+                  Add class <code>.table-striped</code>
+                </p> -->
+                <div class="table-responsive">
+                  <table class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>
+                          Name
+                        </th>
+
+                        <th>
+                          Item Name
+                        </th>
+
+                        <th>
+                          Zeitintervall
+                        </th>
+                        <th>
+                          Start
+                        </th>
+                       
+                      </tr>
+                    </thead>
+                    <tbody id="production_data_select_table_entries">
+                    
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- production_data_table.php End -->
+
+    <!-- production_table.php Start -->
+    <div class="main-panel" id="production_table_main_div" style="display: none">
+      <div class="content-wrapper">
+       <div class="row">
+         <div class="col-lg-12 grid-margin stretch-card">
+           <div class="card">
+             <div class="card-body">
+               <h4 class="card-title">Produkte</h4>
+
+               <!-- 26-11-2021 -->
+               <div class="row">
+                 <div class="form-group col-md-3 mt_pr_alignment" id="product_type_div">
+                   <label for="product_type">Produktart</label>
+                   <select class="form-control form-control-sm text-dark" id="product_type">
+                     <option value='automatic'>Automatisch</option>
+                     <option value='mannual'>Manuell</option>
+                   </select>
+                 </div>
+
+                 <!-- 21-12-2021-- -->
+                 <div class="form-group col-md-3 automatic_product_div" id="all_tables_product_div">
+                   <label for="product_type">Tabelle</label>
+                   <select class="form-control form-control-sm text-dark" id="all_tables_product">
+                   </select>
+                 </div>
+
+                 <div class="form-group col-md-3 automatic_product_div" id="all_columns_product_div">
+                   <label for="product_type">Säulen</label>
+                   <select class="form-control form-control-sm text-dark" id="all_columns_product">
+                     <!-- <option value="">Please Select Column</option> -->
+                   </select>
+                 </div>
+                 <!-- -end -->
+
+                 <div class="form-group col-md-3" id="product_field_div">
+                   <img src="images/search.png" id="all_product_image">
+                   <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='Alle Produkte' readonly >
+                 </div>
+
+                 <div class="form-group col-md-3 mt_pr_alignment" id="product_records_order_by_div" style="display: none">
+                   <label for="product_records_order_by">Filter</label>
+                   <select class="form-control form-control-sm text-dark" id="product_records_order_by">
+                     <option value='desc'>Maximum</option>
+                     <option value='asc'>Minimum</option>
+                   </select>
+                 </div>
+
+                 <div class="form-group col-md-3 automatic_product_div">
+                   <label for="product_total_number_record">Datensätze</label>
+                    <input type="number" class="form-control form-control-sm text-dark" id="product_total_number_record" placeholder="Datensätze">
+                    <span class="product_number_record_error text-danger"></span>
+                 </div>
+
+                 <div class="form-group col-md-3">
+                   <input type="button" class="btn btn-sm btn-success click_common_btn" id="production_btn_table" value='Show Results'>  
+                 </div>
+
+               </div>
+
+               <div class="modal fade modal_all_products" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                 <div class="modal-dialog modal-lg max-width-modal">
+                   <div class="modal-content">
+                     <div class="modal-header">
+                       <h5 class="text-mute text-dark">Dashboard</h5>
+                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                       </button>
+                     </div>
+
+                     <div class="modal-body">
+                       <div class="table-responsive">
+                         <table class="table table-striped table-bordered">
+                           <thead>
+                             <tr>
+                               <th>
+                                 Produktname
+                               </th>
+
+                               <!-- <th>
+                                 Item Name
+                               </th> -->
+
+                               <!-- <th>
+                                 Time Interval
+                               </th> -->
+                               <th>
+                                 Start
+                               </th>
+                               <!-- <th>
+                                 Status
+                               </th> -->
+                             </tr>
+                           </thead>
+                           <tbody id="all_product_table_entries">
+                           
+                           </tbody>
+                         </table>
+                       </div>
+
+                       <div class="pagination_all_product_div" id="pagination_all_product">
+                       </div>
+                     </div>
+                      
+
+                     <div class="modal-footer">
+                       <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                     </div>
+                    
+                   </div>
+                 </div>
+               </div>
+
+               <!-- --end-- -->
+               
+               <!-- <div class="form-group">
+                 <label for="exampleFormControlSelect3">Select No. of Records</label>
+                 <select class="form-control form-control-sm text-dark " id="product_number_record">
+                   <option value="10">10</option>
+                   <option value="20">20</option>
+                   <option value="30">30</option>
+                 </select>
+               </div> -->
+               
+               <!-- <p class="card-description">
+                 Add class <code>.table-striped</code>
+               </p> -->
+               <div class="table-responsive" id="product_select_table_entries_table_div">
+                 <table class="table table-striped table-bordered" id="product_select_table_entries_table">
+                   <thead id="product_select_table_entries_table_header">
+                     <tr>
+                       <!-- <th>
+                         Product Name
+                       </th> -->
+
+                       <th>
+                         Artikelname
+                       </th>
+
+                       <!-- <th>
+                         Time Interval
+                       </th> -->
+                       <th>
+                         Erstellungsdatum
+                       </th>
+
+                       <th>
+                         Gesamteinheiten
+                       </th>
+
+                       <!-- <th>
+                         Status
+                       </th> -->
+                     </tr>
+                   </thead>
+                   <tbody id="product_select_table_entries">
+                     <tr>
+                       <td style="padding: 6px !important" class='text-center' colspan='5'>Produkt auswählen</td>
+                     </tr>
+                   
+                   </tbody>
+                 </table>
+
+                 <div id="product_select_table_entries_pagination">
+                 </div>
+               </div>
+
+               <input type="hidden" id="overall_count_product">
+               <input type="hidden" id="row_click_last_date_product">
+               <input type="hidden" id="analgen_config_id_input">
+
+               <div class="modal fade product_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                 <div class="modal-dialog modal-lg max-width-modal">
+                   <div class="modal-content">
+                     <div class="modal-header">
+                       <h5 class="text-mute text-dark">Dashboard</h5>
+                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                       </button>
+                     </div>
+
+                     <div class="modal-body">
+                       <!-- Height and Width -->
+                       <div class="row">
+                           <div class="form-group col-md-3">
+                             <label for="modal-height-input-product" class="text-mute">Spalte</label>
+                             <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-product" placeholder="Spalte">
+                             <input type="hidden" id="modal-height-input-product-hidden" value="145">
+                           </div>
+
+                           <div class="form-group col-md-3">
+                             <label for="modal-width-input-product" class="text-mute">Zeile</label>
+                             <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-product" placeholder="Reihe">
+                             <input type="hidden" id="modal-width-input-product-hidden" value="285">
+                           </div>
+
+                       </div>
+                       <!-- --end -->
+                       <!-- 23-8-21 -->
+                       <div class="row dashboard_modal_tile gernerated_product_modal_tiles">
+                       </div>
+                       <!-- --end-- -->
+
+                       <div id="product_modal_loader_div" style="display: none">
+                         <img src="images/loader_dashboard.gif" id="product_modal_loader_image">
+                       </div>
+                     
+                     </div>
+
+                     <div class="modal-footer">
+                       <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                       <button type="button" class="btn btn-sm btn-success display-none" data-type="product-table-format"  id="save_table_btn_product">Speichern</button>
+                       <button type="button" class="btn btn-sm btn-success display-none" data-type="Product"  id="update_table_btn_product">Ändern</button>
+                     </div>
+
+                    
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>   
+   </div>
+   <!-- production_table.php End -->
+</div>
+
+<!-- dashboard-Area-End -->
+    
+                              <div id="product_modal_loader_div" style="display: none">
+                                <img src="dashboard/images/loader_dashboard.gif" id="product_modal_loader_image">
+                              </div>
+                            
+                            </div>
+    
+                            <!-- <div class="modal-footer">
+                              <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                              <button type="button" class="btn btn-sm btn-success display-none" data-type="product-table-format"  id="save_table_btn_product">Speichern</button>
+                              <button type="button" class="btn btn-sm btn-success display-none" data-type="Product"  id="update_table_btn_product">Ändern</button>
+                            </div> -->
+    
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>   
+          </div>
+          <!-- main-panel ends -->
+          <!-- partial -->
+          <div class="main-panel" id="wert_main_div" style="display: none">
+            <h3>Wert Page</h3>
+          </div>
+      </div>
+         <!-- page-body-wrapper ends -->
+
       <!-- 28-9-2021- -->
       <div class="loader_image_redirect_div" style="display: none;">
          <img src="images/waiting.gif" id="loader_image_redirect" class="chartImageDiv" alt="Image Not Found">
@@ -11113,6 +12865,35 @@
             </table>
       </div>
             <div id="externeJsDateien">
+               <!-- plugins:js -->
+<script src="dashboard/vendors/base/vendor.bundle.base.js"></script>
+<script type="text/javascript" src="dashboard/html2canvas-master/dist/html2canvas.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="dashboard/vendors/chart.js/Chart.min.js"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="dashboard/js/off-canvas.js"></script>
+  <script src="dashboard/js/hoverable-collapse.js"></script>
+  <script src="dashboard/js/template.js"></script>
+  <script src="dashboard/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="dashboard/js/chart.js"></script>
+  <script src="dashboard/js/dashboard.js"></script>
+
+  <!-- Common Js Files -->
+  <script src="dashboard/js/jquery.multiselect.js"></script>
+  <script src="event.js"></script>
+  <script src="function.js"></script>
+
+  <!-- 7-9-2021 -->
+  <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <!-- <script src="js/canvasjs.min.js"></script> -->
+  <!-- end  -->
+  <!-- End custom js for this page-->
                 <script type="text/javascript" src="dist/js/jquery.min.js" crossorigin="anonymous"></script>
                 <script type="text/javascript">
                    $.ajax({
@@ -11207,5 +12988,6 @@
          </div>
 </div>
 <!--new-mm-end id="manuell" and id="fensterInhalte" 14th branch copy 23-03-2021 -->
+
 </body>
 </html>

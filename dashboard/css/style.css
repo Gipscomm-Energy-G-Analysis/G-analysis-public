@@ -21338,6 +21338,10 @@ dl li {
   right: 1.75rem;
 }
 
+#dashboard_main_div {
+  margin-left: auto;
+}
+
 .rtl .product-chart-wrapper::-webkit-scrollbar,
 .rtl .tab-content .tab-pane .scroll-wrapper::-webkit-scrollbar,
 .rtl .sidebar-fixed .nav::-webkit-scrollbar,
