@@ -83,11 +83,11 @@ const scpChart =
                     
                     }
 
-                    return pipe_(timeSeries)(
-                        this.timeSeriesX
-                        , this.addName(name)
-                        , this.timeSeriesAssignY(data)
-                    )
+                    return pipe_(timeSeries)
+                                ( this.timeSeriesX
+                                , this.addName(name)
+                                , this.timeSeriesAssignY(data)
+                                )
                 }
 
 
@@ -115,13 +115,10 @@ const scpChart =
             this.sumSeries = data => Math.round(data.map(a => a.y).reduce(sum))
 
             this.fillTable = data => tbl => recordFn => {
-
-                console.log("data")
-                console.log(data)
-
                 data
                 .filter( a => a.name !== "" )
-                .map( recordFn ).forEach( tbl.row.add )
+                .map( recordFn )
+                .forEach( tbl.row.add )
                 tbl.draw()
             }
 
