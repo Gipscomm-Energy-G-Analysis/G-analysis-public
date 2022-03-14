@@ -2,8 +2,8 @@
 // Depends on fpChart.js
 "use strict"
 
-let dataMachine = new DataMachine(),
-tblChartData_1 =  $("#tblChartData_1").DataTable({
+let dataMachine = new DataMachine()
+const tblChartData_1 =  $("#tblChartData_1").DataTable({
     dom: 'Bfrtip',
     buttons: [
         {
@@ -44,7 +44,7 @@ tblChartData_1 =  $("#tblChartData_1").DataTable({
         targets: 2
     }]
 })
-tblChartData_2 =  $("#tblChartData_2").DataTable({
+const tblChartData_2 =  $("#tblChartData_2").DataTable({
     dom: 'Bfrtip',
     buttons: [
         {
@@ -85,7 +85,7 @@ tblChartData_2 =  $("#tblChartData_2").DataTable({
         targets: 2
     }]
 })
-tblChartData_3 =  $("#tblChartData_3").DataTable({
+const tblChartData_3 =  $("#tblChartData_3").DataTable({
     dom: 'Bfrtip',
     buttons: [
         {
@@ -126,21 +126,21 @@ tblChartData_3 =  $("#tblChartData_3").DataTable({
         targets: 2
     }]
 })
-year = sessionStorage.getItem("year"),
-monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-month = sessionStorage.getItem("month"),
-nameDB = sessionStorage.getItem("nameDB"),
-chartType = sessionStorage.getItem("chartType"),
-displayMean = sessionStorage.getItem("displayMean"),
-nameMst_1 = sessionStorage.getItem("nameMst_1"),
-nameMst_2 = sessionStorage.getItem("nameMst_2"),
-nameMst_3 = sessionStorage.getItem("nameMst_3"),
-queryString_1 = sessionStorage.getItem("queryString_1"),
-queryString_2 = sessionStorage.getItem("queryString_2"),
-queryString_3 = sessionStorage.getItem("queryString_3"),
-headerDiagramm = "Energieverbrauch " + monthArr[Number(month) - 1] + " " + year,
+const year = sessionStorage.getItem("year")
+const monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+const month = sessionStorage.getItem("month")
+const nameDB = sessionStorage.getItem("nameDB")
+const chartType = sessionStorage.getItem("chartType")
+const displayMean = sessionStorage.getItem("displayMean")
+const nameMst_1 = sessionStorage.getItem("nameMst_1")
+const nameMst_2 = sessionStorage.getItem("nameMst_2")
+const nameMst_3 = sessionStorage.getItem("nameMst_3")
+const queryString_1 = sessionStorage.getItem("queryString_1")
+const queryString_2 = sessionStorage.getItem("queryString_2")
+const queryString_3 = sessionStorage.getItem("queryString_3")
+const headerDiagramm = "Energieverbrauch " + monthArr[Number(month) - 1] + " " + year
 
-csOptions = null;
+let csOptions = null;
 
 let notes = [];
 let msts = [];
@@ -198,9 +198,10 @@ $("#btnNoteOk").click(function() {
     )
     .then(
         () =>
-        pipe( scpChart.getChart("#container")
-            , scpChart.getSeries
-            , scpChart.updateNotesOfVisibleSeries("month") )
+        pipe_( scpChart.getChart("#container"))
+             ( scpChart.getSeries
+             , scpChart.updateNotesOfVisibleSeries("month") 
+             )
     )
     .then(
         [ "#identNote"
@@ -251,7 +252,7 @@ $("#diagSpeichern").click(function() {
     //     height: 250
     // });
 });
-$("#container") .ejChart({
+$("#container").ejChart({
     pointRegionClick: function (args) {
 
         $("#notePopup").dialog({
@@ -308,10 +309,11 @@ $("#container") .ejChart({
 
         // select notes which correspond to the visible series
         // and show only those
-        pipe( scpChart.getChart("#container")
-            , scpChart.getSeries
-            , scpChart.prepareSeries(sender)
-            , scpChart.updateNotesOfVisibleSeries("month") )
+        pipe_( scpChart.getChart("#container"))
+             ( scpChart.getSeries
+             , scpChart.prepareSeries(sender)
+             , scpChart.updateNotesOfVisibleSeries("month") 
+             )
 
     },
     //Initializing Primary X Axis
@@ -369,8 +371,11 @@ function firstQuery(){
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
 
+        console.log("Number(month)")
+        console.log(Number(month))
+
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst, series ] = scpChart.updateChart(scpChart.Interval.Month)(chartData)(nameMst_1)
+        const [ colorMst, series ] = scpChart.updateChart(Number(month))(Interval.Month)(chartData)(nameMst_1)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_1").text( scpChart.sumSeries(chartData) + " kWh" )
@@ -408,7 +413,7 @@ function secondQuery(){
         scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
 
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst2, series2 ] = scpChart.updateChart(scpChart.Interval.Month)(chartData)(nameMst_2)
+        const [ colorMst2, series2 ] = scpChart.updateChart(Number(month))(Interval.Month)(chartData)(nameMst_2)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_2").text( scpChart.sumSeries(chartData) + " kWh" )
@@ -446,7 +451,7 @@ function thirdQuery(){
         scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
 
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst3, series3 ] = scpChart.updateChart(scpChart.Interval.Month)(chartData)(nameMst_3)
+        const [ colorMst3, series3 ] = scpChart.updateChart(Number(month))(Interval.Month)(chartData)(nameMst_3)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_3").text( scpChart.sumSeries(chartData) + " kWh" )
