@@ -1,6 +1,9 @@
 $(document).ready( function(){
 
     var dashboardDBStorage = localStorage.getItem('dashboardDB');
+    if(dashboardDBStorage=='' || dashboardDBStorage==null){
+dashboardDBStorage='g002_badber';
+    }
     $('#nameDashboardDB').val(dashboardDBStorage);
     //Hide All Files
     $('#charts_main_div').hide();
