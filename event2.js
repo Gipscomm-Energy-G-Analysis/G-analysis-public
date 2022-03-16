@@ -1792,6 +1792,7 @@ $(document).ready( function(){
 
     // <----01-9-2021---
     $(document).on('click','#dashboard_add_tile', function(){
+        
         $('#save_and_proceed_btn_dashboard').val('Save & Proceed');
         $('#save_and_proceed_btn_dashboard').attr('data-edit','false');
         $('#save_and_proceed_btn_dashboard').attr('data-edit-chart','false');
@@ -2036,14 +2037,17 @@ $(document).ready( function(){
     // });
     // --end-->
 
+    // 11-03-2022
     $(document).on('click','.dashboard_menu_click',function(){
 
         var dataTab=$(this).attr('data-tab');
-        console.log(dataTab);
+        // console.log(dataTab);
             if(dataTab=='dashboardMain'){
         $('.dashboardDiv').show();
+        $('#main').hide();
         }else{
         $('.dashboardDiv').hide();
+        $('#main').show();
         }
         });
     // <---30-9-2021---

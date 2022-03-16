@@ -522,7 +522,7 @@ function saveTableFormat(type){
     if(row_enteries_length <= 5){
       $.ajax({
         type: "POST",
-        url: "php/operations.php",
+        url: "dashboard/php/operations.php",
         async: false,
         dataType: 'json',
         data: {
@@ -3326,7 +3326,7 @@ function getDimentions(id,classPrdAutomatic) {
                   window.open('/'+arPathname[1]+'/dashboard/html/dashboard/chart_new.php','_blank');
               }
               else{
-                  window.open('/dashboard/html/dashboard/chart_new.php','_blank');
+                  window.open('/G-Analysis---Energiemanagement/dashboard/html/dashboard/chart_new.php','_blank');
               }
             // });
             // ---end-->
@@ -3696,7 +3696,7 @@ function updateTileRecord(){
   if(id != null && id != undefined){
     $.ajax({
       type : "POST",
-      url : 'php/operations.php',
+      url : 'dashboard/php/operations.php',
       async: false,
       dataType: 'json',
       data: {
@@ -3768,7 +3768,7 @@ function updateTileRecordEnergy(){
   if(id != null && id != undefined){
     $.ajax({
       type : "POST",
-      url : 'php/operations.php',
+      url : 'dashboard/php/operations.php',
       async: false,
       dataType: 'json',
       data: {
@@ -3840,7 +3840,7 @@ function updateTileRecordProduct(){
   if(id != null && id != undefined){
     $.ajax({
       type : "POST",
-      url : 'php/operations.php',
+      url : 'dashboard/php/operations.php',
       async: false,
       dataType: 'json',
       data: {
@@ -10518,7 +10518,7 @@ function updateDashboardChart(){
 // --end-->
   $.ajax({
     type: "POST",
-    url: "php/operations.php",
+    url: "dashboard/php/operations.php",
     async: false,
     dataType: 'json',
     data: {

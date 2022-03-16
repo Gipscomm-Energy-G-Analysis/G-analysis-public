@@ -20584,6 +20584,7 @@ dl li {
   display: flex;
   -webkit-flex-direction: column;
   flex-direction: column;
+  margin-left: auto;
 }
 
 @media (max-width: 991px) {
@@ -20784,6 +20785,9 @@ dl li {
   padding: 0.25rem 0 0 3.07rem;
   background: #e8e7ec;
   padding-bottom: 12px;
+  position: static;
+  width: 100%;
+  opacity: 1;
 }
 
 .sidebar .nav.sub-menu .nav-item {
