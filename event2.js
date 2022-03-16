@@ -2,7 +2,7 @@ $(document).ready( function(){
 
     var dashboardDBStorage = localStorage.getItem('dashboardDB');
     if(dashboardDBStorage=='' || dashboardDBStorage==null){
-dashboardDBStorage='g002_badber';
+        dashboardDBStorage='g002_badber';
     }
     $('#nameDashboardDB').val(dashboardDBStorage);
     //Hide All Files
@@ -62,31 +62,31 @@ dashboardDBStorage='g002_badber';
                 // --end-->
                 break;
             
-            case "charts_sidebar":
-                var dashboardDBChart = localStorage.getItem('dashboardDBName');
-                localStorage.setItem('dashboardDBChart',dashboardDBChart);
-                localStorage.removeItem('dashboardDBName');
-                var pathname = window.location.pathname;
-                var arPathname = pathname.split('/');
-                var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
-                // window.open('/'+mainDirectory+'/main.html','_self');
-                if(arPathname.length > 3){
-                    window.open('/'+arPathname[1]+'/main.html','_self');
-                }
-                else{
-                    window.open('/main.html','_self');
-                }
-                // window.open(mainDirectory+'/main.html','_self');
-                $('#charts_main_div').show();
-                $('#dashboard_main_div').hide();
-                $('#energy_table_main_div').hide();
-                $('#measurement_table_main_div').hide();
-                $('#production_data_table_main_div').hide();
-                $('#production_table_main_div').hide();
-                $('#wert_main_div').hide();
-                $('#alerts_table_main_div').hide();
-                $('#help_table_main_div').hide();
-                break;
+            // case "charts_sidebar":
+            //     var dashboardDBChart = localStorage.getItem('dashboardDBName');
+            //     localStorage.setItem('dashboardDBChart',dashboardDBChart);
+            //     localStorage.removeItem('dashboardDBName');
+            //     var pathname = window.location.pathname;
+            //     var arPathname = pathname.split('/');
+            //     var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
+            //     // window.open('/'+mainDirectory+'/main.html','_self');
+            //     if(arPathname.length > 3){
+            //         window.open('/'+arPathname[1]+'/main.html','_self');
+            //     }
+            //     else{
+            //         window.open('/main.html','_self');
+            //     }
+            //     // window.open(mainDirectory+'/main.html','_self');
+            //     $('#charts_main_div').show();
+            //     $('#dashboard_main_div').hide();
+            //     $('#energy_table_main_div').hide();
+            //     $('#measurement_table_main_div').hide();
+            //     $('#production_data_table_main_div').hide();
+            //     $('#production_table_main_div').hide();
+            //     $('#wert_main_div').hide();
+            //     $('#alerts_table_main_div').hide();
+            //     $('#help_table_main_div').hide();
+            //     break;
 
             case "measurement_sidebar_option":
                 $('#charts_main_div').hide();
