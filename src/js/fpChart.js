@@ -44,7 +44,7 @@ const scpChart =
 
             this.timeSeriesMonth = month => range(1)(this.monthArr[month - 1]).map(this.prependZero)
 
-            this.timeSeriesDay = range(1)(24).map(this.prependZero)
+            this.timeSeriesDay = range(1)(24).map(this.prependZero).map(a => a + ":00")
 
             this.setXY = x => y => ({x, y})
 
@@ -90,11 +90,13 @@ const scpChart =
                                 )
                 }
 
-
             this.updateChart = month => interval => newDataSeries => nameSeries => {
 
                 let chart = this.getChart("#container")
                 const nSeries = chart.model.series.length
+
+                console.log("chart.model.series") 
+                console.log(chart.model.series) 
 
                 chart.model.series.push({
                     type: chartType

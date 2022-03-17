@@ -270,9 +270,6 @@ $("#container") .ejChart({
             height: 295
         });
 
-        console.log("args");
-        console.log(args);
-
         $("#identNote").val(
             year + "/" + month + "/" + day + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex)) + ":00"
         )
