@@ -95,9 +95,6 @@ const scpChart =
                 let chart = this.getChart("#container")
                 const nSeries = chart.model.series.length
 
-                console.log("chart.model.series") 
-                console.log(chart.model.series) 
-
                 chart.model.series.push({
                     type: chartType
                     , name: nameSeries
