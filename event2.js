@@ -124,7 +124,7 @@ $(document).ready( function(){
                 $('#energy_table_main_div').hide();
                 $('#measurement_table_main_div').hide();
                 $('#production_data_table_main_div').hide();
-                $('#production_table_main_div').show();
+                $('.Product').show();
                 $('#wert_main_div').hide();
                 $('#alerts_table_main_div').hide();
                 $('#help_table_main_div').hide();

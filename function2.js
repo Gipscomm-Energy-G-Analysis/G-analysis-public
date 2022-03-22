@@ -634,7 +634,7 @@ function saveTableFormatProduct(){
     if(row_enteries_length <= 5){
       $.ajax({
         type: "POST",
-        url: "php/operations.php",
+        url: "dashboard/php/operations.php",
         async: false,
         dataType: 'json',
         data: {
@@ -822,7 +822,7 @@ function saveTableFormatEnergy(type){
     if(row_enteries_length <= 5 || energyType == 'layer_modal'){
       $.ajax({
         type: "POST",
-        url: "php/operations.php",
+        url: "dashboard/php/operations.php",
         async: false,
         dataType: 'json',
         data: {

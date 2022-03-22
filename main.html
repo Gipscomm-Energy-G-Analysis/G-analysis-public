@@ -304,7 +304,7 @@
             <li class="nav-item">
                <a class="nav-link sidebar_redirect" id="tables_sidebar" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                   <i class="ti-view-list-alt menu-icon"></i>
-                  <span class="menu-title">Tisch</span>
+                  <span class="menu-title">Tabelle</span>
                   <i class="menu-arrow"></i>
                </a>
                <div class="collapse" id="ui-basic">
@@ -672,10 +672,10 @@
                   </div>
 
                   <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_layer_filter_div">
-                    <label for="time_interval_chart" class="text-mute">Filter auswählen</label>
+                    <label for="time_interval_chart" class="text-mute">Anzahl Datensätze</label>
                     <span class='mandatory_sign'>*</span>
                     <select class="form-control form-control-sm text-dark" id="energy_chart_layer_filter">
-                      <option value="">Filter auswählen</option>
+                      <option value="">Anzahl Datensätze</option>
                       <option value="day">Tage</option>
                       <option value="week">Wochen</option>
                     </select>
@@ -725,7 +725,7 @@
                   </div>
 
                   <div class="form-group col-md-2" id="chart_record_filter_div">
-                    <label for="chart_record_filter" class="text-mute">Filter</label>
+                    <label for="chart_record_filter" class="text-mute">Anzahl Datensätze</label>
                     <span class='mandatory_sign'>*</span>
                     <select class="form-control form-control-sm text-dark" id="chart_record_filter">
                       <option value=''>Filter auswählen</option>
@@ -1224,6 +1224,15 @@
                     <input type="number" class="form-control-sm form-control text-mute" id="energy_automatic_input" name="energy_automatic_input" placeholder="Bereichswert eingeben">  
                     <span class='energy_automatic_input_error text-danger'></span>
                   </div>
+
+                  <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                     <label for="energy_measurement_automatic">Interval</label>
+                     <select class="form-control form-control-sm text-dark" id="energy_measurement_automatic">
+                       <option value="">15-min</option>
+                       <option value="">Day</option>
+                       <option value="">Month</option>
+                     </select>
+                   </div>
                   <!-- --end-- -->
 
                   
