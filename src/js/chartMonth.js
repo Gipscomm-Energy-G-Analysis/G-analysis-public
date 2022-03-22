@@ -371,9 +371,6 @@ function firstQuery(){
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
 
-        console.log("Number(month)")
-        console.log(Number(month))
-
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst, series ] = scpChart.updateChart(Number(month))(Interval.Month)(chartData)(nameMst_1)
 

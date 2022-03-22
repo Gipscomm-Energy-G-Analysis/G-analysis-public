@@ -107,6 +107,9 @@ const scpChart =
                     , yName: "y"
                 })
 
+                console.log("chart.model.series")
+                console.log(chart.model.series)
+
                 chart.redraw()
                 return [chart.model.series[nSeries].fill, nSeries]
             }
