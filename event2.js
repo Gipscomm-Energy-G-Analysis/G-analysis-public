@@ -1479,7 +1479,7 @@ $(document).ready( function(){
             getChartTimeIntervalRecord();
             // dashboardChart();
             $('#measurement-height-chart').val('2');
-            $('#measurement-height-chart-hidden').val('290');
+            $('#measurement-height-chart-hidden').val('320');
             $('#measurement-width-chart').val('2');
             $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');
@@ -1615,7 +1615,7 @@ $(document).ready( function(){
             getChartTimeIntervalRecordProduct();
             // dashboardChart();
             $('#measurement-height-chart').val('2');
-            $('#measurement-height-chart-hidden').val('290');
+            $('#measurement-height-chart-hidden').val('320');
             $('#measurement-width-chart').val('2');
             $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');

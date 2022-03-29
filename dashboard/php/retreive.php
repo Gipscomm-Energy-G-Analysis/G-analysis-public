@@ -1557,7 +1557,7 @@ class dashboardController {
                          
                         $measurement_title = $_POST['measurement_title'];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$last_id'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -1587,7 +1587,7 @@ class dashboardController {
                                 </div></div>"; 
 
                         //Tile Outer HTML
-                        $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                        $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                             <div class='card card-border tile_border'>
                                 <div class='card-body overflow-hide display-flex pr-0'>
                                     <div id='' class=''>
@@ -1627,7 +1627,7 @@ class dashboardController {
                 
             }
             else{
-                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                 <input type='hidden' id='total_records_chart' value='$last_id'>                
                                 <div class='card card-border tile_border'>
                                     <div class='card-body overflow-hide display-flex pr-0'>
@@ -1658,7 +1658,7 @@ class dashboardController {
                             </div></div>"; 
                             
                     //Tile Outer HTML
-                    $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                    $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -1732,7 +1732,7 @@ class dashboardController {
                          
                         $measurement_title = $_POST['measurement_title'];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$last_id'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -1762,7 +1762,7 @@ class dashboardController {
                                 </div></div>"; 
 
                         //Tile Outer HTML
-                        $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
+                        $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
                             <div class='card card-border tile_border'>
                                 <div class='card-body overflow-hide display-flex pr-0'>
                                     <div id='' class=''>
@@ -1802,7 +1802,7 @@ class dashboardController {
                 
             }
             else{
-                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
+                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
                                 <input type='hidden' id='total_records_chart' value='$last_id'>                
                                 <div class='card card-border tile_border'>
                                     <div class='card-body overflow-hide display-flex pr-0'>
@@ -1833,7 +1833,7 @@ class dashboardController {
                             </div></div>"; 
                             
                     //Tile Outer HTML
-                    $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
+                    $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -1900,7 +1900,7 @@ class dashboardController {
                     if($i == $total_result){
                         $measurement_title = $_POST['measurement_title'];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$last_id'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -1930,7 +1930,7 @@ class dashboardController {
                                 </div></div>"; 
 
                         //Tile Outer HTML
-                        $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
+                        $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
                             <div class='card card-border tile_border'>
                                 <div class='card-body overflow-hide display-flex pr-0'>
                                     <div id='' class=''>
@@ -1970,7 +1970,7 @@ class dashboardController {
                 
             }
             else{
-                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
+                $tileHtml.="<div class='dashboard_chart_tile_html_$last_id'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
                                 <input type='hidden' id='total_records_chart' value='$last_id'>                
                                 <div class='card card-border tile_border'>
                                     <div class='card-body overflow-hide display-flex pr-0'>
@@ -2001,7 +2001,7 @@ class dashboardController {
                             </div></div>"; 
                             
                     //Tile Outer HTML
-                    $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
+                    $tileHtml.="<div class='dashboard_chart_outer_tile_html_$last_id outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -2354,7 +2354,7 @@ class dashboardController {
                         $chart_time_interval = $dataResult[$i]['chart_time_interval'];
                         $records['data'] = $dataResult[$i];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Measurement'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Measurement'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -2384,7 +2384,7 @@ class dashboardController {
                                 </div></div>";
                                 
                                 //Tile Outer HTML
-                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Measurement'>
+                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Measurement'>
                                                 <div class='card card-border'>
                                                     <div class='card-body overflow-hide display-flex pr-0'>
                                                         <div id='' class=''>
@@ -2462,7 +2462,7 @@ class dashboardController {
                         $chart_time_interval = $dataResult[$i]['chart_time_interval'];
                         $records['data'] = $dataResult[$i];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -2492,7 +2492,7 @@ class dashboardController {
                                 </div></div>";
                                 
                                 //Tile Outer HTML
-                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
                                                 <div class='card card-border'>
                                                     <div class='card-body overflow-hide display-flex pr-0'>
                                                         <div id='' class=''>
@@ -2571,7 +2571,7 @@ class dashboardController {
                         $mst_id = $dataResult[$i]['mst_id'];
                         $records['data'] = $dataResult[$i];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -2601,7 +2601,7 @@ class dashboardController {
                                 </div></div>";
                                 
                                 //Tile Outer HTML
-                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
                                                 <div class='card card-border'>
                                                     <div class='card-body overflow-hide display-flex pr-0'>
                                                         <div id='' class=''>
@@ -2680,7 +2680,7 @@ class dashboardController {
                         $mst_id = $dataResult[$i]['mst_id'];
                         $records['data'] = $dataResult[$i];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -2710,7 +2710,7 @@ class dashboardController {
                                 </div></div>";
                                 
                                 //Tile Outer HTML
-                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
+                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Energy'>
                                                 <div class='card card-border'>
                                                     <div class='card-body overflow-hide display-flex pr-0'>
                                                         <div id='' class=''>
@@ -2791,7 +2791,7 @@ class dashboardController {
                         $chart_time_interval = $dataResult[$i]['chart_time_interval'];
                         $records['data'] = $dataResult[$i];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$i_value'>";
-                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Product'>
+                        $tileHtml.="<div class='dashboard_chart_tile_html_$i_value'><div style='height: 320px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Product'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex pr-0'>
                                             <div id='' class=''>
@@ -2821,7 +2821,7 @@ class dashboardController {
                                 </div></div>";
                                 
                                 //Tile Outer HTML
-                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Product'>
+                                $tileHtml.="<div class='dashboard_chart_outer_tile_html_$i_value outer_chart_tile_structure'><div style='height: 145px; width: 320px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_chart_$i_value' data-i='$i_value' data-type-tile='Product'>
                                                 <div class='card card-border'>
                                                     <div class='card-body overflow-hide display-flex pr-0'>
                                                         <div id='' class=''>
@@ -2990,7 +2990,7 @@ class dashboardController {
             $query1 .= "GROUP BY t1.prd_id ";
             $query1 .= ") ";
             $query1 .= "order by Mt.iBdePrdktConf_ID desc ";
-
+//print_r($query1);
             $resultQuery = sqlsrv_query($conn,$query1);
             $data=[] ;
             $tableFound = 'false';

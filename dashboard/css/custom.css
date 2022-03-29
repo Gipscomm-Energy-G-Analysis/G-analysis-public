@@ -266,6 +266,7 @@
 
 #dashboard_count_div_tile .hide_table_main{
     /* height: auto !important; */
+
     height: 145px !important;
     width: 285px  !important;
 }
@@ -694,8 +695,9 @@
 
 .dashboard_count_div .movetile{
     /* position: relative; */
-    padding-right: 15px;
-    padding-left: 15px;
+    float: left;
+    /*padding-right: 15px;*/
+    /*padding-left: 15px;*/
 }
 
 /* --end--> */
@@ -905,4 +907,18 @@
 
 .click_common_btn_chart{
     cursor: pointer;
+}
+.dashboard_count_div{
+    float: left;
+    width: 100%;
+}
+.chart_tile_expand_view .action-modal-button-div .edit_val{
+    height: 17px !important;
+    width: 17px !important;
+    margin-right: 5px !important;
+}
+.chart_tile_expand_view .action-modal-button-div .id_val{
+    height: 17px !important;
+    width: 17px !important;
+    margin-right: 5px !important;
 }
