@@ -124,7 +124,8 @@ $(document).ready( function(){
                 $('#energy_table_main_div').hide();
                 $('#measurement_table_main_div').hide();
                 $('#production_data_table_main_div').hide();
-                $('.Product').show();
+                // $('.Product').show();
+                $('#production_table_main_div').show();
                 $('#wert_main_div').hide();
                 $('#alerts_table_main_div').hide();
                 $('#help_table_main_div').hide();
@@ -306,6 +307,7 @@ $(document).ready( function(){
     });
     // --end-->
 
+    
     $(document).on('blur change', '#measurement_total_number_record', function(){
         // getNumberRecordsMesurement(); 
         var val = $(this).val();
@@ -1179,6 +1181,10 @@ $(document).ready( function(){
             else{
                 alert('Records are Always be less than 5');
             }
+            $('#table_outside_tile_structure').prop('checked',false);
+            $('.table_outisde_tile_controls').hide();
+            $('#expand_view_table').prop('checked',false);
+          
         }
         else if(tile_edit_value == 'true' && type_data_tile == 'table'){ //Table Edit Case
             var tableLength = $('#energy_select_table_entries tr').length;
@@ -1197,7 +1203,7 @@ $(document).ready( function(){
 
                 $('#modal-height-input-energy').attr('disabled',false);
                 $('#modal-width-input-measurement').attr('disabled',false);
-
+         
                 // <---10-11-2021---
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
@@ -1220,6 +1226,7 @@ $(document).ready( function(){
             else{
                 alert('Records are Always be less than 5');
             }
+            $('#table_outside_tile_structure').prop('checked',false);
         }
         else if(tile_edit_value == 'true' && type_data_tile == 'overall_count'){ //Overall Tile Edit
             $('#save_table_btn_energy').addClass('display-none');
@@ -1254,7 +1261,7 @@ $(document).ready( function(){
                 $('.energy_html_modal_'+last_div_index+' .count_result_tile').text(energy_type);
             },1100);
         }
-
+        $('#table_outisde_tile_controls').hide();
     })
     // ---end-->
 
@@ -1479,7 +1486,7 @@ $(document).ready( function(){
             getChartTimeIntervalRecord();
             // dashboardChart();
             $('#measurement-height-chart').val('2');
-            $('#measurement-height-chart-hidden').val('320');
+            $('#measurement-height-chart-hidden').val('290');
             $('#measurement-width-chart').val('2');
             $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');
@@ -1615,7 +1622,7 @@ $(document).ready( function(){
             getChartTimeIntervalRecordProduct();
             // dashboardChart();
             $('#measurement-height-chart').val('2');
-            $('#measurement-height-chart-hidden').val('320');
+            $('#measurement-height-chart-hidden').val('290');
             $('#measurement-width-chart').val('2');
             $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');
@@ -1928,6 +1935,10 @@ $(document).ready( function(){
         else if(ar['record_type_of_tile'] == 'energy' && energy_chart_measurement == 'automatic')
         {
             saveDashboardTileChartEnergyAutomatic();   
+            setTimeout(function () {
+                showexpandedchart();
+            
+            },1000);
         }
         else{
             saveDashboardTileChart();
@@ -2124,14 +2135,45 @@ $(document).ready( function(){
             var id = $('#total_records_chart').val();
             $('#measurement_count_outer_tile_modal_chart_'+id).css('height',145);
             $('#measurement_count_outer_tile_modal_chart_'+id).css('width',285);
+            $('.outer_chart_tile_structure').hide();
+
+
         }
         else{
             $('#expand_view_chart').val("0");
+            $('.outer_chart_tile_structure').show();
         }
     });
     // --end-->
 
+ // <----23-03-2023---
+ $(document).on('click','#expand_view_table', ()=>{
+    var valIsChecked = $('#expand_view_table').is(":checked");
+    var total_records = $('#total_records_table').val();
+    if(valIsChecked == true){
+        $('#expand_view_table').val("1");
+        $('.table_outisde_tile_controls').hide();
+        $('#table_outside_tile_structure').prop('checked',false);
+        $('#table_outside_tile_structure').val('0');
+        
+        $('#table_height_outer_structure').val('');
+        $('#table_width_outer_structure').val('');
 
+        var id = $('#total_records_chart').val();
+        $('#measurement_count_outer_tile_modal_table_'+id).css('height',145);
+        $('#measurement_count_outer_tile_modal_table_'+id).css('width',285);
+        
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',290);
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',580);
+
+    }
+    else{
+        $('#expand_view_table').val("0");
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',145);
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',290);
+    }
+});
+// --end-->
     // <---22-10-2021--
     // $("body").not($(".dashboard_count_div .movetile")).click(function(){
     //     // console.log("323");
@@ -2149,6 +2191,75 @@ $(document).ready( function(){
     // --end-->
 
     // <---29-10-2021--
+    $(document).on('click','#table_outside_tile_structure', ()=>{
+        var valIsChecked = $('#table_outside_tile_structure').is(":checked");
+        if(valIsChecked == true){
+            $('#table_outside_tile_structure').val("1");
+            $('.table_outisde_tile_controls').show();
+            $('#expand_view_table').val("0");
+            $('#expand_view_table').prop("checked",false);
+        }
+        else{
+            $('#table_outside_tile_structure').val("0");
+            $('.table_outisde_tile_controls').hide();
+
+            $('#table_height_outer_structure').val('');
+            $('#table_width_outer_structure').val('');
+
+            var id = $('#total_records_chart').val();
+            $('#measurement_count_outer_tile_modal_table_'+id).css('height',145);
+            $('#measurement_count_outer_tile_modal_table_'+id).css('width',285);
+        }
+    });
+
+    $(document).on('blur change','#table_height_outer_structure,#table_width_outer_structure', function(){
+        var id = $(this).attr('id');
+        var total_records = $('#total_records_table').val();
+        var ar = localStorage.getItem('dashboard_tile_data');
+        ar = JSON.parse(ar);
+        var record_type_of_tile = ar['record_type_of_tile'];
+        if(id == 'table_height_outer_structure')
+        {
+                $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).removeClass('col-md-3');
+                $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).removeClass('actual_tile_height');
+            var height_val = $('#table_height_outer_structure').val();
+            if(height_val <= 0){
+                $('#table_height_outer_structure').val(1);
+            }
+            else{
+                height_value = parseInt(height_val)*145;
+                if(height_value >=580){
+                    height_value = 580;
+                }
+                
+                // console.log('Height Value', height_value);
+                $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',height_value);
+              
+                // $('#measurement-height-chart-hidden').val(height_value);
+            }
+        }
+        else if(id == 'table_width_outer_structure'){
+            $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).removeClass('col-md-3');
+            $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).removeClass('actual_tile_width');
+            var width_val = $('#table_width_outer_structure').val();
+            if(width_val <= 0){
+                $('#table_width_outer_structure').val(1);
+            }
+            else{
+                width_value = parseInt(width_val)*285;
+                if(width_value >=1130){
+                    width_value = 1130;
+                }
+                // console.log('Height Value', width_value);
+               
+                $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',width_value);
+             
+                // $('#measurement-width-chart-hidden').val(width_value);
+            }
+
+        }
+    })
+    // --end--->
     $(document).on('click','#chart_outside_tile_structure', ()=>{
         var valIsChecked = $('#chart_outside_tile_structure').is(":checked");
         if(valIsChecked == true){
@@ -2156,6 +2267,7 @@ $(document).ready( function(){
             $('.chart_outisde_tile_controls').show();
             $('#expand_view_chart').val("0");
             $('#expand_view_chart').prop("checked",false);
+            
         }
         else{
             $('#chart_outside_tile_structure').val("0");
@@ -2163,6 +2275,8 @@ $(document).ready( function(){
 
             $('#chart_height_outer_structure').val('');
             $('#chart_width_outer_structure').val('');
+
+            
 
             var id = $('#total_records_chart').val();
             $('#measurement_count_outer_tile_modal_chart_'+id).css('height',145);
@@ -3185,7 +3299,6 @@ $(document).ready( function(){
     $(document).on('change','#energy_chart_measurement_automatic', function(){
         chartRecordFilter();
     });
-    
 
 
     // // <---1-10-2021--
