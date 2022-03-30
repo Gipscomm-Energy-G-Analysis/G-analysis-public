@@ -5073,6 +5073,18 @@ function saveDashboardTileChartEnergyAutomatic(){
     }
     else if(chart_type == "bar_chart"){
         tile_html = tile_html.replace("barChart",'barChart-none');
+    
+      //   if(chart_type == "line_chart"){
+      //     tile_html = tile_html.replace("lineChart",'lineChart-none');
+      // }
+      // else if(chart_type == "area_chart"){
+      //     tile_html = tile_html.replace("areaChart",'areaChart-none');
+      // }
+      // else if(chart_type == "pie_chart"){
+      //     tile_html = tile_html.replace("pieChart",'pieChart-none');
+      // }
+      // else if(chart_type == "bar_chart"){
+      //     tile_html = tile_html.replace("barChart",'barChart-none');
     }
 
     var ar = localStorage.getItem('dashboard_tile_data');

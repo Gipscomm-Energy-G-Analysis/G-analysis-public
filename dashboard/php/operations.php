@@ -430,6 +430,9 @@ class dashboardControllerOperations {
             }
 //            print_r($html);die;
 //            print_r($maxResult[0]['max_id']);die;
+// $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,prd_anlagen_config_id,energy_layer_filter,energy_layer_range,energy_chart_type ) ";
+// $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$mst_id','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width','$outside_chart_display','$chart_outer_table_limit_column','$analgen_config_id','$energy_layer_filter','$energy_chart_layer_range','$energy_type_dashboard_chart') ";
+
             $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,prd_anlagen_config_id,energy_layer_filter,energy_layer_range,energy_chart_type ) ";
             $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$mst_id','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width','$outside_chart_display','$chart_outer_table_limit_column','$analgen_config_id','$energy_layer_filter','$energy_chart_layer_range','$energy_type_dashboard_chart') ";
             // echo $mst_id; die;
