@@ -1935,10 +1935,7 @@ $(document).ready( function(){
         else if(ar['record_type_of_tile'] == 'energy' && energy_chart_measurement == 'automatic')
         {
             saveDashboardTileChartEnergyAutomatic();   
-            setTimeout(function () {
-                showexpandedchart();
-            
-            },1000);
+          
         }
         else{
             saveDashboardTileChart();
