@@ -3141,6 +3141,14 @@ $(document).on('click','.movetile .stretch-card',function(){
 
     // <---24-2-2022--
     // :not(.movetile .stretch-card #energy_modal_table tbody tr Not Check
+    // Expand View Check
+    var chart_tile_expand_view  = $(this).hasClass('chart_tile_expand_view');
+    // console.log('Chart Tile Check',chart_tile_expand_view); 
+    if(chart_tile_expand_view == true)
+    {
+        return false;
+    }
+    
     var outer_tile_structure = $(this).hasClass('hide_table_main'); //This Class for Outer tile structure
     if(outer_tile_structure == false){
         var automatic_energy_tile = $(this).hasClass('energy_auto_layer_tile');

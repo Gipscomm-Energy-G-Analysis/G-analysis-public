@@ -445,7 +445,7 @@ class dashboardControllerOperations {
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
             $maxResult = queryDB($conn, $selectMaxId, "read");
 
-
+            // print_r($maxResult);  die
             // <----23-11-2021--
             $totalQuery = "SELECT * from tableFormat ";
             $totalResult = queryDB($conn, $totalQuery, "read");

@@ -740,6 +740,9 @@ $(document).ready( function(){
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'energy'){
             saveTableFormatEnergy();
         }
+        setTimeout(function () {
+            showexpandedchart();
+        },1000);
     })
     //--end--->
 
@@ -1287,6 +1290,9 @@ $(document).ready( function(){
             $('.dashboard_count_div .stretch-card').removeClass('tile-click-table');
             $('.dashboard_count_div .stretch-card').addClass('tiles-click');
             $('.dashboard_count_div .stretch-card.product_automatic_tile ').removeClass('tiles-click');
+
+            // $('.dashboard_count_div .stretch-card.chart_tile_expand_view').removeClass('tiles-click');
+           
             // <----03-03-2022--
             // $('.dashboard_count_div .stretch-card').addClass('hide_table_main');
             // ---end--->        
@@ -3143,10 +3149,10 @@ $(document).ready( function(){
             energy_html +="</tr>";
 
            
-            $('.'+tile_id+'.tiles-click .save_table_div_show_table .table thead').html(energy_header);
-            $('.'+tile_id+'.tiles-click .save_table_div_show_table .table tbody').html(energy_html);
+            $('.'+tile_id+' .save_table_div_show_table .table thead').html(energy_header);
+            $('.'+tile_id+' .save_table_div_show_table .table tbody').html(energy_html);
 
-            var table_html = $('.'+tile_id+'.tiles-click .save_table_div_show_table .table').html();
+            var table_html = $('.'+tile_id+' .save_table_div_show_table .table').html();
             var chart_tile_click_data = {'table_html' : table_html,'tile_click_type' : 'table'}
             localStorage.setItem('chart_tile_click_data',JSON.stringify(chart_tile_click_data));
 
