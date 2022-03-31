@@ -7,7 +7,7 @@ setTimeout(function () {
 setTimeout(function () {
     showexpandedchart();
 
-},3000);
+},1000);
 
 function showexpandedchart() {
     var inputs = $(".tiles-click");
@@ -3372,13 +3372,13 @@ function getDimentions(id,classPrdAutomatic) {
                     // tile_html = tile_html.replace('lineChart-none','lineChart');
                 }
                 else if(chart_type == 'area_chart'){
-                    tile_html = tile_html.replace('areaChart-none','areaChart');
+                    // tile_html = tile_html.replace('areaChart-none','areaChart');
                 }
                 else if(chart_type == 'pie_chart'){
-                    tile_html = tile_html.replace('pieChart-none','pieChart');
+                    // tile_html = tile_html.replace('pieChart-none','pieChart');
                 }
                 else if(chart_type == 'bar_chart'){
-                    tile_html = tile_html.replace('barChart-none','barChart');
+                    // tile_html = tile_html.replace('barChart-none','barChart');
                 }
                 $('.'+id+'.tiles-click').html(tile_html);
                 $('.dashboard_chart_tiles').html(''); //Add Chart Tiles Remove Other wise Chat not implemented
@@ -10166,8 +10166,8 @@ function getClickDashboardChartEnergyAutomatic(data){
                     }
                 }
 
-                if ($('#areaChart').length) {
-                    var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+                if ($('#areaChart'+id).length) {
+                    var areaChartCanvas = $("#areaChart"+id).get(0).getContext("2d");
                     var areaChart = new Chart(areaChartCanvas, {
                         type: 'line',
                         data: areaData,
@@ -10181,6 +10181,8 @@ function getClickDashboardChartEnergyAutomatic(data){
 
             }
             else if(chart_type == "pie_chart"){
+              // alert(id);
+              // alert('woring');
                 // var html_canvas_chart = "<canvas id='pieChart'></canvas>";
                 // var div_i_id = $('#total_records_chart').val();
                 // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
@@ -10346,8 +10348,8 @@ function getClickDashboardChartEnergyAutomatic(data){
                     }
                 };
 
-                if ($("#pieChart").length) {
-                    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+                if ($("#pieChart"+id).length) {
+                    var pieChartCanvas = $("#pieChart"+id).get(0).getContext("2d");
                     var pieChart = new Chart(pieChartCanvas, {
                         type: 'pie',
                         data: doughnutPieData,
@@ -10528,8 +10530,8 @@ function getClickDashboardChartEnergyAutomatic(data){
                 };
 
 
-                if($("#barChart").length) {
-                    var barChartCanvas = $("#barChart").get(0).getContext("2d");
+                if($("#barChart"+id).length) {
+                    var barChartCanvas = $("#barChart"+id).get(0).getContext("2d");
                     // This will get the first returned node in the jQuery collection.
                     var barChart = new Chart(barChartCanvas, {
                         type: 'bar',

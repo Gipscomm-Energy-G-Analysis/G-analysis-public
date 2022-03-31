@@ -1713,6 +1713,10 @@ $(document).ready( function(){
             id_val =id.split(" ")[0];
             var product_automatic_tile = $(this).hasClass('product_automatic_tile_delete');
             deleteTile(id_val,product_automatic_tile);
+            setTimeout(function () {
+                showexpandedchart();
+            
+            },1000);
         }
         
     })
@@ -1927,18 +1931,29 @@ $(document).ready( function(){
         if(ar['record_type_of_tile'] == 'product')
         {
             saveDashboardTileChartProduct();
+            setTimeout(function () {
+                showexpandedchart();
+            },1000);
         }
         else if(ar['record_type_of_tile'] == 'energy' && energy_chart_measurement == 'layer_modal')
         {
-            saveDashboardTileChartEnergyLayer();   
+            saveDashboardTileChartEnergyLayer();
+            setTimeout(function () {
+                showexpandedchart();
+            },1000);   
         }
         else if(ar['record_type_of_tile'] == 'energy' && energy_chart_measurement == 'automatic')
         {
             saveDashboardTileChartEnergyAutomatic();   
-          
+            setTimeout(function () {
+                showexpandedchart();
+            },1000);
         }
         else{
             saveDashboardTileChart();
+            setTimeout(function () {
+                showexpandedchart();
+            },1000);
         }
     })
     // --end-->
@@ -2091,6 +2106,10 @@ $(document).ready( function(){
         id_val =id.split(" ")[0];
         getEditDataDashboard(id_val,i_value);
         $('#dashboard_tile_modal').modal('show');   
+        setTimeout(function () {
+            showexpandedchart();
+        
+        },1000);
     });
     // --end---->
     
