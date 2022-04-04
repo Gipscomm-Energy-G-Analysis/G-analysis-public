@@ -586,7 +586,10 @@ function saveTableFormat(type){
             measurement_preview_data.push({'height':measuremnt_table_height,'width':measurement_table_width});
             localStorage.setItem('measurement_preview_data',JSON.stringify(measurement_preview_data));
         }
-        if(row_enteries_length <= 5){
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10){
             $.ajax({
                 type: "POST",
                 url: "dashboard/php/operations.php",
@@ -698,7 +701,10 @@ function saveTableFormatProduct(){
             measurement_preview_data.push({'height':product_table_height,'width':product_table_width});
             localStorage.setItem('measurement_preview_data',JSON.stringify(measurement_preview_data));
         }
-        if(row_enteries_length <= 5){
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10){
             $.ajax({
                 type: "POST",
                 url: "dashboard/php/operations.php",
@@ -791,8 +797,10 @@ function saveTableFormatProductAutomatic(){
         });
 
         var db_table = $('#all_tables_product').val();
-
-        if(row_enteries_length <= 5){
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10){
             $.ajax({
                 type: "POST",
                 url: "dashboard/php/operations.php",
@@ -886,7 +894,11 @@ function saveTableFormatEnergy(type){
             measurement_preview_data.push({'height':energy_table_height,'width':energy_table_width});
             localStorage.setItem('measurement_preview_data',JSON.stringify(measurement_preview_data));
         }
-        if(row_enteries_length <= 5 || energyType == 'layer_modal'){
+
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10 || energyType == 'layer_modal'){
             $.ajax({
                 type: "POST",
                 url: "dashboard/php/operations.php",
@@ -1140,7 +1152,8 @@ function getTableFormatDashboard(){
                 $('#dashboard_count_div_tile .movetile').attr('draggable','true');
                 var dragSrcEl = null;
                 function handleDragStart(e) {
-                    $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
+                    $('#dashboard_count_div_tile .stretch-card').addClass('');
+                    // $('#dashboard_count_div_tile .stretch-card.chart_tile_expand_view').removeClass('hide_table_main');
                     this.style.opacity = '1.0';
 
                     dragSrcEl = this;
@@ -1232,7 +1245,18 @@ function getTableFormatDashboard(){
                         // $('#'+id_val_drop).addClass('hide_table_main ');
                     }
 
-                    // },1500);
+                    // var a = $("energy_count_tile_modal_chart_219").val();
+
+                    // $( document ).ready(function() {
+                        // alert('working1');
+                      $('.loader_image_redirect_div').show();
+                        // alert('working2');
+                        alert("working");
+                        showexpandedchart();
+                       $('.loader_image_redirect_div').hide();
+                        // alert('working3');
+                    // });
+
                 }
 
 

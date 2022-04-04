@@ -1179,7 +1179,7 @@ $(document).ready( function(){
                     $('.energy_html_modal_'+last_div_index+' .small-table').html('');
                 }
                 // --end-->
-
+                
             }
             else{
                 alert('Records are Always be less than 5');
@@ -1265,6 +1265,9 @@ $(document).ready( function(){
             },1100);
         }
         $('#table_outisde_tile_controls').hide();
+        if (energy_automatic_input > 10) {
+            alert("last line");
+        }
     })
     // ---end-->
 
@@ -3252,6 +3255,7 @@ $(document).ready( function(){
                 getNumberRecordsEnergyLayerModal();
             }
         }
+        $('#back_energy_btn_table').show();        
     });
 
 
@@ -3323,6 +3327,10 @@ $(document).ready( function(){
     });
 
 
+    $(document).on('click','#back_energy_btn_table', function(){
+        $('#energy_btn_table').trigger('click');
+    });
+    
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {
