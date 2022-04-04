@@ -1179,7 +1179,7 @@ $(document).ready( function(){
                     $('.energy_html_modal_'+last_div_index+' .small-table').html('');
                 }
                 // --end-->
-
+                
             }
             else{
                 alert('Records are Always be less than 5');
@@ -1265,6 +1265,9 @@ $(document).ready( function(){
             },1100);
         }
         $('#table_outisde_tile_controls').hide();
+        if (energy_automatic_input > 10) {
+            alert("last line");
+        }
     })
     // ---end-->
 

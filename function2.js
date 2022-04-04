@@ -589,7 +589,10 @@ function saveTableFormat(type){
             measurement_preview_data.push({'height':measuremnt_table_height,'width':measurement_table_width});
             localStorage.setItem('measurement_preview_data',JSON.stringify(measurement_preview_data));
         }
-        if(row_enteries_length <= 5){
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10){
             $.ajax({
                 type: "POST",
                 url: "dashboard/php/operations.php",
@@ -701,7 +704,10 @@ function saveTableFormatProduct(){
             measurement_preview_data.push({'height':product_table_height,'width':product_table_width});
             localStorage.setItem('measurement_preview_data',JSON.stringify(measurement_preview_data));
         }
-        if(row_enteries_length <= 5){
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10){
             $.ajax({
                 type: "POST",
                 url: "dashboard/php/operations.php",
@@ -794,8 +800,10 @@ function saveTableFormatProductAutomatic(){
         });
 
         var db_table = $('#all_tables_product').val();
-
-        if(row_enteries_length <= 5){
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10){
             $.ajax({
                 type: "POST",
                 url: "dashboard/php/operations.php",
@@ -867,7 +875,7 @@ function saveTableFormatEnergy(type){
         var input_width = $('#modal-width-input-energy').val();
 
         var last_index_tile = $('#total_records').val();
-
+        
         $('.energy_html_modal_'+last_index_tile+' .card-border').removeClass('tile_border');
 
         var tile_html = $('.energy_html_modal_'+last_index_tile).html();
@@ -889,7 +897,11 @@ function saveTableFormatEnergy(type){
             measurement_preview_data.push({'height':energy_table_height,'width':energy_table_width});
             localStorage.setItem('measurement_preview_data',JSON.stringify(measurement_preview_data));
         }
-        if(row_enteries_length <= 5 || energyType == 'layer_modal'){
+        
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10 || energyType == 'layer_modal'){
             $.ajax({
                 type: "POST",
                 url: "dashboard/php/operations.php",
