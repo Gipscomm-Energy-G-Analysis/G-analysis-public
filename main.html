@@ -1225,14 +1225,14 @@
                     <span class='energy_automatic_input_error text-danger'></span>
                   </div>
 
-                  <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                  <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
                      <label for="energy_measurement_automatic">Interval</label>
                      <select class="form-control form-control-sm text-dark" id="energy_measurement_automatic">
                        <option value="">15-min</option>
                        <option value="">Day</option>
                        <option value="">Month</option>
                      </select>
-                   </div>
+                   </div> -->
                   <!-- --end-- -->
 
                   
@@ -1333,6 +1333,9 @@
                     <input type="button" class="btn btn-sm btn-success click_common_btn" id="energy_btn_table" value='Show Results'>  
                   </div>
 
+                  <div class="form-group col-md-3">
+                     <input type="button" class="btn btn-sm btn-success click_common_btn" id="back_energy_btn_table" value='Back Button' style="display: none">  
+                   </div>
 
                   <div class="form-group col-md-3" id="open_end_layer_div" style="display: none">
                     <div class="form-check form-check-primary">
@@ -13013,6 +13016,6 @@
          },1000);
       });
          </script>
-         
+
 </body>
 </html>

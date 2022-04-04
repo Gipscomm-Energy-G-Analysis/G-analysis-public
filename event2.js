@@ -3252,6 +3252,7 @@ $(document).ready( function(){
                 getNumberRecordsEnergyLayerModal();
             }
         }
+        $('#back_energy_btn_table').show();        
     });
 
 
@@ -3323,6 +3324,10 @@ $(document).ready( function(){
     });
 
 
+    $(document).on('click','#back_energy_btn_table', function(){
+        $('#energy_btn_table').trigger('click');
+    });
+    
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {

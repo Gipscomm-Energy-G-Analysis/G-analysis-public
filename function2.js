@@ -4,10 +4,10 @@ setTimeout(function () {
 
 },1000);
 
-setTimeout(function () {
-    showexpandedchart();
+// setTimeout(function () {
+//     showexpandedchart();
 
-},1000);
+// },1000);
 
 function showexpandedchart() {
     var inputs = $(".tiles-click");
@@ -1143,7 +1143,8 @@ function getTableFormatDashboard(){
                 $('#dashboard_count_div_tile .movetile').attr('draggable','true');
                 var dragSrcEl = null;
                 function handleDragStart(e) {
-                    $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
+                    $('#dashboard_count_div_tile .stretch-card').addClass('');
+                    // $('#dashboard_count_div_tile .stretch-card.chart_tile_expand_view').removeClass('hide_table_main');
                     this.style.opacity = '1.0';
 
                     dragSrcEl = this;
@@ -1234,8 +1235,19 @@ function getTableFormatDashboard(){
                         // $('#'+id_val_start).addClass('hide_table_main ');
                         // $('#'+id_val_drop).addClass('hide_table_main ');
                     }
-
-                    // },1500);
+                   
+                    // var a = $("energy_count_tile_modal_chart_219").val();
+                    
+                    // $( document ).ready(function() {
+                        // alert('working1');
+                      $('.loader_image_redirect_div').show();
+                        // alert('working2');
+                        alert("working");
+                        showexpandedchart();
+                       $('.loader_image_redirect_div').hide();
+                        // alert('working3');
+                    // });
+                      
                 }
 
 
@@ -1248,7 +1260,7 @@ function getTableFormatDashboard(){
                     item.addEventListener('drop', handleDrop, false);
                     item.addEventListener('dragend', handleDragEnd, false);
                 });
-
+                
 
                 // $('#dashboard_count_div_tile .count_result_tile').text(a['total_record']+' Records');
                 // $('#dashboard_count_div_tile .action-modal-button-div').removeClass('col-md-12');
