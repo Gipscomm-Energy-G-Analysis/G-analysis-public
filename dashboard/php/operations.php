@@ -419,19 +419,10 @@ class dashboardControllerOperations {
             $outside_chart_display = $_POST['outside_chart_display'];
             $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'];
 
-            $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
-            $maxResult = queryDB($conn, $selectMaxId, "read");
-            // echo json_encode($maxResult); die;
-            $maxID23=(int)$maxResult[0]['max_id']+1;
 
 
-            $html=str_replace('lineChart-none','lineChart'.$maxID23,$html);
-            $html=str_replace('areaChart-none','areaChart'.$maxID23,$html);
-            $html=str_replace('barChart-none','barChart'.$maxID23,$html);
-            $html=str_replace('pieChart-none','pieChart'.$maxID23,$html);
-            if (strpos($html, 'chart_tile_expand_view') !== false) {
-                $html=str_replace('tiles-click','',$html);
-            }
+
+
 //            print_r($html);die;
 //            print_r($maxResult[0]['max_id']);die;
 
@@ -444,7 +435,13 @@ class dashboardControllerOperations {
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
             $maxResult = queryDB($conn, $selectMaxId, "read");
-
+            $html=str_replace('lineChart-none','lineChart'.$maxResult['max_id'],$html);
+            $html=str_replace('areaChart-none','areaChart'.$maxResult['max_id'],$html);
+            $html=str_replace('barChart-none','barChart'.$maxResult['max_id'],$html);
+            $html=str_replace('pieChart-none','pieChart'.$maxResult['max_id'],$html);
+            if (strpos($html, 'chart_tile_expand_view') !== false) {
+                $html=str_replace('tiles-click','',$html);
+            }
             // print_r($maxResult);  die
             // <----23-11-2021--
             $totalQuery = "SELECT * from tableFormat ";
@@ -452,7 +449,7 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
-            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id',tile_html='$html' where id = '$last_id' ";
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->
 
@@ -466,13 +463,13 @@ class dashboardControllerOperations {
         }
     }
     // --end--->
-    
-    
+
+
     // <---08-9-2021---
     public function saveOverallCountTile(){
         try{
             global $conn;
-            $username = $_SESSION['username']; 
+            $username = $_SESSION['username'];
             $title = $_REQUEST['title'];
             $html = $_POST['tile_html'];
             $height = $_POST['height'];

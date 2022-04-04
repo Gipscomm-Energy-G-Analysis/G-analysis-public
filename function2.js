@@ -4,10 +4,7 @@ setTimeout(function () {
 
 },1000);
 
-setTimeout(function () {
-    showexpandedchart();
 
-},1000);
 
 function showexpandedchart() {
     var inputs = $(".tiles-click");
