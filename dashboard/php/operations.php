@@ -435,14 +435,16 @@ class dashboardControllerOperations {
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
             $maxResult = queryDB($conn, $selectMaxId, "read");
-            $html=str_replace('lineChart-none','lineChart'.$maxResult['max_id'],$html);
-            $html=str_replace('areaChart-none','areaChart'.$maxResult['max_id'],$html);
-            $html=str_replace('barChart-none','barChart'.$maxResult['max_id'],$html);
-            $html=str_replace('pieChart-none','pieChart'.$maxResult['max_id'],$html);
+         
+            $html=str_replace('lineChart-none','lineChart'.$maxResult[0]['max_id'],$html);
+            $html=str_replace('areaChart-none','areaChart'.$maxResult[0]['max_id'],$html);
+            $html=str_replace('barChart-none','barChart'.$maxResult[0]['max_id'],$html);
+            $html=str_replace('pieChart-none','pieChart'.$maxResult[0]['max_id'],$html);
             if (strpos($html, 'chart_tile_expand_view') !== false) {
                 $html=str_replace('tiles-click','',$html);
             }
-            // print_r($maxResult);  die
+
+            // print_r($html);  die;
             // <----23-11-2021--
             $totalQuery = "SELECT * from tableFormat ";
             $totalResult = queryDB($conn, $totalQuery, "read");
