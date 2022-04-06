@@ -58,6 +58,12 @@ $(document).ready( function(){
                 // Edit Local Storage Remove
                 localStorage.removeItem('edit-measurement-tile');
                 localStorage.removeItem('edit-i-value');
+                setTimeout(function () {
+
+                    showexpandedchart();
+
+                },1000);
+
                 // localStorage.removeItem('dashboard_tile_data');
                 // --end-->
                 break;
