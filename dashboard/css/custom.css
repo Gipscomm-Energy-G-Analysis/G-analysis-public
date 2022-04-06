@@ -922,3 +922,8 @@
     width: 17px !important;
     margin-right: 5px !important;
 }
+#back_energy_btn_table {
+    width: 30px;
+    margin: 0px 10px 0px 0px;
+    cursor: pointer;
+}

@@ -523,6 +523,7 @@ $(document).ready( function(){
             // rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array)
         }
         else if(energy_type == 'automatic'){
+            $('#back_energy_btn_table').show();
             var name_val = $(this).children('td:eq(0)').text();
             var dateValue = $(this).children('td:eq(1)').text();
             var totalSumValue = $(this).children('td:eq(1)').text();
@@ -3261,7 +3262,7 @@ $(document).ready( function(){
                 getNumberRecordsEnergyLayerModal();
             }
         }
-        $('#back_energy_btn_table').show();
+        // $('#back_energy_btn_table').show();
     });
 
 
@@ -3335,6 +3336,7 @@ $(document).ready( function(){
 
     $(document).on('click','#back_energy_btn_table', function(){
         $('#energy_btn_table').trigger('click');
+        $('#back_energy_btn_table').hide();
     });
 
     $(document).on('click','#dashboard_sidebar', function(){
