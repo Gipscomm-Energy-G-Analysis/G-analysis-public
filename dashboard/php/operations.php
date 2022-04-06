@@ -435,7 +435,7 @@ class dashboardControllerOperations {
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
             $maxResult = queryDB($conn, $selectMaxId, "read");
-         
+            
             $html=str_replace('lineChart-none','lineChart'.$maxResult[0]['max_id'],$html);
             $html=str_replace('areaChart-none','areaChart'.$maxResult[0]['max_id'],$html);
             $html=str_replace('barChart-none','barChart'.$maxResult[0]['max_id'],$html);
