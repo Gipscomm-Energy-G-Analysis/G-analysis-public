@@ -119,6 +119,56 @@ class dashboardControllerOperations {
     }
     // --end-->
 
+    public function saveTableFormatExpandView(){
+        try {
+            global $conn;
+            $username = $_SESSION['username']; 
+            $queryData = $_REQUEST['query_data'];
+            $number_records = $queryData['number_records']; 
+            $pages_count = $queryData['pages_count']; 
+            $page_value = $queryData['page_val']; 
+            $type = $queryData['type']; 
+            $row_click = $queryData['row_click']; 
+            $query_data_records = $queryData['query1']; 
+            $query_max_val = $queryData['queryMaxValue'];
+            $title = $_REQUEST['title'];
+            $html = $_POST['tile_html'];
+            $height = $_POST['height'];
+            $width = $_POST['width'];
+            $input_height = $_POST['input_height'];
+            $input_width = $_POST['input_width'];
+            $record_type_of_tile = $_POST['record_type_of_tile'];
+            $type_data_tile = $_POST['type_data_tile'];
+            $table_other = $_POST['table_other'];
+            $mst_id = isset($queryData['mst_id']) ?  $queryData['mst_id'] : '';
+            $name_val = isset($queryData['name_val']) ? $queryData['name_val'] : '';
+            $energy_layer_filter = isset($queryData['select_filter_day_week']) ?  $queryData['select_filter_day_week'] : '';
+            $energy_layer_range = isset($queryData['input_val_week_day']) ?  $queryData['input_val_week_day'] : '';
+            $query_data_records = str_replace("'",'',$query_data_records);
+            $query_max_val = str_replace("'",'',$query_max_val);
+
+            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,mst_id,energy_layer_model_name,energy_layer_filter,energy_layer_range ) ";
+            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other', '$mst_id' ,'$name_val','$energy_layer_filter','$energy_layer_range') ";
+            // echo $insertQuery; die;
+            $insertRecord = queryDB($conn, $insertQuery, "write");
+
+            $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
+            $maxResult = queryDB($conn, $selectMaxId, "read");
+
+            // <----07-04-2022--
+            $totalQuery = "SELECT * from tableFormat ";
+            $totalResult = queryDB($conn, $totalQuery, "read");
+            $totalResult = count($totalResult);
+
+            $last_id = $maxResult[0]['max_id'];
+
+            if($insertQuery){
+                return array('Staus' => 200 , 'Message' => 'Successfully Inserted','max_id'=>$maxResult);
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
 
     // <----24-12-2021---
     public function saveTableFormatProductAutomatic(){
@@ -402,7 +452,7 @@ class dashboardControllerOperations {
             $type_data_tile = $_POST['type_data_tile'];
             $type = $_POST['type'];
             $energy_type_dashboard_chart = $_POST['energy_type_dashboard_chart'];
-            $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'] : '';
+            $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'][0] : '';
             $analgen_config_id = isset($_POST['analgen_config_id']) ? $_POST['analgen_config_id'] : '';
 
             
@@ -429,7 +479,7 @@ class dashboardControllerOperations {
 
             $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,prd_anlagen_config_id,energy_layer_filter,energy_layer_range,energy_chart_type ) ";
             $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$mst_id','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width','$outside_chart_display','$chart_outer_table_limit_column','$analgen_config_id','$energy_layer_filter','$energy_chart_layer_range','$energy_type_dashboard_chart') ";
-            // echo $mst_id; die;
+            // echo $insertQuery; die;
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
 

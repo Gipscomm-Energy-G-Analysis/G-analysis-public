@@ -580,7 +580,7 @@
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" id="close-btn">Schließen</button>
               </div>
 
               <!-- ----27-10-2021--- -->
@@ -648,8 +648,7 @@
                   <div class="form-group col-md-2 energy_automatic_div" id="energy_chart_measurement_div_automatic">
                     <label for="energy_chart_measurement_automatic" class="text-mute">Messstelle auswählen</label>
                     <span class='mandatory_sign'>*</span>
-                    <select class="form-control form-control-sm text-dark" id="energy_chart_measurement_automatic">
-                      <option value="">Messstelle auswählen</option>
+                    <select class="form-control form-control-sm text-dark" multiple id="energy_chart_measurement_automatic">
                     </select>
                   </div>
 
@@ -819,7 +818,7 @@
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" id="close-btn">Schließen</button>
                 <!-- <div id="save_btn_tile_div"> -->
                   <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" data-edit-chart='false' class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Speichern & fortfahren">
 
@@ -1435,7 +1434,7 @@
                       </div>
 
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" id="close-btn">Schließen</button>
                         <button type="button" class="btn btn-sm btn-success display-none"  id="save_table_btn_energy">Speichern</button>
                         <button type="button" class="btn btn-sm btn-success display-none" data-type="Energy"  id="update_table_btn_energy">Ändern</button>
                       </div>
@@ -1701,7 +1700,7 @@
                       </div>
 
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" id="close-btn">Schließen</button>
                         <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement-table-format"  id="save_table_btn">Speichern</button>
                         <button type="button" class="btn btn-sm btn-success display-none" data-type="Measurement"  id="update_table_btn_measurement">Ändern</button>
                       </div>
@@ -1882,7 +1881,7 @@
                       
 
                      <div class="modal-footer">
-                       <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                       <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" id="close-btn">Schließen</button>
                      </div>
                     
                    </div>
@@ -1986,7 +1985,7 @@
                      </div>
 
                      <div class="modal-footer">
-                       <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
+                       <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" id="close-btn">Schließen</button>
                        <button type="button" class="btn btn-sm btn-success display-none" data-type="product-table-format"  id="save_table_btn_product">Speichern</button>
                        <button type="button" class="btn btn-sm btn-success display-none" data-type="Product"  id="update_table_btn_product">Ändern</button>
                      </div>
@@ -12016,7 +12015,7 @@
             </table>
             <button class="anlDialogButton" style="font-size:12px;">Schema Speichern</button>
             <button class="anlDialogButton" style="font-size:12px;">Reset</button>
-            <button class="anlDialogSchlButton" style="font-size:12px;">Schließen</button>
+            <button class="anlDialogSchlButton" style="font-size:12px;" id="close-btn">Schließen</button>
         </div>
     </div>
     <!--Anlagenliste II-->
@@ -12323,7 +12322,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-           <button class="berDialogButton" style="font-size:12px;">Schließen</button>
+           <button class="berDialogButton" style="font-size:12px;" id="close-btn">Schließen</button>
         </div>
     </div>
     <!--Vorgelagerten Bereich wählen-->
@@ -12340,7 +12339,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <button class="berDialogSchlButton3" style="font-size:12px;">Schließen</button>
+            <button class="berDialogSchlButton3" style="font-size:12px;" id="close-btn">Schließen</button>
         </div>
     </div>
     <!--Vorgelagerte Messstelle wählen-->
@@ -12360,7 +12359,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-          <button class="berDialogSchlButton1" style="font-size:12px;">Schließen</button>
+          <button class="berDialogSchlButton1" style="font-size:12px;" id="close-btn">Schließen</button>
         </div>
     </div>
 
@@ -12441,7 +12440,7 @@
                   </thead>
                   <tbody></tbody>
                </table>
-               <button class="berDialogSchlButton4" style="font-size:12px;">Schließen</button>
+               <button class="berDialogSchlButton4" style="font-size:12px;" id="close-btn">Schließen</button>
             </div>
          </div>
          <!--Messmittel in MessstellenTab zuweisen-->
@@ -12460,7 +12459,7 @@
                   </thead>
                   <tbody></tbody>
                </table>
-               <button class="berDialogSchlButton5" style="font-size:12px;">Schließen</button>
+               <button class="berDialogSchlButton5" style="font-size:12px;" id="close-btn">Schließen</button>
             </div>
          </div>
          <!--Formel auswählen-->
@@ -12476,7 +12475,7 @@
                   </thead>
                   <tbody></tbody>
                </table>
-               <button class="berDialogSchlButton6" style="font-size:12px;">Schließen</button>
+               <button class="berDialogSchlButton6" style="font-size:12px;" id="close-btn">Schließen</button>
             </div>
          </div>
          <!--Messmittel-->
@@ -12499,7 +12498,7 @@
                   </thead>
                   <tbody></tbody>
                </table>
-               <button class="berDialogSchlButton" style="font-size:12px;">Schließen</button>
+               <button class="berDialogSchlButton" style="font-size:12px;" id="close-btn">Schließen</button>
             </div>
          </div>
          <!--Schichtmodell suchen-->
@@ -12580,7 +12579,7 @@
                   </thead>
                   <tbody></tbody>
                </table>
-               <button class="berDialogSchlButton2" style="font-size:12px;">Schließen</button>
+               <button class="berDialogSchlButton2" style="font-size:12px;" id="close-btn">Schließen</button>
             </div>
          </div>
          <!--Externe Rechnungen-->
@@ -12605,7 +12604,7 @@
                   </thead>
                   <tbody></tbody>
                </table>
-               <button class="berDialogSchlButton7" style="font-size:12px;">Schließen</button>
+               <button class="berDialogSchlButton7" style="font-size:12px;" id="close-btn">Schließen</button>
             </div>
          </div>
          <!--Instanzliste Kennzahlenverwaltung-->

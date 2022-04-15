@@ -738,13 +738,20 @@ $(document).ready( function(){
 
     // <---22-11-2021---
     $(document).on('click','#save_table_btn_energy', function(){
+        var valIsChecked = $('#expand_view_table').is(":checked");
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
         if(ar['type_data_tile'] == 'overall_count' && ar['record_type_of_tile'] == 'energy')
         {
             saveOverallCountTileEnergy();
         }
+        else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'energy' && valIsChecked == true){
+            alert('work start');
+            saveTableFormatEnergyExpandView();
+            alert('work end ');
+        }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'energy'){
+            // alert('work here');
             saveTableFormatEnergy();
         }
         setTimeout(function () {
@@ -2140,6 +2147,7 @@ $(document).ready( function(){
         }
         else if(ar['record_type_of_tile'] == 'energy' && energy_type_dashboard_chart == 'layer_modal') 
         {
+
             updateDashboardChartEnergyLayer();
         }
         else if(ar['record_type_of_tile'] == 'energy' && energy_type_dashboard_chart == 'automatic') 
@@ -2178,10 +2186,11 @@ $(document).ready( function(){
     });
     // --end-->
 
- // <----23-03-2023---
- $(document).on('click','#expand_view_table', ()=>{
+    // <----23-03-2023---
+    $(document).on('click','#expand_view_table', ()=>{
+    // let data_i_value = $(this).attr('data-i');
     var valIsChecked = $('#expand_view_table').is(":checked");
-    var total_records = $('#total_records_table').val();
+    var total_records = $('#total_records').val();
     if(valIsChecked == true){
         $('#expand_view_table').val("1");
         $('.table_outisde_tile_controls').hide();
@@ -2198,9 +2207,14 @@ $(document).ready( function(){
         $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',290);
         $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',580);
 
+        $('#energy_count_tile_modal_'+total_records).css('height',290);
+        $('#energy_count_tile_modal_'+total_records).css('width',570);
+        // saveTableFormatEnergyExpandView();
     }
     else{
         $('#expand_view_table').val("0");
+        $('#energy_count_tile_modal_'+total_records).css('height',145);
+        $('#energy_count_tile_modal_'+total_records).css('width',285);
         $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',145);
         $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',290);
     }
@@ -2230,6 +2244,7 @@ $(document).ready( function(){
             $('.table_outisde_tile_controls').show();
             $('#expand_view_table').val("0");
             $('#expand_view_table').prop("checked",false);
+            // alert("work here");
         }
         else{
             $('#table_outside_tile_structure').val("0");
@@ -3326,11 +3341,11 @@ $(document).ready( function(){
             },3000);
             $('#energy_chart_layer_range_automatic').val('');
         }
-        chartRecordFilter();
+        // chartRecordFilter();
     });
 
     $(document).on('change','#energy_chart_measurement_automatic', function(){
-        chartRecordFilter();
+        // chartRecordFilter();
     });
 
 
@@ -3345,6 +3360,14 @@ $(document).ready( function(){
         },1000);   
     });
     
+    $('#chart_btn_click').click(function(){
+        // alert("working");
+        chartRecordFilter();
+    });
+
+    $('#close-btn').click(function(){
+        showexpandedchart();
+    });
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {
@@ -3609,6 +3632,35 @@ $(document).ready( function(){
     // --end-->
 
 
+        var last_valid_selection = null;
+
+        // $('#energy_chart_measurement_automatic').change(function(event) {
+
+        //   if ($(this).val().length > 5) {
+        //     alert('Please Select maximum 5');
+        //     $(this).val(last_valid_selection);
+            
+        //   } else {
+        //     last_valid_selection = $(this).val();
+        //   }
+          
+     
+        // });
+
+        // $('#energy_chart_measurement_automatic').click(function(){
+        //          $('#energy_chart_measurement_automatic').prop('checked',false);
+        //           $('#energy_chart_measurement_automatic').val('0');
+        // });
+
+        // var theCheckboxes = $("#energy_chart_measurement_automatic input[type='checkbox']");
+        // theCheckboxes.click(function()
+        // {
+        //     if (theCheckboxes.filter(":checked").length > 3)
+            
+        //         $(this).removeAttr("checked");
+        //         // alert("select only three");
+            
+        // });
 
    
 

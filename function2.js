@@ -8,7 +8,6 @@ setTimeout(function () {
 
 function showexpandedchart() {
     var inputs = $(".tiles-click");
-    $('.loader').show();
     inputs.each(function(){
         var className=($(this).attr('class'));
         console.log(className.includes('chart_tile_expand_view'));
@@ -68,7 +67,6 @@ function showexpandedchart() {
         }
 
     });
-    $('.loader').hide();
 }
 
 
@@ -948,7 +946,63 @@ function saveTableFormatEnergy(type){
     }
 }
 // --end-->
+function saveTableFormatEnergyExpandView(){
+    alert("function created");
+    var row_enteries_length = $('#energy_select_table_entries tr').length;
+    var query_data = localStorage.getItem('query_data');
 
+    var energyType = $('#energy_type').val(); 
+    var table_other = $('#energy_record_table table tbody').children('tr:eq(0)').attr('data-table-other');
+    if (row_enteries_length > 10) {
+        alert("Minimum 10 Records can be saved");
+    }
+    if(row_enteries_length <= 10 || energyType == 'layer_modal'){
+        $.ajax({
+            type: "POST",
+            url: "dashboard/php/operations.php",
+            async: false,
+            dataType: 'json',
+            data: {
+                action: "saveTableFormatExpandView",
+                nameDB: $("#nameDashboardDB").val(),
+                query_data : JSON.parse(query_data),
+                title : tile_title,
+                tile_html : tile_html,
+                height: energy_table_height,
+                width : energy_table_width,
+                tableHtml : tableHtml,
+                input_height : input_height,
+                input_width : input_width,
+                record_type_of_tile :record_type_of_tile,
+                type_data_tile : type_data_tile,
+                table_other : table_other
+            },
+            fail: function() {
+                alert("failed!!")
+            },
+            success: function(a) {
+
+                $('#energy_modal_loader_div').show();
+                $('.energy_tile_modal .modal-content').css('opacity','0.8');
+
+                $('#save_tile_id').val(a['max_id'][0]['max_id']);
+
+                setTimeout(() => {
+                    $('#dashboard_sidebar').click();
+                    $('#energy_modal_loader_div').hide();
+                    $('.energy_tile_modal .modal-content').css('opacity','1');
+                    $('.energy_tile_modal').modal('hide');
+
+                    // <---12-11-2021--
+                    // $('#save_position_tile').trigger('click');
+                    // --end--->
+                }, 500);
+                // $('#save_position_tile').attr('btn_click','table');
+            }
+        });
+    }
+
+}
 // <---16-8-2021---
 function getTableFormatDashboard(){
     $('.dashboard_count_div').html('');
@@ -1154,8 +1208,6 @@ function getTableFormatDashboard(){
                 $('#dashboard_count_div_tile .movetile').attr('draggable','true');
                 var dragSrcEl = null;
                 function handleDragStart(e) {
-                    let start_class = $(this).attr('class');
-                    console.log(start_class);
                     $('#dashboard_count_div_tile .stretch-card').addClass('');
                     // $('#dashboard_count_div_tile .stretch-card.chart_tile_expand_view').removeClass('hide_table_main');
                     this.style.opacity = '1.0';
@@ -1204,14 +1256,11 @@ function getTableFormatDashboard(){
                 }
 
                 function handleDrop(e) {
-                    let end_class = $(this).next().find();
-                    console.log(end_class);
                     if (e.stopPropagation) {
                         e.stopPropagation(); // stops the browser from redirecting.
                     }
 
                     if (dragSrcEl != this) {
-
                         dragSrcEl.innerHTML = this.innerHTML;
                         this.innerHTML = e.dataTransfer.getData('text/html');
                     }
@@ -1220,7 +1269,6 @@ function getTableFormatDashboard(){
                 }
 
                 function handleDragEnd(e) {
-                    console.log(this);
                     this.style.opacity = '1';
 
                     items.forEach(function (item) {
@@ -1237,8 +1285,6 @@ function getTableFormatDashboard(){
                     var i_val_drop = $('#drop_tile_data').attr('data-i');
                     var id_val_drop = $('#drop_tile_data').attr('data-id');
 
-                    // console.log('start',id_val_start);
-                    // console.log('drop',id_val_drop);
                     if(class_val_start != undefined && class_val_drop != undefined && class_val_start != class_val_drop){
 
                         // $('#'+id_val_start).attr('class',class_val_drop);
@@ -1261,18 +1307,16 @@ function getTableFormatDashboard(){
                         // alert('working1');
                       $('.loader_image_redirect_div').show();
                         // alert('working2');
-                        // alert("working");
+                        alert("working");
                         showexpandedchart();
                        $('.loader_image_redirect_div').hide();
                         // alert('working3');
-
                     // });
 
                 }
 
 
                 let items = document.querySelectorAll('#dashboard_count_div_tile .movetile');
-
                 items.forEach(function(item) {
                     item.addEventListener('dragstart', handleDragStart, false);
                     item.addEventListener('dragenter', handleDragEnter, false);
@@ -7346,7 +7390,7 @@ function chartRecordFilterEnergyAutomatic(){
                 alert("failed!!")
             },
             success: function(a) {
-
+                // console.log(a);
                 // <---12-11-2021--
                 $('#measurement_modal_loader_div_chart').hide();
                 var div_id_html = $('#total_records_chart').val();
@@ -7382,62 +7426,95 @@ function chartRecordFilterEnergyAutomatic(){
                     $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
                     // --end-->
                     // console.log('line chart');
-
-                    var data = {
-                        labels: a['count_days'],
-                        // labels : ["Test 212", "Test 212", "Test 212"],
-                        datasets: [{
-                            label: 'Consumption',
-                            data: a['count_val'],
-                            // data : [12696.8265385, 0, 7448.749997],
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgba(255,99,132,1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
-                            borderWidth: 1,
-                            fill: false
-                        }]
-                    };
-
-                    var options = {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
+                    var result = getDataSetValueChartEnergyAutomatic(a['count_val']);
+                    console.log(result);
+                    setTimeout(()=>{
+                        var data = {
+                            labels: a['count_days'],
+                            // labels : ["Test 212", "Test 212", "Test 212"],
+                            datasets : result
+                            // datasets: [
+                                // {
+                                //     label: 'Consumption',
+                                //     // data: a['count_val'],
+                                //     data : [12696.8265385, 0, 7448.749997],
+                                //     backgroundColor: [
+                                //         'rgba(255, 99, 132, 0.2)',
+                                //         'rgba(54, 162, 235, 0.2)',
+                                //         'rgba(255, 206, 86, 0.2)',
+                                //         'rgba(75, 192, 192, 0.2)',
+                                //         'rgba(153, 102, 255, 0.2)',
+                                //         'rgba(255, 159, 64, 0.2)'
+                                //     ],
+                                //     borderColor: [
+                                //         'rgba(255,99,132,1)',
+                                //         'rgba(54, 162, 235, 1)',
+                                //         'rgba(255, 206, 86, 1)',
+                                //         'rgba(75, 192, 192, 1)',
+                                //         'rgba(153, 102, 255, 1)',
+                                //         'rgba(255, 159, 64, 1)'
+                                //     ],
+                                //     borderWidth: 1,
+                                //     fill: false 
+                                // },
+                                // {
+                                //     label: 'New Line',
+                                //     // data: a['count_val'],
+                                //     data : [4000, 2200, 6000.749997],
+                                //     backgroundColor: [
+                                //         'rgba(255, 99, 132, 0.2)',
+                                //         'rgba(54, 162, 235, 0.2)',
+                                //         'rgba(255, 206, 86, 0.2)',
+                                //         'rgba(75, 192, 192, 0.2)',
+                                //         'rgba(153, 102, 255, 0.2)',
+                                //         'rgba(255, 159, 64, 0.2)'
+                                //     ],
+                                //     borderColor: [
+                                //         'rgba(255,99,132,1)',
+                                //         'rgba(54, 162, 235, 1)',
+                                //         'rgba(255, 206, 86, 1)',
+                                //         'rgba(75, 192, 192, 1)',
+                                //         'rgba(153, 102, 255, 1)',
+                                //         'rgba(255, 159, 64, 1)'
+                                //     ],
+                                //     borderWidth: 1,
+                                //     fill: false
+                                // },
+                        
+                            // ]
+                        };
+    
+                        
+                        var options = {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: false
+                            },
+                            elements: {
+                                point: {
+                                    radius: 0
                                 }
-                            }]
-                        },
-                        legend: {
-                            display: false
-                        },
-                        elements: {
-                            point: {
-                                radius: 0
                             }
+    
+                        };
+    
+                        if ($("#lineChart").length) {
+                            var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+                            var lineChart = new Chart(lineChartCanvas, {
+                                type: 'line',
+                                data: data,
+                                options: options
+                            });
                         }
 
-                    };
-
-                    if ($("#lineChart").length) {
-                        var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
-                        var lineChart = new Chart(lineChartCanvas, {
-                            type: 'line',
-                            data: data,
-                            options: options
-                        });
-                    }
+                    },2500);
+                   
 
                 }
                 else if (chart_type == "area_chart"){
@@ -7448,7 +7525,7 @@ function chartRecordFilterEnergyAutomatic(){
                     $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
                     //--end-->
 
-                    // console.log('Working');
+                    // alert('Working'); 
                     var areaData = {
                         // <--X Axis Value---
                         // labels: ["2013", "2014", "2015", "2016", "2017","2019","2021","2023"],
@@ -7487,7 +7564,7 @@ function chartRecordFilterEnergyAutomatic(){
                             }
                         }
                     }
-
+                    // alert('Working 2 '); 
                     if ($("#areaChart").length) {
                         var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
                         var areaChart = new Chart(areaChartCanvas, {
@@ -7876,6 +7953,42 @@ function chartRecordFilterEnergyAutomatic(){
         $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
 
     }
+}
+
+function getDataSetValueChartEnergyAutomatic(value)
+{
+    var valuesObjAr = [];
+    if(value.length > 0)
+    {
+        value.forEach(element => {
+            var valueObj=
+                {
+                    label: 'Consumption',
+                    // data: a['count_val'],
+                    data : element,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1,
+                    fill: false
+                }
+                valuesObjAr.push(valueObj);
+        });
+    }
+    return valuesObjAr;
 }
 
 // <---8-9-2021----
@@ -10894,10 +11007,19 @@ function updateDashboardChartEnergyAutomatic(){
     var energy_type_dashboard_chart = $('#energy_type_dashboard_chart').val();
     //console.log('chart_recorda Value ',chart_records);
     //console.log('chart_recorda Filter ',chart_record_filter);
-    if(mst_id == '' || energy_chart_layer_range == '' || energy_type_dashboard_chart != 'automatic'){
-        alert('Please Select Required Fields');
-        return false;
+    if (energy_chart_layer_range == '') {
+        alert("energy chart range empty");
+    } else if(mst_id == ''){
+        alert("mst_id empty");
+    }else if("energy_type_dashboard_chart != 'automatic'"){
+        alert("energy type dashboard empty");
+    }else{
+        alert("all are set");
     }
+    // if(mst_id == '' || energy_chart_layer_range == '' || energy_type_dashboard_chart != 'automatic'){
+    //     alert('Please Select Required Fields');
+    //     return false;
+    // }
     $('.small-table').attr('style','display:block');
     var chart_type = $('#chart_type').val();
     var measuremnt_table_height = $('#measurement-height-chart-hidden').val();
@@ -11415,6 +11537,14 @@ function getEnergyMeasurementChartAutomatic(){
         },
         success: function(a) {
             $('#energy_chart_measurement_automatic').html(a['measurement_html']);
+            // // --end-->
+            $('#energy_chart_measurement_automatic').multiselect({
+                columns: 1,
+                placeholder: 'Select Measurement',
+                search: true,
+            });
+            $('#energy_chart_measurement_automatic').multiselect('refresh');
+
             if(a['table_found'] == "false"){
                 var htmlTableNotFound = '<option>Table Not Found</option>';
                 $('#energy_chart_measurement_automatic').html(htmlTableNotFound);
@@ -11569,7 +11699,11 @@ function logout(){
         }
     });
 }
-
+// $('#energy_chart_measurement_automatic').multiselect({
+//     columns: 1,
+//     placeholder: 'Please Select Measurement',
+//     search: true,
+// });
 // --end-->
 // <---18-1-2022--
 // var i = 1;
