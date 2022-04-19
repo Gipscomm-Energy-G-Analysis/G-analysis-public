@@ -10618,7 +10618,7 @@ class dashboardController {
     public function getClickDashboardChartEnergyAutomatic(){
         try{
             global $conn;
-            $mst_id = unserialize($_POST['mst_id']);
+            $mst_id = $_POST['chart_type'] == 'line_chart' ? unserialize($_POST['mst_id']) : $_POST['mst_id'];
             $input_val_week_day = $_POST['energy_chart_layer_range'];
             $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
             $checkQuery = '';
@@ -10633,32 +10633,43 @@ class dashboardController {
             $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
             $tableOutsideHTML = '';
             if($table_found == 'true'){
-                if(count($mst_id) > 1)
+                if($_POST['chart_type'] == 'line_chart')
                 {
-                    $result = '';
-                    $arTotalVal = [];
-                    $arCountDays = [];
-                    foreach($mst_id as $val)
+                    if(count($mst_id) > 1)
                     {
-                       $result =  $this->getChartRecordFilterEnergyAutomaticMstId($dateCheck,$val);
-                       array_push($arTotalVal,$result);
-                    }
-                    
-                    //Count Days
-                    for($j = 0; $j < $input_val_week_day; $j++)
-                    {
-                        $dateVal = date('Y-m-d', strtotime("-$j days"));
-                        array_push($arCountDays,$dateVal);
-                    }
+                        $result = '';
+                        $arTotalVal = [];
+                        $arCountDays = [];
+                        foreach($mst_id as $val)
+                        {
+                            $result =  $this->getChartRecordFilterEnergyAutomaticMstId($dateCheck,$val);
+                            array_push($arTotalVal,$result);
+                        }
+                        
+                        //Count Days
+                        for($j = 0; $j < $input_val_week_day; $j++)
+                        {
+                            $dateVal = date('Y-m-d', strtotime("-$j days"));
+                            array_push($arCountDays,$dateVal);
+                        }
 
-                    $records['count_val'] = $arTotalVal;
-                    $records['count_days'] = array_reverse($arCountDays); //For ASCENDING
-                    $records['mst_id'] = $mst_id;
-                    echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
-                    die;
+                        $records['count_val'] = $arTotalVal;
+                        $records['count_days'] = array_reverse($arCountDays); //For ASCENDING
+                        $records['mst_id'] = $mst_id;
+                        echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                        die;
+                    }
+                    else{
+                        $mstArray = 1;
+                        $this->getClickDashboardChartEnergyAutomaticSingleMST($mstArray = 1); 
+                    }
                 }
+                $this->getClickDashboardChartEnergyAutomaticSingleMST();
+                die;
+
+
                 $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
-                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id[0]' AND ";
+                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
                 $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date asc ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
                 // echo $queryEnergy; die;
@@ -10707,7 +10718,8 @@ class dashboardController {
             }
             $records['outer_table_html'] = $tableOutsideHTML;
             $records['table_found'] = $table_found;
-            $records['mst_id'] = $mst_id;
+            //To Make Again in Array
+            $records['mst_id'] = $_POST['chart_type'] == 'line_chart' ? unserialize($_POST['mst_id']) : $_POST['mst_id'];
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         }
@@ -10716,6 +10728,89 @@ class dashboardController {
         }
     }
     // --end-->
+
+    public function getClickDashboardChartEnergyAutomaticSingleMST($mstArray = false)
+    {
+        try{
+            global $conn;
+            $mst_id = $_POST['chart_type'] == 'line_chart' ? unserialize($_POST['mst_id']) : $_POST['mst_id'];
+            if($mstArray == 1)
+            {
+                $mst_id = $mst_id[0];
+            }
+            $input_val_week_day = $_POST['energy_chart_layer_range'];
+            $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
+            $checkQuery = '';
+            //SchichtModelleAll Table Check
+            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
+            $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+            $table_found = 'false';
+            if($resultTableExistCheck != false)
+            {
+                $table_found = 'true';
+            }
+            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
+            $tableOutsideHTML = '';
+            if($table_found == 'true'){
+                $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
+                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
+                $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date asc ";
+                $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
+                // echo $queryEnergy; die;
+                // echo json_encode($queryEnergyRecords); 
+                // die;
+                $ar_value = [];
+                $ar_names = [];
+                if($queryEnergyRecords != '' && count($queryEnergyRecords))
+                {
+                    $i = 0;
+                    $modelNameQueryCount = count($queryEnergyRecords);
+                    // echo json_encode($queryEnergyRecords); die;
+                    foreach($queryEnergyRecords as $key => $val){
+                        $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
+                        // $totalValue = $this->convertValueCommaSeperated($totalValue);
+                        array_push($ar_value,$totalValue);
+                        array_push($ar_names,$val['date']->format('Y-m-d'));
+                        if($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount)
+                        {
+                            $outerTableLimit = $modelNameQueryCount - 1; // -1 for Array Index
+                            if($i <= $outerTableLimit)
+                            {
+                                $tableOutsideHTML .= "<tr>";
+                                $tableOutsideHTML.= "<td>".$val['date']->format('Y-m-d')."</td>";
+                                $tableOutsideHTML .= "<td>".$totalValue."</td>";
+                                $tableOutsideHTML .= "</tr>";
+                            }
+                        }
+                        else if($chart_outer_table_limit_column < $modelNameQueryCount)
+                        {
+                            $outerTableLimit = $chart_outer_table_limit_column - 1;
+                            if($i <= $outerTableLimit)
+                            {
+                                $tableOutsideHTML .= "<tr>";
+                                $tableOutsideHTML.= "<td>".$val['date']->format('Y-m-d')."</td>";
+                                $tableOutsideHTML .= "<td>".$totalValue."</td>";
+                                $tableOutsideHTML .= "</tr>";
+                            }
+                        }
+                        $i++;
+                    }
+                    $records['count_val'] = $ar_value;
+                    $records['count_days'] = $ar_names;
+                    $records['count_sum'] = '';
+                }
+            }
+            $records['outer_table_html'] = $tableOutsideHTML;
+            $records['table_found'] = $table_found;
+            //To Make Again in Array
+            $records['mst_id'] = $_POST['chart_type'] == 'line_chart' ? unserialize($_POST['mst_id']) : $_POST['mst_id'];
+            echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+            die;
+        }
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    } 
 
     // <----02-03-2022--
     public function convertValueCommaSeperated($value)

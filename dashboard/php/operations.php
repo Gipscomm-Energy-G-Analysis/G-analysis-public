@@ -468,7 +468,7 @@ class dashboardControllerOperations {
                 $mst_id = isset($_POST['mst_id']) ? serialize($_POST['mst_id']) : '';
             }
             else{
-                $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'] : '';
+                $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'][0] : '';
             }
 
             $chart_time_interval = isset($_POST['chart_time_interval']) ? $_POST['chart_time_interval'] : '';
@@ -696,7 +696,7 @@ class dashboardControllerOperations {
                 $mst_id = isset($_POST['mst_id']) ? serialize($_POST['mst_id']) : '';
             }
             else{
-                $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'] : '';
+                $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'][0] : '';
             }
 
             $chart_time_interval = isset($_POST['chart_time_interval']) ? $_POST['chart_time_interval'] : '';
