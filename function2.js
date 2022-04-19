@@ -14,7 +14,8 @@ function showexpandedchart() {
         if(className.includes('chart_tile_expand_view')){
             var id= className.split(' ');
             getDimentions(id[0],false);
-            $('.small-table_'+id).hide();
+            var i_val= $(this).attr('data-i');
+            $('.small-table_'+i_val).hide();
 
             console.log(localStorage.getItem('height'));
             tile_prd_automatic = localStorage.getItem('tile_dashboard_prd_type_automatic');
@@ -34,7 +35,7 @@ function showexpandedchart() {
             else{
                 $('.'+id+'.tiles-click').removeClass('hide_table_main');
                 $('.'+id+'.tiles-click').removeClass('col-md-3');
-
+                
                 // <---25-10-2021-----
                 var expand_view = localStorage.getItem('expand_view');
                 if(expand_view != null && expand_view != undefined && expand_view == "1"){
@@ -7357,6 +7358,7 @@ function chartRecordFilterEnergyLayer(){
 function chartRecordFilterEnergyAutomatic(){
     var mst_id = $('#energy_chart_measurement_automatic').val();
     var energy_chart_layer_range = $('#energy_chart_layer_range_automatic').val();
+    // $("#energy_chart_measurement_automatic").prop("checked", false);
     var mst_value = $("#energy_chart_measurement_automatic option:selected").text();
     var mst_input_value = $('#total_records_chart').val();
     var dashboard_tile_data = JSON.parse(localStorage.getItem('dashboard_tile_data'));
@@ -7426,8 +7428,8 @@ function chartRecordFilterEnergyAutomatic(){
                     $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
                     // --end-->
                     // console.log('line chart');
-                    var result = getDataSetValueChartEnergyAutomatic(a['count_val']);
-                    console.log(result);
+                    var result = getDataSetValueChartEnergyAutomatic(a['count_val'],mst_id);
+                    // console.log(result);
                     setTimeout(()=>{
                         var data = {
                             labels: a['count_days'],
@@ -7955,38 +7957,72 @@ function chartRecordFilterEnergyAutomatic(){
     }
 }
 
-function getDataSetValueChartEnergyAutomatic(value)
+function getDataSetValueChartEnergyAutomatic(value,mst_id)
 {
+    // var mst_id = $('#energy_chart_measurement_automatic').val();
     var valuesObjAr = [];
     if(value.length > 0)
     {
-        value.forEach(element => {
+        if(mst_id.length > 1)
+        {
+            value.forEach(element => {
+                // console.log('Working');
+                // console.log('Element',element);
+                var valueObj=
+                    {
+                        label: 'Consumption',
+                        // data: a['count_val'],
+                        data : element,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1,
+                        fill: false
+                    }
+                    valuesObjAr.push(valueObj);
+            });
+        }
+        else{
             var valueObj=
-                {
-                    label: 'Consumption',
-                    // data: a['count_val'],
-                    data : element,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1,
-                    fill: false
-                }
-                valuesObjAr.push(valueObj);
-        });
+            {
+                label: 'Consumption',
+                data: value,
+                // data : element,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1,
+                fill: false
+            }
+            valuesObjAr.push(valueObj);
+        }
+       
     }
     return valuesObjAr;
 }
@@ -10205,59 +10241,93 @@ function getClickDashboardChartEnergyAutomatic(data){
                 // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
                 // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
 
-                var data = {
-                    labels: a['count_days'],
-                    datasets: [{
-                        label: 'Consumption',
-                        data: a['count_val'],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1,
-                        fill: false
-                    }]
-                };
+                
+                var result = getDataSetValueChartEnergyAutomatic(a['count_val'],a['mst_id']);
+                // console.log(result);
+                setTimeout(()=>{
+                    var data = {
+                        labels: a['count_days'],
+                        // labels : ["Test 212", "Test 212", "Test 212"],
+                        datasets : result
+                        // datasets: [
+                            // {
+                            //     label: 'Consumption',
+                            //     // data: a['count_val'],
+                            //     data : [12696.8265385, 0, 7448.749997],
+                            //     backgroundColor: [
+                            //         'rgba(255, 99, 132, 0.2)',
+                            //         'rgba(54, 162, 235, 0.2)',
+                            //         'rgba(255, 206, 86, 0.2)',
+                            //         'rgba(75, 192, 192, 0.2)',
+                            //         'rgba(153, 102, 255, 0.2)',
+                            //         'rgba(255, 159, 64, 0.2)'
+                            //     ],
+                            //     borderColor: [
+                            //         'rgba(255,99,132,1)',
+                            //         'rgba(54, 162, 235, 1)',
+                            //         'rgba(255, 206, 86, 1)',
+                            //         'rgba(75, 192, 192, 1)',
+                            //         'rgba(153, 102, 255, 1)',
+                            //         'rgba(255, 159, 64, 1)'
+                            //     ],
+                            //     borderWidth: 1,
+                            //     fill: false 
+                            // },
+                            // {
+                            //     label: 'New Line',
+                            //     // data: a['count_val'],
+                            //     data : [4000, 2200, 6000.749997],
+                            //     backgroundColor: [
+                            //         'rgba(255, 99, 132, 0.2)',
+                            //         'rgba(54, 162, 235, 0.2)',
+                            //         'rgba(255, 206, 86, 0.2)',
+                            //         'rgba(75, 192, 192, 0.2)',
+                            //         'rgba(153, 102, 255, 0.2)',
+                            //         'rgba(255, 159, 64, 0.2)'
+                            //     ],
+                            //     borderColor: [
+                            //         'rgba(255,99,132,1)',
+                            //         'rgba(54, 162, 235, 1)',
+                            //         'rgba(255, 206, 86, 1)',
+                            //         'rgba(75, 192, 192, 1)',
+                            //         'rgba(153, 102, 255, 1)',
+                            //         'rgba(255, 159, 64, 1)'
+                            //     ],
+                            //     borderWidth: 1,
+                            //     fill: false
+                            // },
+                    
+                        // ]
+                    };
 
-                var options = {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
+                    var options = {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        },
+                        elements: {
+                            point: {
+                                radius: 0
                             }
-                        }]
-                    },
-                    legend: {
-                        display: false
-                    },
-                    elements: {
-                        point: {
-                            radius: 0
                         }
-                    }
 
-                };
+                    };
 // alert(id);
-                if ($("#lineChart"+id).length) {
-                    var lineChartCanvas = $("#lineChart"+id).get(0).getContext("2d");
-                    var lineChart = new Chart(lineChartCanvas, {
-                        type: 'line',
-                        data: data,
-                        options: options
-                    });
-                }
+                    if ($("#lineChart"+id).length) {
+                        var lineChartCanvas = $("#lineChart"+id).get(0).getContext("2d");
+                        var lineChart = new Chart(lineChartCanvas, {
+                            type: 'line',
+                            data: data,
+                            options: options
+                        });
+                    }
+                });
 
                 // <---9-11-2021--
                 // if ($("#lineChartOutSideTile").length) {
@@ -11002,8 +11072,8 @@ function updateDashboardChartEnergyAutomatic(){
     var mst_input_value = $('#total_records_chart').val();
     $('.chart_text_edit_'+mst_input_value).attr('class', 'mb-0 mt-2 text-success count_result_tile chart_text_'+mst_input_value);
     $('.chart_text_'+mst_input_value).removeClass('chart_text_edit_'+mst_input_value);
-    var mst_id = $('#energy_chart_measurement').val();
-    var energy_chart_layer_range = $('#energy_chart_layer_range').val();
+    var mst_id = $('#energy_chart_measurement_automatic').val();
+    var energy_chart_layer_range = $('#energy_chart_layer_range_automatic').val();
     var energy_type_dashboard_chart = $('#energy_type_dashboard_chart').val();
     //console.log('chart_recorda Value ',chart_records);
     //console.log('chart_recorda Filter ',chart_record_filter);
@@ -11011,11 +11081,12 @@ function updateDashboardChartEnergyAutomatic(){
         alert("energy chart range empty");
     } else if(mst_id == ''){
         alert("mst_id empty");
-    }else if("energy_type_dashboard_chart != 'automatic'"){
+    }else if(energy_type_dashboard_chart != 'automatic'){
         alert("energy type dashboard empty");
-    }else{
-        alert("all are set");
     }
+    // else{
+    //     alert("all are set");
+    // }
     // if(mst_id == '' || energy_chart_layer_range == '' || energy_type_dashboard_chart != 'automatic'){
     //     alert('Please Select Required Fields');
     //     return false;

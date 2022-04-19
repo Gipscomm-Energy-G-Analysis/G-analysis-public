@@ -452,7 +452,7 @@ class dashboardControllerOperations {
             $type_data_tile = $_POST['type_data_tile'];
             $type = $_POST['type'];
             $energy_type_dashboard_chart = $_POST['energy_type_dashboard_chart'];
-            $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'][0] : '';
+
             $analgen_config_id = isset($_POST['analgen_config_id']) ? $_POST['analgen_config_id'] : '';
 
             
@@ -461,6 +461,16 @@ class dashboardControllerOperations {
             $energy_type_dashboard_chart = $_POST['energy_type_dashboard_chart'];
 
             $chart_type = $_POST['chart_type'];
+
+            $mst_id = '';
+            if($chart_type == 'line_chart')
+            {
+                $mst_id = isset($_POST['mst_id']) ? serialize($_POST['mst_id']) : '';
+            }
+            else{
+                $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'] : '';
+            }
+
             $chart_time_interval = isset($_POST['chart_time_interval']) ? $_POST['chart_time_interval'] : '';
             $expand_view = $_POST['expand_view'];
             $outside_chart_checkbox =  $_POST['outside_chart_checkbox'];
@@ -675,10 +685,20 @@ class dashboardControllerOperations {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             // $type_data_tile = $_POST['type_data_tile'];
             $type = $_POST['type'];
-            $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'] : '';
+            // $mst_id = isset($_POST['mst_id']) ? serialize($_POST['mst_id']) : '';
             $analgen_config_id = isset($_POST['analgen_config_id']) ? $_POST['analgen_config_id'] : '';
             $chart_filter = isset($_POST['chart_record_filter']) ? $_POST['chart_record_filter'] : '';
             $chart_type = $_POST['chart_type'];
+
+            $mst_id = '';
+            if($chart_type == 'line_chart')
+            {
+                $mst_id = isset($_POST['mst_id']) ? serialize($_POST['mst_id']) : '';
+            }
+            else{
+                $mst_id = isset($_POST['mst_id']) ? $_POST['mst_id'] : '';
+            }
+
             $chart_time_interval = isset($_POST['chart_time_interval']) ? $_POST['chart_time_interval'] : '';
 
             $energy_chart_layer_filter = isset($_POST['energy_chart_layer_filter']) ? $_POST['energy_chart_layer_filter'] : '';
@@ -692,6 +712,16 @@ class dashboardControllerOperations {
             $outside_chart_input_width =  $_REQUEST['outside_chart_input_width'];
 
             $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'];
+
+            // <--18-4-2022--
+            $html=str_replace('lineChart-none','lineChart'.$id,$html);
+            $html=str_replace('areaChart-none','areaChart'.$id,$html);
+            $html=str_replace('barChart-none','barChart'.$id,$html);
+            $html=str_replace('pieChart-none','pieChart'.$id,$html);
+            if (strpos($html, 'chart_tile_expand_view') !== false) {
+                $html=str_replace('tiles-click','',$html);
+            }
+            // --end-->
 
             $updateQuery = "UPDATE tableFormat  set type = '$type',tile_title = '$title',tile_html = '$html',height='$height',width='$width' ,input_height='$input_height' ,input_width = '$input_width' ,tile_record_type = '$record_type_of_tile' ,mst_id = '$mst_id' ,chart_filter = '$chart_filter',chart_type = '$chart_type',chart_time_interval = '$chart_time_interval', expand_view = $expand_view , outside_tile_checkbox = $outside_chart_checkbox , outside_tile_input_height = '$outside_chart_input_height', outside_tile_input_width='$outside_chart_input_width', outer_table_column_limit = '$chart_outer_table_limit_column',prd_anlagen_config_id = '$analgen_config_id', energy_layer_filter = '$energy_chart_layer_filter' , energy_layer_range = '$energy_chart_layer_range', energy_chart_type = '$energy_type_dashboard_chart' ";
             $updateQuery .= "WHERE id = $id AND username = '$username' ";

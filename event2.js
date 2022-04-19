@@ -1513,6 +1513,7 @@ $(document).ready( function(){
             $('#measurement-width-chart').val('2');
             $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');
+            $("#energy_chart_measurement_automatic").prop("checked", false);
             $('#chart_records_label').text('Select '+record_type_of_tile);
             $('#update_and_proceed_btn_dashboard_chart').hide();
             $('#save_and_proceed_btn_dashboard_chart').show();
@@ -1621,6 +1622,7 @@ $(document).ready( function(){
             }
         
             $('#dashboard_tile_modal_chart').modal('show');
+            $("#energy_chart_measurement_automatic").prop("checked", false);
             $('#update_and_proceed_btn_dashboard_chart').show();
             $('#save_and_proceed_btn_dashboard_chart').hide();
             $('#chart_records_label').text('Select '+record_type_of_tile);
@@ -1649,6 +1651,7 @@ $(document).ready( function(){
             $('#measurement-width-chart').val('2');
             $('#measurement-width-chart-hidden').val('570');
             $('#dashboard_tile_modal_chart').modal('show');
+            $("#energy_chart_measurement_automatic").prop("checked", false);
             $('#chart_records_label_product').text('Select '+record_type_of_tile);
             $('#update_and_proceed_btn_dashboard_chart').hide();
             $('#save_and_proceed_btn_dashboard_chart').show();
@@ -1699,6 +1702,7 @@ $(document).ready( function(){
             getEditChartTileDashboardProduct();
         
             $('#dashboard_tile_modal_chart').modal('show');
+            $("#energy_chart_measurement_automatic").prop("checked", false);
             $('#update_and_proceed_btn_dashboard_chart').show();
             $('#save_and_proceed_btn_dashboard_chart').hide();
             $('#chart_records_label_product').text('Select '+record_type_of_tile);
@@ -1967,6 +1971,7 @@ $(document).ready( function(){
         }
         else if(ar['record_type_of_tile'] == 'energy' && energy_chart_measurement == 'automatic')
         {
+           
             saveDashboardTileChartEnergyAutomatic();   
             setTimeout(function () {
                 showexpandedchart();
@@ -3368,6 +3373,15 @@ $(document).ready( function(){
     $('#close-btn').click(function(){
         showexpandedchart();
     });
+    $(document).on('click','#refresh-btn', function(){
+        setTimeout(function () {
+            showexpandedchart();
+        },1000);
+    });
+
+    $(document).on('click', '#chartModelCancelButton', function(){
+        $('#dashboard_sidebar').click();
+    })
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {
@@ -3655,10 +3669,10 @@ $(document).ready( function(){
         // var theCheckboxes = $("#energy_chart_measurement_automatic input[type='checkbox']");
         // theCheckboxes.click(function()
         // {
-        //     if (theCheckboxes.filter(":checked").length > 3)
+        //     if (theCheckboxes.filter(":checked").length > 5)
             
         //         $(this).removeAttr("checked");
-        //         // alert("select only three");
+        //         // alert("select only five");
             
         // });
 

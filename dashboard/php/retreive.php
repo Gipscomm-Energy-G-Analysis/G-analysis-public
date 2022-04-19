@@ -10618,12 +10618,12 @@ class dashboardController {
     public function getClickDashboardChartEnergyAutomatic(){
         try{
             global $conn;
-            $mst_id = $_POST['mst_id'];
+            $mst_id = unserialize($_POST['mst_id']);
             $input_val_week_day = $_POST['energy_chart_layer_range'];
             $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
             $checkQuery = '';
             //SchichtModelleAll Table Check
-            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
+            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id[0]' ";
             $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
             $table_found = 'false';
             if($resultTableExistCheck != false)
@@ -10633,8 +10633,32 @@ class dashboardController {
             $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
             $tableOutsideHTML = '';
             if($table_found == 'true'){
+                if(count($mst_id) > 1)
+                {
+                    $result = '';
+                    $arTotalVal = [];
+                    $arCountDays = [];
+                    foreach($mst_id as $val)
+                    {
+                       $result =  $this->getChartRecordFilterEnergyAutomaticMstId($dateCheck,$val);
+                       array_push($arTotalVal,$result);
+                    }
+                    
+                    //Count Days
+                    for($j = 0; $j < $input_val_week_day; $j++)
+                    {
+                        $dateVal = date('Y-m-d', strtotime("-$j days"));
+                        array_push($arCountDays,$dateVal);
+                    }
+
+                    $records['count_val'] = $arTotalVal;
+                    $records['count_days'] = array_reverse($arCountDays); //For ASCENDING
+                    $records['mst_id'] = $mst_id;
+                    echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+                    die;
+                }
                 $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
-                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
+                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id[0]' AND ";
                 $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date asc ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
                 // echo $queryEnergy; die;
@@ -10683,6 +10707,7 @@ class dashboardController {
             }
             $records['outer_table_html'] = $tableOutsideHTML;
             $records['table_found'] = $table_found;
+            $records['mst_id'] = $mst_id;
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         }
