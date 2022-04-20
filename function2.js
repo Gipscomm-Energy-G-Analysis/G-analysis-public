@@ -1307,8 +1307,6 @@ function getTableFormatDashboard(){
                     // $( document ).ready(function() {
                         // alert('working1');
                       $('.loader_image_redirect_div').show();
-                        // alert('working2');
-                        alert("working");
                         showexpandedchart();
                        $('.loader_image_redirect_div').hide();
                         // alert('working3');
@@ -1597,7 +1595,7 @@ function getNumberRecordsEnergy(){
                     $('.table-margin .table td').attr('style','padding: 8px !important;font-size: small !important;');
                 }
                 else if(energy_type == 'layer_modal'){
-                    $('#open_end_layer_div').show();
+                    $('#open_end_layer_div').show(); 
                 }
 
                 $('#pagination_html_energy').html(a['pagination_html_energy']);
@@ -2851,6 +2849,7 @@ function getAllColumnProductTables(edit_tile_all_columns = false){
                 $('#all_columns_product').multiselect('refresh');
 
                 // <----31-12-2021-- Autoplopluate Code
+                
                 if(edit_tile_all_columns != false)
                 {
                     var all_columns = JSON.parse(edit_tile_all_columns);

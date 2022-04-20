@@ -2814,6 +2814,11 @@ class dashboardController {
                 $records['mst_id'] = $mst_id;
                 $records['chart_type'] = $chart_type;
                 $records['input_range'] = $input_range;
+
+                if($chart_type == 'line_chart')
+                {
+                    $records['mst_id'] = unserialize($mst_id);
+                }
                 echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             }
             die;
@@ -4483,10 +4488,12 @@ class dashboardController {
                     $select .= "<option value=".$val["mst_ID"].">".$val['nameMSt']."</option>";    
                 }
                 $result['measurement_html'] = $select;
+                $result['data'] = $resultQuery;
             }
             else{
                 $select = "<option value=''>No Data Found</option>";
                 $result['measurement_html'] = $select;
+                $result['data'] = $resultQuery;
             }
             $result['table_found'] = $tablefound;
             echo json_encode($result,JSON_INVALID_UTF8_IGNORE);
@@ -8877,6 +8884,8 @@ class dashboardController {
             // print_r($_POST['mst_id']);
             // die;
             $mst_id = $_POST['mst_id'];
+             // print_r($_POST['mst_id']);
+            // die;
             $input_val_week_day = $_POST['energy_chart_layer_range'];
             $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
             $checkQuery = '';
