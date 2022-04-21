@@ -4622,7 +4622,8 @@ function getEditChartDataDashboardEnergyAutomatic(){
         },
         success: function(a) {
             $('.dashboard_chart_tiles').html(a['tile_html']);
-            getEnergyMeasurementChartAutomatic();
+            getEnergyMeasurementChartAutomaticLineChartEditValue(a['mst_id'],a['chart_type']);
+            // getEnergyMeasurementChartAutomatic();
             $("#energy_chart_measurement_automatic option[value='"+a.mst_id+"']").prop('selected','selected');
             // var chart_records = $('#chart_records').val();
             setTimeout(()=>{
@@ -11607,13 +11608,99 @@ function getEnergyMeasurementChartAutomatic(){
         },
         success: function(a) {
             $('#energy_chart_measurement_automatic').html(a['measurement_html']);
-            // // --end-->
+            // // // --end-->
             $('#energy_chart_measurement_automatic').multiselect({
                 columns: 1,
                 placeholder: 'Select Measurement',
                 search: true,
             });
-            $('#energy_chart_measurement_automatic').multiselect('refresh');
+
+            // $('#energy_chart_measurement_automatic').multiselect('refresh');
+            $("#energy_chart_measurement_automatic").multiselect('reload');
+
+
+            if(a['table_found'] == "false"){
+                var htmlTableNotFound = '<option>Table Not Found</option>';
+                $('#energy_chart_measurement_automatic').html(htmlTableNotFound);
+                $('#energy_chart_measurement_div_automatic').show();
+            }
+            $('#energy_chart_layer_range_automatic').val('');
+            $('.energy_automatic_div').show();
+            $('.energy_chart_layer_div').hide();
+            $('#time_interval_div').hide();
+            $('#chart_record_div').hide();
+            $('#chart_record_filter_div').hide();
+
+        }
+    });
+}
+
+
+function getEnergyMeasurementChartAutomaticLineChartEditValue(edit_tile_all_columns,chart_type){
+    $.ajax({
+        type: "POST",
+        url: "dashboard/php/retreive.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            action: "getEnergyMeasurementChartAutomatic",
+            nameDB: $("#nameDashboardDB").val(),
+        },
+        fail: function() {
+            alert("failed!!")
+        },
+        success: function(a) {
+            // <--21-4-2022--
+            console.log('Edit Value',edit_tile_all_columns);
+            var measurement_html = "";
+    
+            var all_columns = edit_tile_all_columns;
+            var flag = 0;
+            for(var i = 0; i < a['data'].length; i++)
+            {
+                if(chart_type == 'line_chart'){
+                    for(var j = 0; j < all_columns.length; j++)
+                    {
+                        if(a['data'][i]['mst_ID'] == all_columns[j])
+                        {
+                            flag = 1;
+                            console.log('Flag Condition');
+                            break;
+                        }
+                        else{
+                            flag = 0;
+                        }
+                    }
+
+                    if(flag == 1)
+                    {
+                        measurement_html+="<option selected='selected' value='"+a['data'][i]['mst_ID']+"'>"+a['data'][i]['nameMSt']+"</option>";
+                    }
+                    else{
+                        measurement_html+="<option value='"+a['data'][i]['mst_ID']+"'>"+a['data'][i]['nameMSt']+"</option>";
+                    }
+                }
+                else{
+                    if(a['data'][i]['mst_ID'] == edit_tile_all_columns)
+                    {
+                        measurement_html+="<option selected='selected' value='"+a['data'][i]['mst_ID']+"'>"+a['data'][i]['nameMSt']+"</option>";
+                    }
+                    else{
+                        measurement_html+="<option value='"+a['data'][i]['mst_ID']+"'>"+a['data'][i]['nameMSt']+"</option>";
+                    }
+                }
+            }
+            $('#energy_chart_measurement_automatic').html(measurement_html);    
+          
+            $('#energy_chart_measurement_automatic').multiselect({
+                columns: 1,
+                placeholder: 'Select Measurement',
+                search: true,
+            });
+
+            // $('#energy_chart_measurement_automatic').multiselect('refresh');
+            $("#energy_chart_measurement_automatic").multiselect('reload');
+
 
             if(a['table_found'] == "false"){
                 var htmlTableNotFound = '<option>Table Not Found</option>';
