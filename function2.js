@@ -1199,7 +1199,7 @@ function getTableFormatDashboard(){
                 });
                 $('#dashboard_count_div_tile').html(arHtml);
                 $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
-
+                
                 $('#dashboard_count_div_tile .stretch-card').removeClass('col-md-3');
                 $('#save_position_tile').show();
 
@@ -7367,10 +7367,28 @@ function chartRecordFilterEnergyAutomatic(){
     var chart_type = $('#chart_type').val();
     var mst_check = $('#save_and_proceed_btn_dashboard').val();
 
+    var concatMstName = '';
+    if(mst_id.length > 1)
+    {
+        var concatMstName = '';
+        $.each($("#energy_chart_measurement_automatic option:selected"), function(){   
+            concatMstName+=$(this).text()+',';
+            console.log(concatMstName);
+        });         
+    }
+
     if(mst_check == 'Update & Proceed'){
         $('.chart_text_edit_' + mst_input_value).text(mst_value+'('+energy_chart_layer_range+' Day)');
+        if(concatMstName != '')
+        {
+            $('.chart_text_edit_' + mst_input_value).text(concatMstName+'('+energy_chart_layer_range+' Day)');
+        }
     }else{
         $('.chart_text_' + mst_input_value).text(mst_value+'('+energy_chart_layer_range+' Day)');
+        if(concatMstName != '')
+        {
+            $('.chart_text_' + mst_input_value).text(concatMstName+'('+energy_chart_layer_range+' Day)');
+        }
     }
     var chart_outer_table_limit_column = $('#chart_outer_table_limit_column').val();
     if(mst_id != '' && energy_chart_layer_range != ''){

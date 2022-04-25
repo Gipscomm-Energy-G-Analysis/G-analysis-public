@@ -932,3 +932,14 @@
     cursor: pointer;
     margin: 0px 05px 11px 0px;
 }
+#settings{
+    height: 27px !important;
+    width: 27px !important;
+}
+#dropdown_menu{
+    padding: 50px;
+}
+#save_default_reload_time{
+    margin: 0px;
+    height: 36px;
+}

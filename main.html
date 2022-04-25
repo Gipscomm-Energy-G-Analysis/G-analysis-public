@@ -86,7 +86,7 @@
             <select class="manPfad" size="1" title="Mandant">
             </select>
           </li>
-          <li><a href="javascript:void(0)" class="text-muted menu_dashboard dashboard_menu_click" data-tab="dashboardMain">Dashboard</a></li>
+          <li><a href="javascript:void(0)" class="text-muted menu_dashboard dashboard_menu_click" data-tab="dashboardMain" id="switch_mode">Dashboard</a></li>
           <li>
             <div class="dropdown">
               <button class="dropbtn text-muted menu_dashboard">Auswertungen
@@ -271,7 +271,19 @@
           <li><a href="javascript:void(0);" id="logout" class="dashboard_menu_click text-muted menu_dashboard"><img src="images/logout2.png"></a></li>
         </ul>
         <div class="navbar-nav navbar-nav-right">
-            
+           <!-- 23/02/2022 -->
+
+         <li class="nav-item nav-profile dropdown">
+
+            <a class="nav-link dropdown-toggle nav_bar_redirect" href="javascript:void(0);" data-toggle="dropdown" id="help_nav_bar" title="Help" aria-expanded="false">
+               <img src="images/config.png" id="settings">
+              <i class="ti-help text-muted" style="display: none;"></i>
+
+              <span class="menu-title"></span>
+
+            </a>
+
+          </li>
         </div>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="ti-view-list"></span>
@@ -461,11 +473,26 @@
    
          <!-- help.php start -->
          <div class="main-panel" id="help_table_main_div" style="display: none">
+            <div class="row" id="dropdown_menu">
+               <div class="form-group col-md-3">
+                  <!-- <label for="">Something right here</label> -->
+                  <select class="form-control form-control-sm text-dark" id="">
+                     <option value="5 Min" description="Count for 5 Minute">5 Min</option>
+                     <option value="15 Min" description="Count for 15 Minute">15 Min</option>
+                     <option value="30 Min" description="Count for 30 Minute">30 Min</option>
+                     <option value="45 Min" description="Count for 45 Minute">45 Min</option>
+                     <option value="1 Hour" description="Count for 1 Hour">1 Hour</option>
+                  </select>
+               </div>
+
+               <input type="button" id="save_default_reload_time" data-edit="false"  class="btn btn-sm btn-success" value="Zeit sparen">
+
+            </div>
             <!-- <div class="card">
                <div class="card-body">
                   <h4 class="card-title">Alerts</h4>
                </div> -->
-               <div class="main_div text-center">
+               <div class="main_div text-center" id="help-video" style="display: none;">
                   <h3>Help</h3>
                   <div  class="video_div">
                   <!-- <iframe class="border" id='help_video' width="560" height="315" src="https://media.geeksforgeeks.org/wp-content/uploads/20200513195558/Placement100-_-GeeksforGeeks-1.mp4" frameborder="0" allowfullscreen>
@@ -854,7 +881,7 @@
                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count"></h3>
                       <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                     </div>  
-                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small>,1</small></span></p>
                 </div>
                 
                 <div class="col-md-9 save_table_div_show overflow-hide" id="measurement_table_show" style="display: none">
@@ -912,7 +939,7 @@
                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="product_count"></h3>
                       <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                     </div>  
-                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small>,1</small></span></p>
                 </div>
 
                 <div class="col-md-9 save_table_div_show overflow-hide" id="product_table_show" style="display: none">
@@ -931,7 +958,7 @@
                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_count"></h3>
                     <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                   </div>  
-                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small>,1</small></span></p>
                 </div>
 
                 <div class="col-md-9 save_table_div_show overflow-hide" id="energy_table_show" style="display: none">
@@ -949,7 +976,7 @@
                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_consumed_count"></h3><p class="energy_unit text-muted">kWh</p>
                     <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                   </div>  
-                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"></span></p>
+                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1">,1</span></p>
                 </div>
 
                 <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_table_show" style="display: none">
@@ -970,7 +997,7 @@
                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="five_days_energy_count"></h3><p class="energy_unit text-muted">kWh</p>
                     <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                   </div>  
-                  <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small></small></span></p>
+                  <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small>,1</small></span></p>
                 </div>
                 
                 <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_five_day_table_show" style="display: none">
@@ -1591,7 +1618,7 @@
                                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal" ></h3>
                                       <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>  
-                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small>,1</small></span></p>
                                 </div>
                                 
                                 <div class="overflow-hide ml-3">
@@ -1612,7 +1639,7 @@
                                       <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 product_count_modal"></h3>
                                       <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                     </div>  
-                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small>,1</small></span></p>
                                 </div>
 
                                 <div class="overflow-hide ml-3">
@@ -1634,7 +1661,7 @@
                                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_count_modal"></h3>
                                     <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                   </div>  
-                                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span></p>
+                                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small>,1</small></span></p>
                                 </div>
                               
 
@@ -1656,7 +1683,7 @@
                                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_consumed_count_modal"></h3><p class="energy_unit text-muted">kWh</p>
                                     <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                   </div>  
-                                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"></span></p>
+                                  <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1">,1</span></p>
                                 </div>
 
                                 <div class="overflow-hide ml-3">
@@ -1679,7 +1706,7 @@
                                     <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 five_days_energy_count_modal">0</h3><p class="energy_unit text-muted">kWh</p>
                                     <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                                   </div>  
-                                  <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small></small></span></p>
+                                  <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small>,1</small></span></p>
                                 </div>
                                 
                                 <div class="overflow-hide ml-3">

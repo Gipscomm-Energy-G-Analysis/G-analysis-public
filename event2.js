@@ -236,7 +236,7 @@ $(document).ready( function(){
                 $('#wert_main_div').hide();
                 $('#alerts_table_main_div').hide();
                 $('#help_table_main_div').show();
-                $('#help_video').get(0).play();    
+                $('#help_video').get(1).play();    
                 break;
 
             case "home_nav_bar":
@@ -3382,6 +3382,23 @@ $(document).ready( function(){
     $(document).on('click', '#chartModelCancelButton', function(){
         $('#dashboard_sidebar').click();
     })
+
+    $(document).on('click','#settings', function(){
+        $('#help_nav_bar').trigger('click');
+    });
+
+    $(document).on('click','#switch_mode', function(){
+        $('#dashboard_sidebar').trigger('click');
+    });
+    
+    $('#save_default_reload_time').click(function(){
+        
+    });
+
+    $(document).on('click','#energy_chart_measurement_div_automatic',function(){
+        
+    });
+
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {
@@ -3666,16 +3683,30 @@ $(document).ready( function(){
         //           $('#energy_chart_measurement_automatic').val('0');
         // });
 
-        // var theCheckboxes = $("#energy_chart_measurement_automatic input[type='checkbox']");
-        // theCheckboxes.click(function()
-        // {
-        //     if (theCheckboxes.filter(":checked").length > 5)
+        var theCheckboxes = $("#energy_chart_measurement_automatic input[type='checkbox']");
+        theCheckboxes.click(function()
+        {
+            if (theCheckboxes.filter(":checked").length > 5)
+                $(this).removeAttr("checked");
+                alert("select only five");
             
-        //         $(this).removeAttr("checked");
-        //         // alert("select only five");
-            
-        // });
+        });
 
+//         $('.cbs').click(function () {
+//             if($('input.test').filter(':checked').length>0)
+//               {
+//                    //show ur controls
+//                }
+// else
+// {
+// //hide controls
+// }
+//     });
+// $( document ).ready(function() {
+//     var mst_id = $('#energy_chart_measurement_automatic').val();
+//     var count_value =  $('#energy_chart_measurement_automatic').length;
+//     alert(count_value);
+// });
    
 
 })

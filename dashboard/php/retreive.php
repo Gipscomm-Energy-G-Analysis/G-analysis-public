@@ -1546,7 +1546,7 @@ class dashboardController {
                                         <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                         <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
                                         </div>  
-                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                         
                                     </div>
                                     
@@ -1631,7 +1631,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -1661,7 +1661,7 @@ class dashboardController {
                                         <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                         <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                         </div>  
-                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                         
                                     </div>
                                     
@@ -1702,7 +1702,7 @@ class dashboardController {
                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                             </div> 
-                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                             
                                         </div>
                                         
@@ -1732,7 +1732,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -1806,7 +1806,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -1836,7 +1836,7 @@ class dashboardController {
                                         <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                         <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                         </div>  
-                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                         
                                     </div>
                                     
@@ -1877,7 +1877,7 @@ class dashboardController {
                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                             </div> 
-                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                             
                                         </div>
                                         
@@ -1907,7 +1907,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -1974,7 +1974,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -2004,7 +2004,7 @@ class dashboardController {
                                         <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                         <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                         </div>  
-                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                        <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                         
                                     </div>
                                     
@@ -2045,7 +2045,7 @@ class dashboardController {
                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                             </div> 
-                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                             
                                         </div>
                                         
@@ -2075,7 +2075,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div>  
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -2458,7 +2458,7 @@ class dashboardController {
                                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                             <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                             </div>  
-                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                             
                                                         </div>
                                                         
@@ -2536,7 +2536,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div> 
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -2566,7 +2566,7 @@ class dashboardController {
                                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                             <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                             </div>  
-                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                             
                                                         </div>
                                                         
@@ -2645,7 +2645,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div> 
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -2675,7 +2675,7 @@ class dashboardController {
                                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                             <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                             </div>  
-                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                             
                                                         </div>
                                                         
@@ -2754,7 +2754,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div> 
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -2784,7 +2784,7 @@ class dashboardController {
                                                             <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                             <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                             </div>  
-                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                            <p class='mb-0 mt-2 text-success count_result_tile chart_text_$i_value'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                             
                                                         </div>
                                                         
@@ -2870,7 +2870,7 @@ class dashboardController {
                                                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
                                                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
                                                 </div> 
-                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small></small></span></p>
+                                                <p class='mb-0 mt-2 text-success count_result_tile chart_text_edit_$i_value'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
                                                 
                                             </div>
                                             
@@ -7141,7 +7141,7 @@ class dashboardController {
                         // $firstPostionQuery = str_replace($subStr, $attachment.$subStr, $dataResult[0]['query_data_records']);
                         //$firstPostionQuery = str_replace($dataResult[0]['query_data_records'],$attachment, $firstPostion,0);
                         // $firstPostionQuery = substr_replace($dataResult[0]['query_data_records'],$attachment, $lastPostion,0);
-                        $firstPostionQuery= substr_replace($dataResult[0]['query_data_records'],$attachment,$firstPostion,1);
+                        $firstPostionQuery= substr_replace($dataResult[0]['query_data_records'],$attachment,$firstPostion );
                         // $firstPostionQuery = str_replace($subStr, $attachment, $dataResult[0]['query_data_records'],0);
                         $firstPostionQuery=str_replace('%',"%'", $firstPostionQuery);
                         $firstPostionQuery=str_replace('$',"'%", $firstPostionQuery);
@@ -7643,11 +7643,11 @@ class dashboardController {
             // $queryDataRecords = $_POST['queryDataRecords'];
             // $firstPosition =  strpos($queryDataRecords,'=');
             // $firstPosition = $firstPosition + 1;
-            // $firstPositionQuery= substr_replace($queryDataRecords,"'",$firstPosition,1);
+            // $firstPositionQuery= substr_replace($queryDataRecords,"'",$firstPosition );
             
             // $lastPosition = strpos($firstPositionQuery,'order BY t1.anl_Id desc');
             // $lastPosition = $lastPosition - 1;
-            // $lastPositionQuery= substr_replace($firstPositionQuery,"'",$lastPosition,1);
+            // $lastPositionQuery= substr_replace($firstPositionQuery,"'",$lastPosition );
             // // echo $lastPositionQuery; die;
             // $dataProduct = queryDB($conn, $lastPositionQuery, "read");
             // // echo json_encode($dataProduct); die;
