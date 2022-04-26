@@ -8921,6 +8921,13 @@ class dashboardController {
 
                     $records['count_val'] = $arTotalVal;
                     $records['count_days'] = array_reverse($arCountDays); //For ASCENDING
+
+                    //MST Name
+                    $strMstId = implode(",",$mst_id);
+                    $queryName = "select nameMst from messstellen where mst_ID in($strMstId) ";
+                    $resulMstName = queryDB($conn, $queryName, "read");
+                    $records['mstName'] = $resulMstName;
+
                     echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
                     die;
                 }
@@ -10664,6 +10671,13 @@ class dashboardController {
 
                         $records['count_val'] = $arTotalVal;
                         $records['count_days'] = array_reverse($arCountDays); //For ASCENDING
+
+                        
+                        $strMstId = implode(",",$mst_id);
+                        $queryName = "select nameMst from messstellen where mst_ID in($strMstId) ";
+                        $resulMstName = queryDB($conn, $queryName, "read");
+                        $records['mstName'] = $resulMstName;
+                        
                         $records['mst_id'] = $mst_id;
                         echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
                         die;

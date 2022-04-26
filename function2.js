@@ -7446,7 +7446,7 @@ function chartRecordFilterEnergyAutomatic(){
                     $('#energy_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
                     // --end-->
                     // console.log('line chart');
-                    var result = getDataSetValueChartEnergyAutomatic(a['count_val'],mst_id);
+                    var result = getDataSetValueChartEnergyAutomatic(a['count_val'],mst_id,a['mstName']);
                     // console.log(result);
                     setTimeout(()=>{
                         var data = {
@@ -7931,6 +7931,10 @@ function chartRecordFilterEnergyAutomatic(){
                     };
 
                     var options = {
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                          },
                         scales: {
                             yAxes: [{
                                 ticks: {
@@ -7975,20 +7979,23 @@ function chartRecordFilterEnergyAutomatic(){
     }
 }
 
-function getDataSetValueChartEnergyAutomatic(value,mst_id)
+function getDataSetValueChartEnergyAutomatic(value,mst_id,nameMSt = false)
 {
     // var mst_id = $('#energy_chart_measurement_automatic').val();
+    console.log('name MSt',nameMSt);
     var valuesObjAr = [];
     if(value.length > 0)
     {
         if(mst_id.length > 1)
         {
+            var i = 0;
             value.forEach(element => {
                 // console.log('Working');
                 // console.log('Element',element);
                 var valueObj=
                     {
-                        label: 'Consumption',
+                        // label: 'Consumption',
+                        label : nameMSt != false ? nameMSt[i]['nameMst'] : 'Consumption',
                         // data: a['count_val'],
                         data : element,
                         backgroundColor: [
@@ -8011,6 +8018,7 @@ function getDataSetValueChartEnergyAutomatic(value,mst_id)
                         fill: false
                     }
                     valuesObjAr.push(valueObj);
+                    i++;
             });
         }
         else{
@@ -10260,7 +10268,8 @@ function getClickDashboardChartEnergyAutomatic(data){
                 // $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
 
                 
-                var result = getDataSetValueChartEnergyAutomatic(a['count_val'],a['mst_id']);
+                // var result = getDataSetValueChartEnergyAutomatic(a['count_val'],a['mst_id']);
+                var result = getDataSetValueChartEnergyAutomatic(a['count_val'],mst_id,a['mstName']);
                 // console.log(result);
                 setTimeout(()=>{
                     var data = {
@@ -11714,6 +11723,7 @@ function getEnergyMeasurementChartAutomaticLineChartEditValue(edit_tile_all_colu
                 columns: 1,
                 placeholder: 'Select Measurement',
                 search: true,
+                // maximumSelectionLength: 3
             });
 
             // $('#energy_chart_measurement_automatic').multiselect('refresh');

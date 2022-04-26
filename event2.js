@@ -3662,51 +3662,46 @@ $(document).ready( function(){
     // });
     // --end-->
 
+    //  Greater than 5 value restriction in chart multiselector 
+        $('#energy_chart_measurement_automatic').change(function(event) {
 
-        var last_valid_selection = null;
-
-        // $('#energy_chart_measurement_automatic').change(function(event) {
-
-        //   if ($(this).val().length > 5) {
-        //     alert('Please Select maximum 5');
-        //     $(this).val(last_valid_selection);
+          $('#energy_chart_measurement_automatic').val();
+          if ($(this).val().length > 5) {
+            alert('Please Select maximum 5');
+            // $('#energy_chart_measurement_automatic').prop('checked', false);
+            // // $('#energy_chart_measurement_automatic').val('');
+            // $(this).removeAttr('checked');
+            // $(this).val(last_valid_selection);
             
-        //   } else {
-        //     last_valid_selection = $(this).val();
-        //   }
+            //$(this).prop('selected',false);
+            var val = $('#energy_chart_measurement_automatic').val();
+            $("#energy_chart_measurement_automatic option[value='"+val[5]+"'").prop('selected',false);
+            $("#energy_chart_measurement_automatic").multiselect('reload');
+            
+          } 
           
-     
-        // });
+        });
+// Hide another types of chart on multiple select 
+        $('#energy_chart_measurement_automatic').change(function(event) {
 
-        // $('#energy_chart_measurement_automatic').click(function(){
-        //          $('#energy_chart_measurement_automatic').prop('checked',false);
-        //           $('#energy_chart_measurement_automatic').val('0');
-        // });
-
-        var theCheckboxes = $("#energy_chart_measurement_automatic input[type='checkbox']");
-        theCheckboxes.click(function()
-        {
-            if (theCheckboxes.filter(":checked").length > 5)
-                $(this).removeAttr("checked");
-                alert("select only five");
-            
+          if ($(this).val().length > 1) {
+              $('#area_chart').hide();
+              $('#pie_chart').hide();
+              $('#bar_chart').hide();
+          } 
+          
         });
 
-//         $('.cbs').click(function () {
-//             if($('input.test').filter(':checked').length>0)
-//               {
-//                    //show ur controls
-//                }
-// else
-// {
-// //hide controls
-// }
-//     });
-// $( document ).ready(function() {
-//     var mst_id = $('#energy_chart_measurement_automatic').val();
-//     var count_value =  $('#energy_chart_measurement_automatic').length;
-//     alert(count_value);
-// });
-   
+// Show another types of chart on single select 
+
+        $('#energy_chart_measurement_automatic').change(function(event) {
+
+            if ($(this).val().length < 2) {
+                $('#area_chart').show();
+                $('#pie_chart').show();
+                $('#bar_chart').show();
+            } 
+            
+          });
 
 })
