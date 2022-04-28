@@ -3,8 +3,42 @@ setTimeout(function () {
     $('.background-image').trigger('click');
 
 },1000);
+// setTimeout(function () {
+//     getDimentions();
+//  },500);
 
+function showTableExpandView(){
+    $('.table_tile_expand_view').each(function(){
+        var className=$(this).attr('class');
+        var id= className.split(' ');
+        getDimentions(id[0],false);
+        // console.log('Table Tile Function Calling');
+        $('.'+id+'.tiles-click').removeClass('hide_table_main');
+        $('.'+id+'.tiles-click').removeClass('col-md-3');
 
+        // <---25-10-2021-----
+        // var expand_view = localStorage.getItem('expand_view');
+        // if(expand_view != null && expand_view != undefined && expand_view == "1"){
+        //     var height_expand = localStorage.getItem('height')+'px';
+        //     var width_expand = localStorage.getItem('width')+'px';
+        //     $('.'+id+'.tiles-click').attr('style', "height: "+height_expand+" !important; width: "+width_expand+" !important;");
+        // }
+        // else{
+        //     $('.'+id+'.tiles-click').css('width',localStorage.getItem('width')+'px');
+        //     $('.'+id+'.tiles-click').css('height',localStorage.getItem('height')+'px');
+        // }
+        // <---30-8-2021--
+        $('.'+id+'.tiles-click .card-body').removeClass('row');
+        // --end-->
+
+        // <---03-9-2021--
+        $('.'+id+'.tiles-click .card-body div:first-child').removeClass('col-md-12');
+        // --end--->
+
+        // <---22-9-2021---
+        $('.'+id+'.tiles-click').parent('div').removeClass('col-md-3');
+    })
+} 
 
 function showexpandedchart() {
     var inputs = $(".tiles-click");
@@ -17,7 +51,7 @@ function showexpandedchart() {
             var i_val= $(this).attr('data-i');
             $('.small-table_'+i_val).hide();
 
-            console.log(localStorage.getItem('height'));
+            (localStorage.getItem('height'));
             tile_prd_automatic = localStorage.getItem('tile_dashboard_prd_type_automatic');
             if(tile_prd_automatic != null && tile_prd_automatic != undefined && tile_prd_automatic == 'true')
             {
@@ -947,7 +981,7 @@ function saveTableFormatEnergy(type){
     }
 }
 // --end-->
-function saveTableFormatEnergyExpandView(){
+function saveTableFormatEnergyExpandView(type){
     alert("function created");
     var row_enteries_length = $('#energy_select_table_entries tr').length;
     var query_data = localStorage.getItem('query_data');
@@ -957,50 +991,90 @@ function saveTableFormatEnergyExpandView(){
     if (row_enteries_length > 10) {
         alert("Minimum 10 Records can be saved");
     }
-    if(row_enteries_length <= 10 || energyType == 'layer_modal'){
-        $.ajax({
-            type: "POST",
-            url: "dashboard/php/operations.php",
-            async: false,
-            dataType: 'json',
-            data: {
-                action: "saveTableFormatExpandView",
-                nameDB: $("#nameDashboardDB").val(),
-                query_data : JSON.parse(query_data),
-                title : tile_title,
-                tile_html : tile_html,
-                height: energy_table_height,
-                width : energy_table_width,
-                tableHtml : tableHtml,
-                input_height : input_height,
-                input_width : input_width,
-                record_type_of_tile :record_type_of_tile,
-                type_data_tile : type_data_tile,
-                table_other : table_other
-            },
-            fail: function() {
-                alert("failed!!")
-            },
-            success: function(a) {
+    if(row_enteries_length <= 10 || energyType == 'automatic'){
+        var energy_table_height = $('#modal-height-input-energy-hidden').val();
+        var energy_table_width = $('#modal-width-input-energy-hidden').val();
+        var input_height = $('#modal-height-input-energy').val();
+        var input_width = $('#modal-width-input-energy').val();
 
-                $('#energy_modal_loader_div').show();
-                $('.energy_tile_modal .modal-content').css('opacity','0.8');
+        var expand_view = $('#expand_view_table').val();
 
-                $('#save_tile_id').val(a['max_id'][0]['max_id']);
+        var last_index_tile = $('#total_records').val();
 
-                setTimeout(() => {
-                    $('#dashboard_sidebar').click();
-                    $('#energy_modal_loader_div').hide();
-                    $('.energy_tile_modal .modal-content').css('opacity','1');
-                    $('.energy_tile_modal').modal('hide');
+        $('.energy_html_modal_'+last_index_tile+' .card-border').removeClass('tile_border');
 
-                    // <---12-11-2021--
-                    // $('#save_position_tile').trigger('click');
-                    // --end--->
-                }, 500);
-                // $('#save_position_tile').attr('btn_click','table');
-            }
-        });
+        var tile_html = $('.energy_html_modal_'+last_index_tile).html();
+        var tableHtml = $('.energy_html_modal_'+last_index_tile+' table').html();
+        $('#total_records').remove();
+        tile_html = tile_html.replace('total_records','');
+        tile_html = tile_html.replace('hide_table_main','');
+
+        // <----01-9-2021---
+        var ar = localStorage.getItem('dashboard_tile_data');
+        ar = JSON.parse(ar);
+        var tile_title =ar['title_modal_tile'];
+        var record_type_of_tile =ar['record_type_of_tile'];
+        var type_data_tile =ar['type_data_tile'];
+        // --end->
+        // --end-->
+        if(energy_table_height != '' && energy_table_width != ''){
+            var measurement_preview_data = [];
+            measurement_preview_data.push({'height':energy_table_height,'width':energy_table_width});
+            localStorage.setItem('measurement_preview_data',JSON.stringify(measurement_preview_data));
+        }
+
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10 || energyType == 'layer_modal'){
+            $.ajax({
+                type: "POST",
+                url: "dashboard/php/operations.php",
+                async: false,
+                dataType: 'json',
+                data: {
+                    action: "saveTableFormatExpandView",
+                    nameDB: $("#nameDashboardDB").val(),
+                    query_data : JSON.parse(query_data),
+                    title : tile_title,
+                    tile_html : tile_html,
+                    height: energy_table_height,
+                    width : energy_table_width,
+                    tableHtml : tableHtml,
+                    input_height : input_height,
+                    input_width : input_width,
+                    record_type_of_tile :record_type_of_tile,
+                    type_data_tile : type_data_tile,
+                    table_other : table_other,
+                    expand_view : expand_view
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+
+                    $('#energy_modal_loader_div').show();
+                    $('.energy_tile_modal .modal-content').css('opacity','0.8');
+
+                    $('#save_tile_id').val(a['max_id'][0]['max_id']);
+
+                    setTimeout(() => {
+                        $('#dashboard_sidebar').click();
+                        $('#energy_modal_loader_div').hide();
+                        $('.energy_tile_modal .modal-content').css('opacity','1');
+                        $('.energy_tile_modal').modal('hide');
+
+                        // <---12-11-2021--
+                        // $('#save_position_tile').trigger('click');
+                        // --end--->
+                    }, 500);
+                    // $('#save_position_tile').attr('btn_click','table');
+                }
+            });
+        }
+    }
+    if(row_enteries_length <= 10 || energyType == 'automatic'){
+       
     }
 
 }
@@ -1058,7 +1132,9 @@ function getTableFormatDashboard(){
                     }
                     // --end-->
 
-
+                    if(value['expand_view'] == 1 && value ['tile_data_type'] == "table"){
+                        value['tile_html']=value['tile_html'].replace("grid-margin", "table_tile_expand_view grid-margin");
+                    }
                     // <---21-10-2021--
                     if(value['expand_view'] == 1 && value['tile_data_type'] == "chart"){
                         // $('.'+id+'.tiles-click')
@@ -1349,6 +1425,8 @@ function getTableFormatDashboard(){
                 $('#measurement_dashboard_table').html(a['dashboardMeasurementHtml']);
                 $('#save_position_tile').hide();
             }
+
+            showTableExpandView();
 
             // $('.logo-g-analysis').click();
 
@@ -3220,8 +3298,14 @@ $(document).on('click','.movetile .stretch-card',function(){
     // :not(.movetile .stretch-card #energy_modal_table tbody tr Not Check
     // Expand View Check
     var chart_tile_expand_view  = $(this).hasClass('chart_tile_expand_view');
-    // console.log('Chart Tile Check',chart_tile_expand_view); 
     if(chart_tile_expand_view == true)
+    {
+        return false;
+    }
+
+    //Table Tile Expand View 
+    var table_tile_expand_view = $(this).hasClass('table_tile_expand_view');
+    if(table_tile_expand_view == true)
     {
         return false;
     }
@@ -3247,7 +3331,7 @@ $(document).on('click','.movetile .stretch-card',function(){
     var classPrdAutomatic = $(this).hasClass('product_automatic_tile');
     getDimentions(id,classPrdAutomatic);
     setTimeout(function () {
-        console.log(localStorage.getItem('height'));
+        // console.log(localStorage.getItem('height'));
         tile_prd_automatic = localStorage.getItem('tile_dashboard_prd_type_automatic');
         if(tile_prd_automatic != null && tile_prd_automatic != undefined && tile_prd_automatic == 'true')
         {
@@ -7982,7 +8066,7 @@ function chartRecordFilterEnergyAutomatic(){
 function getDataSetValueChartEnergyAutomatic(value,mst_id,nameMSt = false)
 {
     // var mst_id = $('#energy_chart_measurement_automatic').val();
-    console.log('name MSt',nameMSt);
+    // console.log('name MSt',nameMSt);
     var valuesObjAr = [];
     if(value.length > 0)
     {

@@ -146,9 +146,10 @@ class dashboardControllerOperations {
             $energy_layer_range = isset($queryData['input_val_week_day']) ?  $queryData['input_val_week_day'] : '';
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
+            $expand_view = $_POST['expand_view'];
 
-            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,mst_id,energy_layer_model_name,energy_layer_filter,energy_layer_range ) ";
-            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other', '$mst_id' ,'$name_val','$energy_layer_filter','$energy_layer_range') ";
+            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,mst_id,energy_layer_model_name,energy_layer_filter,energy_layer_range,expand_view ) ";
+            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other', '$mst_id' ,'$name_val','$energy_layer_filter','$energy_layer_range',$expand_view) ";
             // echo $insertQuery; die;
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
@@ -161,6 +162,9 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
+
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
+            $updatePriorityResult = queryDB($conn, $updatePriority, "read");
 
             if($insertQuery){
                 return array('Staus' => 200 , 'Message' => 'Successfully Inserted','max_id'=>$maxResult);

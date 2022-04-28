@@ -1,5 +1,7 @@
 $(document).ready( function(){
-
+    // setTimeout(function () {
+    //     getDimentions();
+    //  },500);
     var dashboardDBStorage = localStorage.getItem('dashboardDB');
     if(dashboardDBStorage=='' || dashboardDBStorage==null){
         dashboardDBStorage='g002_badber';
@@ -746,9 +748,7 @@ $(document).ready( function(){
             saveOverallCountTileEnergy();
         }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'energy' && valIsChecked == true){
-            alert('work start');
             saveTableFormatEnergyExpandView();
-            alert('work end ');
         }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'energy'){
             // alert('work here');
@@ -2198,6 +2198,10 @@ $(document).ready( function(){
     var total_records = $('#total_records').val();
     if(valIsChecked == true){
         $('#expand_view_table').val("1");
+        $("#modal-height-input-energy").attr("disabled", true);
+        $("#modal-width-input-energy").attr("disabled", true);
+        $('#modal-height-input-energy').val('');
+        $('#modal-width-input-energy').val('');
         $('.table_outisde_tile_controls').hide();
         $('#table_outside_tile_structure').prop('checked',false);
         $('#table_outside_tile_structure').val('0');
@@ -2218,6 +2222,8 @@ $(document).ready( function(){
     }
     else{
         $('#expand_view_table').val("0");
+        $("#modal-width-input-energy").removeAttr("disabled");
+        $("#modal-height-input-energy").removeAttr("disabled");
         $('#energy_count_tile_modal_'+total_records).css('height',145);
         $('#energy_count_tile_modal_'+total_records).css('width',285);
         $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',145);
@@ -3681,7 +3687,7 @@ $(document).ready( function(){
           } 
           
         });
-// Hide another types of chart on multiple select 
+    // Hide another types of chart on multiple select 
         $('#energy_chart_measurement_automatic').change(function(event) {
 
           if ($(this).val().length > 1) {
@@ -3692,7 +3698,7 @@ $(document).ready( function(){
           
         });
 
-// Show another types of chart on single select 
+    // Show another types of chart on single select 
 
         $('#energy_chart_measurement_automatic').change(function(event) {
 
@@ -3703,5 +3709,27 @@ $(document).ready( function(){
             } 
             
           });
+
+    // $("#clickMe").click(function(){
+              
+    // $connectTestResult = Test-NetConnection -ComputerName gipscomm.file.core.windows.net -Port 445
+
+    // if ($connectTestResult.TcpTestSucceeded) {
+
+    //     // # Speichern Sie das Kennwort, damit das Laufwerk bei einem Neustart erhalten bleibt.
+
+    //     cmd.exe /C "cmdkey /add:`"gipscomm.file.core.windows.net` /user:localhost\gipscomm`" /pass:`"ygPAB/I9qUKAGenXNDm/gfmfbd1tUklGqm7l4SJzCZmimlBVmAEo6re+jJwBBrf9N6ymSu3P/a9sZDFG/Drqog==`""
+
+    //     // # Laufwerk einbinden
+
+    //     New-PSDrive -Name U -PSProvider FileSystem -Root \\gipscomm.file.core.windows.net\gipscomm -Persist
+
+    // } else {
+
+    //     Write-Error -Message "Unable to reach the Azure storage account via port 445. Check to make sure your organization or ISP is not blocking port 445, or use Azure P2S VPN, Azure S2S VPN, or Express Route to tunnel SMB traffic over a different port.";
+
+    // }
+
+    // });
 
 })
