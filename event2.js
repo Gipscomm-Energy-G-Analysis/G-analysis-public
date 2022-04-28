@@ -761,11 +761,15 @@ $(document).ready( function(){
     //--end--->
 
     $(document).on('click','#save_table_btn_product', function(){
+        var valIsChecked = $('#expand_view_table_product').is(":checked");
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
         if(ar['type_data_tile'] == 'overall_count' && ar['record_type_of_tile'] == 'product')
         {
             saveOverallCountTileProduct();
+        }
+        else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'product' && valIsChecked == true){
+            saveTableFormatProductExpandView();
         }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'product'){
             var product_type = $('#product_type').val();
@@ -2230,6 +2234,47 @@ $(document).ready( function(){
         $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',290);
     }
 });
+
+$(document).on('click','#expand_view_table_product', ()=>{
+    // let data_i_value = $(this).attr('data-i');
+    var valIsChecked = $('#expand_view_table_product').is(":checked");
+    var total_records = $('#total_records').val();
+    if(valIsChecked == true){
+        $('#expand_view_table_product').val("1");
+        $("#modal-height-input-product").attr("disabled", true);
+        $("#modal-width-input-product").attr("disabled", true);
+        $('#modal-height-input-product').val('');
+        $('#modal-width-input-product').val('');
+        $('.table_outisde_tile_controls').hide();
+        $('#table_outside_tile_structure').prop('checked',false);
+        $('#table_outside_tile_structure').val('0');
+        
+        $('#table_height_outer_structure').val('');
+        $('#table_width_outer_structure').val('');
+
+        var id = $('#total_records_chart').val();
+        $('#measurement_count_outer_tile_modal_table_'+id).css('height',145);
+        $('#measurement_count_outer_tile_modal_table_'+id).css('width',285);
+        
+        $('.gernerated_product_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',290);
+        $('.gernerated_product_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',580);
+
+        $('#product_count_tile_modal_'+total_records).css('height',290);
+        $('#product_count_tile_modal_'+total_records).css('width',570);
+        // saveTableFormatEnergyExpandView();
+    }
+    else{
+        $('#expand_view_table_product').val("0");
+        $("#modal-width-input-product").removeAttr("disabled");
+        $("#modal-height-input-product").removeAttr("disabled");
+        $('#product_count_tile_modal_'+total_records).css('height',145);
+        $('#product_count_tile_modal_'+total_records).css('width',285);
+        $('.gernerated_product_modal_tiles .outer_table_tile_structure #product_count_outer_tile_modal_table_'+total_records).css('height',145);
+        $('.gernerated_product_modal_tiles .outer_table_tile_structure #product_count_outer_tile_modal_table_'+total_records).css('width',290);
+    }
+});
+
+
 // --end-->
     // <---22-10-2021--
     // $("body").not($(".dashboard_count_div .movetile")).click(function(){
@@ -3710,26 +3755,6 @@ $(document).ready( function(){
             
           });
 
-    // $("#clickMe").click(function(){
-              
-    // $connectTestResult = Test-NetConnection -ComputerName gipscomm.file.core.windows.net -Port 445
-
-    // if ($connectTestResult.TcpTestSucceeded) {
-
-    //     // # Speichern Sie das Kennwort, damit das Laufwerk bei einem Neustart erhalten bleibt.
-
-    //     cmd.exe /C "cmdkey /add:`"gipscomm.file.core.windows.net` /user:localhost\gipscomm`" /pass:`"ygPAB/I9qUKAGenXNDm/gfmfbd1tUklGqm7l4SJzCZmimlBVmAEo6re+jJwBBrf9N6ymSu3P/a9sZDFG/Drqog==`""
-
-    //     // # Laufwerk einbinden
-
-    //     New-PSDrive -Name U -PSProvider FileSystem -Root \\gipscomm.file.core.windows.net\gipscomm -Persist
-
-    // } else {
-
-    //     Write-Error -Message "Unable to reach the Azure storage account via port 445. Check to make sure your organization or ISP is not blocking port 445, or use Azure P2S VPN, Azure S2S VPN, or Express Route to tunnel SMB traffic over a different port.";
-
-    // }
-
-    // });
+   
 
 })

@@ -28,6 +28,8 @@ function showTableExpandView(){
         //     $('.'+id+'.tiles-click').css('height',localStorage.getItem('height')+'px');
         // }
         // <---30-8-2021--
+        // $('.'+id+'.tiles-click').attr('style', "height: 320px !important; width: 570px !important;");
+
         $('.'+id+'.tiles-click .card-body').removeClass('row');
         // --end-->
 
@@ -37,6 +39,18 @@ function showTableExpandView(){
 
         // <---22-9-2021---
         $('.'+id+'.tiles-click').parent('div').removeClass('col-md-3');
+
+        $('.'+id+'.table_tile_expand_view').not('.delete_btn_tile,.edit_btn_tile').attr('style', "height: 320px !important; width: 570px !important;");
+       
+        // $('.'+id+'.id_val delete_btn_tile').attr('style', "height: 325px !important; width: 575px !important;");
+
+        // $('.'+id+'.delete_btn_tile').css('height','17px');
+        // $('.'+id+'.id_val delete_btn_tile').css('width','17px');
+        // $('.'+id+'.id_val delete_btn_tile').css('margin-right','5px');
+
+        // $('.chart_tile_expand_view .'+id+'.id_val.delete_btn_tile').css('height','17px');
+        // $('.chart_tile_expand_view .'+id+'.id_val.delete_btn_tile').css('width','17px');
+        // $('.chart_tile_expand_view .'+id+'.id_val.delete_btn_tile').css('margin-right','5px');
     })
 } 
 
@@ -890,6 +904,114 @@ function saveTableFormatProductAutomatic(){
 // ----end--->
 
 
+   function saveTableFormatProductExpandView(type){
+    var row_enteries_length = $('#energy_select_table_entries tr').length;
+    var query_data = localStorage.getItem('query_data');
+
+    var productType = $('#product_type').val(); 
+    var table_other = $('#product_select_table_entries_table_div table tbody').children('tr:eq(0)').attr('data-table-other');
+    if (row_enteries_length > 10) {
+        alert("Minimum 10 Records can be saved");
+    }
+    if(row_enteries_length <= 10 || productType == 'automatic'){
+        var product_table_height = $('#modal-height-input-product-hidden').val();
+        var product_table_width = $('#modal-width-input-product-hidden').val();
+        var input_height = $('#modal-height-input-product').val();
+        var input_width = $('#modal-width-input-product').val();
+
+        var expand_view = $('#expand_view_table_product').val();
+
+        var last_index_tile = $('#total_records').val();
+
+        $('.product_html_modal_'+last_index_tile+' .card-border').removeClass('tile_border');
+
+        var tile_html = $('.product_html_modal_'+last_index_tile).html();
+        var tableHtml = $('.product_html_modal_'+last_index_tile+' table').html();
+        $('#total_records').remove();
+        tile_html = tile_html.replace('total_records','');
+        tile_html = tile_html.replace('hide_table_main','');
+
+        // <----01-9-2021---
+        var ar = localStorage.getItem('dashboard_tile_data');
+        ar = JSON.parse(ar);
+        var tile_title =ar['title_modal_tile'];
+        var record_type_of_tile =ar['record_type_of_tile'];
+        var type_data_tile =ar['type_data_tile'];
+        // --end->
+        // --end-->
+        if(product_table_height != '' && product_table_width != ''){
+            var measurement_preview_data = [];
+            measurement_preview_data.push({'height':product_table_height,'width':product_table_width});
+            localStorage.setItem('measurement_preview_data',JSON.stringify(measurement_preview_data));
+        }
+
+        var prd_all_columns_automatic = $('#all_columns_product').val();
+        var columnDataType = [];
+        $('#all_columns_product option:selected').each(function(){
+            var value =$(this).attr('data-type');
+            columnDataType.push(value)
+        });
+
+        var db_table = $('#all_tables_product').val();
+
+        if (row_enteries_length > 10) {
+            alert("Minimum 10 Records can be saved");
+        }
+        if(row_enteries_length <= 10 || energyType == 'layer_modal'){
+            $.ajax({
+                type: "POST",
+                url: "dashboard/php/operations.php",
+                async: false,
+                dataType: 'json',
+                data: {
+                    action: "saveTableFormatExpandView",
+                    nameDB: $("#nameDashboardDB").val(),
+                    query_data : JSON.parse(query_data),
+                    title : tile_title,
+                    tile_html : tile_html,
+                    height: product_table_height,
+                    width : product_table_width,
+                    tableHtml : tableHtml,
+                    input_height : input_height,
+                    input_width : input_width,
+                    record_type_of_tile :record_type_of_tile,
+                    type_data_tile : type_data_tile,
+                    table_other : table_other,
+                    expand_view : expand_view,
+                    prd_all_columns_automatic : JSON.stringify(prd_all_columns_automatic),
+                    columnDataType : JSON.stringify(columnDataType),
+                    db_table : db_table
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+
+                    $('#product_modal_loader_div').show();
+                    $('.product_tile_modal .modal-content').css('opacity','0.8');
+
+                    $('#save_tile_id').val(a['max_id'][0]['max_id']);
+
+                    setTimeout(() => {
+                        $('#dashboard_sidebar').click();
+                        $('#product_modal_loader_div').hide();
+                        $('.product_tile_modal .modal-content').css('opacity','1');
+                        $('.product_tile_modal').modal('hide');
+
+                        // <---12-11-2021--
+                        // $('#save_position_tile').trigger('click');
+                        // --end--->
+                    }, 500);
+                    // $('#save_position_tile').attr('btn_click','table');
+                }
+            });
+        }
+    }
+    
+    // if(row_enteries_length <= 10 || energyType == 'automatic'){
+       
+    // }
+}
 // <---22-11-2021---
 function saveTableFormatEnergy(type){
     var row_enteries_length = $('#energy_select_table_entries tr').length;
@@ -982,7 +1104,6 @@ function saveTableFormatEnergy(type){
 }
 // --end-->
 function saveTableFormatEnergyExpandView(type){
-    alert("function created");
     var row_enteries_length = $('#energy_select_table_entries tr').length;
     var query_data = localStorage.getItem('query_data');
 
@@ -12098,3 +12219,25 @@ function logout(){
 //-----end-->
 
 // ---end-->
+
+// $("#clickMe").click(function(){
+              
+//     $connectTestResult = Test-NetConnection -ComputerName gipscomm.file.core.windows.net -Port 445
+
+//     if ($connectTestResult.TcpTestSucceeded) {
+
+//         // # Speichern Sie das Kennwort, damit das Laufwerk bei einem Neustart erhalten bleibt.
+
+//         cmd.exe /C "cmdkey /add:`"gipscomm.file.core.windows.net` /user:localhost\gipscomm`" /pass:`"ygPAB/I9qUKAGenXNDm/gfmfbd1tUklGqm7l4SJzCZmimlBVmAEo6re+jJwBBrf9N6ymSu3P/a9sZDFG/Drqog==`""
+
+//         // # Laufwerk einbinden
+
+//         New-PSDrive -Name U -PSProvider FileSystem -Root \\gipscomm.file.core.windows.net\gipscomm -Persist
+
+//     } else {
+
+//         Write-Error -Message "Unable to reach the Azure storage account via port 445. Check to make sure your organization or ISP is not blocking port 445, or use Azure P2S VPN, Azure S2S VPN, or Express Route to tunnel SMB traffic over a different port.";
+
+//     }
+
+// });

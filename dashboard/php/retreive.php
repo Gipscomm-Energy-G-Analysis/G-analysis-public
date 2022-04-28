@@ -7565,6 +7565,7 @@ class dashboardController {
         try{
             global $conn;
             $id = $_POST['id'];
+            // $expand_view = $_POST['expand_view'];
             $selectQuery = "select * from tableFormat where id = '$id' ";
             $result = queryDB($conn, $selectQuery, "read");
             // echo json_encode($result); die;
