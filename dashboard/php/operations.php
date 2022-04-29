@@ -262,61 +262,6 @@ class dashboardControllerOperations {
     }
     // --end--->
 
-    public function saveTableFormatExpandViewProduct(){
-        try {
-            global $conn;
-            $username = $_SESSION['username']; 
-            $queryData = $_REQUEST['query_data'];
-            $number_records = $queryData['number_records']; 
-            $pages_count = $queryData['pages_count']; 
-            $page_value = $queryData['page_val']; 
-            $type = $queryData['type']; 
-            $row_click = $queryData['row_click']; 
-            $query_data_records = $queryData['query1']; 
-            $query_max_val = $queryData['queryMaxValue'];
-            $title = $_REQUEST['title'];
-            $html = $_POST['tile_html'];
-            $height = $_POST['height'];
-            $width = $_POST['width'];
-            $input_height = $_POST['input_height'];
-            $input_width = $_POST['input_width'];
-            $record_type_of_tile = $_POST['record_type_of_tile'];
-            $type_data_tile = $_POST['type_data_tile'];
-            $table_other = $_POST['table_other'];
-            $mst_id = isset($queryData['mst_id']) ?  $queryData['mst_id'] : '';
-            $name_val = isset($queryData['name_val']) ? $queryData['name_val'] : '';
-            $product_layer_filter = isset($queryData['select_filter_day_week']) ?  $queryData['select_filter_day_week'] : '';
-            $product_layer_range = isset($queryData['input_val_week_day']) ?  $queryData['input_val_week_day'] : '';
-            $query_data_records = str_replace("'",'',$query_data_records);
-            $query_max_val = str_replace("'",'',$query_max_val);
-            $expand_view = $_POST['expand_view'];
-
-            $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,mst_id,energy_layer_model_name,energy_layer_filter,energy_layer_range,expand_view ) ";
-            $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other', '$mst_id' ,'$name_val','$energy_layer_filter','$energy_layer_range',$expand_view) ";
-            // echo $insertQuery; die;
-            $insertRecord = queryDB($conn, $insertQuery, "write");
-
-            $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
-            $maxResult = queryDB($conn, $selectMaxId, "read");
-
-            // <----07-04-2022--
-            $totalQuery = "SELECT * from tableFormat ";
-            $totalResult = queryDB($conn, $totalQuery, "read");
-            $totalResult = count($totalResult);
-
-            $last_id = $maxResult[0]['max_id'];
-
-            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
-            $updatePriorityResult = queryDB($conn, $updatePriority, "read");
-
-            if($insertQuery){
-                return array('Staus' => 200 , 'Message' => 'Successfully Inserted','max_id'=>$maxResult);
-            }
-        } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
-
-    }
     // <-----31-8-2021---
     public function updateTileRecord(){
         try{

@@ -863,10 +863,6 @@
     margin: 10px;
 }
 
-.mt_pr_alignment{
-    /* margin-top: -32px; */
-}
-
 #product_select_table_entries_table thead tr th{
     padding:  10px 6px 10px 6px !important;
     font-size: small;
@@ -942,4 +938,7 @@
 #save_default_reload_time{
     margin: 0px;
     height: 36px;
+}
+.expand_view_table_div{
+    margin: auto 0;
 }

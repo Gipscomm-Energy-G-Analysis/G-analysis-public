@@ -725,14 +725,20 @@ $(document).ready( function(){
 
     //<--15-8-2021--
     $(document).on('click','#save_table_btn', function(){
+        var valIsChecked = $('#expand_view_table_measurement').is(":checked");
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
         if(ar['type_data_tile'] == 'overall_count' && ar['record_type_of_tile'] == 'measurement')
         {
             saveOverallCountTile();
         }
+        else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'measurement' && valIsChecked == true){
+            alert('entert here 1 ');
+            saveTableFormatMeasurementExpandView();
+        }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'measurement'){
             var type = $(this).attr('data-type');
+            alert('entert here 2 ');
             saveTableFormat(type);
         }
     })
@@ -964,6 +970,10 @@ $(document).ready( function(){
             else{
                 alert('Records are Always be less than 5');
             }
+
+            $('#expand_view_table_product').prop('checked',false);
+            $('#expand_view_table_product').val(0);
+
         }
         else if(tile_edit_value == 'true' && type_data_tile == 'table'){ //Table Edit Case
             var tableLength = $('#mesurement_select_table_entries tr').length;
@@ -1205,6 +1215,7 @@ $(document).ready( function(){
             $('#table_outside_tile_structure').prop('checked',false);
             $('.table_outisde_tile_controls').hide();
             $('#expand_view_table').prop('checked',false);
+            $('#expand_view_table').val(0);
           
         }
         else if(tile_edit_value == 'true' && type_data_tile == 'table'){ //Table Edit Case
@@ -2196,6 +2207,9 @@ $(document).ready( function(){
     // --end-->
 
     // <----23-03-2023---
+
+// Expand view table for Energy Case
+
     $(document).on('click','#expand_view_table', ()=>{
     // let data_i_value = $(this).attr('data-i');
     var valIsChecked = $('#expand_view_table').is(":checked");
@@ -2234,6 +2248,8 @@ $(document).ready( function(){
         $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',290);
     }
 });
+
+// Expand view table for Product Case
 
 $(document).on('click','#expand_view_table_product', ()=>{
     // let data_i_value = $(this).attr('data-i');
@@ -2274,6 +2290,47 @@ $(document).on('click','#expand_view_table_product', ()=>{
     }
 });
 
+
+// Expand view table for Measurement Case
+
+$(document).on('click','#expand_view_table_measurement', ()=>{
+    // let data_i_value = $(this).attr('data-i');
+    var valIsChecked = $('#expand_view_table_measurement').is(":checked");
+    var total_records = $('#total_records').val();
+    if(valIsChecked == true){
+        $('#expand_view_table_measurement').val("1");
+        $("#modal-height-input-measurement").attr("disabled", true);
+        $("#modal-width-input-measurement").attr("disabled", true);
+        $('#modal-height-input-measurement').val('');
+        $('#modal-width-input-measurement').val('');
+        $('.table_outisde_tile_controls').hide();
+        $('#table_outside_tile_structure').prop('checked',false);
+        $('#table_outside_tile_structure').val('0');
+        
+        $('#table_height_outer_structure').val('');
+        $('#table_width_outer_structure').val('');
+
+        var id = $('#total_records_chart').val();
+        $('#measurement_count_outer_tile_modal_table_'+id).css('height',145);
+        $('#measurement_count_outer_tile_modal_table_'+id).css('width',285);
+        
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #measurement_count_outer_tile_modal_table_'+total_records).css('height',290);
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #measurement_count_outer_tile_modal_table_'+total_records).css('width',580);
+
+        $('#measurement_count_tile_modal_'+total_records).css('height',290);
+        $('#measurement_count_tile_modal_'+total_records).css('width',570);
+        // saveTableFormatEnergyExpandView();
+    }
+    else{
+        $('#expand_view_table_measurement').val("0");
+        $("#modal-width-input-measurement").removeAttr("disabled");
+        $("#modal-height-input-measurement").removeAttr("disabled");
+        $('#measurement_count_tile_modal_'+total_records).css('height',145);
+        $('#measurement_count_tile_modal_'+total_records).css('width',285);
+        $('.gernerated_measurement_modal_tiles .outer_table_tile_structure #measurement_count_outer_tile_modal_table_'+total_records).css('height',145);
+        $('.gernerated_measurement_modal_tiles .outer_table_tile_structure #measurement_count_outer_tile_modal_table_'+total_records).css('width',290);
+    }
+});
 
 // --end-->
     // <---22-10-2021--
@@ -2780,6 +2837,8 @@ $(document).on('click','#expand_view_table_product', ()=>{
             else{
                 alert('Records are Always be less than 5');
             }
+            $('#expand_view_table_product').prop('checked',false);
+            $('#expand_view_table_product').val(0);
         }
         else if(tile_edit_value == 'true' && type_data_tile == 'table'){ //Table Edit Case
             var tableLength = $('#product_select_table_entries tr').length;
