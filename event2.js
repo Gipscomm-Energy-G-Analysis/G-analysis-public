@@ -733,7 +733,6 @@ $(document).ready( function(){
             saveOverallCountTile();
         }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'measurement' && valIsChecked == true){
-            alert('entert here 1 ');
             saveTableFormatMeasurementExpandView();
         }
         else if(ar['type_data_tile'] == 'table' && ar['record_type_of_tile'] == 'measurement'){
@@ -971,8 +970,8 @@ $(document).ready( function(){
                 alert('Records are Always be less than 5');
             }
 
-            $('#expand_view_table_product').prop('checked',false);
-            $('#expand_view_table_product').val(0);
+            $('#expand_view_table_measurement').prop('checked',false);
+            $('#expand_view_table_measurement').val(0);
 
         }
         else if(tile_edit_value == 'true' && type_data_tile == 'table'){ //Table Edit Case
@@ -3778,12 +3777,6 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
           $('#energy_chart_measurement_automatic').val();
           if ($(this).val().length > 5) {
             alert('Please Select maximum 5');
-            // $('#energy_chart_measurement_automatic').prop('checked', false);
-            // // $('#energy_chart_measurement_automatic').val('');
-            // $(this).removeAttr('checked');
-            // $(this).val(last_valid_selection);
-            
-            //$(this).prop('selected',false);
             var val = $('#energy_chart_measurement_automatic').val();
             $("#energy_chart_measurement_automatic option[value='"+val[5]+"'").prop('selected',false);
             $("#energy_chart_measurement_automatic").multiselect('reload');

@@ -10580,7 +10580,7 @@ function getClickDashboardChartEnergyAutomatic(data){
 
                 
                 // var result = getDataSetValueChartEnergyAutomatic(a['count_val'],a['mst_id']);
-                var result = getDataSetValueChartEnergyAutomatic(a['count_val'],mst_id,a['mstName']);
+                var result = getDataSetValueChartEnergyAutomatic(a['count_val'],a['mst_id'],a['mstName']);
                 // console.log(result);
                 setTimeout(()=>{
                     var data = {
@@ -12325,25 +12325,3 @@ function logout(){
 //-----end-->
 
 // ---end-->
-
-// $("#clickMe").click(function(){
-              
-//     $connectTestResult = Test-NetConnection -ComputerName gipscomm.file.core.windows.net -Port 445
-
-//     if ($connectTestResult.TcpTestSucceeded) {
-
-//         // # Speichern Sie das Kennwort, damit das Laufwerk bei einem Neustart erhalten bleibt.
-
-//         cmd.exe /C "cmdkey /add:`"gipscomm.file.core.windows.net` /user:localhost\gipscomm`" /pass:`"ygPAB/I9qUKAGenXNDm/gfmfbd1tUklGqm7l4SJzCZmimlBVmAEo6re+jJwBBrf9N6ymSu3P/a9sZDFG/Drqog==`""
-
-//         // # Laufwerk einbinden
-
-//         New-PSDrive -Name U -PSProvider FileSystem -Root \\gipscomm.file.core.windows.net\gipscomm -Persist
-
-//     } else {
-
-//         Write-Error -Message "Unable to reach the Azure storage account via port 445. Check to make sure your organization or ISP is not blocking port 445, or use Azure P2S VPN, Azure S2S VPN, or Express Route to tunnel SMB traffic over a different port.";
-
-//     }
-
-// });
