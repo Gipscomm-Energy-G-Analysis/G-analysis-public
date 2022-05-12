@@ -286,6 +286,7 @@ class dashboardControllerOperations {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
             $table_other = $_POST['table_other'];
+            $expand_view = isset($_POST['expand_view'])  ? $_POST['expand_view'] : 0;
             $mst_id = isset($queryData['mst_id']) ?  $queryData['mst_id'] : '';
             $name_val = isset($queryData['name_val']) ? $queryData['name_val'] : '';
             $energy_layer_filter = isset($queryData['select_filter_day_week']) ?  $queryData['select_filter_day_week'] : '';
@@ -294,9 +295,12 @@ class dashboardControllerOperations {
 
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
+            // if (strpos($html, 'expand_view') !== false) {
+            //     $html=str_replace('tiles-click','',$html);
+            // }
 
             // $tile_html = $_REQUEST['tile_html'];
-            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile', mst_id = '$mst_id', energy_layer_model_name = '$name_val',energy_layer_filter = '$energy_layer_filter', energy_layer_range = '$energy_layer_range' WHERE id = $id AND username ='$username' ";
+            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', expand_view = $expand_view, height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile', mst_id = '$mst_id', energy_layer_model_name = '$name_val',energy_layer_filter = '$energy_layer_filter', energy_layer_range = '$energy_layer_range' WHERE id = $id AND username ='$username' ";
             // echo '<pre>';
             // echo htmlspecialchars($updateQuery);
             // echo '</pre>';
@@ -338,6 +342,7 @@ class dashboardControllerOperations {
             $record_type_of_tile = $_POST['record_type_of_tile'];
             $type_data_tile = $_POST['type_data_tile'];
             $table_other = $_POST['table_other'];
+            $expand_view = isset($_POST['expand_view'])  ? $_POST['expand_view'] : 0;
             $prd_all_columns_automatic = isset($_POST['prd_all_columns_automatic']) ? serialize(json_decode($_POST['prd_all_columns_automatic'])) : '';
             $prd_all_columns_type = isset($_POST['columnDataType']) ? serialize(json_decode($_POST['columnDataType'])) : '';
             $db_table = $_POST['db_table'];
@@ -347,7 +352,7 @@ class dashboardControllerOperations {
             $query_max_val = str_replace("'",'',$query_max_val);
 
             // $tile_html = $_REQUEST['tile_html'];
-            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile',database_name = '$nameDB',prd_all_columns_automatic = '$prd_all_columns_automatic',prd_all_columns_type_automatic = '$prd_all_columns_type',database_table = '$db_table' WHERE id = $id AND username ='$username' ";
+            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', expand_view = $expand_view, height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile',database_name = '$nameDB',prd_all_columns_automatic = '$prd_all_columns_automatic',prd_all_columns_type_automatic = '$prd_all_columns_type',database_table = '$db_table' WHERE id = $id AND username ='$username' ";
             // echo '<pre>';
             // echo htmlspecialchars($updateQuery);
             // echo '</pre>';
@@ -413,11 +418,23 @@ class dashboardControllerOperations {
 
             $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_filter,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,prd_anlagen_config_id ) ";
             $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$mst_id','$chart_filter','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width','$outside_chart_display','$chart_outer_table_limit_column','$analgen_config_id') ";
-            // echo $mst_id; die;
+
             $insertRecord = queryDB($conn, $insertQuery, "write");
+
+
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";
             $maxResult = queryDB($conn, $selectMaxId, "read");
+
+            
+            $html=str_replace('lineChart-none','lineChart'.$maxResult[0]['max_id'],$html);
+            $html=str_replace('areaChart-none','areaChart'.$maxResult[0]['max_id'],$html);
+            $html=str_replace('barChart-none','barChart'.$maxResult[0]['max_id'],$html);
+            $html=str_replace('pieChart-none','pieChart'.$maxResult[0]['max_id'],$html);
+            if (strpos($html, 'chart_tile_expand_view') !== false) {
+                $html=str_replace('tiles-click','',$html);
+            }
+            
 
             // <----23-11-2021--
             $totalQuery = "SELECT * from tableFormat ";
@@ -425,7 +442,7 @@ class dashboardControllerOperations {
             $totalResult = count($totalResult);
 
             $last_id = $maxResult[0]['max_id'];
-            $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
+            $updatePriority = "UPDATE tableFormat set priority = '$last_id',tile_html='$html' where id = '$last_id' ";
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->
 
@@ -655,6 +672,14 @@ class dashboardControllerOperations {
             $outside_chart_input_width =  $_REQUEST['outside_chart_input_width'];
 
             $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'];
+
+            $html=str_replace('lineChart-none','lineChart'.$id,$html);
+            $html=str_replace('areaChart-none','areaChart'.$id,$html);
+            $html=str_replace('barChart-none','barChart'.$id,$html);
+            $html=str_replace('pieChart-none','pieChart'.$id,$html);
+            if (strpos($html, 'chart_tile_expand_view') !== false) {
+                $html=str_replace('tiles-click','',$html);
+            }
 
             $updateQuery = "UPDATE tableFormat  set type = '$type',tile_title = '$title',tile_html = '$html',height='$height',width='$width' ,input_height='$input_height' ,input_width = '$input_width' ,tile_record_type = '$record_type_of_tile' ,mst_id = '$mst_id' ,chart_filter = '$chart_filter',chart_type = '$chart_type',chart_time_interval = '$chart_time_interval', expand_view = $expand_view , outside_tile_checkbox = $outside_chart_checkbox , outside_tile_input_height = '$outside_chart_input_height', outside_tile_input_width='$outside_chart_input_width', outer_table_column_limit = '$chart_outer_table_limit_column',prd_anlagen_config_id = '$analgen_config_id' ";
             $updateQuery .= "WHERE id = $id AND username = '$username' ";

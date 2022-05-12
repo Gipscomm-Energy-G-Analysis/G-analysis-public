@@ -3869,6 +3869,7 @@ class dashboardController {
 
 
             $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
+            $queryEnergy = '';
             if($table_found == 'true'){
                 $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
@@ -3876,19 +3877,27 @@ class dashboardController {
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
                 // echo $queryEnergy; die;
                 // echo json_encode($queryEnergyRecords); 
-                // die;
+
                 if($queryEnergyRecords != '' && count($queryEnergyRecords))
                 {
-                    foreach($queryEnergyRecords as $key => $val){
-                        $tbody .= '<tr class="row_click_energy" data-table-other="true">';
-                        // $tbody .= '<td>'.$dayVal.'</td>';
-                        $tbody.= "<td>".$energy_measurement_text."</td>";
-                        $tbody.= "<td>".$val['date']->format('Y-m-d')."</td>";
-                        $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
-                        $totalValue = $this->convertValueCommaSeperated($totalValue);
-                        $tbody.= "<td>".$totalValue."</td>";
-                        $tbody .= '</tr>';
+                    for($i = 0; $i < $input_val_week_day; $i++)
+                    {
+                        $dateDynamicVal =  date('Y-m-d', strtotime("-$i days"));
+                        $result = $this->generateEnergyAutomaticTableHTML($queryEnergyRecords,$dateDynamicVal,$energy_measurement_text);
+                        $tbody .= $result;
                     }
+                    
+                    // die;
+                    // foreach($queryEnergyRecords as $key => $val){
+                    //     $tbody .= '<tr class="row_click_energy" data-table-other="true">';
+                    //     // $tbody .= '<td>'.$dayVal.'</td>';
+                    //     $tbody.= "<td>".$energy_measurement_text."</td>";
+                    //     $tbody.= "<td>".$val['date']->format('Y-m-d')."</td>";
+                    //     $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
+                    //     $totalValue = $this->convertValueCommaSeperated($totalValue);
+                    //     $tbody.= "<td>".$totalValue."</td>";
+                    //     $tbody .= '</tr>';
+                    // }
                     $paginationHTMl="<div id='save_table_format' class='text-center'>
                     <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                     </div>";
@@ -3918,6 +3927,123 @@ class dashboardController {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+
+    public function generateEnergyAutomaticTableHTML($data,$dateVal,$energy_measurement_text){
+        try{
+            $flag = 0;
+            for($i = 0; $i < count($data); $i++)
+            {
+                if($data[$i]['date']->format('Y-m-d') == $dateVal)
+                {
+                    $flag = 1;
+                    break;
+                }
+            }
+            if($flag == 1)
+            {
+                $tbody = '<tr class="row_click_energy" data-table-other="true">';
+                $tbody .= "<td>".$energy_measurement_text."</td>";
+                $tbody.= "<td>".$data[$i]['date']->format('Y-m-d')."</td>";
+                $totalValue = $data[$i]['value'] > 0 ? $data[$i]['value'] / 4 : 0;
+                $totalValue = $this->convertValueCommaSeperated($totalValue);
+                $tbody.= "<td>".$totalValue."</td>";
+                $tbody .= '</tr>';
+                return $tbody;
+            }
+            else{
+                $tbody = '<tr class="row_click_energy" data-table-other="true">';
+                $tbody.= "<td>".$energy_measurement_text."</td>";
+                $tbody.= "<td>".$dateVal."</td>";
+                $tbody.= "<td>0</td>";
+                $tbody .= '</tr>';
+                return $tbody;
+            }
+        }
+        catch(Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    // public function getNumberRecordsEnergyAutomatic(){
+    //     try{
+    //         global $conn;
+    //         $mst_id = $_POST['mst_id'];
+    //         $input_val_week_day = isset($_POST['input_val_week_day']) ? $_POST['input_val_week_day'] : 100 ;
+    //         $order_by = isset($_POST['order_by']) ?  $_POST['order_by'] : 'asc';
+    //         $energy_measurement_text = $_POST['energy_measurement_text'];
+    //         $energy_type = $_POST['energy_type']
+    //         $thead = "<tr>";
+    //         $thead .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Messstelle</th>";
+    //         $thead .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+    //         $thead .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Wert</th>";
+    //         $thead .= "</tr>";
+
+    //         $tbody = '';
+    //         $checkQuery = '';
+
+    //         $todayDate = date('Y-m-d');
+
+    //         //SchichtModelleAll Table Check
+    //         $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
+    //         $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+    //         $table_found = 'false';
+    //         if($resultTableExistCheck != false)
+    //         {
+    //             $table_found = 'true';
+    //         }
+
+
+    //         $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days "));
+    //         // $dateCheck = date('Y-m-d');
+    //         if($table_found == 'true'){
+    //             $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
+    //             $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
+    //             $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date $order_by ";
+    //             $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
+    //             // echo $queryEnergy; die;
+    //             // echo json_encode($queryEnergyRecords); 
+    //             // die;
+    //             if($queryEnergyRecords != '' && count($queryEnergyRecords))
+    //             {
+    //                 foreach($queryEnergyRecords as $key => $val){
+    //                     $tbody .= '<tr class="row_click_energy" data-table-other="true">';
+    //                     // $tbody .= '<td>'.$dayVal.'</td>';
+    //                     $tbody.= "<td>".$energy_measurement_text."</td>";
+    //                     $tbody.= "<td>".$val['date']->format('Y-m-d')."</td>";
+    //                     $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
+    //                     $totalValue = $this->convertValueCommaSeperated($totalValue);
+    //                     $tbody.= "<td>".$totalValue."</td>";
+    //                     $tbody .= '</tr>';
+    //                 }
+    //                 $paginationHTMl="<div id='save_table_format' class='text-center'>
+    //                 <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
+    //                 </div>";
+    //                 $records['pagination_html_energy'] =  $paginationHTMl;
+    //             }
+    //         }
+
+    //         // <---07-2-2022--
+    //         if($tbody == '')
+    //         {
+    //             $tbody .= '<tr>';
+    //             $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+    //             $tbody .= '</tr>';
+    //             $records['pagination_html_energy'] =  '';
+    //         }
+    //         // --end-->
+            
+    //         $records['energy_header'] = $thead;
+    //         $records['energy_html'] = $tbody;
+    //         $records['table_found'] = $table_found;
+    //         $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $queryEnergy ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'input_val_week_day' => $input_val_week_day , 'name_val' => $energy_measurement_text);
+    //         $records['query_data'] = $ar;
+    //         echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+    //         die;
+    //     }
+    //     catch(Exception $e) {
+    //         echo 'Caught exception: ',  $e->getMessage(), "\n";
+    //     }
+    // }
     
     public function getAutomaticTableEnergyDataPrevious(){
         try{
@@ -4398,6 +4524,7 @@ class dashboardController {
             if($resultQuery != '' && count($resultQuery) > 0)
             {
                 $select = "<option value=''>Please Select Measurement</option>";
+                
                 foreach($resultQuery as $key=>$val)
                 {
                     $select .= "<option value=".$val["mst_ID"].">".$val['nameMSt']."</option>";    
@@ -7601,7 +7728,7 @@ class dashboardController {
                         <td>".$val1['date']->format('Y-m-d')."</td><td>".$totalValue."</td>
                         </tr>";
                     }
-                    $tbody .= "</tbody";
+                    $tbody .= "</tbody>";
                 }
                 else{
                     $tbody .= "<tbody";
@@ -10647,7 +10774,7 @@ class dashboardController {
             {
                 $table_found = 'true';
             }
-            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
+            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day week"));
             $tableOutsideHTML = '';
             if($table_found == 'true'){
                 if($_POST['chart_type'] == 'line_chart')
@@ -10666,7 +10793,7 @@ class dashboardController {
                         //Count Days
                         for($j = 0; $j < $input_val_week_day; $j++)
                         {
-                            $dateVal = date('Y-m-d', strtotime("-$j days"));
+                            $dateVal = date('Y-m-d', strtotime("-$j week"));
                             array_push($arCountDays,$dateVal);
                         }
 

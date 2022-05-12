@@ -58,7 +58,7 @@ function showexpandedchart() {
     var inputs = $(".tiles-click");
     inputs.each(function(){
         var className=($(this).attr('class'));
-        console.log(className.includes('chart_tile_expand_view'));
+        className.includes('chart_tile_expand_view');
         if(className.includes('chart_tile_expand_view')){
             var id= className.split(' ');
             getDimentions(id[0],false);
@@ -3990,6 +3990,27 @@ function edit_tile(type,edit_id){
             (a['data']['input_width'] != 0) ? $('#modal-width-input-measurement').val(a['data']['input_width']) : $('#modal-width-input-measurement').val('');
 
             $('.gernerated_measurement_modal_tiles #measurement_count_tile_modal_'+i_val+' .card-border').addClass('tile_border');
+
+            if(a['data']['expand_view'] == '1')
+            {
+                $('#expand_view_table_measurement').prop('checked',true);
+                $('#expand_view_table_measurement').val(1);
+
+                $("#modal-height-input-measurement").attr("disabled", true);
+                $("#modal-width-input-measurement").attr("disabled", true);
+                $('#modal-height-input-measurement').val('');
+                $('#modal-width-input-measurement').val('');
+
+                $('.gernerated_energy_modal_tiles #energy_count_tile_modal_'+i_val).css('height',290);
+                $('.gernerated_energy_modal_tiles #energy_count_tile_modal_'+i_val).css('width',570);
+            }
+            else{
+                $('#expand_view_table_measurement').prop('checked',false);
+                $('#expand_view_table_measurement').val(0);
+
+                $("#modal-width-input-measurement").removeAttr("disabled");
+                $("#modal-height-input-measurement").removeAttr("disabled");
+            }
         }
     });
 
@@ -4036,16 +4057,27 @@ function edit_tile_energy(type,edit_id){
 
             $('.gernerated_energy_modal_tiles #energy_count_tile_modal_'+i_val+' .card-border').addClass('tile_border');
 
-            if(a['data']['expand_view'] == 1)
+            if(a['data']['expand_view'] == '1')
             {
                 $('#expand_view_table').prop('checked',true);
                 $('#expand_view_table').val(1);
+
+                $("#modal-height-input-energy").attr("disabled", true);
+                $("#modal-width-input-energy").attr("disabled", true);
+                $('#modal-height-input-energy').val('');
+                $('#modal-width-input-energy').val('');
+
+                $('.gernerated_energy_modal_tiles #energy_count_tile_modal_'+i_val).css('height',290);
+                $('.gernerated_energy_modal_tiles #energy_count_tile_modal_'+i_val).css('width',570);
             }
             else{
                 $('#expand_view_table').prop('checked',false);
                 $('#expand_view_table').val(0);
+
+                $("#modal-width-input-energy").removeAttr("disabled");
+                $("#modal-height-input-energy").removeAttr("disabled");
             }
-            $('#expand_view_table').trigger('click');
+            // $('#expand_view_table').trigger('click');
 
         }
     });
@@ -4099,6 +4131,27 @@ function edit_tile_product(type,edit_id){
 
             $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val+' .card-border').addClass('tile_border');
 
+            if(a['data']['expand_view'] == '1')
+            {
+                $('#expand_view_table_product').prop('checked',true);
+                $('#expand_view_table_product').val(1);
+
+                $("#modal-height-input-product").attr("disabled", true);
+                $("#modal-width-input-product").attr("disabled", true);
+                $('#modal-height-input-product').val('');
+                $('#modal-width-input-product').val('');
+
+                $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val).css('height',290);
+                $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val).css('width',570);
+            }
+            else{
+                $('#expand_view_table_product').prop('checked',false);
+                $('#expand_view_table_product').val(0);
+
+                $("#modal-width-input-product").removeAttr("disabled");
+                $("#modal-height-input-product").removeAttr("disabled");
+            }
+
         }
     });
     // }
@@ -4147,6 +4200,26 @@ function edit_tile_product_automatic(type,edit_id){
 
             $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val+' .card-border').addClass('tile_border');
 
+            if(a['data']['expand_view'] == '1')
+            {
+                $('#expand_view_table_product').prop('checked',true);
+                $('#expand_view_table_product').val(1);
+
+                $("#modal-height-input-product").attr("disabled", true);
+                $("#modal-width-input-product").attr("disabled", true);
+                $('#modal-height-input-product').val('');
+                $('#modal-width-input-product').val('');
+
+                $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val).css('height',290);
+                $('.gernerated_product_modal_tiles #product_count_tile_modal_'+i_val).css('width',570);
+            }
+            else{
+                $('#expand_view_table_product').prop('checked',false);
+                $('#expand_view_table_product').val(0);
+
+                $("#modal-width-input-product").removeAttr("disabled");
+                $("#modal-height-input-product").removeAttr("disabled");
+            }
         }
     });
 
@@ -4155,11 +4228,13 @@ function edit_tile_product_automatic(type,edit_id){
 
 // <----31-8-2021----
 function updateTileRecord(){
+    alert("enter here fun");
     var id = localStorage.getItem('edit-measurement-tile');
     var input_height = $('#modal-height-input-measurement').val();
     var input_width = $('#modal-width-input-measurement').val();
     var height = $('#modal-height-input-measurement-hidden').val();
     var width = $('#modal-width-input-measurement-hidden').val();
+    var expand_view = $('#expand_view_table_measurement').val();
     var table_other = $('#measurement_record_table table tbody').children('tr:eq(0)').attr('data-table-other');
 
     // <---1-9-2021----
@@ -4202,6 +4277,7 @@ function updateTileRecord(){
                 record_type_of_tile : record_type_of_tile,
                 type_data_tile : type_data_tile,
                 table_other : table_other,
+                expand_view : expand_view,
                 nameDB: $("#nameDashboardDB").val()
             },
             fail: function() {
@@ -4227,12 +4303,14 @@ function updateTileRecord(){
 
 // <----24-8-2021----
 function updateTileRecordEnergy(){
+    // alert("enter here fun");
     var id = localStorage.getItem('edit-measurement-tile');
     var input_height = $('#modal-height-input-energy').val();
     var input_width = $('#modal-width-input-energy').val();
     var height = $('#modal-height-input-energy-hidden').val();
     var width = $('#modal-width-input-energy-hidden').val();
     var table_other = $('#energy_record_table table tbody').children('tr:eq(0)').attr('data-table-other');
+    var expand_view = $('#expand_view_table').val();
 
     // <---1-9-2021----
     var query_data = localStorage.getItem('query_data');
@@ -4274,7 +4352,8 @@ function updateTileRecordEnergy(){
                 record_type_of_tile : record_type_of_tile,
                 type_data_tile : type_data_tile,
                 table_other : table_other,
-                nameDB: $("#nameDashboardDB").val()
+                nameDB: $("#nameDashboardDB").val(),
+                expand_view : expand_view
             },
             fail: function() {
                 alert("failed!!")
@@ -4305,6 +4384,7 @@ function updateTileRecordProduct(){
     var height = $('#modal-height-input-product-hidden').val();
     var width = $('#modal-width-input-product-hidden').val();
     var table_other = $('#product_select_table_entries_table_div table tbody').children('tr:eq(0)').attr('data-table-other');
+    var expand_view = $('#expand_view_table_product').val();
 
     // <---1-9-2021----
     var query_data = localStorage.getItem('query_data');
@@ -4346,6 +4426,7 @@ function updateTileRecordProduct(){
                 record_type_of_tile : record_type_of_tile,
                 type_data_tile : type_data_tile,
                 table_other : table_other,
+                expand_view : expand_view,
                 nameDB: $("#nameDashboardDB").val()
             },
             fail: function() {
@@ -4377,6 +4458,7 @@ function updateTileRecordProductAutomatic(){
     var input_width = $('#modal-width-input-product').val();
     var height = $('#modal-height-input-product-hidden').val();
     var width = $('#modal-width-input-product-hidden').val();
+    var expand_view = $('#expand_view_table_product').val();
     var table_other = $('#product_select_table_entries_table_div table tbody').children('tr:eq(0)').attr('data-table-other');
 
     // <---1-9-2021----
@@ -4430,6 +4512,7 @@ function updateTileRecordProductAutomatic(){
                 record_type_of_tile : record_type_of_tile,
                 type_data_tile : type_data_tile,
                 table_other : table_other,
+                expand_view : expand_view,
                 nameDB: $("#nameDashboardDB").val(),
                 prd_all_columns_automatic : JSON.stringify(prd_all_columns_automatic),
                 columnDataType : JSON.stringify(columnDataType),
@@ -5945,9 +6028,9 @@ function chartRecordFilter(){
                 // -end--->
 
                 if(chart_type == "line_chart"){
-                   ;
+                   
                     var div_i_id = $('#total_records_chart').val();
-                    var html_canvas_chart = "<canvas id='lineChart"+div_i_id+"'></canvas>"
+                    var html_canvas_chart = "<canvas id='lineChart'></canvas>"
                     $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html('');
                     $('#measurement_count_tile_modal_chart_'+div_i_id+' .save_table_div_show_table').html(html_canvas_chart);
 
@@ -7684,7 +7767,7 @@ function chartRecordFilterEnergyAutomatic(){
         var concatMstName = '';
         $.each($("#energy_chart_measurement_automatic option:selected"), function(){   
             concatMstName+=$(this).text()+',';
-            console.log(concatMstName);
+            // console.log(concatMstName);
         });         
     }
 
@@ -8751,6 +8834,7 @@ function updateTileRecordOverallCount()
             type_data_tile : type_data_tile,
             mst_ID : mst_ID,
             data_other : data_other,
+            expand_view : expand_view,
             type : 'Measurement'
         },
         fail: function() {
@@ -9040,8 +9124,8 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
 
                 };
 
-                if ($("#lineChart").length) {
-                    var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+                if ($("#lineChart"+id).length) {
+                    var lineChartCanvas = $("#lineChart"+id).get(0).getContext("2d");
                     var lineChart = new Chart(lineChartCanvas, {
                         type: 'line',
                         data: data,
@@ -9110,8 +9194,8 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
                     }
                 }
 
-                if ($('#areaChart').length) {
-                    var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+                if ($('#areaChart'+id).length) {
+                    var areaChartCanvas = $("#areaChart"+id).get(0).getContext("2d");
                     var areaChart = new Chart(areaChartCanvas, {
                         type: 'line',
                         data: areaData,
@@ -9290,8 +9374,8 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
                     }
                 };
 
-                if ($("#pieChart").length) {
-                    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+                if ($("#pieChart"+id).length) {
+                    var pieChartCanvas = $("#pieChart"+id).get(0).getContext("2d");
                     var pieChart = new Chart(pieChartCanvas, {
                         type: 'pie',
                         data: doughnutPieData,
@@ -9472,8 +9556,8 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
                 };
 
 
-                if($("#barChart").length) {
-                    var barChartCanvas = $("#barChart").get(0).getContext("2d");
+                if($("#barChart"+id).length) {
+                    var barChartCanvas = $("#barChart"+id).get(0).getContext("2d");
                     // This will get the first returned node in the jQuery collection.
                     var barChart = new Chart(barChartCanvas, {
                         type: 'bar',
@@ -9560,8 +9644,8 @@ function getClickDashboardChartProduct(id,record_type_of_tile,analgen_config_id,
 
                 };
 
-                if ($("#lineChart").length) {
-                    var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+                if ($("#lineChart"+id).length) {
+                    var lineChartCanvas = $("#lineChart"+id).get(0).getContext("2d");
                     var lineChart = new Chart(lineChartCanvas, {
                         type: 'line',
                         data: data,
@@ -9630,8 +9714,8 @@ function getClickDashboardChartProduct(id,record_type_of_tile,analgen_config_id,
                     }
                 }
 
-                if ($('#areaChart').length) {
-                    var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+                if ($('#areaChart'+id).length) {
+                    var areaChartCanvas = $("#areaChart"+id).get(0).getContext("2d");
                     var areaChart = new Chart(areaChartCanvas, {
                         type: 'line',
                         data: areaData,
@@ -9810,8 +9894,8 @@ function getClickDashboardChartProduct(id,record_type_of_tile,analgen_config_id,
                     }
                 };
 
-                if ($("#pieChart").length) {
-                    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+                if ($("#pieChart"+id).length) {
+                    var pieChartCanvas = $("#pieChart"+id).get(0).getContext("2d");
                     var pieChart = new Chart(pieChartCanvas, {
                         type: 'pie',
                         data: doughnutPieData,
@@ -9992,8 +10076,8 @@ function getClickDashboardChartProduct(id,record_type_of_tile,analgen_config_id,
                 };
 
 
-                if($("#barChart").length) {
-                    var barChartCanvas = $("#barChart").get(0).getContext("2d");
+                if($("#barChart"+id).length) {
+                    var barChartCanvas = $("#barChart"+id).get(0).getContext("2d");
                     // This will get the first returned node in the jQuery collection.
                     var barChart = new Chart(barChartCanvas, {
                         type: 'bar',
@@ -10344,7 +10428,7 @@ function getClickDashboardChartEnergyLayer(data){
                     }
                 };
 
-                if ($("#pieChart").length) {
+                if ($("#pieChart"+id).length) {
                     var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
                     var pieChart = new Chart(pieChartCanvas, {
                         type: 'pie',
@@ -10526,7 +10610,7 @@ function getClickDashboardChartEnergyLayer(data){
                 };
 
 
-                if($("#barChart").length) {
+                if($("#barChart"+id).length) {
                     var barChartCanvas = $("#barChart").get(0).getContext("2d");
                     // This will get the first returned node in the jQuery collection.
                     var barChart = new Chart(barChartCanvas, {
@@ -12325,3 +12409,25 @@ function logout(){
 //-----end-->
 
 // ---end-->
+
+// $("#clickMe").click(function(){
+              
+//     $connectTestResult = Test-NetConnection -ComputerName gipscomm.file.core.windows.net -Port 445
+
+//     if ($connectTestResult.TcpTestSucceeded) {
+
+//         // # Speichern Sie das Kennwort, damit das Laufwerk bei einem Neustart erhalten bleibt.
+
+//         cmd.exe /C "cmdkey /add:`"gipscomm.file.core.windows.net` /user:localhost\gipscomm`" /pass:`"ygPAB/I9qUKAGenXNDm/gfmfbd1tUklGqm7l4SJzCZmimlBVmAEo6re+jJwBBrf9N6ymSu3P/a9sZDFG/Drqog==`""
+
+//         // # Laufwerk einbinden
+
+//         New-PSDrive -Name U -PSProvider FileSystem -Root \\gipscomm.file.core.windows.net\gipscomm -Persist
+
+//     } else {
+
+//         Write-Error -Message "Unable to reach the Azure storage account via port 445. Check to make sure your organization or ISP is not blocking port 445, or use Azure P2S VPN, Azure S2S VPN, or Express Route to tunnel SMB traffic over a different port.";
+
+//     }
+
+// });
