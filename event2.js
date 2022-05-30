@@ -1113,7 +1113,6 @@ $(document).ready( function(){
         
     });
 
-
     $(document).on('click','#energy_modal_open_button', function(){
         var edit_id = localStorage.getItem('edit-measurement-tile');
         var tile_edit_value = $(this).attr('tile-edit');
@@ -1187,7 +1186,6 @@ $(document).ready( function(){
 
                 $('#modal-height-input-energy').attr('disabled',false);
                 $('#modal-width-input-energy').attr('disabled',false);
-
 
                 // <---10-11-2021---
                 var query_data_row_click = localStorage.getItem('query_data');
@@ -1297,10 +1295,14 @@ $(document).ready( function(){
         // if (energy_automatic_input > 10) {
         //     alert("last line");
         // }
+        if (tile_edit_value == 'false') {
+            
+            $('#expand_view_table').prop("checked", "true");
+            check_value = $('#expand_view_table').is(":checked");
+            checkExpandViewValueEnergy();
+        }
+       
     })
-    // ---end-->
-
-    // <---20-8-2021----
 
     $(document).on('click', function (event) {
         
@@ -1417,6 +1419,12 @@ $(document).ready( function(){
 
     // <----20-8-2021--
     $(document).on('click', '.save_and_proceed_btn_dashboard', function(e){
+        // alert("position here");
+        // check_value = $('#save_and_proceed_btn_dashboard').val();
+        // if (check_value == "Update & Proceed") {
+        //     $('#production_table_main_div').show();
+        // }
+        // var edit_id = localStorage.getItem('edit-measurement-tile');
         $('#modal_open_button').val('Save & Preview');
         $('#modal_open_button').attr('tile-edit','false');
 
@@ -1455,12 +1463,11 @@ $(document).ready( function(){
             localStorage.setItem('product_title_modal_tile',title_modal_tile);
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
-            
+            var i_val = localStorage.getItem('edit-i-value');
+            var edit_value = $(this).attr('data-edit');
             $('#tables_sidebar').click();
             $('#product_sidebar_option').click();
             $('#dashboard_tile_modal').modal('hide');
-
-            var edit_value = $(this).attr('data-edit');
             if(edit_value == 'true'){
                 $('#product_modal_open_button').val('Update & Preview');
                 $('#product_modal_open_button').attr('tile-edit','true');
@@ -1473,11 +1480,14 @@ $(document).ready( function(){
                 if(edit_tile_db_name != '' && all_column != '' && edit_tile_db_table != '')
                 {
                     $('#dashboard_database_list option[dashboardbvalue=' + edit_tile_db_name + ']').prop('selected', 'selected');
-                    // $('#dashboard_database_list').trigger('change');
-                    // $('#all_tables_product option[value=' + edit_tile_db_table + ']').prop('selected', 'selected');
-                    // getAllColumnProductTables(all_column);
+                    // $('#dashboard_database_list ooption[dashboardbvalue=' + all_column +']').prop('selected','selected');
+                    $('#dashboard_database_list').trigger('change');
+                    $('#all_tables_product option[value=' + edit_tile_db_table + ']').prop('selected', 'selected');
+                    // $('#all_columns_product option[value=' + all_column + ']').prop('selected', 'selected');
+                    getAllColumnProductTables(all_column,i_val);
                     // getAllColumnProductTables();
-                    // getNumberRecordsProductAutomatic();
+                    // getEditTableDataDashboardEnergy();
+                    getNumberRecordsProductAutomatic(i_val);
                 }
                 else if(tile_click_manually != '' && tile_click_manually == 'true'){
                     $("#product_type option[value='mannual']").prop('selected','selecetd');
@@ -2183,12 +2193,13 @@ $(document).ready( function(){
     // <----20-10-2021---
     $(document).on('click','#expand_view_chart', ()=>{
         var valIsChecked = $('#expand_view_chart').is(":checked");
+        var total_records = $('#total_records').val();
         if(valIsChecked == true){
             $('#expand_view_chart').val("1");
-            // $("#measurement-height-chart").attr("disabled", true);
-            // $("#measurement-width-chart").attr("disabled", true);
-            // $('#measurement-height-chart').val('');
-            // $('#measurement-width-chart').val('');
+            $("#measurement-height-chart").attr("readonly", true);
+            $("#measurement-width-chart").attr("readonly", true);
+            $('#measurement-height-chart').val('2');
+            $('#measurement-width-chart').val('2');
             $('.chart_outisde_tile_controls').hide();
             $('#chart_outside_tile_structure').prop('checked',false);
             $('#chart_outside_tile_structure').val('0');
@@ -2201,14 +2212,29 @@ $(document).ready( function(){
             $('#measurement_count_outer_tile_modal_chart_'+id).css('width',285);
             $('.outer_chart_tile_structure').hide();
 
+            $('#measurement_count_tile_modal_chart_'+total_records).css('height',290);
+            $('#measurement_count_tile_modal_chart_'+total_records).css('width',570);
+
+            $('#energy_count_tile_modal_chart_'+total_records).css('height',290);
+            $('#energy_count_tile_modal_chart_'+total_records).css('width',570);
+            
+            // $('.dashboard_chart_tile_html_'+total_records+' #measurement_count_tile_modal_chart_'+total_records).css('height',290);
+            // $('.dashboard_chart_tile_html_'+total_records+' #measurement_count_tile_modal_chart_'+total_records).css('width',570);
+    
 
         }
         else{
             $('#expand_view_chart').val("0");
-            // $("#measurement-height-chart").removeAttr("disabled");
-            // $("#measurement-width-chart").removeAttr("disabled");
+            $("#measurement-height-chart").removeAttr("readonly");
+            $("#measurement-width-chart").removeAttr("readonly");
             // $('#measurement-height-chart').val('2');
             // $('#measurement-width-chart').val('2');
+            // $('#measurement_count_tile_modal_chart_'+total_records).css('height',145);
+            // $('#measurement_count_tile_modal_chart_'+total_records).css('width',285);
+
+            // $('.dashboard_chart_tile_html_'+total_records+' #measurement_count_tile_modal_chart_'+total_records).css('height',145);
+            // $('.dashboard_chart_tile_html_'+total_records+' #measurement_count_tile_modal_chart_'+total_records).css('width',290);
+    
             $('.outer_chart_tile_structure').show();
         }
     });
@@ -3805,12 +3831,6 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
           $('#energy_chart_measurement_automatic').val();
           if ($(this).val().length > 5) {
             alert('Please Select maximum 5');
-            // $('#energy_chart_measurement_automatic').prop('checked', false);
-            // // $('#energy_chart_measurement_automatic').val('');
-            // $(this).removeAttr('checked');
-            // $(this).val(last_valid_selection);
-            
-            //$(this).prop('selected',false);
             var val = $('#energy_chart_measurement_automatic').val();
             $("#energy_chart_measurement_automatic option[value='"+val[5]+"'").prop('selected',false);
             $("#energy_chart_measurement_automatic").multiselect('reload');
@@ -3818,8 +3838,23 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
           } 
           
         });
+
+
+        $('#chart_records').change(function(event) {
+
+            $('#chart_records').val();
+            if ($(this).val().length > 5) {
+              alert('Please Select maximum 5');
+              var val = $('#chart_records').val();
+              $("#chart_records option[value='"+val[5]+"'").prop('selected',false);
+              $("#chart_records").multiselect('reload');
+            } 
+            
+          });
+          
     // Hide another types of chart on multiple select 
-        $('#energy_chart_measurement_automatic').change(function(event) {
+
+        $('#energy_chart_measurement_automatic,#chart_records_product_item,#chart_records').change(function(event) {
 
           if ($(this).val().length > 1) {
               $('#area_chart').hide();
@@ -3831,7 +3866,7 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
 
     // Show another types of chart on single select 
 
-        $('#energy_chart_measurement_automatic').change(function(event) {
+        $('#energy_chart_measurement_automatic,#chart_records_product_item,#chart_records').change(function(event) {
 
             if ($(this).val().length < 2) {
                 $('#area_chart').show();
@@ -3840,7 +3875,15 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
             } 
             
           });
-
-   
-
+          
+          $("#dashboard_add_tile").click(function(){
+              var tile_count = $('.movetile').length;
+              if (tile_count >= 8) {
+                  //   $('#dashboard_tile_modal').hide();
+                  alert("Only 8 tiles Can be Save Here");
+                  return false;
+                 
+              }
+          });
+                 
 })

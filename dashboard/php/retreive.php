@@ -1126,10 +1126,10 @@ class dashboardController {
                                 </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+                    // if($i < $total_result){
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //    $tileHtml.= $dataResult[$i]['tile_html'];
+                    // } 
                 }
                 
             }
@@ -1236,10 +1236,10 @@ class dashboardController {
                                 </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+                    // if($i < $total_result){
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //    $tileHtml.= $dataResult[$i]['tile_html'];
+                    // } 
                 }
                 
             }
@@ -1348,10 +1348,10 @@ class dashboardController {
                                 </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+                    // if($i < $total_result){
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //    $tileHtml.= $dataResult[$i]['tile_html'];
+                    // } 
                 }
                 
             }
@@ -1494,10 +1494,10 @@ class dashboardController {
                         // </div></div>";
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+                    // if($i < $total_result){
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //    $tileHtml.= $dataResult[$i]['tile_html'];
+                    // } 
                 }
                 
             }
@@ -1681,10 +1681,10 @@ class dashboardController {
                         </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+                    // if($i < $total_result){
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //    $tileHtml.= $dataResult[$i]['tile_html'];
+                    // } 
                 }
                 
             }
@@ -1856,10 +1856,10 @@ class dashboardController {
                         </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+                    // if($i < $total_result){
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //    $tileHtml.= $dataResult[$i]['tile_html'];
+                    // } 
                 }
                 
             }
@@ -2024,10 +2024,10 @@ class dashboardController {
                         </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+                    // if($i < $total_result){
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //    $tileHtml.= $dataResult[$i]['tile_html'];
+                    // } 
                 }
                 
             }
@@ -2163,8 +2163,8 @@ class dashboardController {
                         $records['data'] = $dataResult[$i];
                     }
                     else{
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        $tileHtml.= $dataResult[$i]['tile_html'];
+                        // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        // $tileHtml.= $dataResult[$i]['tile_html'];
                     }
                     
                 }
@@ -2233,8 +2233,8 @@ class dashboardController {
                         $records['data'] = $dataResult[$i];
                     }
                     else{
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        $tileHtml.= $dataResult[$i]['tile_html'];
+                        // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        // $tileHtml.= $dataResult[$i]['tile_html'];
                     }
                     
                 }
@@ -2303,8 +2303,8 @@ class dashboardController {
                         $records['data'] = $dataResult[$i];
                     }
                     else{
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        $tileHtml.= $dataResult[$i]['tile_html'];
+                        // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        // $tileHtml.= $dataResult[$i]['tile_html'];
                     }
                     
                 }
@@ -2374,8 +2374,8 @@ class dashboardController {
                         $records['data'] = $dataResult[$i];
                     }
                     else{
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        $tileHtml.= $dataResult[$i]['tile_html'];
+                    //     // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //     // $tileHtml.= $dataResult[$i]['tile_html'];
                     }
                     
                 }
@@ -2586,10 +2586,10 @@ class dashboardController {
                                             </div></div>"; 
 
                     }
-                    else{
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        $tileHtml.= $dataResult[$i]['tile_html'];
-                    }
+                    // else{
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //     $tileHtml.= $dataResult[$i]['tile_html'];
+                    // }
                 }
                 $records['tile_html'] = $tileHtml;
                 $records['total_record'] = count($dataResult);
@@ -2695,10 +2695,10 @@ class dashboardController {
                                             </div></div>"; 
 
                     }
-                    else{
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        $tileHtml.= $dataResult[$i]['tile_html'];
-                    }
+                    // else{
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //     $tileHtml.= $dataResult[$i]['tile_html'];
+                    // }
                 }
                 $records['tile_html'] = $tileHtml;
                 $records['total_record'] = count($dataResult);
@@ -2805,8 +2805,8 @@ class dashboardController {
 
                     }
                     else{
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        $tileHtml.= $dataResult[$i]['tile_html'];
+                        // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                        // $tileHtml.= $dataResult[$i]['tile_html'];
                     }
                 }
                 $records['tile_html'] = $tileHtml;
@@ -2920,10 +2920,10 @@ class dashboardController {
                                             </div></div>"; 
 
                     }
-                    else{
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        $tileHtml.= $dataResult[$i]['tile_html'];
-                    }
+                    // else{
+                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+                    //     $tileHtml.= $dataResult[$i]['tile_html'];
+                    // }
                 }
                 $records['tile_html'] = $tileHtml;
                 $records['total_record'] = count($dataResult);
@@ -3867,8 +3867,8 @@ class dashboardController {
                 $table_found = 'true';
             }
 
-
-            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
+            $dateCheck = date('Y-m-d', strtotime("-60 days"));
+            $dateCheck = date($dateCheck, strtotime("-$input_val_week_day days"));
             $queryEnergy = '';
             if($table_found == 'true'){
                 $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
@@ -5713,11 +5713,20 @@ class dashboardController {
     {
         try{
             global $conn;
+            $i_val = $_POST['i_val'];
             $table_name = $_POST['table_name'];
             $queryColumnTables  = "Select column_name,data_type from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '$table_name' ";
             $queryColumnTablesRecord = queryDB($conn, $queryColumnTables, "read");
             $records['all_columns'] = $queryColumnTablesRecord;
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
+
+            // $new_query = "select prd_all_columns_automatic from tableFormat where id = '$i_val'";
+            // echo $new_query;
+            // $query_result = queryDB($conn,  $new_query, "read");
+            // $result =  ($query_result) ? unserialize($query_result[0]['prd_all_columns_automatic']) :'';
+            // var_dump($result); die;
+            // $records['all_columns'] = $result;
+            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         }
         catch (Exception $e) {

@@ -4,49 +4,9 @@ ini_set ( 'display_errors', 'On' ) ;
 
 $GLOBALS['QueryStatsIntoFile'] = false;
 
-// function connectToDB( $nameDB ) {
-//   $serverName = "sql_gc.managee.de" ;
-//   $connectionInfo = array( "Database"=>$nameDB, "UID"=>"gipscomm", "PWD"=>"Gc$2017!" );
-
-//  $executionStartTime = microtime(true);
-//   if($GLOBALS['QueryStatsIntoFile'] == true) {
-//       $GLOBALS['StartTimeConn'] = $executionStartTime;
-//   }
-
-
-//   $conn = sqlsrv_connect( $serverName, $connectionInfo ) ;
-//   if ( !$conn ) {
-//     die(print_r(( 'Could not connect: ' . sqlsrv_errors() ))) ;
-//   }
-
-//  if($GLOBALS['QueryStatsIntoFile'] == true) {
-//       $executionEndTime = microtime(true);
-//       $elapsedTime = $executionEndTime - $executionStartTime;
-
-//       $file = 'phpDbBenchmark.log';
-
-//       $logTimestamp = "\n\n\n## ".date("Y-m-d",time());
-//       $logDbToUse = "\n## DB TO USE                : '$nameDB'";
-//       $logConnT = "\n## ESTABLISH CONNECTION       : '$elapsedTime'";
-//       $GLOBALS['separator'] = "\n## -------------------------- ";
-
-//       $logFinalString = $logTimestamp
-//       . $GLOBALS['separator']
-//       . $logDbToUse
-//       . $logConnT
-//       . $GLOBALS['separator'];
-
-//       file_put_contents($file, $logFinalString, FILE_APPEND | LOCK_EX);
-//   }
-
-
-//   return $conn ;
-// }
-
 function connectToDB( $nameDB ) {
- $nameDB='G-Analysis';
-  $serverName = "RUGBYHDB.seasia.in" ;
-  $connectionInfo = array( "Database"=>$nameDB, "UID"=>"g-analysis", "PWD"=>"ZWFwcC5pbzAOBg" );
+  $serverName = "sql_gc.managee.de" ;
+  $connectionInfo = array( "Database"=>$nameDB, "UID"=>"gipscomm", "PWD"=>"Gc$2017!" );
 
  $executionStartTime = microtime(true);
   if($GLOBALS['QueryStatsIntoFile'] == true) {
@@ -55,7 +15,6 @@ function connectToDB( $nameDB ) {
 
 
   $conn = sqlsrv_connect( $serverName, $connectionInfo ) ;
-  
   if ( !$conn ) {
     die(print_r(( 'Could not connect: ' . sqlsrv_errors() ))) ;
   }
@@ -83,6 +42,47 @@ function connectToDB( $nameDB ) {
 
   return $conn ;
 }
+
+// function connectToDB( $nameDB ) {
+//  $nameDB='G-Analysis';
+//   $serverName = "RUGBYHDB.seasia.in" ;
+//   $connectionInfo = array( "Database"=>$nameDB, "UID"=>"g-analysis", "PWD"=>"ZWFwcC5pbzAOBg" );
+
+//  $executionStartTime = microtime(true);
+//   if($GLOBALS['QueryStatsIntoFile'] == true) {
+//       $GLOBALS['StartTimeConn'] = $executionStartTime;
+//   }
+
+
+//   $conn = sqlsrv_connect( $serverName, $connectionInfo ) ;
+  
+//   if ( !$conn ) {
+//     die(print_r(( 'Could not connect: ' . sqlsrv_errors() ))) ;
+//   }
+
+//  if($GLOBALS['QueryStatsIntoFile'] == true) {
+//       $executionEndTime = microtime(true);
+//       $elapsedTime = $executionEndTime - $executionStartTime;
+
+//       $file = 'phpDbBenchmark.log';
+
+//       $logTimestamp = "\n\n\n## ".date("Y-m-d",time());
+//       $logDbToUse = "\n## DB TO USE                : '$nameDB'";
+//       $logConnT = "\n## ESTABLISH CONNECTION       : '$elapsedTime'";
+//       $GLOBALS['separator'] = "\n## -------------------------- ";
+
+//       $logFinalString = $logTimestamp
+//       . $GLOBALS['separator']
+//       . $logDbToUse
+//       . $logConnT
+//       . $GLOBALS['separator'];
+
+//       file_put_contents($file, $logFinalString, FILE_APPEND | LOCK_EX);
+//   }
+
+
+//   return $conn ;
+// }
 
 // Tests if sql arg is valid
     function queryDB( $conn, $sqlString, $mode ) {
