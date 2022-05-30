@@ -1474,10 +1474,10 @@ $(document).ready( function(){
                 {
                     $('#dashboard_database_list option[dashboardbvalue=' + edit_tile_db_name + ']').prop('selected', 'selected');
                     // $('#dashboard_database_list').trigger('change');
-                    // $('#all_tables_product option[value=' + edit_tile_db_table + ']').prop('selected', 'selected');
-                    // getAllColumnProductTables(all_column);
+                    $('#all_tables_product option[value=' + edit_tile_db_table + ']').prop('selected', 'selected');
+                    getAllColumnProductTables(all_column);
                     // getAllColumnProductTables();
-                    // getNumberRecordsProductAutomatic();
+                    getNumberRecordsProductAutomatic();
                 }
                 else if(tile_click_manually != '' && tile_click_manually == 'true'){
                     $("#product_type option[value='mannual']").prop('selected','selecetd');

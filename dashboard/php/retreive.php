@@ -1126,10 +1126,10 @@ class dashboardController {
                                 </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+//                    if($i < $total_result){
+//                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+//                       $tileHtml.= $dataResult[$i]['tile_html'];
+//                    }
                 }
                 
             }
@@ -1236,10 +1236,10 @@ class dashboardController {
                                 </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+//                    if($i < $total_result){
+//                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+//                       $tileHtml.= $dataResult[$i]['tile_html'];
+//                    }
                 }
                 
             }
@@ -1348,10 +1348,10 @@ class dashboardController {
                                 </div></div>"; 
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+//                    if($i < $total_result){
+//                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+//                       $tileHtml.= $dataResult[$i]['tile_html'];
+//                    }
                 }
                 
             }
@@ -1494,10 +1494,10 @@ class dashboardController {
                         // </div></div>";
                     } 
                     
-                    if($i < $total_result){
-                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                       $tileHtml.= $dataResult[$i]['tile_html'];
-                    } 
+//                    if($i < $total_result){
+//                        $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
+//                       $tileHtml.= $dataResult[$i]['tile_html'];
+//                    }
                 }
                 
             }
