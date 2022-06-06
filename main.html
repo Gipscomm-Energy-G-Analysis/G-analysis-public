@@ -602,6 +602,11 @@
                   <div id="save_btn_tile_div">
                     <input type="button" id="save_and_proceed_btn_dashboard" data-edit="false" class="btn btn-sm btn-success save_and_proceed_btn_dashboard" value="Speichern & fortfahren">
                   </div>
+                  <input type="hidden" id="table_type">
+                  <input type="hidden" id="table_filter">
+
+                  <input type="hidden" id="edit_tile_click_manually">
+
                   <input type="hidden" id="edit_product_tile_automatic">
                   <input type="hidden" id="edit_tile_click_manually">
                 </div>
@@ -1427,19 +1432,19 @@
                       <div class="modal-body">
                         <!-- Height and Width -->
                         <div class="row">
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3 hide_for_wert_case">
                               <label for="modal-height-input-energy" class="text-mute">Spalte</label>
                               <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-energy" placeholder="Spalte">
                               <input type="hidden" id="modal-height-input-energy-hidden" value="145">
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3 hide_for_wert_case">
                               <label for="modal-width-input-energy" class="text-mute">Zeile</label>
                               <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-energy" placeholder="Reihe">
                               <input type="hidden" id="modal-width-input-energy-hidden" value="285">
                             </div>
 
-                            <diV class="form-group col-md-2 expand_view_table_div">
+                            <diV class="form-group col-md-2 expand_view_table_div hide_for_wert_case">
                               <div class="form-check form-check-primary">
                                 <label class="form-check-label">
                                 Ansicht erweitern
@@ -1577,7 +1582,7 @@
                <!-- Large modal -->
                 <!-- <button type="button" style="display: none" class="btn btn-primary" id="modal_open_button" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button> -->
                 <input type="hidden" id="row_click_last_date">
-                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal fade bd-example-modal-lg measurement_table_modal tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-lg max-width-modal">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -1590,19 +1595,19 @@
                       <div class="modal-body">
                         <!-- Height and Width -->
                         <div class="row">
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-3 hide_for_wert_case">
                               <label for="modal-height-input-measurement" class="text-mute">Spalte</label>
                               <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-measurement" placeholder="Spalte">
                               <input type="hidden" id="modal-height-input-measurement-hidden" value="145">
                             </div>
 
-                            <div class="form-group col-md-3">
-                              <label for="modal-width-input-measurement" class="text-mute">Zeile</label>
+                            <div class="form-group col-md-3 hide_for_wert_case">
+                              <label for="modal-width-input-measurement hide_for_wert_case" class="text-mute">Zeile</label>
                               <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-measurement" placeholder="Reihe">
                               <input type="hidden" id="modal-width-input-measurement-hidden" value="285">
                             </div>
 
-                            <div class="form-group col-md-2 expand_view_table_div">
+                            <div class="form-group col-md-2 expand_view_table_div hide_for_wert_case">
                               <div class="form-check form-check-primary">
                                 <label class="form-check-label">
                                 Ansicht erweitern
@@ -1996,19 +2001,19 @@
                      <div class="modal-body">
                        <!-- Height and Width -->
                        <div class="row">
-                           <div class="form-group col-md-3">
+                           <div class="form-group col-md-3 hide_for_wert_case">
                              <label for="modal-height-input-product" class="text-mute">Spalte</label>
                              <input type="number" class="form-control form-control-sm text-dark" id="modal-height-input-product" placeholder="Spalte">
                              <input type="hidden" id="modal-height-input-product-hidden" value="145">
                            </div>
 
-                           <div class="form-group col-md-3">
+                           <div class="form-group col-md-3 hide_for_wert_case">
                              <label for="modal-width-input-product" class="text-mute">Zeile</label>
                              <input type="number" class="form-control form-control-sm text-dark" id="modal-width-input-product" placeholder="Reihe">
                              <input type="hidden" id="modal-width-input-product-hidden" value="285">
                            </div>
 
-                           <div class="form-group col-md-2 expand_view_table_div" >
+                           <div class="form-group col-md-2 expand_view_table_div hide_for_wert_case" >
                               <div class="form-check form-check-primary">
                                 <label class="form-check-label">
                                 Ansicht erweitern

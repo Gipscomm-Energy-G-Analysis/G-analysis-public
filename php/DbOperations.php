@@ -55,7 +55,6 @@ function connectToDB( $nameDB ) {
 
 
 //   $conn = sqlsrv_connect( $serverName, $connectionInfo ) ;
-  
 //   if ( !$conn ) {
 //     die(print_r(( 'Could not connect: ' . sqlsrv_errors() ))) ;
 //   }

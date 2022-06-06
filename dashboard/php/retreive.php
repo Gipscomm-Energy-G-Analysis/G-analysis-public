@@ -7,6 +7,8 @@ require '..\..\/php/DbOperations.php';
 
 $nameDB = isset($_POST['nameDB']) ? $_POST['nameDB'] : '';
 // $nameDB = 'g000_demo';
+
+// $_SESSION['username'] = 'AWI';
 session_start();
 $conn = connectToDB($nameDB);
 
@@ -279,7 +281,8 @@ class dashboardController {
             //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
-            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement');
+            // $table_filter = $time_interval.','.$order_by_val.','.$total_number_records;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement', 'table_type' => $table_type, 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
              // --end-->
 
@@ -1480,7 +1483,7 @@ class dashboardController {
                                     
                         //             <div class='overflow-hide ml-3 chart-width'>
                         //                 <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                        //                     <p class='text-muted'>Outer Tile View</p>
+                        //                     <p class='text-muted'>Datentabelle</p>
                         //                 </div>
                         //                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
                         //                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -1552,7 +1555,7 @@ class dashboardController {
                                     
                         //             <div class='overflow-hide ml-3 chart-width'>
                         //                 <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                        //                     <p class='text-muted'>Outer Tile View</p>
+                        //                     <p class='text-muted'>Datentabelle</p>
                         //                 </div>
                         //                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
                         //                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -1667,7 +1670,7 @@ class dashboardController {
                                     
                                     <div class='overflow-hide ml-3 chart-width'>
                                         <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                            <p class='text-muted'>Outer Tile View</p>
+                                            <p class='text-muted'>Diagramme</p>
                                         </div>
                                         <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -1738,7 +1741,7 @@ class dashboardController {
                                             
                                             <div class='overflow-hide ml-3 chart-width'>
                                                 <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                    <p class='text-muted'>Outer Tile View</p>
+                                                    <p class='text-muted'>Diagramme</p>
                                                 </div>
                                                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -1842,7 +1845,7 @@ class dashboardController {
                                     
                                     <div class='overflow-hide ml-3 chart-width'>
                                         <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                            <p class='text-muted'>Outer Tile View</p>
+                                            <p class='text-muted'>Diagramme</p>
                                         </div>
                                         <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -1913,7 +1916,7 @@ class dashboardController {
                                             
                                             <div class='overflow-hide ml-3 chart-width'>
                                                 <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                    <p class='text-muted'>Outer Tile View</p>
+                                                    <p class='text-muted'>Diagramme</p>
                                                 </div>
                                                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -2010,7 +2013,7 @@ class dashboardController {
                                     
                                     <div class='overflow-hide ml-3 chart-width'>
                                         <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                            <p class='text-muted'>Outer Tile View</p>
+                                            <p class='text-muted'>Diagramme </p>
                                         </div>
                                         <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -2081,7 +2084,7 @@ class dashboardController {
                                             
                                             <div class='overflow-hide ml-3 chart-width'>
                                                 <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                    <p class='text-muted'>Outer Tile View</p>
+                                                    <p class='text-muted'>Diagramme </p>
                                                 </div>
                                                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
@@ -2464,7 +2467,7 @@ class dashboardController {
                                                         
                                                         <div class='overflow-hide ml-3 chart-width'>
                                                             <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                                <p class='text-muted'>Outer Tile View</p>
+                                                                <p class='text-muted'>Diagramme </p>
                                                             </div>
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
@@ -2572,7 +2575,7 @@ class dashboardController {
                                                         
                                                         <div class='overflow-hide ml-3 chart-width'>
                                                             <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                                <p class='text-muted'>Outer Tile View</p>
+                                                                <p class='text-muted'>Diagramme</p>
                                                             </div>
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
@@ -2681,7 +2684,7 @@ class dashboardController {
                                                         
                                                         <div class='overflow-hide ml-3 chart-width'>
                                                             <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                                <p class='text-muted'>Outer Tile View</p>
+                                                                <p class='text-muted'>Diagramme</p>
                                                             </div>
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
@@ -2790,7 +2793,7 @@ class dashboardController {
                                                         
                                                         <div class='overflow-hide ml-3 chart-width'>
                                                             <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                                <p class='text-muted'>Outer Tile View</p>
+                                                                <p class='text-muted'>Diagramme</p>
                                                             </div>
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
@@ -2906,7 +2909,7 @@ class dashboardController {
                                                         
                                                         <div class='overflow-hide ml-3 chart-width'>
                                                             <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                                                                <p class='text-muted'>Outer Tile View</p>
+                                                                <p class='text-muted'>Diagramme </p>
                                                             </div>
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
@@ -2947,6 +2950,7 @@ class dashboardController {
         try{
             // global $conn;
             $product_automatic_tile = $_POST['product_automatic_tile'];
+            $res =  $product_automatic_tile;
             $conn = '';
             if($product_automatic_tile == 'true')
             {
@@ -2959,6 +2963,8 @@ class dashboardController {
             $id = $_REQUEST['id'];
             $selectQuery = "SELECT * from tableFormat where id ='$id' AND username = '$username' ";
             $resultQuery = queryDB($conn, $selectQuery, "read"); 
+            // var_dump($resultQuery);
+            // echo json_encode($resultQuery);die;
             $records['data'] = $resultQuery;
 
             $allColumns = $product_automatic_tile == 'true' ? unserialize($resultQuery[0]['prd_all_columns_automatic']) : '';
@@ -3250,7 +3256,8 @@ class dashboardController {
             //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
-            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy');
+            $table_filter = $_POST['time_interval'].','.$_POST['energy_order_by_val'].','.$_POST['total_number_records'].','.$_POST['search_record'];
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy', 'table_type' => 'manually', 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
              // --end-->
 
@@ -3843,8 +3850,11 @@ class dashboardController {
     public function getNumberRecordsEnergyAutomatic(){
         try{
             global $conn;
+            $table_type = $_POST['table_type'];
             $mst_id = $_POST['mst_id'];
-            $input_val_week_day = $_POST['input_val_week_day'];
+            $input_val_week_day = $_POST['input_val_week_day'] + 60;
+            // echo $input_val_week_day;
+            $valMaxDate = $input_val_week_day - $_POST['input_val_week_day']; 
             $order_by = isset($_POST['order_by']) ?  $_POST['order_by'] : 'desc';
             $energy_measurement_text = $_POST['energy_measurement_text'];
             $thead = "<tr>";
@@ -3867,22 +3877,22 @@ class dashboardController {
                 $table_found = 'true';
             }
 
-            $dateCheck = date('Y-m-d', strtotime("-60 days"));
-            $dateCheck = date($dateCheck, strtotime("-$input_val_week_day days"));
+            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
+            $maxDateCheck = date('Y-m-d', strtotime("-$valMaxDate days"));
             $queryEnergy = '';
             if($table_found == 'true'){
                 $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
-                $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date $order_by ";
+                $queryEnergy .= "convert(date,Time) > '$dateCheck' AND convert(date,time) <= '$maxDateCheck' group by convert(date,Time) order by date $order_by ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
                 // echo $queryEnergy; die;
-                // echo json_encode($queryEnergyRecords); 
-
+                // echo json_encode($queryEnergyRecords); die;
                 if($queryEnergyRecords != '' && count($queryEnergyRecords))
                 {
-                    for($i = 0; $i < $input_val_week_day; $i++)
+                    for($i = 0; $i < $_POST['input_val_week_day']; $i++)
                     {
-                        $dateDynamicVal =  date('Y-m-d', strtotime("-$i days"));
+                        $dateDynamicIndex = $input_val_week_day - $i;
+                        $dateDynamicVal =  date('Y-m-d', strtotime("-$dateDynamicIndex days"));
                         $result = $this->generateEnergyAutomaticTableHTML($queryEnergyRecords,$dateDynamicVal,$energy_measurement_text);
                         $tbody .= $result;
                     }
@@ -3918,7 +3928,8 @@ class dashboardController {
             $records['energy_header'] = $thead;
             $records['energy_html'] = $tbody;
             $records['table_found'] = $table_found;
-            $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $queryEnergy ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'input_val_week_day' => $input_val_week_day , 'name_val' => $energy_measurement_text);
+            $table_filter = $mst_id.','.$_POST['input_val_week_day'];
+            $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $queryEnergy ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'input_val_week_day' => $_POST['input_val_week_day'] , 'name_val' => $energy_measurement_text, 'table_type' => $table_type, 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
@@ -4572,7 +4583,7 @@ class dashboardController {
                 $select = "<option value=''>Please Select Measurement</option>";
                 foreach($nameQueryResult as $key=>$val)
                 {
-                    $select .= "<option value=".$val["mst_id"].">".$val['nameMSt']."</option>";    
+                    $select .= "<option value=".$val["mst_id"].">".$val['nameMSt']."</option>";   
                 }
                 $result['measurement_html'] = $select;
             }
@@ -4637,6 +4648,7 @@ class dashboardController {
         try{
             global $conn;
             // <----27-1-2021---e
+            $table_type = $_POST['table_type'];
             $mst_id = $_POST['mst_id'];
             $select_day_week = $_POST['select_day_week'];
             $input_val_week_day = $_POST['input_val_week_day'];
@@ -4804,8 +4816,8 @@ class dashboardController {
                 $records['energy_header'] = $thead;
                 $records['energy_html'] = $tbody;
                 $records['table_found'] = $table_found;
-
-                $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $checkQuery ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'select_filter_day_week' => $select_day_week ,'input_val_week_day' => $input_val_week_day);
+                $table_filter = $mst_id.','.$_POST['select_day_week'].','.$_POST['input_val_week_day'];
+                $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $checkQuery ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'select_filter_day_week' => $select_day_week ,'input_val_week_day' => $input_val_week_day,'table_type' => $table_type,'table_filter' => $table_filter);
                 $records['query_data'] = $ar;
 
                 echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
@@ -4916,8 +4928,8 @@ class dashboardController {
                     $records['energy_header'] = $thead;
                     $records['energy_html'] = $tbody;
                     $records['table_found'] = $table_found;
-
-                    $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $checkShiftNameQuery ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'select_filter_day_week' => $select_day_week ,'input_val_week_day' => $input_val_week_day);
+                    $table_filter = $mst_id.','.$_POST['select_day_week'].','.$_POST['input_val_week_day'];
+                    $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $checkShiftNameQuery ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'select_filter_day_week' => $select_day_week ,'input_val_week_day' => $input_val_week_day,'table_type' => $table_type,'table_filter' => $table_filter);
                     $records['query_data'] = $ar;
 
 
@@ -5713,7 +5725,7 @@ class dashboardController {
     {
         try{
             global $conn;
-            $i_val = $_POST['i_val'];
+            // $i_val = $_POST['i_val'];
             $table_name = $_POST['table_name'];
             $queryColumnTables  = "Select column_name,data_type from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '$table_name' ";
             $queryColumnTablesRecord = queryDB($conn, $queryColumnTables, "read");
@@ -9034,7 +9046,9 @@ class dashboardController {
             {
                 $table_found = 'true';
             }
-            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
+
+            $dateCheck = date('Y-m-d', strtotime("-60 days"));
+            $dateCheck = date($dateCheck, strtotime("-$input_val_week_day days"));
             $tableOutsideHTML = '';
             if($table_found == 'true'){
 
@@ -9635,6 +9649,7 @@ class dashboardController {
     // <----14-9-2021---
     public function getAutomaticTableMeasurementData(){
         try{
+            echo "position here "; die;
             global $conn;
             $total_number_records = $_POST['total_number_records'];
             $number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
@@ -9753,6 +9768,7 @@ class dashboardController {
             //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $table_filter = $time_interval.','.$order_by_val.','.$total_number_records;
             $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement');
             $records['query_data'] = $ar;
              // --end-->
@@ -10783,7 +10799,8 @@ class dashboardController {
             {
                 $table_found = 'true';
             }
-            $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day week"));
+            $dateCheck = date('Y-m-d', strtotime("-60 days"));
+            $dateCheck = date($dateCheck, strtotime("-$input_val_week_day week"));
             $tableOutsideHTML = '';
             if($table_found == 'true'){
                 if($_POST['chart_type'] == 'line_chart')
@@ -11010,7 +11027,29 @@ class dashboardController {
         } 
     }
 
-
+    // public function getEditTableValueAutoPopluate(){
+    //     try{
+    //         global $conn;
+    //         $username = $_SESSION['username'];
+    //         $id = $_POST['id'];
+    //         $i_value = $_POST['i_value'];
+    //         $getResult =  "SELECT * from tableFormat where tile_data_type ='table' AND username = '$username' ";
+    //             $dataResult = queryDB($conn, $getResult, "read");
+    //             // print_r($dataResult);
+    //             $tileHtml = '';
+    //             $table_type = '';
+    //             $total_result = count($dataResult);
+    //             echo $total_result;
+    //             if($dataResult != null && count($dataResult)>0){
+    //                 for($i= 0; $i < $total_result; $i++){
+                        
+    //                 }
+    //             }
+    //     }
+    //     catch (Exception $e) {
+    //         echo 'Caught exception: ',  $e->getMessage(), "\n";
+    //     } 
+    // }
     
 
     // ---end--->

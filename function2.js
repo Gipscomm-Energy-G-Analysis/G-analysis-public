@@ -156,6 +156,7 @@ function countDashboard(){
 function getNumberRecordsMesurement(){
     // <---7-9-2021--
     var measurement_type = $('#measurement_type').val();
+    var table_type = measurement_type;
     // console.log(measurement_type);
     // if(measurement_type != 'manually'){
     //   var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
@@ -199,12 +200,14 @@ function getNumberRecordsMesurement(){
             data: {
                 action: "getNumberRecordsMesurement",
                 nameDB: $("#nameDashboardDB").val(),
-                total_number_records : total_number_records,
-                time_interval : time_interval,
-                measurement_order_by_val : records_order_by_val,
                 search_record : search_record,
                 number_records : selected_number_record,
-                measurement_type : measurement_type
+                measurement_type : measurement_type,
+                table_type : table_type,
+                time_interval : time_interval,
+                measurement_order_by_val : records_order_by_val,
+                total_number_records : total_number_records
+
             },
             fail: function() {
                 alert("failed!!")
@@ -657,7 +660,9 @@ function saveTableFormat(type){
                     input_width : input_width,
                     record_type_of_tile :record_type_of_tile,
                     type_data_tile : type_data_tile,
-                    table_other : table_other
+                    table_other : table_other,
+                    table_type : table_type,
+                    table_filter : table_filter
                 },
                 fail: function() {
                     alert("failed!!")
@@ -775,7 +780,9 @@ function saveTableFormatMeasurementExpandView(){
                     record_type_of_tile :record_type_of_tile,
                     type_data_tile : type_data_tile,
                     table_other : table_other,
-                    expand_view : expand_view
+                    expand_view : expand_view,
+                    table_type : table_type,
+                    table_filter :table_filter
                 },
                 fail: function() {
                     alert("failed!!")
@@ -1938,7 +1945,7 @@ function getNumberRecordsEnergy(){
 
 function getNumberRecordsEnergyLayerModal(){
     var energy_type = $('#energy_type').val();
-
+    var table_type = energy_type;
     var open_end_layer = $('#open_end_layer').val();
     // <-----16-12-2021---
     // getEnergyRecordsTableHeader(energy_type);
@@ -1998,9 +2005,11 @@ function getNumberRecordsEnergyLayerModal(){
             data: {
                 action: "getLayerTableEnergyData",
                 nameDB: $("#nameDashboardDB").val(),
+                table_type :table_type,
                 mst_id : energy_measurement,
                 select_day_week : select_day_week,
                 input_val_week_day : input_val_week_day
+
                 // date_val : date_val,
                 // day_from_val : day_from_val,
                 // day_to_val : day_to_val
@@ -2082,6 +2091,7 @@ function getNumberRecordsEnergyLayerModal(){
 // <---03-03-2022--
 function getNumberRecordsEnergyAutomatic(){
     var energy_type = $('#energy_type').val();
+    var table_type = energy_type;
 
     var open_end_layer = $('#open_end_layer').val();
     // <-----16-12-2021---
@@ -2125,7 +2135,8 @@ function getNumberRecordsEnergyAutomatic(){
                 mst_id : mst_id,
                 input_val_week_day : energy_automatic_input ,
                 energy_measurement_text : energy_measurement_text,
-                order_by : order_by
+                order_by : order_by,
+                table_type :table_type
             },
             fail: function() {
                 alert("failed!!")
@@ -3098,12 +3109,12 @@ function getAllProductTables(){
 }
 
 // <---22-12-2021--
-function getAllColumnProductTables(edit_tile_all_columns = false,i_val){
+function getAllColumnProductTables(edit_tile_all_columns = false,){
     $('#product_field_div').hide();
     $('.automatic_product_div').show();
     // var number_records = $('#product_number_record').val();
     var table_name = $('#all_tables_product').val();
-    var select_column = $('#all_columns_product').val();
+    // var select_column = $('#all_columns_product').val();
     var nameDB = $("#nameDashboardDB").val();
     $.ajax({
         type: "POST",
@@ -3114,7 +3125,7 @@ function getAllColumnProductTables(edit_tile_all_columns = false,i_val){
             action: "getAllColumnProductTables",
             nameDB: nameDB,
             table_name : table_name,
-            // i_val :i_val
+            i_val :i_val
         },
         fail: function() {
             alert("failed!!")
@@ -4003,8 +4014,8 @@ function edit_tile(type,edit_id){
                 $('#modal-height-input-measurement').val('');
                 $('#modal-width-input-measurement').val('');
 
-                $('.gernerated_energy_modal_tiles #energy_count_tile_modal_'+i_val).css('height',290);
-                $('.gernerated_energy_modal_tiles #energy_count_tile_modal_'+i_val).css('width',570);
+                $('.gernerated_measurement_modal_tiles #measurement_count_tile_modal_'+i_val).css('height',290);
+                $('.gernerated_measurement_modal_tiles #measurement_count_tile_modal_'+i_val).css('width',570);
             }
             else{
                 $('#expand_view_table_measurement').prop('checked',false);
@@ -4140,6 +4151,7 @@ function edit_tile_product(type,edit_id){
 
                 $("#modal-height-input-product").attr("disabled", true);
                 $("#modal-width-input-product").attr("disabled", true);
+                
                 $('#modal-height-input-product').val('');
                 $('#modal-width-input-product').val('');
 
@@ -4611,7 +4623,11 @@ function getEditDataDashboard(id,i_value,product_automatic_tile = false){
                     }
 
                 }
+
+                $('#table_type').val(val['table_type']);
+                $('#table_filter').val(val['table_filter']);
                 // **end--->
+
             });
         }
     });
@@ -4812,6 +4828,9 @@ function getEditChartTileDashboardEnergy(){
 
                 $('.dashboard_chart_tile_html_'+i_value+' #energy_count_tile_modal_chart_'+i_value+' .card-border').addClass('tile_border');
                 $('.dashboard_chart_outer_tile_html_'+i_value+' #energy_count_outer_tile_modal_chart_'+i_value+' .card-border').addClass('tile_border');
+
+                $('#energy_count_tile_modal_chart_'+i_value).css('height',a['data']['height']);
+                $('#energy_count_tile_modal_chart_'+i_value).css('width',a['data']['width']);
 
                 // 1-11-2021---
                 if(a['data']['outside_tile_checkbox'] == 1 && a['data']['tile_data_type'] == "chart"){
@@ -12483,3 +12502,145 @@ function logout(){
         $('.energy_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('width',290);
     }
 }
+
+function checkExpandViewValueProduct(){
+    var total_records = $('#total_records').val();
+    if(check_value == true){
+        $('#expand_view_table_product').val("1");
+        $("#modal-height-input-product").attr("disabled", true);
+        $("#modal-width-input-product").attr("disabled", true);
+        $('#modal-height-input-product').val('');
+        $('#modal-width-input-product').val('');
+        $('.table_outisde_tile_controls').hide();
+        $('#table_outside_tile_structure').prop('checked',false);
+        $('#table_outside_tile_structure').val('0');
+        
+        $('#table_height_outer_structure').val('');
+        $('#table_width_outer_structure').val('');
+
+        var id = $('#total_records_chart').val();
+        $('#measurement_count_outer_tile_modal_table_'+id).css('height',145);
+        $('#measurement_count_outer_tile_modal_table_'+id).css('width',285);
+        
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',290);
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',580);
+
+        $('#product_count_tile_modal_'+total_records).css('height',290);
+        $('#product_count_tile_modal_'+total_records).css('width',570);
+
+
+        $('.energy_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('height',290);
+        $('.energy_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('width',570);
+        // saveTableFormatEnergyExpandView();
+    }
+    else{
+        $('#expand_view_table').val("0");
+        $("#modal-width-input-product").removeAttr("disabled");
+        $("#modal-height-input-product").removeAttr("disabled");
+        $('#product_count_tile_modal_'+total_records).css('height',145);
+        $('#product_count_tile_modal_'+total_records).css('width',285);
+        $('.gernerated_product_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',145);
+        $('.gernerated_product_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',290);
+        
+        $('.energy_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('height',145);
+        $('.energy_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('width',290);
+    }
+
+}
+
+function checkExpandViewValueMeasurement(){
+    var total_records = $('#total_records').val();
+    if(check_value == true){
+        $('#expand_view_table_measurement').val("1");
+        $("#modal-height-input-measurement").attr("disabled", true);
+        $("#modal-width-input-measurement").attr("disabled", true);
+        $('#modal-height-input-measurement').val('');
+        $('#modal-width-input-measurement').val('');
+        $('.table_outisde_tile_controls').hide();
+        $('#table_outside_tile_structure').prop('checked',false);
+        $('#table_outside_tile_structure').val('0');
+        
+        $('#table_height_outer_structure').val('');
+        $('#table_width_outer_structure').val('');
+
+        var id = $('#total_records_chart').val();
+        $('#measurement_count_outer_tile_modal_table_'+id).css('height',145);
+        $('#measurement_count_outer_tile_modal_table_'+id).css('width',285);
+        
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',290);
+        $('.gernerated_energy_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',580);
+
+        $('#measurement_count_tile_modal_'+total_records).css('height',290);
+        $('#measurement_count_tile_modal_'+total_records).css('width',570);
+
+
+        $('.measurement_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('height',290);
+        $('.measurement_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('width',570);
+        // saveTableFormatEnergyExpandView();
+    }
+    else{
+        $('#expand_view_table').val("0");
+        $("#modal-width-input-measurement").removeAttr("disabled");
+        $("#modal-height-input-measurement").removeAttr("disabled");
+        $('#measurement_count_tile_modal_'+total_records).css('height',145);
+        $('#measurement_count_tile_modal_'+total_records).css('width',285);
+        $('.gernerated_measurement_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('height',145);
+        $('.gernerated_measurement_modal_tiles .outer_table_tile_structure #energy_count_outer_tile_modal_table_'+total_records).css('width',290);
+        
+        $('.measurement_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('height',145);
+        $('.measurement_html_modal_'+total_records+' #energy_count_tile_modal_'+total_records).css('width',290);
+    }   
+}
+ function getEditTableValueAutoPopluate(tile_type,table_type,table_filter){
+    switch(tile_type)
+    {
+        case'energy':
+         if(table_type != '' && table_filter != '')
+         {
+            
+             if(table_type == 'automatic')
+             {
+                $('#energy_type option[value=automatic').prop('selected',true);
+                $('#energy_type').trigger('change');
+
+                var filter_values =  table_filter.split(",");
+                var mst_id_filter_val = filter_values[0];
+                $('#energy_measurement_automatic option[value='+mst_id_filter_val+']').prop('selected',true);
+                $('#energy_automatic_input').val(filter_values[1]);
+
+                getNumberRecordsEnergy();
+                return false;
+             }
+             else if(table_type == 'manually')
+             {
+                // console.log('Working Manually');
+                $('#energy_type option[value=manually').prop('selected',true);
+                $('#energy_type').trigger('change');
+                var filter_values = table_filter.split(",");
+                var energy_time_interval = filter_values[0];
+                $('#energy_time_interval option[value='+energy_time_interval+']').prop('selected',true);
+                var energy_records_order_by = filter_values[1];
+                $('#energy_records_order_by option[value='+energy_records_order_by+']').prop('selected',true);
+                $('#energy_total_number_record').val(filter_values[2]);
+                getNumberRecordsEnergy();
+                return false;
+             }
+             else {
+                 
+                $('#energy_type option[value=layer_modal').prop('selected',true);
+                $('#energy_type').trigger('change');
+                var filter_values = table_filter.split(",");
+                var mst_id_filter_val = filter_values[0];
+                $('#energy_measurement option[value='+mst_id_filter_val+']').prop('selected',true);
+                var select_day_week = filter_values[1];
+                $('#select_day_week option[value='+select_day_week+']').prop('selected',true);
+                $('#input_val_week_day').val(filter_values[2]);
+                getNumberRecordsEnergy();
+             }
+         }
+         break;
+
+     }
+      
+ }
+
