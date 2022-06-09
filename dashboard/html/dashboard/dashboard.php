@@ -152,7 +152,7 @@
 
                     <!-- 18-02-2022 -->
                     <div class="form-group col-md-2" id="energy_type_dashboard_chart_div">
-                      <label for="time_interval_chart" class="text-mute">Energie Typ</label>
+                      <label for="time_interval_chart" class="text-mute">Datentyp</label>
                       <select class="form-control form-control-sm text-dark" id="energy_type_dashboard_chart">
                         <option value="automatic">Automatisch</option>
                         <option value="manually">Manuell</option>
