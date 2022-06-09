@@ -661,8 +661,8 @@ function saveTableFormat(type){
                     record_type_of_tile :record_type_of_tile,
                     type_data_tile : type_data_tile,
                     table_other : table_other,
-                    table_type : table_type,
-                    table_filter : table_filter
+                    // table_type : table_type,
+                    // table_filter : table_filter
                 },
                 fail: function() {
                     alert("failed!!")
@@ -722,10 +722,10 @@ function saveTableFormatMeasurementExpandView(){
 
     var measurementType = $('#measurement_type').val(); 
     var table_other = $('#measurement_record_table table tbody').children('tr:eq(0)').attr('data-table-other');
-    if (row_enteries_length > 10) {
-        alert("Minimum 10 Records can be saved");
-    }
-    if(row_enteries_length <= 10 || measurementType == 'automatic'){
+    // if (row_enteries_length > 10) {
+    //     alert("Minimum 10 Records can be saved");
+    // }
+    // if(row_enteries_length <= 10 || measurementType == 'automatic'){
         var measurement_table_height = $('#modal-height-input-measurement-hidden').val();
         var measurement_table_width = $('#modal-width-input-measurement-hidden').val();
         var input_height = $('#modal-height-input-measurement').val();
@@ -781,8 +781,7 @@ function saveTableFormatMeasurementExpandView(){
                     type_data_tile : type_data_tile,
                     table_other : table_other,
                     expand_view : expand_view,
-                    table_type : table_type,
-                    table_filter :table_filter
+                  
                 },
                 fail: function() {
                     alert("failed!!")
@@ -808,7 +807,7 @@ function saveTableFormatMeasurementExpandView(){
                 }
             });
         }
-    }
+    // }
 
 }
 
@@ -3038,7 +3037,7 @@ function getNumberRecordsProductAutomatic(page_val = 1){
                 $('#product_modal_open_button').val('Save & Preview');
                 $('#product_modal_open_button').attr('tile-edit','false');
             }
-
+        
             var type_data = localStorage.getItem('dashboard_tile_data');
             type_data = JSON.parse(type_data);
             if(type_data['type_data_tile'] == 'overall_count')
@@ -3125,7 +3124,7 @@ function getAllColumnProductTables(edit_tile_all_columns = false,){
             action: "getAllColumnProductTables",
             nameDB: nameDB,
             table_name : table_name,
-            i_val :i_val
+            // i_val :i_val
         },
         fail: function() {
             alert("failed!!")
@@ -3159,13 +3158,17 @@ function getAllColumnProductTables(edit_tile_all_columns = false,){
                 
                 if(edit_tile_all_columns != false)
                 {
-                    var all_columns = JSON.parse(edit_tile_all_columns);
+                    // var all_columns = JSON.parse(edit_tile_all_columns);
+                    var all_columns = edit_tile_all_columns;
                     var options = [];
                     var flag = 0;
+                    var optionValue = '';
                     for(var i = 0; i <  a['all_columns'].length; i++)
                     {
                         for(var j = 0; j < all_columns.length; j++)
                         {
+                            // console.group('I Value Column',a['all_columns'][i]['column_name']);
+                            // console.group('j Value Column',all_columns[j]);
                             if(a['all_columns'][i]['column_name'] == all_columns[j])
                             {
                                 flag = 1;
@@ -3178,29 +3181,44 @@ function getAllColumnProductTables(edit_tile_all_columns = false,){
 
                         if(flag == 1)
                         {
-                            var val = {
-                                name   : all_columns[j],
-                                value  : all_columns[j],
-                                optionAttributes: ['data-type'],
-                                // data_type : a['all_columns'][i]['data_type'],
-                                checked: true,
+                            optionValue+= '<option value='+all_columns[j]+' selected data-type='+a['all_columns'][i]['data_type']+'>'+all_columns[j]+'</option>'
+                            // var val = {
+                            //     name   : all_columns[j],
+                            //     value  : all_columns[j],
+                            //     // optionAttributes: ['data-type'],
+                            //     // data_type : a['all_columns'][i]['data_type'],
+                            //     data_type : "lk;k",
+                            //     checked: true,
 
-                            };
-                            options.push(val);
+                            // };
+                            // options.push(val);
+                            
                         }
                         else{
-                            var val = {
-                                name   : a['all_columns'][i]['column_name'],
-                                value  : a['all_columns'][i]['column_name'],
-                                optionAttributes: ['data-type'],
-                                // data_type : a['all_columns'][i]['data_type'],
-                                checked: false
-                            };
-                            options.push(val);
+                            optionValue+= '<option value='+a['all_columns'][i]['column_name']+' data-type='+a['all_columns'][i]['data_type']+'>'+a['all_columns'][i]['column_name']+'</option>'
+                            // var val = {
+                            //     name   : a['all_columns'][i]['column_name'],
+                            //     value  : a['all_columns'][i]['column_name'],
+                            //     // optionAttributes: ['data-type'],
+                            //     // data_type : a['all_columns'][i]['data_type'],      
+                            //     checked: false
+                            // };
+                            // options.push(val);
                         }
                     }
-                    $('#all_columns_product[multiple]')
-                        .multiselect('loadOptions', options );
+                    // $('#all_columns_product[multiple]')
+                    //     .multiselect('loadOptions', options );
+
+                    $('#all_columns_product').html(optionValue);    
+        
+                    $('#all_columns_product').multiselect({
+                        columns: 1,
+                        placeholder: 'Please Select Columns',
+                        search: true,
+                        // maximumSelectionLength: 3
+                    });
+                    // $('#energy_chart_measurement_automatic').multiselect('refresh');
+                    $("#all_columns_product").multiselect('reload');
                 }
                 // --end-->
 
@@ -4100,6 +4118,7 @@ function edit_tile_energy(type,edit_id){
 
 // <--6-12-2021--
 function edit_tile_product(type,edit_id){
+    
     var i_val = localStorage.getItem('edit-i-value');
     var ar = localStorage.getItem('dashboard_tile_data');
     ar = JSON.parse(ar);
@@ -4242,7 +4261,6 @@ function edit_tile_product_automatic(type,edit_id){
 
 // <----31-8-2021----
 function updateTileRecord(){
-    alert("enter here fun");
     var id = localStorage.getItem('edit-measurement-tile');
     var input_height = $('#modal-height-input-measurement').val();
     var input_width = $('#modal-width-input-measurement').val();
@@ -11794,6 +11812,8 @@ function updateDashboardChartProduct(){
 
 // <---29-11-2021---
 function getAllProductClickTableHTML(prd_id,page_val = 1,order_by = 'desc'){
+    var table_type =  $('#product_type').val();
+    var input_text_field = $('#all_product_input_text_field').val();
     $.ajax({
         type: "POST",
         url: "dashboard/php/retreive.php",
@@ -11804,7 +11824,11 @@ function getAllProductClickTableHTML(prd_id,page_val = 1,order_by = 'desc'){
             nameDB: $("#nameDashboardDB").val(),
             prd_id : prd_id,
             page_val : page_val,
-            order_by : order_by
+            order_by : order_by,
+            input_text_field : input_text_field,
+            table_type : table_type
+            // product_records_order_by : product_records_order_by
+
         },
         fail: function() {
             alert("failed!!")
@@ -12639,8 +12663,58 @@ function checkExpandViewValueMeasurement(){
              }
          }
          break;
+        
+        case'measurement':
+        if(table_type != '' && table_filter != '')
+        {
+            $('#measurement_type option[value='+table_type+']').prop('selected',true);
+            $('#measurement_type').trigger('change');
+            var filter_values =  table_filter.split(",");
+            var time_interval = filter_values[0];
+            $('#measurement_time_interval option[value='+time_interval+']').prop('selected',true);
+            var measurement_records_order_by = filter_values[1];
+            $('#measurement_records_order_by option[value='+measurement_records_order_by+']').prop('selected',true);
+            $('#measurement_total_number_record').val(filter_values[2]);
+            getNumberRecordsMesurement();
+            return false;
+        }
+        break;
 
+        case'product':
+        if(table_type != '' && table_filter != '')
+        {
+            if(table_type == 'mannual')
+            {
+                $('#product_type option[value='+table_type+']').prop('selected',true);
+                $('#product_type').trigger('change');
+                var filter_values =  table_filter.split(",");
+                var prd_id = filter_values[0];
+                var order_by = filter_values[1];
+                $('#product_records_order_by option[value='+order_by+']').prop('selected',true);
+
+                var textPrd = $('#all_product_table_entries [prd_id='+prd_id+']').find('td:eq(0)').text();
+                $('#all_product_input_text_field').val(textPrd);
+                getAllProductClickTableHTML(prd_id,1,order_by);
+                return false;
+            }else{
+
+                $('#product_type option[value='+table_type+']').prop('selected',true);
+                var filter_values =  table_filter.split("*");
+                var all_tables_product = filter_values[0];
+                $('#all_tables_product option[value='+all_tables_product+']').prop('selected',true).trigger('change');
+                var selectedColumns = filter_values[1];
+                selectedColumns = selectedColumns.replace('[', '');
+                selectedColumns = selectedColumns.replace(']', '');
+                var res=  selectedColumns.replace(/"/g,'') ;
+                var result = res .split(',');
+                // console.log(selectedColumns.replace(/['"]+/g, ''));
+                getAllColumnProductTables(result);
+                getNumberRecordsProductAutomatic();
+                // $('#product_total_number_record').val(filter_values[2]);
+            }
+        }
+        break;
      }
-      
+     
  }
-
+ 

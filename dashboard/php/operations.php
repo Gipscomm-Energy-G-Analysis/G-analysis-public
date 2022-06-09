@@ -327,6 +327,7 @@ class dashboardControllerOperations {
     public function updateTileRecordProductAutomatic(){
         try{
             // $conn = connectToDB("gipscomm");
+           
             global $conn;
             $nameDB = $_POST['nameDB'];
             $username = $_SESSION['username']; 
@@ -354,11 +355,16 @@ class dashboardControllerOperations {
             $db_table = $_POST['db_table'];
             
 
+            $table_type = isset($queryData['table_type']) ? $queryData['table_type'] : '';
+            $table_filter = isset($queryData['table_filter']) ? $queryData['table_filter'] : '';
+
+            // echo $table_filter; die;
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
 
             // $tile_html = $_REQUEST['tile_html'];
-            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', expand_view = $expand_view, height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile',database_name = '$nameDB',prd_all_columns_automatic = '$prd_all_columns_automatic',prd_all_columns_type_automatic = '$prd_all_columns_type',database_table = '$db_table' WHERE id = $id AND username ='$username' ";
+            $updateQuery = "UPDATE tableFormat set number_records =$number_records,pages_count=$pages_count,page_value=$page_value,type='$type',row_click='$row_click',query_data_records = '$query_data_records',query_max_val = '$query_max_val',tile_title='$title',tile_html='$html', expand_view = $expand_view, height='$height', width='$width', input_height = '$input_height', input_width = '$input_width' ,table_other = '$table_other' , tile_record_type='$record_type_of_tile',database_name = '$nameDB',prd_all_columns_automatic = '$prd_all_columns_automatic',prd_all_columns_type_automatic = '$prd_all_columns_type',database_table = '$db_table' ,table_type = '$table_type' ,table_filter = '$table_filter' WHERE id = $id AND username ='$username' ";
+            // echo $updateQuery; die;
             // echo '<pre>';
             // echo htmlspecialchars($updateQuery);
             // echo '</pre>';

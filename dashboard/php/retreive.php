@@ -151,13 +151,13 @@ class dashboardController {
     {
         try{
             global $conn;
-            $total_number_records = $_POST['total_number_records'];
             $number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
+            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
+            $measurement_type = $_POST['measurement_type'];
+            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
             $time_interval = $_POST['time_interval'];
             $order_by_val = $_POST['measurement_order_by_val'];
-            $page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
-            $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
-            $measurement_type = $_POST['measurement_type'];
+            $total_number_records = $_POST['total_number_records'];
             $dataMesaurement = '';
             $queryMaxVal = '';
             $pagesCount = '';
@@ -167,7 +167,7 @@ class dashboardController {
                 die;
             }
             if($measurement_type == "automatic"){
-                $this->getAutomaticTableMeasurementData();
+                $this->getAutomaticTableMeasurementData($measurement_type);
                 die;
             }
             // --end-->
@@ -281,8 +281,8 @@ class dashboardController {
             //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
-            // $table_filter = $time_interval.','.$order_by_val.','.$total_number_records;
-            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement', 'table_type' => $table_type, 'table_filter' => $table_filter);
+            $table_filter = $time_interval.','.$_POST['measurement_order_by_val'].','.$_POST['total_number_records'];
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement','table_type' => $measurement_type, 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
              // --end-->
 
@@ -3891,8 +3891,9 @@ class dashboardController {
                 {
                     for($i = 0; $i < $_POST['input_val_week_day']; $i++)
                     {
-                        $dateDynamicIndex = $input_val_week_day - $i;
+                        $dateDynamicIndex = $valMaxDate + $i;
                         $dateDynamicVal =  date('Y-m-d', strtotime("-$dateDynamicIndex days"));
+                        // echo $dateDynamicVal; die;
                         $result = $this->generateEnergyAutomaticTableHTML($queryEnergyRecords,$dateDynamicVal,$energy_measurement_text);
                         $tbody .= $result;
                     }
@@ -5637,6 +5638,7 @@ class dashboardController {
             $total_number_records = isset($_POST['total_number_records']) ? $_POST['total_number_records'] : 100 ;
             $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
             $product_type = $_POST['product_type'];
+            $table_type = $product_type;
             $number_records = 5;
             $pagesCount = '';
             $offSetVal = 0;
@@ -5686,8 +5688,9 @@ class dashboardController {
             $records['product_html'] = $tr;
             $records['product_table_header'] = $th;
             $records['pagination_html'] = $pagination_html;
-
-            $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product');
+            $table_filter = $_POST['all_tables_product'].'*'.$_POST['all_columns_product'].'*'.$_POST['total_number_records'];
+            
+            $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product','table_type' => $table_type , 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
 
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
@@ -6020,14 +6023,16 @@ class dashboardController {
     {
         try{
             global $conn;
-
+            $input_text_field = $_POST['input_text_field'];
+            // echo $input_text_field ; die;
             $prd_id = $_POST['prd_id'];
+            $table_type = $_POST['table_type'];
             $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
             $number_records = 5;
             $pagesCount = '';
             $offSetVal = 0;
             $order_condition = $_POST['order_by'];
-
+            // echo  $order_condition ;die ;
             $queryTotalRecord = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
             $queryTotalRecord .="LEFT join "; 
             $queryTotalRecord.="( ";
@@ -6051,6 +6056,7 @@ class dashboardController {
             $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
 
             $total_number_records = count($totalRecordsValue);
+            // print_r($total_number_records); die;
 
             if(count($totalRecordsValue) > 0){
                if($total_number_records <= $number_records){
@@ -6102,10 +6108,11 @@ class dashboardController {
             $records['product_html'] = $tr;
             $records['product_table_header'] = $th;
             $records['pagination_html'] = $pagination_html;
-
-            $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product');
+            $table_filter = $_POST['prd_id'].','.$_POST['order_by'];
+            // print_r($table_filter); die ;
+            $ar = array('pages_count' => $pagesCount,'page_val' => $page_val,'number_records' => $number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Product', 'table_type' => $table_type , 'table_filter' => $table_filter );
             $records['query_data'] = $ar;
-
+            // , 'table_type' => $table_type , 'table_filter', $table_filter
             echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         }
@@ -7720,7 +7727,8 @@ class dashboardController {
             if($result[0]['row_click'] == 'false')
             {
                 $mst_id = $result[0]['mst_id'];
-                $input_val_week_day = $result[0]['energy_layer_range'];
+                $input_val_week_day = $result[0]['energy_layer_range'] + 60;
+                $maxValDate = $input_val_week_day - $result[0]['energy_layer_range'];
                 $energy_measurement_text = $result[0]['energy_layer_model_name'];
                 $tbody = "<thead>";
                 $tbody .= "<tr>";
@@ -7731,12 +7739,14 @@ class dashboardController {
                 $tbody .= "</thead>";
                 
                 $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days"));
-                
+                $maxDateCheck = date('Y-m-d', strtotime("-$maxValDate days"));
+
                 $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
-                $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date desc ";
+                $queryEnergy .= "convert(date,Time) > '$dateCheck' AND convert(date,Time) <= '$maxDateCheck' group by convert(date,Time) order by date desc ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
                 // echo json_encode($queryEnergyRecords); 
+                // echo $queryEnergy; die;
                 // die;
                 if($queryEnergyRecords != '' && count($queryEnergyRecords))
                 {
@@ -9647,9 +9657,9 @@ class dashboardController {
     }
 
     // <----14-9-2021---
-    public function getAutomaticTableMeasurementData(){
+    public function getAutomaticTableMeasurementData($measurement_type){
         try{
-            echo "position here "; die;
+           
             global $conn;
             $total_number_records = $_POST['total_number_records'];
             $number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
@@ -9768,8 +9778,8 @@ class dashboardController {
             //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
-            $table_filter = $time_interval.','.$order_by_val.','.$total_number_records;
-            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement');
+            $table_filter = $time_interval.','.$_POST['measurement_order_by_val'].','.$_POST['total_number_records'];
+            $ar = array('pages_count' => $pagesCount,'page_val' => $ar_page_val,'number_records' => $ar_number_records,'query1' => $query1 ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Measurement' , 'table_type' => $measurement_type, 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
              // --end-->
 
