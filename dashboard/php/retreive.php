@@ -9058,6 +9058,7 @@ class dashboardController {
             }
 
             $dateCheck = date('Y-m-d', strtotime("-60 days"));
+            echo  $dateCheck; die;
             $dateCheck = date($dateCheck, strtotime("-$input_val_week_day days"));
             $tableOutsideHTML = '';
             if($table_found == 'true'){

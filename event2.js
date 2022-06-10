@@ -7,7 +7,8 @@ $(document).ready( function(){
     var dashboardDBDash =  localStorage.getItem('dashboardDBDash');
     var dashboardDBNameDash = localStorage.getItem('dashboardDBNameDash');
    
-    if(dashboardDBNameDash !='' || dashboardDBNameDash != null){
+    if(dashboardDBNameDash !='' && dashboardDBNameDash != null){
+        // alert('4');
         setTimeout(()=>{
             $('#nameDashboardDB').val(dashboardDBDash); 
             $('#nameDashboardDB').val(dashboardDBStorage);
@@ -15,18 +16,19 @@ $(document).ready( function(){
         },2000);
        
     }
-    else if(dashboardDBStorage=='' || dashboardDBStorage==null){
-        dashboardDBStorage='g002_badber'; 
-    }else{
-        $('#nameDashboardDB').val(dashboardDBDash); 
+    else if(dashboardDBStorage!='' &&  dashboardDBStorage!=null){
+   
         $('#nameDashboardDB').val(dashboardDBStorage);
-        $(".manPfad ").val(dashboardDBNameDash).trigger('change'); 
+    }else{
+      
+        dashboardDBStorage='g002_badber'; 
+        $('#nameDashboardDB').val(dashboardDBStorage);
     }
  
-    setTimeout(()=>{
-        console.log(dashboardDBNameDash);
+    // setTimeout(()=>{
+    //     console.log(dashboardDBNameDash);
        
-    },20000);
+    // },20000);
     
 
     // if(dashboardDBStorage !='' || dashboardDBStorage==null){
