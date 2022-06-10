@@ -9038,12 +9038,12 @@ class dashboardController {
 
 
     public function getChartRecordFilterEnergyAutomatic(){
-        try{
+        try{ 
             global $conn;
             // print_r($_POST['mst_id']);
             // die;
             $mst_id = $_POST['mst_id'];
-             // print_r($_POST['mst_id']);
+            // print_r($_POST['mst_id']);
             // die;
             $input_val_week_day = $_POST['energy_chart_layer_range'];
             $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
@@ -9061,9 +9061,11 @@ class dashboardController {
             $dateCheck = date($dateCheck, strtotime("-$input_val_week_day days"));
             $tableOutsideHTML = '';
             if($table_found == 'true'){
-
+                // print_r($mst_id); die ;
                 if(count($mst_id) > 1)
                 {
+                    // echo "position hefre"; die;
+                   
                     $result = '';
                     $arTotalVal = [];
                     $arCountDays = [];
@@ -9079,7 +9081,6 @@ class dashboardController {
                         $dateVal = date('Y-m-d', strtotime("-$j days"));
                         array_push($arCountDays,$dateVal);
                     }
-
                     $records['count_val'] = $arTotalVal;
                     $records['count_days'] = array_reverse($arCountDays); //For ASCENDING
 

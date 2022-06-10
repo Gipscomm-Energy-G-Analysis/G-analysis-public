@@ -2016,6 +2016,10 @@ $(document).ready(function() {
 
         localStorage.setItem('dashboardDB',$("#nameDB").val());
 
+        localStorage.setItem('dashboardDBNameDash',$(this).val());
+
+        localStorage.setItem('dashboardDBDash',$("#nameDB").val());
+
         $("#nameDashboardDB").val($("#nameDB").val());
 
         getAllProductTables();

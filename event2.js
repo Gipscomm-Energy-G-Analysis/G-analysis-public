@@ -2,11 +2,40 @@ $(document).ready( function(){
     // setTimeout(function () {
     //     getDimentions();
     //  },500);
+
     var dashboardDBStorage = localStorage.getItem('dashboardDB');
-    if(dashboardDBStorage=='' || dashboardDBStorage==null){
-        dashboardDBStorage='g002_badber';
+    var dashboardDBDash =  localStorage.getItem('dashboardDBDash');
+    var dashboardDBNameDash = localStorage.getItem('dashboardDBNameDash');
+   
+    if(dashboardDBNameDash !='' || dashboardDBNameDash != null){
+        setTimeout(()=>{
+            $('#nameDashboardDB').val(dashboardDBDash); 
+            $('#nameDashboardDB').val(dashboardDBStorage);
+            $(".manPfad ").val(dashboardDBNameDash).trigger('change'); 
+        },2000);
+       
     }
-    $('#nameDashboardDB').val(dashboardDBStorage);
+    else if(dashboardDBStorage=='' || dashboardDBStorage==null){
+        dashboardDBStorage='g002_badber'; 
+    }else{
+        $('#nameDashboardDB').val(dashboardDBDash); 
+        $('#nameDashboardDB').val(dashboardDBStorage);
+        $(".manPfad ").val(dashboardDBNameDash).trigger('change'); 
+    }
+ 
+    setTimeout(()=>{
+        console.log(dashboardDBNameDash);
+       
+    },20000);
+    
+
+    // if(dashboardDBStorage !='' || dashboardDBStorage==null){
+    //    var cookieValue = $.cookie(".manPfad");
+    //    var selectDatabase = $(".manPfad ").val();
+    //     $(".manPfad ").val(selectDatabase);
+    // }
+    // $(".manPfad ").val(dashboardDBNameStorage).trigger('change');
+    
     //Hide All Files
     $('#charts_main_div').hide();
     $('#dashboard_main_div').show();
@@ -42,7 +71,7 @@ $(document).ready( function(){
         $('#help_video').get(0).pause();
         switch(id_val){
             case'dashboard_sidebar':
-                $('#charts_main_div').hide();
+                   $('#charts_main_div').hide();
                 $('#dashboard_main_div').show();
                 $('#energy_table_main_div').hide();
                 $('#measurement_table_main_div').hide();
@@ -2890,7 +2919,7 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
 
             $('#modal-height-input-product').attr('disabled',true);
             $('#modal-width-input-product').attr('disabled',true);
-
+                              
             $('#modal-height-input-product').val('1');
             $('#modal-width-input-product').val('1');
             $('#modal-height-input-product-hidden').val(145);
