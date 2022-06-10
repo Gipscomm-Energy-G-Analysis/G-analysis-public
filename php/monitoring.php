@@ -152,7 +152,7 @@ function sendAlertEmails($mstsWithoutData) {
 
 }
 
-$start = hrtime(true) ;
+// $start = hrtime(true) ;
 
 // Sends alert emails to listed addresses if data not up-to-date.
 // --------------------------------------------------------------
@@ -166,8 +166,8 @@ pipe(
 //
 // --------------------------------------------------------------
 
-$end = hrtime(true) ;
+// $end = hrtime(true) ;
 
-echo "    Execution Time : ".(($end - $start) / 1000000000) ;
+// echo "    Execution Time : ".(($end - $start) / 1000000000) ;
 
 ?>
