@@ -8,6 +8,12 @@ setTimeout(function () {
 //  },500);
 
 function showTableExpandView(){
+    // if($("#loader").is(":visible")){
+    //     $('.loader_image_redirect_div').hide();
+    // } else{
+    //     $('.loader_image_redirect_div').show();
+    // }
+    $('.loader_image_redirect_div').show();
     $('.table_tile_expand_view').each(function(){
         var className=$(this).attr('class');
         var id= className.split(' ');
@@ -52,9 +58,12 @@ function showTableExpandView(){
         // $('.chart_tile_expand_view .'+id+'.id_val.delete_btn_tile').css('width','17px');
         // $('.chart_tile_expand_view .'+id+'.id_val.delete_btn_tile').css('margin-right','5px');
     })
+    // $('.loader_image_redirect_div').hide();
+  
 } 
 
 function showexpandedchart() {
+    $('.loader_image_redirect_div').show();
     var inputs = $(".tiles-click");
     inputs.each(function(){
         var className=($(this).attr('class'));
@@ -116,6 +125,7 @@ function showexpandedchart() {
         }
 
     });
+    $('.loader_image_redirect_div').hide();
 }
 
 
@@ -1604,9 +1614,9 @@ function getTableFormatDashboard(){
 
                     // $( document ).ready(function() {
                         // alert('working1');
-                      $('.loader_image_redirect_div').show();
+                
                         showexpandedchart();
-                       $('.loader_image_redirect_div').hide();
+                    
                         // alert('working3');
                     // });
 
@@ -3094,7 +3104,7 @@ function getAllProductTables(){
 
             }
             else{
-                var all_table = "<option>No Data</option>";
+                var all_table = "<option>Es existieren keine Daten die ausgewertet werden können</option>";
                 $('#all_tables_product').html(all_table);
                 $('#all_columns_product').hide();
             }
@@ -3233,7 +3243,7 @@ function getAllColumnProductTables(edit_tile_all_columns = false,){
                 selectHTML += "</select>";
                 $('#all_columns_product_div').html(selectHTML);
 
-                var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>No Data</td></tr>";
+                var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
                 $('#product_select_table_entries').html(tr);
                 $('#product_select_table_entries_pagination').html('');
             }
@@ -5862,11 +5872,11 @@ function getChartTimeIntervalRecord(){
                     $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
                 }
                 else{
-                    select_html+="<option value=''>No Record Found</option>";
+                    select_html+="<option value=''>Es existieren keine Daten die ausgewertet werden können</option>";
                 }
             }
             else{
-                select_html+="<option value=''>No Record Found</option>";
+                select_html+="<option value=''>Es existieren keine Daten die ausgewertet werden können</option>";
                 $('#chart_record_filter_div').hide();
                 $('#chart_record_type_div').hide();
                 $('#save_and_proceed_btn_dashboard_chart').attr('disabled',true);
@@ -5918,7 +5928,7 @@ function getChartTimeIntervalRecordProduct(){
                     $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
                 }
                 else{
-                    select_html+="<option value=''>No Record Found</option>";
+                    select_html+="<option value=''>Es existieren keine Daten die ausgewertet werden können</option>";
                     $('#chart_record_filter_div').hide();
                     $('#chart_record_type_div').hide();
                     $('#save_and_proceed_btn_dashboard_chart').attr('disabled',true);
@@ -5926,7 +5936,7 @@ function getChartTimeIntervalRecordProduct(){
 
             }
             else{
-                select_html+="<option value=''>No Record Found</option>";
+                select_html+="<option value=''>Es existieren keine Daten die ausgewertet werden können</option>";
                 $('#chart_record_filter_div').hide();
                 $('#chart_record_type_div').hide();
                 $('#save_and_proceed_btn_dashboard_chart').attr('disabled',true);
@@ -5970,7 +5980,7 @@ function getChartSelectProductItem(){
                 $('#save_and_proceed_btn_dashboard_chart').attr('disabled',false);
             }
             else{
-                select_html+="<option value=''>No Record Found</option>";
+                select_html+="<option value=''>Es existieren keine Daten die ausgewertet werden können</option>";
                 $('#chart_record_filter_div').hide();
                 $('#chart_record_type_div').hide();
                 $('#save_and_proceed_btn_dashboard_chart').attr('disabled',true);
@@ -9097,6 +9107,7 @@ function getDatabaseList(){
 // ---end--->
 
 function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value,chart_type){
+    $('.loader_image_redirect_div').show();
     $.ajax({
         type: "POST",
         url: "dashboard/php/retreive.php",
@@ -9614,11 +9625,12 @@ function getClickDashboardChart(id,record_type_of_tile,mst_id,chart_filter_value
             }
         }
     });
-
+   
 }
 
 // <----8-12-2021---
 function getClickDashboardChartProduct(id,record_type_of_tile,analgen_config_id,chart_filter_value,chart_type){
+    $('.loader_image_redirect_div').show();
     $.ajax({
         type: "POST",
         url: "dashboard/php/retreive.php",
@@ -10134,13 +10146,14 @@ function getClickDashboardChartProduct(id,record_type_of_tile,analgen_config_id,
             }
         }
     });
-
+    
 }
 // --end-->
 
 
 // <-----23-02-2022---
 function getClickDashboardChartEnergyLayer(data){
+    $('.loader_image_redirect_div').show();
     var id = data['id'];
     var chart_type = data['chart_type'];
     var energy_layer_filter  = data['energy_layer_filter'];
@@ -10668,11 +10681,13 @@ function getClickDashboardChartEnergyLayer(data){
             }
         }
     });
+
 }
 // ---end--->
 
 // <---08-3-2022---
 function getClickDashboardChartEnergyAutomatic(data){
+    $('.loader_image_redirect_div').show();
     var id = data['id'];
     var chart_type = data['chart_type'];
     var energy_layer_range = data['energy_layer_range'];
@@ -11234,6 +11249,7 @@ function getClickDashboardChartEnergyAutomatic(data){
             }
         }
     });
+    $('.loader_image_redirect_div').show();
 }
 // ---end--->
 

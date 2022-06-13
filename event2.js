@@ -24,7 +24,11 @@ $(document).ready( function(){
         dashboardDBStorage='g002_badber'; 
         $('#nameDashboardDB').val(dashboardDBStorage);
     }
- 
+
+    // $(window).on('load', function(){
+    //     $('.loader_image_redirect_div').hide();
+    //     alert('hide sucessfully');
+    // });
     // setTimeout(()=>{
     //     console.log(dashboardDBNameDash);
        
@@ -92,7 +96,7 @@ $(document).ready( function(){
                 localStorage.removeItem('edit-measurement-tile');
                 localStorage.removeItem('edit-i-value');
                 setTimeout(function () {
-
+                    
                     showexpandedchart();
 
                 },1000);
@@ -2778,7 +2782,7 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
         // console.log('prd_id',prd_id);
         // console.log('Name',prd_name);
         var textNoRecord = $('.modal_all_products  table #all_product_table_entries tr').children('td:first').text();
-        if(textNoRecord != 'No Data')
+        if(textNoRecord != 'Es existieren keine Daten die ausgewertet werden können')
         {
             $('#all_product_input_text_field').val(prd_name);
             getAllProductClickTableHTML(prd_id);
@@ -2864,7 +2868,7 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
 
     $(document).on('change','#product_records_order_by', function(){
         var textNoRecord = $('#product_select_table_entries_table_div table #product_select_table_entries tr').children('td:first').text();
-        if(textNoRecord == 'No Data')
+        if(textNoRecord == 'Es existieren keine Daten die ausgewertet werden können')
         {
             return false;
         }
@@ -3659,9 +3663,12 @@ $(document).on('click','#expand_view_table_measurement', ()=>{
     });
 
     $(document).on('click','#switch_mode', function(){
-        $('#dashboard_sidebar').trigger('click');
+        $('.loader_image_redirect_div').show();
     });
-    
+    $(document).on('click','#switch_mode', function(){
+            $('#dashboard_sidebar').trigger('click');
+    });
+
     $('#save_default_reload_time').click(function(){
         
     });

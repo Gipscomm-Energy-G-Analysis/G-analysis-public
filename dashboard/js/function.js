@@ -2644,7 +2644,7 @@ function getAllProductTables(){
           
         }
         else{
-          var all_table = "<option>No Data</option>";
+          var all_table = "<option>Es existieren keine Daten die ausgewertet werden können</option>";
           $('#all_tables_product').html(all_table);
           $('#all_columns_product').hide();
         }
