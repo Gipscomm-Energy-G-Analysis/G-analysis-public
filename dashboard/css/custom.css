@@ -55,6 +55,7 @@
     /* margin-left: 357px; */
     /* margin-left: 465px; */
     margin-left: 42%;
+    position: fixed;
 }
 .pagination_html{
     margin-top: 8px;
@@ -265,6 +266,7 @@
 
 #dashboard_count_div_tile .hide_table_main{
     /* height: auto !important; */
+
     height: 145px !important;
     width: 285px  !important;
 }
@@ -693,8 +695,7 @@
 
 .dashboard_count_div .movetile{
     /* position: relative; */
-    padding-right: 15px;
-    padding-left: 15px;
+    float: left;
 }
 
 /* --end--> */
@@ -860,10 +861,6 @@
     margin: 10px;
 }
 
-.mt_pr_alignment{
-    /* margin-top: -32px; */
-}
-
 #product_select_table_entries_table thead tr th{
     padding:  10px 6px 10px 6px !important;
     font-size: small;
@@ -905,3 +902,50 @@
 .click_common_btn_chart{
     cursor: pointer;
 }
+.dashboard_count_div{
+    float: left;
+    width: 100%;
+}
+.chart_tile_expand_view .action-modal-button-div .edit_val{
+    height: 17px !important;
+    width: 17px !important;
+    margin-right: 5px !important;
+}
+.chart_tile_expand_view .action-modal-button-div .id_val{
+    height: 17px !important;
+    width: 17px !important;
+    margin-right: 5px !important;
+}
+#back_energy_btn_table {
+    width: 30px;
+    margin: 0px 10px 0px 0px;
+    cursor: pointer;
+}
+#refresh-btn{
+    width:20px;
+    cursor: pointer;
+    margin: 0px 05px 11px 0px;
+}
+#settings{
+    height: 27px !important;
+    width: 27px !important;
+}
+#dropdown_menu{
+    padding: 50px;
+}
+#save_default_reload_time{
+    margin: 0px;
+    height: 36px;
+}
+.expand_view_table_div{
+    margin: auto 0;
+}
+select.form-control[multiple] {
+    height: 37px;
+}
+#colr-transparent{
+    background: transparent !important;
+}
+/* option {
+    background: transparent !important;
+} */

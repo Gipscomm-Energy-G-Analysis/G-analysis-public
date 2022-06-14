@@ -152,12 +152,31 @@
 
                     <!-- 18-02-2022 -->
                     <div class="form-group col-md-2" id="energy_type_dashboard_chart_div">
-                      <label for="time_interval_chart" class="text-mute">Energie Typ</label>
+                      <label for="time_interval_chart" class="text-mute">Datentyp</label>
                       <select class="form-control form-control-sm text-dark" id="energy_type_dashboard_chart">
+                        <option value="automatic">Automatisch</option>
                         <option value="manually">Manuell</option>
                         <option value="layer_modal">SchichtModelle</option>
                       </select>
                     </div> 
+
+                    <!-- 7-03-2022 Automatic divs-->
+                    <div class="form-group col-md-2 energy_automatic_div" id="energy_chart_measurement_div_automatic">
+                      <label for="energy_chart_measurement_automatic" class="text-mute">Messstelle auswählen</label>
+                      <span class='mandatory_sign'>*</span>
+                      <select class="form-control form-control-sm text-dark" id="energy_chart_measurement_automatic">
+                        <option value="">Messstelle auswählen</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group energy_automatic_div col-md-2">
+                      <label for="energy_chart_layer_range_automatic" class="text-mute">Bereich</label>
+                      <span class='mandatory_sign'>*</span>
+                      <input type="number" class="form-control form-control-sm text-dark" id="energy_chart_layer_range_automatic" placeholder="Enter Value">
+                      <span class="energy_chart_layer_automatic_range_error text-danger"></span>
+                    </div>
+
+                    <!-- end-- -->
 
                     <!-- *Energy Layer Modal Div -->
                     <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_measurement_div">

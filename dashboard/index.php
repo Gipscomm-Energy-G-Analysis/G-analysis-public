@@ -19,9 +19,9 @@ if(isset($_SESSION))
   }
 }
 include_once("headerfiles.php");
-?>
+?>                                                                    
 <div class="container-scroller">
-    <?php
+    <?php                                                         
         include_once("navbar.php");
     ?>
    <div class="container-fluid page-body-wrapper">

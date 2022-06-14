@@ -2009,7 +2009,27 @@ $(document).ready(function() {
         externeRechnungenListeErstellen("vergleich")
 
         // <----16-7-2021---
+
         dashboardLocalStorage();
+
+        localStorage.setItem('dashboardDBName',$(this).val());
+
+        localStorage.setItem('dashboardDB',$("#nameDB").val());
+
+        localStorage.setItem('dashboardDBNameDash',$(this).val());
+
+        localStorage.setItem('dashboardDBDash',$("#nameDB").val());
+
+        $("#nameDashboardDB").val($("#nameDB").val());
+
+        getAllProductTables();
+
+        // getTableFormatDashboard();
+
+        $('#dashboard_sidebar').click();
+
+        storeDBValueSession();
+
         // ---end-->
     });
     $(".orgPfad").change(function() {
