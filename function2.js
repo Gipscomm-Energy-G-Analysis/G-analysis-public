@@ -6,6 +6,9 @@ setTimeout(function () {
 // setTimeout(function () {
 //     getDimentions();
 //  },500);
+// $( window ).on( "load", function() {
+//     $('.loader_image_redirect_div').hide();
+// });
 
 function showTableExpandView(){
     // if($("#loader").is(":visible")){
@@ -13,7 +16,7 @@ function showTableExpandView(){
     // } else{
     //     $('.loader_image_redirect_div').show();
     // }
-    $('.loader_image_redirect_div').show();
+    // $('.loader_image_redirect_div').show();
     $('.table_tile_expand_view').each(function(){
         var className=$(this).attr('class');
         var id= className.split(' ');
@@ -63,7 +66,7 @@ function showTableExpandView(){
 } 
 
 function showexpandedchart() {
-    $('.loader_image_redirect_div').show();
+    // $('.loader_image_redirect_div').show();
     var inputs = $(".tiles-click");
     inputs.each(function(){
         var className=($(this).attr('class'));

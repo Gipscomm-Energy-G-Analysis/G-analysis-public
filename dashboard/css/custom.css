@@ -54,7 +54,8 @@
     text-align: center;
     /* margin-left: 357px; */
     /* margin-left: 465px; */
-    margin-left: 42%;
+    margin-left: 44%;
+    margin-top: 0.3%;
     position: fixed;
 }
 .pagination_html{
@@ -921,6 +922,26 @@
     margin: 0px 10px 0px 0px;
     cursor: pointer;
 }
+#back_btn_energy {
+    width: 30px;
+    margin: 0px 10px 0px 0px;
+    cursor: pointer;
+}
+#back_btn_energy_popup {
+    width: 30px;
+    margin: 0px 10px 0px 0px;
+    cursor: pointer;
+}
+#back_btn_measurement_popup {
+    width: 30px;
+    margin: 0px 10px 0px 0px;
+    cursor: pointer;
+}
+#back_btn_product_popup {
+    width: 30px;
+    margin: 0px 10px 0px 0px;
+    cursor: pointer;
+}
 #refresh-btn{
     width:20px;
     cursor: pointer;
@@ -945,6 +966,21 @@ select.form-control[multiple] {
 }
 #colr-transparent{
     background: transparent !important;
+}
+#back_btn_product {
+    width: 30px;
+    margin: 0px 10px 0px 0px;
+    cursor: pointer;
+}
+#back_btn_measurement {
+    width: 30px;
+    margin: 0px 10px 0px 0px;
+    cursor: pointer;
+}
+.align-cntr {
+    display: flex;
+    justify-content: center;
+    align-items: end;
 }
 /* option {
     background: transparent !important;
