@@ -8,10 +8,11 @@ require 'DbOperations.php' ;
 
 $nameDB = $_POST['nameDB'] ;
 $conn = connectToDB($nameDB) ;
+$eAnl_ID = $_POST['eAnl_ID'] ;
 
 $query = "SELECT * FROM erweiterungenAnlagen " ;
 $query .= "INNER JOIN subGroupOptions " ;
-$query .= "WHERE deleted = 0 " ;
+$query .= "WHERE eAnl_ID = ".$eAnl_ID." AND deleted = 0 " ;
 
 $records = queryDB($conn, $query, "read") ;
 

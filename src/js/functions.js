@@ -1440,7 +1440,13 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
+
+                    console.log("JSON.parse(a)")
+                    console.log(a)
+
+                    // Clear label fields
                     $("#lblCustom1Anl, #lblCustom2Anl, #lblCustom3Anl, #lblCustom4Anl, #lblCustom5Anl, #lblCustom6Anl").text("");
+
                     for (i = 0; i < a.length; i++) {
                         $("#lblCustom" + (i + 1) + "Anl").text(a[i].name);
                         $("#tblAnlagenListe2 thead tr th").eq(i + 3).text(a[i].name);
@@ -5903,32 +5909,26 @@ try {
                     });
                     break;
                 case "eAnl":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readInstanzen.php",
-                        data: {
-                            id: "eAnl",
-                            nameDB: $("#nameDB").val()
-                        },
-                        fail: function() {
-                            alert("failed!!")
-                        },
-                        success: function(a) {
-                            var c = $.parseJSON(a);
-                            $("#eAnlCount").val(c.length);
-                            0 < c.length ? ([
-                                ["#eAnlID", "eAnl_ID"],
-                                ["#nameEAnl", "name"],
-                                ["#kuerzelEAnl", "kurz"],
-                                ["#beschreibungEAnl", "beschreibung"]
-                            ].forEach(function(a) {
-                                $(a[0]).val(c[b][a[1]])
-                            }), tblOptionenEAnl.clear().draw(), c[b].optionen.split(",").forEach(function(a) {
-                                tblOptionenEAnl.row.add([a]).draw()
-                            })) : clearFields("eAnlHinz")
-                        }
-                    });
+                    ajaxPost("php/readInstanzen.php")({id : "eAnl", nameDB:  $("#nameDB").val()})
+                    .then(data => 
+                        data.length > 0 ? 
+                        [["#eAnlID", "eAnl_ID"],
+                        ["#nameEAnl", "name"],
+                        ["#kuerzelEAnl", "kurz"],
+                        ["#beschreibungEAnl", "beschreibung"]
+                        ].forEach(function(a) {
+                            $(a[0]).val(data[b][a[1]])
+                        }) : clearFields("eAnlHinz")
+                    )
+                    .then(() => {
+                        ajaxPost("php/eAnlOptions.php")({eAnl_ID : $("#eAnlID").val(), nameDB:  $("#nameDB").val()})
+                        .then(data_ => {
+                            tblOptionenEAnl.clear().draw()
+                            data_.forEach(
+                                a => tblOptionenEAnl.row.add([a]).draw()
+                            )
+                        }) 
+                    })
                     break;
                 case "ePrd":
                     $.ajax({
