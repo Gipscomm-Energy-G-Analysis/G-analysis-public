@@ -212,13 +212,6 @@ elseif($id == "enf"){
 
 }
 
-elseif($id == "eAnl"){
-
-    $query = "SELECT * FROM erweiterungenAnlagen ";
-    $query .= "WHERE deleted <> 'true' ";
-
-}
-
 elseif($id == "ePrd"){
 
     $query = "SELECT * FROM erweiterungenProdukte ";
