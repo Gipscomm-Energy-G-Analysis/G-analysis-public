@@ -2761,7 +2761,7 @@ function getAllColumnProductTables(edit_tile_all_columns = false){
           selectHTML += "</select>";
           $('#all_columns_product_div').html(selectHTML);
 
-          var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>No Data</td></tr>";
+          var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
           $('#product_select_table_entries').html(tr);
           $('#product_select_table_entries_pagination').html('');
         }
@@ -11066,7 +11066,6 @@ function rowClickParticularProductEntry(analgen_config_id,page_val = 1,order_by 
   var table_other = $('#product_select_table_entries').children('tr:eq(0)').attr('data-table-other'); 
   $('#analgen_config_id_input').attr('data-table-other',table_other);
   $('#analgen_config_id_input').val(analgen_config_id);
-  // console.log('Worrking Function');
   $.ajax({
     type: "POST",
     url: "php/retreive.php",

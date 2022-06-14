@@ -132,7 +132,7 @@ class dashboardController {
                     $tr.="</tr>";
                 }
             }else{
-                 $tr = "<tr><td colspan='4' class='text-center'>No Data</td></tr>";
+                 $tr = "<tr><td colspan='4' class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
             }
             $records['energy_not_consumed'] = $tr;
 
@@ -553,7 +553,7 @@ class dashboardController {
                 $tr.="</tr>";
             }
         }else{
-                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -816,7 +816,7 @@ class dashboardController {
                 }
                 $tr.= "</tbody>";
             }else{
-                    $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+                    $tr .= "<tbody><tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr></tbody>";
             }
             return $tr;
         }
@@ -932,7 +932,7 @@ class dashboardController {
                 }
                 $tr.= "</tbody>";
             }else{
-                    $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+                    $tr .= "<tbody><tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr></tbody>";
             }
             return $tr;
         }
@@ -1052,7 +1052,7 @@ class dashboardController {
                 }
                 $tr .= "</tbody>";
             }else{
-                $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+                $tr .= "<tbody><tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr></tbody>";
             }
 
             return $tr;
@@ -3527,7 +3527,7 @@ class dashboardController {
             }
             $tr.="</tr>";
         }else{
-                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -3752,7 +3752,7 @@ class dashboardController {
                 $tr.="</tr>";
             }
         }else{
-                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -3920,7 +3920,7 @@ class dashboardController {
             if($tbody == '')
             {
                 $tbody .= '<tr>';
-                $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können Found</td>';
                 $tbody .= '</tr>';
                 $records['pagination_html_energy'] =  '';
             }
@@ -4038,7 +4038,7 @@ class dashboardController {
     //         if($tbody == '')
     //         {
     //             $tbody .= '<tr>';
-    //             $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+    //             $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können Found</td>';
     //             $tbody .= '</tr>';
     //             $records['pagination_html_energy'] =  '';
     //         }
@@ -4374,7 +4374,7 @@ class dashboardController {
                 $tr.="</tr>";
             }
         }else{
-                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -4502,7 +4502,7 @@ class dashboardController {
                 $result['measurement_html'] = $select;
             }
             else{
-                $select = "<option value=''>No Data Found</option>";
+                $select = "<option value=''>Es existieren keine Daten die ausgewertet werden können</option>";
                 $result['measurement_html'] = $select;
             }
             $result['table_found'] = $tablefound;
@@ -4544,7 +4544,7 @@ class dashboardController {
                 $result['measurement_html'] = $select;
             }
             else{
-                $select = "<option value=''>No Data Found</option>";
+                $select = "<option value=''>Es existieren keine Daten die ausgewertet werden können</option>";
                 $result['measurement_html'] = $select;
             }
             $result['table_found'] = $tablefound;
@@ -4589,7 +4589,7 @@ class dashboardController {
                 $result['measurement_html'] = $select;
             }
             else{
-                $select = "<option value=''>No Data Found</option>";
+                $select = "<option value=''>Es existieren keine Daten die ausgewertet werden können</option>";
                 $result['measurement_html'] = $select;
             }
             $result['table_found'] = $tablefound;
@@ -4630,7 +4630,7 @@ class dashboardController {
                 $result['data'] = $resultQuery;
             }
             else{
-                $select = "<option value=''>No Data Found</option>";
+                $select = "<option value=''>Es existieren keine Daten die ausgewertet werden können Found</option>";
                 $result['measurement_html'] = $select;
                 $result['data'] = $resultQuery;
             }
@@ -4808,7 +4808,7 @@ class dashboardController {
                 if($tbody == '')
                 {
                     $tbody .= '<tr>';
-                    $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                    $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können Found</td>';
                     $tbody .= '</tr>';
                     $records['pagination_html_energy'] =  $paginationHTMl;
                 }
@@ -4922,7 +4922,7 @@ class dashboardController {
                     }
                     else{
                         $tbody .= '<tr>';
-                        $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                        $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können Found</td>';
                         $tbody .= '</tr>';
                     }
                     
@@ -5024,7 +5024,7 @@ class dashboardController {
             }
             else{
                 $tbody .= '<tr>';
-                $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können Found</td>';
                 $tbody .= '</tr>';
             }
 
@@ -5145,7 +5145,7 @@ class dashboardController {
             }
             else{
                 $tbody .= '<tr>';
-                $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können Found</td>';
                 $tbody .= '</tr>';
             }
 
@@ -5398,7 +5398,7 @@ class dashboardController {
                 $tr.="</tr>";
             }
         }else{
-                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -5778,7 +5778,7 @@ class dashboardController {
                     $tr .= "</tr>";
                 }
             }else{
-                 $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+                 $tr = "<tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
             }
 
             return $tr;
@@ -5932,7 +5932,7 @@ class dashboardController {
                     $tr.="</tr>";
                 }
             }else{
-                 $tr = "<tr><td colspan='4' class='text-center all_product_table_row_click'>No Data</td></tr>";
+                 $tr = "<tr><td colspan='4' class='text-center all_product_table_row_click'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
             }
 
             return $tr;
@@ -6401,7 +6401,7 @@ class dashboardController {
                     $tr.="</tr>";
                 }
             }else{
-                 $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+                 $tr = "<tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
             }
 
             return $tr;
@@ -6536,7 +6536,7 @@ class dashboardController {
                 $tr.="</tr>";
             }
         }else{
-             $tr = "<tr><td colspan='4' class='text-center'>No Data</td></tr>";
+             $tr = "<tr><td colspan='4' class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
         }
 
         $records['production_data_html'] = $tr;
@@ -6605,7 +6605,7 @@ class dashboardController {
                     $tr.="</tr>";
                 }
             }else{
-                 $tr = "<tr><td colspan='4' class='text-center'>No Data</td></tr>";
+                 $tr = "<tr><td colspan='4' class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
             }
 
             //2nd Case  Min Value Greater
@@ -6709,7 +6709,7 @@ class dashboardController {
                     $tr.="</tr>";
                 }
             }else{
-                $tr = "<tr><td colspan='5' class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td colspan='5' class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
             }
 
             
@@ -6817,7 +6817,7 @@ class dashboardController {
                     $tr.="</tr>";
                 }
             }else{
-                $tr = "<tr><td colspan='4' class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td colspan='4' class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
             }
 
 
@@ -7383,7 +7383,7 @@ class dashboardController {
                 $tr .= "<th>Status</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
-                $tr .= "<tbody><tr><td colspan='5' class='text-center'>No Data</td></tr></tbody>";
+                $tr .= "<tbody><tr><td colspan='5' class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr></tbody>";
                 $records['dashboardMeasurementHtml'] = $tr;
                 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
             }
@@ -7421,7 +7421,7 @@ class dashboardController {
             }
             $tr .= "</tbody>";
         }else{
-            $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tbody></tr>";
+            $tr .= "<tbody><tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tbody></tr>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -7456,7 +7456,7 @@ class dashboardController {
             }
             $tr .= "</tbody>";
         }else{
-            $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+            $tr .= "<tbody><tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr></tbody>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -7496,7 +7496,7 @@ class dashboardController {
             }
             $tr .= "</tbody>";
         }else{
-            $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+            $tr .= "<tbody><tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr></tbody>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -7631,7 +7631,7 @@ class dashboardController {
                     else{
                         $tbody .= "<tbody>";
                         $tbody .= '<tr>';
-                        $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                        $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können</td>';
                         $tbody .= '</tr>';
                         $tbody .= "</tbody>";
                     }
@@ -7693,7 +7693,7 @@ class dashboardController {
                     else{
                         $tbody .= "<tbody>";
                         $tbody .= '<tr>';
-                        $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                        $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können </td>';
                         $tbody .= '</tr>';
                         $tbody .= "</tbody>";
                     }
@@ -7764,7 +7764,7 @@ class dashboardController {
                 else{
                     $tbody .= "<tbody";
                     $tbody .= '<tr>';
-                    $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
+                    $tbody .= '<td colspan="50" class="text-center">Es existieren keine Daten die ausgewertet werden können </td>';
                     $tbody .= '</tr>';
                     $tbody .= "</tbody";
                 }
@@ -7864,7 +7864,7 @@ class dashboardController {
                 }
                 $tr .="</tbody>";
             }else{
-                 $tr = "<tbody><tr><td $col_span class='text-center'>No Data</td></tbody></tr>";
+                 $tr = "<tbody><tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tbody></tr>";
             }
             // echo $tr; die;
             return $tr;
@@ -10089,7 +10089,7 @@ class dashboardController {
                 $tr.="</tr>";
             }
         }else{
-                $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
+                $tr = "<tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr>";
         }
         return $tr;
         // $records['measurement_html'] = $tr;
@@ -10255,7 +10255,7 @@ class dashboardController {
                 }
                 $tr.= "</tbody>";
             }else{
-                    $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
+                    $tr .= "<tbody><tr><td $col_span class='text-center'>Es existieren keine Daten die ausgewertet werden können</td></tr></tbody>";
             }
             return $tr;
         }
@@ -10741,7 +10741,7 @@ class dashboardController {
                                 $from=$fromDate.'T'.$fromTime;
                                 // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
                                 $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
-
+                                
                                 $resultEnergy = queryDB($conn, $query1, "read");
                                 // echo json_encode($resultEnergy); die;
                                 $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
@@ -11039,32 +11039,6 @@ class dashboardController {
         } 
     }
 
-    // public function getEditTableValueAutoPopluate(){
-    //     try{
-    //         global $conn;
-    //         $username = $_SESSION['username'];
-    //         $id = $_POST['id'];
-    //         $i_value = $_POST['i_value'];
-    //         $getResult =  "SELECT * from tableFormat where tile_data_type ='table' AND username = '$username' ";
-    //             $dataResult = queryDB($conn, $getResult, "read");
-    //             // print_r($dataResult);
-    //             $tileHtml = '';
-    //             $table_type = '';
-    //             $total_result = count($dataResult);
-    //             echo $total_result;
-    //             if($dataResult != null && count($dataResult)>0){
-    //                 for($i= 0; $i < $total_result; $i++){
-                        
-    //                 }
-    //             }
-    //     }
-    //     catch (Exception $e) {
-    //         echo 'Caught exception: ',  $e->getMessage(), "\n";
-    //     } 
-    // }
-    
-
-    // ---end--->
   
 }
 $obj = new dashboardController();
