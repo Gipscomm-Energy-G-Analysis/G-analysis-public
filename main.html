@@ -4,6 +4,10 @@
    <title>G-Analysis</title>
    <meta charset="UTF-8">
    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
+
+   <!-- Bootstrap Scripts-->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
    <link id="mainStyle" type="text/css" rel="stylesheet" href="src/css/main_style.css" media="all">
    <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.min.css">
    <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.structure.min.css">
@@ -36,6 +40,8 @@
    <link  rel="stylesheet" href="dashboard/css/jquery.multiselect.css" />
    <!-- 7-9-2021-- -->
    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+   <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
 
 
    <style>
@@ -65,9 +71,13 @@
          font-family: Calibri,Arial, Helvetica, sans-serif !important;
       }
    </style>
+   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="production_dashboard/css/bootstrap-duallistbox.min.css">
+   <link rel="stylesheet" href="production_dashboard/css/new.css">
 </head>
 <body>
-    <div id="mainP">
+      <div id="loader_demo"></div>
+      <div id="mainP">
         <!--Header-->
         <img id="headerBalken" src="images/header2.png" alt="header" style="position:absolute;width:100%;height:55px;opacity:.7;top:0;" />
         <!--Horizontal Menu-->
@@ -127,8 +137,7 @@
                   </div>
                   <div class="column">
 
-                    <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer">
-                     <a href="/product-dashboard">Produktion</a>
+                    <h3 id="menuProduktionAusw" class="dashboard_menu_click cursor_pointer">Produktion
                     </h3>
                   </div>
                 </div>
@@ -2272,153 +2281,857 @@
       </div>
       <div id="auswertungen" style="display: none;">
          <div id="produktion" style="display:none;">
-            <div class="infoBody">
-               <div id="infosProduktion" style="height:950px;">
-                  <div class="navDropBox" style="height:20px;padding:3px"> <img id="anlSuchenProd" title="Anlage suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" /> <img style="float:right;width:15px;" src="images/space1.png" alt="__" /> <img id="anlProdLast" style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Anlage" src="images/last.png" alt="letzte" /> <img id="anlProdNext" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Anlage" src="images/next.png" alt="nächste" /> <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> <img id="anlProdPrevious" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Anlage" src="images/previous.png" alt="vorherige" /> <img id="anlProdFirst" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Anlage" src="images/first.png" alt="erste" />
+
+            <div class="infoBody" style="display: block; width: 100%;">
+                        
+               <div class="production_mode_switch btn-group float-right" style="margin-right: 7px;">
+                  <input type="checkbox" id="productionPageModeSelector" checked data-toggle="toggle" data-on="View Mode" data-off="Edit Mode" data-onstyle="success" data-offstyle="info">
+               </div>
+         
+               <button type="button" class="btn btn-info float-right btn-sm" id="machine_table_configuration" data-toggle="modal" data-target="#modal-machine-configuration" style="display: none;">Machine Table Configrations</button>
+         
+               <div id="infosProduktion" style="height:auto;padding-bottom: 10px;" class="production-view-mode">
+                  <div class="navDropBox" style="height:20px;padding:3px"> 
+                     <img id="anlSuchenProd" title="Anlage suchen" src="images/search.png" alt="suchen, auswählen" style="height:18px;width:18px;" data-toggle="modal" data-target="#modal-Machines-list" /> 
+                     <img style="float:right;width:15px;" src="images/space1.png" alt="__" />
+                     <div class="navigation-production" data-value="86" data-index="0" data-array="" data-graph-points="">
+                        <img class="navigation-production-li" event-type="last"  style="float:right;margin-left:5px;height:18px;width:18px;" title="letzte Anlage" src="images/last.png" alt="letzte" /> 
+                        <img class="navigation-production-li" event-type="next" style="float:right;margin-left:5px;height:18px;width:18px;" title="nächste Anlage" src="images/next.png" alt="nächste" /> 
+                        <img style="float:right;width:5px;" src="images/space1.png" alt="__" /> 
+                        <img class="navigation-production-li" event-type="prev" style="float:right;margin-left:5px;height:18px;width:18px;" title="vorherige Anlage" src="images/previous.png" alt="vorherige" /> 
+                        <img class="navigation-production-li" event-type="first" style="float:right;margin-left:5px;height:18px;width:18px;" title="erste Anlage" src="images/first.png" alt="erste" />
+                        
+                     </div>
                      <label class="manOrgLabel">Organisation:</label>
-                     <select class="orgPfad" size="1" title="Organisation"></select>
+                     <select name="select" id="org-data">
+                       <option value="">Select</option>
+                     </select>
                      <label class="manLiegLabel">Liegenschaft:</label>
-                     <select class="liegPfad" size="1" title="Liegenschaft"></select>
+                     <select name="Data-property" id="property-data">
+                        <option value="">Select</option>
+                     </select>
                   </div>
-                  <div class="sectionHeader">
-                     <label>Allgemein</label>
-                  </div>
-                  <div style="float:right; width:300px;">
-                     <div class="controlDiv">
-                        <label>Anlage</label>
-                        <input id="anlageProd" />
+                  <!-- Production  Detail Div Start -->
+                  <div class="card" style="margin-bottom:10px;">
+                     <div class="" style="background: #6b6f73;color:white; padding-left:3px;">
+                        Allgemein
                      </div>
-                     <div class="controlDiv">
-                        <label>Programm</label>
-                        <input id="programmProd" />
-                     </div>
-                     <div class="controlDiv">
-                        <label>Artikel</label>
-                        <input id="artikelProd" />
-                     </div>
-                     <!--<div class="controlDiv">
-                           <label>Auftragsvolumen</label>
-                           <input id="auftragsvolumenProd" />
-                           </div>-->
-                     <div class="controlDiv">
-                        <label>Bisher produziert</label>
-                        <input id="anzahlArtikelProduziertProd" />
-                     </div>
-                     <div class="controlDiv">
-                        <label>Zeit/Zyklus</label>
-                        <input id="zeitZyklusProd" />
-                     </div>
-                     <div class="controlDiv">
-                        <label>Artikel/Stunde</label>
-                        <input id="artikelProStundeProd" />
-                     </div>
-                     <!--<div class="controlDiv">
-                           <label>Fertigst. Auftrag[h]</label>
-                           <input id="endeAuftragProd" />
-                           </div>-->
-                     <div class="controlDiv">
-                        <label>Letzte Störung</label>
-                        <input id="letzteStoerungProd" />
-                     </div>
-                  </div>
-                  <div> <img src="images/Blasanlage.jpg" style="width:340px;height:225px;" /> </div>
-                  <div class="sectionHeader">
-                     <label>Zustand Gesamte Produktionsanlage</label>
-                     <div class="controlDiv">
-                        <input id="zustandAnlageAmpel" name="zustandAnlage" type="radio" style="width:60px;" />
-                        <label id="zustandAnlageString">Zustandsstring</label>
-                     </div>
-                  </div>
-                  <div class="sectionHeader">
-                     <label>Zustand Extruder</label>
-                  </div>
-                  <div class="controlDiv">
-                     <label style="font-size:16px;font-weight:bold;">Hydraulik</label>
-                     <br>
-                     <br>
-                     <label class="lblStringZustand">Extruder 1</label>
-                     <br> <img id="zustandHydExt1Ampel" class="imgAmpelZustand" src="#" alt="statusAmpel" />
-                     <label id="zustandHydExt1String" class="lblStringZustand">Zustandsstring</label>
-                     <br>
-                     <label class="lblStringZustand">Extruder 2</label>
-                     <br> <img id="zustandHydExt2Ampel" class="imgAmpelZustand" src="#" alt="statusAmpel" />
-                     <label id="zustandHydExt2String" class="lblStringZustand">Zustandsstring</label>
-                     <br>
-                     <label class="lblStringZustand">Extruder 3</label>
-                     <br> <img id="zustandHydExt3Ampel" class="imgAmpelZustand" src="#" alt="statusAmpel" />
-                     <label id="zustandHydExt3String" class="lblStringZustand">Zustandsstring</label>
-                     <br>
-                  </div>
-                  <div class="controlDiv">
-                     <label style="font-size:16px;font-weight:bold;">Heizung</label>
-                     <br>
-                     <br>
-                     <label class="lblStringZustand">Extruder 1</label>
-                     <br> <img id="zustandHeizExt1Ampel" class="imgAmpelZustand" src="#" alt="statusAmpel" />
-                     <label id="zustandHydExt1String" class="lblStringZustand">Zustandsstring</label>
-                     <br>
-                     <label class="lblStringZustand">Extruder 2</label>
-                     <br> <img id="zustandHeizExt2Ampel" class="imgAmpelZustand" src="#" alt="statusAmpel" />
-                     <label id="zustandHydExt1String" class="lblStringZustand">Zustandsstring</label>
-                     <br>
-                     <label class="lblStringZustand">Extruder 3</label>
-                     <br> <img id="zustandHeizExt3Ampel" class="imgAmpelZustand" src="#" alt="statusAmpel" />
-                     <label id="zustandHydExt1String" class="lblStringZustand">Zustandsstring</label>
-                     <br>
-                  </div>
-                  <div style="clear:both;">
-                     <div class="sectionHeader">
-                        <label>Energie und Ressourcen</label>
-                     </div>
-                     <div class="controlDiv">
-                        <label>
-                           <br />Leistung[kW]</label>
-                        <input id="leistungProd" />
-                     </div>
-                     <div class="controlDiv">
-                        <label>
-                           <br />Verbrauch[kWh]</label>
-                        <input id="verbrauchProd" />
-                     </div>
-                     <div class="controlDiv">
-                        <label>Spezifischer Verbrauch[kWh/m^3]</label>
-                        <input id="speziVerbrauchProd" />
-                     </div>
-                     <div class="controlDiv">
-                        <label>Druckluft[m^3/h]</label>
-                        <input id="druckluftProStundeProd" />
-                     </div>
-                     <div class="controlDiv">
-                        <label>Wasser[m^3/h]</label>
-                        <input id="wasserProStundeProd" />
-                     </div>
-                  </div>
-                  <button id="diaProd1AusEin" style="margin-bottom:10px;">Diagramm ausklappen</button>
-                  <div id="diaProd1" style="display:none;">
-                     <hr />
-                     <div id="chartdiv" style="width:100%;height:300px;"></div>
-                  </div>
-                  <div class="infosBlock">
-                     <div class="sectionHeader">
-                        <label>Parameter</label>
-                     </div>
-                     <div>
-                        <div class="controlDiv">
-                           <label>Drehzahl Extruder</label>
-                           <input id="drehzahlProd" />
+                     <div class="card-body custom-padding" style="background: #bac0c8;">
+                        <div class="f-display" style="display: flex; margin-top: 6px;">
+                           <div> 
+                              <img class="m-6" src="images/Blasanlage.jpg" style="width:291px;height:152px;padding: 0px 3px;" />
+                           </div>  
+                           <div class="c-div m-6" style="display:flex">
+                              <div class="div-4">
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Anlage</label>
+                                    <input id="anlageProd" />
+                                 </div>
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Auftragsmenge</label>
+                                    <input id="AuftragsmengeProd" />
+                                 </div>
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Bestellung</label>
+                                    <input id="BestellungProd" />
+                                 </div>
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Artikel</label>
+                                    <input id="artikelProd" />
+                                 </div>
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Gutmenge</label>
+                                    <input id="GutmengeProd" />
+                                 </div>
+                                    <!--<div class="controlDiv">
+                                    <label>Auftragsvolumen</label>
+                                    <input id="auftragsvolumenProd" />
+                                    </div>-->
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Ausschuss</label>
+                                    <input id="AusschussProd" />
+                                 </div>
+                              </div>
+                              <div class="div-3">
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Programm</label>
+                                    <input id="programProd" />
+                                 </div>
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Zeit_zyklus</label>
+                                    <input id="Zeit_zyklusProd" />
+                                 </div>
+                                    <!--<div class="controlDiv">
+                                    <label>Fertigst. Auftrag[h]</label>
+                                    <input id="endeAuftragProd" />
+                                    </div>-->
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Werkzeug</label>
+                                    <input id="WerkzeugProd" />
+                                 </div>
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Kavitäten</label>
+                                    <input id="KavitätenProd" />
+                                 </div>
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Letzte_störung</label>
+                                    <input id="LetztestörungProd" />
+                                 </div>
+                                 <div class="controlDiv controlDivProductionn">
+                                    <label>Bisher_produziert</label>
+                                    <input id="BisherproduziertProd" />
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                        <div class="controlDiv">
-                           <label>Temp. Masse</label>
-                           <input id="tempMasseProd" />
+                        <!-- Production  Detail Div End -->
+                        <!-- Production accordion start-->
+                        <div class="m-topp">
+                           <div class="">
+                              <div class="productioncol" style="background: #6b6f73;color:white;margin-bottom:
+                              5px;">
+                                 Production Dynamic Columns
+                              </div>
+         
+                              <div class="error_message">
+                                 <h3>Noch keine Production Dynamic Columns verfügbar!!</h3></div>
+                              <div class="" style="background: #bac0c8;">
+                                 <!-- Dynamic Div Production start-->
+                                 <div class="f-display"> 
+                                    <div class="c-div m-12" style="display:flex">
+                                       <div class="col-sm-6 left_section dynamic_columns">
+                                          <!-- <div class="controlDiv controlDivProductionn dynamic-production-div">
+                                             <label>Anlage</label>
+                                             <input id="anlageProd" />
+                                          </div> -->
+                                       </div>
+                                       <div class="col-sm-6 right_section dynamic_columns">
+                                          <!-- <div class="controlDiv controlDivProductionn dynamic-production-div">
+                                             <label>Programm</label>
+                                             <input id="programProd" />
+                                          </div> -->
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <!-- Dynamic Div Production end-->
+                              </div>
+                           </div>
+         
+                           <!-- not required-->
+                           <div id="accordion">
+                              <div class="card m-topp">
+                                 <div class="card-header accordion-header p-0">
+                                    <span class="clr-white p-l" data-toggle="collapse" href="#collapseOne">
+                                       Energy Charts
+                                    </span>
+                                    <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
+                                       <input type="checkbox" id="graphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
+                                    </div>
+                                 </div>
+                                 <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                 <div class="card-body card-body-production">
+                                          <!-- Graph Mode Start -->
+                                          <div class="graph-mode" >
+                                             <div class="energy_graph_div" style="display:none;">
+                                                <div class="row">
+                                                   <div class="col-sm-3">
+                                                      <div class="controlDiv controlDivProduction bgclrnone">
+                                                            <label>No. of Records</label>
+                                                            <select class="time_filter" id="timeFilter" onmousedown="this.value='';" onchange="jsFunction(this.value,'31,290');">
+                                                               <option value="5" selected>5</option>
+                                                               <option value="10">10</option>
+                                                               <option value="15">15</option>
+                                                               <option value="100">100</option>
+                                                            </select>
+                                                      </div>
+                                                   </div>
+                                                   
+         
+                                                   <div class="col-sm-3">
+                                                      <div class="controlDiv controlDivProduction">
+                                                            <label>Time Interval</label>
+                                                            <select class="graph-filter-dynamic" id="timeFilterInterval">
+                                                               <option value="1">1 Minutes</option>
+                                                               <option value="5">5 Minutes</option>
+                                                               <option value="10">10 Minutes</option>
+                                                               <option value="15" selected>15 Minutes</option>
+                                                            </select>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             <div class="row" id="graph_div"></div>
+                                             
+         
+                                             <div id="loader_image_energy_charts" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image">
+                                             </div>
+         
+                                             <div class="chart" id="chartdiv">
+                                             </div>
+                                          </div>
+         
+                                          <div class="energy_graph_msg">
+                                             <h3>No data found for measuring points yet!</h3>
+                                          </div>
+                                       </div>
+                                       <!-- Graph Mode end -->
+                                       <!-- Edit Mode start -->
+                                       <div class="history-mode" style="display:none;">
+                                             <form id="historicGraphData">
+                                                <div class="row">
+                                                   <input type="hidden" value="{{$data['msGraphData']}}" id="msgraphData">
+                                                   <div class="col-sm-3">
+                                                         <div class="controlDiv controlDivProduction">
+                                                            <label>Period</label>
+                                                            <select class="form-control" id="periodFilterInterval">
+                                                               <option value="year">Year</option>
+                                                               <option value="month">Month</option>
+                                                               <option value="custom">Custom</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+                                                   <div class="col-sm-3">
+                                                         <div class="controlDiv controlDivProduction">
+                                                            <label>Type</label>
+                                                            <select class="form-control" id="typeFilterInterval">
+                                                               <option value="line">Line Graph</option>
+                                                               <option value="bar">Bar Graph</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+         
+                                                   <div class="col-sm-3 year_filter">
+                                                         <div class="controlDiv controlDivProduction">
+                                                            <label>Year</label>
+                                                            <select class="form-control" id="yearFilterInterval">
+                                                               <option value="">Select</option>
+                                                               <option value="2022">2022</option>
+                                                               <option value="2021">2021</option>
+                                                               <option value="2020">2020</option>
+                                                               <option value="2019">2019</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+         
+                                                   <div class="col-sm-3 clear month_filter" style="display:none;">
+                                                         <div class="controlDiv controlDivProduction">
+                                                            <label>Month</label>
+                                                            <select class="form-control" id="monthFilterInterval">
+                                                               <option value="">Select</option>
+                                                               <option value="01">January</option>
+                                                               <option value="02">February</option>
+                                                               <option value="03">March</option>
+                                                               <option value="04">April</option>
+                                                               <option value="05">May</option>
+                                                               <option value="06">June</option>
+                                                               <option value="07">July</option>
+                                                               <option value="08">August</option>
+                                                               <option value="09">September</option>
+                                                               <option value="10">October</option>
+                                                               <option value="11">November</option>
+                                                               <option value="12">December</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+         
+                                                   <div class="col-sm-3 custom_filter" style="display:none;">
+                                                         <div class="controlDiv controlDivProduction">
+                                                            <label>Start Date</label>
+                                                            <input type="text" id="start_date" class="form-control" placeholder="Start Date" value="" readonly="">
+                                                         </div>
+                                                   </div>
+         
+                                                   <div class="col-sm-3 custom_filter" style="display:none;">
+                                                         <div class="controlDiv controlDivProduction">
+                                                            <label>End Date</label>
+                                                            <input type="text" id="end_date" class="form-control" placeholder="End Date" value="" readonly="">
+                                                         </div>
+                                                   </div>
+                                                </div>
+                                                <div class="popup">
+                                                   <div class="row">
+                                                         <div class="col-sm-3">
+                                                            <button type="submit" class="btn btn-block btn-primary" id="create_graph">Create Graph</button>
+                                                         </div>
+                                                         <div class="col-sm-4">
+                                                            <button type="button" class="btn btn-block btn-primary" id="create_graph_window">Create Graph (New Window)</button>
+                                                         </div>
+                                                   </div>
+                                                </div>
+                                             </form>
+         
+                                             <div id="loader_image_history_charts" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image">
+                                             </div>
+         
+                                             <div class="row historyGraphDiv" style="display:none;">
+         
+                                                <div class="charts am_graph_div" id="historyChartdiv">
+         
+                                                </div>
+                                             </div>
+                                       </div>
+                                       <!-- Edit mode end -->
+                                    </div>
+                                 </div>
+                              </div>
+         
+                              <!-- production chart -->
+         
+                              <div class="card">
+                                 <div class="accordion-header" id="headingTwo"preference_tab>
+                                 <div class="row">
+                                    <div class="col-sm-6" data-toggle="collapse" data-target="#graphCollapseTwo" aria-expanded="false" aria-controls="graphCollapseTwo">
+                                       <span class="mb-0 clr-white p-l">
+                                             Production Charts
+                                       </span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                       <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
+                                             <input type="checkbox" id="productGraphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 </div>
+                                 <div id="graphCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                 <div class="card-body card-body-production">
+                                    <div class="product-graph-mode">
+                                       <div class="row">
+                                                   <div class="col-sm-3">
+                                                         <div class="controlDiv controlDivProduction">
+                                                            <label>No. of Records</label>
+                                                            <select class="time_filter h-w" id="timeFilterProduction" onmousedown="this.value='';" onchange="jsFunctionProduction(this.value);">
+                                                               <option value="5" selected>5</option>
+                                                               <option value="10">10</option>
+                                                               <option value="15">15</option>
+                                                               <option value="100">100</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+                                                   <div class="col-sm-3">
+                                                         <div class="controlDiv controlDivProduction">
+                                                            <label>Time Interval</label>
+                                                            <select class="graph-filter-dynamic h-w" id="timeFilterIntervalProduction">
+                                                               <option value="1">1 Minutes</option>
+                                                               <option value="5">5 Minutes</option>
+                                                               <option value="10">10 Minutes</option>
+                                                               <option value="15" selected>15 Minutes</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+                                                <!-- <div class="col-sm-6 production-graph-icons text-right">
+                                                </div> -->
+                                                <div class="energy_graph_msg" style="display:none;">
+                                                   <h3>No data found for measuring points yet!</h3>
+                                                </div>
+                                       </div>
+                                       <div id="loader_image" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image"></div>
+                                       <div class="row" id="other_graph_div">
+                                       </div>
+                                    </div>
+                                    <!-- Edit Mode start -->
+                                    <div class="product-history-mode" style="display:none;">
+                                       <form id="productHistoricGraphData">
+                                             <div class="row">
+                                                <div class="col-sm-3">
+                                                   <div class="form-group">
+                                                         <label>Period</label>
+                                                         <select class="form-control h-w" id="productPeriodFilterInterval">
+                                                            <option value="">Select</option>
+                                                            <option value="year">Year</option>
+                                                            <option value="month">Month</option>
+                                                            <option value="custom">Custom</option>
+                                                         </select>
+                                                   </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                   <div class="form-group">
+                                                         <label>Type</label>
+                                                         <select class="form-control h-w" id="productTypeFilterInterval">
+                                                            <option value="line">Line Graph</option>
+                                                            <option value="bar">Bar Graph</option>
+                                                         </select>
+                                                   </div>
+                                                </div>
+         
+                                                <div class="col-sm-3 product_year_filter">
+                                                   <div class="form-group">
+                                                         <label>Year</label>
+                                                         <select class="form-control h-w" id="productYearFilterInterval">
+                                                            <option value="">Select</option>
+                                                            @for($i=date('Y');$i >date('Y')-4;$i--)
+                                                               <option value="{{$i}}">{{$i}}</option>
+                                                            @endfor
+                                                         </select>
+                                                   </div>
+                                                </div>
+         
+                                                <div class="col-sm-3 clear product_month_filter" style="display:none;">
+                                                   <div class="form-group">
+                                                         <label>Month</label>
+                                                         <select class="form-control" id="productMonthFilterInterval">
+                                                            <option value="">Select</option>
+                                                            <option value="01">January</option>
+                                                            <option value="02">February</option>
+                                                            <option value="03">March</option>
+                                                            <option value="04">April</option>
+                                                            <option value="05">May</option>
+                                                            <option value="06">June</option>
+                                                            <option value="07">July</option>
+                                                            <option value="08">August</option>
+                                                            <option value="09">September</option>
+                                                            <option value="10">October</option>
+                                                            <option value="11">November</option>
+                                                            <option value="12">December</option>
+                                                         </select>
+                                                   </div>
+                                                </div>
+         
+                                                <div class="col-sm-4 product_custom_filter" style="display:none;">
+                                                   <div class="form-group">
+                                                         <label>Start Date</label>
+                                                         <input type="text" id="product_start_date" class="form-control" placeholder="Start Date" value="" readonly="">
+                                                   </div>
+                                                </div>
+         
+                                                <div class="col-sm-4 product_custom_filter" style="display:none;">
+                                                   <div class="form-group">
+                                                         <label>End Date</label>
+                                                         <input type="text" id="product_end_date" class="form-control" placeholder="End Date" value="" readonly="">
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <div class="popup">
+                                                <div class="row">
+                                                   <div class="col-sm-3">
+                                                         <button type="submit" class="btn btn-block btn-primary" id="product_create_graph">Create Graph</button>
+                                                   </div>
+                                                   <div class="col-sm-3">
+                                                         <button type="button" class="btn btn-block btn-primary wdth" id="product_create_graph_window">Create Graph (New Window)</button>
+                                                   </div>
+         
+                                                </div>
+                                             </div>
+                                       </form>
+                                       <div id="loader_image_create_graph" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image">
+                                                   </div>
+                                       <div class="row product_historyGraphDiv" style="display:none;">
+                                             <div class="charts am_graph_div" id="product_historyChartdiv">
+         
+                                             </div>
+                                       </div>
+                                    </div>
+                                    <!-- Edit mode end -->
+                                 </div>
+                                 </div>
+                           </div>
+         
+                              
+                              <!-- Mixed charts -->
+                              <div class="card">
+                                 <div class="card-header accordion-header p-0" id="headingThree">
+                                    <div class="row">
+                                       <div class="col-sm-6" data-toggle="collapse" data-target="#graphCollapseThree" aria-expanded="false" aria-controls="graphCollapseThree">
+                                             <span class="mb-0 clr-white p-l">
+                                                Mixed Charts
+                                             </span>
+                                       </div>
+                                       <div class="col-sm-6">
+                                             <div class="btn-group float-right" style="font-size: 18px;width:135px;color:white;">
+                                                <input type="checkbox" id="mixedGraphModeSelector" checked data-toggle="toggle" data-on="Graph Mode" data-off="History Mode" data-onstyle="success" data-offstyle="info">
+                                             </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div id="graphCollapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                    <div class="card-body card-body-production">
+                                       <div class="mixed-graph-mode">
+                                             <div class="row">
+                                                <div class="col-sm-3">
+                                                   <div class="controlDiv controlDivProduction">
+                                                         <label>No. of Records</label>
+                                                         <select class="time_filter" id="timeFilterMixed" onmousedown="this.value='';" onchange="jsFunctionMixed(this.value);">
+                                                            <option value="5" selected>5</option>
+                                                            <option value="10">10</option>
+                                                            <option value="15">15</option>
+                                                            <option value="100">100</option>
+                                                         </select>
+                                                   </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                   <div class="controlDiv controlDivProduction">
+                                                        <label>Time Interval</label>
+                                                         <select class="graph-filter-dynamic" id="timeFilterIntervalMixed">
+                                                            <option value="1">1 Minutes</option>
+                                                            <option value="5">5 Minutes</option>
+                                                            <option value="10">10 Minutes</option>
+                                                            <option value="15" selected>15 Minutes</option>
+                                                         </select>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <div class="row am_graph_div" id="mixed_graph_div">
+                                              </div>
+         
+                                              <div class="error_msg">
+                                                <h3>NO Record Found</h3>
+                                             </div>
+                                       </div>
+         
+                                       <!-- Edit Mode start -->
+                                       <div class="mixed-history-mode" style="display:none;">
+                                             <form id="mixedHistoricGraphData">
+                                                <div class="row">
+                                                   <div class="col-sm-3">
+                                                         <div class="form-group">
+                                                            <label>Period</label>
+                                                            <select class="form-control h-w" id="mixedPeriodFilterInterval">
+                                                               <option value="year">Year</option>
+                                                               <option value="month">Month</option>
+                                                               <option value="custom">Custom</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+                                                   <div class="col-sm-3">
+                                                         <div class="form-group">
+                                                            <label>Type</label>
+                                                            <select class="form-control h-w" id="mixedTypeFilterInterval">
+                                                               <option value="line">Line Graph</option>
+                                                               <option value="bar">Bar Graph</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+         
+                                                   <div class="col-sm-3 mixed_year_filter">
+                                                         <div class="form-group">
+                                                            <label>Year</label>
+                                                            <select class="form-control h-w" id="mixedYearFilterInterval">
+                                                               <option value="">Select</option>
+                                                               @for($i=date('Y');$i >date('Y')-4;$i--)
+                                                                     <option value="{{$i}}">{{$i}}</option>
+                                                               @endfor
+                                                            </select>
+                                                         </div>
+                                                   </div>
+         
+                                                   <div class="col-sm-4 clear mixed_month_filter" style="display:none;">
+                                                         <div class="form-group">
+                                                            <label>Month</label>
+                                                            <select class="form-control" id="mixedMonthFilterInterval">
+                                                               <option value="">Select</option>
+                                                               <option value="01">January</option>
+                                                               <option value="02">February</option>
+                                                               <option value="03">March</option>
+                                                               <option value="04">April</option>
+                                                               <option value="05">May</option>
+                                                               <option value="06">June</option>
+                                                               <option value="07">July</option>
+                                                               <option value="08">August</option>
+                                                               <option value="09">September</option>
+                                                               <option value="10">October</option>
+                                                               <option value="11">November</option>
+                                                               <option value="12">December</option>
+                                                            </select>
+                                                         </div>
+                                                   </div>
+         
+                                                   <div class="col-sm-4 mixed_custom_filter" style="display:none;">
+                                                         <div class="form-group">
+                                                            <label>Start Date</label>
+                                                            <input type="text" id="mixed_start_date" class="form-control" placeholder="Start Date" value="" readonly="">
+                                                         </div>
+                                                   </div>
+         
+                                                   <div class="col-sm-4 product_custom_filter" style="display:none;">
+                                                         <div class="form-group">
+                                                            <label>End Date</label>
+                                                            <input type="text" id="mixed_end_date" class="form-control" placeholder="End Date" value="" readonly="">
+                                                         </div>
+                                                   </div>
+                                                </div>
+                                                <div class="popup">
+                                                   <div class="row">
+                                                         <div class="col-sm-3">
+                                                            <button type="submit" class="btn btn-block btn-primary" id="mixed_create_graph">Create Graph</button>
+                                                         </div>
+                                                         <div class="col-sm-3">
+                                                            <button type="button" class="btn btn-block btn-primary wdth" id="mixed_create_graph_window">Create Graph(New Window)</button>
+                                                         </div>
+                                                   </div>
+                                                </div>
+                                             </form>
+                                             <div class="row mixed_historyGraphDiv" style="display:none;">
+                                                <div class="charts am_graph_div" id="mixed_historyChartdiv">
+         
+                                                </div>
+                                             </div>
+                                       </div>
+                                       <!-- Edit mode end -->
+                                    </div>
+                                 </div>
+                           </div>
+                           </div>
                         </div>
-                     </div>
-                     <button id="diaProd2AusEin" style="margin-bottom:5px;">Diagramm ausklappen</button>
-                     <div id="diaProd2" style="display:none;">
-                        <hr />
-                        <div id="chartdiv2" style="width:100%;height:300px;"></div>
+                        <!-- Production accordion end-->
                      </div>
                   </div>
                </div>
+         
+               <!-- Begin Production Edit Mode Section -->
+               <div class="production-edit-mode" style="display: none;">
+                  
+                  <div class="container" style="padding:0px;">
+                     
+                     <div class="card mb-4">
+                        <div class="card-header py-0 d-flex align-items-center justify-content-between" style="background-color: #6B6F73;">
+                           <span class="clr-white">
+                              Edit Sub G Configrations
+                           </span>
+         
+                           <div>
+                              <div class="production_mode_switch btn-group float-right" style="width: 175px; margin-bottom: 3px;">
+                                 <input type="checkbox" id="editSubGroupConfigMode" checked data-toggle="toggle" data-on="Group Columns" data-off="Default Columns" data-onstyle="success" data-offstyle="info">
+                              </div>
+         
+                              <butto
+                               n type="button" class="btn btn-info float-right btn-sm" id="addGroupOptions_btn" data-toggle="modal" data-target="#modal-addGroupOptions" style="display: none;">Add Group Options</button>
+                           </div>
+                           
+                        </div>
+         
+                        <div class="card-body card-body-production">
+         
+                           <div class="editSubGroupColumn">
+                              <div class="row">
+                                 <div class="col-12 col-md-4">
+                                    
+                                    <div class="controlDiv controlDivProductionn m-bottom">
+                                       <label>Anlagengruppe</label>
+                                       <select class="width-66 black" id="select_group_options">
+                                       </select>
+                                     </div>
+         
+                                 </div>
+                                 <!-- <div class="col-12 col-md-4">
+                                    
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label>Tables</label>
+                                       <select class="width-66 black" id="select_group_table">
+                                       </select>
+                                    </div>
+         
+                                 </div> -->
+                              </div>
+         
+                           <div id="showData_SubGroupConfigrations" style="display: none;">
+                              <!-- <div class="row">
+                                 <div class="col-12 col-md-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label>Primary Key</label>
+                                       <select class="primary_key_subGroup width-66 black" id="primary_key_subGroup">
+                                          
+                                       </select>
+                                    </div>
+                                 </div>
+         
+                                 <div class="col-12 col-md-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label>Foreign Key</label>
+                                       <select class="foreign_key_subGroup width-66 black" id="foreign_key_subGroup">
+                                          
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div> -->
+         
+                              <div class="infosBlock">
+                                 <div class="sectionHeader">
+                                    
+                                    <label>Sub Group Table</label>
+                                 </div>
+                                 <div class="table-responsive">
+                                    <table id="configuration_table" class="table table-bordered bg-light">
+                                       <thead>
+                                       <tr>
+                                          <th scope="col">Column</th>
+                                          <th scope="col">Label</th>
+                                          <th scope="col" style="width: 110px;" class="text-center">Graph Value</th>
+                                       </tr>
+                                       </thead>
+                                       <tbody>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+         
+                              <div class="row mt-4">
+                                 <div class="col-sm-3">
+                                     <button type="button" class="btn btn-block btn-primary" id="save_configuration_button">Save Configrations</button>
+                                 </div>
+                             </div>
+         
+                           </div>
+         
+         
+                           </div>
+                           <!-- /.editSubGroupColumn -->
+         
+                           <div class="editSubDefaultColumn" style="display: none;">
+         
+                              <div class="row">
+                                 <div class="col-sm-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label for="add_label_field">Enter Label Name</label>
+                                       <input type="text" class="width-66 black" id="add_label_field">
+                                    </div>
+                                 </div>
+         
+                                 <div class="col-sm-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label for="select_table">Select Table</label>
+                                       <select class="select_table width-66 black" id="select_table">
+                                             <option value="">Select</option>
+                                             <option value="data_value_15m">data_value_15m</option>
+                                             <option value="data_value_1m">data_value_1m</option>
+                                             <option value="data_value_1s">data_value_1s</option>
+                                             <option value="spiesnet">spiesnet</option>
+                                             <option value="spiesnetFAs">spiesnetFAs</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+         
+                              <div class="row">
+                                 <div class="col-sm-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label for="select_column">Select Column</label>
+                                       <select class="select_column width-66 black" id="select_column">
+                                             <option value="">Select</option>
+                                       </select>
+                                    </div>
+                                 </div>
+         
+                                 <div class="col-sm-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label for="select_column">Select Primary key</label>
+                                       <select class="select_primary_column width-66 black" id="select_primary_column">
+                                          <option value="">Select</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+         
+                              <div class="row">
+                                 <div class="col-sm-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label for="select_column">Select Foreign key</label>
+                                       <select class="select_foreign_column width-66 black" id="select_foreign_column">
+                                             <option value="">Select</option>
+                                       </select>
+                                    </div>
+                                 </div>
+         
+                                 <div class="col-sm-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label for="graph">Graph</label>
+                                       <select class="graph width-66 black" id="graph">
+                                             <option value="0">No</option>
+                                             <option value="1">Yes</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                              </div>
+         
+                              <div class="row mt-4">
+                                 <div class="col-sm-3">
+                                    <button type="button" class="btn btn-primary" id="save_field">Save Changes</button>
+                                 </div>
+                              </div>
+         
+                           </div>
+                           <!-- /.editSubDefaultColumn -->
+         
+         
+                        </div>
+         
+                     </div>
+         
+                     <div class="card">
+                        <div class="card-header" style="background-color: #6B6F73;">
+                           <span class="clr-white">
+                            Add Graph Configrations
+                           </span>
+                        </div>
+         
+                        <div class="card-body card-body-production">
+                              <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label>Enter Graph Name</label>
+                                       <input type="text" class="width-66 black" id="graph_name" name="graph_name">
+                                     </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                       <label>Select Label Column</label>
+                                       <select class="graph_column width-66 black" id="label_column" name="label_column">
+                                        <option value="anlage">anlage</option>
+                                        <option value="auftragsmenge">auftragsmenge</option>
+                                        <option value="programm">programm</option>
+                                        <option value="zeit_zyklus">zeit_zyklus</option>
+                                        <option value="bestellung">bestellung</option>
+                                        <option value="werkzeug">werkzeug</option>
+                                        <option value="artikel">artikel</option>
+                                        <option value="kavitäten">kavitäten</option>
+                                        <option value="gutmenge">gutmenge</option>
+                                        <option value="letzte_störung">letzte_störung</option>
+                                        <option value="ausschuss">ausschuss</option>
+                                        <option value="bisher_produziert">bisher_produziert</option>
+                                        <option value="data_channel_15m_id">data_channel_15m_id</option>
+                                        <option value="channel_id">channel_id</option>
+                                        <option value="signal_type_id">signal_type_id</option>
+                                        <option value="time_server">time_server</option>
+                                        </select>
+                                    </div>
+                                </div>
+         
+                                <div class="col-12 col-md-4">
+                                    <div class="controlDiv controlDivProductionn">
+                                        <label>Accordion Settings</label>
+                                        <select class="width-66 black" id="accordion_setting" name="is_open">
+                                          <option value="hide">Closed</option>
+                                          <option value="show">Open</option>
+                                        </select>
+                                    </div>
+                                </div>
+         
+                              </div>
+         
+                              <div class="row mb-4">
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-block btn-primary" id="save_graph_field">Save Changes</button>
+                                </div>
+                              </div>
+         
+                              <div class="table-responsive">
+                                 <table class="table table-bordered bg-light" id="dynamic_subgroup_field">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">Graph Name</th>
+                                        <th scope="col">Label</th>
+                                        <th scope="col">Actions</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                       
+                                    </tbody>
+                                  </table>
+                              </div>
+         
+                        </div>
+         
+                     </div>
+               </div>
+         
+               <!-- Machine Table Configrations Modal -->
             </div>
          </div>
          <div id="editor" style="display:none;">
@@ -13300,6 +14013,8 @@
                    });
                 </script>
                 <script src="dashboard/vendors/base/vendor.bundle.base.js"></script>
+                <!-- BootStrap Scripts-->
+               <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
                 <script type="text/javascript" src="src/js/treeExtended.js"></script>
                 <script type="text/javascript" src="dist/js/jqueryui/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="dist/js/mathquill/mathquill.min.js"></script>
@@ -13356,6 +14071,13 @@
                         }
                     )
                 </script>
+
+                <!-- Js loader start-->
+               <script src="production_dashboard/production_js/loader/helpers/spin.min.js"></script>
+               <script src="production_dashboard/production_js/loader/helpers/jquery.easing.1.3.js"></script>
+               <script src="production_dashboard/production_js/assets/js/jquery.loading.block.js"></script>
+               <!-- Js Loader End-->
+
                 <script type="text/javascript" src="src/js/functions.js"></script>
                 <script type="text/javascript" src="src/js/manualFunction.js"></script>
                 <script type="text/javascript" src="src/js/indexedDB.js"></script>
@@ -13415,7 +14137,159 @@
 
 
       });
-         </script>
+   </script>
+
+   <!-- Production dashboard scripts start-->
+               
+   <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" ></script>
+   <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+   <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+   <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+   <script type="text/javascript" src="production_dashboard/production_js/production.js"></script>
+   <script type="text/javascript" src="production_dashboard/production_js/graphScripts.js"></script>
+   <script type="text/javascript" src="production_dashboard/production_js/graphMode.js"></script>
+   <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+   <script type="text/javascript" src="production_dashboard/production_js/jquery.bootstrap-duallistbox.min.js"></script>
+   <script type="text/javascript" src="production_dashboard/production_js/intializeProductDetails.js"></script>
+   <!-- Production dashboard scripts end-->
+
+<!-- Modal Start -->
+<div class="modal fade" id="modal-Machines-list">
+   <div class="modal-dialog modal-xl" style="max-width: 1800px;">
+      <div class="modal-content">
+         <div class="modal-header">
+               <h4 class="modal-title">Custom Machine Table</h4>
+               <button type="button" class="close close_mac_modal" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+         </div>
+         <div class="modal-body">
+               <section class="content">
+                  <div class="card card-success">
+                     <div class="card-header">
+                           <h3 class="card-title">Anlagen Table Data</h3>
+                     </div>
+                     <div class="card-body">
+                           <table id="custom_machines_table" class="width w-100 table"> 
+                              <thead>
+                                 <tr class="column_name">
+                                 </tr>
+                              </thead> 
+                           </table>
+                           
+                     </div>
+                     <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+               </section>
+         </div>
+      </div>
+      <!-- /.modal-content -->
+   </div>
+   <!-- /.modal-dialog -->
+</div>
+<!-- Modal End -->
+
+<!-- Machine Table Configrations Modal -->
+<div class="modal" id="modal-machine-configuration" tabindex="-1" aria-labelledby="modal-machine-configurationLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl">
+   <div class="modal-content modelstyle">
+      <div class="modal-header">
+         <h5 class="modal-title" id="modal-machine-configurationLabel" style="font-weight: bold;">Machine Table Configurations</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      <div class="modal-body">
+         <form action="">
+            <div class="">
+               <label>Select Machine</label>
+               <select class="" multiple="multiple" id="multi-machine-prioprity" value="machineData" style="width: 100%; color:black; height: 189px"></select>
+            </div>
+
+            <div class="">
+               <label>Select Machine Table Column</label>
+               <select class="duallistbox" id="machine-table-column-DualListbox" multiple="multiple" size="10" name="duallistbox_demo1[]" style="color:black; height: 189px;">
+                  <option value="anlage">anlage</option>
+                  <option value="auftragsmenge">auftragsmenge</option>
+                  <option value="programm">programm</option>
+                  <option value="zeit_zyklus">zeit_zyklus</option>
+                  <option value="bestellung">bestellung</option>
+                  <option value="werkzeug">werkzeug</option>
+                  <option value="artikel">artikel</option>
+                  <option value="kavitätena">kavitäten</option>
+                  <option value="gutmenge">gutmenge</option>
+                  <option value="letzte_störung">letzte_störung</option>
+                  <option value="ausschuss">ausschuss</option>
+                  <option value="bisher_produziert">bisher_produziert</option>
+               </select>
+            </div>
+
+         </form>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-primary" id="save_table_configuration_button">Save Configrations</button>
+      </div>
+   </div>
+   </div>
+    </div>
+  <!-- /Machine Table Configrations Modal -->
+
+          <!-- Add Group Options Modal -->
+          <div class="modal fade" id="modal-addGroupOptions" tabindex="-1" aria-labelledby="modal-addGroupOptionsLabel" aria-hidden="true">
+             <div class="modal-dialog modal-lg">
+             <div class="modal-content">
+                <div class="modal-header">
+                   <h5 class="modal-title" id="modal-addGroupOptionsLabel" style="font-weight: bold;">Add Group Options</h5>
+                   <input type="hidden" value="1" id="group_id" />
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                   </button>
+                </div>
+                <div class="modal-body scroll-black">
+
+                   <div class="card shadow-none">
+                      <div class="card-header d-flex justify-content-between align-items-center">
+                         <h3 class="card-title">Anlagengruppe</h3>
+                         <button type="button" name="add" id="add_sub" class="btn btn-sm btn-success">Add Subgroup</button>
+                     </div>
+
+                      <div class="card-body">
+
+                          <!-- <tr id="subrow1">
+                               <td>1</td>
+                               <td>
+                                  <div class="form-group ">
+                                     <label for="Kompressoren" class="col-form-label group-label">Kompressoren</label>
+                                     <input type="hidden" name="sub_group[]" class="form-control name_list" value="Kompressoren">
+                                     <button style="float:right;" type="button" name="remove" id="1" class="btn btn-sm btn-danger btn_delete">Delete</button>
+                                  </div>
+                               </td>
+                            </tr> -->
+
+                         <table class="table table-bordered white-border-head white-border-body" id="dynamic_subgroup_field">
+                            <thead>
+                               <tr>
+                                   <th style="width: 10px;">#</th>
+                                   <th>Options</th>
+                               </tr>
+                           </thead>
+                           <tbody id="dynamic_subgroup_field_body">
+                           </tbody>
+                         </table>
+
+                      </div>
+                    </div>
+                   
+                </div>
+                <div class="modal-footer">
+                   <button type="button" class="btn btn-primary" id="save_subgroup_options">Save Changes</button>
+                </div>
+             </div>
+             </div>
+          </div>
+          <!-- /Add Group Options Modal -->
 
 </body>
 </html>
