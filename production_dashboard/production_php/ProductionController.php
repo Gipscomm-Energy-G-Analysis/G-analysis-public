@@ -1116,7 +1116,7 @@ class ProductionController {
         return $subject;
     }
      
-    public function getSubGoupConfiguration(){
+public function getSubGoupConfiguration(){
          try{
             $id = $_POST['grosubGroupId'];
             $query = "SELECT * FROM SubGroupConfiguration where id='$id'";
@@ -1131,23 +1131,36 @@ class ProductionController {
    
  public function getAddGoupConfiguration(){
     try {
-        $ID = $_POST['id'];
-        $user_Id = $_POST['user_id'];
+    //    print_r($_POST);die;
+        $id = '0';
         $label = $_POST['label'];
-        $table_name = $_POST['table_name'];
-        $data = $_POST['data'];
-        $type = $_POST['type'];
-        $user_name = $_SESSION['username'];
-        $graph_name = $_POST['graph_name'];
-        $primary_key = $_POST['primary_key'];
-        $foreign_key = $_POST['foreign_key']; 
+        $table_name = 'anlagen';
+        $data = '';
+        $type = ''; 
+        $username = $_SESSION['username'];
+        $graph_name = $_POST['graph'];
+        $primary_key = "anl_ID";
+        $foreign_key = "anl_ID"; 
         $status = '1';
-     
-        $insertquery = "INSERT INTO graph_configurations( ID, user_Id, label, data, type, user_name, graph_name, primary_key, foreign_key, status ) VALUES ('$id', '$user_id', '$label', '$table_name', '$primary_key', '$foreign_key', '$status', '$graph', '$anl_ID', '$nameDB')";
-
-        // $insert_records = $this->conn->prepare($insertquery)->execute();
-        $insert_records = queryDB ( $this->conn, $insertquery, "write");
-
+        $is_open = $_POST['is_open'];
+        
+        $sql = "SELECT COUNT(*) AS count_mp FROM  graph_configurations WHERE username='".$username."'";
+        $countRecord = queryDB ( $this->conn, $sql, "read");
+        // print_r($countRecord);die;
+        if($countRecord[0]['count_mp'] >= 5) {
+            return ['status' => 'success', 'code' => 404, 'message' => 'Max number of records.'];
+        }
+        
+        $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username' AND label= '$label'";
+        $record = queryDB ( $this->conn, $selectQuery, "read");
+        if(!empty($record)) {
+            $updateId = $record[0]['id'];
+            $updatequery = "UPDATE graph_configurations SET graph_name='$graph_name' WHERE id = '$updateId'";  
+            $update_records = queryDB ( $this->conn, $updatequery, "write");
+        } else {
+            $insertquery = "INSERT INTO graph_configurations(label, table_name, data, type, username, graph_name, primary_key, foreign_key, status, is_open ) VALUES ('$label', '$table_name', '$data', '$type', '$username', '$graph_name', '$primary_key', '$foreign_key', '1', '$is_open')";
+            $insert_records = queryDB ( $this->conn, $insertquery, "write");
+        }
         return ['status' => 'success', 'code' => 200, 'data' => 'Insert successfully', 'message' => 'Save Configuration Data'];
         
     } catch (Exception $e) {
@@ -1156,5 +1169,44 @@ class ProductionController {
 
 }
 
+public function showConfigurationData() {
+
+    try {
+        $username = $_SESSION['username'];
+        $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username'";
+        $record = queryDB ( $this->conn, $selectQuery, "read");
+            return ['status' => 'success', 'code' => 200, 'data' => $record, 'message' => 'Configuration Data Fetched.'];
+        
+        return ['status' => 'warning', 'code' => 400, 'data' => [], 'message' => 'No Record Found!'];
+    }catch (Exception $e) {
+        return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+    }
 }
+
+public function deleteGraphConfiguration(){
+    try{
+        $id     = $_POST['id'];
+        $query = "DELETE FROM graph_configurations WHERE id ='$id'";
+        // $data = $this->conn->query($query)->execute();
+        $data = queryDB ( $this->conn, $query, "write");
+        return ['code' => 200, 'message' =>'Record deleted successfully.'];
+    }catch(Exception $e) {
+        return ['code' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+    }
+}
+
+public function getGraphConfiguration(){
+    try {
+        $username = $_SESSION['username'];
+        $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username'";
+        $record = queryDB ( $this->conn, $selectQuery, "read");
+            return ['status' => 'success', 'code' => 200, 'data' => $record, 'message' => 'Configuration Data Fetched.'];
+        
+        return ['status' => 'warning', 'code' => 400, 'data' => [], 'message' => 'No Record Found!'];
+    }catch (Exception $e) {
+        return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+    }
+}
+}
+
 $obj = new ProductionController();

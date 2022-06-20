@@ -262,7 +262,12 @@ $(document).on('focusout', '.custom_label_input', function() {
 
 $(document).on('click', '.remove_column', function() {
     $(this).parent().parent().remove();
-})
+});
+
+$(document).on('click', '.remove_graph_column', function() {
+    $(this).parent().parent().remove();
+});
+
 
 let getPlantGroup = function () {
     $.ajax({
@@ -991,6 +996,7 @@ const showTableConfigurations = (data) => {
 const showMachinePrioritySelect = (data) => {
     let selectHtml = '';
     for(const select_name of data.allMachines) {
+
         if(data.selected.includes(select_name.anl_ID)){
             selectHtml += `<option value='${select_name.anl_ID}' selected>${select_name.nummerAnl}</option>`;
         } else {
@@ -1190,6 +1196,29 @@ const getsubGroup = function() {
 }
 getsubGroup();
 
+let showGraphColumn = function(result){
+    let html = '';
+    console.log('value', result.data);
+    $.each(result.data, function (key, value) {
+     console.log('valuee', value)
+        let label = value.label;
+        // let column = value.COLUMN_NAME;
+        let graph_name = value.graph_name;
+
+        html += `<tr>
+        <td>${graph_name}<input hidden class="show_configuration_data"></td>
+        <td class="custom_label" style="text-align:center;">
+            <span class="custom_label" style="padding-top: 12px; float: left;">${label}</span></td>
+            <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="form-control custom_label_input"/>
+           <td><button type="button" name="remove" data-id="${value.id}" class="btn btn-sm btn-danger float-right remove_graph_column">Delete</button>
+        </td>
+       
+        </tr>`;
+    });
+
+    $('#graph_configuration_table tbody').html(html);
+}
+
 $(document).on('click', '#save_graph_field', function() {
     if ($('#graph_name').val() == '') {
         alert('Please select label');
@@ -1204,7 +1233,7 @@ $(document).on('click', '#save_graph_field', function() {
 
     let graph = $('#graph_name').val();
     let label = $('#label_column').val();
-    let accordion = $('#accordion_setting').val();
+    let is_open = $('#accordion_setting').val();
 
     $.ajax({
         type: "POST",
@@ -1213,13 +1242,68 @@ $(document).on('click', '#save_graph_field', function() {
         data: { 
             action: "getAddGoupConfiguration",
             label:label,
-            accordion: accordion,
+            is_open: is_open,
             graph:graph,
             nameDB: $("#nameDB").val(),
         },
-        success: function () {
-           console.log('sahii');
+        success: function (result) {          
+            if(result.code == 200) {
+                showConfigurationColumn();
+                toastr.success(result.message);
+            } else {
+                toastr.error(result.message);
+            }
          },
        
     });
 });
+
+let showConfigurationColumn = function () {
+    $.ajax({
+        type: "POST",
+        url: "production_dashboard/production_php/ProductionController.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            action: "showConfigurationData",
+            nameDB: $("#nameDB").val(),
+        },
+        fail: function() {
+            alert("failed!!")
+        },
+        success: function(result) {
+            console.log('graph', result);
+            if(result.code == '200') {
+                console.log('here isrfsadgd');
+                showGraphColumn(result);
+            }
+        }
+      });
+}
+showConfigurationColumn();
+
+
+$(document).on('click', '.remove_graph_column', function() {
+    let id = $(this).attr('data-id');
+    $.ajax({
+        type: "POST",
+        url: "production_dashboard/production_php/ProductionController.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            id: id,
+            action: "deleteGraphConfiguration",
+            nameDB: $("#nameDB").val(),
+        },
+        success:function(result) {
+            if(result.code == 200) {
+                toastr.success(result.message);
+            } else {
+                toastr.error(result.message);
+            }
+        },
+        error:function(result) {
+            toastr.error(result);
+        }
+    });
+})
