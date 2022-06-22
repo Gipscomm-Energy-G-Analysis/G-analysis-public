@@ -142,9 +142,19 @@ class ProductionController {
 
                 $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
                 $graphData = queryDB ( $this->conn, $query, "read");
+                $graphPoints = '';
+                if(!empty($graphData)) {
+                    $dataGraph = explode(',', $graphData[0]['graphPoints']);
+                    foreach($dataGraph as $value) {
+                        if(!empty($value)){
+                            $graphPoints .= $value.',';
+                        }
+                    }
+                    $graphPoints = $this->str_lreplace(',', '', $graphPoints);
+                }
                 $groups = [];
                 if (!empty($machineData)) {
-                    return ['status' => 'success', 'code' => 200, 'anl_ID' => $machineId, 'data' => $machineData[0], 'graphPoints' => $graphData[0]['graphPoints'], 'message' => 'Prduction details fetched.', 'groups' => $groups, 'currentIndex'=>$currentIndex];
+                    return ['status' => 'success', 'code' => 200, 'anl_ID' => $machineId, 'data' => $machineData[0], 'graphPoints' => $graphPoints, 'message' => 'Prduction details fetched.', 'groups' => $groups, 'currentIndex'=>$currentIndex];
                 } else {
                     return ['status' => 'error', 'code' => 404, 'anl_ID' => $machineId, 'data' => [], 'graphPoints' => "", 'message' => 'No Record Found!', 'groups' => $groups, 'currentIndex'=>$currentIndex];
                 }
@@ -1143,6 +1153,7 @@ public function getSubGoupConfiguration(){
         $foreign_key = "anl_ID"; 
         $status = '1';
         $is_open = $_POST['is_open'];
+        $graph_text = $_POST['textDB'];
         
         $sql = "SELECT COUNT(*) AS count_mp FROM  graph_configurations WHERE username='".$username."'";
         $countRecord = queryDB ( $this->conn, $sql, "read");
@@ -1155,10 +1166,10 @@ public function getSubGoupConfiguration(){
         $record = queryDB ( $this->conn, $selectQuery, "read");
         if(!empty($record)) {
             $updateId = $record[0]['id'];
-            $updatequery = "UPDATE graph_configurations SET graph_name='$graph_name' WHERE id = '$updateId'";  
+            $updatequery = "UPDATE graph_configurations SET graph_name='$graph_name', graph_text='$graph_text' WHERE id = '$updateId'";  
             $update_records = queryDB ( $this->conn, $updatequery, "write");
         } else {
-            $insertquery = "INSERT INTO graph_configurations(label, table_name, data, type, username, graph_name, primary_key, foreign_key, status, is_open ) VALUES ('$label', '$table_name', '$data', '$type', '$username', '$graph_name', '$primary_key', '$foreign_key', '1', '$is_open')";
+            $insertquery = "INSERT INTO graph_configurations(label, table_name, data, type, username, graph_name, primary_key, foreign_key, status, is_open, graph_text) VALUES ('$label', '$table_name', '$data', '$type', '$username', '$graph_name', '$primary_key', '$foreign_key', '1', '$is_open', '$graph_text')";
             $insert_records = queryDB ( $this->conn, $insertquery, "write");
         }
         return ['status' => 'success', 'code' => 200, 'data' => 'Insert successfully', 'message' => 'Save Configuration Data'];
@@ -1198,15 +1209,56 @@ public function deleteGraphConfiguration(){
 public function getGraphConfiguration(){
     try {
         $username = $_SESSION['username'];
+        $machineId = $machineId = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$this->getMachineId();
         $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username'";
         $record = queryDB ( $this->conn, $selectQuery, "read");
-            return ['status' => 'success', 'code' => 200, 'data' => $record, 'message' => 'Configuration Data Fetched.'];
         
+        if(!empty($record)) {
+            $prodDataRecords = $this->makeProductGraphData(5, $record, $machineId);
+            return ['status' => 'success', 'code' => 200, 'graphData' => $prodDataRecords['data'], 'message' => 'Configuration Data Fetched.'];
+        }
         return ['status' => 'warning', 'code' => 400, 'data' => [], 'message' => 'No Record Found!'];
     }catch (Exception $e) {
         return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
     }
 }
+
+public function makeProductGraphData($limit, $record, $machineID) {
+    try {
+        $prodGraphPoints = [];
+        foreach($record as $value) {
+            $selectQuery = "SELECT TOP $limit ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' ORDER BY zeitstempel desc";
+            $prodData = queryDB ( $this->conn, $selectQuery, "read");
+            if(!empty($prodData)) {
+                $getProductionDataPoints = $this->getProductionChartData($prodData, $machineID, $value['graph_name']);
+                array_push($prodGraphPoints, $getProductionDataPoints);
+            }
+        }
+        return ['status' => 'success', 'code' => 200, 'data' => $prodGraphPoints, 'message' => 'Configuration Data Fetched.'];
+    } catch (Exception $e) {
+        return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+    }
+}
+
+/**
+ * @param $data
+ * @param $id
+ * @return array
+ */
+public function getProductionChartData($data, $id, $name) {
+    $recordData = !empty($data) ? true: false;
+    $label = [];
+    $valData = [];
+    $amData = [];
+    foreach($data as $key=>$value){
+        $timeData = $value['Time']->format('Y-m-d H:i:s');
+        array_push($amData, ['date'=>(strtotime($timeData) * 1000), 'value'=>floatval($value['value']), 'time'=>$timeData,'convertedTime'=>'']);
+        $value['value'] = floatval($value['value']);
+        array_push($valData, $value['value']);
+    }
+    return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data ];
+}
+
 }
 
 $obj = new ProductionController();

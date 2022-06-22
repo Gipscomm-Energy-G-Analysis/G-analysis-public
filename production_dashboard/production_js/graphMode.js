@@ -72,18 +72,22 @@ function createEnergyDataGraph(windowTrue) {
             graphPoints: $(".navigation-production").attr("data-graph-points")
         },
         success:function(result) {
+            $("#loader_image_history_charts").hide();
             if(result.code == 200) {
-                $("#loader_image_history_charts").hide();
-                $("#historyChartdiv").show();
-                if(windowTrue) {
-                    localStorage.setItem('graphData', JSON.stringify(result.graphData));
-                    localStorage.setItem('graphType', result.type);
-                    window.open('history_graph.html', '_blank');
-                } else {
-                    $('.historyGraphDiv').show();
-                    createAmChart(historic_root, result.graphData, true);
-                }
-                
+                if(showRecord(result.graphData)){  
+                    if(windowTrue) {
+                        localStorage.setItem('graphData', JSON.stringify(result.graphData));
+                        localStorage.setItem('graphType', result.type);
+                        window.open('history_graph.html', '_blank');
+                    } else {
+                        $("#historyChartdiv").show();
+                        $('.historyGraphDiv').show();
+                        $('.energy_graph_msg_history').hide();
+                        createAmChart(historic_root, result.graphData, true);
+                    }
+                }else{
+                    $('.energy_graph_msg_history').show();
+                }  
             }
         },
         error:function(result) {
@@ -94,8 +98,7 @@ function createEnergyDataGraph(windowTrue) {
     });
 }
 
-function jsFunction(value, points) {
-
+function jsFunction(graphPoints='') {
     $.ajax({
         url: "production_dashboard/production_php/GraphController.php",
         type:"POST",
@@ -104,23 +107,54 @@ function jsFunction(value, points) {
         data: {
             action: "getPointsData",
             nameDB: $("#nameDashboardDB").val(),
-            limit:value,
-            points:points
+            limit:$('#timeFilter').val(),
+            points:(graphPoints == '')?$(".navigation-production").attr("data-graph-points"):graphPoints
         },
         success:function(data){
             if(data.code == 200) {
-                console.log('showrecord',showRecord(data.graphData));
                 if(showRecord(data.graphData)){
-                    console.log('here');
                     $('.energy_graph_msg').hide();
                     $(".energy_graph_div").show();
                     createAmChart(root, data.graphData, true);
-                    
                 }else{
                     $('.energy_graph_msg').show();
                 }
             }
         },
+    });
+}
+
+
+function jsFunctionProduction(anl_Id ='') {  
+    $("#loader_image").show();
+    $("#other_graph_div").hide();
+    $.ajax({
+        type: "POST",
+        url: "production_dashboard/production_php/GraphController.php",
+        data: {
+            action: "getPointsData",
+            nameDB: $("#nameDashboardDB").val(),
+            periodFilter: $("#productPeriodFilterInterval").val(),
+            typeFilter: $("#productTypeFilterInterval").val(),
+            yearFilter: $("#productYearFilterInterval").val(),
+            monthFilter: $("#productMonthFilterInterval").val(),
+            startDate: $("#product_start_date").val(),
+            endDate: $("#product_end_date").val(),
+            anl_ID: (anl_Id == '')?$('.navigation').attr('data-value'):anl_Id,
+            limit: $('#timeFilterProduction').val()
+        },
+        success:function(result) {
+            if(result.code == 200) {
+                $("#loader_image").hide();
+                $("#other_graph_div").show();
+                createAmChart(historic_root, result.graphData, true);
+            }
+        },
+        error:function(result) {
+            $("#loader_image").hide();
+            $("#other_graph_div").show();
+            toastr.error(result);
+        }
     });
 }
 

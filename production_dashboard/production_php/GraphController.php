@@ -1,4 +1,4 @@
-<?php
+ <?php
 // include_once('dbConnection.php');
 error_reporting ( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
@@ -38,8 +38,6 @@ class GraphController {
             $measuringPoint = $points;
             global $conn;      
             $query = "SELECT TOP ".$limit." MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten WHERE MessstellenEnergiedaten.mst_ID = ".$measuringPoint." ORDER BY MessstellenEnergiedaten.Time asc";
-            
-            // $data = $this->conn->query($query)->fetchAll();
             $data = queryDB ( $this->conn, $query, "read");
             return $this->getlineChartData($data, $measuringPoint, $name);
         } catch (Exception $e) {
@@ -63,6 +61,7 @@ class GraphController {
             $timeData = $value['Time']->format('Y-m-d H:i:s');
             array_push($amData, ['date'=>(strtotime($timeData) * 1000), 'value'=>floatval(($value['Value']*$value['ConvFactor'])/4), 'time'=>$timeData,'convertedTime'=>'']);
             $value['Value'] = floatval(($value['Value']*$value['ConvFactor'])/4);
+            $data[$key]['Time'] = $timeData;
             array_push($valData, $value['Value']);
         }
         return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data ];
@@ -78,13 +77,56 @@ class GraphController {
                 switch ($periodFilter) {
                     case 'year':
                         $year = $_REQUEST['yearFilter'];
-                        $query = "SELECT TOP 1 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
+                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
                         WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".date('Y')." ORDER BY MessstellenEnergiedaten.Time desc";
                         break;
                     case 'month':
                         $month = $_REQUEST['monthFilter'];
-                        $query = "SELECT TOP 1000 Messstellmst_ID = ".$val." AND YEAR(MenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
-                        WHERE MessstellenEnergiedaten.essstellenEnergiedaten.Time) = ".date('Y')." AND MessstellenEnergiedaten.Time = ".$month." ORDER BY MessstellenEnergiedaten.Time desc";
+                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
+                        WHERE  MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".date('Y')." AND MONTH(MessstellenEnergiedaten.Time) = ".$month." ORDER BY MessstellenEnergiedaten.Time desc";
+                        break;
+                    case 'custom':
+                        $start = date_create($_REQUEST['startDate']);
+                        $start = date_format($start,"Y-m-d");
+                        $end = date_create($_REQUEST['endDate']);
+                        $end = date_format($end,"Y-m-d");
+                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
+                        WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND cast (MessstellenEnergiedaten.Time as date) >= '".$start."' AND cast (MessstellenEnergiedaten.Time as date) <= '".$end."' ORDER BY MessstellenEnergiedaten.Time desc";
+                        break;
+                    default:
+                        return ['code'=>400, 'msg' => 'no record found'];
+                }
+                // $data = $this->conn->query($query)->fetchAll();
+                $data = queryDB ( $this->conn, $query, "read");
+                $name = 'messstelle'.($key+1).'IDAnl';
+                $pointData =$this->getlineChartData($data, $val, $name);
+                array_push($graphData, $pointData);
+            }
+            if (empty($graphData)) {
+                return ['code'=>400, 'graphData' => $graphData, 'msg' => 'no record found'];
+            }
+            return ['code'=>200, 'graphData' => $graphData];
+        }
+        return ['code'=>400, 'msg' => 'no record found'];
+    }
+
+    public function historicDataProduction() {
+        $graphPoints = isset($_REQUEST['graphPoints']) && !empty($_REQUEST['graphPoints'])?$_REQUEST['graphPoints']:null;
+        $periodFilter = $_REQUEST['periodFilter'];
+        if (!empty($graphPoints)) {
+            $graphArray = explode(',',$graphPoints);
+            $graphData = [];
+            foreach($graphArray as $key=>$val) {
+                switch ($periodFilter) {
+                    case 'year':
+                        $year = $_REQUEST['yearFilter'];
+                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
+                        WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".date('Y')." ORDER BY MessstellenEnergiedaten.Time desc";
+                        break;
+                    case 'month':
+                        $month = $_REQUEST['monthFilter'];
+                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
+                        WHERE  MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".date('Y')." AND MONTH(MessstellenEnergiedaten.Time) = ".$month." ORDER BY MessstellenEnergiedaten.Time desc";
                         break;
                     case 'custom':
                         $start = date_create($_REQUEST['startDate']);

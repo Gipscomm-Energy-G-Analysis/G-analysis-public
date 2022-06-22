@@ -2429,36 +2429,36 @@
                                     </div>
                                  </div>
                                  <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                                 <div class="card-body card-body-production">
+                                    <div class="card-body card-body-production">
                                           <!-- Graph Mode Start -->
-                                          <div class="graph-mode" >
-                                             <div class="energy_graph_div" style="display:none;">
-                                                <div class="row">
-                                                   <div class="col-sm-3">
-                                                      <div class="controlDiv controlDivProduction bgclrnone">
-                                                            <label>No. of Records</label>
-                                                            <select class="time_filter" id="timeFilter" onmousedown="this.value='';" onchange="jsFunction(this.value,'31,290');">
-                                                               <option value="5" selected>5</option>
-                                                               <option value="10">10</option>
-                                                               <option value="15">15</option>
-                                                               <option value="100">100</option>
-                                                            </select>
-                                                      </div>
-                                                   </div>
-                                                   
-         
-                                                   <div class="col-sm-3">
-                                                      <div class="controlDiv controlDivProduction">
-                                                            <label>Time Interval</label>
-                                                            <select class="graph-filter-dynamic" id="timeFilterInterval">
-                                                               <option value="1">1 Minutes</option>
-                                                               <option value="5">5 Minutes</option>
-                                                               <option value="10">10 Minutes</option>
-                                                               <option value="15" selected>15 Minutes</option>
-                                                            </select>
-                                                      </div>
+                                       <div class="graph-mode" >
+                                          <div class="energy_graph_div" style="display:none;">
+                                             <div class="row">
+                                                <div class="col-sm-3">
+                                                   <div class="controlDiv controlDivProduction bgclrnone">
+                                                         <label>No. of Records</label>
+                                                         <select class="time_filter" id="timeFilter" onmousedown="this.value='';" onchange="jsFunction();">
+                                                            <option value="5" selected>5</option>
+                                                            <option value="10">10</option>
+                                                            <option value="15">15</option>
+                                                            <option value="100">100</option>
+                                                         </select>
                                                    </div>
                                                 </div>
+                                                
+      
+                                                <div class="col-sm-3">
+                                                   <div class="controlDiv controlDivProduction">
+                                                         <label>Time Interval</label>
+                                                         <select class="graph-filter-dynamic" id="timeFilterInterval">
+                                                            <option value="1">1 Minutes</option>
+                                                            <option value="5">5 Minutes</option>
+                                                            <option value="10">10 Minutes</option>
+                                                            <option value="15" selected>15 Minutes</option>
+                                                         </select>
+                                                   </div>
+                                                </div>
+                                             </div>
                                              <div class="row" id="graph_div"></div>
                                              
          
@@ -2469,105 +2469,106 @@
                                              </div>
                                           </div>
          
-                                          <div class="energy_graph_msg">
-                                             <h3>No data found for measuring points yet!</h3>
+                                          <div class="energy_graph_msg common-msg">
+                                             <h3>Es existieren keine Daten die ausgewertet werden können!</h3>
                                           </div>
                                        </div>
                                        <!-- Graph Mode end -->
                                        <!-- Edit Mode start -->
                                        <div class="history-mode" style="display:none;">
-                                             <form id="historicGraphData">
+                                          <form id="historicGraphData">
+                                             <div class="row">
+                                                <input type="hidden" value="{{$data['msGraphData']}}" id="msgraphData">
+                                                <div class="col-sm-3">
+                                                      <div class="controlDiv controlDivProduction">
+                                                         <label>Period</label>
+                                                         <select class="form-control" id="periodFilterInterval">
+                                                            <option value="year">Year</option>
+                                                            <option value="month">Month</option>
+                                                            <option value="custom">Custom</option>
+                                                         </select>
+                                                      </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                      <div class="controlDiv controlDivProduction">
+                                                         <label>Type</label>
+                                                         <select class="form-control" id="typeFilterInterval">
+                                                            <option value="line">Line Graph</option>
+                                                            <option value="bar">Bar Graph</option>
+                                                         </select>
+                                                      </div>
+                                                </div>
+      
+                                                <div class="col-sm-3 year_filter">
+                                                      <div class="controlDiv controlDivProduction">
+                                                         <label>Year</label>
+                                                         <select class="form-control" id="yearFilterInterval">
+                                                            <option value="">Select</option>
+                                                            <option value="2022">2022</option>
+                                                            <option value="2021">2021</option>
+                                                            <option value="2020">2020</option>
+                                                            <option value="2019">2019</option>
+                                                         </select>
+                                                      </div>
+                                                </div>
+      
+                                                <div class="col-sm-3 clear month_filter" style="display:none;">
+                                                      <div class="controlDiv controlDivProduction">
+                                                         <label>Month</label>
+                                                         <select class="form-control" id="monthFilterInterval">
+                                                            <option value="">Select</option>
+                                                            <option value="01">January</option>
+                                                            <option value="02">February</option>
+                                                            <option value="03">March</option>
+                                                            <option value="04">April</option>
+                                                            <option value="05">May</option>
+                                                            <option value="06">June</option>
+                                                            <option value="07">July</option>
+                                                            <option value="08">August</option>
+                                                            <option value="09">September</option>
+                                                            <option value="10">October</option>
+                                                            <option value="11">November</option>
+                                                            <option value="12">December</option>
+                                                         </select>
+                                                      </div>
+                                                </div>
+      
+                                                <div class="col-sm-3 custom_filter" style="display:none;">
+                                                      <div class="controlDiv controlDivProduction">
+                                                         <label>Start Date</label>
+                                                         <input type="text" id="start_date" class="form-control" placeholder="Start Date" value="" readonly="">
+                                                      </div>
+                                                </div>
+      
+                                                <div class="col-sm-3 custom_filter" style="display:none;">
+                                                      <div class="controlDiv controlDivProduction">
+                                                         <label>End Date</label>
+                                                         <input type="text" id="end_date" class="form-control" placeholder="End Date" value="" readonly="">
+                                                      </div>
+                                                </div>
+                                             </div>
+                                             <div class="popup">
                                                 <div class="row">
-                                                   <input type="hidden" value="{{$data['msGraphData']}}" id="msgraphData">
-                                                   <div class="col-sm-3">
-                                                         <div class="controlDiv controlDivProduction">
-                                                            <label>Period</label>
-                                                            <select class="form-control" id="periodFilterInterval">
-                                                               <option value="year">Year</option>
-                                                               <option value="month">Month</option>
-                                                               <option value="custom">Custom</option>
-                                                            </select>
-                                                         </div>
-                                                   </div>
-                                                   <div class="col-sm-3">
-                                                         <div class="controlDiv controlDivProduction">
-                                                            <label>Type</label>
-                                                            <select class="form-control" id="typeFilterInterval">
-                                                               <option value="line">Line Graph</option>
-                                                               <option value="bar">Bar Graph</option>
-                                                            </select>
-                                                         </div>
-                                                   </div>
-         
-                                                   <div class="col-sm-3 year_filter">
-                                                         <div class="controlDiv controlDivProduction">
-                                                            <label>Year</label>
-                                                            <select class="form-control" id="yearFilterInterval">
-                                                               <option value="">Select</option>
-                                                               <option value="2022">2022</option>
-                                                               <option value="2021">2021</option>
-                                                               <option value="2020">2020</option>
-                                                               <option value="2019">2019</option>
-                                                            </select>
-                                                         </div>
-                                                   </div>
-         
-                                                   <div class="col-sm-3 clear month_filter" style="display:none;">
-                                                         <div class="controlDiv controlDivProduction">
-                                                            <label>Month</label>
-                                                            <select class="form-control" id="monthFilterInterval">
-                                                               <option value="">Select</option>
-                                                               <option value="01">January</option>
-                                                               <option value="02">February</option>
-                                                               <option value="03">March</option>
-                                                               <option value="04">April</option>
-                                                               <option value="05">May</option>
-                                                               <option value="06">June</option>
-                                                               <option value="07">July</option>
-                                                               <option value="08">August</option>
-                                                               <option value="09">September</option>
-                                                               <option value="10">October</option>
-                                                               <option value="11">November</option>
-                                                               <option value="12">December</option>
-                                                            </select>
-                                                         </div>
-                                                   </div>
-         
-                                                   <div class="col-sm-3 custom_filter" style="display:none;">
-                                                         <div class="controlDiv controlDivProduction">
-                                                            <label>Start Date</label>
-                                                            <input type="text" id="start_date" class="form-control" placeholder="Start Date" value="" readonly="">
-                                                         </div>
-                                                   </div>
-         
-                                                   <div class="col-sm-3 custom_filter" style="display:none;">
-                                                         <div class="controlDiv controlDivProduction">
-                                                            <label>End Date</label>
-                                                            <input type="text" id="end_date" class="form-control" placeholder="End Date" value="" readonly="">
-                                                         </div>
-                                                   </div>
-                                                </div>
-                                                <div class="popup">
-                                                   <div class="row">
-                                                         <div class="col-sm-3">
-                                                            <button type="submit" class="btn btn-block btn-primary" id="create_graph">Create Graph</button>
-                                                         </div>
-                                                         <div class="col-sm-4">
-                                                            <button type="button" class="btn btn-block btn-primary" id="create_graph_window">Create Graph (New Window)</button>
-                                                         </div>
-                                                   </div>
-                                                </div>
-                                             </form>
-         
-                                             <div id="loader_image_history_charts" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image">
-                                             </div>
-         
-                                             <div class="row historyGraphDiv" style="display:none;">
-         
-                                                <div class="charts am_graph_div" id="historyChartdiv">
-         
+                                                      <div class="col-sm-3">
+                                                         <button type="submit" class="btn btn-block btn-primary" id="create_graph">Create Graph</button>
+                                                      </div>
+                                                      <div class="col-sm-4">
+                                                         <button type="button" class="btn btn-block btn-primary" id="create_graph_window">Create Graph (New Window)</button>
+                                                      </div>
                                                 </div>
                                              </div>
+                                          </form>
+         
+                                          <div id="loader_image_history_charts" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image">
+                                          </div>
+      
+                                          <div class="row historyGraphDiv" style="display:none;">
+                                             <div class="charts am_graph_div" id="historyChartdiv">
+                                             </div>
+                                             <div class="energy_graph_msg_history common-msg">
+                                                <h3>Es existieren keine Daten die ausgewertet werden können!</h3>
+                                             </div>
+                                          </div>
                                        </div>
                                        <!-- Edit mode end -->
                                     </div>
@@ -2594,37 +2595,37 @@
                                  <div id="graphCollapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                                  <div class="card-body card-body-production">
                                     <div class="product-graph-mode">
-                                       <div class="row">
-                                                   <div class="col-sm-3">
-                                                         <div class="controlDiv controlDivProduction">
-                                                            <label>No. of Records</label>
-                                                            <select class="time_filter h-w" id="timeFilterProduction" onmousedown="this.value='';" onchange="jsFunctionProduction(this.value);">
-                                                               <option value="5" selected>5</option>
-                                                               <option value="10">10</option>
-                                                               <option value="15">15</option>
-                                                               <option value="100">100</option>
-                                                            </select>
-                                                         </div>
+                                       <div class="product_graph_div" style="display:none;">
+                                          <div class="row">
+                                             <div class="col-sm-3">
+                                                   <div class="controlDiv controlDivProduction">
+                                                      <label>No. of Records</label>
+                                                      <select class="time_filter h-w" id="timeFilterProduction" onmousedown="this.value='';" onchange="jsFunctionProduction(this.value);">
+                                                         <option value="5" selected>5</option>
+                                                         <option value="10">10</option>
+                                                         <option value="15">15</option>
+                                                         <option value="100">100</option>
+                                                      </select>
                                                    </div>
-                                                   <div class="col-sm-3">
-                                                         <div class="controlDiv controlDivProduction">
-                                                            <label>Time Interval</label>
-                                                            <select class="graph-filter-dynamic h-w" id="timeFilterIntervalProduction">
-                                                               <option value="1">1 Minutes</option>
-                                                               <option value="5">5 Minutes</option>
-                                                               <option value="10">10 Minutes</option>
-                                                               <option value="15" selected>15 Minutes</option>
-                                                            </select>
-                                                         </div>
+                                             </div>
+                                             <div class="col-sm-3">
+                                                   <div class="controlDiv controlDivProduction">
+                                                      <label>Time Interval</label>
+                                                      <select class="graph-filter-dynamic h-w" id="timeFilterIntervalProduction">
+                                                         <option value="1">1 Minutes</option>
+                                                         <option value="5">5 Minutes</option>
+                                                         <option value="10">10 Minutes</option>
+                                                         <option value="15" selected>15 Minutes</option>
+                                                      </select>
                                                    </div>
-                                                <!-- <div class="col-sm-6 production-graph-icons text-right">
-                                                </div> -->
-                                                <div class="energy_graph_msg" style="display:none;">
-                                                   <h3>No data found for measuring points yet!</h3>
-                                                </div>
+                                             </div>
+                                          </div>
+                                          <div id="loader_image" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image"></div>
+                                          <div class="row" id="other_graph_div">
+                                          </div>
                                        </div>
-                                       <div id="loader_image" style="display:none;  text-align: center;"> <img src="https://g-analysis.com/product/images/loader.gif" alt="Loader Image"></div>
-                                       <div class="row" id="other_graph_div">
+                                       <div class="product_graph_msg common-msg">
+                                          <h3>Es existieren keine Daten die ausgewertet werden können!</h3>
                                        </div>
                                     </div>
                                     <!-- Edit Mode start -->
@@ -2883,7 +2884,7 @@
                      <div class="card mb-4">
                         <div class="card-header py-0 d-flex align-items-center justify-content-between" style="background-color: #6B6F73;">
                            <span class="clr-white">
-                              Edit Sub G Configrations
+                              Edit Sub Graph Configrations
                            </span>
          
                            <div>
@@ -3073,22 +3074,22 @@
                                     <div class="controlDiv controlDivProductionn">
                                        <label>Select Label Column</label>
                                        <select class="graph_column width-66 black" id="label_column" name="label_column">
-                                        <option value="anlage">anlage</option>
-                                        <option value="auftragsmenge">auftragsmenge</option>
-                                        <option value="programm">programm</option>
-                                        <option value="zeit_zyklus">zeit_zyklus</option>
-                                        <option value="bestellung">bestellung</option>
-                                        <option value="werkzeug">werkzeug</option>
-                                        <option value="artikel">artikel</option>
-                                        <option value="kavitäten">kavitäten</option>
+                                        <!-- <option value="anlage">anlage</option> -->
+                                        <option value="sollmenge">auftragsmenge</option>
+                                        <!-- <option value="programm">programm</option> -->
+                                        <option value="zykluszeit">zeit_zyklus</option>
+                                        <!-- <option value="bestellung">bestellung</option> -->
+                                        <!-- <option value="werkzeug">werkzeug</option> -->
+                                        <!-- <option value="artikel">artikel</option> -->
+                                        <option value="nester">kavitäten</option>
                                         <option value="gutmenge">gutmenge</option>
-                                        <option value="letzte_störung">letzte_störung</option>
+                                        <option value="zeitstempel">letzte_störung</option>
                                         <option value="ausschuss">ausschuss</option>
-                                        <option value="bisher_produziert">bisher_produziert</option>
-                                        <option value="data_channel_15m_id">data_channel_15m_id</option>
-                                        <option value="channel_id">channel_id</option>
-                                        <option value="signal_type_id">signal_type_id</option>
-                                        <option value="time_server">time_server</option>
+                                        <option value="gutmenge">bisher_produziert</option>
+                                        <!-- <option value="data_channel_15m_id">data_channel_15m_id</option>
+                                        <option value="channel_id">channel_id</option> -->
+                                        <!-- <option value="signal_type_id">signal_type_id</option> -->
+                                        <!-- <option value="time_server">time_server</option> -->
                                         </select>
                                     </div>
                                 </div>
@@ -14146,9 +14147,9 @@
    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-   <script type="text/javascript" src="production_dashboard/production_js/production.js"></script>
    <script type="text/javascript" src="production_dashboard/production_js/graphScripts.js"></script>
    <script type="text/javascript" src="production_dashboard/production_js/graphMode.js"></script>
+   <script type="text/javascript" src="production_dashboard/production_js/production.js"></script>
    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
    <script type="text/javascript" src="production_dashboard/production_js/jquery.bootstrap-duallistbox.min.js"></script>
    <script type="text/javascript" src="production_dashboard/production_js/intializeProductDetails.js"></script>

@@ -167,12 +167,12 @@ max-width: 100%;
 }
 #other_graph_div {
 width: 100%;
-/* height: 500px; */
+height: 300px;
 max-width: 100%;
 }
 .am_graph_div {
 width: 100%;
-/* height: 300px; */
+height: 300px;
 max-width: 100%;
 }
 
@@ -482,7 +482,7 @@ padding-left: 8px;
     display: flex;
     padding-left: 12px;
 }
-.energy_graph_msg h3{
+.common-msg h3{
   font-size: 14px;
   padding-top: 3px;
   display: flex;

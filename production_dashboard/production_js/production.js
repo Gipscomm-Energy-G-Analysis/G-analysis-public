@@ -8,6 +8,10 @@ function hideAllcharts() {
     //hide energy charts
     $(".energy_graph_div").hide();
     $('.energy_graph_msg').show();
+    $('.energy_graph_msg_history').show();
+
+    $(".product_graph_div").hide();
+    $('.product_graph_msg').show();
 }
 
 let getProductionDetails = (dataIndex) => {
@@ -25,7 +29,8 @@ let getProductionDetails = (dataIndex) => {
             console.log('res', response);
             if(response.code == '200') {
                 machineDetailsParams(response);
-                jsFunction(5, response.graphPoints);
+                jsFunction(response.graphPoints);
+                jsFunctionProduction(response.anl_ID);
             } else if(response.code == '404')  {
                 toastr.warning(response.message);
                 machineDetailsParams(response);
@@ -88,11 +93,12 @@ let machineCommonAjax = (params) => {
         success: function(response) {
             setTimeout($.loadingBlockHide, 2000);
             $(".navigation-production").attr("data-index", params.machineIndex);
-            $(".navigation-production").attr("data-graph-points", params.graphPoints);
+            $(".navigation-production").attr("data-graph-points", response.graphPoints);
             if(response.code == '200') {
                 $(".navigation-production").attr("data-index", response.currentIndex);
                 machineDetailsParams(response);
                 jsFunction(5, response.graphPoints);
+                getProductionGraphDetails(params.machineIndex, response.anl_ID);
             } else if(response.code == '400') {
                 machineDetailsParams(response);
                 hideAllcharts();
@@ -210,6 +216,7 @@ $(document).on('click','.navigation-production-li', function() {
     console.log('params', params);
     machineCommonAjax(params);
     getDynamicProductionColumns(findIndex);
+    getProductionGraphDetails(findIndex);
 });
 
 // Production page switches
@@ -267,7 +274,6 @@ $(document).on('click', '.remove_column', function() {
 $(document).on('click', '.remove_graph_column', function() {
     $(this).parent().parent().remove();
 });
-
 
 let getPlantGroup = function () {
     $.ajax({
@@ -654,7 +660,7 @@ $(document).on('click', '#save_field', function() {
     let table = $('#select_table').val();
     let column = $('#select_column').val();
     let primary_key = $('#select_primary_column').val();
-    let foreign_key = $('#select_foreign_column').val();
+    let foreign_key = $('#select_foreig n_column').val();
     let graph = $('#graph').val();
     let anl_ID = $('#anl_ID').val();
     
@@ -996,7 +1002,6 @@ const showTableConfigurations = (data) => {
 const showMachinePrioritySelect = (data) => {
     let selectHtml = '';
     for(const select_name of data.allMachines) {
-
         if(data.selected.includes(select_name.anl_ID)){
             selectHtml += `<option value='${select_name.anl_ID}' selected>${select_name.nummerAnl}</option>`;
         } else {
@@ -1201,7 +1206,7 @@ let showGraphColumn = function(result){
     console.log('value', result.data);
     $.each(result.data, function (key, value) {
      console.log('valuee', value)
-        let label = value.label;
+        let label = value.graph_text;
         // let column = value.COLUMN_NAME;
         let graph_name = value.graph_name;
 
@@ -1215,7 +1220,6 @@ let showGraphColumn = function(result){
        
         </tr>`;
     });
-
     $('#graph_configuration_table tbody').html(html);
 }
 
@@ -1245,6 +1249,7 @@ $(document).on('click', '#save_graph_field', function() {
             is_open: is_open,
             graph:graph,
             nameDB: $("#nameDB").val(),
+            textDB: $("#label_column option:selected").text()
         },
         success: function (result) {          
             if(result.code == 200) {
@@ -1274,7 +1279,6 @@ let showConfigurationColumn = function () {
         success: function(result) {
             console.log('graph', result);
             if(result.code == '200') {
-                console.log('here isrfsadgd');
                 showGraphColumn(result);
             }
         }
@@ -1306,4 +1310,77 @@ $(document).on('click', '.remove_graph_column', function() {
             toastr.error(result);
         }
     });
-})
+});
+
+
+$(document).on('click','#custom_machines_table tr', function(){
+    let anl_ID = $(this).find("td:first").text();
+    let index = $('.navigation-production').attr('data-index');
+    let data_array = $('.navigation-production').attr('data-array');
+    let data_result = $('.navigation-production').attr('data-result');
+    
+    let findIndex = index;
+    let params = {
+    	id:anl_ID,
+        dataIndex:data_array,
+        machineIndex:findIndex,
+        dataResult: data_result,
+        prop_id:$('#property-data').val()
+    }
+    machineCommonAjax(params);
+    getDynamicProductionColumns(findIndex, anl_ID);
+    getProductionGraphDetails(findIndex, anl_ID);
+});
+
+let getProductionGraphDetails = (index, anl_ID="") => {
+    $.ajax({
+        type: "POST",
+        url: "production_dashboard/production_php/ProductionController.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            action: "getGraphConfiguration",
+            nameDB: $("#nameDB").val(),
+            id:anl_ID,
+            dataIndex:$(".navigation-production").attr("data-array"),
+            machineIndex:index,
+        },
+        success: function(result) {
+            console.log('production_graph', result);
+            if(result.code == '200') {
+                console.log('showrecord',showRecord(result.graphData));
+                if(showRecord(result.graphData)){
+                    console.log('here');
+                    $('.product_graph_msg').hide();
+                    $(".product_graph_div").show();
+                    createAmChart(root_other_graph, result.graphData, true); 
+                }else{
+                    $('.product_graph_msg').show();
+                }
+            }
+        }
+    });
+}
+
+// let graphConfiguration = function () {
+//     $.ajax({
+//         type: "POST",
+//         url: "production_dashboard/production_php/ProductionController.php",
+//         async: false,
+//         dataType: 'json',
+//         data: {
+//             action: "getGraphConfiguration",
+//             nameDB: $("#nameDB").val(),
+//         },
+//         fail: function() {
+//             alert("failed!!")
+//         },
+//         success: function(result) {
+//             console.log('graph', result);
+//             if(result.code == '200') {
+//                 console.log('here isrfsadgd');
+//             }
+//         }
+//       });
+// }
+// graphConfiguration();

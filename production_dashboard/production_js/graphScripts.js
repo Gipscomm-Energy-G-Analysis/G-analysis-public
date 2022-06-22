@@ -1,8 +1,8 @@
 //OLD code end
 let root = am5.Root.new("chartdiv");
-// let root_other_graph = am5.Root.new("other_graph_div");
+let root_other_graph = am5.Root.new("other_graph_div");
 let historic_root = am5.Root.new("historyChartdiv");
-// let product_other_graph = am5.Root.new("product_historyChartdiv");
+let product_other_graph = am5.Root.new("product_historyChartdiv");
 // let mixed_root = am5.Root.new("mixed_graph_div");
 // let mixed_history_graph = am5.Root.new("mixed_historyChartdiv");
 // New Code
