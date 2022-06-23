@@ -70,6 +70,7 @@ class GraphController {
     public function historicData() {
         $graphPoints = isset($_REQUEST['graphPoints']) && !empty($_REQUEST['graphPoints'])?$_REQUEST['graphPoints']:null;
         $periodFilter = $_REQUEST['periodFilter'];
+
         if (!empty($graphPoints)) {
             $graphArray = explode(',',$graphPoints);
             $graphData = [];
@@ -77,13 +78,23 @@ class GraphController {
                 switch ($periodFilter) {
                     case 'year':
                         $year = $_REQUEST['yearFilter'];
+                        if(empty($year)) {
+                            return ['code'=>400, 'msg' => 'No record found!'];
+                        }
                         $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
-                        WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".date('Y')." ORDER BY MessstellenEnergiedaten.Time desc";
+                        WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".$year." ORDER BY MessstellenEnergiedaten.Time desc";
                         break;
                     case 'month':
                         $month = $_REQUEST['monthFilter'];
+                        $year = $_REQUEST['yearFilter'];
+                        if(empty($month)) {
+                            return ['code'=>400, 'msg' => 'No record found!'];
+                        }
+                        if(empty($year)) {
+                            return ['code'=>400, 'msg' => 'No record found!'];
+                        }
                         $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
-                        WHERE  MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".date('Y')." AND MONTH(MessstellenEnergiedaten.Time) = ".$month." ORDER BY MessstellenEnergiedaten.Time desc";
+                        WHERE  MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".$year." AND MONTH(MessstellenEnergiedaten.Time) = ".$month." ORDER BY MessstellenEnergiedaten.Time desc";
                         break;
                     case 'custom':
                         $start = date_create($_REQUEST['startDate']);
@@ -94,7 +105,7 @@ class GraphController {
                         WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND cast (MessstellenEnergiedaten.Time as date) >= '".$start."' AND cast (MessstellenEnergiedaten.Time as date) <= '".$end."' ORDER BY MessstellenEnergiedaten.Time desc";
                         break;
                     default:
-                        return ['code'=>400, 'msg' => 'no record found'];
+                        return ['code'=>400, 'msg' => 'No record found!'];
                 }
                 // $data = $this->conn->query($query)->fetchAll();
                 $data = queryDB ( $this->conn, $query, "read");
@@ -110,40 +121,109 @@ class GraphController {
         return ['code'=>400, 'msg' => 'no record found'];
     }
 
+    public function getGraphConfiguration(){
+        try {
+            $username = $_SESSION['username'];
+            $machineId = $machineId = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$this->getMachineId();
+            $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username'";
+            $record = queryDB ( $this->conn, $selectQuery, "read");
+            
+            if(!empty($record)) {
+                $prodDataRecords = $this->makeProductGraphData(5, $record, $machineId);
+                return ['status' => 'success', 'code' => 200, 'graphData' => $prodDataRecords['data'], 'message' => 'Configuration Data Fetched.'];
+            }
+            return ['status' => 'warning', 'code' => 400, 'data' => [], 'message' => 'No Record Found!'];
+        }catch (Exception $e) {
+            return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+        }
+    }
+    
+    public function makeProductGraphData($limit, $record, $machineID) {
+        try {
+            $prodGraphPoints = [];
+            foreach($record as $value) {
+                $selectQuery = "SELECT TOP $limit ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' ORDER BY zeitstempel desc";
+                $prodData = queryDB ( $this->conn, $selectQuery, "read");
+                if(!empty($prodData)) {
+                    $getProductionDataPoints = $this->getProductionChartData($prodData, $machineID, $value['graph_name']);
+                    array_push($prodGraphPoints, $getProductionDataPoints);
+                }
+
+            }
+            return ['status' => 'success', 'code' => 200, 'data' => $prodGraphPoints, 'message' => 'Configuration Data Fetched.'];
+        } catch (Exception $e) {
+            return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+        }
+    }
+    
+    /**
+     * @param $data
+     * @param $id
+     * @return array
+     */
+    public function getProductionChartData($data, $id, $name) {
+        $recordData = !empty($data) ? true: false;
+        $label = [];
+        $valData = [];
+        $amData = [];
+        foreach($data as $key=>$value){
+            $timeData = $value['Time']->format('Y-m-d H:i:s');
+            array_push($amData, ['date'=>(strtotime($timeData) * 1000), 'value'=>floatval($value['value']), 'time'=>$timeData,'convertedTime'=>'']);
+            $value['value'] = floatval($value['value']);
+            array_push($valData, $value['value']);
+        }
+        return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data ];
+    }
+
     public function historicDataProduction() {
-        $graphPoints = isset($_REQUEST['graphPoints']) && !empty($_REQUEST['graphPoints'])?$_REQUEST['graphPoints']:null;
+        $username = $_SESSION['username'];
+        $dataArray = isset($_POST['dataResult']) && !empty($_POST['dataResult'])?$_POST['dataResult']:null;
+        $dataIndex = isset($_POST['machineIndex']) && !empty($_POST['machineIndex'])?$_POST['machineIndex']:null;
+        $machineID = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$dataArray[$dataIndex];
+        $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username'";
+        $record = queryDB ( $this->conn, $selectQuery, "read");
         $periodFilter = $_REQUEST['periodFilter'];
-        if (!empty($graphPoints)) {
-            $graphArray = explode(',',$graphPoints);
+        $limit = isset($_POST['limit']) && !empty($_POST['limit'])?$_POST['limit']:5;
+        if (!empty($record)) {
             $graphData = [];
-            foreach($graphArray as $key=>$val) {
+            foreach($record as $key=>$value) {
                 switch ($periodFilter) {
                     case 'year':
                         $year = $_REQUEST['yearFilter'];
-                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
-                        WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".date('Y')." ORDER BY MessstellenEnergiedaten.Time desc";
+                        if(empty($year)) {
+                            return ['code'=>400, 'msg' => 'No record found!'];
+                        }
+                        $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
+                        AND YEAR(zeitstempel) = ".$year." ORDER BY zeitstempel desc";
                         break;
                     case 'month':
                         $month = $_REQUEST['monthFilter'];
-                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
-                        WHERE  MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".date('Y')." AND MONTH(MessstellenEnergiedaten.Time) = ".$month." ORDER BY MessstellenEnergiedaten.Time desc";
+                        $year = $_REQUEST['yearFilter'];
+                        if(empty($month)) {
+                            return ['code'=>400, 'msg' => 'No record found!'];
+                        }
+                        if(empty($year)) {
+                            return ['code'=>400, 'msg' => 'No record found!'];
+                        }
+                        $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
+                        AND YEAR(zeitstempel) = ".$year." AND MONTH(zeitstempel) = ".$month." ORDER BY zeitstempel desc";
                         break;
                     case 'custom':
                         $start = date_create($_REQUEST['startDate']);
                         $start = date_format($start,"Y-m-d");
                         $end = date_create($_REQUEST['endDate']);
                         $end = date_format($end,"Y-m-d");
-                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
-                        WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND cast (MessstellenEnergiedaten.Time as date) >= '".$start."' AND cast (MessstellenEnergiedaten.Time as date) <= '".$end."' ORDER BY MessstellenEnergiedaten.Time desc";
+                        $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
+                        AND cast (zeitstempel as date) >= '".$start."' AND cast (zeitstempel as date) <= '".$end."' ORDER BY zeitstempel desc";
                         break;
                     default:
                         return ['code'=>400, 'msg' => 'no record found'];
                 }
                 // $data = $this->conn->query($query)->fetchAll();
                 $data = queryDB ( $this->conn, $query, "read");
-                $name = 'messstelle'.($key+1).'IDAnl';
-                $pointData =$this->getlineChartData($data, $val, $name);
+                $pointData =$this->getProductionChartData($data, $machineID, $value['graph_text']);
                 array_push($graphData, $pointData);
+
             }
             if (empty($graphData)) {
                 return ['code'=>400, 'graphData' => $graphData, 'msg' => 'no record found'];
@@ -194,5 +274,6 @@ class GraphController {
         }
         return $data_var;
     }
+
  }
 $obj = new GraphController();

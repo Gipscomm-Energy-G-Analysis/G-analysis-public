@@ -4,6 +4,18 @@ let stopLoader = () => {
 }
 let dataTableMachine;
 
+$(document).on('click','#menuProduktionAusw', function() {
+    getOrganisation();
+    getPlantGroup();
+    showTables();
+    getMachineName();
+    getDynamicProductionColumns($('.navigation-production').attr('data-index'));
+    getsubGroup();
+    showConfigurationColumn();
+        customMachineTable();
+
+});
+
 function hideAllcharts() {
     //hide energy charts
     $(".energy_graph_div").hide();
@@ -92,13 +104,13 @@ let machineCommonAjax = (params) => {
         },
         success: function(response) {
             setTimeout($.loadingBlockHide, 2000);
+            console.log('responns', response.graphPoints);
             $(".navigation-production").attr("data-index", params.machineIndex);
             $(".navigation-production").attr("data-graph-points", response.graphPoints);
             if(response.code == '200') {
                 $(".navigation-production").attr("data-index", response.currentIndex);
                 machineDetailsParams(response);
-                jsFunction(5, response.graphPoints);
-                getProductionGraphDetails(params.machineIndex, response.anl_ID);
+                jsFunction(response.graphPoints);
             } else if(response.code == '400') {
                 machineDetailsParams(response);
                 hideAllcharts();
@@ -195,7 +207,7 @@ let getProperty = function (org_id) {
     });
 }
 
-getOrganisation();
+
 
 $(document).on('click','.navigation-production-li', function() {
     // return false;
@@ -303,7 +315,7 @@ let getPlantGroup = function () {
         }
       });
 }
-getPlantGroup();
+
 
 let showTables = function () {
     $.ajax({
@@ -336,7 +348,7 @@ let showTables = function () {
         }
       });
 }
-showTables();
+
 
 
 let showPrimaryKey = function () {
@@ -867,7 +879,7 @@ let getDynamicProductionColumns = (index, anl_ID="") => {
         }
     });
 }
-getDynamicProductionColumns($('.navigation-production').attr('data-index'));
+
 
 const customMachineTable = function() {
     $.ajax({
@@ -908,28 +920,26 @@ const customMachineTable = function() {
 
 
 
-$(document).on('click','#custom_machines_table tr', function(){
-    let anl_ID = $(this).find("td:first").text();
-    let index = $('.navigation-production').attr('data-index');
-    let data_array = $('.navigation-production').attr('data-array');
-    let data_result = $('.navigation-production').attr('data-result');
+// $(document).on('click','#custom_machines_table tr', function(){
+//     let anl_ID = $(this).find("td:first").text();
+//     let index = $('.navigation-production').attr('data-index');
+//     let data_array = $('.navigation-production').attr('data-array');
+//     let data_result = $('.navigation-production').attr('data-result');
     
-    let findIndex = index;
-    let params = {
-    	id:anl_ID,
-        dataIndex:data_array,
-        machineIndex:findIndex,
-        dataResult: data_result,
-        prop_id:$('#property-data').val()
-    }
-    machineCommonAjax(params);
-    getDynamicProductionColumns(findIndex, anl_ID);
-});
+//     let findIndex = index;
+//     let params = {
+//     	id:anl_ID,
+//         dataIndex:data_array,
+//         machineIndex:findIndex,
+//         dataResult: data_result,
+//         prop_id:$('#property-data').val()
+//     }
+//     machineCommonAjax(params);
+//     getDynamicProductionColumns(findIndex, anl_ID);
+// });
 
 
-setTimeout(function() {
-    customMachineTable();
-}, 5000);
+
 
 
 // $(document).on('click', '#save_configuration_button', function(){
@@ -978,7 +988,7 @@ const getMachineName = function() {
         },
     });
 }
-getMachineName();
+
 
 // $(document).on('click', '#save_table_configuration_button', function() {
 //     let selectedColumn = $('.duallistbox').val();
@@ -1199,7 +1209,7 @@ const getsubGroup = function() {
         },
     });
 }
-getsubGroup();
+
 
 let showGraphColumn = function(result){
     let html = '';
@@ -1284,7 +1294,7 @@ let showConfigurationColumn = function () {
         }
       });
 }
-showConfigurationColumn();
+
 
 
 $(document).on('click', '.remove_graph_column', function() {
@@ -1335,7 +1345,7 @@ $(document).on('click','#custom_machines_table tr', function(){
 let getProductionGraphDetails = (index, anl_ID="") => {
     $.ajax({
         type: "POST",
-        url: "production_dashboard/production_php/ProductionController.php",
+        url: "production_dashboard/production_php/GraphController.php",
         async: false,
         dataType: 'json',
         data: {

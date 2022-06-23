@@ -132,7 +132,7 @@ function jsFunctionProduction(anl_Id ='') {
         type: "POST",
         url: "production_dashboard/production_php/GraphController.php",
         data: {
-            action: "getPointsData",
+            action: "historicDataProduction",
             nameDB: $("#nameDashboardDB").val(),
             periodFilter: $("#productPeriodFilterInterval").val(),
             typeFilter: $("#productTypeFilterInterval").val(),
@@ -140,7 +140,9 @@ function jsFunctionProduction(anl_Id ='') {
             monthFilter: $("#productMonthFilterInterval").val(),
             startDate: $("#product_start_date").val(),
             endDate: $("#product_end_date").val(),
-            anl_ID: (anl_Id == '')?$('.navigation').attr('data-value'):anl_Id,
+            dataResult: $('.navigation-production').attr('data-array'),
+            machineIndex: $('.navigation-production').attr('data-index'),
+            id: (anl_Id == '')?$('.navigation').attr('data-value'):anl_Id,
             limit: $('#timeFilterProduction').val()
         },
         success:function(result) {
@@ -148,6 +150,8 @@ function jsFunctionProduction(anl_Id ='') {
                 $("#loader_image").hide();
                 $("#other_graph_div").show();
                 createAmChart(historic_root, result.graphData, true);
+            } else {
+                $("#loader_image").hide();
             }
         },
         error:function(result) {
