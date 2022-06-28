@@ -4,18 +4,6 @@ let stopLoader = () => {
 }
 let dataTableMachine;
 
-$(document).on('click','#menuProduktionAusw', function() {
-    getOrganisation();
-    getPlantGroup();
-    showTables();
-    getMachineName();
-    getDynamicProductionColumns($('.navigation-production').attr('data-index'));
-    getsubGroup();
-    showConfigurationColumn();
-        customMachineTable();
-
-});
-
 function hideAllcharts() {
     //hide energy charts
     $(".energy_graph_div").hide();
@@ -44,7 +32,7 @@ let getProductionDetails = (dataIndex) => {
                 jsFunction(response.graphPoints);
                 jsFunctionProduction(response.anl_ID);
             } else if(response.code == '404')  {
-                toastr.warning(response.message);
+             //   toastr.warning(response.message);
                 machineDetailsParams(response);
                 hideAllcharts();
             } else {
@@ -207,7 +195,7 @@ let getProperty = function (org_id) {
     });
 }
 
-
+getOrganisation();
 
 $(document).on('click','.navigation-production-li', function() {
     // return false;
@@ -315,7 +303,7 @@ let getPlantGroup = function () {
         }
       });
 }
-
+getPlantGroup();
 
 let showTables = function () {
     $.ajax({
@@ -348,7 +336,7 @@ let showTables = function () {
         }
       });
 }
-
+showTables();
 
 
 let showPrimaryKey = function () {
@@ -879,7 +867,7 @@ let getDynamicProductionColumns = (index, anl_ID="") => {
         }
     });
 }
-
+getDynamicProductionColumns($('.navigation-production').attr('data-index'));
 
 const customMachineTable = function() {
     $.ajax({
@@ -939,7 +927,9 @@ const customMachineTable = function() {
 // });
 
 
-
+setTimeout(function() {
+    customMachineTable();
+}, 5000);
 
 
 // $(document).on('click', '#save_configuration_button', function(){
@@ -988,7 +978,7 @@ const getMachineName = function() {
         },
     });
 }
-
+getMachineName();
 
 // $(document).on('click', '#save_table_configuration_button', function() {
 //     let selectedColumn = $('.duallistbox').val();
@@ -1209,7 +1199,7 @@ const getsubGroup = function() {
         },
     });
 }
-
+getsubGroup();
 
 let showGraphColumn = function(result){
     let html = '';
@@ -1294,7 +1284,7 @@ let showConfigurationColumn = function () {
         }
       });
 }
-
+showConfigurationColumn();
 
 
 $(document).on('click', '.remove_graph_column', function() {
@@ -1394,3 +1384,25 @@ let getProductionGraphDetails = (index, anl_ID="") => {
 //       });
 // }
 // graphConfiguration();
+
+$.ajax({
+    type: "POST",
+    url: "production_dashboard/production_php/ProductionController.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        id: id,
+        action: "getProdDataInfo",
+        nameDB: $("#nameDB").val(),
+    },
+    success:function(result) {
+        if(result.code == 200) {
+            toastr.success(result.message);
+        } else {
+            toastr.error(result.message);
+        }
+    },
+    error:function(result) {
+        toastr.error(result);
+    }
+});

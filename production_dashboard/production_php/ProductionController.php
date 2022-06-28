@@ -200,10 +200,10 @@ class ProductionController {
                 } 
 
                 switch ($type) {
-                    case 'first':
+                    case 'first': 
                         $machineDataQuery .= " ORDER BY anlagen.anl_ID desc ";
                         break;
-                    case 'next':
+                    case 'next': 
                         $machineDataQuery .= " AND anlagen.anl_ID >".$id." ORDER BY anlagen.anl_ID asc";
                         break;
                     case 'prev':
@@ -224,7 +224,9 @@ class ProductionController {
                 $groups = $this->getGroup();
                 
                 if (!empty($machineData)) {
-                    return ['status' => 'success', 'code' => 200, 'data' => $machineData, 'message' => 'Prduction details fetched.', 'groups' => $groups];
+                    return ['
+                    
+                    status' => 'success', 'code' => 200, 'data' => $machineData, 'message' => 'Prduction details fetched.', 'groups' => $groups];
                 } else {
                     return ['status' => 'error', 'code' => 404, 'data' => [] , 'message' => 'No Record Found!', 'groups' => $groups];
                 }
@@ -1206,57 +1208,16 @@ public function deleteGraphConfiguration(){
     }
 }
 
-public function getGraphConfiguration(){
+public function getProdDataInfo() {
     try {
-        $username = $_SESSION['username'];
-        $machineId = $machineId = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$this->getMachineId();
-        $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username'";
-        $record = queryDB ( $this->conn, $selectQuery, "read");
-        
-        if(!empty($record)) {
-            $prodDataRecords = $this->makeProductGraphData(5, $record, $machineId);
-            return ['status' => 'success', 'code' => 200, 'graphData' => $prodDataRecords['data'], 'message' => 'Configuration Data Fetched.'];
-        }
-        return ['status' => 'warning', 'code' => 400, 'data' => [], 'message' => 'No Record Found!'];
-    }catch (Exception $e) {
-        return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
-    }
-}
+        $machine_ID = 23;
+        $query = "SELECT auftrag, artikelnummer, sollmenge, gesamtmenge, timeUnlock, timeClose FROM ProdData WHERE anl_ID='265'";
+        $data = queryDB ( $this->conn, $query, "read");
+        print_r($data);die;
 
-public function makeProductGraphData($limit, $record, $machineID) {
-    try {
-        $prodGraphPoints = [];
-        foreach($record as $value) {
-            $selectQuery = "SELECT TOP $limit ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' ORDER BY zeitstempel desc";
-            $prodData = queryDB ( $this->conn, $selectQuery, "read");
-            if(!empty($prodData)) {
-                $getProductionDataPoints = $this->getProductionChartData($prodData, $machineID, $value['graph_name']);
-                array_push($prodGraphPoints, $getProductionDataPoints);
-            }
-        }
-        return ['status' => 'success', 'code' => 200, 'data' => $prodGraphPoints, 'message' => 'Configuration Data Fetched.'];
-    } catch (Exception $e) {
-        return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+    } catch(Exception $e) {
+        return ['code' => 'error', 'code' => 500, 'message' => $e->getMessage()];
     }
-}
-
-/**
- * @param $data
- * @param $id
- * @return array
- */
-public function getProductionChartData($data, $id, $name) {
-    $recordData = !empty($data) ? true: false;
-    $label = [];
-    $valData = [];
-    $amData = [];
-    foreach($data as $key=>$value){
-        $timeData = $value['Time']->format('Y-m-d H:i:s');
-        array_push($amData, ['date'=>(strtotime($timeData) * 1000), 'value'=>floatval($value['value']), 'time'=>$timeData,'convertedTime'=>'']);
-        $value['value'] = floatval($value['value']);
-        array_push($valData, $value['value']);
-    }
-    return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data ];
 }
 
 }
