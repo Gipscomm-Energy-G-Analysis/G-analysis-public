@@ -4,15 +4,13 @@ const TranslationType = {
   ENERGY_DATA_02: 2
 }
 
-const TimeMode =
-    { DAY   : 0
-    , MONTH : 1
-    , YEAR  : 2
-    }
+const fullHour =
+    minutes =>
+    minutes === "00"
 
-const makeHour =
-    hour =>
-    hour + ":00"
+const isCounter =
+    data =>
+    data.every((a, i, arr) => equalsZero(i) || a.Value >= arr[decr(i)])
 
 function DataTranslator(translationType, inData){
   this.translationType = translationType;
@@ -38,7 +36,6 @@ function DataTranslator(translationType, inData){
       }
     }
     switch (this.translationType) {
-
       case TranslationType.ENERGY_DATA_01:
         for(let i = 0; i < nMonth; i++){
           if(i < 9){

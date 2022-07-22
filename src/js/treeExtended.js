@@ -376,12 +376,10 @@ Tree.prototype.getValues = function () {
   return values;
 };
 
-Tree.prototype.getEditValues = 
-    treeViewSelector =>
-    array($(treeViewSelector + " .treejs-checkbox-edit").length)()()
-    .map((_, i) => $(treeViewSelector + " .treejs-checkbox-edit").eq(i).prop("checked"))
-    .map((a, i) => a ? scpRechteverwaltung.getMenuIDs()[i] : "")
-    .filter(a => !emptyString(a))
+Tree.prototype.getEditValues = function () {
+  return array($("#sAdmTreeview .treejs-checkbox-edit").length)()()
+         .map((_, i) => $("#sAdmTreeview .treejs-checkbox-edit").eq(i).prop("checked"))
+};
 
 Tree.prototype.setValues = function (values) {
   var _this4 = this;
@@ -396,11 +394,9 @@ Tree.prototype.setValues = function (values) {
 };
 
 Tree.prototype.setEditValues = 
-    treeViewSelector =>
-    editValues => 
-    scpRechteverwaltung.getMenuIDs()
-    .map(a => editValues.some(b => a === b))
-    .forEach((a, i) => $(treeViewSelector + " .treejs-checkbox-edit").eq(i).prop("checked", a ))
+    editValues =>
+    editValues
+    .map((a, i) => $("#sAdmTreeview .treejs-checkbox-edit").eq(i).prop("checked", equal(a)("false") ? false : true))
 
 Tree.prototype.setDisable = function (value) {
   var node = this.nodesById[value];
@@ -681,23 +677,21 @@ Tree.createLiEle = function (node, closed) {
   label.appendChild(text);
   li.appendChild(label);
   li.nodeId = node.id;
-
-  const checkboxEdit = document.createElement('input');
-  const labelEdit = document.createElement('span');
-  const textEdit = document.createTextNode("Ändern");
-
-  if(scpRechteverwaltung.getEditItemIDs($("[data-edit]")).some(a => node.id === a)) {
-      checkboxEdit.classList.add('treejs-checkbox-edit');
-      checkboxEdit.id = node.text.replace(" ", "-")
-      checkboxEdit.type = "checkbox"
-      li.appendChild(checkboxEdit);
-      
-      labelEdit.classList.add('treejs-label-edit');
-      
-      labelEdit.appendChild(textEdit);
-      li.appendChild(labelEdit);
-  }
   
+  const checkboxEdit = document.createElement('input');
+  checkboxEdit.classList.add('treejs-checkbox-edit');
+  checkboxEdit.id = node.text.replace(" ", "-")
+  li.appendChild(checkboxEdit);
+  $(".treejs-checkbox-edit").prop("type", "checkbox")
+  
+  const labelEdit = document.createElement('span');
+  labelEdit.classList.add('treejs-label-edit');
+  
+  const textEdit = document.createTextNode("Ändern");
+  
+  labelEdit.appendChild(textEdit);
+  li.appendChild(labelEdit);
+
   const shouldUncheckEdit = 
     () =>
     li.classList.contains("treejs-node__checked") && checkboxEdit.checked

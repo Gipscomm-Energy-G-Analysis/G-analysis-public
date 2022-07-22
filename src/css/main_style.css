@@ -422,7 +422,7 @@ nav {
  {
   background-color: #B9C0C7;
   margin: 10px;
-  width: 831px;
+  width: 21.85cm;
   border: 1px solid black;
   border-radius: 8px;
   -webkit-box-shadow: 0 0 5px #333;
@@ -1811,8 +1811,4 @@ div#intBdeConcernOrDeletePopUpDiv button#intBdeDelete {
 }
 #tblMasseneingabeDataIMw table tr th:first-child {
   z-index: 9;
-}
-
-.treejs-checkbox-edit {
-    margin-left: 5px;
 }

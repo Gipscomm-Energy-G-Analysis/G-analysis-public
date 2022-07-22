@@ -117,10 +117,7 @@
         <div class="container-fluid">
             <div class="offset-md-1 row mb-2">
                 <div class="col-sm-4">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('product-dashboard')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">ChartJS</li>
-                    </ol>
+                    
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -134,13 +131,7 @@
                     <!-- AREA CHART -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title dynamic_title">Line Chart</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
+                            <h3 class="card-title dynamic_title">History Chart</h3>
                         </div>
                         <div class="card-body">
                             <div class="chart">
@@ -287,9 +278,9 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
         valueXField: "date",
         legendLabelText: name,
         tooltip: am5.Tooltip.new(root, {
-            pointerOrientation: "horizontal",
-            labelText: "{valueY}"
-        })
+                pointerOrientation: "horizontal",
+                labelText: "{valueY}"
+            })
         })
     );
 
@@ -313,6 +304,114 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
     
 
     series.data.setAll(startValue);
+}
+
+
+const createAmChartCategory = (root, chartsData, dispose, name, type) => {
+    let graphName = name !== undefined?name:0;
+    if (dispose) {
+        root.container.children.clear();
+    }
+    // Set themes
+    // https://www.amcharts.com/docs/v5/concepts/themes/
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    // Create chart
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/
+    var chart = root.container.children.push(
+        am5xy.XYChart.new(root, {
+            focusable: true,
+            panX: true,
+            panY: true,
+            wheelX: "panX",
+            wheelY: "zoomX",
+            layout: root.verticalLayout
+        })
+    );
+
+    var easing = am5.ease.linear;
+    // chart.get("colors").set("step", 3);
+
+    // Create axes
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+
+    var xAxis = chart.xAxes.push(
+        am5xy.CategoryAxis.new(root, {
+            categoryField: "date",
+            renderer: am5xy.AxisRendererX.new(root, {})
+        })
+    );
+
+    xAxis.data.setAll(chartsData);
+
+
+    var yRenderer = am5xy.AxisRendererY.new(root, {
+        opposite: false
+    });
+
+    var yAxis = chart.yAxes.push(
+        am5xy.ValueAxis.new(root, {
+        maxDeviation: 1,
+        renderer: yRenderer
+        })
+    );
+
+    if (chart.yAxes.indexOf(yAxis) > 0) {
+        yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
+    }
+    console.log('graph_type', type);
+    if(type == 'double') {
+        var series = chart.series.push(
+            am5xy.ColumnSeries.new(root, {
+                name: graphName,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                logarithmic: true,
+                valueYField: "value",
+                categoryXField: "date"
+            })
+        );
+        series.data.setAll(chartsData);
+        var series2 = chart.series.push( 
+            am5xy.ColumnSeries.new(root, { 
+              name: "Energy", 
+              xAxis: xAxis, 
+              yAxis: yAxis, 
+              logarithmic: true,
+              valueYField: "value2", 
+              categoryXField: "date" 
+            }) 
+          );
+        series2.data.setAll(chartsData);
+    } else {
+        var series = chart.series.push(
+            am5xy.ColumnSeries.new(root, {
+                name: graphName,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: "value",
+                categoryXField: "date"
+            })
+        );
+        
+        series.data.setAll(chartsData);
+        series.tooltipText = "{categoryX}: {valueY}";
+    }
+
+   
+
+    var legend = chart.children.push(
+        am5.Legend.new(root, {
+          centerX: am5.p50,
+          x: am5.p50
+        })
+      );
+    legend.data.setAll(chart.series.values);
+    // Make stuff animate on load
+    // https://www.amcharts.com/docs/v5/concepts/animations/
+    chart.appear(1000, 100);
 }
 
 //blade code for measuring points data start
@@ -363,13 +462,28 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
         
     }
 
+    const createCategoryGraph = (graph_name, graphData, type) => {
+        for (const key in graphData) {
+            if(graph_name == graphData[key]['name']) {
+                createAmChartCategory(root, graphData[key]['amData'], true, graph_name, type);
+                return false;
+            }
+        }
+    }
 
     //historic data end
     if(localStorage.getItem('graphData')) {
         let graphData = JSON.parse(localStorage.getItem('graphData'));
         let graphType = localStorage.getItem('graphType');
-        createAmChart(root, graphData, false);
-        createTable(graphData);
+        let graph_name = localStorage.getItem('graph_name');
+        if(graphType == 'production') {
+            createCategoryGraph(graph_name, graphData, 'single');
+        } else if(graphType == 'mixed') {
+            createCategoryGraph(graph_name, graphData, 'double');
+        } else if(graphType == 'energy') {
+            createAmChart(root, graphData, false);
+            createTable(graphData);
+        }    
     }
 </script>
 </body>

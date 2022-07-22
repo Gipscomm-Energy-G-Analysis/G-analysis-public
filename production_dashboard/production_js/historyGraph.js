@@ -1,6 +1,6 @@
 let root = am5.Root.new("chartdiv");
     //historic data start
-    const createAmChart = (root, chartsData, dispose) => {
+const createAmChart = (root, chartsData, dispose) => {
     console.log(chartsData);
     if (dispose) {
         root.container.children.clear();
@@ -126,9 +126,116 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
     series.data.setAll(startValue);
 }
 
-//blade code for measuring points data start
 
-    function createTable(chartsData) {
+const createAmChartCategory = (root, chartsData, dispose, name, type) => {
+    let graphName = name !== undefined?name:0;
+    if (dispose) {
+        root.container.children.clear();
+    }
+    // Set themes
+    // https://www.amcharts.com/docs/v5/concepts/themes/
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    // Create chart
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/
+    var chart = root.container.children.push(
+        am5xy.XYChart.new(root, {
+            focusable: true,
+            panX: true,
+            panY: true,
+            wheelX: "panX",
+            wheelY: "zoomX",
+            layout: root.verticalLayout
+        })
+    );
+
+    var easing = am5.ease.linear;
+    // chart.get("colors").set("step", 3);
+
+    // Create axes
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+
+    var xAxis = chart.xAxes.push(
+        am5xy.CategoryAxis.new(root, {
+            categoryField: "date",
+            renderer: am5xy.AxisRendererX.new(root, {})
+        })
+    );
+
+    xAxis.data.setAll(chartsData);
+
+
+    var yRenderer = am5xy.AxisRendererY.new(root, {
+        opposite: false
+    });
+
+    var yAxis = chart.yAxes.push(
+        am5xy.ValueAxis.new(root, {
+        maxDeviation: 1,
+        renderer: yRenderer
+        })
+    );
+
+    if (chart.yAxes.indexOf(yAxis) > 0) {
+        yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
+    }
+    console.log('graph_type', type);
+    if(type == 'double') {
+        var series = chart.series.push(
+            am5xy.ColumnSeries.new(root, {
+                name: graphName,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                logarithmic: true,
+                valueYField: "value",
+                categoryXField: "date"
+            })
+        );
+        series.data.setAll(chartsData);
+        var series2 = chart.series.push( 
+            am5xy.ColumnSeries.new(root, { 
+              name: "Energy", 
+              xAxis: xAxis, 
+              yAxis: yAxis, 
+              logarithmic: true,
+              valueYField: "value2", 
+              categoryXField: "date" 
+            }) 
+          );
+        series2.data.setAll(chartsData);
+    } else {
+        var series = chart.series.push(
+            am5xy.ColumnSeries.new(root, {
+                name: graphName,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: "value",
+                categoryXField: "date"
+            })
+        );
+        
+        series.data.setAll(chartsData);
+        series.tooltipText = "{categoryX}: {valueY}";
+    }
+
+   
+
+    var legend = chart.children.push(
+        am5.Legend.new(root, {
+          centerX: am5.p50,
+          x: am5.p50
+        })
+      );
+    legend.data.setAll(chart.series.values);
+    // Make stuff animate on load
+    // https://www.amcharts.com/docs/v5/concepts/animations/
+    chart.appear(1000, 100);
+}
+
+//blade code for measuring points data start
+function createTable(chartsData) {
         let cardhtml = '';
         for (const key in chartsData) {
             cardhtml += `<div class="card">
@@ -179,6 +286,24 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
 if(localStorage.getItem('graphData')) {
     let graphData = JSON.parse(localStorage.getItem('graphData'));
     let graphType = localStorage.getItem('graphType');
-    createAmChart(root, graphData, false);
-    createTable(graphData);
+    let graph_name = localStorage.getItem('graph_name');
+    if(graphType == 'production') {
+        for (const key in graphData) {
+            if(graph_name == graphData[key]['name']) {
+                createAmChartCategory(root, graphData[key]['amData'], true, graph_name, 'single');
+                return false;
+            }
+        }
+    } else if(graphType == 'mixed') {
+        for (const key in graphData) {
+            if(graph_name == graphData[key]['name']) {
+                createAmChartCategory(root, graphData[key]['amData'], true, graph_name, 'double');
+                return false;
+            }
+        }
+    } else {
+        createAmChart(root, graphData, false);
+        createTable(graphData);
+    }
+    
 }

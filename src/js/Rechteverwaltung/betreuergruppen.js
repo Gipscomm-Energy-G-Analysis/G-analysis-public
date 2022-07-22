@@ -86,6 +86,7 @@ const scpRechteverwaltung_betreuergruppen =
                     this.readIntoFormFields(helper.fieldValue("betrGrpIdx"))
                 )
                 
+
             const nonCompleteDataDialog =
                 formData =>
                 $("#saveBetrGrpDialog").dialog({
@@ -142,7 +143,6 @@ const scpRechteverwaltung_betreuergruppen =
                   , "notizBetrGrp"
                   ]    
                   .forEach(helper.clearField)
-                , scpRechteverwaltung_superAdmins.clearFields()
                 , clearTable(tblMandantenBetrGrp)
                 , helper.setState("betrGrp")("new")
                 )
@@ -281,15 +281,6 @@ const scpRechteverwaltung_betreuergruppen =
                     clearTable(tblBetrGrpSuchen)
                     intoTable(tblBetrGrpSuchen)(prepareData(data))
                 }
-
-            this.removeFromMandantenTbl =
-                that =>
-                createNew =>
-                equal(createNew)("new") ?
-                tblMandantenBetrGrp.row(that).remove().draw() :
-                confirm("Soll der Mandant wirklich aus der Liste entfernt werden ? Dies könnte Probleme nach sich ziehen !") ?
-                tblMandantenBetrGrp.row(that).remove().draw() :
-                false
 
             this.search =
                 () => {

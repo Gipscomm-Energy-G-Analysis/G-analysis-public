@@ -4,6 +4,8 @@ let stopLoader = () => {
 }
 let dataTableMachine;
 
+
+
 function hideAllcharts() {
     //hide energy charts
     $(".energy_graph_div").hide();
@@ -12,6 +14,11 @@ function hideAllcharts() {
 
     $(".product_graph_div").hide();
     $('.product_graph_msg').show();
+    $('.product_graph_msg_history').show();
+
+    $(".mixed_graph_div").hide();
+    $('.mixed_graph_msg').show();
+    $('.mixed_graph_msg_history').show();
 }
 
 let getProductionDetails = (dataIndex) => {
@@ -30,9 +37,9 @@ let getProductionDetails = (dataIndex) => {
             if(response.code == '200') {
                 machineDetailsParams(response);
                 jsFunction(response.graphPoints);
-                jsFunctionProduction(response.anl_ID);
+                getProductionGraphDetails(response.anl_ID);
+                getMixedGraphDetails(response.anl_ID); 
             } else if(response.code == '404')  {
-             //   toastr.warning(response.message);
                 machineDetailsParams(response);
                 hideAllcharts();
             } else {
@@ -44,7 +51,6 @@ let getProductionDetails = (dataIndex) => {
 }
 
 let machineDetailsParams = (response) => {
-    console.log('machine',response.data.maschine);
     $('#anlageProd').val((response.data.maschine !== undefined && response.data.maschine != '' && response.data.maschine !== null) ? response.data.maschine : 'NULL');
     $('#AuftragsmengeProd').val((response.data.sollmenge !== undefined && response.data.sollmenge != '' && response.data.sollmenge !== null) ? response.data.sollmenge: 'NULL');
     $('#BestellungProd').val((response.data.maschinentyp !== undefined && response.data.maschinentyp != '' && response.data.maschinentyp !== null)? response.data.maschinentyp: 'NULL');
@@ -61,6 +67,7 @@ let machineDetailsParams = (response) => {
 
 let machineCommonAjax = (params) => {
     $(".close_mac_modal").click();
+    
     $.ajax({
         type: "POST",
         url: "production_dashboard/production_php/ProductionController.php",
@@ -75,7 +82,7 @@ let machineCommonAjax = (params) => {
             dataResult:params.dataResult,
             prop_id:params.prop_id
         },
-        beforeSend: function() {
+        beforeSend:function(){
             $.loadingBlockShow({
                 imgPath: 'production_dashboard/production_js/assets/img/default.svg',
                 text: '',
@@ -88,11 +95,10 @@ let machineCommonAjax = (params) => {
                     top: 0,
                     zIndex: 10000
                 }
-            });
+            })
         },
         success: function(response) {
             setTimeout($.loadingBlockHide, 2000);
-            console.log('responns', response.graphPoints);
             $(".navigation-production").attr("data-index", params.machineIndex);
             $(".navigation-production").attr("data-graph-points", response.graphPoints);
             if(response.code == '200') {
@@ -131,9 +137,6 @@ let getOrganisation = function () {
             action: "getOrganisationData",
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
                 let html = '<option value="">Please Select</option>';
@@ -145,6 +148,8 @@ let getOrganisation = function () {
                     }
                 });
                 $("#org-data").html(html).trigger('change');
+            } else {
+                $("#property-data").html('<option value="">Please Select</option>');
             }
         }
       });
@@ -163,31 +168,17 @@ let getProperty = function (org_id) {
             org_id:org_id,
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
-                $("#property-data").html('<option value="">Please Select</option>');
+                let html = `<option value="">Please Select</option>`;
                 $.each(result.data, function (key, value) {
                     if (key == 0) {
-                        $("#property-data").append(
-                            '<option value="' +
-                                value.lieg_ID +
-                                '" selected>' +
-                                value.nameLieg +
-                                "</option>"
-                        );
+                        html += `<option value="${value.lieg_ID}" selected>${value.nameLieg}</option>`;
                     } else {
-                        $("property-data").append(
-                            '<option value="' +
-                                value.lieg_ID +
-                                '">' +
-                                value.nameLieg +
-                                  "</option>"
-                        );
+                        html += `<option value="${value.lieg_ID}">${value.nameLieg}</option>`;
                     }
                 });
+                $("#property-data").html(html);
             }
 
             getNavigationDetails();
@@ -204,8 +195,6 @@ $(document).on('click','.navigation-production-li', function() {
     let data_array = $(this).parent().attr('data-array');
     let data_result = $(this).parent().attr('data-result');
     let findIndex = calculateNavigationIndex($(this).attr('event-type'), index);
-    console.log('current', index);
-    console.log('next', findIndex);
     let params = {
         id:'',
         dataIndex:data_array,
@@ -213,10 +202,10 @@ $(document).on('click','.navigation-production-li', function() {
         dataResult: data_result,
         prop_id:$('#property-data').val()
     }
-    console.log('params', params);
     machineCommonAjax(params);
     getDynamicProductionColumns(findIndex);
     getProductionGraphDetails(findIndex);
+    getMixedGraphDetails(findIndex);
 });
 
 // Production page switches
@@ -285,9 +274,6 @@ let getPlantGroup = function () {
             action: "getPlantGroupData",
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
                 let html = '<option value="" selected>Please Select</option>';
@@ -301,7 +287,7 @@ let getPlantGroup = function () {
                 $("#select_group_options").html(html).trigger('change');
             }
         }
-      });
+    });
 }
 getPlantGroup();
 
@@ -315,14 +301,8 @@ let showTables = function () {
             action: "showTablesList",
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
-
-                console.log(result);
-
                 let html = '<option value="" selected>Please Select</option>';
                 $.each(result.data, function (key, value) {
                     if (key == 0) {
@@ -334,7 +314,7 @@ let showTables = function () {
                 $("#select_group_table").html(html).trigger('change');
             }
         }
-      });
+    });
 }
 showTables();
 
@@ -349,14 +329,8 @@ let showPrimaryKey = function () {
             action: "showPrimaryKeyList",
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
-
-                console.log(result);
-
                 let html = '<option value="" selected>Please Select</option>';
                 $.each(result.data, function (key, value) {
                     if (key == 0) {
@@ -369,7 +343,7 @@ let showPrimaryKey = function () {
                 $("#select_primary_column").html(html).trigger('change');
             }
         }
-      });
+    });
 }
 
 let showForeignKey = function () {
@@ -384,14 +358,8 @@ let showForeignKey = function () {
             table_name:table_name,
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
-
-                console.log(result);
-
                 let html = '<option value="" selected>Please Select</option>';
                 $.each(result.data, function (key, value) {
                     if (key == 0) {
@@ -403,7 +371,7 @@ let showForeignKey = function () {
                 $("#foreign_key_subGroup").html(html).trigger('change');
             }
         }
-      });
+    });
 }
 
 let getGroupData = function () {
@@ -420,9 +388,6 @@ let getGroupData = function () {
             action: "getConfigurationData",
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
                 let html = '';
@@ -430,21 +395,19 @@ let getGroupData = function () {
                     let label = value.COLUMN_NAME;
                     let column = value.COLUMN_NAME;
                     let graph_value = value.COLUMN_NAME;
-
                     html += `<tr>
                     <td>${column}<input hidden class="configuration_column_data" value="${column}"></td>
                     <td class="custom_label_td" style="text-align:center;">
                         <span class="custom_label_span" style="padding-top: 12px; float: left;">${label}</span>
-                        <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="form-control custom_label_input"/>
-                        <button type="button" name="remove"  class="btn btn-sm btn-danger float-right remove_column">Delete</button>
-                        <button type="button" name="remove" style="margin-right:5px;" class="btn btn-sm btn-warning float-right edit_label">Edit</button>
+                        <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="custom_label_input"/>
+                        <i class="fa fa-trash-o  float-right remove_column cursor" style="font-size:24px"></i>
+                        <i class='fa fa-edit float-right edit_label cursor' style='font-size:24px;margin-right: 10px;margin-top: 2px;'></i>
                     </td>
                     <td class="text-center">
                     <input type="checkbox" value="${graph_value}" class="graph_checkbox_value" checked data-toggle="toggle" data-on="" data-off="" data-onstyle="success" data-offstyle="info">
                     </td>
                     </tr>`;
                 });
-
                 $('#configuration_table tbody').html(html);
             }
         }
@@ -452,7 +415,6 @@ let getGroupData = function () {
 }
 
 $(document).on('change', '#select_group_options', function() {
-    console.log('dataVal',$(this).val());
     if( $(this).val() ) {
         $('#showData_SubGroupConfigrations').show();
         getGroupData();
@@ -485,7 +447,6 @@ $(document).on('change', '#select_group_options', function() {
 // }
 
 $(document).on('click', '#save_configuration_button', function() {
-
     if ($('#select_group_options').val() == '') {
         alert('Please select group option!');
         return false;
@@ -554,9 +515,6 @@ let showColumns = function () {
             table_name:table_name,
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
 
@@ -573,7 +531,7 @@ let showColumns = function () {
                 $("#select_column").html(html).trigger('change');
             }
         }
-      });
+    });
 }
 
 let showForeignKeyType = function () {
@@ -592,9 +550,6 @@ let showForeignKeyType = function () {
             primary_key:primary_key,
             primary_key_data_type:primary_key_data_type,
             nameDB: $("#nameDB").val(),
-        },
-        fail: function() {
-            alert("failed!!")
         },
         success: function(result) {
             if(result.code == '200') {
@@ -616,7 +571,7 @@ let showForeignKeyType = function () {
                 $("#select_foreign_column").html(html).trigger('change');
             }
         }
-      });
+    });
 }
 
 $(document).on('change', '#select_table', function() {
@@ -635,24 +590,24 @@ $(document).on('change', '#select_primary_column', function() {
 $(document).on('click', '#save_field', function() {
 
     if ($('#add_label_field').val() == '') {
-        alert('Please select label');
+        toastr.warning('Please select label');
         return false;
     } else if($('#select_table').val() == '') {
-        alert('Please select table');
+        toastr.warning('Please select table');
         return false;
     } else if($('#select_column').val() == '') {
-        alert('Please select column');
+        toastr.warning('Please select column');
         return false;
     } else if($('#select_primary_column').val() == '') {
-        alert('Please select primary key');
+        toastr.warning('Please select primary key');
         return false;
     }
     else if($('#select_foreign_column').val() == '') {
-        alert('Please select foreign key');
+        toastr.warning('Please select foreign key');
         return false;
     }
     else if($('#graph').val() == '') {
-        alert('Please select graph');
+        toastr.warning('Please select graph');
         return false;
     }
 
@@ -669,7 +624,7 @@ $(document).on('click', '#save_field', function() {
         url: "production_dashboard/production_php/ProductionController.php",
         dataType: 'json',
         data: { 
-            action: "saveFields",
+            action:"saveFields",
             label:label,
             table:table,
             column:column,
@@ -677,18 +632,17 @@ $(document).on('click', '#save_field', function() {
             foreign_key:foreign_key,
             graph:graph,
             anl_ID:anl_ID,
-            nameDB: $("#nameDB").val(),
+            nameDB:$("#nameDB").val(),
         },
         success: function (data) {
             if (data.code == 200) {
                 getDynamicProductionColumns($('.navigation-production').attr('data-index'));
                 toastr.success(data.message);
-             }
-         },
-         error: function (error) {
-             alert("error");
-             toastr.error('Error while saving record.');
-         },
+            }
+        },
+        error: function (error) {
+            toastr.error('Error while saving record.');
+        },
     });
     
 });
@@ -722,10 +676,6 @@ $("#save_subgroup_options").on("click", function (e) {
                     toastr.error(result.msg);
                 }   
             },
-            // error: function (result) {
-            //     alert("error");
-            //     toastr.error('Error while saving record.');
-            // },
         });
     }
 });
@@ -746,6 +696,7 @@ const createGroupTable = (data) => {
     });
     $("#dynamic_subgroup_field_body").html(html);
 };
+
 
 $("#add_sub").click(function () {    
     let icount = $("#dynamic_subgroup_field_body").find("tr").length + 1;
@@ -782,9 +733,6 @@ let getGroupOptions = function () {
             action: "getGroupOptionsList",
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             if(result.code == '200') {
                 let html = '';
@@ -813,7 +761,6 @@ $(document).on("click", "#addGroupOptions_btn", function () {
 });
 
 const showMachineData = (data) => {
-    console.log('showMachineData', data);
     let even = "";
     let odd = "";
     $.each(data.even, function (key, value) {
@@ -849,9 +796,6 @@ let getDynamicProductionColumns = (index, anl_ID="") => {
             dataIndex:$(".navigation-production").attr("data-array"),
             machineIndex:index,
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             // console.log('result code data',result.code);
             if(result.code == '200') {
@@ -863,6 +807,9 @@ let getDynamicProductionColumns = (index, anl_ID="") => {
                     $('.dynamic_columns').html('');
                     $('.error_message').show();
                 }
+            } else {
+                $('.dynamic_columns').html('');
+                $('.error_message').show();
             }
         }
     });
@@ -879,9 +826,6 @@ const customMachineTable = function() {
             action: "getmachineDetails",
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
             
             if(result.code == '200') {
@@ -891,16 +835,20 @@ const customMachineTable = function() {
                     html += '<th>'+val+'</th>';
                 });
                 $(".column_name").html(html);
-                if(dataTableMachine){
-                    dataTableMachine.clear().destroy();
-                }
+                // console.log('dataTableMachine', dataTableMachine);
+                // if(dataTableMachine){
+                //     $(dataTableMachine).destroy();
+                // }
                // $('#custom_machines_table').DataTable().clear().destroy();
-
-                dataTableMachine = $('#custom_machines_table').dataTable( {
-                    "bSort" : false,
-                    "aaData": result.data,
-                    "columns": result.dataTable,
-                })
+               setTimeout(function() {
+                    dataTableMachine = $('#custom_machines_table').dataTable( {
+                        destroy: true,
+                        "bSort" : false,
+                        "aaData": result.data,
+                        "columns": result.dataTable,
+                    })
+                }, 1000);
+                
             }
         },
     });
@@ -1000,9 +948,10 @@ const showTableConfigurations = (data) => {
 }
 
 const showMachinePrioritySelect = (data) => {
+    let selectedMachine = data.selected;
     let selectHtml = '';
     for(const select_name of data.allMachines) {
-        if(data.selected.includes(select_name.anl_ID)){
+        if(showMacthedValue(selectedMachine, select_name.anl_ID)){
             selectHtml += `<option value='${select_name.anl_ID}' selected>${select_name.nummerAnl}</option>`;
         } else {
             selectHtml += `<option value='${select_name.anl_ID}'>${select_name.nummerAnl}</option>`;
@@ -1011,26 +960,33 @@ const showMachinePrioritySelect = (data) => {
     $('#multi-machine-prioprity').html(selectHtml).select2().trigger('change')
 }
 
+const showMacthedValue = (data, value) => {
+    for(const select_name of data) {
+        if(select_name == value) {
+            return true;
+        }
+    }
+    return false;
+}
+
 $(document).on('click', '#machine_table_configuration', function() {
     $.ajax({
         type: "POST",
         url: "production_dashboard/production_php/ProductionController.php",
         async: false,
-        // dataType: 'json',
+        dataType: 'json',
         data: {
             action: "getMachineConfigurations",
             nameDB: $("#nameDB").val(),
         },
         success:function(result) {
             if(result.status == 200) {
-                console.log('result', result);
                 showTableConfigurations(result.data);
                 showMachinePrioritySelect(result.machinePriorityData);
                 customMachineTable();
             }
         },
         error:function(result) {
-            // console.log(result);
             toastr.error(result);
         }
     });
@@ -1067,6 +1023,11 @@ $(document).on('click', '#save_table_configuration_button', function() {
     let priorityMachines = $('#multi-machine-prioprity').val();
     if(selectedColumn.length == 0 ) {
         toastr.warning('Please select columns!');
+        return false;
+    }
+
+    if(selectedColumn.length > 8 ) {
+        toastr.warning('Please select 6 or less column to be displayed!');
         return false;
     }
     saveTableConfigurations(selectedColumn, priorityMachines);
@@ -1176,49 +1137,44 @@ function calculateNavigationIndex(event, currentIndex) {
 // }
 // checkmigration();
 
-const getsubGroup = function() {
-    $.ajax({
-        type: "POST",
-        url: "production_dashboard/production_php/ProductionController.php",
-        async: false,
-        dataType: 'json',
-        data: {
-            action: "getSubGoupConfiguration",
-            nameDB: $("#nameDB").val(),
-        },
-        fail: function() {
-            alert("failed!!")
-        },
-        success: function(result) {
-            if(result.status == 200) {
+// const getsubGroup = function() {
+//     $.ajax({
+//         type: "POST",
+//         url: "production_dashboard/production_php/ProductionController.php",
+//         async: false,
+//         dataType: 'json',
+//         data: {
+//             action: "getSubGoupConfiguration",
+//             nameDB: $("#nameDB").val(),
+//         },
+//         fail: function() {
+//             alert("failed!!")
+//         },
+//         success: function(result) {
+//             if(result.status == 200) {
              
-            } else {
+//             } else {
              
-            }
+//             }
           
-        },
-    });
-}
-getsubGroup();
+//         },
+//     });
+// }
+// getsubGroup();
 
 let showGraphColumn = function(result){
     let html = '';
-    console.log('value', result.data);
     $.each(result.data, function (key, value) {
-     console.log('valuee', value)
         let label = value.graph_text;
         // let column = value.COLUMN_NAME;
         let graph_name = value.graph_name;
-
-        html += `<tr>
-        <td>${graph_name}<input hidden class="show_configuration_data"></td>
+        html += `<tr><td>${graph_name}<input hidden class="show_configuration_data"></td>
         <td class="custom_label" style="text-align:center;">
             <span class="custom_label" style="padding-top: 12px; float: left;">${label}</span></td>
             <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="form-control custom_label_input"/>
-           <td><button type="button" name="remove" data-id="${value.id}" class="btn btn-sm btn-danger float-right remove_graph_column">Delete</button>
-        </td>
-       
-        </tr>`;
+        <td>
+           <i class="fa fa-trash-o float-right remove_graph_column" data-id="${value.id}" style="font-size:24px"></i>
+        </td></tr>`;
     });
     $('#graph_configuration_table tbody').html(html);
 }
@@ -1230,15 +1186,11 @@ $(document).on('click', '#save_graph_field', function() {
     } else if($('#label_column').val() == '') {
         alert('Please select table');
         return false;
-    } else if($('#accordion_setting').val() == '') {
-        alert('Please select column');
-        return false;
     }
 
     let graph = $('#graph_name').val();
     let label = $('#label_column').val();
-    let is_open = $('#accordion_setting').val();
-
+   // let is_open = $('#accordion_setting').val();
     $.ajax({
         type: "POST",
         url: "production_dashboard/production_php/ProductionController.php",
@@ -1246,7 +1198,7 @@ $(document).on('click', '#save_graph_field', function() {
         data: { 
             action: "getAddGoupConfiguration",
             label:label,
-            is_open: is_open,
+            is_open: "show",
             graph:graph,
             nameDB: $("#nameDB").val(),
             textDB: $("#label_column option:selected").text()
@@ -1254,12 +1206,13 @@ $(document).on('click', '#save_graph_field', function() {
         success: function (result) {          
             if(result.code == 200) {
                 showConfigurationColumn();
+                getProductionGraphDetails($('.navigation-production').attr('data-index'));
+                getMixedGraphDetails($('.navigation-production').attr('data-index'));
                 toastr.success(result.message);
             } else {
                 toastr.error(result.message);
             }
          },
-       
     });
 });
 
@@ -1273,16 +1226,12 @@ let showConfigurationColumn = function () {
             action: "showConfigurationData",
             nameDB: $("#nameDB").val(),
         },
-        fail: function() {
-            alert("failed!!")
-        },
         success: function(result) {
-            console.log('graph', result);
             if(result.code == '200') {
                 showGraphColumn(result);
             }
         }
-      });
+    });
 }
 showConfigurationColumn();
 
@@ -1301,6 +1250,8 @@ $(document).on('click', '.remove_graph_column', function() {
         },
         success:function(result) {
             if(result.code == 200) {
+                getProductionGraphDetails($('.navigation-production').attr('data-index'));
+                getMixedGraphDetails($('.navigation-production').attr('data-index'));
                 toastr.success(result.message);
             } else {
                 toastr.error(result.message);
@@ -1330,7 +1281,17 @@ $(document).on('click','#custom_machines_table tr', function(){
     machineCommonAjax(params);
     getDynamicProductionColumns(findIndex, anl_ID);
     getProductionGraphDetails(findIndex, anl_ID);
+    getMixedGraphDetails(findIndex, anl_ID);
 });
+
+const createProductInfo = (element, data) => {
+    let html = '';
+    $.each(data, function (key, value) {           
+        html += `<option value='${value}'>${value}</option>`;
+    });
+    $(element).html(html);
+    
+}
 
 let getProductionGraphDetails = (index, anl_ID="") => {
     $.ajax({
@@ -1339,29 +1300,75 @@ let getProductionGraphDetails = (index, anl_ID="") => {
         async: false,
         dataType: 'json',
         data: {
-            action: "getGraphConfiguration",
-            nameDB: $("#nameDB").val(),
             id:anl_ID,
             dataIndex:$(".navigation-production").attr("data-array"),
             machineIndex:index,
+            action: "getProdDataInfo",
+            nameDB: $("#nameDB").val(),
         },
-        success: function(result) {
-            console.log('production_graph', result);
+        success:function(result) {
             if(result.code == '200') {
-                console.log('showrecord',showRecord(result.graphData));
-                if(showRecord(result.graphData)){
-                    console.log('here');
+                if (showRecord(result.graphData)) {
                     $('.product_graph_msg').hide();
                     $(".product_graph_div").show();
-                    createAmChart(root_other_graph, result.graphData, true); 
-                }else{
+                    createProductInfo('#orderFilterProduction', result['graphData'][0]['prodInfo']);
+                  //  createAmChart(root_other_graph, result.graphData, true, 'production'); 
+                    productionAppButtons('#timeFilterIntervalProduction', result.graphData, 'production');
+                   // createAmChartCategory(root_other_graph, result.graphData, true, 'production');
+                } else {
                     $('.product_graph_msg').show();
                 }
             }
+        },
+        error:function(result) {
+            console.log('Error in function getProdDataInfo() Please check');
         }
     });
 }
 
+const getProdDataColumn = () => {
+    $.ajax({
+        type: "POST",
+        url: "production_dashboard/production_php/ProductionController.php",
+        dataType: 'json',
+        data: {
+            action: "getProdDataColumn",
+            nameDB: $("#nameDB").val(),
+        },
+        success: function(result) {
+            if(result.code == '200') {
+                let html = '';
+                $.each(result.data, function (key, value) {           
+                    html += `<option value='${value.COLUMN_NAME}'>${value.COLUMN_NAME}</option>`;
+                });
+                $('#label_column').html(html);
+            }
+        }
+    });
+}
+getProdDataColumn();
+
+const getAnlagenColumn = () => {
+    $.ajax({
+        type: "POST",
+        url: "production_dashboard/production_php/ProductionController.php",
+        dataType: 'json',
+        data: {
+            action: "getAnlagenColumn",
+            nameDB: $("#nameDB").val(),
+        },
+        success: function(result) {
+            if(result.code == '200') {
+                let html = '';
+                $.each(result.data, function (key, value) {           
+                    html += `<option value='${value.COLUMN_NAME}'>${value.COLUMN_NAME}</option>`;
+                });
+                $('#machine-table-column-DualListbox').html(html);
+            }
+        }
+    });
+}
+getAnlagenColumn();
 // let graphConfiguration = function () {
 //     $.ajax({
 //         type: "POST",
@@ -1385,24 +1392,35 @@ let getProductionGraphDetails = (index, anl_ID="") => {
 // }
 // graphConfiguration();
 
-$.ajax({
-    type: "POST",
-    url: "production_dashboard/production_php/ProductionController.php",
-    async: false,
-    dataType: 'json',
-    data: {
-        id: id,
-        action: "getProdDataInfo",
-        nameDB: $("#nameDB").val(),
-    },
-    success:function(result) {
-        if(result.code == 200) {
-            toastr.success(result.message);
-        } else {
-            toastr.error(result.message);
+let getMixedGraphDetails = (index, anl_ID="") => {
+    $.ajax({
+        type: "POST",
+        url: "production_dashboard/production_php/GraphController.php",
+        async: false,
+        dataType: 'json',
+        data: {
+            id:anl_ID,
+            dataIndex:$(".navigation-production").attr("data-array"),
+            machineIndex:index,
+            action: "getProdDataInfo",
+            nameDB: $("#nameDB").val(),
+            graphType: 'energy'
+        },
+        success:function(result) {
+            if(result.code == '200') {
+                if(showRecord(result.graphData)){
+                    $('.mixed_graph_msg').hide();
+                    $(".mixed_graph_div").show();
+                    createProductInfo('#orderFilterMixed', result['graphData'][0]['prodInfo']);
+                    productionAppButtons('#timeFilterIntervalMixed', result.graphData, 'mixed');
+                    // createAmChartCategory(mixed_root, result.graphData, true, 'production');
+                }else{
+                    $('.mixed_graph_msg').show();
+                }
+            }
+        },
+        error:function(result) {
+            console.log('Error in function getProdDataInfo() Please check');
         }
-    },
-    error:function(result) {
-        toastr.error(result);
-    }
-});
+    });
+}

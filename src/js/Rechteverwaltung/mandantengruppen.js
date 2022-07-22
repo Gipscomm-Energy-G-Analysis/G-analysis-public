@@ -155,12 +155,7 @@ const scpRechteverwaltung_mandantengruppen =
 
             this.removeFromMandantenTbl =
                 that =>
-                createNew =>
-                equal(createNew)("new") ?
-                tblMandantengruppe.row(that).remove().draw() :
-                confirm("Soll der Mandant wirklich aus der Liste entfernt werden ? Dies könnte Probleme nach sich ziehen !") ?
-                tblMandantengruppe.row(that).remove().draw() :
-                false
+                tblMandantengruppe.row(that).remove().draw()
 
             const readIntoFormFields =
                 idx => {

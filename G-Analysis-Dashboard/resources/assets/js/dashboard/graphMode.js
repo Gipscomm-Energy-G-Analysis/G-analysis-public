@@ -172,11 +172,11 @@ function createEnergyDataGraph(windowTrue) {
         },
         success:function(result) {
             if(result.code == 200) {
-                $("#loader_image_history_charts").hide();
+                $("#loader_image_history_charts").hide(); 
                 $("#historyChartdiv").show();
                 if(windowTrue) {
                     localStorage.setItem('graphData', JSON.stringify(result.graphData));
-                    localStorage.setItem('graphType', result.type);
+                    localStorage.setItem('graphType', 'energy');
                     window.open('/product/index.php/product-graph/history/data', '_blank');
                 } else {
                     $('.historyGraphDiv').show();
@@ -215,7 +215,7 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
                 $("#product_historyChartdiv").show();
                 if(windowTrue) {
                     localStorage.setItem('graphData', JSON.stringify(result.graphData));
-                    localStorage.setItem('graphType', result.type);
+                    localStorage.setItem('graphType', 'production');
                     window.open('/product/index.php/product-graph/history/data', '_blank');
                 } else {
                     $("#loader_image_create_graph").hide();
@@ -256,7 +256,7 @@ function mixedGraphData(conId,windowTrue, $limit=5) {
             if(result.code == 200) {
                 if(windowTrue) {
                     localStorage.setItem('graphData', JSON.stringify(result.graphData));
-                    localStorage.setItem('graphType', result.type);
+                    localStorage.setItem('graphType', 'mixed');
                     window.open('/product/index.php/product-graph/history/data', '_blank');
                 } else {
                     $('.mixed_historyGraphDiv').show();
@@ -318,7 +318,6 @@ function jsFunctionMixed(value) {
             endDate: $("#product_end_date").val(),
             anl_ID:$('.navigation').attr('data-value'),
             limit: value
-
         },
         success:function(result) {
             if(result.code == 200) {

@@ -1,11 +1,14 @@
 
-    $(document).on('change','.manPfad',function() {
+    $(document).on('change','.menu_dashboard_database .manPfad',function() {
     // $("#main-production-loader").css("display", "block");
     // $("#main-production-loader").css("display", "block");
     //$("#main-production-loader").css("display", "none");
-        
-        getProductionDetails();
         getOrganisation();
-        jsFunction(5,"31,290");
-        getDynamicProductionColumns();
+        getPlantGroup();
+        showTables();
+        getMachineName();
+        showConfigurationColumn();
+        getProdDataColumn();
+        customMachineTable();
+        getDynamicProductionColumns(0);
     });

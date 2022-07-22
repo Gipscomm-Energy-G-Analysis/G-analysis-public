@@ -21,7 +21,6 @@ class ProductionController {
 
     public function getProductionDetail(){
         try {
-
             $machineData = $this->getMachineDetailOptimized(); 
             // print_r($machineData);die;
             if($machineData['code'] == 200) {
@@ -39,7 +38,10 @@ class ProductionController {
             $query = "SELECT * FROM organisationen";
            // $records = $this->conn->query($query)->fetchAll();
             $records = queryDB ( $this->conn, $query, "read");
-            return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Organisation details fetched.'];
+            if(!empty($records)) {
+                return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Organisation details fetched.'];
+            }
+            return ['status' => 'warning', 'code' => 400, 'data' => [], 'message' => 'No record found.'];
         } catch (Exception $e) {
             return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
         }
@@ -59,7 +61,7 @@ class ProductionController {
 
     public function getAnlagenDetails($init = false){
         try {
-            $lieg_ID = isset($_POST['prop_id']) && !empty($_POST['prop_id'])?$_POST['prop_id']:$prop_id;
+            $lieg_ID = isset($_POST['prop_id']) && $_POST['prop_id'] != ''?$_POST['prop_id']:null;
             $query = "SELECT anl_ID FROM Anlagen WHERE datumAnl IS NOT NULL AND anl_ID IS NOT NULL AND anl_ID != '' AND deleted = 0 ";
             if(!empty($lieg_ID)){
                 $query .=  " AND lieg_ID =".$lieg_ID." ";
@@ -68,7 +70,7 @@ class ProductionController {
             //Get Machine present for data
             // $query = "SELECT DISTINCT ProdData_.anl_ID FROM ProdData_";
             // $recordPresent = queryDB ($this->conn, $query, "read");
-            $returnData = [];
+            $return_data = [];
 
             
 
@@ -122,6 +124,9 @@ class ProductionController {
     public function getMachineDetailOptimized()
     {
         try {
+            session_write_close();
+            // sleep(10);
+            // return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
             if($this->migrationController->checkMigration('ProdData_')) {
                 
                 $machineId = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$this->getMachineId();
@@ -137,9 +142,7 @@ class ProductionController {
                 CONVERT(VARCHAR(10), ProdData_.zeitstempel) as zeitstempel,ProdData_.ausschuss,ProdData_.gutmenge FROM ProdData_ 
                 LEFT JOIN ProdData ON ProdData_.anl_ID = ProdData.anl_ID
                 WHERE ProdData_.anl_ID=".$machineId." ORDER BY ProdData_.zeitstempel desc";
-                
                 $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
-
                 $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
                 $graphData = queryDB ( $this->conn, $query, "read");
                 $graphPoints = '';
@@ -569,6 +572,8 @@ class ProductionController {
                 } else {
                     return ['code' => 404, 'data' => [], 'status' =>'error', 'msg' => 'No Record Found!'];
                 }
+            } else {
+                return ['status' => 'warning', 'code' => 404, 'data' => [], 'message' => "ProdData_ view does'nt exist!"]; 
             }
         } catch(Exception $ex) {
             // print_r($ex);die;
@@ -690,35 +695,13 @@ class ProductionController {
         try {
 
             $sql = "SELECT machines FROM machine_priority WHERE username='".$this->username."'";
-            // $machinePriority = $this->conn->query($sql)->fetch();
             $machinePriority = queryDB ( $this->conn, $sql, "read");
-            // print_r($machinePriority);die;
             $selectedData = [];
-            if(!empty($machinePriority[0])) {
-                $selectedId = json_decode($machinePriority[0]['machines']);
-                $selectedId = implode(',', $selectedId);
-                $selectedQuery = "SELECT anl_ID, CONVERT(VARCHAR(10),datumAnl) as datumAnl, nummerAnl, bezeichnungAnl FROM anlagen WHERE anl_ID IN ($selectedId)";
-                // $selectedData = $this->conn->query($selectedQuery)->fetchAll();
-                $selectedQuery = queryDB ( $this->conn, $selectedQuery, "read");    
-                // print_r($selectedQuery);die;
-                $query = "SELECT anl_ID, CONVERT(VARCHAR(10),datumAnl) as datumAnl, nummerAnl, bezeichnungAnl FROM anlagen WHERE anl_ID NOT IN ($selectedId) AND datumAnl IS NOT NULL AND deleted =0 ORDER BY CASE WHEN anl_ID =11 then -1 else anl_ID end,anl_ID";
-                //  print_r($machinePriority); 
-            } else {
-                $query = "SELECT anl_ID, CONVERT(VARCHAR(10),datumAnl) as datumAnl, nummerAnl, bezeichnungAnl FROM anlagen WHERE datumAnl IS NOT NULL AND deleted =0 ORDER BY anl_ID ASC";
-            }
-            
-            // $columnData = "SELECT column_name FROM machine_table_config WHERE username='$this->username' AND status !='0'";
-            // $columnData = $this->conn->query($columnData)->fetchAll();
-            // $columnData = array_map('current', $columnData);
-            // $columnData = $this->addSelectedOption($columnData,'2');
 
+            $selectedQuery = "SELECT column_name FROM machine_table_config WHERE username='$this->username' AND status !='0' AND column_name != 'anl_ID'";
+            $columnData = queryDB ( $this->conn, $selectedQuery, "read");
             
-           // print_r($query);die;
-            // $records = $this->conn->query($query)->fetchAll();
-            $records = queryDB ( $this->conn, $query, "read");
-            $records = array_merge($selectedData, $records);
-            //print_r($records);die;
-
+            $columnsString = 'CONVERT(VARCHAR(10),datumAnl) as datumAnl, nummerAnl, bezeichnungAnl';
             $columnArray = ["anl_ID","datumAnl","nummerAnl","bezeichnungAnl"];
             $columnDataArray = [
                 ["data" => "anl_ID"],
@@ -726,6 +709,47 @@ class ProductionController {
                 ["data" => "nummerAnl"],
                 ["data" => "bezeichnungAnl"]
             ];
+            if(!empty($columnData)) {
+                $columnDataAr = array_map('current', $columnData);
+                $columnData = '';
+                $columnsString = '';
+                $columnArray = ["anl_ID"];
+                $columnDataArray = [["data" => "anl_ID"]];
+                foreach ($columnDataAr as $value ) {
+                    array_push($columnArray, $value);
+                    array_push($columnDataArray, ["data" => $value]);
+                    if($value == 'datumAnl') {
+                        $columnsString .= 'CONVERT(VARCHAR(10),datumAnl) as datumAnl , ';
+                    } else {
+                        $columnsString .= $value.', ';
+                    }
+                }
+                $columnsString = $this->str_replace_last(', ', '', $columnsString);
+            }
+            
+            if(!empty($machinePriority[0])) {
+                $selectedId = json_decode($machinePriority[0]['machines']);
+                $selectedId = implode(',', $selectedId);
+                //print_r($selectedId);die;
+                $selectedQuery = "SELECT anl_ID, $columnsString FROM anlagen WHERE anl_ID IN ($selectedId)";
+                $selectedData = queryDB ( $this->conn, $selectedQuery, "read");    
+                $query = "SELECT anl_ID, $columnsString FROM anlagen WHERE anl_ID NOT IN ($selectedId) AND datumAnl IS NOT NULL AND deleted =0 ORDER BY anl_ID";
+            } else {
+                $query = "SELECT anl_ID, $columnsString FROM anlagen WHERE datumAnl IS NOT NULL AND deleted =0 ORDER BY anl_ID ASC";
+            }
+            
+            
+            // $columnData = $this->addSelectedOption($columnData,'2');
+
+            
+           // print_r($query);die;
+            // $records = $this->conn->query($query)->fetchAll();
+            $records = queryDB ( $this->conn, $query, "read");
+            
+            $records = array_merge($selectedData, $records);
+            //print_r($records);die;
+
+            
             // foreach($records as $value) {
             //     array_push($columnDataArray, ["data"=>$value['label']]);
             // }
@@ -820,17 +844,18 @@ class ProductionController {
             // $columnData = $this->conn->query($columnData)->fetchAll();
           
             $columnData = queryDB ( $this->conn, $columnData, "read");
+            
             if(json_encode(array_map('current', $columnData))){
                 $columnData = array_map('current', $columnData);
             }else{
                 $columnData = [];
             }
-           
-            $columnData = array_map('current', $columnData);
+          //  print_r($columnData);die;
             
             $columns = ['anlage', 'auftragsmenge', 'programm', 'zeit_zyklus', 'bestellung', 'werkzeug', 'artikel', 'kavitäten',
                 'gutmenge', 'letzte_störung', 'ausschuss', 'bisher_produziert'];
-            $combinedData = $columns;
+            $combinedData = $this->getAnlagenColumn();
+            $combinedData = array_map('current', $combinedData['data']);
             $machinePriorityData = $this->getPriorityMachineData();
             
             if(empty($columnData)){
@@ -905,12 +930,14 @@ class ProductionController {
             $defaultColumns = $this->addSelectedOption(array_intersect($columns,$selectedColumns), '2');
             $customColumns = $this->addSelectedOption(array_diff($selectedColumns,$columns), '1');
             $selecteData = array_merge($defaultColumns, $customColumns);
+           // print_r($selecteData);die;
             $this->savePriorityList($_POST['priorityMachines']);
             if(!empty($selecteData)) {
                 $updatequery = "UPDATE machine_table_config SET status='0' WHERE username='$this->username'";
                 // $update_records = $this->
                 //update all records for particular uconn->prepare($updatequery)->execute();
                 $update_records = queryDB ( $this->conn, $updatequery, "write");
+                //print_r($selecteData);die;
                 foreach($selecteData as $value){
                     //update column values
                     if($value['option'] == 2){
@@ -928,19 +955,20 @@ class ProductionController {
                     $query = "SELECT TOP 1 * FROM machine_table_config WHERE username='$this->username' AND column_name ='$column_name'";
                 
                     // $tableConfig = $this->conn->query($query)->fetch();
-                    $update_records = queryDB ( $this->conn, $query, "read");
-                    // print_r( $tableConfig);die;
+                    $tableConfig = queryDB ( $this->conn, $query, "read");
+                   // print_r( $tableConfig);
 
                     if (empty($tableConfig)) {
                         $insertquery = "INSERT INTO machine_table_config (username, column_name, status, label_name, table_name) VALUES ('$this->username', '$column_name', '$status', '$label_name', '$table_name')";
                         // $insertquery = "INSERT INTO machine_table_config WHERE username = '$this->username' AND column_name='$value['column']' ";
                         // $insert_records = $this->conn->prepare($insertquery)->execute();
-                        $insert_records = queryDB ( $this->conn, $query, "write");
+                     //   print_r($insertquery);die;
+                        $insert_records = queryDB ( $this->conn, $insertquery, "write");
                     } else {
-                        $update_id = $tableConfig['id'];
+                        $update_id = $tableConfig[0]['id'];
                         $updatequery = "UPDATE machine_table_config SET status='$status', label_name='$label_name', table_name='$table' WHERE id='$update_id'";
                         // $update_records = $this->conn->prepare($updatequery)->execute();
-                        $update_records = queryDB ( $this->conn, $query, "write");
+                        $update_records = queryDB ( $this->conn, $updatequery, "write");
                     }
                         // TableConfiguration::updateOrCreate($columnData, $data);
                 }
@@ -1129,21 +1157,18 @@ class ProductionController {
     }
      
 public function getSubGoupConfiguration(){
-         try{
-            $id = $_POST['grosubGroupId'];
-            $query = "SELECT * FROM SubGroupConfiguration where id='$id'";
-             $records = queryDB ( $this->conn, $query, "read");
-            //  print_r($records);die;
-             return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Organisation details fetched.'];
-
-     }catch(Exception $e) {
-         return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
-     }
+    try{
+        $id = $_POST['grosubGroupId'];
+        $query = "SELECT * FROM SubGroupConfiguration where id='$id'";
+        $records = queryDB ( $this->conn, $query, "read");
+        return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Organisation details fetched.'];
+    }catch(Exception $e) {
+        return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+    }
  }
    
  public function getAddGoupConfiguration(){
     try {
-    //    print_r($_POST);die;
         $id = '0';
         $label = $_POST['label'];
         $table_name = 'anlagen';
@@ -1188,8 +1213,9 @@ public function showConfigurationData() {
         $username = $_SESSION['username'];
         $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username'";
         $record = queryDB ( $this->conn, $selectQuery, "read");
+        if(!empty($record)) {
             return ['status' => 'success', 'code' => 200, 'data' => $record, 'message' => 'Configuration Data Fetched.'];
-        
+        }
         return ['status' => 'warning', 'code' => 400, 'data' => [], 'message' => 'No Record Found!'];
     }catch (Exception $e) {
         return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
@@ -1198,9 +1224,8 @@ public function showConfigurationData() {
 
 public function deleteGraphConfiguration(){
     try{
-        $id     = $_POST['id'];
+        $id = $_POST['id'];
         $query = "DELETE FROM graph_configurations WHERE id ='$id'";
-        // $data = $this->conn->query($query)->execute();
         $data = queryDB ( $this->conn, $query, "write");
         return ['code' => 200, 'message' =>'Record deleted successfully.'];
     }catch(Exception $e) {
@@ -1208,15 +1233,39 @@ public function deleteGraphConfiguration(){
     }
 }
 
-public function getProdDataInfo() {
+public function getProdDataColumn() {
     try {
-        $machine_ID = 23;
-        $query = "SELECT auftrag, artikelnummer, sollmenge, gesamtmenge, timeUnlock, timeClose FROM ProdData WHERE anl_ID='265'";
-        $data = queryDB ( $this->conn, $query, "read");
-        print_r($data);die;
+        $excludeColumn = ['prdData_ID', 'anl_ID', 'anlageMst', 'maschinenID', 'maschine', 
+        'maschinentyp', 'auftrag', 'artikelnummer', 'werkzeug', 'timeUnlock', 'timeClose'];
+        $query = "SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name ='ProdData'";
+        $records = queryDB ( $this->conn, $query, "read");
+        $data_array = [];
+        foreach($records as $key=>$value ) {
+            if(in_array($value['COLUMN_NAME'], $excludeColumn)) {
+                unset($records[$key]);
+            }
+        }
+        return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Configuration Data Fetched.']; 
+    } catch (Exception $e) {
+        return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+    }
+}
 
-    } catch(Exception $e) {
-        return ['code' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+public function getAnlagenColumn() {
+    try {
+        $excludeColumn = ['prdData_ID', 'anl_ID', 'anlageMst', 'maschinenID', 'maschine', 
+        'maschinentyp', 'auftrag', 'artikelnummer', 'werkzeug', 'timeUnlock', 'timeClose'];
+        $query = "SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name ='anlagen'";
+        $records = queryDB ( $this->conn, $query, "read");
+        //$data_array = [];
+        // foreach($records as $key=>$value ) {
+        //     if(in_array($value['COLUMN_NAME'], $excludeColumn)) {
+        //         unset($records[$key]);
+        //     }
+        // }
+        return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Configuration Data Fetched.']; 
+    } catch (Exception $e) {
+        return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
     }
 }
 

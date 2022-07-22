@@ -1440,13 +1440,7 @@ try {
                 },
                 success: function(a) {
                     a = JSON.parse(a);
-
-                    console.log("JSON.parse(a)")
-                    console.log(a)
-
-                    // Clear label fields
                     $("#lblCustom1Anl, #lblCustom2Anl, #lblCustom3Anl, #lblCustom4Anl, #lblCustom5Anl, #lblCustom6Anl").text("");
-
                     for (i = 0; i < a.length; i++) {
                         $("#lblCustom" + (i + 1) + "Anl").text(a[i].name);
                         $("#tblAnlagenListe2 thead tr th").eq(i + 3).text(a[i].name);
@@ -1673,6 +1667,15 @@ try {
             dbFuerEnergietraegerFestlegen($("#nameDB").val());
             energietrInDBoxLieg();
             readInstanzen("liegFirst", 0);
+            [ "msm"
+            , "std"
+            , "anl"
+            , "ent"
+            , "enf"
+            , "eRng"
+            , "iMw"
+            , "zp" ]
+            .forEach(ident => readInstanzen(`${ident}First`, 0))
             liegNavID =
             berNavID =
             mstENavID =
@@ -5909,26 +5912,32 @@ try {
                     });
                     break;
                 case "eAnl":
-                    ajaxPost("php/readInstanzen.php")({id : "eAnl", nameDB:  $("#nameDB").val()})
-                    .then(data => 
-                        data.length > 0 ? 
-                        [["#eAnlID", "eAnl_ID"],
-                        ["#nameEAnl", "name"],
-                        ["#kuerzelEAnl", "kurz"],
-                        ["#beschreibungEAnl", "beschreibung"]
-                        ].forEach(function(a) {
-                            $(a[0]).val(data[b][a[1]])
-                        }) : clearFields("eAnlHinz")
-                    )
-                    .then(() => {
-                        ajaxPost("php/eAnlOptions.php")({eAnl_ID : $("#eAnlID").val(), nameDB:  $("#nameDB").val()})
-                        .then(data_ => {
-                            tblOptionenEAnl.clear().draw()
-                            data_.forEach(
-                                a => tblOptionenEAnl.row.add([a]).draw()
-                            )
-                        }) 
-                    })
+                    $.ajax({
+                        type: "POST",
+                        async: !0,
+                        url: "php/readInstanzen.php",
+                        data: {
+                            id: "eAnl",
+                            nameDB: $("#nameDB").val()
+                        },
+                        fail: function() {
+                            alert("failed!!")
+                        },
+                        success: function(a) {
+                            var c = $.parseJSON(a);
+                            $("#eAnlCount").val(c.length);
+                            0 < c.length ? ([
+                                ["#eAnlID", "eAnl_ID"],
+                                ["#nameEAnl", "name"],
+                                ["#kuerzelEAnl", "kurz"],
+                                ["#beschreibungEAnl", "beschreibung"]
+                            ].forEach(function(a) {
+                                $(a[0]).val(c[b][a[1]])
+                            }), tblOptionenEAnl.clear().draw(), c[b].optionen.split(",").forEach(function(a) {
+                                tblOptionenEAnl.row.add([a]).draw()
+                            })) : clearFields("eAnlHinz")
+                        }
+                    });
                     break;
                 case "ePrd":
                     $.ajax({
@@ -6101,7 +6110,82 @@ try {
             $(`#messmittelBerechnungslogikMst${type}`).val()
 
         instanzSpeichern = function(a) {
-            if ("manSpeichern" == a) $.ajax({
+            if ("manGrpSpeichern" == a) {
+                const getManIDs =
+                    () =>
+                    array($("#tblMandantengruppe tbody tr").length)()()
+                    .map((_, i) => tblMandantengruppe.cell(i, 0).data())
+                    .join(",")
+
+                $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        id: "manGrp",
+                        nameDB: "gipscomm",
+                        modus: "save",
+                        betrGrpID: $("#betrGrpID").val(),
+                        manGrpID: $("#manGrpID").val(),
+                        mandatenIDs: getManIDs(),
+                        name: $("#nameManGrp").val(),
+                        kurz: $("#kurzManGrp").val(),
+                        notiz: $("#notizManGrp").val()
+                    },
+                    success: function(a) {
+                        alert(datensatzGespeichert(a))
+                        manGrpEinlesen()
+                    }
+                })}
+            else if ("admSpeichern" == a) $.ajax({
+                type: "POST",
+                async: !0,
+                url: "php/instanzIntoDb.php",
+                data: {
+                    id: "adm",
+                    modus: "save",
+                    nameDB: "gipscomm",
+                    admID: $("#admID").val(),
+                    titel: $("#titelAdm").val(),
+                    name: $("#nameAdm").val(),
+                    vorname: $("#vornameAdm").val(),
+                    eMail: $("#emailAdm").val(),
+                    telefon: $("#telefonAdm").val(),
+                    fax: $("#faxAdm").val(),
+                    mobiltelefon: $("#mobiltelefonAdm").val(),
+                    benutzername: $("#benutzernameAdm").val(),
+                    passwort: getHash($("#passwortAdm").val())
+                },
+                success: function(a) {
+                    adminsRollenUndBerechtigungen();
+                    alert(datensatzGespeichert(a))
+                }
+            });
+            else if ("benSpeichern" == a) $.ajax({
+                type: "POST",
+                async: !0,
+                url: "php/instanzIntoDb.php",
+                data: {
+                    id: "ben",
+                    modus: "save",
+                    nameDB: "gipscomm",
+                    ben_ID: $("#benID").val(),
+                    titel: $("#titelBen").val(),
+                    name: $("#nameBen").val(),
+                    vorname: $("#vornameBen").val(),
+                    eMail: $("#emailBen").val(),
+                    telefon: $("#telefonBen").val(),
+                    fax: $("#faxBen").val(),
+                    mobiltelefon: $("#mobiltelefonBen").val(),
+                    benutzername: $("#benutzernameBen").val(),
+                    passwort: getHash($("#passwortBen").val())
+                },
+                success: function(a) {
+                    benutzerRollenUndBerechtigungen();
+                    alert(datensatzGespeichert(a))
+                }
+            });
+            else if ("manSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "../php/mandantIntoDb.php",
@@ -6700,6 +6784,144 @@ try {
                     alert(datensatzGespeichert(a))
                 }
             });
+            else if ("prdSpeichern" == a) {
+                f = changeTracker.getChanges();
+                h = f.length;
+                q = "";
+                for (r = 0; r < h; r++) q += f[r].label + ":" + f[r].oldValue + " -> " + f[r].newValue + ", ";
+                $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        modus: "save",
+                        id: "prd",
+                        nameDB: $("#nameDB").val(),
+                        prdID: $("#prdID").val(),
+                        orgID: $("#orgID").val(),
+                        bezeichnung: $("#bezeichnungPrd").val(),
+                        artikelnummer: $("#artklnrPrd").val().trim(),
+                        gruppenID: $("#prdCount").val(),
+                        archiviert: $("#archiviertPrd").val(),
+                        bemerkung: $("#bemerkungHistFenster").val(),
+                        info: q,
+                        gueltigVon: $("#gueltigVonHistFenster").val(),
+                        gueltigBis: $("#gueltigBisHistFenster").val(),
+                        custom1: $("#custom1Prd").val(),
+                        custom2: $("#custom2Prd").val(),
+                        custom3: $("#custom3Prd").val(),
+                        custom4: $("#custom4Prd").val(),
+                        custom5: $("#custom5Prd").val(),
+                        custom6: $("#custom6Prd").val(),
+                        anl01ID: $("#inpAnlage1IDPrd").val(),
+                        anl02ID: $("#inpAnlage2IDPrd").val(),
+                        anl03ID: $("#inpAnlage3IDPrd").val(),
+                        anl04ID: $("#inpAnlage4IDPrd").val(),
+                        anl05ID: $("#inpAnlage5IDPrd").val(),
+                        anl06ID: $("#inpAnlage6IDPrd").val(),
+                        anl07ID: $("#inpAnlage7IDPrd").val(),
+                        anl08ID: $("#inpAnlage8IDPrd").val(),
+                        anl09ID: $("#inpAnlage9IDPrd").val(),
+                        anlType01: $("#messartMstInpAnlage1Prd").val(),
+                        anlType02: $("#messartMstInpAnlage2Prd").val(),
+                        anlType03: $("#messartMstInpAnlage3Prd").val(),
+                        anlType04: $("#messartMstInpAnlage4Prd").val(),
+                        anlType05: $("#messartMstInpAnlage5Prd").val(),
+                        anlType06: $("#messartMstInpAnlage6Prd").val(),
+                        anlType07: $("#messartMstInpAnlage7Prd").val(),
+                        anlType08: $("#messartMstInpAnlage8Prd").val(),
+                        anlType09: $("#messartMstInpAnlage9Prd").val()
+                    },
+                    success: function(a) {
+                        alert(datensatzGespeichert(a));
+                        readInstanzen("prdLast", $("#prdCount").val())
+                    }
+                });
+                /*produkte mm 01-03-2021*/
+                /*new-mm-start*/
+                /*$.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        modus: "save",
+                        id: "prdktAnl",
+                        nameDB: $("#nameDB").val(),
+                        prdID: $("#prdID").val(),
+                        orgID: $("#orgID").val(),
+                        anl01ID: $("#inpAnlage1IDPrd").val(),
+                        anl02ID: $("#inpAnlage2IDPrd").val(),
+                        anl03ID: $("#inpAnlage3IDPrd").val(),
+                        anl04ID: $("#inpAnlage4IDPrd").val(),
+                        anl05ID: $("#inpAnlage5IDPrd").val(),
+                        anl06ID: $("#inpAnlage6IDPrd").val(),
+                        anl07ID: $("#inpAnlage7IDPrd").val(),
+                        anl08ID: $("#inpAnlage8IDPrd").val(),
+                        anl09ID: $("#inpAnlage9IDPrd").val(),
+                        anlType01: $("#messartMstInpAnlage1Prd").val(),
+                        anlType02: $("#messartMstInpAnlage2Prd").val(),
+                        anlType03: $("#messartMstInpAnlage3Prd").val(),
+
+                        anlType04: $("#messartMstInpAnlage4Prd").val(),
+                        anlType05: $("#messartMstInpAnlage5Prd").val(),
+                        anlType06: $("#messartMstInpAnlage6Prd").val(),
+
+                        anlType07: $("#messartMstInpAnlage7Prd").val(),
+                        anlType08: $("#messartMstInpAnlage8Prd").val(),
+                        anlType09: $("#messartMstInpAnlage9Prd").val()
+
+                    },
+                    success: function(a) {
+                        alert(datensatzGespeichert(a));
+                        readInstanzen("prdLast", $("#prdCount").val())
+                    }
+                });*/
+                /*new-mm-end*/
+                prdNavID = $("#prdCount").val()}
+            else if ("prdSpeichernHist" == a) {
+                f = changeTracker.getChanges();
+                h = f.length;
+                q = "";
+                for (r =
+                    0; r < h; r++) q += f[r].label + ":" + f[r].oldValue + " -> " + f[r].newValue + ", ";
+                $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        id: "prd",
+                        nameDB: $("#nameDB").val(),
+                        prdID: $("#prdID").val(),
+                        modus: "save",
+                        archiviert: $("#archiviertPrd").val(),
+                        bemerkung: $("#bemerkungHistFenster").val(),
+                        info: q,
+                        gueltigVon: $("#gueltigVonPrdHist").val(),
+                        gueltigBis: $("#gueltigBisPrdHist").val(),
+                        bezeichnung: $("#bezeichnungPrdHist").val(),
+                        artikelnummer: $("#artklnrPrdHist").val().trim(),
+                        custom1: $("#custom1PrdHist").val(),
+                        custom2: $("#custom2PrdHist").val(),
+                        custom3: $("#custom3PrdHist").val(),
+                        custom4: $("#custom4PrdHist").val(),
+                        custom5: $("#custom5PrdHist").val(),
+                        custom6: $("#custom6PrdHist").val(),
+                        anl1: $("#inpAnlage1PrdHist").val(),
+                        anl2: $("#inpAnlage2PrdHist").val(),
+                        anl3: $("#inpAnlage3PrdHist").val(),
+                        anl4: $("#inpAnlage4PrdHist").val(),
+                        anl5: $("#inpAnlage5PrdHist").val(),
+                        anl6: $("#inpAnlage6PrdHist").val(),
+                        anl7: $("#inpAnlage7PrdHist").val(),
+                        anl8: $("#inpAnlage8PrdHist").val(),
+                        anl9: $("#inpAnlage9PrdHist").val()
+                    },
+                    success: function(a) {
+                        alert(datensatzGespeichert(a));
+                        readInstanzen("prdLast", $("#prdCount").val())
+                    }
+                });
+                prdNavID = $("#prdCount").val()}
             else if ("entSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -6855,15 +7077,8 @@ try {
                     , Custom6: formatNumber("deform", $("#custom6ERng").val())
                     }
 
-                if (data.mstID === "") {
-                    alert("Es muss vor dem Speichern noch eine Messstelle zugeordnet werden !")
-                }
-                else {
-                    ajaxPost("php/instanzIntoDb.php")(data)
-                    .then(result => {
-                        alert(datensatzGespeichert(result))
-                    })
-                }
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => alert(datensatzGespeichert(result)))
             }
             else if ("intEngIMwSpeichern" == a) {
                 var x = "",
@@ -7318,7 +7533,87 @@ try {
                 }
             })
         }, instanzErstellen = function(a, b) {
-            if ("manSpeichern" == a) $.ajax({
+            if ("manGrpSpeichern" == a) {
+                var e = [];
+                for (i = 0; i < $("#tblMandantengruppe tbody tr").length; i++) e[i] = tblMandantengruppe.cell(i, 0).data();
+                e = e.join(",");
+                $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        id: "manGrp",
+                        nameDB: "gipscomm",
+                        modus: "new",
+                        betrGrpID: $("#betrGrpID").val(),
+                        name: $("#nameManGrp").val(),
+                        kurz: $("#kurzManGrp").val(),
+                        notiz: $("#notizManGrp").val(),
+                        mandatenIDs: e
+                    },
+                    success: function(a) {
+                        alert(datensatzGespeichert(a));
+                        readInstanzen("manGrpLast", $("#manGrpCount").val())
+                        manGrpEinlesen()
+                    }
+                });
+                manGrpNavID = $("#manGrpCount").val(); }
+            else if ("admSpeichern" == a) {
+                var c;
+                "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val());
+                $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        id: "adm",
+                        nameDB: "gipscomm",
+                        modus: "new",
+                        ins: e,
+                        insID: c,
+                        titel: $("#titelAdm").val(),
+                        name: $("#nameAdm").val(),
+                        vorname: $("#vornameAdm").val(),
+                        eMail: $("#emailAdm").val(),
+                        telefon: $("#telefonAdm").val(),
+                        fax: $("#faxAdm").val(),
+                        mobiltelefon: $("#mobiltelefonAdm").val(),
+                        benutzername: $("#benutzernameAdm").val(),
+                        passwort: getHash($("#passwortAdm").val())
+                    },
+                    success: function(a) {
+                        adminsRollenUndBerechtigungen()
+                        alert(datensatzGespeichert(a));
+                        readInstanzen("admLast", $("#admCount").val())
+                    }
+                });
+                admNavID = $("#admCount").val() }
+            else if ("benSpeichern" == a) "optMan" == $("#manOderManGrp").val() ? (e = "man_ID", c = $("#manRechteID").val()) : (e = "manGrp_ID", c = $("#manGrpID").val()), $.ajax({
+                type: "POST",
+                async: !0,
+                url: "php/instanzIntoDb.php",
+                data: {
+                    id: "ben",
+                    nameDB: "gipscomm",
+                    modus: "new",
+                    ins: e,
+                    insID: c,
+                    titel: $("#titelBen").val(),
+                    name: $("#nameBen").val(),
+                    vorname: $("#vornameBen").val(),
+                    eMail: $("#emailBen").val(),
+                    telefon: $("#telefonBen").val(),
+                    fax: $("#faxBen").val(),
+                    mobiltelefon: $("#mobiltelefonBen").val(),
+                    benutzername: $("#benutzernameBen").val(),
+                    passwort: getHash($("#passwortBen").val())
+                },
+                success: function(a) {
+                    benutzerRollenUndBerechtigungen();
+                    alert(datensatzGespeichert(a));
+                    readInstanzen("benLast", $("#benCount").val())
+                } }), benNavID = $("#benCount").val();
+            else if ("manSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
                 url: "../php/mandantIntoDb.php",
@@ -7794,6 +8089,47 @@ try {
                     alert(datensatzGespeichert(a));
                     readInstanzen("msmLast", $("#msmCount").val())
                 } }), msmNavID = $("#msmCount").val();
+            else if ("prdSpeichern" == a) e = 0, e = "neueGrp" === b ? Number($("#prdCount").val()) + 1 : $("#gruppenIDPrd").val(), $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/instanzIntoDb.php",
+                    data: {
+                        id: "prd",
+                        nameDB: $("#nameDB").val(),
+                        modus: "new",
+                        gruppenID: e,
+                        orgID: $("#orgID").val(),
+                        bezeichnung: $("#bezeichnungPrd").val(),
+                        artikelnummer: $("#artklnrPrd").val().trim(),
+                        custom1: $("#custom1Prd").val(),
+                        custom2: $("#custom2Prd").val(),
+                        custom3: $("#custom3Prd").val(),
+                        custom4: $("#custom4Prd").val(),
+                        custom5: $("#custom5Prd").val(),
+                        custom6: $("#custom6Prd").val(),
+                        anl01ID: $("#inpAnlage1IDPrd").val(),
+                        anl02ID: $("#inpAnlage2IDPrd").val(),
+                        anl03ID: $("#inpAnlage3IDPrd").val(),
+                        anl04ID: $("#inpAnlage4IDPrd").val(),
+                        anl05ID: $("#inpAnlage5IDPrd").val(),
+                        anl06ID: $("#inpAnlage6IDPrd").val(),
+                        anl07ID: $("#inpAnlage7IDPrd").val(),
+                        anl08ID: $("#inpAnlage8IDPrd").val(),
+                        anl09ID: $("#inpAnlage9IDPrd").val(),
+                        anlType01: $("#messartMstInpAnlage1Prd").val(),
+                        anlType02: $("#messartMstInpAnlage2Prd").val(),
+                        anlType03: $("#messartMstInpAnlage3Prd").val(),
+                        anlType04: $("#messartMstInpAnlage4Prd").val(),
+                        anlType05: $("#messartMstInpAnlage5Prd").val(),
+                        anlType06: $("#messartMstInpAnlage6Prd").val(),
+                        anlType07: $("#messartMstInpAnlage7Prd").val(),
+                        anlType08: $("#messartMstInpAnlage8Prd").val(),
+                        anlType09: $("#messartMstInpAnlage9Prd").val()
+                    },
+                    success: function(a) {
+                        alert(datensatzGespeichert(a));
+                        readInstanzen("prdLast", $("#prdCount").val())
+                    } }), prdNavID = $("#prdCount").val();
             else if ("entSpeichern" == a) energietrInDBoxLieg(), $.ajax({
                 type: "POST",
                 async: !0,
@@ -7946,17 +8282,13 @@ try {
                     , lblCustom6: $("#lblCustom6ERng").text()
                     , Custom6: formatNumber("deform", $("#custom6ERng").val())
                     }
-                if (data.mstID === "") {
-                    alert("Es muss vor dem Speichern noch eine Messstelle zugeordnet werden !")
-                }
-                else {
-                    ajaxPost("php/instanzIntoDb.php")(data)
-                    .then(result => {
-                        alert(datensatzGespeichert(result))
-                        readInstanzen("eRngLast", $("#eRngCount").val())
-                    })
-                    eRngNavID = $("#eRngCount").val()
-                }
+
+                ajaxPost("php/instanzIntoDb.php")(data)
+                .then(result => {
+                    alert(datensatzGespeichert(result))
+                    readInstanzen("eRngLast", $("#eRngCount").val())
+                })
+                eRngNavID = $("#eRngCount").val()
             }
             else if ("iMwSpeichern" == a) $.ajax({
                 type: "POST",
@@ -8925,20 +9257,6 @@ try {
             sInfoEmpty: ""
         }
     });
-    tblNichtAngelegtPrd = $("#tblNichtAngelegtPrd").DataTable({
-        dom: "Bfrtip",
-        buttons: [],
-        pageLength: 15,
-        bAutoWidth: !0,
-        bFilter: !1,
-        bPaginate: !1,
-        lengthChange: !1,
-        ordering: !0,
-        oLanguage: {
-            sInfo: "",
-            sInfoEmpty: ""
-        }
-    });
     tblBerechnungAuswElem = $("#tblBerechnungAuswElem").DataTable({
         dom: "Bfrtip",
         buttons: [],
@@ -9857,6 +10175,7 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+
     tblAdmSuchen = $("#tblAdmSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -9882,6 +10201,7 @@ try {
         bAutoWidth: !1,
         colReorder: !0
     });
+
     tblSAdmSuchen = $("#tblSAdmSuchen").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -9981,6 +10301,7 @@ try {
         , colReorder: !0
         }
     )
+
     tblAnlagenII =
         setAnlagenTbl2();
     var tblDokumenteAnl = $("#tblDokumenteAnl").DataTable({

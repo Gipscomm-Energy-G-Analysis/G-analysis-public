@@ -3,12 +3,6 @@
 // DataTables libs
 // Syncfusion Chart libs
 
-const Interval = 
-    { Year  : 0
-    , Month : 1
-    , Day   : 2
-    }
-
 const scpChart =
     Object
     .freeze (
@@ -36,79 +30,19 @@ const scpChart =
 
             this.chooseFlag = hx => head(colors().filter(a => equal(hx)(a.hex))).name
 
-            this.prependZero = n => n < 10 ? "0" + String(n) : String(n)
-
-            this.timeSeriesYear = range(1)(12).map(this.prependZero)
-
-            this.monthArr = [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
-
-            this.timeSeriesMonth = month => range(1)(this.monthArr[month - 1]).map(this.prependZero)
-
-            this.timeSeriesDay = range(1)(24).map(this.prependZero).map(a => a + ":00")
-
-            this.setXY = x => y => ({x, y})
-
-            this.timeSeriesX = timeSeries => timeSeries.map(flip(this.setXY)())
-
-            this.addName = name => timeSeries => timeSeries.map(a => ({x : a.x, y : a.y, name}))
-
-            this.timeSeriesAssignY =
-                dataXY =>
-                timeSeriesX_ =>
-                timeSeriesX_
-                .map(
-                    a => {
-                        const foundRecord = dataXY.find(b => a.x === b.x)
-                        
-                        return foundRecord === undefined ? a : foundRecord
-                    }
-                )
-
-            this.generateDataSeries =
-                month =>
-                name =>
-                interval => 
-                data => {
-                    let timeSeries = []
-                    switch (interval) {
-                        case Interval.Year:
-                            timeSeries = this.timeSeriesYear
-                            break;
-                        case Interval.Month:
-                            timeSeries = this.timeSeriesMonth(month)
-                            break;
-                        case Interval.Day:
-                            timeSeries = this.timeSeriesDay
-                            break;
-                    
-                    }
-
-                    return pipe_(timeSeries)
-                                ( this.timeSeriesX
-                                , this.addName(name)
-                                , this.timeSeriesAssignY(data)
-                                )
-                }
-
-            this.updateChart = month => interval => newDataSeries => nameSeries => {
+            this.updateChart = newDataSeries => nameSeries => {
 
                 let chart = this.getChart("#container")
                 const nSeries = chart.model.series.length
-
                 chart.model.series.push({
-                    type: chartType
+                      type: chartType
                     , name: nameSeries
-                    , points: 
-                        this.generateDataSeries(interval === Interval.Month ? month : 0)(nameSeries)(interval)(newDataSeries)
-                        .map(
+                    , points: newDataSeries.map(
                             a => ({name: a.name, x: a.x + " ", y: a.y})
                         )
                     , xName: "x"
                     , yName: "y"
                 })
-
-                console.log("chart.model.series")
-                console.log(chart.model.series)
 
                 chart.redraw()
                 return [chart.model.series[nSeries].fill, nSeries]
@@ -117,10 +51,7 @@ const scpChart =
             this.sumSeries = data => Math.round(data.map(a => a.y).reduce(sum))
 
             this.fillTable = data => tbl => recordFn => {
-                data
-                .filter( a => a.name !== "" )
-                .map( recordFn )
-                .forEach( tbl.row.add )
+                data.map( recordFn ).forEach( tbl.row.add )
                 tbl.draw()
             }
 
@@ -260,5 +191,5 @@ const scpChart =
                     }
                 })
 
-    }
-);
+        }
+    );

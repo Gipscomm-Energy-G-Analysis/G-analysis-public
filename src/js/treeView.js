@@ -43,9 +43,9 @@ const scpTreeView =
                 ) : nodes
 
             this.clear =
-                selector =>
-                ( $(".treejs-checkbox-edit").prop("checked", true)
-                , $(selector + " > div > ul > li > span.treejs-checkbox").trigger("click")  
+                that =>
+                ( that.setValues([])
+                , $(".treejs-checkbox-edit").prop("checked", false)  
                 ) 
 
             this.show =

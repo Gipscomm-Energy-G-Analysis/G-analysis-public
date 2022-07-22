@@ -14,7 +14,7 @@ const scpRechteverwaltung_benutzer =
 
             const getMenuAndEditConfig =
                 () =>
-                (
+                JSON.stringify(
                     { values     : treeBen.getValues().join(",")
                     , editValues : treeBen.getEditValues().join(",")
                     }
@@ -43,9 +43,8 @@ const scpRechteverwaltung_benutzer =
                     , mobiltelefon   : helper.fieldValue("mobiltelefonBen")
                     , username       : helper.fieldValue("benutzernameBen")
                     , passHash       : getHash_()
-                    , rechteTreeView : JSON.stringify(getMenuAndEditConfig())
+                    , rechteTreeView : getMenuAndEditConfig()
                     , rechteMenu     : scpTreeView.getSelectedNodes(treeBen).join(",")
-                    , rechteEdit     : getMenuAndEditConfig().editValues
                     }
                 )
 
@@ -138,15 +137,15 @@ const scpRechteverwaltung_benutzer =
                   , "passwortBen"
                   ]    
                   .forEach(helper.clearField)
-                , scpTreeView.clear("#benTreeview")
+                , scpTreeView.clear(treeBen)
                 , helper.setState("ben")("new")
                 )
 
             const getRef =
-                () => 
-                idxDB.benutzer
-                .where($(".manGrpPfad").val().split("-")[0])
-                .equals(Number($(".manGrpPfad").val().split("-")[1]))
+                  () => 
+                  idxDB.benutzer
+                  .where($(".manGrpPfad").val().split("-")[0])
+                  .equals(Number($(".manGrpPfad").val().split("-")[1]))
             
             const queryDatasIDB =
                 () =>
@@ -177,7 +176,7 @@ const scpRechteverwaltung_benutzer =
                             $("#titelBen").val(record.titel)
                             $("#nameBen").val(record.name)
                             $("#vornameBen").val(record.vorname)
-                            $("#emailBen").val(record.eMail)
+                            $("#emailBen").val(record.email)
                             $("#telefonBen").val(record.telefon)
                             $("#faxBen").val(record.fax)
                             $("#mobiltelefonBen").val(record.mobiltelefon)
@@ -187,7 +186,7 @@ const scpRechteverwaltung_benutzer =
                             helper.setState("ben")("edit")
 
                             treeBen.setValues(values_(record))
-                            treeBen.setEditValues("#benTreeview")(editValues_(record))
+                            treeBen.setEditValues(editValues_(record))
                         }
                     )
                 }

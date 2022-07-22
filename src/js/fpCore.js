@@ -102,7 +102,6 @@ Object
         };
         this.ajaxPost = this.callAjax("POST");
         this.ajaxGet = this.callAjax("GET");
-        this.prefixZero = n => n < 10 ? "0" + n : String(n)
         this.pipe = (...fns) => {
             let results = [this.head(fns)]
             for(k=1;this.smaller(k)(fns.length);k++) {
@@ -110,7 +109,6 @@ Object
             }
             return results
         };
-        this.pipe_ = acc => (...fns) => fns.length === 1 ?  fns[0](acc) :  pipe_(fns[0](acc))(...fns.slice(1))
         this.itemSessionSet = key => value => sessionStorage.setItem(key, value);
         this.itemSessionGet = key => sessionStorage.getItem(key);
         this.push = a => b => { a[a.length] = b;return a };
@@ -138,14 +136,8 @@ Object
                     return newAcc
                 }
             }
-        
-        this.prepRange1To = arr => n => n > 0 ? range0 (arr.concat(n)) (n - 1) : arr.sort()
-        this.range1To = this.prepRange1To([])
-        this.rangePrep = arrNew => n => m => n < m + 1 ? this.rangePrep(arrNew.concat(n))(n + 1)(m) : arrNew
-        this.range = this.rangePrep([])
         this.difference = arr1 => arr2 => arr1.filter(a1 => !arr2.some(equal(a1)))
         this.containsNaN = str => this.unequal(str.search("NaN"))(-1)
-        this.removeDuplicates = arr => Array.from(new Set(arr))
     }
 );
 const { split_
@@ -206,16 +198,12 @@ const { split_
       , deepFreeze
       , ajaxPost
       , ajaxGet
-      , prefixZero
       , pipe
-      , pipe_
       , itemSessionSet
       , itemSessionGet
       , push
       , partition
       , difference
       , containsNaN
-      , removeDuplicates
-      , range
       } = scpCore;
     // module.exports = scpCore;

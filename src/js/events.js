@@ -1625,7 +1625,7 @@ $(document).ready(function() {
     // Remove Mandant From DB Table
     //
     $("#tblMandantenBetrGrp tbody").on("dblclick", "tr", function() {
-        scpRechteverwaltung_betreuergruppen.removeFromMandantenTbl(this)($(`#betrGrpState`).val())
+        scpRechteverwaltung_betreuergruppen.removeFromMandantenTbl(this)
     })
     //
     // Change Per Dropbox
@@ -1697,7 +1697,7 @@ $(document).ready(function() {
     // Remove Mandant From DB Table
     //
     $("#tblMandantengruppe tbody").on("dblclick", "tr", function() {
-        scpRechteverwaltung_mandantengruppen.removeFromMandantenTbl(this)($(`#manGrpState`).val())
+        scpRechteverwaltung_mandantengruppen.removeFromMandantenTbl(this)
     })
 
     //
@@ -2045,7 +2045,7 @@ $(document).ready(function() {
         clearFields(this.id);
         b = !0
     });
-    $("#manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
+    $("#manSpeichern, #orgSpeichern, #liegSpeichern, #extDlSpeichern, #berSpeichern, #benSpeichern, #mstESpeichern, #mstBSpeichern, #stdSpeichern, #stdDrSpeichern,  #anlSpeichern, #anlSpeichernHist, #msmSpeichern, #entSpeichern, #enfSpeichern, #eRngSpeichern, #intEngIMwSpeichern, #eAnlSpeichern, #zpSpeichern, #ePrdSpeichern, #prdSpeichern, #knzSpeichern, #betrParSpeichern, #grpDiagSpeichern").click(function() {
         "manSpeichern" == this.id ? "" != $("#nameAllgemeinMan").val() && 1 == b ? (instanzErstellen(this.id), mandantenEinlesen($("#betrGrpID").val(), "man_ID", $("#manID").val()), $(".manPfad").prop("selectedIndex", mandantenliste.length - 1), b = !1) : "" != $("#nameAllgemeinMan").val() && 0 == b ? (instanzSpeichern(this.id), $(".manPfad").prop("selectedIndex", manNavID)) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "orgSpeichern" == this.id ? "" != $("#nameAllgemeinOrg").val() && 1 == b ? (instanzErstellen(this.id), b = !1) : "" != $("#nameAllgemeinOrg").val() && 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
@@ -2127,8 +2127,54 @@ $(document).ready(function() {
         "ePrdSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "grpDiagSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+            title: "Meldung!"
+        })) :
+        "prdSpeichern" == this.id ? 1 == b ? ($("#archiviertPrd").val(!1), instanzErstellen(this.id, "neueGrp"), b = !1) : 0 == b ? $("#historyOrNot").dialog({
+            height: 400,
+            width: 450,
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            open: function() {
+                $("#histSpeichern,\n                                                        #histNichtSpeichern,\n                                                        #histOk,\n                                                        #histAbbrechen").off("click");
+                $("#histSpeichern").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "inline");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "none")
+                });
+                $("#histNichtSpeichern").on("click", function() {
+                    $("#archiviertPrd").val("false");
+                    instanzSpeichern("prdSpeichern");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histOk").on("click", function() {
+                    $("#archiviertPrd").val("true");
+                    instanzSpeichern("prdSpeichern");
+                    instanzErstellen("prdSpeichern");
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#infosBemerkungHist input").val("");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#historyOrNot").dialog("close")
+                });
+                $("#histAbbrechen").on("click", function() {
+                    $("#infosBemerkungHist, #histOk").css("display", "none");
+                    $("#histSpeichern, #histNichtSpeichern").css("display", "inline");
+                    $("#infosBemerkungHist input").val("");
+                    $("#historyOrNot").dialog("close")
+                })
+            },
+            close: function() {
+                $("#infosBemerkungHist input").val("");
+                $("#infosBemerkungHist, #histOk").css("display", "none");
+                $("#histSpeichern, #histNichtSpeichern").css("display",
+                    "inline") } }) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
-         "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
+        "knzSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :
         "zpSpeichern" == this.id ? 1 == b ? (instanzErstellen(this.id), b = !1) : 0 == b ? instanzSpeichern(this.id) : ($("#meldung").css("display", "block"), $("#meldung").dialog({
             title: "Meldung!" })) :

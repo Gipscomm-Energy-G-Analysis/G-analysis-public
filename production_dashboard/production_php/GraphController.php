@@ -35,8 +35,8 @@ class GraphController {
      */
     public function getChartsData($points, $limit, $name) {
         try {
-            $measuringPoint = $points;
-            global $conn;      
+            session_write_close();
+            $measuringPoint = $points;     
             $query = "SELECT TOP ".$limit." MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten WHERE MessstellenEnergiedaten.mst_ID = ".$measuringPoint." ORDER BY MessstellenEnergiedaten.Time asc";
             $data = queryDB ( $this->conn, $query, "read");
             return $this->getlineChartData($data, $measuringPoint, $name);
@@ -179,56 +179,65 @@ class GraphController {
         $username = $_SESSION['username'];
         $dataArray = isset($_POST['dataResult']) && !empty($_POST['dataResult'])?$_POST['dataResult']:null;
         $dataIndex = isset($_POST['machineIndex']) && !empty($_POST['machineIndex'])?$_POST['machineIndex']:null;
-        $machineID = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$dataArray[$dataIndex];
-        $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username'";
+        $graphType = isset($_POST['graphType'])?$_POST['graphType']:'production';
+      //  $machineID = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$dataArray[$dataIndex];
+
+        $selectQuery = "SELECT label, graph_name, graph_text FROM graph_configurations WHERE username= '$username'";
         $record = queryDB ( $this->conn, $selectQuery, "read");
+        $productionArray = [];
+        $prodGraphPoints = [];
+        $columnString = '';
+        foreach($record as $value) {
+            $columnString .= $value['label'].',';
+            array_push($productionArray, ['name'=>$value['graph_name'], 'label'=>$value['label']]);
+        }
+        $columnString = $this->str_lreplace(',', '', $columnString);
         $periodFilter = $_REQUEST['periodFilter'];
         $limit = isset($_POST['limit']) && !empty($_POST['limit'])?$_POST['limit']:5;
         if (!empty($record)) {
             $graphData = [];
-            foreach($record as $key=>$value) {
-                switch ($periodFilter) {
-                    case 'year':
-                        $year = $_REQUEST['yearFilter'];
-                        if(empty($year)) {
-                            return ['code'=>400, 'msg' => 'No record found!'];
-                        }
-                        $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
-                        AND YEAR(zeitstempel) = ".$year." ORDER BY zeitstempel desc";
-                        break;
-                    case 'month':
-                        $month = $_REQUEST['monthFilter'];
-                        $year = $_REQUEST['yearFilter'];
-                        if(empty($month)) {
-                            return ['code'=>400, 'msg' => 'No record found!'];
-                        }
-                        if(empty($year)) {
-                            return ['code'=>400, 'msg' => 'No record found!'];
-                        }
-                        $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
-                        AND YEAR(zeitstempel) = ".$year." AND MONTH(zeitstempel) = ".$month." ORDER BY zeitstempel desc";
-                        break;
-                    case 'custom':
-                        $start = date_create($_REQUEST['startDate']);
-                        $start = date_format($start,"Y-m-d");
-                        $end = date_create($_REQUEST['endDate']);
-                        $end = date_format($end,"Y-m-d");
-                        $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
-                        AND cast (zeitstempel as date) >= '".$start."' AND cast (zeitstempel as date) <= '".$end."' ORDER BY zeitstempel desc";
-                        break;
-                    default:
-                        return ['code'=>400, 'msg' => 'no record found'];
-                }
-                // $data = $this->conn->query($query)->fetchAll();
-                $data = queryDB ( $this->conn, $query, "read");
-                $pointData =$this->getProductionChartData($data, $machineID, $value['graph_text']);
-                array_push($graphData, $pointData);
-
+            switch ($periodFilter) {
+                case 'year':
+                    $year = $_REQUEST['yearFilter'];
+                    if(empty($year)) {
+                        return ['code'=>400, 'msg' => 'No record found!'];
+                    }
+                    // $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
+                    // AND YEAR(zeitstempel) = ".$year." ORDER BY zeitstempel desc";
+                    $query = "SELECT TOP 1000 ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer,verbrauchAuftrag FROM ProdData WHERE anl_ID='265' AND YEAR(timeUnlock) = ".$year." ORDER BY timeUnlock ASC";
+                    break;
+                case 'month':
+                    $month = $_REQUEST['monthFilter'];
+                    $year = $_REQUEST['yearFilter'];
+                    if(empty($month)) {
+                        return ['code'=>400, 'msg' => 'No record found!'];
+                    }
+                    if(empty($year)) {
+                        return ['code'=>400, 'msg' => 'No record found!'];
+                    }
+                    $query = "SELECT TOP 1000 ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer,verbrauchAuftrag FROM ProdData WHERE anl_ID='265' AND YEAR(timeUnlock) = ".$year." AND MONTH(timeUnlock) = ".$month." ORDER BY timeUnlock ASC";
+                    break;
+                case 'custom':
+                    $start = date_create($_REQUEST['startDate']);
+                    $start = date_format($start,"Y-m-d");
+                    $end = date_create($_REQUEST['endDate']);
+                    $end = date_format($end,"Y-m-d");
+                    $query = "SELECT TOP 1000 ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer,verbrauchAuftrag FROM ProdData WHERE anl_ID='265' AND cast (timeUnlock as date) >= '".$start."' AND cast (timeUnlock as date) <= '".$end."' ORDER BY timeUnlock ASC";
+                    break;
+                default:
+                    return ['code'=>400, 'msg' => 'no record found'];
             }
-            if (empty($graphData)) {
-                return ['code'=>400, 'graphData' => $graphData, 'msg' => 'no record found'];
+            // $data = $this->conn->query($query)->fetchAll();
+            $data = queryDB ( $this->conn, $query, "read");
+            foreach($productionArray as $key=>$value){
+                $getProductionDataPoints = $this->makeProductionGraphData($data, $key, $value['name'], $value['label'], $graphType);
+                array_push($prodGraphPoints, $getProductionDataPoints);
             }
-            return ['code'=>200, 'graphData' => $graphData];
+            //print_r($prodGraphPoints);die;
+            if (empty($prodGraphPoints)) {
+                return ['code'=>400, 'graphData' => $prodGraphPoints, 'msg' => 'no record found'];
+            }
+            return ['code'=>200, 'graphData' => $prodGraphPoints];
         }
         return ['code'=>400, 'msg' => 'no record found'];
     }
@@ -240,8 +249,8 @@ class GraphController {
         ];
        
         $data=array(
-            "is_open"   =>  $request->accordion_setting,
-            "label"     =>  $request->label_name,
+            "is_open" =>  $request->accordion_setting,
+            "label"   =>  $request->label_name,
             "status"  =>  '1');
         GraphConfiguration::updateOrCreate($columnData, $data);
         return ['status'=> 200 , 
@@ -273,6 +282,103 @@ class GraphController {
             }
         }
         return $data_var;
+    }
+
+    public function getProdDataInfo() {
+        try {
+            $username = $_SESSION['username'];
+            $selectQuery = "SELECT label, graph_name, graph_text FROM graph_configurations WHERE username= '$username'";
+            $record = queryDB ( $this->conn, $selectQuery, "read");
+            $graphType = isset($_POST['graphType'])?$_POST['graphType']:null;
+            $productionArray = [];
+            $limit = isset($_POST['limit'])?$_POST['limit']:5;
+            $columnString = '';
+            $energy_point_exits = false; 
+            foreach($record as $value) {
+                $columnString .= $value['label'].',';
+                if($value['label'] == 'verbrauchAuftrag') {
+                    $energy_point_exits = true; 
+                }
+                array_push($productionArray, ['name'=>$value['graph_name'], 'label'=>$value['label']]);
+            }
+            $columnString = $this->str_lreplace(',', '', $columnString);
+            $machine_ID = 23;
+            $prodGraphPoints = [];
+
+            if($graphType == 'energy') {
+                if($energy_point_exits){
+                    $query = "SELECT TOP $limit ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer FROM ProdData WHERE anl_ID='265' ORDER BY timeUnlock ASC";
+                } else {
+                    array_push($productionArray, ['name'=>'Energy Data', 'label'=>'verbrauchAuftrag']);
+                    $query = "SELECT TOP $limit ".$columnString.", timeUnlock, timeClose, verbrauchAuftrag, auftrag, artikelnummer FROM ProdData WHERE anl_ID='265' ORDER BY timeUnlock ASC";
+                } 
+            } else {
+                $query = "SELECT TOP $limit ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer FROM ProdData WHERE anl_ID='265' ORDER BY timeUnlock ASC";
+            }
+            
+            $data = queryDB ( $this->conn, $query, "read");
+            
+            foreach($productionArray as $key=>$value){
+                $getProductionDataPoints = $this->makeProductionGraphData($data, $key, $value['name'], $value['label'], $graphType);
+                array_push($prodGraphPoints, $getProductionDataPoints);
+            }
+            return ['status' => 'success', 'code' => 200, 'graphData' => $prodGraphPoints, 'message' => 'Configuration Data Fetched.'];
+        } catch(Exception $e) {
+            return ['code' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+        }
+    }
+    
+    /**
+     * @param $data
+     * @param $id
+     * @return array
+     */
+    public function makeProductionGraphData($data, $id, $name, $textLable, $graphType='production') {
+        
+        $recordData = !empty($data) ? true: false;
+        $label = [];
+        $valData = [];
+        $amData = [];
+        $minValue = isset($data[0]['auftrag'])?(int)$data[0]['auftrag']:0;
+        $maxValue = isset($data[0]['auftrag'])?(int)$data[0]['auftrag']:0;
+        $productInfo = [];
+        foreach ($data as $key=>$value) {
+            $timeData =  (int) $value['auftrag'];
+            array_push($productInfo, $value['artikelnummer']);
+            if ($timeData < $minValue) {
+                $minValue = $timeData;
+            } elseif($timeData > $maxValue ) {
+                $maxValue = $timeData;
+            }
+
+            //print_r($value);die;
+            foreach ($value as $key2 => $prodGraps) {
+                //print_r($prodGraps);die;
+                if($key2 == $textLable) {
+                    if($graphType == 'energy') {
+                        array_push($amData, ['date'=>trim($value['auftrag']), 'value'=>floatval($prodGraps), 'value2'=>floatval($value['verbrauchAuftrag']), 'time'=>$timeData,'convertedTime'=>'']);
+                    } else {
+                        array_push($amData, ['date'=>trim($value['auftrag']), 'value'=>floatval($prodGraps), 'time'=>$timeData,'convertedTime'=>'']);
+                    }
+                    
+                    $value[$key2] = floatval($prodGraps);
+                    array_push($valData, $prodGraps);
+                }
+            }
+        }
+        return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data, 'minValue' => $minValue, 'maxValue' => $maxValue, 'prodInfo' => array_unique($productInfo) ];
+    }
+
+    public function str_lreplace($search, $replace, $subject)
+    {
+        $pos = strrpos($subject, $search);
+
+        if($pos !== false)
+        {
+            $subject = substr_replace($subject, $replace, $pos, strlen($search));
+        }
+
+        return $subject;
     }
 
  }

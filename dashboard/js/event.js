@@ -2343,7 +2343,7 @@ $(document).ready( function(){
         // console.log('prd_id',prd_id);
         // console.log('Name',prd_name);
         var textNoRecord = $('.modal_all_products  table #all_product_table_entries tr').children('td:first').text();
-        if(textNoRecord != 'Es existieren keine Daten die ausgewertet werden können')
+        if(textNoRecord != 'No Data')
         {
             $('#all_product_input_text_field').val(prd_name);
             getAllProductClickTableHTML(prd_id);
@@ -2429,7 +2429,7 @@ $(document).ready( function(){
 
     $(document).on('change','#product_records_order_by', function(){
         var textNoRecord = $('#product_select_table_entries_table_div table #product_select_table_entries tr').children('td:first').text();
-        if(textNoRecord == 'Es existieren keine Daten die ausgewertet werden können')
+        if(textNoRecord == 'No Data')
         {
             return false;
         }

@@ -22,8 +22,7 @@ const scpIndexedDB =
                 ajaxPost("php/populateIndexedDB.php")({nameDB : $("#nameDB").val()})
                 .then(
                     result => 
-                    [ "produkte"
-                    , "schichtModelle"
+                    [ "schichtModelle"
                     , "schichten"
                     , "schichtModelleHist"
                     , "schichtenHist"
