@@ -8,7 +8,7 @@ class DBConnection
 	const DB_HOST               		= "sql_gc.managee.de";
     const DB_DATABASE           		= 'g008_gipshold';
     const DB_USERNAME           		= 'gipscomm';
-    const DB_PASSWORD           		= 'Gc$2017!';
+    const DB_PASSWORD           		= 'yXFdFioIzNoGFwaQeGHo';
     const DB_PORT               		= '3306';
 
     /** local DB Connections */

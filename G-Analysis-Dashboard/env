@@ -13,14 +13,14 @@ DB_HOST=sql_gc.managee.de
 #DB_PORT=3306
 DB_DATABASE=g002_badber
 DB_USERNAME=gipscomm
-DB_PASSWORD=Gc$2017!
+DB_PASSWORD=yXFdFioIzNoGFwaQeGHo
 
 #super admin connection
 DB_HOST_SA=sql_gc.managee.de
 #DB_PORT_SA=3306
 DB_DATABASE_SA=gipscomm
 DB_USERNAME_SA=gipscomm
-DB_PASSWORD_SA=Gc$2017!
+DB_PASSWORD_SA=yXFdFioIzNoGFwaQeGHo
 
 
 BROADCAST_DRIVER=log
