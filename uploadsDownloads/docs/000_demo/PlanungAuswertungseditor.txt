@@ -1,0 +1,45 @@
+Projektplanung Auswertungseditor##
+##################################
+
+1. Beim Login werden Userdaten in terminierten Cookies gespeichert.
+	1.1 usr=username, hash=passwordhash
+2. Beim Klicken auf den Menupunkt "Auswertungen"
+   Auswertungen->Editor dort dann die entsprechende Vorlage auswählen(erst-
+   mal nur SpaEfV Tbl_1). 
+   2.1 Je nach Vorlage, werden vor der Erstellung der Editor Oberfläche, 
+       bestimmte Parameter abgefragt, welche allerdings auch im Editor noch-
+	   mals verändert oder gelöscht werden können.
+3. Nach dem Klick auf "Editoroberfläche starten", Soll von PHP anhand der 
+   Logindaten des angemeldeten Users, eine neue Seite geechoed werden.
+	3.1 Die Seite soll rechts zusätzliche Controls zur Steuerung enthalten
+	3.2 Links neben des Spreadsheets soll es zwei Tabellen zur Auswahl der
+	    aus der DB einzulesenden Daten geben(drag&drop von sp1 zu sp2).
+		3.2.1 Im Falle der Vorlage zur SpaEfV Tbl_1, Sollen die benutzten
+			  Energieträger dynamisch eingelesen werden.
+		3.2.2 Die Anzahl der anzuzeigenden Jahre und das Startjahr sowie
+			  das Endjahr sollen links statt der zwei Tabellen dargestellt 
+			  werden, damit diese Parameter verändert werden können.
+			  
+Spreadsheet TestWebsite#
+########################
+
+To instanciate a Spreadsheet Control, the object ej.Spreadsheet has to be
+created.
+
+Which controls do I need for the import/export of data?
+	DBimport: 
+		1. ej.DataManager({"url":"<path to PHP file>"})
+			-> returns dbData as JSON
+		2. ej.Query()
+			-> queries data from a ej.DataManager object
+	DBexport:
+		1. 
+	
+Important IDs#
+##############
+
+
+
+	
+
+	

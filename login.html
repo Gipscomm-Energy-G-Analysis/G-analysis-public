@@ -9,7 +9,7 @@
     <div id="formLogin">
         <header>Login</header>
         <label>Username <span>*</span></label>
-        <input id="user" type="text" />
+        <input id="username" type="text" />
         <label>Password <span>*</span></label>
         <input id="pw" type="password" />
         <button id="btnLogin">Login</button>
@@ -17,27 +17,16 @@
     <div class="tst" style="margin: 100px;">
     </div>
     <script type="text/javascript">
-    //Wenn Login Button von form geklickt dann per ajax überprüfen ob gültig wenn ja auf mainP leiten
-    $("#btnLogin").click(function () {
-        userLogin();
-        //Gipscomm Logo ausblenden
-        $("#Glogo, #logo").css("display", "none");
-    });
+
+    $("#btnLogin").click(() => (userLogin(), $("#Glogo, #logo").css("display", "none")))
 
     function userLogin() {
-        const user = $("#user").val()
 
-        ajaxPost('php/login.php')({user})
+        const username = $("#username").val()
+
+        ajaxPost("php/login.php")({username})
         .then(
             record => {
-                const dbHash =
-                    head(record).passHash
-
-                const permissions =
-                    ({ menu: head(record).rechteMenu
-                     , edit: head(record).rechteEdit
-                     }
-                    )
 
                 const fieldnames =
                     [ "betrGrp_ID"
@@ -49,39 +38,25 @@
                     ]
 
                 const valueField =
-                    name => head(record)[name] ;
+                    name => 
+                    head(record)[name] 
 
-                if ( equal( getHash( $("#pw").val() ) ) ( dbHash ) ) {
-                    fieldnames
-                    .map(
-                        name => itemSessionSet(name)( valueField(name) )
-                    )
+                if (equal(getHash($("#pw").val()))(head(record).passHash)) {
 
-                    itemSessionSet("rechteMenu")(permissions.menu)
-                    itemSessionSet("rechteEdit")(permissions.edit)
+                    fieldnames.forEach(name => itemSessionSet(name)(valueField(name)))
 
-                    setTimeout(function(){ 
-                        window.open("main.html","_self");
-                        // <---1-3-2022--
-                        var pathname = window.location.pathname;
-                        var arPathname = pathname.split('/');
-                        if(arPathname.length > 2){
-                            window.open('/'+arPathname[1]+'/main.html','_self');
-                        }
-                        else{
-                            window.open("/main.html","_self");
-                        }
-                        // window.open("/dashboard/","_self");
-                        // --end--->
-                     }, 1000);
+                    itemSessionSet("rechteMenu")(head(record).rechteMenu)
+                    itemSessionSet("rechteEdit")(head(record).rechteEdit)
+
+                    window.open(`${window.location.origin}/main.html`,"_self")
                    
                     //  <---28-9-2021--
-                    localStorage.removeItem('dashboardDB');
-                    localStorage.removeItem('dashboardDBName');
+                    localStorage.removeItem("dashboardDB")
+                    localStorage.removeItem("dashboardDBName")
                     // --end-->
                 }
                 else {
-                    alert("Ihr Benutzername oder Passwort ist falsch!")
+                    alert("Ihr Benutzername oder Passwort ist falsch, bitte passen Sie Ihre Zugangsdaten entsprechend an.")
                 }
             }
         )
