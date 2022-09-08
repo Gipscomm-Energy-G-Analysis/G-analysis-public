@@ -1285,9 +1285,10 @@ $(document).on('click','#custom_machines_table tr', function(){
 });
 
 const createProductInfo = (element, data) => {
+    console.log('data',data);
     let html = '';
     $.each(data, function (key, value) {           
-        html += `<option value='${value}'>${value}</option>`;
+        html += `<option value='${key}'>${value}</option>`;
     });
     $(element).html(html);
     
@@ -1307,10 +1308,12 @@ let getProductionGraphDetails = (index, anl_ID="") => {
             nameDB: $("#nameDB").val(),
         },
         success:function(result) {
+            console.log('here data');
             if(result.code == '200') {
                 if (showRecord(result.graphData)) {
                     $('.product_graph_msg').hide();
                     $(".product_graph_div").show();
+                    console.log("result['graphData'][0]['prodInfo']",result['graphData'][0]['prodInfo']);
                     createProductInfo('#orderFilterProduction', result['graphData'][0]['prodInfo']);
                   //  createAmChart(root_other_graph, result.graphData, true, 'production'); 
                     productionAppButtons('#timeFilterIntervalProduction', result.graphData, 'production');
@@ -1411,6 +1414,7 @@ let getMixedGraphDetails = (index, anl_ID="") => {
                 if(showRecord(result.graphData)){
                     $('.mixed_graph_msg').hide();
                     $(".mixed_graph_div").show();
+                    console.log("result['graphData'][0]['prodInfo']",result['graphData'][0]['prodInfo']);
                     createProductInfo('#orderFilterMixed', result['graphData'][0]['prodInfo']);
                     productionAppButtons('#timeFilterIntervalMixed', result.graphData, 'mixed');
                     // createAmChartCategory(mixed_root, result.graphData, true, 'production');

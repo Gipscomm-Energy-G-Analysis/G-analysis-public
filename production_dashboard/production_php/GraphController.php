@@ -295,7 +295,7 @@ class GraphController {
             $columnString = '';
             $energy_point_exits = false; 
             foreach($record as $value) {
-                $columnString .= $value['label'].',';
+                $columnString .= 'ProdData.'.$value['label'].',';
                 if($value['label'] == 'verbrauchAuftrag') {
                     $energy_point_exits = true; 
                 }
@@ -307,13 +307,13 @@ class GraphController {
 
             if($graphType == 'energy') {
                 if($energy_point_exits){
-                    $query = "SELECT TOP $limit ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer FROM ProdData WHERE anl_ID='265' ORDER BY timeUnlock ASC";
+                    $query = "SELECT TOP $limit ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' ORDER BY ProdData.timeUnlock ASC";
                 } else {
                     array_push($productionArray, ['name'=>'Energy Data', 'label'=>'verbrauchAuftrag']);
-                    $query = "SELECT TOP $limit ".$columnString.", timeUnlock, timeClose, verbrauchAuftrag, auftrag, artikelnummer FROM ProdData WHERE anl_ID='265' ORDER BY timeUnlock ASC";
+                    $query = "SELECT TOP $limit ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.verbrauchAuftrag, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' ORDER BY ProdData.timeUnlock ASC";
                 } 
             } else {
-                $query = "SELECT TOP $limit ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer FROM ProdData WHERE anl_ID='265' ORDER BY timeUnlock ASC";
+                $query = "SELECT TOP $limit ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' ORDER BY ProdData.timeUnlock ASC";
             }
             
             $data = queryDB ( $this->conn, $query, "read");
@@ -342,9 +342,11 @@ class GraphController {
         $minValue = isset($data[0]['auftrag'])?(int)$data[0]['auftrag']:0;
         $maxValue = isset($data[0]['auftrag'])?(int)$data[0]['auftrag']:0;
         $productInfo = [];
+        
         foreach ($data as $key=>$value) {
             $timeData =  (int) $value['auftrag'];
-            array_push($productInfo, $value['artikelnummer']);
+            //array_push($productInfo, [$value['namePrd'] => $value['artikelnummer']]);
+            $productInfo[$value['artikelnummer']] = $value['namePrd'];
             if ($timeData < $minValue) {
                 $minValue = $timeData;
             } elseif($timeData > $maxValue ) {
@@ -366,6 +368,7 @@ class GraphController {
                 }
             }
         }
+        //print_r($productInfo);die;
         return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data, 'minValue' => $minValue, 'maxValue' => $maxValue, 'prodInfo' => array_unique($productInfo) ];
     }
 
