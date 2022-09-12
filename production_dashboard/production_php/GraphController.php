@@ -346,7 +346,7 @@ class GraphController {
         foreach ($data as $key=>$value) {
             $timeData =  (int) $value['auftrag'];
             //array_push($productInfo, [$value['namePrd'] => $value['artikelnummer']]);
-            $productInfo[$value['artikelnummer']] = $value['namePrd'];
+            $productInfo[$value['artikelnummer']] = $value['namePrd'].'('.$value['artikelnummer'].')';
             if ($timeData < $minValue) {
                 $minValue = $timeData;
             } elseif($timeData > $maxValue ) {
