@@ -17,8 +17,8 @@
 - ##### [Objective](#objective)
   + [Checklist](#checklist)
 >
-- ##### [Objective](#objective)
-  + [Naming Patterns](#naming-patterns)
+- ##### [Naming Patterns](#naming-patterns)
+
 ---
 
 ## Meeting Schedule ::
@@ -60,8 +60,11 @@
     3.3 Write tests for functions and/or 
         properties in reference to the given issue
 
-4. Add time estimate to the issue
-    4.1 The time estimate should be added by using the 'Effort' property of an issue...
+4. Add time estimate and 'statement of approach' to the issue
+
+    4.1 Post the 'statement of approach' to discussion
+    
+    4.2 Post the time estimate to discussion  
 
 5. Use one or more testing styles of your choice like...
 
@@ -78,7 +81,9 @@
     5.3 user-interaction tests via puppeteer 
 
 6. Confirmation of issue completion
+    
     6.1 Checking if the requirements have been fullfilled
+    
     6.2 Dragging issue into 'Done' section
 
 7. Merge code after every finished, reviewed as well as
@@ -108,7 +113,7 @@
 <br>
 
 
-<div style="float: left;">Sinan-David Müller</div> <div style="float: right;">2022-09-09</div>
+<div style="float: left;">Sinan-David Müller</div> <div style="float: right;">2022-09-13</div>
 
 </br>
 
