@@ -227,7 +227,7 @@ try {
             date =>
             `RIGHT(LEFT(${date}, 10), 2) + '.' + RIGHT(LEFT(${date}, 7), 2) + '.' + LEFT(${date}, 4) + ' ' + RIGHT(LEFT(${date}, 22), 11)`
 
-        chartInNewWindowKnz = function() {
+        chartInNewWindowKnz = function(isNewWindow=true) {
             sessionStorage.setItem("nameDB", $("#nameDB").val());
             sessionStorage.setItem("chartType", $("#typDiagKnz").val());
             sessionStorage.setItem("timeSpan", $("#letzteAuftrDiagKnz").val());
@@ -237,7 +237,10 @@ try {
             sessionStorage.setItem("knzName_1", $("#knzDiag1").val());
             sessionStorage.setItem("knzName_2", $("#knzDiag2").val());
             sessionStorage.setItem("knzName_3", $("#knzDiag3").val());
-            window.open("chartKennzahlenMst.html", "_blank")
+            if(isNewWindow) {
+                window.open("chartKennzahlenMst.html", "_blank");
+            }
+           
         },
         gespeicherteDiagrammeAuswahllisteErstellen2 = function() {
             var a = "",

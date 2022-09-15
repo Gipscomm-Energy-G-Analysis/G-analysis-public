@@ -2986,15 +2986,9 @@
                                                             <div class="row">
                                                                 <div class="col-sm-3">
                                                                     <div class="controlDiv controlDivProduction">
-                                                                        <label>No. of Records</label>
-                                                                        <select class="time_filter h-w"
-                                                                            id="timeFilterProduction"
-                                                                            onmousedown="this.value='';"
-                                                                            onchange="jsFunctionProduction();">
-                                                                            <option value="5" selected>5</option>
-                                                                            <option value="10">10</option>
-                                                                            <option value="15">15</option>
-                                                                            <option value="100">100</option>
+                                                                        <label>Auftrag</label>
+                                                                        <select class="graph-filter-dynamic h-w select-prod-filter"
+                                                                            id="orderFilterProduction">
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -3008,12 +3002,18 @@
                                                                 </div>
                                                                 <div class="col-sm-3">
                                                                     <div class="controlDiv controlDivProduction">
-                                                                        <label>Auftrag</label>
-                                                                        <select class="graph-filter-dynamic h-w select-prod-filter"
-                                                                            id="orderFilterProduction">
+                                                                        <label>No. of Records</label>
+                                                                        <select class="time_filter h-w"
+                                                                            id="timeFilterProduction"
+                                                                            onmousedown="this.value='';"
+                                                                            onchange="jsFunctionProduction();">
+                                                                            <option value="5" selected>5</option>
+                                                                            <option value="10">10</option>
+                                                                            <option value="15">15</option>
+                                                                            <option value="100">100</option>
                                                                         </select>
                                                                     </div>
-                                                                </div>
+                                                                </div>  
                                                             </div>
                                                             <div id="loader_image"
                                                                 style="display:none;  text-align: center;"> <img
@@ -3184,14 +3184,9 @@
                                                             <div class="row">
                                                                 <div class="col-sm-3">
                                                                     <div class="controlDiv controlDivProduction">
-                                                                        <label>No. of Records</label>
-                                                                        <select class="time_filter" id="timeFilterMixed"
-                                                                            onmousedown="this.value='';"
-                                                                            onchange="jsFunctionMixed();">
-                                                                            <option value="5" selected>5</option>
-                                                                            <option value="10">10</option>
-                                                                            <option value="15">15</option>
-                                                                            <option value="100">100</option>
+                                                                        <label>Auftrag</label>
+                                                                        <select class="graph-filter-dynamic h-w select-prod-filter"
+                                                                            id="orderFilterMixed">
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -3206,12 +3201,19 @@
                                                                 </div>
                                                                 <div class="col-sm-3">
                                                                     <div class="controlDiv controlDivProduction">
-                                                                        <label>Auftrag</label>
-                                                                        <select class="graph-filter-dynamic h-w select-prod-filter"
-                                                                            id="orderFilterMixed">
+                                                                        <label>No. of Records</label>
+                                                                        <select class="time_filter" id="timeFilterMixed"
+                                                                            onmousedown="this.value='';"
+                                                                            onchange="jsFunctionMixed();">
+                                                                            <option value="5" selected>5</option>
+                                                                            <option value="10">10</option>
+                                                                            <option value="15">15</option>
+                                                                            <option value="100">100</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
+                                                                
+                                                                
                                                             </div>
                                                             <div class="row am_graph_div" id="mixed_graph_plot_div">
                                                             </div>

@@ -188,7 +188,7 @@ class GraphController {
         $prodGraphPoints = [];
         $columnString = '';
         foreach($record as $value) {
-            $columnString .= $value['label'].',';
+            $columnString .= 'ProdData.'.$value['label'].',';
             array_push($productionArray, ['name'=>$value['graph_name'], 'label'=>$value['label']]);
         }
         $columnString = $this->str_lreplace(',', '', $columnString);
@@ -204,7 +204,7 @@ class GraphController {
                     }
                     // $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
                     // AND YEAR(zeitstempel) = ".$year." ORDER BY zeitstempel desc";
-                    $query = "SELECT TOP 1000 ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer,verbrauchAuftrag FROM ProdData WHERE anl_ID='265' AND YEAR(timeUnlock) = ".$year." ORDER BY timeUnlock ASC";
+                    $query = "SELECT TOP 1000 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' AND YEAR(ProdData.timeUnlock) = ".$year." ORDER BY ProdData.timeUnlock ASC";
                     break;
                 case 'month':
                     $month = $_REQUEST['monthFilter'];
@@ -215,14 +215,14 @@ class GraphController {
                     if(empty($year)) {
                         return ['code'=>400, 'msg' => 'No record found!'];
                     }
-                    $query = "SELECT TOP 1000 ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer,verbrauchAuftrag FROM ProdData WHERE anl_ID='265' AND YEAR(timeUnlock) = ".$year." AND MONTH(timeUnlock) = ".$month." ORDER BY timeUnlock ASC";
+                    $query = "SELECT TOP 1000 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' AND YEAR(ProdData.timeUnlock) = ".$year." AND MONTH(ProdData.timeUnlock) = ".$month." ORDER BY ProdData.timeUnlock ASC";
                     break;
                 case 'custom':
                     $start = date_create($_REQUEST['startDate']);
                     $start = date_format($start,"Y-m-d");
                     $end = date_create($_REQUEST['endDate']);
                     $end = date_format($end,"Y-m-d");
-                    $query = "SELECT TOP 1000 ".$columnString.", timeUnlock, timeClose, auftrag, artikelnummer,verbrauchAuftrag FROM ProdData WHERE anl_ID='265' AND cast (timeUnlock as date) >= '".$start."' AND cast (timeUnlock as date) <= '".$end."' ORDER BY timeUnlock ASC";
+                    $query = "SELECT TOP 1000 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' AND cast (ProdData.timeUnlock as date) >= '".$start."' AND cast (ProdData.timeUnlock as date) <= '".$end."' ORDER BY ProdData.timeUnlock ASC";
                     break;
                 default:
                     return ['code'=>400, 'msg' => 'no record found'];
