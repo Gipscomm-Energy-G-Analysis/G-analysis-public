@@ -1,20 +1,15 @@
 <?php
-include('top-cache.php');
-error_reporting (-1);
-ini_set ('display_errors', 'On');
 
-require 'DbOperations.php';
+error_reporting (-1) ;
+ini_set ("display_errors", "On") ;
 
-$nameDB = $_POST['nameDB'];
-$conn = connectToDB($nameDB);
+require "DbOperations.php" ;
 
-$gDiaID = $_POST['gDiaID'];
+$query  = "SELECT * FROM gespeicherteDiagramme " ;
+$query .= "WHERE gDia_ID = ".$_POST["gDiaID"]." " ;
 
-$query = "SELECT * FROM gespeicherteDiagramme " ;
-$query .= "WHERE  gDia_ID = $gDiaID " ;
+$records = queryDB(connectToDB($_POST["nameDB"]), $query, "read") ;
 
-$records = queryDB($conn, $query, "read");
+echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-include('bottom-cache.php');
 ?>
