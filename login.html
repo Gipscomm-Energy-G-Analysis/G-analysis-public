@@ -25,41 +25,41 @@
         const username = $("#username").val()
 
         ajaxPost("php/login.php")({username})
-        .then(
-            record => {
+        .then(console.log)
+        // .then(
+        //     record => {
+        //         const fieldnames =
+        //             [ "betrGrp_ID"
+        //             , "manGrp_ID"
+        //             , "man_ID"
+        //             , "nameDB"
+        //             , "position"
+        //             , "username"
+        //             ]
 
-                const fieldnames =
-                    [ "betrGrp_ID"
-                    , "manGrp_ID"
-                    , "man_ID"
-                    , "nameDB"
-                    , "position"
-                    , "username"
-                    ]
+        //         const valueField =
+        //             name => 
+        //             head(record)[name] 
 
-                const valueField =
-                    name => 
-                    head(record)[name] 
+        //         if (equal(getHash($("#pw").val()))(head(record).passHash)) {
 
-                if (equal(getHash($("#pw").val()))(head(record).passHash)) {
+        //             fieldnames.forEach(name => itemSessionSet(name)(valueField(name)))
 
-                    fieldnames.forEach(name => itemSessionSet(name)(valueField(name)))
+        //             itemSessionSet("rechteMenu")(head(record).rechteMenu)
+        //             itemSessionSet("rechteEdit")(head(record).rechteEdit)
 
-                    itemSessionSet("rechteMenu")(head(record).rechteMenu)
-                    itemSessionSet("rechteEdit")(head(record).rechteEdit)
-
-                    window.open(`${window.location.origin}/main.html`,"_self")
+        //             window.open(`${window.location.origin}/main.html`,"_self")
                    
-                    //  <---28-9-2021--
-                    localStorage.removeItem("dashboardDB")
-                    localStorage.removeItem("dashboardDBName")
-                    // --end-->
-                }
-                else {
-                    alert("Ihr Benutzername oder Passwort ist falsch, bitte passen Sie Ihre Zugangsdaten entsprechend an.")
-                }
-            }
-        )
+        //             //  <---28-9-2021--
+        //             localStorage.removeItem("dashboardDB")
+        //             localStorage.removeItem("dashboardDBName")
+        //             // --end-->
+        //         }
+        //         else {
+        //             alert("Ihr Benutzername oder Passwort ist falsch, bitte passen Sie Ihre Zugangsdaten entsprechend an.")
+        //         }
+        //     }
+        // )
     }
 
     /**
