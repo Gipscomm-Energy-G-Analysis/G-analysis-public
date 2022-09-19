@@ -3345,6 +3345,65 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- KPI charts Start-->
+                                        <div class="card">
+                                            <div class="card-header accordion-header p-0" id="headingFour">
+                                                <!-- <div class="row">
+                                                    <div class="col-sm-6" data-toggle="collapse"
+                                                        data-target="#graphCollapseFour" aria-expanded="false"
+                                                        aria-controls="graphCollapseFour">
+                                                        <span class="mb-0 clr-white p-l">
+                                                            KPI Charts
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="btn-group float-right"
+                                                            style="font-size: 18px;width:135px;color:white;">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+                                                <h2 class="card-header accordion-header p-0" id="headingFour">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#graphCollapseFour" aria-expanded="false" aria-controls="graphCollapseFour">
+                                                        KPI Charts
+                                                    </button>
+                                                  </h2>
+                                            </div>
+                                            <div id="graphCollapseFour" class="collapse" aria-labelledby="headingFour"
+                                                data-parent="#accordion">
+                                                <div class="card-body card-body-production">
+                                                    <div class="kpi_graph_div">
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <div class="controlDiv controlDivProduction">
+                                                                    <label>Auftrag</label>
+                                                                    <select class="graph-filter-dynamic h-w"
+                                                                        id="kpiFormula">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="controlDiv controlDivProduction">
+                                                                    <label>Graph Name</label>
+                                                                    <select class="graph-filter-dynamic"
+                                                                        id="kpiTimeFilter">
+                                                                        
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row am_graph_div" id="kpi_graph_plot_div">
+                                                        </div>
+                                                    </div>
+                                                    <div class="kpi_graph_msg common-msg">
+                                                        <h3>Es existieren keine Daten die ausgewertet werden können!
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- KPI charts End-->
                                     </div>
                                 </div>
                                 <!-- Production accordion end-->
@@ -15791,6 +15850,7 @@
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <script type="text/javascript"
         src="production_dashboard/production_js/jquery.bootstrap-duallistbox.min.js"></script>
+    <script type="text/javascript" src="production_dashboard/production_js/kpiGraph.js"></script>
     <script type="text/javascript" src="production_dashboard/production_js/intializeProductDetails.js"></script>
     <!-- Production dashboard scripts end-->
 
