@@ -239,8 +239,7 @@ try {
             sessionStorage.setItem("knzName_3", $("#knzDiag3").val());
             if(isNewWindow) {
                 window.open("chartKennzahlenMst.html", "_blank");
-            }
-           
+            }    
         },
         gespeicherteDiagrammeAuswahllisteErstellen2 = function() {
             var a = "",
@@ -2736,6 +2735,7 @@ try {
                                             $("#tblKennzahlAuswahl tbody").off("dblclick", "tr");
                                             $("#tblKennzahlAuswahl tbody").on("dblclick", "tr", function() {
                                                 var c = tblKennzahlAuswahl.row(this).data();
+                                                console.log('data_set', a);
                                                 switch (a) {
                                                     case "imgBtnknzDiag11":
                                                         $("#knzDiag1").val(c[1]);
