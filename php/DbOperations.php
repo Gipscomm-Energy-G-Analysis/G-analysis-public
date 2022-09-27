@@ -59,8 +59,16 @@ function connectToDB(string $nameDB): DBConnection
     return $conn;
 }
 
+enum E_CRUDMode
+{
+    case Read;
+    case Create;
+    case Update;
+    case Delete;
+}
+
 // Tests if sql arg is valid
-function queryDB(DBConnection $conn, string | array $sqlQueries, string $mode): array | bool
+function queryDB(DBConnection $conn, string | array $sqlQueries, E_CRUDMode $mode): array | bool
 {
     if ($GLOBALS['QueryStatsIntoFile'] == true) {
         $GLOBALS['StartTimeQueries'] = microtime(true);
@@ -95,7 +103,7 @@ function queryDB(DBConnection $conn, string | array $sqlQueries, string $mode): 
 }
 
 // Tests if ret arr is valid
-function execQuery(DBConnection $conn_, string $query_, string $mode_)
+function execQuery(DBConnection $conn_, string $query_, E_CRUDMode $mode_): string | array | bool
 {
     $retVal = '';
     $msgValid = false;
@@ -126,12 +134,10 @@ function execQuery(DBConnection $conn_, string $query_, string $mode_)
             'true' :
             'false';
 
-            $retVal = ($isValidArr && $hasValidStruct) ? $retMsg : false;
-
-    } else {b
-        $result = sqlsrv_query(d$conn_, $query_);
+        $retVal = ($isValidArr && $hasValidStruct) ? $retMsg : false;
+    } else {
+        $result = sqlsrv_query($conn_, $query_);
         $retVal = !$result ? 'error' : $query_;
-
     }
     if ($GLOBALS['QueryStatsIntoFile'] == true) {
         $executionEndTime = microtime(true);
@@ -159,7 +165,7 @@ function closeDbConn(DBConnection $conn): bool
     if ($GLOBALS['QueryStatsIntoFile'] == true) {
         $executionStartTime = microtime(true);
 
-        $isClosed = sqlsrv_close($openConn);
+        $isClosed = sqlsrv_close($conn);
 
         $executionEndTime = microtime(true);
 
