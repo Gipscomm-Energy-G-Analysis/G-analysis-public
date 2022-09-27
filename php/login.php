@@ -1,27 +1,27 @@
 <?php
 
-session_start () ;
-error_reporting(-1) ;
-ini_set ("display_errors", 1) ;
+session_start();
+error_reporting(-1);
+ini_set("display_errors", 1);
 
-require "DbOperations.php" ;
+require "DbOperations.php";
 
-// $conn = connectToDB("gipscomm") ;
+$conn = connectToDB("gipscomm");
 
-// $query  = "SELECT * FROM Users " ;
-// $query .= "WHERE username = '".$_POST["username"]."' " ;
-// $query .= "AND deleted = 0 " ;
+$query  = "SELECT * FROM Users ";
+$query .= "WHERE username = '" . $_POST["username"] . "' ";
+$query .= "AND deleted = 0 ";
 
-// $executedQuery = queryDB($conn, $query, "read") ;
+$executedQuery = queryDB($conn, $query, "read");
 
-// $records = count($executedQuery) === 1 ? $executedQuery : ["username" => json_encode(false)] ;
+$records = count($executedQuery) === 1 ? $executedQuery : ["username" => json_encode(false)];
 
-// $_SESSION["login_state"] = json_encode(count($records) === 1) ;
-// $_SESSION["username"] = $records[0]["username"] ; 
+$_SESSION["login_state"] = json_encode(count($records) === 1);
+$_SESSION["username"] = $records[0]["username"];
 
-// $login = count($records) === 1 ? $records : "error" ;
+$login = count($records) === 1 ? $records : "error";
 
-// echo json_encode($login, JSON_INVALID_UTF8_IGNORE) ;
-// closeDbConn($conn) ;
+echo json_encode(["query"=>"test"], JSON_INVALID_UTF8_IGNORE);
 
+closeDbConn($conn);
 ?>
