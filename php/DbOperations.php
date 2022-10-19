@@ -1,5 +1,5 @@
 <?php
-error_reporting(-1);
+error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 class DBConnection
@@ -50,108 +50,56 @@ class DBConnection
     }
 }
 
-
 function connectToDB(string $nameDB): DBConnection
 {
-    $server = 'sql_gc.managee.de';
-    $conn = new DBConnection('sqlsrv:Server=' . $server . ';Database=' . $nameDB . ';', 'gipscomm', 'yXFdFioIzNoGFwaQeGHo');
-
-    return $conn;
+    return new DBConnection($nameDB);
 }
 
-enum E_CRUDMode
+function queryDB(DBConnection $conn, string | array $sqlQueries, string $mode): array | string
 {
-    case Read;
-    case Create;
-    case Update;
-    case Delete;
-}
+    $typeQueries = gettype($sqlQueries);
 
-// Tests if sql arg is valid
-function queryDB(DBConnection $conn, string | array $sqlQueries, E_CRUDMode $mode): array | bool
-{
-    if ($GLOBALS['QueryStatsIntoFile'] == true) {
-        $GLOBALS['StartTimeQueries'] = microtime(true);
-    }
+    switch ($typeQueries) {
+        case 'string':
+            $prepVal = execQuery($conn, $sqlQueries, $mode);
+            $retVal = $prepVal ? $prepVal : 'queryDB : Invalid query string !! -> ' . $sqlQueries;
+            break;
 
-    $typeSqlQuery = gettype($sqlQueries);
-    if ($typeSqlQuery === 'string') {
-        $retVal = execQuery($conn, $sqlQueries, $mode);
-    } elseif ($typeSqlQuery === 'array') {
-        $retArr = array();
-        foreach ($sqlQueries as $query) {
-            $retArr[] = execQuery($conn, $query, $mode);
-        }
-        $retVal = $retArr;
-    } else {
-        $retVal = 'The datatype of the passed SQL-query is invalid!'
-            . '\n\nSQL query was passed as ' . $typeSqlQuery
-            . '\n\nThe expected datatype is either a string'
-            . '\n(one query) or an array (multiple queries)!';
-    }
-    if ($GLOBALS['QueryStatsIntoFile']) {
-        $GLOBALS['EndTimeQueries'] = microtime(true);
-        $file = 'phpDbBenchmark.log';
+        case 'array':
+            $retArr = array();
+            foreach ($sqlQueries as $query) {
+                $retArr[] = execQuery($conn, $query, $mode);
+            }
+            $retVal = in_array(false, $retArr) ? 'queryDB : Queries are not all executable  !!' : $retArr;
+            break;
 
-        $logQueriesToRun = '\n## QUERY / QUERIES TO RUN   : ';
-        $logQueriesToRun .= $typeSqlQuery === 'array' ? implode(', ', $sqlQueries) : $sqlQueries;
-
-        file_put_contents($file, $logQueriesToRun, FILE_APPEND | LOCK_EX);
+        default:
+            $retVal = 'The datatype of the passed SQL-query is invalid!'
+                . '\n\nSQL query was passed as ' . $typeQueries
+                . '\n\nThe expected datatype is either a string'
+                . '\n(one query) or an array (multiple queries)!';
+            break;
     }
 
     return $retVal;
 }
 
-// Tests if ret arr is valid
-function execQuery(DBConnection $conn_, string $query_, E_CRUDMode $mode_): string | array | bool
+function execQuery(DBConnection $conn_, string $query_, string $mode_): string | array
 {
     $retVal = '';
-    $msgValid = false;
-    $hasValidStruct = false;
-
-    if ($GLOBALS['QueryStatsIntoFile'] == true) {
-        $executionStartTime = microtime(true);
-    }
 
     if ($mode_ === 'read') {
         $result = sqlsrv_query($conn_, $query_);
         $data = array();
-        //      print_r($data);die;
 
         while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
             $data[] = $row;
         }
-        if ($result === false) {
-            $retMsg = 'error';
-        } else {
-            $retMsg = $data;
-        }
-        $isValidArr =
-            isArray($retMsg);
 
-        $hasValidStruct =
-            count(array_filter(array_map('isArray', $retMsg), 'not')) === 0 ?
-            'true' :
-            'false';
-
-        $retVal = ($isValidArr && $hasValidStruct) ? $retMsg : false;
+        $retVal = $result ? $data : 'execQuery : No data could be read !';
     } else {
         $result = sqlsrv_query($conn_, $query_);
-        $retVal = !$result ? 'error' : $query_;
-    }
-    if ($GLOBALS['QueryStatsIntoFile'] == true) {
-        $executionEndTime = microtime(true);
-
-        $elapsedTime = $executionEndTime - $executionStartTime;
-
-        $file = 'phpDbBenchmark.log';
-
-        $logQueryT = '\n## EXECUTE QUERY            : $elapsedTime';
-        $GLOBALS['separator'] = '\n## -------------------------- ';
-
-        $logFinalString = $logQueryT . $GLOBALS['separator'];
-
-        file_put_contents($file, $logFinalString, FILE_APPEND | LOCK_EX);
+        $retVal = $result ? $query_ : 'execQuery : No data could be inserted or updated !';
     }
 
     return $retVal;
@@ -159,43 +107,5 @@ function execQuery(DBConnection $conn_, string $query_, E_CRUDMode $mode_): stri
 
 function closeDbConn(DBConnection $conn): bool
 {
-
-    $isClosed = false;
-
-    if ($GLOBALS['QueryStatsIntoFile'] == true) {
-        $executionStartTime = microtime(true);
-
-        $isClosed = sqlsrv_close($conn);
-
-        $executionEndTime = microtime(true);
-
-        $elapsedTimeTerminate = $executionEndTime - $executionStartTime;
-        $elapsedTimeTotal = microtime(true) - $GLOBALS['StartTimeConn'];
-        $elapsedTimeQueries = $GLOBALS['EndTimeQueries'] - $GLOBALS['StartTimeQueries'];
-
-        $file = 'phpDbBenchmark.log';
-
-        $logTerminateT = '\n## TERMINATE CONNECTION     : $elapsedTimeTerminate';
-        $logQueriesT = '\n## TIME QUERIES           : $elapsedTimeQueries';
-        $logTotalT = '\n## TIME TOTAL               : $elapsedTimeTotal';
-
-        $logFinalString = $logTerminateT . $GLOBALS['separator'];
-        $logFinalString .= $logQueriesT . $logTotalT;
-
-        file_put_contents($file, $logFinalString, FILE_APPEND | LOCK_EX);
-    } else {
-        $isClosed = sqlsrv_close($conn);
-    }
-
-    return $isClosed;
-}
-
-// Some little helpers
-function isArray($arg)
-{
-    return gettype($arg) === 'array' ? 'true' : 'false';
-}
-function not($arg)
-{
-    return !$arg;
+    return sqlsrv_close($conn);
 }

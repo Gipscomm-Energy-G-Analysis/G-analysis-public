@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-error_reporting(-1);
+error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require "DbOperations.php";
@@ -9,7 +9,7 @@ require "DbOperations.php";
 $conn = connectToDB("gipscomm");
 
 $query  = "SELECT * FROM Users ";
-$query .= "WHERE username = '" . $_POST["username"] . "' ";
+$query .= "WHERE username = '" . $_POST["user"] . "' ";
 $query .= "AND deleted = 0 ";
 
 $executedQuery = queryDB($conn, $query, "read");
@@ -24,4 +24,3 @@ $login = count($records) === 1 ? $records : "error";
 echo json_encode(["query"=>"test"], JSON_INVALID_UTF8_IGNORE);
 
 closeDbConn($conn);
-?>
