@@ -16,7 +16,6 @@ class DBConnection
 {
     /** Define constants for write operations */
 
-    // const DB_HOST               		= '10.30.68.157';
     const DB_HOST                       = 'sql_gc.managee.de';
     const DB_DATABASE                   = 'gipscomm';
     const DB_USERNAME                   = 'gipscomm';
@@ -61,7 +60,7 @@ function queryDB(PDO $conn, string | array $sqlQueries, string $mode): array
             $retVal =
                 !$prepVal ?
                 ['error' => 'queryDB : Invalid query string !! -> ' . $sqlQueries] :
-                [$prepVal];
+                $prepVal;
             break;
 
         case 'array':
@@ -85,28 +84,20 @@ function queryDB(PDO $conn, string | array $sqlQueries, string $mode): array
 
 function execQuery(PDO $conn_, string $query_, string $mode_): array
 {
-    $retVal = '';
+    $retVal = array("" => "");
 
-    try {
-        $stmt = $conn_->query($query_);
-    } catch (Error $err) {
-        echo json_encode(['error' => $err]);
-    }
+    $stmt = $conn_->query($query_);
 
     if ($mode_ === 'read') {
-        $result = [];
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            array_push($result, $row);
-        }
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $stmt->closeCursor();
-
-        unset($stmt);
 
         $retVal = !$result ? ['error' => 'execQuery : No data could be read !'] : $result;
     } else {
         $retVal = !$stmt ? ['error' => 'execQuery : No data could be inserted or updated !'] : ["query" => $query_];
+
+        $stmt->closeCursor();
     }
 
     return $retVal;
