@@ -4254,8 +4254,9 @@ try {
         };
     const eAnlagenlisteErstellen =
         () =>
-        ajaxPost("php/eAnlEinlesen.php")({
-            nameDB: $("#nameDB").val()
+        ajaxPost("php/eAnlOptions.php")({
+            nameDB: $("#nameDB").val(),
+            eAnl_ID: $("#eAnlID").val()
         })
         .then(result => {
             const prepareTableData =

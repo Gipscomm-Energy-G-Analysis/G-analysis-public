@@ -5,12 +5,8 @@ ini_set('display_errors', 'On');
 
 require 'DbOperations.php';
 
-$conn = connectToDB($_POST['nameDB']);
+$query = "SELECT * FROM erweiterungenProdukte ";
 
-$query = (string)"SELECT * FROM erweiterungenProdukte ";
-
-$records = queryDB($conn, $query, "read");
-
-closeDbConn($conn);
+$records = (array)queryDB(connectToDB($_POST['nameDB']), $query, "read");
 
 echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);

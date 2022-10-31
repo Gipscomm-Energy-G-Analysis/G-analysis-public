@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(-1);
 ini_set('display_errors', 'On');
 
@@ -100,5 +101,5 @@ echo json_encode(
     [
         "gipscommAdmins"   => $results[0], "betreuerGruppen"  => $results[1], "superAdmins"      => $results[2], "mandantenGruppen" => $results[3], "admins"           => $results[4], "benutzer"         => $results[5]
     ],
-    JSON_INVALID_UTF8_IGNORE
+    JSON_INVALID_UTF8_SUBSTITUTE
 );

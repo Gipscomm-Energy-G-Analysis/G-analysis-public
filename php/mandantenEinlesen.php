@@ -1,59 +1,51 @@
 <?php
-include('top-cache.php') ;
-error_reporting (-1) ;
-ini_set ('display_errors', 'On') ;
 
-require 'DbOperations.php' ;
+error_reporting(-1);
+ini_set('display_errors', 'On');
 
-$nameDB = "gipscomm" ;
-$conn = connectToDB ( $nameDB ) ;
+require 'DbOperations.php';
 
-$betrGrpID = $_POST [ 'betrGrpID' ] ;
-$ins = $_POST [ 'ins' ] ;
-$manOderManGrpID = $_POST [ 'manOderManGrpID' ] ;
+$nameDB = "gipscomm";
+$conn = connectToDB($nameDB);
 
-if( $betrGrpID == "alle" ) {
-    $query = "SELECT * FROM mandanten " ;
-    $query .= "ORDER BY nameMan " ;
-}
-else {
-  if( $ins == null && $manOderManGrpID == null ) {
-    $queryBetrGrp  = "SELECT mandantenIDs FROM betreuerGruppen " ;
-    $queryBetrGrp .= "WHERE betrGrp_ID = '$betrGrpID' " ;
+$betrGrpID = $_POST['betrGrpID'];
+$ins = $_POST['ins'];
+$manOderManGrpID = $_POST['manOderManGrpID'];
 
-    $result = queryDB ($conn, $queryBetrGrp, "read")[0]["mandantenIDs"] ;
+if ($betrGrpID == "alle") {
+    $query = "SELECT * FROM mandanten ";
+    $query .= "ORDER BY nameMan ";
+} else {
+    if ($ins == null && $manOderManGrpID == null) {
+        $queryBetrGrp  = "SELECT mandantenIDs FROM betreuerGruppen ";
+        $queryBetrGrp .= "WHERE betrGrp_ID = '$betrGrpID' ";
 
-    $query  = "SELECT * FROM mandanten " ;
-    $query .= "WHERE man_ID IN (".$result.") " ;
-  }
-  elseif( $ins == "man_ID" ) {
-    $query = "SELECT * FROM mandanten " ;
-    $query .= "WHERE man_ID = '$manOderManGrpID' " ;
-  }
-  elseif ( $ins == "manGrp_ID" ) {
-    $query1 = "SELECT mandantenIDs FROM mandantenGruppen " ;
-    $query1 .= "WHERE manGrp_ID = '$manOderManGrpID' " ;
+        $result = queryDB($conn, $queryBetrGrp, "read")[0]["mandantenIDs"];
 
-    $result1 = sqlsrv_query ( $conn, $query1 ) ;
-    $data1 = array() ;
+        $query  = "SELECT * FROM mandanten ";
+        $query .= "WHERE man_ID IN (" . $result . ") ";
+    } elseif ($ins == "man_ID") {
+        $query = "SELECT * FROM mandanten ";
+        $query .= "WHERE man_ID = '$manOderManGrpID' ";
+    } elseif ($ins == "manGrp_ID") {
+        $query1 = "SELECT mandantenIDs FROM mandantenGruppen ";
+        $query1 .= "WHERE manGrp_ID = '$manOderManGrpID' ";
 
-    while( $row1 = sqlsrv_fetch_array ( $result1, SQLSRV_FETCH_ASSOC ) ) {
-    	$data1[] = $row1 ;
+        $result1 = queryDB($conn, $query1, "read");
+        $data1 = array();
+        $data1 = $result1;
+
+        $manIDs = explode(",", $data1[0]["mandantenIDs"]);
+
+        $query = "SELECT * FROM mandanten ";
+        $query .= "WHERE man_ID = '$manIDs[0]' ";
+
+        for ($n = 1; $n < count($manIDs); $n++) {
+            $query .= "OR man_ID = '$manIDs[$n]' ";
+        }
     }
-
-    $manIDs = explode ( ",", $data1 [ 0 ] [ "mandantenIDs" ] ) ;
-
-    $query = "SELECT * FROM mandanten " ;
-    $query .= "WHERE man_ID = '$manIDs[0]' " ;
-
-    for($n = 1; $n < count ( $manIDs ); $n++) {
-      $query .= "OR man_ID = '$manIDs[$n]' " ;
-    }
-  }
 }
 
-$records = queryDB ( $conn, $query, "read") ;
+$records = queryDB($conn, $query, "read");
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;
-include('bottom-cache.php') ;
-?>
+echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);

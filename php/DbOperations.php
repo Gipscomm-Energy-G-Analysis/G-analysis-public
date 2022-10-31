@@ -84,16 +84,17 @@ function queryDB(PDO $conn, string | array $sqlQueries, string $mode): array
 
 function execQuery(PDO $conn_, string $query_, string $mode_): array
 {
-    $retVal = array("" => "");
+    $retVal = array();
 
-    $stmt = $conn_->query($query_);
+    $stmt = $conn_->prepare($query_);
+    $stmt->execute();
 
     if ($mode_ === 'read') {
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt->closeCursor();
-
         $retVal = !$result ? ['error' => 'execQuery : No data could be read !'] : $result;
+
+        $stmt->closeCursor();
     } else {
         $retVal = !$stmt ? ['error' => 'execQuery : No data could be inserted or updated !'] : ["query" => $query_];
 

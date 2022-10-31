@@ -11,6 +11,6 @@ $query = (string)'SELECT * FROM erweiterungenProdukte ';
 
 $records = queryDB(conn, $query, "read");
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
 
 closeDbConn(conn);

@@ -1,23 +1,17 @@
 <?php
 
-include('top-cache.php');
+error_reporting(-1);
+ini_set('display_errors', 'On');
 
-error_reporting ( -1 ) ;
-ini_set ( 'display_errors', 'On' ) ;
+require 'DbOperations.php';
 
-require 'DbOperations.php' ;
+$nameDB = $_POST['nameDB'];
+$conn = connectToDB($nameDB);
 
-$nameDB = $_POST[ 'nameDB' ] ;
-$conn = connectToDB( $nameDB ) ;
+$query  = "SELECT * FROM betreuerGruppen WHERE deleted = 0";
 
-$query  = "SELECT * FROM betreuerGruppen WHERE deleted = 0" ;
+$records = queryDB($conn, $query, "read");
 
-$records = queryDB( $conn, $query, "read" ) ;
+closeDbConn($conn);
 
-closeDbConn ( $conn ) ;
-
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-
-include('bottom-cache.php');
-
-?>
+echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);

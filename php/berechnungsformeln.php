@@ -13,6 +13,4 @@ $query .= "AND deleted <> 'true' ";
 
 $records = queryDB($conn, $query, "read");
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-
-?>
+echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);

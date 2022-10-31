@@ -18,7 +18,7 @@
     <link type="text/css" rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
     <link type="text/css" rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
     <link type="text/css" rel="stylesheet" href="dist/css/colReorder.dataTables.min.css">
-    
+
     <link href="dist/css/pace-theme.min.css" rel="stylesheet" />
     <!-- Tree View Script -->
     <link href="src/css/jquery.treeview.css" rel="stylesheet">
@@ -381,269 +381,266 @@
             </nav>
         </div>
     </div>
-    
-                <!-- 21-9-2021--- -->
-                <input type="hidden" id="start_tile_data">
-                <input type="hidden" id="drop_tile_data">
 
-                <!-- --end -->
+    <!-- 21-9-2021--- -->
+    <input type="hidden" id="start_tile_data">
+    <input type="hidden" id="drop_tile_data">
 
-                <input type="hidden" id='save_tile_id'>
-                <input type="hidden" id='save_tile_id_automatic'>
-                <!-- <div id='outside_tile_chart_display_html'></div> -->
-                <div class="dashboard_count_div" id="dashboard_count_div_tile">
-                    <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click"
-                        id="mesurement_count_div" style="display: none">
-                        <div class="card card-border">
-                            <div class="row card-body">
-                                <div id="mesurement_count_content" class="col-md-12">
-                                    <p class="card-title text-md-center text-xl-left"
-                                        id="measuremet_dashboard_tile_title">Messstellen</p>
-                                    <div
-                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count">
-                                        </h3>
-                                        <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                    </div>
-                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span
-                                            class="text-black ml-1"><small></small></span></p>
-                                </div>
+    <!-- --end -->
 
-                                <div class="col-md-9 save_table_div_show overflow-hide" id="measurement_table_show"
-                                    style="display: none">
-                                    <div class="save_table_height">
-                                        <table class="table table-striped table-bordered table-hover"
-                                            id="measurement_dashboard_table">
-                                        </table>
-                                    </div>
-                                    <div class="pagination_save_table" style="display: none">
-                                        <ul class="pagination">
-                                            <li class="page-item ">
-                                                <a class="page-link" href="javascript:void(0);" aria-label="Previous">
-                                                    <span aria-hidden="true">«</span>
-                                                    <span class="sr-only">das Vorhergehende</span>
-                                                </a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="javascript:void(0);">Seite</a>
-                                            </li>
+    <input type="hidden" id='save_tile_id'>
+    <input type="hidden" id='save_tile_id_automatic'>
+    <!-- <div id='outside_tile_chart_display_html'></div> -->
+    <div class="dashboard_count_div" id="dashboard_count_div_tile">
+        <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click"
+            id="mesurement_count_div" style="display: none">
+            <div class="card card-border">
+                <div class="row card-body">
+                    <div id="mesurement_count_content" class="col-md-12">
+                        <p class="card-title text-md-center text-xl-left" id="measuremet_dashboard_tile_title">
+                            Messstellen</p>
+                        <div
+                            class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                            <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="mesurement_count">
+                            </h3>
+                            <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                        </div>
+                        <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span>
+                        </p>
+                    </div>
 
-                                            <li style="display: block" class="page-item"><input type="number" readonly
-                                                    class="save_pagination_input_val pagination_input_val page-link">
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="javascript:void(0);">of</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link " href="javascript:void(0);">1</a>
-                                            </li>
+                    <div class="col-md-9 save_table_div_show overflow-hide" id="measurement_table_show"
+                        style="display: none">
+                        <div class="save_table_height">
+                            <table class="table table-striped table-bordered table-hover"
+                                id="measurement_dashboard_table">
+                            </table>
+                        </div>
+                        <div class="pagination_save_table" style="display: none">
+                            <ul class="pagination">
+                                <li class="page-item ">
+                                    <a class="page-link" href="javascript:void(0);" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                        <span class="sr-only">das Vorhergehende</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="javascript:void(0);">Seite</a>
+                                </li>
 
-                                            <li class="page-item ">
-                                                <a class="page-link" style="background: #d6d6d6; color: black"
-                                                    href="javascript:void(0);" aria-label="Next">
-                                                    <span aria-hidden="true">»</span>
-                                                    <span class="sr-only">das Nächste</span>
-                                                </a>
-                                            </li>
+                                <li style="display: block" class="page-item"><input type="number" readonly
+                                        class="save_pagination_input_val pagination_input_val page-link">
+                                </li>
+                                <li class="page-item"><a class="page-link" href="javascript:void(0);">of</a>
+                                </li>
+                                <li class="page-item"><a class="page-link " href="javascript:void(0);">1</a>
+                                </li>
 
-                                            <li class="page-item">
-                                                <select class="page-link" id="save_measurement_number_record">
-                                                    <option value="5">5</option>
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="30">30</option>
-                                                    <option value="50">50</option>
-                                                </select>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- <div class="col-md-9 image_div_show overflow-hide" style="display: none">
+                                <li class="page-item ">
+                                    <a class="page-link" style="background: #d6d6d6; color: black"
+                                        href="javascript:void(0);" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                        <span class="sr-only">das Nächste</span>
+                                    </a>
+                                </li>
+
+                                <li class="page-item">
+                                    <select class="page-link" id="save_measurement_number_record">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-9 image_div_show overflow-hide" style="display: none">
                    <img src="upload/screenshot_table_body.png" id="screenshot_image" alt="Image Not Available" height="167px" width="593px">
                 </div> -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click"
-                        id="product_count_div" style="display: none">
-                        <div class="card card-border">
-                            <div class="row card-body">
-                                <div id="product_count_content" class="col-md-12">
-                                    <p class="card-title text-md-center text-xl-left">Produkte</p>
-                                    <div
-                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="product_count"></h3>
-                                        <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                    </div>
-                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span
-                                            class="text-black ml-1"><small></small></span></p>
-                                </div>
-
-                                <div class="col-md-9 save_table_div_show overflow-hide" id="product_table_show"
-                                    style="display: none">
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click"
-                        id="energy_count_div" style="display: none">
-                        <div class="card card-border">
-                            <div class="row card-body">
-                                <div class="col-md-12" id="energy_count_content">
-                                    <p class="card-title text-md-center text-xl-left">Energiedaten Eintrag</p>
-                                    <div
-                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_count"></h3>
-                                        <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                    </div>
-                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span
-                                            class="text-black ml-1"><small></small></span></p>
-                                </div>
-
-                                <div class="col-md-9 save_table_div_show overflow-hide" id="energy_table_show"
-                                    style="display: none">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click"
-                        id="energy_consumed_div" style="display: none">
-                        <div class="card card-border">
-                            <div class="row card-body">
-                                <div class="col-md-12" id="energy_consumed_content">
-                                    <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
-                                    <div
-                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"
-                                            id="energy_consumed_count"></h3>
-                                        <p class="energy_unit text-muted">kWh</p>
-                                        <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                    </div>
-                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"></span></p>
-                                </div>
-
-                                <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_table_show"
-                                    style="display: none">
-
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 27-7-2021 -->
-                    <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width  tiles-click"
-                        id="five_days_energy_consumed" style="display: none">
-                        <div class="card card-border">
-                            <div class="row card-body">
-                                <div class="col-md-12" id="energy_consumed_five_day_content">
-                                    <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
-                                    <div
-                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0"
-                                            id="five_days_energy_count"></h3>
-                                        <p class="energy_unit text-muted">kWh</p>
-                                        <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                    </div>
-                                    <p class="mb-0 mt-2 text-success">(05 Tage)<span
-                                            class="text-black ml-1"><small></small></span></p>
-                                </div>
-
-                                <div class="col-md-9 save_table_div_show overflow-hide"
-                                    id="energy_consumed_five_day_table_show" style="display: none">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- --end-- -->
                 </div>
-
-                <div class="row dashboard_count_div_chart">
-                    <div class="col-md-6 grid-margin stretch-card" id="energy_graph_chart" style="display: none">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-title">Energiedaten ein Monat</p>
-                                <p class="text-muted font-weight-light">Received overcame oh sensible so at an. Formed
-                                    do change merely to county it. Am separate contempt domestic to to oh. On relation
-                                    my so addition branched.</p>
-                                <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
-                                <!-- <canvas id="sales-chart"></canvas> -->
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-md-6 grid-margin stretch-card" id="energy_circle_chart" style="display: none">
-                        <div class="card border-bottom-0">
-                            <div class="card-body pb-0">
-                                <p class="card-title">Energiedaten details</p>
-                                <p class="text-muted font-weight-light">The argument in favor of using filler text goes
-                                    something like this: If you use real content in the design process, anytime you
-                                    reach a review</p>
-
-                            </div>
-                            <!-- <canvas id="order-chart" class="w-100"></canvas> -->
-                            <canvas id="north-america-chart"></canvas>
-                            <div id="north-america-legend"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="display: none">
-                    <div class="col-md-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="card-title mb-2">Energiedaten Verbrauch</p>
-                                <div class="table-responsive table-not-consumed">
-                                    <table class="table table-hover table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Zeitintervall</th>
-                                                <th>Start</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="energy_not_consumed_table">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 28-7-2021 -->
-                <div class="row dashboard_count_div">
-                    <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div"
-                        style="display: none">
-                        <div class="card card-border">
-                            <div class="card-body">
-                                <p class="card-title mb-2">Energiedaten 5 Tage Verbrauch</p>
-                                <div class="table-responsive table-not-consumed">
-                                    <table class="table table-hover table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Zeitintervall</th>
-                                                <th>Tag</th>
-                                                <th>Datum</th>
-                                                <th>Verbrauch</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="five_days_energy_consumed_table">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- --end-- -->
             </div>
-            <!-- <canvas id="areaChart"></canvas> -->
-            <!-- 30-9-2021- -->
-            <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div>  -->
-            <!-- <div style="height: 500px; width: 570px;" class="3 grid-margin actual_tile_height stretch-card tiles-click" id="measurement_count_tile_modal_3" data-i="3" data-type-tile="Measurement">
+        </div>
+        <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click"
+            id="product_count_div" style="display: none">
+            <div class="card card-border">
+                <div class="row card-body">
+                    <div id="product_count_content" class="col-md-12">
+                        <p class="card-title text-md-center text-xl-left">Produkte</p>
+                        <div
+                            class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                            <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="product_count"></h3>
+                            <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                        </div>
+                        <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span>
+                        </p>
+                    </div>
+
+                    <div class="col-md-9 save_table_div_show overflow-hide" id="product_table_show"
+                        style="display: none">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click"
+            id="energy_count_div" style="display: none">
+            <div class="card card-border">
+                <div class="row card-body">
+                    <div class="col-md-12" id="energy_count_content">
+                        <p class="card-title text-md-center text-xl-left">Energiedaten Eintrag</p>
+                        <div
+                            class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                            <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_count"></h3>
+                            <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                        </div>
+                        <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"><small></small></span>
+                        </p>
+                    </div>
+
+                    <div class="col-md-9 save_table_div_show overflow-hide" id="energy_table_show"
+                        style="display: none">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click"
+            id="energy_consumed_div" style="display: none">
+            <div class="card card-border">
+                <div class="row card-body">
+                    <div class="col-md-12" id="energy_consumed_content">
+                        <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
+                        <div
+                            class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                            <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="energy_consumed_count"></h3>
+                            <p class="energy_unit text-muted">kWh</p>
+                            <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                        </div>
+                        <p class="mb-0 mt-2 text-success">(30 Tage)<span class="text-black ml-1"></span></p>
+                    </div>
+
+                    <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_table_show"
+                        style="display: none">
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- 27-7-2021 -->
+        <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width  tiles-click"
+            id="five_days_energy_consumed" style="display: none">
+            <div class="card card-border">
+                <div class="row card-body">
+                    <div class="col-md-12" id="energy_consumed_five_day_content">
+                        <p class="card-title text-md-center text-xl-left">Energiedaten Verbrauch</p>
+                        <div
+                            class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                            <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0" id="five_days_energy_count"></h3>
+                            <p class="energy_unit text-muted">kWh</p>
+                            <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                        </div>
+                        <p class="mb-0 mt-2 text-success">(05 Tage)<span class="text-black ml-1"><small></small></span>
+                        </p>
+                    </div>
+
+                    <div class="col-md-9 save_table_div_show overflow-hide" id="energy_consumed_five_day_table_show"
+                        style="display: none">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- --end-- -->
+    </div>
+
+    <div class="row dashboard_count_div_chart">
+        <div class="col-md-6 grid-margin stretch-card" id="energy_graph_chart" style="display: none">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title">Energiedaten ein Monat</p>
+                    <p class="text-muted font-weight-light">Received overcame oh sensible so at an. Formed
+                        do change merely to county it. Am separate contempt domestic to to oh. On relation
+                        my so addition branched.</p>
+                    <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
+                    <!-- <canvas id="sales-chart"></canvas> -->
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6 grid-margin stretch-card" id="energy_circle_chart" style="display: none">
+            <div class="card border-bottom-0">
+                <div class="card-body pb-0">
+                    <p class="card-title">Energiedaten details</p>
+                    <p class="text-muted font-weight-light">The argument in favor of using filler text goes
+                        something like this: If you use real content in the design process, anytime you
+                        reach a review</p>
+
+                </div>
+                <!-- <canvas id="order-chart" class="w-100"></canvas> -->
+                <canvas id="north-america-chart"></canvas>
+                <div id="north-america-legend"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="display: none">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title mb-2">Energiedaten Verbrauch</p>
+                    <div class="table-responsive table-not-consumed">
+                        <table class="table table-hover table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Zeitintervall</th>
+                                    <th>Start</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="energy_not_consumed_table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 28-7-2021 -->
+    <div class="row dashboard_count_div">
+        <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div" style="display: none">
+            <div class="card card-border">
+                <div class="card-body">
+                    <p class="card-title mb-2">Energiedaten 5 Tage Verbrauch</p>
+                    <div class="table-responsive table-not-consumed">
+                        <table class="table table-hover table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Zeitintervall</th>
+                                    <th>Tag</th>
+                                    <th>Datum</th>
+                                    <th>Verbrauch</th>
+                                </tr>
+                            </thead>
+                            <tbody id="five_days_energy_consumed_table">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- --end-- -->
+    </div>
+    <!-- <canvas id="areaChart"></canvas> -->
+    <!-- 30-9-2021- -->
+    <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div>  -->
+    <!-- <div style="height: 500px; width: 570px;" class="3 grid-margin actual_tile_height stretch-card tiles-click" id="measurement_count_tile_modal_3" data-i="3" data-type-tile="Measurement">
                                   <div class="card card-border">
                                       <div class="card-body">
                                           <div id="" class="">
@@ -668,128 +665,128 @@
                                       </div>
                                   </div>
                               </div> -->
-            <!-- end -->
-            <!-- content-wrapper ends -->
-            <!-- partial:partials/_footer.html -->
+    <!-- end -->
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
 
-            <footer class="footer">
-                <!-- <div class="d-sm-flex justify-content-center justify-content-sm-between">
+    <footer class="footer">
+        <!-- <div class="d-sm-flex justify-content-center justify-content-sm-between">
           <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
           <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard templates</a> from Bootstrapdash.com</span>
         </div> -->
-            </footer>
-            <!-- partial -->
-        </div>
+    </footer>
+    <!-- partial -->
+    </div>
 
-        <!-- dashboard.php End -->
+    <!-- dashboard.php End -->
 
-        <!-- chart.php start -->
-        <div class="main-panel" id="charts_main_div" style="display: none">
-            <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-lg-6 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Line chart</h4>
-                                <canvas class="lineChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Bar chart</h4>
-                                <canvas id="barChart"></canvas>
-                            </div>
+    <!-- chart.php start -->
+    <div class="main-panel" id="charts_main_div" style="display: none">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Line chart</h4>
+                            <canvas class="lineChart"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Area chart</h4>
-                                <canvas id="areaChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Doughnut chart</h4>
-                                <canvas id="doughnutChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Pie chart</h4>
-                                <canvas id="pieChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Scatter chart</h4>
-                                <canvas id="scatterChart"></canvas>
-                            </div>
+                <div class="col-lg-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Bar chart</h4>
+                            <canvas id="barChart"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:../../partials/_footer.html -->
-            <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
-                        bootstrapdash.com 2020</span>
-                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
-                            href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard templates</a> from
-                        Bootstrapdash.com</span>
+            <div class="row">
+                <div class="col-lg-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Area chart</h4>
+                            <canvas id="areaChart"></canvas>
+                        </div>
+                    </div>
                 </div>
-            </footer>
-            <!-- partial -->
+                <div class="col-lg-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Doughnut chart</h4>
+                            <canvas id="doughnutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Pie chart</h4>
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 grid-margin grid-margin-lg-0 stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Scatter chart</h4>
+                            <canvas id="scatterChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- chart.php End -->
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
+                    bootstrapdash.com 2020</span>
+                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
+                        href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard templates</a> from
+                    Bootstrapdash.com</span>
+            </div>
+        </footer>
+        <!-- partial -->
+    </div>
+    <!-- chart.php End -->
 
-        <!-- energy_table.php Start -->
-        <div class="main-panel" id="energy_table_main_div" style="display: none">
-            <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Energiedaten</h4>
-                                <!-- 17-11-2021 -->
-                                <div class="row">
-                                    <div class="form-group col-md-1 align-cntr">
-                                        <label><img src="images/back-btn.png" id="back_btn_energy"
-                                                style="display: block;"></label>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="energy_type">Datentyp</label>
-                                        <select class="form-control form-control-sm text-dark" id="energy_type">
-                                            <option value="automatic">Automatisch</option>
-                                            <option value="manually">Manuell</option>
-                                            <option value="layer_modal">SchichtModelle</option>
-                                        </select>
-                                    </div>
+    <!-- energy_table.php Start -->
+    <div class="main-panel" id="energy_table_main_div" style="display: none">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Energiedaten</h4>
+                            <!-- 17-11-2021 -->
+                            <div class="row">
+                                <div class="form-group col-md-1 align-cntr">
+                                    <label><img src="images/back-btn.png" id="back_btn_energy"
+                                            style="display: block;"></label>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="energy_type">Datentyp</label>
+                                    <select class="form-control form-control-sm text-dark" id="energy_type">
+                                        <option value="automatic">Automatisch</option>
+                                        <option value="manually">Manuell</option>
+                                        <option value="layer_modal">SchichtModelle</option>
+                                    </select>
+                                </div>
 
 
-                                    <!----3-2-2022 -->
-                                    <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
-                                        <label for="energy_measurement_automatic">Messstelle auswählen</label>
-                                        <select class="form-control form-control-sm text-dark"
-                                            id="energy_measurement_automatic">
-                                            <option value="">Messung auswählen</option>
-                                        </select>
-                                    </div>
+                                <!----3-2-2022 -->
+                                <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                                    <label for="energy_measurement_automatic">Messstelle auswählen</label>
+                                    <select class="form-control form-control-sm text-dark"
+                                        id="energy_measurement_automatic">
+                                        <option value="">Messung auswählen</option>
+                                    </select>
+                                </div>
 
-                                    <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                                <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
                     <label for="energy_automatic_order_by" id="energy_record_order_by_label">Verbrauchte Filtereinheiten</label>
                     <select class="form-control form-control-sm text-dark" id="energy_automatic_order_by">
                       <option value="desc">Maximum</option>
@@ -797,8 +794,8 @@
                     </select>
                   </div> -->
 
-                                    <!-- 04-3-2022 -->
-                                    <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                                <!-- 04-3-2022 -->
+                                <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
                     <label class="form-check-label"> Uhrzeit Von </label>
                     <input type="time" class="form-control-sm form-control text-mute" id="energy_automatic_input_from_time" name="energy_automatic_input_from_time" placeholder="Uhrzeit Von">
                     <span class='energy_automatic_input_from_time_error text-danger'></span>
@@ -810,16 +807,16 @@
                     <span class='energy_automatic_input_to_time_error text-danger'></span>
                   </div> -->
 
-                                    <div class="form-group col-md-3 energy_automatic_filter_div"
-                                        id="energy_automatic_input_div" style="display: none">
-                                        <label class="form-check-label"> Anzahl Datensätze </label>
-                                        <input type="number" class="form-control-sm form-control text-mute"
-                                            id="energy_automatic_input" name="energy_automatic_input"
-                                            placeholder="Bereichswert eingeben">
-                                        <span class='energy_automatic_input_error text-danger'></span>
-                                    </div>
+                                <div class="form-group col-md-3 energy_automatic_filter_div"
+                                    id="energy_automatic_input_div" style="display: none">
+                                    <label class="form-check-label"> Anzahl Datensätze </label>
+                                    <input type="number" class="form-control-sm form-control text-mute"
+                                        id="energy_automatic_input" name="energy_automatic_input"
+                                        placeholder="Bereichswert eingeben">
+                                    <span class='energy_automatic_input_error text-danger'></span>
+                                </div>
 
-                                    <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
+                                <!-- <div class="form-group col-md-3 energy_automatic_filter_div" style="display: none">
                      <label for="energy_measurement_automatic">Interval</label>
                      <select class="form-control form-control-sm text-dark" id="energy_measurement_automatic">
                        <option value="">15-min</option>
@@ -827,42 +824,40 @@
                        <option value="">Month</option>
                      </select>
                    </div> -->
-                                    <!-- --end-- -->
+                                <!-- --end-- -->
 
 
-                                    <div class="form-group col-md-3 auto_man_div">
-                                        <label for="energy_time_interval">Wählen Sie ein Zeitintervall aus</label>
-                                        <select class="form-control form-control-sm text-dark"
-                                            id="energy_time_interval">
-                                            <option value="1">Tage</option>
-                                            <option value="2">Wochen</option>
-                                            <option value="3">Monate</option>
-                                            <option value="4">Jahre</option>
-                                            <!-- <option value="40">40</option>
+                                <div class="form-group col-md-3 auto_man_div">
+                                    <label for="energy_time_interval">Wählen Sie ein Zeitintervall aus</label>
+                                    <select class="form-control form-control-sm text-dark" id="energy_time_interval">
+                                        <option value="1">Tage</option>
+                                        <option value="2">Wochen</option>
+                                        <option value="3">Monate</option>
+                                        <option value="4">Jahre</option>
+                                        <!-- <option value="40">40</option>
                       <option value="50">50</option> -->
-                                        </select>
-                                    </div>
+                                    </select>
+                                </div>
 
-                                    <div class="form-group col-md-3 auto_man_div">
-                                        <label for="energy_records_order_by"
-                                            id="energy_record_order_by_label">Verbrauchte Filtereinheiten</label>
-                                        <select class="form-control form-control-sm text-dark"
-                                            id="energy_records_order_by">
-                                            <option value="order_by_desc">Maximum</option>
-                                            <option value="order_by_asc">Minimum</option>
-                                            <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
-                                        </select>
-                                    </div>
+                                <div class="form-group col-md-3 auto_man_div">
+                                    <label for="energy_records_order_by" id="energy_record_order_by_label">Verbrauchte
+                                        Filtereinheiten</label>
+                                    <select class="form-control form-control-sm text-dark" id="energy_records_order_by">
+                                        <option value="order_by_desc">Maximum</option>
+                                        <option value="order_by_asc">Minimum</option>
+                                        <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
+                                    </select>
+                                </div>
 
-                                    <div class="form-group col-md-3 auto_man_div">
-                                        <label for="energy_number_record">Gesameinträge</label>
-                                        <input type="number" class="form-control form-control-sm text-dark"
-                                            id="energy_total_number_record" placeholder="Gesamtrekorde">
-                                        <span class='energy_number_record_error text-danger'></span>
-                                    </div>
+                                <div class="form-group col-md-3 auto_man_div">
+                                    <label for="energy_number_record">Gesameinträge</label>
+                                    <input type="number" class="form-control form-control-sm text-dark"
+                                        id="energy_total_number_record" placeholder="Gesamtrekorde">
+                                    <span class='energy_number_record_error text-danger'></span>
+                                </div>
 
-                                    <!-- 12-1-2022 Layer Modal Div -->
-                                    <!-- <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                                <!-- 12-1-2022 Layer Modal Div -->
+                                <!-- <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
                     <label for="layer_modal_date">Select Date</label>
                      <input type="date" class="form-control form-control-sm text-dark" id="layer_modal_date" placeholder="Select Date">
                   </div>
@@ -896,736 +891,724 @@
                     </select>
                     <span class='energy_number_layer_day_filter_error text-danger'></span>
                   </div> -->
-                                    <!-- --end -->
+                                <!-- --end -->
 
 
-                                    <!-- 25-1-2022 -->
+                                <!-- 25-1-2022 -->
 
-                                    <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
-                                        <label for="energy_measurement">Messung auswählen</label>
-                                        <select class="form-control form-control-sm text-dark" id="energy_measurement">
-                                            <option value="">Messung auswählen</option>
-                                        </select>
-                                    </div>
-
-
-                                    <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
-                                        <label for="select_day_week">Wählen Sie Filter aus</label>
-                                        <select class="form-control form-control-sm text-dark" id="select_day_week">
-                                            <option value="">Wählen Sie Filter aus</option>
-                                            <option value="day">Tag</option>
-                                            <option value="week">Woche</option>
-                                        </select>
-                                        <span class='energy_day_week_filter_error text-danger'></span>
-                                    </div>
-
-                                    <div class="form-group col-md-3 layer_modal_filter_div" id="input_val_week_day_div"
-                                        style="display: none">
-                                        <label class="form-check-label"> Bereichswert eingeben </label>
-                                        <input type="number" class="form-control-sm form-control text-mute"
-                                            id="input_val_week_day" name="input_val_week_day"
-                                            placeholder="Bereichswert eingeben">
-                                        <span class='energy_input_day_week_error text-danger'></span>
-                                    </div>
-                                    <!-- --end -->
+                                <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                                    <label for="energy_measurement">Messung auswählen</label>
+                                    <select class="form-control form-control-sm text-dark" id="energy_measurement">
+                                        <option value="">Messung auswählen</option>
+                                    </select>
+                                </div>
 
 
-                                    <div class="form-group col-md-3">
-                                        <input type="button" class="btn btn-sm btn-success click_common_btn"
-                                            id="energy_btn_table" value='Show Results'>
-                                    </div>
+                                <div class="form-group col-md-3 layer_modal_filter_div" style="display: none">
+                                    <label for="select_day_week">Wählen Sie Filter aus</label>
+                                    <select class="form-control form-control-sm text-dark" id="select_day_week">
+                                        <option value="">Wählen Sie Filter aus</option>
+                                        <option value="day">Tag</option>
+                                        <option value="week">Woche</option>
+                                    </select>
+                                    <span class='energy_day_week_filter_error text-danger'></span>
+                                </div>
 
-                                    <!-- <div class="form-group col-md-3">
+                                <div class="form-group col-md-3 layer_modal_filter_div" id="input_val_week_day_div"
+                                    style="display: none">
+                                    <label class="form-check-label"> Bereichswert eingeben </label>
+                                    <input type="number" class="form-control-sm form-control text-mute"
+                                        id="input_val_week_day" name="input_val_week_day"
+                                        placeholder="Bereichswert eingeben">
+                                    <span class='energy_input_day_week_error text-danger'></span>
+                                </div>
+                                <!-- --end -->
+
+
+                                <div class="form-group col-md-3">
+                                    <input type="button" class="btn btn-sm btn-success click_common_btn"
+                                        id="energy_btn_table" value='Show Results'>
+                                </div>
+
+                                <!-- <div class="form-group col-md-3">
                      <input type="button" class="btn btn-sm btn-success click_common_btn" id="back_energy_btn_table" value='Back' style="display: none">
                    </div> -->
 
-                                    <div class="form-group col-md-3" id="open_end_layer_div" style="display: none">
-                                        <div class="form-check form-check-primary">
-                                            <label class="form-check-label">
-                                                Open End
-                                                <input type="checkbox" class="text-mute" id="open_end_layer"
-                                                    name="open_end_layer" checked value="1">
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-                                    <div class="form-group col-md-12">
-                                        <label for="energy_search_record"><img src="images/back-btn.png"
-                                                id="back_energy_btn_table" style="display: none;">
-                                            Aufzeichnungen suchen</label>
-                                        <input type="text" class="form-control form-control-sm text-dark"
-                                            id="energy_search_record" placeholder="Aufzeichnungen suchen">
-                                    </div>
-
-                                    <div class="table-responsive col-md-12 table-margin" id="energy_record_table">
-                                        <table class="table table-striped table-bordered table-hover"
-                                            id="energy_record_tb">
-                                            <thead class="energy_table_header">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Zeitintervall</th>
-                                                    <th>Erstellungsdatum</th>
-                                                    <th>Gesamteinheiten</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="energy_select_table_entries">
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <input type="hidden" id="mst_id_hidden_energy">
-                                    <input type="hidden" id="overall_count_energy">
-                                    <input type="hidden" id="row_click_last_date_energy">
-                                    <input type="hidden" id="layer_modal">
-
-                                    <div id="energy_table_data_loader_div" style="display: none">
-                                        <img src="dashboard/images/loader_dashboard.gif"
-                                            id="energy_table_data_loader_img">
+                                <div class="form-group col-md-3" id="open_end_layer_div" style="display: none">
+                                    <div class="form-check form-check-primary">
+                                        <label class="form-check-label">
+                                            Open End
+                                            <input type="checkbox" class="text-mute" id="open_end_layer"
+                                                name="open_end_layer" checked value="1">
+                                        </label>
                                     </div>
                                 </div>
 
-                                <div class="pagination_html_energy" id="pagination_html_energy">
-                                </div>
-                                <!-- end -->
-
-                                <!-- 22-11-2021-- -->
-                                <div class="modal fade bd-example-modal-lg energy_tile_modal" tabindex="-1"
-                                    role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg max-width-modal">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="text-mute text-dark">Dashboard</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <!-- Height and Width -->
-                                                <div class="row">
-
-                                                    <div class="form-group col-md-1 align-cntr ">
-                                                        <label><img src="images/back-btn.png" id="back_btn_energy_popup"
-                                                                style="display: block;"></label>
-                                                    </div>
-                                                    <div class="form-group col-md-3 hide_for_wert_case">
-                                                        <label for="modal-height-input-energy"
-                                                            class="text-mute">Spalte</label>
-                                                        <input type="number"
-                                                            class="form-control form-control-sm text-dark"
-                                                            id="modal-height-input-energy" placeholder="Spalte">
-                                                        <input type="hidden" id="modal-height-input-energy-hidden"
-                                                            value="145">
-                                                    </div>
-
-                                                    <div class="form-group col-md-3 hide_for_wert_case">
-                                                        <label for="modal-width-input-energy"
-                                                            class="text-mute">Zeile</label>
-                                                        <input type="number"
-                                                            class="form-control form-control-sm text-dark"
-                                                            id="modal-width-input-energy" placeholder="Reihe">
-                                                        <input type="hidden" id="modal-width-input-energy-hidden"
-                                                            value="285">
-                                                    </div>
-
-                                                    <diV
-                                                        class="form-group col-md-2 expand_view_table_div hide_for_wert_case">
-                                                        <div class="form-check form-check-primary">
-                                                            <label class="form-check-label">
-                                                                Als Expandiert Anzeigen
-                                                                <input type="checkbox"
-                                                                    class="text-mute form-check-input"
-                                                                    id="expand_view_table" name="expand_view" value="0">
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <!-- --end -->
-                                                <!-- 23-8-21 -->
-                                                <div class="row dashboard_modal_tile gernerated_energy_modal_tiles">
-                                                </div>
-                                                <!-- --end-- -->
-
-                                                <div id="energy_modal_loader_div" style="display: none">
-                                                    <img src="dashboard/images/loader_dashboard.gif"
-                                                        id="energy_modal_loader_image">
-                                                </div>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                    data-dismiss="modal" id="close-btn">Schließen</button>
-                                                <button type="button" class="btn btn-sm btn-success display-none"
-                                                    id="save_table_btn_energy">Speichern</button>
-                                                <button type="button" class="btn btn-sm btn-success display-none"
-                                                    data-type="Energy" id="update_table_btn_energy">Ändern</button>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- ---end--- -->
                             </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label for="energy_search_record"><img src="images/back-btn.png"
+                                            id="back_energy_btn_table" style="display: none;">
+                                        Aufzeichnungen suchen</label>
+                                    <input type="text" class="form-control form-control-sm text-dark"
+                                        id="energy_search_record" placeholder="Aufzeichnungen suchen">
+                                </div>
+
+                                <div class="table-responsive col-md-12 table-margin" id="energy_record_table">
+                                    <table class="table table-striped table-bordered table-hover" id="energy_record_tb">
+                                        <thead class="energy_table_header">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Zeitintervall</th>
+                                                <th>Erstellungsdatum</th>
+                                                <th>Gesamteinheiten</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="energy_select_table_entries">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <input type="hidden" id="mst_id_hidden_energy">
+                                <input type="hidden" id="overall_count_energy">
+                                <input type="hidden" id="row_click_last_date_energy">
+                                <input type="hidden" id="layer_modal">
+
+                                <div id="energy_table_data_loader_div" style="display: none">
+                                    <img src="dashboard/images/loader_dashboard.gif" id="energy_table_data_loader_img">
+                                </div>
+                            </div>
+
+                            <div class="pagination_html_energy" id="pagination_html_energy">
+                            </div>
+                            <!-- end -->
+
+                            <!-- 22-11-2021-- -->
+                            <div class="modal fade bd-example-modal-lg energy_tile_modal" tabindex="-1" role="dialog"
+                                aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg max-width-modal">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="text-mute text-dark">Dashboard</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <!-- Height and Width -->
+                                            <div class="row">
+
+                                                <div class="form-group col-md-1 align-cntr ">
+                                                    <label><img src="images/back-btn.png" id="back_btn_energy_popup"
+                                                            style="display: block;"></label>
+                                                </div>
+                                                <div class="form-group col-md-3 hide_for_wert_case">
+                                                    <label for="modal-height-input-energy"
+                                                        class="text-mute">Spalte</label>
+                                                    <input type="number" class="form-control form-control-sm text-dark"
+                                                        id="modal-height-input-energy" placeholder="Spalte">
+                                                    <input type="hidden" id="modal-height-input-energy-hidden"
+                                                        value="145">
+                                                </div>
+
+                                                <div class="form-group col-md-3 hide_for_wert_case">
+                                                    <label for="modal-width-input-energy"
+                                                        class="text-mute">Zeile</label>
+                                                    <input type="number" class="form-control form-control-sm text-dark"
+                                                        id="modal-width-input-energy" placeholder="Reihe">
+                                                    <input type="hidden" id="modal-width-input-energy-hidden"
+                                                        value="285">
+                                                </div>
+
+                                                <diV
+                                                    class="form-group col-md-2 expand_view_table_div hide_for_wert_case">
+                                                    <div class="form-check form-check-primary">
+                                                        <label class="form-check-label">
+                                                            Als Expandiert Anzeigen
+                                                            <input type="checkbox" class="text-mute form-check-input"
+                                                                id="expand_view_table" name="expand_view" value="0">
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!-- --end -->
+                                            <!-- 23-8-21 -->
+                                            <div class="row dashboard_modal_tile gernerated_energy_modal_tiles">
+                                            </div>
+                                            <!-- --end-- -->
+
+                                            <div id="energy_modal_loader_div" style="display: none">
+                                                <img src="dashboard/images/loader_dashboard.gif"
+                                                    id="energy_modal_loader_image">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"
+                                                id="close-btn">Schließen</button>
+                                            <button type="button" class="btn btn-sm btn-success display-none"
+                                                id="save_table_btn_energy">Speichern</button>
+                                            <button type="button" class="btn btn-sm btn-success display-none"
+                                                data-type="Energy" id="update_table_btn_energy">Ändern</button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ---end--- -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- energy_table.php End -->
+    </div>
+    <!-- energy_table.php End -->
 
-        <!-- measurement_table.php Start -->
-        <div class="main-panel" id="measurement_table_main_div" style="display: none">
-            <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Messstellen</h4>
+    <!-- measurement_table.php Start -->
+    <div class="main-panel" id="measurement_table_main_div" style="display: none">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Messstellen</h4>
 
-                                <div class="row">
-                                    <div class="form-group col-md-1 align-cntr">
-                                        <label><img src="images/back-btn.png" id="back_btn_measurement"
-                                                style="display: block;"></label>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label for="measurement_type">Messtyp</label>
-                                        <select class="form-control form-control-sm text-dark" id="measurement_type">
-                                            <option value="automatic">Automatisch</option>
-                                            <option value="manually">Manuell</option>
-                                            <!-- <option value="calculated">Calculated</option> -->
-                                        </select>
-                                    </div>
+                            <div class="row">
+                                <div class="form-group col-md-1 align-cntr">
+                                    <label><img src="images/back-btn.png" id="back_btn_measurement"
+                                            style="display: block;"></label>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="measurement_type">Messtyp</label>
+                                    <select class="form-control form-control-sm text-dark" id="measurement_type">
+                                        <option value="automatic">Automatisch</option>
+                                        <option value="manually">Manuell</option>
+                                        <!-- <option value="calculated">Calculated</option> -->
+                                    </select>
+                                </div>
 
-                                    <div class="form-group col-md-3">
-                                        <label for="measurement_time_interval">Wählen Sie ein Zeitintervall aus</label>
-                                        <select class="form-control form-control-sm text-dark"
-                                            id="measurement_time_interval">
-                                            <option value="1">Tage</option>
-                                            <option value="2">Wochen</option>
-                                            <option value="3">Monate</option>
-                                            <option value="4">Jahre</option>
-                                            <!-- <option value="40">40</option>
+                                <div class="form-group col-md-3">
+                                    <label for="measurement_time_interval">Wählen Sie ein Zeitintervall aus</label>
+                                    <select class="form-control form-control-sm text-dark"
+                                        id="measurement_time_interval">
+                                        <option value="1">Tage</option>
+                                        <option value="2">Wochen</option>
+                                        <option value="3">Monate</option>
+                                        <option value="4">Jahre</option>
+                                        <!-- <option value="40">40</option>
                       <option value="50">50</option> -->
-                                        </select>
-                                    </div>
+                                    </select>
+                                </div>
 
-                                    <div class="form-group col-md-3">
-                                        <label for="measurement_records_order_by">Filter</label>
-                                        <select class="form-control form-control-sm text-dark"
-                                            id="measurement_records_order_by">
-                                            <option value="order_by_desc">Maximum</option>
-                                            <option value="order_by_asc">Minimum</option>
-                                            <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
-                                        </select>
-                                    </div>
+                                <div class="form-group col-md-3">
+                                    <label for="measurement_records_order_by">Filter</label>
+                                    <select class="form-control form-control-sm text-dark"
+                                        id="measurement_records_order_by">
+                                        <option value="order_by_desc">Maximum</option>
+                                        <option value="order_by_asc">Minimum</option>
+                                        <!-- <option value="five_days_measurement_records">Messstellen 05 Days Records</option> -->
+                                    </select>
+                                </div>
 
-                                    <!-- <div class="form-group col-md-2" style="display: none">
+                                <!-- <div class="form-group col-md-2" style="display: none">
                     <label for="measurement_number_record">Select No. of Records</label>
                      <input type="number" class="form-control form-control-sm text-dark" id="measurement_number_record" minlength="5" maxlength="50" placeholder="Select No. of Records">
                      <span class='measurement_number_record_error text-danger'></span>
                     </div> -->
 
-                                    <div class="form-group col-md-3">
-                                        <label for="measurement_number_record">Gesamteinträge</label>
-                                        <input type="number" class="form-control form-control-sm text-dark"
-                                            id="measurement_total_number_record" placeholder="Gesamtrekorde">
-                                        <span class='measurement_number_record_error text-danger'></span>
-                                    </div>
-
-                                    <div class="form-group col-md-3">
-                                        <input type="button" class="btn btn-sm btn-success click_common_btn"
-                                            id="measurement_btn_table" value='Show Results'>
-                                    </div>
-
+                                <div class="form-group col-md-3">
+                                    <label for="measurement_number_record">Gesamteinträge</label>
+                                    <input type="number" class="form-control form-control-sm text-dark"
+                                        id="measurement_total_number_record" placeholder="Gesamtrekorde">
+                                    <span class='measurement_number_record_error text-danger'></span>
                                 </div>
 
-                                <div class="row">
-                                    <div class="form-group col-md-12">
-                                        <label for="measurement_search_record">Datensatz suchen</label>
-                                        <input type="text" class="form-control form-control-sm text-dark"
-                                            id="measurement_search_record" placeholder="Aufzeichnungen suchen">
-                                    </div>
-
-                                    <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
-                                        <table class="table table-striped table-bordered table-hover"
-                                            id="measurement_record_tb">
-                                            <thead class="measurement_table_header">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Zeitintervall</th>
-                                                    <th>Erstellungsdatum</th>
-                                                    <th>Gesamteinheiten</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="mesurement_select_table_entries">
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <input type="hidden" id="mst_id_hidden">
-                                    <input type="hidden" id="overall_count">
+                                <div class="form-group col-md-3">
+                                    <input type="button" class="btn btn-sm btn-success click_common_btn"
+                                        id="measurement_btn_table" value='Show Results'>
                                 </div>
-                                <!-- <p class="card-description">
-                  Add class <code>.table-striped</code>
-                </p> -->
-
-                                <!-- 30-7-2021 -->
-                                <div class="pagination_html" id="pagination_html">
-                                </div>
-
-                                <!-- Modal -->
-                                <!-- Large modal -->
-                                <!-- <button type="button" style="display: none" class="btn btn-primary" id="modal_open_button" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button> -->
-                                <input type="hidden" id="row_click_last_date">
-                                <div class="modal fade bd-example-modal-lg measurement_table_modal tabindex=" -1"
-                                    role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg max-width-modal">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="text-mute text-dark">Dashboard</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <!-- Height and Width -->
-                                                <div class="row">
-                                                    <div class="form-group col-md-1 v">
-                                                        <label><img src="images/back-btn.png"
-                                                                id="back_btn_measurement_popup"
-                                                                style="display: block;"></label>
-                                                    </div>
-                                                    <div class="form-group col-md-3 hide_for_wert_case">
-                                                        <label for="modal-height-input-measurement"
-                                                            class="text-mute">Spalte</label>
-                                                        <input type="number"
-                                                            class="form-control form-control-sm text-dark"
-                                                            id="modal-height-input-measurement" placeholder="Spalte">
-                                                        <input type="hidden" id="modal-height-input-measurement-hidden"
-                                                            value="145">
-                                                    </div>
-
-                                                    <div class="form-group col-md-3 hide_for_wert_case">
-                                                        <label for="modal-width-input-measurement hide_for_wert_case"
-                                                            class="text-mute">Zeile</label>
-                                                        <input type="number"
-                                                            class="form-control form-control-sm text-dark"
-                                                            id="modal-width-input-measurement" placeholder="Reihe">
-                                                        <input type="hidden" id="modal-width-input-measurement-hidden"
-                                                            value="285">
-                                                    </div>
-
-                                                    <div
-                                                        class="form-group col-md-2 expand_view_table_div hide_for_wert_case">
-                                                        <div class="form-check form-check-primary">
-                                                            <label class="form-check-label">
-                                                                Als Expandiert Anzeigen
-                                                                <input type="checkbox"
-                                                                    class="text-mute form-check-input "
-                                                                    id="expand_view_table_measurement"
-                                                                    name="expand_view" value="0">
-                                                                <i class="input-helper"></i></label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <!-- --end -->
-                                                <!-- 23-8-21 -->
-                                                <div
-                                                    class="row dashboard_modal_tile gernerated_measurement_modal_tiles">
-                                                </div>
-                                                <!-- --end-- -->
-                                                <div class="row dashboard_modal_tile">
-                                                    <div class="grid-margin actual_tile_height actual_tile_width stretch-card "
-                                                        id="measurement_count_tile_modal" style="display: none">
-                                                        <div class="card card-border">
-                                                            <div class="card-body overflow-hide display-flex">
-                                                                <div id="" class="">
-                                                                    <p class="card-title text-md-center text-xl-left"
-                                                                        id="measurement_tile_heading_modal"></p>
-                                                                    <div
-                                                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                                        <h3
-                                                                            class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal">
-                                                                        </h3>
-                                                                        <i
-                                                                            class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                                                    </div>
-                                                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span
-                                                                            class="text-black ml-1"><small></small></span>
-                                                                    </p>
-                                                                </div>
-
-                                                                <div class="overflow-hide ml-3">
-                                                                    <div class="">
-                                                                        <table
-                                                                            class="table table-striped table-bordered table-hover"
-                                                                            id="measurement_modal_table">
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="grid-margin actual_tile_height actual_tile_width stretch-card "
-                                                        id="product_count_tile_modal" style="display: none">
-                                                        <div class="card card-border">
-                                                            <div class="card-body overflow-hide display-flex">
-                                                                <div id="" class="">
-                                                                    <p class="card-title text-md-center text-xl-left">
-                                                                        Produkte</p>
-                                                                    <div
-                                                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                                        <h3
-                                                                            class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 product_count_modal">
-                                                                        </h3>
-                                                                        <i
-                                                                            class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                                                    </div>
-                                                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span
-                                                                            class="text-black ml-1"><small></small></span>
-                                                                    </p>
-                                                                </div>
-
-                                                                <div class="overflow-hide ml-3">
-                                                                    <div class="">
-                                                                        <table
-                                                                            class="table table-striped table-bordered table-hover">
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="grid-margin actual_tile_height actual_tile_width stretch-card "
-                                                        id="energy_count_tile_modal" style="display: none">
-                                                        <div class="card card-border">
-                                                            <div class="card-body overflow-hide display-flex">
-                                                                <div class="" id="">
-                                                                    <p class="card-title text-md-center text-xl-left">
-                                                                        Energiedateneintrag</p>
-                                                                    <div
-                                                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                                        <h3
-                                                                            class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_count_modal">
-                                                                        </h3>
-                                                                        <i
-                                                                            class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                                                    </div>
-                                                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span
-                                                                            class="text-black ml-1"><small></small></span>
-                                                                    </p>
-                                                                </div>
-
-
-                                                                <div class="overflow-hide ml-3">
-                                                                    <div class="">
-                                                                        <table
-                                                                            class="table table-striped table-bordered table-hover">
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="grid-margin actual_tile_height actual_tile_width stretch-card "
-                                                        id="energy_consumed_tile_modal" style="display: none">
-                                                        <div class="card card-border">
-                                                            <div class=" card-body overflow-hide display-flex">
-                                                                <div class="" id="">
-                                                                    <p class="card-title text-md-center text-xl-left">
-                                                                        Energiedaten Verbrauch</p>
-                                                                    <div
-                                                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                                        <h3
-                                                                            class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_consumed_count_modal">
-                                                                        </h3>
-                                                                        <p class="energy_unit text-muted">kWh</p>
-                                                                        <i
-                                                                            class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                                                    </div>
-                                                                    <p class="mb-0 mt-2 text-success">(30 Tage)<span
-                                                                            class="text-black ml-1"></span></p>
-                                                                </div>
-
-                                                                <div class="overflow-hide ml-3">
-                                                                    <div class="">
-                                                                        <table
-                                                                            class="table table-striped table-bordered table-hover">
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- 27-7-2021 -->
-                                                    <div class="grid-margin actual_tile_height actual_tile_width stretch-card"
-                                                        id="five_days_energy_consumed_tile_modal" style="display: none">
-                                                        <div class="card card-border">
-                                                            <div class="card-body overflow-hide display-flex">
-                                                                <div class="" id="">
-                                                                    <p class="card-title text-md-center text-xl-left">
-                                                                        Energiedaten Verbrauch</p>
-                                                                    <div
-                                                                        class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                                        <h3
-                                                                            class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 five_days_energy_count_modal">
-                                                                            0</h3>
-                                                                        <p class="energy_unit text-muted">kWh</p>
-                                                                        <i
-                                                                            class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                                                                    </div>
-                                                                    <p class="mb-0 mt-2 text-success">(05 Tage)<span
-                                                                            class="text-black ml-1"><small></small></span>
-                                                                    </p>
-                                                                </div>
-
-                                                                <div class="overflow-hide ml-3">
-                                                                    <div class="">
-                                                                        <table
-                                                                            class="table table-striped table-bordered table-hover">
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- --end-- -->
-                                                </div>
-
-                                                <div id="measurement_modal_loader_div" style="display: none">
-                                                    <img src="dashboard/images/loader_dashboard.gif"
-                                                        id="measurement_modal_loader_image">
-                                                </div>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                    data-dismiss="modal" id="close-btn">Schließen</button>
-                                                <button type="button" class="btn btn-sm btn-success display-none"
-                                                    data-type="Measurement-table-format"
-                                                    id="save_table_btn">Speichern</button>
-                                                <button type="button" class="btn btn-sm btn-success display-none"
-                                                    data-type="Measurement"
-                                                    id="update_table_btn_measurement">Ändern</button>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- --end -->
 
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- measurement_table.php End -->
 
-        <!-- production_data_table.php Start-->
-        <div class="main-panel" id="production_data_table_main_div" style="display: none">
-            <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Produktionsdaten</h4>
-
-                                <div class="form-group">
-                                    <label for="exampleFormControlSelect3">Anzahl Datensätze auswählen</label>
-                                    <select class="form-control form-control-sm text-dark"
-                                        id="production_data_number_record">
-                                        <option value="10">10</option>
-                                        <option value="20">20</option>
-                                        <option value="30">30</option>
-                                        <!-- <option value="40">40</option>
-                    <option value="50">50</option> -->
-                                    </select>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label for="measurement_search_record">Datensatz suchen</label>
+                                    <input type="text" class="form-control form-control-sm text-dark"
+                                        id="measurement_search_record" placeholder="Aufzeichnungen suchen">
                                 </div>
 
-                                <!-- <p class="card-description">
-                  Add class <code>.table-striped</code>
-                </p> -->
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered">
-                                        <thead>
+                                <div class="table-responsive col-md-12 table-margin" id="measurement_record_table">
+                                    <table class="table table-striped table-bordered table-hover"
+                                        id="measurement_record_tb">
+                                        <thead class="measurement_table_header">
                                             <tr>
-                                                <th>
-                                                    Name
-                                                </th>
-
-                                                <th>
-                                                    Item Name
-                                                </th>
-
-                                                <th>
-                                                    Zeitintervall
-                                                </th>
-                                                <th>
-                                                    Start
-                                                </th>
-
+                                                <th>Name</th>
+                                                <th>Zeitintervall</th>
+                                                <th>Erstellungsdatum</th>
+                                                <th>Gesamteinheiten</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="production_data_select_table_entries">
+                                        <tbody id="mesurement_select_table_entries">
 
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <input type="hidden" id="mst_id_hidden">
+                                <input type="hidden" id="overall_count">
+                            </div>
+                            <!-- <p class="card-description">
+                  Add class <code>.table-striped</code>
+                </p> -->
+
+                            <!-- 30-7-2021 -->
+                            <div class="pagination_html" id="pagination_html">
+                            </div>
+
+                            <!-- Modal -->
+                            <!-- Large modal -->
+                            <!-- <button type="button" style="display: none" class="btn btn-primary" id="modal_open_button" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button> -->
+                            <input type="hidden" id="row_click_last_date">
+                            <div class="modal fade bd-example-modal-lg measurement_table_modal tabindex=" -1"
+                                role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg max-width-modal">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="text-mute text-dark">Dashboard</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <!-- Height and Width -->
+                                            <div class="row">
+                                                <div class="form-group col-md-1 v">
+                                                    <label><img src="images/back-btn.png"
+                                                            id="back_btn_measurement_popup"
+                                                            style="display: block;"></label>
+                                                </div>
+                                                <div class="form-group col-md-3 hide_for_wert_case">
+                                                    <label for="modal-height-input-measurement"
+                                                        class="text-mute">Spalte</label>
+                                                    <input type="number" class="form-control form-control-sm text-dark"
+                                                        id="modal-height-input-measurement" placeholder="Spalte">
+                                                    <input type="hidden" id="modal-height-input-measurement-hidden"
+                                                        value="145">
+                                                </div>
+
+                                                <div class="form-group col-md-3 hide_for_wert_case">
+                                                    <label for="modal-width-input-measurement hide_for_wert_case"
+                                                        class="text-mute">Zeile</label>
+                                                    <input type="number" class="form-control form-control-sm text-dark"
+                                                        id="modal-width-input-measurement" placeholder="Reihe">
+                                                    <input type="hidden" id="modal-width-input-measurement-hidden"
+                                                        value="285">
+                                                </div>
+
+                                                <div
+                                                    class="form-group col-md-2 expand_view_table_div hide_for_wert_case">
+                                                    <div class="form-check form-check-primary">
+                                                        <label class="form-check-label">
+                                                            Als Expandiert Anzeigen
+                                                            <input type="checkbox" class="text-mute form-check-input "
+                                                                id="expand_view_table_measurement" name="expand_view"
+                                                                value="0">
+                                                            <i class="input-helper"></i></label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!-- --end -->
+                                            <!-- 23-8-21 -->
+                                            <div class="row dashboard_modal_tile gernerated_measurement_modal_tiles">
+                                            </div>
+                                            <!-- --end-- -->
+                                            <div class="row dashboard_modal_tile">
+                                                <div class="grid-margin actual_tile_height actual_tile_width stretch-card "
+                                                    id="measurement_count_tile_modal" style="display: none">
+                                                    <div class="card card-border">
+                                                        <div class="card-body overflow-hide display-flex">
+                                                            <div id="" class="">
+                                                                <p class="card-title text-md-center text-xl-left"
+                                                                    id="measurement_tile_heading_modal"></p>
+                                                                <div
+                                                                    class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                                                    <h3
+                                                                        class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 mesurement_count_modal">
+                                                                    </h3>
+                                                                    <i
+                                                                        class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                                                </div>
+                                                                <p class="mb-0 mt-2 text-success">(30 Tage)<span
+                                                                        class="text-black ml-1"><small></small></span>
+                                                                </p>
+                                                            </div>
+
+                                                            <div class="overflow-hide ml-3">
+                                                                <div class="">
+                                                                    <table
+                                                                        class="table table-striped table-bordered table-hover"
+                                                                        id="measurement_modal_table">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="grid-margin actual_tile_height actual_tile_width stretch-card "
+                                                    id="product_count_tile_modal" style="display: none">
+                                                    <div class="card card-border">
+                                                        <div class="card-body overflow-hide display-flex">
+                                                            <div id="" class="">
+                                                                <p class="card-title text-md-center text-xl-left">
+                                                                    Produkte</p>
+                                                                <div
+                                                                    class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                                                    <h3
+                                                                        class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 product_count_modal">
+                                                                    </h3>
+                                                                    <i
+                                                                        class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                                                </div>
+                                                                <p class="mb-0 mt-2 text-success">(30 Tage)<span
+                                                                        class="text-black ml-1"><small></small></span>
+                                                                </p>
+                                                            </div>
+
+                                                            <div class="overflow-hide ml-3">
+                                                                <div class="">
+                                                                    <table
+                                                                        class="table table-striped table-bordered table-hover">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="grid-margin actual_tile_height actual_tile_width stretch-card "
+                                                    id="energy_count_tile_modal" style="display: none">
+                                                    <div class="card card-border">
+                                                        <div class="card-body overflow-hide display-flex">
+                                                            <div class="" id="">
+                                                                <p class="card-title text-md-center text-xl-left">
+                                                                    Energiedateneintrag</p>
+                                                                <div
+                                                                    class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                                                    <h3
+                                                                        class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_count_modal">
+                                                                    </h3>
+                                                                    <i
+                                                                        class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                                                </div>
+                                                                <p class="mb-0 mt-2 text-success">(30 Tage)<span
+                                                                        class="text-black ml-1"><small></small></span>
+                                                                </p>
+                                                            </div>
+
+
+                                                            <div class="overflow-hide ml-3">
+                                                                <div class="">
+                                                                    <table
+                                                                        class="table table-striped table-bordered table-hover">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="grid-margin actual_tile_height actual_tile_width stretch-card "
+                                                    id="energy_consumed_tile_modal" style="display: none">
+                                                    <div class="card card-border">
+                                                        <div class=" card-body overflow-hide display-flex">
+                                                            <div class="" id="">
+                                                                <p class="card-title text-md-center text-xl-left">
+                                                                    Energiedaten Verbrauch</p>
+                                                                <div
+                                                                    class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                                                    <h3
+                                                                        class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 energy_consumed_count_modal">
+                                                                    </h3>
+                                                                    <p class="energy_unit text-muted">kWh</p>
+                                                                    <i
+                                                                        class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                                                </div>
+                                                                <p class="mb-0 mt-2 text-success">(30 Tage)<span
+                                                                        class="text-black ml-1"></span></p>
+                                                            </div>
+
+                                                            <div class="overflow-hide ml-3">
+                                                                <div class="">
+                                                                    <table
+                                                                        class="table table-striped table-bordered table-hover">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- 27-7-2021 -->
+                                                <div class="grid-margin actual_tile_height actual_tile_width stretch-card"
+                                                    id="five_days_energy_consumed_tile_modal" style="display: none">
+                                                    <div class="card card-border">
+                                                        <div class="card-body overflow-hide display-flex">
+                                                            <div class="" id="">
+                                                                <p class="card-title text-md-center text-xl-left">
+                                                                    Energiedaten Verbrauch</p>
+                                                                <div
+                                                                    class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                                                                    <h3
+                                                                        class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 five_days_energy_count_modal">
+                                                                        0</h3>
+                                                                    <p class="energy_unit text-muted">kWh</p>
+                                                                    <i
+                                                                        class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                                                                </div>
+                                                                <p class="mb-0 mt-2 text-success">(05 Tage)<span
+                                                                        class="text-black ml-1"><small></small></span>
+                                                                </p>
+                                                            </div>
+
+                                                            <div class="overflow-hide ml-3">
+                                                                <div class="">
+                                                                    <table
+                                                                        class="table table-striped table-bordered table-hover">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- --end-- -->
+                                            </div>
+
+                                            <div id="measurement_modal_loader_div" style="display: none">
+                                                <img src="dashboard/images/loader_dashboard.gif"
+                                                    id="measurement_modal_loader_image">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"
+                                                id="close-btn">Schließen</button>
+                                            <button type="button" class="btn btn-sm btn-success display-none"
+                                                data-type="Measurement-table-format"
+                                                id="save_table_btn">Speichern</button>
+                                            <button type="button" class="btn btn-sm btn-success display-none"
+                                                data-type="Measurement"
+                                                id="update_table_btn_measurement">Ändern</button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- --end -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- measurement_table.php End -->
+
+    <!-- production_data_table.php Start-->
+    <div class="main-panel" id="production_data_table_main_div" style="display: none">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Produktionsdaten</h4>
+
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect3">Anzahl Datensätze auswählen</label>
+                                <select class="form-control form-control-sm text-dark"
+                                    id="production_data_number_record">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <!-- <option value="40">40</option>
+                    <option value="50">50</option> -->
+                                </select>
+                            </div>
+
+                            <!-- <p class="card-description">
+                  Add class <code>.table-striped</code>
+                </p> -->
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+
+                                            <th>
+                                                Item Name
+                                            </th>
+
+                                            <th>
+                                                Zeitintervall
+                                            </th>
+                                            <th>
+                                                Start
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="production_data_select_table_entries">
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- production_data_table.php End -->
+    </div>
+    <!-- production_data_table.php End -->
 
-        <!-- production_table.php Start -->
-        <div class="main-panel" id="production_table_main_div" style="display: none">
-            <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Produkte</h4>
+    <!-- production_table.php Start -->
+    <div class="main-panel" id="production_table_main_div" style="display: none">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Produkte</h4>
 
-                                <!-- 26-11-2021 -->
-                                <div class="row">
-                                    <div class="form-group col-md-1 align-cntr">
-                                        <label><img src="images/back-btn.png" id="back_btn_product"
-                                                style="display: block;"></label>
-                                    </div>
-                                    <div class="form-group col-md-2 mt_pr_alignment" id="product_type_div">
-                                        <label for="product_type">Produktart</label>
-                                        <select class="form-control form-control-sm text-dark" id="product_type">
-                                            <option value='automatic'>Automatisch</option>
-                                            <option value='mannual'>Manuell</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- 21-12-2021-- -->
-                                    <div class="form-group col-md-3 automatic_product_div" id="all_tables_product_div">
-                                        <label for="product_type">Tabelle</label>
-                                        <select class="form-control form-control-sm text-dark" id="all_tables_product">
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-md-3 automatic_product_div" id="all_columns_product_div">
-                                        <label for="product_type">Säulen</label>
-                                        <select class="form-control form-control-sm text-dark" id="all_columns_product">
-                                            <!-- <option value="">Please Select Column</option> -->
-                                        </select>
-                                    </div>
-                                    <!-- -end -->
-
-                                    <div class="form-group col-md-3" id="product_field_div">
-                                        <img src="images/search.png" id="all_product_image">
-                                        <input type='text' id="all_product_input_text_field"
-                                            class='form-control form-control-sm text-dark' placeholder='Alle Produkte'
-                                            readonly>
-                                    </div>
-
-                                    <div class="form-group col-md-3 mt_pr_alignment" id="product_records_order_by_div"
-                                        style="display: none">
-                                        <label for="product_records_order_by">Filter</label>
-                                        <select class="form-control form-control-sm text-dark"
-                                            id="product_records_order_by">
-                                            <option value='desc'>Maximum</option>
-                                            <option value='asc'>Minimum</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-md-3 automatic_product_div">
-                                        <label for="product_total_number_record">Datensätze</label>
-                                        <input type="number" class="form-control form-control-sm text-dark"
-                                            id="product_total_number_record" placeholder="Datensätze">
-                                        <span class="product_number_record_error text-danger"></span>
-                                    </div>
-
-                                    <div class="form-group col-md-3">
-                                        <input type="button" class="btn btn-sm btn-success click_common_btn"
-                                            id="production_btn_table" value='Show Results'>
-                                    </div>
-
+                            <!-- 26-11-2021 -->
+                            <div class="row">
+                                <div class="form-group col-md-1 align-cntr">
+                                    <label><img src="images/back-btn.png" id="back_btn_product"
+                                            style="display: block;"></label>
+                                </div>
+                                <div class="form-group col-md-2 mt_pr_alignment" id="product_type_div">
+                                    <label for="product_type">Produktart</label>
+                                    <select class="form-control form-control-sm text-dark" id="product_type">
+                                        <option value='automatic'>Automatisch</option>
+                                        <option value='mannual'>Manuell</option>
+                                    </select>
                                 </div>
 
-                                <div class="modal fade modal_all_products" tabindex="-1" role="dialog"
-                                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg max-width-modal">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="text-mute text-dark">Dashboard</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
+                                <!-- 21-12-2021-- -->
+                                <div class="form-group col-md-3 automatic_product_div" id="all_tables_product_div">
+                                    <label for="product_type">Tabelle</label>
+                                    <select class="form-control form-control-sm text-dark" id="all_tables_product">
+                                    </select>
+                                </div>
 
-                                            <div class="modal-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-striped table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>
-                                                                    Produktname
-                                                                </th>
+                                <div class="form-group col-md-3 automatic_product_div" id="all_columns_product_div">
+                                    <label for="product_type">Säulen</label>
+                                    <select class="form-control form-control-sm text-dark" id="all_columns_product">
+                                        <!-- <option value="">Please Select Column</option> -->
+                                    </select>
+                                </div>
+                                <!-- -end -->
 
-                                                                <!-- <th>
+                                <div class="form-group col-md-3" id="product_field_div">
+                                    <img src="images/search.png" id="all_product_image">
+                                    <input type='text' id="all_product_input_text_field"
+                                        class='form-control form-control-sm text-dark' placeholder='Alle Produkte'
+                                        readonly>
+                                </div>
+
+                                <div class="form-group col-md-3 mt_pr_alignment" id="product_records_order_by_div"
+                                    style="display: none">
+                                    <label for="product_records_order_by">Filter</label>
+                                    <select class="form-control form-control-sm text-dark"
+                                        id="product_records_order_by">
+                                        <option value='desc'>Maximum</option>
+                                        <option value='asc'>Minimum</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-3 automatic_product_div">
+                                    <label for="product_total_number_record">Datensätze</label>
+                                    <input type="number" class="form-control form-control-sm text-dark"
+                                        id="product_total_number_record" placeholder="Datensätze">
+                                    <span class="product_number_record_error text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <input type="button" class="btn btn-sm btn-success click_common_btn"
+                                        id="production_btn_table" value='Show Results'>
+                                </div>
+
+                            </div>
+
+                            <div class="modal fade modal_all_products" tabindex="-1" role="dialog"
+                                aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg max-width-modal">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="text-mute text-dark">Dashboard</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                Produktname
+                                                            </th>
+
+                                                            <!-- <th>
                                  Item Name
                                </th> -->
 
-                                                                <!-- <th>
+                                                            <!-- <th>
                                  Time Interval
                                </th> -->
-                                                                <th>
-                                                                    Start
-                                                                </th>
-                                                                <!-- <th>
+                                                            <th>
+                                                                Start
+                                                            </th>
+                                                            <!-- <th>
                                  Status
                                </th> -->
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="all_product_table_entries">
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="all_product_table_entries">
 
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-                                                <div class="pagination_all_product_div" id="pagination_all_product">
-                                                </div>
+                                                    </tbody>
+                                                </table>
                                             </div>
 
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                    data-dismiss="modal" id="close-btn">Schließen</button>
+                                            <div class="pagination_all_product_div" id="pagination_all_product">
                                             </div>
-
                                         </div>
+
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"
+                                                id="close-btn">Schließen</button>
+                                        </div>
+
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- --end-- -->
+                            <!-- --end-- -->
 
-                                <!-- <div class="form-group">
+                            <!-- <div class="form-group">
                  <label for="exampleFormControlSelect3">Select No. of Records</label>
                  <select class="form-control form-control-sm text-dark " id="product_number_record">
                    <option value="10">10</option>
@@ -1634,134 +1617,128 @@
                  </select>
                </div> -->
 
-                                <!-- <p class="card-description">
+                            <!-- <p class="card-description">
                  Add class <code>.table-striped</code>
                </p> -->
-                                <div class="table-responsive" id="product_select_table_entries_table_div">
-                                    <table class="table table-striped table-bordered"
-                                        id="product_select_table_entries_table">
-                                        <thead id="product_select_table_entries_table_header">
-                                            <tr>
-                                                <!-- <th>
+                            <div class="table-responsive" id="product_select_table_entries_table_div">
+                                <table class="table table-striped table-bordered"
+                                    id="product_select_table_entries_table">
+                                    <thead id="product_select_table_entries_table_header">
+                                        <tr>
+                                            <!-- <th>
                          Product Name
                        </th> -->
 
-                                                <th>
-                                                    Artikelname
-                                                </th>
+                                            <th>
+                                                Artikelname
+                                            </th>
 
-                                                <!-- <th>
+                                            <!-- <th>
                          Time Interval
                        </th> -->
-                                                <th>
-                                                    Erstellungsdatum
-                                                </th>
+                                            <th>
+                                                Erstellungsdatum
+                                            </th>
 
-                                                <th>
-                                                    Gesamteinheiten
-                                                </th>
+                                            <th>
+                                                Gesamteinheiten
+                                            </th>
 
-                                                <!-- <th>
+                                            <!-- <th>
                          Status
                        </th> -->
-                                            </tr>
-                                        </thead>
-                                        <tbody id="product_select_table_entries">
-                                            <tr>
-                                                <td style="padding: 6px !important" class='text-center' colspan='5'>
-                                                    Produkt auswählen</td>
-                                            </tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="product_select_table_entries">
+                                        <tr>
+                                            <td style="padding: 6px !important" class='text-center' colspan='5'>
+                                                Produkt auswählen</td>
+                                        </tr>
 
-                                        </tbody>
-                                    </table>
+                                    </tbody>
+                                </table>
 
-                                    <div id="product_select_table_entries_pagination">
-                                    </div>
+                                <div id="product_select_table_entries_pagination">
                                 </div>
+                            </div>
 
-                                <input type="hidden" id="overall_count_product">
-                                <input type="hidden" id="row_click_last_date_product">
-                                <input type="hidden" id="analgen_config_id_input">
+                            <input type="hidden" id="overall_count_product">
+                            <input type="hidden" id="row_click_last_date_product">
+                            <input type="hidden" id="analgen_config_id_input">
 
-                                <div class="modal fade product_tile_modal" tabindex="-1" role="dialog"
-                                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg max-width-modal">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="text-mute text-dark">Dashboard</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
+                            <div class="modal fade product_tile_modal" tabindex="-1" role="dialog"
+                                aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg max-width-modal">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="text-mute text-dark">Dashboard</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
 
-                                            <div class="modal-body">
-                                                <!-- Height and Width -->
-                                                <div class="row">
-                                                    <div class="form-group col-md-1 align-cntr">
-                                                        <label><img src="images/back-btn.png"
-                                                                id="back_btn_product_popup"
-                                                                style="display: block;"></label>
-                                                    </div>
-                                                    <div class="form-group col-md-3 hide_for_wert_case">
-                                                        <label for="modal-height-input-product"
-                                                            class="text-mute">Spalte</label>
-                                                        <input type="number"
-                                                            class="form-control form-control-sm text-dark"
-                                                            id="modal-height-input-product" placeholder="Spalte">
-                                                        <input type="hidden" id="modal-height-input-product-hidden"
-                                                            value="145">
-                                                    </div>
-
-                                                    <div class="form-group col-md-3 hide_for_wert_case">
-                                                        <label for="modal-width-input-product"
-                                                            class="text-mute">Zeile</label>
-                                                        <input type="number"
-                                                            class="form-control form-control-sm text-dark"
-                                                            id="modal-width-input-product" placeholder="Reihe">
-                                                        <input type="hidden" id="modal-width-input-product-hidden"
-                                                            value="285">
-                                                    </div>
-
-                                                    <div
-                                                        class="form-group col-md-2 expand_view_table_div hide_for_wert_case">
-                                                        <div class="form-check form-check-primary">
-                                                            <label class="form-check-label">
-                                                                Als Expandiert Anzeigen
-                                                                <input type="checkbox"
-                                                                    class="text-mute form-check-input"
-                                                                    id="expand_view_table_product" name="expand_view"
-                                                                    value="0">
-                                                                <i class="input-helper"></i></label>
-                                                        </div>
-                                                    </div>
-
+                                        <div class="modal-body">
+                                            <!-- Height and Width -->
+                                            <div class="row">
+                                                <div class="form-group col-md-1 align-cntr">
+                                                    <label><img src="images/back-btn.png" id="back_btn_product_popup"
+                                                            style="display: block;"></label>
                                                 </div>
-                                                <!-- --end -->
-                                                <!-- 23-8-21 -->
-                                                <div class="row dashboard_modal_tile gernerated_product_modal_tiles">
+                                                <div class="form-group col-md-3 hide_for_wert_case">
+                                                    <label for="modal-height-input-product"
+                                                        class="text-mute">Spalte</label>
+                                                    <input type="number" class="form-control form-control-sm text-dark"
+                                                        id="modal-height-input-product" placeholder="Spalte">
+                                                    <input type="hidden" id="modal-height-input-product-hidden"
+                                                        value="145">
                                                 </div>
-                                                <!-- --end-- -->
 
-                                                <div id="product_modal_loader_div" style="display: none">
-                                                    <img src="dashboard/images/loader_dashboard.gif"
-                                                        id="product_modal_loader_image">
+                                                <div class="form-group col-md-3 hide_for_wert_case">
+                                                    <label for="modal-width-input-product"
+                                                        class="text-mute">Zeile</label>
+                                                    <input type="number" class="form-control form-control-sm text-dark"
+                                                        id="modal-width-input-product" placeholder="Reihe">
+                                                    <input type="hidden" id="modal-width-input-product-hidden"
+                                                        value="285">
+                                                </div>
+
+                                                <div
+                                                    class="form-group col-md-2 expand_view_table_div hide_for_wert_case">
+                                                    <div class="form-check form-check-primary">
+                                                        <label class="form-check-label">
+                                                            Als Expandiert Anzeigen
+                                                            <input type="checkbox" class="text-mute form-check-input"
+                                                                id="expand_view_table_product" name="expand_view"
+                                                                value="0">
+                                                            <i class="input-helper"></i></label>
+                                                    </div>
                                                 </div>
 
                                             </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                    data-dismiss="modal" id="close-btn">Schließen</button>
-                                                <button type="button" class="btn btn-sm btn-success display-none"
-                                                    data-type="product-table-format"
-                                                    id="save_table_btn_product">Speichern</button>
-                                                <button type="button" class="btn btn-sm btn-success display-none"
-                                                    data-type="Product" id="update_table_btn_product">Ändern</button>
+                                            <!-- --end -->
+                                            <!-- 23-8-21 -->
+                                            <div class="row dashboard_modal_tile gernerated_product_modal_tiles">
                                             </div>
+                                            <!-- --end-- -->
 
+                                            <div id="product_modal_loader_div" style="display: none">
+                                                <img src="dashboard/images/loader_dashboard.gif"
+                                                    id="product_modal_loader_image">
+                                            </div>
 
                                         </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"
+                                                id="close-btn">Schließen</button>
+                                            <button type="button" class="btn btn-sm btn-success display-none"
+                                                data-type="product-table-format"
+                                                id="save_table_btn_product">Speichern</button>
+                                            <button type="button" class="btn btn-sm btn-success display-none"
+                                                data-type="Product" id="update_table_btn_product">Ändern</button>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -1770,7 +1747,8 @@
                 </div>
             </div>
         </div>
-        <!-- production_table.php End -->
+    </div>
+    <!-- production_table.php End -->
     </div>
 
     <!-- dashboard-Area-End -->
@@ -2004,19 +1982,19 @@
                                     src="images/first.png" alt="erste" />
 
                             </div>
-         
-                                <label class="manOrgLabel">Organisation:</label>
-                                <select name="select" id="org-data" class="common-select-width">
-                                    <option value="">Select</option>
-                                </select>
-                    
-                       
-                                <label class="manLiegLabel">Liegenschaft:</label>
-                                <select name="Data-property" class="common-select-width" id="property-data">
-                                    <option value="">Select</option>
-                                </select>
-        
-                            
+
+                            <label class="manOrgLabel">Organisation:</label>
+                            <select name="select" id="org-data" class="common-select-width">
+                                <option value="">Select</option>
+                            </select>
+
+
+                            <label class="manLiegLabel">Liegenschaft:</label>
+                            <select name="Data-property" class="common-select-width" id="property-data">
+                                <option value="">Select</option>
+                            </select>
+
+
                         </div>
                         <!-- Production  Detail Div Start -->
                         <div class="card" style="margin-bottom:10px;">
@@ -2351,7 +2329,8 @@
                                                                 <div class="col-sm-3">
                                                                     <div class="controlDiv controlDivProduction">
                                                                         <label>Auftrag</label>
-                                                                        <select class="graph-filter-dynamic h-w select-prod-filter"
+                                                                        <select
+                                                                            class="graph-filter-dynamic h-w select-prod-filter"
                                                                             id="orderFilterProduction">
                                                                         </select>
                                                                     </div>
@@ -2359,7 +2338,8 @@
                                                                 <div class="col-sm-3">
                                                                     <div class="controlDiv controlDivProduction">
                                                                         <label>Graph Name</label>
-                                                                        <select class="graph-filter-dynamic select-prod-filter h-w"
+                                                                        <select
+                                                                            class="graph-filter-dynamic select-prod-filter h-w"
                                                                             id="timeFilterIntervalProduction">
                                                                         </select>
                                                                     </div>
@@ -2377,7 +2357,7 @@
                                                                             <option value="100">100</option>
                                                                         </select>
                                                                     </div>
-                                                                </div>  
+                                                                </div>
                                                             </div>
                                                             <div id="loader_image"
                                                                 style="display:none;  text-align: center;"> <img
@@ -2549,7 +2529,8 @@
                                                                 <div class="col-sm-3">
                                                                     <div class="controlDiv controlDivProduction">
                                                                         <label>Auftrag</label>
-                                                                        <select class="graph-filter-dynamic h-w select-prod-filter"
+                                                                        <select
+                                                                            class="graph-filter-dynamic h-w select-prod-filter"
                                                                             id="orderFilterMixed">
                                                                         </select>
                                                                     </div>
@@ -2559,7 +2540,7 @@
                                                                         <label>Graph Name</label>
                                                                         <select class="graph-filter-dynamic"
                                                                             id="timeFilterIntervalMixed">
-                                                                            
+
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -2576,8 +2557,8 @@
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                
-                                                                
+
+
                                                             </div>
                                                             <div class="row am_graph_div" id="mixed_graph_plot_div">
                                                             </div>
@@ -2698,12 +2679,12 @@
 
                                                             </div>
                                                             <div class="mixed_graph_msg_history common-msg">
-                                                               <h3>Es existieren keine Daten die ausgewertet werden
-                                                                   können!</h3>
+                                                                <h3>Es existieren keine Daten die ausgewertet werden
+                                                                    können!</h3>
                                                             </div>
                                                         </div>
 
-                                                        
+
                                                     </div>
                                                     <!-- Edit mode end -->
                                                 </div>
@@ -2972,28 +2953,30 @@
                                         </div>
                                     </div>
                                     <div class="infosBlock"></div>
-                                        <div class="sectionHeader common-section-header">
-                                            <label>Graph Configrations Table</label>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-striped dataTable dtr-inline no-footer common-heading-class" id="graph_configuration_table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Graph Name</th>
-                                                        <th scope="col">Label</th>
-                                                        <th scope="col">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div> 
+                                    <div class="sectionHeader common-section-header">
+                                        <label>Graph Configrations Table</label>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table
+                                            class="table table-bordered table-striped dataTable dtr-inline no-footer common-heading-class"
+                                            id="graph_configuration_table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Graph Name</th>
+                                                    <th scope="col">Label</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Machine Table Configrations Modal -->
                     </div>
+                    <!-- Machine Table Configrations Modal -->
+                </div>
             </div>
 
             <div id="editor" style="display:none;">
@@ -15039,39 +15022,41 @@
                 <script type="text/javascript" src="dist/js/Synchronizer.min.js"></script>
                 <script type="text/javascript" src="dist/js/DataMachine.min.js"></script>
                 <script type="text/javascript" src="dist/js/objects.min.js"></script>
-                <script type="text/javascript" src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.2/dexie.min.js">
+                </script>
                 <script>
                     const newVersion =
                         () =>
-                            Number(
-                                new Date()
-                                    .toISOString()
-                                    .slice(0, 10)
-                                    .replace(/-/g, "")
-                            )
+                        Number(
+                            new Date()
+                            .toISOString()
+                            .slice(0, 10)
+                            .replace(/-/g, "")
+                        )
 
                     idxDB = new Dexie("G-Analysis")
                     idxDB
                         .version(newVersion())
-                        .stores(
-                            {
-                                mandanten: "man_ID, betrGrp_ID, nameMan, dbName"
+                        .stores({
+                            mandanten: "man_ID, betrGrp_ID, nameMan, dbName"
 
-                                , produkte: "prd_ID, namePrd, artikelNrPrd, deleted, custom1, custom2, custom3, custom4, custom5, custom6, datum, archiviert, aenderungsBemerkung, aenderungsInfo, gueltigVonPrd, gueltigBisPrd, gueltigVon1, gueltigBis1, gueltigVon2, gueltigBis2, gueltigVon3, gueltigBis3, gueltigVon4, gueltigBis4, gueltigVon5, gueltigBis5, gueltigVon6, gueltigBis6, gueltigVon7, gueltigBis7, gueltigVon8, gueltigBis8, gueltigVon9, gueltigBis9, gruppenID, org_ID, anl01_ID, anl02_ID, anl03_ID, anl04_ID, anl05_ID, anl06_ID, anl07_ID, anl08_ID, anl09_ID"
+                                ,
+                            produkte: "prd_ID, namePrd, artikelNrPrd, deleted, custom1, custom2, custom3, custom4, custom5, custom6, datum, archiviert, aenderungsBemerkung, aenderungsInfo, gueltigVonPrd, gueltigBisPrd, gueltigVon1, gueltigBis1, gueltigVon2, gueltigBis2, gueltigVon3, gueltigBis3, gueltigVon4, gueltigBis4, gueltigVon5, gueltigBis5, gueltigVon6, gueltigBis6, gueltigVon7, gueltigBis7, gueltigVon8, gueltigBis8, gueltigVon9, gueltigBis9, gruppenID, org_ID, anl01_ID, anl02_ID, anl03_ID, anl04_ID, anl05_ID, anl06_ID, anl07_ID, anl08_ID, anl09_ID"
 
-                                , schichtModelle: "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz, liegRef"
-                                , schichten: "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
-                                , schichtModelleHist: "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz, liegRef"
-                                , schichtenHist: "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
+                                ,
+                            schichtModelle: "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, notiz, liegRef",
+                            schichten: "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis",
+                            schichtModelleHist: "schtMdl_ID, lieg_ID, modellBez, anzahl, gueltigVon, gueltigBis, notiz, liegRef",
+                            schichtenHist: "schtDat_ID, schtMdl_ID, nr, bezeichnung, uhrzeitVon, uhrzeitBis, tagVon, tagBis"
 
-                                , gipscommAdmins: "gipsAdm_ID, username, betrGrp_ID, position, manGrp_ID, man_ID"
-                                , betreuerGruppen: "betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs"
-                                , superAdmins: "sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechteTreeView, rechteMenu, rechteEdit"
-                                , mandantenGruppen: "manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs"
-                                , admins: "adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu, rechteEdit"
-                                , benutzer: "ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu, rechteEdit"
-                            }
-                        )
+                                ,
+                            gipscommAdmins: "gipsAdm_ID, username, betrGrp_ID, position, manGrp_ID, man_ID",
+                            betreuerGruppen: "betrGrp_ID, firma, anzahlMitarbeiter, anschrift, plz, ort, geschaeftsfuehrer, telefon, eMail, notiz, mandantenIDs",
+                            superAdmins: "sAdm_ID, betrGrp_ID, manGrp_ID, man_ID, titelSAdm, nameSAdm, vornameSAdm, emailSAdm, telefonSAdm, faxSAdm, mobiltelefonSAdm, username, rechteTreeView, rechteMenu, rechteEdit",
+                            mandantenGruppen: "manGrp_ID, betrGrp_ID, name, kurz, notiz, mandantenIDs",
+                            admins: "adm_ID, manGrp_ID, man_ID, betrGrp_ID, titel, name, vorname, email, telefon, fax, mobiltelefon, username, position, rechteTreeView, rechteMenu, rechteEdit",
+                            benutzer: "ben_ID, manGrp_ID, man_ID, betrGrp_ID, name, vorname, username, titel, eMail, telefon, fax, mobiltelefon, position, rechteTreeView, rechteMenu, rechteEdit"
+                        })
                 </script>
 
                 <!-- Js loader start-->
@@ -15152,14 +15137,14 @@
     <script type="text/javascript" src="production_dashboard/production_js/graphMode.js"></script>
     <script type="text/javascript" src="production_dashboard/production_js/production.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-    <script type="text/javascript"
-        src="production_dashboard/production_js/jquery.bootstrap-duallistbox.min.js"></script>
+    <script type="text/javascript" src="production_dashboard/production_js/jquery.bootstrap-duallistbox.min.js">
+    </script>
     <script type="text/javascript" src="production_dashboard/production_js/intializeProductDetails.js"></script>
     <!-- Production dashboard scripts end-->
 
     <!-- Modal Start -->
     <div class="modal fade" id="modal-Machines-list">
-        <div class="modal-dialog modal-xl" >
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Custom Machine Table</h4>
@@ -15174,7 +15159,8 @@
                                 <h3 class="card-title" style="margin-bottom: 0px;">Anlagen Table Data</h3>
                             </div>
                             <div class="card-body">
-                                <table id="custom_machines_table" class="table table-bordered table-striped dataTable dtr-inline no-footer">
+                                <table id="custom_machines_table"
+                                    class="table table-bordered table-striped dataTable dtr-inline no-footer">
                                     <thead>
                                         <tr class="column_name">
                                         </tr>
@@ -15279,7 +15265,8 @@
                                </td>
                             </tr> -->
 
-                            <table class="table table-bordered table-striped dataTable dtr-inline no-footer common-heading-class"
+                            <table
+                                class="table table-bordered table-striped dataTable dtr-inline no-footer common-heading-class"
                                 id="dynamic_subgroup_field">
                                 <thead>
                                     <tr>
