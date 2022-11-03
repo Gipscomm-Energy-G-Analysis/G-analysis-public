@@ -51,12 +51,29 @@ case "knzIns":
     break;
 case "knz":
     $knzInsID = $_POST['knzInsID'];
-
     $query = "SELECT * FROM KennzahlenFormeln ";
     $query .= "WHERE knzIns_ID = $knzInsID ";
     $query .= "ORDER BY knzIns_ID ";
     $records = queryDB($conn, $query, "read");
     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+    break;
+case "knzCustom":
+    $anlID = $_POST['anlID'];
+    $machineQuery = "SELECT DISTINCT ProdData_.artikelnummer, produkte.prd_ID, produkte.namePrd FROM ProdData_ JOIN produkte ON  ProdData_.artikelnummer = produkte.artikelNrPrd WHERE ProdData_.anl_ID = $anlID";
+    $records1 = queryDB($conn, $machineQuery, "read");
+    // print_r($records1);die;
+    $prodIDArray = [];
+    for ( $i = 0; $i < count($records1); $i++ ) {
+        $id = $records1[$i]['prd_ID'];
+        $query2 = "SELECT produkte.artikelNrPrd + '_' + produkte.namePrd AS instanz, kennzahlenInstanzen.knzIns_ID ";
+        $query2 .= "FROM produkte JOIN kennzahlenInstanzen ON produkte.prd_ID=kennzahlenInstanzen.prd_ID ";
+        $query2 .= "WHERE produkte.prd_ID = ".$records1[$i]['prd_ID']." "; 
+        $instanz = queryDB($conn, $query2, "read");
+        $records1[$i]["instanz"] = $instanz[0]["instanz"];
+        $records1[$i]["id"] = $id;
+        $records1[$i]["knzIns_ID"] = $instanz[0]["knzIns_ID"];
+    }
+    echo json_encode($records1, JSON_INVALID_UTF8_IGNORE);
     break;
 case "spzKnz":
     $query = "SELECT * FROM KennzahlenFormeln ";

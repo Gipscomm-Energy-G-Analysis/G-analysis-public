@@ -137,7 +137,7 @@ class ProductionController {
                 $prod = [];
                 $customColumns = [];
                 $currentIndex = array_search($machineId, explode(',', $_POST['dataIndex']));
-                $machineDataQuery = "SELECT TOP 1 ProdData_.anl_ID,ProdData.maschine,ProdData.sollmenge,ProdData.maschinentyp,ProdData.zykluszeit,
+                $machineDataQuery = "SELECT TOP 1 ProdData_.anl_ID,ProdData_.anlageMst,ProdData.maschine,ProdData.sollmenge,ProdData.maschinentyp,ProdData.zykluszeit,
                 ProdData.artikelnummer,ProdData.werkzeug,ProdData.auftrag,ProdData.nester,ProdData.gutmenge,
                 CONVERT(VARCHAR(10), ProdData_.zeitstempel) as zeitstempel,ProdData_.ausschuss,ProdData_.gutmenge FROM ProdData_ 
                 LEFT JOIN ProdData ON ProdData_.anl_ID = ProdData.anl_ID
@@ -157,9 +157,9 @@ class ProductionController {
                 }
                 $groups = [];
                 if (!empty($machineData)) {
-                    return ['status' => 'success', 'code' => 200, 'anl_ID' => $machineId, 'data' => $machineData[0], 'graphPoints' => $graphPoints, 'message' => 'Prduction details fetched.', 'groups' => $groups, 'currentIndex'=>$currentIndex];
+                    return ['status' => 'success', 'code' => 200, 'anl_ID' => $machineId ,'machine_name'=> $machineData[0]['anlageMst'], 'data' => $machineData[0], 'graphPoints' => $graphPoints, 'message' => 'Prduction details fetched.', 'groups' => $groups, 'currentIndex'=>$currentIndex];
                 } else {
-                    return ['status' => 'error', 'code' => 404, 'anl_ID' => $machineId, 'data' => [], 'graphPoints' => "", 'message' => 'No Record Found!', 'groups' => $groups, 'currentIndex'=>$currentIndex];
+                    return ['status' => 'error', 'code' => 404, 'anl_ID' => $machineId , 'machine_name'=> "", 'data' => [], 'graphPoints' => "", 'message' => 'No Record Found!', 'groups' => $groups, 'currentIndex'=>$currentIndex];
                 }
             } else {
                 return ['status' => 'warning', 'code' => 404, 'data' => [], 'message' => "ProdData_ view does'nt exist!"]; 
@@ -223,7 +223,7 @@ class ProductionController {
                 }
                 // print_r($machineDataQuery);die;
                 // $machineData = $this->conn->query($machineDataQuery)->fetch();
-                $machineData = queryDB ( $this->conn, $query, "read");
+                $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
                 $groups = $this->getGroup();
                 
                 if (!empty($machineData)) {
@@ -320,7 +320,7 @@ class ProductionController {
 
     public function getPlantGroupData() {
         try {
-            $query = "SELECT * FROM subGroupOptions";
+            $query = "SELECT * FROM grp.groupOptions";
             // $records = $this->conn->query($query)->fetchAll();
             $records = queryDB ( $this->conn, $query, "read");
             return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Plant Group Fetched'];
@@ -524,11 +524,14 @@ class ProductionController {
 
     public function getDynamicColumnListing() {
         try {
+            
             if($this->migrationController->checkMigration('ProdData_')) {
+                
                 $machineId = $machineId = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$this->getMachineId();
                 $property_id = !empty($_POST['property_id'])?$_POST['property_id']:null;
+                
                 if($machineId) {
-                    $machineDataQuery = "SELECT custom1Anl FROM anlagen WHERE anl_ID=".$machineId;
+                    $machineDataQuery = "SELECT custom1Anl,nummerAnl FROM anlagen WHERE anl_ID=".$machineId;
                     $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
                     $query = "SELECT * FROM dashboardProduktionConfig";
                     // $data = $this->conn->query($query)->fetchAll();
@@ -554,6 +557,7 @@ class ProductionController {
                     
                     // get sub group configuration options
                     $subGroupId = $this->getSubGroupid($machineData[0]['custom1Anl']);
+                    
                     $primary_key = 'anl_ID';
                     
                     $subGroupConfig = [];
@@ -568,7 +572,7 @@ class ProductionController {
 
                     // $customDataMerge = array_merge($singular, $columnData);
     
-                    return ['code' => 200, 'data' => $this->splitArray($subGroupConfig), 'status' =>'success'];
+                    return ['code' => 200, 'data' => $this->splitArray($subGroupConfig), 'anl_id' => $machineId, 'machine_name' => $machineData[0]['nummerAnl'], 'status' =>'success'];
                 } else {
                     return ['code' => 404, 'data' => [], 'status' =>'error', 'msg' => 'No Record Found!'];
                 }
@@ -593,7 +597,7 @@ class ProductionController {
 
     public function getSubgroupData($option , $where, $is_graph=false, $machineId) {
         try {
-            $query = "SELECT column_name as dynamicString FROM SubGroupConfiguration 
+            $query = "SELECT column_name as dynamicString FROM grp.groupConfig 
                         WHERE sub_group_id=$option AND username='$this->username' AND status = '1'";         
             $records = queryDB ( $this->conn, $query, "read");
 
@@ -643,17 +647,18 @@ class ProductionController {
 
     public function getSubGroupid($option) {
         if(empty($option)) return null;
-        $query = "SELECT TOP 1 * FROM subGroupOptions 
+        $query = "SELECT TOP 1 * FROM grp.groupOptions 
                     WHERE option_name='$option'";
-            $data = queryDB ( $this->conn, $query, "read");         
+       // print_r($query);die;       
+            $data = queryDB ( $this->conn, $query, "read");     
         // $data = $this->conn->query($query)->fetch();
-        
+      //  print_r($data);die; 
         return isset($data['id'])?$data['id']:null;
     }
 
     public function getPrimaryKey($option) {
         if(empty($option)) return null;
-        $query = "SELECT TOP 1 primary_key FROM SubGroupConfiguration 
+        $query = "SELECT TOP 1 primary_key FROM groupConfig 
                     WHERE sub_group_id='$option'";
         // $data = $this->conn->query($query)->fetch();
         $data = queryDB ( $this->conn, $query, "read");     

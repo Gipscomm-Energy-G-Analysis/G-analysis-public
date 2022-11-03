@@ -339,6 +339,7 @@ class GraphController {
         $label = [];
         $valData = [];
         $amData = [];
+        $energyData = [];
         $minValue = isset($data[0]['auftrag'])?(int)$data[0]['auftrag']:0;
         $maxValue = isset($data[0]['auftrag'])?(int)$data[0]['auftrag']:0;
         $productInfo = [];
@@ -358,9 +359,10 @@ class GraphController {
                 //print_r($prodGraps);die;
                 if($key2 == $textLable) {
                     if($graphType == 'energy') {
-                        array_push($amData, ['date'=>trim($value['auftrag']), 'value'=>floatval($prodGraps), 'value2'=>floatval($value['verbrauchAuftrag']), 'time'=>$timeData,'convertedTime'=>'']);
+                        array_push($amData, ['x'=>trim($value['auftrag']),'y'=>floatval($prodGraps),'date'=>trim($value['auftrag']), 'value'=>floatval($prodGraps), 'value2'=>floatval($value['verbrauchAuftrag']), 'time'=>$timeData,'convertedTime'=>'']);
+                        array_push($energyData, ['x'=>trim($value['auftrag']),'y'=>floatval($value['verbrauchAuftrag']),'date'=>trim($value['auftrag']), 'value'=>floatval($prodGraps), 'value2'=>floatval($value['verbrauchAuftrag']), 'time'=>$timeData,'convertedTime'=>'']);
                     } else {
-                        array_push($amData, ['date'=>trim($value['auftrag']), 'value'=>floatval($prodGraps), 'time'=>$timeData,'convertedTime'=>'']);
+                        array_push($amData, ['x'=>trim($value['auftrag']),'y'=>floatval($prodGraps),'date'=>trim($value['auftrag']), 'value'=>floatval($prodGraps), 'time'=>$timeData,'convertedTime'=>'']);
                     }
                     
                     $value[$key2] = floatval($prodGraps);
@@ -369,19 +371,25 @@ class GraphController {
             }
         }
         //print_r($productInfo);die;
-        return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data, 'minValue' => $minValue, 'maxValue' => $maxValue, 'prodInfo' => array_unique($productInfo) ];
+        return [ 'label'=> $label,'data'=>$valData,'energyData' =>$energyData ,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data, 'minValue' => $minValue, 'maxValue' => $maxValue, 'prodInfo' => array_unique($productInfo) ];
     }
 
     public function str_lreplace($search, $replace, $subject)
     {
         $pos = strrpos($subject, $search);
-
         if($pos !== false)
         {
             $subject = substr_replace($subject, $replace, $pos, strlen($search));
         }
-
         return $subject;
+    }
+
+    public function getFormulas() {
+        try {
+            
+        } catch(Exception $e) {
+            return ['code' => 'error', 'code' => 500, 'message' => $e->getMessage()];
+        }
     }
 
  }

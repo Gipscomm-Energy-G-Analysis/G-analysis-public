@@ -98,6 +98,7 @@ let machineCommonAjax = (params) => {
             })
         },
         success: function(response) {
+            console.log('here data asfdsaf', response);
             setTimeout($.loadingBlockHide, 2000);
             $(".navigation-production").attr("data-index", params.machineIndex);
             $(".navigation-production").attr("data-graph-points", response.graphPoints);
@@ -180,7 +181,8 @@ let getProperty = function (org_id) {
                 });
                 $("#property-data").html(html);
             }
-
+            console.log('gefrhasejfkldsjfkldsjsdjgkljds');
+            getMachineTable();
             getNavigationDetails();
         }
     });
@@ -206,6 +208,7 @@ $(document).on('click','.navigation-production-li', function() {
     getDynamicProductionColumns(findIndex);
     getProductionGraphDetails(findIndex);
     getMixedGraphDetails(findIndex);
+    
 });
 
 // Production page switches
@@ -797,16 +800,17 @@ let getDynamicProductionColumns = (index, anl_ID="") => {
             machineIndex:index,
         },
         success: function(result) {
-            // console.log('result code data',result.code);
+             console.log('result code data',result);
             if(result.code == '200') {
                 if(result.data.main.odd != '' || result.data.main.even != ''){
-                showMachineData(result.data.main);
-                $('.error_message').hide();
-                }
-                else{
+                    showMachineData(result.data.main);
+                    $('.error_message').hide();
+                }else{
                     $('.dynamic_columns').html('');
                     $('.error_message').show();
                 }
+                getFormulas(result.anl_id);
+                $(".graph-machine-filters").html(`<option value="${result.anl_id}">${result.machine_name}</option>`)
             } else {
                 $('.dynamic_columns').html('');
                 $('.error_message').show();
@@ -1074,12 +1078,14 @@ function getNavigationDetails() {
             nameDB: $("#nameDB").val(),
         },
         success:function(result) {
+            
             if(result.code == 200) {
                 $(".navigation-production").attr("data-array", result.data.group_anl);
                 $(".navigation-production").attr("data-result", result.data.group_record);
                 $(".navigation-production").attr("data-first", 0);
                 $(".navigation-production").attr("data-last", result.data.last);
                 getProductionDetails(result.data.group_anl);
+                
             }
         },
         error:function(result) {
