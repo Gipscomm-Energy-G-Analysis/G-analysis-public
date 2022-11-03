@@ -16,13 +16,13 @@ $query  .= "WHERE ber_ID = " . $_POST['berID'] . " ";
 $query  .= "AND typ = '" . $_POST['type'] . "' ";
 $query  .= "AND deleted = 0 ";
 
-$records = queryDB($conn, $query, "read");
+$records = (array)queryDB($conn, $query, "read");
 
 for ($i = 0; $i < count($records); $i++) {
 
     if ($records[$i]["vorgelMst_ID"] != 0 && $records[$i]["vorgelMst_ID"] != null) {
 
-        foreach ($records[$i] as $mst) {
+        foreach ($records as $mst) {
 
             if ($records[$i]["vorgelMst_ID"] === $mst["mst_ID"]) {
 

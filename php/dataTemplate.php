@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 // we need this so that PHP does not complain about deprectaed functions
 error_reporting( 0 );
 
@@ -65,5 +65,3 @@ while ($rowString = sqlsrv_fetch_array($result[0], SQLSRV_FETCH_ASSOC))
 }
 
 echo json_encode($data);
-include('bottom-cache.php');
-?>	

@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 error_reporting(-1);
 ini_set ('display_errors', 'On');
 
@@ -63,4 +63,3 @@ else if($id == 'saveInvestValuesMeasuring'){
     $result = queryDB($conn, $queryDB, "write");
     echo json_encode($result); 
 }
-?>

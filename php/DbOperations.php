@@ -57,8 +57,7 @@ function queryDB(PDO $conn, string | array $sqlQueries, string $mode): array
     switch (gettype($sqlQueries)) {
         case 'string':
             $prepVal = execQuery($conn, $sqlQueries, $mode);
-            $retVal =
-                !$prepVal ?
+            $retVal = !$prepVal ?
                 ['error' => 'queryDB : Invalid query string !! -> ' . $sqlQueries] :
                 $prepVal;
             break;

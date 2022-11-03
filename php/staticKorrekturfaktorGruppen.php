@@ -83,6 +83,5 @@ if(isset($id) && $id =="ePrdKFEGruppenGetTblData"){
     ON T1.ePrdKFE_GrpID = T2.ePrdKFE_GrpID WHERE T2.deleted='false' AND T1.deleted='false'";
 }
 $records = queryDB($conn, $query, "read");
-    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+    echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
 }
-?>

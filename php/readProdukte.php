@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 error_reporting ( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
 
@@ -42,6 +42,4 @@ for ( $i = 0; $i < count( $records1 ); $i++ ) {
   }
 }
 
-echo json_encode($records1, JSON_INVALID_UTF8_IGNORE);
-include('bottom-cache.php');
-?>
+echo json_encode($records1, JSON_INVALID_UTF8_SUBSTITUTE);

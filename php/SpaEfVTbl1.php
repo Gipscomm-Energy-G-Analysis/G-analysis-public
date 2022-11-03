@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 require 'DbOperations.php';
 
 function readInSpaEfVTbl1Data($nameDB, ){
@@ -11,6 +11,3 @@ function readInSpaEfVTbl1Data($nameDB, ){
 
   return $records;
 }
-
-include('bottom-cache.php');
- ?>

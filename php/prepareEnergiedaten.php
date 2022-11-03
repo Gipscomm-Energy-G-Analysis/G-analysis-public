@@ -2,9 +2,8 @@
 
 set_time_limit(0) ;
 
-include('top-cache.php') ;
-// error_reporting (-1) ;
-// ini_set ('display_errors', 'On') ;
+error_reporting (-1) ;
+ini_set ('display_errors', 'On') ;
 
 require 'helpers.php' ;
 require 'DbOperations.php' ;
@@ -392,5 +391,3 @@ closeDbConn(connect) ;
 $end = hrtime(true) ;
 
 echo "    Execution Time : ".(($end - $start) / 1000000000) ;
-
-?>

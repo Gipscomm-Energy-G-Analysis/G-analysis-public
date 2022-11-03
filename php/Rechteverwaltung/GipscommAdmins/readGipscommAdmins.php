@@ -11,5 +11,4 @@ $query .= "WHERE deleted = 0 " ;
 
 $result = queryDB( $conn, $query, "read" ) ;
 
-echo json_encode(["gipscommAdmins" => $result] , JSON_INVALID_UTF8_IGNORE) ;
-?>
+echo json_encode(["gipscommAdmins" => $result] , JSON_INVALID_UTF8_SUBSTITUTE) ;

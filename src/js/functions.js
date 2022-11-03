@@ -292,7 +292,7 @@ try {
                 G = $("#avgDiag2").is(":checked"),
                 f = "001_heco" === a || "002_badber" === a || "003_tauchzor" === a ? "value" : "power";
             if ("" != r) {
-                a = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     f + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 a += "INNER JOIN messmittel ";
                 a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -301,13 +301,13 @@ try {
                 a += "WHERE messstellen.mst_ID = '" + c + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + h + "' ", "Tag" == v || "Tag 15min" == v) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + x + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + h + "' ", "Tag" == v || "Tag 15min" == v) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + x + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == v || "Monat 15min" == v) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + x + "' "
+                        if ("Monat" == v || "Monat 15min" == v) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + x + "' "
                     }
                 else a += "AND time_de BETWEEN '" + transformDate(C) + "' AND '" + transformDate(D) + "' ";
                 a += "ORDER by time_de ";
-                b = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     f + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 b += "INNER JOIN messmittel ";
                 b += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -316,13 +316,13 @@ try {
                 b += "WHERE messstellen.mst_ID = '" + c + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (b +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + q + "' ", "Tag" == v || "Tag 15min" == v) b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + u + "' ", b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + y + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + q + "' ", "Tag" == v || "Tag 15min" == v) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + u + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + y + "' ";
                     else {
-                        if ("Monat" == v || "Monat 15min" == v) b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + u + "' "
+                        if ("Monat" == v || "Monat 15min" == v) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + u + "' "
                     }
                 else b += "AND time_de BETWEEN '" + transformDate(C) + "' AND '" + transformDate(D) + "' ";
                 b += "ORDER by time_de ";
-                e = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                e = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     f + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 e += "INNER JOIN messmittel ";
                 e += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -331,14 +331,14 @@ try {
                 e += "WHERE messstellen.mst_ID = '" + c + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (e +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + r + "' ", "Tag" == v || "Tag 15min" == v) e += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + z + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + r + "' ", "Tag" == v || "Tag 15min" == v) e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + z + "' ";
                     else {
-                        if ("Monat" == v || "Monat 15min" == v) e += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == v || "Monat 15min" == v) e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else e += "AND time_de BETWEEN '" + transformDate(C) + "' AND '" + transformDate(D) + "' ";
                 e += "ORDER by time_de "
             } else if ("" != q) {
-                a = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     f + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 a += "INNER JOIN messmittel ";
                 a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -347,13 +347,13 @@ try {
                 a += "WHERE messstellen.mst_ID = '" + c + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + h + "' ", "Tag" == v || "Tag 15min" == v) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + x + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + h + "' ", "Tag" == v || "Tag 15min" == v) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + x + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == v || "Monat 15min" == v) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + x + "' "
+                        if ("Monat" == v || "Monat 15min" == v) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + x + "' "
                     }
                 else a += "AND time_de BETWEEN '" + transformDate(C) + "' AND '" + transformDate(D) + "' ";
                 a += "ORDER by time_de ";
-                b = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     f + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 b += "INNER JOIN messmittel ";
                 b += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -362,14 +362,14 @@ try {
                 b += "WHERE messstellen.mst_ID = '" + c + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (b +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + q + "' ", "Tag" == v || "Tag 15min" == v) b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + u + "' ", b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + y + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + q + "' ", "Tag" == v || "Tag 15min" == v) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + u + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + y + "' ";
                     else {
-                        if ("Monat" == v || "Monat 15min" == v) b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + u + "' "
+                        if ("Monat" == v || "Monat 15min" == v) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + u + "' "
                     }
                 else b += "AND time_de BETWEEN '" + transformDate(C) + "' AND '" + transformDate(D) + "' ";
                 b += "ORDER by time_de "
             } else {
-                a = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     f + " AS Value FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 a += "INNER JOIN messmittel ";
                 a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -377,10 +377,10 @@ try {
                 a += "ON messmittel.mst_ID = messstellen.mst_ID ";
                 a += "WHERE messstellen.mst_ID = '" + c + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
-                    if (a += "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" +
-                        h + "' ", "Tag" == v || "Tag 15min" == v) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + x + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                    if (a += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" +
+                        h + "' ", "Tag" == v || "Tag 15min" == v) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + x + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == v || "Monat 15min" == v) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + x + "' "
+                        if ("Monat" == v || "Monat 15min" == v) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + x + "' "
                     }
                 else a += "AND time_de BETWEEN '" + transformDate(C) + "' AND '" + transformDate(D) + "' ";
                 a += "ORDER by time_de "
@@ -441,7 +441,7 @@ try {
         if (jahr_3 != "") {
 
             // First MeasurementPoint
-            queryString_1 = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
+            queryString_1 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
             queryString_1 += "INNER JOIN channel ";
             queryString_1 += "ON data_value_15m.channel_id = channel.channel_id ";
             queryString_1 += "INNER JOIN messmittel ";
@@ -450,12 +450,12 @@ try {
             queryString_1 += "ON messmittel.mst_ID = messstellen.mst_ID ";
             queryString_1 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
-                queryString_1 += "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
+                queryString_1 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
                 if (timeInterval == "Tag" || timeInterval == "Tag 15min") {
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + tag_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + tag_1 + "' ";
                 } else if (timeInterval == "Monat" || timeInterval == "Monat 15min") {
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
                 }
             } else {
                 queryString_1 += "AND time_de BETWEEN '" + transformDate(von) + "' AND '" + transformDate(bis) + "' ";
@@ -463,7 +463,7 @@ try {
             queryString_1 += "ORDER by time_de ";
 
             // Second MeasurementPoint
-            queryString_2 = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
+            queryString_2 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
             queryString_2 += "INNER JOIN channel ";
             queryString_2 += "ON data_value_15m.channel_id = channel.channel_id ";
             queryString_2 += "INNER JOIN messmittel ";
@@ -472,12 +472,12 @@ try {
             queryString_2 += "ON messmittel.mst_ID = messstellen.mst_ID ";
             queryString_2 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
-                queryString_2 += "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + jahr_2 + "' ";
+                queryString_2 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_2 + "' ";
                 if (timeInterval == "Tag" || timeInterval == "Tag 15min") {
-                    queryString_2 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_2 + "' ";
-                    queryString_2 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + tag_2 + "' ";
+                    queryString_2 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_2 + "' ";
+                    queryString_2 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + tag_2 + "' ";
                 } else if (timeInterval == "Monat" || timeInterval == "Monat 15min") {
-                    queryString_2 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_2 + "' ";
+                    queryString_2 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_2 + "' ";
                 }
             } else {
                 queryString_2 += "AND time_de BETWEEN '" + transformDate(von) + "' AND '" + transformDate(bis) + "' ";
@@ -485,7 +485,7 @@ try {
             queryString_2 += "ORDER by time_de ";
 
             // Third MeasurementPoint
-            queryString_3 = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
+            queryString_3 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
             queryString_3 += "INNER JOIN channel ";
             queryString_3 += "ON data_value_15m.channel_id = channel.channel_id ";
             queryString_3 += "INNER JOIN messmittel ";
@@ -494,12 +494,12 @@ try {
             queryString_3 += "ON messmittel.mst_ID = messstellen.mst_ID ";
             queryString_3 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
-                queryString_3 += "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + jahr_3 + "' ";
+                queryString_3 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_3 + "' ";
                 if (timeInterval == "Tag" || timeInterval == "Tag 15min") {
-                    queryString_3 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_3 + "' ";
-                    queryString_3 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + tag_3 + "' ";
+                    queryString_3 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_3 + "' ";
+                    queryString_3 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + tag_3 + "' ";
                 } else if (timeInterval == "Monat" || timeInterval == "Monat 15min") {
-                    queryString_3 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_3 + "' ";
+                    queryString_3 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_3 + "' ";
                 }
             } else {
                 queryString_3 += "AND time_de BETWEEN '" + transformDate(von) + "' AND '" + transformDate(bis) + "' ";
@@ -508,7 +508,7 @@ try {
         } else if (jahr_2 != "") {
 
             // First MeasurementPoint
-            queryString_1 = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
+            queryString_1 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
             queryString_1 += "INNER JOIN channel ";
             queryString_1 += "ON data_value_15m.channel_id = channel.channel_id ";
             queryString_1 += "INNER JOIN messmittel ";
@@ -517,12 +517,12 @@ try {
             queryString_1 += "ON messmittel.mst_ID = messstellen.mst_ID ";
             queryString_1 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
-                queryString_1 += "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
+                queryString_1 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
                 if (timeInterval == "Tag" || timeInterval == "Tag 15min") {
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + tag_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + tag_1 + "' ";
                 } else if (timeInterval == "Monat" || timeInterval == "Monat 15min") {
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
                 }
             } else {
                 queryString_1 += "AND time_de BETWEEN '" + transformDate(von) + "' AND '" + transformDate(bis) + "' ";
@@ -530,7 +530,7 @@ try {
             queryString_1 += "ORDER by time_de ";
 
             // Second MeasurementPoint
-            queryString_2 = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
+            queryString_2 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m ";
             queryString_2 += "INNER JOIN channel ";
             queryString_2 += "ON data_value_15m.channel_id = channel.channel_id ";
             queryString_2 += "INNER JOIN messmittel ";
@@ -539,12 +539,12 @@ try {
             queryString_2 += "ON messmittel.mst_ID = messstellen.mst_ID ";
             queryString_2 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
-                queryString_2 += "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + jahr_2 + "' ";
+                queryString_2 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_2 + "' ";
                 if (timeInterval == "Tag" || timeInterval == "Tag 15min") {
-                    queryString_2 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_2 + "' ";
-                    queryString_2 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + tag_2 + "' ";
+                    queryString_2 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_2 + "' ";
+                    queryString_2 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + tag_2 + "' ";
                 } else if (timeInterval == "Monat" || timeInterval == "Monat 15min") {
-                    queryString_2 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_2 + "' ";
+                    queryString_2 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_2 + "' ";
                 }
             } else {
                 queryString_2 += "AND time_de BETWEEN '" + transformDate(von) + "' AND '" + transformDate(bis) + "' ";
@@ -553,7 +553,7 @@ try {
         } else {
 
             // First MeasurementPoint
-            queryString_1 = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value FROM data_value_15m ";
+            queryString_1 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value FROM data_value_15m ";
             queryString_1 += "INNER JOIN channel ";
             queryString_1 += "ON data_value_15m.channel_id = channel.channel_id ";
             queryString_1 += "INNER JOIN messmittel ";
@@ -562,12 +562,12 @@ try {
             queryString_1 += "ON messmittel.mst_ID = messstellen.mst_ID ";
             queryString_1 += "WHERE messstellen.mst_ID = '" + idMst + "' ";
             if ($("#btnZeitrmDiag").text() == "Benutzerdefinierter Zeitraum") {
-                queryString_1 += "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
+                queryString_1 += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr_1 + "' ";
                 if (timeInterval == "Tag" || timeInterval == "Tag 15min") {
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + tag_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + tag_1 + "' ";
                 } else if (timeInterval == "Monat" || timeInterval == "Monat 15min") {
-                    queryString_1 += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
+                    queryString_1 += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat_1 + "' ";
                 }
             } else {
                 queryString_1 += "AND time_de BETWEEN '" + transformDate(von) + "' AND '" + transformDate(bis) + "' ";
@@ -647,14 +647,14 @@ try {
                 a += "WHERE mst_ID = '" + g + "' "
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
-                        "AND LEFT(CONVERT(letchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 a += "ORDER by Time ";
             } else {
-                a = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase," +
+                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase," +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 a += "INNER JOIN messmittel ";
                 a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -663,9 +663,9 @@ try {
                 a += "WHERE messstellen.mst_ID = '" + g + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 a += "ORDER by time_de ";
@@ -675,14 +675,14 @@ try {
                 b += "WHERE mst_ID = '" + f + "' "
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (b +=
-                        "AND LEFT(CONVERT(letchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
                     }
                 else b += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 b += "ORDER by Time ";
             } else {
-                b = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 b += "INNER JOIN messmittel ";
                 b += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -691,9 +691,9 @@ try {
                 b += "WHERE messstellen.mst_ID = '" + f + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (b +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else b += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 b += "ORDER by time_de ";
@@ -703,14 +703,14 @@ try {
                 e += "WHERE mst_ID = '" + h + "' "
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (e +=
-                        "AND LEFT(CONVERT(letchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) e += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
                     }
                 else e += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 e += "ORDER by Time ";
             } else {
-                e = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                e = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 e += "INNER JOIN messmittel ";
                 e += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -719,9 +719,9 @@ try {
                 e += "WHERE messstellen.mst_ID = '" + h + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (e +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) e += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else e += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 e += "ORDER by time_de "
@@ -732,14 +732,14 @@ try {
                 a += "WHERE mst_ID = '" + g + "' "
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
-                        "AND LEFT(CONVERT(letchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 a += "ORDER by Time ";
             } else {
-                a = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 a += "INNER JOIN messmittel ";
                 a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -748,9 +748,9 @@ try {
                 a += "WHERE messstellen.mst_ID = '" + g + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 a += "ORDER by time_de ";
@@ -760,14 +760,14 @@ try {
                 b += "WHERE mst_ID = '" + f + "' "
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (b +=
-                        "AND LEFT(CONVERT(letchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
                     }
                 else b += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 b += "ORDER by Time ";
             } else {
-                b = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 b += "INNER JOIN messmittel ";
                 b += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -776,9 +776,9 @@ try {
                 b += "WHERE messstellen.mst_ID = '" + f + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (b +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else b += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 b += "ORDER by time_de "
@@ -789,14 +789,14 @@ try {
                 a += "WHERE mst_ID = '" + g + "' "
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
-                        "AND LEFT(CONVERT(letchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), Time, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), Time, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 a += "ORDER by Time ";
             } else {
-                a = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, " +
+                a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
                 a += "INNER JOIN messmittel ";
                 a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
@@ -805,9 +805,9 @@ try {
                 a += "WHERE messstellen.mst_ID = '" + g + "' ";
                 if ("Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text())
                     if (a +=
-                        "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 10), 2) = '" + w + "' ";
+                        "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + u + "' ", "Tag" == p || "Tag 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' ", a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '" + w + "' ";
                     else {
-                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + t + "' "
+                        if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 a += "ORDER by time_de "
@@ -847,7 +847,7 @@ try {
             jahr = $("#VerbrauchsdatenexportJahr").val(),
             monat = $("#VerbrauchsdatenexportMonat").val(),
             vers = 0;
-        queryString = "SELECT nameMSt AS Name, CONVERT(letchar(20), time_de, 104) + ' ' + CONVERT(letchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value FROM data_value_15m ";
+        queryString = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value FROM data_value_15m ";
         queryString += "INNER JOIN channel ";
         queryString += "ON data_value_15m.channel_id = channel.channel_id ";
         queryString += "INNER JOIN messmittel ";
@@ -855,9 +855,9 @@ try {
         queryString += "INNER JOIN messstellen ";
         queryString += "ON messmittel.mst_ID = messstellen.mst_ID ";
         queryString += "WHERE messstellen.mst_ID = '" + idMst + "' ";
-        queryString += "AND LEFT(CONVERT(letchar(20), time_de, 120), 4) = '" + jahr + "' ";
+        queryString += "AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '" + jahr + "' ";
         if (monat != "-") {
-            queryString += "AND RIGHT(LEFT(CONVERT(letchar(20), time_de, 120), 7), 2) = '" + monat + "' ";
+            queryString += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + monat + "' ";
         }
         queryString += "ORDER by time_de ";
         vers = 2;
@@ -1791,9 +1791,9 @@ try {
                 g = e.length,
                 f = !0,
                 h = "";
-            if ("basis" == a) h += "Jahr > RIGHT(CONVERT(letchar(20), getdate(), 104), 4) - 5 ";
+            if ("basis" == a) h += "Jahr > RIGHT(CONVERT(varchar(20), getdate(), 104), 4) - 5 ";
             else if ("benutzerdefiniert" == a)
-                if ("letzte5" == b) h += "Jahr > RIGHT(CONVERT(letchar(20), getdate(), 104), 4) - 5 ";
+                if ("letzte5" == b) h += "Jahr > RIGHT(CONVERT(varchar(20), getdate(), 104), 4) - 5 ";
                 else if ("benutzerdefJahre" == b)
                 for (var q = 0; q < g; q++) e.eq(q).prop("checked") && f ? (h += "Jahr = '" + c.eq(q).text() + "' ", f = !1) : e.eq(q).prop("checked") ? h += "OR Jahr = '" + c.eq(q).text() + "' " : e.eq(q).prop("checked") && alert("getting the SpaEfV Benutzerdefinierte Jahre failed!! :func getJahresstringSpaEfVBenutzerdef()");
             else alert("getting the SpaEfV Jahres Modus failed!! :func getJahresstringSpaEfVBenutzerdef()");

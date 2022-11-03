@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 $fileName = $_FILES['file']['name'];
 $fileType = $_FILES['file']['type'];
 $fileSize = $_FILES['file']['size'];
@@ -13,5 +13,3 @@ $fileContent = fread($fileHandle, $fileSize);
 file_put_contents('$fileName', $fileContent);
 
 echo $fileName;
-include('bottom-cache.php');
-?>

@@ -10,5 +10,4 @@ $query  = "SELECT man_ID, betrGrp_ID, nameMan, dbName FROM mandanten " ;
 
 $result = queryDB( $conn, $query, "read" ) ;
 
-echo json_encode(["mandanten" => $result] , JSON_INVALID_UTF8_IGNORE) ;
-?>
+echo json_encode(["mandanten" => $result] , JSON_INVALID_UTF8_SUBSTITUTE) ;

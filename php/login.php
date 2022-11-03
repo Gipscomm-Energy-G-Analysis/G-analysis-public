@@ -24,8 +24,8 @@ $executedQuery = queryDB($conn, $query, 'read');
 
 $records = count($executedQuery) === 1 ? $executedQuery : ['username' => json_encode(false)];
 
-// $_SESSION['login_state'] = json_encode(count($records) === 1);
-// $_SESSION['username'] = $records[0]['username'];
+$_SESSION['login_state'] = json_encode(count($records) === 1);
+$_SESSION['username'] = $records[0]['username'];
 
 $login =
     count($records) !== 1 ?

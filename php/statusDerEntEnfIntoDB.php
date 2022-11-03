@@ -1,6 +1,5 @@
 <?php
 
-include('top-cache.php');
 $nameDB = $_POST['nameDB'];
 
 $id = $_POST['id'];
@@ -36,6 +35,3 @@ else{
 	
 
 echo json_encode($tsql);
-
-include('top-cache.php');
-?>

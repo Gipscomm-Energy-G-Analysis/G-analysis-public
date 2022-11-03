@@ -1,6 +1,5 @@
 <?php
 
-include('top-cache.php');
 error_reporting(-1);
 ini_set ('display_errors', 'On');
 
@@ -77,6 +76,3 @@ $query .= "WHERE ".$idName." = ".$idValue." ";
 queryDB($conn, $query, "write");
 
 echo $query;
-
-include('bottom-cache.php');
-?>

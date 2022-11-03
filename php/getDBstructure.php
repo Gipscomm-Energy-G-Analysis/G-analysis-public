@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 error_reporting(-1);
 ini_set('display_errors', 'On');
 
@@ -36,5 +36,3 @@ closeDbConn($conn2);
 $records = array_merge($recordsRaw1, $recordsRaw2);
 
 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-include('bottom-cache.php');
-?>

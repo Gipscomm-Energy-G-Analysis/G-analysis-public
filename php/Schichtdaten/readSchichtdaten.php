@@ -30,5 +30,4 @@ echo json_encode(
     , "schichten" => $schichten
     , "schichtModelleHist" => $schichtModelleHist
     , "schichtenHist" => $schichtenHist
-    ] , JSON_INVALID_UTF8_IGNORE) ;
-?>
+    ] , JSON_INVALID_UTF8_SUBSTITUTE) ;

@@ -1298,12 +1298,11 @@ else if($id == 'startEndDateEinheitTypeCheckValidation'){
 		}
 		//echo  json_encode(array_values($records));die;
 
-		echo json_encode(array_values($records), JSON_INVALID_UTF8_IGNORE);
+		echo json_encode(array_values($records), JSON_INVALID_UTF8_SUBSTITUTE);
 	}
 	else{
 		$records= queryDB($conn, $query, "read");
 //	print_r($records);die;
-		echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+		echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
 	}
 }
-?>

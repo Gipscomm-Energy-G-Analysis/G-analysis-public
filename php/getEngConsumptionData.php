@@ -1,7 +1,7 @@
 <?php
-include('top-cache.php');
+
 error_reporting(-1);
-ini_set ('display_errors', 'On');
+ini_set('display_errors', 'On');
 
 require 'DbOperations.php';
 
@@ -10,10 +10,8 @@ $conn = connectToDB($nameDB);
 
 $energietraeger = $_POST['energietraeger'];
 
-$query= "SELECT * FROM energietraeger WHERE nameEnt = '$energietraeger'";
+$query = "SELECT * FROM energietraeger WHERE nameEnt = '$energietraeger'";
 
 $records = queryDB($conn, $query, "read");
 
 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-include('bottom-cache.php');
-?>

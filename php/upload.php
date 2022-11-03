@@ -1,8 +1,8 @@
 
 <?php
-include('top-cache.php');
+
 error_reporting(-1);
-ini_set ('display_errors', 'On');
+ini_set('display_errors', 'On');
 
 require 'DbOperations.php';
 
@@ -25,24 +25,24 @@ $fileContent = fread($fileHandle, $fileSize);
 
 $fileContentEnc = base64_encode($fileContent);
 
-if($verwaltung == "anl"){
-	$query = "INSERT INTO dokumente(anl_ID,kategorieDok,nameDok,typDok,erweiterungDok,groesseDok,inhalt)";
-	$query .= "VALUES('$id','$kategorie','$fileName','$fileType','$fileExtention','$fileSize','$fileContentEnc')";
+if ($verwaltung == "anl") {
+    $query = "INSERT INTO dokumente(anl_ID,kategorieDok,nameDok,typDok,erweiterungDok,groesseDok,inhalt)";
+    $query .= "VALUES('$id','$kategorie','$fileName','$fileType','$fileExtention','$fileSize','$fileContentEnc')";
 }
 
- if($verwaltung == "msm"){
-	$query = "INSERT INTO dokumente(msm_ID,kategorieDok,nameDok,typDok,erweiterungDok,groesseDok,inhalt)";
-	$query .= "VALUES('$id','$kategorie','$fileName','$fileType','$fileExtention','$fileSize','$fileContentEnc')";
+if ($verwaltung == "msm") {
+    $query = "INSERT INTO dokumente(msm_ID,kategorieDok,nameDok,typDok,erweiterungDok,groesseDok,inhalt)";
+    $query .= "VALUES('$id','$kategorie','$fileName','$fileType','$fileExtention','$fileSize','$fileContentEnc')";
 }
 
-if($verwaltung == "eRng"){
-	$query = "INSERT INTO dokumente(eRng_ID,kategorieDok,nameDok,typDok,erweiterungDok,groesseDok,inhalt)";
-	$query .= "VALUES('$id','$kategorie','$fileName','$fileType','$fileExtention','$fileSize','$fileContentEnc')";
+if ($verwaltung == "eRng") {
+    $query = "INSERT INTO dokumente(eRng_ID,kategorieDok,nameDok,typDok,erweiterungDok,groesseDok,inhalt)";
+    $query .= "VALUES('$id','$kategorie','$fileName','$fileType','$fileExtention','$fileSize','$fileContentEnc')";
 }
 
 queryDB($conn, $query, "write");
 
 echo $query;
 
-include('bottom-cache.php');
+
 ?>

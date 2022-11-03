@@ -1,7 +1,6 @@
 <?php
-include('top-cache.php');
-error_reporting(-1);
 
+error_reporting(-1);
 ini_set('display_errors', 'On');
 
 require 'DbOperations.php';
@@ -19,6 +18,4 @@ $records = queryDB($conn, $query, "read");
 
 closeDbConn($conn);
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-include('bottom-cache.php');
-?>
+echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);

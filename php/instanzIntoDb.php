@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 error_reporting(-1);
 ini_set ('display_errors', 'On');
 
@@ -3747,5 +3747,3 @@ if ($id != "ePrdKFE" && $id != "ePrdDKFE" && $id != "calculationTypeResult" && $
 //     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 // }
 /*new-mm-end 23-03-2021*/
-include('bottom-cache.php');
-?>

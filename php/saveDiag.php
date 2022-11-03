@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 error_reporting (-1);
 ini_set ('display_errors', 'On');
 
@@ -19,6 +19,4 @@ $query .= "VALUES (getdate(), '$name', '$beschreibung', '$typ', '$bemerkung', '$
 
 $records = queryDB($conn, $query, "write");
 
-echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-include('bottom-cache.php');
-?>
+echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);

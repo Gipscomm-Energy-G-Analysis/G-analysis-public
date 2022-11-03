@@ -1,6 +1,5 @@
 <?php
 
-include('top-cache.php');
 error_reporting(-1);
 ini_set ('display_errors', 'On');
 
@@ -49,6 +48,3 @@ while ($rowString = sqlsrv_fetch_array($result[0], SQLSRV_FETCH_ASSOC))
 }
 
 echo json_encode($data, JSON_INVALID_UTF8_IGNORE);
-
-include('bottom-cache.php');
-?>

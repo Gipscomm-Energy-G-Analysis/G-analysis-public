@@ -20,5 +20,4 @@ else {
 
 $result = queryDB( $conn, $query, "read" ) ;
 
-echo json_encode(["benutzer" => $result] , JSON_INVALID_UTF8_IGNORE) ;
-?>
+echo json_encode(["benutzer" => $result] , JSON_INVALID_UTF8_SUBSTITUTE) ;

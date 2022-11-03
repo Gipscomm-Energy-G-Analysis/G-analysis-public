@@ -1,5 +1,5 @@
 <?php
-include('top-cache.php');
+
 error_reporting (-1);
 ini_set ('display_errors', 'On');
 
@@ -33,5 +33,3 @@ if($key === "8a4528bca54661f63e623ab08de9be83f00e48384df64f1224acb848b8b33625991
 else {
     echo "<h3>Access denied.</h3>";
 }
-include('bottom-cache.php');
-?>

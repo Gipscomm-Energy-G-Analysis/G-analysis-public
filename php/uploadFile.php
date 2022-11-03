@@ -1,6 +1,5 @@
 <?php
 
-include('top-cache.php');
 error_reporting(-1);
 ini_set ('display_errors', 'On');
 
@@ -20,6 +19,3 @@ $tsql = "INSERT INTO dokumente(anl_ID,kategorieDok,nameDok,typDok,groeßeDok,inh
 queryDB($conn, $tsql, "write");
 
 echo $tsql;
-
-include('bottom-cache.php');
-?>
