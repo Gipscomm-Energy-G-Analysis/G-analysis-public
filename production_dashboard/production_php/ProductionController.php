@@ -144,7 +144,6 @@ class ProductionController {
                 CONVERT(VARCHAR(10), ProdData_.zeitstempel) as zeitstempel,ProdData_.ausschuss,ProdData_.gutmenge FROM ProdData_ 
                 LEFT JOIN ProdData ON ProdData_.anl_ID = ProdData.anl_ID
                 WHERE ProdData_.anl_ID=".$machineId." ORDER BY ProdData_.zeitstempel desc";
-                print_r($machineDataQuery);die;
                 $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
                 
                 $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
