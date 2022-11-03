@@ -130,6 +130,7 @@ class ProductionController {
             if($this->migrationController->checkMigration('ProdData_')) {
                 
                 $machineId = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$this->getMachineId();
+                
                 $lieg_ID = isset($_POST['prop_id']) && !empty($_POST['prop_id'])?$_POST['prop_id']:null;
                 $machineData = null;
                 $prodData = [];
@@ -137,12 +138,15 @@ class ProductionController {
                 $prod = [];
                 $customColumns = [];
                 $currentIndex = array_search($machineId, explode(',', $_POST['dataIndex']));
+                
                 $machineDataQuery = "SELECT TOP 1 ProdData_.anl_ID,ProdData_.anlageMst,ProdData.maschine,ProdData.sollmenge,ProdData.maschinentyp,ProdData.zykluszeit,
                 ProdData.artikelnummer,ProdData.werkzeug,ProdData.auftrag,ProdData.nester,ProdData.gutmenge,
                 CONVERT(VARCHAR(10), ProdData_.zeitstempel) as zeitstempel,ProdData_.ausschuss,ProdData_.gutmenge FROM ProdData_ 
                 LEFT JOIN ProdData ON ProdData_.anl_ID = ProdData.anl_ID
                 WHERE ProdData_.anl_ID=".$machineId." ORDER BY ProdData_.zeitstempel desc";
+                print_r($machineDataQuery);die;
                 $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
+                
                 $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
                 $graphData = queryDB ( $this->conn, $query, "read");
                 $graphPoints = '';
@@ -565,7 +569,7 @@ class ProductionController {
                     // if(!empty($primary_key)) {
                     //     $primary_key = $machineData['$primary_key'];
                     // $subGroupConfig = $this->getSubgroupData($subGroupId , $primary_key);
-                        $subGroupConfig = $this->getSubgroupData('6', '2', false, $machineId);
+                    $subGroupConfig = $this->getSubgroupData('6', '2', false, $machineId);
                     //print_r($subGroupConfig);die;
                 // }
                     // $singular = $this->convertMultipleColumnArrayToSingle($subGroupConfig);
@@ -600,7 +604,7 @@ class ProductionController {
             $query = "SELECT column_name as dynamicString FROM grp.groupConfig 
                         WHERE sub_group_id=$option AND username='$this->username' AND status = '1'";         
             $records = queryDB ( $this->conn, $query, "read");
-
+            
             $dynamic_string = '';
             foreach ($records as $value) {
                 if($value['dynamicString'] == 'datumAnl') {
@@ -610,10 +614,12 @@ class ProductionController {
                 }
             }
             $dynamic_string = $this->str_lreplace(',', '', $dynamic_string);
-
+            
             if(!empty ($dynamic_string)){
                 $dataQuery = "SELECT TOP 1 ".$dynamic_string." FROM Anlagen WHERE anl_ID=".$machineId;
+                print_r($dataQuery);die;
                 $sqlData = queryDB ( $this->conn, $dataQuery, "read");
+                
                 return $sqlData[0];
             } else {
                 return [];

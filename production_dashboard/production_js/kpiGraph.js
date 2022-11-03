@@ -3,11 +3,19 @@ const [ frm, geo ] = [ scpFormula, scpGeometry ] ;
 csOptions = null;
 let formulaStringArray = {};
 let chartInstance;
+let intializeChart = true;
 
 $(function(){
     $('#kpiTimeFilter').multiselect({
         numberDisplayed: 1
     });
+});
+
+$(document).on('click','#headingFour',function(){
+    if(intializeChart) {
+        getFormulas($('#anl_ID').val());
+        intializeChart = false;
+    }
 });
     
 const intializeKpiCharts = (sa, formulaStringArray, formulaArray) => {
@@ -67,8 +75,6 @@ const intializeKpiCharts = (sa, formulaStringArray, formulaArray) => {
             console.log(args.data);
         }
     });
-    // let axis = [];
-    // let series = [];
     let first_name;
     chartInstance = $("#kpi_graph_plot_div") .ejChart("instance");
     formulaArray.forEach(function (item, index) {
@@ -123,40 +129,12 @@ const intializeKpiCharts = (sa, formulaStringArray, formulaArray) => {
                 }
             }
         }))
-
-
-
-
-
-
-
-        //  Old Code
-        //  let formullaData = formulaStringArray[item];
-        //  console.log('formullaData',formullaData);
-        //  console.log('index',index);     
-        // if(index === 0) {
-        //     firstQuery(item, formullaData);
-        // } else if(index === 1) {
-        //     secondQuery(item, formullaData);
-        // } else if(index === 2) {
-        //     thirdQuery(item, formullaData);
-        // }
     });
     setTimeout(function(){
         chartInstance.redraw();
     }, 5000);
     
 }
-
-// $("h3").text(header);
-
-
-// $("#zielwert").text(zielwert);
-
-// if(knzID_1 != "" && knzID_2 != "" && knzID_3 != ""){
-    
-// }
-
 
 const updateChart =
     newDataSeries =>
@@ -197,19 +175,6 @@ const updateChart =
                 });
             }
         }
-        // } else {
-        //     chart.model.axes.push({
-        //         orientation: 'Vertical',
-        //         hidePartialLabels: false,
-        //         rowIndex: 0,
-        //         majorGridLines: { visible: true },
-        //         axisLine: { visible: false },
-        //         name: nameSeries,
-        //         labelFormat: '{value}',
-        //         title: { text: nameSeries },
-        //         opposedPosition: false
-        //     });
-        // }
         chart.redraw();
         return chart;
     }
@@ -280,9 +245,6 @@ function firstQuery(knzID, formullaData) {
                     y: data
                 })
             ),
-
-            
-
         [startingPoint, endingPoint] =
         [geo.point(head(chartData).x), geo.point(last(chartData).x)]
 
@@ -290,31 +252,13 @@ function firstQuery(knzID, formullaData) {
         indicator =
         geo
         .horizontalLine(startingPoint)(endingPoint);
-
         $("#startX").val(head(chartData).x);
         $("#endX").val(last(chartData).x);
-
         $("#lbl_1").text(knzID);
-
-        // const indicators =
-        // arr =>
-        // arr
-        // .map(
-        //     a => updateChart(indicator(head(tail(a))))(head(a))(0.3)(1)
-        // )
-
         const drawChart =
         () => {
             updateChart (chartData) (formullaData.dataName) (1.0)(1);
-            // indicators (
-            //     [["Kennzahl", formullaData.kennz],
-            //     ["Obergrenze", formullaData.obergr],
-            //     ["Untergrenze",formullaData.untergr]]
-            // );
         }
-
-        
-     //   updateLimits(formullaData);
         return drawChart();
     })
     )
@@ -367,9 +311,7 @@ function thirdQuery(knzID, formullaData){
 )
 }
 
-
 //kpi graphs
-
 const getFormulas = (anlId) => {
     console.log('trigger getFromulas');
     $.ajax({
@@ -378,7 +320,7 @@ const getFormulas = (anlId) => {
         data: {
             ins: "knzCustom",
             anlID: 265,
-            nameDB: 'g002_badber',
+            nameDB: $("#nameDB").val(),
             orgID: $('#org-data').val() != ""?$('#org-data').val():1
         },
         success: function(response) {
@@ -391,13 +333,6 @@ const getFormulas = (anlId) => {
         }
     })
 }
-
-// $(document).on('click','#headingFour',function(){
-//     getFormulas();
-// });
-// $( document ).ready(function() {
-//     getFormulas();
-// });
 
 const getFormulaString = (knzInsID, triggerChange=false) => {
     $.ajax({
@@ -446,8 +381,6 @@ $(document).on('change','#kpiFormula',function(){
 
 
 $(document).on('change','#kpiTimeFilter',function(){
-    console.log('formulaStringArray',formulaStringArray);
-    console.log('this value', $(this).val());
     let formulaArray = $(this).val();
     nameDB = "g002_badber";
     chartType =  "line";
@@ -457,144 +390,18 @@ $(document).on('change','#kpiTimeFilter',function(){
     kennz = $('option:selected', this).attr('data-kennzahl');
     obergr = $('option:selected', this).attr('data-obergr');
     untergr = $('option:selected', this).attr('data-untergr');
-    // csOptions = {
-    //     tooltip: {
-    //         visible : true
-    //     },
-    //     border : {width: 0},
-    //     marker: {
-    //         shape: 'circle',
-    //         size: {
-    //             height: 6, width: 6
-    //         },
-    //         visible: true,
-    //         border :{width : 2,color : "black"},
-    //     },
-    //     tooltip: {visible: true, format: "#point.x# <br/> #series.name# : #point.y#"},
-    //     enableAnimation :true
-    // }
-
-    // const kpiGraph = $("#kpi_graph_plot_div").ejChart(
-    //     {	
-	// 		//Initializing Primary X Axis
-	// 		primaryXAxis:
-    //         {
-    //             title: { text: "KPI Charts" }
-    //         },
-			
-	// 		//Initializing Primary Y Axis
-    //         primaryYAxis:
-    //         {
-    //             axisLine: { visible: false },
-    //             name: 'Verbrauch Auftrag',
-    //             title: { text: "Verbrauch Auftrag" }
-    //         },
-    //         axes: [],
-	// 		//Initializing Common Properties for all the series  
-	// 		commonSeriesOptions : csOptions,
-	// 		//Initializing Series
-    //         series: [],
-	// 		load:"loadTheme",
-	// 		isResponsive: true,
-    //         title :{text: 'Auftrag-Charge'},
-    //         legend: { visible: true }
-    // });
     intializeKpiCharts(knzID_1, formulaStringArray, formulaArray);
-    // createSeriesAndAxesArray(formulaArray, nameDB, timeSpan).then(
-    //     function(combineData) {
-    //         console.log('combine_data', '==========>', combineData);
-    //         console.log('serires','+++++++++++>',combineData.series);
-    //         console.log('axes','+++++++++++>',combineData.axes);
-    //         intializeKpiCharts(formulaStringArray, combineData.series, combineData.axes);
-    //     },
-    //     function(error) {
-    //         alert('error');
-    //     }
-    //   );
 });
 
 $(document).on('change','#kpiRecordFilter',function(){
     nameDB = "g002_badber";
     chartType =  "line";
     timeSpan = $(this).val();
+    let formulaArray = $('#kpiTimeFilter').val();
     knzID_1 = $('option:selected', '#kpiTimeFilter').val();
     knzName_1 = $('option:selected', '#kpiTimeFilter').text();
     kennz = $('option:selected', '#kpiTimeFilter').attr('data-kennzahl');
     obergr = $('option:selected', '#kpiTimeFilter').attr('data-obergr');
     untergr = $('option:selected', '#kpiTimeFilter').attr('data-untergr');
-    intializeKpiCharts(knzID_1, formulaStringArray);
+    intializeKpiCharts(knzID_1, formulaStringArray, formulaArray);
 });
-
-const createSeriesAndAxesArray = (recordArray, nameDB, timeSpan) => {
-    return new Promise(function(myResolve, myReject) {
-        // "Producing Code" (May take some time)
-            let combineData = {};
-            let series = [];
-            let axes = [];
-            let newPoints;
-            console.log('here  data ', recordArray);
-            recordArray.forEach(function (item, index) {
-                let formullaData = formulaStringArray[item];
-                console.log('formulla_string Data', formullaData);
-                const xAxis =
-                frm.datasetRaw(nameDB)(formullaData.knz_ID)(timeSpan).then(
-                    dataRaw =>
-                    frm.datasetFormula(nameDB)(formullaData.knz_ID)(timeSpan)
-                    .then(newData => {
-                    chartData =
-                    newData
-                    .map(
-                        (data,i)=>
-                        ({
-                            name: formullaData.dataName.trim(),
-                            x: "A" + (i + 1) + "-" + dataRaw[i].auftrag.trim(),
-                            y: data
-                        })
-                    )
-                    newPoints = {
-                        type: 'line',
-                        dataSource: chartData,
-                        points: chartData,
-                        name: formullaData.dataName,
-                        xName: "x",
-                        yName: "y",
-                        yAxisName: formullaData.dataName,
-                    };
-                    series.push(newPoints);
-                    if(index == 0) {
-                        position = false;
-                        first_name = formullaData.dataName;
-                        axes.push({
-                            orientation: 'Vertical',
-                            hidePartialLabels: false,
-                            rowIndex: 0,
-                            majorGridLines: { visible: true },
-                            axisLine: { visible: false },
-                            name: formullaData.dataName,
-                            labelFormat: '{value}',
-                            title: { text: formullaData.dataName },
-                            opposedPosition: true
-                        })
-                    } else {
-                        axes.push({
-                            orientation: 'Vertical',
-                            hidePartialLabels: false,
-                            rowIndex: 0,
-                            majorGridLines: { visible: true },
-                            axisLine: { visible: false },
-                            name: formullaData.dataName,
-                            labelFormat: '{value}',
-                            title: { text: formullaData.dataName },
-                            opposedPosition: true
-                        })
-                    }
-                }));
-            });
-            console.log('axes','"?"', axes);
-            console.log("series",'sdfdsf',newPoints);
-            combineData['series'] = newPoints;
-            combineData['axes'] = axes;
-            myResolve(combineData); // when successful
-            //myReject('Error');  // when error
-        });
-};
