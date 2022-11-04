@@ -616,7 +616,6 @@ class ProductionController {
             
             if(!empty ($dynamic_string)){
                 $dataQuery = "SELECT TOP 1 ".$dynamic_string." FROM Anlagen WHERE anl_ID=".$machineId;
-                print_r($dataQuery);die;
                 $sqlData = queryDB ( $this->conn, $dataQuery, "read");
                 
                 return $sqlData[0];
