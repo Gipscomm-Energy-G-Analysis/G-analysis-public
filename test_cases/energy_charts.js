@@ -16,10 +16,10 @@ const evaluation = {
   auswertungen: 'button[class="dropbtn text-muted menu_dashboard"]',
 };
 
-const production = {
+/*const production = {
   product: 'a[href="/product-dashboard"]',
 };
-
+*/
 const charts = {
   chart: 'label[for="graphModeSelector"]',
 };
@@ -51,7 +51,7 @@ puppeteer.launch(config.launchOptions).then(async (browser) => {
   await page.type(loginPage.username, "Deepak");
   await page.type(loginPage.password, "ast15jbhMBDV1YJmmCY0");
   await page.click(loginPage.login);
-  await page.setViewport({ width: 1280, height: 800 });
+  //await page.setViewport({ width: 1280, height: 800 });
   await delay(10000);
 
   // Dashboard Page
@@ -59,7 +59,7 @@ puppeteer.launch(config.launchOptions).then(async (browser) => {
   await delay(5000);
   await page.click(evaluation.auswertungen);
   await page.click("#menuProduktionAusw");
-  await page.click(production.product);
+  //await page.click(production.product);
   await delay(5000);
 
   //   Auto Scroll

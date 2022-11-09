@@ -75,49 +75,47 @@ await page.evaluate(() => {
     });
   }
 
- await page.click("#headingTwo");
- //await page.waitForSelector('select#orderFilterProduction',{ visible: true,waitUntil: "option",timeout:0}).then(() => console.log('got it'));
-
-const timeFilterProduction = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('#timeFilterProduction option')).map(element=>element.value)
+ await page.click("#headingFour");
+const kpiRecordFilter = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#kpiRecordFilter option')).map(element=>element.value)
   );
-console.log(timeFilterProduction)
+console.log(kpiRecordFilter)
 
-  for(let index =0;index<timeFilterProduction.length;index++){
+  for(let index =0;index<kpiRecordFilter.length;index++){
      //   Auto Scroll
   (async () => {
     await autoScroll(page);
   })();
-    let timeFilter = timeFilterProduction[index];
+    let kpiRecordFilterValue = kpiRecordFilter[index];
     await delay(5000);
-    console.log(timeFilter);
-    await page.select("select#timeFilterProduction", timeFilter);
-    await delay(5000);
-  }
-
-  const timeFilterIntervalProduction = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('#timeFilterIntervalProduction option')).map(element=>element.value)
-  );
-console.log(timeFilterIntervalProduction)
-
-  for(let index =0;index<timeFilterIntervalProduction.length;index++){
-    let timeFilterInterval = timeFilterIntervalProduction[index];
-    await delay(5000);
-    console.log(timeFilterInterval);
-    await page.select("select#timeFilterIntervalProduction", timeFilterInterval);
+    console.log(kpiRecordFilterValue);
+    await page.select("select#kpiRecordFilter", kpiRecordFilterValue);
     await delay(5000);
   }
 
-  const orderFilterProduction = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('#orderFilterProduction option')).map(element=>element.value)
+  const timeFilterIntervalMixed = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#timeFilterIntervalMixed option')).map(element=>element.value)
   );
-console.log(orderFilterProduction)
+console.log(timeFilterIntervalMixed)
 
-  for(let index =0;index<orderFilterProduction.length;index++){
-    let orderFilter = orderFilterProduction[index];
+  for(let index =0;index<timeFilterIntervalMixed.length;index++){
+    let timeFilterIntervalMixedValue = timeFilterIntervalMixed[index];
     await delay(5000);
-    console.log(orderFilter);
-     await page.select("select#orderFilterProduction", orderFilter);
+    console.log(timeFilterIntervalMixedValue);
+    await page.select("select#timeFilterIntervalMixed", timeFilterIntervalMixedValue);
+    await delay(5000);
+  }
+
+  const orderFilterMixed = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#orderFilterMixed option')).map(element=>element.value)
+  );
+console.log(orderFilterMixed)
+
+  for(let index =0;index<orderFilterMixed.length;index++){
+    let orderFilterMixedValue = orderFilterMixed[index];
+    await delay(5000);
+    console.log(orderFilterMixedValue);
+     await page.select("select#orderFilterMixed", orderFilterMixedValue);
      await delay(5000);
   }
 //   Production Charts 
@@ -130,28 +128,25 @@ console.log(orderFilterProduction)
 
   // **No. of Records** 
   /*await page.select("select#timeFilterProduction", "100");
-  await delay(5000);*/ 
+  await delay(5000);*/
 
-/* await page.click('label[for="productGraphModeSelector"]');
+  // **Create Graph**
+  //await page.click(create_graphs.create_graph);
+  // await delay(10000);  
+
+ await page.click('label[for="mixedGraphModeSelector"]');
  await delay(2000);
- const productGraphFilter = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('#productGraphFilter option')).map(element=>element.value)
+ /*const productPeriodFilterInterval = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#productPeriodFilterInterval option')).map(element=>element.value)
   );
- console.log(productGraphFilter)
+ console.log(productPeriodFilterInterval)
 
-  for(let index =0;index<productGraphFilter.length;index++){
-    let productGraphFilterValue = productGraphFilter[index];
+  for(let index =0;index<productPeriodFilterInterval.length;index++){
+    let productPeriodFilterIntervalValue = productPeriodFilterInterval[index];
     await delay(5000);
-    console.log(productGraphFilterValue);
-    await page.select("select#productPeriodFilterInterval", "Year");
-    await delay(2000);
-    await page.select("select#productTypeFilterInterval", "line");
-    await delay(2000);
-    await page.select("select#productYearFilterInterval", "2022");
-    await delay(2000);
-    await page.select("select#productGraphFilter", productGraphFilterValue);
+    console.log(productPeriodFilterIntervalValue);
+    await page.select("select#productPeriodFilterInterval", productPeriodFilterIntervalValue);
     await delay(5000);
-    await page.click('button[id="product_create_graph"]');
   }*/
   console.log("puppeteer test");
    await delay(2000);  
