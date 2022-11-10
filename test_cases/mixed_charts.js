@@ -133,21 +133,92 @@ console.log(orderFilterMixed)
   // **Create Graph**
   //await page.click(create_graphs.create_graph);
   // await delay(10000);  
-
+await page.evaluate( () => {
+                window.scrollTo(300, 400);
+            });
+await delay(2000);
  await page.click('label[for="mixedGraphModeSelector"]');
  await delay(2000);
- /*const productPeriodFilterInterval = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('#productPeriodFilterInterval option')).map(element=>element.value)
+ await page.evaluate( () => {
+    window.scrollTo(300, 400);
+  });
+ const mixedGraphFilterHistory = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#mixedGraphFilter option')).map(element=>element.value)
   );
- console.log(productPeriodFilterInterval)
+ mixedGraphFilterArray = mixedGraphFilterHistory.filter(item => item);
+ console.log(mixedGraphFilterArray)
 
-  for(let index =0;index<productPeriodFilterInterval.length;index++){
-    let productPeriodFilterIntervalValue = productPeriodFilterInterval[index];
+  for(let index =0;index<mixedGraphFilterArray.length;index++){
+    let mixedGraphFilterValue = mixedGraphFilterArray[index];
     await delay(5000);
-    console.log(productPeriodFilterIntervalValue);
-    await page.select("select#productPeriodFilterInterval", productPeriodFilterIntervalValue);
+    console.log(mixedGraphFilterValue);
+    await page.select("select#mixedPeriodFilterInterval", "year");
+    await delay(2000);
+    await page.select("select#mixedTypeFilterInterval", "line");
+    await delay(2000);
+    await page.select("select#mixedYearFilterInterval", "2022");
+    await delay(2000);
+    await page.select("select#mixedGraphFilter", mixedGraphFilterValue);
     await delay(5000);
-  }*/
+    await page.click('button[id="mixed_create_graph"]');
+      await page.evaluate( () => {
+      window.scrollTo(300, 600);
+    });
+  }
+
+  for(let index =0;index<mixedGraphFilterArray.length;index++){
+    let mixedGraphFilterValue = mixedGraphFilterArray[index];
+    await delay(5000);
+    console.log(mixedGraphFilterValue);
+    await page.select("select#mixedPeriodFilterInterval", "year");
+    await delay(2000);
+    await page.select("select#mixedTypeFilterInterval", "line");
+    await delay(2000);
+    await page.select("select#mixedYearFilterInterval", "2021");
+    await delay(2000);
+    await page.select("select#mixedGraphFilter", mixedGraphFilterValue);
+    await delay(5000);
+    await page.click('button[id="mixed_create_graph"]');
+      await page.evaluate( () => {
+      window.scrollTo(300, 600);
+    });
+  }
+
+  for(let index =0;index<mixedGraphFilterArray.length;index++){
+    let mixedGraphFilterValue = mixedGraphFilterArray[index];
+    await delay(5000);
+    console.log(mixedGraphFilterValue);
+    await page.select("select#mixedPeriodFilterInterval", "year");
+    await delay(2000);
+    await page.select("select#mixedTypeFilterInterval", "line");
+    await delay(2000);
+    await page.select("select#mixedYearFilterInterval", "2020");
+    await delay(2000);
+    await page.select("select#mixedGraphFilter", mixedGraphFilterValue);
+    await delay(5000);
+    await page.click('button[id="mixed_create_graph"]');
+     await page.evaluate( () => {
+      window.scrollTo(300, 600);
+    });
+  }
+
+  for(let index =0;index<mixedGraphFilterArray.length;index++){
+    let mixedGraphFilterValue = mixedGraphFilterArray[index];
+    await delay(5000);
+    console.log(mixedGraphFilterValue);
+    await page.select("select#mixedPeriodFilterInterval", "year");
+    await delay(2000);
+    await page.select("select#mixedTypeFilterInterval", "line");
+    await delay(2000);
+    await page.select("select#mixedYearFilterInterval", "2019");
+    await delay(2000);
+    await page.select("select#mixedGraphFilter", mixedGraphFilterValue);
+    await delay(5000);
+    await page.click('button[id="mixed_create_graph"]');
+     await page.evaluate( () => {
+      window.scrollTo(300, 600);
+    });
+  }
   console.log("puppeteer test");
    await delay(2000);  
    await browser.close();

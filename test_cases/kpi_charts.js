@@ -76,6 +76,8 @@ await page.evaluate(() => {
   }
 
  await page.click("#headingFour");
+ //await page.waitForSelector('select#orderFilterProduction',{ visible: true,waitUntil: "option",timeout:0}).then(() => console.log('got it'));
+
 const kpiRecordFilter = await page.evaluate(() =>
     Array.from(document.querySelectorAll('#kpiRecordFilter option')).map(element=>element.value)
   );
@@ -92,30 +94,29 @@ console.log(kpiRecordFilter)
     await page.select("select#kpiRecordFilter", kpiRecordFilterValue);
     await delay(5000);
   }
-
-  const timeFilterIntervalMixed = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('#timeFilterIntervalMixed option')).map(element=>element.value)
+  const kpiFormula = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#kpiFormula option')).map(element=>element.value)
   );
-console.log(timeFilterIntervalMixed)
+console.log(kpiFormula)
 
-  for(let index =0;index<timeFilterIntervalMixed.length;index++){
-    let timeFilterIntervalMixedValue = timeFilterIntervalMixed[index];
+  for(let index =0;index<kpiFormula.length;index++){
+    let kpiFormulaValue = kpiFormula[index];
     await delay(5000);
-    console.log(timeFilterIntervalMixedValue);
-    await page.select("select#timeFilterIntervalMixed", timeFilterIntervalMixedValue);
+    console.log(kpiFormulaValue);
+    await page.select("select#kpiFormula", kpiFormulaValue);
     await delay(5000);
   }
 
-  const orderFilterMixed = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('#orderFilterMixed option')).map(element=>element.value)
+  const kpiTimeFilter = await page.evaluate(() =>
+    Array.from(document.querySelectorAll('#kpiTimeFilter option')).map(element=>element.value)
   );
-console.log(orderFilterMixed)
+console.log(kpiTimeFilter)
 
-  for(let index =0;index<orderFilterMixed.length;index++){
-    let orderFilterMixedValue = orderFilterMixed[index];
+  for(let index =0;index<kpiTimeFilter.length;index++){
+    let kpiTimeFilterValue = kpiTimeFilter[index];
     await delay(5000);
-    console.log(orderFilterMixedValue);
-     await page.select("select#orderFilterMixed", orderFilterMixedValue);
+    console.log(kpiTimeFilterValue);
+     await page.select("select#kpiTimeFilter", kpiTimeFilterValue);
      await delay(5000);
   }
 //   Production Charts 
@@ -128,27 +129,9 @@ console.log(orderFilterMixed)
 
   // **No. of Records** 
   /*await page.select("select#timeFilterProduction", "100");
-  await delay(5000);*/
+  await delay(5000);*/ 
 
-  // **Create Graph**
-  //await page.click(create_graphs.create_graph);
-  // await delay(10000);  
-
- await page.click('label[for="mixedGraphModeSelector"]');
- await delay(2000);
- /*const productPeriodFilterInterval = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('#productPeriodFilterInterval option')).map(element=>element.value)
-  );
- console.log(productPeriodFilterInterval)
-
-  for(let index =0;index<productPeriodFilterInterval.length;index++){
-    let productPeriodFilterIntervalValue = productPeriodFilterInterval[index];
-    await delay(5000);
-    console.log(productPeriodFilterIntervalValue);
-    await page.select("select#productPeriodFilterInterval", productPeriodFilterIntervalValue);
-    await delay(5000);
-  }*/
   console.log("puppeteer test");
-   await delay(2000);  
-   await browser.close();
+   /*await delay(2000);  
+   await browser.close();*/
 });

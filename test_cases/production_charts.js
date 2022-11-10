@@ -76,7 +76,6 @@ await page.evaluate(() => {
   }
 
  await page.click("#headingTwo");
- //await page.waitForSelector('select#orderFilterProduction',{ visible: true,waitUntil: "option",timeout:0}).then(() => console.log('got it'));
 
 const timeFilterProduction = await page.evaluate(() =>
     Array.from(document.querySelectorAll('#timeFilterProduction option')).map(element=>element.value)
@@ -120,30 +119,29 @@ console.log(orderFilterProduction)
      await page.select("select#orderFilterProduction", orderFilter);
      await delay(5000);
   }
-//   Production Charts 
- /* await page.select("select#orderFilterProduction", "100899404");
-  await delay(5000);*/
-
-  // **Graph Name** 
-  /*await page.select("select#timeFilterIntervalProduction", "Total Goods");
-  await delay(5000);*/
-
   // **No. of Records** 
   /*await page.select("select#timeFilterProduction", "100");
   await delay(5000);*/ 
-
-/* await page.click('label[for="productGraphModeSelector"]');
+await page.evaluate( () => {
+    window.scrollTo(300, 400);
+  });
+await delay(2000);
+ await page.click('label[for="productGraphModeSelector"]');
  await delay(2000);
+ await page.evaluate( () => {
+    window.scrollTo(300, 400);
+  });
  const productGraphFilter = await page.evaluate(() =>
     Array.from(document.querySelectorAll('#productGraphFilter option')).map(element=>element.value)
   );
- console.log(productGraphFilter)
+ productGraphFilterArray = productGraphFilter.filter(item => item);
+ console.log(productGraphFilterArray)
 
-  for(let index =0;index<productGraphFilter.length;index++){
-    let productGraphFilterValue = productGraphFilter[index];
+  for(let index =0;index<productGraphFilterArray.length;index++){
+    let productGraphFilterValue = productGraphFilterArray[index];
     await delay(5000);
     console.log(productGraphFilterValue);
-    await page.select("select#productPeriodFilterInterval", "Year");
+    await page.select("select#productPeriodFilterInterval", "year");
     await delay(2000);
     await page.select("select#productTypeFilterInterval", "line");
     await delay(2000);
@@ -152,7 +150,64 @@ console.log(orderFilterProduction)
     await page.select("select#productGraphFilter", productGraphFilterValue);
     await delay(5000);
     await page.click('button[id="product_create_graph"]');
-  }*/
+      await page.evaluate( () => {
+      window.scrollTo(300, 600);
+    });
+  }
+
+  for(let index =0;index<productGraphFilterArray.length;index++){
+    let productGraphFilterValue = productGraphFilterArray[index];
+    await delay(5000);
+    console.log(productGraphFilterValue);
+    await page.select("select#productPeriodFilterInterval", "year");
+    await delay(2000);
+    await page.select("select#productTypeFilterInterval", "line");
+    await delay(2000);
+    await page.select("select#productYearFilterInterval", "2021");
+    await delay(2000);
+    await page.select("select#productGraphFilter", productGraphFilterValue);
+    await delay(5000);
+    await page.click('button[id="product_create_graph"]');
+      await page.evaluate( () => {
+      window.scrollTo(300, 600);
+    });
+  }
+
+  for(let index =0;index<productGraphFilterArray.length;index++){
+    let productGraphFilterValue = productGraphFilterArray[index];
+    await delay(5000);
+    console.log(productGraphFilterValue);
+    await page.select("select#productPeriodFilterInterval", "year");
+    await delay(2000);
+    await page.select("select#productTypeFilterInterval", "line");
+    await delay(2000);
+    await page.select("select#productYearFilterInterval", "2020");
+    await delay(2000);
+    await page.select("select#productGraphFilter", productGraphFilterValue);
+    await delay(5000);
+    await page.click('button[id="product_create_graph"]');
+     await page.evaluate( () => {
+      window.scrollTo(300, 600);
+    });
+  }
+
+  for(let index =0;index<productGraphFilterArray.length;index++){
+    let productGraphFilterValue = productGraphFilterArray[index];
+    await delay(5000);
+    console.log(productGraphFilterValue);
+    await page.select("select#productPeriodFilterInterval", "year");
+    await delay(2000);
+    await page.select("select#productTypeFilterInterval", "line");
+    await delay(2000);
+    await page.select("select#productYearFilterInterval", "2019");
+    await delay(2000);
+    await page.select("select#productGraphFilter", productGraphFilterValue);
+    await delay(5000);
+    await page.click('button[id="product_create_graph"]');
+     await page.evaluate( () => {
+      window.scrollTo(300, 600);
+    });
+  }
   console.log("puppeteer test");
    await delay(2000);  
    await browser.close();
