@@ -13,7 +13,7 @@ $(function(){
 
 $(document).on('click','#headingFour',function(){
     if(intializeChart) {
-        getFormulas($('#anl_ID').val());
+      //  getFormulas($('#anl_ID').val());
         intializeChart = false;
     }
 });
@@ -312,19 +312,27 @@ function thirdQuery(knzID, formullaData){
 }
 
 //kpi graphs
-const getFormulas = (anlId) => {
-    console.log('trigger getFromulas');
+const getFormulas = (anlId="") => {
+    console.log('trigger getFromulas', anlId);
     $.ajax({
         type: "POST",
         url: "../../php/readKennzahlen.php",
         data: {
             ins: "knzCustom",
-            anlID: 265,
+            anlID: anlId == ""?265:anlId,
             nameDB: $("#nameDB").val(),
             orgID: $('#org-data').val() != ""?$('#org-data').val():1
         },
         success: function(response) {
             response = JSON.parse(response);
+            console.log('kpiarrayresponse',response)
+            if(response.length==0){
+                $('.kpi_graph_msg').show();
+                $('.kpi_graph_div').hide(); 
+            }else{
+                $('.kpi_graph_div').show(); 
+                $('.kpi_graph_msg').hide(); 
+            }
             let html = '';
             $.each(response, function (key, value) {           
                 html += `<option value='${value.knzIns_ID}'>${value.instanz}</option>`;
@@ -340,7 +348,7 @@ const getFormulaString = (knzInsID, triggerChange=false) => {
         url: "../../php/readKennzahlen.php",
         data: {
             ins: "knz",
-            nameDB: 'g002_badber',
+            nameDB: $("#nameDB").val(),
             knzInsID: knzInsID
         },
         success: function(response) {
@@ -382,7 +390,7 @@ $(document).on('change','#kpiFormula',function(){
 
 $(document).on('change','#kpiTimeFilter',function(){
     let formulaArray = $(this).val();
-    nameDB = "g002_badber";
+    nameDB = $("#nameDB").val();
     chartType =  "line";
     timeSpan = $('#kpiRecordFilter').val();
     knzID_1 = $(this).val();
@@ -394,7 +402,7 @@ $(document).on('change','#kpiTimeFilter',function(){
 });
 
 $(document).on('change','#kpiRecordFilter',function(){
-    nameDB = "g002_badber";
+    nameDB = $("#nameDB").val();
     chartType =  "line";
     timeSpan = $(this).val();
     let formulaArray = $('#kpiTimeFilter').val();

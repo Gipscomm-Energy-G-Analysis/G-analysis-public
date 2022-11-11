@@ -38,7 +38,8 @@ let getProductionDetails = (dataIndex) => {
                 machineDetailsParams(response);
                 jsFunction(response.graphPoints);
                 getProductionGraphDetails(response.anl_ID);
-                getMixedGraphDetails(response.anl_ID); 
+                getMixedGraphDetails(response.anl_ID);
+                getFormulas(response.anl_ID);
             } else if(response.code == '404')  {
                 machineDetailsParams(response);
                 hideAllcharts();
@@ -809,7 +810,7 @@ let getDynamicProductionColumns = (index, anl_ID="") => {
                     $('.dynamic_columns').html('');
                     $('.error_message').show();
                 }
-                getFormulas(result.anl_id);
+                //getFormulas(result.anl_id);
                 $(".graph-machine-filters").html(`<option value="${result.anl_id}">${result.machine_name}</option>`)
             } else {
                 $('.dynamic_columns').html('');

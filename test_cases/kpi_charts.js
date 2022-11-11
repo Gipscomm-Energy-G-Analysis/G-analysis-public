@@ -74,7 +74,7 @@ await page.evaluate(() => {
       window.scrollBy(0, window.innerHeight);
     });
   }
-
+await delay(5000);
  await page.click("#headingFour");
  //await page.waitForSelector('select#orderFilterProduction',{ visible: true,waitUntil: "option",timeout:0}).then(() => console.log('got it'));
 
@@ -107,6 +107,22 @@ console.log(kpiFormula)
     await delay(5000);
   }
 
+/*await delay(2000);
+     await page.click(".multiselect-selected-text");
+     await delay(2000);
+           const els = await page.$$(".multiselect-native-select .form-check input[type=checkbox]");
+       await delay(2000);
+      const promises = els.map(e => e.checked = true);
+       await delay(2000);
+      await Promise.all(promises);
+      await delay(2000);
+      await page.click(".multiselect-selected-text");*/
+       /*await page.evaluate(() => {
+    for (const checkbox of document.querySelectorAll('.multiselect-native-select .form-check input[type=checkbox]')) {
+      if (!checkbox.checked) checkbox.click();
+    }
+  });
+  console.log('Done.');*/
   const kpiTimeFilter = await page.evaluate(() =>
     Array.from(document.querySelectorAll('#kpiTimeFilter option')).map(element=>element.value)
   );

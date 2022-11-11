@@ -219,7 +219,7 @@ const updateChartScript =
     opacity => root => type => {
         let chart = $(`#${root}`).ejChart("instance");
         chart.model.series.push({
-            type: chartType,
+            type: 'line',
             dataSource: newDataSeries,
             name: nameSeries,
             xName: "x",
@@ -228,7 +228,7 @@ const updateChartScript =
         });
         if(type == 'double') {
             chart.model.series.push({
-                type: chartType,
+                type: 'line',
                 dataSource: newDataSeries,
                 name: 'Energy',
                 yAxisName: 'Energy',
