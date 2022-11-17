@@ -252,7 +252,7 @@ class dashboardControllerOperations {
             $updatePriorityResult = queryDB($conn, $updatePriority, "read");
             // --end-->
 
-            if($insertQuery){
+            if($insertQuery) {
                 return array('Staus' => 200 , 'Message' => 'Successfully Inserted','max_id'=>$maxResult);
             }
             // }
@@ -775,4 +775,3 @@ class dashboardControllerOperations {
 }
 
 $obj = new dashboardControllerOperations();
-?>

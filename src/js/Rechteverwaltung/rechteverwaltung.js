@@ -28,13 +28,11 @@ const scpRechteverwaltung =
 
                         case POSITION.GipscommAdmin:
                             return ajaxRechte({position})
-                            break;
                         
                         case POSITION.SuperAdmin:
                             betrGrpID = itemSessionGet("betrGrp_ID")
 
                             return ajaxRechte({position, betrGrpID})
-                            break;
                         
                         case POSITION.Admin:
                             betrGrpID = itemSessionGet("betrGrp_ID")
@@ -42,7 +40,6 @@ const scpRechteverwaltung =
                             manID     = itemSessionGet("man_ID")
 
                             return ajaxRechte({position, betrGrpID, manGrpID, manID})
-                            break;
                         
                         case POSITION.Benutzer:
                             betrGrpID = itemSessionGet("betrGrp_ID")
@@ -50,7 +47,6 @@ const scpRechteverwaltung =
                             manID     = itemSessionGet("man_ID")
 
                             return ajaxRechte({position, betrGrpID, manGrpID, manID})
-                            break;
                     }
                 }
 

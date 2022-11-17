@@ -2,7 +2,8 @@
   <html>
     <head>
       <link id="indexStyle" rel="stylesheet" href="dist/css/login_style.min.css" type="text/css" media="all">
-      <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="src/js/fpCore.js"></script>
     </head>
     <body>
       <!--Logo-->
@@ -35,26 +36,27 @@
           <button id="btnRegGast">Absenden</button>
         </div>
         <script type="text/javascript">
-          $("#btnRegGast").click(function(){
-            $.ajax({
-              type: 'POST',
-              async: true,
-              url: 'php/sendMail.php',
-              data: {
-                anrede: $("#anredeDemo").val(),
-                vorname: $("#vornameDemo").val(),
-                nachname: $("#nachnameDemo").val(),
-                firma: $("#firmaDemo").val(),
-                empfaenger: $("#emailDemo").val(),
-                mitteilung: $("#mitteillungDemo").val(),
-                anhangPfad: "/documents/G_Analysis_PPT.pdf"
-              },
-              success: function (echo) {
-                console.log(echo);
-                alert("Die E-Mail wurde erfolgreich versendet.");
-                window.open("index.html", "_self");
-              }
-          })});
+
+            const data =
+                { anrede: $("#anredeDemo").val()
+                , vorname: $("#vornameDemo").val()
+                , nachname: $("#nachnameDemo").val()
+                , firma: $("#firmaDemo").val()
+                , empfaenger: $("#emailDemo").val()
+                , mitteilung: $("#mitteillungDemo").val()
+                }
+
+            const sendMail =
+                () =>
+                ajaxPost("php/sendMail.php")({data})
+                .then(
+                    adressesOfFailedEMails => 
+                    adressesOfFailedEMails.length === 0 ?
+                    adressesOfFailedEMails.forEach(console.log) :
+                    (alert("Die E-Mail wurde erfolgreich versendet."), window.open("index.html", "_self"))
+                )
+
+            $("#btnRegGast").click(sendMail)
         </script>
     </body>
   </html>

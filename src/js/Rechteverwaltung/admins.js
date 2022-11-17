@@ -29,6 +29,7 @@ const scpRechteverwaltung_admins =
             // Returns an object that contains the form data
             const getFormData =
                 () => (
+                    // eslint-disable-next-line no-undef
                     { modus          : helper.fieldValue("admState")
                     , admID          : helper.fieldValue("admID")
                     , manID          : helper.fieldValue("abManID")
