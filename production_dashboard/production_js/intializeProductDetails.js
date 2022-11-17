@@ -11,4 +11,5 @@
         getProdDataColumn();
         customMachineTable();
         getDynamicProductionColumns(0);
+        getFormulas();
     });

@@ -292,6 +292,7 @@ function mixedGraphData(conId,windowTrue, $limit=5) {
                         $('.mixed_graph_msg_history').hide();
                         for (const key in result.graphData) {
                             if(graph_name == result.graphData[key]['name']) {
+                                console.log('amData', result.graphData[key]['amData']);
                                 createAmChartCategory(mixed_history_graph, result.graphData[key]['amData'], true, graph_name, 'double');
                                 return false;
                             }
