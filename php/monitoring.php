@@ -1,84 +1,93 @@
 <?php
-error_reporting( -1 ) ;
-ini_set ( 'display_errors', 'On' ) ;
+error_reporting(-1);
+ini_set('display_errors', 'On');
 set_error_handler("warning_handler", E_WARNING);
 
 require 'DbOperations.php';
 require 'EMail_PHPMailer.php';
 require 'helpers.php';
 
-function warning_handler($errno, $errstr) { 
-    throw new Exception("ErrorNr : ".$errno.", ErrorDescr : ".$errstr) ;
+function warning_handler($errno, $errstr)
+{
+    throw new Exception("ErrorNr : " . $errno . ", ErrorDescr : " . $errstr);
 }
 
-define("connGipscomm", connectToDB("gipscomm")) ;
+const connGipscomm = connectToDB("gipscomm");
 
-function mstsInvalidDate($db) {
+function mstsInvalidDate($db)
+{
 
-    $query  = "SELECT '$db' AS db " ;
-    $query .= "  , div1.mst_ID " ;
-    $query .= "  , nameMSt AS Name " ;
-    $query .= "  , kanal1Msm AS Channel1 " ;
-    $query .= "  , kanal2Msm AS Channel2 " ;
-    $query .= "  , kanal3Msm AS Channel3 FROM " ;
-    $query .= "     (SELECT messstellen.mst_ID, nameMSt, kanal1Msm, kanal2Msm, kanal3Msm FROM messstellen " ;
-    $query .= "	    INNER JOIN messmittel " ;
-    $query .= "	    ON messstellen.mst_ID = messmittel.mst_ID " ;
-    $query .= "     WHERE messartMst = 'automatisch' AND messstellen.deleted = 0 AND messmittel.deleted = 0 AND messstellen.aktivMst = 1) AS div1 " ;
-    $query .= "LEFT JOIN " ;
-    $query .= "	    (SELECT mst_ID, Name FROM " ;
-    $query .= "		   (SELECT TOP (5000) mst_ID, Name " ;
-    $query .= "		   FROM MessstellenEnergiedaten " ;
-    $query .= "		   WHERE CONVERT(varchar(10),Time,21) = CONVERT(varchar(10), getdate(), 21) " ;
-    $query .= "		   ) AS div2 " ;
-    $query .= "	    GROUP BY mst_ID, Name) As div3 " ;
-    $query .= "ON div1.mst_ID = div3.mst_ID " ;
-    $query .= "WHERE Name IS NULL " ;
-    $query .= "ORDER BY div1.nameMSt " ;
+    $query  = "SELECT '$db' AS db ";
+    $query .= "  , div1.mst_ID ";
+    $query .= "  , nameMSt AS Name ";
+    $query .= "  , kanal1Msm AS Channel1 ";
+    $query .= "  , kanal2Msm AS Channel2 ";
+    $query .= "  , kanal3Msm AS Channel3 FROM ";
+    $query .= "     (SELECT messstellen.mst_ID, nameMSt, kanal1Msm, kanal2Msm, kanal3Msm FROM messstellen ";
+    $query .= "	    INNER JOIN messmittel ";
+    $query .= "	    ON messstellen.mst_ID = messmittel.mst_ID ";
+    $query .= "     WHERE messartMst = 'automatisch' AND messstellen.deleted = 0 AND messmittel.deleted = 0 AND messstellen.aktivMst = 1) AS div1 ";
+    $query .= "LEFT JOIN ";
+    $query .= "	    (SELECT mst_ID, Name FROM ";
+    $query .= "		   (SELECT TOP (5000) mst_ID, Name ";
+    $query .= "		   FROM MessstellenEnergiedaten ";
+    $query .= "		   WHERE CONVERT(varchar(10),Time,21) = CONVERT(varchar(10), getdate(), 21) ";
+    $query .= "		   ) AS div2 ";
+    $query .= "	    GROUP BY mst_ID, Name) As div3 ";
+    $query .= "ON div1.mst_ID = div3.mst_ID ";
+    $query .= "WHERE Name IS NULL ";
+    $query .= "ORDER BY div1.nameMSt ";
 
-    $records = queryDB(connectToDB($db) , $query, "read") ;
+    $records = queryDB(connectToDB($db), $query, "read");
 
-    return indexAssocArray(gettype($records) === "string" ? [] : $records) ;
+    return indexAssocArray(gettype($records) === "string" ? [] : $records);
 }
 
-function mstsDbsWithInvalidDate($dbs) {
-    return array_map('mstsInvalidDate', $dbs) ;
+function mstsDbsWithInvalidDate($dbs)
+{
+    return array_map('mstsInvalidDate', $dbs);
 }
 
-function sendAlertEmails($mstsWithoutData) {
+function sendAlertEmails($mstsWithoutData)
+{
 
-    function buildStringMst($acc, $mst) {
-        return $acc.
+    function buildStringMst($acc, $mst)
+    {
+        return $acc .
             "<tr>
-                <td>".$mst["index"]."</td>
-                <td>".$mst["db"]."</td>
-                <td>".$mst["mst_ID"]."</td>
-                <td>".$mst["Name"]."</td>
-                <td>".$mst["Channel1"]."</td>
-                <td>".$mst["Channel2"]."</td>
-                <td>".$mst["Channel3"]."</td>
-            </tr>" ;
+                <td>" . $mst["index"] . "</td>
+                <td>" . $mst["db"] . "</td>
+                <td>" . $mst["mst_ID"] . "</td>
+                <td>" . $mst["Name"] . "</td>
+                <td>" . $mst["Channel1"] . "</td>
+                <td>" . $mst["Channel2"] . "</td>
+                <td>" . $mst["Channel3"] . "</td>
+            </tr>";
     }
 
-    function buildStringMstsDB($msts) {
-        return array_reduce($msts, 'buildStringMst') ;
+    function buildStringMstsDB($msts)
+    {
+        return array_reduce($msts, 'buildStringMst');
     }
 
-    function buildStringDBs($acc, $mstsDbs) {
-        return $acc.buildStringMstsDB($mstsDbs) ;
+    function buildStringDBs($acc, $mstsDbs)
+    {
+        return $acc . buildStringMstsDB($mstsDbs);
     }
 
-    function buildStringMstsDBs($mstsDbs) {
-        return array_reduce($mstsDbs, 'buildStringDBs') ;
+    function buildStringMstsDBs($mstsDbs)
+    {
+        return array_reduce($mstsDbs, 'buildStringDBs');
     }
 
-    function sendMails($tblData) {
+    function sendMails($tblData)
+    {
 
-        $subject = "Daten kommen nicht mehr an (G-Analysis)" ;
+        $subject = "Daten kommen nicht mehr an (G-Analysis)";
 
-        define("subject", $subject) ; 
+        define("subject", $subject);
 
-        $emailText  = "<h3>Bei folgenden Messstellen kommen keine aktuellen Daten mehr an : </h3><br>" ;
+        $emailText  = "<h3>Bei folgenden Messstellen kommen keine aktuellen Daten mehr an : </h3><br>";
         $emailText .= " <style>
                             table, td, th {
                                 border: 1px solid black;
@@ -103,53 +112,51 @@ function sendAlertEmails($mstsWithoutData) {
                                     <th>Channel 3</th>
                                 </tr>
                             </thead>
-                            <tbody>".$tblData."</tbody>
-                        </table><br><br>" ;
+                            <tbody>" . $tblData . "</tbody>
+                        </table><br><br>";
 
-        define("emailText", $emailText) ;
+        define("emailText", $emailText);
 
-        echo emailText ;
-       
-        $gUsers = 
-            [ "sdm"
-            , "info"
-            , "cmu"
-            , "rpi"
-            , "hts"
-            ] ;
+        echo emailText;
 
-        define("gUsers", $gUsers) ;
-  
-        $extEMailAdresses = [ "alfred.tekniepe@managee.de" ] ;
-            
-        define("extEMailAdresses", $extEMailAdresses) ;
+        $gUsers =
+            [
+                "sdm", "info", "cmu", "rpi", "hts"
+            ];
 
-        function gDomain ($username) {
-            return $username."@energie-gipscomm.de" ;
+        define("gUsers", $gUsers);
+
+        $extEMailAdresses = ["alfred.tekniepe@managee.de"];
+
+        define("extEMailAdresses", $extEMailAdresses);
+
+        function gDomain($username)
+        {
+            return $username . "@energie-gipscomm.de";
         }
 
-        function recipients () {
-            $gEMailAdresses = array_map('gDomain', gUsers) ;
-            
-            return array_merge ($gEMailAdresses, extEMailAdresses) ;
+        function recipients()
+        {
+            $gEMailAdresses = array_map('gDomain', gUsers);
+
+            return array_merge($gEMailAdresses, extEMailAdresses);
         }
 
-        function sendMail ($address) {
-            eMail($address, subject, emailText) ;
+        function sendMail($address)
+        {
+            eMail($address, subject, emailText);
         }
 
-        return array_map( 'sendMail', recipients() ) ;
+        return array_map('sendMail', recipients());
     }
 
-    $rowsString = buildStringMstsDBs($mstsWithoutData) ;
+    $rowsString = buildStringMstsDBs($mstsWithoutData);
 
     if ($rowsString === "") {
-        echo "All data up to date !!" ;
+        echo "All data up to date !!";
+    } else {
+        sendMails($rowsString);
     }
-    else {
-        sendMails($rowsString) ;
-    }
-
 }
 
 // $start = hrtime(true) ;
@@ -158,16 +165,13 @@ function sendAlertEmails($mstsWithoutData) {
 // --------------------------------------------------------------
 //
 pipe(
-    [ getActiveCustomerDBs()
-    , 'mstsDbsWithInvalidDate'
-    , 'sendAlertEmails'
+    [
+        getActiveCustomerDBs(), 'mstsDbsWithInvalidDate', 'sendAlertEmails'
     ]
-) ;
+);
 //
 // --------------------------------------------------------------
 
 // $end = hrtime(true) ;
 
 // echo "    Execution Time : ".(($end - $start) / 1000000000) ;
-
-?>

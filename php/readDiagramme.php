@@ -1,12 +1,11 @@
 <?php
 
-error_reporting (-1);
-ini_set ('display_errors', 'On');
+error_reporting(-1);
+ini_set('display_errors', 'On');
 
 require 'DbOperations.php';
 
-$nameDB = $_POST['nameDB'];
-$conn = connectToDB($nameDB);
+$conn = connectToDB($_POST['nameDB']);
 
 $diagID = $_POST['loadDiagID'];
 

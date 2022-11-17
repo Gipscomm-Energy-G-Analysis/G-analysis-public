@@ -47,7 +47,7 @@ case "knzIns":
         $records1[$i]["instanz"] = $instanz[0]["instanz"];
         $records1[$i]["id"] = $id;
     }
-    echo json_encode($records1, JSON_INVALID_UTF8_IGNORE);
+    echo json_encode($records1, JSON_INVALID_UTF8_SUBSTITUTE);
     break;
 case "knz":
     $knzInsID = $_POST['knzInsID'];
@@ -56,13 +56,13 @@ case "knz":
     $query .= "WHERE knzIns_ID = $knzInsID ";
     $query .= "ORDER BY knzIns_ID ";
     $records = queryDB($conn, $query, "read");
-    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+    echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
     break;
 case "spzKnz":
     $query = "SELECT * FROM KennzahlenFormeln ";
     $query .= "ORDER BY knzIns_ID ";
     $records = queryDB($conn, $query, "read");
-    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+    echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
     break;
 default:
     echo "error";
@@ -73,7 +73,6 @@ case "kpiRec":
     $query = "SELECT * FROM KpiRecord ";
     $query .= "WHERE knz_ID = '$knzID' ";
     $records = queryDB($conn, $query, "read");
-    echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+    echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
     break;
 }
-?>

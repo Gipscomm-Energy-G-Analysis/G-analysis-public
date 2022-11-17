@@ -37,9 +37,6 @@
 
                         const record_ = head(record)
 
-                        console.log("login data record")
-                        console.log(record_)
-
                         const dbHash =
                             record_.passHash
 
@@ -221,9 +218,7 @@
                         utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                         utftext += String.fromCharCode((c & 63) | 128);
                     }
-
                 }
-
                 return utftext;
             }
 

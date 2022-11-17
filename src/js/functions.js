@@ -1367,7 +1367,7 @@ try {
                     nameDB: $("#nameDB").val()
                 },
                 success: function (a) {
-                    a = JSON.parse(a);
+                    a = json(a);
                     $("#lblCustom1Prd, #lblCustom2Prd, #lblCustom3Prd, #lblCustom4Prd, #lblCustom5Prd, #lblCustom6Prd").text("");
                     $("#lblCustom1PrdKnz, #lblCustom2PrdKnz, #lblCustom3PrdKnz, #lblCustom4PrdKnz, #lblCustom5PrdKnz, #lblCustom6PrdKnz").text("");
                     $("#custom1PrdKnz, #custom2PrdKnz, #custom3PrdKnz, #custom4PrdKnz, #custom5PrdKnz, #custom6PrdKnz").val("");
@@ -1394,7 +1394,7 @@ try {
                     eAnl_ID: $("#eAnlID").val()
                 },
                 success: function (a) {
-                    a = JSON.parse(a);
+                    a = json(a);
                     $("#lblCustom1Anl, #lblCustom2Anl, #lblCustom3Anl, #lblCustom4Anl, #lblCustom5Anl, #lblCustom6Anl").text("");
                     for (i = 0; i < a.length; i++) {
                         $("#lblCustom" + (i + 1) + "Anl").text(a[i].name);
@@ -4823,7 +4823,6 @@ try {
             switch (isInstance(a)) {
                 case "adm":
                     var record_set = $('#' + a).data("record");
-                    //alert($("#manBID").val());
                     "optMan" == $("#manOderManGrp").val() ? (a = "man_ID", e = $("#manRechteID").val()) : (a = "manGrp_ID", e = $("#manGrpID").val());
                     $.ajax({
                         type: "POST",

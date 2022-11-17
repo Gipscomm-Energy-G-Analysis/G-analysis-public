@@ -6,7 +6,7 @@ ini_set('display_errors', 'On');
 require 'DbOperations.php';
 
 $query  = "SELECT * FROM erweiterungenAnlagen ";
-$query .= "INNER JOIN subGroupOptions ";
+$query .= "INNER JOIN groupOptions ";
 $query .= "ON erweiterungenAnlagen.eAnl_ID = subGroupOptions.eAnl_ID ";
 $query .= "WHERE erweiterungenAnlagen.eAnl_ID = " . (string)$_POST['eAnl_ID'] . " AND erweiterungenAnlagen.deleted = 0 ";
 

@@ -5,8 +5,7 @@ ini_set('display_errors', 'On');
 
 require 'DbOperations.php';
 
-$nameDB = $_POST['nameDB'];
-$conn = connectToDB($nameDB);
+$conn = connectToDB($_POST['nameDB']);
 
 $query = "SELECT * FROM config.betriebsparameter ";
 
