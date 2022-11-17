@@ -53,6 +53,7 @@ class ProductionController {
             $query = "SELECT * FROM liegenschaften WHERE org_ID =".$org_id;
            //$records = $this->conn->query($query)->fetchAll();
             $records = queryDB ( $this->conn, $query, "read");
+            echo "<pre>";print_r($records);die;
             return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Property details fetched.'];
         } catch (Exception $e) {
             return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
@@ -363,7 +364,7 @@ class ProductionController {
 
     public function getSavedConfiguration($subGroupId) {
         try {
-            $query = "SELECT column_name as COLUMN_NAME FROM SubGroupConfiguration 
+            $query = "SELECT column_name as COLUMN_NAME FROM grp.groupConfig 
                         WHERE sub_group_id=$subGroupId AND username='$this->username' AND status = '1'";         
             return queryDB ( $this->conn, $query, "read");  
         } catch (Exception $e) {
@@ -410,7 +411,7 @@ class ProductionController {
             $foreign_key = 'anl_ID';
             $primary_key ='anl_ID';
 
-            $sql_sub_group_option = "SELECT group_id FROM subGroupOptions WHERE id='".$subGroupId."' ";
+            $sql_sub_group_option = "SELECT group_id FROM grp.groupOptions WHERE id='".$subGroupId."' ";
             // $row_sub_group_option = $this->conn->query($sql_sub_group_option)->fetch();
             $row_sub_group_option = queryDB ( $this->conn, $sql_sub_group_option, "read");
             
@@ -433,15 +434,15 @@ class ProductionController {
                 ];
                 
                 // check entry
-                $sql = "SELECT COUNT(*) AS count_sgc FROM SubGroupConfiguration WHERE sub_group_id='".$subGroupId."' AND username='".$userName."' AND table_name='".$table."' AND column_name='".$column[$i]."' ";
+                $sql = "SELECT COUNT(*) AS count_sgc FROM grp.groupConfig WHERE sub_group_id='".$subGroupId."' AND username='".$userName."' AND table_name='".$table."' AND column_name='".$column[$i]."' ";
                 // $row = $this->conn->query($sql)->fetch();
                 $row = queryDB ( $this->conn, $sql, "read");
                 $count = $row[0]['count_sgc'];
                 if($count > 0){
-                    $updatequery = "UPDATE SubGroupConfiguration SET eAnl_ID=1, sub_group_id='".$subGroupId."', username='".$userName."', table_name='".$table."', column_name='".$column[$i]."', label_name='".$label[$i]."', status='".$status."', is_graph='".$graph_value[$i]."' WHERE group_id='".$groupId."' AND sub_group_id='".$subGroupId."' AND username='".$userName."' AND table_name='".$table."' AND column_name='".$column[$i]."' ";
+                    $updatequery = "UPDATE grp.groupConfig SET eAnl_ID=1, sub_group_id='".$subGroupId."', username='".$userName."', table_name='".$table."', column_name='".$column[$i]."', label_name='".$label[$i]."', status='".$status."', is_graph='".$graph_value[$i]."' WHERE group_id='".$groupId."' AND sub_group_id='".$subGroupId."' AND username='".$userName."' AND table_name='".$table."' AND column_name='".$column[$i]."' ";
                     $update_records = queryDB ( $this->conn, $updatequery, "write");  
                 } else {
-                    $insertquery = "INSERT INTO SubGroupConfiguration ( sub_group_id, eAnl_ID, username, table_name, column_name, label_name, status, is_graph ) VALUES ('$subGroupId', 1, '$userName', '$table', '$column[$i]', '$label[$i]', '$status', '$graph_value[$i]')";
+                    $insertquery = "INSERT INTO grp.groupConfig ( sub_group_id, eAnl_ID, username, table_name, column_name, label_name, status, is_graph ) VALUES ('$subGroupId', 1, '$userName', '$table', '$column[$i]', '$label[$i]', '$status', '$graph_value[$i]')";
                     $insert_records = queryDB ( $this->conn, $insertquery, "write");
                 }               
             }
@@ -516,7 +517,7 @@ class ProductionController {
 
     public function getGroupOptionsList() {
         try {
-            $query = "SELECT * FROM subGroupOptions";
+            $query = "SELECT * FROM grp.groupOptions";
             // $records = $this->conn->query($query)->fetchAll();
             $records = queryDB ( $this->conn, $query, "read");
             return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Group Options Fetched'];
@@ -1043,12 +1044,12 @@ class ProductionController {
         $table_check = queryDB ( $this->conn, $query, "read");
        // print_r($table_check);die;
         if (!empty($table_check)) {
-            $query = "SELECT * FROM subGroupOptions";
+            $query = "SELECT * FROM grp.groupOptions";
           //  $result1 = $this->conn->query($query)->fetchAll();
             $result1 = queryDB ( $this->conn, $query, "read");
             if (count($result1)>0 ) {
                 $query = "SELECT * FROM ErweiterungenAnlagen
-                JOIN subGroupOptions ON ErweiterungenAnlagen.eAnl_ID=subGroupOptions.group_id";
+                JOIN grp.groupOptions ON ErweiterungenAnlagen.eAnl_ID=grp.groupOptions.group_id";
                // $result = $this->conn->query($query)->fetchAll();
                 $result = queryDB ( $this->conn, $query, "read");
                 if(count($result)>0){
@@ -1067,31 +1068,31 @@ class ProductionController {
                         // "group_id"=>$groupId,
                         // "username"=>$this->username,
                         // "status"        =>  '1');
-                        $query = "SELECT TOP 1 * FROM subGroupOptions WHERE username='$this->username' AND option_name ='$stringOptions' AND group_id ='$groupId' AND status ='1'";
+                        $query = "SELECT TOP 1 * FROM grp.groupOptions WHERE username='$this->username' AND option_name ='$stringOptions' AND group_id ='$groupId' AND status ='1'";
                        // $tableConfig = $this->conn->query($query)->fetch();
                         $tableConfig = queryDB ( $this->conn, $query, "read");
                         // print_r( $tableConfig);die;
 
                         if (empty($tableConfig)) {
-                            $insertquery = "INSERT INTO subGroupOptions (username, option_name, status, group_id) VALUES ('$this->username', '$stringOptions', '1', '$groupId')";
+                            $insertquery = "INSERT INTO grp.groupOptions (username, option_name, status, group_id) VALUES ('$this->username', '$stringOptions', '1', '$groupId')";
                             // $insertquery = "INSERT INTO machine_table_config WHERE username = '$this->username' AND column_name='$value['column']' ";
                             // $insert_records = $this->conn->prepare($insertquery)->execute();
                             $insert_records = queryDB ( $this->conn, $query, "write");
                         } else {
                             $update_id = $tableConfig['id'];
-                            // $updatequery = "UPDATE subGroupOptions SET status='$status', label_name='$label_name', table_name='$table' WHERE id='$update_id'";
-                            $updatequery = "UPDATE subGroupOptions SET option_name='$stringOptions',group_id='$groupId',username='$this->username', status='1' WHERE id='$update_id'";
+                            // $updatequery = "UPDATE grp.groupOptions SET status='$status', label_name='$label_name', table_name='$table' WHERE id='$update_id'";
+                            $updatequery = "UPDATE grp.groupOptions SET option_name='$stringOptions',group_id='$groupId',username='$this->username', status='1' WHERE id='$update_id'";
                             // $update_records = $this->conn->prepare($updatequery)->execute();
                             $update_records = queryDB ( $this->conn, $query, "write");
                         }
 
-                        // subGroupOptions::updateOrCreate($data)
-                        // $updatequery = "UPDATE subGroupOptions SET option_name='$stringOptions',group_id='$groupId',username='$this->username', status='1' WHERE id='$update_id'";
+                        // grp.groupOptions::updateOrCreate($data)
+                        // $updatequery = "UPDATE grp.groupOptions SET option_name='$stringOptions',group_id='$groupId',username='$this->username', status='1' WHERE id='$update_id'";
                         // $update_records = $this->conn->prepare($updatequery)->execute();
                     }
                 }
-                // $result = subGroupOptions::get()->toArray();
-                $query = "SELECT * FROM subGroupOptions";
+                // $result = grp.groupOptions::get()->toArray();
+                $query = "SELECT * FROM grp.groupOptions";
                 // $result = $this->conn->query($query)->fetchAll();
                 $result = queryDB ( $this->conn, $query, "read");
                 $msg = "Record inserted successfully.";
@@ -1116,27 +1117,27 @@ class ProductionController {
        
         if(!empty($option_name)){
             foreach($option_name as $option){
-                $query = "SELECT TOP 1 * FROM subGroupOptions WHERE option_name ='$option' AND group_id ='$group_id' AND status ='1'";
+                $query = "SELECT TOP 1 * FROM grp.groupOptions WHERE option_name ='$option' AND group_id ='$group_id' AND status ='1'";
                 // $tableConfig = $this->conn->query($query)->fetch();
                
                 $tableConfig = queryDB ( $this->conn, $query, "read");
             //    print_r($tableConfig);die;
 
                 if (empty($tableConfig)) {
-                    $insertquery = "INSERT INTO subGroupOptions (option_name, status, group_id) VALUES ('$option', '1', '$group_id')";
+                    $insertquery = "INSERT INTO grp.groupOptions (option_name, status, group_id) VALUES ('$option', '1', '$group_id')";
                     // $insertquery = "INSERT INTO machine_table_config WHERE username = '$this->username' AND column_name='$value['column']' ";
                     // $insert_records = $this->conn->prepare($insertquery)->execute();
                     $insert_records = queryDB ( $this->conn, $query, "write");
                 } else {
                     $update_id = $tableConfig[0]['id'];
-                    // $updatequery = "UPDATE subGroupOptions SET status='$status', label_name='$label_name', table_name='$table' WHERE id='$update_id'";
-                    $updatequery = "UPDATE subGroupOptions SET option_name='$option',group_id='$group_id',status='1' WHERE id='$update_id'";
+                    // $updatequery = "UPDATE grp.groupOptions SET status='$status', label_name='$label_name', table_name='$table' WHERE id='$update_id'";
+                    $updatequery = "UPDATE grp.groupOptions SET option_name='$option',group_id='$group_id',status='1' WHERE id='$update_id'";
                     // $update_records = $this->conn->prepare($updatequery)->execute();
                     $update_records = queryDB ( $this->conn, $query, "write");
                 }
             }
             $msg = "Record updated successfully.";
-            $query = "SELECT * FROM subGroupOptions WHERE group_id='$group_id'";
+            $query = "SELECT * FROM grp.groupOptions WHERE group_id='$group_id'";
             // $data = $this->conn->query($query)->fetchAll();
             $data = queryDB ( $this->conn, $query, "read");
             return ['status' => 200, 'msg' =>$msg, 'data'=>$data];
@@ -1148,7 +1149,7 @@ class ProductionController {
     public function deletesaveGroupOptions(){
         try{
             $id     = $_POST['id'];
-            $query = "DELETE FROM subGroupOptions WHERE id ='$id'";
+            $query = "DELETE FROM grp.groupOptions WHERE id ='$id'";
             // $data = $this->conn->query($query)->execute();
             $data = queryDB ( $this->conn, $query, "write");
             return ['code' => 200, 'message' =>'Record deleted successfully.'];
@@ -1168,7 +1169,7 @@ class ProductionController {
 public function getSubGoupConfiguration(){
     try{
         $id = $_POST['grosubGroupId'];
-        $query = "SELECT * FROM SubGroupConfiguration where id='$id'";
+        $query = "SELECT * FROM grp.groupConfig where id='$id'";
         $records = queryDB ( $this->conn, $query, "read");
         return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Organisation details fetched.'];
     }catch(Exception $e) {

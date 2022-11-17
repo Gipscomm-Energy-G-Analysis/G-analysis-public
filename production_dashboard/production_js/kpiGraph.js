@@ -326,6 +326,11 @@ const getFormulas = (anlId="") => {
         success: function(response) {
             response = JSON.parse(response);
             console.log('kpiarrayresponse',response)
+            let html = '';
+            $.each(response, function (key, value) {           
+                html += `<option value='${value.knzIns_ID}'>${value.instanz}</option>`;
+            });
+            $("#kpiFormula").html(html).trigger('change');
             if(response.length==0){
                 $('.kpi_graph_msg').show();
                 $('.kpi_graph_div').hide(); 
@@ -333,11 +338,7 @@ const getFormulas = (anlId="") => {
                 $('.kpi_graph_div').show(); 
                 $('.kpi_graph_msg').hide(); 
             }
-            let html = '';
-            $.each(response, function (key, value) {           
-                html += `<option value='${value.knzIns_ID}'>${value.instanz}</option>`;
-            });
-            $("#kpiFormula").html(html).trigger('change');
+
         }
     })
 }
