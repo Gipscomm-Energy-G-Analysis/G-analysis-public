@@ -53,7 +53,7 @@ class ProductionController {
             $query = "SELECT * FROM liegenschaften WHERE org_ID =".$org_id;
            //$records = $this->conn->query($query)->fetchAll();
             $records = queryDB ( $this->conn, $query, "read");
-            echo "<pre>";print_r($records);die;
+            //echo "<pre>";print_r($records);die;
             return ['status' => 'success', 'code' => 200, 'data' => $records, 'message' => 'Property details fetched.'];
         } catch (Exception $e) {
             return ['status' => 'error', 'code' => 500, 'message' => $e->getMessage()];
