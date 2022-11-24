@@ -146,9 +146,10 @@ class ProductionController {
                 LEFT JOIN ProdData ON ProdData_.anl_ID = ProdData.anl_ID
                 WHERE ProdData_.anl_ID=".$machineId." ORDER BY ProdData_.zeitstempel desc";
                 $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
-                
+                //print_r($machineData);die;
                 $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
                 $graphData = queryDB ( $this->conn, $query, "read");
+                
                 $graphPoints = '';
                 if(!empty($graphData)) {
                     $dataGraph = explode(',', $graphData[0]['graphPoints']);
@@ -537,6 +538,7 @@ class ProductionController {
                 if($machineId) {
                     $machineDataQuery = "SELECT custom1Anl,nummerAnl FROM anlagen WHERE anl_ID=".$machineId;
                     $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
+                    
                     $query = "SELECT * FROM dashboardProduktionConfig";
                     // $data = $this->conn->query($query)->fetchAll();
                     $data = queryDB ( $this->conn, $query, "read");
