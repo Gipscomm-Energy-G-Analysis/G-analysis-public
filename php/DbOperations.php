@@ -90,7 +90,9 @@ function execQuery(PDO $conn_, string $query_, string $mode_): array
 
     if ($mode_ === 'read') {
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        // echo "<pre>";
+        // print_r($result);
+        // print_r($query_);
         $retVal = !$result ? ['error' => 'execQuery : No data could be read !'] : $result;
 
         $stmt->closeCursor();

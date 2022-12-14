@@ -1364,7 +1364,7 @@ try {
                 async: !0,
                 url: "php/ePrdEinlesen.php",
                 data: {
-                    nameDB: $("#nameDB").val()
+                    nameDB: $("#nameDB").val() == '' ? 'g002_badber' : $("#nameDB").val()
                 },
                 success: function (a) {
                     a = json(a);
@@ -1390,8 +1390,8 @@ try {
                 async: !0,
                 url: "php/eAnlOptions.php",
                 data: {
-                    nameDB: $("#nameDB").val(),
-                    eAnl_ID: $("#eAnlID").val()
+                    nameDB: $("#nameDB").val() == '' ? 'g002_badber' : $("#nameDB").val(),
+                    eAnl_ID: $("#eAnlID").val() == '' ? '1' : $("#eAnlID").val()
                 },
                 success: function (a) {
                     a = json(a);
@@ -1399,7 +1399,7 @@ try {
                     for (i = 0; i < a.length; i++) {
                         $("#lblCustom" + (i + 1) + "Anl").text(a[i].name);
                         $("#tblAnlagenListe2 thead tr th").eq(i + 3).text(a[i].name);
-                        var b = a[i].optionen.split(",");
+                        var b = a[i].option_name.split(",");
                         $("#custom" + (i + 1) + "Anl").empty();
                         for (j = 0; j < b.length; j++) $("#custom" + (i + 1) + "Anl").append("<option>" + b[j] + "</option>")
                         $("#custom" + (i + 1) + "Anl").val(erwAnl[i])

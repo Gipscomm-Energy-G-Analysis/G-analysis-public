@@ -346,8 +346,9 @@ function jsFunctionProduction(anl_Id ='') {
             action: "getProdDataInfo",
             nameDB: $("#nameDashboardDB").val(),
             limit:$('#timeFilterProduction').val(),
-            dataResult: $('.navigation-production').attr('data-array'),
+            dataIndex: $('.navigation-production').attr('data-array'),
             machineIndex: $('.navigation-production').attr('data-index'),
+            nameDB: $("#nameDB").val(),
         },
         success:function(result) {
             console.log('result production data', result);
@@ -381,7 +382,7 @@ function jsFunctionMixed() {
             action: "getProdDataInfo",
             nameDB: $("#nameDashboardDB").val(),
             limit:$('#timeFilterMixed').val(),
-            dataResult: $('.navigation-production').attr('data-array'),
+            dataIndex: $('.navigation-production').attr('data-array'),
             machineIndex: $('.navigation-production').attr('data-index'),
             graphType: 'energy'
         },

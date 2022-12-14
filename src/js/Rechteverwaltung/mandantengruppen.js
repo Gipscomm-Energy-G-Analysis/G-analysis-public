@@ -118,7 +118,7 @@ const scpRechteverwaltung_mandantengruppen =
                 () =>   
                 idxDB.mandantenGruppen   
                 .where("betrGrp_ID")    
-                .equals(Number(helper.fieldValue("betrGrpID"))) 
+                .equals(`${Number(helper.fieldValue("betrGrpID"))}`) 
 
             this.queryMandantengruppenDataIDB =
                 () => 

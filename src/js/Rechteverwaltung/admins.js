@@ -149,7 +149,7 @@ const scpRechteverwaltung_admins =
                   () => 
                   idxDB.admins
                   .where($(".manGrpPfad").val().split("-")[0])
-                  .equals(Number($(".manGrpPfad").val().split("-")[1]))
+                  .equals(`${Number($(".manGrpPfad").val().split("-")[1])}`)
             
             // Returns an array of the Schicht Modelle from indexedDB
             const queryDatasIDB =

@@ -284,8 +284,25 @@ class GraphController {
         return $data_var;
     }
 
+    public function getMachineId() {
+        try {
+            $getIndex = isset($_POST['machineIndex']) && !empty($_POST['machineIndex'])?$_POST['machineIndex']:0;
+            $dataIndex = $_POST['dataIndex']; 
+            $dataIndex = explode(',', $dataIndex);
+            return $dataIndex[$getIndex];
+        } catch(Exception $e) {
+            return false;
+        }
+    }
+
     public function getProdDataInfo() {
         try {
+            // print_r($_REQUEST);die;
+            $machine_ID = isset($_POST['id'])?$_POST['id']:null;
+            if(empty($machine_ID)) {
+                $machine_ID = $this->getMachineId();
+            }
+           // print_r($machine_ID);die;
             $username = $_SESSION['username'];
             $selectQuery = "SELECT label, graph_name, graph_text FROM graph_configurations WHERE username= '$username'";
             $record = queryDB ( $this->conn, $selectQuery, "read");
@@ -303,21 +320,23 @@ class GraphController {
                 array_push($productionArray, ['name'=>$value['graph_name'], 'label'=>$value['label']]);
             }
           //  $columnString = $this->str_lreplace(',', '', $columnString);
-            $machine_ID = 23;
+            
             $prodGraphPoints = [];
             
             if($graphType == 'energy') {
                 if($energy_point_exits){
-                    $query = "SELECT TOP $limit ".$columnString." ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' ORDER BY ProdData.timeUnlock ASC";
+                    $query = "SELECT TOP $limit ".$columnString." ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, ProdData.artikelnummer FROM ProdData WHERE ProdData.anl_ID='".$machine_ID."' ORDER BY ProdData.timeUnlock ASC";
                 } else {
                     array_push($productionArray, ['name'=>'Energy Data', 'label'=>'verbrauchAuftrag']);
-                    $query = "SELECT TOP $limit ".$columnString." ProdData.timeUnlock, ProdData.timeClose, ProdData.verbrauchAuftrag, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' ORDER BY ProdData.timeUnlock ASC";
+                    $query = "SELECT TOP $limit ".$columnString." ProdData.timeUnlock, ProdData.timeClose, ProdData.verbrauchAuftrag, ProdData.auftrag, ProdData.artikelnummer FROM ProdData WHERE ProdData.anl_ID='".$machine_ID."' ORDER BY ProdData.timeUnlock ASC";
                 } 
             } else {
-                $query = "SELECT TOP $limit ".$columnString." ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' ORDER BY ProdData.timeUnlock ASC";
+                $query = "SELECT TOP $limit ".$columnString." ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, ProdData.artikelnummer FROM ProdData WHERE ProdData.anl_ID='".$machine_ID."' ORDER BY ProdData.timeUnlock ASC";
             }
+           // print_r($query);die;
+           
             $data = queryDB ( $this->conn, $query, "read");
-            
+          // print_r($data);die;
             foreach($productionArray as $key=>$value){
                 $getProductionDataPoints = $this->makeProductionGraphData($data, $key, $value['name'], $value['label'], $graphType);
                 array_push($prodGraphPoints, $getProductionDataPoints);
@@ -334,7 +353,9 @@ class GraphController {
      * @return array
      */
     public function makeProductionGraphData($data, $id, $name, $textLable, $graphType='production') {
-        
+        if(isset($data['error'])) {
+            return [ 'label'=> [],'data'=>[],'energyData' =>[] ,'amData'=>[], 'id'=>$id , 'record'=>false, 'name'=>$name, 'tableData' =>[], 'minValue' => 0, 'maxValue' => 0, 'prodInfo' => [] ];
+        }
         $recordData = !empty($data) ? true: false;
         $label = [];
         $valData = [];
@@ -343,11 +364,11 @@ class GraphController {
         $minValue = isset($data[0]['auftrag'])?(int)$data[0]['auftrag']:0;
         $maxValue = isset($data[0]['auftrag'])?(int)$data[0]['auftrag']:0;
         $productInfo = [];
-        
+
         foreach ($data as $key=>$value) {
             $timeData =  (int) $value['auftrag'];
             //array_push($productInfo, [$value['namePrd'] => $value['artikelnummer']]);
-            $productInfo[$value['artikelnummer']] = $value['namePrd'].'('.$value['artikelnummer'].')';
+            $productInfo[$value['artikelnummer']] = '('.$value['artikelnummer'].')';
             if ($timeData < $minValue) {
                 $minValue = $timeData;
             } elseif($timeData > $maxValue ) {

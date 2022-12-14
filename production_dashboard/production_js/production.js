@@ -37,8 +37,8 @@ let getProductionDetails = (dataIndex) => {
             if(response.code == '200') {
                 machineDetailsParams(response);
                 jsFunction(response.graphPoints);
-                getProductionGraphDetails(response.anl_ID);
-                getMixedGraphDetails(response.anl_ID);
+                getProductionGraphDetails($('.navigation-production').attr('data-index'),response.anl_ID);
+                getMixedGraphDetails($('.navigation-production').attr('data-index'),response.anl_ID);
                 getFormulas(response.anl_ID);
             } else if(response.code == '404')  {
                 machineDetailsParams(response);

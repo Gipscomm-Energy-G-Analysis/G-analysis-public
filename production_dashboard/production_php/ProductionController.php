@@ -24,7 +24,7 @@ class ProductionController {
             $machineData = $this->getMachineDetailOptimized(); 
             // print_r($machineData);die;
             if($machineData['code'] == 200) {
-                return ['status' => 'success', 'code' => 200, 'data' => $machineData['data'], 'message' => 'Prduction details fetched.', 'groups' => $machineData['groups']];
+                return ['status' => 'success', 'code' => 200, 'data' => $machineData['data'], 'message' => 'Prduction details fetched.', 'groups' => $machineData['groups'],'anl_ID' => $machineData['anl_ID']];
             } else {
                 return $machineData; 
             }
