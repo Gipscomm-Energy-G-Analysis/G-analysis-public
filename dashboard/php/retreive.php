@@ -195,7 +195,7 @@ class dashboardController
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
 
-            $resultQuery = sqlsrv_query($conn, $queryTotalRecords);
+            $resultQuery = queryDB($conn, $queryTotalRecords, "read");
             $totalRecordsValue = [];
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
@@ -249,7 +249,7 @@ class dashboardController
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             // echo json_encode($query1); die;
 
-            $resultQuery = sqlsrv_query($conn, $query1);
+            $resultQuery = queryDB($conn, $query1, "read");
             $dataMesaurement = [];
             $tableFound = 'false';
             if ($resultQuery != false) {
@@ -2868,7 +2868,7 @@ class dashboardController
                 $query1 .= "AND T1.intTp_ID = '$time_interval' ";
                 $query1 .= "Order by T2.val  Desc ";
 
-                $resultQuery = sqlsrv_query($conn, $query1);
+                $resultQuery = queryDB($conn, $query1, "read");
                 $data = [];
                 $tableFound = 'false';
                 if ($resultQuery != false) {
@@ -2892,7 +2892,7 @@ class dashboardController
                 $query1 .= "Where T1.intTp_ID = '$time_interval' ";
                 $query1 .= "Order by T2.val  Desc ";
 
-                $resultQuery = sqlsrv_query($conn, $query1);
+                $resultQuery = queryDB($conn, $query1, "read");
                 $data = [];
                 $tableFound = 'false';
                 if ($resultQuery != false) {
@@ -2930,7 +2930,7 @@ class dashboardController
             $query1 .= ") ";
             $query1 .= "order by Mt.iBdePrdktConf_ID desc ";
 
-            $resultQuery = sqlsrv_query($conn, $query1);
+            $resultQuery = queryDB($conn, $query1, "read");
             $data = [];
             $tableFound = 'false';
             if ($resultQuery != false) {
@@ -3041,7 +3041,7 @@ class dashboardController
             $queryTotalRecords .= "where T1.intTp_ID = '$time_interval' ";
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
-            $resultQuery = sqlsrv_query($conn, $queryTotalRecords);
+            $resultQuery = queryDB($conn, $queryTotalRecords, "read");
             $totalRecordsValue = [];
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
@@ -3092,7 +3092,7 @@ class dashboardController
             $query1 .= $queryMainCondition;
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            $resultQuery = sqlsrv_query($conn, $query1);
+            $resultQuery = queryDB($conn, $query1, "read");
             $dataMesaurement = [];
             $tableFound = 'false';
             if ($resultQuery != false) {
@@ -3307,7 +3307,7 @@ class dashboardController
             }
             //Query Check
             // echo $query1; die;
-            $resultQuery = sqlsrv_query($conn, $query1);
+            $resultQuery = queryDB($conn, $query1, "read");
             $tableFound = 'false';
             $dataMesaurement = [];
             // echo json_encode($resultQuery); die;
@@ -3671,9 +3671,9 @@ class dashboardController
     {
         try {
             global $conn;
-            $table_type = $_POST['table_type'];
+            $table_type = isset($_POST['table_type']);
             $mst_id = $_POST['mst_id'];
-            $input_val_week_day = $_POST['input_val_week_day'] + 60;
+            $input_val_week_day = $_POST['input_val_week_day'] + 20;
             // echo $input_val_week_day;
             $valMaxDate = $input_val_week_day - $_POST['input_val_week_day'];
             $order_by = isset($_POST['order_by']) ?  $_POST['order_by'] : 'desc';
@@ -3690,8 +3690,8 @@ class dashboardController
             $todayDate = date('Y-m-d');
 
             //SchichtModelleAll Table Check
-            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
-            $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+            $tableCheckQuery = "select TOP 1 * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
+            $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
             $table_found = 'false';
             if ($resultTableExistCheck != false) {
                 $table_found = 'true';
@@ -3761,9 +3761,11 @@ class dashboardController
         try {
             $flag = 0;
             for ($i = 0; $i < count($data); $i++) {
-                if ($data[$i]['date']->format('Y-m-d') == $dateVal) {
-                    $flag = 1;
-                    break;
+                if(!empty($data[$i]['date'])){
+                    if ($data[$i]['date']->format('Y-m-d') == $dateVal) {
+                        $flag = 1;
+                        break;
+                    }
                 }
             }
             if ($flag == 1) {
@@ -3912,7 +3914,7 @@ class dashboardController
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
             // echo $queryTotalRecords; die;
-            $resultQuery = sqlsrv_query($conn, $queryTotalRecords);
+            $resultQuery = queryDB($conn, $queryTotalRecords, "read");
             $totalRecordsValue = [];
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
@@ -3964,7 +3966,7 @@ class dashboardController
             $query1 .= $queryMainCondition;
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            $resultQuery = sqlsrv_query($conn, $query1);
+            $resultQuery = queryDB($conn, $query1, "read");
             $tableFound = 'false';
             $dataMesaurement = [];
             if ($resultQuery != false) {
@@ -4266,7 +4268,7 @@ class dashboardController
         try {
             global $conn;
             $queryMeasurement = "select mst_Id from MessstellenEnergiedaten group by mst_Id ";
-            $resulTotalRecord = sqlsrv_query($conn, $queryMeasurement);
+            $resulTotalRecord = queryDB($conn, $queryMeasurement, "read");
             $resultQuery = [];
             $tablefound = 'false';
 
@@ -4307,7 +4309,7 @@ class dashboardController
         try {
             global $conn;
             $queryMeasurement = "select * from messstellen where messartMst = 'automatisch' ";
-            $resulTotalRecord = sqlsrv_query($conn, $queryMeasurement);
+            $resulTotalRecord = queryDB($conn, $queryMeasurement, "read");
             $resultQuery = [];
             $tablefound = 'false';
 
@@ -4343,7 +4345,7 @@ class dashboardController
         try {
             global $conn;
             $queryMeasurement = "select mst_Id from MessstellenEnergiedaten group by mst_Id ";
-            $resulTotalRecord = sqlsrv_query($conn, $queryMeasurement);
+            $resulTotalRecord = queryDB($conn, $queryMeasurement, "read");
             $resultQuery = [];
             $tablefound = 'false';
 
@@ -4383,7 +4385,7 @@ class dashboardController
         try {
             global $conn;
             $queryMeasurement = "select * from messstellen where messartMst = 'automatisch' ";
-            $resulTotalRecord = sqlsrv_query($conn, $queryMeasurement);
+            $resulTotalRecord = queryDB($conn, $queryMeasurement, "read");
             $resultQuery = [];
             $tablefound = 'false';
 
@@ -4443,7 +4445,7 @@ class dashboardController
 
                 //SchichtModelleAll Table Check
                 $tableCheckQuery = "select * from SchichtModelleAll ";
-                $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+                $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
                 $table_found = 'false';
                 if ($resultTableExistCheck != false) {
                     $table_found = 'true';
@@ -4602,7 +4604,7 @@ class dashboardController
 
                 //SchichtModelleAll Table Check
                 $tableCheckQuery = "select * from SchichtModelleAll ";
-                $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+                $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
 
                 $table_found = 'false';
                 if ($resultTableExistCheck != false) {
@@ -5240,7 +5242,7 @@ class dashboardController
             $queryTotalRecord .= "where t1.iBdeType = 1 AND t1.prd_id != '0' ";
             $queryTotalRecord .= "GROUP BY t1.prd_id ";
             // --end-->
-            $resultQuery = sqlsrv_query($conn, $queryTotalRecord);
+            $resultQuery = queryDB($conn, $queryTotalRecord, "read");
             $totalRecordsValue = [];
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
@@ -5289,7 +5291,7 @@ class dashboardController
             $query1 .= ") ";
             $query1 .= "order by Mt.iBdePrdktConf_ID desc ";
             // --end--
-            $resultQuery = sqlsrv_query($conn, $query1);
+            $resultQuery = queryDB($conn, $query1, "read");
             $tableFound = 'false';
             $dataProduct = [];
             if ($resultQuery != false) {
@@ -8264,7 +8266,7 @@ class dashboardController
 
                     //SchichtModelleAll Table Check
                     $tableCheckQuery = "select * from SchichtModelleAll ";
-                    $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+                    $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
                     $table_found = 'false';
                     if ($resultTableExistCheck != false) {
                         $table_found = 'true';
@@ -8353,7 +8355,7 @@ class dashboardController
                 } else if ($select_day_week == 'week') {
                     //SchichtModelleAll Table Check
                     $tableCheckQuery = "select * from SchichtModelleAll ";
-                    $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+                    $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
 
                     $table_found = 'false';
                     if ($resultTableExistCheck != false) {
@@ -8473,7 +8475,7 @@ class dashboardController
             $checkQuery = '';
             //SchichtModelleAll Table Check
             $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id[0]' ";
-            $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+            $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
             $table_found = 'false';
             if ($resultTableExistCheck != false) {
                 $table_found = 'true';
@@ -9053,7 +9055,7 @@ class dashboardController
             $queryTotalRecords .= $order_by_val;
             // echo $queryTotalRecords; die;
 
-            $resultQuery = sqlsrv_query($conn, $queryTotalRecords);
+            $resultQuery = queryDB($conn, $queryTotalRecords, "read");
             $totalRecordsValue = [];
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
@@ -9105,7 +9107,7 @@ class dashboardController
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             // echo $query1; die; 
 
-            $resultQuery = sqlsrv_query($conn, $query1);
+            $resultQuery = queryDB($conn, $query1, "read");
             $dataMesaurement = [];
             $tableFound = 'false';
             if ($resultQuery != false) {
@@ -9874,7 +9876,7 @@ class dashboardController
 
                     //SchichtModelleAll Table Check
                     $tableCheckQuery = "select * from SchichtModelleAll ";
-                    $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+                    $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
                     $table_found = 'false';
                     if ($resultTableExistCheck != false) {
                         $table_found = 'true';
@@ -9963,7 +9965,7 @@ class dashboardController
                 } else if ($select_day_week == 'week') {
                     //SchichtModelleAll Table Check
                     $tableCheckQuery = "select * from SchichtModelleAll ";
-                    $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+                    $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
 
                     $table_found = 'false';
                     if ($resultTableExistCheck != false) {
@@ -10075,7 +10077,7 @@ class dashboardController
             $checkQuery = '';
             //SchichtModelleAll Table Check
             $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id[0]' ";
-            $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+            $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
             $table_found = 'false';
             if ($resultTableExistCheck != false) {
                 $table_found = 'true';
@@ -10188,7 +10190,7 @@ class dashboardController
             $checkQuery = '';
             //SchichtModelleAll Table Check
             $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
-            $resultTableExistCheck = sqlsrv_query($conn, $tableCheckQuery);
+            $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
             $table_found = 'false';
             if ($resultTableExistCheck != false) {
                 $table_found = 'true';

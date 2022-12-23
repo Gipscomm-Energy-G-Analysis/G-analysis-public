@@ -8630,7 +8630,7 @@ function saveOverallCountTileEnergy(){
                 $('#dashboard_sidebar').click();
                 $('#energy_modal_loader_div').hide();
                 $('.energy_tile_modal .modal-content').css('opacity','1');
-                $('.energy_tile_modal ').modal('hide');
+                $('.energy_tile_modal').modal('hide');
 
                 // <---12-11-2021--
                 // $('#save_position_tile').trigger('click');

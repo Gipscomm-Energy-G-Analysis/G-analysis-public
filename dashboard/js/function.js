@@ -803,8 +803,8 @@ function saveTableFormatEnergy(type){
     var tile_html = $('.energy_html_modal_'+last_index_tile).html();
     var tableHtml = $('.energy_html_modal_'+last_index_tile+' table').html();
     $('#total_records').remove();
-    tile_html = tile_html.replace('total_records','');
-    tile_html = tile_html.replace('hide_table_main','');
+    tile_html = tile_html?.replace('total_records','');
+    tile_html = tile_html?.replace('hide_table_main','');
 
     // <----01-9-2021---
     var ar = localStorage.getItem('dashboard_tile_data');

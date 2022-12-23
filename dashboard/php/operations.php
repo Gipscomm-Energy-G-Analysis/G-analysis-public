@@ -104,7 +104,7 @@ class dashboardControllerOperations {
             // $last_id_val = $maxResult[0]['max_id'];
             // --end->
             $updatePriority = "UPDATE tableFormat set priority = '$last_id' where id = '$last_id' ";
-            $updatePriorityResult = queryDB($conn, $updatePriority, "read");
+            $updatePriorityResult = queryDB($conn, $updatePriority, "write");
             // --end-->
 
             if($insertQuery){
