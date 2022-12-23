@@ -2859,7 +2859,7 @@ $(document).ready( function(){
     // <----03-3-2022-----
     $(document).on('blur', '#energy_automatic_input', function(){
         var input_val = $(this).val();
-        if(input_val > 30 || input_val < 1)
+        if(input_val > 300 || input_val < 1)
         {
             $('.energy_automatic_input_error').text('Value Cannot be Greater than 30 and less than 0');
             $('.energy_automatic_input_error').fadeIn('slow');

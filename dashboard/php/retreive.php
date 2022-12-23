@@ -8474,7 +8474,7 @@ class dashboardController
             $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
             $checkQuery = '';
             //SchichtModelleAll Table Check
-            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id[0]' ";
+            $tableCheckQuery = "select  TOP 1 * from MessstellenEnergiedaten where mst_id = '$mst_id[0]' ";
             $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
             $table_found = 'false';
             if ($resultTableExistCheck != false) {
