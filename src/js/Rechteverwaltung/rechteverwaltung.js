@@ -114,7 +114,9 @@ const scpRechteverwaltung =
                             break;
 
                         case POSITION.Admin:
-
+                            console.log('hideElement',hideElement);
+                            console.log('itemSessionGet("manGrp_ID")',itemSessionGet("manGrp_ID"));
+                            console.log('itemSessionGet("man_ID")',itemSessionGet("man_ID"));
                             [ "#tabGipscAdm"
                             , "#tabBetrGrp"
                             , "#betrGrpMenu"
@@ -126,6 +128,8 @@ const scpRechteverwaltung =
                             , ".hideBetrGrp"
                             , ".manGrpPfad"
                             , "#hideManManGrpLbl"
+                            , "#benMenu",
+                            , ".admin_panel"
                             ].forEach(hideElement)
 
                             scpRechteverwaltung_betreuergruppen
@@ -142,14 +146,13 @@ const scpRechteverwaltung =
                             
                         case POSITION.Benutzer:
                             hideElement("#rechtMenuLi")
-
                             scpRechteverwaltung_betreuergruppen
                             .readIntoFormFields(0)
                             break;
                     }
 
                     if (!equal(position)(POSITION.GipscommAdmin)) {
-                        removeMenus()
+                      //  removeMenus()
                     }
                     else {
                         // Nothing
