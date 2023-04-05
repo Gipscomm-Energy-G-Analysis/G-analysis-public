@@ -28,7 +28,7 @@
 .table tbody tr td {
     border: 1px solid black !important;
     color: black;
- 
+}
 </style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->

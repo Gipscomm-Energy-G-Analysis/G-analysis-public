@@ -1367,7 +1367,7 @@ try {
                     nameDB: $("#nameDB").val() == '' ? 'g002_badber' : $("#nameDB").val()
                 },
                 success: function (a) {
-                    a = json(a);
+                    a = JSON.parse(a);
                     $("#lblCustom1Prd, #lblCustom2Prd, #lblCustom3Prd, #lblCustom4Prd, #lblCustom5Prd, #lblCustom6Prd").text("");
                     $("#lblCustom1PrdKnz, #lblCustom2PrdKnz, #lblCustom3PrdKnz, #lblCustom4PrdKnz, #lblCustom5PrdKnz, #lblCustom6PrdKnz").text("");
                     $("#custom1PrdKnz, #custom2PrdKnz, #custom3PrdKnz, #custom4PrdKnz, #custom5PrdKnz, #custom6PrdKnz").val("");
@@ -1394,7 +1394,7 @@ try {
                     eAnl_ID: $("#eAnlID").val() == '' ? '1' : $("#eAnlID").val()
                 },
                 success: function (a) {
-                    a = json(a);
+                    a = JSON.parse(a);
                     $("#lblCustom1Anl, #lblCustom2Anl, #lblCustom3Anl, #lblCustom4Anl, #lblCustom5Anl, #lblCustom6Anl").text("");
                     for (i = 0; i < a.length; i++) {
                         $("#lblCustom" + (i + 1) + "Anl").text(a[i].name);
@@ -10270,6 +10270,7 @@ try {
         setAnlagenTbl2();
     var tblDokumenteAnl = $("#tblDokumenteAnl").DataTable({
             dom: "Bfrtip",
+            columnDefs: [ { "defaultContent": "-", "targets": "_all" } ],
             buttons: [],
             pageLength: 10,
             bAutoWidth: !1,
@@ -10285,6 +10286,7 @@ try {
         }),
         tblDokumenteMsm = $("#tblDokumenteMsm").DataTable({
             dom: "Bfrtip",
+            columnDefs: [ { "defaultContent": "-", "targets": "_all" } ],
             buttons: [],
             pageLength: 10,
             bAutoWidth: !1,
@@ -11217,7 +11219,7 @@ function getStatischeKorrekturfaktoren(grpId) {
             grpId: grpId
         },
         success: function (a) {
-            a = json(a);
+            a = JSON.parse(a);
             var b = a.length;
             tblGetStatischeKorrekturfaktoren.colReorder.reset();
             tblGetStatischeKorrekturfaktoren.clear().draw();
@@ -11244,7 +11246,7 @@ function getKorrekturfaktor() {
             nameDB: $("#nameDB").val()
         },
         success: function (a) {
-            a = json(a);
+            a = JSON.parse(a);
             var b = a.length;
             tblKorrekturfaktor.colReorder.reset();
             tblKorrekturfaktor.clear().draw();

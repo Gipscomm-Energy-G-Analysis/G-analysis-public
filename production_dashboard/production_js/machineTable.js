@@ -6,6 +6,7 @@ $(document).on('click','#anlSuchenProd',function(){
 
 function getMachineTable() {
     newMachineTable = $('#machineListingTable').DataTable({
+        destroy: true,
         ajax: {
             type: "POST",
             url: "../../php/getAnlagen.php",

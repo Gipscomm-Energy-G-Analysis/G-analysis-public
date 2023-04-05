@@ -20,19 +20,21 @@ else{
 
 if($modus == "gesamt"){
   $query = "SELECT * FROM SpaEfvTbl1Gesamt".$viewPostfix." " ;
-  $query .= "WHERE 1 = 1 AND ";
+  $query .= "WHERE 1 = 1 ";
 }
 elseif ($modus == "organisation") {
   $orgID = $_POST['orgID'];
   $query = "SELECT * FROM SpaEfvTbl1Organisation".$viewPostfix." ";
-  $query .= "WHERE org_ID = '$orgID' AND ";
+  $query .= "WHERE org_ID = '$orgID'";
 }
 elseif ($modus == "liegenschaft"){
   $liegID = $_POST['liegID'];
   $query = "SELECT * FROM SpaEfvTbl1Liegenschaft".$viewPostfix." ";
-  $query .= "WHERE lieg_ID = '$liegID' AND ";
+  $query .= "WHERE lieg_ID = '$liegID'";
 }
-$query .= "(".$jahreSqlString.") ";
+if(!empty($jahreSqlString)){
+  $query .= " AND ( ".$jahreSqlString.") ";
+}
 $query .= "ORDER BY Energietraeger, Jahr ";
 $records = queryDB($conn, $query, "read");
 
