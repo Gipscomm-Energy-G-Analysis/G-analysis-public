@@ -1129,7 +1129,6 @@ $(document).ready(function() {
     });
     $("#btnDiagrammErst").click(function() {
         chartInNewWindow()
-        alert('okk');
     });
     $("#btnDiagramm2Erst").click(function() {
         chartInNewWindow2()
