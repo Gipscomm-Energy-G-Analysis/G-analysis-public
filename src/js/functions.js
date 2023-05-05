@@ -640,6 +640,11 @@ try {
             p = $("#zeitrDiag").val(),
             A = $("#typDiag").val(),
             B = $("#avgDiag").is(":checked");
+            // startWochen = $("#startWochen").val(),
+            // endeWochen = $("#endeWochen").val();
+            // console.log(u);
+            // console.log('==============');
+            // console.log(t);
         sessionStorage.setItem("loadDiag", !1);
         if ("" != h) {
             if (qa === "berechnet") {

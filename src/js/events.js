@@ -486,7 +486,9 @@ $(document).ready(function() {
         "Benutzerdefiniert" === this.value ? $("#btnZeitrmDiag").text("Benutzerdefinierter Zeitraum") : $("#btnZeitrmDiag").text("Allgemeiner Zeitraum");
         $("#btnZeitrmDiag").trigger("click");
         "Jahr" === this.value ?
-            ($("#diagMonatDiv, #diagTagDiv").css("display", "none"), $("#diagMonat, #diagTag").prop("selectedIndex", 0)) : "Monat" === this.value || "Monat 15min" === this.value ? ($("#diagMonatDiv").css("display", "inline-block"), $("#diagTagDiv").css("display", "none"), $("#diagTag").prop("selectedIndex", 0)) : "Tag" !== this.value && "Tag 15min" !== this.value || $("#diagMonatDiv, #diagTagDiv").css("display", "inline-block")
+            ($("#diagMonatDiv, #diagTagDiv, #startWochenDiag, #endeWochenDiag").css("display", "none"), $("#diagMonat, #diagTag").prop("selectedIndex", 0)) : "Monat" === this.value || "Monat 15min" === this.value ? ($("#diagMonatDiv").css("display", "inline-block"), $("#diagTagDiv,#startWochenDiag, #endeWochenDiag ").css("display", "none"), $("#diagTag").prop("selectedIndex", 0)) : "Tag" !== this.value && "Tag 15min" !== this.value || $("#diagMonatDiv, #diagTagDiv").css("display", "inline-block"),$("#startWochenDiag, #endeWochenDiag").css("display", "none")
+        "Wochen" === this.value ? 
+        ($("#startWochenDiag, #endeWochenDiag").css("display", "inline-block"), $(".allgZeitrDiag").css("display", "none")) : $("#startWochenDiag, #endeWochenDiag").css("display", "none")
     });
     $("#btnZeitrmDiag").click(function() {
         "Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text() ? ($(".allgZeitrDiag").css("display",
@@ -1127,6 +1129,7 @@ $(document).ready(function() {
     });
     $("#btnDiagrammErst").click(function() {
         chartInNewWindow()
+        alert('okk');
     });
     $("#btnDiagramm2Erst").click(function() {
         chartInNewWindow2()
