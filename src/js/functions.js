@@ -640,11 +640,6 @@ try {
             p = $("#zeitrDiag").val(),
             A = $("#typDiag").val(),
             B = $("#avgDiag").is(":checked");
-            // startWochen = $("#startWochen").val(),
-            // endeWochen = $("#endeWochen").val();
-            // console.log(u);
-            // console.log('==============');
-            // console.log(t);
         sessionStorage.setItem("loadDiag", !1);
         if ("" != h) {
             if (qa === "berechnet") {
@@ -758,7 +753,7 @@ try {
                         if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                a += "ORDER by time_de ";
+                a += "ORDER by time_de "; 
             }
             if (ra === "berechnet") {
                 b = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
@@ -799,7 +794,7 @@ try {
                         if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                a += "ORDER by Time ";
+                a += "ORDER by Time "; 
             } else {
                 a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
@@ -818,6 +813,23 @@ try {
                 a += "ORDER by time_de "
             }
         }
+        if(p==="Wochen"){
+            startWochenNumber= $("#startWochen").val().slice(6, 8);
+            endeWochenNumber= $("#endeWochen").val().slice(6, 8);
+            startWochenYear = $("#startWochen").val().slice(0, 4);
+            // a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
+            // c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
+            // a += "INNER JOIN messmittel ";
+            // a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+            // a += "INNER JOIN messstellen ";
+            // a += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            // a += "WHERE messstellen.mst_ID = '" + g + "' ";
+            // a += "AND CONVERT(date, time_de) >= '" + startWochen + "' AND CONVERT(date, time_de) <= '"+ endeWochen +"' ";
+            // a += "ORDER by time_de "
+            a = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + g + "' AND DATEPART(week, time_de) >= '"+startWochenNumber+"' AND DATEPART(week, time_de) <= '"+endeWochenNumber+"' AND DATEPART(year, time_de) = '"+startWochenYear+"' ORDER by Time";
+            b = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + f + "' AND DATEPART(week, time_de) >= '"+startWochenNumber+"' AND DATEPART(week, time_de) <= '"+endeWochenNumber+"' AND DATEPART(year, time_de) = '"+startWochenYear+"' ORDER by Time";
+            e = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + h + "' AND DATEPART(week, time_de) >= '"+startWochenNumber+"' AND DATEPART(week, time_de) <= '"+endeWochenNumber+"' AND DATEPART(year, time_de) = '"+startWochenYear+"' ORDER by Time";
+        }
 
         [
             ["nameDB", $("#nameDB").val()],
@@ -826,6 +838,11 @@ try {
             ["from", y],
             ["to", z],
             ["month", t],
+            ["startWeek",startWochenNumber],
+            ["endWeek", endeWochenNumber],
+            ["startWeekYear", startWochenYear],
+            ["startdate",$("#startWochen").val()],
+            ["enddate",$("#endeWochen").val()],
             ["chartType", A],
             ["displayMean", B],
             ["nameMst_1", q],
@@ -840,7 +857,7 @@ try {
         ].forEach(prop => sessionStorage.setItem(head(prop), last(prop)))
 
         setTimeout(function () {
-            "Jahr" == p ? window.open("chartYear.html", "_blank") : "Monat" == p ? window.open("chartMonth.html", "_blank") : "Monat 15min" == p ? window.open("chartMonth15min.html", "_blank") : "Tag" == p ? window.open("chartDay.html", "_blank") : "Tag 15min" == p ? window.open("chartDay15min.html", "_blank") : window.open("chartBenDef15min.html", "_blank")
+            "Jahr" == p ? window.open("chartYear.html", "_blank"): "Wochen" == p ? window.open("chartWeek.html", "_blank") : "Monat" == p ? window.open("chartMonth.html", "_blank") : "Monat 15min" == p ? window.open("chartMonth15min.html", "_blank") : "Tag" == p ? window.open("chartDay.html", "_blank") : "Tag 15min" == p ? window.open("chartDay15min.html", "_blank") : window.open("chartBenDef15min.html", "_blank")
         }, 2E3)
     };
 
