@@ -490,6 +490,14 @@ $(document).ready(function() {
         "Wochen" === this.value ? 
         ($("#startWochenDiag, #endeWochenDiag").css("display", "inline-block"), $(".allgZeitrDiag").css("display", "none")) : $("#startWochenDiag, #endeWochenDiag").css("display", "none")
     });
+    $("#startWochen, #endeWochen").on('change',function () {
+        startWochenNumber = $("#startWochen").val();
+        endWochenNumber = $("#endeWochen").val();
+        $("#endeWochen").attr("min", startWochenNumber);
+        if (endWochenNumber) {
+            $("#startWochen").attr("max", endWochenNumber);
+        }
+    });   
     $("#btnZeitrmDiag").click(function() {
         "Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text() ? ($(".allgZeitrDiag").css("display",
             "none"), $(".benutzerdefZeitrDiag").css("display", "inline-block"), $("#btnZeitrmDiag").text("Allgemeiner Zeitraum")) : ($(".allgZeitrDiag").css("display", "inline-block"), $(".benutzerdefZeitrDiag").css("display", "none"), $("#btnZeitrmDiag").text("Benutzerdefinierter Zeitraum"))

@@ -639,7 +639,13 @@ try {
             z = $("#bisDiag").val(),
             p = $("#zeitrDiag").val(),
             A = $("#typDiag").val(),
-            B = $("#avgDiag").is(":checked");
+            B = $("#avgDiag").is(":checked")
+            startWochenNumber= $("#startWochen").val().slice(6, 8),
+            endeWochenNumber= $("#endeWochen").val().slice(6, 8),
+            startWochenYear = $("#startWochen").val().slice(0, 4),
+            endWochenYear = $("#endeWochen").val().slice(0, 4),
+            startWeekDate= dateConvert(weekdate(startWochenYear,startWochenNumber, 0)),
+            endWeekDate= dateConvert(weekdate(endWochenYear, endeWochenNumber, 6));
         sessionStorage.setItem("loadDiag", !1);
         if ("" != h) {
             if (qa === "berechnet") {
@@ -814,9 +820,8 @@ try {
             }
         }
         if(p==="Wochen"){
-            startWochenNumber= $("#startWochen").val().slice(6, 8);
-            endeWochenNumber= $("#endeWochen").val().slice(6, 8);
-            startWochenYear = $("#startWochen").val().slice(0, 4);
+            // var weeknumber = moment(startWeekDate, "YYYY-MM-DD").week();
+            // console.log(weeknumber);
             // a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
             // c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
             // a += "INNER JOIN messmittel ";
@@ -826,9 +831,9 @@ try {
             // a += "WHERE messstellen.mst_ID = '" + g + "' ";
             // a += "AND CONVERT(date, time_de) >= '" + startWochen + "' AND CONVERT(date, time_de) <= '"+ endeWochen +"' ";
             // a += "ORDER by time_de "
-            a = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + g + "' AND DATEPART(week, time_de) >= '"+startWochenNumber+"' AND DATEPART(week, time_de) <= '"+endeWochenNumber+"' AND DATEPART(year, time_de) = '"+startWochenYear+"' ORDER by Time";
-            b = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + f + "' AND DATEPART(week, time_de) >= '"+startWochenNumber+"' AND DATEPART(week, time_de) <= '"+endeWochenNumber+"' AND DATEPART(year, time_de) = '"+startWochenYear+"' ORDER by Time";
-            e = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + h + "' AND DATEPART(week, time_de) >= '"+startWochenNumber+"' AND DATEPART(week, time_de) <= '"+endeWochenNumber+"' AND DATEPART(year, time_de) = '"+startWochenYear+"' ORDER by Time";
+            a = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + g + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time";
+            b = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + f + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time";
+            e = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + h + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time";
         }
 
         [
@@ -841,6 +846,7 @@ try {
             ["startWeek",startWochenNumber],
             ["endWeek", endeWochenNumber],
             ["startWeekYear", startWochenYear],
+            ["endWeekYear", endWochenYear],
             ["startdate",$("#startWochen").val()],
             ["enddate",$("#endeWochen").val()],
             ["chartType", A],
@@ -15769,4 +15775,18 @@ function infosIntEnergiedaten_measuring_point_function(a, b) {
                 }
             })
         })
+}
+
+var weekdate= function(year, week, dayNumber)
+{
+    var j1 = new Date( year,0,10,12,0,0),
+        j2 = new Date( year,0,4,12,0,0),
+        mon1 = j2.getTime() - j1.getDay() * 86400000;
+    return new Date(mon1 + ((week- 1)  * 7  + dayNumber) * 86400000);
+};
+function dateConvert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
 }

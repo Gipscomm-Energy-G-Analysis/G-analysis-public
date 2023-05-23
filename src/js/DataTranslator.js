@@ -222,7 +222,7 @@ function DataTranslator(translationType, inData){
         startVal = 0,
         endVal = 0;      
 
-    for(let x =0 ; x < (enWeek-stWeek); x++){
+    for(let x =0 ; x <= (enWeek-stWeek); x++){
       summedData[x] = {
         Name: "" ,
         Time: "",
@@ -233,11 +233,11 @@ function DataTranslator(translationType, inData){
     }
     switch (this.translationType) {
       case TranslationType.ENERGY_DATA_01:
-        for(let i = 0; i < (enWeek-stWeek); i++){
+        for(let i = 0; i <= (enWeek-stWeek); i++){
           stWeek = parseInt(stWeek);
           dayMonth = stWeek+i;
           for(let j = 0; j < this.data.length; j++){
-            let day = moment(this.data[j].Convdate, "YYYY-MM-DD").week();
+            let day = moment(this.data[j].Convdate, "YYYY-MM-DD").week()-1;
             let month = moment(this.data[j].Convdate, "YYYY-MM-DD").format('MMMM');
             let year = moment(this.data[j].Convdate, "YYYY-MM-DD").year();
             if(day == dayMonth){

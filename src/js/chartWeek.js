@@ -6,124 +6,124 @@ let dataMachine = new DataMachine(),
     tblChartData_1 = $("#tblChartData_1").DataTable({
         dom: 'Bfrtip',
         buttons: [{
-                extend: 'copy',
-                text: 'Kopieren',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'csv',
-                text: 'CSV-Export',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                exportOptions: {
-                    columns: ':visible'
-                }
+            extend: 'copy',
+            text: 'Kopieren',
+            exportOptions: {
+                columns: ':visible'
             }
+        },
+        {
+            extend: 'csv',
+            text: 'CSV-Export',
+            exportOptions: {
+                columns: ':visible'
+            }
+        },
+        {
+            extend: 'print',
+            text: 'Drucken',
+            exportOptions: {
+                columns: ':visible'
+            }
+        }
         ],
         pageLength: 15,
         bAutoWidth: false,
         colReorder: true,
         columnDefs: [{
-                width: "33%",
-                targets: 0
-            },
-            {
-                width: "33%",
-                targets: 1
-            },
-            {
-                width: "33%",
-                targets: 2
-            }
+            width: "33%",
+            targets: 0
+        },
+        {
+            width: "33%",
+            targets: 1
+        },
+        {
+            width: "33%",
+            targets: 2
+        }
         ]
     }),
     tblChartData_2 = $("#tblChartData_2").DataTable({
         dom: 'Bfrtip',
         buttons: [{
-                extend: 'copy',
-                text: 'Kopieren',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'csv',
-                text: 'CSV-Export',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                exportOptions: {
-                    columns: ':visible'
-                }
+            extend: 'copy',
+            text: 'Kopieren',
+            exportOptions: {
+                columns: ':visible'
             }
+        },
+        {
+            extend: 'csv',
+            text: 'CSV-Export',
+            exportOptions: {
+                columns: ':visible'
+            }
+        },
+        {
+            extend: 'print',
+            text: 'Drucken',
+            exportOptions: {
+                columns: ':visible'
+            }
+        }
         ],
         pageLength: 15,
         bAutoWidth: false,
         colReorder: true,
         columnDefs: [{
-                width: "33%",
-                targets: 0
-            },
-            {
-                width: "33%",
-                targets: 1
-            },
-            {
-                width: "33%",
-                targets: 2
-            }
+            width: "33%",
+            targets: 0
+        },
+        {
+            width: "33%",
+            targets: 1
+        },
+        {
+            width: "33%",
+            targets: 2
+        }
         ]
     }),
     tblChartData_3 = $("#tblChartData_3").DataTable({
         dom: 'Bfrtip',
         buttons: [{
-                extend: 'copy',
-                text: 'Kopieren',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'csv',
-                text: 'CSV-Export',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                exportOptions: {
-                    columns: ':visible'
-                }
+            extend: 'copy',
+            text: 'Kopieren',
+            exportOptions: {
+                columns: ':visible'
             }
+        },
+        {
+            extend: 'csv',
+            text: 'CSV-Export',
+            exportOptions: {
+                columns: ':visible'
+            }
+        },
+        {
+            extend: 'print',
+            text: 'Drucken',
+            exportOptions: {
+                columns: ':visible'
+            }
+        }
         ],
         pageLength: 15,
         bAutoWidth: false,
         colReorder: true,
         columnDefs: [{
-                width: "33%",
-                targets: 0
-            },
-            {
-                width: "33%",
-                targets: 1
-            },
-            {
-                width: "33%",
-                targets: 2
-            }
+            width: "33%",
+            targets: 0
+        },
+        {
+            width: "33%",
+            targets: 1
+        },
+        {
+            width: "33%",
+            targets: 2
+        }
         ]
     }),
     year = sessionStorage.getItem("year"),
@@ -141,7 +141,8 @@ let dataMachine = new DataMachine(),
     startWeekDate = sessionStorage.getItem("startWeek"),
     endWeekDate = sessionStorage.getItem("endWeek"),
     startWeekYear = sessionStorage.getItem("startWeekYear"),
-    headerDiagramm = "Energieverbrauch Startwoche " + startWeekDate +"-"+startWeekYear+ " Endwoche " + (parseInt(endWeekDate)-1) +"-"+startWeekYear,
+    endWeekYear = sessionStorage.getItem("endWeekYear"),
+    headerDiagramm = "Energieverbrauch Startwoche " + startWeekDate + "-" + getMonthName(startWeekDate, startWeekYear) + "-" + startWeekYear + " Endwoche " + (parseInt(endWeekDate)) + "-" + getMonthName((parseInt(endWeekDate)), endWeekYear) + "-" + endWeekYear,
 
     csOptions = null;
 
@@ -199,19 +200,19 @@ $("#btnNoteOk").click(function () {
     // saves the note created in the dialog
     // then updates the note list
     saveNoteMonth(
-            $("#identNote").val()
-        )(
-            $("#mstIDNote").val()
-        )(
-            $("#bemerkungNote").val()
-        )
+        $("#identNote").val()
+    )(
+        $("#mstIDNote").val()
+    )(
+        $("#bemerkungNote").val()
+    )
         .then(
             () =>
-            pipe(scpChart.getChart("#container"), scpChart.getSeries, scpChart.updateNotesOfVisibleSeries("month"))
+                pipe(scpChart.getChart("#container"), scpChart.getSeries, scpChart.updateNotesOfVisibleSeries("month"))
         )
         .then(
             ["#identNote", "#mstIDNote", "#mstNote", "#colorNote", "#bemerkungNote", "#seriesNote"]
-            .forEach(a => $(a).val(""))
+                .forEach(a => $(a).val(""))
         )
 
     // empty notes array
@@ -287,9 +288,9 @@ $("#container").ejChart({
 
         const toTake =
             notes
-            .filter(
-                a => a[0] === $("#identNote").val() && a[2] == $("#mstIDNote").val()
-            )
+                .filter(
+                    a => a[0] === $("#identNote").val() && a[2] == $("#mstIDNote").val()
+                )
 
         $("#bemerkungNote").val(
             toTake.length >= 1 ? toTake[0][4] : ""
@@ -315,7 +316,7 @@ $("#container").ejChart({
     //Initializing Primary X Axis
     primaryXAxis: {
         title: {
-            text: "Tag"
+            text: "Woche"
         }
     },
     //Initializing Primary Y Axis
@@ -344,7 +345,7 @@ if (queryString_1 != "" && queryString_2 != "" && queryString_3 != "") {
 }
 
 const recordMask =
-    a => [a.name, a.x , a.y]
+    a => [a.name, a.x, a.y]
 
 function firstQuery() {
     dataMachine.runQuery("read", nameDB, queryString_1)
@@ -355,9 +356,9 @@ function firstQuery() {
                 sumMonth = 0;
 
             dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data)
-          
+
             dataTranslator.sumDaysWeek(startWeekDate, endWeekDate)
-            
+
             // Translates the data to a format the charts understand
             chartData = dataTranslator.translate(4)
 
@@ -462,3 +463,8 @@ function thirdQuery() {
             )
         });
 }
+function getMonthName(week, year) {
+    let d = new Date(year, 0, 1 + (week - 1) * 7);
+    d.getUTCDay() < 5 ? d.setUTCDate(d.getUTCDate() - d.getUTCDay() + 1) : d.setUTCDate(d.getUTCDate() + 8 - d.getUTCDay());
+    return ("" + d).split(" ")[1];
+}    
