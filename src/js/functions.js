@@ -1957,9 +1957,15 @@ try {
                     a = JSON.parse(a);
                     a = JSON.stringify(a);
                     sessionStorage.setItem("jsonStringMassInput", a);
-                    setTimeout(function () {
-                        window.open("SpaEfV_Tabelle_2.html", "_blank")
-                    }, 2E3)
+                    if(sessionStorage.getItem("jsonStringVerbrauch")==='{"error":"execQuery : No data could be read !"}') {
+                        alert('No Record Found!');
+                    } else {
+                        setTimeout(function () {
+                            window.open("SpaEfV_Tabelle_2.html", "_blank")
+                        }, 2E3)
+                        
+                    }
+                    
                 }
             })
         },
