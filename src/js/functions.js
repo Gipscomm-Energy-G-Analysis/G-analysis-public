@@ -1891,7 +1891,7 @@ try {
                     modus: a,
                     version: b,
                     verdichtung: e,
-                    jahr: c,
+                    jahr: $("#year").val(),  //c
                     liegID: $("#liegID").val(),
                     orgID: $("#orgID").val()
                 },
@@ -1911,7 +1911,7 @@ try {
                     modus: a,
                     version: b,
                     verdichtung: e,
-                    jahr: c,
+                    jahr: $("#year").val(),  //c
                     liegID: $("#liegID").val(),
                     orgID: $("#orgID").val()
                 },
@@ -1931,7 +1931,7 @@ try {
                     modus: a,
                     version: b,
                     verdichtung: e,
-                    jahr: c,
+                    jahr: $("#year").val(),  //c
                     liegID: $("#liegID").val(),
                     orgID: $("#orgID").val()
                 },
@@ -1958,7 +1958,8 @@ try {
                     a = JSON.stringify(a);
                     sessionStorage.setItem("jsonStringMassInput", a);
                     if(sessionStorage.getItem("jsonStringVerbrauch")==='{"error":"execQuery : No data could be read !"}') {
-                        alert('No Record Found!');
+                        var year =$("#year").val();
+                        alert('No Record Found for the Year '+year);
                     } else {
                         setTimeout(function () {
                             window.open("SpaEfV_Tabelle_2.html", "_blank")
@@ -15796,3 +15797,16 @@ function dateConvert(str) {
     day = ("0" + date.getDate()).slice(-2);
   return [date.getFullYear(), mnth, day].join("-");
 }
+
+window.onload = function () {
+    var select = document.getElementById("year");
+    var date = new Date();
+    var year = date.getFullYear();
+    for (var i = year - 15; i <= year; i++) {
+      var option = document.createElement('option');
+      option.value = option.innerHTML = i;
+      if (i === year) option.selected = true;
+      select.appendChild(option);
+    }
+    document.getElementById("year").appendChild(select);
+};
