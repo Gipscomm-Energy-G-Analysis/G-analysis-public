@@ -1957,16 +1957,14 @@ try {
                     a = JSON.parse(a);
                     a = JSON.stringify(a);
                     sessionStorage.setItem("jsonStringMassInput", a);
-                    if(sessionStorage.getItem("jsonStringVerbrauch")==='{"error":"execQuery : No data could be read !"}') {
-                        var year =$("#year").val();
-                        alert('No Record Found for the Year '+year);
-                    } else {
                         setTimeout(function () {
-                            window.open("SpaEfV_Tabelle_2.html", "_blank")
-                        }, 2E3)
-                        
-                    }
-                    
+                            if((sessionStorage.getItem("jsonStringVerbrauch")==='{"error":"execQuery : No data could be read !"}') || (sessionStorage.getItem("jsonStringVerbrauch")==='')) {
+                                var year =$("#year").val();
+                                alert('No Record Found for the Year '+year);
+                            } else {
+                                window.open("SpaEfV_Tabelle_2.html", "_blank")
+                            }
+                        }, 2E3)                    
                 }
             })
         },
