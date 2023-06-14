@@ -161,10 +161,11 @@ class ProductionController {
                     $graphPoints = $this->str_lreplace(',', '', $graphPoints);
                 }
                 $groups = [];
-                if (!empty($machineData)) {
-                    return ['status' => 'success', 'code' => 200, 'anl_ID' => $machineId ,'machine_name'=> $machineData[0]['anlageMst'], 'data' => $machineData[0], 'graphPoints' => $graphPoints, 'message' => 'Prduction details fetched.', 'groups' => $groups, 'currentIndex'=>$currentIndex];
-                } else {
+
+                if (isset($machineData['error'])) {
                     return ['status' => 'error', 'code' => 404, 'anl_ID' => $machineId , 'machine_name'=> "", 'data' => [], 'graphPoints' => "", 'message' => 'No Record Found!', 'groups' => $groups, 'currentIndex'=>$currentIndex];
+                } else {
+                    return ['status' => 'success', 'code' => 200, 'anl_ID' => $machineId ,'machine_name'=> ($machineData[0])?$machineData[0]['anlageMst']:null, 'data' => ($machineData[0])?$machineData[0]:null, 'graphPoints' => $graphPoints, 'message' => 'Prduction details fetched.', 'groups' => $groups, 'currentIndex'=>$currentIndex];
                 }
             } else {
                 return ['status' => 'warning', 'code' => 404, 'data' => [], 'message' => "ProdData_ view does'nt exist!"]; 
@@ -1203,7 +1204,7 @@ public function getSubGoupConfiguration(){
         
         $selectQuery = "SELECT * FROM graph_configurations WHERE username= '$username' AND label= '$label'";
         $record = queryDB ( $this->conn, $selectQuery, "read");
-        if(!empty($record)) {
+        if((!empty($record)) && (!isset($record['error']))) {
             $updateId = $record[0]['id'];
             $updatequery = "UPDATE graph_configurations SET graph_name='$graph_name', graph_text='$graph_text' WHERE id = '$updateId'";  
             $update_records = queryDB ( $this->conn, $updatequery, "write");

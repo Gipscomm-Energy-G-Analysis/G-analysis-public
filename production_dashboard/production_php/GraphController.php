@@ -1,5 +1,8 @@
  <?php
 // include_once('dbConnection.php');
+
+use function PHPSTORM_META\type;
+
 error_reporting ( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
 require '..\..\/php/DbOperations.php';
@@ -57,8 +60,12 @@ class GraphController {
         $valData = [];
         $amData = [];
         foreach($data as $key=>$value){
-        //    print_r( );die;
-            $timeData = $value['Time']->format('Y-m-d H:i:s');
+            
+            if(gettype ($value['Time']) == 'string'){
+                $timeData = date("Y-m-d H:i:s", strtotime($value['Time']));
+            } else {
+                $timeData = $value['Time']->format('Y-m-d H:i:s');
+            }
             array_push($amData, ['date'=>(strtotime($timeData) * 1000), 'value'=>floatval(($value['Value']*$value['ConvFactor'])/4), 'time'=>$timeData,'convertedTime'=>'']);
             $value['Value'] = floatval(($value['Value']*$value['ConvFactor'])/4);
             $data[$key]['Time'] = $timeData;

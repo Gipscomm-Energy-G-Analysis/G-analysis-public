@@ -4,6 +4,27 @@ let stopLoader = () => {
 }
 let dataTableMachine;
 
+$(document).on('click','#machineListingTable tr', function(){
+    console.log('hererererewrwerew')
+    let anl_ID = $(this).find("td:first").text();
+    let index = $('.navigation-production').attr('data-index');
+    let data_array = $('.navigation-production').attr('data-array');
+    let data_result = $('.navigation-production').attr('data-result');
+    
+    let findIndex = index;
+    let params = {
+        id:anl_ID,
+        dataIndex:data_array,
+        machineIndex:findIndex,
+        dataResult: data_result,
+        prop_id:$('#property-data').val()
+    }
+    machineCommonAjax(params);
+    getDynamicProductionColumns(findIndex, anl_ID);
+    getProductionGraphDetails(findIndex, anl_ID);
+    getMixedGraphDetails(findIndex, anl_ID);
+    getFormulas(anl_ID);
+});
 
 
 function hideAllcharts() {
@@ -33,7 +54,6 @@ let getProductionDetails = (dataIndex) => {
             dataIndex:dataIndex
         },
         success: function(response) {
-            console.log('res', response);
             if(response.code == '200') {
                 machineDetailsParams(response);
                 jsFunction(response.graphPoints);
@@ -99,7 +119,7 @@ let machineCommonAjax = (params) => {
             })
         },
         success: function(response) {
-            console.log('here data asfdsaf', response);
+        	console.log('response',response);
             setTimeout($.loadingBlockHide, 2000);
             $(".navigation-production").attr("data-index", params.machineIndex);
             $(".navigation-production").attr("data-graph-points", response.graphPoints);
@@ -112,6 +132,8 @@ let machineCommonAjax = (params) => {
                 hideAllcharts();
                 toastr.warning(response.message);
             } else {
+            	toastr.error(response.message);
+            	console.log('here in error');
                 machineDetailsParams(response);
                 hideAllcharts();
                 toastr.error(response.message);
@@ -124,7 +146,6 @@ let machineCommonAjax = (params) => {
 }
 
 $(document).on('change','#org-data',function(){
-    console.log('organistion value on trigger',this.value );
     getProperty(this.value);
 });
 
@@ -182,7 +203,6 @@ let getProperty = function (org_id) {
                 });
                 $("#property-data").html(html);
             }
-            console.log('gefrhasejfkldsjfkldsjsdjgkljds');
             getMachineTable();
             getNavigationDetails();
         }
@@ -393,26 +413,31 @@ let getGroupData = function () {
             nameDB: $("#nameDB").val(),
         },
         success: function(result) {
-            if(result.code == '200') {
+            if (result.code == '200') {
                 let html = '';
-                $.each(result.data, function (key, value) {
-                    let label = value.COLUMN_NAME;
-                    let column = value.COLUMN_NAME;
-                    let graph_value = value.COLUMN_NAME;
-                    html += `<tr>
-                    <td>${column}<input hidden class="configuration_column_data" value="${column}"></td>
-                    <td class="custom_label_td" style="text-align:center;">
-                        <span class="custom_label_span" style="padding-top: 12px; float: left;">${label}</span>
-                        <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="custom_label_input"/>
-                        <i class="fa fa-trash-o  float-right remove_column cursor" style="font-size:24px"></i>
-                        <i class='fa fa-edit float-right edit_label cursor' style='font-size:24px;margin-right: 10px;margin-top: 2px;'></i>
-                    </td>
-                    <td class="text-center">
-                    <input type="checkbox" value="${graph_value}" class="graph_checkbox_value" checked data-toggle="toggle" data-on="" data-off="" data-onstyle="success" data-offstyle="info">
-                    </td>
-                    </tr>`;
-                });
-                $('#configuration_table tbody').html(html);
+                if (result.data.error) {
+                    html += `<tr><td class="custom_label_td" colspan="3" style="text-align:center;">No data available in table</td></tr>`;
+                    $('#configuration_table tbody').html(html);
+                } else {
+                    $.each(result.data, function (key, value) {
+                        let label = value.COLUMN_NAME;
+                        let column = value.COLUMN_NAME;
+                        let graph_value = value.COLUMN_NAME;
+                        html += `<tr>
+                        <td>${column}<input hidden class="configuration_column_data" value="${column}"></td>
+                        <td class="custom_label_td" style="text-align:center;">
+                            <span class="custom_label_span" style="padding-top: 12px; float: left;">${label}</span>
+                            <input style="display:none;" type="text" name="configuration_value_data[]" placeholder="Enter Custom Label Name" value="${label}" class="custom_label_input"/>
+                            <i class="fa fa-trash-o  float-right remove_column cursor" style="font-size:24px"></i>
+                            <i class='fa fa-edit float-right edit_label cursor' style='font-size:24px;margin-right: 10px;margin-top: 2px;'></i>
+                        </td>
+                        <td class="text-center">
+                        <input type="checkbox" value="${graph_value}" class="graph_checkbox_value" checked data-toggle="toggle" data-on="" data-off="" data-onstyle="success" data-offstyle="info">
+                        </td>
+                        </tr>`;
+                    });
+                    $('#configuration_table tbody').html(html);
+                }
             }
         }
       });
@@ -522,7 +547,6 @@ let showColumns = function () {
         success: function(result) {
             if(result.code == '200') {
 
-                console.log(result);
 
                 let html = '<option value="" selected>Please Select</option>';
                 $.each(result.data, function (key, value) {
@@ -558,7 +582,6 @@ let showForeignKeyType = function () {
         success: function(result) {
             if(result.code == '200') {
 
-                console.log(result);
 
                 let html = '<option value="" selected>Please Select</option>';
                 $.each(result.data, function (key, value) {
@@ -801,7 +824,6 @@ let getDynamicProductionColumns = (index, anl_ID="") => {
             machineIndex:index,
         },
         success: function(result) {
-             console.log('result code data',result);
             if(result.code == '200') {
                 if(result.data.main.odd != '' || result.data.main.even != ''){
                     showMachineData(result.data.main);
@@ -834,7 +856,6 @@ const customMachineTable = function() {
         success: function(result) {
             
             if(result.code == '200') {
-                // console.log(result);
                 var html = '';
                 $.each(result.columnName, function(key1, val) {
                     html += '<th>'+val+'</th>';
@@ -861,7 +882,8 @@ const customMachineTable = function() {
 
 
 
-// $(document).on('click','#custom_machines_table tr', function(){
+// $(document).on('click','#machineListingTable tr', function(){
+//     console.log('here',this);
 //     let anl_ID = $(this).find("td:first").text();
 //     let index = $('.navigation-production').attr('data-index');
 //     let data_array = $('.navigation-production').attr('data-array');
@@ -875,6 +897,7 @@ const customMachineTable = function() {
 //         dataResult: data_result,
 //         prop_id:$('#property-data').val()
 //     }
+//     console.log('params', params);
 //     machineCommonAjax(params);
 //     getDynamicProductionColumns(findIndex, anl_ID);
 // });
@@ -1171,6 +1194,10 @@ function calculateNavigationIndex(event, currentIndex) {
 
 let showGraphColumn = function(result){
     let html = '';
+    if (result.data.error) {
+        html += `<tr><td class="custom_label_td" colspan="3" style="text-align:center;">No data available in table</td></tr>`;
+        $('#graph_configuration_table tbody').html(html);
+    } else {
     $.each(result.data, function (key, value) {
         let label = value.graph_text;
         // let column = value.COLUMN_NAME;
@@ -1184,6 +1211,7 @@ let showGraphColumn = function(result){
         </td></tr>`;
     });
     $('#graph_configuration_table tbody').html(html);
+   }
 }
 
 $(document).on('click', '#save_graph_field', function() {
@@ -1271,28 +1299,9 @@ $(document).on('click', '.remove_graph_column', function() {
 });
 
 
-$(document).on('click','#custom_machines_table tr', function(){
-    let anl_ID = $(this).find("td:first").text();
-    let index = $('.navigation-production').attr('data-index');
-    let data_array = $('.navigation-production').attr('data-array');
-    let data_result = $('.navigation-production').attr('data-result');
-    
-    let findIndex = index;
-    let params = {
-    	id:anl_ID,
-        dataIndex:data_array,
-        machineIndex:findIndex,
-        dataResult: data_result,
-        prop_id:$('#property-data').val()
-    }
-    machineCommonAjax(params);
-    getDynamicProductionColumns(findIndex, anl_ID);
-    getProductionGraphDetails(findIndex, anl_ID);
-    getMixedGraphDetails(findIndex, anl_ID);
-});
+
 
 const createProductInfo = (element, data) => {
-    console.log('data',data);
     let html = '';
     $.each(data, function (key, value) {           
         html += `<option value='${key}'>${value}</option>`;
@@ -1315,12 +1324,10 @@ let getProductionGraphDetails = (index, anl_ID="") => {
             nameDB: $("#nameDB").val(),
         },
         success:function(result) {
-            console.log('here data');
             if(result.code == '200') {
                 if (showRecord(result.graphData)) {
                     $('.product_graph_msg').hide();
                     $(".product_graph_div").show();
-                    console.log("result['graphData'][0]['prodInfo']",result['graphData'][0]['prodInfo']);
                     createProductInfo('#orderFilterProduction', result['graphData'][0]['prodInfo']);
                   //  createAmChart(root_other_graph, result.graphData, true, 'production'); 
                     productionAppButtons('#timeFilterIntervalProduction', result.graphData, 'production');
@@ -1421,7 +1428,6 @@ let getMixedGraphDetails = (index, anl_ID="") => {
                 if(showRecord(result.graphData)){
                     $('.mixed_graph_msg').hide();
                     $(".mixed_graph_div").show();
-                    console.log("result['graphData'][0]['prodInfo']",result['graphData'][0]['prodInfo']);
                     createProductInfo('#orderFilterMixed', result['graphData'][0]['prodInfo']);
                     productionAppButtons('#timeFilterIntervalMixed', result.graphData, 'mixed');
                     // createAmChartCategory(mixed_root, result.graphData, true, 'production');
