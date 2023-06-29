@@ -138,7 +138,11 @@ let dataMachine = new DataMachine(),
     queryString_1 = sessionStorage.getItem("queryString_1"),
     queryString_2 = sessionStorage.getItem("queryString_2"),
     queryString_3 = sessionStorage.getItem("queryString_3"),
-    headerDiagramm = "Energieverbrauch " + monthArr[Number(month) - 1] + " " + year,
+    startWeekDate = sessionStorage.getItem("startWeek"),
+    endWeekDate = sessionStorage.getItem("endWeek"),
+    startWeekYear = sessionStorage.getItem("startWeekYear"),
+    endWeekYear = sessionStorage.getItem("endWeekYear"),
+    headerDiagramm = "Energieverbrauch Startwoche " + startWeekDate + "-" + getMonthName(startWeekDate, startWeekYear) + "-" + startWeekYear + " Endwoche " + (parseInt(endWeekDate)) + "-" + getMonthName((parseInt(endWeekDate)), endWeekYear) + "-" + endWeekYear,
 
     csOptions = null;
 
@@ -312,7 +316,7 @@ $("#container").ejChart({
     //Initializing Primary X Axis
     primaryXAxis: {
         title: {
-            text: "Tag"
+            text: "Woche"
         }
     },
     //Initializing Primary Y Axis
@@ -341,7 +345,7 @@ if (queryString_1 != "" && queryString_2 != "" && queryString_3 != "") {
 }
 
 const recordMask =
-    a => [a.name, a.x + "." + month + "." + year, a.y]
+    a => [a.name, a.x, a.y]
 
 function firstQuery() {
     dataMachine.runQuery("read", nameDB, queryString_1)
@@ -353,17 +357,11 @@ function firstQuery() {
 
             dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data)
 
-            dataTranslator.sumDays(year, month)
+            dataTranslator.sumDaysWeek(startWeekDate, endWeekDate)
 
             // Translates the data to a format the charts understand
             chartData = dataTranslator.translate(4)
-            let chartDataArray = []
-            chartData.forEach(element => {
-                if (element.name != "") {
-                    chartDataArray.push(element)
-                }
-            })
-            chartData = chartDataArray;
+
             // Fill table with energy records
             scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
 
@@ -399,15 +397,9 @@ function secondQuery() {
                 sumMonth = 0;
             dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
-            dataTranslator.sumDays(year, month);
+            dataTranslator.sumDaysWeek(startWeekDate, endWeekDate);
             chartData = dataTranslator.translate(4);
-            let chartDataArray = []
-            chartData.forEach(element => {
-                if (element.name != "") {
-                    chartDataArray.push(element)
-                }
-            })
-            chartData = chartDataArray;
+
             // Fill table with energy records
             scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
 
@@ -443,15 +435,9 @@ function thirdQuery() {
                 sumMonth = 0;
             dataTranslator = new DataTranslator(TranslationType.ENERGY_DATA_01, data);
 
-            dataTranslator.sumDays(year, month);
+            dataTranslator.sumDaysWeek(startWeekDate, endWeekDate);
             chartData = dataTranslator.translate(4);
-            let chartDataArray = []
-            chartData.forEach(element => {
-                if (element.name != "") {
-                    chartDataArray.push(element)
-                }
-            })
-            chartData = chartDataArray;
+
             // Fill table with energy records
             scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
 
@@ -477,3 +463,8 @@ function thirdQuery() {
             )
         });
 }
+function getMonthName(week, year) {
+    let d = new Date(year, 0, 1 + (week - 1) * 7);
+    d.getUTCDay() < 5 ? d.setUTCDate(d.getUTCDate() - d.getUTCDay() + 1) : d.setUTCDate(d.getUTCDate() + 8 - d.getUTCDay());
+    return ("" + d).split(" ")[1];
+}    

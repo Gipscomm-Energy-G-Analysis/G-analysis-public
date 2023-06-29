@@ -639,7 +639,13 @@ try {
             z = $("#bisDiag").val(),
             p = $("#zeitrDiag").val(),
             A = $("#typDiag").val(),
-            B = $("#avgDiag").is(":checked");
+            B = $("#avgDiag").is(":checked")
+            startWochenNumber= $("#startWochen").val().slice(6, 8),
+            endeWochenNumber= $("#endeWochen").val().slice(6, 8),
+            startWochenYear = $("#startWochen").val().slice(0, 4),
+            endWochenYear = $("#endeWochen").val().slice(0, 4),
+            startWeekDate= dateConvert(weekdate(startWochenYear,startWochenNumber, 0)),
+            endWeekDate= dateConvert(weekdate(endWochenYear, endeWochenNumber, 6));
         sessionStorage.setItem("loadDiag", !1);
         if ("" != h) {
             if (qa === "berechnet") {
@@ -753,7 +759,7 @@ try {
                         if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                a += "ORDER by time_de ";
+                a += "ORDER by time_de "; 
             }
             if (ra === "berechnet") {
                 b = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
@@ -794,7 +800,7 @@ try {
                         if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), Time, 120), 7), 2) = '" + t + "' "
                     }
                 else a += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                a += "ORDER by Time ";
+                a += "ORDER by Time "; 
             } else {
                 a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
@@ -813,6 +819,22 @@ try {
                 a += "ORDER by time_de "
             }
         }
+        if(p==="Wochen"){
+            // var weeknumber = moment(startWeekDate, "YYYY-MM-DD").week();
+            // console.log(weeknumber);
+            // a = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
+            // c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
+            // a += "INNER JOIN messmittel ";
+            // a += "ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm ";
+            // a += "INNER JOIN messstellen ";
+            // a += "ON messmittel.mst_ID = messstellen.mst_ID ";
+            // a += "WHERE messstellen.mst_ID = '" + g + "' ";
+            // a += "AND CONVERT(date, time_de) >= '" + startWochen + "' AND CONVERT(date, time_de) <= '"+ endeWochen +"' ";
+            // a += "ORDER by time_de "
+            a = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + g + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time";
+            b = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + f + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time";
+            e = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + h + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time";
+        }
 
         [
             ["nameDB", $("#nameDB").val()],
@@ -821,6 +843,12 @@ try {
             ["from", y],
             ["to", z],
             ["month", t],
+            ["startWeek",startWochenNumber],
+            ["endWeek", endeWochenNumber],
+            ["startWeekYear", startWochenYear],
+            ["endWeekYear", endWochenYear],
+            ["startdate",$("#startWochen").val()],
+            ["enddate",$("#endeWochen").val()],
             ["chartType", A],
             ["displayMean", B],
             ["nameMst_1", q],
@@ -835,7 +863,7 @@ try {
         ].forEach(prop => sessionStorage.setItem(head(prop), last(prop)))
 
         setTimeout(function () {
-            "Jahr" == p ? window.open("chartYear.html", "_blank") : "Monat" == p ? window.open("chartMonth.html", "_blank") : "Monat 15min" == p ? window.open("chartMonth15min.html", "_blank") : "Tag" == p ? window.open("chartDay.html", "_blank") : "Tag 15min" == p ? window.open("chartDay15min.html", "_blank") : window.open("chartBenDef15min.html", "_blank")
+            "Jahr" == p ? window.open("chartYear.html", "_blank"): "Wochen" == p ? window.open("chartWeek.html", "_blank") : "Monat" == p ? window.open("chartMonth.html", "_blank") : "Monat 15min" == p ? window.open("chartMonth15min.html", "_blank") : "Tag" == p ? window.open("chartDay.html", "_blank") : "Tag 15min" == p ? window.open("chartDay15min.html", "_blank") : window.open("chartBenDef15min.html", "_blank")
         }, 2E3)
     };
 
@@ -1367,7 +1395,7 @@ try {
                     nameDB: $("#nameDB").val() == '' ? 'g002_badber' : $("#nameDB").val()
                 },
                 success: function (a) {
-                    a = json(a);
+                    a = JSON.parse(a);
                     $("#lblCustom1Prd, #lblCustom2Prd, #lblCustom3Prd, #lblCustom4Prd, #lblCustom5Prd, #lblCustom6Prd").text("");
                     $("#lblCustom1PrdKnz, #lblCustom2PrdKnz, #lblCustom3PrdKnz, #lblCustom4PrdKnz, #lblCustom5PrdKnz, #lblCustom6PrdKnz").text("");
                     $("#custom1PrdKnz, #custom2PrdKnz, #custom3PrdKnz, #custom4PrdKnz, #custom5PrdKnz, #custom6PrdKnz").val("");
@@ -1394,7 +1422,7 @@ try {
                     eAnl_ID: $("#eAnlID").val() == '' ? '1' : $("#eAnlID").val()
                 },
                 success: function (a) {
-                    a = json(a);
+                    a = JSON.parse(a);
                     $("#lblCustom1Anl, #lblCustom2Anl, #lblCustom3Anl, #lblCustom4Anl, #lblCustom5Anl, #lblCustom6Anl").text("");
                     for (i = 0; i < a.length; i++) {
                         $("#lblCustom" + (i + 1) + "Anl").text(a[i].name);
@@ -1863,7 +1891,7 @@ try {
                     modus: a,
                     version: b,
                     verdichtung: e,
-                    jahr: c,
+                    jahr: $("#year").val(),  //c
                     liegID: $("#liegID").val(),
                     orgID: $("#orgID").val()
                 },
@@ -1883,7 +1911,7 @@ try {
                     modus: a,
                     version: b,
                     verdichtung: e,
-                    jahr: c,
+                    jahr: $("#year").val(),  //c
                     liegID: $("#liegID").val(),
                     orgID: $("#orgID").val()
                 },
@@ -1903,7 +1931,7 @@ try {
                     modus: a,
                     version: b,
                     verdichtung: e,
-                    jahr: c,
+                    jahr: $("#year").val(),  //c
                     liegID: $("#liegID").val(),
                     orgID: $("#orgID").val()
                 },
@@ -1929,9 +1957,14 @@ try {
                     a = JSON.parse(a);
                     a = JSON.stringify(a);
                     sessionStorage.setItem("jsonStringMassInput", a);
-                    setTimeout(function () {
-                        window.open("SpaEfV_Tabelle_2.html", "_blank")
-                    }, 2E3)
+                        setTimeout(function () {
+                            if((sessionStorage.getItem("jsonStringVerbrauch")==='{"error":"execQuery : No data could be read !"}') || (sessionStorage.getItem("jsonStringVerbrauch")==='')) {
+                                var year =$("#year").val();
+                                alert('No Record Found for the Year '+year);
+                            } else {
+                                window.open("SpaEfV_Tabelle_2.html", "_blank")
+                            }
+                        }, 2E3)                    
                 }
             })
         },
@@ -10270,6 +10303,7 @@ try {
         setAnlagenTbl2();
     var tblDokumenteAnl = $("#tblDokumenteAnl").DataTable({
             dom: "Bfrtip",
+            columnDefs: [ { "defaultContent": "-", "targets": "_all" } ],
             buttons: [],
             pageLength: 10,
             bAutoWidth: !1,
@@ -10285,6 +10319,7 @@ try {
         }),
         tblDokumenteMsm = $("#tblDokumenteMsm").DataTable({
             dom: "Bfrtip",
+            columnDefs: [ { "defaultContent": "-", "targets": "_all" } ],
             buttons: [],
             pageLength: 10,
             bAutoWidth: !1,
@@ -11217,7 +11252,7 @@ function getStatischeKorrekturfaktoren(grpId) {
             grpId: grpId
         },
         success: function (a) {
-            a = json(a);
+            a = JSON.parse(a);
             var b = a.length;
             tblGetStatischeKorrekturfaktoren.colReorder.reset();
             tblGetStatischeKorrekturfaktoren.clear().draw();
@@ -11244,7 +11279,7 @@ function getKorrekturfaktor() {
             nameDB: $("#nameDB").val()
         },
         success: function (a) {
-            a = json(a);
+            a = JSON.parse(a);
             var b = a.length;
             tblKorrekturfaktor.colReorder.reset();
             tblKorrekturfaktor.clear().draw();
@@ -15746,3 +15781,30 @@ function infosIntEnergiedaten_measuring_point_function(a, b) {
             })
         })
 }
+
+var weekdate= function(year, week, dayNumber)
+{
+    var j1 = new Date( year,0,10,12,0,0),
+        j2 = new Date( year,0,4,12,0,0),
+        mon1 = j2.getTime() - j1.getDay() * 86400000;
+    return new Date(mon1 + ((week- 1)  * 7  + dayNumber) * 86400000);
+};
+function dateConvert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
+}
+
+window.onload = function () {
+    var select = document.getElementById("year");
+    var date = new Date();
+    var year = date.getFullYear();
+    for (var i = year - 15; i <= year; i++) {
+      var option = document.createElement('option');
+      option.value = option.innerHTML = i;
+      if (i === year) option.selected = true;
+      select.appendChild(option);
+    }
+    document.getElementById("year").appendChild(select);
+};

@@ -486,8 +486,18 @@ $(document).ready(function() {
         "Benutzerdefiniert" === this.value ? $("#btnZeitrmDiag").text("Benutzerdefinierter Zeitraum") : $("#btnZeitrmDiag").text("Allgemeiner Zeitraum");
         $("#btnZeitrmDiag").trigger("click");
         "Jahr" === this.value ?
-            ($("#diagMonatDiv, #diagTagDiv").css("display", "none"), $("#diagMonat, #diagTag").prop("selectedIndex", 0)) : "Monat" === this.value || "Monat 15min" === this.value ? ($("#diagMonatDiv").css("display", "inline-block"), $("#diagTagDiv").css("display", "none"), $("#diagTag").prop("selectedIndex", 0)) : "Tag" !== this.value && "Tag 15min" !== this.value || $("#diagMonatDiv, #diagTagDiv").css("display", "inline-block")
+            ($("#diagMonatDiv, #diagTagDiv, #startWochenDiag, #endeWochenDiag").css("display", "none"), $("#diagMonat, #diagTag").prop("selectedIndex", 0)) : "Monat" === this.value || "Monat 15min" === this.value ? ($("#diagMonatDiv").css("display", "inline-block"), $("#diagTagDiv,#startWochenDiag, #endeWochenDiag ").css("display", "none"), $("#diagTag").prop("selectedIndex", 0)) : "Tag" !== this.value && "Tag 15min" !== this.value || $("#diagMonatDiv, #diagTagDiv").css("display", "inline-block"),$("#startWochenDiag, #endeWochenDiag").css("display", "none")
+        "Wochen" === this.value ? 
+        ($("#startWochenDiag, #endeWochenDiag").css("display", "inline-block"), $(".allgZeitrDiag").css("display", "none")) : $("#startWochenDiag, #endeWochenDiag").css("display", "none")
     });
+    $("#startWochen, #endeWochen").on('change',function () {
+        startWochenNumber = $("#startWochen").val();
+        endWochenNumber = $("#endeWochen").val();
+        $("#endeWochen").attr("min", startWochenNumber);
+        if (endWochenNumber) {
+            $("#startWochen").attr("max", endWochenNumber);
+        }
+    });   
     $("#btnZeitrmDiag").click(function() {
         "Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text() ? ($(".allgZeitrDiag").css("display",
             "none"), $(".benutzerdefZeitrDiag").css("display", "inline-block"), $("#btnZeitrmDiag").text("Allgemeiner Zeitraum")) : ($(".allgZeitrDiag").css("display", "inline-block"), $(".benutzerdefZeitrDiag").css("display", "none"), $("#btnZeitrmDiag").text("Benutzerdefinierter Zeitraum"))

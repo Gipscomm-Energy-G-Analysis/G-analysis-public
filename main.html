@@ -164,7 +164,7 @@
                                                     </div>
                                                 </div>
                                                 <a href="javascript:void(0);" id="zeitVerglMenu"
-                                                    class="dashboard_menu_click" data-menus="2-2-2">Gespeichertes
+                                                    class="dashboard_menu_click gespLadenMenu" data-menus="2-2-2">Gespeichertes
                                                     Laden</a>
                                             </div>
                                             <div class="column">
@@ -202,7 +202,7 @@
                                             <a href="javascript:void(0);" id="manGrpMenu" data-menus="3-1-2"
                                                 class="dashboard_menu_click admin_panel">Mandantengruppen</a>
                                             <a href="javascript:void(0);" id="betrGrpMenu" data-menus="3-1-3"
-                                                class="dashboard_menu_click admin_panel">Superadmins</a>
+                                                class="dashboard_menu_click admin_panel sAdmMenu">Superadmins</a>
                                             <a href="javascript:void(0);" id="admMenu" data-menus="3-1-4"
                                                 class="dashboard_menu_click admin_panel">Admins</a>
                                             <a href="javascript:void(0);" id="benMenu" data-menus="3-1-5"
@@ -3442,6 +3442,7 @@
                                 <option>Jahr</option>
                                 <option>Monat</option>
                                 <option>Monat 15min</option>
+                                <option>Wochen</option>
                                 <option>Tag</option>
                                 <option>Tag 15min</option>
                                 <option>Benutzerdefiniert</option>
@@ -3533,6 +3534,14 @@
                                 <option value="30">30</option>
                                 <option value="31">31</option>
                             </select>
+                        </div>
+                        <div id="startWochenDiag" class="controlDiv" style="display:none;">
+                                <label for="Start Wochen">Start Wochen</label>
+                                <input type="week" name="startWeek" id="startWochen" />
+                        </div>
+                        <div id="endeWochenDiag" class="controlDiv" style="display:none;">
+                            <label for="Ende Wochen">Ende Wochen</label>
+                            <input type="week" name="endWeek" id="endeWochen" />
                         </div>
                         <div>
                             <div class="controlDiv benutzerdefZeitrDiag">
@@ -4089,6 +4098,7 @@
                                 <div id="jahreSpaEfVBenutzerdef"> </div>
                             </fieldset>
                         </fieldset>
+                        <div id="customYears" style="padding-left:18px;padding-bottom:5px;font-size:14px"><select id="year"></select></div>
                         <button id="btnSpaEfVTbl2Erstellen" name="2">SpaEfV Tabelle 2 Erstellen</button>
                     </div>
                 </div>
@@ -15466,7 +15476,7 @@
         </div>
     </div>
     <!-- /Add Group Options Modal -->
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 </body>
 
 </html>

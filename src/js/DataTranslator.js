@@ -1,3 +1,30 @@
+Date.prototype.getWeek = function (dowOffset) {
+  /*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.meanfreepath.com */
+  
+      dowOffset = typeof(dowOffset) == 'number' ? dowOffset : 0; //default dowOffset to zero
+      var newYear = new Date(this.getFullYear(),0,1);
+      var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+      day = (day >= 0 ? day : day + 7);
+      var daynum = Math.floor((this.getTime() - newYear.getTime() - 
+      (this.getTimezoneOffset()-newYear.getTimezoneOffset())*60000)/86400000) + 1;
+      var weeknum;
+      //if the year starts before the middle of a week
+      if(day < 4) {
+          weeknum = Math.floor((daynum+day-1)/7) + 1;
+          if(weeknum > 52) {
+              nYear = new Date(this.getFullYear() + 1,0,1);
+              nday = nYear.getDay() - dowOffset;
+              nday = nday >= 0 ? nday : nday + 7;
+              /*if the next year starts before the middle of
+                the week, it is week #1 of that year*/
+              weeknum = nday < 4 ? 1 : 53;
+          }
+      }
+      else {
+          weeknum = Math.floor((daynum+day-1)/7);
+      }
+      return weeknum;
+  };
 
 const TranslationType = {
   ENERGY_DATA_01: 1,
@@ -184,6 +211,91 @@ function DataTranslator(translationType, inData){
 
     return this.data;
   }
+
+  DataTranslator.prototype.sumDaysWeek = function(startWeek, endWeek){
+    stWeek = startWeek;
+    enWeek = endWeek;
+      let summedData = [],
+        nDays = new Date(year, month, 0).getDate(),
+        dayMonth = "",
+        day = "",
+        startVal = 0,
+        endVal = 0;      
+
+    for(let x =0 ; x <= (enWeek-stWeek); x++){
+      summedData[x] = {
+        Name: "" ,
+        Time: "",
+        Phase: 0,
+        Value: 0,
+        ConvFactor: 1
+      }
+    }
+    switch (this.translationType) {
+      case TranslationType.ENERGY_DATA_01:
+        for(let i = 0; i <= (enWeek-stWeek); i++){
+          stWeek = parseInt(stWeek);
+          dayMonth = stWeek+i;
+          for(let j = 0; j < this.data.length; j++){
+            let day = moment(this.data[j].Convdate, "YYYY-MM-DD").week()-1;
+            let month = moment(this.data[j].Convdate, "YYYY-MM-DD").format('MMMM');
+            let year = moment(this.data[j].Convdate, "YYYY-MM-DD").year();
+            if(day == dayMonth){
+                summedData[i].Value += (this.data[j].Value)?Number(this.data[j].Value):0;
+                summedData[i].Time =  `${month}-${day}-${year}`;//+ " " + getWeekday(year, month, day, "short");
+                summedData[i].Name = this.data[0].Name;
+                summedData[i].ConvFactor = this.data[0].ConvFactor;              
+            }
+          }
+        }
+        this.data = summedData;
+        break;
+      case TranslationType.ENERGY_DATA_02:
+        for(let i = 0; i < nDays; i++){
+          if(i < 9){
+            dayMonth = "0" + (i);
+          }
+          else {
+            dayMonth = i;
+          }
+          //startVal = Number(this.data[0].Value);
+          for(let j = 0; j < this.data.length; j++){
+            day = this.data[j].Time;
+            day =  day.slice(0, 2);
+            if(day == dayMonth){
+              if(startVal == 0){
+                startVal = Number(this.data[j].Value);
+              }
+            }
+            else {
+              if(startVal != 0 && endVal == 0){
+                endVal = Number(this.data[j].Value);
+                if(Math.round(endVal - startVal) < 0){
+                  summedData[i].Value = 0;
+                }
+                else {
+                  summedData[i].Value = endVal - startVal;
+                }
+                summedData[i].Time = day;
+                summedData[i].Name = this.data[0].Name;
+                summedData[i].ConvFactor = this.data[0].ConvFactor;
+
+
+                startVal = 0;
+                endVal = 0;
+
+                break;
+              }
+            }
+          }
+        }
+        this.data = summedData;
+        break;
+    }
+
+    return this.data;
+  }
+
   DataTranslator.prototype.sumHours = function(){
     let summedData = [],
         nHours = 24,
