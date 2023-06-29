@@ -642,7 +642,7 @@ $(document).on('click', '#save_field', function() {
     let table = $('#select_table').val();
     let column = $('#select_column').val();
     let primary_key = $('#select_primary_column').val();
-    let foreign_key = $('#select_foreig n_column').val();
+    let foreign_key = $('#select_foreign_column').val();
     let graph = $('#graph').val();
     let anl_ID = $('#anl_ID').val();
     
@@ -725,7 +725,7 @@ const createGroupTable = (data) => {
 };
 
 
-$("#add_sub").click(function () {    
+$(document).on('click','#add_sub', function(){    
     let icount = $("#dynamic_subgroup_field_body").find("tr").length + 1;
     $("#dynamic_subgroup_field_body").append(`<tr id="subrow${icount}">
     <td>${icount}</td>
