@@ -142,17 +142,19 @@ class ProductionController {
                 
                 $machineDataQuery = "SELECT TOP 1 ProdData_.anl_ID,ProdData_.anlageMst,ProdData.maschine,ProdData.sollmenge,ProdData.maschinentyp,ProdData.zykluszeit,
                 ProdData.artikelnummer,ProdData.werkzeug,ProdData.auftrag,ProdData.nester,ProdData.gutmenge,
-                CONVERT(VARCHAR(10), ProdData_.zeitstempel) as zeitstempel,ProdData_.ausschuss,ProdData_.gutmenge FROM ProdData_ 
+                CONVERT(VARCHAR(10), ProdData_.zeitstempel) as zeitstempel,ProdData_.ausschuss,ProdData_.gutmenge,
+                CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM ProdData_ 
                 LEFT JOIN ProdData ON ProdData_.anl_ID = ProdData.anl_ID
+                LEFT JOIN Anlagen ON Anlagen.anl_ID = ProdData.anl_ID
                 WHERE ProdData_.anl_ID=".$machineId." ORDER BY ProdData_.zeitstempel desc";
                 $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
-                //print_r($machineData);die;
-                $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
-                $graphData = queryDB ( $this->conn, $query, "read");
+                // print_r($machineData);die;
+                // $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
+                // $graphData = queryDB ( $this->conn, $query, "read");
                 
-                $graphPoints = '';
-                if(!empty($graphData)) {
-                    $dataGraph = explode(',', $graphData[0]['graphPoints']);
+                $graphPoints = NULL;
+                if(!empty($machineData)) {
+                    $dataGraph = explode(',', $machineData[0]['graphPoints']);
                     foreach($dataGraph as $value) {
                         if(!empty($value)){
                             $graphPoints .= $value.',';

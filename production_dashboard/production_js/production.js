@@ -725,7 +725,7 @@ const createGroupTable = (data) => {
 };
 
 
-$(document).on('click','#add_sub', function(){    
+$(document).on('click','#add_sub', function(){     
     let icount = $("#dynamic_subgroup_field_body").find("tr").length + 1;
     $("#dynamic_subgroup_field_body").append(`<tr id="subrow${icount}">
     <td>${icount}</td>

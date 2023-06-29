@@ -290,124 +290,161 @@ const createGraphDataSet = (newData, chartName, root, type) => {
     drawChart();
     return;
 }
-
 const createAmChart = (root, chartsData, dispose, xtype="date") => {
-    console.log('root',root);
-    console.log('chartsData',chartsData);
-    if (dispose) {
-        root.container.children.clear();
+    console.log('charData',chartsData);
+    let graphData = [];
+    for (const property of chartsData[0]?.amData) {
+        console.log(property,'property')
+        graphData.push(
+            {
+                x : new Date(property?.date),
+                y : property?.value
+            }
+        )
     }
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
+    console.log('graphData',graphData);
+    var chart = new ej.charts.Chart({
+        primaryXAxis: {
+            valueType: 'DateTime',
+            title: 'Sales Across Years',
+            labelFormat: 'yMMM',
+            minimum: new Date(2000, 6, 1),
+            maximum: new Date(2010, 6, 1),
+            interval: 15,
+            //interval type as years in primary x axis
+            intervalType: 'Minutes'
+        },
+        primaryYAxis: {
+            title: 'Sales Amount in millions(USD)'
+        },
+        series:[{
+            dataSource: chartsData,
+            xName: 'x', yName: 'y',
+            name: 'Sales', type: 'Line'
+        }],
+        title: 'Average Sales Comparison'
+    }, '#chartdiv');
+}
 
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-    var chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-            focusable: true,
-            panX: true,
-            panY: true,
-            wheelX: "panX",
-            wheelY: "zoomX",
-            fill: am5.color(0x777777),
-            layout: root.verticalLayout
-        })
-    );
 
-    var easing = am5.ease.linear;
-    chart.get("colors").set("step", 3);
 
-    if(xtype == "date") {
-         // Create axes
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-        var xAxis = chart.xAxes.push(
-            am5xy.DateAxis.new(root, {
-                maxDeviation: 0.1,
-                groupData: true,
-                baseInterval: {
-                    timeUnit: "second",
-                    count: 1
-                },
-                renderer: am5xy.AxisRendererX.new(root, {}),
-                tooltip: am5.Tooltip.new(root, {})
-            })
-        );
-    } else {
-        // var xAxis = chart.xAxes.push(
-        //     am5xy.DateAxis.new(root, {
-        //         maxDeviation: 0.1,
-        //         groupData: true,
-        //         baseInterval: {
-        //         timeUnit: "minutes",
-        //         count: 15
-        //     },
-        //         renderer: am5xy.AxisRendererX.new(root, {}),
-        //         tooltip: am5.Tooltip.new(root, {})
-        //     })
-        // );
-        console.log('chartsData', chartsData[0]['minValue']);
-        console.log('chartsData', chartsData[0]['maxValue']);
-        var xAxis = chart.xAxes.push(
-            am5xy.ValueAxis.new(root, {
-              min: chartsData[0]['minValue'],
-              max: chartsData[0]['maxValue'],
-              renderer: am5xy.AxisRendererX.new(root, {})
-            })
-          );
+// const createAmChart = (root, chartsData, dispose, xtype="date") => {
+//     console.log('root',root);
+//     console.log('chartsData',chartsData);
+//     if (dispose) {
+//         root.container.children.clear();
+//     }
+//     // Set themes
+//     // https://www.amcharts.com/docs/v5/concepts/themes/
+//     root.setThemes([
+//         am5themes_Animated.new(root)
+//     ]);
 
-        // var xAxis = chart.xAxes.push(
-        //     am5xy.CategoryAxis.new(root, {
-        //       categoryField: "category",
-        //       renderer: am5xy.AxisRendererX.new(root, {})
-        //     })
-        //   );
-        // var xAxis = chart.xAxes.push(
-        //     am5xy.DateAxis.new(root, {
-        //         groupData: true,
-        //         renderer: am5xy.AxisRendererX.new(root, {}),
-        //         tooltip: am5.Tooltip.new(root, {})
-        //     })
-        // );
-    }
+//     // Create chart
+//     // https://www.amcharts.com/docs/v5/charts/xy-chart/
+//     var chart = root.container.children.push(
+//         am5xy.XYChart.new(root, {
+//             focusable: true,
+//             panX: true,
+//             panY: true,
+//             wheelX: "panX",
+//             wheelY: "zoomX",
+//             fill: am5.color(0x777777),
+//             layout: root.verticalLayout
+//         })
+//     );
+
+//     var easing = am5.ease.linear;
+//     chart.get("colors").set("step", 3);
+
+//     if(xtype == "date") {
+//          // Create axes
+//         // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+//         var xAxis = chart.xAxes.push(
+//             am5xy.DateAxis.new(root, {
+//                 maxDeviation: 0.1,
+//                 groupData: true,
+//                 baseInterval: {
+//                     timeUnit: "second",
+//                     count: 1
+//                 },
+//                 renderer: am5xy.AxisRendererX.new(root, {}),
+//                 tooltip: am5.Tooltip.new(root, {})
+//             })
+//         );
+//     } else {
+//         // var xAxis = chart.xAxes.push(
+//         //     am5xy.DateAxis.new(root, {
+//         //         maxDeviation: 0.1,
+//         //         groupData: true,
+//         //         baseInterval: {
+//         //         timeUnit: "minutes",
+//         //         count: 15
+//         //     },
+//         //         renderer: am5xy.AxisRendererX.new(root, {}),
+//         //         tooltip: am5.Tooltip.new(root, {})
+//         //     })
+//         // );
+//         console.log('chartsData', chartsData[0]['minValue']);
+//         console.log('chartsData', chartsData[0]['maxValue']);
+//         var xAxis = chart.xAxes.push(
+//             am5xy.ValueAxis.new(root, {
+//               min: chartsData[0]['minValue'],
+//               max: chartsData[0]['maxValue'],
+//               renderer: am5xy.AxisRendererX.new(root, {})
+//             })
+//           );
+
+//         // var xAxis = chart.xAxes.push(
+//         //     am5xy.CategoryAxis.new(root, {
+//         //       categoryField: "category",
+//         //       renderer: am5xy.AxisRendererX.new(root, {})
+//         //     })
+//         //   );
+//         // var xAxis = chart.xAxes.push(
+//         //     am5xy.DateAxis.new(root, {
+//         //         groupData: true,
+//         //         renderer: am5xy.AxisRendererX.new(root, {}),
+//         //         tooltip: am5.Tooltip.new(root, {})
+//         //     })
+//         // );
+//     }
     
 
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-        xAxis: xAxis,
-        behavior: "none"
-        })
-    );
-    cursor.lineY.set("visible", false);
+//     // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+//     var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+//         xAxis: xAxis,
+//         behavior: "none"
+//         })
+//     );
+//     cursor.lineY.set("visible", false);
 
-    // add scrollbar
-    chart.set("scrollbarX", am5.Scrollbar.new(root, {
-        orientation: "horizontal"
-    }));
+//     // add scrollbar
+//     chart.set("scrollbarX", am5.Scrollbar.new(root, {
+//         orientation: "horizontal"
+//     }));
 
-    let count = 0;
-    let opposite;
+//     let count = 0;
+//     let opposite;
 
-    for (const key in chartsData) {
-        opposite = (count == 0)?false:true;
-        let graphName = chartsData[key]['name'] !== undefined?chartsData[key]['name']:key;
-        createAxisAndSeries(chartsData[key]['amData'], opposite, graphName, root, chart, xAxis, xtype);
-        count++;
-    }
+//     for (const key in chartsData) {
+//         opposite = (count == 0)?false:true;
+//         let graphName = chartsData[key]['name'] !== undefined?chartsData[key]['name']:key;
+//         createAxisAndSeries(chartsData[key]['amData'], opposite, graphName, root, chart, xAxis, xtype);
+//         count++;
+//     }
 
-    var legend = chart.children.push(
-        am5.Legend.new(root, {
-          centerX: am5.p50,
-          x: am5.p50
-        })
-      );
-    legend.data.setAll(chart.series.values);
-    // Make stuff animate on load
-    // https://www.amcharts.com/docs/v5/concepts/animations/
-    chart.appear(1000, 100);
-}
+//     var legend = chart.children.push(
+//         am5.Legend.new(root, {
+//           centerX: am5.p50,
+//           x: am5.p50
+//         })
+//       );
+//     legend.data.setAll(chart.series.values);
+//     // Make stuff animate on load
+//     // https://www.amcharts.com/docs/v5/concepts/animations/
+//     chart.appear(1000, 100);
+// }
 
 function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis, xtype) {
     console.log('startValue',startValue);
@@ -437,7 +474,11 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis, xty
                 yAxis: yAxis,
                 valueYField: "value",
                 valueXField: "date",
-                legendLabelText: name
+                legendLabelText: name,
+                tooltip: am5.Tooltip.new(root, {
+                    pointerOrientation: "horizontal",
+                    labelText: "("+name+"=>{valueY}:Order Number=>{valueX})"
+                })
             })
         );
     } else {
