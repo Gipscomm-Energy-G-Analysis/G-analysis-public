@@ -292,6 +292,8 @@ const createGraphDataSet = (newData, chartName, root, type) => {
 }
 
 const createAmChart = (root, chartsData, dispose, xtype="date") => {
+    console.log('root',root);
+    console.log('chartsData',chartsData);
     if (dispose) {
         root.container.children.clear();
     }
@@ -326,8 +328,8 @@ const createAmChart = (root, chartsData, dispose, xtype="date") => {
                 maxDeviation: 0.1,
                 groupData: true,
                 baseInterval: {
-                    timeUnit: "minutes",
-                    count: 15
+                    timeUnit: "second",
+                    count: 1
                 },
                 renderer: am5xy.AxisRendererX.new(root, {}),
                 tooltip: am5.Tooltip.new(root, {})
@@ -408,6 +410,7 @@ const createAmChart = (root, chartsData, dispose, xtype="date") => {
 }
 
 function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis, xtype) {
+    console.log('startValue',startValue);
     var yRenderer = am5xy.AxisRendererY.new(root, {
         opposite: opposite
     });
@@ -423,6 +426,8 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis, xty
         yAxis.set("syncWithAxis", chart.yAxes.getIndex(0));
     }
 
+    console.log('xtype',xtype);
+
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     if ( xtype == 'date') {
@@ -432,11 +437,7 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis, xty
                 yAxis: yAxis,
                 valueYField: "value",
                 valueXField: "date",
-                legendLabelText: name,
-                tooltip: am5.Tooltip.new(root, {
-                    pointerOrientation: "horizontal",
-                    labelText: "("+name+"=>{valueY}:Order Number=>{valueX})"
-                })
+                legendLabelText: name
             })
         );
     } else {

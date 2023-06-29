@@ -16,24 +16,28 @@ $query  .= "WHERE ber_ID = " . $_POST['berID'] . " ";
 $query  .= "AND typ = '" . $_POST['type'] . "' ";
 $query  .= "AND deleted = 0 ";
 
+
 $records = (array)queryDB($conn, $query, "read");
+if(isset($records['error'])){
+    for ($i = 0; $i < count($records); $i++) {
 
-for ($i = 0; $i < count($records); $i++) {
-
-    if ($records[$i]["vorgelMst_ID"] != 0 && $records[$i]["vorgelMst_ID"] != null) {
-
-        foreach ($records as $mst) {
-
-            if ($records[$i]["vorgelMst_ID"] === $mst["mst_ID"]) {
-
-                $records[$i]["vorgelMst"] = $mst["nameMSt"];
+        if ($records[$i]["vorgelMst_ID"] != 0 && $records[$i]["vorgelMst_ID"] != null) {
+    
+            foreach ($records as $mst) {
+    
+                if ($records[$i]["vorgelMst_ID"] === $mst["mst_ID"]) {
+    
+                    $records[$i]["vorgelMst"] = $mst["nameMSt"];
+                }
             }
+        } else {
+            $records[$i]["vorgelMst"] = "";
         }
-    } else {
-        $records[$i]["vorgelMst"] = "";
     }
 }
+
 
 closeDbConn($conn);
 
 echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
+die();

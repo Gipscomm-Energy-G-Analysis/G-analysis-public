@@ -809,8 +809,7 @@ $(document).ready(function() {
         setCostRng(this.id)
     });
     $("#btnSpaEfVTbl1Erstellen, #btnSpaEfVTbl2Erstellen").click(function() {
-        var a =
-                getModusSpaEfV(this.name),
+        var a = getModusSpaEfV(this.name),
             b = getVersionSpaEfV(this.name),
             c = getVerdichtungSpaEfV(this.name);
         if ("btnSpaEfVTbl1Erstellen" == this.id) {

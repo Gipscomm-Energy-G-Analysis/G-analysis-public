@@ -264,7 +264,7 @@ class MigrationController{
         $query = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$this->schema' AND  TABLE_NAME = '$tableName'";
         // $table_exits = $this->conn->query($query)->fetch();
         $table_exits = queryDB ( $this->conn, $query, "read");
-        if (empty($table_exits)) {
+        if (empty($table_exits) || isset($table_exits['error'])) {
             return false;
         }
         return true;

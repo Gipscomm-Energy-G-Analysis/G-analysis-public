@@ -1,5 +1,8 @@
  <?php
 // include_once('dbConnection.php');
+
+use function PHPSTORM_META\type;
+
 error_reporting ( -1 ) ;
 ini_set ( 'display_errors', 'On' ) ;
 require '..\..\/php/DbOperations.php';
@@ -39,6 +42,8 @@ class GraphController {
             $measuringPoint = $points;     
             $query = "SELECT TOP ".$limit." MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten WHERE MessstellenEnergiedaten.mst_ID = ".$measuringPoint." ORDER BY MessstellenEnergiedaten.Time asc";
             $data = queryDB ( $this->conn, $query, "read");
+            // print_r("===========");
+            // print_r($data);
             return $this->getlineChartData($data, $measuringPoint, $name);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -56,10 +61,22 @@ class GraphController {
         $label = [];
         $valData = [];
         $amData = [];
+        // echo '<pre>';
+        // print_r($data);
         foreach($data as $key=>$value){
-        //    print_r( );die;
-            $timeData = $value['Time']->format('Y-m-d H:i:s');
-            array_push($amData, ['date'=>(strtotime($timeData) * 1000), 'value'=>floatval(($value['Value']*$value['ConvFactor'])/4), 'time'=>$timeData,'convertedTime'=>'']);
+            if(gettype ($value['Time']) == 'string'){
+                $timeData = date("Y-m-d H:i:s", strtotime($value['Time']));
+            } else {
+                $timeData = $value['Time']->format('Y-m-d H:i:s');
+            }
+            // $timeData = DateTime::createFromFormat(
+            //     'Y-m-d H:i:s',
+            //     $value['Time'],
+            //     new DateTimeZone('UTC')
+            // );
+            // $timeData = new DateTime($value['Time']);
+            // $timestamp = $timeData->format('Uv');
+            array_push($amData, ['date'=>(int)strtotime($timeData), 'value'=>floatval(($value['Value']*$value['ConvFactor'])/4), 'time'=>$timeData,'convertedTime'=>'']);
             $value['Value'] = floatval(($value['Value']*$value['ConvFactor'])/4);
             $data[$key]['Time'] = $timeData;
             array_push($valData, $value['Value']);

@@ -327,6 +327,7 @@ function jsFunction(graphPoints='') {
                     $('.energy_graph_msg').hide();
                     $(".energy_graph_div").show();
                     $('.energy_graph_msg').hide();
+                    console.log('data.graphData',data.graphData);
                     createAmChart(root, data.graphData, true);
                 }else{
                     $('.energy_graph_msg').show();

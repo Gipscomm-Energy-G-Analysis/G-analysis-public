@@ -2225,7 +2225,7 @@ try {
                 .then(
                     result => {
                         const len = result.length
-
+                        console.log('result',result);
                         const tblDataTable =
                             ins === "Anl" ?
                             tblDokumenteAnl :
