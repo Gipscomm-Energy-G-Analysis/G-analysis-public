@@ -30,7 +30,7 @@ if ($ins = "prd") {
     $whereClause =
         $nameDB === "012_spiess" ?
         "WHERE LEFT(artikelnummer,4) = ".$preRecords[0]['artikelNrPrd']." " :
-        "WHERE artikelnummer = ".$preRecords[0]['artikelNrPrd']." " ;
+        "WHERE artikelnummer = '".$preRecords[0]['artikelNrPrd']."' " ;
 
     $query = "SELECT * FROM (SELECT".$top." * FROM ProdData ";
     $query .= $whereClause ;
@@ -41,7 +41,6 @@ if ($ins = "prd") {
     $query .= "WHERE ".$ins."_ID = $id ";
     $query .= "ORDER BY timeClose";
 }
-
 $records = queryDB($conn, $query, "read");
 
 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);

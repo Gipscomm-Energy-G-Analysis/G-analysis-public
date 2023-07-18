@@ -24,6 +24,7 @@ class GraphController {
         $limit = $_REQUEST['limit'];
         $points = explode(',', $_REQUEST['points']);
         $data = [];
+       // print_r($points);die;
         foreach($points as $key=>$value) {
             $chartsData = $this->getChartsData($value, $limit, 'messstelle'.($key+1).'IDAnl');
             array_push($data, $chartsData);
@@ -38,12 +39,12 @@ class GraphController {
      */
     public function getChartsData($points, $limit, $name) {
         try {
-            session_write_close();
+        
             $measuringPoint = $points;     
             $query = "SELECT TOP ".$limit." MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten WHERE MessstellenEnergiedaten.mst_ID = ".$measuringPoint." ORDER BY MessstellenEnergiedaten.Time asc";
+          //  print_r($query);die;
             $data = queryDB ( $this->conn, $query, "read");
-            // print_r("===========");
-            // print_r($data);
+            
             return $this->getlineChartData($data, $measuringPoint, $name);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -56,21 +57,22 @@ class GraphController {
      * @return array
      */
     public function getlineChartData($data, $id, $name) {
-     //   print_r($data);die;
-        $recordData = !empty($data) ? true: false;
+        $recordData = (isset($data['error']))?false:true;
         $label = [];
         $valData = [];
         $amData = [];
-        foreach($data as $key=>$value){
-            if(gettype ($value['Time']) == 'string'){
-                $timeData = date("Y-m-d H:i:s", strtotime($value['Time']));
-            } else {
-                $timeData = $value['Time']->format('Y-m-d H:i:s');
+        if($recordData) {
+            foreach($data as $key=>$value){
+                if(gettype ($value['Time']) == 'string'){
+                    $timeData = date("Y-m-d H:i:s", strtotime($value['Time']));
+                } else {
+                    $timeData = $value['Time']->format('Y-m-d H:i:s');
+                }
+                array_push($amData, ['date'=>(strtotime($value['Time']) * 1000), 'value'=>floatval(($value['Value']*$value['ConvFactor'])/4), 'time'=>$timeData,'convertedTime'=>'']);
+                $value['Value'] = floatval(($value['Value']*$value['ConvFactor'])/4);
+                $data[$key]['Time'] = $timeData;
+                array_push($valData, $value['Value']);
             }
-            array_push($amData, ['date'=>(strtotime($value['Time'])), 'value'=>floatval(($value['Value']*$value['ConvFactor'])/4), 'time'=>$timeData,'convertedTime'=>'']);
-            $value['Value'] = floatval(($value['Value']*$value['ConvFactor'])/4);
-            $data[$key]['Time'] = $timeData;
-            array_push($valData, $value['Value']);
         }
         return [ 'label'=> $label,'data'=>$valData,'amData'=>$amData, 'id'=>$id , 'record'=>$recordData, 'name'=>$name, 'tableData' =>$data ];
     }
@@ -152,11 +154,11 @@ class GraphController {
             foreach($record as $value) {
                 $selectQuery = "SELECT TOP $limit ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' ORDER BY zeitstempel desc";
                 $prodData = queryDB ( $this->conn, $selectQuery, "read");
+                print_r($prodData);die;
                 if(!empty($prodData)) {
                     $getProductionDataPoints = $this->getProductionChartData($prodData, $machineID, $value['graph_name']);
                     array_push($prodGraphPoints, $getProductionDataPoints);
                 }
-
             }
             return ['status' => 'success', 'code' => 200, 'data' => $prodGraphPoints, 'message' => 'Configuration Data Fetched.'];
         } catch (Exception $e) {
@@ -314,6 +316,10 @@ class GraphController {
             $username = $_SESSION['username'];
             $selectQuery = "SELECT label, graph_name, graph_text FROM graph_configurations WHERE username= '$username'";
             $record = queryDB ( $this->conn, $selectQuery, "read");
+
+            if(isset($record['error'])) {
+                return ['status' => 'success', 'code' => 200, 'graphData' => [], 'message' => 'Configuration Data Fetched.'];
+            }
             
             $graphType = isset($_POST['graphType'])?$_POST['graphType']:null;
             $productionArray = [];

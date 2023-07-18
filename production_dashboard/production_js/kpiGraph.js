@@ -1,4 +1,5 @@
 let kennz,obergr,untergr,knzID_1,knzName_1;
+let bdeProd_1;
 const [ frm, geo ] = [ scpFormula, scpGeometry ] ;
 csOptions = null;
 let formulaStringArray = {};
@@ -76,60 +77,129 @@ const intializeKpiCharts = (sa, formulaStringArray, formulaArray) => {
         }
     });
     let first_name;
-    chartInstance = $("#kpi_graph_plot_div") .ejChart("instance");
-    formulaArray.forEach(function (item, index) {
-
-        //NEW code 
-        let formullaData = formulaStringArray[item];
-        const xAxis =
-        frm.datasetRaw(nameDB)(item)(timeSpan)
-        .then(
-            dataRaw =>
-            frm.datasetFormula(nameDB)(item)(timeSpan)
-            .then(newData => {
-            const chartData =
-            newData
-            .map(
-                (data,i)=>
-                ({
-                    name: formullaData.dataName,
-                    x: "A" + (i + 1) + "-" + dataRaw[i].auftrag,
-                    y: data
+    chartInstance = $("#kpi_graph_plot_div").ejChart("instance");
+    if(nameDB == 'g012_spiess') {
+        let columnData =  ['auftrag','ausschuss','gesamtmenge','gutmenge','verbrauchAuftrag'];
+        formulaArray.forEach(function (item, index) {
+            //NEW code 
+            let formullaData = formulaStringArray[item];
+            console.log('formullaData',formullaData);
+            // let rawD = frm.datasetRaw(nameDB)(item)(timeSpan).then(
+            //     dataRaw => console.log('data_rararar',dataRaw)
+            // )
+            // let datasetfo = frm.datasetFormula(nameDB)(item)(timeSpan).then(
+            //     newData => console.log('data_rararar_newData',newData)
+            // )
+            const xAxis =
+            frm.datasetRaw(nameDB)(item)(timeSpan)
+            .then(
+                dataRaw => {
+                // console.log('columnData[index]',columnData[index]);
+                // console.log('data[columnData[index]]',data[columnData[index]]);
+                // frm.datasetFormula(nameDB)(item)(timeSpan)
+                // .then(newData => {
+                  //  console.log('newData',newData);
+                    const chartData =
+                    dataRaw
+                    .map(
+                        (data,i)=>
+                        ({
+                            name: formullaData.dataName,
+                            x: "A" + (i + 1) + "-" + dataRaw[i].artikelnummer,
+                            y: data[columnData[index]]
+                        })
+                    )
+                    if(index == 0) {
+                        chartInstance.model.series.push({
+                            type: chartType,
+                            dataSource: chartData,
+                            name: formullaData.dataName,
+                            xName: "x",
+                            yName: "y"
+                        });
+                    } else {
+                        if(formullaData.dataName != 'kennzahl' || formullaData.dataName != 'obergrenze' || formullaData.dataName != 'untergrenze') {
+                            chartInstance.model.series.push({
+                                type: chartType,
+                                dataSource: chartData,
+                                name: formullaData.dataName,
+                                xName: "x",
+                                yName: "y",
+                                yAxisName: formullaData.dataName
+                            });
+                            chartInstance.model.axes.push({
+                                orientation: 'Vertical',
+                                hidePartialLabels: false,
+                                rowIndex: 0,
+                                majorGridLines: { visible: true },
+                                axisLine: { visible: false },
+                                name: formullaData.dataName,
+                                labelFormat: '{value}',
+                                title: { text: formullaData.dataName },
+                                opposedPosition: true
+                            });
+                        }
+                    }
+                // })
+            })
+        });
+    } else {
+        formulaArray.forEach(function (item, index) {
+            //NEW code 
+            let formullaData = formulaStringArray[item];
+            console.log('formullaData',formullaData);
+            const xAxis =
+            frm.datasetRaw(nameDB)(item)(timeSpan)
+            .then(
+                dataRaw => {
+                frm.datasetFormula(nameDB)(item)(timeSpan)
+                .then(newData => {
+                    console.log('newData',newData);
+                    const chartData =
+                    newData
+                    .map(
+                        (data,i)=>
+                        ({
+                            name: formullaData.dataName,
+                            x: "A" + (i + 1) + "-" + dataRaw[i].auftrag,
+                            y: data
+                        })
+                    )
+                    if(index == 0) {
+                        chartInstance.model.series.push({
+                            type: chartType,
+                            dataSource: chartData,
+                            name: formullaData.dataName,
+                            xName: "x",
+                            yName: "y"
+                        });
+                    } else {
+                        if(formullaData.dataName != 'kennzahl' || formullaData.dataName != 'obergrenze' || formullaData.dataName != 'untergrenze') {
+                            chartInstance.model.series.push({
+                                type: chartType,
+                                dataSource: chartData,
+                                name: formullaData.dataName,
+                                xName: "x",
+                                yName: "y",
+                                yAxisName: formullaData.dataName
+                            });
+                            chartInstance.model.axes.push({
+                                orientation: 'Vertical',
+                                hidePartialLabels: false,
+                                rowIndex: 0,
+                                majorGridLines: { visible: true },
+                                axisLine: { visible: false },
+                                name: formullaData.dataName,
+                                labelFormat: '{value}',
+                                title: { text: formullaData.dataName },
+                                opposedPosition: true
+                            });
+                        }
+                    }
                 })
-            )
-            if(index == 0) {
-                chartInstance.model.series.push({
-                    type: chartType,
-                    dataSource: chartData,
-                    name: formullaData.dataName,
-                    xName: "x",
-                    yName: "y"
-                });
-            } else {
-                if(formullaData.dataName != 'kennzahl' || formullaData.dataName != 'obergrenze' || formullaData.dataName != 'untergrenze') {
-                    chartInstance.model.series.push({
-                        type: chartType,
-                        dataSource: chartData,
-                        name: formullaData.dataName,
-                        xName: "x",
-                        yName: "y",
-                        yAxisName: formullaData.dataName
-                    });
-                    chartInstance.model.axes.push({
-                        orientation: 'Vertical',
-                        hidePartialLabels: false,
-                        rowIndex: 0,
-                        majorGridLines: { visible: true },
-                        axisLine: { visible: false },
-                        name: formullaData.dataName,
-                        labelFormat: '{value}',
-                        title: { text: formullaData.dataName },
-                        opposedPosition: true
-                    });
-                }
-            }
-        }))
-    });
+            })
+        });
+    }
     setTimeout(function(){
         chartInstance.redraw();
     }, 5000);
@@ -234,7 +304,6 @@ function firstQuery(knzID, formullaData) {
         dataRaw =>
         frm.datasetFormula(nameDB)(knzID)(timeSpan)
         .then(newData => {
-
             const chartData =
             newData
             .map(

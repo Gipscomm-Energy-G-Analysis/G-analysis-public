@@ -1,5 +1,5 @@
 //OLD code end
-let root = am5.Root.new("chartdiv");
+let root = "#chartdiv";
 let root_other_graph = "other_graph_div";
 let historic_root = am5.Root.new("historyChartdiv");
 let product_other_graph = "product_historyChartdiv";
@@ -143,7 +143,7 @@ const createAmChartCategory = (root, chartsData, dispose, name, type) => {
     }
     if(type == 'double') {
         console.log('herer is mixed charts');
-        $(`#${root}`) .ejChart({
+        $(`#${root}`).ejChart({
             palette: [ "black", "blue", "red", "green", "yellow", "purple"],
             legend: {
                 position: "top"
@@ -290,40 +290,76 @@ const createGraphDataSet = (newData, chartName, root, type) => {
     drawChart();
     return;
 }
-const createAmChart = (root, chartsData, dispose, xtype="date") => {
-    console.log('charData',chartsData);
-    let graphData = [];
-    for (const property of chartsData[0]?.amData) {
-        console.log(property,'property')
-        graphData.push(
-            {
-                x : new Date(property?.date),
-                y : property?.value
-            }
-        )
+const createAmChart = async (root, chartsData, dispose, xtype="date") => {
+    let graphSeries = [];
+    let maxArray = [];
+    console.log('chartsData.amData',chartsData);
+    for (const property of chartsData) {
+        let series = {
+            dataSource: [],
+            xName: 'x', yName: 'y',
+            name: property.name, type: 'Line',
+            tooltip :
+                {	visible :true, 
+                    format: " #series.name#  <br/> #point.x# : #point.y#"
+                },
+                marker:
+                {
+                    shape: 'circle',
+                    size:
+                    {
+                        height: 6, width: 6
+                    },
+                    visible: true
+                },
+        };
+        for (const graphValues of property.amData) {
+            series.dataSource.push(
+                {
+                    x : new Date(graphValues?.date),
+                    y : graphValues?.value
+                }
+            )
+            maxArray.push(graphValues?.value);
+        }
+        graphSeries.push(series);
+        
     }
-    console.log('graphData',graphData);
-    var chart = new ej.charts.Chart({
-        primaryXAxis: {
-            valueType: 'DateTime',
-            title: 'Sales Across Years',
-            labelFormat: 'yMMM',
-            minimum: new Date(2000, 6, 1),
-            maximum: new Date(2010, 6, 1),
+    console.log(graphSeries,'graphSeries');
+    $(`#chartdiv`).ejChart({        
+        //Initializing Primary X Axis
+        primaryXAxis:
+        {
+            title: { text: "Time" },
             interval: 15,
+            valueType: 'DateTime',
             //interval type as years in primary x axis
             intervalType: 'Minutes'
         },
-        primaryYAxis: {
-            title: 'Sales Amount in millions(USD)'
+        
+        //Initializing Primary Y Axis
+        primaryYAxis:
+        {
+            labelFormat: '{value}',
+            // minimum: 0,
+            // maximum: Math.max(...maxArray),
+            // axisLine: { visible: false },
+            name: 'yAxis',
+            title: { text: "Energy" }
         },
-        series:[{
-            dataSource: chartsData,
-            xName: 'x', yName: 'y',
-            name: 'Sales', type: 'Line'
-        }],
-        title: 'Average Sales Comparison'
-    }, '#chartdiv');
+        series:graphSeries,
+        //Initializing Common Properties for all the series  
+        commonSeriesOptions :
+        {
+            enableAnimation :true
+        },
+        
+        //Initializing Series
+        load:"loadTheme",
+        canResize:true,
+        title :{text: 'Energy Charts'},
+        legend: { visible: true }
+    });
 }
 
 

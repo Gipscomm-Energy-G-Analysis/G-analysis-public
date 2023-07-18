@@ -165,7 +165,7 @@ function createEnergyDataGraph(windowTrue) {
         dataType: 'json',
         data: {
             action: "historicData",
-            nameDB: $("#nameDashboardDB").val(),
+            nameDB: $("#nameDB").val(),
             periodFilter: $("#periodFilterInterval").val(),
             typeFilter: $("#typeFilterInterval").val(),
             yearFilter: $("#yearFilterInterval").val(),
@@ -186,6 +186,7 @@ function createEnergyDataGraph(windowTrue) {
                         $("#historyChartdiv").show();
                         $('.historyGraphDiv').show();
                         $('.energy_graph_msg_history').hide();
+                        console.log(historic_root,"historic_root");
                         createAmChart(historic_root, result.graphData, true);
                     }
                 }else{
@@ -223,7 +224,6 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
             $("#loader_image_history_charts").hide();
             if(result.code == 200) {
                 if(showRecord(result.graphData)){  
-                    console.log('pass1');
                     let graph_name = $('#productGraphFilter').val();
                     if(windowTrue) {
                         localStorage.setItem('graphData', JSON.stringify(result.graphData));
@@ -236,10 +236,10 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
                         $('.product_graph_msg_history').hide();
                         
                         for (const key in result.graphData) {
-                            if(graph_name == result.graphData[key]['name']) {
+                          //  if(graph_name == result.graphData[key]['name']) {
                                 createAmChartCategory(product_other_graph, result.graphData[key]['amData'], true, graph_name, 'single');
-                                return false;
-                            }
+                             //   return false;
+                          //  }
                         }
                     }
                 }else{
@@ -291,11 +291,11 @@ function mixedGraphData(conId,windowTrue, $limit=5) {
                         $('#mixed_historyGraphDiv').show();
                         $('.mixed_graph_msg_history').hide();
                         for (const key in result.graphData) {
-                            if(graph_name == result.graphData[key]['name']) {
+                           // if(graph_name == result.graphData[key]['name']) {
                                 console.log('amData', result.graphData[key]['amData']);
                                 createAmChartCategory(mixed_history_graph, result.graphData[key]['amData'], true, graph_name, 'double');
                                 return false;
-                            }
+                          //  }
                         }
                     }
                 }else{
@@ -317,7 +317,7 @@ function jsFunction(graphPoints='') {
         dataType: 'json',
         data: {
             action: "getPointsData",
-            nameDB: $("#nameDashboardDB").val(),
+            nameDB: $("#nameDB").val(),
             limit:$('#timeFilter').val(),
             points:(graphPoints == '')?$(".navigation-production").attr("data-graph-points"):graphPoints
         },
@@ -345,7 +345,7 @@ function jsFunctionProduction(anl_Id ='') {
         dataType: 'json',
         data: {
             action: "getProdDataInfo",
-            nameDB: $("#nameDashboardDB").val(),
+            nameDB: $("#nameDB").val(),
             limit:$('#timeFilterProduction').val(),
             dataIndex: $('.navigation-production').attr('data-array'),
             machineIndex: $('.navigation-production').attr('data-index'),
@@ -381,7 +381,7 @@ function jsFunctionMixed() {
         dataType: 'json',
         data: {
             action: "getProdDataInfo",
-            nameDB: $("#nameDashboardDB").val(),
+            nameDB: $("#nameDB").val(),
             limit:$('#timeFilterMixed').val(),
             dataIndex: $('.navigation-production').attr('data-array'),
             machineIndex: $('.navigation-production').attr('data-index'),

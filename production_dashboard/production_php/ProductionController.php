@@ -2,7 +2,7 @@
 error_reporting ( 1 ) ;
 ini_set ( 'display_errors', 1 ) ;
 // include_once('dbConnection.php');
-require '..\..\/php/DbOperations.php';
+include_once '..\..\/php/DbOperations.php';
 session_start () ;
 $nameDB = isset($_REQUEST['nameDB']) && !empty($_REQUEST['nameDB']) ? $_REQUEST['nameDB'] : 'g002_badber';
 $conn = connectToDB($nameDB);
@@ -142,19 +142,17 @@ class ProductionController {
                 
                 $machineDataQuery = "SELECT TOP 1 ProdData_.anl_ID,ProdData_.anlageMst,ProdData.maschine,ProdData.sollmenge,ProdData.maschinentyp,ProdData.zykluszeit,
                 ProdData.artikelnummer,ProdData.werkzeug,ProdData.auftrag,ProdData.nester,ProdData.gutmenge,
-                CONVERT(VARCHAR(10), ProdData_.zeitstempel) as zeitstempel,ProdData_.ausschuss,ProdData_.gutmenge,
-                CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM ProdData_ 
+                CONVERT(VARCHAR(10), ProdData_.zeitstempel) as zeitstempel,ProdData_.ausschuss,ProdData_.gutmenge FROM ProdData_ 
                 LEFT JOIN ProdData ON ProdData_.anl_ID = ProdData.anl_ID
-                LEFT JOIN Anlagen ON Anlagen.anl_ID = ProdData.anl_ID
                 WHERE ProdData_.anl_ID=".$machineId." ORDER BY ProdData_.zeitstempel desc";
                 $machineData = queryDB ( $this->conn, $machineDataQuery, "read");
-                // print_r($machineData);die;
-                // $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
-                // $graphData = queryDB ( $this->conn, $query, "read");
+                //print_r($machineData);die;
+                $query = "SELECT CONCAT(messstelle1IDAnl,',',messstelle2IDAnl,',',messstelle3IDAnl,',',messstelle4IDAnl) as graphPoints FROM Anlagen WHERE anl_ID=$machineId";
+                $graphData = queryDB ( $this->conn, $query, "read");
                 
-                $graphPoints = NULL;
-                if(!empty($machineData)) {
-                    $dataGraph = explode(',', $machineData[0]['graphPoints']);
+                $graphPoints = '';
+                if(!empty($graphData)) {
+                    $dataGraph = explode(',', $graphData[0]['graphPoints']);
                     foreach($dataGraph as $value) {
                         if(!empty($value)){
                             $graphPoints .= $value.',';
@@ -604,12 +602,14 @@ class ProductionController {
         return $retData;
     }
 
-    public function getSubgroupData($option , $where, $is_graph=false, $machineId) {
+    public function getSubgroupData($option , $where, $is_graph=false, $machineId = null) {
         try {
             $query = "SELECT column_name as dynamicString FROM grp.groupConfig 
                         WHERE sub_group_id=$option AND username='$this->username' AND status = '1'";         
             $records = queryDB ( $this->conn, $query, "read");
-            
+            if(isset($records['error'])) {
+                return [];
+            }
             $dynamic_string = '';
             foreach ($records as $value) {
                 if($value['dynamicString'] == 'datumAnl') {

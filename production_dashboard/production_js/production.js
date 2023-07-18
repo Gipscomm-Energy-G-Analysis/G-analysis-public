@@ -54,6 +54,7 @@ let getProductionDetails = (dataIndex) => {
             dataIndex:dataIndex
         },
         success: function(response) {
+            console.log('get Production details',response);
             if(response.code == '200') {
                 machineDetailsParams(response);
                 jsFunction(response.graphPoints);
