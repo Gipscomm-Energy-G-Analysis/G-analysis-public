@@ -486,8 +486,8 @@ $(document).ready(function() {
         "Benutzerdefiniert" === this.value ? $("#btnZeitrmDiag").text("Benutzerdefinierter Zeitraum") : $("#btnZeitrmDiag").text("Allgemeiner Zeitraum");
         $("#btnZeitrmDiag").trigger("click");
         "Jahr" === this.value ?
-            ($("#diagMonatDiv, #diagTagDiv, #startWochenDiag, #endeWochenDiag").css("display", "none"), $("#diagMonat, #diagTag").prop("selectedIndex", 0)) : "Monat" === this.value || "Monat 15min" === this.value ? ($("#diagMonatDiv").css("display", "inline-block"), $("#diagTagDiv,#startWochenDiag, #endeWochenDiag ").css("display", "none"), $("#diagTag").prop("selectedIndex", 0)) : "Tag" !== this.value && "Tag 15min" !== this.value || $("#diagMonatDiv, #diagTagDiv").css("display", "inline-block"),$("#startWochenDiag, #endeWochenDiag").css("display", "none")
-        "Wochen" === this.value ? 
+            ($("#diagMonatDiv, #diagTagDiv").css("display", "none"), $("#diagMonat, #diagTag").prop("selectedIndex", 0)) : "Monat" === this.value || "Monat 15min" === this.value ? ($("#diagMonatDiv").css("display", "inline-block"), $("#diagTagDiv").css("display", "none"), $("#diagTag").prop("selectedIndex", 0)) : "Tag" !== this.value && "Tag 15min" !== this.value || $("#diagMonatDiv, #diagTagDiv").css("display", "inline-block")
+            "Wochen" === this.value ? 
         ($("#startWochenDiag, #endeWochenDiag").css("display", "inline-block"), $(".allgZeitrDiag").css("display", "none")) : $("#startWochenDiag, #endeWochenDiag").css("display", "none")
     });
     $("#startWochen, #endeWochen").on('change',function () {
@@ -819,7 +819,8 @@ $(document).ready(function() {
         setCostRng(this.id)
     });
     $("#btnSpaEfVTbl1Erstellen, #btnSpaEfVTbl2Erstellen").click(function() {
-        var a = getModusSpaEfV(this.name),
+        var a =
+                getModusSpaEfV(this.name),
             b = getVersionSpaEfV(this.name),
             c = getVerdichtungSpaEfV(this.name);
         if ("btnSpaEfVTbl1Erstellen" == this.id) {

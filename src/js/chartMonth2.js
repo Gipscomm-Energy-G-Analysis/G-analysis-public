@@ -381,9 +381,6 @@ function firstQuery(){
         // Translates the data to a format the charts understand
         chartData = dataTranslator.translate(4)
 
-        // Fill table with energy records
-        scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
-
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst, series ] = scpChart.updateChart(Number(month_1))(Interval.Month)(chartData)(month_1 + "." + year_1)
 
@@ -392,6 +389,25 @@ function firstQuery(){
 
         // Sets the color of the text for the sum of the month
         $("#consumption-month_1").css("color", colorMst)
+
+        // Replace the y value dot to comma
+        let chartDataArray = []
+        chartData.forEach(element => {
+            //if (element.y != "") {
+                    let elementY =element.y;
+                    let elementYtoString=elementY.toString();
+                    let fristValue =elementYtoString.split('.')[0];
+                    let lastValue =elementYtoString.split('.')[1];
+                     lastValue = lastValue?','+lastValue:'';
+                    let elementYValue= formatComma(fristValue);
+                    element.y = elementYValue+lastValue; 
+                    chartDataArray.push(element)
+            //}
+        })
+        chartData = chartDataArray;
+
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
 
         msts.push([sessionStorage.getItem("mstID"), nameMst, colorMst])
 
@@ -422,9 +438,6 @@ function secondQuery(){
         dataTranslator.sumDays(year_2, month_2);
         chartData = dataTranslator.translate(4);
 
-        // Fill table with energy records
-        scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
-
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst2, series2 ] = scpChart.updateChart(Number(month_2))(Interval.Month)(chartData)(month_2 + "." + year_2)
 
@@ -433,6 +446,25 @@ function secondQuery(){
 
         // Sets the color of the text for the sum of the month
         $("#consumption-month_2").css("color", colorMst2)
+
+        // Replace the y value dot to comma
+        let chartDataArray = []
+        chartData.forEach(element => {
+            //if (element.y != "") {
+                    let elementY =element.y;
+                    let elementYtoString=elementY.toString();
+                    let fristValue =elementYtoString.split('.')[0];
+                    let lastValue =elementYtoString.split('.')[1];
+                     lastValue = lastValue?','+lastValue:'';
+                    let elementYValue= formatComma(fristValue);
+                    element.y = elementYValue+lastValue; 
+                    chartDataArray.push(element)
+            //}
+        })
+        chartData = chartDataArray;
+
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
 
         msts.push([sessionStorage.getItem("mstID_2"), nameMst_2, colorMst2])
 
@@ -463,9 +495,6 @@ function thirdQuery(){
         dataTranslator.sumDays(year_3, month_3);
         chartData = dataTranslator.translate(4);
 
-        // Fill table with energy records
-        scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
-
         // Updates the chart and gets the color of the current series as a return value
         const [ colorMst3, series3 ] = scpChart.updateChart(Number(month_3))(Interval.Month)(chartData)(month_3 + "." + year_3)
 
@@ -474,6 +503,25 @@ function thirdQuery(){
 
         // Sets the color of the text for the sum of the month
         $("#consumption-month_3").css("color", colorMst3)
+
+        // Replace the y value dot to comma
+        let chartDataArray = []
+        chartData.forEach(element => {
+            //if (element.y != "") {
+                    let elementY =element.y;
+                    let elementYtoString=elementY.toString();
+                    let fristValue =elementYtoString.split('.')[0];
+                    let lastValue =elementYtoString.split('.')[1];
+                     lastValue = lastValue?','+lastValue:'';
+                    let elementYValue= formatComma(fristValue);
+                    element.y = elementYValue+lastValue; 
+                    chartDataArray.push(element)
+            //}
+        })
+        chartData = chartDataArray;
+
+        // Fill table with energy records
+        scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
 
         msts.push([sessionStorage.getItem("mstID_3"), nameMst_3, colorMst3])
 
@@ -488,3 +536,7 @@ function thirdQuery(){
         )
     });
 }
+
+const formatComma = num => 
+    String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1.')
+;

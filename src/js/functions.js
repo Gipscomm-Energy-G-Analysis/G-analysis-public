@@ -2258,7 +2258,7 @@ try {
                 .then(
                     result => {
                         const len = result.length
-                        console.log('result',result);
+
                         const tblDataTable =
                             ins === "Anl" ?
                             tblDokumenteAnl :
@@ -5211,9 +5211,9 @@ try {
                     type = "energiedaten"
 
                     ajaxPost("php/readMessstellen.php")({
-                            berID,
-                            nameDB,
-                            type
+                        berID: berID,
+                        nameDB: nameDB,
+                        type: type
                         })
                         .then(result => {
 
@@ -5252,9 +5252,9 @@ try {
                     type = "betriebsdaten"
 
                     ajaxPost("php/readMessstellen.php")({
-                            berID,
-                            nameDB,
-                            type
+                            berID: berID,
+                            nameDB: nameDB,
+                            type: type
                         })
                         .then(result => {
 

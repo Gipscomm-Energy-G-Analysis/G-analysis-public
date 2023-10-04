@@ -1,7 +1,7 @@
 //OLD code end
 let root = "#chartdiv";
 let root_other_graph = "other_graph_div";
-let historic_root = am5.Root.new("historyChartdiv");
+let historic_root = "#historyChartdiv";
 let product_other_graph = "product_historyChartdiv";
 let mixed_root = "mixed_graph_plot_div";
 let mixed_history_graph = "mixed_historyChartdiv";
@@ -326,7 +326,7 @@ const createAmChart = async (root, chartsData, dispose, xtype="date") => {
         
     }
     console.log(graphSeries,'graphSeries');
-    $(`#chartdiv`).ejChart({        
+    $(`${root}`).ejChart({        
         //Initializing Primary X Axis
         primaryXAxis:
         {

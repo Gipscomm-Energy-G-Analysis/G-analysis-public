@@ -172,6 +172,7 @@ function createEnergyDataGraph(windowTrue) {
             monthFilter: $("#monthFilterInterval").val(),
             startDate: $("#start_date").val(),
             endDate: $("#end_date").val(),
+            historyTimeFilter: $("#historytimeFilter").val(),
             graphPoints: $(".navigation-production").attr("data-graph-points")
         },
         success:function(result) {
@@ -186,7 +187,6 @@ function createEnergyDataGraph(windowTrue) {
                         $("#historyChartdiv").show();
                         $('.historyGraphDiv').show();
                         $('.energy_graph_msg_history').hide();
-                        console.log(historic_root,"historic_root");
                         createAmChart(historic_root, result.graphData, true);
                     }
                 }else{
@@ -212,6 +212,8 @@ function createProductHistoryGraph(conId,windowTrue, $limit=5) {
         url: "production_dashboard/production_php/GraphController.php",
         data: {
             action: "historicDataProduction",
+            nameDB: $("#nameDB").val(),
+            dataIndex: $('.navigation-production').attr('data-array'),
             periodFilter: $("#productPeriodFilterInterval").val(),
             typeFilter: $("#productTypeFilterInterval").val(),
             yearFilter: $("#productYearFilterInterval").val(),
@@ -263,6 +265,8 @@ function mixedGraphData(conId,windowTrue, $limit=5) {
         url: "production_dashboard/production_php/GraphController.php",
         data: {
             action: "historicDataProduction",
+            nameDB: $("#nameDB").val(),
+            dataIndex: $('.navigation-production').attr('data-array'),
             periodFilter: $("#mixedPeriodFilterInterval").val(),
             typeFilter: $("#mixedTypeFilterInterval").val(),
             yearFilter: $("#mixedYearFilterInterval").val(),

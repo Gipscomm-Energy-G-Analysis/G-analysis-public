@@ -242,7 +242,7 @@ function Tree(container, options) {
 }
 
 Tree.prototype.init = function (data) {
-  console.time('init');
+ // console.time('init');
 
   var _Tree$parseTreeData = Tree.parseTreeData(data),
       treeNodes = _Tree$parseTreeData.treeNodes,
@@ -264,11 +264,11 @@ Tree.prototype.init = function (data) {
   if (disables && disables.length) defaultDisables = disables;
   defaultDisables.length && this.setDisables(defaultDisables);
   loaded && loaded.call(this);
-  console.timeEnd('init');
+ // console.timeEnd('init');
 };
 
 Tree.prototype.load = function (callback) {
-  console.time('load');
+ // console.time('load');
   var _this$options2 = this.options,
       url = _this$options2.url,
       method = _this$options2.method,
@@ -278,7 +278,7 @@ Tree.prototype.load = function (callback) {
     method: method,
     success: function success(result) {
       var data = result;
-      console.timeEnd('load');
+     // console.timeEnd('load');
 
       if (beforeLoad) {
         data = beforeLoad(result);
@@ -338,7 +338,7 @@ Tree.prototype.bindEvent = function (ele) {
 };
 
 Tree.prototype.onItemClick = function (id) {
-  console.time('onItemClick');
+ // console.time('onItemClick');
   var node = this.nodesById[id];
   var onChange = this.options.onChange;
 
@@ -348,7 +348,7 @@ Tree.prototype.onItemClick = function (id) {
   }
 
   onChange && onChange.call(this);
-  console.timeEnd('onItemClick');
+ // console.timeEnd('onItemClick');
 };
 
 Tree.prototype.setValue = function (value) {

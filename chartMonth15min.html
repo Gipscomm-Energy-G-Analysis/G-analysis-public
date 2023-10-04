@@ -335,12 +335,12 @@
                     dataTranslator.sum15minsMonth(year, month);
                     chartData = dataTranslator.translate(4);
                     for (let i = 0; i < chartData.length; i++) {
+                        sumMonth += chartData[i].y;
                         tblChartData_1.row.add([
                             chartData[1].name,
                             chartData[i].x,
-                            chartData[i].y
+                            commanFunctionDottoCommaValue(chartData[i].y)
                         ]).draw();
-                        sumMonth += chartData[i].y;
                     }
                     if (sumMonth > 0) {
                         updateChart(chartData, nameMst_1); //edited on 06-02-2020 raj
@@ -364,12 +364,12 @@
                     dataTranslator.sum15minsMonth(year, month);
                     chartData = dataTranslator.translate(4);
                     for (let i = 0; i < chartData.length; i++) {
+                        sumMonth += chartData[i].y;
                         tblChartData_2.row.add([
                             chartData[1].name,
                             chartData[i].x,
-                            chartData[i].y
+                            commanFunctionDottoCommaValue(chartData[i].y)
                         ]).draw();
-                        sumMonth += chartData[i].y;
                     }
                     if (sumMonth > 0) {
                         updateChart(chartData, nameMst_2);
@@ -392,12 +392,12 @@
                     dataTranslator.sum15minsMonth(year, month);
                     chartData = dataTranslator.translate(4);
                     for (let i = 0; i < chartData.length; i++) {
+                        sumMonth += chartData[i].y;
                         tblChartData_3.row.add([
                             chartData[1].name,
                             chartData[i].x,
-                            chartData[i].y
+                            commanFunctionDottoCommaValue(chartData[i].y)
                         ]).draw();
-                        sumMonth += chartData[i].y;
                     }
                     if (sumMonth > 0) {
                         updateChart(chartData, nameMst_3);
@@ -408,6 +408,20 @@
                     }
                 });
         }
+
+      function commanFunctionDottoCommaValue(value){
+        let elementYtoString=value.toString();
+        let fristValue =elementYtoString.split('.')[0];
+        let lastValue =elementYtoString.split('.')[1];
+        let lastValue2 = lastValue?','+lastValue:'';
+        let elementYValue= formatComma(fristValue);
+        let yMainValue = elementYValue+lastValue2; 
+        return yMainValue;
+      }
+
+      const formatComma = num => 
+        String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1.')
+      ;
 
         function updateChart(newDataSeries, nameSeries) {
             let chart = $("#container").ejChart("instance");

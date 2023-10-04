@@ -330,12 +330,12 @@
                     dataTranslator.sum15minsDay();
                     chartData = dataTranslator.translate(4);
                     for (let i = 0; i < chartData.length; i++) {
+                        sumDay += chartData[i].y;
                         tblChartData_1.row.add([
                             chartData[1].name,
                             day + "." + month + "." + year + " " + chartData[i].x,
-                            chartData[i].y
+                            commanFunctionDottoCommaValue(chartData[i].y)
                         ]).draw();
-                        sumDay += chartData[i].y;
                     }
                     if (sumDay > 0) {
                         updateChart(chartData, nameMst_1);
@@ -360,12 +360,12 @@
                     dataTranslator.sum15minsDay();
                     chartData = dataTranslator.translate(4);
                     for (let i = 0; i < chartData.length; i++) {
+                        sumDay += chartData[i].y;
                         tblChartData_2.row.add([
                             chartData[1].name,
                             day + "." + month + "." + year + " " + chartData[i].x,
-                            chartData[i].y
+                            commanFunctionDottoCommaValue(chartData[i].y)
                         ]).draw();
-                        sumDay += chartData[i].y;
                     }
                     if (sumDay > 0) {
                         updateChart(chartData, nameMst_2);
@@ -389,12 +389,12 @@
                     dataTranslator.sum15minsDay();
                     chartData = dataTranslator.translate(4);
                     for (let i = 0; i < chartData.length; i++) {
+                        sumDay += chartData[i].y;
                         tblChartData_3.row.add([
                             chartData[1].name,
                             day + "." + month + "." + year + " " + chartData[i].x,
-                            chartData[i].y
+                            commanFunctionDottoCommaValue(chartData[i].y)
                         ]).draw();
-                        sumDay += chartData[i].y;
                     }
                     if (sumDay > 0) {
                         updateChart(chartData, nameMst_3);
@@ -406,6 +406,20 @@
 
                 });
         }
+
+        function commanFunctionDottoCommaValue(value){
+            let elementYtoString=value.toString();
+            let fristValue =elementYtoString.split('.')[0];
+            let lastValue =elementYtoString.split('.')[1];
+            let lastValue2 = lastValue?','+lastValue:'';
+            let elementYValue= formatComma(fristValue);
+            let yMainValue = elementYValue+lastValue2; 
+            return yMainValue;
+        }
+
+        const formatComma = num => 
+            String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1.')
+        ;
 
         function updateChart(newDataSeries, nameSeries) {
             let chart = $("#container").ejChart("instance");
