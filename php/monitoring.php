@@ -12,8 +12,6 @@ function warning_handler($errno, $errstr)
     throw new Exception("ErrorNr : " . $errno . ", ErrorDescr : " . $errstr);
 }
 
-const connGipscomm = connectToDB("gipscomm");
-
 function mstsInvalidDate($db)
 {
 

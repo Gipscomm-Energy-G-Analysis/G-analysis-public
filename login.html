@@ -37,6 +37,9 @@
 
                         const record_ = head(record)
 
+                        console.log("login data record")
+                        console.log(record_)
+
                         const dbHash =
                             record_.passHash
 
@@ -65,9 +68,9 @@
                             var arPathname = pathname.split('/');
 
                             if (arPathname.length > 2) {
-                                window.open('/' + arPathname[1] + '/main.html', '_self');
+                                window.open('/' + arPathname[1] + '/dashboard', '_self');
                             } else {
-                                window.open("/main.html", "_self");
+                                window.open("/dashboard", "_self");
                             }
 
                             //  <---28-9-2021--
@@ -218,7 +221,9 @@
                         utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                         utftext += String.fromCharCode((c & 63) | 128);
                     }
+
                 }
+
                 return utftext;
             }
 

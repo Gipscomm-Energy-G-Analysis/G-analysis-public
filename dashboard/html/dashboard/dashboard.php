@@ -1,3 +1,39 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script type="text/javascript">
+  // Default Configuration
+    $(document).ready(function() {
+      toastr.options = {
+        'closeButton': true,
+        'debug': false,
+        'newestOnTop': false,
+        'progressBar': false,
+        'positionClass': 'toast-top-right',
+        'preventDuplicates': false,
+        'showDuration': '1000',
+        'hideDuration': '1000',
+        'timeOut': '3000',
+        'extendedTimeOut': '1000',
+        'showEasing': 'swing',
+        'hideEasing': 'linear',
+        'showMethod': 'fadeIn',
+        'hideMethod': 'fadeOut',
+      }
+    });
+  // Toast Image and Progress Bar
+    $('#image').click(function(event) {
+      toastr.options.progressBar = true,
+      toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+    });
+  // Toast Position
+    $('#position').click(function(event) {
+      var pos = $('input[name=position]:checked', '#positionForm').val();
+      toastr.options.positionClass = "toast-" + pos;
+      toastr.options.preventDuplicates = false;
+      toastr.info('This sample position', 'Toast Position')
+    });
+</script>
 <!-- partial -->
 <div class="main-panel" id="dashboard_main_div" style="display: none">
         <div class="content-wrapper">
@@ -40,7 +76,7 @@
 
           <!-- 20-8-2021-- -->
             <div class="dashboard-btn">
-                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal">Auswertung hinzufügen</button>
+                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal" onclick="dashboardTileCount()">Auswertung hinzufügen</button>
 
                 <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Struktur speichern</button>
 
@@ -164,7 +200,7 @@
                     <div class="form-group col-md-2 energy_automatic_div" id="energy_chart_measurement_div_automatic">
                       <label for="energy_chart_measurement_automatic" class="text-mute">Messstelle auswählen</label>
                       <span class='mandatory_sign'>*</span>
-                      <select class="form-control form-control-sm text-dark" id="energy_chart_measurement_automatic">
+                      <select class="form-control form-control-sm text-dark" id="energy_chart_measurement_automatic" multiple>
                         <option value="">Messstelle auswählen</option>
                       </select>
                     </div>

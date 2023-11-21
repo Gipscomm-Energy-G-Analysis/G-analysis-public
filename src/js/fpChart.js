@@ -9,14 +9,14 @@ const scpChart =
         new function () {
             this.getChart = sel => $(sel).ejChart("instance")
 
-            this.note = ident => mst => color => note_ =>
+            this.note = ident => mst => color => note_ => bemDiag_ID =>
                 "<div class='bem'>" +
                 "<image src='images/icons/notepad.svg' style='height:18px;width:18px;'/>" +
                 "<label style='margin-right:10px;'> &nbsp;" + ident + " </label>" +
                 "<label style='margin-right:10px;color:" + color + "'>" + mst + " </label>" +
                 "<label>" + note_ + " </label>" +
+                "<image src='images/delete.png' class='deleteButton' id='"+ bemDiag_ID +"' style='height: 14px;width: 14px;margin-left: 5px;cursor: pointer;'/>" +
                 "</div>"
-
             this.appendTo = elem => sth => $(elem).append(sth)
 
             this.formatDate = dt => dt.length === 1 ? "0" + dt : dt
@@ -75,6 +75,11 @@ const scpChart =
                 notes_.filter(
                     a =>
                     a.ident.split("/")[0] === year
+                ) :
+                equal(type)("week") ?
+                notes_.filter(
+                    a =>
+                    a.ident.split("-")[2] === year
                 ) : false
 
             this.addToList =
@@ -85,9 +90,9 @@ const scpChart =
                     .forEach(
                         rec => {
                             this.appendTo ("#bemList")
-                            ( this.note (rec.ident)(mstName)(mstColor)(rec.bemerkung) )
+                            ( this.note (rec.ident)(mstName)(mstColor)(rec.bemerkung)(rec.bemDiag_ID) )
 
-                            notes.push([rec.ident, mstName, rec.mst_ID, mstColor, rec.bemerkung])
+                            notes.push([rec.ident, mstName, rec.mst_ID, mstColor, rec.bemerkung, rec.bemDiag_ID])
                         }
                     )
                     return notes
@@ -161,6 +166,23 @@ const scpChart =
                     }
                 )
 
+            this.saveNote2 =
+                type =>
+                ident =>
+                mstID =>
+                bemerkung =>
+                line_index =>
+                ajaxPost('php/saveNote.php')(
+                    { nameDB
+                    , ins : this.noteExists(ident)(mstID) ? "save" : "new"
+                    , ident
+                    , mstID
+                    , bemerkung
+                    , type,
+                    line_index
+                    }
+                )    
+
             this.getSeries =
                 chartObj =>
                 JSON.parse(JSON.stringify(chartObj.model.series))
@@ -193,3 +215,24 @@ const scpChart =
 
         }
     );
+//delete flag data
+$(document).on("click",".deleteButton",function() {
+    let id = this.id;
+    $(this).parent().remove();
+       $.ajax({
+        type : "POST",
+        url : 'php/deleteNote.php',
+        async: false,
+        dataType: 'json',
+        data: {
+            id: id,
+            nameDB: sessionStorage.getItem("nameDB")
+        },
+        fail: function() {
+            alert("failed!!")
+        },
+        success: function(a) {
+            window.location.reload();
+        }
+    });
+});

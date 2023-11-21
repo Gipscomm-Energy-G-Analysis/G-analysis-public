@@ -150,11 +150,11 @@ let dataMachine = new DataMachine(),
 let notes = [];
 let msts = [];
 
-const getNotesMonth =
-    scpChart.getNotes("month")
+const getNotesWeek =
+    scpChart.getNotes("week","identyear","lineIndex")
 
-const saveNoteMonth =
-    scpChart.saveNote("month")
+const saveNoteWeek =
+    scpChart.saveNote2("week","line_index")
 
 if (chartType == "line") {
     csOptions = {
@@ -169,6 +169,23 @@ if (chartType == "line") {
             size: {
                 height: 10,
                 width: 10
+            },
+            visible: true
+        }
+    }
+} else if (chartType == "column") {
+    csOptions = {
+        tooltip: {
+            visible: true
+        },
+        border: {
+            width: 2
+        },
+        marker: {
+            shape: 'circle',
+            size: {
+                height: 0,
+                width: 0
             },
             visible: true
         }
@@ -200,12 +217,14 @@ $("#btnNoteOk").click(function () {
 
     // saves the note created in the dialog
     // then updates the note list
-    saveNoteMonth(
+    saveNoteWeek(
             $("#identNote").val()
         )(
             $("#mstIDNote").val()
         )(
             $("#bemerkungNote").val()
+        )(
+            $("#lineIndex").val()
         )
         .then(
             () =>
@@ -215,7 +234,7 @@ $("#btnNoteOk").click(function () {
             ["#identNote", "#mstIDNote", "#mstNote", "#colorNote", "#bemerkungNote", "#seriesNote"]
             .forEach(a => $(a).val(""))
         )
-
+    window.location.reload()    
     // empty notes array
     notes = []
 });
@@ -230,7 +249,7 @@ $("#btnSaveOk").click(function () {
             ins: "saveDiag",
             nameDB,
             name: headerDiagramm,
-            typ: "month",
+            typ: "week",
             jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
@@ -271,9 +290,18 @@ $("#container").ejChart({
             height: 295
         });
 
-        $("#identNote").val(
-            year + "/" + month + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
-        )
+        if(args.data.region.SeriesIndex==2){
+            $("#identNote").val($("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, ''))
+            $("#lineIndex").val('2')
+        }
+        if(args.data.region.SeriesIndex==1){
+            $("#identNote").val($("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, ''))
+            $("#lineIndex").val('1')
+        }
+        if(args.data.region.SeriesIndex==0){
+            $("#identNote").val($("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, ''))
+            $("#lineIndex").val('0')
+        }
         $("#mstIDNote").val(
             msts[args.data.region.SeriesIndex][0]
         )
@@ -318,7 +346,8 @@ $("#container").ejChart({
     primaryXAxis: {
         title: {
             text: "Woche"
-        }
+        },
+            labelIntersectAction : "rotate45"
     },
     //Initializing Primary Y Axis
     primaryYAxis: {
@@ -363,45 +392,53 @@ function firstQuery() {
             // Translates the data to a format the charts understand
             chartData = dataTranslator.translate(4)
 
-            // Updates the chart and gets the color of the current series as a return value
-            const [colorMst, series] = scpChart.updateChart(chartData)(nameMst_1)
-
-            // Sums up all the values of the month for the given Messstelle
-            $("#consumption-month_1").text(scpChart.sumSeries(chartData) + " kWh")
-
-            // Sets the color of the text for the sum of the month
-            $("#consumption-month_1").css("color", colorMst)
-
-            // Replace the y value dot to comma
-            let chartDataArray = [];
+            let chartDataElement = [];
             chartData.forEach(element => {
-                //if (element.y != "") {
-                    let elementY =element.y;
-                    let elementYtoString=elementY.toString();
-                    let fristValue =elementYtoString.split('.')[0];
-                    let lastValue =elementYtoString.split('.')[1];
-                     lastValue = lastValue?','+lastValue:'';
-                    let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
-                    chartDataArray.push(element)
-                //}
+                if (element.x != "" && element.y != 0) {
+                    chartDataElement.push(element)
+                }
             })
-            chartData = chartDataArray;
+            if(chartDataElement.length != 0){
+                // Updates the chart and gets the color of the current series as a return value
+                const [colorMst, series] = scpChart.updateChart(chartData)(nameMst_1)
 
-            // Fill table with energy records
-            scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
+                // Sums up all the values of the month for the given Messstelle
+                $("#consumption-month_1").text(scpChart.sumSeries(chartData) + " kWh")
 
-            msts.push([sessionStorage.getItem("mstID_1"), nameMst_1, colorMst])
+                // Sets the color of the text for the sum of the month
+                $("#consumption-month_1").css("color", colorMst)
 
-            getNotesMonth(
-                sessionStorage.getItem("mstID_1")
-            )(
-                nameMst_1
-            )(
-                colorMst
-            )(
-                series
-            )
+                // Replace the y value dot to comma
+                let chartDataArray = [];
+                chartData.forEach(element => {
+                    if (element.y != "" && element.y != 0) {
+                        let elementY =element.y;
+                        let elementYtoString=elementY.toString();
+                        let fristValue =elementYtoString.split('.')[0];
+                        let lastValue =elementYtoString.split('.')[1];
+                         lastValue = lastValue?','+lastValue:'';
+                        let elementYValue= formatComma(fristValue);
+                        element.y = elementYValue+lastValue; 
+                        chartDataArray.push(element)
+                    }
+                })
+                chartData = chartDataArray;
+
+                // Fill table with energy records
+                scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
+
+                msts.push([sessionStorage.getItem("mstID_1"), nameMst_1, colorMst])
+
+                getNotesWeek(
+                    sessionStorage.getItem("mstID_1")
+                )(
+                    nameMst_1
+                )(
+                    colorMst
+                )(
+                    series
+                )
+        }
         });
 }
 
@@ -417,45 +454,53 @@ function secondQuery() {
             dataTranslator.sumDaysWeek(startWeekDate, endWeekDate);
             chartData = dataTranslator.translate(4);
 
-            // Updates the chart and gets the color of the current series as a return value
-            const [colorMst2, series2] = scpChart.updateChart(chartData)(nameMst_2)
-
-            // Sums up all the values of the month for the given Messstelle
-            $("#consumption-month_2").text(scpChart.sumSeries(chartData) + " kWh")
-
-            // Sets the color of the text for the sum of the month
-            $("#consumption-month_2").css("color", colorMst2)
-
-            // Replace the y value dot to comma
-            let chartDataArray = [];
+            let chartDataElement = [];
             chartData.forEach(element => {
-                //if (element.y != "") {
-                    let elementY =element.y;
-                    let elementYtoString=elementY.toString();
-                    let fristValue =elementYtoString.split('.')[0];
-                    let lastValue =elementYtoString.split('.')[1];
-                     lastValue = lastValue?','+lastValue:'';
-                    let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
-                    chartDataArray.push(element)
-                //}
+                if (element.x != "" && element.y != 0) {
+                    chartDataElement.push(element)
+                }
             })
-            chartData = chartDataArray;
+            if(chartDataElement.length != 0){
+                // Updates the chart and gets the color of the current series as a return value
+                const [colorMst2, series2] = scpChart.updateChart(chartData)(nameMst_2)
 
-            // Fill table with energy records
-            scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
+                // Sums up all the values of the month for the given Messstelle
+                $("#consumption-month_2").text(scpChart.sumSeries(chartData) + " kWh")
 
-            msts.push([sessionStorage.getItem("mstID_2"), nameMst_2, colorMst2])
+                // Sets the color of the text for the sum of the month
+                $("#consumption-month_2").css("color", colorMst2)
 
-            getNotesMonth(
-                sessionStorage.getItem("mstID_2")
-            )(
-                sessionStorage.getItem("nameMst_2")
-            )(
-                colorMst2
-            )(
-                series2
-            )
+                // Replace the y value dot to comma
+                let chartDataArray = [];
+                chartData.forEach(element => {
+                    if (element.y != "" && element.y != 0) {
+                        let elementY =element.y;
+                        let elementYtoString=elementY.toString();
+                        let fristValue =elementYtoString.split('.')[0];
+                        let lastValue =elementYtoString.split('.')[1];
+                         lastValue = lastValue?','+lastValue:'';
+                        let elementYValue= formatComma(fristValue);
+                        element.y = elementYValue+lastValue; 
+                        chartDataArray.push(element)
+                    }
+                })
+                chartData = chartDataArray;
+
+                // Fill table with energy records
+                scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
+
+                msts.push([sessionStorage.getItem("mstID_2"), nameMst_2, colorMst2])
+
+                getNotesWeek(
+                    sessionStorage.getItem("mstID_2")
+                )(
+                    sessionStorage.getItem("nameMst_2")
+                )(
+                    colorMst2
+                )(
+                    series2
+                )
+            }    
         });
 }
 
@@ -471,45 +516,53 @@ function thirdQuery() {
             dataTranslator.sumDaysWeek(startWeekDate, endWeekDate);
             chartData = dataTranslator.translate(4);
 
-            // Updates the chart and gets the color of the current series as a return value
-            const [colorMst3, series3] = scpChart.updateChart(chartData)(nameMst_3)
-
-            // Sums up all the values of the month for the given Messstelle
-            $("#consumption-month_3").text(scpChart.sumSeries(chartData) + " kWh")
-
-            // Sets the color of the text for the sum of the month
-            $("#consumption-month_3").css("color", colorMst3)
-
-            // Replace the y value dot to comma
-            let chartDataArray = [];
+            let chartDataElement = [];
             chartData.forEach(element => {
-                //if (element.y != "") {
-                    let elementY =element.y;
-                    let elementYtoString=elementY.toString();
-                    let fristValue =elementYtoString.split('.')[0];
-                    let lastValue =elementYtoString.split('.')[1];
-                     lastValue = lastValue?','+lastValue:'';
-                    let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
-                    chartDataArray.push(element)
-                //}
+                if (element.x != "" && element.y != 0) {
+                    chartDataElement.push(element)
+                }
             })
-            chartData = chartDataArray;
+            if(chartDataElement.length != 0){
+                // Updates the chart and gets the color of the current series as a return value
+                const [colorMst3, series3] = scpChart.updateChart(chartData)(nameMst_3)
 
-            // Fill table with energy records
-            scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
+                // Sums up all the values of the month for the given Messstelle
+                $("#consumption-month_3").text(scpChart.sumSeries(chartData) + " kWh")
 
-            msts.push([sessionStorage.getItem("mstID_3"), nameMst_3, colorMst3])
+                // Sets the color of the text for the sum of the month
+                $("#consumption-month_3").css("color", colorMst3)
 
-            getNotesMonth(
-                sessionStorage.getItem("mstID_3")
-            )(
-                sessionStorage.getItem("nameMst_3")
-            )(
-                colorMst3
-            )(
-                series3
-            )
+                // Replace the y value dot to comma
+                let chartDataArray = [];
+                chartData.forEach(element => {
+                    if (element.y != "" && element.y != 0) {
+                        let elementY =element.y;
+                        let elementYtoString=elementY.toString();
+                        let fristValue =elementYtoString.split('.')[0];
+                        let lastValue =elementYtoString.split('.')[1];
+                         lastValue = lastValue?','+lastValue:'';
+                        let elementYValue= formatComma(fristValue);
+                        element.y = elementYValue+lastValue; 
+                        chartDataArray.push(element)
+                    }
+                })
+                chartData = chartDataArray;
+
+                // Fill table with energy records
+                scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
+
+                msts.push([sessionStorage.getItem("mstID_3"), nameMst_3, colorMst3])
+
+                getNotesWeek(
+                    sessionStorage.getItem("mstID_3")
+                )(
+                    sessionStorage.getItem("nameMst_3")
+                )(
+                    colorMst3
+                )(
+                    series3
+                )
+            }    
         });
 }
 function getMonthName(week, year) {

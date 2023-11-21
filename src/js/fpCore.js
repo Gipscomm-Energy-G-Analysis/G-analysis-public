@@ -140,6 +140,7 @@ const scpCore =
             this.ajaxGet = this.callAjax("GET");
             this.pipe = (...fns) => {
                 let results = [this.head(fns)]
+                let k=1
                 for (k = 1; this.smaller(k)(fns.length); k++) {
                     results = this.push(results)(fns[k](results[this.decr(k)]))
                 }

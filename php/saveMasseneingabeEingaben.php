@@ -95,7 +95,7 @@ if($modus == "savePrdkt"){
 			}
 			$queryCheckEnabled="SELECT * FROM masseneingabeSuchePrdIMw WHERE prd_anl_ID = '$mstIDEnabled' AND on_date = '$dateEnabled' AND type = '$type' AND on_week = '$dateWk1'";
 		    $recordsCheckEnabled = queryDB($conn, $queryCheckEnabled, "read");
-		    if(count($recordsCheckEnabled) > 0){
+		    if(count($recordsCheckEnabled) > 0 && !isset($recordsCheckEnabled['error'])){
 		    	 $queryEnabledUpdate = "UPDATE masseneingabeSuchePrdIMw SET
 			      on_date = '$dateEnabled',on_week = '$dateWk1',val = '$textValEnabled' ";
 			      $queryEnabledUpdate .= "WHERE prd_anl_ID = '$mstIDEnabled' ";
@@ -126,7 +126,7 @@ if($modus == "savePrdkt"){
 			}
 			$queryCheckDisabled="SELECT * FROM masseneingabeSucheBetriebsPrdIMw WHERE prd_anl_ID = '$mstIDDisabled' AND on_date = '$dateDisabled' AND type = '$type' AND on_week = '$dateWk2'";
 		    $recordsCheckDisabled = queryDB($conn, $queryCheckDisabled, "read");
-		    if(count($recordsCheckDisabled) > 0){
+		    if(count($recordsCheckDisabled) > 0 && !isset($recordsCheckDisabled['error'])){
 		    	 $queryDisabledUpdate = "UPDATE masseneingabeSucheBetriebsPrdIMw SET
 			      on_date = '$dateDisabled',on_week = '$dateWk2',val = '$textValDisabled' ";
 			      $queryDisabledUpdate .= "WHERE prd_anl_ID = '$mstIDDisabled' ";
@@ -416,7 +416,7 @@ if($modus == "deleteCurrentInputPrdkt"){
 			$currentDateJustPrev ="SELECT TOP 1 * FROM masseneingabeSuchePrdIMw WHERE prd_anl_ID = '$mstID' AND on_date < '$currentDate' AND type = '$type' ORDER BY on_date DESC";
 			$r1 = queryDB($conn, $currentDateJustNext, "read");
 			$r2 = queryDB($conn, $currentDateJustPrev, "read");
-			if((isset($r1) && !empty($r1)) && (isset($r2) && !empty($r2))){
+			if((isset($r1) && !empty($r1) && !isset($r1['error'])) && (isset($r2) && !empty($r2) && !isset($r2['error']))){
 				$resultNxtVal = $r1[0]['val']-$r2[0]['val'];
 				$onDateNext = $r1[0]['on_date'];
 				$queryNxtValUpdate = "UPDATE masseneingabeSucheBetriebsPrdIMw SET val = '$resultNxtVal' ";

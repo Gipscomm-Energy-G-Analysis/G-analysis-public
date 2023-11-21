@@ -453,7 +453,7 @@ class dashboardController
         } else if ($queryMaxVal != '') {
             $col_span = "colspan='4'";
         }
-        if ($dataMesaurement != '' && count($dataMesaurement) > 0) {
+        if ($dataMesaurement != '' && count($dataMesaurement) > 0 && !isset($dataMesaurement['error'])) {
             foreach ($dataMesaurement as $key => $value) {
                 $style = '';
                 $class_val = '';
@@ -637,7 +637,7 @@ class dashboardController
             // $conn = connectToDB($nameDB);
             // // echo $conn; die;
             // $getResult = "SELECT * from tableFormat WHERE username = '$username' order by priority asc";
-            // $result = sqlsrv_query($conn,$getResult);
+            // $result = queryDB($conn,$getResult);
             // // echo json_encode(gettype($result)); die;
             // $dataResult = [];
             // if($result != false)
@@ -680,21 +680,21 @@ class dashboardController
                 $col_span = "colspan='5'";
                 $tr = "<thead>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Zeitintervall</th>";
-                $tr .= "<th>Erstellungsdatum</th>";
-                $tr .= "<th>Gesamteinheiten</th>";
-                $tr .= "<th>Status</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Erstellungsdatum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Gesamteinheiten</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             } else if ($queryMaxVal != '') {
                 $col_span = "colspan='4'";
                 $tr = "<thead style='background-color: #c5c8d2'>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Zeitintervall</th>";
-                $tr .= "<th>Datum</th>";
-                $tr .= "<th>Units Consumed</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Units Consumed</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             }
@@ -782,21 +782,21 @@ class dashboardController
                 $col_span = "colspan='5'";
                 $tr = "<thead>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Zeitintervall</th>";
-                $tr .= "<th>Erstellungsdatum</th>";
-                $tr .= "<th>Gesamteinheiten</th>";
-                $tr .= "<th>Status</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Erstellungsdatum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Gesamteinheiten</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             } else if ($queryMaxVal != '') {
                 $col_span = "colspan='4'";
                 $tr = "<thead style='background-color: #c5c8d2'>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Zeitintervall</th>";
-                $tr .= "<th>Datum</th>";
-                $tr .= "<th>Verbrauchte Einheiten</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Verbrauchte Einheiten</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             }
@@ -883,21 +883,21 @@ class dashboardController
                 $col_span = "colspan='5'";
                 $tr = "<thead>";
                 $tr .= "<tr>";
-                $tr .= "<th>Artikelname</th>";
-                $tr .= "<th>Zeitintervall</th>";
-                $tr .= "<th>Erstellungsdatum</th>";
-                $tr .= "<th>Gesamteinheiten</th>";
-                $tr .= "<th>Status</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Artikelname</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Erstellungsdatum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Gesamteinheiten</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             } else if ($queryMaxVal != '') {
                 $col_span = "colspan='4'";
                 $tr = "<thead style='background-color: #c5c8d2'>";
                 $tr .= "<tr>";
-                $tr .= "<th>Artikelname</th>";
-                $tr .= "<th>Zeitintervall</th>";
-                $tr .= "<th>Datum</th>";
-                $tr .= "<th>Verbrauchte Einheiten</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Artikelname</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Zeitintervall</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Verbrauchte Einheiten</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             }
@@ -1014,9 +1014,9 @@ class dashboardController
                     $style = '';
                     if ($i == $total_result) {
 
-                        $measurement_title = $_POST['measurement_title'];;
+                        $measurement_title = $_POST['measurement_title'];
                         $tileHtml .= "<input type='hidden' id='total_records' value='$last_id'>";
-                        $tileHtml .= "<div class='measurement_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                        $tileHtml .= "<div class='measurement_html_modal_$last_id'><div style='height: 290px; width: 500px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Measurement'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
@@ -1034,11 +1034,8 @@ class dashboardController
                                             </div>
                                             
                                             <div class='overflow-hide ml-3'>
-                                                <div class='col-md-6 p-0 small-table small-table_$last_id' style='display: none'>
-                                                    <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
-                                                    </table>
-                                                </div>
-                                                <div class='save_table_div_show_table'> 
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
                                                     </table>                        
                                                 </div>
@@ -1046,6 +1043,35 @@ class dashboardController
                                         </div>
                                     </div>
                                 </div></div>";
+
+                        //Tile Outer HTML
+                        $tileHtml .= "<div class='measurement_table_outer_html_modal_$last_id outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div>  
+                                                    <table class='table table-striped table-bordered table-hover' id='measurement_outer_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";        
                     }
 
                     // if($i < $total_result){
@@ -1073,11 +1099,8 @@ class dashboardController
                                         </div>
                                         
                                         <div class='overflow-hide ml-3'>
-                                            <div class='col-md-6 p-0 small-table small-table_$last_id' style='display: none'>
-                                                <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
-                                                </table>
-                                            </div>
                                             <div class='save_table_div_show_table'> 
+                                                <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                 <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
                                                 </table>                        
                                             </div>
@@ -1085,6 +1108,35 @@ class dashboardController
                                     </div>
                                 </div>
                             </div></div>";
+
+                //Tile Outer HTML
+                $tileHtml .= "<div class='measurement_table_outer_html_modal_$last_id outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'> 
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
+                                                    <table class='table table-striped table-bordered table-hover' id='measurement_outer_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";          
             }
             $records['tile_html'] = $tileHtml;
             $records['data'] = $dataResult;
@@ -1122,7 +1174,7 @@ class dashboardController
 
                         $product_title = $_POST['product_title'];;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$last_id'>";
-                        $tileHtml .= "<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
+                        $tileHtml .= "<div class='product_html_modal_$last_id'><div style='height: 290px; width: 500px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
@@ -1144,7 +1196,8 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
                                                     </table>
                                                 </div>
-                                                <div class='save_table_div_show_table'> 
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
                                                     </table>                        
                                                 </div>
@@ -1152,6 +1205,34 @@ class dashboardController
                                         </div>
                                     </div>
                                 </div></div>";
+                        //Tile Outer HTML
+                        $tileHtml .= "<div class='product_table_outer_html_modal_$last_id outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='product'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='product' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$product_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
+                                                    <table class='table table-striped table-bordered table-hover' id='product_outer_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";        
                     }
 
                     // if($i < $total_result){
@@ -1183,7 +1264,8 @@ class dashboardController
                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
                                                 </table>
                                             </div>
-                                            <div class='save_table_div_show_table'> 
+                                            <div class='save_table_div_show_table'>
+                                                <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                 <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
                                                 </table>                        
                                             </div>
@@ -1191,6 +1273,34 @@ class dashboardController
                                     </div>
                                 </div>
                             </div></div>";
+                    //Tile Outer HTML
+                        $tileHtml .= "<div class='product_table_outer_html_modal_$last_id outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='product'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='product' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='product' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$product_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
+                                                    <table class='table table-striped table-bordered table-hover' id='product_outer_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";        
             }
             $records['tile_html'] = $tileHtml;
             $records['data'] = $dataResult;
@@ -1341,7 +1451,7 @@ class dashboardController
 
                         $energy_title = $_POST['energy_title'];;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$last_id'>";
-                        $tileHtml .= "<div class='energy_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Energy'>
+                        $tileHtml .= "<div class='energy_html_modal_$last_id'><div style='height: 290px; width: 500px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Energy'>
                                     <div class='card card-border tile_border'>
                                         <div class='card-body overflow-hide display-flex'>
                                             <div id='' class=''>
@@ -1363,7 +1473,8 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
                                                     </table>
                                                 </div>
-                                                <div class='save_table_div_show_table'> 
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='energy_modal_table'>
                                                     </table>                        
                                                 </div>
@@ -1372,6 +1483,34 @@ class dashboardController
                                     </div>
                                 </div></div>";
                         $tileHtml .= "<input type='hidden' id='total_records_table' value='$last_id'>";
+                        //Tile Outer HTML
+                        $tileHtml .= "<div class='energy_table_outer_html_modal_$last_id outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='energy'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='energy' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='energy' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$energy_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
+                                                    <table class='table table-striped table-bordered table-hover' id='energy_outer_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
                         //         $tileHtml.="<div class='dashboard_table_outer_tile_html_$last_id outer_table_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='energy'>
                         //     <div class='card card-border tile_border'>
                         //         <div class='card-body overflow-hide display-flex pr-0'>
@@ -1433,7 +1572,8 @@ class dashboardController
                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
                                                 </table>
                                             </div>
-                                            <div class='save_table_div_show_table'> 
+                                            <div class='save_table_div_show_table'>
+                                                <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                 <table class='table table-striped table-bordered table-hover' id='energy_modal_table'>
                                                 </table>                        
                                             </div>
@@ -1442,6 +1582,34 @@ class dashboardController
                                 </div>
                             </div></div>";
                 $tileHtml .= "<input type='hidden' id='total_records_table' value='$last_id'>";
+                //Tile Outer HTML
+                        $tileHtml .= "<div class='energy_table_outer_html_modal_$last_id outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='energy'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='energy' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='energy' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$energy_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
+                                                    <table class='table table-striped table-bordered table-hover' id='energy_outer_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>"; 
                 //     $tileHtml.="<div class='dashboard_table_outer_tile_html_$last_id outer_table_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='energy'>
                 //     <div class='card card-border tile_border'>
                 //         <div class='card-body overflow-hide display-flex pr-0'>
@@ -1545,7 +1713,8 @@ class dashboardController
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
                                             </table>
                                             </div> 
-                                                <div class='save_table_div_show_table'> 
+                                                <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
+                                                <div class='save_table_div_show_table'>
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
                                             </div>
@@ -1578,7 +1747,8 @@ class dashboardController
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
                                             </table>
                                         </div> 
-                                        <div class='save_table_div_show_table'> 
+                                    <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
+                                        <div class='save_table_div_show_table'>
                                         </div>
                                     </div>
                                 </div>
@@ -1614,7 +1784,8 @@ class dashboardController
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
                                             </table>
                                             </div> 
-                                            <div class='save_table_div_show_table'> 
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
+                                            <div class='save_table_div_show_table'>
                                                 <canvas id='areaChart'></canvas>
                                             </div>
                                         </div>
@@ -1647,7 +1818,8 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
                                                     </table>
                                                 </div> 
-                                                <div class='save_table_div_show_table'> 
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
+                                                <div class='save_table_div_show_table'>
                                                 </div>
                                             </div>
                                         </div>
@@ -1715,7 +1887,8 @@ class dashboardController
                                             <div class='col-md-6 p-0 small-table small-table_$last_id' style='display:none'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
                                             </table>
-                                            </div> 
+                                            </div>
+                                                <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
@@ -1748,7 +1921,8 @@ class dashboardController
                                         <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
                                             </table>
-                                        </div> 
+                                        </div>
+                                        <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                         <div class='save_table_div_show_table'> 
                                         </div>
                                     </div>
@@ -1784,7 +1958,8 @@ class dashboardController
                                         <div class='col-md-6 p-0 small-table small-table_$last_id' style='display:none'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
                                             </table>
-                                            </div> 
+                                            </div>
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                             <div class='save_table_div_show_table'> 
                                                 <canvas id='areaChart'></canvas>
                                             </div>
@@ -1818,6 +1993,7 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
                                                     </table>
                                                 </div> 
+                                                <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div>
                                                 <div class='save_table_div_show_table'> 
                                                 </div>
                                             </div>
@@ -1879,7 +2055,8 @@ class dashboardController
                                             <div class='col-md-6 p-0 small-table small-table_$last_id' style='display:none'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
                                             </table>
-                                            </div> 
+                                            </div>
+                                                <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
@@ -1912,7 +2089,8 @@ class dashboardController
                                         <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
                                             </table>
-                                        </div> 
+                                        </div>
+                                        <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                         <div class='save_table_div_show_table'> 
                                         </div>
                                     </div>
@@ -1948,7 +2126,8 @@ class dashboardController
                                         <div class='col-md-6 p-0 small-table small-table_$last_id' style='display:none'>
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$last_id'></td><td id='td_two_text_$last_id'></td></tr></tbody>
                                             </table>
-                                            </div> 
+                                            </div>
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                             <div class='save_table_div_show_table'> 
                                                 <canvas id='areaChart'></canvas>
                                             </div>
@@ -1981,7 +2160,8 @@ class dashboardController
                                                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
                                                     </table>
-                                                </div> 
+                                                </div>
+                                                <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                                 <div class='save_table_div_show_table'> 
                                                 </div>
                                             </div>
@@ -2044,8 +2224,37 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$i_value'></td><td id='td_table_tile_two_text_$i_value'></td></tr></tbody>
                                                     </table>
                                                 </div>
-                                                <div class='save_table_div_show_table'> 
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='measurement_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";
+                        //Tile Outer HTML
+                        $tileHtml .= "<div class='measurement_table_outer_html_modal_$i_value outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_outer_tile_modal_table_$i_value' data-i='$i_value' data-type-tile='Measurement'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='Measurement' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal'>$measurement_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'>
+                                                <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
+                                                    <table class='table table-striped table-bordered table-hover' id='measurement_outer_modal_table'>
                                                     </table>                        
                                                 </div>
                                             </div>
@@ -2112,8 +2321,38 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$i_value'></td><td id='td_table_tile_two_text_$i_value'></td></tr></tbody>
                                                     </table>
                                                 </div>
-                                                <div class='save_table_div_show_table'> 
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='energy_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";
+                        $tileHtml .= "<input type='hidden' id='total_records_table' value='$i_value'>";
+                        //Tile Outer HTML
+                        $tileHtml .= "<div class='energy_table_outer_html_modal_$i_value outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_table_$i_value' data-i='$i_value' data-type-tile='energy'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='energy' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='energy' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$energy_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
+                                                    <table class='table table-striped table-bordered table-hover' id='energy_outer_modal_table'>
                                                     </table>                        
                                                 </div>
                                             </div>
@@ -2180,8 +2419,37 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$i_value'></td><td id='td_table_tile_two_text_$i_value'></td></tr></tbody>
                                                     </table>
                                                 </div>
-                                                <div class='save_table_div_show_table'> 
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
+                                                    </table>                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></div>";
+                        //Tile Outer HTML
+                        $tileHtml .= "<div class='product_table_outer_html_modal_$i_value outer_table_tile_structure'><div style='height: 145px; width: 250px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_outer_tile_modal_table_$i_value' data-i='$i_value' data-type-tile='product'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body overflow-hide display-flex'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile' data-type-tile='product' data-i-value ='$i_value' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='product' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='product_tile_heading_modal'>$product_title</p>
+                                                <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
+                                               
+                                                <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
+                                                </div>  
+                                                <p class='mb-0 mt-2 text-success count_result_tile'>(30 days)<span class='text-black ml-1'><small></small></span></p>
+                                                
+                                            </div>
+                                            
+                                            <div class='overflow-hide ml-3 table-width'>
+                                                <div class='save_table_div_show_table'>
+                                                    <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
+                                                    <table class='table table-striped table-bordered table-hover' id='product_outer_modal_table'>
                                                     </table>                        
                                                 </div>
                                             </div>
@@ -2249,7 +2517,8 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$i_value'></td><td id='td_table_tile_two_text_$i_value'></td></tr></tbody>
                                                     </table>
                                                 </div>
-                                                <div class='save_table_div_show_table'> 
+                                                <div class='save_table_div_show_table'>
+                                                <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
                                                     </table>                        
                                                 </div>
@@ -2322,6 +2591,7 @@ class dashboardController
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
                                             </table>
                                             </div>
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
@@ -2354,7 +2624,8 @@ class dashboardController
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
                                                                 </table>
-                                                            </div> 
+                                                            </div>
+                                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div>  
                                                             <div class='save_table_div_show_table'> 
                                                             </div>
                                                         </div>
@@ -2428,6 +2699,7 @@ class dashboardController
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
                                             </table>
                                             </div>
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
@@ -2460,7 +2732,8 @@ class dashboardController
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
                                                                 </table>
-                                                            </div> 
+                                                            </div>
+                                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div>  
                                                             <div class='save_table_div_show_table'> 
                                                             </div>
                                                         </div>
@@ -2536,6 +2809,7 @@ class dashboardController
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
                                             </table>
                                             </div>
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
@@ -2568,7 +2842,8 @@ class dashboardController
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
                                                                 </table>
-                                                            </div> 
+                                                            </div>
+                                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div>  
                                                             <div class='save_table_div_show_table'> 
                                                             </div>
                                                         </div>
@@ -2644,6 +2919,7 @@ class dashboardController
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
                                             </table>
                                             </div>
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
@@ -2676,7 +2952,8 @@ class dashboardController
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
                                                                 </table>
-                                                            </div> 
+                                                            </div>
+                                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div>  
                                                             <div class='save_table_div_show_table'> 
                                                             </div>
                                                         </div>
@@ -2757,6 +3034,7 @@ class dashboardController
                                             <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_text_$i_value'></td><td id='td_two_text_$i_value'></td></tr></tbody>
                                             </table>
                                             </div>
+                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div> 
                                                 <div class='save_table_div_show_table'> 
                                                     <canvas id='areaChart'></canvas>                       
                                                 </div>
@@ -2789,7 +3067,8 @@ class dashboardController
                                                             <div class='col-md-6 p-0 small-table small-table_$i_value'>
                                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$i_value'></td><td id='td_outer_tile_two_text_$i_value'></td></tr></tbody>
                                                                 </table>
-                                                            </div> 
+                                                            </div>
+                                                            <div class='customgraph'><img src='images/graph-image.svg' class='graphimage'></div>  
                                                             <div class='save_table_div_show_table'> 
                                                             </div>
                                                         </div>
@@ -3510,7 +3789,7 @@ class dashboardController
         } else if ($queryMaxVal != '') {
             $col_span = "colspan='4'";
         }
-        if ($dataMesaurement != '' && count($dataMesaurement) > 0) {
+        if ($dataMesaurement != '' && count($dataMesaurement) > 0 && !$dataMesaurement['error']) {
             foreach ($dataMesaurement as $key => $value) {
                 $style = '';
                 $class_val = '';
@@ -3671,9 +3950,9 @@ class dashboardController
     {
         try {
             global $conn;
-            $table_type = isset($_POST['table_type']);
+            $table_type = $_POST['table_type'];
             $mst_id = $_POST['mst_id'];
-            $input_val_week_day = $_POST['input_val_week_day'] + 20;
+            $input_val_week_day = $_POST['input_val_week_day'] /*+ 60*/;
             // echo $input_val_week_day;
             $valMaxDate = $input_val_week_day - $_POST['input_val_week_day'];
             $order_by = isset($_POST['order_by']) ?  $_POST['order_by'] : 'desc';
@@ -3690,7 +3969,7 @@ class dashboardController
             $todayDate = date('Y-m-d');
 
             //SchichtModelleAll Table Check
-            $tableCheckQuery = "select TOP 1 * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
+            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
             $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
             $table_found = 'false';
             if ($resultTableExistCheck != false) {
@@ -3701,13 +3980,17 @@ class dashboardController
             $maxDateCheck = date('Y-m-d', strtotime("-$valMaxDate days"));
             $queryEnergy = '';
             if ($table_found == 'true') {
-                $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
+                /*$queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
-                $queryEnergy .= "convert(date,Time) > '$dateCheck' AND convert(date,time) <= '$maxDateCheck' group by convert(date,Time) order by date $order_by ";
+                $queryEnergy .= "convert(date,Time) > '$dateCheck' AND convert(date,time) <= '$maxDateCheck' group by convert(date,Time) order by date $order_by ";*/
+                $topRecords= $_POST['input_val_week_day'];
+                $queryEnergy = "Select TOP ($topRecords) convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
+                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' ";
+                $queryEnergy .= " group by convert(date,Time) order by date $order_by ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
                 // echo $queryEnergy; die;
                 // echo json_encode($queryEnergyRecords); die;
-                if ($queryEnergyRecords != '' && count($queryEnergyRecords)) {
+                if ($queryEnergyRecords != '' && count($queryEnergyRecords) && !isset($queryEnergyRecords['error'])) {
                     for ($i = 0; $i < $_POST['input_val_week_day']; $i++) {
                         $dateDynamicIndex = $valMaxDate + $i;
                         $dateDynamicVal =  date('Y-m-d', strtotime("-$dateDynamicIndex days"));
@@ -3761,17 +4044,17 @@ class dashboardController
         try {
             $flag = 0;
             for ($i = 0; $i < count($data); $i++) {
-                if(!empty($data[$i]['date'])){
-                    if ($data[$i]['date']->format('Y-m-d') == $dateVal) {
-                        $flag = 1;
-                        break;
-                    }
+                //if ($data[$i]['date']->format('Y-m-d') == $dateVal) {
+                if (date("Y-m-d",strtotime($data[$i]['date'])) == $dateVal) {
+                    $flag = 1;
+                    break;
                 }
             }
             if ($flag == 1) {
                 $tbody = '<tr class="row_click_energy" data-table-other="true">';
                 $tbody .= "<td>" . $energy_measurement_text . "</td>";
-                $tbody .= "<td>" . $data[$i]['date']->format('Y-m-d') . "</td>";
+                //$tbody .= "<td>" . $data[$i]['date']->format('Y-m-d') . "</td>";
+                $tbody .= "<td>" . date("Y-m-d",strtotime($data[$i]['date'])) . "</td>";
                 $totalValue = $data[$i]['value'] > 0 ? $data[$i]['value'] / 4 : 0;
                 $totalValue = $this->convertValueCommaSeperated($totalValue);
                 $tbody .= "<td>" . $totalValue . "</td>";
@@ -3811,7 +4094,7 @@ class dashboardController
 
     //         //SchichtModelleAll Table Check
     //         $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
-    //         $resultTableExistCheck = sqlsrv_query($conn,$tableCheckQuery);
+    //         $resultTableExistCheck = queryDB($conn,$tableCheckQuery);
     //         $table_found = 'false';
     //         if($resultTableExistCheck != false)
     //         {
@@ -4468,7 +4751,7 @@ class dashboardController
                     // echo json_encode($resultShiftName);
 
                     // <----09-02-2022----
-                    if ($resultShiftName != '' && count($resultShiftName) > 0) {
+                    if ($resultShiftName != '' && count($resultShiftName) > 0  && !$resultShiftName['error']) {
                         $ind = $input_val_week_day - 1;
                         $dateValCheck = date('Y-m-d', strtotime("-$ind days"));
                         $fromDateCheck = '';
@@ -4572,7 +4855,7 @@ class dashboardController
                     $tbody .= '<tr>';
                     $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
                     $tbody .= '</tr>';
-                    $records['pagination_html_energy'] =  $paginationHTMl;
+                    //$records['pagination_html_energy'] =  $paginationHTMl;
                 }
                 // --end-->
 
@@ -4630,7 +4913,7 @@ class dashboardController
                     $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
                     // echo json_encode($resultShiftName); die;
                     // --end--->
-                    if ($resultShiftName != '' && count($resultShiftName) > 0) {
+                    if ($resultShiftName != '' && count($resultShiftName) > 0 && !$resultShiftName['error']) {
                         $weekInd = $input_val_week_day * 7; //Week;
                         $dateValCheck = date('Y-m-d', strtotime("-$weekInd Days"));
                         // echo $fromDateCheck; die;
@@ -5587,7 +5870,7 @@ class dashboardController
         try {
             // echo json_encode($dataProduct); die;
             $tr = '';
-            if ($dataProduct != '' && count($dataProduct) > 0) {
+            if ($dataProduct != '' && count($dataProduct) > 0 && !isset($dataProduct['error'])) {
                 foreach ($dataProduct as $key => $value) {
                     $val_prd_ID = $value['prd_ID'];
                     $prd_name = $value['namePrd'];
@@ -6876,8 +7159,10 @@ class dashboardController
             $getResult = "SELECT * from tableFormat WHERE username = '$username' AND id = $id ";
             $dataResult = queryDB($conn, $getResult, "read");
             if ($dataResult != '' && count($dataResult) > 0) {
+                
                 $dataMeasurement = '';
                 if ($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == '') {
+                    
                     //Seacrh Record 
                     // echo json_encode($dataResult[0]['query_data_records']); die;
                     $firstPostion =  strpos($dataResult[0]['query_data_records'], '%');
@@ -6898,8 +7183,10 @@ class dashboardController
                     }
                     // <----15-9-2021---
                     $dashboardMeasurementHtml = '';
+                    
                     // echo json_encode($dataMeasurement); die;
                     if ($dataResult[0]['table_other'] == 'false') {
+                        
                         if ($dataResult[0]['type'] == 'Energy') {
                             // echo json_encode($dataMeasurement); die;
                             $dashboardMeasurementHtml = $this->dashboardEnergyHtml($dataMeasurement);
@@ -6909,10 +7196,13 @@ class dashboardController
                             $dashboardMeasurementHtml = $this->dashboardProductHtml($dataMeasurement);
                         }
                     } else if ($dataResult[0]['table_other'] == 'schichtModelle') {
+                        
                         $dashboardMeasurementHtml = $this->dashboardEnergyLayerHtmlChecked($dataMeasurement);
                     } elseif ($dataResult[0]['table_other'] == 'schichtModelleHist') {
+                        
                         $dashboardMeasurementHtml = $this->dashboardEnergyLayerHtml($dataMeasurement);
                     } else {
+                        
                         $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement);
                     }
                     // --end-->
@@ -6957,11 +7247,11 @@ class dashboardController
             } else {
                 $tr = "<thead>";
                 $tr .= "<tr>";
-                $tr .= "<th>Name</th>";
-                $tr .= "<th>Time Interval</th>";
-                $tr .= "<th>Created Date</th>";
-                $tr .= "<th>Total Units</th>";
-                $tr .= "<th>Status</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Name</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Time Interval</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Created Date</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Total Units</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Status</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
                 $tr .= "<tbody><tr><td colspan='5' class='text-center'>No Data</td></tr></tbody>";
@@ -8474,7 +8764,7 @@ class dashboardController
             $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
             $checkQuery = '';
             //SchichtModelleAll Table Check
-            $tableCheckQuery = "select  TOP 1 * from MessstellenEnergiedaten where mst_id = '$mst_id[0]' ";
+            $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id[0]' ";
             $resultTableExistCheck = queryDB($conn, $tableCheckQuery, "read");
             $table_found = 'false';
             if ($resultTableExistCheck != false) {
@@ -8522,7 +8812,7 @@ class dashboardController
                 // die;
                 $ar_value = [];
                 $ar_names = [];
-                if ($queryEnergyRecords != '' && count($queryEnergyRecords)) {
+                if ($queryEnergyRecords != '' && count($queryEnergyRecords) && !$queryEnergyRecords['error']) {
                     $i = 0;
                     $modelNameQueryCount = count($queryEnergyRecords);
                     // echo json_encode($queryEnergyRecords); die;
@@ -9523,18 +9813,18 @@ class dashboardController
                 $col_span = "colspan='5'";
                 $tr = "<thead>";
                 $tr .= "<tr>";
-                $tr .= "<th>Messstelle</th>";
-                $tr .= "<th>Datum</th>";
-                $tr .= "<th>Wert</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Messstelle</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Wert</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             } else if ($queryMaxVal != '') {
                 $col_span = "colspan='4'";
                 $tr = "<thead style='background-color: #c5c8d2'>";
                 $tr .= "<tr>";
-                $tr .= "<th>Messstelle</th>";
-                $tr .= "<th>Datum</th>";
-                $tr .= "<th>Wert</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Messstelle</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
+                $tr .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Wert</th>";
                 $tr .= "</tr>";
                 $tr .= "</thead>";
             }
@@ -10207,7 +10497,7 @@ class dashboardController
                 // die;
                 $ar_value = [];
                 $ar_names = [];
-                if ($queryEnergyRecords != '' && count($queryEnergyRecords)) {
+                if ($queryEnergyRecords != '' && count($queryEnergyRecords) && !$queryEnergyRecords['error']) {
                     $i = 0;
                     $modelNameQueryCount = count($queryEnergyRecords);
                     // echo json_encode($queryEnergyRecords); die;
@@ -10262,6 +10552,25 @@ class dashboardController
         }
     }
 
+   public function dashboardTileCount()
+    {
+        try {
+            global $conn;
+            $username = $_POST['username'];
+            $nameDB = $_POST['nameDB'];
+            $queryTileCount = "Select * FROM tableFormat where username = '$username'";
+            $queryTileCount = queryDB(connectToDB((string)$nameDB), (string)$queryTileCount, "read");
+            if(!isset($queryTileCount['error'])){
+                $queryTileCount=count($queryTileCount);
+            }else{
+                $queryTileCount=0;
+            }
+            return $queryTileCount;
+            die;
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
 
     public function storeDBValueSession()
     {

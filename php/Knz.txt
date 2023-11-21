@@ -1,0 +1,267 @@
+
+            ##########################################################################
+
+            Geändert
+            ++++++++
+            Datum: 17.3.2019 9:50
+
+            bezug: mst
+            instanzID: 
+            zustaendigerMitarbeiter: 
+            beschreibung: 
+
+            nKnzs: 1
+
+            bezeichnung1: 
+            anwendungsbereich1: Produkteliste
+            status1: false
+            einfuehrung1: 
+            letzteUeberpruefung1: 
+            deaktivierung1: 
+            einheit1: 
+            formelID1: 
+            kennzahl1: 
+            toleranzgrenzeOben1:  
+            toleranzgrenzeUnten1: 
+
+            bezeichnung2: 
+            anwendungsbereich2: Produkteliste
+            status2: false
+            einfuehrung2: 
+            letzteUeberpruefung2: 
+            deaktivierung2: 
+            einheit2: 
+            formelID2: 
+            kennzahl2: 
+            toleranzgrenzeOben2:  
+            toleranzgrenzeUnten2: 
+
+            bezeichnung3: 
+            anwendungsbereich3: Produkteliste
+            status3: false
+            einfuehrung3: 
+            letzteUeberpruefung3: 
+            deaktivierung3: 
+            einheit3: 
+            formelID3: 
+            kennzahl3: 
+            toleranzgrenzeOben3:  
+            toleranzgrenzeUnten3: 
+
+            bezeichnung4: 
+            anwendungsbereich4: Produkteliste
+            status4: false
+            einfuehrung4: 
+            letzteUeberpruefung4: 
+            deaktivierung4: 
+            einheit4: 
+            formelID4: 
+            kennzahl4: 
+            toleranzgrenzeOben4:  
+            toleranzgrenzeUnten4: 
+
+            bezeichnung5: 
+            anwendungsbereich5: Produkteliste
+            status5: false
+            einfuehrung5: 
+            letzteUeberpruefung5: 
+            deaktivierung5: 
+            einheit5: 
+            formelID5: 
+            kennzahl5: 
+            toleranzgrenzeOben5:  
+            toleranzgrenzeUnten5: 
+
+            bezeichnung6: 
+            anwendungsbereich6: Produkteliste
+            status6: false
+            einfuehrung6: 
+            letzteUeberpruefung6: 
+            deaktivierung6: 
+            einheit6: 
+            formelID6: 
+            kennzahl6: 
+            toleranzgrenzeOben6:  
+            toleranzgrenzeUnten6: 
+
+            bezeichnung7: 
+            anwendungsbereich7: Produkteliste
+            status7: false
+            einfuehrung7: 
+            letzteUeberpruefung7: 
+            deaktivierung7: 
+            einheit7: 
+            formelID7: 
+            kennzahl7: 
+            toleranzgrenzeOben7:  
+            toleranzgrenzeUnten7: 
+
+            bezeichnung8: 
+            anwendungsbereich8: Produkteliste
+            status8: false
+            einfuehrung8: 
+            letzteUeberpruefung8: 
+            deaktivierung8: 
+            einheit8: 
+            formelID8: 
+            kennzahl8: 
+            toleranzgrenzeOben8:  
+            toleranzgrenzeUnten8: 
+
+            bezeichnung9: 
+            anwendungsbereich9: Produkteliste
+            status9: false
+            einfuehrung9: 
+            letzteUeberpruefung9: 
+            deaktivierung9: 
+            einheit9: 
+            formelID9: 
+            kennzahl9: 
+            toleranzgrenzeOben9:  
+            toleranzgrenzeUnten9: 
+
+            bezeichnung10: 
+            anwendungsbereich10: Produkteliste
+            status10: false
+            einfuehrung10: 
+            letzteUeberpruefung10: 
+            deaktivierung10: 
+            einheit10: 
+            formelID10: 
+            kennzahl10: 
+            toleranzgrenzeOben10:  
+            toleranzgrenzeUnten10: 
+            
+            ##########################################################################
+
+            Geändert
+            ++++++++
+            Datum: 2.10.2019 16:59
+
+            bezug: prd
+            instanzID: 112
+            zustaendigerMitarbeiter: 
+            beschreibung: 
+
+            nKnzs: 4
+
+            bezeichnung1: VerbrauchProSchuss
+            anwendungsbereich1: null
+            status1: true
+            einfuehrung1: 
+            letzteUeberpruefung1: 
+            deaktivierung1: 
+            einheit1: 
+            formelID1: 36
+            kennzahl1: .000
+            toleranzgrenzeOben1:  .000
+            toleranzgrenzeUnten1: .000
+
+            bezeichnung2: VerbrauchProAuftrag
+            anwendungsbereich2: null
+            status2: true
+            einfuehrung2: 
+            letzteUeberpruefung2: 
+            deaktivierung2: 
+            einheit2: 
+            formelID2: 37
+            kennzahl2: 5131.992
+            toleranzgrenzeOben2:  10192.472
+            toleranzgrenzeUnten2: 3107.799
+
+            bezeichnung3: GemesseneZeit
+            anwendungsbereich3: null
+            status3: true
+            einfuehrung3: 
+            letzteUeberpruefung3: 
+            deaktivierung3: 
+            einheit3: 
+            formelID3: 34
+            kennzahl3: .000
+            toleranzgrenzeOben3:  .000
+            toleranzgrenzeUnten3: .000
+
+            bezeichnung4: VerbrauchProStÃ¼ck
+            anwendungsbereich4: null
+            status4: true
+            einfuehrung4: 
+            letzteUeberpruefung4: 
+            deaktivierung4: 
+            einheit4: 
+            formelID4: 39
+            kennzahl4: .000
+            toleranzgrenzeOben4:  .000
+            toleranzgrenzeUnten4: .000
+
+            bezeichnung5: 
+            anwendungsbereich5: null
+            status5: false
+            einfuehrung5: 
+            letzteUeberpruefung5: 
+            deaktivierung5: 
+            einheit5: 
+            formelID5: 
+            kennzahl5: 
+            toleranzgrenzeOben5:  
+            toleranzgrenzeUnten5: 
+
+            bezeichnung6: 
+            anwendungsbereich6: null
+            status6: false
+            einfuehrung6: 
+            letzteUeberpruefung6: 
+            deaktivierung6: 
+            einheit6: 
+            formelID6: 
+            kennzahl6: 
+            toleranzgrenzeOben6:  
+            toleranzgrenzeUnten6: 
+
+            bezeichnung7: 
+            anwendungsbereich7: null
+            status7: false
+            einfuehrung7: 
+            letzteUeberpruefung7: 
+            deaktivierung7: 
+            einheit7: 
+            formelID7: 
+            kennzahl7: 
+            toleranzgrenzeOben7:  
+            toleranzgrenzeUnten7: 
+
+            bezeichnung8: 
+            anwendungsbereich8: null
+            status8: false
+            einfuehrung8: 
+            letzteUeberpruefung8: 
+            deaktivierung8: 
+            einheit8: 
+            formelID8: 
+            kennzahl8: 
+            toleranzgrenzeOben8:  
+            toleranzgrenzeUnten8: 
+
+            bezeichnung9: 
+            anwendungsbereich9: null
+            status9: false
+            einfuehrung9: 
+            letzteUeberpruefung9: 
+            deaktivierung9: 
+            einheit9: 
+            formelID9: 
+            kennzahl9: 
+            toleranzgrenzeOben9:  
+            toleranzgrenzeUnten9: 
+
+            bezeichnung10: 
+            anwendungsbereich10: null
+            status10: false
+            einfuehrung10: 
+            letzteUeberpruefung10: 
+            deaktivierung10: 
+            einheit10: 
+            formelID10: 
+            kennzahl10: 
+            toleranzgrenzeOben10:  
+            toleranzgrenzeUnten10: 
+            

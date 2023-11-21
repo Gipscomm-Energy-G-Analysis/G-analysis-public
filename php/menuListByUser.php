@@ -7,7 +7,8 @@ require 'DbOperations.php';
 $userid = $_POST['userid'];
 $queryData  = "SELECT menu_permission_id FROM user_menu_permissions WHERE user_id = " . (string)$userid . " ";
 $records = (array)queryDB(connectToDB((string)$_POST['nameDB']), (string)$queryData, "read");
-if(count($records) > 1){
+
+if(count($records) > 1 && !isset($records['error'])){
     $idsarray=[];
     foreach($records as $value){
         $idsarray[]=$value['menu_permission_id'];

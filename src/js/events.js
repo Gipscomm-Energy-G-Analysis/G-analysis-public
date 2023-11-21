@@ -517,27 +517,41 @@ $(document).ready(function() {
     $("#btnKnzResetDiag").click(function() {
         $("#knzDiag1, #knzDiag2, #knzDiag3,#knzIDDiag1, #knzIDDiag2, #knzIDDiag3").val("")
     });
-    $("#zeitrDiag2").change(() => {
+    $('#zeitrDiag2').change(function () {
 
         switch (this.value) {
 
             case "Jahr" :
 
-                $(".monatZeitvergl, .tagZeitvergl").css("display", "none")
+                $(".year1Diag, .year2Diag, .year3Diag").css("display", "inline-block")
+                $(".monatZeitvergl, .tagZeitvergl, .weekfilterZeitr, .customDatefilterZeitr").css("display", "none")
                 $(".monatZeitvergl, .tagZeitvergl").val("-");
                 break
 
             case "Monat" :
 
-                $(".monatZeitvergl").css("display", "inline-block")
-                $(".tagZeitvergl").css("display", "none")
+                $(".monatZeitvergl, .year1Diag, .year2Diag, .year3Diag").css("display", "inline-block")
+                $(".tagZeitvergl, .weekfilterZeitr, .customDatefilterZeitr").css("display", "none")
                 $(".tagZeitvergl").val("-");
                 break
 
             case "Tag" :
 
-                $(".monatZeitvergl, .tagZeitvergl").css("display", "inline-block")
+                $(".monatZeitvergl, .tagZeitvergl, .year1Diag, .year2Diag, .year3Diag").css("display", "inline-block")
+                $(".weekfilterZeitr, .customDatefilterZeitr").css("display", "none")
                 break
+
+            case "Wochen" :
+
+                $(".weekfilterZeitr").css("display", "inline-block")
+                $(".year1Diag, .year2Diag, .year3Diag, .monatZeitvergl, .tagZeitvergl, .customDatefilterZeitr").css("display", "none")
+                break
+                
+            case "Benutzerdefiniert" :
+
+                $(".customDatefilterZeitr").css("display", "inline-block")
+                $(".year1Diag, .year2Diag, .year3Diag, .monatZeitvergl, .tagZeitvergl, .weekfilterZeitr").css("display", "none")
+                break        
 
             default :
 
@@ -1139,6 +1153,7 @@ $(document).ready(function() {
         chartInNewWindow()
     });
     $("#btnDiagramm2Erst").click(function() {
+        sessionStorage.setItem("mstID_1", $("#mstIDDiag").val());
         chartInNewWindow2()
     });
     $("#btnDiagrammKnzErst").click(function() {
@@ -8151,3 +8166,15 @@ $(document).ready( function (){
     //-end-->
 })
 //--end-->
+$('#dashboard').on('click', function(){
+    var pathname = window.location.pathname;
+    var arPathname = pathname.split('/');
+    var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
+    // window.open('/'+mainDirectory+'/main.html','_self');
+    if(arPathname.length > 3){
+        window.open('/'+arPathname[1]+'/dashboard','_self');
+    }
+    else{
+        window.open('/dashboard','_self');
+    }
+});

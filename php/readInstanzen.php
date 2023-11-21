@@ -63,23 +63,40 @@ if ($id == "adm") {
     $query .= "WHERE org_ID = " . $orgID . " ";
     $query .= "AND deleted = 0 ";
 } elseif ($id == "extDl") {
+
     $liegID = $_POST['liegID'];
 
     $query = "SELECT * FROM externeDurchleitungen ";
+
     $query .= "WHERE lieg_ID = " . $liegID . " ";
+
     $query .= "AND deleted = 0 ";
 } elseif ($id == "ber") {
+
+
     $liegID = $_POST['liegID'];
 
     $query = "SELECT * FROM bereiche ";
+
+
     $query .= "WHERE lieg_ID = " . $liegID . " ";
+
     $query .= "AND deleted = 0 ";
 } elseif ($id == "mst") {
 
+
     $berID = $_POST['berID'];
+
     $query = "SELECT * FROM messstellen ";
+
+
     $query .= "WHERE ber_ID = '" . $berID . "' ";
+
+
     $query .= "AND deleted = 0 ";
+
+
+
     $query .= "ORDER BY nameMSt ";
 } elseif ($id == "std") {
 
@@ -89,12 +106,17 @@ if ($id == "adm") {
     $query .= "WHERE lieg_ID = " . $liegID . " ";
     $query .= "AND deleted = 0 ";
 } elseif ($id == "stdDr") {
+
     $liegID = $_POST['liegID'];
 
     $query = "SELECT * FROM standorteDritter ";
+
     $query .= "WHERE lieg_ID = " . $liegID . " ";
+
     $query .= "AND deleted = 0 ";
 } elseif ($id == "anl" || $id == "anlID") {
+
+
     $liegID = $_POST['liegID'];
 
     $query = "SELECT * FROM anlagen ";
@@ -157,7 +179,9 @@ if ($id == "adm") {
     //$liegID = $_POST['liegID'];
 
     $query = "SELECT * FROM messstellen ";
+
     $query .= "WHERE messartMst = 'manuell' ";
+
     $query .= "AND deleted = 0 ";
 } elseif ($id == "intBdeIMw") {
 

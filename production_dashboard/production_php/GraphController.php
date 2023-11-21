@@ -80,6 +80,7 @@ class GraphController {
     public function historicData() {
         $graphPoints = isset($_REQUEST['graphPoints']) && !empty($_REQUEST['graphPoints'])?$_REQUEST['graphPoints']:null;
         $periodFilter = $_REQUEST['periodFilter'];
+        $historyTimeFilter = $_REQUEST['historyTimeFilter'];
 
         if (!empty($graphPoints)) {
             $graphArray = explode(',',$graphPoints);
@@ -91,7 +92,7 @@ class GraphController {
                         if(empty($year)) {
                             return ['code'=>400, 'msg' => 'No record found!'];
                         }
-                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
+                        $query = "SELECT TOP ".$historyTimeFilter." MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
                         WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".$year." ORDER BY MessstellenEnergiedaten.Time desc";
                         break;
                     case 'month':
@@ -103,7 +104,7 @@ class GraphController {
                         if(empty($year)) {
                             return ['code'=>400, 'msg' => 'No record found!'];
                         }
-                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
+                        $query = "SELECT TOP ".$historyTimeFilter." MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
                         WHERE  MessstellenEnergiedaten.mst_ID = ".$val." AND YEAR(MessstellenEnergiedaten.Time) = ".$year." AND MONTH(MessstellenEnergiedaten.Time) = ".$month." ORDER BY MessstellenEnergiedaten.Time desc";
                         break;
                     case 'custom':
@@ -111,7 +112,7 @@ class GraphController {
                         $start = date_format($start,"Y-m-d");
                         $end = date_create($_REQUEST['endDate']);
                         $end = date_format($end,"Y-m-d");
-                        $query = "SELECT TOP 1000 MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
+                        $query = "SELECT TOP ".$historyTimeFilter." MessstellenEnergiedaten.Time, MessstellenEnergiedaten.Value, MessstellenEnergiedaten.ConvFactor FROM MessstellenEnergiedaten 
                         WHERE MessstellenEnergiedaten.mst_ID = ".$val." AND cast (MessstellenEnergiedaten.Time as date) >= '".$start."' AND cast (MessstellenEnergiedaten.Time as date) <= '".$end."' ORDER BY MessstellenEnergiedaten.Time desc";
                         break;
                     default:
@@ -191,6 +192,10 @@ class GraphController {
         $dataIndex = isset($_POST['machineIndex']) && !empty($_POST['machineIndex'])?$_POST['machineIndex']:null;
         $graphType = isset($_POST['graphType'])?$_POST['graphType']:'production';
       //  $machineID = isset($_POST['id']) && !empty($_POST['id'])?$_POST['id']:$dataArray[$dataIndex];
+        $machine_ID = isset($_POST['id'])?$_POST['id']:null;
+            if(empty($machine_ID)) {
+                $machine_ID = $this->getMachineId();
+            }
 
         $selectQuery = "SELECT label, graph_name, graph_text FROM graph_configurations WHERE username= '$username'";
         $record = queryDB ( $this->conn, $selectQuery, "read");
@@ -214,7 +219,7 @@ class GraphController {
                     }
                     // $query = "SELECT TOP 1000 ".$value['label']." as value, zeitstempel as Time FROM ProdData_ WHERE anl_ID='$machineID' 
                     // AND YEAR(zeitstempel) = ".$year." ORDER BY zeitstempel desc";
-                    $query = "SELECT TOP 1000 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' AND YEAR(ProdData.timeUnlock) = ".$year." ORDER BY ProdData.timeUnlock ASC";
+                    $query = "SELECT TOP 100 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID=".$machine_ID." AND YEAR(ProdData.timeUnlock) = ".$year." ORDER BY ProdData.timeUnlock ASC";
                     break;
                 case 'month':
                     $month = $_REQUEST['monthFilter'];
@@ -225,14 +230,14 @@ class GraphController {
                     if(empty($year)) {
                         return ['code'=>400, 'msg' => 'No record found!'];
                     }
-                    $query = "SELECT TOP 1000 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' AND YEAR(ProdData.timeUnlock) = ".$year." AND MONTH(ProdData.timeUnlock) = ".$month." ORDER BY ProdData.timeUnlock ASC";
+                    $query = "SELECT TOP 100 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID=".$machine_ID." AND YEAR(ProdData.timeUnlock) = ".$year." AND MONTH(ProdData.timeUnlock) = ".$month." ORDER BY ProdData.timeUnlock ASC";
                     break;
                 case 'custom':
                     $start = date_create($_REQUEST['startDate']);
                     $start = date_format($start,"Y-m-d");
                     $end = date_create($_REQUEST['endDate']);
                     $end = date_format($end,"Y-m-d");
-                    $query = "SELECT TOP 1000 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID='265' AND cast (ProdData.timeUnlock as date) >= '".$start."' AND cast (ProdData.timeUnlock as date) <= '".$end."' ORDER BY ProdData.timeUnlock ASC";
+                    $query = "SELECT TOP 100 ".$columnString.", ProdData.timeUnlock, ProdData.timeClose, ProdData.auftrag, produkte.namePrd, ProdData.artikelnummer, ProdData.verbrauchAuftrag FROM ProdData LEFT JOIN produkte ON ProdData.artikelnummer=produkte.artikelNrPrd WHERE ProdData.anl_ID=".$machine_ID." AND cast (ProdData.timeUnlock as date) >= '".$start."' AND cast (ProdData.timeUnlock as date) <= '".$end."' ORDER BY ProdData.timeUnlock ASC";
                     break;
                 default:
                     return ['code'=>400, 'msg' => 'no record found'];

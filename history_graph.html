@@ -175,10 +175,89 @@
 <script src="production_dashboard/production_js/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="production_dashboard/production_js/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="production_dashboard/production_js/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="dist/js/ej.web.all.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="dist/js/fpCore.min.js"></script>
+<script type="text/javascript" src="dist/js/fpGeometry.min.js"></script>
+<script type="text/javascript" src="src/js/formula.js"></script>
+<script src="dist/js/math.min.js" type="text/javascript"></script>
+<script src="Syncfusion/scripts/properties.js" type="text/javascript"></script>
 <!-- Page specific script -->
 
-<script>
-    let root = am5.Root.new("chartdiv");
+    <script type="text/javascript" language="javascript">
+    const [ frm, geo ] = [ scpFormula, scpGeometry ] ;
+    let root = "#chartdiv";
+    const createAmChart = async (root, chartsData, dispose, xtype="date") => {
+    let graphSeries = [];
+    let maxArray = [];
+    console.log('chartsData.amData',root);
+    for (const property of chartsData) {
+        let series = {
+            dataSource: [],
+            xName: 'x', yName: 'y',
+            name: property.name, type: 'Line',
+            tooltip :
+                {   visible :true, 
+                    format: " #series.name#  <br/> #point.x# : #point.y#"
+                },
+                marker:
+                {
+                    shape: 'circle',
+                    size:
+                    {
+                        height: 6, width: 6
+                    },
+                    visible: true
+                },
+        };
+        for (const graphValues of property.amData) {
+            series.dataSource.push(
+                {
+                    x : new Date(graphValues?.date),
+                    y : graphValues?.value
+                }
+            )
+            maxArray.push(graphValues?.value);
+        }
+        graphSeries.push(series);
+        
+    }
+    console.log(graphSeries,'graphSeries');
+    $(`${root}`).ejChart({        
+        //Initializing Primary X Axis
+        primaryXAxis:
+        {
+            title: { text: "Time" },
+            interval: 15,
+            valueType: 'DateTime',
+            //interval type as years in primary x axis
+            intervalType: 'Minutes'
+        },
+        
+        //Initializing Primary Y Axis
+        primaryYAxis:
+        {
+            labelFormat: '{value}',
+            // minimum: 0,
+            // maximum: Math.max(...maxArray),
+            // axisLine: { visible: false },
+            name: 'yAxis',
+            title: { text: "Energy" }
+        },
+        series:graphSeries,
+        //Initializing Common Properties for all the series  
+        commonSeriesOptions :
+        {
+            enableAnimation :true
+        },
+        
+        //Initializing Series
+        load:"loadTheme",
+        canResize:true,
+        title :{text: 'Energy Charts'},
+        legend: { visible: true }
+    });
+}
+    /*let root = am5.Root.new("chartdiv");
     //historic data start
     const createAmChart = (root, chartsData, dispose) => {
     console.log(chartsData);
@@ -250,7 +329,7 @@
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
     chart.appear(1000, 100);
-}
+}*/
 
 function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
     var yRenderer = am5xy.AxisRendererY.new(root, {
@@ -306,8 +385,174 @@ function createAxisAndSeries(startValue, opposite, name, root, chart, xAxis) {
     series.data.setAll(startValue);
 }
 
-
 const createAmChartCategory = (root, chartsData, dispose, name, type) => {
+    console.log('type', type);
+    // console.log('chartData', chartsData);
+    // return false;
+    csOptions = {
+        tooltip: {
+            visible : true
+        },
+        border : {width: 0},
+        stroke : {width: 0},
+        marker: {
+            shape: 'circle',
+            size: {
+                height: 6, width: 6
+            },
+            visible: true,
+            border :{width : 2,color : "black"},
+        },
+        tooltip: {visible: true, format: "#point.x# <br/> #series.name# : #point.y#"}
+    }
+    if(type == 'double') {
+        console.log('herer is mixed charts');
+        $(`#chartdiv`).ejChart({
+            palette: [ "black", "blue", "red", "green", "yellow", "purple"],
+            legend: {
+                position: "top"
+            },
+            //Initializing Primary X Axis
+            primaryXAxis: {
+                title: {
+                    text: name
+                },
+                labelIntersectAction : "rotate45"
+            },
+            //Initializing Primary Y Axis
+            primaryYAxis: {
+                title: {
+                    text: name
+                }
+            },
+            axes: 
+            [
+                {
+                    orientation: 'Vertical',
+                    hidePartialLabels: false,
+                    rowIndex: 0,
+                    majorGridLines: { visible: true },
+                    axisLine: { visible: false },
+                    name: 'Energy',
+                    labelFormat: '{value}',
+                    title: { text: "Energy Consuption" },
+                    opposedPosition: true
+                }
+            ],
+            commonSeriesOptions: csOptions,
+            series: [],
+            pointRegionClick: function (args) {
+                console.log("Clicked on point! PointIndex: " + args.data.region.Region.PointIndex);
+                console.log(args.data);
+            }
+        });
+    } else {
+        $(`#chartdiv`) .ejChart({
+            palette: [ "black", "blue", "red", "green", "yellow", "purple"],
+            legend: {
+                position: "top"
+            },
+            //Initializing Primary X Axis
+            primaryXAxis: {
+                title: {
+                    text: name
+                },
+                labelIntersectAction : "rotate45"
+            },
+            //Initializing Primary Y Axis
+            primaryYAxis: {
+                title: {
+                    text: ""
+                }
+            },
+            commonSeriesOptions: csOptions,
+            series: [],
+            pointRegionClick: function (args) {
+                console.log("Clicked on point! PointIndex: " + args.data.region.Region.PointIndex);
+                console.log(args.data);
+            }
+        });
+    }
+    
+    createGraphDataSet(chartsData, name, root, type);
+}
+const createGraphDataSet = (newData, chartName, root, type) => {
+    const chartData =
+        newData
+        .map(
+            (data,i)=>
+            ({
+                name: chartName,
+                x: "A" + (i + 1) + "-" + data.date,
+                y: data.value,
+                y1: data.value2
+            })
+        ),
+
+        
+
+    [startingPoint, endingPoint] =
+    [geo.point(head(chartData).x), geo.point(last(chartData).x)]
+
+    indicator =
+    geo
+    .horizontalLine(startingPoint)(endingPoint);
+
+
+    const indicators =
+    arr =>
+    arr
+    .map(
+        a => updateChartScript(indicator(head(tail(a))))(head(a))(0.3)(root)
+    )
+    const drawChart =
+    () => {
+        updateChartScript (chartData) (chartName) (1.0) (root) (type);
+        
+    }
+
+    console.log('chartPoint', chartData);
+    const pointsChart =
+        chartData
+        .map(a => a.y);
+
+    const minPointsChart =
+        math.min(pointsChart)
+
+    const maxPointsChart =
+        math.max(pointsChart)
+
+    drawChart();
+    return;
+}
+const updateChartScript =
+    newDataSeries =>
+    nameSeries =>
+    opacity => root => type => {
+        let chart = $(`#chartdiv`).ejChart("instance");
+        chart.model.series.push({
+            type: 'line',
+            dataSource: newDataSeries,
+            name: nameSeries,
+            xName: "x",
+            yName: "y",
+            opacity
+        });
+        if(type == 'double') {
+            chart.model.series.push({
+                type: 'line',
+                dataSource: newDataSeries,
+                name: 'Energy',
+                yAxisName: 'Energy',
+                xName: "x",
+                yName: "y1",
+                opacity
+            });
+        }
+        
+        chart.redraw();
+    }
+/*const createAmChartCategory = (root, chartsData, dispose, name, type) => {
     let graphName = name !== undefined?name:0;
     if (dispose) {
         root.container.children.clear();
@@ -412,7 +657,7 @@ const createAmChartCategory = (root, chartsData, dispose, name, type) => {
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
     chart.appear(1000, 100);
-}
+}*/
 
 //blade code for measuring points data start
 

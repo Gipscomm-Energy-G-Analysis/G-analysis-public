@@ -12,6 +12,7 @@ $id = $_POST['id'] ;
 $selectFrom = "SELECT dok_ID, kategorieDok, nameDok, erweiterungDok FROM dokumente " ;
 $notDeleted = "AND deleted = 0 " ;
 
+
 switch ($verwaltung) {
 
     case "Anl" :
@@ -35,7 +36,6 @@ switch ($verwaltung) {
 } ;
 
 $records = queryDB($conn, $query, "read") ;
-
 closeDbConn($conn) ;
 
 echo json_encode($records, JSON_INVALID_UTF8_IGNORE) ;     // CHANGE: The DB data has to be echoed json encoded(before echo $records;) 27.05.2020

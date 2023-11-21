@@ -153,10 +153,10 @@ let notes = [];
 let msts = [];
 
 const getNotesMonth =
-    scpChart.getNotes("month")
+    scpChart.getNotes("month","year","identyear","lineIndex")
 
 const saveNoteMonth =
-    scpChart.saveNote("month")
+    scpChart.saveNote("month","line_index")
 
 if(chartType == "line"){
     csOptions = {
@@ -168,6 +168,23 @@ if(chartType == "line"){
             shape: 'circle',
             size: {
                 height: 10, width: 10
+            },
+            visible: true
+        }
+    }
+}else if (chartType == "column") {
+    csOptions = {
+        tooltip: {
+            visible: true
+        },
+        border: {
+            width: 2
+        },
+        marker: {
+            shape: 'circle',
+            size: {
+                height: 0,
+                width: 0
             },
             visible: true
         }
@@ -202,25 +219,18 @@ $("#btnNoteOk").click(function() {
         $("#mstIDNote").val()
     )(
         $("#bemerkungNote").val()
+    )(
+        $("#lineIndex").val()
     )
     .then(
         () =>
-        pipe_( scpChart.getChart("#container"))
-             ( scpChart.getSeries
-             , scpChart.updateNotesOfVisibleSeries("month") 
-             )
+        pipe(scpChart.getChart("#container"),scpChart.getSeries, scpChart.updateNotesOfVisibleSeries("month"))
     )
     .then(
-        [ "#identNote"
-        , "#mstIDNote"
-        , "#mstNote"
-        , "#colorNote"
-        , "#bemerkungNote"
-        , "#seriesNote"
-        ]
+        [ "#identNote", "#mstIDNote", "#mstNote", "#colorNote", "#bemerkungNote", "#seriesNote"]
         .forEach(a => $(a).val(""))
     )
-
+    window.location.reload()
     // empty notes array
     notes = []
 });
@@ -276,15 +286,33 @@ $("#container").ejChart({
             height: 295
         });
 
-        $("#identNote1").val(
-            year_1 + "/" + month_1 + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
-        )
-        $("#identNote2").val(
-            year_2 + "/" + month_2 + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
-        )
-        $("#identNote3").val(
-            year_3 + "/" + month_3 + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
-        )
+        if(args.data.region.SeriesIndex==2){
+            var a = $('#container_svg_LegendItemText2').text().split(".");
+            var monthName = a[0];
+            var yearName = a[1];
+            $("#identNote").val(
+                yearName + "/" + monthName + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
+            )
+            $("#lineIndex").val('2')
+        }
+        if(args.data.region.SeriesIndex==1){
+            var a = $('#container_svg_LegendItemText1').text().split(".");
+            var monthName = a[0];
+            var yearName = a[1];
+            $("#identNote").val(
+                yearName + "/" + monthName + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
+            )
+            $("#lineIndex").val('1')
+        }
+        if(args.data.region.SeriesIndex==0){
+            var a = $('#container_svg_LegendItemText0').text().split(".");
+            var monthName = a[0];
+            var yearName = a[1];
+            $("#identNote").val(
+                yearName + "/" + monthName + "/" + scpChart.formatDate(String(args.data.region.Region.PointIndex + 1))
+            )
+            $("#lineIndex").val('0')
+        }
         $("#mstIDNote").val(
             msts[args.data.region.SeriesIndex][0]
         )
@@ -322,11 +350,7 @@ $("#container").ejChart({
 
         // select notes which correspond to the visible series
         // and show only those
-        pipe_( scpChart.getChart("#container"))
-             ( scpChart.getSeries
-             , scpChart.prepareSeries(sender)
-             , scpChart.updateNotesOfVisibleSeries("month") 
-             )
+        pipe(scpChart.getChart("#container"),scpChart.getSeries, scpChart.prepareSeries(sender), scpChart.updateNotesOfVisibleSeries("month"))
 
     },
     //Initializing Primary X Axis
@@ -348,22 +372,28 @@ $("#container").ejChart({
 $("h3").text(headerDiagramm);
 
 if(queryString_1 != "" && queryString_2 != "" && queryString_3 != ""){
-    firstQuery();
-    secondQuery();
-    thirdQuery();
+    (async () => {
+        await firstQuery();
+        await secondQuery();
+        await thirdQuery();
+    })();
 }
 else if (queryString_1 != "" && queryString_2 != "") {
-    firstQuery();
-    secondQuery();
+    (async () => {
+        await firstQuery();
+        await secondQuery();
+    })();
 }
 else if (queryString_1 != "") {
-    firstQuery();
+    (async () => {
+        await firstQuery();
+    })();
 }
 else {
     console.log("There're no query data!!");
 }
 
-function firstQuery(){
+async  function firstQuery(){
     dataMachine.runQuery("read", nameDB, queryString_1)
     .then(JSON.parse)
     .then(function(data) {
@@ -381,8 +411,24 @@ function firstQuery(){
         // Translates the data to a format the charts understand
         chartData = dataTranslator.translate(4)
 
+        //month series
+        let i=1;
+        chartData.forEach(element => {
+            if(element.x==""){
+            if(i < 10){
+                    element.x='0'+i;        
+                }else{
+                    element.x=i;    
+                }       
+            }else{
+                element.x=element.x;   
+            }
+            i++;
+        })
+
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst, series ] = scpChart.updateChart(Number(month_1))(Interval.Month)(chartData)(month_1 + "." + year_1)
+        //const [ colorMst, series ] = scpChart.updateChart(Number(month_1))(Interval.Month)(chartData)(month_1 + "." + year_1)
+        const [ colorMst, series ] = scpChart.updateChart(chartData)(month_1 + "." + year_1)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_1").text( scpChart.sumSeries(chartData) + " kWh" )
@@ -409,11 +455,11 @@ function firstQuery(){
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_1)(recordMask)
 
-        msts.push([sessionStorage.getItem("mstID"), nameMst, colorMst])
+        msts.push([sessionStorage.getItem("mstID_1"), nameMst, colorMst])
 
         getNotesMonth(
-            sessionStorage.getItem("mstID")
-        )(
+            sessionStorage.getItem("mstID_1")
+        )(year_1)(0)(
             nameMst
         )(
             colorMst
@@ -423,7 +469,7 @@ function firstQuery(){
     });
 }
 
-function secondQuery(){
+async  function secondQuery(){
     dataMachine.runQuery("read", nameDB, queryString_2)
     .then(JSON.parse)
     .then(function(data){
@@ -438,8 +484,24 @@ function secondQuery(){
         dataTranslator.sumDays(year_2, month_2);
         chartData = dataTranslator.translate(4);
 
+        //month series
+        let i=1;
+        chartData.forEach(element => {
+            if(element.x==""){
+            if(i < 10){
+                    element.x='0'+i;        
+                }else{
+                    element.x=i;    
+                }       
+            }else{
+                element.x=element.x;   
+            }
+            i++;
+        })
+
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst2, series2 ] = scpChart.updateChart(Number(month_2))(Interval.Month)(chartData)(month_2 + "." + year_2)
+        //const [ colorMst2, series2 ] = scpChart.updateChart(Number(month_2))(Interval.Month)(chartData)(month_2 + "." + year_2)
+        const [ colorMst2, series2 ] = scpChart.updateChart(chartData)(month_2 + "." + year_2)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_2").text( scpChart.sumSeries(chartData) + " kWh" )
@@ -466,11 +528,11 @@ function secondQuery(){
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_2)(recordMask)
 
-        msts.push([sessionStorage.getItem("mstID_2"), nameMst_2, colorMst2])
+        msts.push([sessionStorage.getItem("mstID_1"), nameMst, colorMst2])
 
         getNotesMonth(
-            sessionStorage.getItem("mstID")
-        )(
+            sessionStorage.getItem("mstID_1")
+        )(year_2)(1)(
             sessionStorage.getItem("nameMst")
         )(
             colorMst2
@@ -480,7 +542,7 @@ function secondQuery(){
     });
 }
 
-function thirdQuery(){
+async  function thirdQuery(){
     dataMachine.runQuery("read", nameDB, queryString_3)
     .then(JSON.parse)
     .then(function(data) {
@@ -495,8 +557,24 @@ function thirdQuery(){
         dataTranslator.sumDays(year_3, month_3);
         chartData = dataTranslator.translate(4);
 
+        //month series
+        let i=1;
+        chartData.forEach(element => {
+            if(element.x==""){
+            if(i < 10){
+                    element.x='0'+i;        
+                }else{
+                    element.x=i;    
+                }       
+            }else{
+                element.x=element.x;   
+            }
+            i++;
+        })
+
         // Updates the chart and gets the color of the current series as a return value
-        const [ colorMst3, series3 ] = scpChart.updateChart(Number(month_3))(Interval.Month)(chartData)(month_3 + "." + year_3)
+        //const [ colorMst3, series3 ] = scpChart.updateChart(Number(month_3))(Interval.Month)(chartData)(month_3 + "." + year_3)
+        const [ colorMst3, series3 ] = scpChart.updateChart(chartData)(month_3 + "." + year_3)
 
         // Sums up all the values of the month for the given Messstelle
         $("#consumption-month_3").text( scpChart.sumSeries(chartData) + " kWh" )
@@ -523,11 +601,11 @@ function thirdQuery(){
         // Fill table with energy records
         scpChart.fillTable(chartData)(tblChartData_3)(recordMask)
 
-        msts.push([sessionStorage.getItem("mstID_3"), nameMst_3, colorMst3])
+        msts.push([sessionStorage.getItem("mstID_1"), nameMst, colorMst3])
 
         getNotesMonth(
-            sessionStorage.getItem("mstID")
-        )(
+            sessionStorage.getItem("mstID_1")
+        )(year_3)(2)(
             sessionStorage.getItem("nameMst")
         )(
             colorMst3

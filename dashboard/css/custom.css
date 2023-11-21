@@ -1,7 +1,54 @@
 .act_background{
     background-color: #b5b8c1 !important;
 }
-
+.tableimage{
+    max-width: 83%;
+    margin-top: 18px;
+    width: 66px;
+    height: 74px;
+    display: none;
+}
+.showtableimage{
+    max-width: 96%;
+    display: block;
+}
+.graphimage{
+    max-width: 60%;
+    margin-top: 16px;
+    display: none;
+}
+.showgraphimage {
+    max-width: 88%;
+    margin-top: 16px;
+    margin: -115px 0 0 0;
+    height: 94px;
+    display: block;
+}
+.stretch-card .showgraphimage {
+    display: none;
+}
+.hide_table_main .showgraphimage {
+    display: block !important;
+}
+.stretch-card .showtableimage {
+    display: none;
+}
+.hide_table_main .showtableimage {
+    display: block !important;
+}
+.chart_tile .card-body.pr-0.set-tile .showgraphimage {
+    display: block;
+    margin: -2px 0 0 10px;
+}
+.chart_tile .card-body.pr-0.set-tile {
+    margin-right: 14px;
+}
+.dashboard_count_div .chart_tile.hide_table_main .set-tile .overflow-hide {
+    padding-left: 70px !important;
+}
+.chart_tile .card-body.pr-0.row.set-tile .showgraphimage {
+    margin: -2px 0 0 23px;
+}
 .logo-g-analysis{
     height: 41.67px !important;
     width: 125px  !important;
@@ -11,7 +58,10 @@
     /* overflow-y: hidden; */
     overflow-y: auto;
 }
-
+.cancel {
+    margin-left: 8px;
+    margin-top: 32px;
+}
 .measurement-select{
     padding: .4375rem .75rem !important; 
     border: 0 !important;
@@ -169,7 +219,7 @@
 }
 
 #measurement_modal_table td{
-    padding:  6px !important;
+    padding:  10px 6px 10px 6px !important;
     font-size: small;
 }
 
@@ -178,7 +228,34 @@
 }
 
 #energy_modal_table td{
-    padding:  6px !important;
+    padding:  10px 6px 10px 6px !important;
+    font-size: small;
+}
+
+#energy_outer_modal_table th{
+    padding:  10px 6px 10px 6px !important;
+}
+
+#energy_outer_modal_table td{
+    padding:  10px 6px 10px 6px !important;
+    font-size: small;
+}
+
+#measurement_outer_modal_table th{
+    padding:  10px 6px 10px 6px !important;
+}
+
+#measurement_outer_modal_table td{
+    padding:  10px 6px 10px 6px !important;
+    font-size: small;
+}
+
+#product_outer_modal_table th{
+    padding:  10px 6px 10px 6px !important;
+}
+
+#product_outer_modal_table td{
+    padding:  10px 6px 10px 6px !important;
     font-size: small;
 }
 
@@ -187,7 +264,7 @@
 }
 
 #product_modal_table td{
-    padding:  6px !important;
+    padding:  10px 6px 10px 6px !important;
     font-size: small;
 }
 
@@ -200,7 +277,7 @@
 }
 
 .dashboard_count_div .stretch-card{
-    padding-right: 15px;
+    padding-right: 10px;
     padding-left: 15px;
 }
 
@@ -269,9 +346,19 @@
     /* height: auto !important; */
 
     height: 145px !important;
-    width: 285px  !important;
+    width: 250px  !important;
 }
-#dashboard_count_div_tile .hide_table_main table{
+.energy_tile_modal .form-check .form-check-label, .product_tile_modal .form-check .form-check-label, .bd-example-modal-lg .form-check .form-check-label{
+    width: 100%;
+}
+.table_tile .save_table_div_show_table {
+    overflow: auto;
+    padding: 0 10px;
+}
+/*#dashboard_count_div_tile .hide_table_main table{
+   display: none;
+}*/
+#dashboard_count_div_tile .hide-table table{
    display: none;
 }
 .card-border{
@@ -282,7 +369,7 @@
 }
 #dashboard_count_div_tile .overflow-hide{
     /* margin: -105px 16px 21px 22px;  */
-    padding: 0px 0px 0px 109px;
+    padding: 0px 0px 0px 62px;
 }
 .hide_table_preview{
     height: 145px !important;
@@ -346,7 +433,8 @@
 
  #dashboard_count_div_tile table{
     /* margin-left: -58px; */
-    margin-left: -49px;
+    margin-left: -10px;
+    margin-top: 5px;
  }
 
  #chart_records_label{
@@ -427,7 +515,7 @@
 
 .tile-image-icon-table{
     height: 57px;
-    width: 55px;
+    width: 60px;
     margin: -16px 13px -9px 0px !important;
 }
 
@@ -640,7 +728,7 @@
 }
 
 .dashboard_count_div .stretch-card .card .ml-3{
-    width: 97%;
+    width: 96%;
 }
 
 #dashboard_count_div_tile canvas{
@@ -737,6 +825,16 @@
 .dashboard_count_div .hide_table_main .chart_overflow_margin_4{
     margin-top: -304px !important;
 }
+
+/*.dashboard_count_div .hide_table_main .table_overflow_margin_2{
+    margin-top: -157px !important;
+}*/
+/*.dashboard_count_div .hide_table_main .table_overflow_margin_3{
+    margin-top: -230px !important;
+}*/
+/*.dashboard_count_div .hide_table_main .table_overflow_margin_4{
+    margin-top: -304px !important;
+}*/
 
 #dashboard_loader_div{
     text-align: center;
@@ -913,6 +1011,16 @@
     margin-right: 5px !important;
 }
 .chart_tile_expand_view .action-modal-button-div .id_val{
+    height: 17px !important;
+    width: 17px !important;
+    margin-right: 5px !important;
+}
+.table_tile_expand_view .action-modal-button-div .edit_val{
+    height: 17px !important;
+    width: 17px !important;
+    margin-right: 5px !important;
+}
+.table_tile_expand_view .action-modal-button-div .id_val{
     height: 17px !important;
     width: 17px !important;
     margin-right: 5px !important;

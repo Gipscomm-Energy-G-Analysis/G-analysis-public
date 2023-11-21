@@ -292,11 +292,11 @@
           commonSeriesOptions: csOptions,
           series: [],
           zooming :{
-            enable: true,
+            /*enable: true,
             enablePinching: true,
             enableDeferredZoom : true,
             enableScrollbar : true,
-            enableMouseWheel : true
+            enableMouseWheel : true*/
           }
         });
 
@@ -330,7 +330,7 @@
   function firstQuery(){
     dataMachine.runQuery("read", nameDB, queryString_1)
     .then(function(data){
-
+console.log(data);
       let jsonData = JSON.parse(data);
 
       console.log("Data parsed to JSON");
@@ -358,12 +358,11 @@
           chartData[i].x,
           commanFunctionDottoCommaValue(chartData[i].y)
         ]).draw();
-
+      }
      	if(sumBenDef>0){$("#consumption-month_1").text(Math.round(sumBenDef/4) + " kWh"); updateChart(chartData, nameMst_1);}
      
 	/*else{alert("Data not available/No Operation on " +nameMst_1); $("#consumption-month_1").text((sumBenDef)+" kWh (Data not available/No Operation)"+ nameMst_1); }*/
       else{alert("Data not available");}
-	 }
     });
   }
 

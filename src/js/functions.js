@@ -432,9 +432,35 @@ try {
             tag = $("#diagTag").val(),
             von = $("#vonDiag").val(),
             bis = $("#bisDiag").val(),
+
+            von1 = $("#vonDiag1").val(),
+            bis1 = $("#bisDiag1").val(),
+            von2 = $("#vonDiag2").val(),
+            bis2 = $("#bisDiag2").val(),
+            von3 = $("#vonDiag3").val(),
+            bis3 = $("#bisDiag3").val(),
+
             timeInterval = $("#zeitrDiag2").val(),
             chartType = $("#typDiag2").val(),
             displayMean = $("#avgDiag2").is(":checked"),
+            startWochenNumber1= $("#startWochen1").val().slice(6, 8),
+            endeWochenNumber1= $("#endeWochen1").val().slice(6, 8),
+            startWochenYear1 = $("#startWochen1").val().slice(0, 4),
+            endWochenYear1 = $("#endeWochen1").val().slice(0, 4),
+            startWochenNumber2= $("#startWochen2").val().slice(6, 8),
+            endeWochenNumber2= $("#endeWochen2").val().slice(6, 8),
+            startWochenYear2 = $("#startWochen2").val().slice(0, 4),
+            endWochenYear2 = $("#endeWochen2").val().slice(0, 4),
+            startWochenNumber3= $("#startWochen3").val().slice(6, 8),
+            endeWochenNumber3= $("#endeWochen3").val().slice(6, 8),
+            startWochenYear3 = $("#startWochen3").val().slice(0, 4),
+            endWochenYear3 = $("#endeWochen3").val().slice(0, 4),
+            startWeekDate1= dateConvert(weekdate(startWochenYear1,startWochenNumber1, 0)),
+            endWeekDate1= dateConvert(weekdate(endWochenYear1, endeWochenNumber1, 6)),
+            startWeekDate2= dateConvert(weekdate(startWochenYear2,startWochenNumber2, 0)),
+            endWeekDate2= dateConvert(weekdate(endWochenYear2, endeWochenNumber2, 6)),
+            startWeekDate3= dateConvert(weekdate(startWochenYear3,startWochenNumber3, 0)),
+            endWeekDate3= dateConvert(weekdate(endWochenYear3, endeWochenNumber3, 6)),
             vers = 0;
         valName = "power";
 
@@ -574,6 +600,18 @@ try {
             }
             queryString_1 += "ORDER by time_de ";
         }
+
+        if(timeInterval==="Wochen"){
+            queryString_1 = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + idMst + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate1+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate1+"' ORDER by time_de";
+            queryString_2 = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + idMst + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate2+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate2+"' ORDER by time_de";
+            queryString_3 = "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + idMst + "' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate3+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate3+"' ORDER by time_de";
+        }
+        if(timeInterval==="Benutzerdefiniert"){
+            queryString_1 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + idMst + "' AND time_de BETWEEN '" + von1 + "' AND '" + bis1 + "' ORDER by time_de";
+            queryString_2 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + idMst + "' AND time_de BETWEEN '" + von2 + "' AND '" + bis2 + "' ORDER by time_de";
+            queryString_3 = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " + valName + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '" + idMst + "' AND time_de BETWEEN '" + von3 + "' AND '" + bis3 + "' ORDER by time_de";
+        }
+
         vers = 2;
 
         [
@@ -583,6 +621,12 @@ try {
             ["day", tag],
             ["from", von],
             ["to", bis],
+            ["from1", von1],
+            ["to1", bis1],
+            ["from2", von2],
+            ["to2", bis2],
+            ["from3", von3],
+            ["to3", bis3],
             ["chartType", chartType],
             ["displayMean", displayMean],
             ["nameMst", nameMst],
@@ -595,6 +639,28 @@ try {
             ["day_1", tag_1],
             ["day_2", tag_2],
             ["day_3", tag_3],
+
+            ["startWeek1",startWochenNumber1],
+            ["endWeek1", endeWochenNumber1],
+            ["startWeekYear1", startWochenYear1],
+            ["endWeekYear1", endWochenYear1],
+            ["startdate1",$("#startWochen1").val()],
+            ["enddate1",$("#endeWochen1").val()],
+
+            ["startWeek2",startWochenNumber2],
+            ["endWeek2", endeWochenNumber2],
+            ["startWeekYear2", startWochenYear2],
+            ["endWeekYear2", endWochenYear2],
+            ["startdate2",$("#startWochen2").val()],
+            ["enddate2",$("#endeWochen2").val()],
+
+            ["startWeek3",startWochenNumber3],
+            ["endWeek3", endeWochenNumber3],
+            ["startWeekYear3", startWochenYear3],
+            ["endWeekYear3", endWochenYear3],
+            ["startdate3",$("#startWochen3").val()],
+            ["enddate3",$("#endeWochen3").val()],
+
             ["queryString_1", queryString_1],
             ["queryString_2", queryString_2],
             ["queryString_3", queryString_3]
@@ -613,6 +679,10 @@ try {
                 window.open("chartDay2.html", "_blank");
             } else if (timeInterval == "Tag 15min") {
                 window.open("chartDay15min2.html", "_blank");
+            } else if (timeInterval == "Wochen") {
+                window.open("chartWeek2.html", "_blank");
+            } else if (timeInterval == "Benutzerdefiniert") {
+                window.open("chartBenDef15min2.html", "_blank");
             } else {
                 window.open("chartBenDef15min2.html", "_blank");
             }
@@ -673,7 +743,7 @@ try {
                     else {
                         if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
-                else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                else a += "AND time_de BETWEEN '" + y + "' AND '" + z + "' ";
                 a += "ORDER by time_de ";
             }
             if (ra === "berechnet") {
@@ -687,6 +757,7 @@ try {
                     }
                 else b += "AND Time BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
                 b += "ORDER by Time ";
+                
             } else {
                 b = "SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, " +
                     c + " AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id ";
@@ -701,8 +772,9 @@ try {
                     else {
                         if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
-                else b += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                else b += "AND time_de BETWEEN '" + y + "' AND '" + z + "' ";
                 b += "ORDER by time_de ";
+                
             }
             if (xa === "berechnet") {
                 e = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
@@ -729,8 +801,9 @@ try {
                     else {
                         if ("Monat" == p || "Monat 15min" == p) e += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
-                else e += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                else e += "AND time_de BETWEEN '" + y + "' AND '" + z + "' ";
                 e += "ORDER by time_de "
+
             }
         } else if ("" != f) {
             if (qa === "berechnet") {
@@ -758,8 +831,9 @@ try {
                     else {
                         if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
-                else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
+                else a += "AND time_de BETWEEN '" + y + "' AND '" + z + "' ";
                 a += "ORDER by time_de "; 
+                
             }
             if (ra === "berechnet") {
                 b = "SELECT mst_ID, Name, " + toGermanDate("Time") + " AS Time, Value, ConvFactor FROM berechneteEnergiedaten "
@@ -786,8 +860,8 @@ try {
                     else {
                         if ("Monat" == p || "Monat 15min" == p) b += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
-                else b += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                b += "ORDER by time_de "
+                else b += "AND time_de BETWEEN '" + y + "' AND '" + z + "' ";
+                b += "ORDER by time_de ";
             }
         } else {
             if (qa === "berechnet") {
@@ -815,8 +889,9 @@ try {
                     else {
                         if ("Monat" == p || "Monat 15min" == p) a += "AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '" + t + "' "
                     }
-                else a += "AND time_de BETWEEN '" + transformDate(y) + "' AND '" + transformDate(z) + "' ";
-                a += "ORDER by time_de "
+                else a += "AND time_de BETWEEN '" + y + "' AND '" + z + "' ";
+                a += "ORDER by time_de ";
+                
             }
         }
         if(p==="Wochen"){

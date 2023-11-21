@@ -53,7 +53,8 @@
                     </div>
 
                     <div class="form-group col-md-3">
-                      <input type="button" class="btn btn-sm btn-success click_common_btn" id="production_btn_table" value='Show Results'>  
+                      <input type="button" class="btn btn-sm btn-success click_common_btn" id="production_btn_table" value='Show Results'>
+                      <button type="button" class="btn btn-sm btn-secondary cancel">Stornieren</button>  
                     </div>
 
                   </div>
@@ -196,6 +197,46 @@
 
                           </div>
                           <!-- --end -->
+                          <!-- 07-9-23 -->
+                          <div class="row">
+                            <div class="form-group col-md-3">
+                              <div class="form-check form-check-primary">
+                                <label class="form-check-label">
+                                Erweiterte Ansicht anwenden
+                                  <input type="checkbox" class="text-mute form-check-input" id="expand_view_product_table" name="expand_view" value="0">  
+                                <i class="input-helper"></i></label>
+                              </div>
+                            </div>
+                          
+                          <!-- --end -->
+                          <!-- <--08-09-2023 -->
+                          <diV class="form-group col-md-2">
+                            <div class="form-check form-check-primary">
+                              <label class="form-check-label">
+                                Kachelstruktur anpassen
+                                <input type="checkbox" class="text-mute form-check-input" id="product_table_outside_tile_structure" name="table_outside_tile_structure" value="0">  
+                              </label>
+                            </div>
+                          </div>
+                          <!-- -end -->
+
+                          <!-- 08-09-2023 -->
+                          <div class="form-group col-md-2 table_outisde_tile_controls" style="display: none">
+                            <label for="table_height_outer_structure" class="text-mute">Äußere Kachelspalte</label>
+                            <input type="number" class="form-control form-control-sm text-dark" id="product_table_height_outer_structure" placeholder="Outer Column">
+                          </div>
+
+                          <div class="form-group col-md-2 table_outisde_tile_controls"  style="display: none">
+                            <label for="table_width_outer_structure" class="text-mute">Außerhalb der Kachelreihe</label>
+                            <input type="number" class="form-control form-control-sm text-dark" id="product_table_width_outer_structure" placeholder="Outer Row">
+                          </div>
+
+                          <div class="form-group col-md-2 table_outisde_tile_controls" style="display: none">
+                            <label for="table_outer_table_limit_column" class="text-mute">Spaltenlimit</label>
+                            <input type="number" class="form-control form-control-sm text-dark" id="product_table_outer_table_limit_column" placeholder="Limit Column" value='1'>
+                          </div>
+                          </div>
+                          <!-- -end- -->
                           <!-- 23-8-21 -->
                           <div class="row dashboard_modal_tile gernerated_product_modal_tiles">
                           </div>

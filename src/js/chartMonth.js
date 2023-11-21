@@ -168,6 +168,23 @@ if (chartType == "line") {
             visible: true
         }
     }
+} else if (chartType == "column") {
+    csOptions = {
+        tooltip: {
+            visible: true
+        },
+        border: {
+            width: 2
+        },
+        marker: {
+            shape: 'circle',
+            size: {
+                height: 0,
+                width: 0
+            },
+            visible: true
+        }
+    }
 } else {
     csOptions = {
         tooltip: {
@@ -358,6 +375,21 @@ function firstQuery() {
             // Translates the data to a format the charts understand
             chartData = dataTranslator.translate(4)
 
+            //month series
+            let i=1;
+            chartData.forEach(element => {
+                if(element.x==""){
+                if(i < 10){
+                        element.x='0'+i;        
+                    }else{
+                        element.x=i;    
+                    }       
+                }else{
+                    element.x=element.x;   
+                }
+                i++;
+            })
+
             // Updates the chart and gets the color of the current series as a return value
             const [colorMst, series] = scpChart.updateChart(chartData)(nameMst_1)
 
@@ -411,6 +443,21 @@ function secondQuery() {
             dataTranslator.sumDays(year, month);
             chartData = dataTranslator.translate(4);
 
+            //month series
+            let i=1;
+            chartData.forEach(element => {
+                if(element.x==""){
+                if(i < 10){
+                        element.x='0'+i;        
+                    }else{
+                        element.x=i;    
+                    }       
+                }else{
+                    element.x=element.x;   
+                }
+                i++;
+            })
+
             // Updates the chart and gets the color of the current series as a return value
             const [colorMst2, series2] = scpChart.updateChart(chartData)(nameMst_2)
 
@@ -463,6 +510,21 @@ function thirdQuery() {
 
             dataTranslator.sumDays(year, month);
             chartData = dataTranslator.translate(4);
+
+            //month series
+            let i=1;
+            chartData.forEach(element => {
+                if(element.x==""){
+                if(i < 10){
+                        element.x='0'+i;        
+                    }else{
+                        element.x=i;    
+                    }       
+                }else{
+                    element.x=element.x;   
+                }
+                i++;
+            })
 
              // Updates the chart and gets the color of the current series as a return value
             const [colorMst3, series3] = scpChart.updateChart(chartData)(nameMst_3)

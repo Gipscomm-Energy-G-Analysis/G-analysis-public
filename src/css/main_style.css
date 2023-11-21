@@ -139,7 +139,7 @@ h3{
 #masseneingabeNameUndInputMatrixIMw{
   height: 600px;
 }
-.liegPfad, .orgPfad{
+.liegPfad, .orgPfad .berPfad{
   font-size: 12px;
   width: 145px;
 }
@@ -816,6 +816,9 @@ nav {
   margin-bottom:0.1cm;
   width:7.2cm;
   /*border:1px solid red;*/
+}
+.three-column {
+    width: 7.1cm;
 }
 .controlDivInternTab{
   width: 6.5cm;

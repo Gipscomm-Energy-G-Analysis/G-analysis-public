@@ -170,6 +170,23 @@ if (chartType == "line") {
             visible: true
         }
     }
+} else if (chartType == "column") {
+    csOptions = {
+        tooltip: {
+            visible: true
+        },
+        border: {
+            width: 2
+        },
+        marker: {
+            shape: 'circle',
+            size: {
+                height: 0,
+                width: 0
+            },
+            visible: true
+        }
+    }
 } else {
     csOptions = {
         tooltip: {
