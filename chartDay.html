@@ -4,6 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
     <link type="text/css" rel="stylesheet" href="Syncfusion/content/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.min.css">
     <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.structure.min.css">
@@ -109,10 +110,10 @@
         <button type="button" id="btnNoteAbbr">Abbrechen</button>
     </div>
     <div id="savePopup" style="display:none;">
-        <input type="text" name="" placeholder="Name">
+        <input type="text" id="name" name="name" placeholder="Name" style="width: 90%;">
         <br>
         <br>
-        <textarea id="bemerkungSave" name="name" rows="3" cols="60" placeholder="Bemerkung"></textarea>
+        <textarea id="beschreibungSave" name="beschreibung" rows="3" cols="40" placeholder="Beschreibung" style="width: 90%;"></textarea>
         <br>
         <br>
         <button type="button" id="btnSaveOk">Ok</button>

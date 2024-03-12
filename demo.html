@@ -1,52 +1,57 @@
   <!DOCTYPE html>
   <html>
     <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta charset="utf-8">
       <link id="indexStyle" rel="stylesheet" href="dist/css/login_style.min.css" type="text/css" media="all">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
       <script type="text/javascript" src="src/js/fpCore.js"></script>
     </head>
     <body>
       <!--Logo-->
-      <img id="Glogo" src="images/gLogoOrg3.png" alt="Gipscomm-Energie Logo" style="float:left; height:50px; width:150px;">
-      <img id="logo" src="images/g_analysisNeu6.png" alt="G-Analysis Logo" style="clear:right; float:right;height:50px;width:150px;">
+      <img id="Glogo" src="images/gLogoOrg3.png" alt="Gipscomm-Energie Logo" style="float:left; height:60px; margin: 40px 0px 0px 40px;">
+      <img id="logo" src="images/g_analysisNeu6.png" alt="G-Analysis Logo" style="clear:right; float:right;height:60px;margin: 40px 40px 0px 0px;">
       <div id="formReg">
-        <p>Um Ihnen einen Demozugang zur Verfügung stellen
-          zu können schicken Sie uns eine E-mail an die
-          unten angegebene Adresse oder füllen Sie das folgende
-          Formular aus und bestätigen mit dem "Absenden" Knopf.<br><br>
+        <p style="width: 90%;">Um Ihnen einen Demo-Zugang zur Verfügung stellen zu können, 
+          schicken Sie uns eine E-mail an die unten angegebene Adresse 
+          oder füllen Sie das folgende Formular aus und bestätigen mit "Absenden".<br><br>
           info@energie-gipscomm.de</p>
           <br>
-          <label>Anrede*:</label>
+          <label>Anrede<span style="color:#E94649;position:sticky;font-size:15px;">*</span>:</label>
           <select id="anredeDemo">
             <option> </option>
             <option>Herr</option>
             <option>Frau</option>
           </select>
-          <label>Vorname:</label>
+          <label>Vorname<span style="color:#E94649;position:sticky;font-size:15px;">*</span>:</label>
           <input id="vornameDemo" type="text" name="Vorname"/>
-          <label>Nachname*:</label>
+          <label>Nachname<span style="color:#E94649;position:sticky;font-size:15px;">*</span>:</label>
           <input id="nachnameDemo" type="text" name="Nachname"/>
-          <label>Firma*:</label>
+          <label>Firma<span style="color:#E94649;position:sticky;font-size:15px;">*</span>:</label>
           <input id="firmaDemo" type="text" name="Firma"/>
-          <label>E-mail*: ->wenn mehrere durch Komma trennen</label>
-          <input id="emailDemo" type="text" name="E-mail"/>
-          <label>Mitteilung:</label>
+          <label>E-mail<span style="color:#E94649;position:sticky;font-size:15px;">*</span>: ->wenn mehrere durch Komma trennen</label>
+          <input id="emailDemo" type="email" name="E-mail"/>
+          <label>Mitteilung<span style="color:#E94649;position:sticky;font-size:15px;">*</span>:</label>
           <textarea id="mitteillungDemo" rows="10" name="Mitteilung"></textarea>
           <br>
+          <label>GDPR Vereinbarung<span style="color:#E94649;position:sticky;font-size:15px;">*</span></label>
+          <p style="font-weight: normal;width: 90%;margin-top: 5px;"><input type="checkbox" id="gdpragreement" name="gdpragreement" value="GDPR agreement" style="width: auto;margin-left: 0px;float: left;"><span class="agreement"> Ich bin damit einverstanden, dass diese Website die von mir übermittelten Daten speichert, damit sie auf meine Anfrage antworten kann.</span></p>
+          <label>Datenschutz-Bestimmungen<span style="color:#E94649;position:sticky;font-size:15px;">*</span></label>
+          <p style="font-weight: normal;width: 90%;margin-top: 5px;"><input type="checkbox" id="privacypolicy" name="privacypolicy" value="Privacy Policy" style="width: auto;margin-left: 0px;float: left;"><span class="policy"> Ich habe die Datenschutzerklärung gelesen.</span></p>
           <button id="btnRegGast">Absenden</button>
         </div>
         <script type="text/javascript">
 
-            const data =
+            /*const data =
                 { anrede: $("#anredeDemo").val()
                 , vorname: $("#vornameDemo").val()
                 , nachname: $("#nachnameDemo").val()
                 , firma: $("#firmaDemo").val()
                 , empfaenger: $("#emailDemo").val()
                 , mitteilung: $("#mitteillungDemo").val()
-                }
+                }*/
 
-            const sendMail =
+            /*const sendMail =
                 () =>
                 ajaxPost("php/sendMail.php")({data})
                 .then(
@@ -54,9 +59,59 @@
                     adressesOfFailedEMails.length === 0 ?
                     adressesOfFailedEMails.forEach(console.log) :
                     (alert("Die E-Mail wurde erfolgreich versendet."), window.open("index.html", "_self"))
-                )
+                )*/
 
-            $("#btnRegGast").click(sendMail)
+             //$("#btnRegGast").click(sendMail)
+            $(document).on('click', '#btnRegGast', function(){
+              $(".error").remove();
+              var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+              if ($('#anredeDemo').val() == ""){
+                  $('#anredeDemo').after('<span class="error" style="color:#E94649;display: block;padding-left: 20px;">This field is required</span>');
+                  }
+              else if ($('#vornameDemo').val() == ""){
+                  $('#vornameDemo').after('<span class="error" style="color:#E94649;display: block;padding-left: 20px;">This field is required</span>');
+              }  
+              else if ($('#nachnameDemo').val() == ""){
+                  $('#nachnameDemo').after('<span class="error" style="color:#E94649;display: block;padding-left: 20px;">This field is required</span>');
+              }  
+              else if ($('#firmaDemo').val() == ""){
+                  $('#firmaDemo').after('<span class="error" style="color:#E94649;display: block;padding-left: 20px;">This field is required</span>');
+              } 
+              else if ($('#emailDemo').val() == ""){
+                  $('#emailDemo').after('<span class="error" style="color:#E94649;display: block;padding-left: 20px;">This field is required</span>');
+              }
+              else if (reg.test($("#emailDemo").val()) == false){
+                $('#emailDemo').after('<span class="error" style="color:#E94649;display: block;padding-left: 20px;">Invalid Email Address</span>');
+              }
+              else if ($('#mitteillungDemo').val() == ""){
+                  $('#mitteillungDemo').after('<span class="error" style="color:#E94649;display: block;padding-left: 20px;">This field is required</span>');  
+              } 
+              else if ($("#gdpragreement").prop('checked') == false){
+                  $('.agreement').after('<span class="error" style="color:#E94649;display: block;">This field is required</span>');
+              }
+              else if ($("#privacypolicy").prop('checked') == false){
+                  $('.policy').after('<span class="error" style="color:#E94649;display: block;">This field is required</span>');
+                  return false;
+              }
+              else{
+                  $.ajax({
+                    type: "POST",
+                    async: !0,
+                    url: "php/sendMail.php",
+                    data: { 
+                      anrede: $("#anredeDemo").val(),
+                      vorname: $("#vornameDemo").val(),
+                      nachname: $("#nachnameDemo").val(),
+                      firma: $("#firmaDemo").val(),
+                      empfaenger: $("#emailDemo").val(),
+                      mitteilung: $("#mitteillungDemo").val()
+                      },
+                    success: function (a) {
+                      alert("Die E-Mail wurde erfolgreich versendet."), window.open("index.html", "_self")
+                    }
+                  });
+              }
+            });
         </script>
     </body>
   </html>

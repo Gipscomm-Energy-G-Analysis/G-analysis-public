@@ -155,7 +155,7 @@
                                                 <h3 data-menus="2-2">Diagramme</h3>
                                                 <div class="sub_menu_open">
                                                     <span data-menus="2-2-1">Neu erstellen</span>
-                                                    <i class="ti-angle-down"></i>
+                                                    <i class="ti-angle-down angle-down"></i>
                                                     <div class="sub_menu_1_div">
                                                         <a href="javascript:void(0);" id="mstVerglMenu"
                                                             class="dashboard_sub_menu_1 dashboard_menu_click"
@@ -168,9 +168,24 @@
                                                             data-menus="2-2-1-3">Kennzahlendarstellung</a>
                                                     </div>
                                                 </div>
-                                                <a href="javascript:void(0);" id="zeitVerglMenu"
+                                                <div class="sub_menu_open">
+                                                    <span data-menus="2-2-1">Gespeichertes Laden</span>
+                                                    <i class="ti-angle-down angle-down-diagramme-main"></i>
+                                                    <div class="sub_menu_1_div">
+                                                        <a href="javascript:void(0);" id="mstVerglMenu"
+                                                            class="dashboard_sub_menu_1 dashboard_menu_click messstellen_graph"
+                                                            data-menus="2-2-1-1">Messstellen Graph</a>
+                                                        <a href="javascript:void(0);" id="zeitVerglMenu"
+                                                            class="dashboard_sub_menu_1 dashboard_menu_click zeitvergleich_graph"
+                                                            data-menus="2-2-1-2">Zeitvergleich Graph</a>
+                                                        <a href="javascript:void(0);" id="knzDarst"
+                                                            class="dashboard_sub_menu_1 dashboard_menu_click kennzahlen_graph"
+                                                            data-menus="2-2-1-2">Kennzahlen Graph</a>    
+                                                    </div>
+                                                </div>
+                                                <!-- <a href="javascript:void(0);" id="zeitVerglMenu"
                                                     class="dashboard_menu_click gespLadenMenu" data-menus="2-2-2">Gespeichertes
-                                                    Laden</a>
+                                                    Laden</a> -->
                                             </div>
                                             <div class="column">
                                                 <h3 id="verbExportMenu" class="dashboard_menu_click cursor_pointer"
@@ -202,7 +217,7 @@
                                     <div class="row">
                                         <div class="column">
                                             <h3 data-menus="3-1">Rechteverwaltung</h3>
-                                            <a href="javascript:void(0);" id="betrGrpMenu" data-menus="3-1-1"
+                                            <!-- <a href="javascript:void(0);" id="betrGrpMenu" data-menus="3-1-1"
                                                 class="dashboard_menu_click admin_panel">Betreuergruppen</a>
                                             <a href="javascript:void(0);" id="manGrpMenu" data-menus="3-1-2"
                                                 class="dashboard_menu_click admin_panel">Mandantengruppen</a>
@@ -211,7 +226,7 @@
                                             <a href="javascript:void(0);" id="admMenu" data-menus="3-1-4"
                                                 class="dashboard_menu_click admin_panel">Admins</a>
                                             <a href="javascript:void(0);" id="benMenu" data-menus="3-1-5"
-                                                class="dashboard_menu_click admin_panel">Benutzer</a>
+                                                class="dashboard_menu_click admin_panel">Benutzer</a> -->
                                             <a href="http://20.113.70.139/admin" id="adminPortalMenu" data-menus="3-1-6"
                                                 class="dashboard_menu_click admin_panel" target="_blank">Admin Portal</a>    
                                         </div>
@@ -332,7 +347,7 @@
 
                                             <div class="sub_menu_open">
                                                 <span data-menus="5-1-4">Erweiterungen</span>
-                                                <i class="ti-angle-down"></i>
+                                                <i class="ti-angle-down angle-down"></i>
                                                 <div class="sub_menu_1_div">
                                                     <a href="javascript:void(0);" data-menus="5-1-4-1" id="erwAnlMenu"
                                                         class="dashboard_sub_menu_1 dashboard_menu_click">Erweiterung
@@ -3451,8 +3466,6 @@
                             <label>Lieg.: </label>
                             <select class="liegPfad"></select>
                         </div>
-                        <br>
-                        <br>
                         <div class="sectionHeader">
                             <label>Konfiguration Diagramm Messstellenvergleich</label>
                         </div>
@@ -3702,8 +3715,10 @@
                             <select id="zeitrDiag2">
                                 <option>Jahr</option>
                                 <option>Monat</option>
+                                <option>Monat 15min</option>
                                 <option>Wochen</option>
                                 <option>Tag</option>
+                                <option>Tag 15min</option>
                                 <option>Benutzerdefiniert</option>
                             </select>
                         </div>
@@ -4168,6 +4183,11 @@
                             </fieldset>
                         </fieldset>
                         <div id="customYears" style="padding-left:18px;padding-bottom:5px;font-size:14px"><select id="year"></select></div>
+                        <div class="engine-checkbox" style="padding-left:18px;padding-bottom:5px;padding-top:5px;font-size:16px;">
+                            <input type="checkbox" class="activeEngine" id="all" name="activeEngine" value="all" checked/>All<br>
+                            <input type="checkbox" class="activeEngine" id="funktion" name="activeEngine" value="1" />In Funktion<br>
+                            <input type="checkbox" class="activeEngine" id="ausgeschaltet" name="activeEngine" value="0" />Ausgeschaltet
+                        </div>
                         <button id="btnSpaEfVTbl2Erstellen" name="2">SpaEfV Tabelle 2 Erstellen</button>
                     </div>
                 </div>
@@ -6646,7 +6666,7 @@
                               </div>
                               </div>-->
                                 <!--Ende kategorienDok-->
-                                <div id="dateiTabelle" style="padding:30px;width:65%;">
+                                <div id="dateiTabelle" style="padding:30px;width:100%;">
                                     <input id="dokuAuswahlAnl" type="file" name="fileAnl"
                                         title="Achtung! Der Dateiname des Dokumentes, darf maximal 30 Zeichen lang sein! Ausserdem werden Umlaute in ihre Ersatzformen umgeschrieben(z.B. Ä zu Ae usw.)">
                                     <br>
@@ -14304,8 +14324,8 @@
                             <th>Bezeichnung</th>
                             <th>Beschreibung</th>
                             <th>Typ</th>
-                            <th>Messstellen</th>
-                            <th>Bemerkung</th>
+                            <!-- <th>Messstellen</th>
+                            <th>Bemerkung</th> -->
                         </tr>
                     </thead>
                     <tbody></tbody>

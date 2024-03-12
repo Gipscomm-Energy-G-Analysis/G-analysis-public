@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
     <link href="Syncfusion/content/bootstrap.min.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.min.css">
@@ -45,6 +45,7 @@
       font-size: 12px;
       font-weight: 600;
       text-decoration: none;
+      border: 1px solid;
     }
     #saveKnz:hover,#diagSpeichern:hover {
       color:white;
@@ -166,6 +167,16 @@
             <tbody>
             </tbody>
         </table>
+    </div>
+    <div id="savePopup" style="display:none;">
+        <input type="text" id="name" name="name" placeholder="Name" style="width: 90%;">
+        <br>
+        <br>
+        <textarea id="beschreibungSave" name="beschreibung" rows="3" cols="40" placeholder="Beschreibung" style="width: 90%;"></textarea>
+        <br>
+        <br>
+        <button type="button" id="btnSaveOk">Ok</button>
+        <button type="button" id="btnSaveAbbr">Abbrechen</button>
     </div>
     <script type="text/javascript" src="dist/js/fpCore.min.js">
     </script>
@@ -396,6 +407,79 @@
             }
         }
     }
+
+    $("#btnSaveAbbr").click(function () {
+        $("#savePopup").dialog("close")
+    })
+
+    $("#btnSaveOk").click(function () {
+        $(".error").remove();
+        if ($('#name').val() == ""){
+            $('#name').after('<span class="error" style="color:#E94649;">Name field is required</span>');
+            return false;
+            }
+        if ($('#beschreibungSave').val() == ""){
+            $('#beschreibungSave').after('<span class="error" style="color:#E94649;">Beschreibung field is required</span>');
+            return false;
+        }  
+        $("#savePopup").dialog("close");
+        var jsonData = {
+            "nameDB": nameDB,
+            "chartType": chartType,
+            "name": $("#name").val(),
+            "timeSpan": timeSpan,
+            "knzID_1": knzID_1,
+            "knzID_2": knzID_2,
+            "knzID_3": knzID_3,
+            "knzName_1": knzName_1,
+            "knzName_2": knzName_2,
+            "knzName_3": knzName_3,
+            "knz_1_kennz": kennz,
+            "knz_1_obergr": obergr,
+            "knz_1_untergr": untergr,
+            "knz_1_zielwert": zielwert,
+            "knz_1_zielVon": zielVon,
+            "knz_1_zielBis": zielBis,
+            "headerKnz": header
+        }
+        $.ajax({
+            type: 'POST',
+            async: true,
+            url: 'php/saveGraphDiag.php',
+            data: {
+                ins: "saveDiag",
+                nameDB,
+                name: header,
+                typ: "knz",
+                beschreibung: $("#beschreibungSave").val(),
+                jsonDiag: JSON.stringify(jsonData)
+                //jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+            },
+            success: function (records) {
+                alert("Daten gespeichert!");
+            }
+        });
+    });
+
+    $("#diagSpeichern").click(function () {
+        //alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+        $("#name").val('');
+        $("#beschreibungSave").val('');
+        $("#savePopup").dialog({
+            resize: "auto",
+            show: {
+                effect: "fade",
+                duration: 500
+            },
+            hide: {
+                effect: "fade",
+                duration: 500
+            },
+            width: 425,
+            height: 250
+        });
+    });
+
     $("#container") .ejChart({
         palette: [ "black", "blue", "red", "green"],
         legend: {
@@ -698,7 +782,8 @@ function thirdQuery(){
                 (data,i)=>
                 ({
                     name: knzName_3,
-                    x: "A" + (i + 1) + "-" + dataRaw[i].artikelnummer.split("-")[1],
+                    //x: "A" + (i + 1) + "-" + dataRaw[i].artikelnummer.split("-")[1],
+                    x: "A" + (i + 1) + "-" + dataRaw[i].auftrag,
                     y: data
                 })
             );
@@ -708,7 +793,8 @@ function thirdQuery(){
             .forEach((col,n) =>
             tblChartData_3.row.add([
                 col.artikelnummer.split("-")[0],
-                "A" + (n + 1) + "-" + col.artikelnummer.split("-")[1],
+                //"A" + (n + 1) + "-" + col.artikelnummer.split("-")[1],
+                "A" + (n + 1) + "-" + dataRaw[n].auftrag,
                 /*col.nameMSt,
                 col.istMenge,*/
                 col.anlageMst,
@@ -740,6 +826,30 @@ const formatComma = num =>
 
 
 <style class="cssStyles">
+#diagSpeichern,
+#btnNoteAbbr,
+#btnNoteOk,
+#btnSaveAbbr,
+#btnSaveOk {
+    border: 0 solid black;
+    border-radius: 5px;
+    background-color: transparent;
+    color: black;
+    margin: 3px;
+    margin-top: 5px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid;
+}
+#diagSpeichern:hover,
+#btnNoteAbbr:hover,
+#btnNoteOk:hover {
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
 html{
     width: 100%;
     padding: 10px;
@@ -788,6 +898,21 @@ label{
     height: 60px;
     width: 60px;
     background-repeat: no-repeat;
+}
+.ui-dialog .ui-dialog-content {
+    position: relative;
+    padding: 0.5em 1em;
+    background: #b9c0c7;
+}
+.ui-dialog .ui-dialog-titlebar {
+    background: #6b6f73;
+}
+.ui-dialog-titlebar {
+    width: 92%;
+}
+.ui-widget-content {
+    border: 3px solid black;
+    background: #b9c0c7;
 }
 </style>
 

@@ -239,6 +239,7 @@
           }
           sheet.printInfo.zoomFactor = 1;
           sheet.printInfo.orientation = 2;
+          sheet.printInfo.headerLeft= nameInstance;
 
           workbook.fromJSON(jsonData,{
           });
@@ -254,6 +255,11 @@
 
     function exportExcelfile() {
       let fileName = $("#exportFileName").val();
+      if(fileName != ''){
+        fileName = $("#exportFileName").val();
+      }else{
+        fileName = "SpaEfV_Tabelle_2";
+      }
       if (fileName.substr(-5, 5) !== '.xls') {
         fileName += '.xls';
       }

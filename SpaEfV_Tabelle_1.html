@@ -283,6 +283,11 @@
 
   function exportExcelfile() {
       var fileName = $("#exportFileName").val();
+      if(fileName != ''){
+        fileName = $("#exportFileName").val();
+      }else{
+        fileName = "SpaEfV_Tabelle_1";
+      }
       if (fileName.substr(-5, 5) !== '.xls') {
           fileName += '.xls';
       }
